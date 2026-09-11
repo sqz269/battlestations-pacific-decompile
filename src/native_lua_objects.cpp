@@ -114,6 +114,12 @@ std::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage& object
     return lua_toboolean(object.owner_00->state_04,object.index_08)!=0?1:0;
 }
 bool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage& object) noexcept {return object.kind_04==0;}
+bool native_lua_is_string_00b660a0(const NativeLuaObjectStorage& object){
+    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TSTRING;
+}
+float native_lua_number_or_00b66330(const NativeLuaObjectStorage& object,float fallback){
+    return native_lua_is_number_00b66050(object)?native_lua_number_00b66270(object):fallback;
+}
 std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage& object,std::int32_t fallback,const bool& mode){
     return native_lua_is_number_00b66050(object)?native_lua_integer_00b66290(object,mode):fallback;
 }

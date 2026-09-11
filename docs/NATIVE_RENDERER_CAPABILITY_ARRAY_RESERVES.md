@@ -103,3 +103,8 @@ C++ exceptions and native hardware/SEH unwinding were not exercised. Original
 reserves execute with full compiled source providers, not original CRT bodies.
 There is no gather, gameplay or drop-in ABI claim. Exact hashes and the local
 immutable bundle paths are recorded in the accompanying audit report.
+
+
+## Primary integration
+
+Primary registered both complete source entries and passed the strict Win32 build, both existing CTests and eight fresh seeds. All four packets were checked against the same frozen main library `5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8`. Unchanged focused original/full-main-library allocator-mutation comparison passes both widths and negative-request no-growth. All225 original bytes/90 instructions exact except four bound direct provider CALL operands. Two exact members,8 ownedCOFF/96 mappedsections332relocations,58 actual imports and8368 whole runtime code bytes verified. Original private4096-byte page unchanged after execution; four raw124-byte traces compare with only explicit data-pointer identity normalization. Existing actual malloc/free providers are used through fixed source bridges. No allocationfailure/new-handler/null-destination/nativeSEH/callerABI, nested/gather/gamma or game claim. Reviewed names and evidence are saved with prior comments retained; correct CRT library names remain. All affected exports were forcibly refreshed. Immutable primary evidence: `local/capability_array_reserves_primary/`.

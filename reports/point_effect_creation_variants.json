@@ -1,0 +1,704 @@
+{
+  "packet": "orch3_point_creation_variants_af",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "reconstructed_actual_lifetime_full_original_body_and_strict_win32_fixture_passed",
+  "functions": [
+    {
+      "name": "matrix",
+      "address": "00868420",
+      "end_exclusive": "008685d8",
+      "length": 440,
+      "sha256": "4d752e25114c75084d3241d1a88550a2236df21f3732e424738fa0fd9ac22262",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00868453",
+          "target": "0x866440",
+          "relative": true
+        },
+        {
+          "address": "0086846c",
+          "target": "dword ptr [0xce2218]",
+          "relative": false
+        },
+        {
+          "address": "00868494",
+          "target": "0x86a650",
+          "relative": true
+        },
+        {
+          "address": "008684a6",
+          "target": "0xbf681b",
+          "relative": true
+        },
+        {
+          "address": "008684e4",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "008684ee",
+          "target": "0x8680b0",
+          "relative": true
+        },
+        {
+          "address": "0086850d",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "0086852e",
+          "target": "ebx",
+          "relative": false
+        },
+        {
+          "address": "0086853a",
+          "target": "edx",
+          "relative": false
+        },
+        {
+          "address": "00868545",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        },
+        {
+          "address": "00868558",
+          "target": "ebx",
+          "relative": false
+        },
+        {
+          "address": "00868565",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "0086859b",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        },
+        {
+          "address": "008685ae",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "008685bf",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086857d",
+          "bytes": "c21000",
+          "operands": "0x10"
+        },
+        {
+          "address": "008685d5",
+          "bytes": "c21000",
+          "operands": "0x10"
+        }
+      ],
+      "cpp_symbol": "create_point_effect_matrix_00868420",
+      "ghidra_name": "BSP_PointEffect_CreateFromMatrix",
+      "original_abi": "ECX output slot; EDX opaque third word; stack consumed definition,matrix,option,tail; EAX output-slot address; RET10",
+      "behavior": "Admission borrows original matrix+30; constructor receives original live matrix, null parent, EDX third word, transform0.",
+      "source": "src/point_effect_owner.cpp"
+    },
+    {
+      "name": "position",
+      "address": "008685e0",
+      "end_exclusive": "008687bc",
+      "length": 476,
+      "sha256": "801731fab732f456d24af4b19f87f019ab7fb9496b4ea861e2aff37927f45c02",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00868615",
+          "target": "0x866440",
+          "relative": true
+        },
+        {
+          "address": "0086862e",
+          "target": "dword ptr [0xce2218]",
+          "relative": false
+        },
+        {
+          "address": "0086867a",
+          "target": "0x86a650",
+          "relative": true
+        },
+        {
+          "address": "0086868c",
+          "target": "0xbf681b",
+          "relative": true
+        },
+        {
+          "address": "008686ce",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "008686d6",
+          "target": "0x8680b0",
+          "relative": true
+        },
+        {
+          "address": "008686f5",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "00868716",
+          "target": "ebx",
+          "relative": false
+        },
+        {
+          "address": "00868722",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "0086872d",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        },
+        {
+          "address": "00868740",
+          "target": "ebx",
+          "relative": false
+        },
+        {
+          "address": "0086874d",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "0086877f",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        },
+        {
+          "address": "00868792",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "008687a3",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00868765",
+          "bytes": "c21000",
+          "operands": "0x10"
+        },
+        {
+          "address": "008687b9",
+          "bytes": "c21000",
+          "operands": "0x10"
+        }
+      ],
+      "cpp_symbol": "create_point_effect_position_008685e0",
+      "ghidra_name": "BSP_PointEffect_CreateFromPosition",
+      "original_abi": "ECX output slot; EDX opaque third word; stack consumed definition,XYZ,option,tail; EAX output-slot address; RET10",
+      "behavior": "Sequential XYZ stores to actual F87640/44/48 preserve overlap; admission receives original live XYZ; constructor receives current F87610, null parent, EDX third word, transform0.",
+      "source": "src/point_effect_owner.cpp"
+    },
+    {
+      "name": "parent_matrix",
+      "address": "008687c0",
+      "end_exclusive": "008689bb",
+      "length": 507,
+      "sha256": "e614d7f0b088170614179967554026824cae2fd832166771adc6a7869d12f161",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008687f3",
+          "target": "0x866440",
+          "relative": true
+        },
+        {
+          "address": "0086880c",
+          "target": "dword ptr [0xce2218]",
+          "relative": false
+        },
+        {
+          "address": "00868832",
+          "target": "0xb6db70",
+          "relative": true
+        },
+        {
+          "address": "00868849",
+          "target": "0x413920",
+          "relative": true
+        },
+        {
+          "address": "00868865",
+          "target": "0x86a650",
+          "relative": true
+        },
+        {
+          "address": "00868877",
+          "target": "0xbf681b",
+          "relative": true
+        },
+        {
+          "address": "008688c4",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "008688d1",
+          "target": "0x8680b0",
+          "relative": true
+        },
+        {
+          "address": "008688f0",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "00868911",
+          "target": "ebx",
+          "relative": false
+        },
+        {
+          "address": "0086891d",
+          "target": "edx",
+          "relative": false
+        },
+        {
+          "address": "00868928",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        },
+        {
+          "address": "0086893b",
+          "target": "ebx",
+          "relative": false
+        },
+        {
+          "address": "00868948",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "0086897e",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        },
+        {
+          "address": "00868991",
+          "target": "dword ptr [0xce2220]",
+          "relative": false
+        },
+        {
+          "address": "008689a2",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00868960",
+          "bytes": "c21400",
+          "operands": "0x14"
+        },
+        {
+          "address": "008689b8",
+          "bytes": "c21400",
+          "operands": "0x14"
+        }
+      ],
+      "cpp_symbol": "create_point_effect_parent_matrix_008687c0",
+      "ghidra_name": "BSP_PointEffect_CreateWithParentMatrix",
+      "original_abi": "ECX output slot; EDX parent; stack consumed definition,matrix,transform,option,tail; EAX output-slot address; RET14",
+      "behavior": "Nonzero low transform byte refreshes actual parent and uses full413920 original-matrix*parent.world only for admission; constructor receives original live matrix, actual parent, third0 and original transform byte.",
+      "source": "src/point_effect_owner.cpp"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "00868453",
+      "native": "00866440",
+      "function": "00868420"
+    },
+    {
+      "address": "00868494",
+      "native": "0086a650",
+      "function": "00868420"
+    },
+    {
+      "address": "008684a6",
+      "native": "00bf681b",
+      "function": "00868420"
+    },
+    {
+      "address": "008684ee",
+      "native": "008680b0",
+      "function": "00868420"
+    },
+    {
+      "address": "00868615",
+      "native": "00866440",
+      "function": "008685e0"
+    },
+    {
+      "address": "0086867a",
+      "native": "0086a650",
+      "function": "008685e0"
+    },
+    {
+      "address": "0086868c",
+      "native": "00bf681b",
+      "function": "008685e0"
+    },
+    {
+      "address": "008686d6",
+      "native": "008680b0",
+      "function": "008685e0"
+    },
+    {
+      "address": "008687f3",
+      "native": "00866440",
+      "function": "008687c0"
+    },
+    {
+      "address": "00868832",
+      "native": "00b6db70",
+      "function": "008687c0"
+    },
+    {
+      "address": "00868849",
+      "native": "00413920",
+      "function": "008687c0"
+    },
+    {
+      "address": "00868865",
+      "native": "0086a650",
+      "function": "008687c0"
+    },
+    {
+      "address": "00868877",
+      "native": "00bf681b",
+      "function": "008687c0"
+    },
+    {
+      "address": "008688d1",
+      "native": "008680b0",
+      "function": "008687c0"
+    }
+  ],
+  "supporting_byte_spans": [
+    {
+      "name": "maps",
+      "address": "00dc6ef8",
+      "end_exclusive": "00dc6fdc",
+      "length": 228,
+      "sha256": "6873116cd7dbcc860df62acb239aec23b7be46d427bdabd3c3a356afb0a7f180",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "funclets",
+      "address": "00c95030",
+      "end_exclusive": "00c95116",
+      "length": 230,
+      "sha256": "d774ebab553c8f2147b77fcfaeabd76a1535f752318706445b8f868bf4e07f51",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00c95044",
+          "target": "0xbf65ac",
+          "relative": true
+        },
+        {
+          "address": "00c95094",
+          "target": "0xbf65ac",
+          "relative": true
+        },
+        {
+          "address": "00c950e4",
+          "target": "0xbf65ac",
+          "relative": true
+        }
+      ],
+      "returns": [
+        {
+          "address": "00c9504a",
+          "bytes": "c3",
+          "operands": ""
+        },
+        {
+          "address": "00c9506b",
+          "bytes": "c3",
+          "operands": ""
+        },
+        {
+          "address": "00c9509a",
+          "bytes": "c3",
+          "operands": ""
+        },
+        {
+          "address": "00c950bb",
+          "bytes": "c3",
+          "operands": ""
+        },
+        {
+          "address": "00c950ea",
+          "bytes": "c3",
+          "operands": ""
+        },
+        {
+          "address": "00c9510b",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "live_coordinate_interface": {
+    "type": "EffectPointView",
+    "changed_addresses": [
+      "0086a650",
+      "0086b7d0"
+    ],
+    "behavior": "AF: typed admission interfaces now borrow EffectPointView (three live native floats), including original matrix+30 slices. No overlapping std::array object or entry snapshot. Reference refresh and row virtual+1C receive original live pointer; admission algorithm and base AL1 leaf unchanged. Full original440/476/507-byte creation-wrapper fixtures verify callback mutation and sequential overlapping XYZ stores through actual point/definition/component/event lifetimes. docs/POINT_EFFECT_CREATION_VARIANTS.md; reports/point_effect_creation_variants.json. No native ABI or gameplay claim.",
+    "override_signature_change": true
+  },
+  "exception_maps": [
+    {
+      "function": "00868420",
+      "handler": "00c9506c",
+      "funcinfo": "00dc6ef8",
+      "map": "00dc6f1c",
+      "actions_input_lock_raw_temporary_output": [
+        "00c95030",
+        "00c95038",
+        "00c95040",
+        "00c9504b",
+        "00c95053"
+      ]
+    },
+    {
+      "function": "008685e0",
+      "handler": "00c950bc",
+      "funcinfo": "00dc6f44",
+      "map": "00dc6f68",
+      "actions_input_lock_raw_temporary_output": [
+        "00c95080",
+        "00c95088",
+        "00c95090",
+        "00c9509b",
+        "00c950a3"
+      ]
+    },
+    {
+      "function": "008687c0",
+      "handler": "00c9510c",
+      "funcinfo": "00dc6f90",
+      "map": "00dc6fb4",
+      "actions_input_lock_raw_temporary_output": [
+        "00c950d0",
+        "00c950d8",
+        "00c950e0",
+        "00c950eb",
+        "00c950f3"
+      ]
+    }
+  ],
+  "unwind_states": [
+    {
+      "state": 0,
+      "next": -1,
+      "action": "guarded fresh output"
+    },
+    {
+      "state": 1,
+      "next": 0,
+      "action": "original consumed definition"
+    },
+    {
+      "state": 2,
+      "next": 1,
+      "action": "captured lock"
+    },
+    {
+      "state": 3,
+      "next": 2,
+      "action": "raw allocation free"
+    },
+    {
+      "state": 4,
+      "next": 2,
+      "action": "temporary reference"
+    }
+  ],
+  "validation": {
+    "build": "local/point-variants-af-build.log: strict MSVC Win32 and both existing CTests passed",
+    "native_probe": "local/point-variants-af-probe.log: all440/476/507 original bytes, all RET immediate bytes and ESP, same canonical direct callees/actual Win32 imports, full114h image and admission/matrix/global comparison",
+    "pointer_words_normalized": [
+      "0c",
+      "18",
+      "84",
+      "8c",
+      "110"
+    ],
+    "cases": [
+      "normal creation for each wrapper",
+      "parent transform0 and255 with full4x4 product",
+      "all rows rejected",
+      "null114h allocation",
+      "callback mutates original or global matrix before constructor",
+      "sequential overlapping XYZ stores yield9,9,9",
+      "actual parent count1->2->1->0 and physical node-pool return",
+      "matrix C++ constructor throw: unchanged output, raw free under lock after callee argument cleanup, unlock then input terminal, counters retained"
+    ],
+    "actual_lifetime": "Four named components transferred to real definition array; three actual20h rumble events; canonical raw counts, real string/node pools, insertion/frame/terminal lifecycle; independent requests survive point teardown.",
+    "fixture_adapters": [
+      "manager native+4 exposes same actual Win32 section used by typed manager projection",
+      "definition virtual-zero thunk restores canonical D0DA58 before actual zero dispatch",
+      "original direct callees bridged to canonical implementations",
+      "controlled admission predicate observes/mutates live inputs; remaining rumble predicates actual86B7D0",
+      "application actual nullable root field=null; pure parent lookup uses actual canonical node binding"
+    ],
+    "regression": "local/point-variants-af-regression.log: existing AE8689C0 full-lifetime fixture passed with view override signature updated",
+    "probe_sources": [
+      "local/point_variants_af.cpp",
+      "local/point_variants_af_tail.cpp",
+      "local/generate_point_variants_af.py",
+      "local/extract_point_variants_af.py",
+      "local/point_variants_af_regression.cpp"
+    ],
+    "original_exception_dispatch_executed": false,
+    "physical_output_or_gameplay_tested": false,
+    "new_permanent_tests": false,
+    "call_verification": "14 direct native call rows checked, zero failures; local/point-variants-af-call-verification.log"
+  },
+  "uncertainty": "New C++ interface with required actual application bindings, not native-vtable/SEH ABI. Original exception dispatcher not executed. Intrusive terminal/free interfaces are nonthrowing. Fixture uses nullable root=null, controlled predicate/device output and explicit manager/definition ABI adapters; other component families, nonnull-root application, physical output and gameplay unvalidated.",
+  "remaining": [
+    "Remaining component factories/event consumers and native force-request storage.",
+    "Actual application composition with matching root/parent/current table/lifetime bindings.",
+    "Native exception/vtable ABI and runnable gameplay validation."
+  ],
+  "ghidra_signature_audit": {
+    "project": "bsp.gpr",
+    "program": "battlestationspacific.exe",
+    "before": {
+      "00868420": "00868420 FUN_00868420  undefined FUN_00868420(void)  body 00868420 - 008685d7\n",
+      "008685e0": "008685e0 FUN_008685e0  undefined FUN_008685e0(void)  body 008685e0 - 008687bb\n",
+      "008687c0": "008687c0 FUN_008687c0  undefined FUN_008687c0(void)  body 008687c0 - 008689ba\n"
+    },
+    "changes": [
+      {
+        "address": "00868420",
+        "prototype": "void * __fastcall BSP_PointEffect_CreateFromMatrix(void * output_slot, uint third_word, void * consumed_definition, float * matrix, uint option_word, uint tail_word)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00868420 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "008685e0",
+        "prototype": "void * __fastcall BSP_PointEffect_CreateFromPosition(void * output_slot, uint third_word, void * consumed_definition, float * xyz, uint option_word, uint tail_word)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 008685e0 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "008687c0",
+        "prototype": "void * __fastcall BSP_PointEffect_CreateWithParentMatrix(void * output_slot, void * parent, void * consumed_definition, float * matrix, uint transform_word, uint option_word, uint tail_word)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 008687c0 with __fastcall calling convention"
+        }
+      }
+    ],
+    "after": "00868420 BSP_PointEffect_CreateFromMatrix  void * __fastcall BSP_PointEffect_CreateFromMatrix(void * output_slot, uint third_word, void * consumed_definition, float * matrix, uint option_word, uint tail_word)  body 00868420 - 008685d7\n008685e0 BSP_PointEffect_CreateFromPosition  void * __fastcall BSP_PointEffect_CreateFromPosition(void * output_slot, uint third_word, void * consumed_definition, float * xyz, uint option_word, uint tail_word)  body 008685e0 - 008687bb\n008687c0 BSP_PointEffect_CreateWithParentMatrix  void * __fastcall BSP_PointEffect_CreateWithParentMatrix(void * output_slot, void * parent, void * consumed_definition, float * matrix, uint transform_word, uint option_word, uint tail_word)  body 008687c0 - 008689ba\n",
+    "save": {
+      "confirmed_by": "local/point-variants-af-annotations.log",
+      "project_saved": true,
+      "initial_attempt_error": "Unable to lock due to active transaction; subsequent annotation batch saved successfully"
+    }
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T222350Z.json",
+    "readback": "local/point-variants-af-comments.json",
+    "project_saved": true,
+    "all5_names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00868420",
+        "before": {
+          "address": "00868420",
+          "function_name": "BSP_PointEffect_CreateFromMatrix"
+        },
+        "after": {
+          "address": "00868420",
+          "name": "BSP_PointEffect_CreateFromMatrix",
+          "evidence": "Packet orch3_point_creation_variants_af. Complete creation entrypoint, nonnull consumed definition, real866440 captured lock/admission86A650/114h allocation/8680B0 constructor and canonical intrusive lifetime. Output untouched on constructor throw; callee argument cleanup precedes raw free under lock, unlock precedes original input release. Original complete body, ESP and normalized114h owner images compared through actual definition/component/event/node/string domains. docs/POINT_EFFECT_CREATION_VARIANTS.md; reports/point_effect_creation_variants.json. Names are hypotheses. Admission borrows original matrix+30; constructor receives original live matrix, null parent, EDX third word, transform0. Complete440 bytes 00868420..008685d7, live/disk SHA256 4d752e25114c75084d3241d1a88550a2236df21f3732e424738fa0fd9ac22262."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008685e0",
+        "before": {
+          "address": "008685e0",
+          "function_name": "BSP_PointEffect_CreateFromPosition"
+        },
+        "after": {
+          "address": "008685e0",
+          "name": "BSP_PointEffect_CreateFromPosition",
+          "evidence": "Packet orch3_point_creation_variants_af. Complete creation entrypoint, nonnull consumed definition, real866440 captured lock/admission86A650/114h allocation/8680B0 constructor and canonical intrusive lifetime. Output untouched on constructor throw; callee argument cleanup precedes raw free under lock, unlock precedes original input release. Original complete body, ESP and normalized114h owner images compared through actual definition/component/event/node/string domains. docs/POINT_EFFECT_CREATION_VARIANTS.md; reports/point_effect_creation_variants.json. Names are hypotheses. Sequential XYZ stores to actual F87640/44/48 preserve overlap; admission receives original live XYZ; constructor receives current F87610, null parent, EDX third word, transform0. Complete476 bytes 008685e0..008687bb, live/disk SHA256 801731fab732f456d24af4b19f87f019ab7fb9496b4ea861e2aff37927f45c02."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008687c0",
+        "before": {
+          "address": "008687c0",
+          "function_name": "BSP_PointEffect_CreateWithParentMatrix"
+        },
+        "after": {
+          "address": "008687c0",
+          "name": "BSP_PointEffect_CreateWithParentMatrix",
+          "evidence": "Packet orch3_point_creation_variants_af. Complete creation entrypoint, nonnull consumed definition, real866440 captured lock/admission86A650/114h allocation/8680B0 constructor and canonical intrusive lifetime. Output untouched on constructor throw; callee argument cleanup precedes raw free under lock, unlock precedes original input release. Original complete body, ESP and normalized114h owner images compared through actual definition/component/event/node/string domains. docs/POINT_EFFECT_CREATION_VARIANTS.md; reports/point_effect_creation_variants.json. Names are hypotheses. Nonzero low transform byte refreshes actual parent and uses full413920 original-matrix*parent.world only for admission; constructor receives original live matrix, actual parent, third0 and original transform byte. Complete507 bytes 008687c0..008689ba, live/disk SHA256 e614d7f0b088170614179967554026824cae2fd832166771adc6a7869d12f161."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086a650",
+        "before": {
+          "address": "0086a650",
+          "function_name": "BSP_EffectTemplate_AdmitPoint",
+          "comment": "[BSP reconstruction 0086a650]\nComplete captured-array admission loop, canonical transform refresh, exact x87 operation/spill order, required actual row projection/current virtual dispatch | Original ABI: ECX template; stack original XYZ and reference transform; AL result; RET8; upper EAX stale. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim."
+        },
+        "after": {
+          "address": "0086a650",
+          "name": "BSP_EffectTemplate_AdmitPoint",
+          "evidence": "Complete captured-array admission loop, canonical transform refresh, exact x87 operation/spill order, required actual row projection/current virtual dispatch | Original ABI: ECX template; stack original XYZ and reference transform; AL result; RET8; upper EAX stale. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim. | AF: typed admission interfaces now borrow EffectPointView (three live native floats), including original matrix+30 slices. No overlapping std::array object or entry snapshot. Reference refresh and row virtual+1C receive original live pointer; admission algorithm and base AL1 leaf unchanged. Full original440/476/507-byte creation-wrapper fixtures verify callback mutation and sequential overlapping XYZ stores through actual point/definition/component/event lifetimes. docs/POINT_EFFECT_CREATION_VARIANTS.md; reports/point_effect_creation_variants.json. No native ABI or gameplay claim."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086b7d0",
+        "before": {
+          "address": "0086b7d0",
+          "function_name": "BSP_EffectComponent_AdmitAlways",
+          "comment": "[BSP reconstruction 0086b7d0]\nHypothesis, not a recovered symbol. Complete5-byte MOV AL,1; RET8 leaf. Does not inspect ECX or either argument. Verified shake D0D5F4 virtual+1C selects this leaf; not a fallback for unknown predicates. Strict Win32 and full original-body fixture with explicit ESP balance passed across12 x87 precision/rounding settings. docs/GAMEPLAY_POINT_EFFECT.md; reports/gameplay_point_effect.json. New C++ ABI; application dispatch, unmasked FP exceptions and gameplay unvalidated."
+        },
+        "after": {
+          "address": "0086b7d0",
+          "name": "BSP_EffectComponent_AdmitAlways",
+          "evidence": "Hypothesis, not a recovered symbol. Complete5-byte MOV AL,1; RET8 leaf. Does not inspect ECX or either argument. Verified shake D0D5F4 virtual+1C selects this leaf; not a fallback for unknown predicates. Strict Win32 and full original-body fixture with explicit ESP balance passed across12 x87 precision/rounding settings. docs/GAMEPLAY_POINT_EFFECT.md; reports/gameplay_point_effect.json. New C++ ABI; application dispatch, unmasked FP exceptions and gameplay unvalidated. | AF: typed admission interfaces now borrow EffectPointView (three live native floats), including original matrix+30 slices. No overlapping std::array object or entry snapshot. Reference refresh and row virtual+1C receive original live pointer; admission algorithm and base AL1 leaf unchanged. Full original440/476/507-byte creation-wrapper fixtures verify callback mutation and sequential overlapping XYZ stores through actual point/definition/component/event lifetimes. docs/POINT_EFFECT_CREATION_VARIANTS.md; reports/point_effect_creation_variants.json. No native ABI or gameplay claim."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

@@ -38,3 +38,8 @@ ignored. Device readback confirms both zeros. The existing generated shader draw
 still produces centerFF407FBF/outsideFF000000 and restores its state. Win32 build,
 both existing CTests and the full D3D9/native-matrix probes pass; no new test target
 was added. Registry/conversion details are in `SHADER_RENDER_STATE_TABLE.md`.
+
+
+## Correction from docs/NATIVE_SHADER_DESCRIPTOR_DEPENDENCIES.md
+
+Actual native string/Lua storage readers now cover B437F0 and B439C0. The inner ordinal advances even for rejected keys; missing mode is an explicit native stack input and mode*8 addressing remains unchecked. The outer gate is released before a fresh field lookup. Five installed shader combiners match complete original instruction execution; original exception ABI and full descriptor integration remain open. See that document and `reports/native_shader_descriptor_dependencies.json` for evidence and limits.

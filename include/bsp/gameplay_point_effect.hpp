@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/gamepad_force_events.hpp"
+#include "bsp/effect_admission.hpp"
 
 namespace bsp {
 class RenderCommandReference;
@@ -9,7 +10,7 @@ class RenderCommandReference;
 // arguments (point, reference); AL=1, RET8. Upper EAX remains stale. This is
 // the verified base virtual+1C leaf, not a fallback for unknown predicates.
 std::uint8_t admit_effect_component_0086b7d0(const void* actual_component,
-    const std::array<float, 3>& point, CameraTransform& reference) noexcept;
+    EffectPointView point, CameraTransform& reference) noexcept;
 
 // Complete0042C3D0..0042C44B. Native ECX actual target, stack float, RET4;
 // no meaningful return value. Borrow its actual float fields: current+1C0,

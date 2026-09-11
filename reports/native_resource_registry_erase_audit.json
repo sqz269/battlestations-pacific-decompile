@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_resource_registry_erase2",
-  "status": "two_complete_actual_storage_entries_primary_source_and_fixture_reviewed_strict_win32_and_focused_comparison_passed",
+  "status": "complete_actual_registry_erase_and_range_main_archive_native_composition_and_strict_Win32_checked",
   "utc": "2026-09-11T21:53:13.943100+00:00",
   "base_commit": "d214cc3dabb3ddedcd8ee78c4e739d6c406bd092",
   "branch": "agent/native-resource-registry-erase2",
@@ -1588,5 +1588,114 @@
   "Ghidra_mutated": false,
   "shared_metadata_or_CMake_mutated": false,
   "original_installation_mutated": false,
-  "immutable_handoff": "local/registry_erase_handoff/manifest.json; external self-independent read-only manifest includes report and all proof artifacts"
+  "immutable_handoff": "local/registry_erase_handoff/manifest.json; external self-independent read-only manifest includes report and all proof artifacts",
+  "primary_integration": {
+    "status": "complete_actual_registry_erase_and_range_main_archive_native_composition_and_strict_Win32_checked",
+    "main_library_sha256": "5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\error_erase_reserves_special_build_frozen\\manifest.json",
+      "bytes": 26871,
+      "sha256": "20e67dc6a422214cada2caa8045746c20ae8e17ac0a524deb7760ad00846f077"
+    },
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 130,
+    "report_pins": 77,
+    "fresh_spans": 31,
+    "fresh_bytes": 2333,
+    "current_source_byte_drift": [
+      {
+        "path": "src/native_resource_registry_erase.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-registry-erase2\\src\\native_resource_registry_erase.cpp",
+          "bytes": 11626,
+          "sha256": "94048283f7c81aad5befefb617b8484c374bd325c35ebbd0769178b35b0b701d"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_resource_registry_erase.cpp",
+          "bytes": 11384,
+          "sha256": "99ebbecf42f13963b2695f7191b53096dae2f32e9a28a01dcbb4755f5e6c4d1b"
+        },
+        "review": "Exact decoded source text equality; CRLF/LF-only byte difference."
+      }
+    ],
+    "exact_archive_objects": 9,
+    "whole_COFF_code_sections": 198,
+    "whole_COFF_code_bytes": 14256,
+    "whole_COFF_relocations": 461,
+    "linked_sections": 82,
+    "linked_code_bytes": 8238,
+    "trace_words": 231,
+    "top_level_comparisons": 5,
+    "original_owned_execution": true,
+    "original_pool_CRT_helper_execution": false,
+    "boundary": "Unchanged focused fixture matches231 words for five original/source operations: mirrored near-child rotations, three-node partial range with11 returning invalid-handler calls, fullclear, captured-head repairs and aliased output. Actual free changes count13/0 and pool getter mutates captured key. Both owned entries, subtree, increment and rotations execute; extrema installed/static only here. Nine exact objects/198 code sections14256bytes461relocations;82 linked sections8238bytes checked outside relocation operands, not every resolved target. Separate source owning-exception payload/copy/destruction check; original EH static. Inherited actual pool-release noexcept/recreation-failure boundary and host RTTI/SEH/caller ABI limits remain. No full registry/factory/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\registry_erase_primary\\sealed.json",
+      "bytes": 23667,
+      "sha256": "dc57cb753cc9355e555fad24f9534f6158f8f203b29062221220b6b050bc881c"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_error_erase_reserves_special_annotations.json",
+    "bytes": 16456,
+    "sha256": "b10cf9720fbc6581797d35cb147c86d48f7cd9a664972769d9c7bb787962a20f"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b19f90",
+      "name": "BSP_ResourceRegistryTree_EraseIterator",
+      "cpp_symbol": "bsp::erase_native_resource_registry_iterator_00b19f90",
+      "source": "src/native_resource_registry_erase.cpp",
+      "native_end_exclusive": "00b1a25c",
+      "status": "complete_actual_registry_erase_and_range_main_archive_native_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_erase_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1a2f0",
+      "name": "BSP_ResourceRegistryTree_EraseRange",
+      "cpp_symbol": "bsp::erase_native_resource_registry_range_00b1a2f0",
+      "source": "src/native_resource_registry_erase.cpp",
+      "native_end_exclusive": "00b1a3b9",
+      "status": "complete_actual_registry_erase_and_range_main_archive_native_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_erase_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b19f90",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19f90\\decompiled.c",
+      "bytes": 8726,
+      "sha256": "582917253173c6f079c4af32b3502a869702335b94a4d91f26d02d08eb7c8081"
+    },
+    {
+      "address": "00b1a2f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1a2f0\\decompiled.c",
+      "bytes": 3066,
+      "sha256": "49142aa6c370b19305aa7a5a6d1e4e2448b14a444f5b593e94f3b536a89f717d"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_ERASE.md",
+    "bytes": 10938,
+    "sha256": "e9d839b2aaefc14b5c866df6d2b8914cde9ced7b9dbf072a9c964413e7094783"
+  },
+  "closure_utc": "2026-09-11T22:20:32.385271+00:00"
 }

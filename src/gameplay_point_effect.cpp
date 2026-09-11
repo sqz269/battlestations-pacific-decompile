@@ -39,7 +39,7 @@ std::array<float, 3> separation(const CameraMatrix& node, const CameraMatrix& ta
 } // namespace
 
 std::uint8_t admit_effect_component_0086b7d0(const void*,
-    const std::array<float, 3>&, CameraTransform&) noexcept {
+    EffectPointView, CameraTransform&) noexcept {
     return 1;
 }
 

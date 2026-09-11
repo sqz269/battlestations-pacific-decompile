@@ -1504,17 +1504,25 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
 GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
     long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
-    std::string language)
+    std::string language, long mission_complete_frame)
     : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
     if (!menu_select.empty()) {
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
-            locale, std::move(menu_select), mission_frames, profiler, std::move(language));
+            locale, std::move(menu_select), mission_frames, profiler, std::move(language),
+            mission_complete_frame);
     }
 }
 
 GameMenuHost::~GameMenuHost() = default;
 
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
+
+bool GameMenuHost::mission_exit_finished() const noexcept {
+    // Milestone 2g: the mission left game state 0Dh through 004d7970 and the
+    // drain reached request 04h, the front-end shell the debrief runs in.
+    return impl_->mission != nullptr
+        && impl_->mission->summary().mission_exit_completed;
+}
 
 void GameMenuHost::run_title_init_004c9a70() {
     Impl& host = *impl_;

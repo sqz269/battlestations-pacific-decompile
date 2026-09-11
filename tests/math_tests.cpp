@@ -48,6 +48,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/mission_named_call_args.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
@@ -55,6 +56,7 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/plane_class_fields.hpp"
 #include "bsp/vehicle_class_fields.hpp"
+#include "bsp/scene_property_bag.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -1821,6 +1823,51 @@ int main() {
                   && bsp::world_bucket_head_offset(0x00) == 0x64,
             "the name lookup skips the released candidate and the negative buckets, and "
             "matches case-insensitively on the first live entity of a searched kind");
+    }
+
+    {
+        // One installed property line, `Vehicles = IA 8 17 19 20 21 23 68 73 109 ;`
+        // from the shipped .scn files. The leading 8 is the element count that
+        // 008F636C/008F650C reads before the loop, not a value: a reader that
+        // scanned to the `;` would report nine elements.
+        bsp::ScenePropertyType type{};
+        bsp::SceneReferenceKind kind{};
+        const bool letter_is_int_array
+            = bsp::scene_property_type_for_letter("IA", type, kind)
+            && type == bsp::ScenePropertyType::IntArray;
+        const std::vector<std::string> tokens{
+            "8", "17", "19", "20", "21", "23", "68", "73", "109"};
+        bsp::ScenePropertyValue value{};
+        const bool decoded = bsp::scene_decode_property_value(
+            bsp::ScenePropertyType::IntArray, kind, tokens, value);
+        check(letter_is_int_array && decoded && value.int_array.size() == 8
+                  && value.int_array.front() == 17 && value.int_array.back() == 109
+                  && bsp::scene_property_array_bytes(
+                         bsp::ScenePropertyType::IntArray, 8) == 32,
+            "an installed `IA` property line decodes its leading token as the element "
+            "count and yields eight values");
+    }
+
+    {
+        // 00887750's nargs accounting, which is easy to "correct" the wrong way.
+        // EBX is cleared at 00887780 and only the self-key block sets it to one,
+        // 0088793C adds the record count verbatim even for a tag-4 record that
+        // pushes nothing, and stack_first == 0 is the sentinel at 008877F2 that
+        // also stops stack_last from being normalised.
+        const bsp::MissionLuaStackRange none = bsp::resolve_named_call_stack_range(0, -1, 12);
+        const bsp::MissionLuaStackRange relative = bsp::resolve_named_call_stack_range(-3, -1, 12);
+        std::vector<bsp::MissionLuaArgument> arguments(2);
+        arguments[0].type = bsp::MissionLuaArgumentType::Number;
+        arguments[1].type = bsp::MissionLuaArgumentType::Skipped;
+        const bsp::NamedCallArgumentCounts without_self
+            = bsp::named_call_argument_count(false, arguments, none);
+        const bsp::NamedCallArgumentCounts with_self
+            = bsp::named_call_argument_count(true, arguments, relative);
+        check(!none.active && none.count == 0 && relative.active && relative.first == 10
+                  && relative.last == 12 && relative.count == 3 && without_self.declared == 2
+                  && without_self.pushed == 1 && with_self.declared == 6 && with_self.pushed == 5,
+            "the named call counts a skipped record in nargs but not on the stack, starts at zero "
+            "without a self key, and treats stack_first zero as the no-forwarding sentinel");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

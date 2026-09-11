@@ -9,6 +9,7 @@
 #include "bsp/sound_system_update.hpp"
 #include "bsp/sound_spatial_instance.hpp"
 #include "bsp/sound_event_instance.hpp"
+#include "bsp/sound_gameplay_methods.hpp"
 
 #include <memory>
 #include <string>
@@ -30,8 +31,16 @@ class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
     public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
     public SoundChannelFmodHost, public SoundSystemUpdateFmodHost, public SoundSpatialChannelFmodHost,
-    public SoundEventFmodHost {
+    public SoundEventFmodHost, public SoundGameplayFmodHost {
 public:
+    FmodResult channel_set_3d_minmax_distance(void*, float, float) override;
+    FmodResult channel_get_mode(void*, std::optional<std::uint32_t>&) override;
+    FmodResult channel_set_mode(void*, std::uint32_t) override;
+    FmodResult channel_get_position(void*, std::uint32_t*, std::uint32_t) override;
+    FmodResult channel_group_get_num_groups(void*, std::int32_t*) override;
+    FmodResult channel_group_get_group(void*, std::int32_t, std::optional<void*>&) override;
+    FmodResult channel_group_get_num_channels(void*, std::int32_t*) override;
+    FmodResult channel_group_get_channel(void*, std::int32_t, std::optional<void*>&) override;
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
         const std::wstring& event_dll_path, SoundFileCallbackBundle callbacks = {});

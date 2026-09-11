@@ -1,0 +1,95 @@
+[
+  {
+    "address": "00b1b5f0",
+    "before": {
+      "address": "00b1b5f0",
+      "function_name": "BSP_ResourceRegistry_Destroy",
+      "comment": "[BSP reconstruction 00b1b5f0]\nComplete 111-byte actual resource-registry destructor B1B5F0..B1B65F. Original ECX registry, plain RET. Full B1A2F0 range destruction followed by current head free; restored 39-byte returning-free tail B1B638..B1B65F zeros current head/count, clears actual F8D41C singleton publication and writes CE3818 base profile. Native EH only calls B19760 publication/profile reset; no rollback or invented resource ownership. Full original spans and dependencies reviewed; full source destructor/range erase remain pending. Adjacent B1B660 scalar deleting destructor is preserved. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json"
+    },
+    "after": {
+      "address": "00b1b5f0",
+      "name": "BSP_ResourceRegistry_Destroy",
+      "evidence": "Complete111-byte destructor. Capture actual registry, current head/minimum and by-value range arguments before arming state0; invoke full actual range provider. Reread CURRENT head for actual free; afterward zero current head/count, clear borrowed actualF8D41C, then captured registry profileCE3818. Native CBC778/DF4AD8/mapDF4AD0/CBC770/B19760 cleanup resets only publication/profile on captured registry. Source guard translates propagating host unwind; no factory or registry allocation free, initial profile rewrite or tree rollback. Caller supplies live16-byte registry prefix and actual publication reference. Unchanged focused fixture matches23 words for original/source destroy and directreset; actual nodefree changescurrenthead and headfree changescount/head/publicationdecoy. Original128 ownedbytes execute with complete current range/free providers and literal writableF8D41C mapping, no fixturePE overlap. Ten exact archive members/204 wholeCOFF code sections14514bytes469relocations;85 linked sections8154bytes checked outside relocation operands, not every resolved target. Original nativeEH and sourceguard unwind static only; inherited pool/free exception boundaries remain. No factory/getter/scalar-delete/nativeSEH/originalcallerABI or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_resource_registry_destroy_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19760",
+    "before": {
+      "address": "00b19760",
+      "function_name": "FUN_00b19760"
+    },
+    "after": {
+      "address": "00b19760",
+      "name": "BSP_ResourceRegistry_ResetPublicationAndBaseProfile",
+      "evidence": "Complete17-byte ECX/RET reset. Directly clear actual borrowedF8D41C without reading prior publication; write baseprofileCE3818 to captured registry without reading previous profile/head/count. Do not follow current publication, repair tree or release factory/registry storage. Direct invocation and destructor guard share this complete source entry; remaining owner construction/getter routes are separate. Unchanged focused fixture matches23 words for original/source destroy and directreset; actual nodefree changescurrenthead and headfree changescount/head/publicationdecoy. Original128 ownedbytes execute with complete current range/free providers and literal writableF8D41C mapping, no fixturePE overlap. Ten exact archive members/204 wholeCOFF code sections14514bytes469relocations;85 linked sections8154bytes checked outside relocation operands, not every resolved target. Original nativeEH and sourceguard unwind static only; inherited pool/free exception boundaries remain. No factory/getter/scalar-delete/nativeSEH/originalcallerABI or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_resource_registry_destroy_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c08479",
+    "before": {
+      "address": "00c08479",
+      "function_name": "LIBCRT_unmatched_00c08479",
+      "comment": "[BSP inventory 00c08479] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c08479",
+      "name": "BSP_CRT_X87_FinishResultStatus",
+      "evidence": "Complete163-byte assembly-only packed-CW JMP tail. EntryESP packedDWORD,+4 realreturn,+8 arg1,+10 arg2; ST0 result,ECX name,EDX operation. Borrow EBX actual48-byte D6A684 region: maxfinite,minnormal,-1536,+1536,+infinity,+zero. Six same-length FLD/FCOMP/FMUL address adaptations read only reached current cells. Original FST nonpop, three waiting9BDFE0 stores, all scaling/comparison/exception-mask branches and both full error calls retained. Every normal path POPs packedDWORD intoEDX thenRET consumes realreturn; no literal read after dispatch. No FP reset, newEH or arithmetic callback. All163 bytes/57 instructions, six current literal reads and two provider calls proved; completeCFG visits allthree packedCW POP/RET exits. Complete83-byte errorcore/unary5-byte JMP+17h and concrete C27489 wholecompiled section/EBX save-restore checked. Three actual archive members/91 wholeCOFF sections. Persistent actual LegacyCrtMathRuntime/E16BD0/owningerrno and established FPIEEE,precision01,FP/status,Win32 exception and volatile-register limits remain. No runtime/linked-address/nativeSEH/originalcallerABI, fullpow/SSE2/gamma or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_crt_x87_result_status_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b23120",
+    "before": {
+      "address": "00b23120",
+      "function_name": "FUN_00b23120"
+    },
+    "after": {
+      "address": "00b23120",
+      "name": "BSP_RendererCapabilityRecords_Resize",
+      "evidence": "Complete96-byte ECX/RET4 raw inner resize with explicit ignoredEDX source parameter. Signed request/capacity, full primitive reserve, current count/base rereads; grow writes DWORD+0 then bytes+4,+5,+6,+7 only, leaving payloadDWORD+8 unchanged. Shrink decrements current signed count before final target publication. No typed vector or zeroing of whole12-byte records. Unchanged original/full-main-library nested grow/copy/shrink sequence matches both344-byte traces under real allocator-induced pointer/count mutation with11 lifetime-specific pointer roles. All593 original bytes executed; three owned345bytes plus complete primitive130 match after declaredCALLs. Outer248 is full reviewed source/EH translation, not literal identity; RET0 specialization explicit. Three exact objects/20wholeownedCOFF/127 mappedsections450relocations,60actual imports and10637 runtimecodebytes verified. Private4096-byte original page unchanged after18 checked operand bindings, including actual linked__CxxFrameHandler3. No failure/new-handler/exception-path/nativeSEH/privateframealias/originalcallerABI, gather/device/gamma or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_renderer_capability_nested_arrays_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b25e60",
+    "before": {
+      "address": "00b25e60",
+      "function_name": "FUN_00b25e60"
+    },
+    "after": {
+      "address": "00b25e60",
+      "name": "BSP_RendererCapabilityRecords_CopyAssign",
+      "evidence": "Complete133-byte ECX/RET4 raw inner copy assignment, EAX destination. Resize destination0 before capturing source, then unconditionally reserve current source count even0. Actual source-argument slot becomes loop counter after capture. Capture source row before destination reserve; append via current destination base/count, then current source count comparison. Three full fixed helper calls; no source/destination snapshot or rollback. Unchanged original/full-main-library nested grow/copy/shrink sequence matches both344-byte traces under real allocator-induced pointer/count mutation with11 lifetime-specific pointer roles. All593 original bytes executed; three owned345bytes plus complete primitive130 match after declaredCALLs. Outer248 is full reviewed source/EH translation, not literal identity; RET0 specialization explicit. Three exact objects/20wholeownedCOFF/127 mappedsections450relocations,60actual imports and10637 runtimecodebytes verified. Private4096-byte original page unchanged after18 checked operand bindings, including actual linked__CxxFrameHandler3. No failure/new-handler/exception-path/nativeSEH/privateframealias/originalcallerABI, gather/device/gamma or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_renderer_capability_nested_arrays_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b29d40",
+    "before": {
+      "address": "00b29d40",
+      "function_name": "FUN_00b29d40"
+    },
+    "after": {
+      "address": "00b29d40",
+      "name": "BSP_RendererCapabilityHeaders_Reserve",
+      "evidence": "Complete248-byte original outer reserve translated to explicit naked ECX/request-slot entry and C++ core with fixed volatile savedstate. Clamp actual request slot only below1; count read precedes fresh/completed stores. Save current destination and armstate0 before childzero/copy; compare current count BEFORE disarm/completed store. Destroy current oldchildren/data, reloadrequest only after enteredoldchildloop, freecurrentouter then publishfresh/capacity. CBD327/DF5AFC/mapDF5AF4/CBD310 savedreads and401130 RET-only action are preserved as explicit hostEH specialization (compilerRET0); no fresh/completedbuffer cleanup invented. Original privateframe aliases/nativeSEH excluded. Restored18/14-byte gaps afterfree callsB29DF8/B29E12. Unchanged original/full-main-library nested grow/copy/shrink sequence matches both344-byte traces under real allocator-induced pointer/count mutation with11 lifetime-specific pointer roles. All593 original bytes executed; three owned345bytes plus complete primitive130 match after declaredCALLs. Outer248 is full reviewed source/EH translation, not literal identity; RET0 specialization explicit. Three exact objects/20wholeownedCOFF/127 mappedsections450relocations,60actual imports and10637 runtimecodebytes verified. Private4096-byte original page unchanged after18 checked operand bindings, including actual linked__CxxFrameHandler3. No failure/new-handler/exception-path/nativeSEH/privateframealias/originalcallerABI, gather/device/gamma or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_renderer_capability_nested_arrays_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2ae20",
+    "before": {
+      "address": "00b2ae20",
+      "function_name": "FUN_00b2ae20"
+    },
+    "after": {
+      "address": "00b2ae20",
+      "name": "BSP_RendererCapabilityHeaders_Resize",
+      "evidence": "Complete116-byte ECX/RET4 outer resize with explicit ignoredEDX. Full outerreserve on grow; each newly added header gets exactly three zeroDWORDs using current base/count. Shrink publishes current count decrement, captures child, calls full innerresize0 and frees its CURRENT data, then rereads outer count/base before finaltarget. Restored8-byte returning-free gap afterB2AE7E. No vector rollback or delayed count publication. Unchanged original/full-main-library nested grow/copy/shrink sequence matches both344-byte traces under real allocator-induced pointer/count mutation with11 lifetime-specific pointer roles. All593 original bytes executed; three owned345bytes plus complete primitive130 match after declaredCALLs. Outer248 is full reviewed source/EH translation, not literal identity; RET0 specialization explicit. Three exact objects/20wholeownedCOFF/127 mappedsections450relocations,60actual imports and10637 runtimecodebytes verified. Private4096-byte original page unchanged after18 checked operand bindings, including actual linked__CxxFrameHandler3. No failure/new-handler/exception-path/nativeSEH/privateframealias/originalcallerABI, gather/device/gamma or game claim. Same frozen main library b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5; strictWin32/2existingCTests/8freshseeds passed. reports/native_renderer_capability_nested_arrays_audit.json"
+    },
+    "status": "applied"
+  }
+]

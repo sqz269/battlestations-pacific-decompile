@@ -99,7 +99,7 @@ static_assert(offsetof(OwnedSection, recursion_18) == 0x18);
 } // namespace
 
 bool admit_point_effect_0086a650(EffectAdmissionTemplateView owner,
-    const std::array<float, 3>& point, CameraTransform& reference,
+    EffectPointView point, CameraTransform& reference,
     EffectAdmissionDispatch& dispatch) {
     if ((reference.valid_flags & 2u) == 0) refresh_camera_world_00b6db70(reference);
     auto* cursor = owner.rows_08;
