@@ -1,0 +1,162 @@
+{
+  "packet": "cc_mission_lua",
+  "owner": "agent/cc-mission-lua",
+  "doc": "docs/MISSION_LUA_MACHINE.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "sources": [
+    "include/bsp/mission_lua_machine.hpp",
+    "src/mission_lua_machine.cpp",
+    "src/mission_script_probe.cpp"
+  ],
+  "build": {
+    "target_sources": ["src/mission_lua_machine.cpp"],
+    "executables": ["bsp_mission_script_probe"],
+    "options": "/W4 /WX, Win32",
+    "shared_target_change": {
+      "file": "cmake/lua.cmake",
+      "target": "bsp_lua511",
+      "change": "rewrite the vendored luaconf.h so LUA_COMPAT_LSTR is 2 instead of 1",
+      "reason": "00a71350 carries the lexer's other two messages but not 'nesting of [[...]] is deprecated', which stock 5.1.1 emits from the same function under LUA_COMPAT_LSTR == 1; two shipped scripts need the old nesting behaviour",
+      "review": "affects every worker linking bsp_lua511; additive only; nothing in the repository referenced the macro or the message"
+    }
+  },
+  "state": "checked against the installed scripts; 293 of 299 mission scripts load and run all four entry points with no error",
+  "relationship_to_prior_packet": {
+    "doc": "docs/MISSION_LUA_HOST.md",
+    "sources": ["include/bsp/mission_lua_host.hpp", "src/mission_lua_host.cpp"],
+    "note": "the machine, the 560-row binding table, the chunk and named-call rules and the game+644h guard were already reconstructed there and were not redone; this packet checked them against real scripts and closed the three gaps the check exposed"
+  },
+  "corrections": [
+    {
+      "address": "00886900",
+      "doc": "docs/MISSION_LUA_HOST.md",
+      "previous": "00886900, the host teardown reached from BSP_Game_OnDestroy",
+      "corrected": "BSP_MissionLua_RunGlobalScriptFolders: callers 004dc6a0 BSP_Game_ConstructGlobalSubsystems and 004e3aa0 BSP_Game_OnInit; runs Scripts/global/ then Scripts/datatables/autoload/ through 00886370; already reconstructed in src/global_script_folders.cpp",
+      "impact": "a bring-up step the mission scripts depend on, not a teardown; the teardown at 004dc729 remains unread"
+    },
+    {
+      "address": "008860b0",
+      "doc": "docs/MISSION_SCENE_LOAD.md",
+      "previous": "008860B0 runs Scripts/missions/<name>.lua, read as the short name",
+      "corrected": "the name is the scene record's script-table entry at +928h and must carry the subdirectory; Scripts/missions/ holds no loose .lua at all",
+      "impact": "derive_scene_short_name's output is a different record field and cannot resolve a script path"
+    },
+    {
+      "address": "00887750",
+      "doc": "packet brief",
+      "previous": "00887750 and 00887b30 have no Ghidra function and must be read from the raw listing",
+      "corrected": "both have Ghidra functions: 00887750..008879e4 and 00887b30..00887b54",
+      "impact": "no listing-only reading was needed; the no_ghidra_function table is empty"
+    }
+  ],
+  "routines": [
+    {
+      "address": "005e2f00",
+      "name": "BSP_Game_SyncLobbySettingsFromLua",
+      "abi": "__fastcall void(void), body 005e2f00..005e3282, RET",
+      "callers": ["004dfb70 BSP_Game_LoadMissionScene"],
+      "state": "analysed; field table reconstructed and installed-script-checked",
+      "evidence": "opens the global table named by 00cf1f28 through BSP_LuaStateOwner_GetGlobals and the LuaObject API, then walks the 14-slot pointer array at 00e08908; the loop at 005e2f6f skips index 0Dh by number because 00e08940 is null; 005e2f8b excludes slots 0 and 2 from the read-back branch",
+      "fields": [
+        {"slot": 0, "name": "PlayerCount", "string": "00cf1f1c", "game_owned": true},
+        {"slot": 1, "name": "Map", "string": "00cea3f8", "game_owned": false},
+        {"slot": 2, "name": "GameMode", "string": "00cf1f10", "game_owned": true},
+        {"slot": 3, "name": "MapSize", "string": "00cf1f08", "game_owned": false},
+        {"slot": 4, "name": "UnitType", "string": "00cf1efc", "game_owned": false},
+        {"slot": 5, "name": "ResourceLimit", "string": "00cf1eec", "game_owned": false},
+        {"slot": 6, "name": "TimeLimit", "string": "00cf1ee0", "game_owned": false},
+        {"slot": 7, "name": "TimeLimit_IC", "string": "00cf1ed0", "game_owned": false},
+        {"slot": 8, "name": "PointLimit", "string": "00cf1ec4", "game_owned": false},
+        {"slot": 9, "name": "RoundLimit", "string": "00cf1eb8", "game_owned": false},
+        {"slot": 10, "name": "EnablePowerups", "string": "00cf1ea8", "game_owned": false},
+        {"slot": 11, "name": "EnableMap", "string": "00cf1e9c", "game_owned": false},
+        {"slot": 12, "name": "ReloadPayload", "string": "00cf1e8c", "game_owned": false},
+        {"slot": 13, "name": null, "string": "00e08940 is null", "game_owned": false}
+      ]
+    },
+    {
+      "address": "00b6a303",
+      "name": "DoFile registration",
+      "abi": "lua_setfield on LUA_GLOBALSINDEX with callback 00b69e00",
+      "state": "analysed",
+      "evidence": "DoFile is not one of the 560 rows of 00e0b7b8 but is the first call every stock mission script makes; game+1a0ch is an inline LuaStateOwner built at 004dd641 from [[game+1a08h]+4h]+4h, over the same lua_State; both paths the stock script passes resolve against the install root, so the callback applies no directory of its own"
+    },
+    {
+      "address": "00a71350",
+      "name": "Lua 5.1.1 long-string lexer",
+      "state": "string evidence only, library code, not renamed",
+      "evidence": "carries 'unfinished long comment' and 'unfinished long string' but not 'nesting of [[...]] is deprecated', which stock 5.1.1 emits from the same function inside #if LUA_COMPAT_LSTR == 1; the game therefore built with the value 2"
+    }
+  ],
+  "global_namespace_sources": [
+    {"order": 1, "origin": "PlatformChunk", "content": "PC=true", "site": "00884be0 via 006b8ad0"},
+    {"order": 2, "origin": "BindingTable", "content": "560 rows of 00e0b7b8", "site": "006b8610"},
+    {"order": 3, "origin": "FundamentalsChunk", "content": "Scripts\\fundamentals.lua", "site": "00884be0 via 006b89f0"},
+    {"order": 4, "origin": "StateOwnerCallback", "content": "DoFile", "site": "00b6a303"},
+    {"order": 5, "origin": "GlobalScriptFolders", "content": "Scripts/global/, Scripts/datatables/autoload/", "site": "00886900"}
+  ],
+  "binding_table": {
+    "address": "00e0b7b8",
+    "entry_count": 560,
+    "stride": 8,
+    "terminator": "00e0c938, a {name 00ce3a0c (empty), function NULL} row",
+    "first": {"name": "Log", "function": "0088bec0"},
+    "last": {"name": "TerminateExecution", "function": "008c8250"},
+    "verified": "bytes at 00e0b7b8 and 00e0c930 read from Ghidra; 00e0b7b8 + 560*8 == 00e0c938"
+  },
+  "load_path_steps": [
+    {"address": "00886900", "name": "BSP_MissionLua_RunGlobalScriptFolders", "inside_load_depth": false},
+    {"address": "005e2f00", "name": "BSP_Game_SyncLobbySettingsFromLua", "inside_load_depth": false},
+    {"address": "004d30f0", "name": "BSP_Game_RefillScriptedNameList", "inside_load_depth": false},
+    {"address": "008860b0", "name": "BSP_MissionScript_RunFile", "inside_load_depth": true},
+    {"address": "0045f520", "name": "BSP_Game_CallLuaEntryPointForced", "inside_load_depth": true},
+    {"address": "0045f440", "name": "BSP_Game_CallLuaEntryPointThreadSafe", "inside_load_depth": true}
+  ],
+  "probe": {
+    "executable": "bsp_mission_script_probe",
+    "source": "src/mission_script_probe.cpp",
+    "arguments": "[game-root] [mission-name] [--stub-dofile] [--skip-global-folders] [--skip-lobby-settings]",
+    "divergences": [
+      "each binding is one C function plus a row-index upvalue, because 006b8610's nup of 0 works only when every row is a distinct native function",
+      "the folder walk sorts by name, because the native's order comes from the VFS provider list a disk-only probe cannot reproduce",
+      "006b8720, the panic function, was not read; the probe installs its own",
+      "LobbySettings field values are 0 because they come from game state the probe does not have"
+    ],
+    "sweep": {
+      "scripts": 299,
+      "clean": 293,
+      "stub_return_limited": 6,
+      "stub_return_limited_names": [
+        "COTP-IJN/jm04",
+        "ijn/JM/jm04",
+        "COTP-USN/usn_02_battle_of_cape_esperance",
+        "COTP-USN/PRCPUS/usn_02_battle_of_cape_esperance",
+        "bsm/bsm_04_vengance_at_luzon",
+        "bsm/bsm_06_holding_lombok"
+      ],
+      "stub_return_limited_cause": "two index FindEntity(...).Class.Height; the rest reach commandhelpers.lua code that indexes the global Mission, which mission scripts assign from the engine-supplied this inside luaStageInit"
+    },
+    "negative_controls": [
+      {"flag": "--skip-global-folders", "effect": "luaStageInitMulti fails on a nil luaLoadControlFunctionNames, which commandhelpers.lua defines"},
+      {"flag": "--skip-lobby-settings", "effect": "the multi/duel scripts index a nil LobbySettings at their first line"}
+    ]
+  },
+  "uncertainties": [
+    "which LobbySettings slots hold strings; UnitType is compared against \"globals.unitcat_destroyer\", so at least that one is",
+    "006b8720, the panic function, was not read",
+    "004d30f0's container was not identified and the probe does not perform that step; no installed script failed for want of it",
+    "the .luab branch of 00886370 is never taken on the installed copy, so the shadowing rule is carried but unexercised",
+    "whether the LuaStateOwner over game+1a0ch installs anything beyond DoFile onto the mission state"
+  ],
+  "no_ghidra_function": [],
+  "follow_up_packets": [
+    {"packet": "mission_lua_self_table", "addresses": ["00887750", "00884240", "00ce7494"], "doc": "docs/MISSION_LUA_SELF_TABLE.md"},
+    {"packet": "lua_binding_find_entity", "addresses": ["the FindEntity and Effect rows of 00e0b7b8"], "doc": "docs/LUA_BINDING_ENTITY.md"},
+    {"packet": "mission_lobby_settings_values", "addresses": ["005e2f00", "00e19564", "00e19584"], "doc": "docs/MISSION_LOBBY_SETTINGS.md"},
+    {"packet": "mission_lua_teardown", "addresses": ["004dc729"], "doc": "docs/MISSION_LUA_TEARDOWN.md"}
+  ]
+}
