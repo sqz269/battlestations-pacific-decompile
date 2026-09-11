@@ -6324,6 +6324,38 @@
       "prerequisite_packets": [],
       "scope": "Full raw scaled affine inverse, matrix multiply and affine composition with complete original/main-object byte proof.",
       "evidence": "reports/native_camera_matrix_math_audit.json"
+    },
+    {
+      "id": "orch4_effect_components_n",
+      "packet": "orch4_effect_components_n",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_native_constructor_and_lua_fixture_tested_pending_integration",
+      "function_addresses": [
+        "0086bc80",
+        "0086b8b0",
+        "0086bcc0",
+        "0086bd30",
+        "0086bd70",
+        "0086fec0",
+        "0086bdc0",
+        "0086cf90",
+        "0086cfe0",
+        "0086d030",
+        "0086be00",
+        "0086be40",
+        "00870400",
+        "00868bf0",
+        "008700e0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_components.hpp",
+        "src/gameplay_effect_components.cpp",
+        "include/bsp/gameplay_effect_acquisition.hpp",
+        "src/gameplay_effect_acquisition.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_components.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_COMPONENTS.md"
     }
   ],
   "snapshot_after_analysis": {
