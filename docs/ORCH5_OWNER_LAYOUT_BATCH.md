@@ -53,4 +53,7 @@ content assignment/glyph clearing and Text style against existing state and
 resource contracts. These prerequisites prevent claiming a working menu.
 
 Standard-build results are recorded in `reports/orch5_owner_layout_batch.json`.
-Git history and remote ancestry establish integration and publication.
+The coordinated helper reconciled current main, rebuilt successfully, passed
+both existing tests, and integrated the batch into main at `a4fbaed0`.
+See `local/orch5_owner_layout_integration.log`. Git history and remote ancestry
+establish publication.
