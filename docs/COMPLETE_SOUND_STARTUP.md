@@ -91,3 +91,14 @@ target and passed both CTests. Main integration `c33924f` adds only coordination
 documentation after that build. All 31 reviewed names and evidence comments were
 saved and read back, preserving previous comments; affected exports refreshed.
 This does not establish that the game executable runs through sound startup.
+
+## Follow-up: concrete sound resource runtime
+
+The subsequent SOUND_RESOURCE_RUNTIME.md packet supplies the recovered cache,
+asset creation and teardown through actual VFS/FMOD services. Its installed
+fixture now executes the full normal sound constructor, actual cached error FSB
+and standalone FEV lifecycles, and installed Lua initialization: 133 successful
+FMOD calls. Platform pretranslation/focus remain explicit fixture observers;
+no audible playback, native ABI or gameplay claim follows. The current singleton
+and +54 cache stay published until resource cleanup finishes. Earlier unresolved
+loader/cleanup statements above describe this document's original snapshot.

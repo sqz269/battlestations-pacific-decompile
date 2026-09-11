@@ -140,11 +140,15 @@ checks identify all production providers. All eight native seeds matched;
 added. Detailed artifact pins and adapters are recorded in
 `reports/native_hardware_layout_construct_audit.json`.
 
-Only the two owned source/interface files and this document/report are changed.
-The integrator must register `src/native_hardware_layout_construct.cpp` in
-`bsp_core`, update B60790/B60CB0 native evidence and reconstruction ledgers,
-preserve existing comments/names as appropriate, save Ghidra, and refresh
-exports. The worker makes no shared CMake, metadata, or Ghidra mutation.
+Primary integration registered this source in `bsp_core` and reran the
+unchanged fixture against a frozen copy of the current library. The two owned
+functions and ten selected dependencies resolve to that library; only the
+exact current production support body is compiled separately with its existing
+observation alias. All six comparisons still match 30,494 DWORDs. All 22 fresh
+Ghidra/PE spans and loaded postimages were checked against the 26 declared
+patches. Existing descriptive names and comments were preserved, complete
+function entries were added, Ghidra was saved, and exports were refreshed.
+Both existing CTests passed; no permanent tests were added.
 This establishes bounded reconstruction, strict compilation and fixture
 agreement, not original binary ABI, game, COM-driver, visual, invalid-stack,
 or concurrent-mutation validation.

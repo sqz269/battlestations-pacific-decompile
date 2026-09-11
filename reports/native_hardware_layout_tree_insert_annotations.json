@@ -1,0 +1,72 @@
+[
+  {
+    "address": "00b20d30",
+    "before": {
+      "address": "00b20d30",
+      "function_name": "FUN_00b20d30"
+    },
+    "after": {
+      "address": "00b20d30",
+      "old_name": "FUN_00b20d30",
+      "name": "BSP_HardwareLayoutTree_DecrementIterator",
+      "evidence": "Checked decrement of an actual tree iterator. Validate the owner, then reread the current node. The sentinel path publishes maximum before invoking the invalid-parameter handler. Parent ascent preserves intermediate iterator stores and subsequent current-node reads, including a returning handler that repairs the iterator. Independent proof: reports/native_hardware_layout_tree_insert_fixture.json. Frozen actual primary library supplied sixteen providers. Verified 46 live/PE spans, 1,013 owned bytes, all postimages with only 25 relocations, twelve service bridges and three FH3 adapters. Matched 8,582 behavior words, 56 output stores and five actual CRT throw events. Shared allocation/string/CRT adapters are explicit boundaries. No original binary ABI or game validation. Original ABI: ECX actual iterator; RET or invalid-parameter tail Complete src/native_hardware_layout_tree_insert.cpp; reports/native_hardware_layout_tree_insert_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b28370",
+    "before": {
+      "address": "00b28370",
+      "function_name": "FUN_00b28370"
+    },
+    "after": {
+      "address": "00b28370",
+      "old_name": "FUN_00b28370",
+      "name": "BSP_HardwareLayoutTree_InitializeNode",
+      "evidence": "Initialize an actual 28h tree node. Store left, right, then parent before copying the raw key/value. Forward copy rereads signed source count after each store, then rereads count and value at their native points. Publish color at +24h and zero sentinel at +25h; preserve unused key words and padding. Independent proof: reports/native_hardware_layout_tree_insert_fixture.json. Frozen actual primary library supplied sixteen providers. Verified 46 live/PE spans, 1,013 owned bytes, all postimages with only 25 relocations, twelve service bridges and three FH3 adapters. Matched 8,582 behavior words, 56 output stores and five actual CRT throw events. Shared allocation/string/CRT adapters are explicit boundaries. No original binary ABI or game validation. Original ABI: ECX node; stack left/parent/right/pair/color; RET14h; EAX node Complete src/native_hardware_layout_tree_insert.cpp; reports/native_hardware_layout_tree_insert_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b29cd0",
+    "before": {
+      "address": "00b29cd0",
+      "function_name": "FUN_00b29cd0"
+    },
+    "after": {
+      "address": "00b29cd0",
+      "old_name": "FUN_00b29cd0",
+      "name": "BSP_HardwareLayoutTree_AllocateNode",
+      "evidence": "Allocate and initialize a 40-byte tree node through the actual shared allocator and B28370. Five stack arguments; callee RET14h; incoming ECX unused. Preserve the native null branch, while successful null is outside the actual allocator contract. Fixed valid-storage initialization cannot throw; no rollback is invented. Independent proof: reports/native_hardware_layout_tree_insert_fixture.json. Frozen actual primary library supplied sixteen providers. Verified 46 live/PE spans, 1,013 owned bytes, all postimages with only 25 relocations, twelve service bridges and three FH3 adapters. Matched 8,582 behavior words, 56 output stores and five actual CRT throw events. Shared allocation/string/CRT adapters are explicit boundaries. No original binary ABI or game validation. Original ABI: Stack left/parent/right/pair/color; callee RET14h; EAX node Complete src/native_hardware_layout_tree_insert.cpp; reports/native_hardware_layout_tree_insert_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2f1b0",
+    "before": {
+      "address": "00b2f1b0",
+      "function_name": "STL_xlen_throw_00b2f1b0"
+    },
+    "after": {
+      "address": "00b2f1b0",
+      "old_name": "STL_xlen_throw_00b2f1b0",
+      "name": "BSP_HardwareLayoutTree_LinkNode",
+      "evidence": "Complete tree link and red-black repair, previously misidentified as only an xlen throw. Unsigned count >=0AAAAAA9h constructs the actual owning 28h D69260 length-error payload, with nineteen counted bytes including NUL, through 411700/411940/411780. Original DF6050 state0 cleanup reaches CBD7C0. Otherwise capture head before allocation, reread it afterwards, and preserve count/link publication order. Compose B20910/B22BD0 rotations while retaining the distinct reread in inlined left rotation B2F326. Blacken the root, then publish output NODE before OWNER. Host RTTI and exception ABI remain new interfaces. Independent proof: reports/native_hardware_layout_tree_insert_fixture.json. Frozen actual primary library supplied sixteen providers. Verified 46 live/PE spans, 1,013 owned bytes, all postimages with only 25 relocations, twelve service bridges and three FH3 adapters. Matched 8,582 behavior words, 56 output stores and five actual CRT throw events. Shared allocation/string/CRT adapters are explicit boundaries. No original binary ABI or game validation. Original ABI: ECX tree; stack output/left-byte/parent/pair; RET10h; EAX output Complete src/native_hardware_layout_tree_insert.cpp; reports/native_hardware_layout_tree_insert_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2f540",
+    "before": {
+      "address": "00b2f540",
+      "function_name": "FUN_00b2f540"
+    },
+    "after": {
+      "address": "00b2f540",
+      "old_name": "FUN_00b2f540",
+      "name": "BSP_HardwareLayoutTree_InsertPair",
+      "evidence": "Complete ordered tree insertion using actual key comparison, predecessor validation and duplicate rejection. Duplicate rejection allocates nothing and adds no reference. Every result publishes NODE, then INSERTED BYTE, then OWNER, preserving padding and the observed result/key alias order. Independent proof: reports/native_hardware_layout_tree_insert_fixture.json. Frozen actual primary library supplied sixteen providers. Verified 46 live/PE spans, 1,013 owned bytes, all postimages with only 25 relocations, twelve service bridges and three FH3 adapters. Matched 8,582 behavior words, 56 output stores and five actual CRT throw events. Shared allocation/string/CRT adapters are explicit boundaries. No original binary ABI or game validation. Original ABI: ECX tree; stack output/pair; RET8; EAX output Complete src/native_hardware_layout_tree_insert.cpp; reports/native_hardware_layout_tree_insert_audit.json."
+    },
+    "status": "applied"
+  }
+]

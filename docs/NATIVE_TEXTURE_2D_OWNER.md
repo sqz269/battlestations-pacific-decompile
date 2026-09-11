@@ -152,7 +152,18 @@ The strict Win32 build and both existing tests pass; all eight native math seeds
 were verified before the build. No tracked test or shared CMake/ledger change
 belongs to this packet. Reproducers, logs, compiler listings, binaries and current
 source hashes are pinned in the audit. Shared registration, Ghidra annotation,
-body repair, ledger entries and refreshed exports belong to primary integration.
+body repair, ledger entries and refreshed exports were completed by primary
+integration after the worker evidence was reviewed.
+
+The primary build now registers this source in `bsp_core`. Its three owner
+symbols and selected dependencies resolve to a frozen copy of the current
+library; exact current allocator/string/synchronization sources are compiled
+separately only for the existing fixture observations. The same 9,715 DWORDs
+match, including both terminal pairs. All 46 fresh Ghidra/PE ranges and every
+loaded postimage were checked. Ghidra now includes the destructor's returning
+free continuation through `B3F40D`; prior comments and earlier high-level
+fragment records were preserved. Saved annotations and refreshed exports are
+recorded in the audit. Both existing CTests pass; no tracked tests were added.
 
 Unrestricted COM implementations, other native profiles, invalid accessed
 storage, unobserved fault sites, concurrent mutation, whole original dependency

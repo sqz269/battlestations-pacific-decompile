@@ -49,5 +49,13 @@ The implementation and original ABI are in
 `include/bsp/native_hardware_layout_tree_insert.hpp` and
 `src/native_hardware_layout_tree_insert.cpp`. Static evidence and current
 validation status are in `reports/native_hardware_layout_tree_insert_audit.json`.
+The independent fixture in `NATIVE_HARDWARE_LAYOUT_TREE_INSERT_FIXTURE.md`
+found no production defect and matched 8,582 behavior words, 56 output stores,
+and five actual CRT throw/rethrow events against a frozen primary library.
+The primary review rechecked fourteen source pins, 23 fixture pins, sixteen
+library providers, and all 46 live/PE spans and loaded postimages. Five full
+reconstruction entries and saved Ghidra annotations now accompany the source;
+the former xlen-only name at B2F1B0 was corrected to identify the complete
+linking routine. Existing comments were preserved and exports refreshed.
 Tree startup, the complete hardware-layout factory, arbitrary invalid graphs,
 concurrent mutation, binary replacement and game behavior remain unvalidated.

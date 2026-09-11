@@ -1,0 +1,297 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "function_before": "Function: BSP_D3D9Texture_Destroy at 00b3f2e0\nSignature: undefined BSP_D3D9Texture_Destroy(void)\nEntry: 00b3f2e0\nBody: 00b3f2e0 - 00b3f3e8",
+      "documentation_before": {
+        "hash": "a5c61d893ec427d93b2e838bee7486f7110a5408d476808e70fc4bb843965117",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b3f2e0",
+        "function_name": "BSP_D3D9Texture_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b3f2e0]\nECX2Dtexture,RET. Release retainedstream+4C before renderer notifications, COMtexture+10 cleanup,cachedsurfaces andbase. Rawfullbody302bytes beyond truncatedfreeexport. Typedowner implements source-before-COM cleanup only; registry/cachedsurfaces/base/allocator remain unported.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar4",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 77,
+            "name": "LAB_00b3f32d"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00b3f330"
+          },
+          {
+            "relative_offset": 140,
+            "name": "LAB_00b3f36c"
+          },
+          {
+            "relative_offset": 163,
+            "name": "LAB_00b3f383"
+          },
+          {
+            "relative_offset": 176,
+            "name": "LAB_00b3f390"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_00b3f3b5"
+          },
+          {
+            "relative_offset": 219,
+            "name": "LAB_00b3f3bb"
+          },
+          {
+            "relative_offset": 227,
+            "name": "LAB_00b3f3c3"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_00b3f3d0"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "returning_free_call_sites": [
+        "00b3f3e4"
+      ],
+      "function_after": "Function: BSP_D3D9Texture_Destroy at 00b3f2e0\nSignature: undefined BSP_D3D9Texture_Destroy(void)\nEntry: 00b3f2e0\nBody: 00b3f2e0 - 00b3f40d",
+      "documentation_after": {
+        "hash": "7bde5fb83ab1a11deb797acbf2fb48a9389b4f80b46dd010c0e3671b28825cdf",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b3f2e0",
+        "function_name": "BSP_D3D9Texture_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b3f2e0]\nECX2Dtexture,RET. Release retainedstream+4C before renderer notifications, COMtexture+10 cleanup,cachedsurfaces andbase. Rawfullbody302bytes beyond truncatedfreeexport. Typedowner implements source-before-COM cleanup only; registry/cachedsurfaces/base/allocator remain unported.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "LVar4",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 77,
+            "name": "LAB_00b3f32d"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00b3f330"
+          },
+          {
+            "relative_offset": 140,
+            "name": "LAB_00b3f36c"
+          },
+          {
+            "relative_offset": 163,
+            "name": "LAB_00b3f383"
+          },
+          {
+            "relative_offset": 176,
+            "name": "LAB_00b3f390"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_00b3f3b5"
+          },
+          {
+            "relative_offset": 219,
+            "name": "LAB_00b3f3bb"
+          },
+          {
+            "relative_offset": 227,
+            "name": "LAB_00b3f3c3"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_00b3f3d0"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b3f3e9",
+        "end_address": "00b3f40e"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b3f3e9",
+        "end_address": "00b3f40d",
+        "bytes_disassembled": 37,
+        "message": "Successfully disassembled 37 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b3f3e4"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b3f3e4 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b3f2e0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b3f2e0",
+        "deleted_function": "BSP_D3D9Texture_Destroy",
+        "body_size": 259,
+        "message": "Function 'BSP_D3D9Texture_Destroy' deleted at 00b3f2e0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b3f2e0",
+        "name": "BSP_D3D9Texture_Destroy",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b3f2e0",
+        "function_name": "BSP_D3D9Texture_Destroy",
+        "entry_point": "00b3f2e0",
+        "body_size": 296,
+        "message": "Function created successfully at 00b3f2e0",
+        "warnings": [
+          "Function name 'BSP_D3D9Texture_Destroy' \u2014 main part 'D3D9Texture_Destroy' is not PascalCase. Expected: D3d9textureDestroy",
+          "Function name 'BSP_D3D9Texture_Destroy' \u2014 main part 'D3D9Texture_Destroy' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_D3D9Texture_Destroy' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Native texture2D destructor full body restored and saved; existing code and comments preserved"
+}

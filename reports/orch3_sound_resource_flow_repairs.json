@@ -1,0 +1,282 @@
+[
+  {
+    "arguments": [
+      "00a842e0",
+      "--tail-end",
+      "00a84358"
+    ],
+    "exit_code": 0,
+    "record": {
+      "repairs": [
+        {
+          "function": "00a842e0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-11T04:09:51Z",
+          "decompile_lines_before": 17,
+          "gaps": [
+            {
+              "site": "00a84314",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00a84319",
+              "gap_end_exclusive": "00a84358",
+              "bytes": 63,
+              "after_call": true,
+              "sha256": "bc2eb3b9a9fb1ca39dabe7538cdf287da3bee5de5e15d5a483b5a8cfbcf28724"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a84314",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00a84319",
+                "gap_end_exclusive": "00a84358",
+                "bytes": 63,
+                "after_call": true,
+                "sha256": "bc2eb3b9a9fb1ca39dabe7538cdf287da3bee5de5e15d5a483b5a8cfbcf28724"
+              },
+              "clear": "Success: Cleared flow override at 00a84314 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 63 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00a84314",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00a84314 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00a84358",
+          "explicit_body_sha256": "c63c6bb0501b0e34269eb4d1b23874d6de533572756cad3ec21d366dc73121b2",
+          "body_before": "Function: FUN_00a842e0 at 00a842e0\nSignature: undefined FUN_00a842e0(void)\nEntry: 00a842e0\nBody: 00a842e0 - 00a84318",
+          "decompile_lines_after": 30,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00a842e0 at 00a842e0\nSignature: undefined FUN_00a842e0(void)\nEntry: 00a842e0\nBody: 00a842e0 - 00a84318",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "log": "local/sound_flow_record.log"
+  },
+  {
+    "arguments": [
+      "00a85500",
+      "--tail-end",
+      "00a8555f"
+    ],
+    "exit_code": 0,
+    "record": {
+      "repairs": [
+        {
+          "function": "00a85500",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-11T04:09:57Z",
+          "decompile_lines_before": 20,
+          "gaps": [
+            {
+              "site": "00a85547",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00a8554c",
+              "gap_end_exclusive": "00a8555f",
+              "bytes": 19,
+              "after_call": true,
+              "sha256": "e7ce22dbe8169080e63b1547dd78c3b12e6b84a78e109d22d6969dfdb70fe47b"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a85547",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00a8554c",
+                "gap_end_exclusive": "00a8555f",
+                "bytes": 19,
+                "after_call": true,
+                "sha256": "e7ce22dbe8169080e63b1547dd78c3b12e6b84a78e109d22d6969dfdb70fe47b"
+              },
+              "clear": "Success: Cleared flow override at 00a85547 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 19 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00a85547",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00a85547 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00a8555f",
+          "explicit_body_sha256": "3b9e9a899705e790a5f562e00cd36e5447edad98f17da3b72dd04794602a43d3",
+          "body_before": "Function: FUN_00a85500 at 00a85500\nSignature: undefined FUN_00a85500(void)\nEntry: 00a85500\nBody: 00a85500 - 00a8554b",
+          "decompile_lines_after": 21,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00a85500 at 00a85500\nSignature: undefined FUN_00a85500(void)\nEntry: 00a85500\nBody: 00a85500 - 00a8554b",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "log": "local/sound_flow_owner.log"
+  },
+  {
+    "arguments": [
+      "00a84d00",
+      "--tail-end",
+      "00a84d17"
+    ],
+    "exit_code": 0,
+    "record": {
+      "repairs": [
+        {
+          "function": "00a84d00",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-11T04:10:03Z",
+          "decompile_lines_before": 9,
+          "gaps": [
+            {
+              "site": "00a84d0d",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00a84d12",
+              "gap_end_exclusive": "00a84d17",
+              "bytes": 5,
+              "after_call": true,
+              "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a84d0d",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00a84d12",
+                "gap_end_exclusive": "00a84d17",
+                "bytes": 5,
+                "after_call": true,
+                "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+              },
+              "clear": "Success: Cleared flow override at 00a84d0d (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 5 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00a84d0d",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00a84d0d (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00a84d17",
+          "explicit_body_sha256": "026dd786912e6deb1a4affd22202468212450cde39d678dedc1bd2db0c64f78e",
+          "body_before": "Function: FUN_00a84d00 at 00a84d00\nSignature: undefined FUN_00a84d00(void)\nEntry: 00a84d00\nBody: 00a84d00 - 00a84d11",
+          "decompile_lines_after": 9,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00a84d00 at 00a84d00\nSignature: undefined FUN_00a84d00(void)\nEntry: 00a84d00\nBody: 00a84d00 - 00a84d11",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "log": "local/sound_flow_storage.log"
+  },
+  {
+    "arguments": [
+      "00a84450",
+      "00a85ac0"
+    ],
+    "exit_code": 0,
+    "record": {
+      "repairs": [
+        {
+          "function": "00a84450",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-11T04:10:05Z",
+          "decompile_lines_before": 43,
+          "gaps": [
+            {
+              "site": "00a8450b",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00a84510",
+              "gap_end_exclusive": "00a8451a",
+              "bytes": 10,
+              "after_call": true,
+              "sha256": "f504c0a22c5c06a5d1327cc4c6720a99ac6e4741d712473d5eee249651938e38"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a8450b",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00a84510",
+                "gap_end_exclusive": "00a8451a",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "f504c0a22c5c06a5d1327cc4c6720a99ac6e4741d712473d5eee249651938e38"
+              },
+              "clear": "Success: Cleared flow override at 00a8450b (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 10 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 45,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00a85ac0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-11T04:10:05Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00a85ad0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00a85ad5",
+              "gap_end_exclusive": "00a85ad8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a85ad0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00a85ad5",
+                "gap_end_exclusive": "00a85ad8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00a85ad0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0
+        }
+      ]
+    },
+    "log": "local/sound_flow_internal.log"
+  },
+  {
+    "arguments": [
+      "00bd91f0",
+      "--tail-end",
+      "00bd91fe"
+    ],
+    "exit_code": 0,
+    "record": null,
+    "log": "local/sound_flow_whole_file_free.log"
+  }
+]

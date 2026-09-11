@@ -1,0 +1,703 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_global_startup_next",
+  "status": "read_only_complete_body_byte_audited_discovery_ready_packets",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-global-startup-next-20260910",
+  "branch": "agent/native-hardware-layout-global-startup-next-20260910",
+  "base_commit": "b81fe57",
+  "owned_files": [
+    "docs/NATIVE_HARDWARE_LAYOUT_GLOBAL_STARTUP_NEXT.md",
+    "reports/native_hardware_layout_global_startup_next.json"
+  ],
+  "scope": "Two files only; no source, test, shared metadata or Ghidra mutation.",
+  "evidence": {
+    "target": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "verified_before_each_read": true
+    },
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span_count": 31,
+    "span_bytes": 1599,
+    "candidate_bytes": 555,
+    "spans": [
+      {
+        "address": "00cd7ca0",
+        "end_exclusive": "00cd7cb6",
+        "length": 22,
+        "kind": "candidate_static_initializer",
+        "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+        "hex": "b99cfe0801e82688e8ff68400dce00e841f3f1ff59c3",
+        "section": ".text",
+        "raw_backed_bytes": 22,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00cd7ca0 --length 22"
+      },
+      {
+        "address": "00ce0d40",
+        "end_exclusive": "00ce0d4a",
+        "length": 10,
+        "kind": "candidate_static_destructor",
+        "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+        "hex": "b99cfe0801e926f5e7ff",
+        "section": ".text",
+        "raw_backed_bytes": 10,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00ce0d40 --length 10"
+      },
+      {
+        "address": "00b604d0",
+        "end_exclusive": "00b605a3",
+        "length": 211,
+        "kind": "candidate_pool_initializer",
+        "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+        "hex": "6aff68de12cc0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706f02ad600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8675009008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e80064090083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+        "section": ".text",
+        "raw_backed_bytes": 211,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b604d0 --length 211"
+      },
+      {
+        "address": "00b60270",
+        "end_exclusive": "00b602fa",
+        "length": 138,
+        "kind": "candidate_pool_destructor",
+        "sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+        "hex": "56578bf933f639772cc707f02ad60076178b47288b0cb051e81f63090083c60183c4043b772c72e98b472885c0740950e8e466090083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+        "section": ".text",
+        "raw_backed_bytes": 138,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b60270 --length 138"
+      },
+      {
+        "address": "00b60020",
+        "end_exclusive": "00b6002e",
+        "length": 14,
+        "kind": "candidate_table_unwind",
+        "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+        "hex": "8b0185c0740750e85d69090059c3",
+        "section": ".text",
+        "raw_backed_bytes": 14,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b60020 --length 14"
+      },
+      {
+        "address": "00b60350",
+        "end_exclusive": "00b603f0",
+        "length": 160,
+        "kind": "candidate_trim_virtual",
+        "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+        "hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84009000020753d50e8366209008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c044b92000000090893883c04883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4009000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+        "section": ".text",
+        "raw_backed_bytes": 160,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b60350 --length 160"
+      },
+      {
+        "address": "00cc12c0",
+        "end_exclusive": "00cc12e8",
+        "length": 40,
+        "kind": "constructor_eh_code",
+        "sha256": "bd28c99b85f8be1e198ce96da0cab1df3737b6dfe0faab11d082147dc674a349",
+        "hex": "8b4df0e9a82674ff8b4df083c10ce99d1c74ff8b4df083c128e942ede9ffb858a0df00e95b58f3ff",
+        "section": ".text",
+        "raw_backed_bytes": 40,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00cc12c0 --length 40"
+      },
+      {
+        "address": "00dfa040",
+        "end_exclusive": "00dfa07c",
+        "length": 60,
+        "kind": "constructor_eh_map_funcinfo",
+        "sha256": "fcbe9156f44b7a2c3f871544e9fa11dd2570a0a807202a21cd91bdd36bf924dc",
+        "hex": "ffffffffc012cc0000000000c812cc0001000000d312cc00220593190300000040a0df00000000000000000000000000000000000000000001000000",
+        "section": ".rdata",
+        "raw_backed_bytes": 60,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00dfa040 --length 60"
+      },
+      {
+        "address": "00402f70",
+        "end_exclusive": "00402f97",
+        "length": 39,
+        "kind": "existing_critical_section_cleanup",
+        "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+        "hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+        "section": ".text",
+        "raw_backed_bytes": 39,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00402f70 --length 39"
+      },
+      {
+        "address": "00403970",
+        "end_exclusive": "0040399b",
+        "length": 43,
+        "kind": "existing_allocator_unlink",
+        "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+        "hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+        "section": ".text",
+        "raw_backed_bytes": 43,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00403970 --length 43"
+      },
+      {
+        "address": "004b46b0",
+        "end_exclusive": "004b46d1",
+        "length": 33,
+        "kind": "existing_allocator_trim_dispatch",
+        "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+        "hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+        "section": ".text",
+        "raw_backed_bytes": 33,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 004b46b0 --length 33"
+      },
+      {
+        "address": "00d62af0",
+        "end_exclusive": "00d62af4",
+        "length": 4,
+        "kind": "pool_profile",
+        "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+        "hex": "5003b600",
+        "section": ".rdata",
+        "raw_backed_bytes": 4,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00d62af0 --length 4"
+      },
+      {
+        "address": "00d7a0c0",
+        "end_exclusive": "00d7a0c4",
+        "length": 4,
+        "kind": "base_profile",
+        "sha256": "02b0d2f98cdca124036199ae8e499b047ce80fb4c504cc3ab2f3b30da8cfb500",
+        "hex": "8e69bf00",
+        "section": ".rdata",
+        "raw_backed_bytes": 4,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00d7a0c0 --length 4"
+      },
+      {
+        "address": "00e188b4",
+        "end_exclusive": "00e188b8",
+        "length": 4,
+        "kind": "allocator_head_image_preimage",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "hex": "00000000",
+        "section": ".data",
+        "raw_backed_bytes": 0,
+        "PE_virtual_zero_fill_bytes": 4,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00e188b4 --length 4"
+      },
+      {
+        "address": "0108fe9c",
+        "end_exclusive": "0108fed4",
+        "length": 56,
+        "kind": "pool_image_preimage",
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+        "hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "section": ".data",
+        "raw_backed_bytes": 0,
+        "PE_virtual_zero_fill_bytes": 56,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 0108fe9c --length 56"
+      },
+      {
+        "address": "00ce3534",
+        "end_exclusive": "00ce354c",
+        "length": 24,
+        "kind": "initializer_table_slice",
+        "sha256": "7992ed465ca1738deaef43c25049c46883787b833d504599b435efbecf0c8a7e",
+        "hex": "607ccd00807ccd00a07ccd00c07ccd00e07ccd00f07ccd00",
+        "section": ".rdata",
+        "raw_backed_bytes": 24,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00ce3534 --length 24"
+      },
+      {
+        "address": "00bfbc47",
+        "end_exclusive": "00bfbcd9",
+        "length": 146,
+        "kind": "crt_initializer_dispatch",
+        "sha256": "f7ec982f84c4a0c364ffb44ddb181f37268086f5ae5240bbc575143d373922f1",
+        "hex": "833dd893d60000741a68d893d600e876b1010085c059740bff742404ff15d893d60059e8a0ab0000680837ce0068e836ce00e814feffff85c059597554565768266dc100e865b3ffffbe3427ce008bc6bfe436ce003bc759730f8b0685c07402ffd083c6043bf772f1833dd8fe0901005f5e741b68d8fe0901e80bb1010085c059740c6a006a026a00ff15d8fe090133c0c3",
+        "section": ".text",
+        "raw_backed_bytes": 146,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bfbc47 --length 146"
+      },
+      {
+        "address": "00bf6ff5",
+        "end_exclusive": "00bf7007",
+        "length": 18,
+        "kind": "crt_atexit",
+        "sha256": "09942fe4905f48be972c0e6824f517bcc0cde802100baff5d8a61369ddad30b6",
+        "hex": "ff742404e8bbfffffff7d81bc0f7d85948c3",
+        "section": ".text",
+        "raw_backed_bytes": 18,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6ff5 --length 18"
+      },
+      {
+        "address": "00bf6fb9",
+        "end_exclusive": "00bf6fef",
+        "length": 54,
+        "kind": "crt_onexit_wrapper",
+        "sha256": "7608521a2c02ea42523f647610e04e419867cc0280d686d18b595d6e3ca2215f",
+        "hex": "6a0c68f02ce000e83b0c0100e89e4a00008365fc00ff7508e8fbfeffff598945e4c745fcfeffffffe8090000008b45e4e8570c0100c3",
+        "section": ".text",
+        "raw_backed_bytes": 54,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6fb9 --length 54"
+      },
+      {
+        "address": "00bf6ed1",
+        "end_exclusive": "00bf6f8a",
+        "length": 185,
+        "kind": "crt_onexit_append",
+        "sha256": "43495f9c2d74fd78ba0322b149e03dc4f39121d32f5516c72400488952e85f15",
+        "hex": "5153555657ff35d0fe0901e8fde00000ff35ccfe09018bf089742418e8ece000008bf83bfe59590f82840000008bdf2bde8d6b0483fd04727856e84c0c01008bf03bf559734ab8000800003bf073028bc603c63bc6721050ff742414e870d9000085c0595975178d46103bc6724350ff742414e859d9000085c059597433c1fb02508d3c98e80ce0000059a3d0fe0901ff742418e8fddf0000890783c70457e8f2df000059a3ccfe09018b44241c59eb0233c05f5e5d5b59c3",
+        "section": ".text",
+        "raw_backed_bytes": 185,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6ed1 --length 185"
+      },
+      {
+        "address": "00bfba68",
+        "end_exclusive": "00bfba71",
+        "length": 9,
+        "kind": "crt_onexit_lock8",
+        "sha256": "6085cbacd1d0f0746985417de59fd6660af45f46b70ec140821178181388a24d",
+        "hex": "6a08e8b261010059c3",
+        "section": ".text",
+        "raw_backed_bytes": 9,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bfba68 --length 9"
+      },
+      {
+        "address": "00bfba71",
+        "end_exclusive": "00bfba7a",
+        "length": 9,
+        "kind": "crt_onexit_unlock8",
+        "sha256": "3daa6be57897c9f67ba35767cedde327252cad21126d1006de41d42646d3e636",
+        "hex": "6a08e8b960010059c3",
+        "section": ".text",
+        "raw_backed_bytes": 9,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bfba71 --length 9"
+      },
+      {
+        "address": "00bf6fef",
+        "end_exclusive": "00bf6ff5",
+        "length": 6,
+        "kind": "crt_onexit_finally",
+        "sha256": "b5f58ac4d6da06524330d46e2a0634602afda3f84c585b72c1a5faa9a267a10e",
+        "hex": "e87d4a0000c3",
+        "section": ".text",
+        "raw_backed_bytes": 6,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6fef --length 6"
+      },
+      {
+        "address": "00e02cf0",
+        "end_exclusive": "00e02d0c",
+        "length": 28,
+        "kind": "crt_onexit_seh4_map",
+        "sha256": "e660d9443087c01a7965ab95f0f472d5dc384e2dbcacc8162bafc63663d444ed",
+        "hex": "feffffff00000000d4ffffff00000000feffffff00000000ef6fbf00",
+        "section": ".rdata",
+        "raw_backed_bytes": 28,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00e02cf0 --length 28"
+      },
+      {
+        "address": "00bf55be",
+        "end_exclusive": "00bf55c3",
+        "length": 5,
+        "kind": "new_thunk",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "hex": "e958120000",
+        "section": ".text",
+        "raw_backed_bytes": 5,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf55be --length 5"
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "kind": "free_thunk",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "hex": "e917380000",
+        "section": ".text",
+        "raw_backed_bytes": 5,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf65ac --length 5"
+      },
+      {
+        "address": "00bf6989",
+        "end_exclusive": "00bf698e",
+        "length": 5,
+        "kind": "array_free_thunk",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "hex": "e91efcffff",
+        "section": ".text",
+        "raw_backed_bytes": 5,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6989 --length 5"
+      },
+      {
+        "address": "00bf681b",
+        "end_exclusive": "00bf6884",
+        "length": 105,
+        "kind": "existing_new_service",
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+        "hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+        "section": ".text",
+        "raw_backed_bytes": 105,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf681b --length 105"
+      },
+      {
+        "address": "00bf9dc8",
+        "end_exclusive": "00bf9e56",
+        "length": 142,
+        "kind": "existing_free_service",
+        "sha256": "d5bec1353d11880b9ac19e7aa0648037b7000906a0c9ba7754084429d0735955",
+        "hex": "6a0c68f02de000e82cde00008b750885f67475833d7ced09010375436a04e8367e0100598365fc0056e8477f0100598945e485c074095650e8637f01005959c745fcfeffffffe80b000000837de4007537ff7508eb0a6a04e80c7d010059c3566a00ff35bce10901ff15fc20ce0085c07516e84c5d00008bf0ff155822ce0050e8035d0000890659e8f0dd0000c3",
+        "section": ".text",
+        "raw_backed_bytes": 142,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf9dc8 --length 142"
+      },
+      {
+        "address": "00ce220c",
+        "end_exclusive": "00ce2218",
+        "length": 12,
+        "kind": "critical_section_import_cells",
+        "sha256": "0f8ae4c205c3c2d5b650b9aa4303048fb6e4fbc16e8be72c1d9d7ac15a5f0551",
+        "hex": "6c56a0008856a000a056a000",
+        "section": ".rdata",
+        "raw_backed_bytes": 12,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00ce220c --length 12"
+      },
+      {
+        "address": "0109fecc",
+        "end_exclusive": "0109fed4",
+        "length": 8,
+        "kind": "crt_onexit_encoded_slots_image_preimage",
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "hex": "0000000000000000",
+        "section": ".data",
+        "raw_backed_bytes": 0,
+        "PE_virtual_zero_fill_bytes": 8,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 0109fecc --length 8"
+      }
+    ],
+    "imports": [
+      {
+        "iat": "00ce220c",
+        "dll": "KERNEL32.dll",
+        "name": "InitializeCriticalSection"
+      },
+      {
+        "iat": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      {
+        "iat": "00ce2214",
+        "dll": "KERNEL32.dll",
+        "name": "DeleteCriticalSection"
+      }
+    ],
+    "image_preimage_boundary": "Ghidra static image vs loader-mapped PE bytes, including explicit zero-filled virtual tails. This is not live game state or permission to reset actual globals."
+  },
+  "candidates": [
+    {
+      "address": "00cd7ca0",
+      "end_exclusive": "00cd7cb6",
+      "length": 22,
+      "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+      "original_abi": "No args; ECX=108FE9C for initializer; EAX atexit result; RET; no own EH.",
+      "current_name": "missing_function_enclosing_CD7B60_is_not_owner",
+      "source_status": "not_reconstructed_by_this_discovery"
+    },
+    {
+      "address": "00ce0d40",
+      "end_exclusive": "00ce0d4a",
+      "length": 10,
+      "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+      "original_abi": "No args; ECX=108FE9C; tail JMP B60270; no own frame.",
+      "current_name": "CG_static_init_00ce0d40",
+      "source_status": "not_reconstructed_by_this_discovery"
+    },
+    {
+      "address": "00b604d0",
+      "end_exclusive": "00b605a3",
+      "length": 211,
+      "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+      "original_abi": "ECX actual 38h pool; EAX same pool; RET; FH3 state2->1->0 cleanup.",
+      "current_name": "FUN_00b604d0",
+      "source_status": "not_reconstructed_by_this_discovery"
+    },
+    {
+      "address": "00b60270",
+      "end_exclusive": "00b602fa",
+      "length": 138,
+      "sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+      "original_abi": "ECX actual pool; RET; no own EH frame.",
+      "current_name": "FUN_00b60270",
+      "source_status": "not_reconstructed_by_this_discovery"
+    },
+    {
+      "address": "00b60020",
+      "end_exclusive": "00b6002e",
+      "length": 14,
+      "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+      "original_abi": "ECX actual table header (pool+28), not pool; RET; first DWORD only; no clears.",
+      "current_name": "FUN_00b60020",
+      "source_status": "not_reconstructed_by_this_discovery"
+    },
+    {
+      "address": "00b60350",
+      "end_exclusive": "00b603f0",
+      "length": 160,
+      "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+      "original_abi": "ECX actual pool; RET; no lock acquisition or release.",
+      "current_name": "FUN_00b60350",
+      "source_status": "not_reconstructed_by_this_discovery"
+    }
+  ],
+  "packets": [
+    {
+      "id": "native_hardware_layout_pool_lifetime3",
+      "addresses": [
+        "00b604d0",
+        "00b60270",
+        "00b60020"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_pool_lifetime.hpp",
+        "src/native_hardware_layout_pool_lifetime.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_LIFETIME.md",
+        "reports/native_hardware_layout_pool_lifetime_audit.json"
+      ],
+      "named_incomplete_dependencies": [],
+      "binding_contract": "Genuine trim binding is required before actual node publication. Source implementation may proceed independently; verified initialization composition requires trim1.",
+      "ownership_disjoint": true,
+      "shared_metadata_owner": "integrator"
+    },
+    {
+      "id": "native_hardware_layout_pool_trim1",
+      "addresses": [
+        "00b60350"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_pool_trim.hpp",
+        "src/native_hardware_layout_pool_trim.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_TRIM.md",
+        "reports/native_hardware_layout_pool_trim_audit.json"
+      ],
+      "named_incomplete_dependencies": [],
+      "binding_contract": "Actual valid initialized hardware pool plus existing real free service; exposes actual D62AF0/B60350 binding.",
+      "ownership_disjoint": true,
+      "shared_metadata_owner": "integrator"
+    },
+    {
+      "id": "native_hardware_layout_pool_static2",
+      "addresses": [
+        "00cd7ca0",
+        "00ce0d40"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_pool_static.hpp",
+        "src/native_hardware_layout_pool_static.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_STATIC.md",
+        "reports/native_hardware_layout_pool_static_audit.json"
+      ],
+      "named_incomplete_dependencies": [
+        "native_hardware_layout_pool_lifetime3",
+        "native_hardware_layout_pool_trim1"
+      ],
+      "binding_contract": "One canonical actual 108FE9C-equivalent storage and shared list domain; real host atexit with actual destructor callback.",
+      "ownership_disjoint": true,
+      "shared_metadata_owner": "integrator"
+    }
+  ],
+  "actual_globals": [
+    {
+      "address": "0108fe9c",
+      "bytes": 56,
+      "role": "actual hardware pool storage; no private companion or reset"
+    },
+    {
+      "address": "00e188b4",
+      "bytes": 4,
+      "role": "actual shared allocator head; borrowed current list state"
+    },
+    {
+      "address": "00d62af0",
+      "bytes": 4,
+      "role": "one-slot pool profile",
+      "virtual0": "00b60350"
+    },
+    {
+      "address": "00d7a0c0",
+      "bytes": 4,
+      "role": "allocator base profile"
+    },
+    {
+      "address": "0108d530",
+      "role": "separate native tree; initialization CD7960 and destruction CE0C50 outside scope"
+    }
+  ],
+  "constructor_unwind": {
+    "handler": "00cc12de",
+    "funcinfo": "00dfa058",
+    "map": "00dfa040",
+    "states": [
+      {
+        "state": 2,
+        "previous": 1,
+        "funclet": "00cc12d3",
+        "call": "00b60020",
+        "receiver": "current captured owner+28"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "funclet": "00cc12c8",
+        "call": "00402f70",
+        "receiver": "current captured owner+0C"
+      },
+      {
+        "state": 0,
+        "previous": -1,
+        "funclet": "00cc12c0",
+        "call": "00403970",
+        "receiver": "captured actual owner"
+      }
+    ],
+    "initialization_failure_boundary": "State0 only before InitializeCriticalSection returns; no invented C++ failure callback."
+  },
+  "static_registration": {
+    "table_word": "00ce353c",
+    "callback": "00cd7ca0",
+    "dispatcher": "00bfbc47",
+    "cpp_interval": [
+      "00ce2734",
+      "00ce36e4"
+    ],
+    "initializer_return_ignored": true,
+    "atexit": "00bf6ff5",
+    "onexit_wrapper": "00bf6fb9",
+    "onexit_append": "00bf6ed1",
+    "crt_lock": 8,
+    "shutdown_callback": "00ce0d40",
+    "registration_failure_rolls_back_pool": false,
+    "host_boundary": "real std::atexit; original CRT global tables/locks not reconstructed"
+  },
+  "existing_dependencies": [
+    {
+      "address": "004b46b0",
+      "role": "global trim walks actual current list and actual current virtual profile"
+    },
+    {
+      "address": "00403970",
+      "role": "existing actual-list base unlink"
+    },
+    {
+      "address": "00402f70",
+      "role": "proven positive recursion drain plus DeleteCriticalSection; existing APIs are private to other pool types"
+    },
+    {
+      "address": "00bf55be",
+      "chain": [
+        "00bf681b"
+      ],
+      "provider": "singleton_lifetime_allocate actual host malloc/new-handler/bad_alloc service"
+    },
+    {
+      "address": "00bf6989",
+      "chain": [
+        "00bf65ac",
+        "00bf9dc8"
+      ],
+      "provider": "singleton_lifetime_free actual host CRT free; do not replace native CRT heap with GetProcessHeap"
+    }
+  ],
+  "saved_analysis_repairs_pending": [
+    {
+      "site": "00b60584",
+      "normal_continuation": "00b60589..00b6058b",
+      "repair": "clear incorrect CALL_RETURN site override and decode proven missing continuation under write lock"
+    },
+    {
+      "site": "00b60288",
+      "normal_continuation": "00b6028d..00b60297",
+      "repair": "clear incorrect CALL_RETURN site override and decode proven missing continuation under write lock"
+    },
+    {
+      "site": "00b602a0",
+      "normal_continuation": "00b602a5..00b602a7",
+      "repair": "clear incorrect CALL_RETURN site override and decode proven missing continuation under write lock"
+    },
+    {
+      "site": "00b60027",
+      "normal_continuation": "00b6002c",
+      "repair": "clear incorrect CALL_RETURN site override and decode proven missing continuation under write lock"
+    },
+    {
+      "site": "00b60371",
+      "normal_continuation": "00b60376..00b603ac",
+      "repair": "clear incorrect CALL_RETURN site override and decode proven missing continuation under write lock"
+    },
+    {
+      "site": "00cd7ca0",
+      "repair": "create exact 22-byte complete function, preserve old comments and refresh exports"
+    }
+  ],
+  "validation": {
+    "all_31_live_PE_spans_match": true,
+    "candidate_body_bytes": 555,
+    "ghidra_writes": false,
+    "source_changes": false,
+    "build_run": false,
+    "fixture_execution": false,
+    "game_validation": false,
+    "abi_compatible": false
+  }
+}

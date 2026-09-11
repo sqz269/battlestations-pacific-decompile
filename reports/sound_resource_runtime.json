@@ -1,0 +1,123 @@
+{
+  "packet": "orch3_sound_resource_runtime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/SOUND_RESOURCE_RUNTIME.md",
+  "worker_commits": {
+    "cache": "55bed87",
+    "asset_header": "ba10934",
+    "asset": "e1f644b",
+    "cleanup": "edbe149"
+  },
+  "sources": [
+    "src/sound_resource_runtime.cpp",
+    "src/vfs_file_date.cpp",
+    "src/resource_load_events.cpp",
+    "src/fmod_configuration_library.cpp",
+    "src/mounted_streams.cpp",
+    "src/mpkg_provider.cpp"
+  ],
+  "runtime": {
+    "full_constructor_fixture": true,
+    "library_calls": 133,
+    "library_errors": 0,
+    "error_bank_raw_bytes": 2560,
+    "pcm_length": 8064,
+    "frequency": 44100,
+    "duration": 0.182857,
+    "event_project_bytes": 300597,
+    "groups": 12,
+    "types": 25,
+    "platform_focus_observations": 2,
+    "cache_records_after_destroy": 0,
+    "audible_playback": false
+  },
+  "probe": {
+    "source": "local/sound_resource_probe.cpp",
+    "command": "local/run_sound_resource_probe.cmd",
+    "log": "local/sound-resource-probe.log",
+    "result": "local/sound_resource_probe.json",
+    "actual_services": [
+      "VFS ordered mounts and whole-file bytes",
+      "installed FMOD Ex and Event DLLs",
+      "reconstructed cache/create/retain/release paths",
+      "installed fundamentals and soundsetup Lua",
+      "concrete FrameClock sample"
+    ],
+    "fixture_services": [
+      "XLive pretranslation and platform cursor/focus observers",
+      "singleton destruction observer unused because explicit unregister completes before shutdown"
+    ],
+    "output": "FMOD_OUTPUTTYPE_NOSOUND",
+    "installation_written": false
+  },
+  "installed_artifacts": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+      "bytes": 350544,
+      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll",
+      "bytes": 238936,
+      "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/gui/error.fsb",
+      "bytes": 2688,
+      "sha256": "247374fbb9cfcb9e3867f054c72e0663f346ee858ecc1ea1ffa4c4fff32fb555"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/events/planes.fev",
+      "bytes": 118753,
+      "sha256": "b239cda305e3574d44a7e483111e6b71225591591f0df8cb9b34e62c1d44d458"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/soundsetup.lua",
+      "bytes": 6559,
+      "sha256": "17a237a56369d11af275533f0e7a1e3b0d0c68ff817a1aa1f4fd365660390d65"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    }
+  ],
+  "validation": {
+    "win32_release_build": "passed",
+    "ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "log": "local/sound-resource-runtime-build.log",
+    "services_fixture": "Actual UTC file time, ordered zero fallback, date-disabled branch and queued Win32 message passed. local/sound-services-probe.log",
+    "independent_reviews": [
+      "Cache and cleanup final-reference reentry from native vtables and assembly",
+      "Date fields and last-write FILETIME stack offset",
+      "Canonical provider date bindings and current disabled flag",
+      "Asset/runtime ownership, Lua/clock adapters and 12 actual installed DLL exports"
+    ]
+  },
+  "analysis_repairs": {
+    "definitions": "reports/orch3_sound_resource_function_definitions.json",
+    "flow": "reports/orch3_sound_resource_flow_repairs.json",
+    "remaining_body_metadata": [
+      "00a842e0",
+      "00a85500",
+      "00a84d00",
+      "00bf3a80 (existing 00bf3acc continuation)"
+    ],
+    "full_body_repair_claimed": false
+  },
+  "native_accounting_caveat": "Same-cache final release can subtract size twice and outer clear can pop the new tail storage without releasing that resource. Preserved from independent assembly review; not a balanced arbitrary multi-entry teardown claim.",
+  "integration_boundary": "src/game_hosts.cpp phase5 currently logs sound_system_initialize as unimplemented; executable-host binding is separately owned. Current sound owner and +54 must stay published through resource destruction.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": [
+    "Actual XLive pretranslation and cursor/focus policy",
+    "Executable startup-host binding to canonical sound/VFS/clock/lifetime state",
+    "Enabled hardware-audio branch and audible playback",
+    "Native object, checked iterator, allocator and exception ABI",
+    "Full gameplay validation"
+  ]
+}
