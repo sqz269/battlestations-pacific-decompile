@@ -1,0 +1,27 @@
+{
+  "packet": "orch2_storage_backend_integration",
+  "base": "2f90f26",
+  "worker_commits": {
+    "keyboard": "adcd29a",
+    "storage": "pending",
+    "profile_manager": "pending"
+  },
+  "primary_addresses": [
+    "00bd48f0",
+    "00bd49b0",
+    "00bd4a70",
+    "00bd4860"
+  ],
+  "validation": {
+    "compression": "native container equality and boundary fixture passed",
+    "combined": "pending"
+  },
+  "annotations": "pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining_boundaries": [
+    "actual game Lua environment creation and fundamentals",
+    "keyboard archive reader and runtime apply",
+    "complete application bindings and gameplay"
+  ]
+}

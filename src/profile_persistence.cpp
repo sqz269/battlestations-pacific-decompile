@@ -1,7 +1,18 @@
 #include "bsp/profile_persistence.hpp"
+#include "bsp/keyboard_archive.hpp"
 #include <stdexcept>
 
 namespace bsp {
+GameArchiveSettingsServices::GameArchiveSettingsServices(const GameSettingsBlock& settings,
+    const std::vector<LanguageEntry>& languages, SettingsTextHost& text_host,
+    const InputSettings& input) noexcept
+    : settings_(settings), languages_(languages), text_host_(text_host), input_(input) {}
+void GameArchiveSettingsServices::write_options_text_008d6170() {
+    write_settings_text_008d6170(settings_, languages_, text_host_);
+}
+void GameArchiveSettingsServices::write_keyboard_setup(SettingsWriter& writer) {
+    write_keyboard_setup_006a51c0(input_, writer);
+}
 void MissionProgressOwner::destroy_mission_progress_007fd780() noexcept { progress_.reset(); }
 bool MissionProgressOwner::construct_mission_progress_00920e10() noexcept {
     try { progress_ = std::make_unique<MissionProgress>(); return true; }
