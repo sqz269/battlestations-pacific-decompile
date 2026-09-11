@@ -73,7 +73,7 @@
       "cpp_symbol": "construct_native_live_effect_manager_004cf700",
       "end_exclusive": "004cf761",
       "original_abi": "ECX actual28h manager; EAX same owner; RET",
-      "behavior": "Actual storage: identity00=CE789C, untouched allocator04, listhead08/count0C, owning raw-pointer arrays10/1C. Publish identity before sentinel allocation, then sentinel/count and six zero array fields. HandlerC65C68 selectsD8E698/mapD8E690 state0->-1 C65C60/4B7F50: allocation failure clears global and base identity only, no list unwind. No global publication in constructor."
+      "behavior": "Actual storage: identity00=CE789C, untouched allocator04, listhead08/count0C, raw-pointer arrays10/1C. Publish identity before sentinel allocation, then sentinel/count and six zero array fields. HandlerC65C68 selectsD8E698/mapD8E690 state0->-1 C65C60/4B7F50: allocation failure clears global and base identity only, no list unwind. No global publication in constructor."
     }
   ],
   "ownership": "Actual28h F8765C storage; actual0Ch ring/header. No replacement container, registry, count, lock or payload disposal.",
@@ -187,5 +187,6 @@
       "readback_name_evidence_and_prior_comment_verified": true
     }
   ],
-  "ghidra_annotation_verification": "All five names/evidence saved and read back, prior comments preserved; five affected exports refreshed, with documented4C5940 stored tail limit."
+  "ghidra_annotation_verification": "All five names/evidence saved and read back, prior comments preserved; five affected exports refreshed, with documented4C5940 stored tail limit.",
+  "subsequent_lifetime_ownership_correction": "Packet orch3_live_effect_manager_lifetime_v corrects constructor-only ownership interpretation: headers+10/+1C share physical layout but867C00 releases+10 owners twice around pending flush; +1C only frees/clears backing without cell releases and preserves count/capacity. Zero initialization in4CF700 alone did not prove identical ownership policies. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. Prior annotation retained as history."
 }

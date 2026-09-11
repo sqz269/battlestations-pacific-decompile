@@ -110,3 +110,25 @@ companion-backed owner. No original/linked/runtime execution, complete hierarchy
 migration, camera-owner compatibility, renderer behavior or game validation is
 claimed. Ghidra, shared metadata and permanent build configuration were not
 changed. Function names remain descriptive hypotheses.
+
+
+## Primary main-object validation
+
+The raw world entry is registered in main. Strict MSVC Win32 compilation and
+both existing CTests passed; eight native seeds matched. The primary checked
+48 worker artifact pins and the compiler pin, then twenty current files:
+nineteen literal matches and one existing file with only CRLF/LF differences.
+Nine fresh guarded spans matched all 772 bytes.
+
+The actual main library
+`6eb2fce9d811380365d3031d51de8b82a0f98bcf7a997c3695c7c231295d9d7a`
+and three exact archive members were frozen. Complete original/main COFF
+verification covers the 80-byte world routine and both matrix providers,
+522 bytes and 181 instructions, after only three direct-call operands and
+one equal read-only constant operand. No new runtime or linked fixture is
+claimed here. The companion hierarchy migration remains pending.
+
+The read-only bundle is `local/camera_world_primary/`, manifest SHA256
+`0f27423f70503ae4f803ff3c10da72b0e9100aa834824aa9751b9ec63292fea7`.
+The existing Ghidra name and comments were preserved, evidence was appended
+and saved, and the export and complete source record were refreshed.
