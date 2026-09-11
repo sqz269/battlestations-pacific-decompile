@@ -48,8 +48,8 @@ const char* scan_disposition_name(PackageScanDisposition disposition) {
 // GameVfsHost
 // ---------------------------------------------------------------------------
 
-GameVfsHost::GameVfsHost(GameHostLog& log, bool cached_load)
-    : log_(log), cached_load_(cached_load) {}
+GameVfsHost::GameVfsHost(GameHostLog& log, bool cached_load, bool hardware_probe_commit)
+    : log_(log), cached_load_(cached_load), hardware_probe_commit_(hardware_probe_commit) {}
 
 GameVfsHost::~GameVfsHost() = default;
 
@@ -59,8 +59,22 @@ bool GameVfsHost::provider_manager_installed() {
 }
 
 void GameVfsHost::probe_hardware_0073c3b0() {
-    // 0073d610, inside the gate. The probe needs the hardware profile host; not reconstructed.
-    log_.unimplemented("Phase 2 probe_hardware", "0073c3b0");
+    // 0073d610, inside the DAT_0109ceec first-time gate and before the VFS exists.
+    // Milestone 2c runs it: the four stored registry values and their all-four
+    // gate through bsp::probe_hardware_0073c3b0, then the comparison, message and
+    // write-back of bsp::run_hardware_probe_tail_0073c3b0.
+    hardware_probe_ = std::make_unique<GameHardwareProbe>(log_, hardware_probe_commit_);
+    hardware_probe_->run();
+    log_.implemented("Phase 2 probe_hardware", "0073c3b0");
+}
+
+const GameHardwareProbeSummary& GameVfsHost::hardware_probe() const noexcept {
+    static const GameHardwareProbeSummary kNotRun{};
+    return hardware_probe_ != nullptr ? hardware_probe_->summary() : kNotRun;
+}
+
+std::size_t GameVfsHost::registered_parsers() const noexcept {
+    return resource_manager_ != nullptr ? resource_manager_->parsers.size() : 0u;
 }
 
 void GameVfsHost::construct_provider_manager_00beda60() {
@@ -94,20 +108,31 @@ VfsStartupObject GameVfsHost::mpkg_factory_00736a90() {
 }
 
 VfsStartupObject GameVfsHost::mpak_factory_00736b60() {
-    // DAT_010904d4, the .mpak provider factory. No reconstruction exists for the mpak
-    // provider, so no token is produced and the registration below records the gap.
-    log_.unimplemented("Factory tail mpak_factory", "00736b60");
-    return nullptr;
+    // 00736b60 is the same lazy double-checked singleton as the mpkg factory
+    // 00736a90: an 8-byte object with primary vtable 00cfea20 at +0 and the
+    // lifetime sub-object vtable 00cfea1c at +4, cached at DAT_010904d4. The one
+    // behavioural difference is slot 1, the Create 00bb83a0, which matches the
+    // ".mpak" suffix and builds a 0x44-byte provider; that body is packet
+    // `mpak_provider_create` and is not reconstructed, so the factory exists and
+    // is registered but creates nothing.
+    log_.implemented("Factory tail mpak_factory", "00736b60");
+    log_.notef("mpak factory singleton cache=%08lx vtable=%08lx extension=%s "
+        "(Create 00bb83a0 unimplemented)",
+        static_cast<unsigned long>(kMpakProviderFactory_00736b60.cache_global),
+        static_cast<unsigned long>(kMpakProviderFactory_00736b60.primary_vtable),
+        kMpakArchiveExtension);
+    return &factory_tokens_[2];
 }
 
 void GameVfsHost::register_provider_factory_00be0660(VfsStartupObject factory) {
-    // 00be0660 appends a factory to the manager list. VfsProviderFactories is a single
-    // object that already holds the physical, FileStore and MPKG factories in registration
-    // order, so an append has nothing to add; a null token is the unreconstructed mpak.
-    if (factory == nullptr) {
-        // The 0073d94f registration in the factory tail, kept under its own name so a
-        // reached-but-unimplemented call is never merged into the two concrete ones.
-        log_.unimplemented("Factory tail register_provider_factory", "00be0660");
+    // 00be0660 is a plain std::list::push_back onto the list at manager+30h/+34h:
+    // no deduplication, no reference count, no ownership. The order is the call
+    // order, which is physical, FileStore, MPKG, then MPAK from the factory tail.
+    // VfsProviderFactories already holds the first three, so the append is
+    // recorded against this list and only the MPAK entry is new.
+    vfs_register_provider_factory_00be0660(registered_factories_, factory);
+    if (factory == &factory_tokens_[2]) {
+        log_.implemented("Factory tail register_provider_factory", "00be0660");
         return;
     }
     log_.implemented("Phase 2 register_provider_factory", "00be0660");
@@ -218,14 +243,22 @@ void GameVfsHost::register_resource_search_paths_00738360() {
 }
 
 VfsStartupObject GameVfsHost::pak_archive_registry_00736c30() {
-    log_.unimplemented("Factory tail pak_archive_registry", "00736c30");
-    return nullptr;
+    // The same lazy shape over DAT_010904d8: operator new(0x1c), constructor
+    // 00bb4fb0, lifetime sub-object at instance+8h rather than +4h. +0Ch is the
+    // 0x64 every PAK provider copies into provider+18h.
+    pak_registry_ = pak_archive_registry_state_00bb4fb0();
+    log_.implemented("Factory tail pak_archive_registry", "00736c30");
+    log_.notef("pak archive registry cache=%08lx enabled=%d provider_limit=%d",
+        static_cast<unsigned long>(kPakArchiveRegistry_00736c30.cache_global),
+        pak_registry_.enabled_04, pak_registry_.provider_limit_0c);
+    return &pak_registry_;
 }
 
 void GameVfsHost::set_manager_pak_registry_00bd9230(VfsStartupObject registry) {
-    // manager+88h. Without a reconstructed PAK registry there is nothing to store.
-    (void)registry;
-    log_.unimplemented("Factory tail set_manager_pak_registry", "00bd9230");
+    // manager+88h, the provider policy slot.
+    set_file_manager_provider_policy_00bd9230(manager_knobs_, registry);
+    pak_registry_published_ = manager_knobs_.provider_policy == registry && registry != nullptr;
+    log_.implemented("Factory tail set_manager_pak_registry", "00bd9230");
 }
 
 void GameVfsHost::set_manager_cached_load_00bd9f90(bool cached_load) {
@@ -238,30 +271,59 @@ void GameVfsHost::set_manager_cached_load_00bd9f90(bool cached_load) {
 }
 
 void GameVfsHost::create_pak_registry_lock_00bb40b0() {
-    log_.unimplemented("Factory tail create_pak_registry_lock", "00bb40b0");
+    // One process-wide lock published into DAT_010904e0: a CRITICAL_SECTION plus
+    // the depth counter at +18h that 00bd1860 initialises.
+    const bool created = create_shared_lock_00bb40b0(pak_lock_, pak_lock_storage_);
+    log_.implemented("Factory tail create_pak_registry_lock", "00bb40b0");
+    log_.notef("pak registry lock published=%d", created ? 1 : 0);
 }
 
 VfsStartupObject GameVfsHost::resource_manager_004c1400() {
-    log_.unimplemented("Phase 6 resource_manager", "004c1400");
-    return nullptr;
+    // 004c1400 returns the global at 010901c4, constructing a 0x28-byte manager
+    // through 00b81040 on the first call. That object is packet
+    // `resource_manager_singleton`; the process holds the parser map at
+    // manager+8h, which is the one field 00b80a50 touches, and hands back the
+    // same object for both 0073db41 and 0073db55 as the native does.
+    if (resource_manager_ == nullptr) {
+        resource_manager_ = std::make_unique<GameResourceManager>();
+    }
+    log_.implemented("Phase 6 resource_manager", "004c1400");
+    return resource_manager_.get();
 }
 
 VfsStartupObject GameVfsHost::animation_channels_parser_00736dd0() {
-    log_.unimplemented("Phase 6 animation_channels_parser", "00736dd0");
-    return nullptr;
+    if (animation_channels_parser_ == nullptr) {
+        animation_channels_parser_ = std::make_unique<GameStructuredParser>(log_,
+            kAnimationChannelsParser_00736dd0);
+    }
+    log_.implemented("Phase 6 animation_channels_parser", "00736dd0");
+    return animation_channels_parser_.get();
 }
 
 VfsStartupObject GameVfsHost::bone_parser_00736ea0() {
-    log_.unimplemented("Phase 6 bone_parser", "00736ea0");
-    return nullptr;
+    if (bone_parser_ == nullptr) {
+        bone_parser_ = std::make_unique<GameStructuredParser>(log_, kBoneParser_00736ea0);
+    }
+    log_.implemented("Phase 6 bone_parser", "00736ea0");
+    return bone_parser_.get();
 }
 
 bool GameVfsHost::register_type_parser_00b80a50(VfsStartupObject manager,
     VfsStartupObject parser) {
-    (void)manager;
-    (void)parser;
-    log_.unimplemented("Phase 6 register_type_parser", "00b80a50");
-    return false;
+    // 00b80a50 appends into the parser map at manager+8h keyed by the string the
+    // parser's vtable slot +4h returns. Phase 6 discards the result both times.
+    auto* resource_manager = static_cast<GameResourceManager*>(manager);
+    auto* structured = static_cast<GameStructuredParser*>(parser);
+    if (resource_manager == nullptr || structured == nullptr) {
+        log_.unimplemented("Phase 6 register_type_parser", "00b80a50");
+        return false;
+    }
+    const bool registered = resource_manager->parsers.register_parser(*structured);
+    log_.implemented("Phase 6 register_type_parser", "00b80a50");
+    log_.notef("resource type parser %-18s registered=%d map=%zu",
+        structured->identity().type_name, registered ? 1 : 0,
+        resource_manager->parsers.size());
+    return registered;
 }
 
 bool GameVfsHost::exists(const std::string& requested) {

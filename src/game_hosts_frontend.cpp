@@ -33,6 +33,11 @@ namespace {
 // that need them (bsp/d3d9_texture.hpp forward-declares the image-info tag).
 constexpr UINT kD3dxDefault = 0xFFFFFFFFu;
 
+// D3DXIMAGE_FILEFORMAT::D3DXIFF_PNG. Declared locally for the same reason.
+constexpr DWORD kD3dxImageFormatPng = 3;
+using SaveSurfaceToFile = HRESULT(WINAPI*)(LPCSTR, DWORD, IDirect3DSurface9*,
+    const PALETTEENTRY*, const RECT*);
+
 // The same two D3DX9 entry points the font resources use, imported once for the sprite
 // bridge. This is executable plumbing, not a native routine.
 class D3dxImageImports {
@@ -44,6 +49,8 @@ public:
         std::memcpy(&read_info, &address, sizeof(read_info));
         address = GetProcAddress(module_, "D3DXCreateTextureFromFileInMemoryEx");
         std::memcpy(&create, &address, sizeof(create));
+        address = GetProcAddress(module_, "D3DXSaveSurfaceToFileA");
+        std::memcpy(&save_surface, &address, sizeof(save_surface));
     }
     ~D3dxImageImports() { if (module_) FreeLibrary(module_); }
     D3dxImageImports(const D3dxImageImports&) = delete;
@@ -51,6 +58,7 @@ public:
     bool usable() const noexcept { return read_info != nullptr && create != nullptr; }
     ReadImageInfoFromMemory read_info{};
     CreateTextureFromMemory create{};
+    SaveSurfaceToFile save_surface{};
 
 private:
     HMODULE module_{};
@@ -145,8 +153,12 @@ struct GameFrontendHost::Impl {
     // `registry` for the whole run, so these stay valid.
     std::vector<const GuiLayoutWidget*> widget_nodes;
     // The widgets 00aa5e20's virtual +34h calls reached, so a false there can be told from
-    // the projected constructor default.
+    // the projected constructor default. Milestone 2c: the page roots that a front-end
+    // screen's 004f83b0 commit reached land here too, which is what takes those pages out
+    // of the bridge's substitute rule.
     std::set<const void*> visibility_applied;
+    // Pages a front-end screen owns (milestone 2c).
+    std::set<const GuiLayoutPage*> screen_pages;
     GameFrontendSummary summary;
 
     // The 0x88-byte GUI manager of 00aa5d70, kept as the dword slots 00aa5e20 writes.
@@ -169,6 +181,7 @@ struct GameFrontendHost::Impl {
     unsigned back_buffer_width{};
     unsigned back_buffer_height{};
     bool quads_built{false};
+    std::size_t last_logged_quads{static_cast<std::size_t>(-1)};
     std::size_t node_counter{0};
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
@@ -272,8 +285,13 @@ struct GameFrontendHost::Impl {
     // What the sprite bridge shows. A widget the native resource list explicitly hid, or
     // one the page authored as hidden, stays hidden, and so does its whole subtree. A
     // widget with neither is drawn: the projected default is false and the true value a
-    // running game would see comes from the screen activate 004f83b0, which is the
-    // front-end owner's. That last rule is the bridge's, not the game's.
+    // running game would see comes from the screen activate 004f83b0.
+    //
+    // Milestone 2c: for a page a front-end screen owns, that push now happens for real.
+    // The page root is in visibility_applied, so the first arm of the walk answers from
+    // the byte the screen published and the substitute rule never reaches it. The rule
+    // still stands in for the pages no screen owns: the five 00aa5e20 resource entries
+    // and the two frame layouts 00518250 selects.
     bool bridge_visible(const GuiLayoutWidget* widget) const {
         for (const GuiLayoutWidget* node = widget; node != nullptr; node = node->parent) {
             if (visibility_applied.count(node) != 0) {
@@ -651,6 +669,9 @@ void GameFrontendHost::Impl::load_atlases() {
 
 void GameFrontendHost::Impl::build_quads() {
     quads_built = true;
+    ++summary.bridge_rebuilds;
+    quads.clear();
+    for (GameWidgetRecord& record : widget_records) record.drawn = false;
     if (back_buffer_width == 0 || back_buffer_height == 0) return;
     const float screen_w = static_cast<float>(back_buffer_width);
     const float screen_h = static_cast<float>(back_buffer_height);
@@ -684,8 +705,10 @@ void GameFrontendHost::Impl::build_quads() {
             texture = create_texture(key);
         }
         if (texture == nullptr) {
-            log.notef("sprite bridge miss %-22s %s (no atlas item, no loose file)",
-                record.key.c_str(), key.c_str());
+            if (summary.bridge_rebuilds == 1) {
+                log.notef("sprite bridge miss %-22s %s (no atlas item, no loose file)",
+                    record.key.c_str(), key.c_str());
+            }
             continue;
         }
         float width = record.width;
@@ -731,11 +754,18 @@ void GameFrontendHost::Impl::build_quads() {
         record.drawn = true;
     }
     summary.bridge_quads = quads.size();
+    summary.bridge_textures = 0;
     for (const auto& entry : loose_textures) {
         if (entry.second != nullptr) ++summary.bridge_textures;
     }
-    log.notef("sprite bridge quads=%zu textures=%zu/%zu atlas_items=%zu", quads.size(),
-        summary.bridge_textures, loose_textures.size(), atlas.items.size());
+    // The quad list is rebuilt whenever a screen publishes a visibility byte or a page
+    // loads, so only a changed result is worth a line.
+    if (last_logged_quads != quads.size()) {
+        last_logged_quads = quads.size();
+        log.notef("sprite bridge quads=%zu textures=%zu/%zu atlas_items=%zu rebuild=%zu",
+            quads.size(), summary.bridge_textures, loose_textures.size(),
+            atlas.items.size(), summary.bridge_rebuilds);
+    }
 }
 
 void GameFrontendHost::draw_bridge(IDirect3DDevice9& device) {
@@ -764,6 +794,97 @@ void GameFrontendHost::draw_bridge(IDirect3DDevice9& device) {
         device.DrawPrimitiveUP(D3DPT_TRIANGLELIST, 2, quad.vertices, sizeof(BridgeVertex));
     }
     device.SetTexture(0, nullptr);
+}
+
+// ---------------------------------------------------------------------------
+// Milestone 2c: pages a front-end screen owns
+// ---------------------------------------------------------------------------
+
+GuiLayoutPage* GameFrontendHost::load_screen_page(const std::string& name) {
+    Impl& host = *impl_;
+    if (!host.page_scripts) {
+        throw std::logic_error("A screen page requires the GUI startup phase");
+    }
+    GameGuiLayoutHost layout(host, *host.page_scripts);
+    const std::size_t before = host.widget_records.size();
+    GuiLayoutPage* page = host.load_page(layout, name, true);
+    if (page == nullptr) return nullptr;
+    host.screen_pages.insert(page);
+    for (std::size_t index = before; index < host.widget_records.size(); ++index) {
+        host.widget_records[index].screen_owned = true;
+    }
+    host.summary.screen_owned_pages = host.screen_pages.size();
+    host.quads_built = false;
+    return page;
+}
+
+void GameFrontendHost::release_screen_page(GuiLayoutPage* page) {
+    Impl& host = *impl_;
+    // 00aa31f0 on the GUI manager. GuiPageRegistry owns every page for the whole
+    // run, so the release is recorded and the page stays loaded; nothing here
+    // models the native reference count at page+4h.
+    host.log.unimplemented("GuiManagerResources::release_page", "00aa31f0");
+    if (page != nullptr) host.screen_pages.erase(page);
+}
+
+GuiLayoutWidget* GameFrontendHost::find_page_child(GuiLayoutPage& page,
+    const std::string& name) {
+    Impl& host = *impl_;
+    host.log.implemented("GuiManagerResources::find_child", "00aa7e00");
+    if (!page.root) return nullptr;
+    return find_child_by_name_00aa7e00(*page.root, name);
+}
+
+void GameFrontendHost::commit_page_visibility(GuiLayoutPage& page, bool visible) {
+    Impl& host = *impl_;
+    if (!page.root) return;
+    page.root->visible = visible;
+    host.visibility_applied.insert(page.root.get());
+    ++host.summary.visibility_pushes;
+    host.quads_built = false;
+}
+
+void GameFrontendHost::set_widget_visible(GuiLayoutWidget& widget, bool visible) {
+    Impl& host = *impl_;
+    widget.visible = visible;
+    host.visibility_applied.insert(&widget);
+    host.quads_built = false;
+}
+
+void GameFrontendHost::set_widget_color(GuiLayoutWidget& widget, float r, float g, float b,
+    float a) {
+    widget.color[0] = r;
+    widget.color[1] = g;
+    widget.color[2] = b;
+    widget.color[3] = a;
+}
+
+void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
+
+bool GameFrontendHost::save_back_buffer(IDirect3DDevice9& device, const std::string& path) {
+    Impl& host = *impl_;
+    if (host.imports.save_surface == nullptr) {
+        host.log.note("screenshot unavailable: d3dx9_40!D3DXSaveSurfaceToFileA missing");
+        return false;
+    }
+    IDirect3DSurface9* surface = nullptr;
+    HRESULT result = device.GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &surface);
+    if (FAILED(result) || surface == nullptr) {
+        host.log.notef("screenshot failed: GetBackBuffer hr=0x%08lx",
+            static_cast<unsigned long>(result));
+        return false;
+    }
+    result = host.imports.save_surface(path.c_str(), kD3dxImageFormatPng, surface, nullptr,
+        nullptr);
+    surface->Release();
+    if (FAILED(result)) {
+        host.log.notef("screenshot failed: D3DXSaveSurfaceToFileA hr=0x%08lx",
+            static_cast<unsigned long>(result));
+        return false;
+    }
+    host.log.notef("screenshot written %s (%ux%u)", path.c_str(), host.back_buffer_width,
+        host.back_buffer_height);
+    return true;
 }
 
 const std::vector<GameGuiResourceRecord>& GameFrontendHost::gui_resources() const noexcept {
