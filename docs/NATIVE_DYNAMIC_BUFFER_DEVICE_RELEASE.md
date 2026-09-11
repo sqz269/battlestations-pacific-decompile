@@ -141,3 +141,15 @@ This is an actual-layout reconstruction with strict-build and real-resource
 differential evidence. It is a new C++ interface, not a drop-in original ABI.
 The installed game was read only; gameplay, rendering, concurrent mutations,
 arbitrary COM exceptions and asynchronous SEH were not validated.
+
+## Primary integration
+
+The primary registered the source in CMake and repeated the strict Win32 build
+and both existing CTests. It verified all 47 worker artifacts, four current
+source/provider files and twelve fresh live-Ghidra/installed-PE spans (461 bytes).
+The unchanged worker fixture linked the frozen main library, SHA-256
+`2b6d41802c42d5b58a1e20702f517fc401de08d1138b4e63ebbfd0d36f9fbcaf`, and repeated the full
+268,850 DWORD comparison, call/write PC checks and 184 module entry captures.
+The complete reconstruction ledger and refreshed export are registered; saved
+Ghidra annotation preserves the previous name and comments. No permanent test
+target was added. The validation limits above still apply.

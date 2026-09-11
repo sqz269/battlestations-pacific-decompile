@@ -4502,8 +4502,8 @@
       "id": "native_dynamic_buffer_device_release1",
       "packet": "native_dynamic_buffer_device_release1",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b237d0"
       ],
@@ -4516,7 +4516,8 @@
       "source_ready": true,
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
-      "scope": "Full243byte B237D0 actual current renderer/wrapper/COM release with genuine optional guard providers and original FH3 cleanup. Preserve existing typed d3d9_states projection; no synthetic COM providers."
+      "scope": "Full243byte B237D0 actual current renderer/wrapper/COM release with genuine optional guard providers and original FH3 cleanup. Preserve existing typed d3d9_states projection; no synthetic COM providers.",
+      "evidence": "reports/native_dynamic_buffer_device_release_audit.json"
     },
     {
       "id": "native_buffer_device_reset_next",
@@ -4590,7 +4591,7 @@
     {
       "id": "native_diagnostic_sink_lifetime3",
       "packet": "native_diagnostic_sink_lifetime3",
-      "worker": "main",
+      "worker": "system_fog_owner_discovery",
       "done": false,
       "state": "worker_source_and_original_fixture_in_progress",
       "function_addresses": [
@@ -4681,6 +4682,26 @@
       ],
       "discovery_evidence": "reports/native_buffer_device_reset_next.json",
       "scope": "754 native bytes including24 bytes of returning-free gaps. Existing actual Attach/string/resource-support/lifetime providers required in context. Current actual renderer publication, COM endpoints, allocation and callable engine tables; explicit unsupported-pool stack-state domain remains a complete-entry requirement."
+    },
+    {
+      "id": "native_renderer_reset_routes_next",
+      "packet": "native_renderer_reset_routes_next",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_bounded_native_dependency_discovery_in_progress",
+      "function_addresses": [
+        "00b24bf0",
+        "00b262c0",
+        "00b23b10"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_RESET_ROUTES_NEXT.md",
+        "reports/native_renderer_reset_routes_next.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Read-only full native renderer reset unbind/release/restore contracts and direct/indirect actual providers; explicit ready implementation packets."
     }
   ],
   "snapshot_after_analysis": {

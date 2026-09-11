@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "packet": "native_resource_creation_flags1",
+  "status": "complete_raw_storage_reconstruction_strict_primary_build_and_full_original_body_fixture_passed",
+  "generated_utc": "2026-09-11T06:07:56.804378+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910",
+  "branch": "agent/native-resource-creation-flags-20260910",
+  "base_commit": "4bb349a",
+  "owned_addresses": [
+    "00b20a80"
+  ],
+  "owned_files": [
+    "include/bsp/native_resource_creation_flags.hpp",
+    "src/native_resource_creation_flags.cpp",
+    "docs/NATIVE_RESOURCE_CREATION_FLAGS.md",
+    "reports/native_resource_creation_flags_audit.json"
+  ],
+  "function": {
+    "address": "00b20a80",
+    "native_end_exclusive": "00b20b75",
+    "byte_count": 245,
+    "old_name": "BSP_D3D9_TranslateResourceFlags",
+    "retained_name": "BSP_D3D9_TranslateResourceFlags",
+    "old_signature": "undefined BSP_D3D9_TranslateResourceFlags(void)",
+    "cpp_symbol": "translate_native_resource_creation_flags_00b20a80",
+    "source": "src/native_resource_creation_flags.cpp",
+    "original_ABI": "ECX actual usage DWORD output; EDX actual pool DWORD output; stack flags then resource kind; RET8; preserves EBX/ESI/EDI; no semantic result",
+    "source_API": "void translate_native_resource_creation_flags_00b20a80(void* actual_usage_output, void* actual_pool_output, uint32_t captured_flags, uint32_t captured_kind) noexcept",
+    "name_is_hypothesis": true,
+    "complete_instruction_count": 75,
+    "native_calls": 0,
+    "native_differential_fixture": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "native_evidence": {
+    "generated_utc": "2026-09-11T06:01:11.196018+00:00",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verification": "Every bsp.py ghidra bytes call verifies expected project/program/language/image base before reading.",
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_size": 14872576,
+    "spans": [
+      {
+        "address": 11668096,
+        "length": 245,
+        "offset": 7473792,
+        "hex": "538b5c24088bc35683e00f33f683f803578b7c24147731ff2485780bb20083ff078932740583ff06751e81cb00000100eb16c70201000000eb0ec70202000000eb06c70203000000f6c3107405be010000008bc325000f00003d000300007722741b3d00010000740f3d00020000752e81ce00400000eb2683ce02eb2183ce40eb1c3d00040000740f3d00050000750e81ce80000000eb0681ce000100008bc32500f000003d00100000750681ce0002000083ff07740583ff0675138bd381e200000f0081fa00000100750383ce0883ff03740583ff05751481e3000000ff81fb00000001750681ce000400005f89315e5bc20800",
+        "sha256": "90d0910bd9bf3c9f7273bfd40fba84a586819c45254c5805eaf95a0b087a4fb8",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 11668344,
+        "length": 16,
+        "offset": 7474040,
+        "hex": "9e0ab200b20ab200ba0ab200c20ab200",
+        "sha256": "46932d12d89262abfda764b7d39cf3f38986a4624e217aa5de6ce8dbe35c13b9",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      }
+    ],
+    "jump_table_entries": [
+      "00b20a9e",
+      "00b20ab2",
+      "00b20aba",
+      "00b20ac2"
+    ],
+    "sdk": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9types.h",
+      "sha256": "ce75dc368d5f37506ada4c32062a96ab4d4894fead5d21ad5844fc9f0a2e62c2",
+      "pool_lines": [
+        1523,
+        1524,
+        1525,
+        1526
+      ],
+      "resource_kind_lines": [
+        1604,
+        1606,
+        1607,
+        1608
+      ],
+      "usage_lines": [
+        1615,
+        1616,
+        1617,
+        1631,
+        1632,
+        1644,
+        1647,
+        1648,
+        1649
+      ]
+    }
+  },
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\include\\bsp\\native_resource_creation_flags.hpp",
+      "bytes": 627,
+      "sha256": "0fe50fcb3fb45e422e20187e39b1a9dd9df39f4b7d1e4a0e8b256d47a6c09e0c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\src\\native_resource_creation_flags.cpp",
+      "bytes": 1415,
+      "sha256": "1dcd17fcf4fa8dcf0b628b435e6e02e5bb8461ee2db26d2d61654c4ddfa2d82b"
+    }
+  ],
+  "raw_output_contract": {
+    "output_extent_bytes": 4,
+    "unaligned_supported": true,
+    "exact_or_partial_overlap_supported": true,
+    "input_values_captured_before_output_mutation": true,
+    "pool_access": "Only low nibble 0..3 writes the corresponding DWORD; all unsupported codes never access pool output.",
+    "pool_native_store_addresses": [
+      "00b20aa1",
+      "00b20ab2",
+      "00b20aba",
+      "00b20ac2"
+    ],
+    "usage_native_store_address": "00b20b6e",
+    "output_reads": false,
+    "output_order": "Supported pool is stored first; usage is always stored last, replacing any shared bytes.",
+    "pool_zero_buffer_adjustment": "Kinds6/7 and nibble0 OR captured flags with0x10000 before exact usage-field comparisons; existing0x20000 becomes0x30000 and does not yield WRITEONLY.",
+    "unsupported_pool_caller_relevance": "Native buffer restore B4A040 may pass an untouched pool-local DWORD; no default, output-read, initialization, or invalid-call policy is invented."
+  },
+  "mapping": {
+    "resource_kinds": {
+      "3": "D3DRTYPE_TEXTURE",
+      "5": "D3DRTYPE_CUBETEXTURE",
+      "6": "D3DRTYPE_VERTEXBUFFER",
+      "7": "D3DRTYPE_INDEXBUFFER"
+    },
+    "pool_values": {
+      "0": "D3DPOOL_DEFAULT",
+      "1": "D3DPOOL_MANAGED",
+      "2": "D3DPOOL_SYSTEMMEM",
+      "3": "D3DPOOL_SCRATCH"
+    },
+    "nonzero_flags_10_usage": "00000001",
+    "flags_F00_equal_usage": {
+      "100": "00000002",
+      "200": "00004000",
+      "300": "00000040",
+      "400": "00000100",
+      "500": "00000080"
+    },
+    "flags_F000_equal_1000_usage": "00000200",
+    "kinds6_or7_flags_F0000_equal_10000_usage": "00000008",
+    "kinds3_or5_flags_FF000000_equal_01000000_usage": "00000400",
+    "unsupported_field_codes": "No usage contribution; equality tests are not individual-bit tests."
+  },
+  "build": {
+    "script": "./scripts/build.ps1",
+    "passed": true,
+    "existing_CTests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "native_seed_spans_matched": 8,
+    "new_tracked_tests": 0,
+    "actual_source_in_primary_library": true,
+    "local_registration": "Ignored CMAKE_PROJECT_INCLUDE_BEFORE adds owned source to primary bsp_core; permanent shared registration remains integrator-owned.",
+    "fixture_options": [
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/W4",
+      "/WX"
+    ]
+  },
+  "fixture": {
+    "matching_phases": 35,
+    "mapping_phases": 24,
+    "exact_and_partial_overlap_layouts": 7,
+    "unaligned_disjoint_layouts": 1,
+    "unsupported_inaccessible_pool_phases": 2,
+    "captured_input_storage_alias_phases": 1,
+    "matching_raw_backing_bytes": 1120,
+    "matching_trace_bytes": 1960,
+    "trace_record_bytes": 56,
+    "raw_backing_bytes_per_phase": 32,
+    "exact_trace_equality": true,
+    "normalization": "None; all actual backing bytes and input/layout metadata are retained.",
+    "native_execution": "Complete245-byte body through original fastcall-compatible ABI in sparse relocated image; original branch/control bytes preserved except declared jump-table absolute address relocation.",
+    "entry_or_service_bridges": [],
+    "absolute_relocations": [
+      {
+        "operand_address": "00b20a9a",
+        "old_target": "00b20b78",
+        "runtime_target": "01290b78"
+      },
+      {
+        "operand_address": "00b20b78",
+        "old_target": "00b20a9e",
+        "runtime_target": "01290a9e"
+      },
+      {
+        "operand_address": "00b20b7c",
+        "old_target": "00b20ab2",
+        "runtime_target": "01290ab2"
+      },
+      {
+        "operand_address": "00b20b80",
+        "old_target": "00b20aba",
+        "runtime_target": "01290aba"
+      },
+      {
+        "operand_address": "00b20b84",
+        "old_target": "00b20ac2",
+        "runtime_target": "01290ac2"
+      }
+    ],
+    "runtime_spans": [
+      {
+        "address": "00b20a80",
+        "length": 245,
+        "preimage_sha256": "90d0910bd9bf3c9f7273bfd40fba84a586819c45254c5805eaf95a0b087a4fb8",
+        "postimage_hex": "538b5c24088bc35683e00f33f683f803578b7c24147731ff2485780b290183ff078932740583ff06751e81cb00000100eb16c70201000000eb0ec70202000000eb06c70203000000f6c3107405be010000008bc325000f00003d000300007722741b3d00010000740f3d00020000752e81ce00400000eb2683ce02eb2183ce40eb1c3d00040000740f3d00050000750e81ce80000000eb0681ce000100008bc32500f000003d00100000750681ce0002000083ff07740583ff0675138bd381e200000f0081fa00000100750383ce0883ff03740583ff05751481e3000000ff81fb00000001750681ce000400005f89315e5bc20800",
+        "postimage_sha256": "cdcc091be93aabbcd1574d5fa618d6f533456b38ad0f9d27b9822a224f1fc1e4",
+        "only_declared_relocations": true
+      },
+      {
+        "address": "00b20b78",
+        "length": 16,
+        "preimage_sha256": "46932d12d89262abfda764b7d39cf3f38986a4624e217aa5de6ce8dbe35c13b9",
+        "postimage_hex": "9e0a2901b20a2901ba0a2901c20a2901",
+        "postimage_sha256": "ab5081e670bdd1da2b23dd59994aa4016dc125a946ddb0462b7001049114fc1a",
+        "only_declared_relocations": true
+      }
+    ],
+    "all_postimages_verified": true,
+    "source_library_provider": {
+      "symbol": "translate_native_resource_creation_flags_00b20a80",
+      "provider": "bsp_core:native_resource_creation_flags.obj",
+      "exact_map_line": " 0001:00003470       ?translate_native_resource_creation_flags_00b20a80@bsp@@YAXPAX0II@Z 30004470 f   bsp_core:native_resource_creation_flags.obj"
+    },
+    "source_object_machine_code": {
+      "function_bytes": 236,
+      "exact_linked_body_equals_object": true,
+      "sha256": "c79822823bd8d5f16fe1e0149e132415f34750adb5a239f5723c0ac5634fbf36",
+      "call_instructions": 0,
+      "non_stack_memory_reads": 0,
+      "pool_argument_load_skipped_on_unsupported_code": true,
+      "captured_flags_and_kind_load_before_pool_store": true,
+      "DWORD_stores": [
+        {
+          "offset": "0018",
+          "hex": "8908",
+          "instruction": "mov dword ptr [eax], ecx"
+        },
+        {
+          "offset": "00c7",
+          "hex": "8930",
+          "instruction": "mov dword ptr [eax], esi"
+        },
+        {
+          "offset": "00e7",
+          "hex": "8908",
+          "instruction": "mov dword ptr [eax], ecx"
+        }
+      ],
+      "usage_stores_are_exclusive_exits": true
+    },
+    "store_order_evidence": "Native full decode plus actual linked optimized source machine code establish DWORD width and pool-before-usage order. Focused fixture proves resulting bytes, not a concurrency or hardware atomicity model."
+  },
+  "shared_metadata_or_Ghidra_edits": false,
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\capture.py",
+      "bytes": 3070,
+      "sha256": "e1dcce8d1cc28145992295b9bdc97a3b9e42fd11fb3589aeacad032917ec4f97"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\capture.json",
+      "bytes": 10148,
+      "sha256": "d2c9cd64a999b3b9743373c176954e3d6ed791d257a0d8c217e28d496bdcd354"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\reference.hpp",
+      "bytes": 765,
+      "sha256": "96d219710304403035c86be6342d6ce50b65b68e389770e92f9e5c46e5dc8834"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\fixture.cpp",
+      "bytes": 5710,
+      "sha256": "54081674086802d5ba314b2aadd7ef0f24630fa1c701bf00668c36033a78f301"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\CMakeLists.txt",
+      "bytes": 735,
+      "sha256": "3cd905cccc2c31465650f43b91278f3b83b7f1d7587b42cad1b43f9686d6c5f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\finalize.py",
+      "bytes": 11594,
+      "sha256": "8fda5e4c8c3824835bb3524fda3fb49a1f0260505d3bcdd9dd5389778bc4f241"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\source_object_disasm.txt",
+      "bytes": 5357,
+      "sha256": "b4bb3d3ac80e5dfd06588264c7c5d24fb1faf679f3787721dc1d04f062762c8c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\primary_configure.log",
+      "bytes": 978,
+      "sha256": "a749ff8ac6770a252d3a763815986c05c23f87689ecb33db8198409b91da5bb9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\configure.log",
+      "bytes": 640,
+      "sha256": "27fb7564f4157ffac4b4296f7f63a85ad46ab2b0dced897bea51def661754191"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\build.log",
+      "bytes": 562,
+      "sha256": "7489ece7389358f4d01f5e08d3d8a05ca34c95e6817172f4438585ea00500f89"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\repository_build.log",
+      "bytes": 14735,
+      "sha256": "c4393d452d4a7e7c7ca50ad50343803d8f9b03a80ee4b04b4780e41c1bbe0e41"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\creation_flags_diff\\Release\\creation_flags_diff.exe",
+      "bytes": 33280,
+      "sha256": "d08e70d3b5062178995976cef6561f29049954640d99eea63410d053b5470876"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\creation_flags_diff\\Release\\creation_flags_diff.map",
+      "bytes": 65551,
+      "sha256": "18b4728be3925985a5019979ec601c037d5e37377855c7fb3c1f2cfdd2839f51"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\creation_flags_diff\\run.log",
+      "bytes": 118,
+      "sha256": "612c8b644c45805ed13dcdd0bfacbd8b2da35f34668b62c8af1b1090484e8427"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\creation_flags_diff\\native_trace.bin",
+      "bytes": 1960,
+      "sha256": "b3317697cb5d99fda81fc3e204b528542005fe74e6b5bf059732865136f65022"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\creation_flags_diff\\host_trace.bin",
+      "bytes": 1960,
+      "sha256": "b3317697cb5d99fda81fc3e204b528542005fe74e6b5bf059732865136f65022"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\creation_flags_diff\\patched_spans.txt",
+      "bytes": 554,
+      "sha256": "99860f41c5c7f46e058c190f611c32620c43bd94115bd2671ca3e9ee1cc8fdda"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_register.cmake",
+      "bytes": 120,
+      "sha256": "ec8376538f49f26a6b3e475026fed23a4f73fb72cfd0b524ff4b0fb7a219a68f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\build_creation_flags_checks.ps1",
+      "bytes": 1745,
+      "sha256": "32b2e1049b392e8bb99fcdddef3e7ab88715473adfd8870ec960c225af3bcf54"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 27016272,
+      "sha256": "504ab6c29ef1217420696438237d821addb207e2e24cc8560dd9bdb3a06244e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\build\\win32\\bsp_core.dir\\Release\\native_resource_creation_flags.obj",
+      "bytes": 1152,
+      "sha256": "9ae1849684edaffa0160536ebd3b3704df687c04fdff8bf2e4ea734a12d120f4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-creation-flags-20260910\\local\\creation_flags_diff\\trace_records.json",
+      "bytes": 7617,
+      "sha256": "149e6db1e873ae2dd13ad6baa5cd311ecdd63dbbb0c0698a7acc4a8818d94f2d"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive native/C++ names are hypotheses, not recovered symbols.",
+    "Every reached output access requires valid four-byte backing. No safety policy for invalid usage output, inaccessible supported pool output, concurrency, or asynchronous faults is introduced.",
+    "The original register ABI is used only by the native comparison; the new C++ API is not a drop-in binary replacement.",
+    "No surrounding resource owner, renderer, COM object, device restoration, or game behavior is validated by this pure helper."
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}
