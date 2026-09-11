@@ -1,0 +1,231 @@
+{
+  "packet": "orch3_gameplay_point_adapter_aa",
+  "scope": "Three complete native routines; full gameplay-definition/point-construction adapter remains outstanding",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/gameplay_point_effect.cpp",
+  "header": "include/bsp/gameplay_point_effect.hpp",
+  "documentation": "docs/GAMEPLAY_POINT_EFFECT.md",
+  "native_spans": [
+    {
+      "name": "predicate",
+      "address": "0086b7d0",
+      "end_exclusive": "0086b7d5",
+      "length": 5,
+      "sha256": "96bb05a9b4b1029fe7f666a311c7c16bed4d239a715c81b90e12ebf3a7657c4d",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [
+        {
+          "address": "0086b7d2",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "operands": {}
+    },
+    {
+      "name": "shake",
+      "address": "0086a820",
+      "end_exclusive": "0086a903",
+      "length": 227,
+      "sha256": "3b5da4894f8a3192aee574d6a5329ca5056669617cf7b991e17defaf426acd22",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086a84f",
+          "target": "0x414db0"
+        },
+        {
+          "address": "0086a867",
+          "target": "0xb6db70"
+        },
+        {
+          "address": "0086a8b8",
+          "target": "0x42b2f0"
+        },
+        {
+          "address": "0086a8e8",
+          "target": "0x42c3d0"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086a8f4",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "0086a900",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "operands": {
+        "00e188a8": [
+          17,
+          186
+        ]
+      }
+    },
+    {
+      "name": "accumulate",
+      "address": "0042c3d0",
+      "end_exclusive": "0042c44c",
+      "length": 124,
+      "sha256": "b0273084de8febea30e50534f5048625b5c8540fd65362ececd2166ba5423ff6",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [
+        {
+          "address": "0042c410",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "0042c438",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "0042c449",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "operands": {}
+    },
+    {
+      "name": "shake_table",
+      "address": "00d0d5f4",
+      "end_exclusive": "00d0d614",
+      "length": 32,
+      "sha256": "57fef60f81da4cc2b635f15407f609166b02ffbdba2f372ef905da277c65b518",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [],
+      "operands": {}
+    }
+  ],
+  "reconstructions": [
+    {
+      "address": "0086b7d0",
+      "end_exclusive": "0086b7d5",
+      "name": "BSP_EffectComponent_AdmitAlways",
+      "cpp_symbol": "admit_effect_component_0086b7d0",
+      "original_abi": "ECX component; two unused stack arguments point/reference; AL=1, upper EAX stale; RET8",
+      "behavior": "Complete5-byte MOV AL,1; RET8 leaf. Does not inspect ECX or either argument. Verified shake D0D5F4 virtual+1C selects this leaf; not a fallback for unknown predicates."
+    },
+    {
+      "address": "0086a820",
+      "end_exclusive": "0086a903",
+      "name": "BSP_EffectShake_Create",
+      "cpp_symbol": "create_point_shake_0086a820",
+      "original_abi": "ECX actual2Ch component; stack actual point effect; EAX0 on every path; RET4",
+      "behavior": "Complete227-byte shake virtual+18 at D0D5F4. Persistent byte20 skips all; capture current [E188A8]+1ED4 target, optional actual414DB0 refresh, THEN capture subject+110 node and optional B6DB70 refresh. x87 copy all node position floats first, subtract captured target position with float spills, actual42B2F0 distance. (1-distance/radius24)*strength28 has no intermediate gain spill/clamp. Ordered positive final float strength reloads CURRENT target for actual42C3D0 accumulator. Always null result; no event allocation or fake owner/reference."
+    },
+    {
+      "address": "0042c3d0",
+      "end_exclusive": "0042c44c",
+      "name": "BSP_Target_AccumulateClampedShake",
+      "cpp_symbol": "accumulate_target_shake_0042c3d0",
+      "original_abi": "ECX actual target; stack float contribution; RET4; no meaningful result",
+      "behavior": "Complete124-byte target accumulator. x87 contribution+current1C0 ->float STORE FIRST, recapture sum, capture minimum1C8; ordered minimum>sum returns minimum WITHOUT loading maximum. Otherwise capture maximum1C4; ordered sum>maximum selects maximum else captured sum. Exact x87 spills/NaN comparisons/MOVSS final stores, including inverted bounds. Shake interpretation comes from86A820 and its Lua reader; other callers unreviewed."
+    }
+  ],
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/gameplay-point-effect-aa-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS exit0; local/gameplay-point-effect-aa-fixture.log",
+    "fixture_source": "local/gameplay_point_probe_aa.cpp",
+    "native_cases": [
+      "Complete5/227/124 byte bodies and all native RET immediates, explicit ESP balance",
+      "AL1 with native upper EAX preserved",
+      "Full target/node bytes and x87 exception/TOP bits for11 accumulator and11 factory inputs across12 precision/rounding settings",
+      "Interior/lower/upper/inverted limits, signed zero, NaNs including signaling raw field patterns, infinity and float rounding",
+      "Persistent and null-target paths never read subject; negative gain times negative strength remains positive",
+      "Actual414DB0 and B6DB70 dirty pose/node refresh",
+      "Fixture-only injection after real target refresh changes target and subject: captured old target distance, current new subject node, current new target accumulation"
+    ],
+    "rebindings": [
+      "Original factory refresh/length CALLs enter existing canonical414DB0/B6DB70/42B2F0 implementations through ABI bridges",
+      "Original factory accumulator CALL enters copied original124-byte body",
+      "Both E188A8 operands address actual fixture game-pointer slot",
+      "C++ uses concrete ForceEventSpatialRuntime and existing actual pose/transform field bindings"
+    ],
+    "coverage_limits": [
+      "FP exceptions masked; no unmasked hardware exception behavior proved",
+      "Actual application table dispatch and source gameplay definition companion not yet connected",
+      "Refresh/length dependencies not copied original bodies in this fixture",
+      "Injected target replacement is a fixture boundary perturbation, not claimed application resolver behavior"
+    ],
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Concrete gameplay-definition companion borrowing original+04 without a second count",
+    "Actual name-header constructor integration without snapshots or reinitialization",
+    "Actual current component table dispatch and remaining predicates/factories",
+    "Concrete PointEffectConstruction adapter for8689C0",
+    "Application/gameplay and native binary ABI validation"
+  ],
+  "fixture_artifact_sha256": {
+    "local/gameplay_point_probe_aa.cpp": "d1de4c9e4df4ad9c61ff6505dc7f48273820ea07e55de94c3bf43dbed6660d50",
+    "local/run_gameplay_point_probe_aa.cmd": "a8415f0cb8a32074c6de249badc47dc5cfa3a5d9b7cb417199945967b7ef9a6f",
+    "local/gameplay_point_native_bytes_aa.hpp": "a2bdbbeba65ef9f8047f53e7ada2efb5f3526dd045719b8119d8cdd0d63b46af",
+    "local/gameplay-point-byte-evidence-aa.json": "87e676877f722af16a9e20e6b59e27d40c9006eb5891e4184ea5e471fbff3238",
+    "local/extract_gameplay_point_aa.py": "d4b93fa1d2be380f556a1212ddff54d18dc7d733d40a87169ebe0cc2d91df9e7"
+  },
+  "ghidra_annotations": {
+    "saved": true,
+    "audit_path": "local/ghidra-annotations-20260911T194648Z.json",
+    "readback_path": "local/gameplay-point-aa-comments.json",
+    "all_three_names_and_evidence_verified": true,
+    "previous_comments_preserved": true,
+    "old_and_new_values": [
+      {
+        "address": "0042c3d0",
+        "before": {
+          "address": "0042c3d0",
+          "function_name": "FUN_0042c3d0"
+        },
+        "after": {
+          "address": "0042c3d0",
+          "name": "BSP_Target_AccumulateClampedShake",
+          "evidence": "Hypothesis, not a recovered symbol. Complete124-byte target accumulator. x87 contribution+current1C0 ->float STORE FIRST, recapture sum, capture minimum1C8; ordered minimum>sum returns minimum WITHOUT loading maximum. Otherwise capture maximum1C4; ordered sum>maximum selects maximum else captured sum. Exact x87 spills/NaN comparisons/MOVSS final stores, including inverted bounds. Shake interpretation comes from86A820 and its Lua reader; other callers unreviewed. Strict Win32 and full original-body fixture with explicit ESP balance passed across12 x87 precision/rounding settings. docs/GAMEPLAY_POINT_EFFECT.md; reports/gameplay_point_effect.json. New C++ ABI; application dispatch, unmasked FP exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086a820",
+        "before": {
+          "address": "0086a820",
+          "function_name": "FUN_0086a820"
+        },
+        "after": {
+          "address": "0086a820",
+          "name": "BSP_EffectShake_Create",
+          "evidence": "Hypothesis, not a recovered symbol. Complete227-byte shake virtual+18 at D0D5F4. Persistent byte20 skips all; capture current [E188A8]+1ED4 target, optional actual414DB0 refresh, THEN capture subject+110 node and optional B6DB70 refresh. x87 copy all node position floats first, subtract captured target position with float spills, actual42B2F0 distance. (1-distance/radius24)*strength28 has no intermediate gain spill/clamp. Ordered positive final float strength reloads CURRENT target for actual42C3D0 accumulator. Always null result; no event allocation or fake owner/reference. Strict Win32 and full original-body fixture with explicit ESP balance passed across12 x87 precision/rounding settings. docs/GAMEPLAY_POINT_EFFECT.md; reports/gameplay_point_effect.json. New C++ ABI; application dispatch, unmasked FP exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086b7d0",
+        "before": {
+          "address": "0086b7d0",
+          "function_name": "FUN_0086b7d0"
+        },
+        "after": {
+          "address": "0086b7d0",
+          "name": "BSP_EffectComponent_AdmitAlways",
+          "evidence": "Hypothesis, not a recovered symbol. Complete5-byte MOV AL,1; RET8 leaf. Does not inspect ECX or either argument. Verified shake D0D5F4 virtual+1C selects this leaf; not a fallback for unknown predicates. Strict Win32 and full original-body fixture with explicit ESP balance passed across12 x87 precision/rounding settings. docs/GAMEPLAY_POINT_EFFECT.md; reports/gameplay_point_effect.json. New C++ ABI; application dispatch, unmasked FP exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "exports_refreshed": true
+  }
+}
