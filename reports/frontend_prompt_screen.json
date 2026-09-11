@@ -1,0 +1,261 @@
+{
+  "packet": "orch2_frontend_prompt_screen",
+  "date": "2026-09-10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "read_only_ghidra": true,
+  "ghidra_mutations": [],
+  "documentation": "docs/FRONTEND_PROMPT_SCREEN.md",
+  "reconstruction": [
+    {
+      "address": "00531b00",
+      "name": "BSP_MenuPromptScreen_Raise",
+      "cpp_symbol": "bsp::raise_prompt_00531b00",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu; ten logical stack arguments, RET 2Ch. Dismiss slots0..6 before copies; fifth argument unread; owned ninth NativeString released after refresh. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00532a20",
+      "name": "BSP_MenuPromptScreen_DismissSlot",
+      "cpp_symbol": "bsp::dismiss_prompt_00532a20",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu, stack slot, RET4. Kind3 or dismissible0 suppresses callback; dismissible0 appends copy to FIFO. Clear fields, callback ECX2, then refresh. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00530650",
+      "name": "BSP_MenuPromptScreen_DismissAll",
+      "cpp_symbol": "bsp::dismiss_all_prompts_00530650",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu, RET. Calls00532a20 for slots0..6 in ascending order, retaining per-slot refresh side effects. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00532360",
+      "name": "BSP_MenuPromptScreen_Refresh",
+      "cpp_symbol": "bsp::refresh_prompt_screen_00532360",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu; select highest occupied slot, OR modal kinds1/2/4, preserve cinematic byte, resume FIFO or close; rebuild per-kind button/navigation policy; tail00530a60 remains GUI layout contract. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00532c50",
+      "name": "BSP_MenuPromptScreen_Complete",
+      "cpp_symbol": "bsp::complete_prompt_00532c50",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu, stack response, RET4. Save/clear callback and force dismissible1; clear current and refresh BEFORE callback ECX=response; input update0 then dynamic-button probe/latch. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00532cb0",
+      "name": "BSP_MenuPromptScreen_WidgetEvent",
+      "cpp_symbol": "bsp::prompt_widget_event_00532cb0",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu+10h, stack event, RET4; LEA ECX,[EDI-10h] restores menu. Type3, strength1; event codesA7/A2/A3 dispatch results3/(2 before1)/0 with current button gates. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00532dc0",
+      "name": "BSP_MenuPromptScreen_Update",
+      "cpp_symbol": "bsp::update_prompt_screen_00532dc0",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu, stack float delta, RET4. Undefined native body read from disk00532dc0..00533117; timer uses strict elapsed>timeout and result+34h; input priority No/Accept/Restart/Yes, continuing with fresh post-callback buttons. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00530f40",
+      "name": "BSP_MenuPromptRecord_Construct",
+      "cpp_symbol": "bsp::FrontEndPromptRecord::FrontEndPromptRecord",
+      "kind": "function",
+      "source": "include/bsp/frontend_prompts.hpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX record, EAX record, RET at00530f81. Undefined body read from disk. Seven48h records; three empty native strings, kind/callback/timer0, timestamp0/1, dismissible1, slot7; padding and timeout result+34h untouched. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00530f90",
+      "name": "BSP_MenuPromptRecord_Destroy",
+      "cpp_symbol": "bsp::destroy_prompt_record_00530f90",
+      "kind": "function",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX record, RET. Destroy strings+38h,+10h,+0h in order with native pool release; preserve header contents. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    },
+    {
+      "address": "00533120",
+      "name": "BSP_MenuPromptScreen_Construct",
+      "cpp_symbol": "bsp::construct_prompt_screen_00533120",
+      "kind": "fragment",
+      "source": "src/frontend_prompts.cpp",
+      "status": "reconstructed_build_tested_host_projection",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX menu allocation, EAX menu, RET. Host projection of base flags, two seven-string vectors, seven48h record constructors, pending list, +3Ch=true,+284h=-1,+288h=0. Native interface vtables and vector allocation internals remain contracts; +258h..264h not initialized natively. See docs/FRONTEND_PROMPT_SCREEN.md and reports/frontend_prompt_screen.json. Worker Ghidra read-only."
+    }
+  ],
+  "already_reconstructed_reused": [
+    "004b6e50",
+    "00530890",
+    "0041dd40",
+    "0041dd20"
+  ],
+  "native_slot_count": 7,
+  "native_record_base": "menu+60h",
+  "native_record_size": 72,
+  "gates": {
+    "menu+188h": "record[4].kind",
+    "menu+218h": "record[6].kind"
+  },
+  "no_ghidra_function": [
+    {
+      "address": "00530f40",
+      "final_instruction_address": "00530f81",
+      "final_instruction_length": 1,
+      "inclusive_end": "00530f81"
+    },
+    {
+      "address": "00532dc0",
+      "final_instruction_address": "00533115",
+      "final_instruction_length": 3,
+      "inclusive_end": "00533117"
+    }
+  ],
+  "old_live_names": {
+    "00533120": "CG_array_ctor_helper_00533120",
+    "00531b00": "FUN_00531b00",
+    "00532a20": "FUN_00532a20",
+    "00530650": "FUN_00530650",
+    "00532360": "FUN_00532360",
+    "00532c50": "FUN_00532c50",
+    "00532cb0": "FUN_00532cb0",
+    "00530f90": "FUN_00530f90"
+  },
+  "flow_audit": {
+    "fallthrough_gaps": [],
+    "padding": [
+      {
+        "address": "005323ad",
+        "length": 3,
+        "reason": "unconditional JMP005323b0 skips it"
+      }
+    ],
+    "shared_tail": "00530a60..00530c17 already belongs to00532360"
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "architecture": "MSVC Win32 Release",
+    "build_exit": 0,
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matching": 8,
+      "total": 8
+    },
+    "local_fixture": {
+      "command": "cmd /d /c local\\frontend_prompts_probe.cmd",
+      "exit": 0,
+      "scenario": "nondismissible busy -> interrupting notification -> accepted callback after busy restoration -> strict timeout equality -> busy completion result; release reentry during retired-node cleanup must expose the successor",
+      "native_differential": false,
+      "repository_test_target_added": false
+    },
+    "artifacts": [
+      {
+        "path": "local/frontend_prompts_probe.cpp",
+        "sha256": "415daa4652d87eb127535c6e6a75c970c40ccf0bd4ce27e16556d41fd906aad7"
+      },
+      {
+        "path": "local/frontend_prompts_probe.cmd",
+        "sha256": "fe6a5d0c5c00a4702e1415ec04b977530858594ffa6133356a7a331fcc336c45"
+      },
+      {
+        "path": "local/frontend_prompts_probe.exe",
+        "sha256": "fe9bb34621c9ec7e16c6241cdfe46e74ffc108fc078c68e0786e5561c78e6bae"
+      },
+      {
+        "path": "local/frontend_prompts_probe.log",
+        "sha256": "8c89f5ab7afdffe9cb22a32b54faa1c2546470da7b0a8f261224d91292ab6eeb"
+      },
+      {
+        "path": "local/frontend_prompts_build.log",
+        "sha256": "4ef503561286b08b5abf774b6dc97f61c77a4390782c389b4966eb3e0b391915"
+      },
+      {
+        "path": "src/frontend_prompts.cpp",
+        "sha256": "98065400089149d2f85a2a0ccb52d898ad0711b037a78317a356e4c134b41fa1"
+      },
+      {
+        "path": "include/bsp/frontend_prompts.hpp",
+        "sha256": "2f7afdcb1a0c67e577708f72edde545807afe381b291a71119f78986d39aa084"
+      },
+      {
+        "path": "local/frontend_prompts_retirement_baseline.log",
+        "sha256": "61d3c3fa8b9ec94be8a0ac44b8397682d9e805d57cedaa68de9d750663720f58"
+      }
+    ]
+  },
+  "limits": [
+    "new C++ host interfaces, not native ABI hooks",
+    "no game/runtime/visual validation",
+    "GUI register/enter/layout, navigation, input, localization, callback ABI invocation remain native host contracts",
+    "CRT00bf85b0 remains unresolved rounding contract; no guessed ceil/floor replacement",
+    "constructor is a projection fragment; vector/list allocation traces and exact exception unwinding not reconstructed",
+    "valid slots, input-mode label indices, current prompt and native container invariants required",
+    "std::list pending size decreases at splice; native stored size decreases after string destruction and node free. Exact transient size/empty-list behavior under reentry is not reconstructed."
+  ],
+  "review_followup": {
+    "finding": "queued record remained linked during owned string destruction, allowing release reentry to restore/destroy the same node again",
+    "correction": "splice current front into a private std::list before destroy_prompt_record_00530f90; private list releases node afterward",
+    "native_evidence": {
+      "helper": "00531f10",
+      "unlink": [
+        "00531f44",
+        "00531f4e"
+      ],
+      "string_destructor_call": "00531f51",
+      "free_call": "00531f57",
+      "stored_size_decrement": "00531f5f",
+      "primary_repair_report": "reports/prompt_list_flow_repair.json"
+    },
+    "focused_probe": {
+      "baseline_commit": "ded56f6",
+      "baseline_exit": 2,
+      "baseline_log": "local/frontend_prompts_retirement_baseline.log",
+      "corrected_exit": 0,
+      "scenario": "pending[A,B]; release of retiredA title re-enters complete(activeA) once; nested refresh restoresB and callback sees currentB",
+      "failure_guard": "baseline detects wrong pending front and returns2 without deliberately duplicating string frees"
+    },
+    "remaining_projection_difference": "std::list pending size decreases at splice; native stored size decreases after string destruction and node free. Exact transient size/empty-list behavior under reentry is not reconstructed."
+  }
+}
