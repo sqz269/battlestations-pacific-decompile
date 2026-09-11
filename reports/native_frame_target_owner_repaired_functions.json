@@ -1,0 +1,374 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b1fc00",
+      "end_exclusive": "00b1fcef",
+      "length": 239,
+      "sha256": "64be080eac78cd962e9480b0f1200cc99dd00ea5086d644596c6903af753d168",
+      "function_before": "Function: FUN_00b1fc00 at 00b1fc00\nSignature: undefined FUN_00b1fc00(void)\nEntry: 00b1fc00\nBody: 00b1fc00 - 00b1fcc9",
+      "documentation_before": {
+        "hash": "8e3e22e56eefdb477f570a494b6450deb6bf4e14e0c50e58ae2bcc9fd1084cce",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fc00",
+        "function_name": "FUN_00b1fc00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 55,
+            "name": "LAB_00b1fc37"
+          },
+          {
+            "relative_offset": 84,
+            "name": "LAB_00b1fc54"
+          },
+          {
+            "relative_offset": 91,
+            "name": "LAB_00b1fc5b"
+          },
+          {
+            "relative_offset": 111,
+            "name": "LAB_00b1fc6f"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00b1fc94"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b1fc9b"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_00b1fcb1"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "00b1fcc5"
+      ],
+      "function_after": "Function: FUN_00b1fc00 at 00b1fc00\nSignature: undefined FUN_00b1fc00(void)\nEntry: 00b1fc00\nBody: 00b1fc00 - 00b1fcee",
+      "documentation_after": {
+        "hash": "1aabe43e5c9827c0c180d7f41b4b434361a8c09bc3201df408b603436c7abad0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fc00",
+        "function_name": "FUN_00b1fc00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 55,
+            "name": "LAB_00b1fc37"
+          },
+          {
+            "relative_offset": 84,
+            "name": "LAB_00b1fc54"
+          },
+          {
+            "relative_offset": 91,
+            "name": "LAB_00b1fc5b"
+          },
+          {
+            "relative_offset": 111,
+            "name": "LAB_00b1fc6f"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00b1fc94"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b1fc9b"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_00b1fcb1"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00b1fcf0",
+      "end_exclusive": "00b1fd0e",
+      "length": 30,
+      "sha256": "4e7470a32ffbfe8ddbf79d518924119d75acc1d13a6b987d9da1401f0bd70c0b",
+      "function_before": "Function: CG_scalar_deleting_dtor_00b1fcf0 at 00b1fcf0\nSignature: undefined CG_scalar_deleting_dtor_00b1fcf0(void)\nEntry: 00b1fcf0\nBody: 00b1fcf0 - 00b1fd0d",
+      "documentation_before": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fcf0",
+        "function_name": "CG_scalar_deleting_dtor_00b1fcf0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b1fd08"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "00b1fd00"
+      ],
+      "function_after": "Function: CG_scalar_deleting_dtor_00b1fcf0 at 00b1fcf0\nSignature: undefined CG_scalar_deleting_dtor_00b1fcf0(void)\nEntry: 00b1fcf0\nBody: 00b1fcf0 - 00b1fd0d",
+      "documentation_after": {
+        "hash": "4a8d186092ee86c4f7ad3ceaa567be0aa64e70057f2968b51f413abd7447a706",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fcf0",
+        "function_name": "CG_scalar_deleting_dtor_00b1fcf0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b1fd08"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1fcca",
+        "end_address": "00b1fcef"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1fcca",
+        "end_address": "00b1fcee",
+        "bytes_disassembled": 37,
+        "message": "Successfully disassembled 37 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1fcc5"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1fcc5 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1fc00"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1fc00",
+        "deleted_function": "FUN_00b1fc00",
+        "body_size": 202,
+        "message": "Function 'FUN_00b1fc00' deleted at 00b1fc00"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1fc00",
+        "name": "FUN_00b1fc00",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1fc00",
+        "function_name": "FUN_00b1fc00",
+        "entry_point": "00b1fc00",
+        "body_size": 239,
+        "message": "Function created successfully at 00b1fc00"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1fd05",
+        "end_address": "00b1fd0e"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1fd05",
+        "end_address": "00b1fd0d",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1fd00"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1fd00 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1fcf0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1fcf0",
+        "deleted_function": "CG_scalar_deleting_dtor_00b1fcf0",
+        "body_size": 27,
+        "message": "Function 'CG_scalar_deleting_dtor_00b1fcf0' deleted at 00b1fcf0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1fcf0",
+        "name": "CG_scalar_deleting_dtor_00b1fcf0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1fcf0",
+        "function_name": "CG_scalar_deleting_dtor_00b1fcf0",
+        "entry_point": "00b1fcf0",
+        "body_size": 30,
+        "message": "Function created successfully at 00b1fcf0",
+        "warnings": [
+          "Function name 'CG_scalar_deleting_dtor_00b1fcf0' \u2014 main part 'CG_scalar_deleting_dtor_00b1fcf0' is not PascalCase. Expected: CgScalarDeletingDtor00b1fcf0",
+          "Function name 'CG_scalar_deleting_dtor_00b1fcf0' \u2014 main part 'CG_scalar_deleting_dtor_00b1fcf0' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Two complete frame target owner bodies repaired with original comments preserved; project saved"
+}

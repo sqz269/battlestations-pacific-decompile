@@ -1,0 +1,198 @@
+{
+  "packet": "orch2_gui_layout_finished_integration_v",
+  "utc": "2026-09-11T15:43:56.589312+00:00",
+  "tested_source_commit": "95106ed03d0135c35b3683a8519ddaf48a34aaed",
+  "source_sha256": {
+    "include/bsp/gui_widget.hpp": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9",
+    "src/gui_widget.cpp": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf",
+    "include/bsp/gui_layout_finished.hpp": "025878ebb6dcf57c8c40d89053aacb11458a56f15871fa6345b92938ca235389",
+    "src/gui_layout_finished.cpp": "9123cc7aa5283ee1282077f5df30026c1dccdb8a9d95f4ea66a976eb81c5d27b",
+    "include/bsp/gui_clip_box.hpp": "59bd6209449492ca023206669e31ea5c2c4f21b662c65530b9a10476403457df",
+    "src/gui_clip_box.cpp": "a2ee7d4a88035ec121d2f6f618a554cdd3207b32095ea43e8857386c2ab81807",
+    "include/bsp/gui_widget_owner.hpp": "e68daa73f1c7dc4246fe51516daa66afa2a410849868990a500c14d01bfd654e",
+    "src/gui_widget_owner.cpp": "730dae3215b4c505a69111890b532187176a5d658e41858a87104c1f166e2216",
+    "cmake/startup.cmake": "f02e66cb098755e530487bc3ade16a94faa2399cbc8d935f044509d18fa84277",
+    "CMakeLists.txt": "6c3d62be9c1e58a133a9280213f6a3321e588d839b4e7bddf8379cd8c8240aad"
+  },
+  "artifacts_sha256": {
+    "local/gui-layout-finished-build.log": "76cb671af53d872f361242e43fbd5c22695ff7eee567e22212b9a4e6b9276ae2",
+    "local/gui-layout-finished-probe.cpp": "0325054469f9d2af3b0cd23b5f5b5260cb6b8b6e3253ef5049d84653dd64c66e",
+    "local/run_gui_layout_finished_probe.ps1": "2b6a7330200c21327ade70d9ed397f0dda759d895e70592c233061ea9f596296",
+    "local/gui-layout-finished-probe.exe": "c878317c94880b7ebf5e97250959985277d59d9affaa78d9fedfd3479c427b4f",
+    "local/gui-layout-finished-probe_compile.log": "d32e6ca8c0eaa0cb59b2e2cb581945ec63cec0e6822cf7cc06768f0311833bd1",
+    "local/gui-layout-finished-probe-result.log": "0c0e02aafecce60f1200c14e0ab97ca4a52bbda1b4c21ca4b2d59b1f95a6e98f",
+    "local/gui-layout-finished-names-before.txt": "bb8984ce5aa36eabf0d350f1d16f00991c38fd5ca3caa4bc8d0b216f92b8aba6",
+    "local/gui-layout-finished-names-after.txt": "e84091b01ab027b8d117c1e5e1bf3ca41aa212635958fd79a03f6654736923e5",
+    "local/gui-layout-finished-comments-before.json": "09f3074823a31356edda171352c709292e07c1041f60acea8e016f7c04c4f6b0",
+    "local/gui-layout-finished-comments-after.json": "fdcf1bc6d5fd66e31f06ca9747e7ac910c70626e9adeda7654401289847f7d20",
+    "local/gui-layout-finished-names-expected.json": "a8be6975d1b70dfdf7a216f3a16a96d2484b7d60d596e965fcfbc20cdbf179d1",
+    "local/gui-layout-finished-annotations.log": "026d5363321c1b77c1db5ecf72b5447b63a340b1b20d00c350b515fb5e50d09c",
+    "local/gui-layout-finished-export-refresh.log": "d65f1f23b587ab969f246d6af2fad9b90b232fec518335c684f8370624c73f16",
+    "local/gui-layout-finished-annotation-verification.json": "b13b9e717092a8dba586240b4e685a0aa6fd6e7936dc269b51c59bb133f5dd36",
+    "local/gui_layout_finished_annotations.py": "e655361e2f8c048362f5d867a774a61d3402ae5fa47300294e9dc0559cce9945",
+    "local/gui-layout-finished-worker/manifest.json": "b7d510c7eb2cb5f5c9d66fc54528596ce8a8c8d448aa65d2b763e799fff95393",
+    "local/take_over_gui_layout_finished.py": "b68982fcca183cb472065ab987b90bd3dafe9edc3d3daba091e7e57aea339247",
+    "local/gui-native-material-retirement.json": "c63680482e72234b1532aad25183fa3b59af1bba66c5b62cca0cbaad215ae99a",
+    "local/gui-layout-finished-tested/bsp_core.lib": "b80b54bfe0faa0f6af90eb99812b12913f4a6b141448749744f81ab4f6647248",
+    "local/gui-layout-finished-tested/bsp_game.exe": "3167c33877784bd9573b9a4053db7e61ca2863c0cc0bd27744c837418d0cfc7f",
+    "local/gui-layout-finished-tested/LastTest.log": "dcb95244f3b64bcea60dfda17fcdbd02ef8e24468fc1f0bbc743c51cd963236d"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/gui-layout-finished-tested/bsp_core.lib",
+      "sha256": "b80b54bfe0faa0f6af90eb99812b12913f4a6b141448749744f81ab4f6647248"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/gui-layout-finished-tested/bsp_game.exe",
+      "sha256": "3167c33877784bd9573b9a4053db7e61ca2863c0cc0bd27744c837418d0cfc7f"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/gui-layout-finished-tested/LastTest.log",
+      "sha256": "dcb95244f3b64bcea60dfda17fcdbd02ef8e24468fc1f0bbc743c51cd963236d"
+    }
+  ],
+  "preserved_worker_artifacts": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-layout-finished-worker/bsp_index.sqlite",
+      "sha256": "83fd094438f49cfde53633730dc79eab9061d0b5cf471ae9adfbbebcbf55ee03"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\gui_layout_finished_build.log",
+      "preserved": "local/gui-layout-finished-worker/gui_layout_finished_build.log",
+      "sha256": "3d87fbf005e9926794078c758677d86a2c5bffb148a6b45bd59ea3781ff1f8b9"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\gui_layout_finished_native.hpp",
+      "preserved": "local/gui-layout-finished-worker/gui_layout_finished_native.hpp",
+      "sha256": "43541fd3c802b0a14df62a558a65e84092b50a46c1dff1e203d7d8fb87e8a98c"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\gui_layout_finished_probe.cpp",
+      "preserved": "local/gui-layout-finished-worker/gui_layout_finished_probe.cpp",
+      "sha256": "19ab9a9a751d715d8f957e825c2e08e68944b127af7ebf153f697d5fadb7ac47"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\gui_layout_finished_span_check.json",
+      "preserved": "local/gui-layout-finished-worker/gui_layout_finished_span_check.json",
+      "sha256": "fc673e667eeebdcc81f8440e86c6407da6aed051682d416ade5f1bbec1624692"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\prepare_layout_finished_probe.py",
+      "preserved": "local/gui-layout-finished-worker/prepare_layout_finished_probe.py",
+      "sha256": "c08d6a0c211c61f85cd4c78576d1eca09b33753eb001ce19b6719c6932c0cc85"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\run_layout_finished_probe.ps1",
+      "preserved": "local/gui-layout-finished-worker/run_layout_finished_probe.ps1",
+      "sha256": "c2d5f247ce03fce1ae7f1b1ac69ddeb7bfd618c38067a4ede0f466ec6d72a4b7"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-layout-finished-20260911u\\local\\seed_reference.hpp",
+      "preserved": "local/gui-layout-finished-worker/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    }
+  ],
+  "original_spans": [
+    {
+      "address": "00aa8710",
+      "length": 157,
+      "matches_disk": true
+    },
+    {
+      "address": "00a9e0a0",
+      "length": 1,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5c118",
+      "length": 8,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5c154",
+      "length": 4,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5cba4",
+      "length": 4,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5c4e4",
+      "length": 4,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5d154",
+      "length": 4,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5be5c",
+      "length": 4,
+      "matches_disk": true
+    },
+    {
+      "address": "00d5d07c",
+      "length": 4,
+      "matches_disk": true
+    }
+  ],
+  "interrupted_worker": "orch2-gui-layout-finished-20260911u",
+  "original_abi": {
+    "00aa8710": "ECX widget, no stack args, tail current+24;157bytes throughAA87AC",
+    "00a9e0a0": "Single RET/C3 byte; ECX ignored; no stack args"
+  },
+  "native_shift": {
+    "double_bits": "3fc2222240000000",
+    "float_bits": "3e111112",
+    "exact_value": "0.1416666805744171142578125",
+    "former_host_float_bits": "3e1110e8",
+    "original_fixture_constant_independent": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "original_instruction_comparisons": 80,
+    "widgets_per_comparison": 3,
+    "position_bits": true,
+    "child_first_call_order": true,
+    "listener_bounds_gates": true,
+    "platform_short_circuit": true,
+    "align_zero_native_null_platform": true,
+    "full_float_status_compared": false,
+    "companion_adapter_runtime_tested": false,
+    "initial_probe_failures": [
+      "Unfinished worker inline asm needed statement line breaks.",
+      "Independent captured constant guard exposed the wrong pre-existing decimal literal."
+    ],
+    "permanent_tests_added": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "addresses": [
+      "00aa8710",
+      "00a9e0a0"
+    ],
+    "names_verified": 2,
+    "prior_comment_fields_preserved": 1,
+    "forced_exports": 2,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "defined_functions": [],
+    "remaining_call_gaps": 0
+  },
+  "limitations": [
+    "Final dispatch is a live companion adapter; no actual widget-vtable word exists in this projection.",
+    "Stable child vectors, serialized calls and valid owner/layout lifetime are required.",
+    "Controlled callbacks do not validate real scene/ClipBox adapter installation or a complete draw.",
+    "Native teardown-phase dispatch, canonical widget retention and gameplay remain unresolved."
+  ]
+}

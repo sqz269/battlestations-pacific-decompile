@@ -38,7 +38,7 @@ inline constexpr float kGuiBoundsHalfScale = 0.5f;
 // widget's authored X at 00AA8764 and 00AA8774. The stored bits are
 // 3FC2222240000000h; the value is exactly representable as a float, so it was
 // almost certainly authored as one. What it is a fraction of was not recovered.
-inline constexpr float kGuiWideScreenShift = 0.14166605472564697265625f;
+inline constexpr float kGuiWideScreenShift = 0.1416666805744171142578125f;
 
 // Widget +E0h, the "WideScreenAlign" property of the descriptor table at
 // 00AAAED0. Tested at 00AA874C and 00AA875C. The table names two enumerators
@@ -255,6 +255,12 @@ void set_resolved_position(GuiWidgetTransform& widget,
 // 00AA8710, __thiscall(widget), RET. Children first, in list order, then the
 // wide-screen X fixup, then the layout notification, the recompose, the bounds
 // refresh and the widget's own vtable +24h.
+// Align zero skips the platform query. A valid store uses native x87 FLD/FSTP
+// (including authored-only signaling-NaN conversion); invalid nonzero align
+// with widescreen enabled skips that store. Child payloads must be non-null.
+// The projected child vectors must stay stable for this serialized pass.
+// GuiLayoutFinishedHost supplies the retained companions' current+24 over this
+// same tree while preserving the other actual transform-host operations.
 void apply_widescreen_layout(
     GuiWidgetTransform& widget, GuiWidgetTransformHost& host);
 
