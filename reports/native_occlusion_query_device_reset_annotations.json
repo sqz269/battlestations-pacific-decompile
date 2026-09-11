@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b5fe20",
+    "before": {
+      "address": "00b5fe20",
+      "function_name": "BSP_OcclusionQuery_ReleaseForReset",
+      "comment": "[BSP reconstruction 00b5fe20]\nECXwrapper RET. Ifquery+10nonnull Releaseonce thennull; no balancedpair, fields+8/+C preserved, noguard/unregister. Realquery resetrelease verified."
+    },
+    "after": {
+      "address": "00b5fe20",
+      "old_name": "BSP_OcclusionQuery_ReleaseForReset",
+      "name": "BSP_OcclusionQuery_ReleaseForReset",
+      "evidence": "Complete 27-byte actual occlusion query reset entry. Capture actual owner+10 query; initial null returns without writes, otherwise current captured-query vtable+8 Release once then clear current owner+10 only after return. No balanced pair/current-owner reload/owner destruction/unregister/exception cleanup. Native ABI ECX actual owner, no stack arguments, RET, no semantic result, no own EH. New C++ interface src/native_occlusion_query_device_reset.cpp; reports/native_occlusion_query_device_reset_audit.json. Primary strict main-library original-entry comparison369DWORDs/1476bytes/27snapshots/six states; two real HAL devices per process, three real CreateQuery and two real Release calls. Observer callbacks forward actual Windows methods before explicit mutations/throws. All10 original/compiled COM call PCs,18 current x86 module-entry16-byte postimages and factory import-thunk/IAT binding verified. All67 original release/restore/getter code bytes unchanged except one4byte renderer-global operand relocation; no service/entry bridges. Complete actual main COFF/linked/runtime source-provider bodies verified; genuine existing shader-reset device getter bound. Strict Win32 build/two existing CTests/eight seeds passed. Existing typed d3d9_query projection preserved separately. Descriptive name hypothesis. Not original binary ABI, full renderer reset, native HRESULT failure, query Issue/GetData/render or gameplay validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5fe60",
+    "before": {
+      "address": "00b5fe60",
+      "function_name": "BSP_OcclusionQuery_RestoreAfterReset",
+      "comment": "[BSP reconstruction 00b5fe60]\nECXwrapper RET,no stackdevice. Currentrenderer singleton devicegetter thenCreateQuery9 into+10; no oldcleanup/HRESULTgate. Typedexplicitstabledevice requiresnullowner/reportsfailure; fields+8/+C unchanged. Realqueryrecreation checked."
+    },
+    "after": {
+      "address": "00b5fe60",
+      "old_name": "BSP_OcclusionQuery_RestoreAfterReset",
+      "name": "BSP_OcclusionQuery_RestoreAfterReset",
+      "evidence": "Complete 33-byte actual occlusion query reset entry. Read current F8D394 renderer publication, full actual B1FEF0 borrowed device getter, then captured device current table+1D8 CreateQuery(9,address of actual owner+10). No previous-query gate/release/output clear/HRESULT gate or rollback; current direct output remains after callback throw. Native ABI ECX actual owner, no stack arguments, RET, no semantic result, no own EH. New C++ interface src/native_occlusion_query_device_reset.cpp; reports/native_occlusion_query_device_reset_audit.json. Primary strict main-library original-entry comparison369DWORDs/1476bytes/27snapshots/six states; two real HAL devices per process, three real CreateQuery and two real Release calls. Observer callbacks forward actual Windows methods before explicit mutations/throws. All10 original/compiled COM call PCs,18 current x86 module-entry16-byte postimages and factory import-thunk/IAT binding verified. All67 original release/restore/getter code bytes unchanged except one4byte renderer-global operand relocation; no service/entry bridges. Complete actual main COFF/linked/runtime source-provider bodies verified; genuine existing shader-reset device getter bound. Strict Win32 build/two existing CTests/eight seeds passed. Existing typed d3d9_query projection preserved separately. Descriptive name hypothesis. Not original binary ABI, full renderer reset, native HRESULT failure, query Issue/GetData/render or gameplay validation."
+    },
+    "status": "applied"
+  }
+]

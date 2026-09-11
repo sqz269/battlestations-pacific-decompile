@@ -4833,8 +4833,8 @@
       "id": "native_occlusion_query_device_reset2",
       "packet": "native_occlusion_query_device_reset2",
       "worker": "main",
-      "done": false,
-      "state": "primary_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b5fe20",
         "00b5fe60"
@@ -4850,7 +4850,28 @@
         "native_shader_device_reset5"
       ],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
-      "scope": "Complete60bytes: raw owner+10 query release and current renderer global/device getter CreateQuery9 directly into actual owner+10, without added guards or previous cleanup."
+      "scope": "Complete60bytes: raw owner+10 query release and current renderer global/device getter CreateQuery9 directly into actual owner+10, without added guards or previous cleanup.",
+      "evidence": "reports/native_occlusion_query_device_reset_audit.json"
+    },
+    {
+      "id": "native_renderer_vertex_layout_binding1",
+      "packet": "native_renderer_vertex_layout_binding1",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_actual_profile_contract_and_source_in_progress",
+      "function_addresses": [
+        "00b23f20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_vertex_layout_binding.hpp",
+        "src/native_renderer_vertex_layout_binding.cpp",
+        "docs/NATIVE_RENDERER_VERTEX_LAYOUT_BINDING.md",
+        "reports/native_renderer_vertex_layout_binding_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Complete226-byte raw renderer vertex-layout binding with actual D62AF4 hardware owner/current optional guard and full EH; independent actual provider review before implementation."
     }
   ],
   "snapshot_after_analysis": {

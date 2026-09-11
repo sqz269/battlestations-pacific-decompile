@@ -1,0 +1,1599 @@
+{
+  "schema_version": 1,
+  "packet": "native_occlusion_query_device_reset2",
+  "status": "complete_native_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
+  "source_frozen": true,
+  "functions": [
+    {
+      "address": "00b5fe20",
+      "name": "BSP_OcclusionQuery_ReleaseForReset",
+      "cpp_symbol": "bsp::release_native_occlusion_query_for_reset_00b5fe20",
+      "source": "src/native_occlusion_query_device_reset.cpp",
+      "native_end_exclusive": "00b5fe3b",
+      "native_bytes": 27,
+      "original_abi": "ECX actual owner; no stack arguments; RET; no semantic result; no own EH"
+    },
+    {
+      "address": "00b5fe60",
+      "name": "BSP_OcclusionQuery_RestoreAfterReset",
+      "cpp_symbol": "bsp::restore_native_occlusion_query_after_reset_00b5fe60",
+      "source": "src/native_occlusion_query_device_reset.cpp",
+      "native_end_exclusive": "00b5fe81",
+      "native_bytes": 33,
+      "original_abi": "ECX actual owner; no stack arguments; RET; no semantic result; no own EH"
+    }
+  ],
+  "native_evidence": {
+    "utc": "2026-09-11T06:23:44.816626+00:00",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "address": 11927072,
+        "length": 27,
+        "role": "complete_release",
+        "hex": "568bf18b461085c0740f8b088b510850ffd2c74610000000005ec3",
+        "sha256": "9c45583ceed898e5c04ef5b8a6a7100afb71a45a97fc601bd4e1e7751f315ef2",
+        "fresh_live_PE_match": true,
+        "instructions": [
+          "00b5fe20: push esi",
+          "00b5fe21: mov esi, ecx",
+          "00b5fe23: mov eax, dword ptr [esi + 0x10]",
+          "00b5fe26: test eax, eax",
+          "00b5fe28: je 0xb5fe39",
+          "00b5fe2a: mov ecx, dword ptr [eax]",
+          "00b5fe2c: mov edx, dword ptr [ecx + 8]",
+          "00b5fe2f: push eax",
+          "00b5fe30: call edx",
+          "00b5fe32: mov dword ptr [esi + 0x10], 0",
+          "00b5fe39: pop esi",
+          "00b5fe3a: ret "
+        ]
+      },
+      {
+        "address": 11927136,
+        "length": 33,
+        "role": "complete_restore",
+        "hex": "568bf18b0d94d3f800e88200fcff8b088b91d801000083c610566a0950ffd25ec3",
+        "sha256": "31eeaea774758bf37204434d865460bfd1c18f2746cec2e899b08dd421b2269c",
+        "fresh_live_PE_match": true,
+        "instructions": [
+          "00b5fe60: push esi",
+          "00b5fe61: mov esi, ecx",
+          "00b5fe63: mov ecx, dword ptr [0xf8d394]",
+          "00b5fe69: call 0xb1fef0",
+          "00b5fe6e: mov ecx, dword ptr [eax]",
+          "00b5fe70: mov edx, dword ptr [ecx + 0x1d8]",
+          "00b5fe76: add esi, 0x10",
+          "00b5fe79: push esi",
+          "00b5fe7a: push 9",
+          "00b5fe7c: push eax",
+          "00b5fe7d: call edx",
+          "00b5fe7f: pop esi",
+          "00b5fe80: ret "
+        ]
+      },
+      {
+        "address": 11665136,
+        "length": 7,
+        "role": "complete_actual_device_getter",
+        "hex": "8b81101a0000c3",
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "fresh_live_PE_match": true,
+        "instructions": [
+          "00b1fef0: mov eax, dword ptr [ecx + 0x1a10]",
+          "00b1fef6: ret "
+        ]
+      },
+      {
+        "address": 16307092,
+        "length": 4,
+        "role": "renderer_publication",
+        "hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": 14035688,
+        "length": 8,
+        "role": "query_profile_reset_slots",
+        "hex": "20feb50060feb500",
+        "sha256": "43b7c8449158f6763c8f93429473b22db5bcac53fa8f9ed33ca08283e19ce646",
+        "fresh_live_PE_match": true
+      }
+    ],
+    "SDK": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+      "bytes": 164262,
+      "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04"
+    },
+    "owned_native_bytes": 60,
+    "native_dependencies_bytes": 7,
+    "profile_slots_bytes": 8,
+    "original_global_operand_relocations": [
+      {
+        "address": "00b5fe65",
+        "expected": "00f8d394"
+      }
+    ],
+    "getter_direct_call_unchanged": true
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_occlusion_query_device_reset.hpp",
+      "bytes": 731,
+      "sha256": "c701d1b86601ed377485629c416cea31621609fabfe23c762e6b6b4e56c16d52"
+    },
+    {
+      "path": "src/native_occlusion_query_device_reset.cpp",
+      "bytes": 1870,
+      "sha256": "d3dd29ed58286326a4f63a49bd87f83eb814db9d7c0c284328d3a5dd2953178e"
+    },
+    {
+      "path": "include/bsp/native_shader_device_reset.hpp",
+      "bytes": 1356,
+      "sha256": "347056dafcbfe3a29f6d109c4f79914f583e4976327bf9c61b51e4d88ee01590"
+    },
+    {
+      "path": "src/native_shader_device_reset.cpp",
+      "bytes": 3154,
+      "sha256": "21a2631b1cdecf365bd93bcfdefbb9cd371eec46865921197a6dc6ecfb9cdcce"
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/capture_query_reset.py",
+      "bytes": 2960,
+      "sha256": "1006ccac1f818dfe7e5a8a2ffb9ecc138c7ce8d0c76a525e99d98d4837e0b7cd"
+    },
+    {
+      "path": "local/build_query_reset_fixture.ps1",
+      "bytes": 1455,
+      "sha256": "b74f23631bc83a967b854ca312c3ad3368fc85d0b59b1f49653645597d832a9e"
+    },
+    {
+      "path": "local/run_query_reset_fixture.py",
+      "bytes": 783,
+      "sha256": "8cae73ac3d348d11fc9ff1655eed17c9587fd443e6ed10bcd5392c79ef684cf7"
+    },
+    {
+      "path": "local/verify_query_reset.py",
+      "bytes": 11723,
+      "sha256": "be1f33db06385f62fadf6ea5680fc3da1325ef1a934183c4cca1d90f9b6c781b"
+    },
+    {
+      "path": "local/query_reset/capture.json",
+      "bytes": 3353,
+      "sha256": "67b8acc4a1e58a1736aad55b4c0b231bee1ca3685c84f34e3236ec1194d902a4"
+    },
+    {
+      "path": "local/query_reset/fixture.cpp",
+      "bytes": 12310,
+      "sha256": "78b76e13dbd246f09d2e1b2df278458ba644ec6d42e83f6b3d1dfe22a061914d"
+    },
+    {
+      "path": "local/query_reset/fixture_build.txt",
+      "bytes": 13,
+      "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+    },
+    {
+      "path": "local/query_reset/flow.txt",
+      "bytes": 172,
+      "sha256": "e40ce21b1cccb9108f01926ce0ba1c13dd2c2d8eb357480663333d8058959ffc"
+    },
+    {
+      "path": "local/query_reset/frozen.json",
+      "bytes": 1561,
+      "sha256": "4761d0e84b4fb0d4604d404af5a0bfa14309febd8a9a6df7eea10753530bf1fd"
+    },
+    {
+      "path": "local/query_reset/live_00b1fef0.txt",
+      "bytes": 41,
+      "sha256": "e545de402c70014ce8028c562c73dd3b8128bacff7b7687cdc5838416d0c1de8"
+    },
+    {
+      "path": "local/query_reset/live_00b5fe20.txt",
+      "bytes": 134,
+      "sha256": "64ba090077729b6b1811f601ea7cbec8a554b1b7ebc30e824d124d27c017916f"
+    },
+    {
+      "path": "local/query_reset/live_00b5fe60.txt",
+      "bytes": 171,
+      "sha256": "d3c01b7d31a392fbb6a548033abcfb2099fbc9b176660ff1c97d84c64b9ec23f"
+    },
+    {
+      "path": "local/query_reset/live_00d62ae8.txt",
+      "bytes": 45,
+      "sha256": "d13035b33b2e528e7e652e09ca1e3fcab41694105da066d90a89a54d4ebba19b"
+    },
+    {
+      "path": "local/query_reset/live_00f8d394.txt",
+      "bytes": 29,
+      "sha256": "185167e9b01f37c26cf222b2e65cb11322afde473342afcef500aeb7f230aafe"
+    },
+    {
+      "path": "local/query_reset/prototype.txt",
+      "bytes": 357,
+      "sha256": "9bd4d7202d0fbaebf094bb21d4807222f49a9295b525ec16f6e6dea4815e1d59"
+    },
+    {
+      "path": "local/query_reset/spans.hpp",
+      "bytes": 897,
+      "sha256": "f3be9337d71c4ed759a19ce8c14c738adad134a1719b7d6ec7d04f8b0f4b81ea"
+    },
+    {
+      "path": "local/query_reset/strict_build.txt",
+      "bytes": 3281,
+      "sha256": "cc7befb059adcef4027a170b4962899ef35fd255097c034f47535ba48f30b5e6"
+    },
+    {
+      "path": "local/query_reset/verified.json",
+      "bytes": 34089,
+      "sha256": "35a9ab9c3994f435c8d8add7f84d884cf7af521d63dfaab9d63e16b645a0f7f0"
+    },
+    {
+      "path": "local/query_reset/verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "build/query-reset-check/bsp_core.lib",
+      "bytes": 27932596,
+      "sha256": "3d6730a666b29103e7b8926e206e7c32054d8cd599130e099eee28a02de5c211"
+    },
+    {
+      "path": "build/query-reset-check/build.cmd",
+      "bytes": 809,
+      "sha256": "0f5e22fa149742f9d2342e9dbf4f69cbbf8129589a0559d4b631f47dcca8c7e8"
+    },
+    {
+      "path": "build/query-reset-check/fixture.obj",
+      "bytes": 180116,
+      "sha256": "ec6b7e1d8d5a0cbbd175cb6c5235f77b6c1a22e4d7c6222e68b7f12e15906be1"
+    },
+    {
+      "path": "build/query-reset-check/native_occlusion_query_device_reset.obj",
+      "bytes": 1755,
+      "sha256": "e7e2ec4961df61ba2ed406261d70f95b3b3b7e15ba6ba7bcbfb7287871a460e3"
+    },
+    {
+      "path": "build/query-reset-check/native_shader_device_reset.obj",
+      "bytes": 3973,
+      "sha256": "65bf94b1fb854c778b502842d046c968c7a87c2805baa35bf467cbd26a11b485"
+    },
+    {
+      "path": "build/query-reset-check/query_reset_check.exe",
+      "bytes": 40448,
+      "sha256": "72ae697abc9736bd0d6e9896e42f44757f30afe81c4fa9210b23d1ae9218896f"
+    },
+    {
+      "path": "build/query-reset-check/query_reset_check.map",
+      "bytes": 73625,
+      "sha256": "87ba0093206d273845746643eed38e3a41f8513a085496f9131d0411920c645e"
+    },
+    {
+      "path": "build/query-reset-check/query_reset_disasm.txt",
+      "bytes": 6352,
+      "sha256": "8ac33d14e4f1dfc0b129b454e24eb6a2f6d1da6f88c2f3f4c26b07802380be55"
+    },
+    {
+      "path": "build/query-reset-check/host/calls.txt",
+      "bytes": 167,
+      "sha256": "59d2858033e5b4369234149f744ed50426fcd3e995d281cbb31de9b6752dcda1"
+    },
+    {
+      "path": "build/query-reset-check/host/cleanup.txt",
+      "bytes": 10,
+      "sha256": "1f84453c0041bd949af86941b3f4aa2ada8f779a3bcd3f2f624674ebb9c10f82"
+    },
+    {
+      "path": "build/query-reset-check/host/host_code.txt",
+      "bytes": 798,
+      "sha256": "c81e61ca1669be2c42bb84a6a271e17b3404b041c7d1eda55cb765156b82e044"
+    },
+    {
+      "path": "build/query-reset-check/host/modules.txt",
+      "bytes": 1249,
+      "sha256": "8caccb9bf74a5787c1d5c8be584e6892d8335b9dd491e720f99769d03464cd0d"
+    },
+    {
+      "path": "build/query-reset-check/host/postimages.txt",
+      "bytes": 223,
+      "sha256": "f3eb0e83da62a827a825bbe90d0a443d9df6c850d2e40488923aabd301cd3ab0"
+    },
+    {
+      "path": "build/query-reset-check/host/run.txt",
+      "bytes": 119,
+      "sha256": "2999f6ea62e333eb358e671763c46105551e7a2e6efc7eb366ce1d0458f842ec"
+    },
+    {
+      "path": "build/query-reset-check/host/runtime.txt",
+      "bytes": 123,
+      "sha256": "df66264151752b6935c9be7596b3d5f98f2f9d18532d00a962bce59b727e410e"
+    },
+    {
+      "path": "build/query-reset-check/host/trace.bin",
+      "bytes": 1476,
+      "sha256": "805882fa0b674bbe667b7fa6a57a8b3c8d796b1bc8ce306e6fac05e2e7840f8c"
+    },
+    {
+      "path": "build/query-reset-check/native/calls.txt",
+      "bytes": 172,
+      "sha256": "7191a6e43ed577aa37cb2030acddc5603fe818e9436837bea6d99e89bdb965bd"
+    },
+    {
+      "path": "build/query-reset-check/native/cleanup.txt",
+      "bytes": 10,
+      "sha256": "1f84453c0041bd949af86941b3f4aa2ada8f779a3bcd3f2f624674ebb9c10f82"
+    },
+    {
+      "path": "build/query-reset-check/native/host_code.txt",
+      "bytes": 798,
+      "sha256": "c81e61ca1669be2c42bb84a6a271e17b3404b041c7d1eda55cb765156b82e044"
+    },
+    {
+      "path": "build/query-reset-check/native/modules.txt",
+      "bytes": 1249,
+      "sha256": "8caccb9bf74a5787c1d5c8be584e6892d8335b9dd491e720f99769d03464cd0d"
+    },
+    {
+      "path": "build/query-reset-check/native/postimages.txt",
+      "bytes": 223,
+      "sha256": "198ce89c119171cdfae5d04ce28364945059960468395c5b5449822757b03e89"
+    },
+    {
+      "path": "build/query-reset-check/native/run.txt",
+      "bytes": 121,
+      "sha256": "5143e4bd250f553bb9e01a2729d510a737851b0f65f2626953868be83237abb5"
+    },
+    {
+      "path": "build/query-reset-check/native/runtime.txt",
+      "bytes": 123,
+      "sha256": "db1543e3f1512da04814bd681a1568ecefe43194348ebfe8af307e477626c126"
+    },
+    {
+      "path": "build/query-reset-check/native/trace.bin",
+      "bytes": 1476,
+      "sha256": "805882fa0b674bbe667b7fa6a57a8b3c8d796b1bc8ce306e6fac05e2e7840f8c"
+    }
+  ],
+  "verification": {
+    "passed": true,
+    "matching_DWORDs": 369,
+    "matching_bytes": 1476,
+    "states": 6,
+    "snapshots": 27,
+    "exception_records": 6,
+    "trace_sha256": "805882fa0b674bbe667b7fa6a57a8b3c8d796b1bc8ce306e6fac05e2e7840f8c",
+    "normalization": "Only actual owner+10 query pointer and current renderer publication identities; every other owner DWORD exact. Call PCs checked separately.",
+    "providers": [
+      {
+        "symbol": "?release_native_occlusion_query_for_reset_00b5fe20@bsp@@YAXPAX@Z",
+        "address": 4216080,
+        "provider": "bsp_core:native_occlusion_query_device_reset.obj",
+        "bytes": 80,
+        "COFF_relocations": [],
+        "full_linked_body_matches_actual_main_object": true,
+        "sha256": "596138332c5c764bed5fd5e719b62cc8e5140cce8ef554ce3a3968beb7e3663e",
+        "instructions": [
+          "00405510: push ebp",
+          "00405511: mov ebp, esp",
+          "00405513: sub esp, 8",
+          "00405516: push esi",
+          "00405517: mov esi, dword ptr [ebp + 8]",
+          "0040551a: add esi, 0x10",
+          "0040551d: mov dword ptr [ebp + 8], esi",
+          "00405520: mov eax, dword ptr [ebp + 8]",
+          "00405523: mov eax, dword ptr [eax]",
+          "00405525: mov dword ptr [ebp - 4], eax",
+          "00405528: mov ecx, dword ptr [ebp - 4]",
+          "0040552b: mov dword ptr [ebp + 8], ecx",
+          "0040552e: test ecx, ecx",
+          "00405530: je 0x40555b",
+          "00405532: mov eax, dword ptr [ebp + 8]",
+          "00405535: mov eax, dword ptr [eax]",
+          "00405537: mov dword ptr [ebp - 8], eax",
+          "0040553a: mov eax, dword ptr [ebp - 8]",
+          "0040553d: add eax, 8",
+          "00405540: mov dword ptr [ebp + 8], eax",
+          "00405543: mov eax, dword ptr [ebp + 8]",
+          "00405546: mov eax, dword ptr [eax]",
+          "00405548: mov dword ptr [ebp - 8], eax",
+          "0040554b: push ecx",
+          "0040554c: call dword ptr [ebp - 8]",
+          "0040554f: mov dword ptr [ebp + 8], esi",
+          "00405552: mov eax, dword ptr [ebp + 8]",
+          "00405555: mov dword ptr [eax], 0",
+          "0040555b: pop esi",
+          "0040555c: mov esp, ebp",
+          "0040555e: pop ebp",
+          "0040555f: ret "
+        ],
+        "return_PCs": [
+          4216143
+        ]
+      },
+      {
+        "symbol": "?restore_native_occlusion_query_after_reset_00b5fe60@bsp@@YAXPAXPBX@Z",
+        "address": 4216160,
+        "provider": "bsp_core:native_occlusion_query_device_reset.obj",
+        "bytes": 70,
+        "COFF_relocations": [
+          {
+            "offset": 18,
+            "kind": "COFF_REL32",
+            "target": "?get_native_renderer_device_00b1fef0@bsp@@YAPAXPBX@Z",
+            "actual_provider": "bsp_core:native_shader_device_reset.obj",
+            "original": "00000000",
+            "resolved": "0000003a"
+          }
+        ],
+        "full_linked_body_matches_actual_main_object": true,
+        "sha256": "20fd1142dfcc9956a17cc3db1a63ac087f5a9d80e5cbf8944aba797509472c7d",
+        "instructions": [
+          "00405560: push ebp",
+          "00405561: mov ebp, esp",
+          "00405563: sub esp, 8",
+          "00405566: mov eax, dword ptr [ebp + 0xc]",
+          "00405569: mov eax, dword ptr [eax]",
+          "0040556b: mov dword ptr [ebp - 4], eax",
+          "0040556e: push dword ptr [ebp - 4]",
+          "00405571: call 0x4055b0",
+          "00405576: mov edx, eax",
+          "00405578: add esp, 4",
+          "0040557b: mov dword ptr [ebp - 4], edx",
+          "0040557e: mov eax, dword ptr [ebp - 4]",
+          "00405581: mov eax, dword ptr [eax]",
+          "00405583: mov dword ptr [ebp - 8], eax",
+          "00405586: add dword ptr [ebp - 8], 0x1d8",
+          "0040558d: mov eax, dword ptr [ebp - 8]",
+          "00405590: mov eax, dword ptr [eax]",
+          "00405592: mov dword ptr [ebp - 4], eax",
+          "00405595: mov ecx, dword ptr [ebp + 8]",
+          "00405598: add ecx, 0x10",
+          "0040559b: push ecx",
+          "0040559c: push 9",
+          "0040559e: push edx",
+          "0040559f: call dword ptr [ebp - 4]",
+          "004055a2: mov esp, ebp",
+          "004055a4: pop ebp",
+          "004055a5: ret "
+        ],
+        "return_PCs": [
+          4216182,
+          4216226
+        ]
+      },
+      {
+        "symbol": "?get_native_renderer_device_00b1fef0@bsp@@YAPAXPBX@Z",
+        "address": 4216240,
+        "provider": "bsp_core:native_shader_device_reset.obj",
+        "bytes": 14,
+        "COFF_relocations": [],
+        "full_linked_body_matches_actual_main_object": true,
+        "sha256": "27080f656c49545ebca8b272ea4d36a6291a65ed91af0e0aca22dd4f90dd7956",
+        "instructions": [
+          "004055b0: push ebp",
+          "004055b1: mov ebp, esp",
+          "004055b3: mov eax, dword ptr [ebp + 8]",
+          "004055b6: mov eax, dword ptr [eax + 0x1a10]",
+          "004055bc: pop ebp",
+          "004055bd: ret "
+        ],
+        "return_PCs": []
+      }
+    ],
+    "complete_original_postimages": [
+      {
+        "mode": "native",
+        "address": "00b5fe20",
+        "bytes": 27,
+        "sha256": "9c45583ceed898e5c04ef5b8a6a7100afb71a45a97fc601bd4e1e7751f315ef2",
+        "complete_postimage_verified": true,
+        "edits": []
+      },
+      {
+        "mode": "native",
+        "address": "00b5fe60",
+        "bytes": 33,
+        "sha256": "946e09424d77035c4f84f79df1ebee0e38be6df80253a1da27843429d454e036",
+        "complete_postimage_verified": true,
+        "edits": [
+          {
+            "offset": 5,
+            "kind": "single_absolute_global_operand",
+            "original": 16307092,
+            "target": 61985684
+          }
+        ]
+      },
+      {
+        "mode": "native",
+        "address": "00b1fef0",
+        "bytes": 7,
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "complete_postimage_verified": true,
+        "edits": []
+      },
+      {
+        "mode": "native",
+        "address": "00f8d394",
+        "bytes": 4,
+        "sha256": "a331707d74a18966bde5f0fb3ff134138effc65af2d0a1efd398c16eaa184ef3",
+        "complete_postimage_verified": true,
+        "edits": [
+          {
+            "offset": 0,
+            "kind": "actual_current_renderer_publication",
+            "target": 8044284
+          }
+        ]
+      },
+      {
+        "mode": "native",
+        "address": "00d62ae8",
+        "bytes": 8,
+        "sha256": "43b7c8449158f6763c8f93429473b22db5bcac53fa8f9ed33ca08283e19ce646",
+        "complete_postimage_verified": true,
+        "edits": []
+      },
+      {
+        "mode": "host",
+        "address": "00b5fe20",
+        "bytes": 27,
+        "sha256": "9c45583ceed898e5c04ef5b8a6a7100afb71a45a97fc601bd4e1e7751f315ef2",
+        "complete_postimage_verified": true,
+        "edits": []
+      },
+      {
+        "mode": "host",
+        "address": "00b5fe60",
+        "bytes": 33,
+        "sha256": "bb016a18a4ae96f172c1e8bbe4c5cbc7578545641b95cb541d83117b5cfeb661",
+        "complete_postimage_verified": true,
+        "edits": [
+          {
+            "offset": 5,
+            "kind": "single_absolute_global_operand",
+            "original": 16307092,
+            "target": 56873876
+          }
+        ]
+      },
+      {
+        "mode": "host",
+        "address": "00b1fef0",
+        "bytes": 7,
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "complete_postimage_verified": true,
+        "edits": []
+      },
+      {
+        "mode": "host",
+        "address": "00f8d394",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "complete_postimage_verified": true,
+        "edits": []
+      },
+      {
+        "mode": "host",
+        "address": "00d62ae8",
+        "bytes": 8,
+        "sha256": "43b7c8449158f6763c8f93429473b22db5bcac53fa8f9ed33ca08283e19ce646",
+        "complete_postimage_verified": true,
+        "edits": []
+      }
+    ],
+    "complete_main_body_runtime_captures": [
+      {
+        "mode": "native",
+        "symbol": "?release_native_occlusion_query_for_reset_00b5fe20@bsp@@YAXPAX@Z",
+        "runtime_address": 8017168,
+        "bytes": 128,
+        "complete_body_in_capture": true,
+        "postimage_sha256": "cd3132b1d0eb4e5d860f40816713aa238643f70ea6668f2421db5e5a5752059a",
+        "loader_relocations": [],
+        "all_bytes_match_actual_exe": true
+      },
+      {
+        "mode": "native",
+        "symbol": "?restore_native_occlusion_query_after_reset_00b5fe60@bsp@@YAXPAXPBX@Z",
+        "runtime_address": 8017248,
+        "bytes": 128,
+        "complete_body_in_capture": true,
+        "postimage_sha256": "17d4d9771ee3b34f02e65902440f985d1745aed89917370c2f2fa6807c18f055",
+        "loader_relocations": [
+          {
+            "offset": 109,
+            "old": 4225440,
+            "new": 8026528
+          },
+          {
+            "offset": 115,
+            "old": 4223812,
+            "new": 8024900
+          },
+          {
+            "offset": 122,
+            "old": 4223264,
+            "new": 8024352
+          }
+        ],
+        "all_bytes_match_actual_exe": true
+      },
+      {
+        "mode": "native",
+        "symbol": "?get_native_renderer_device_00b1fef0@bsp@@YAPAXPBX@Z",
+        "runtime_address": 8017328,
+        "bytes": 128,
+        "complete_body_in_capture": true,
+        "postimage_sha256": "fa15bf2f3514d35fca733227c970340012529bc23bbdaf8cd62e79376f669468",
+        "loader_relocations": [
+          {
+            "offset": 29,
+            "old": 4225440,
+            "new": 8026528
+          },
+          {
+            "offset": 35,
+            "old": 4223812,
+            "new": 8024900
+          },
+          {
+            "offset": 42,
+            "old": 4223264,
+            "new": 8024352
+          },
+          {
+            "offset": 48,
+            "old": 4223260,
+            "new": 8024348
+          },
+          {
+            "offset": 72,
+            "old": 4223364,
+            "new": 8024452
+          },
+          {
+            "offset": 86,
+            "old": 4251012,
+            "new": 8052100
+          },
+          {
+            "offset": 100,
+            "old": 4251012,
+            "new": 8052100
+          },
+          {
+            "offset": 116,
+            "old": 4223256,
+            "new": 8024344
+          },
+          {
+            "offset": 122,
+            "old": 4223132,
+            "new": 8024220
+          }
+        ],
+        "all_bytes_match_actual_exe": true
+      },
+      {
+        "mode": "host",
+        "symbol": "?release_native_occlusion_query_for_reset_00b5fe20@bsp@@YAXPAX@Z",
+        "runtime_address": 8017168,
+        "bytes": 128,
+        "complete_body_in_capture": true,
+        "postimage_sha256": "cd3132b1d0eb4e5d860f40816713aa238643f70ea6668f2421db5e5a5752059a",
+        "loader_relocations": [],
+        "all_bytes_match_actual_exe": true
+      },
+      {
+        "mode": "host",
+        "symbol": "?restore_native_occlusion_query_after_reset_00b5fe60@bsp@@YAXPAXPBX@Z",
+        "runtime_address": 8017248,
+        "bytes": 128,
+        "complete_body_in_capture": true,
+        "postimage_sha256": "17d4d9771ee3b34f02e65902440f985d1745aed89917370c2f2fa6807c18f055",
+        "loader_relocations": [
+          {
+            "offset": 109,
+            "old": 4225440,
+            "new": 8026528
+          },
+          {
+            "offset": 115,
+            "old": 4223812,
+            "new": 8024900
+          },
+          {
+            "offset": 122,
+            "old": 4223264,
+            "new": 8024352
+          }
+        ],
+        "all_bytes_match_actual_exe": true
+      },
+      {
+        "mode": "host",
+        "symbol": "?get_native_renderer_device_00b1fef0@bsp@@YAPAXPBX@Z",
+        "runtime_address": 8017328,
+        "bytes": 128,
+        "complete_body_in_capture": true,
+        "postimage_sha256": "fa15bf2f3514d35fca733227c970340012529bc23bbdaf8cd62e79376f669468",
+        "loader_relocations": [
+          {
+            "offset": 29,
+            "old": 4225440,
+            "new": 8026528
+          },
+          {
+            "offset": 35,
+            "old": 4223812,
+            "new": 8024900
+          },
+          {
+            "offset": 42,
+            "old": 4223264,
+            "new": 8024352
+          },
+          {
+            "offset": 48,
+            "old": 4223260,
+            "new": 8024348
+          },
+          {
+            "offset": 72,
+            "old": 4223364,
+            "new": 8024452
+          },
+          {
+            "offset": 86,
+            "old": 4251012,
+            "new": 8052100
+          },
+          {
+            "offset": 100,
+            "old": 4251012,
+            "new": 8052100
+          },
+          {
+            "offset": 116,
+            "old": 4223256,
+            "new": 8024344
+          },
+          {
+            "offset": 122,
+            "old": 4223132,
+            "new": 8024220
+          }
+        ],
+        "all_bytes_match_actual_exe": true
+      }
+    ],
+    "actual_module_entry_captures": [
+      {
+        "mode": "native",
+        "label": "fixture_image",
+        "entry": 8012688,
+        "module_base": 7995392,
+        "method_RVA": 17296,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "538bdc83ec0883e4f083c404558b6b04",
+        "loader_relocations": [],
+        "module": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\query_reset_check.exe",
+          "bytes": 40448,
+          "sha256": "72ae697abc9736bd0d6e9896e42f44757f30afe81c4fa9210b23d1ae9218896f"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "Direct3DCreate9_thunk",
+        "entry": 8017155,
+        "module_base": 7995392,
+        "method_RVA": 21763,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "ff253c727a00cccccccccccccc558bec",
+        "loader_relocations": [
+          {
+            "offset": 2,
+            "old": 4223548,
+            "new": 8024636
+          }
+        ],
+        "module": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\query_reset_check.exe",
+          "bytes": 40448,
+          "sha256": "72ae697abc9736bd0d6e9896e42f44757f30afe81c4fa9210b23d1ae9218896f"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "Direct3DCreate9",
+        "entry": 1614812848,
+        "module_base": 1614282752,
+        "method_RVA": 530096,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec518b4d0833c050508945fc",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "CreateDevice",
+        "entry": 1614544992,
+        "module_base": 1614282752,
+        "method_RVA": 262240,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec83e4f881ec58010000a180",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "Release",
+        "entry": 1614801808,
+        "module_base": 1614282752,
+        "method_RVA": 519056,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "Release",
+        "entry": 1614801808,
+        "module_base": 1614282752,
+        "method_RVA": 519056,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "CreateQuery",
+        "entry": 1614781088,
+        "module_base": 1614282752,
+        "method_RVA": 498336,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "6a14b8e3e54060e815b000008b75088b",
+        "loader_relocations": [
+          {
+            "offset": 3,
+            "old": 269018595,
+            "new": 1614865891
+          }
+        ],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "CreateQuery",
+        "entry": 1614781088,
+        "module_base": 1614282752,
+        "method_RVA": 498336,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "6a14b8e3e54060e815b000008b75088b",
+        "loader_relocations": [
+          {
+            "offset": 3,
+            "old": 269018595,
+            "new": 1614865891
+          }
+        ],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "native",
+        "label": "CreateQuery",
+        "entry": 1614781088,
+        "module_base": 1614282752,
+        "method_RVA": 498336,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "6a14b8e3e54060e815b000008b75088b",
+        "loader_relocations": [
+          {
+            "offset": 3,
+            "old": 269018595,
+            "new": 1614865891
+          }
+        ],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "fixture_image",
+        "entry": 8012688,
+        "module_base": 7995392,
+        "method_RVA": 17296,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "538bdc83ec0883e4f083c404558b6b04",
+        "loader_relocations": [],
+        "module": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\query_reset_check.exe",
+          "bytes": 40448,
+          "sha256": "72ae697abc9736bd0d6e9896e42f44757f30afe81c4fa9210b23d1ae9218896f"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "Direct3DCreate9_thunk",
+        "entry": 8017155,
+        "module_base": 7995392,
+        "method_RVA": 21763,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "ff253c727a00cccccccccccccc558bec",
+        "loader_relocations": [
+          {
+            "offset": 2,
+            "old": 4223548,
+            "new": 8024636
+          }
+        ],
+        "module": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\query_reset_check.exe",
+          "bytes": 40448,
+          "sha256": "72ae697abc9736bd0d6e9896e42f44757f30afe81c4fa9210b23d1ae9218896f"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "Direct3DCreate9",
+        "entry": 1614812848,
+        "module_base": 1614282752,
+        "method_RVA": 530096,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec518b4d0833c050508945fc",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "CreateDevice",
+        "entry": 1614544992,
+        "module_base": 1614282752,
+        "method_RVA": 262240,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec83e4f881ec58010000a180",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "Release",
+        "entry": 1614801808,
+        "module_base": 1614282752,
+        "method_RVA": 519056,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "Release",
+        "entry": 1614801808,
+        "module_base": 1614282752,
+        "method_RVA": 519056,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+        "loader_relocations": [],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "CreateQuery",
+        "entry": 1614781088,
+        "module_base": 1614282752,
+        "method_RVA": 498336,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "6a14b8e3e54060e815b000008b75088b",
+        "loader_relocations": [
+          {
+            "offset": 3,
+            "old": 269018595,
+            "new": 1614865891
+          }
+        ],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "CreateQuery",
+        "entry": 1614781088,
+        "module_base": 1614282752,
+        "method_RVA": 498336,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "6a14b8e3e54060e815b000008b75088b",
+        "loader_relocations": [
+          {
+            "offset": 3,
+            "old": 269018595,
+            "new": 1614865891
+          }
+        ],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      },
+      {
+        "mode": "host",
+        "label": "CreateQuery",
+        "entry": 1614781088,
+        "module_base": 1614282752,
+        "method_RVA": 498336,
+        "actual_x86_PE_identity_verified": true,
+        "live_entry16_hex": "6a14b8e3e54060e815b000008b75088b",
+        "loader_relocations": [
+          {
+            "offset": 3,
+            "old": 269018595,
+            "new": 1614865891
+          }
+        ],
+        "module": {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+        }
+      }
+    ],
+    "actual_COM_calls": [
+      {
+        "mode": "native",
+        "phase": 1,
+        "kind": "release",
+        "actual_identity": 1,
+        "actual_return_PC": 57605682,
+        "result": 1,
+        "actual_module_method_entry": 1614801808,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "native",
+        "phase": 2,
+        "kind": "release",
+        "actual_identity": 2,
+        "actual_return_PC": 57605682,
+        "result": 1,
+        "actual_module_method_entry": 1614801808,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "native",
+        "phase": 3,
+        "kind": "create",
+        "actual_identity": 1,
+        "actual_return_PC": 57605759,
+        "result": 0,
+        "actual_module_method_entry": 1614781088,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "native",
+        "phase": 4,
+        "kind": "create",
+        "actual_identity": 2,
+        "actual_return_PC": 57605759,
+        "result": 0,
+        "actual_module_method_entry": 1614781088,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "native",
+        "phase": 5,
+        "kind": "create",
+        "actual_identity": 2,
+        "actual_return_PC": 57605759,
+        "result": 0,
+        "actual_module_method_entry": 1614781088,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "phase": 1,
+        "kind": "release",
+        "actual_identity": 1,
+        "actual_return_PC": 8017231,
+        "result": 1,
+        "actual_module_method_entry": 1614801808,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "phase": 2,
+        "kind": "release",
+        "actual_identity": 2,
+        "actual_return_PC": 8017231,
+        "result": 1,
+        "actual_module_method_entry": 1614801808,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "phase": 3,
+        "kind": "create",
+        "actual_identity": 1,
+        "actual_return_PC": 8017314,
+        "result": 0,
+        "actual_module_method_entry": 1614781088,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "phase": 4,
+        "kind": "create",
+        "actual_identity": 2,
+        "actual_return_PC": 8017314,
+        "result": 0,
+        "actual_module_method_entry": 1614781088,
+        "call_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "phase": 5,
+        "kind": "create",
+        "actual_identity": 2,
+        "actual_return_PC": 8017314,
+        "result": 0,
+        "actual_module_method_entry": 1614781088,
+        "call_PC_verified": true
+      }
+    ],
+    "events": [
+      {
+        "tag": 256,
+        "phase": 0,
+        "renderer_identity": 1,
+        "query_identity": 0,
+        "create_count": 0,
+        "release_count": 0,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 257,
+        "phase": 0,
+        "renderer_identity": 1,
+        "query_identity": 0,
+        "create_count": 0,
+        "release_count": 0,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 1024,
+        "phase": 0,
+        "exception_marker": 0
+      },
+      {
+        "tag": 256,
+        "phase": 1,
+        "renderer_identity": 1,
+        "query_identity": 1,
+        "create_count": 0,
+        "release_count": 0,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 512,
+        "phase": 1,
+        "renderer_identity": 1,
+        "query_identity": 1,
+        "create_count": 0,
+        "release_count": 1,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 513,
+        "phase": 1,
+        "renderer_identity": 1,
+        "query_identity": 1,
+        "create_count": 0,
+        "release_count": 1,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 514,
+        "phase": 1,
+        "renderer_identity": 1,
+        "query_identity": 3,
+        "create_count": 0,
+        "release_count": 1,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 257,
+        "phase": 1,
+        "renderer_identity": 1,
+        "query_identity": 0,
+        "create_count": 0,
+        "release_count": 1,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 1024,
+        "phase": 1,
+        "exception_marker": 0
+      },
+      {
+        "tag": 256,
+        "phase": 2,
+        "renderer_identity": 1,
+        "query_identity": 2,
+        "create_count": 0,
+        "release_count": 1,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 512,
+        "phase": 2,
+        "renderer_identity": 1,
+        "query_identity": 2,
+        "create_count": 0,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 513,
+        "phase": 2,
+        "renderer_identity": 1,
+        "query_identity": 2,
+        "create_count": 0,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 514,
+        "phase": 2,
+        "renderer_identity": 1,
+        "query_identity": 3,
+        "create_count": 0,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 257,
+        "phase": 2,
+        "renderer_identity": 1,
+        "query_identity": 3,
+        "create_count": 0,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 1024,
+        "phase": 2,
+        "exception_marker": 305441741
+      },
+      {
+        "tag": 256,
+        "phase": 3,
+        "renderer_identity": 1,
+        "query_identity": 3,
+        "create_count": 0,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 768,
+        "phase": 3,
+        "renderer_identity": 1,
+        "query_identity": 3,
+        "create_count": 1,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 769,
+        "phase": 3,
+        "renderer_identity": 1,
+        "query_identity": 101,
+        "create_count": 1,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 770,
+        "phase": 3,
+        "renderer_identity": 2,
+        "query_identity": 101,
+        "create_count": 1,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 257,
+        "phase": 3,
+        "renderer_identity": 2,
+        "query_identity": 101,
+        "create_count": 1,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 1024,
+        "phase": 3,
+        "exception_marker": 0
+      },
+      {
+        "tag": 256,
+        "phase": 4,
+        "renderer_identity": 2,
+        "query_identity": 3,
+        "create_count": 1,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 768,
+        "phase": 4,
+        "renderer_identity": 2,
+        "query_identity": 3,
+        "create_count": 2,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 769,
+        "phase": 4,
+        "renderer_identity": 2,
+        "query_identity": 102,
+        "create_count": 2,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 770,
+        "phase": 4,
+        "renderer_identity": 2,
+        "query_identity": 102,
+        "create_count": 2,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 257,
+        "phase": 4,
+        "renderer_identity": 2,
+        "query_identity": 102,
+        "create_count": 2,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 1024,
+        "phase": 4,
+        "exception_marker": 0
+      },
+      {
+        "tag": 256,
+        "phase": 5,
+        "renderer_identity": 2,
+        "query_identity": 3,
+        "create_count": 2,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 768,
+        "phase": 5,
+        "renderer_identity": 2,
+        "query_identity": 3,
+        "create_count": 3,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 769,
+        "phase": 5,
+        "renderer_identity": 2,
+        "query_identity": 103,
+        "create_count": 3,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 770,
+        "phase": 5,
+        "renderer_identity": 2,
+        "query_identity": 103,
+        "create_count": 3,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 257,
+        "phase": 5,
+        "renderer_identity": 2,
+        "query_identity": 103,
+        "create_count": 3,
+        "release_count": 2,
+        "all_other_owner_words_preserved": true
+      },
+      {
+        "tag": 1024,
+        "phase": 5,
+        "exception_marker": 2271560481
+      }
+    ],
+    "real_HAL_devices_per_process": 2,
+    "actual_CreateQuery_per_process": 3,
+    "actual_Release_per_process": 2,
+    "entry_or_service_bridges": [],
+    "original_instruction_changes": "One four-byte renderer-global absolute operand relocation; original relative getter call and all other67 entry bytes unchanged.",
+    "frozen_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\bsp_core.lib",
+        "bytes": 27932596,
+        "sha256": "3d6730a666b29103e7b8926e206e7c32054d8cd599130e099eee28a02de5c211"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\native_occlusion_query_device_reset.obj",
+        "bytes": 1755,
+        "sha256": "e7e2ec4961df61ba2ed406261d70f95b3b3b7e15ba6ba7bcbfb7287871a460e3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\query-reset-check\\native_shader_device_reset.obj",
+        "bytes": 3973,
+        "sha256": "65bf94b1fb854c778b502842d046c968c7a87c2805baa35bf467cbd26a11b485"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_occlusion_query_device_reset.cpp",
+        "bytes": 1870,
+        "sha256": "d3dd29ed58286326a4f63a49bd87f83eb814db9d7c0c284328d3a5dd2953178e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_occlusion_query_device_reset.hpp",
+        "bytes": 731,
+        "sha256": "c701d1b86601ed377485629c416cea31621609fabfe23c762e6b6b4e56c16d52"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_shader_device_reset.cpp",
+        "bytes": 3154,
+        "sha256": "21a2631b1cdecf365bd93bcfdefbb9cd371eec46865921197a6dc6ecfb9cdcce"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_shader_device_reset.hpp",
+        "bytes": 1356,
+        "sha256": "347056dafcbfe3a29f6d109c4f79914f583e4976327bf9c61b51e4d88ee01590"
+      }
+    ],
+    "device_owned_reference_releases": {
+      "native": [
+        "1|0",
+        "2|0"
+      ],
+      "host": [
+        "1|0",
+        "2|0"
+      ]
+    },
+    "limits": [
+      "Fixture table observers restore and forward actual Windows COM methods, then apply explicit field/publication changes or throw after the actual call.",
+      "Successful real occlusion query creation is covered; no native HRESULT failure, full device-reset cycle, query Issue/GetData/render/game or original binary ABI validation.",
+      "The new source API passes the address of actual renderer publication explicitly; native entry reads F8D394."
+    ]
+  },
+  "preserved_semantic_projection": "src/d3d9_query.cpp",
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_occlusion_query_device_reset_annotations.json",
+    "bytes": 4140,
+    "sha256": "e3c17ad8dd561541bfe8ddf1927225fe498b840059058d7f0f7a6735451e1fc0",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b5fe20",
+      "path": "exports/bsp/functions/00b5fe20/decompiled.c",
+      "bytes": 1975,
+      "sha256": "f2ce70a8ddfa3d23f2fb7fb8b8b6906f5f3e590027a0fbfac417cc73897d294d"
+    },
+    {
+      "address": "00b5fe60",
+      "path": "exports/bsp/functions/00b5fe60/decompiled.c",
+      "bytes": 2056,
+      "sha256": "9e05377d47c14f3921f9efec630363657d574b6ad65977b064416b48f462de34"
+    }
+  ],
+  "closure_utc": "2026-09-11T06:38:05.092535+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b5fe20",
+      "name": "BSP_OcclusionQuery_ReleaseForReset",
+      "cpp_symbol": "bsp::release_native_occlusion_query_for_reset_00b5fe20",
+      "source": "src/native_occlusion_query_device_reset.cpp",
+      "native_end_exclusive": "00b5fe3b",
+      "native_bytes": 27,
+      "original_abi": "ECX actual owner; no stack arguments; RET; no semantic result; no own EH",
+      "evidence": "reports/native_occlusion_query_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5fe60",
+      "name": "BSP_OcclusionQuery_RestoreAfterReset",
+      "cpp_symbol": "bsp::restore_native_occlusion_query_after_reset_00b5fe60",
+      "source": "src/native_occlusion_query_device_reset.cpp",
+      "native_end_exclusive": "00b5fe81",
+      "native_bytes": 33,
+      "original_abi": "ECX actual owner; no stack arguments; RET; no semantic result; no own EH",
+      "evidence": "reports/native_occlusion_query_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_OCCLUSION_QUERY_DEVICE_RESET.md",
+    "bytes": 4598,
+    "sha256": "4d18993ab08cb4ad13452b6c1226d82e36e93a4b62a18a21dcf63306f3b6e7ab"
+  }
+}
