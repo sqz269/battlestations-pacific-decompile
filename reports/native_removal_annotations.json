@@ -1,0 +1,45 @@
+[
+  {
+    "address": "00b31dc0",
+    "before": {
+      "address": "00b31dc0",
+      "function_name": "FUN_00b31dc0"
+    },
+    "after": {
+      "address": "00b31dc0",
+      "old_name": "FUN_00b31dc0",
+      "name": "BSP_NativeRenderResourceContainer_RemoveByAlias",
+      "evidence": "Actual texture-manager container removal: preserve initial originalname copy beforeEHstate0, construct/discard normalizedcopy with sideeffects, scan capturedbegin/end and sentinel with current validation checks; compare equal-length NULterminated names with actualCRT locale. At match captureCURRENTresource/profile/+0Cslot through borrowed immutable 2D/cube/volume tables and concrete getters; subtractCURRENTaccounting. Preserve no-opdiagnosticargument reads, currentlast assignment then refreshedcurrentlast destruction, finalCURRENTcount decrement. State0cleansCURRENToriginalname only, no rollback. Original ABI: ECX actual container, one stack original native-name-header pointer, RET4, no semantic return. Evidence reports/native_render_resource_container_removal_audit.json and docs/NATIVE_RENDER_RESOURCE_CONTAINER_REMOVAL.md. Primarylibrary ONEoriginalcaller fixture12384words/12cases/172events with full native520byteparent, both nativegetters and3originalunwindactions; actualhelpercomposition andCRTcomparison/invalidparameter boundaries explicit; strictWin32+2CTest. General unsupportedprofiles are out of domain, unusedtables maybenull onmiss; no fullcontainerlifetime/ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ce30",
+    "before": {
+      "address": "00b3ce30",
+      "function_name": "BSP_D3D9Texture2D_GetAccountedSize"
+    },
+    "after": {
+      "address": "00b3ce30",
+      "old_name": "BSP_D3D9Texture2D_GetAccountedSize",
+      "name": "BSP_D3D9Texture2D_GetAccountedSize",
+      "evidence": "Complete current actual2Dtexture DWORD+24 getter; profileD61948 slot0C. Separate4byte function defined; old enclosingB3CE20 body untouched. Original ABI: ECX actual resource; current DWORD+24 returned in EAX; plain RET. Evidence reports/native_render_resource_container_removal_audit.json and docs/NATIVE_RENDER_RESOURCE_CONTAINER_REMOVAL.md. Primarylibrary ONEoriginalcaller fixture12384words/12cases/172events with full native520byteparent, both nativegetters and3originalunwindactions; actualhelpercomposition andCRTcomparison/invalidparameter boundaries explicit; strictWin32+2CTest. General unsupportedprofiles are out of domain, unusedtables maybenull onmiss; no fullcontainerlifetime/ABI/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00a82250",
+    "before": {
+      "address": "00a82250",
+      "function_name": "BSP_MaterialEffect_ZeroAccountedSize",
+      "comment": "[BSP reconstruction 00a82250]\nMissing function definition. Vtable00d61a00+Ch points here. Disk/Ghidra matched00a82250-00a82252 = XOR EAX,EAX;RET. Descriptive role name provisional; shared leaf may serve other classes. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+    },
+    "after": {
+      "address": "00a82250",
+      "old_name": "BSP_MaterialEffect_ZeroAccountedSize",
+      "name": "BSP_MaterialEffect_ZeroAccountedSize",
+      "evidence": "Complete shared XOR EAX,EAX;RET zero leaf, no inputs consumed. Preserve existing MaterialEffect name; add concrete cubeD61870 and volumeD618B0 slot0C users from actual texture-loader branches. This is an observed native zero implementation, not a fallback. Original ABI: No register or stack inputs consumed; XOR EAX,EAX; plain RET. Evidence reports/native_render_resource_container_removal_audit.json and docs/NATIVE_RENDER_RESOURCE_CONTAINER_REMOVAL.md. Primarylibrary ONEoriginalcaller fixture12384words/12cases/172events with full native520byteparent, both nativegetters and3originalunwindactions; actualhelpercomposition andCRTcomparison/invalidparameter boundaries explicit; strictWin32+2CTest. General unsupportedprofiles are out of domain, unusedtables maybenull onmiss; no fullcontainerlifetime/ABI/game claim."
+    },
+    "status": "applied"
+  }
+]

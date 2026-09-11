@@ -72,6 +72,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_render_cache_construction.cpp
   src/native_render_resource_record_construction.cpp
   src/native_render_resource_record_array.cpp
+  src/native_render_resource_container_removal.cpp
   src/native_render_command_owner.cpp
   src/native_legacy_sbo_string.cpp
   src/native_legacy_exception_owner.cpp src/native_render_queue_access.cpp

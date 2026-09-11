@@ -3250,8 +3250,8 @@
       "id": "native_render_resource_container_removal_closure",
       "packet": "native_render_resource_container_removal_closure",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "closing_actual_resource_dispatch_for_container_removal",
+      "done": true,
+      "state": "integrated_actual_alias_removal_three_texture_profiles_original_caller_and_primary_build_checked",
       "function_addresses": [
         "00b31dc0",
         "00b3ce30",
@@ -3262,7 +3262,8 @@
         "src/native_render_resource_container_removal.cpp",
         "docs/NATIVE_RENDER_RESOURCE_CONTAINER_REMOVAL.md",
         "reports/native_render_resource_container_removal_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_render_resource_container_removal_audit.json"
     },
     {
       "id": "native_physical_buffer_owner",
@@ -3318,6 +3319,30 @@
         "src/native_vertex_declaration_owner.cpp",
         "docs/NATIVE_VERTEX_DECLARATION_OWNER.md",
         "reports/native_vertex_declaration_owner_audit.json"
+      ]
+    },
+    {
+      "id": "native_render_buffer_unregistration",
+      "packet": "native_render_buffer_unregistration",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "implementing_actual_renderer_and_physical_buffer_swap_last_unregistration",
+      "function_addresses": [
+        "00b25300",
+        "00b25370",
+        "00b25580",
+        "00b268e0",
+        "00b26900",
+        "00b27d40",
+        "00b4b2e0",
+        "00b4b390",
+        "00b4b3f0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_buffer_unregistration.hpp",
+        "src/native_render_buffer_unregistration.cpp",
+        "docs/NATIVE_RENDER_BUFFER_UNREGISTRATION.md",
+        "reports/native_render_buffer_unregistration_audit.json"
       ]
     }
   ],
@@ -4319,8 +4344,8 @@
     {
       "packet": "native_render_resource_container_removal_closure",
       "worker": "material_effect_plane",
-      "state": "closing_actual_resource_dispatch_for_container_removal",
-      "validation": null
+      "state": "integrated_actual_alias_removal_three_texture_profiles_original_caller_and_primary_build_checked",
+      "validation": "reports/native_render_resource_container_removal_audit.json"
     },
     {
       "packet": "native_physical_buffer_owner",
@@ -4333,18 +4358,15 @@
       "worker": "system_fog_owner_discovery",
       "state": "implementing_actual_CPU_vertex_declaration_arrays_and_lifetime",
       "validation": null
+    },
+    {
+      "packet": "native_render_buffer_unregistration",
+      "worker": "material_effect_plane",
+      "state": "implementing_actual_renderer_and_physical_buffer_swap_last_unregistration",
+      "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_render_resource_container_removal_closure",
-      "worker": "material_effect_plane",
-      "function_addresses": [
-        "00b31dc0",
-        "00b3ce30",
-        "00a82250"
-      ]
-    },
     {
       "packet": "native_physical_buffer_owner",
       "worker": "main",
@@ -4380,6 +4402,21 @@
         "00b48b70",
         "00b48ca0",
         "00b47950"
+      ]
+    },
+    {
+      "packet": "native_render_buffer_unregistration",
+      "worker": "material_effect_plane",
+      "function_addresses": [
+        "00b25300",
+        "00b25370",
+        "00b25580",
+        "00b268e0",
+        "00b26900",
+        "00b27d40",
+        "00b4b2e0",
+        "00b4b390",
+        "00b4b3f0"
       ]
     }
   ],

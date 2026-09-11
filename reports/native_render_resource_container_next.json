@@ -1018,13 +1018,16 @@
     "uninitialized_analysis_observations_are_not_runtime_values": true,
     "substring_complete": true,
     "normalizer_worker_in_progress": false,
-    "resource_container_removal_complete": false,
+    "resource_container_removal_complete": true,
     "evidence": "reports/native_pooled_string_substring_audit.json",
     "utc": "2026-09-10T23:59:57.363038+00:00",
     "actual_normalizer_complete_evidence": "reports/native_pooled_resource_path_audit.json",
     "actual_record_construction_complete_evidence": "reports/native_render_resource_record_construction_audit.json",
     "actual_record_array_worker_active": false,
     "actual_record_array_complete_evidence": "reports/native_render_resource_record_array_audit.json",
-    "actual_removal_closure_worker_active": true
+    "actual_removal_closure_worker_active": false,
+    "resource_container_removal_completion_domain": "Actual immutable 2D D61948, cube D61870 and volume D618B0 texture-manager profiles with borrowed actual table views and existing string/storage/CRT contract",
+    "actual_removal_complete_evidence": "reports/native_render_resource_container_removal_audit.json",
+    "full_container_lifetime_complete": false
   }
 }
