@@ -1,0 +1,201 @@
+{
+  "packet": "orch5_gui_text_clip_refresh",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/gui_text_clip_refresh.cpp",
+  "routines": [
+    {
+      "address": "00ab7a40",
+      "end_inclusive": "00ab7b0b",
+      "last_instruction_length": 1,
+      "native_abi": "__thiscall ECX Text; no stack arguments; RET",
+      "coverage": "partial_actual_material_prefix_and_post_child_continuation",
+      "implemented_ranges": [
+        "00ab7a40..00ab7af7",
+        "00ab7afa..00ab7b0b"
+      ],
+      "boundary": "00ab7af8 CALL current child virtual70 is not implemented. Empty list reaches native return; otherwise explicit pending frame.",
+      "domain": "Same live actual owners/material profileD5E520, valid nonnegative mesh extents, shared parameter/string pools; borrowed child membership/order stable during traversal with surviving frame owners. Native intrusive iterator ABI, corrupt list/storage and SEH excluded.",
+      "unread_ranges": [],
+      "instruction_count": 77
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab7a4e",
+      "native": "00b74650",
+      "function": "00ab7a40",
+      "contract": "main captured at7A45: Captured actual Model+180 nonnull test; no stack/RET."
+    },
+    {
+      "address": "00ab7a5b",
+      "native": "00b74640",
+      "function": "00ab7a40",
+      "contract": "main captured at7A45: Captured actual Model geometry getter; unused index0 stack/RET4."
+    },
+    {
+      "address": "00ab7a62",
+      "native": "00b72b40",
+      "function": "00ab7a40",
+      "contract": "main captured at7A45: Actual mesh+58 section count; no stack/RET; zero skips drawable."
+    },
+    {
+      "address": "00ab7a71",
+      "native": "00b74640",
+      "function": "00ab7a40",
+      "contract": "main captured at7A45: Reload SAME captured Model geometry before selecting section0; index0/RET4."
+    },
+    {
+      "address": "00ab7a78",
+      "native": "00b732c0",
+      "function": "00ab7a40",
+      "contract": "main captured at7A45: Actual mesh+54 pointer array index0; stack index/RET4."
+    },
+    {
+      "address": "00ab7a83",
+      "native": "00aa9f10",
+      "function": "00ab7a40",
+      "contract": "main captured at7A45: ECX original Text; captured actual section0 material+20 stack/RET4. SAME raw clip/name/pool/borrowed-source implementation."
+    },
+    {
+      "address": "00ab7a94",
+      "native": "00b74650",
+      "function": "00ab7a40",
+      "contract": "LIVE shadow captured at7A88 after main callbacks: Captured actual Model+180 nonnull test; no stack/RET."
+    },
+    {
+      "address": "00ab7aa1",
+      "native": "00b74640",
+      "function": "00ab7a40",
+      "contract": "LIVE shadow captured at7A88 after main callbacks: Captured actual Model geometry getter; unused index0 stack/RET4."
+    },
+    {
+      "address": "00ab7aa8",
+      "native": "00b72b40",
+      "function": "00ab7a40",
+      "contract": "LIVE shadow captured at7A88 after main callbacks: Actual mesh+58 section count; no stack/RET; zero skips drawable."
+    },
+    {
+      "address": "00ab7ab7",
+      "native": "00b74640",
+      "function": "00ab7a40",
+      "contract": "LIVE shadow captured at7A88 after main callbacks: Reload SAME captured Model geometry before selecting section0; index0/RET4."
+    },
+    {
+      "address": "00ab7abe",
+      "native": "00b732c0",
+      "function": "00ab7a40",
+      "contract": "LIVE shadow captured at7A88 after main callbacks: Actual mesh+54 pointer array index0; stack index/RET4."
+    },
+    {
+      "address": "00ab7ac9",
+      "native": "00aa9f10",
+      "function": "00ab7a40",
+      "contract": "LIVE shadow captured at7A88 after main callbacks: ECX original Text; captured actual section0 material+20 stack/RET4. SAME raw clip/name/pool/borrowed-source implementation."
+    },
+    {
+      "address": "00ab7af8",
+      "native": "current_child+vtable70",
+      "function": "00ab7a40",
+      "contract": "UNIMPLEMENTED current dispatch boundary, not a forwarding host: caller completes actual child70 before resume. Native loads payload+8/current table/current70 each loop."
+    }
+  ],
+  "excluded_list_check_calls": [
+    {
+      "address": "00ab7add",
+      "native": "00bf6713",
+      "function": "00ab7a40",
+      "contract": "Observed out-of-domain list-consistency branch. Forwarding library body read; its CRT behavior is not reconstructed."
+    },
+    {
+      "address": "00ab7aeb",
+      "native": "00bf6713",
+      "function": "00ab7a40",
+      "contract": "Observed out-of-domain list-consistency branch. Forwarding library body read; its CRT behavior is not reconstructed."
+    },
+    {
+      "address": "00ab7aff",
+      "native": "00bf6713",
+      "function": "00ab7a40",
+      "contract": "Observed out-of-domain list-consistency branch. Forwarding library body read; its CRT behavior is not reconstructed."
+    }
+  ],
+  "consumed_existing_helpers": [
+    {
+      "entry": "00b74650",
+      "end_inclusive": "00b7465b",
+      "last_instruction_length": 1,
+      "contract": "Model+180 nonnull; same existing owner accessor."
+    },
+    {
+      "entry": "00b74640",
+      "end_inclusive": "00b74648",
+      "last_instruction_length": 3,
+      "contract": "Same Model+180 pointer, ignored stack DWORD,RET4."
+    },
+    {
+      "entry": "00b72b40",
+      "end_inclusive": "00b72b43",
+      "last_instruction_length": 1,
+      "contract": "Same actual mesh DWORD+58,RET."
+    },
+    {
+      "entry": "00b732c0",
+      "end_inclusive": "00b732cc",
+      "last_instruction_length": 3,
+      "contract": "Actual mesh pointer array+54[index],RET4."
+    },
+    {
+      "entry": "00aa9f10",
+      "end_inclusive": "00aaa0e8",
+      "last_instruction_length": 5,
+      "contract": "Full body read; canonical actual clip registration, same native names/parameter pool and borrowed sources. Final instruction is backedgeJMP; RET4 atAAA0D7."
+    }
+  ],
+  "callers": {
+    "direct_functions": [],
+    "direct_sites": [],
+    "data_xrefs": [
+      {
+        "site": "00d5c738",
+        "bytes": "40 7a ab 00",
+        "table": "00d5c6c8",
+        "slot": "70",
+        "target": "00ab7a40"
+      }
+    ],
+    "evidence": "Both current callers and xrefs queried. Sole reference is exact Text table word; no direct caller contracts inferred."
+  },
+  "register_provenance": {
+    "esi": "Entry ECX captured atAB7A42, original Text for both AA9F10 calls; overwritten with first list-node link at7AD4 only after both material stages.",
+    "edi": "Main+4C captured7A45; remains same Model for two getters. LIVE shadow+188 loaded7A88 after main callbacks; remains same captured shadow for both getters. Becomes Text+64 at7AD1.",
+    "ebx": "Current sentinel loaded from EDI+4 at7AD8 each loop.",
+    "child": "ESI current native list-node; payload ECX at7AF0, current tableEAX7AF3,current70EDX7AF5,CALL7AF8. Reload sentinel after callback at7AFA, next link7B04, then current end/payload again.",
+    "arguments": "Both Model getters pushunused0/RET4; element getter index0/RET4; AA9F10 material pointer/RET4; current child70 no stack/RET. Full filtered listing read."
+  },
+  "ownership": {
+    "state": "Same GuiTextLifetime content binding and live shadow_188 slot; no copied Text state.",
+    "models": "Resolve captured node actual storage through existing attachments and validate same live Model/node/resource domains. No extra retain.",
+    "geometry": "Same actual Model+180, NativeMeshReference, NativeMeshSectionReference and NativeMaterialReference; no semantic geometry/material snapshot.",
+    "names": "AA9F10 actual NativeString temporary cleanup precedes each later stage; same parameter pool and string service.",
+    "values": "Borrow widget+E8, captured canonical ClipBox center/border and SAME aspect_ratio00E12FC0 reference through future parameter consumers.",
+    "children": "Same borrowed transform.children vector; continuation is only parent/runtime/index/payload. Duplicate entries distinct, no ownership transfer or second list."
+  },
+  "remaining": [
+    "Actual current child70 dispatch for every child profile. Existing generic type interface lacks70; no substitute callback or factory is added.",
+    "Native intrusive-list mutation/iterator ABI and child self-deletion behavior outside stable-membership/order/surviving-owner domain.",
+    "Executable source registration, composition and game/render verification remain integrator work."
+  ],
+  "verification": {
+    "strict_compile": "passed MSVC Win32 C++17 /W4 /WX /EHsc /permissive-; isolated new-header overlay then integration/peer headers",
+    "exact_call_verifier": "passed integrator tools/verify_report_calls.py:15 direct rows (12 concrete host,3 excluded-list analysis),0failed;1 child indirect boundary manually traced",
+    "worker_call_verifier": "passed worker tools/verify_report_calls.py:15 direct rows,0failed",
+    "new_tests": 0,
+    "runtime": "Unwired module, no current factory/executable path reaches it. No native ABI or game/render equivalence claim."
+  },
+  "tool_issues": [],
+  "descriptive_names_are_hypotheses": true
+}
