@@ -3,7 +3,6 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
-#include <bit>
 #include <cstring>
 #include <new>
 
@@ -18,7 +17,9 @@ std::uint32_t name_count(void* config) {
     const auto begin = read<std::uint32_t>(config, 0x10);
     if (!begin) return 0;
     const auto difference = read<std::uint32_t>(config, 0x14) - begin;
-    return static_cast<std::uint32_t>(std::bit_cast<std::int32_t>(difference) >> 3);
+    std::int32_t signed_difference;
+    std::memcpy(&signed_difference, &difference, sizeof signed_difference);
+    return static_cast<std::uint32_t>(signed_difference >> 3);
 }
 struct FileBlockCleanup {
     GlobalSubsystemHost& host;
