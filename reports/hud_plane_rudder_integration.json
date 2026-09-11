@@ -1,0 +1,158 @@
+{
+  "orchestrator": "orch2-20260910",
+  "baseline": "e0ad746",
+  "integration_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "workers": [
+    {
+      "packet": "orch2_hud_root_unit_rows",
+      "branch": "agent/orch2-hud-rows-20260910",
+      "implementation_commit": "9b921a8",
+      "report": "reports/hud_root_unit_rows.json",
+      "undefined_functions_to_define": [],
+      "worker_build_passed": true,
+      "worker_ctests_passed": 2
+    },
+    {
+      "packet": "orch2_plane_bow_wave_record",
+      "branch": "agent/orch2-bow-wave-20260910",
+      "implementation_commit": "36be122",
+      "report": "reports/plane_bow_wave_record.json",
+      "undefined_functions_to_define": [],
+      "worker_build_passed": true,
+      "worker_ctests_passed": 1
+    },
+    {
+      "packet": "orch2_unit_rudder_curve",
+      "branch": "agent/orch2-rudder-20260910",
+      "implementation_commit": "e282e9e",
+      "report": "reports/unit_rudder_curve.json",
+      "undefined_functions_to_define": [],
+      "worker_build_passed": true,
+      "worker_ctests_passed": 2
+    }
+  ],
+  "review": {
+    "primary": "Reviewed all three C++ interfaces and implementations; independently checked selected native listings for selection, health, payload state, bow-wave marker binding and effect append, curve/heading/shifted update.",
+    "independent": "Bow-wave worker independently compared rudder 0082ECB0, 0082E890 and 00811AB0 with native listings; no concrete mismatches found in this scope.",
+    "no_new_repository_tests": true,
+    "native_seed_matches": 8,
+    "baseline_win32_release_ctests": "2/2 passed",
+    "rudder_native_fixture_result": "55/55 bitwise equal, 220 settings getter calls per implementation",
+    "rudder_probe_preserved_in": "local/ (check_rudder_bytes.py, rudder_differential.cpp, run-rudder-differential.cmd, rudder_reference.hpp, rudder_native_verification.json, and three *-native-bytes.txt files)"
+  },
+  "flow_repair": {
+    "report": "reports/plane_bow_wave_flow_repair.json",
+    "function": "007d3e60",
+    "restored_instructions": 17,
+    "remaining_call_gaps": 0,
+    "saved": true,
+    "export_refreshed": true
+  },
+  "annotations": [
+    {
+      "address": "00419010",
+      "old_name": "FUN_00419010",
+      "new_name": "BSP_Math_InterpolateClamped"
+    },
+    {
+      "address": "00438aa0",
+      "old_name": "FUN_00438aa0",
+      "new_name": "BSP_Math_AddWrappedAngle"
+    },
+    {
+      "address": "00438b10",
+      "old_name": "FUN_00438b10",
+      "new_name": "BSP_Math_SubtractWrappedAngle"
+    },
+    {
+      "address": "00644c20",
+      "old_name": "FUN_00644c20",
+      "new_name": "BSP_InGameHudRootScreen_FindPrimaryUnitSelection"
+    },
+    {
+      "address": "00644cc0",
+      "old_name": "FUN_00644cc0",
+      "new_name": "BSP_InGameHudRootScreen_FindUnitSelection"
+    },
+    {
+      "address": "00644db0",
+      "old_name": "FUN_00644db0",
+      "new_name": "BSP_InGameHudRootScreen_PollUnitSelection"
+    },
+    {
+      "address": "00647080",
+      "old_name": "FUN_00647080",
+      "new_name": "BSP_InGameHudRootScreen_ToggleClosedRows"
+    },
+    {
+      "address": "00648c20",
+      "old_name": "FUN_00648c20",
+      "new_name": "BSP_InGameHudRootScreen_UpdateUnitRowWidgets"
+    },
+    {
+      "address": "007cd2f0",
+      "old_name": "FUN_007cd2f0",
+      "new_name": "BSP_PlaneBowWaveDefinition_FillRetainedCopies"
+    },
+    {
+      "address": "007d1b50",
+      "old_name": "FUN_007d1b50",
+      "new_name": "BSP_PlaneBowWaveVector_InsertOne"
+    },
+    {
+      "address": "007d3e60",
+      "old_name": "FUN_007d3e60",
+      "new_name": "BSP_PlaneClass_BindModelData_Provisional"
+    },
+    {
+      "address": "007d5890",
+      "old_name": "FUN_007d5890",
+      "new_name": "BSP_Plane_CreateBowWaveEffects"
+    },
+    {
+      "address": "00811890",
+      "old_name": "BSP_UnitInstance_ComputeYawRateFromRudder",
+      "new_name": "BSP_UnitInstance_ComputeYawRateFromRudder"
+    },
+    {
+      "address": "00811940",
+      "old_name": "FUN_00811940",
+      "new_name": "BSP_UnitInstance_GetCurrentCommandYawRate"
+    },
+    {
+      "address": "00811960",
+      "old_name": "FUN_00811960",
+      "new_name": "BSP_UnitHeadingCommand_SetLimitedTarget"
+    },
+    {
+      "address": "00811ab0",
+      "old_name": "FUN_00811ab0",
+      "new_name": "BSP_UnitInstance_RunShiftedControllerUpdate"
+    },
+    {
+      "address": "0082e890",
+      "old_name": "FUN_0082e890",
+      "new_name": "BSP_ShipClass_ComputeRudderCurveDenominator"
+    },
+    {
+      "address": "0082ecb0",
+      "old_name": "FUN_0082ecb0",
+      "new_name": "BSP_ShipClass_ComputeYawRateFromRudder"
+    }
+  ],
+  "combined_build": {
+    "status": "pending integration",
+    "command": "tools/integrate_workers.py with all three worker branches --no-push"
+  },
+  "annotation_apply": {
+    "status": "pending integration"
+  },
+  "limits": [
+    "New C++ interfaces, not native ABI replacements.",
+    "No HUD fixture/visual validation or plane effect runtime validation.",
+    "Rudder native numerical evidence covers only the composed finite curve fixtures; no universal FP or gameplay equivalence.",
+    "Native string/allocator/SEH and external gameplay/effect subsystems retain documented host boundaries."
+  ]
+}

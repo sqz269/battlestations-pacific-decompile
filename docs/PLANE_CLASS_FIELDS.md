@@ -309,3 +309,15 @@ reproduce the refcount traffic or the SEH states, and it has not been run agains
 | `007C3510`, `007CCCA0`, `007D1D30` | exported, analysed from their call sites, name recorded |
 | `009536B0` | read only, no Ghidra function; end `009536D2`, reported for definition |
 | `00870CD0`, `004D9C00`, `00960230`, `007E2A20`, `007CD2F0` | read only, not renamed here |
+
+## Correction from docs/PLANE_BOW_WAVE_RECORD.md
+
+The trailing BowWaves fields are model-space x/y/z floats. The Lua reader leaves
+them unset, but the model-binding fragment `007D4812..007D4953` writes the first
+point of the model marker named exactly `wave`, with separate numeric id equal
+to the record index plus one. `007D5890` copies the point into the runtime effect
+record at the plane's `+A3Ch` container, including when effect creation returns
+null. The `007C3700` consumer transforms that point using the instance matrix.
+The follow-up records the native call sites, reconstructed boundary and the
+saved Ghidra repair of 17 missing free-call fallthrough instructions in
+`007D3E60`. The full model loader and effect update remain outside that packet.

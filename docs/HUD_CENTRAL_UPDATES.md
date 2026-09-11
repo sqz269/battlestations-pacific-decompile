@@ -394,3 +394,14 @@ above; the ones this packet identified but did not read in full are 006430C0, 00
 | 006463E0 | re-read only for the two clone template fields |
 | The clip rectangle, the pulse, the row layout, the icon placement | reconstructed as pure functions and build-tested |
 | 008E9AF0 and the marker pool routines | referenced only |
+
+## Correction from docs/HUD_ROOT_UNIT_ROWS.md
+
+The follow-up packet separates input selection from row presentation. `00644DB0`
+handles input edges and the primary/secondary selection tuple; its current native
+body is `00644DB0..0064505B` inclusive (684 bytes), correcting the 1195-byte size
+above. `00648C20` performs the per-unit row presentation. Its payload icon call at
+`00649803` takes the computed state loaded into EAX at `006497F2` and pushed at
+`00649802`; the decompiler's constant `3` is not the call's unconditional argument.
+See the follow-up's listing evidence, bounded reconstruction and remaining widget
+ownership questions. These findings do not establish native ABI or in-game UI parity.

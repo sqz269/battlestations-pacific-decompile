@@ -345,3 +345,16 @@ caller is `00825F20`.
 
 Every routine here has a Ghidra function; there is no listing-only routine in this packet.
 `bsp.py ghidra flow` was not run, and no `_free` fall-through gap appeared in the listings read.
+
+## Correction from docs/UNIT_RUDDER_CURVE.md
+
+The `unit_rudder_curve` follow-up traces `0082ECB0` through `0082E890`: the
+denominator uses two clamped interpolation segments through three settings
+knots. Normalized speed and the divided base yaw rate are stored as floats
+before the final native multiply chain. `00811960` selects a target heading,
+reverses the reference heading when forward speed is at most -1, and clamps
+the heading difference to the game's float-rounded quarter-pi bounds.
+`00811AB0` is an update entered with ECX equal to unit+310h, not a small
+rudder accessor. Its controller update and unit virtual call remain explicit
+external boundaries. See the follow-up for original ABIs, the exact constants,
+reconstruction and focused numerical verification limits.
