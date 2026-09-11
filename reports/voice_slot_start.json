@@ -1,0 +1,146 @@
+{
+  "packet": "orch4_voice_slot_start_b",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "document": "docs/VOICE_SLOT_START.md",
+  "source": "src/voice_slot_start.cpp",
+  "header": "include/bsp/voice_slot_start.hpp",
+  "routines": [
+    {
+      "address": "00702cc0",
+      "proposed_name": "BSP_VoiceSlot_ConstructAndStart",
+      "cpp_name": "construct_voice_slot_00702cc0",
+      "abi": "ECX=fresh18h slot; Clip12 pointer, owned resource value stack; EAX=this; RET8",
+      "final_instruction": "00703016",
+      "final_instruction_length": 3,
+      "finding": "Initialize sound/auxiliary/string, guard-before-Warnings lookup, timestamp and signed ID gate; bank auxiliary, indexed resource or named alternate playback; state1/2 and by-value bank consumption.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b82c0",
+      "proposed_name": "BSP_VoiceSlot_Assign",
+      "cpp_name": "assign_voice_slot_005b82c0",
+      "abi": "ECX=destination; source slot pointer stack; EAX=this; RET4",
+      "final_instruction": "005b8371",
+      "final_instruction_length": 3,
+      "finding": "State before publish-retain-release sound and auxiliary; source fields reread after callbacks; deep copy NativeString at0C and copy timestamp last.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b7fc0",
+      "proposed_name": "BSP_VoiceSlot_Destroy",
+      "cpp_name": "destroy_voice_slot_005b7fc0",
+      "abi": "ECX=slot; RET",
+      "final_instruction": "005b8068",
+      "final_instruction_length": 1,
+      "finding": "Return owned NativeString storage without clearing header, then release/clear auxiliary and current sound in order; no stop/state reset.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b9050",
+      "proposed_name": "BSP_VoiceManager_StartClip",
+      "cpp_name": "start_voice_clip_005b9050",
+      "abi": "ECX=manager; signed index, Clip12 by value, owned resource stack; RET14",
+      "final_instruction": "005b9154",
+      "final_instruction_length": 3,
+      "finding": "Retain bank for temporary construction, compute manager+8+24*index, assign and destroy temporary, poll current destination, conditional NOT FOUND then unconditional played logs, consume bank.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "0054d4c0",
+      "proposed_name": "BSP_VoiceSoundReference_Assign",
+      "cpp_name": "assign_voice_reference_0054d4c0",
+      "abi": "ECX=destination reference; source reference pointer stack; EAX=this; RET4",
+      "final_instruction": "0054d4fe",
+      "final_instruction_length": 3,
+      "finding": "Equal pointer skip, otherwise publish replacement before retain and captured-old release.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "00a7b0a0",
+      "proposed_name": "BSP_SoundManager_FindTypeByName",
+      "cpp_name": "find_sound_type_00a7b0a0",
+      "abi": "ECX=manager; NativeString pointer stack; RET4; EAX=ordinal",
+      "final_instruction": "00a7b10f",
+      "final_instruction_length": 3,
+      "finding": "Canonical configured type table14h entries; length then CRT case-insensitive comparison; first match and zero on miss.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "00a7e490",
+      "proposed_name": "BSP_SoundManager_CreateTrackedSound",
+      "cpp_name": "create_voice_sound_00a7e490",
+      "abi": "ECX=manager; hidden return reference pointer, resource, class, type, flag stack; RET14",
+      "final_instruction": "00a7e61e",
+      "final_instruction_length": 3,
+      "finding": "Wrapper+8 kind0/1 selects vslot0C/10; other kinds null; append canonical manager reference, retain result and consume factory temporary.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "00a798c0",
+      "proposed_name": "BSP_Sound_SetStartTimer",
+      "cpp_name": "set_voice_sound_start_00a798c0",
+      "abi": "ECX=sound; float stack; RET4",
+      "final_instruction": "00a798e3",
+      "final_instruction_length": 3,
+      "finding": "COMISS/JBE means positive duration ->3C duration,38 enabled1; zero/negative/unordered ->3C positive0,38 zero.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "00a7c080",
+      "proposed_name": "BSP_SoundEntryArray_Reserve",
+      "cpp_name": "reserve_voice_sound_entries_00a7c080",
+      "abi": "ECX=manager+8C; signed capacity stack; RET4",
+      "final_instruction": "00a7c171",
+      "final_instruction_length": 3,
+      "finding": "Clamp>=1, never shrink; retain all replacement references before forward old releases; raw hidden tail installs pointer/capacity.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "00a7d5c0",
+      "proposed_name": "BSP_SoundEntryArray_Append",
+      "cpp_name": "append_voice_sound_entry_00a7d5c0",
+      "abi": "ECX=manager+8C; source reference pointer stack; RET4",
+      "final_instruction": "00a7d630",
+      "final_instruction_length": 3,
+      "finding": "Grow only at count==capacity to max(2*capacity,1), append retained canonical SoundLevelEntry pointer and increment count.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    }
+  ],
+  "integration": "Direct start function implemented; parent must replace old abstract start_clip call and remove outer consumed-reference guard after merge. Old callback remains temporarily to build this isolated branch.",
+  "flow_gaps": [
+    {
+      "function": "00a7c080",
+      "first": "00a7c14f",
+      "last_inclusive": "00a7c161",
+      "length": 19,
+      "cause": "false no-return at CALL00a7c14a ->_free",
+      "meaning": "install new pointer and capacity, restore stack/callee-saved registers",
+      "final_instruction": "00a7c171",
+      "final_instruction_length": 3
+    }
+  ],
+  "missing_functions": [],
+  "unresolved": [
+    "Resource wrapper concrete owner/layout beyond kind+8; not SoundOwnedResource.",
+    "Real manager virtual0C/10 sound factories and alternate00A78CE0 queue execution.",
+    "Native index -1 address mapping/fault instead of substituting slot0.",
+    "Canonical entry arrays require stable structure during reference callbacks and count/capacity<=INT32_MAX/2.",
+    "Intrusive lifetime, polling callbacks and warning flag remain actual host services."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "existing_tests": "reconstructed_math passed 1/1",
+    "build_log": "local/voice-slot-start-build.log",
+    "focused_probe": "PASS: both factory routes, temporary/by-value bank consumption, canonical manager references through reserve, assignment-release reentry changes state before poll, conditional/unconditional logs, final ownership cleanup",
+    "probe_source": "local/voice-slot-start-probe.cpp",
+    "probe_recipe": "./local/run-voice-slot-start-probe.ps1 (use -Integrated after removing the old start callback)",
+    "probe_log": "local/voice-slot-start-probe.log",
+    "permanent_tests_added": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

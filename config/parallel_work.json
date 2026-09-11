@@ -4114,6 +4114,103 @@
       "discovery_evidence": "docs/UNIT_COMMAND_PRODUCERS.md"
     },
     {
+      "id": "orch4_voice_slot_start_b",
+      "packet": "orch4_voice_slot_start_b",
+      "worker": "agent/orch4-slot-start-20260910b",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005b9050",
+        "00702cc0",
+        "005b82c0",
+        "005b7fc0",
+        "00a7b0a0",
+        "00a7e490",
+        "00a798c0",
+        "0054d4c0",
+        "00a7d5c0",
+        "00a7c080"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_slot_start.hpp",
+        "src/voice_slot_start.cpp",
+        "docs/VOICE_SLOT_START.md",
+        "reports/voice_slot_start.json"
+      ],
+      "scope": "Slot construction, assignment, cleanup, startup and six direct sound/reference helpers.",
+      "integration_report": "reports/voice_services_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_line_playback"
+      ],
+      "discovery_evidence": "docs/VOICE_SERVICES_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_voice_subtitles_b",
+      "packet": "orch4_voice_subtitles_b",
+      "worker": "agent/orch4-subtitles-20260910b",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005b8510"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_subtitles.hpp",
+        "src/voice_subtitles.cpp",
+        "docs/VOICE_SUBTITLES.md",
+        "reports/voice_subtitles.json"
+      ],
+      "scope": "Complete subtitle clone/text/layout call sequence with canonical GUI projections and required dispatch.",
+      "integration_report": "reports/voice_services_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_line_playback"
+      ],
+      "discovery_evidence": "docs/VOICE_SERVICES_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_voice_fade_b",
+      "packet": "orch4_voice_fade_b",
+      "worker": "agent/orch4-fade-20260910b",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005b8c30"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_fade_update.hpp",
+        "src/voice_fade_update.cpp",
+        "docs/VOICE_FADE_UPDATE.md",
+        "reports/voice_fade_update.json"
+      ],
+      "scope": "Fade step, callback copy-clear-dispatch-cleanup and current sound multiplier publication.",
+      "integration_report": "reports/voice_services_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_line_playback"
+      ],
+      "discovery_evidence": "docs/VOICE_SERVICES_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_voice_line_advance",
+      "packet": "orch4_voice_line_advance",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005b91e0"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_line_advance.hpp",
+        "src/voice_line_advance.cpp",
+        "docs/VOICE_LINE_ADVANCE.md",
+        "reports/voice_line_advance.json"
+      ],
+      "scope": "Active line polling, skipped records, unsigned index progression and subsequent clip start.",
+      "integration_report": "reports/voice_services_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_line_playback"
+      ],
+      "discovery_evidence": "docs/VOICE_SERVICES_INTEGRATION.md"
+    },
+    {
       "id": "native_cube_texture_base2",
       "packet": "native_cube_texture_base2",
       "worker": "main",

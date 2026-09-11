@@ -9,17 +9,25 @@
 
 namespace bsp {
 
+struct GuiWidgetTransform;
+struct GuiTextWidget;
+struct VoiceSubtitleContext;
+struct VoiceFadeBindings;
+
 // Typed projections, not native binary layouts. Clip12 is {vtable, record*,
-// opaque word}; record begins {NativeString, signed sound id}. Records are
-// borrowed. The clip word is copied unchanged, including on positional calls.
+// resource index}; record begins {NativeString, signed sound id}. Records and
+// resource array references are borrowed. Native lifetime stays with the owner.
 struct VoiceClipRecord {
     NativeString text_00;
     std::int32_t sound_id_08{};
+    std::uint8_t alternate_14{};
+    NativeString alternate_name_18;
+    std::vector<void*> resources_20; // resource wrappers, not SoundOwnedResource
 };
 struct VoiceClip {
     std::uint32_t native_vtable_00{0x00cf0dd0};
     const VoiceClipRecord* record_04{};
-    std::uint32_t word_08{};
+    std::uint32_t word_08{}; // index into record+20 on the ordinary branch
 };
 using VoiceClips = std::vector<VoiceClip>;
 
@@ -28,6 +36,7 @@ struct VoicePlaybackSlot {
     std::int32_t state_00{};
     void* sound_04{}; // intrusive reference; virtual +8 stop, +C completion
     void* auxiliary_08{}; // intrusive reference; virtual +8(0), then reset
+    NativeString alternate_name_0c; // owned; explicit 005B7FC0 teardown
     float started_at_14{};
 };
 
@@ -67,9 +76,19 @@ struct VoiceLineQueue {
 };
 struct VoicePlaybackManager {
     VoicePlaybackSlot slot_08;
+    GuiWidgetTransform* template_2c{};
+    GuiWidgetTransform* group_30{};
+    GuiTextWidget* text_34{};
+    GuiTextWidget* text_38{};
+    GuiWidgetTransform* background_3c{};
+    GuiWidgetTransform* decoration_40{};
     VoiceLineQueue lines_54;
+    std::uint8_t dirty_60{};
     std::uint32_t blocked_6c{};
     std::uint32_t disabled_74{};
+    float initial_78{};
+    float per_character_7c{};
+    float base_80{};
     std::array<void*, 5> speaker_table_a0{}; // borrowed intrusive references
     float fade_value_d4{};
     float fade_target_d8{};
@@ -77,6 +96,7 @@ struct VoicePlaybackManager {
     NativeString fade_callback_e0;
 };
 struct VoicePanelState { std::uint32_t field_34{}, field_24{}; };
+struct VoiceSlotStartContext;
 
 // Required game services at the named native callsites. They must implement
 // the stated effects; no fallback, fake FMOD or implicit success exists here.
@@ -94,11 +114,11 @@ public:
     virtual void retain_reference(void*) = 0; // InterlockedIncrement at +4
     virtual std::uint32_t invalid_target_00e188d8() = 0;
     virtual bool target_valid_00645160(std::uint32_t target, bool flag) = 0;
-    virtual void display_text_005b8510(VoiceLine&, const NativeString&) = 0;
-    // Bank is borrowed for this host invocation. The wrapper retains/releases
-    // the native by-value argument around it. Slot -1 is passed unchanged.
-    virtual void start_clip_005b9050(VoicePlaybackManager&, std::int32_t slot,
-        const VoiceClip&, void* bank) = 0;
+    // Side-effect-free accessors expose live real owners and services. Resolve
+    // the global manager separately at every recovered native load site.
+    virtual VoicePlaybackManager& current_voice_manager_00e198c4_a4() = 0;
+    virtual VoiceSubtitleContext& subtitle_context() = 0;
+    virtual VoiceSlotStartContext& slot_start_context() = 0;
     virtual void log_004254b0(const char* format, const char* text) = 0;
     // These perform the native dirty-bit tests and refresh calls, returning
     // float camera+120/124/128 and entity+FC/100/104 coordinates respectively.
@@ -106,7 +126,7 @@ public:
     virtual std::array<float, 3> entity_position_00414db0(void* entity) = 0;
     virtual double vector_length_0042b2f0(const std::array<float, 3>&) = 0;
     virtual float global_sound_level_6c() = 0;
-    virtual void update_fade_005b8c30(VoicePlaybackManager&, float delta) = 0;
+    virtual VoiceFadeBindings& fade_bindings() = 0;
 };
 
 // Native ECX=slot, RET; polls AND may stop/release/reset the slot.
@@ -120,7 +140,7 @@ std::uint32_t classify_voice_speaker_005bbc10(void* speaker, VoiceLineHost&);
 void append_voice_line_005b7790(VoiceLineQueue&, VoiceLine*, VoiceLineHost&);
 // Native ECX=fresh 38h line, vector*/target/ref-value stack, RET0C/EAX=this.
 // bank owns ONE already-retained argument reference, consumed on return.
-VoiceLine& construct_voice_line_005babb0(VoiceLine&, VoicePlaybackManager&,
+VoiceLine& construct_voice_line_005babb0(VoiceLine&,
     const VoiceClips&, std::uint32_t target, void* bank, VoiceLineHost&,
     NativeStringStorage&);
 // Native ECX=manager, vector*/target/speaker stack, RET0C.

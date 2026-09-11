@@ -1,0 +1,48 @@
+{
+  "packet": "orch4_voice_subtitles_b",
+  "address": "005b8510",
+  "proposed_name": "BSP_VoiceLine_CreateSubtitleWidgets",
+  "name_status": "hypothesis_not_recovered_symbol",
+  "native_abi": "__thiscall; ECX=38h line; NativeString* at entry ESP+4; RET4",
+  "last_instruction": "005b8807",
+  "inclusive_last_byte": "005b880b",
+  "byte_length": 764,
+  "instructions": 222,
+  "state": "full_control_flow_and_call_sequence_reconstructed_with_explicit_GUI_contracts",
+  "sources": ["src/voice_subtitles.cpp", "include/bsp/voice_subtitles.hpp"],
+  "documentation": "docs/VOICE_SUBTITLES.md",
+  "evidence": [
+    "exports/bsp/functions/005b8510/assembly.txt: complete 222-instruction body",
+    "live read-only proto 005b8510 confirms body005b8510..005b880b",
+    "live read-only disasm 00aa7d00 and 00aa67f0",
+    "live bytes 00cec380,00cef290,00cf0de0,00cf0de8,00d7a258,00d7a210,00d7a280,00ce3a0c",
+    "live flow 005b8510: 222 listed instructions, zero gaps"
+  ],
+  "canonical_implementations": [
+    "clone_subtree", "set_localised_source_00abaed0", "widget_size",
+    "resolved_position", "set_resolved_position", "recompose_local_transform",
+    "refresh_local_bounds"
+  ],
+  "required_calls": [
+    "widget_vslot34_visibility", "widget_vslot58_size", "00aa7e00_child_lookup",
+    "00abbe50_literal_submission_external_locale_owner", "00ab6bd0_normalized_height"
+  ],
+  "manager_reload_sites": ["005b8528", "005b85d4", "005b872c", "005b878c", "005b87ad", "005b87be"],
+  "flow_gaps": [],
+  "missing_function_starts": [],
+  "ghidra_mutations": false,
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32 passed; MSVC 19.51.36244.0",
+    "existing_checks": "CTest reconstructed_math 1/1 passed; this does not exercise the new subtitle sequence",
+    "diff_check": "git diff --check passed",
+    "new_tests": 0,
+    "subtitle_fixture": false,
+    "native_differential": false,
+    "game_visual": false
+  },
+  "limits": [
+    "Typed manager,line,GUI projections are not native binary layouts or ABI entry points.",
+    "Host still supplies actual GUI virtual dispatch, child-tree mapping, height and locale services.",
+    "GUI canonical callees retain their previously documented reconstruction limits."
+  ]
+}
