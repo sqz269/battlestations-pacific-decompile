@@ -1,0 +1,207 @@
+{
+  "packet": "orch3_effect_o_integration",
+  "reviewed_commits": {
+    "row_ownership": "47fbb127",
+    "teardown": "e3ccbe68"
+  },
+  "node_pool": "Stopped worker draft recovered/completed in primary; reports/native_node_pool_allocation.json",
+  "changes": [
+    {
+      "address": "006cf070",
+      "before": {
+        "address": "006cf070",
+        "function_name": "FUN_006cf070"
+      },
+      "after": {
+        "address": "006cf070",
+        "name": "BSP_RetainedReference_ReleaseThenClearSlot",
+        "evidence": "Hypothesis, not recovered symbol. ECX pointer slot; RET. Capture nonnull old, decrement actual+04, current virtual00 at zero, clear captured slot after terminal returns; empty does not write. Complete typed helper; required borrowed counts/nonthrowing terminal mapping. Constructor EH funclet C9501A invokes this for temporary result. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/point_effect_row_ownership.json"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "006fbeb0",
+      "before": {
+        "address": "006fbeb0",
+        "function_name": "FUN_006fbeb0"
+      },
+      "after": {
+        "address": "006fbeb0",
+        "name": "BSP_RetainedReference_AssignFromSlot",
+        "evidence": "Hypothesis, not recovered symbol. ECX destination; stack pointer-to-source-slot; EAX destination; RET4. Capture source then old; identity no-op; publish incoming then actual+04 retain then captured old release/current virtual00. No rewrite after terminal reentry. Complete typed helper, required borrowed actual counts and nonthrowing terminal mapping. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/point_effect_row_ownership.json"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008675b0",
+      "before": {
+        "address": "008675b0",
+        "function_name": "FUN_008675b0"
+      },
+      "after": {
+        "address": "008675b0",
+        "name": "BSP_PointEffectReferenceArray_Destroy_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. ECX actual0Ch header; RET; no established EAX result. 8675B5 resize current header to0. 8675BA reload current backing. 8675BD ordinary free. begin and capacity left unchanged. Complete typed body using required actual borrowed owner/terminal bindings; five-state member unwind for867680. Current110 reload after canonical B6DFA0; no invented node retry/counter rollback. docs/POINT_EFFECT_TEARDOWN.md; reports/point_effect_teardown.json. Strict combined build/lifetime probes; original exceptionABI and gameplay unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00867680",
+      "before": {
+        "address": "00867680",
+        "function_name": "FUN_00867680"
+      },
+      "after": {
+        "address": "00867680",
+        "name": "BSP_PointEffectInstance_Destroy_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. ECX actual114h instance; RET; no established EAX result. 86769F publishD0D3EC. 8676A5 capture node before8676AB F87600 decrement. 8676BA canonical B6DFA0 then8676BF reload current110. 8676CB..DB release actual current node04 and virtual00 atzero. 8676DD..FE parent8C release-clear. 867708..729 current template84 release-clear. 867733..747 auxiliary18 resize0/free. 86774F..763 entries0C resize0/free. 867775 BD30F0 base identity only. Complete typed body using required actual borrowed owner/terminal bindings; five-state member unwind for867680. Current110 reload after canonical B6DFA0; no invented node retry/counter rollback. docs/POINT_EFFECT_TEARDOWN.md; reports/point_effect_teardown.json. Strict combined build/lifetime probes; original exceptionABI and gameplay unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00867ce0",
+      "before": {
+        "address": "00867ce0",
+        "function_name": "CG_scalar_deleting_dtor_00867ce0"
+      },
+      "after": {
+        "address": "00867ce0",
+        "name": "BSP_PointEffectInstance_ScalarDeletingDtor_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. ECX actual114h instance; flags stackDWORD; EAX original address including afterfree; RET4. 867CE3 complete direct destructor. 867CE8 low flagsbit0. 867CF0 BF65AC ordinaryfree. 867CF8 original pointer return onbothbranches. Complete typed body using required actual borrowed owner/terminal bindings; five-state member unwind for867680. Current110 reload after canonical B6DFA0; no invented node retry/counter rollback. docs/POINT_EFFECT_TEARDOWN.md; reports/point_effect_teardown.json. Strict combined build/lifetime probes; original exceptionABI and gameplay unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008680b0",
+      "before": {
+        "address": "008680b0",
+        "function_name": "BSP_PointEffect_Construct_Provisional",
+        "comment": "[BSP reconstruction 008680b0]\nHypothesis, not recovered symbol. Actual114h constructor; ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json.\n\n[BSP reconstruction 008680b0] update\nHypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json."
+      },
+      "after": {
+        "address": "008680b0",
+        "name": "BSP_PointEffect_Construct_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json. | Packet orch3_effect_o_integration adds bounded8682D5..86838C actual row stage: resize current count, refresh current node then global19FC reference, option gate, capture current template extent, current row flags/required virtual18, reload destination backing afterfactory, assign and consume original temporary. Whole constructor/row factory/manager insertion remain required. True constructor ABI seven DWORDstackslots/RET1C. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/effect_o_integration.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6dd10",
+      "before": {
+        "address": "00b6dd10",
+        "function_name": "FUN_00b6dd10"
+      },
+      "after": {
+        "address": "00b6dd10",
+        "name": "BSP_NativeNodePoolSlab_Construct",
+        "evidence": "Hypothesis, not recovered symbol. ECX actual2F44h slab; stack slab index; EAX slab; RET4. CountWORD2F40=32; free indexWORDs31..0 at2F00; DWORD slab ID after each174h payload. Preserve all payloads and final2padding bytes. Five-body original-byte differential with current CRT/Windows rebinding passed, including1057allocations/tablegrowth/scanning/reuse/depth. Actual owner constructor and node construction/terminal binding remain required. docs/NATIVE_NODE_POOL_ALLOCATION.md; reports/native_node_pool_allocation.json. TypedAPI; no exceptionABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6e490",
+      "before": {
+        "address": "00b6e490",
+        "function_name": "FUN_00b6e490"
+      },
+      "after": {
+        "address": "00b6e490",
+        "name": "BSP_NativeNodePool_ReturnRawSlot",
+        "evidence": "Hypothesis, not recovered symbol. ECX actual initialized38h owner; stack raw slot; RET4. Actual lock/depth; read slot+174 slab index, resolve current table. Signed pointer delta/178h truncates towardzero; lowWORD pushed at slab freecount; incrementWORD count; unsigned lower-earliest; decrementdepth/unlock. No validation or reclamation. Five-body original-byte differential with current CRT/Windows rebinding passed, including1057allocations/tablegrowth/scanning/reuse/depth. Actual owner constructor and node construction/terminal binding remain required. docs/NATIVE_NODE_POOL_ALLOCATION.md; reports/native_node_pool_allocation.json. TypedAPI; no exceptionABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6e670",
+      "before": {
+        "address": "00b6e670",
+        "function_name": "FUN_00b6e670"
+      },
+      "after": {
+        "address": "00b6e670",
+        "name": "BSP_NativeNode_ReturnRawSlot",
+        "evidence": "Hypothesis, not recovered symbol. ECX raw slot; select0108FF58; CALL B6E490; RET. Constructor-failure raw return; preserves real global pool selection. Does not invoke node destructor. Five-body original-byte differential with current CRT/Windows rebinding passed, including1057allocations/tablegrowth/scanning/reuse/depth. Actual owner constructor and node construction/terminal binding remain required. docs/NATIVE_NODE_POOL_ALLOCATION.md; reports/native_node_pool_allocation.json. TypedAPI; no exceptionABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6eb00",
+      "before": {
+        "address": "00b6eb00",
+        "function_name": "FUN_00b6eb00"
+      },
+      "after": {
+        "address": "00b6eb00",
+        "name": "BSP_NativeNodePool_AllocateRawSlot",
+        "evidence": "Hypothesis, not recovered symbol. ECX actual initialized38h owner; EAX raw178h slot; RET. Actual CS0C/depth24/table28/count2C/cap30/earliest34. FFFFFFFF creates2F44h slab, publishes earliest before allocation; capacity=2*cap+2 before table allocation, live copy/free/replacement publication. PopWORD index; full slab scans later nonfull slabs. No local EH/rollback; captured slot returned after depth decrement/unlock. Five-body original-byte differential with current CRT/Windows rebinding passed, including1057allocations/tablegrowth/scanning/reuse/depth. Actual owner constructor and node construction/terminal binding remain required. docs/NATIVE_NODE_POOL_ALLOCATION.md; reports/native_node_pool_allocation.json. TypedAPI; no exceptionABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6ed70",
+      "before": {
+        "address": "00b6ed70",
+        "function_name": "CG_static_dtor_stub_00b6ed70"
+      },
+      "after": {
+        "address": "00b6ed70",
+        "name": "BSP_NativeNode_AllocateRawSlot",
+        "evidence": "Hypothesis, not recovered symbol. Incoming ECX ignored; MOV ECX,0108FF58; tailJMP B6EB00; EAX raw slot. Corrects erroneous CG_static_dtor_stub inventory name. Caller174h size is overwritten; global actual pool selects raw178h slot. TypedAPI borrows actual global pool address; no substitute pool or node construction. Five-body original-byte differential with current CRT/Windows rebinding passed, including1057allocations/tablegrowth/scanning/reuse/depth. Actual owner constructor and node construction/terminal binding remain required. docs/NATIVE_NODE_POOL_ALLOCATION.md; reports/native_node_pool_allocation.json. TypedAPI; no exceptionABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c94efa",
+      "before": {
+        "address": "00c94efa",
+        "function_name": "FUN_00c94efa"
+      },
+      "after": {
+        "address": "00c94efa",
+        "name": "BSP_PointEffectInstance_Destroy_ExceptionHandler",
+        "evidence": "Hypothesis, not recovered symbol. Compiler10-byte MOV EAX,DC6D4C; JMP BF6B43 for867680. MapDC6D70 states4parent8C,3template84,2array18,1array0C,0base; no node retry/counter rollback/physicalfree. Live/disk defined handler; decoded destructor tail remains outside stored function body. docs/POINT_EFFECT_TEARDOWN.md; reports/effect_o_definitions.json; reports/effect_o_flow.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_readback": "All12 names/evidence and prior comments verified in local/effect-node-o-comments.json",
+  "exports": "All12 refreshed after saved annotations",
+  "source_registration": "point_effect_row_ownership.cpp,point_effect_teardown.cpp,native_node_pool_allocation.cpp registered in cmake/startup.cmake",
+  "flow_repair": {
+    "effect": "reports/effect_o_flow.json",
+    "node_pool": "reports/native_node_pool_flow_o.json",
+    "complete_repairs": [
+      "867CF5 ADD ESP4 returning-free gap; zero remaining call gaps",
+      "B6EB96 ADD ESP4 returning-free gap; zero remaining call gaps"
+    ],
+    "partial_repairs": [
+      "8675C2..C6 decoded but stored8675B0 body still ends8675C1",
+      "86774C..86778B decoded but stored867680 body still ends86774B"
+    ],
+    "padding_left_alone": "B6EBF9 seven-byte alignment after unconditional JMP"
+  },
+  "compiler_handler": "C94EFA ten-byte destructor EH handler defined from verified live/disk bytes; reports/effect_o_definitions.json",
+  "validation": {
+    "strict_combined_build": "PASS scripts/build.ps1; local/effect-node-o-build.log",
+    "existing_ctests": "2/2 pass",
+    "row_fixture": "PASS borrowed-count/alias/factory-reentry/captured-extent/destination-reload; local/combined-point_effect_row_probe.log",
+    "teardown_fixture": "PASS actual count/current-node replacement/member unwind/ordered cleanup/flags; local/combined-point_effect_teardown_probe.log",
+    "node_pool_fixture": "PASS five original byte bodies,1057allocations,table growth32to66,metadata/preimages,full-slab scan,LIFO,nested lock depth; local/node-pool-o-fixture.log",
+    "linkage": "Worker probes relinked against combined bsp_core.lib without duplicate standalone source objects"
+  },
+  "supersedes": [
+    "Row/teardown source-registration and annotation pending fields in worker reports",
+    "Row assignment/temporary-release helper boundary in point-effect constructor report",
+    "Raw node pool allocation/return body boundary; actual pool owner initialization and physical node construction still required"
+  ],
+  "remaining": [
+    "Actual B6E980 pool constructor/B6E3D0 destructor/static lifetime integration",
+    "Actual B6F5A0 physical node constructor and retained terminal/scene companion",
+    "Actual row virtual18 factory implementations",
+    "Point-effect manager insertion, virtual0 deferred release and whole constructor/exception ABI",
+    "Application/gameplay validation"
+  ],
+  "new_permanent_tests": 0,
+  "game_validated": false,
+  "abi_compatible": false
+}
