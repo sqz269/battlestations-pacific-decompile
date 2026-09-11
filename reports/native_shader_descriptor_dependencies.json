@@ -1,0 +1,592 @@
+{
+  "packet": "orch2_native_shader_descriptor_dependencies_ak",
+  "functions": [
+    {
+      "address": "00b6a020",
+      "name": "BSP_LuaStateOwner_Open",
+      "cpp": "open_native_lua_state_00b6a020",
+      "source": "src/native_lua_bootstrap.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual4C8h owner; stack library mask; RET4",
+      "evidence": "Full823-byte actual owner bootstrap. Always base then selected table-order libraries. Writes owns/state/initial-top08 only, retaining slots and earlier state without closing it. PC/X360/region protected chunks ignore statuses; live globals and native temporary strings. Zero-upvalue required DoFile. Required fundamentals getter called twice: firstsize08 then secondbytes04; loadbuffer status ignored before unprotected lua_call. Cache/VFS ownership remains external; no invented rollback."
+    },
+    {
+      "address": "00b669c0",
+      "name": "BSP_LuaStateOwner_Panic",
+      "cpp": "native_lua_panic_00b669c0",
+      "source": "src/native_lua_bootstrap.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX lua_State; EAX0; RET; host callback C ABI",
+      "evidence": "Full23-byte panic callback: lua_tolstring(state,lua_gettop(state),null), return0. Discards returned pointer, DOES NOT POP stack. Numeric top becomes string in place. Original instructions compared; fatal process termination not exercised."
+    },
+    {
+      "address": "00b437f0",
+      "name": "BSP_ShaderDescriptor_ReadCombinerEntry",
+      "cpp": "read_native_shader_combiner_00b437f0",
+      "source": "src/native_shader_combiner_reader.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX unused; stack actual8h string slots and14h Lua entry; RET8",
+      "evidence": "Full449-byte native string reader. Integral-number keys participate but ordinal advances EVERY entry. Ordinal0 exactNUMBER mode/default13; ordinal1 exactSTRING name/defaultempty; extrasignored. Missing mode preserves explicit original stack input at align_down(entryESP-4,8)-4Ch. Unchecked32bit mode*8 destination, duplicatesoverwrite. Cached local length/current pointer for finalcopy and normalrelease; currentheader EHcleanup. Four-state unwind checked, not executed."
+    },
+    {
+      "address": "00b439c0",
+      "name": "BSP_ShaderDescriptor_ReadCombinerTable",
+      "cpp": "read_native_shader_combiner_table_00b439c0",
+      "source": "src/native_shader_combiner_reader.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX descriptor passed through unused; stack slots/Shader/NativeString field; RET0C",
+      "evidence": "Full320-byte native outer reader: field C-string lookup, TABLE gate/release/freshlookup; VALUE termination, integral-number outer keys only, explicit per-entry missing-mode input. Preserve prior slots, value/key/table cleanup. Four-state unwind verified. B43A7A..7F remains unreachable alignment after jump. Installed debug modes0/1/3/4 andalpha7 yield dummy.shfx through original/rebuilt code."
+    },
+    {
+      "address": "00b660a0",
+      "name": "BSP_LuaObject_IsString",
+      "cpp": "native_lua_is_string_00b660a0",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual14h Lua object; ALboolean; RET",
+      "evidence": "Full68-byte actual helper: kind2 and exactLUA_TSTRING only. Original/rebuilt fixture across11values/fivekinds; no numeric-to-string coercion."
+    },
+    {
+      "address": "00b66330",
+      "name": "BSP_LuaReference_GetFloatOrDefault",
+      "cpp": "native_lua_number_or_00b66330",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual14h Lua object; stack floatfallback; ST0float; RET4",
+      "evidence": "Full66-byte actual helper: kind2 and exactLUA_TNUMBER converts then float32spill/reload; otherwise suppliedfallback. Numericstrings rejected. Original/rebuilt floatbits compared including signedzero/rounding/NaN/infinity."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b6a02c",
+      "native": "00a6a260",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a03b",
+      "native": "00a67390",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a068",
+      "native": "00a67b20",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a073",
+      "native": "00a67a50",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a082",
+      "native": "00a68090",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a096",
+      "native": "00a673d0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a0ae",
+      "native": "0041dd40",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a0c9",
+      "native": "00bf7680",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a0dd",
+      "native": "00a6a190",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a0ee",
+      "native": "00a680e0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a0fe",
+      "native": "00419cc0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a105",
+      "native": "00bd1510",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a123",
+      "native": "0041dd40",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a13e",
+      "native": "00bf7680",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a14c",
+      "native": "0041dd40",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a167",
+      "native": "00bf7680",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a17b",
+      "native": "00a6a190",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a18c",
+      "native": "00a680e0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a19c",
+      "native": "00419cc0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a1a3",
+      "native": "00bd1510",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a1bb",
+      "native": "00bf7fbf",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a1dc",
+      "native": "0041dd40",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a1f7",
+      "native": "00bf7680",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a20b",
+      "native": "00a6a190",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a21c",
+      "native": "00a680e0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a247",
+      "native": "00bf7fbf",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a268",
+      "native": "0041dd40",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a283",
+      "native": "00bf7680",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a2a1",
+      "native": "00bf7fbf",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a2bb",
+      "native": "0041e870",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a2d2",
+      "native": "00a6a190",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a2e3",
+      "native": "00a680e0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a2f7",
+      "native": "00419cc0",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a2fe",
+      "native": "00bd1510",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a30c",
+      "native": "00a67b20",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a31e",
+      "native": "00a67e40",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a323",
+      "native": "00884770",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a32b",
+      "native": "00884770",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a33c",
+      "native": "00a6a160",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b6a348",
+      "native": "00a68090",
+      "function": "00b6a020"
+    },
+    {
+      "address": "00b669c5",
+      "native": "00a673d0",
+      "function": "00b669c0"
+    },
+    {
+      "address": "00b669ce",
+      "native": "00a67810",
+      "function": "00b669c0"
+    },
+    {
+      "address": "00b43815",
+      "native": "00b65f50",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43824",
+      "native": "00b65f50",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b4384b",
+      "native": "00b67080",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43857",
+      "native": "00b66420",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43868",
+      "native": "00b66a60",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b4387f",
+      "native": "00b66380",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b4389d",
+      "native": "00b685c0",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b438b6",
+      "native": "0041dd40",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b438ce",
+      "native": "00bf7680",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b438ee",
+      "native": "00419cc0",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b438f5",
+      "native": "00bd1510",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43911",
+      "native": "00b67190",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b4391d",
+      "native": "00b66420",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43941",
+      "native": "0041dd40",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43956",
+      "native": "00bf7680",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43972",
+      "native": "00419cc0",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43979",
+      "native": "00bd1510",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43987",
+      "native": "00b67700",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b43998",
+      "native": "00b67700",
+      "function": "00b437f0"
+    },
+    {
+      "address": "00b439ee",
+      "native": "00b68100",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b439fd",
+      "native": "00b661b0",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a10",
+      "native": "00b67700",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a25",
+      "native": "00b68100",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a36",
+      "native": "00b65f50",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a45",
+      "native": "00b65f50",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a5d",
+      "native": "00b67080",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a6b",
+      "native": "00b66420",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a84",
+      "native": "00b66a60",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43a95",
+      "native": "00b437f0",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43aa8",
+      "native": "00b67190",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43ab6",
+      "native": "00b66420",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43ac7",
+      "native": "00b67700",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43ad5",
+      "native": "00b67700",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b43ae6",
+      "native": "00b67700",
+      "function": "00b439c0"
+    },
+    {
+      "address": "00b660c4",
+      "native": "00a675a0",
+      "function": "00b660a0"
+    },
+    {
+      "address": "00b66347",
+      "native": "00a675a0",
+      "function": "00b66330"
+    },
+    {
+      "address": "00b66359",
+      "native": "00a67770",
+      "function": "00b66330"
+    }
+  ],
+  "no_ghidra_function": [],
+  "storage": {
+    "lua_owner_bytes": 1224,
+    "lua_object_bytes": 20,
+    "native_string_bytes": 8,
+    "fundamentals_readable_bytes": 12,
+    "combiner_slots": 14
+  },
+  "bootstrap": {
+    "always_base": true,
+    "library_mask_order": [
+      "base",
+      "package",
+      "table",
+      "io",
+      "os",
+      "string",
+      "math",
+      "debug"
+    ],
+    "initial_top_offset": 8,
+    "tracking_fields_retained": true,
+    "previous_state_closed": false,
+    "required_external_services": [
+      "00884770 cache getter",
+      "00b69e00 zero-upvalue DoFile"
+    ],
+    "cache_getter_order": [
+      "first result length08",
+      "second result bytes04"
+    ],
+    "platform_chunks_protected": true,
+    "fundamentals_load_status_ignored": true,
+    "fundamentals_call_protected": false,
+    "panic_pops_stack": false,
+    "panic_numeric_top_coerces_in_place": true,
+    "exception_rollback": false
+  },
+  "combiner": {
+    "ordinal_advances_for_rejected_keys": true,
+    "ordinal_zero": "exact NUMBER mode or13",
+    "ordinal_one": "exact STRING name or empty",
+    "missing_mode": "explicit stack preimage",
+    "destination": "32-bit slots+mode*8, unchecked",
+    "duplicates": "last writer wins",
+    "others_retained": true,
+    "local_name_cached_length": true,
+    "final_copy_uses_current_local_pointer_after_resize": true,
+    "normal_cleanup": "current pointer/cached length",
+    "unwind_cleanup": "current header",
+    "outer_fresh_lookup": true,
+    "outer_keys": "integral NUMBER only",
+    "termination": "value is unbound",
+    "cleanup": [
+      "value",
+      "key",
+      "table"
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_packet_functions_executed": 6,
+    "prior_dependency_bodies_relocated": 31,
+    "paired_bootstrap_cases": 36,
+    "bootstrap_executions": 72,
+    "full_owner_bytes_compared": 1224,
+    "old_state_survival": true,
+    "distinct_cache_views": true,
+    "multiple_fundamentals_return_values": true,
+    "zero_upvalue_dofile_invoked": true,
+    "helper_values": 11,
+    "helper_object_kinds": 5,
+    "float_bits_compared": true,
+    "panic_stack_coercion": true,
+    "combiner_shapes": 9,
+    "integer_modes": [
+      "SSE2",
+      "x87"
+    ],
+    "native_mode_stack_seed": true,
+    "fresh_metatable_lookup": true,
+    "absent_boolean_empty_preserve_output": true,
+    "embedded_nul_strings": true,
+    "paired_allocation_release_traces": true,
+    "actual_descriptor_cleanup": true,
+    "installed_combiners": {
+      "debugshader": {
+        "0": "dummy.shfx",
+        "1": "dummy.shfx",
+        "3": "dummy.shfx",
+        "4": "dummy.shfx"
+      },
+      "alphablend": {
+        "7": "dummy.shfx"
+      }
+    },
+    "original_exception_execution": false,
+    "fatal_process_termination_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "corrections": [
+    {
+      "was": "Existing Lua bootstrap used a projected owner and protected cleanup/error recovery.",
+      "is": "Actual4C8h owner bootstrap preserves slots/old state and calls fundamentals without protection.",
+      "evidence": "B6A020 complete listing and original/rebuilt fixture."
+    },
+    {
+      "was": "Panic prose said it discards the message, which could be read as popping the stack.",
+      "is": "Only the returned string pointer is discarded; stack top stays present and numeric values coerce in place.",
+      "evidence": "B669C0 full23-byte body and direct original/rebuilt calls."
+    },
+    {
+      "was": "Combiner readers were semantic projections.",
+      "is": "Actual native strings/tracked Lua objects, explicit uninitialized-mode inputs and actual descriptor cleanup.",
+      "evidence": "B437F0/B439C0 full bodies, eight EH states and installed shader fixture."
+    }
+  ],
+  "fixture_boundaries": {
+    "lua": "StockLua5.1.1 via original register/stack ABI adapters, including C-to-native panic trampoline and native table mapped to corresponding stock C openers.",
+    "allocations": "Existing actual native string pool, shared heap and descriptor cleanup implementations.",
+    "stack_seed": "Only align_down(entryESP-4,8)-4Ch is seeded before original combiner entry; rebuilt receives identical per-entry inputs. Unconstrained native stack reuse is not inferred.",
+    "fundamentals": "Two external actual-layout views carrying fixture Lua code, not installed cached fundamentals. Full cache owner and VFS loading remain external.",
+    "installed_dofile": "Loads installed loose shaderfx/dx9_lua.inc; native VFS routing not claimed.",
+    "exceptions": "Original metadata and thunks inspected, not executed. No fatal-path or arbitrary callback mutation claim."
+  },
+  "limitations": [
+    "Not drop-in original ABI replacements.",
+    "B43B00 actual descriptor integration requires B69D40/B66CA0 and actual VFS/stream contracts.",
+    "00884770/B68340 fundamentals ownership is not reconstructed here.",
+    "Explicit valid mode addresses, iterable values and valid Lua tracking capacities remain caller contracts.",
+    "Original exception ABI, fatal process behavior, callback-driven header mutation and game rendering/gameplay remain unvalidated."
+  ]
+}
