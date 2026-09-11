@@ -2,6 +2,8 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/settings_initial_state.hpp"
+#include <stdexcept>
 
 #include <objbase.h>
 #include <shlobj.h>
@@ -190,6 +192,20 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             game_root = argv[++index];
+        } else if (std::strcmp(argument, "--settings-personal-root") == 0) {
+            if (index + 1 >= argc) {
+                error = "--settings-personal-root needs a directory";
+                return false;
+            }
+            // Resolve before --game-root changes CWD; an isolated output path
+            // must not accidentally become relative to the original installation.
+            const char* input = argv[++index];
+            const DWORD required = GetFullPathNameA(input, 0, nullptr, nullptr);
+            if (!required) { error = "cannot resolve settings personal root"; return false; }
+            settings_personal_root.resize(required);
+            const DWORD length = GetFullPathNameA(input, required, settings_personal_root.data(), nullptr);
+            if (!length || length >= required) { error = "cannot resolve settings personal root"; return false; }
+            settings_personal_root.resize(length);
         } else if (std::strcmp(argument, "--vfs-probe") == 0) {
             if (index + 1 >= argc) {
                 error = "--vfs-probe needs a virtual path";
@@ -465,11 +481,17 @@ void GameLoopCallbacks::frame() {
 // GameStartupHost, 008f81f0
 // ---------------------------------------------------------------------------
 
+GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
+    const GameExecutableOptions& options) : log_(log), instance_(instance), options_(options) {
+    initialize_static_game_settings_00cd2d80(settings_);
+}
+
 GameStartupHost::~GameStartupHost() {
     delete loop_callbacks_;
     delete frame_host_;
     delete device_;
     delete window_host_;
+    delete settings_host_;
     delete vfs_;
     delete random_threads_;
 }
@@ -569,8 +591,10 @@ std::string GameStartupHost::resolve_language() {
     std::string language = kStartupLanguageEnglish;
 
     char personal[MAX_PATH] = {};
-    if (SHGetSpecialFolderPathA(nullptr, personal, CSIDL_PERSONAL, TRUE)) {
-        std::string path(personal);
+    if (!options_.settings_personal_root.empty()
+        || SHGetSpecialFolderPathA(nullptr, personal, CSIDL_PERSONAL, TRUE)) {
+        std::string path = options_.settings_personal_root.empty()
+            ? std::string(personal) : options_.settings_personal_root;
         path += kOptionsDirectory;
         path += kOptionsFileName;
         PhysicalFile file;
@@ -706,37 +730,34 @@ void GameStartupHost::run_initialize_phases() {
     // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before
     // window creation at 0073dc0f, which is the ordering constraint the whole phase exists
     // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.
-    GameSettingsBinding settings_host(log_);
-    settings_ = load_game_settings_008d8190(settings_host);
+    if (!vfs_->manager()) throw std::runtime_error("Settings startup requires the mounted VFS");
+    settings_host_ = new GameSettingsBinding(log_, vfs_->manager()->context(),
+        vfs_->search_registrations(), content_suffixes_, profile_hints_, options_.settings_personal_root);
+    auto& settings_host = *settings_host_;
+    load_game_settings_008d8190(settings_, settings_host);
     log_.implemented("Phase 5 load_game_settings", "008d8190");
     summary_.options_file_present = settings_host.options_file_present();
     summary_.options_path = settings_host.options_path();
     log_.notef("options file %s %s", settings_host.options_path().c_str(),
-        summary_.options_file_present ? "loaded" : "absent, using detected defaults");
-    for (const std::string& recased : settings_host.recased_tokens()) {
-        log_.notef("options token recased %s", recased.c_str());
-    }
-    for (const std::string& unknown : settings_.unknown_tokens) {
-        log_.notef("Options: unknown token %s", unknown.c_str());
-    }
-    summary_.language = settings_.language;
-    summary_.settings_width = settings_.width_14;
-    summary_.settings_height = settings_.height_18;
-    summary_.settings_fullscreen = settings_.fullscreen_1e;
-    summary_.settings_vsync = settings_.vsync_60;
-    summary_.settings_antialias = settings_.antialias_58;
+        summary_.options_file_present ? "loaded" : "absent, initial options write attempted");
+    summary_.language = settings_.options_file.language;
+    summary_.settings_width = settings_.options_file.width_14;
+    summary_.settings_height = settings_.options_file.height_18;
+    summary_.settings_fullscreen = settings_.options_file.fullscreen_1e;
+    summary_.settings_vsync = settings_.options_file.vsync_60;
+    summary_.settings_antialias = settings_.options_file.antialias_58;
     log_.notef("settings resolution=%dx%d index=%d fullscreen=%d vsync=%d antialias=%d "
-        "shader_model=%d language=%s", settings_.width_14, settings_.height_18,
-        settings_.resolution_index_78, settings_.fullscreen_1e ? 1 : 0,
-        settings_.vsync_60 ? 1 : 0, settings_.antialias_58, settings_.shader_model_88,
-        settings_.language.empty() ? "(none)" : settings_.language.c_str());
+        "shader_model=%d language=%s", settings_.options_file.width_14, settings_.options_file.height_18,
+        settings_.options_file.resolution_index_78, settings_.options_file.fullscreen_1e ? 1 : 0,
+        settings_.options_file.vsync_60 ? 1 : 0, settings_.options_file.antialias_58, settings_.options_file.shader_model_88,
+        settings_.options_file.language.empty() ? "(none)" : settings_.options_file.language.c_str());
 
     // The three VFS reads the later milestones depend on: a GUI script, the locale table the
     // settings language selects, and one texture.
     if (vfs_ != nullptr && vfs_->ready()) {
         std::vector<std::string> probes{"interface/_common.lua"};
         probes.push_back("lockit/"
-            + (settings_.language.empty() ? std::string("english") : settings_.language)
+            + (settings_.options_file.language.empty() ? std::string("english") : settings_.options_file.language)
             + ".lng");
         probes.push_back("effects/a_fiji_terr_atl.dds");
         for (const std::string& extra : options_.vfs_probes) probes.push_back(extra);
@@ -753,13 +774,13 @@ void GameStartupHost::run_initialize_phases() {
     PlatformWindowRequest request{};
     window_class_name_ = kWindowName;
     request.name = window_class_name_.c_str();
-    request.fullscreen = settings_.fullscreen_1e;
-    request.color_depth_selector = settings_.vsync_60;
+    request.fullscreen = settings_.options_file.fullscreen_1e;
+    request.color_depth_selector = settings_.options_file.vsync_60;
     request.x = 0;
     request.y = 0;
-    request.width = settings_.width_14;
-    request.height = settings_.height_18;
-    request.renderer_option = static_cast<std::uint32_t>(settings_.antialias_58);
+    request.width = settings_.options_file.width_14;
+    request.height = settings_.options_file.height_18;
+    request.renderer_option = static_cast<std::uint32_t>(settings_.options_file.antialias_58);
     request.application = this;
     request.instance = instance_;
     request.procedure = &game_window_procedure;

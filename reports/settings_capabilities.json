@@ -1,0 +1,187 @@
+{
+  "packet": "orch2_settings_capabilities",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "sources": [
+    "include/bsp/settings_capabilities.hpp",
+    "src/settings_capabilities.cpp"
+  ],
+  "evidence_doc": "docs/SETTINGS_CAPABILITIES.md",
+  "functions": [
+    {
+      "address": "00b1ffd0",
+      "name": "compare_settings_resolutions_00b1ffd0",
+      "cpp_symbol": "compare_settings_resolutions_00b1ffd0",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "cdecl(two resolution pointers), RET",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b1ffed",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_CompareResolutionPairs",
+      "detail": "Complete 29-byte body: signed wrapped width difference, else height difference. Originally missing Ghidra function; integrator defined/saved under write lock. Disk bytes match live export. Original-byte fixture agrees in four cases."
+    },
+    {
+      "address": "00b1fff0",
+      "name": "settings_resolutions_00b1fff0",
+      "cpp_symbol": "settings_resolutions_00b1fff0",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX renderer, RET; returns renderer+1Ch",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b1fff4",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_GetResolutionVector",
+      "detail": "LEA EAX,[ECX+1Ch]; RET. Vector holds width/height DWORD pairs, populated by 00b27d80."
+    },
+    {
+      "address": "00b20000",
+      "name": "settings_antialias_levels_00b20000",
+      "cpp_symbol": "settings_antialias_levels_00b20000",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX renderer, RET; returns renderer+28h",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b20004",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_GetAntialiasVector",
+      "detail": "LEA EAX,[ECX+28h]; RET. AA DWORD vector populated by 00b295c0."
+    },
+    {
+      "address": "00b200b0",
+      "name": "settings_max_shader_model_00b200b0",
+      "cpp_symbol": "settings_max_shader_model_00b200b0",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX renderer, RET; returns DWORD at renderer+1B48h",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b200b7",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_GetSettingsShaderCeiling",
+      "detail": "MOV EAX,[ECX+1B48h]; RET. Producer 00b2c8e0 stores packed pixel version<0200h ? 1 : 2; ps_3_0 still maps to 2."
+    },
+    {
+      "address": "00b200c0",
+      "name": "select_settings_shader_model_00b200c0",
+      "cpp_symbol": "select_settings_shader_model_00b200c0",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX ignored, one ignored DWORD, RET4",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b200c3",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_SelectShaderModelNoOp",
+      "detail": "Entire body C2 04 00, RET4; does not read selected model or renderer. Observed complete no-op, not an unresolved stub."
+    },
+    {
+      "address": "00b27d80",
+      "name": "enumerate_settings_resolutions_00b27d80",
+      "cpp_symbol": "enumerate_settings_resolutions_00b27d80",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX renderer, RET",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b27e75",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_EnumerateResolutionPairs",
+      "detail": "Clears opaque renderer+19DCh, counts and enumerates adapter0 X8R8G8B8 modes, accepts result==0 and unsigned width>=640,height>=480, appends absent pairs using external008d46c0, retains existing vector and qsorts with00b1ffd0."
+    },
+    {
+      "address": "00b295c0",
+      "name": "rebuild_settings_antialias_00b295c0",
+      "cpp_symbol": "rebuild_settings_antialias_00b295c0",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX renderer, stack format DWORD, RET4",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "reconstructed_strict_win32_build_and_focused_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_end_exclusive": "00b2966c",
+      "kind": "function",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_RebuildAntialiasSamples",
+      "detail": "Clears renderer+28h vector, appends0, calls IDirect3D9 vtable+2Ch CheckDeviceMultiSampleType(0,HAL,format,FALSE,samples,&quality) for2..15; only HRESULT==0 appends. Format preserved in EBP; stack arg reused for quality, ignored for selection."
+    },
+    {
+      "address": "00b2c8e0",
+      "name": "gather_settings_shader_caps_00b2c8e0",
+      "cpp_symbol": "gather_settings_shader_caps_00b2c8e0",
+      "source": "src/settings_capabilities.cpp",
+      "original_abi": "ECX renderer, RET; only settings fields projected here",
+      "evidence": "reports/settings_capabilities.json; docs/SETTINGS_CAPABILITIES.md",
+      "status": "settings_projection_strict_win32_build_and_query_fixture_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "kind": "fragment",
+      "proposed_ghidra_name": "BSP_D3D9Renderer_GatherCapabilities",
+      "detail": "Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields."
+    }
+  ],
+  "comparator_disk_hex": "8b5424048b02568b74240c8b0e3bc175088b42042b46045ec32bc15ec3",
+  "validation": {
+    "strict_msvc_win32_release_build": true,
+    "seed_byte_matches": 8,
+    "existing_ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "controlled_query_fixture": "passed",
+    "native_comparator_differential_cases_passed": 4,
+    "real_d3d9": {
+      "resolution_pairs": 26,
+      "pixel_shader_version_28": "0300",
+      "max_shader_model": 2,
+      "format": "0015",
+      "antialias_levels": [
+        0,
+        2,
+        4,
+        8
+      ]
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "Only the settings projection of00b2c8e0 is reconstructed; other caps, ATOC/vendor checks and format vectors remain external.",
+    "Resolution/AA operations own std::vector storage, not native object layout or allocation failure behavior.",
+    "GetDeviceCaps failure is an explicit safe boundary; native consumes undefined uninitialized stack data.",
+    "Opaque renderer+19DCh meaning remains unknown; exact zero write is retained.",
+    "Win32 query adapter borrows IDirect3D9 lifetime; caller chooses AA format and operation timing."
+  ],
+  "ignored_artifacts": [
+    "local/settings_capabilities_build.log",
+    "local/settings_capabilities_fixture/",
+    "local/settings_capabilities_metadata.py",
+    "local/bsp_index.sqlite",
+    "exports/bsp/functions/<listed-addresses>/"
+  ]
+}

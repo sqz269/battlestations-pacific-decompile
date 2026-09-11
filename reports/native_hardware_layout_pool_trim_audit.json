@@ -1,0 +1,1091 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_pool_trim1",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "generated_utc": "2026-09-11T04:19:49.742413+00:00",
+  "base_commit": "93af8a3",
+  "owned_addresses": [
+    "00b60350"
+  ],
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_verification": "Each bsp.py ghidra bytes invocation verifies project, program, language and image base before reading.",
+  "capture_utc": "2026-09-11T04:12:11.446116+00:00",
+  "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00b60350",
+      "native_end_exclusive": "00b603f0",
+      "byte_count": 160,
+      "name": "trim_native_hardware_layout_pool_00b60350",
+      "cpp_symbol": "trim_native_hardware_layout_pool_00b60350",
+      "source": "src/native_hardware_layout_pool_trim.cpp",
+      "original_abi": "ECX actual38h pool; RET; no semantic result. D62AF0 virtual slot0.",
+      "evidence": "reports/native_hardware_layout_pool_trim_audit.json",
+      "status": "actual_storage_strict_Win32_full_original_body_free_compaction_and_list_dispatch_fixture_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "new_host_setup_API": {
+    "symbol": "bind_native_hardware_layout_pool_trim_00d62af0",
+    "native_address": null,
+    "role": "Bind actual first12-byte AllocatorListElement before initializer publication; no raw pool/list mutation. Real D62AF0/B60350 profile with actual_pool context and complete trim implementation.",
+    "same_binding_idempotent_checked": true
+  },
+  "production_Ghidra_or_shared_metadata_edits": false,
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\include\\bsp\\native_hardware_layout_pool_trim.hpp",
+      "bytes": 1040,
+      "sha256": "2c2c01acf016071125cddf5b4d24fa879e9ae9bbbc638f19201c4bd0357ec3ef"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\src\\native_hardware_layout_pool_trim.cpp",
+      "bytes": 2712,
+      "sha256": "bcc55c5a25dc67c8a607de8aa7c010b76d18df1ec822d34450cdaf16c5cf8e83"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\include\\bsp\\allocator_list.hpp",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\src\\allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "native_byte_evidence": [
+    {
+      "address": 4933296,
+      "length": 33,
+      "offset": 738992,
+      "code": true,
+      "hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "fresh_live_Ghidra_matches_installed_PE": true,
+      "actual_postimage_hex": "568b35b488590185f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "actual_postimage_sha256": "d589d084bc40bb7491cc3bd684b1f4acd408e2b0832f2f9cff5705db550a6762",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11928400,
+      "length": 160,
+      "offset": 7734096,
+      "code": true,
+      "hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84009000020753d50e8366209008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c044b92000000090893883c04883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4009000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+      "fresh_live_Ghidra_matches_installed_PE": true,
+      "actual_postimage_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84009000020753d50e8366209008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c044b92000000090893883c04883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4009000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "actual_postimage_sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12543404,
+      "length": 5,
+      "offset": 8349100,
+      "code": true,
+      "hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "fresh_live_Ghidra_matches_installed_PE": true,
+      "actual_postimage_hex": "e9afd0c82e",
+      "actual_postimage_sha256": "ac7f7814427e5ec401b44d4e8e70dcfc1d717697c18d66b6a7bd3003c0e3b7ce",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14035696,
+      "length": 4,
+      "offset": 9841392,
+      "code": false,
+      "hex": "5003b600",
+      "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+      "fresh_live_Ghidra_matches_installed_PE": true,
+      "actual_postimage_hex": "50032e01",
+      "actual_postimage_sha256": "961c8f8d4e9a50cdbaadee99c59d2d5dc28e5364c0740e54de45409ee6a94d22",
+      "complete_postimage_matches_only_listed_changes": true
+    }
+  ],
+  "full_native_instruction_decode": [
+    {
+      "address": 4933296,
+      "hex": "56",
+      "instruction": "push esi"
+    },
+    {
+      "address": 4933297,
+      "hex": "8b35b488e100",
+      "instruction": "mov esi, dword ptr [0xe188b4]"
+    },
+    {
+      "address": 4933303,
+      "hex": "85f6",
+      "instruction": "test esi, esi"
+    },
+    {
+      "address": 4933305,
+      "hex": "7414",
+      "instruction": "je 0x4b46cf"
+    },
+    {
+      "address": 4933307,
+      "hex": "eb03",
+      "instruction": "jmp 0x4b46c0"
+    },
+    {
+      "address": 4933309,
+      "hex": "8d4900",
+      "instruction": "lea ecx, [ecx]"
+    },
+    {
+      "address": 4933312,
+      "hex": "8b06",
+      "instruction": "mov eax, dword ptr [esi]"
+    },
+    {
+      "address": 4933314,
+      "hex": "8b10",
+      "instruction": "mov edx, dword ptr [eax]"
+    },
+    {
+      "address": 4933316,
+      "hex": "8bce",
+      "instruction": "mov ecx, esi"
+    },
+    {
+      "address": 4933318,
+      "hex": "ffd2",
+      "instruction": "call edx"
+    },
+    {
+      "address": 4933320,
+      "hex": "8b7608",
+      "instruction": "mov esi, dword ptr [esi + 8]"
+    },
+    {
+      "address": 4933323,
+      "hex": "85f6",
+      "instruction": "test esi, esi"
+    },
+    {
+      "address": 4933325,
+      "hex": "75f1",
+      "instruction": "jne 0x4b46c0"
+    },
+    {
+      "address": 4933327,
+      "hex": "5e",
+      "instruction": "pop esi"
+    },
+    {
+      "address": 4933328,
+      "hex": "c3",
+      "instruction": "ret "
+    },
+    {
+      "address": 11928400,
+      "hex": "56",
+      "instruction": "push esi"
+    },
+    {
+      "address": 11928401,
+      "hex": "57",
+      "instruction": "push edi"
+    },
+    {
+      "address": 11928402,
+      "hex": "8bf1",
+      "instruction": "mov esi, ecx"
+    },
+    {
+      "address": 11928404,
+      "hex": "33ff",
+      "instruction": "xor edi, edi"
+    },
+    {
+      "address": 11928406,
+      "hex": "397e2c",
+      "instruction": "cmp dword ptr [esi + 0x2c], edi"
+    },
+    {
+      "address": 11928409,
+      "hex": "765a",
+      "instruction": "jbe 0xb603b5"
+    },
+    {
+      "address": 11928411,
+      "hex": "eb03",
+      "instruction": "jmp 0xb60360"
+    },
+    {
+      "address": 11928413,
+      "hex": "8d4900",
+      "instruction": "lea ecx, [ecx]"
+    },
+    {
+      "address": 11928416,
+      "hex": "8b4628",
+      "instruction": "mov eax, dword ptr [esi + 0x28]"
+    },
+    {
+      "address": 11928419,
+      "hex": "8b04b8",
+      "instruction": "mov eax, dword ptr [eax + edi*4]"
+    },
+    {
+      "address": 11928422,
+      "hex": "6683b84009000020",
+      "instruction": "cmp word ptr [eax + 0x940], 0x20"
+    },
+    {
+      "address": 11928430,
+      "hex": "753d",
+      "instruction": "jne 0xb603ad"
+    },
+    {
+      "address": 11928432,
+      "hex": "50",
+      "instruction": "push eax"
+    },
+    {
+      "address": 11928433,
+      "hex": "e836620900",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "address": 11928438,
+      "hex": "8b5628",
+      "instruction": "mov edx, dword ptr [esi + 0x28]"
+    },
+    {
+      "address": 11928441,
+      "hex": "8b4e2c",
+      "instruction": "mov ecx, dword ptr [esi + 0x2c]"
+    },
+    {
+      "address": 11928444,
+      "hex": "8b4c8afc",
+      "instruction": "mov ecx, dword ptr [edx + ecx*4 - 4]"
+    },
+    {
+      "address": 11928448,
+      "hex": "8bc2",
+      "instruction": "mov eax, edx"
+    },
+    {
+      "address": 11928450,
+      "hex": "890cb8",
+      "instruction": "mov dword ptr [eax + edi*4], ecx"
+    },
+    {
+      "address": 11928453,
+      "hex": "83462cff",
+      "instruction": "add dword ptr [esi + 0x2c], -1"
+    },
+    {
+      "address": 11928457,
+      "hex": "83c404",
+      "instruction": "add esp, 4"
+    },
+    {
+      "address": 11928460,
+      "hex": "3b7e2c",
+      "instruction": "cmp edi, dword ptr [esi + 0x2c]"
+    },
+    {
+      "address": 11928463,
+      "hex": "7319",
+      "instruction": "jae 0xb603aa"
+    },
+    {
+      "address": 11928465,
+      "hex": "8b5628",
+      "instruction": "mov edx, dword ptr [esi + 0x28]"
+    },
+    {
+      "address": 11928468,
+      "hex": "8b04ba",
+      "instruction": "mov eax, dword ptr [edx + edi*4]"
+    },
+    {
+      "address": 11928471,
+      "hex": "83c044",
+      "instruction": "add eax, 0x44"
+    },
+    {
+      "address": 11928474,
+      "hex": "b920000000",
+      "instruction": "mov ecx, 0x20"
+    },
+    {
+      "address": 11928479,
+      "hex": "90",
+      "instruction": "nop "
+    },
+    {
+      "address": 11928480,
+      "hex": "8938",
+      "instruction": "mov dword ptr [eax], edi"
+    },
+    {
+      "address": 11928482,
+      "hex": "83c048",
+      "instruction": "add eax, 0x48"
+    },
+    {
+      "address": 11928485,
+      "hex": "83e901",
+      "instruction": "sub ecx, 1"
+    },
+    {
+      "address": 11928488,
+      "hex": "75f6",
+      "instruction": "jne 0xb603a0"
+    },
+    {
+      "address": 11928490,
+      "hex": "83ef01",
+      "instruction": "sub edi, 1"
+    },
+    {
+      "address": 11928493,
+      "hex": "83c701",
+      "instruction": "add edi, 1"
+    },
+    {
+      "address": 11928496,
+      "hex": "3b7e2c",
+      "instruction": "cmp edi, dword ptr [esi + 0x2c]"
+    },
+    {
+      "address": 11928499,
+      "hex": "72ab",
+      "instruction": "jb 0xb60360"
+    },
+    {
+      "address": 11928501,
+      "hex": "33c0",
+      "instruction": "xor eax, eax"
+    },
+    {
+      "address": 11928503,
+      "hex": "39462c",
+      "instruction": "cmp dword ptr [esi + 0x2c], eax"
+    },
+    {
+      "address": 11928506,
+      "hex": "c74634ffffffff",
+      "instruction": "mov dword ptr [esi + 0x34], 0xffffffff"
+    },
+    {
+      "address": 11928513,
+      "hex": "762a",
+      "instruction": "jbe 0xb603ed"
+    },
+    {
+      "address": 11928515,
+      "hex": "8b4e28",
+      "instruction": "mov ecx, dword ptr [esi + 0x28]"
+    },
+    {
+      "address": 11928518,
+      "hex": "eb08",
+      "instruction": "jmp 0xb603d0"
+    },
+    {
+      "address": 11928520,
+      "hex": "8da42400000000",
+      "instruction": "lea esp, [esp]"
+    },
+    {
+      "address": 11928527,
+      "hex": "90",
+      "instruction": "nop "
+    },
+    {
+      "address": 11928528,
+      "hex": "8b11",
+      "instruction": "mov edx, dword ptr [ecx]"
+    },
+    {
+      "address": 11928530,
+      "hex": "6683ba4009000000",
+      "instruction": "cmp word ptr [edx + 0x940], 0"
+    },
+    {
+      "address": 11928538,
+      "hex": "750e",
+      "instruction": "jne 0xb603ea"
+    },
+    {
+      "address": 11928540,
+      "hex": "83c001",
+      "instruction": "add eax, 1"
+    },
+    {
+      "address": 11928543,
+      "hex": "83c104",
+      "instruction": "add ecx, 4"
+    },
+    {
+      "address": 11928546,
+      "hex": "3b462c",
+      "instruction": "cmp eax, dword ptr [esi + 0x2c]"
+    },
+    {
+      "address": 11928549,
+      "hex": "72e9",
+      "instruction": "jb 0xb603d0"
+    },
+    {
+      "address": 11928551,
+      "hex": "5f",
+      "instruction": "pop edi"
+    },
+    {
+      "address": 11928552,
+      "hex": "5e",
+      "instruction": "pop esi"
+    },
+    {
+      "address": 11928553,
+      "hex": "c3",
+      "instruction": "ret "
+    },
+    {
+      "address": 11928554,
+      "hex": "894634",
+      "instruction": "mov dword ptr [esi + 0x34], eax"
+    },
+    {
+      "address": 11928557,
+      "hex": "5f",
+      "instruction": "pop edi"
+    },
+    {
+      "address": 11928558,
+      "hex": "5e",
+      "instruction": "pop esi"
+    },
+    {
+      "address": 11928559,
+      "hex": "c3",
+      "instruction": "ret "
+    }
+  ],
+  "decompiler_truncation": {
+    "missing_continuation_start": "00b60376",
+    "missing_continuation_end_exclusive": "00b603ad",
+    "bytes": 55,
+    "reason": "Current Ghidra decompile/listing stops the free branch at BF65AC. Fresh full160-byte live/PE equality plus independent x86 decode includes the actual post-free continuation through B603AC.",
+    "continuation": "Reload current table and count; copy current last pointer to current index before current count decrement; if index<current count, reload moved pointer and write index into all32 slot tokens; decrement index so loop increment rescans replacement."
+  },
+  "field_contract": {
+    "pool_bytes": 56,
+    "list_element_offset": 0,
+    "critical_section_offset": 12,
+    "depth_offset": 36,
+    "table_offset": 40,
+    "slab_count_offset": 44,
+    "capacity_offset": 48,
+    "earliest_offset": 52,
+    "slab_bytes": 2372,
+    "slab_free_count_offset": 2368,
+    "slab_free_count_width": 2,
+    "fully_free_count": 32,
+    "slots_per_slab": 32,
+    "slot_stride": 72,
+    "slot_token_offset": 68
+  },
+  "material_ordering": [
+    "Unsigned current slab count bounds each loop. Free-count equality uses WORD32, preserving adjacent A7 padding.",
+    "Actual free precedes reloading table and count. Replacement pointer store precedes count decrement. Moved tokens are rewritten only when current index is still inside the new count.",
+    "Rewrite exactly32 DWORD tokens at moved_slab+44+n*48, then rescan current index, including when replacement is itself wholly free.",
+    "After deletion loop capture current nonempty test before writing earliest=-1. If captured nonempty, capture table cursor once, reread count after each zero-free-count slab, and publish first nonzero-free-count index.",
+    "No slab payload destructor, table tail clearing, capacity shrink, list relink, lock acquisition or depth change."
+  ],
+  "build": {
+    "repository_script": "./scripts/build.ps1",
+    "passed": true,
+    "existing_CTests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tracked_tests": 0,
+    "new_source_strict_compile": "Ignored local/pool_trim_diff target compiles fixture.cpp plus the owned production source using /O2 /Oy- /MD /EHsc /fp:strict /W4 /WX, and links existing bsp_core.lib.",
+    "integration_boundary": "Shared CMake source registration remains integrator-owned; baseline repository library does not include the new trim TU until the integrator adds it. The new production TU was compiled and executed directly in the focused fixture."
+  },
+  "fixture": {
+    "matching_DWORD_trace_entries": 62291,
+    "matching_trace_bytes": 249164,
+    "native_host_trace_exact_equal": true,
+    "actual_slab_frees_each": 6,
+    "free_events": [
+      [
+        4026531840,
+        1,
+        0,
+        32,
+        5,
+        2
+      ],
+      [
+        4026531840,
+        1,
+        4,
+        32,
+        4,
+        2
+      ],
+      [
+        4026531840,
+        1,
+        2,
+        32,
+        3,
+        2
+      ],
+      [
+        4026531840,
+        2,
+        0,
+        32,
+        4,
+        2
+      ],
+      [
+        4026531840,
+        3,
+        0,
+        32,
+        2,
+        2
+      ],
+      [
+        4026531840,
+        3,
+        1,
+        32,
+        1,
+        2
+      ]
+    ],
+    "source_and_native_trim_use_actual_host_CRT_free": true,
+    "CRT_free_module": {
+      "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+      "path_resolution": "Physical SysWOW64 DLL selected for x86-reported System32 path; PE014c verified."
+    },
+    "owned160_native_instruction_bytes_unpatched": true,
+    "all_four_runtime_spans_verified": true,
+    "absolute_relocations": [
+      {
+        "operand_address": 4933299,
+        "native_preimage_value": 14780596,
+        "runtime_value": 22644916
+      },
+      {
+        "operand_address": 14035696,
+        "native_preimage_value": 11928400,
+        "runtime_value": 19792720
+      }
+    ],
+    "entry_bridge": {
+      "address": 12543404,
+      "preimage": "e917380000",
+      "runtime_target": 805320288,
+      "role": "cdecl observed actual host CRT free; native caller retains original ADD ESP,4 continuation"
+    },
+    "image_base": 12058624,
+    "original_relative_calls_preserved": true,
+    "global_list_storage": "Caller-initialized raw pointer at relocated E188B4. No serialized BSS value claim.",
+    "address_normalization": "Normalize only explicit pool/table/slab identities and rebased native D62AF0 profile. Raw pool fields, full live slab bytes and inactive table entries are retained in traces.",
+    "original_list_dispatch": "Execute full original4B46B0 using current E188B4 element, its real rebased D62AF0 vtable and original B60350 slot0. Host side uses actual trim binding plus existing AllocatorListDomain::trim_all_004b46b0.",
+    "post_free_perturbation": "In phase2, the observer performs actual free then deliberately redirects actual pool table/count before returning. This controlled service-boundary perturbation verifies current loads; it is not claimed as ordinary CRT free behavior.",
+    "phases": [
+      {
+        "phase": 1,
+        "initial_free_counts": [
+          32,
+          0,
+          32,
+          7,
+          32
+        ],
+        "result": "Free slab0, moved full slab4 and last slab2; retain slab3 at index0 and slab1 at index1; first available0. Verify every moved token, all surviving payload/index-stack/padding bytes, and stale inactive table tail."
+      },
+      {
+        "phase": 2,
+        "initial_free_counts": [
+          32,
+          0,
+          4,
+          9
+        ],
+        "result": "After first actual free replace table with alternate table and count2; swap its last slab3 into index0, current count1, rewrite tokens0. Old unreferenced survivors remain intact and are released only by fixture teardown."
+      },
+      {
+        "phase": 3,
+        "initial_free_counts": [
+          32,
+          32
+        ],
+        "result": "Both slabs freed via replacement rescan; count0, earliestFFFFFFFF, capacity unchanged."
+      },
+      {
+        "phase": 4,
+        "initial_free_counts": [
+          0,
+          0
+        ],
+        "result": "No slab free; no available slab; earliestFFFFFFFF and all storage preserved."
+      },
+      {
+        "phase": 5,
+        "initial_free_counts": [],
+        "result": "Empty count skips invalid unused table valueDEADBEEF and sets earliestFFFFFFFF."
+      }
+    ],
+    "library_and_owned_source_providers": [
+      {
+        "symbol": "trim_native_hardware_layout_pool_00b60350",
+        "provider": "native_hardware_layout_pool_trim.obj",
+        "exact_map_line": " 0001:00004be0       ?trim_native_hardware_layout_pool_00b60350@bsp@@YAXPAX@Z 30005be0 f   native_hardware_layout_pool_trim.obj"
+      },
+      {
+        "symbol": "bind_native_hardware_layout_pool_trim_00d62af0",
+        "provider": "native_hardware_layout_pool_trim.obj",
+        "exact_map_line": " 0001:00004ba0       ?bind_native_hardware_layout_pool_trim_00d62af0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30005ba0 f   native_hardware_layout_pool_trim.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_free",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00005690       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30006690 f   bsp_core:singleton_lifetime.obj"
+      },
+      {
+        "symbol": "AllocatorListDomain::bind_virtual0",
+        "provider": "bsp_core:allocator_list.obj",
+        "exact_map_line": " 0001:00005470       ?bind_virtual0@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@UAllocatorListVirtual0Binding@2@@Z 30006470 f   bsp_core:allocator_list.obj"
+      },
+      {
+        "symbol": "AllocatorListDomain::trim_all_004b46b0",
+        "provider": "bsp_core:allocator_list.obj",
+        "exact_map_line": " 0001:000055b0       ?trim_all_004b46b0@AllocatorListDomain@bsp@@QAEXXZ 300065b0 f   bsp_core:allocator_list.obj"
+      }
+    ]
+  },
+  "uncertainty": [
+    "Descriptive names are reconstruction hypotheses, not recovered original symbols.",
+    "Requires valid backed pool/table/slab storage and supported original free domain. No new synchronization is added; malformed storage, concurrency, or free boundary failures are not made safe.",
+    "Original instructions execute in an isolated relocated sparse image with one actual CRT bridge. New C++ APIs and host list binding are not drop-in original ABI replacements.",
+    "No game validation or full-process startup claim."
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\capture.py",
+      "bytes": 2853,
+      "sha256": "3daf2b4d2643de74dfdea26d9ea8ea78a13fe413c3483ca8de739690347f1c63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\capture.json",
+      "bytes": 9989,
+      "sha256": "6d470e702d3739199bca431bdc53cd3aac4c58cf7b00b0bf9b403fedb59dd5f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\reference.hpp",
+      "bytes": 734,
+      "sha256": "e58c103685c48cf3cf5922e83022f378e61a5f37aa9643196583fad75d8270a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\fixture.cpp",
+      "bytes": 13374,
+      "sha256": "eac84b6e07ea674935f5f4970ca09cb9bc1ddedaa7f0ed640fc68672ca6040d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\CMakeLists.txt",
+      "bytes": 754,
+      "sha256": "c9b8f271f5e6b3f5a33f73a71483f19040790746bb0a01d4e83daa4ed148d93c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\finalize.py",
+      "bytes": 11644,
+      "sha256": "b86496aff9f7f57167675a4f06bb33facca9da8301914681433c8daa2bce147e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\configure.log",
+      "bytes": 637,
+      "sha256": "11983446042b7cf3c33f6c98b93953fb4926124fb70f6d9bc356af04ab37485f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\build.log",
+      "bytes": 230,
+      "sha256": "2ed57e3f4ecd2fe4df5f217cec70d0dcda3f12559ff709350dfcad3538c351d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\local\\pool_trim_diff\\repository_build.log",
+      "bytes": 13740,
+      "sha256": "6a3e9d04ed76a69ff8e44ba6466ca1098b7f5a9938888159f40a405c235e2710"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\Release\\pool_trim_diff.exe",
+      "bytes": 44032,
+      "sha256": "79d5f1ef22a9c6c526877116dece6fb7d980274551bd8c44055aab465931e154"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\Release\\pool_trim_diff.map",
+      "bytes": 84953,
+      "sha256": "7269bdfee06919b7bb6d43aa1809088862046eb6606f8644281567536c6e1c4d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\run.log",
+      "bytes": 134,
+      "sha256": "2d658d05769c841b4354d4ae7a432f78811087f979862ce9e6459ad9402f8aee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\native_trace.bin",
+      "bytes": 249164,
+      "sha256": "0d0f8e30d077b93c5fca49d429f6749f35621ba92296c02a52e98b65513ff6fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\host_trace.bin",
+      "bytes": 249164,
+      "sha256": "0d0f8e30d077b93c5fca49d429f6749f35621ba92296c02a52e98b65513ff6fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\patched_spans.txt",
+      "bytes": 458,
+      "sha256": "84357a48489f1a6f139b6a639049d5a927d15ae62f9a41570e0e4bf88253da5f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\bridge_target.txt",
+      "bytes": 11,
+      "sha256": "4afc952ea98ae14652e4eacf6cf2a49deb6bd754c48b2c307d79e15a6db2b431"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\free_module.txt",
+      "bytes": 34,
+      "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 23432336,
+      "sha256": "bbde9313490139253c32ba7683097dccb765aa4db39e0743f787bb38048373eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910\\build\\pool_trim_diff\\pool_trim_diff.dir\\Release\\native_hardware_layout_pool_trim.obj",
+      "bytes": 2339,
+      "sha256": "562734ed7b0fc9b96dcc20e540c9415f9ec4ecb1b7883c9f9feb1e7897ce4918"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "verification": {
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-trim-20260910",
+        "worker_pins_verified": 25,
+        "source_pins": 6,
+        "current_source_differences": [],
+        "fresh_spans": [
+          {
+            "address": "004b46b0",
+            "length": 33,
+            "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60350",
+            "length": 160,
+            "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf65ac",
+            "length": 5,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d62af0",
+            "length": 4,
+            "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+            "live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "matched_words": 62291,
+      "frees_each": 6,
+      "free_events": [
+        [
+          4026531840,
+          1,
+          0,
+          32,
+          5,
+          2
+        ],
+        [
+          4026531840,
+          1,
+          4,
+          32,
+          4,
+          2
+        ],
+        [
+          4026531840,
+          1,
+          2,
+          32,
+          3,
+          2
+        ],
+        [
+          4026531840,
+          2,
+          0,
+          32,
+          4,
+          2
+        ],
+        [
+          4026531840,
+          3,
+          0,
+          32,
+          2,
+          2
+        ],
+        [
+          4026531840,
+          3,
+          1,
+          32,
+          1,
+          2
+        ]
+      ],
+      "comparisons": [
+        {
+          "native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\native_trace.bin",
+            "bytes": 249164,
+            "sha256": "0d0f8e30d077b93c5fca49d429f6749f35621ba92296c02a52e98b65513ff6fd"
+          },
+          "host": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\host_trace.bin",
+            "bytes": 249164,
+            "sha256": "0d0f8e30d077b93c5fca49d429f6749f35621ba92296c02a52e98b65513ff6fd"
+          },
+          "equal": true
+        }
+      ],
+      "runtime_postimages": [
+        {
+          "address": "004b46b0",
+          "postimage_hex": "568b35b488690185f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+          "sha256": "8e8f9231e4fcdc754275de1cef46ddc4478432b38cb853aaa44f0279a08afc36",
+          "only_declared_changes": true
+        },
+        {
+          "address": "00b60350",
+          "postimage_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84009000020753d50e8366209008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c044b92000000090893883c04883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4009000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+          "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+          "only_declared_changes": true
+        },
+        {
+          "address": "00bf65ac",
+          "postimage_hex": "e9afd0b82e",
+          "sha256": "9a191e3b9ad7702bf05334047768136920cd2f25da2c69d808c62ad5b3de7cb9",
+          "only_declared_changes": true
+        },
+        {
+          "address": "00d62af0",
+          "postimage_hex": "50033e01",
+          "sha256": "6fa1e2c713cada1eddc95696d53f4c9d295c5bd722d0308675eaf55f5ca1186f",
+          "only_declared_changes": true
+        }
+      ],
+      "bindings": {
+        "image_base": 13107200,
+        "relocations": {
+          "004b46b3": "00e188b4",
+          "00d62af0": "00b60350"
+        },
+        "free_bridge_target": 805320288
+      },
+      "providers": [
+        {
+          "symbol": "trim_native_hardware_layout_pool_00b60350",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_trim.obj",
+          "line": " 0001:000055d0       ?trim_native_hardware_layout_pool_00b60350@bsp@@YAXPAX@Z 300065d0 f   bsp_core.linked:native_hardware_layout_pool_trim.obj"
+        },
+        {
+          "symbol": "bind_native_hardware_layout_pool_trim_00d62af0",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_trim.obj",
+          "line": " 0001:00005590       ?bind_native_hardware_layout_pool_trim_00d62af0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30006590 f   bsp_core.linked:native_hardware_layout_pool_trim.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_free",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "line": " 0001:00005690       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30006690 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "bind_virtual0",
+          "provider": "bsp_core.linked:allocator_list.obj",
+          "line": " 0001:00005390       ?bind_virtual0@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@UAllocatorListVirtual0Binding@2@@Z 30006390 f   bsp_core.linked:allocator_list.obj"
+        },
+        {
+          "symbol": "trim_all_004b46b0",
+          "provider": "bsp_core.linked:allocator_list.obj",
+          "line": " 0001:000054d0       ?trim_all_004b46b0@AllocatorListDomain@bsp@@QAEXXZ 300064d0 f   bsp_core.linked:allocator_list.obj"
+        }
+      ],
+      "actual_CRT_free": {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\bridge_target.txt",
+          "bytes": 11,
+          "sha256": "4afc952ea98ae14652e4eacf6cf2a49deb6bd754c48b2c307d79e15a6db2b431"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\bsp_core.linked.lib",
+          "bytes": 25180122,
+          "sha256": "cb6a08ee4335ab634b824cf5358c6a82656b46af9cc7adb0a07b8a1350ed0a16"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\build_trim.cmd",
+          "bytes": 878,
+          "sha256": "b137b151811c88581f01c6331067cb8fd4088ba709014416ab062bfd73d8d12b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\fixture.obj",
+          "bytes": 194814,
+          "sha256": "f58621c9d2451d4ea1d023c9bd583a62cf812005124860edccd63d285911af69"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\free_module.txt",
+          "bytes": 34,
+          "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\host_trace.bin",
+          "bytes": 249164,
+          "sha256": "0d0f8e30d077b93c5fca49d429f6749f35621ba92296c02a52e98b65513ff6fd"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\native_trace.bin",
+          "bytes": 249164,
+          "sha256": "0d0f8e30d077b93c5fca49d429f6749f35621ba92296c02a52e98b65513ff6fd"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\patched_spans.txt",
+          "bytes": 458,
+          "sha256": "f987f99889d774f0fabc8cb7c07d45daa0b42031376a89dca360c2813fa7414c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\pool_trim_diff.exe",
+          "bytes": 43008,
+          "sha256": "667af98749384d7be390d2890188eebadd787a65f921224f669cb87b6186c9ad"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-trim-primary-check\\pool_trim_diff.map",
+          "bytes": 85177,
+          "sha256": "dfe09e4e930b6857efbc731ff4ccbe607bb86d6ce2bab8aca71035edf3ecb13d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_pool_trim.cpp",
+          "bytes": 2712,
+          "sha256": "bcc55c5a25dc67c8a607de8aa7c010b76d18df1ec822d34450cdaf16c5cf8e83"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\allocator_list.cpp",
+          "bytes": 2682,
+          "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_hardware_pool_trim_primary_check.ps1",
+          "bytes": 1488,
+          "sha256": "e9139dbb867ad17b65d7f0c86b525e422f7129dc85c5abb70ff78b4b95ec7662"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_pool_trim_primary_fixture.txt",
+          "bytes": 147,
+          "sha256": "2c53e3121e705802363a98e48ecf85ac352b3793f451f1492734b149d4700beb"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_factory_trim_primary_build.txt",
+          "bytes": 3617,
+          "sha256": "088c0db09b596c77cd48ea8ebf2b64ab006ff86fe76777cdbd7b216bd9db3d28"
+        }
+      ]
+    },
+    "owned_source_provider": "Frozen current main bsp_core.linked.lib for owned trim and real list/free dependencies; unchanged worker fixture.",
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_pool_trim_annotations.json",
+    "bytes": 1292,
+    "sha256": "ae3dc6936e0a8cd6f968f44709d1f74677270135699b1c4ca0e9594da0de4d51",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "path": "exports/bsp/functions/00b60350/decompiled.c",
+      "bytes": 2406,
+      "sha256": "d53ff0fa286791a331aac13ef68360a2fb19dd3589d28a39cf862e015a56b3d9"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:35:52.769546+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b60350",
+      "name": "trim_native_hardware_layout_pool_00b60350",
+      "cpp_symbol": "trim_native_hardware_layout_pool_00b60350",
+      "source": "src/native_hardware_layout_pool_trim.cpp",
+      "native_end_exclusive": "00b603f0",
+      "original_abi": "Native ECX actual 38h pool; RET, no semantic result; D62AF0 virtual slot0.",
+      "evidence": "reports/native_hardware_layout_pool_trim_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_POOL_TRIM.md",
+    "bytes": 6593,
+    "sha256": "d270bed5434dec0b18b5aceb5ac56d4a4ea17f6bf94ce87930c65f9a0714fbbe"
+  }
+}

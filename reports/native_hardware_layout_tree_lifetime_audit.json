@@ -1,0 +1,3751 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_tree_lifetime3",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "generated_utc": "2026-09-11T04:35:25.067369+00:00",
+  "base_commit": "033d79e",
+  "owned_addresses": [
+    "00b25dc0",
+    "00b230b0",
+    "00b2f3a0"
+  ],
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_verification": "Each bsp.py ghidra bytes call verifies project/program/language/image base before reading.",
+  "capture_utc": "2026-09-11T04:27:49.671871+00:00",
+  "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b25dc0",
+      "native_end_exclusive": "00b25df7",
+      "byte_count": 55,
+      "cpp_symbol": "allocate_native_hardware_layout_tree_sentinel_00b25dc0",
+      "original_abi": "ECX unused; no stack arguments; EAX actual allocation; RET.",
+      "kind": "function",
+      "source": "src/native_hardware_layout_tree_lifetime.cpp",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json",
+      "status": "complete_actual_storage_strict_Win32_and_bounded_original_instruction_differential_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b230b0",
+      "native_end_exclusive": "00b230e5",
+      "byte_count": 53,
+      "cpp_symbol": "destroy_native_hardware_layout_subtree_00b230b0",
+      "original_abi": "ECX actual tree carried through recursion; stack node; RET4; EAX unspecified.",
+      "kind": "function",
+      "source": "src/native_hardware_layout_tree_lifetime.cpp",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json",
+      "status": "complete_actual_storage_strict_Win32_and_bounded_original_instruction_differential_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b2f3a0",
+      "native_end_exclusive": "00b2f469",
+      "byte_count": 201,
+      "cpp_symbol": "erase_native_hardware_layout_range_00b2f3a0",
+      "original_abi": "ECX actual tree; stack output, first owner/node, last owner/node; EAX output; RET14h.",
+      "kind": "function",
+      "source": "src/native_hardware_layout_tree_lifetime.cpp",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json",
+      "status": "complete_actual_storage_strict_Win32_and_bounded_original_instruction_differential_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\include\\bsp\\native_hardware_layout_tree_lifetime.hpp",
+      "bytes": 1538,
+      "sha256": "5df46c227157d8c05b915f8a9d8850ae62292e7d4a025b92fd1a87b1eb2b22e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\src\\native_hardware_layout_tree_lifetime.cpp",
+      "bytes": 3985,
+      "sha256": "c3ff4c177eb623b85a44237b4fd5096bdfea1f91924742cbeca7d27e3f9bf6d4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\include\\bsp\\native_hardware_layout_tree.hpp",
+      "bytes": 3491,
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\src\\native_hardware_layout_tree.cpp",
+      "bytes": 13258,
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\include\\bsp\\native_tree_out_of_range_exception.hpp",
+      "bytes": 966,
+      "sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\src\\native_tree_out_of_range_exception.cpp",
+      "bytes": 709,
+      "sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\include\\bsp\\native_legacy_exception_owner.hpp",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\src\\native_legacy_exception_owner.cpp",
+      "bytes": 5121,
+      "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\include\\bsp\\native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\src\\native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "native_byte_evidence": [
+    {
+      "address": 4223696,
+      "length": 5,
+      "offset": 29392,
+      "code": true,
+      "hex": "568bf1837e",
+      "sha256": "729ece47e21499657cd967d9aa375929e5f5c6ce6ea4e5b538612f5b7412c40d",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e90bbe462f",
+      "loaded_postimage_sha256": "593a49c599368be9928ccce7858a0445ede92a440bf85cb1298258706acbcd6a",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 4227360,
+      "length": 5,
+      "offset": 33056,
+      "code": true,
+      "hex": "538b5c2408",
+      "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9dbda462f",
+      "loaded_postimage_sha256": "a14a36641ff78aba9006758c6391271f6fa3d1e40b0348d6daa5754eb13af98a",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 4228896,
+      "length": 5,
+      "offset": 34592,
+      "code": true,
+      "hex": "5355568bf1",
+      "sha256": "d2f427c4948de1a7dfd12b9851267537e99bd6b1b33b57b7fd07e98d10c79de7",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9eba8462f",
+      "loaded_postimage_sha256": "38037a671b8f8a4d50a12755020f8b6d561cad2f8735d5fe4196c60269a7936d",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 4265728,
+      "length": 95,
+      "offset": 71424,
+      "code": true,
+      "hex": "6aff6818e0c50064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+      "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "6aff68f02f003064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+      "loaded_postimage_sha256": "50183df528c15e7456ed4c12a049c001a2414a5f9845cda1e124c39ffb0af479",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 4266192,
+      "length": 101,
+      "offset": 71888,
+      "code": true,
+      "hex": "6aff6858e0c50064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+      "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "6aff680030003064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+      "loaded_postimage_sha256": "6efdb61aea52415eb71c53eaf596553287daa2cc4027548af428337f97f71f9a",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 4461232,
+      "length": 50,
+      "offset": 266928,
+      "code": true,
+      "hex": "568bf1c7064892d600837e2410720c8b461050e8e4527b0083c40433c0c746240f0000008946208846108bce5ee972517b00",
+      "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "568bf1c7064892d600837e2410720c8b461050e8e4527b0083c40433c0c746240f0000008946208846108bce5ee972517b00",
+      "loaded_postimage_sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 4462432,
+      "length": 25,
+      "offset": 268128,
+      "code": true,
+      "hex": "8b44240456508bf1e86301fdffc7066c92d6008bc65ec20400",
+      "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8b44240456508bf1e86301fdffc7066c92d6008bc65ec20400",
+      "loaded_postimage_sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11667552,
+      "length": 28,
+      "offset": 7473248,
+      "code": true,
+      "hex": "8bc18b5008807a25007510eb038d49008bc28b5008807a250074f5c3",
+      "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8bc18b5008807a25007510eb038d49008bc28b5008807a250074f5c3",
+      "loaded_postimage_sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11667584,
+      "length": 27,
+      "offset": 7473280,
+      "code": true,
+      "hex": "8bc18b10807a250075108d9b000000008bc28b10807a250074f6c3",
+      "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8bc18b10807a250075108d9b000000008bc28b10807a250074f6c3",
+      "loaded_postimage_sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11667728,
+      "length": 82,
+      "offset": 7473424,
+      "code": true,
+      "hex": "8b5424048b02568b700889328b7008807e250075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8b5424048b02568b700889328b7008807e250075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "loaded_postimage_sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11668928,
+      "length": 99,
+      "offset": 7474624,
+      "code": true,
+      "hex": "568bf1833e007505e846590d008b46048078250074065ee937590d008b480880792500751a8b0180782500750d8d49008bc88b018078250074f6894e045ec38b40048078250075168b4e043b4808750e8946048bd08b42048078250074ea8946045ec3",
+      "sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "568bf1833e007505e846590d008b46048078250074065ee937590d008b480880792500751a8b0180782500750d8d49008bc88b018078250074f6894e045ec38b40048078250075168b4e043b4808750e8946048bd08b42048078250074ea8946045ec3",
+      "loaded_postimage_sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11676624,
+      "length": 78,
+      "offset": 7482320,
+      "code": true,
+      "hex": "8b5424048b4208568b308972088b30807e250075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8b5424048b4208568b308972088b30807e250075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "loaded_postimage_sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11677872,
+      "length": 53,
+      "offset": 7483568,
+      "code": true,
+      "hex": "5356578b7c2410807f25008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e8d8340d0083c404807e25008bfe74e25f5e5bc20400",
+      "sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "5356578b7c2410807f25008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e8d8340d0083c404807e25008bfe74e25f5e5bc20400",
+      "loaded_postimage_sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11689408,
+      "length": 55,
+      "offset": 7495104,
+      "code": true,
+      "hex": "6a28e8540a0d0083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6402401c6402500c3",
+      "sha256": "51379a0350144891c34143e39eb335be8d91c69152d35602809e3148585c8ddf",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "6a28e8540a0d0083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6402401c6402500c3",
+      "loaded_postimage_sha256": "51379a0350144891c34143e39eb335be8d91c69152d35602809e3148585c8ddf",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11726592,
+      "length": 679,
+      "offset": 7532288,
+      "code": true,
+      "hex": "64a1000000006aff68a8d7cb0050648925000000008b44241883ec488078250055568be9744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e8d7978dff8d44240c508d4c242c8974245ce8a5278eff68a863d8008d4c242c51c74424306c92d600e813790c00538bd8578d4c246c895c2410e83d1effff8b038078250074058b7b08eb188b5308807a250074048bf8eb0b8b4c24703bcb8b79087567807f25008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f250074048bc6eb078bcfe89818ffff89038b5d048b4c2410394b087570807f250074078bc6894308eb638bcfe85618ffff894308eb578948048b1389113b4b0875048bf1eb1a807f25008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53248a41248851248843248b442410b3013858240f85f20000008b4d043b79040f84e3000000385f240f85da0000008b063bf875638b4608807824007512885824568bcdc6462400e8283bffff8b46088078250075728b10385a2475088b4808385924745f8b48083859247512885a24508bcdc6402400e83918ffff8b46088a4e24884824885e248b5008568bcd885a24e8df3affffeb71807824007511885824568bcdc6462400e80818ffff8b068078250075138b5008385a24751e8b083859247517c64024008b55048bfe3b7a048b76040f854dffffffeb2e8b083859247511885a24508bcdc6402400e8843affff8b068a4e24884824885e248b10568bcd885a24e8ac17ffff885f248b44241050e83b740c008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+      "sha256": "9fe114e6cdaee7ef2d25d62c7c2362d7fa21256a788208a8b51de4f0ecd0d6ef",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "64a1000000006aff680031003050648925000000008b44241883ec488078250055568be9744c6a1b33f668e04447018d4c2414c744242c0f00000089742428c644241800e8d7978dff8d44240c508d4c242c8974245ce8a5278eff68a86351018d4c242c51c74424306c92d600e813790c00538bd8578d4c246c895c2410e83d1effff8b038078250074058b7b08eb188b5308807a250074048bf8eb0b8b4c24703bcb8b79087567807f25008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f250074048bc6eb078bcfe89818ffff89038b5d048b4c2410394b087570807f250074078bc6894308eb638bcfe85618ffff894308eb578948048b1389113b4b0875048bf1eb1a807f25008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53248a41248851248843248b442410b3013858240f85f20000008b4d043b79040f84e3000000385f240f85da0000008b063bf875638b4608807824007512885824568bcdc6462400e8283bffff8b46088078250075728b10385a2475088b4808385924745f8b48083859247512885a24508bcdc6402400e83918ffff8b46088a4e24884824885e248b5008568bcd885a24e8df3affffeb71807824007511885824568bcdc6462400e80818ffff8b068078250075138b5008385a24751e8b083859247517c64024008b55048bfe3b7a048b76040f854dffffffeb2e8b083859247511885a24508bcdc6402400e8843affff8b068a4e24884824885e248b10568bcd885a24e8ac17ffff885f248b44241050e83b740c008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+      "loaded_postimage_sha256": "3d5c000be168e84cf3ef6d753acc6bfb5fe0ff0927e6aa3829bbab41ea06528c",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11727776,
+      "length": 201,
+      "offset": 7533472,
+      "code": true,
+      "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e854730c008b5c24243bdd75598b44242885c08b6e0474043bc67405e838730c00396c242c753f8b4e048b5104528bcee8c13cffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8e4720c003b5c242c74218d4c2420e88219ffff53578d542418528bcee8b4faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "sha256": "1640a9cdf8b79dc1489413d15cc0a391e0cfe1304fef45f0c9c67c048c351e64",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e854730c008b5c24243bdd75598b44242885c08b6e0474043bc67405e838730c00396c242c753f8b4e048b5104528bcee8c13cffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8e4720c003b5c242c74218d4c2420e88219ffff53578d542418528bcee8b4faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "loaded_postimage_sha256": "1640a9cdf8b79dc1489413d15cc0a391e0cfe1304fef45f0c9c67c048c351e64",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 11728064,
+      "length": 126,
+      "offset": 7533760,
+      "code": true,
+      "hex": "83ec08a134d5080153558b6c2414568bd88b0057be30d508018bf889742410897c241485f6740881fe30d508017405e81f720c003bfb743c85f67505e812720c003b7e047505e808720c003b6f2074138d4c2410e8a718ffff8b7c24148b742410ebc057568d44241850b930d50801e8ccf9ffff5f5e5d5b83c408c20400",
+      "sha256": "56ed03e5e9f71e813f4df848443dafd905e13fe7c5be6b9813dae7c1542a0e80",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "83ec08a134d5810153558b6c2414568bd88b0057be30d581018bf889742410897c241485f6740881fe30d581017405e81f720c003bfb743c85f67505e812720c003b7e047505e808720c003b6f2074138d4c2410e8a718ffff8b7c24148b742410ebc057568d44241850b930d58101e8ccf9ffff5f5e5d5b83c408c20400",
+      "loaded_postimage_sha256": "ae509788de2fded6ba77efacd2655a914d1b3c94b9d89380bad5507553a5f2b2",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12542767,
+      "length": 17,
+      "offset": 8348463,
+      "code": true,
+      "hex": "8bc18360040083600800c7007093d600c3",
+      "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8bc18360040083600800c7007093d600c3",
+      "loaded_postimage_sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12542886,
+      "length": 88,
+      "offset": 8348582,
+      "code": true,
+      "hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+      "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+      "loaded_postimage_sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12543060,
+      "length": 22,
+      "offset": 8348756,
+      "code": true,
+      "hex": "83790800c7017093d6007409ff7104e86039000059c3",
+      "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "83790800c7017093d6007409ff7104e86039000059c3",
+      "loaded_postimage_sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12543404,
+      "length": 5,
+      "offset": 8349100,
+      "code": true,
+      "hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e96fd8c72e",
+      "loaded_postimage_sha256": "5cddf8f4c80be80fc1544f0b24deff4b456983ee480ee340611eca5349075db5",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12543727,
+      "length": 5,
+      "offset": 8349423,
+      "code": true,
+      "hex": "558becff35",
+      "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9bccbc72e",
+      "loaded_postimage_sha256": "e0b50a911c68ccc7fbebab0108ae5bbdc911ffbcf99d1e9533ae41cc0973e393",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12543763,
+      "length": 16,
+      "offset": 8349459,
+      "code": true,
+      "hex": "33c05050505050e8d0ffffff83c414c3",
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "33c05050505050e8d0ffffff83c414c3",
+      "loaded_postimage_sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12544027,
+      "length": 5,
+      "offset": 8349723,
+      "code": true,
+      "hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9d0c6c72e",
+      "loaded_postimage_sha256": "7e879d9708a0d62a10d7a7198d94034ca0944be7af45b21be234a8ca01fb921c",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12544133,
+      "length": 5,
+      "offset": 8349829,
+      "code": true,
+      "hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9a6d9c72e",
+      "loaded_postimage_sha256": "e9079c53145377e418dc5ecc942bd0184689763c94069d9ba03333a7f2b583a9",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12544835,
+      "length": 5,
+      "offset": 8350531,
+      "code": true,
+      "hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9461fc82e",
+      "loaded_postimage_sha256": "0bc87d9c0a9a50cf523135050dd724afa906c6edb42dd349abd49e70988332e5",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12555172,
+      "length": 101,
+      "offset": 8360868,
+      "code": true,
+      "hex": "8b4c24045333db3bcb565774088b7c24143bfb771be8cd6700006a165e89305353535353e822d3ffff83c4148bc6eb318b7424183bf375048819ebd98bd18a06880242463ac374034f75f33bfb75108819e8916700006a225989088bf1ebc033c05f5e5bc3",
+      "sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8b4c24045333db3bcb565774088b7c24143bfb771be8cd6700006a165e89305353535353e822d3ffff83c4148bc6eb318b7424183bf375048819ebd98bd18a06880242463ac374034f75f33bfb75108819e8916700006a225989088bf1ebc033c05f5e5bc3",
+      "loaded_postimage_sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12557768,
+      "length": 5,
+      "offset": 8363464,
+      "code": true,
+      "hex": "6a0c68f02d",
+      "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e953a0c72e",
+      "loaded_postimage_sha256": "3d252a482bf7cfbd8aed92ee575b2097b630a8e23a52ee4de7836cd54eccf5e9",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12558106,
+      "length": 5,
+      "offset": 8363802,
+      "code": true,
+      "hex": "558b6c2408",
+      "sha256": "5cda66d596638726fa3617fb7f791797871e45ad0ae221a318eafa8d5334a495",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e941a0c72e",
+      "loaded_postimage_sha256": "74706fc06df8b478cdde7748d8d48de1cd7bf8e8e79cfab8481e75bd3cc94474",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12581771,
+      "length": 5,
+      "offset": 8387467,
+      "code": true,
+      "hex": "e827560000",
+      "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e910e43b74",
+      "loaded_postimage_sha256": "9db9d370ba39178861d01acf70e9f5b5913e01935ab7983b62a6ec3398b24efd",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12598752,
+      "length": 5,
+      "offset": 8404448,
+      "code": true,
+      "hex": "8b4c2404f7",
+      "sha256": "5f85ab0b310f40a69b5b6d3c69c1add39029bf41ce264cbd9e71975b31366573",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "e9d94cc72e",
+      "loaded_postimage_sha256": "83c340476a9e48b7f8e9074d6bd8f5a26d87dfb0ec4edcba70bd9b28ca8d218c",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12967952,
+      "length": 8,
+      "offset": 8773648,
+      "code": true,
+      "hex": "8b4df0e93c84f9ff",
+      "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8b4df0e93c84f9ff",
+      "loaded_postimage_sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12967960,
+      "length": 10,
+      "offset": 8773656,
+      "code": true,
+      "hex": "b8743fd800e9218bf9ff",
+      "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "b8743f5101e9218bf9ff",
+      "loaded_postimage_sha256": "7ed9acf4375e7f0c6938087d61ddd04fb1cc4b4c84b0a4d3016fbe14dac77faf",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12968016,
+      "length": 8,
+      "offset": 8773712,
+      "code": true,
+      "hex": "8b4df0e9fc83f9ff",
+      "sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8b4df0e9fc83f9ff",
+      "loaded_postimage_sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 12968024,
+      "length": 10,
+      "offset": 8773720,
+      "code": true,
+      "hex": "b82440d800e9e18af9ff",
+      "sha256": "7a72ae46a76082c602940eb6fef1fbb68b68b07feb036c6548fcaf85d2e84d5c",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "b824405101e9e18af9ff",
+      "loaded_postimage_sha256": "cc6fbdf9ebfa3f1f9b44109ecda410e8c7625c5f6b09da2d9e7648317a9135cf",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 13359008,
+      "length": 8,
+      "offset": 9164704,
+      "code": true,
+      "hex": "8d4db0e9289b74ff",
+      "sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "8d4db0e9289b74ff",
+      "loaded_postimage_sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 13359016,
+      "length": 10,
+      "offset": 9164712,
+      "code": true,
+      "hex": "b82460df00e99193f3ff",
+      "sha256": "1550efbddb4b68fa29dd9e6e7e6b8e41cb5c00fb30c361e511f137ebd520e7a6",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "b824605801e99193f3ff",
+      "loaded_postimage_sha256": "9a5f73fa92b18aaf80969b9bbb30cd4c644bcc283a291f00f65b44dff5f0731d",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 13518048,
+      "length": 28,
+      "offset": 9323744,
+      "code": false,
+      "hex": "696e76616c6964206d61702f7365743c543e206974657261746f7200",
+      "sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "696e76616c6964206d61702f7365743c543e206974657261746f7200",
+      "loaded_postimage_sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14172012,
+      "length": 44,
+      "offset": 9977708,
+      "code": false,
+      "hex": "ffffffff10e0c50022059319010000006c3fd800000000000000000000000000000000000000000001000000",
+      "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "ffffffff10e03e0122059319010000006c3f5101000000000000000000000000000000000000000001000000",
+      "loaded_postimage_sha256": "3ada25e08cb1ecdce2edd84f8e50ecf91698fd84e1ddc2b312001328d9309a1a",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14172160,
+      "length": 28,
+      "offset": 9977856,
+      "code": false,
+      "hex": "000000002080e00000000000ffffffff0000000028000000d0184100",
+      "sha256": "d037d7830611e5a31cf21ad46624ea03580cbd0c558623e20c15b4d1526dc1d1",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "000000002080590100000000ffffffff0000000028000000d018ba00",
+      "loaded_postimage_sha256": "1df5f423e4cf184cbf61be9e6894e7ae529630dd9ff3d010ad94fe715c253d47",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14172188,
+      "length": 44,
+      "offset": 9977884,
+      "code": false,
+      "hex": "ffffffff50e0c50022059319010000001c40d800000000000000000000000000000000000000000001000000",
+      "sha256": "a75d91d18050b85fd79822428ad231ae53eaa9f3690f53b95d52425b02ebffff",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "ffffffff50e03e0122059319010000001c405101000000000000000000000000000000000000000001000000",
+      "loaded_postimage_sha256": "53744294add756a34eee0e4b7c91b23b237313fc64238631fed7fcaac97cd408",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14181288,
+      "length": 16,
+      "offset": 9986984,
+      "code": false,
+      "hex": "00000000b012440000000000e463d800",
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "00000000b012bd0000000000e4635101",
+      "loaded_postimage_sha256": "005f1d5fd97774d59a30a12496f2af36d22bedb7d870a3b1a9a3b8aa530bda12",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14181348,
+      "length": 44,
+      "offset": 9987044,
+      "code": false,
+      "hex": "03000000f463d8000040d8007c3ce000000000007c81e00000000000ffffffff000000002800000060174400",
+      "sha256": "803c823bf8f2098853c79d808ee520bb609ce65a63e51b0961d182e1fc08d361",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "03000000f4635101004051017c3c5901000000007c81590100000000ffffffff00000000280000006017bd00",
+      "loaded_postimage_sha256": "42c8f3562934df7d6f6ded112dd16b8757831ee1ed103d4dbae6f4c980da3931",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14639132,
+      "length": 44,
+      "offset": 10444828,
+      "code": false,
+      "hex": "ffffffffa0d7cb0022059319010000001c60df00000000000000000000000000000000000000000001000000",
+      "sha256": "05b72cd9bba082f459a2d40c1bad5e06c7a5495afd28b28577ab4ba9a64e234c",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "ffffffffa0d7440122059319010000001c605801000000000000000000000000000000000000000001000000",
+      "loaded_postimage_sha256": "160d708d579a3873714f430f3353af76cd9951cc1950acde1aace2eb4f2e1c11",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14695548,
+      "length": 28,
+      "offset": 10501244,
+      "code": false,
+      "hex": "00000000f074e10000000000ffffffff000000000c000000a663bf00",
+      "sha256": "9fa41aa7ae4c2be7d89eea68c3e5b98ae3b6fb7822f78c013edb988305f079f4",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "00000000f0745a0100000000ffffffff000000000c000000a6633801",
+      "loaded_postimage_sha256": "85f52196b519eb0eaa77ba20ad782770ff11f7ebee0076e775514f21e7fd7077",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14712864,
+      "length": 32,
+      "offset": 10518560,
+      "code": false,
+      "hex": "d493d600000000002e3f41566c6f6769635f6572726f72407374644040000000",
+      "sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "d493d600000000002e3f41566c6f6769635f6572726f72407374644040000000",
+      "loaded_postimage_sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14713212,
+      "length": 32,
+      "offset": 10518908,
+      "code": false,
+      "hex": "d493d600000000002e3f41566f75745f6f665f72616e67654073746440400000",
+      "sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "d493d600000000002e3f41566f75745f6f665f72616e67654073746440400000",
+      "loaded_postimage_sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76",
+      "complete_postimage_matches_only_listed_changes": true
+    },
+    {
+      "address": 14775536,
+      "length": 32,
+      "offset": 10581232,
+      "code": false,
+      "hex": "d493d600000000002e3f4156657863657074696f6e40737464404000ffffffff",
+      "sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+      "live_ghidra_matches_installed_pe": true,
+      "loaded_postimage_hex": "d493d600000000002e3f4156657863657074696f6e40737464404000ffffffff",
+      "loaded_postimage_sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+      "complete_postimage_matches_only_listed_changes": true
+    }
+  ],
+  "production_Ghidra_or_shared_metadata_edits": false,
+  "decompiler_truncation": {
+    "function": "00b230b0",
+    "call_site": "00b230cf",
+    "missing_start": "00b230d4",
+    "missing_end_exclusive": "00b230df",
+    "byte_count": 11,
+    "hex": "83c404807e25008bfe74e2",
+    "decoded": "ADD ESP,4; CMP byte [ESI+25h],0; MOV EDI,ESI; JZ B230C1. The entire native53-byte body includes right recursion, captured-left assignment, returning-free continuation and RET4.",
+    "saved_analysis_repair": "Primary integrator owns clearing the incorrect no-return flow override and disassembling the existing complete-body gap, then renaming/commenting and refreshing exports."
+  },
+  "material_ordering": [
+    "B25DC0 performs actual shared allocation of40 bytes, conditional link writes +0/+4/+8, then black1 and nonsentinel0. Key/value and2 trailing bytes remain uninitialized. Caller must set sentinel1; successful null allocation is not supported by the existing shared allocator.",
+    "B230B0 checks sentinel before traversal; recurses into current right subtree; captures current left only after recursion; frees original current node; tests captured left after free and repeats. It never releases borrowed values or changes tree header/count.",
+    "B2F3A0 captures current minimum before initial owner validation, reads first node after the handler, and captures current head before last-owner validation. Full range frees the current root, rereads head to set root=self, captures head before clearing count, sets minimum=self, rereads head to set maximum=self, then captures minimum before output OWNER/NODE stores.",
+    "Partial range validates captured first owner against current last owner before every equality check. It advances actual local first with existing B20DC0, erases captured old owner/node with existing B2EF00, then reloads current first node followed by owner. Final output stores captured OWNER before NODE."
+  ],
+  "build": {
+    "repository_script": "./scripts/build.ps1",
+    "passed": true,
+    "seeds_verified_against_live_Ghidra_and_installed_PE": true,
+    "existing_CTests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tracked_tests": 0,
+    "new_source_strict_compile": "Ignored local/tree_lifetime_diff target directly compiles the owned source and fixture using /O2 /Oy- /MD /EHsc /fp:strict /W4 /WX and links the current worktree bsp_core.lib.",
+    "integration_boundary": "Shared CMake registration and ledgers/Ghidra remain primary-integrator owned. New source is compiled/executed in this private focused target; it joins the primary library after integration."
+  },
+  "fixture": {
+    "native_host_trace_exact_equal": true,
+    "matching_DWORD_trace_entries": 13747,
+    "matching_trace_bytes": 54988,
+    "actual_node_frees_each": 43,
+    "free_events": [
+      [
+        4026531840,
+        2,
+        7
+      ],
+      [
+        4026531840,
+        2,
+        6
+      ],
+      [
+        4026531840,
+        2,
+        5
+      ],
+      [
+        4026531840,
+        2,
+        4
+      ],
+      [
+        4026531840,
+        2,
+        3
+      ],
+      [
+        4026531840,
+        2,
+        2
+      ],
+      [
+        4026531840,
+        2,
+        1
+      ],
+      [
+        4026531840,
+        3,
+        7
+      ],
+      [
+        4026531840,
+        3,
+        6
+      ],
+      [
+        4026531840,
+        3,
+        4
+      ],
+      [
+        4026531840,
+        3,
+        3
+      ],
+      [
+        4026531840,
+        3,
+        2
+      ],
+      [
+        4026531840,
+        3,
+        1
+      ],
+      [
+        4026531840,
+        4,
+        7
+      ],
+      [
+        4026531840,
+        4,
+        6
+      ],
+      [
+        4026531840,
+        4,
+        5
+      ],
+      [
+        4026531840,
+        4,
+        4
+      ],
+      [
+        4026531840,
+        4,
+        3
+      ],
+      [
+        4026531840,
+        4,
+        2
+      ],
+      [
+        4026531840,
+        4,
+        1
+      ],
+      [
+        4026531840,
+        6,
+        2
+      ],
+      [
+        4026531840,
+        6,
+        3
+      ],
+      [
+        4026531840,
+        6,
+        4
+      ],
+      [
+        4026531840,
+        6,
+        5
+      ],
+      [
+        4026531840,
+        8,
+        7
+      ],
+      [
+        4026531840,
+        8,
+        6
+      ],
+      [
+        4026531840,
+        8,
+        5
+      ],
+      [
+        4026531840,
+        8,
+        4
+      ],
+      [
+        4026531840,
+        8,
+        3
+      ],
+      [
+        4026531840,
+        8,
+        2
+      ],
+      [
+        4026531840,
+        8,
+        1
+      ],
+      [
+        4026531840,
+        10,
+        2
+      ],
+      [
+        4026531840,
+        10,
+        3
+      ],
+      [
+        4026531840,
+        10,
+        4
+      ],
+      [
+        4026531840,
+        10,
+        5
+      ],
+      [
+        4026531840,
+        11,
+        2
+      ],
+      [
+        4026531840,
+        11,
+        3
+      ],
+      [
+        4026531840,
+        11,
+        4
+      ],
+      [
+        4026531840,
+        11,
+        5
+      ],
+      [
+        4026531840,
+        13,
+        2
+      ],
+      [
+        4026531840,
+        13,
+        3
+      ],
+      [
+        4026531840,
+        13,
+        4
+      ],
+      [
+        4026531840,
+        13,
+        5
+      ]
+    ],
+    "returning_or_throwing_invalid_handler_calls_each": 9,
+    "invalid_events": [
+      [
+        3120562176,
+        8,
+        1
+      ],
+      [
+        3120562176,
+        9,
+        1
+      ],
+      [
+        3120562176,
+        10,
+        1
+      ],
+      [
+        3120562176,
+        11,
+        1
+      ],
+      [
+        3120562176,
+        11,
+        2
+      ],
+      [
+        3120562176,
+        11,
+        3
+      ],
+      [
+        3120562176,
+        11,
+        4
+      ],
+      [
+        3120562176,
+        11,
+        5
+      ],
+      [
+        3120562176,
+        12,
+        1
+      ]
+    ],
+    "original_output_stores": [
+      [
+        4,
+        0,
+        11727889
+      ],
+      [
+        4,
+        4,
+        11727893
+      ],
+      [
+        6,
+        0,
+        11727962
+      ],
+      [
+        6,
+        4,
+        11727967
+      ],
+      [
+        7,
+        0,
+        11727962
+      ],
+      [
+        7,
+        4,
+        11727967
+      ],
+      [
+        8,
+        0,
+        11727889
+      ],
+      [
+        8,
+        4,
+        11727893
+      ],
+      [
+        9,
+        0,
+        11727889
+      ],
+      [
+        9,
+        4,
+        11727893
+      ],
+      [
+        10,
+        0,
+        11727962
+      ],
+      [
+        10,
+        4,
+        11727967
+      ],
+      [
+        11,
+        0,
+        11727962
+      ],
+      [
+        11,
+        4,
+        11727967
+      ]
+    ],
+    "host_output_stores": [
+      [
+        4,
+        0,
+        805334193
+      ],
+      [
+        4,
+        4,
+        805334195
+      ],
+      [
+        6,
+        0,
+        805334272
+      ],
+      [
+        6,
+        4,
+        805334275
+      ],
+      [
+        7,
+        0,
+        805334272
+      ],
+      [
+        7,
+        4,
+        805334275
+      ],
+      [
+        8,
+        0,
+        805334193
+      ],
+      [
+        8,
+        4,
+        805334195
+      ],
+      [
+        9,
+        0,
+        805334193
+      ],
+      [
+        9,
+        4,
+        805334195
+      ],
+      [
+        10,
+        0,
+        805334272
+      ],
+      [
+        10,
+        4,
+        805334275
+      ],
+      [
+        11,
+        0,
+        805334272
+      ],
+      [
+        11,
+        4,
+        805334275
+      ]
+    ],
+    "output_store_order_exact_equal": true,
+    "output_store_observer": "Private output page is read-only until vectored write fault; one original/host instruction is single-stepped, post-store OWNER/NODE words recorded, page protected again. Output-header alias phases use actual header storage and final-state traces.",
+    "owned_native_bytes": 309,
+    "all_three_owned_native_bodies_unpatched": true,
+    "all_48_runtime_postimages_verified": true,
+    "all_48_spans_fresh_live_PE_matched": true,
+    "span_bytes": 2429,
+    "image_base": 12124160,
+    "absolute_relocations": [
+      {
+        "address": 4265731,
+        "expected": 12967960,
+        "preimage": "18e0c500",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 4266195,
+        "expected": 12968024,
+        "preimage": "58e0c500",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11726601,
+        "expected": 13359016,
+        "preimage": "a8d7cb00",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11726635,
+        "expected": 13518048,
+        "preimage": "e044ce00",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11726684,
+        "expected": 14181288,
+        "preimage": "a863d800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11728068,
+        "expected": 17356084,
+        "preimage": "34d50801",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11728085,
+        "expected": 17356080,
+        "preimage": "30d50801",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11728105,
+        "expected": 17356080,
+        "preimage": "30d50801",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 11728171,
+        "expected": 17356080,
+        "preimage": "30d50801",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 12967961,
+        "expected": 14172020,
+        "preimage": "743fd800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 12968025,
+        "expected": 14172196,
+        "preimage": "2440d800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 13359017,
+        "expected": 14639140,
+        "preimage": "2460df00",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14172016,
+        "expected": 12967952,
+        "preimage": "10e0c500",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14172028,
+        "expected": 14172012,
+        "preimage": "6c3fd800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14172164,
+        "expected": 14712864,
+        "preimage": "2080e000",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14172184,
+        "expected": 4266192,
+        "preimage": "d0184100",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14172192,
+        "expected": 12968016,
+        "preimage": "50e0c500",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14172204,
+        "expected": 14172188,
+        "preimage": "1c40d800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181292,
+        "expected": 4461232,
+        "preimage": "b0124400",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181300,
+        "expected": 14181348,
+        "preimage": "e463d800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181352,
+        "expected": 14181364,
+        "preimage": "f463d800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181356,
+        "expected": 14172160,
+        "preimage": "0040d800",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181360,
+        "expected": 14695548,
+        "preimage": "7c3ce000",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181368,
+        "expected": 14713212,
+        "preimage": "7c81e000",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14181388,
+        "expected": 4462432,
+        "preimage": "60174400",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14639136,
+        "expected": 13359008,
+        "preimage": "a0d7cb00",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14639148,
+        "expected": 14639132,
+        "preimage": "1c60df00",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14695552,
+        "expected": 14775536,
+        "preimage": "f074e100",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      },
+      {
+        "address": 14695572,
+        "expected": 12542886,
+        "preimage": "a663bf00",
+        "kind": "absolute_native_address_rebased_to_sparse_image"
+      }
+    ],
+    "relative_calls_and_jumps_preserved": [
+      {
+        "site": 4265757,
+        "target": 12542767,
+        "bytes": "e80d4c7e00",
+        "instruction": "call 0xbf632f"
+      },
+      {
+        "site": 4265798,
+        "target": 4227360,
+        "bytes": "e8d569ffff",
+        "instruction": "call 0x408120"
+      },
+      {
+        "site": 4266227,
+        "target": 12542886,
+        "bytes": "e8ae4a7e00",
+        "instruction": "call 0xbf63a6"
+      },
+      {
+        "site": 4266267,
+        "target": 4227360,
+        "bytes": "e80068ffff",
+        "instruction": "call 0x408120"
+      },
+      {
+        "site": 4461251,
+        "target": 12543404,
+        "bytes": "e8e4527b00",
+        "instruction": "call 0xbf65ac"
+      },
+      {
+        "site": 4461277,
+        "target": 12543060,
+        "bytes": "e972517b00",
+        "instruction": "jmp 0xbf6454"
+      },
+      {
+        "site": 4462440,
+        "target": 4266192,
+        "bytes": "e86301fdff",
+        "instruction": "call 0x4118d0"
+      },
+      {
+        "site": 11667563,
+        "target": 11667568,
+        "bytes": "eb03",
+        "instruction": "jmp 0xb20870"
+      },
+      {
+        "site": 11668936,
+        "target": 12543763,
+        "bytes": "e846590d00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11668951,
+        "target": 12543763,
+        "bytes": "e937590d00",
+        "instruction": "jmp 0xbf6713"
+      },
+      {
+        "site": 11677895,
+        "target": 11677872,
+        "bytes": "e8e4ffffff",
+        "instruction": "call 0xb230b0"
+      },
+      {
+        "site": 11677903,
+        "target": 12543404,
+        "bytes": "e8d8340d00",
+        "instruction": "call 0xbf65ac"
+      },
+      {
+        "site": 11689410,
+        "target": 12544027,
+        "bytes": "e8540a0d00",
+        "instruction": "call 0xbf681b"
+      },
+      {
+        "site": 11726660,
+        "target": 4228896,
+        "bytes": "e8d7978dff",
+        "instruction": "call 0x408720"
+      },
+      {
+        "site": 11726678,
+        "target": 4265728,
+        "bytes": "e8a5278eff",
+        "instruction": "call 0x411700"
+      },
+      {
+        "site": 11726701,
+        "target": 12544133,
+        "bytes": "e813790c00",
+        "instruction": "call 0xbf6885"
+      },
+      {
+        "site": 11726718,
+        "target": 11668928,
+        "bytes": "e83d1effff",
+        "instruction": "call 0xb20dc0"
+      },
+      {
+        "site": 11726734,
+        "target": 11726760,
+        "bytes": "eb18",
+        "instruction": "jmp 0xb2efa8"
+      },
+      {
+        "site": 11726747,
+        "target": 11726760,
+        "bytes": "eb0b",
+        "instruction": "jmp 0xb2efa8"
+      },
+      {
+        "site": 11726783,
+        "target": 11726796,
+        "bytes": "eb0b",
+        "instruction": "jmp 0xb2efcc"
+      },
+      {
+        "site": 11726791,
+        "target": 11726796,
+        "bytes": "eb03",
+        "instruction": "jmp 0xb2efcc"
+      },
+      {
+        "site": 11726815,
+        "target": 11726824,
+        "bytes": "eb07",
+        "instruction": "jmp 0xb2efe8"
+      },
+      {
+        "site": 11726819,
+        "target": 11667584,
+        "bytes": "e89818ffff",
+        "instruction": "call 0xb20880"
+      },
+      {
+        "site": 11726849,
+        "target": 11726950,
+        "bytes": "eb63",
+        "instruction": "jmp 0xb2f066"
+      },
+      {
+        "site": 11726853,
+        "target": 11667552,
+        "bytes": "e85618ffff",
+        "instruction": "call 0xb20860"
+      },
+      {
+        "site": 11726861,
+        "target": 11726950,
+        "bytes": "eb57",
+        "instruction": "jmp 0xb2f066"
+      },
+      {
+        "site": 11726877,
+        "target": 11726905,
+        "bytes": "eb1a",
+        "instruction": "jmp 0xb2f039"
+      },
+      {
+        "site": 11726916,
+        "target": 11726932,
+        "bytes": "eb0e",
+        "instruction": "jmp 0xb2f054"
+      },
+      {
+        "site": 11726927,
+        "target": 11726932,
+        "bytes": "eb03",
+        "instruction": "jmp 0xb2f054"
+      },
+      {
+        "site": 11727011,
+        "target": 11676624,
+        "bytes": "e8283bffff",
+        "instruction": "call 0xb22bd0"
+      },
+      {
+        "site": 11727058,
+        "target": 11667728,
+        "bytes": "e83918ffff",
+        "instruction": "call 0xb20910"
+      },
+      {
+        "site": 11727084,
+        "target": 11676624,
+        "bytes": "e8df3affff",
+        "instruction": "call 0xb22bd0"
+      },
+      {
+        "site": 11727089,
+        "target": 11727204,
+        "bytes": "eb71",
+        "instruction": "jmp 0xb2f164"
+      },
+      {
+        "site": 11727107,
+        "target": 11667728,
+        "bytes": "e80818ffff",
+        "instruction": "call 0xb20910"
+      },
+      {
+        "site": 11727156,
+        "target": 11727204,
+        "bytes": "eb2e",
+        "instruction": "jmp 0xb2f164"
+      },
+      {
+        "site": 11727175,
+        "target": 11676624,
+        "bytes": "e8843affff",
+        "instruction": "call 0xb22bd0"
+      },
+      {
+        "site": 11727199,
+        "target": 11667728,
+        "bytes": "e8ac17ffff",
+        "instruction": "call 0xb20910"
+      },
+      {
+        "site": 11727212,
+        "target": 12543404,
+        "bytes": "e83b740c00",
+        "instruction": "call 0xbf65ac"
+      },
+      {
+        "site": 11727802,
+        "target": 12543763,
+        "bytes": "e854730c00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11727830,
+        "target": 12543763,
+        "bytes": "e838730c00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11727850,
+        "target": 11677872,
+        "bytes": "e8c13cffff",
+        "instruction": "call 0xb230b0"
+      },
+      {
+        "site": 11727914,
+        "target": 12543763,
+        "bytes": "e8e4720c00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11727929,
+        "target": 11668928,
+        "bytes": "e88219ffff",
+        "instruction": "call 0xb20dc0"
+      },
+      {
+        "site": 11727943,
+        "target": 11726592,
+        "bytes": "e8b4faffff",
+        "instruction": "call 0xb2ef00"
+      },
+      {
+        "site": 11727956,
+        "target": 11727904,
+        "bytes": "ebca",
+        "instruction": "jmp 0xb2f420"
+      },
+      {
+        "site": 11728111,
+        "target": 12543763,
+        "bytes": "e81f720c00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11728124,
+        "target": 12543763,
+        "bytes": "e812720c00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11728134,
+        "target": 12543763,
+        "bytes": "e808720c00",
+        "instruction": "call 0xbf6713"
+      },
+      {
+        "site": 11728148,
+        "target": 11668928,
+        "bytes": "e8a718ffff",
+        "instruction": "call 0xb20dc0"
+      },
+      {
+        "site": 11728161,
+        "target": 11728099,
+        "bytes": "ebc0",
+        "instruction": "jmp 0xb2f4e3"
+      },
+      {
+        "site": 11728175,
+        "target": 11726592,
+        "bytes": "e8ccf9ffff",
+        "instruction": "call 0xb2ef00"
+      },
+      {
+        "site": 12542919,
+        "target": 12598752,
+        "bytes": "e814da0000",
+        "instruction": "call 0xc03de0"
+      },
+      {
+        "site": 12542928,
+        "target": 12558106,
+        "bytes": "e8453b0000",
+        "instruction": "call 0xbf9f1a"
+      },
+      {
+        "site": 12542947,
+        "target": 12555172,
+        "bytes": "e8bc2f0000",
+        "instruction": "call 0xbf93a4"
+      },
+      {
+        "site": 12542955,
+        "target": 12542966,
+        "bytes": "eb09",
+        "instruction": "jmp 0xbf63f6"
+      },
+      {
+        "site": 12542961,
+        "target": 12542966,
+        "bytes": "eb03",
+        "instruction": "jmp 0xbf63f6"
+      },
+      {
+        "site": 12543075,
+        "target": 12557768,
+        "bytes": "e860390000",
+        "instruction": "call 0xbf9dc8"
+      },
+      {
+        "site": 12543770,
+        "target": 12543727,
+        "bytes": "e8d0ffffff",
+        "instruction": "call 0xbf66ef"
+      },
+      {
+        "site": 12555193,
+        "target": 12581771,
+        "bytes": "e8cd670000",
+        "instruction": "call 0xbffb8b"
+      },
+      {
+        "site": 12555208,
+        "target": 12543727,
+        "bytes": "e822d3ffff",
+        "instruction": "call 0xbf66ef"
+      },
+      {
+        "site": 12555218,
+        "target": 12555269,
+        "bytes": "eb31",
+        "instruction": "jmp 0xbf9405"
+      },
+      {
+        "site": 12555230,
+        "target": 12555193,
+        "bytes": "ebd9",
+        "instruction": "jmp 0xbf93b9"
+      },
+      {
+        "site": 12555253,
+        "target": 12581771,
+        "bytes": "e891670000",
+        "instruction": "call 0xbffb8b"
+      },
+      {
+        "site": 12555265,
+        "target": 12555203,
+        "bytes": "ebc0",
+        "instruction": "jmp 0xbf93c3"
+      },
+      {
+        "site": 12967955,
+        "target": 12543060,
+        "bytes": "e93c84f9ff",
+        "instruction": "jmp 0xbf6454"
+      },
+      {
+        "site": 12967965,
+        "target": 12544835,
+        "bytes": "e9218bf9ff",
+        "instruction": "jmp 0xbf6b43"
+      },
+      {
+        "site": 12968019,
+        "target": 12543060,
+        "bytes": "e9fc83f9ff",
+        "instruction": "jmp 0xbf6454"
+      },
+      {
+        "site": 12968029,
+        "target": 12544835,
+        "bytes": "e9e18af9ff",
+        "instruction": "jmp 0xbf6b43"
+      },
+      {
+        "site": 13359011,
+        "target": 4223696,
+        "bytes": "e9289b74ff",
+        "instruction": "jmp 0x4072d0"
+      },
+      {
+        "site": 13359021,
+        "target": 12544835,
+        "bytes": "e99193f3ff",
+        "instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "entry_bridges": [
+      {
+        "address": 4228896,
+        "boundary": "counted_assignment_thiscall_to_existing_production",
+        "preimage": "5355568bf1",
+        "runtime_target": 805318672
+      },
+      {
+        "address": 4227360,
+        "boundary": "substring_assignment_thiscall_to_existing_production",
+        "preimage": "538b5c2408",
+        "runtime_target": 805329920
+      },
+      {
+        "address": 4223696,
+        "boundary": "SBO_destroy_thiscall_to_existing_production",
+        "preimage": "568bf1837e",
+        "runtime_target": 805318880
+      },
+      {
+        "address": 12544133,
+        "boundary": "observed_actual_host_CxxThrowException",
+        "preimage": "558bec83ec",
+        "runtime_target": 805323312
+      },
+      {
+        "address": 12543404,
+        "boundary": "observed_actual_host_free",
+        "preimage": "e917380000",
+        "runtime_target": 805322272
+      },
+      {
+        "address": 12558106,
+        "boundary": "observed_actual_host_malloc",
+        "preimage": "558b6c2408",
+        "runtime_target": 805322592
+      },
+      {
+        "address": 12557768,
+        "boundary": "observed_actual_host_free",
+        "preimage": "6a0c68f02d",
+        "runtime_target": 805322272
+      },
+      {
+        "address": 12598752,
+        "boundary": "actual_host_strlen",
+        "preimage": "8b4c2404f7",
+        "runtime_target": 805341886
+      },
+      {
+        "address": 12543727,
+        "boundary": "validate_five_zero_args_then_actual_host_invalid_parameter_noinfo",
+        "preimage": "558becff35",
+        "runtime_target": 805319344
+      },
+      {
+        "address": 12581771,
+        "boundary": "actual_host_errno",
+        "preimage": "e827560000",
+        "runtime_target": 1970593696
+      },
+      {
+        "address": 12544835,
+        "boundary": "actual_host_CxxFrameHandler3",
+        "preimage": "558bec83ec",
+        "runtime_target": 805341838
+      },
+      {
+        "address": 12544027,
+        "boundary": "existing_actual_shared_singleton_lifetime_allocate",
+        "preimage": "558bec83ec",
+        "runtime_target": 805318384
+      }
+    ],
+    "existing_FH3_registration_adapters": [
+      {
+        "operand_address": 11726601,
+        "runtime_target": 805318912
+      },
+      {
+        "operand_address": 4265731,
+        "runtime_target": 805318640
+      },
+      {
+        "operand_address": 4266195,
+        "runtime_target": 805318656
+      }
+    ],
+    "service_boundary": "Actual shared singleton_lifetime_allocate plus actual CRT malloc/free/new-handler are reused. Existing checked increment, erase, rotations and native exception closure bodies execute on original side; original operation entries are not callback substitutes. Existing owning-string service and host CRT adapters are loaded for the already-reconstructed erase error closure, whose exception construction is not revalidated by this packet.",
+    "service_perturbations": "Phase1 poisons newly returned actual40-byte allocation before initialization. Phase3 observers modify node6.left while node7 is freed and node4.left after its next child has been captured. These intentional service-boundary experiments verify reads and captures; they are not claims about ordinary malloc/free side effects. Phase14 injects one failed malloc40 and lets the existing actual allocator call the installed new handler, which throws a marker.",
+    "address_normalization": "Only actual tree, guarded output and nine actual node identities are normalized. Node links, entire key bytes, value pointers, color/sentinel/padding, current count, frees and handler events are traced.",
+    "phases": [
+      {
+        "phase": 1,
+        "result": "Raw40 allocation initializes exactly three links and color/sentinel bytes; key/value/padding stay A7."
+      },
+      {
+        "phase": 2,
+        "result": "Destroy perfect seven-node tree in right/node/left order7,6,5,4,3,2,1; sentinel and header/count retained."
+      },
+      {
+        "phase": 3,
+        "result": "Returning-free observer proves current left reload after right recursion and capture before own free; free7,6,4,3,2,1 while5 survives; direct sentinel input performs no free."
+      },
+      {
+        "phase": 4,
+        "result": "Full range clears root/count/extrema using retained head and publishes OWNER then NODE."
+      },
+      {
+        "phase": 5,
+        "result": "Empty full range with output overlapping actual head/count retains captured result node across owner publication."
+      },
+      {
+        "phase": 6,
+        "result": "Partial range[2,6) invokes original increment and erase, freeing2,3,4,5 with successor transplant/black fixup; survivors1,6,7."
+      },
+      {
+        "phase": 7,
+        "result": "Empty partial range publishes unchanged first iterator without free."
+      },
+      {
+        "phase": 8,
+        "result": "Returning first-owner handler mutates minimum; pre-handler captured minimum still selects full range."
+      },
+      {
+        "phase": 9,
+        "result": "Returning last-owner handler replaces head with a separate actual empty sentinel; pre-handler head comparison selects full range while current root/reset/output use replacement head."
+      },
+      {
+        "phase": 10,
+        "result": "Matching foreign first/last owner identity receives initial owner handler only and survives partial output."
+      },
+      {
+        "phase": 11,
+        "result": "Foreign last owner invokes returning handler before every partial equality check, including final equality; five calls for four frees."
+      },
+      {
+        "phase": 12,
+        "result": "Throwing owner-equality handler runs even for empty partial range; original marker propagates before output or free."
+      },
+      {
+        "phase": 13,
+        "result": "Partial output overlaps actual header head/count and retains captured final owner/node."
+      },
+      {
+        "phase": 14,
+        "result": "Failed malloc40 reaches actual shared allocator new handler; thrown marker propagates with no successful allocation."
+      }
+    ],
+    "library_and_owned_source_providers": [
+      {
+        "symbol": "allocate_native_hardware_layout_tree_sentinel_00b25dc0",
+        "provider": "native_hardware_layout_tree_lifetime.obj",
+        "exact_map_line": " 0001:00005b80       ?allocate_native_hardware_layout_tree_sentinel_00b25dc0@bsp@@YAPAXXZ 30006b80 f   native_hardware_layout_tree_lifetime.obj"
+      },
+      {
+        "symbol": "destroy_native_hardware_layout_subtree_00b230b0",
+        "provider": "native_hardware_layout_tree_lifetime.obj",
+        "exact_map_line": " 0001:00005be0       ?destroy_native_hardware_layout_subtree_00b230b0@bsp@@YAXPAX0@Z 30006be0 f   native_hardware_layout_tree_lifetime.obj"
+      },
+      {
+        "symbol": "erase_native_hardware_layout_range_00b2f3a0",
+        "provider": "native_hardware_layout_tree_lifetime.obj",
+        "exact_map_line": " 0001:00005c20       ?erase_native_hardware_layout_range_00b2f3a0@bsp@@YAPAUNativeHardwareLayoutTreeIterator@1@PAXPAU21@U21@2ABUSingletonLifetimeCallbacks@1@@Z 30006c20 f   native_hardware_layout_tree_lifetime.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_allocate",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00006500       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30007500 f   bsp_core:singleton_lifetime.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_free",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00006560       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30007560 f   bsp_core:singleton_lifetime.obj"
+      },
+      {
+        "symbol": "increment_native_hardware_layout_iterator_00b20dc0",
+        "provider": "bsp_core:native_hardware_layout_tree.obj",
+        "exact_map_line": " 0001:000068e0       ?increment_native_hardware_layout_iterator_00b20dc0@bsp@@YAXAAUNativeHardwareLayoutTreeIterator@1@ABUSingletonLifetimeCallbacks@1@@Z 300078e0 f   bsp_core:native_hardware_layout_tree.obj"
+      },
+      {
+        "symbol": "erase_native_hardware_layout_iterator_00b2ef00",
+        "provider": "bsp_core:native_hardware_layout_tree.obj",
+        "exact_map_line": " 0001:000065d0       ?erase_native_hardware_layout_iterator_00b2ef00@bsp@@YAPAUNativeHardwareLayoutTreeIterator@1@PAXPAU21@U21@ABUSingletonLifetimeCallbacks@1@@Z 300075d0 f   bsp_core:native_hardware_layout_tree.obj"
+      },
+      {
+        "symbol": "rotate_native_hardware_layout_left_00b22bd0",
+        "provider": "bsp_core:native_hardware_layout_tree.obj",
+        "exact_map_line": " 0001:00006960       ?rotate_native_hardware_layout_left_00b22bd0@bsp@@YAXPAX0@Z 30007960 f   bsp_core:native_hardware_layout_tree.obj"
+      },
+      {
+        "symbol": "rotate_native_hardware_layout_right_00b20910",
+        "provider": "bsp_core:native_hardware_layout_tree.obj",
+        "exact_map_line": " 0001:000069b0       ?rotate_native_hardware_layout_right_00b20910@bsp@@YAXPAX0@Z 300079b0 f   bsp_core:native_hardware_layout_tree.obj"
+      },
+      {
+        "symbol": "native_legacy_sbo_string_assign_counted_00408720",
+        "provider": "bsp_core:native_legacy_sbo_string.obj",
+        "exact_map_line": " 0001:00006070       ?native_legacy_sbo_string_assign_counted_00408720@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@PBDI@Z 30007070 f   bsp_core:native_legacy_sbo_string.obj"
+      },
+      {
+        "symbol": "native_legacy_sbo_string_assign_substring_00408120",
+        "provider": "bsp_core:native_legacy_sbo_string.obj",
+        "exact_map_line": " 0001:00006190       ?native_legacy_sbo_string_assign_substring_00408120@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@ABU21@II@Z 30007190 f   bsp_core:native_legacy_sbo_string.obj"
+      },
+      {
+        "symbol": "native_legacy_sbo_string_destroy_004072d0",
+        "provider": "bsp_core:native_legacy_sbo_string.obj",
+        "exact_map_line": " 0001:000062c0       ?native_legacy_sbo_string_destroy_004072d0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z 300072c0 f   bsp_core:native_legacy_sbo_string.obj"
+      }
+    ],
+    "actual_host_boundary_modules": [
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "boundary_label": "malloc",
+        "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_x86_PE_machine": "014c"
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "boundary_label": "free",
+        "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_x86_PE_machine": "014c"
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "boundary_label": "throw",
+        "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "physical_x86_PE_machine": "014c"
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "boundary_label": "FH3",
+        "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "physical_x86_PE_machine": "014c"
+      }
+    ]
+  },
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\prepare.py",
+      "bytes": 3505,
+      "sha256": "2c553faa910c6500fab5ff631d6bdc3917a225690af2dacffb4af7042b268c6a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\capture.py",
+      "bytes": 6899,
+      "sha256": "e7993b1ee7f36949f4bdab34fe3d1e7fa77164764d96ba91858ba27f9d976eb4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\capture.json",
+      "bytes": 36839,
+      "sha256": "6293fef35a68c97b331c0dffef73cf97ccab4ff32ceddccb55579529cdd09a92"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\reference.hpp",
+      "bytes": 7532,
+      "sha256": "2de3bb22f0aa9deadb00b08e2d406a1101d731074b63091f58391aff99c7286a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\loader.inc",
+      "bytes": 11244,
+      "sha256": "1057e7346ef30b02ebcf90e410479b1361f5c7185adf4cc9b8e495e16dcbf9e9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\fixture.cpp",
+      "bytes": 14401,
+      "sha256": "aa5e4e10de57e7678be208a659f786f6efd8d732027c377e98a13dbf81a3beb0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\CMakeLists.txt",
+      "bytes": 797,
+      "sha256": "5e203cbca483cbc29ad801f70fdefc5d555fe734a3b44649c933264cbfa39236"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\finalize.py",
+      "bytes": 15356,
+      "sha256": "dfbb77e5c8a4a783ff5f1fdb5eaf38504e55a85788a0517d5fb80090f06dea28"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\configure.log",
+      "bytes": 685,
+      "sha256": "69883ee6ea405bb789540b4833af030722b2ce807510c98f592eb00ed453b6da"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\build.log",
+      "bytes": 246,
+      "sha256": "7ba66474aa99c2f840c4f8e790ad4bc88562429dc12f0578398e7c3e3ba33ccf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\local\\tree_lifetime_diff\\repository_build.log",
+      "bytes": 3431,
+      "sha256": "01e19138f2bfc1ddfc3eb6c79f98cc80bb38c1c476c1a8a9913f2ba681e0abdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\tree_lifetime_diff.exe",
+      "bytes": 57344,
+      "sha256": "7ed5e70eecd5382b4ec5f9a678f6fdb74a07003282c62ef1197b8944bf24a1f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\tree_lifetime_diff.map",
+      "bytes": 98928,
+      "sha256": "53149d50a661b1b8ce1a846e6be84157eac2d1912902364e6190eee6580ccebf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\run.log",
+      "bytes": 103,
+      "sha256": "45538424be32ffaabe707e7be7fe44557819cdbf311e9e317ab04c7c987262b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\native_trace.bin",
+      "bytes": 54988,
+      "sha256": "bc4513eacec4ac3f2e0dbbae0208fbaeefed83654db5d2aaaf0d7f67c3a8f936"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\host_trace.bin",
+      "bytes": 54988,
+      "sha256": "bc4513eacec4ac3f2e0dbbae0208fbaeefed83654db5d2aaaf0d7f67c3a8f936"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\native_stores.bin",
+      "bytes": 168,
+      "sha256": "3342e8600138f96e0e2370a9bd886df22531ab12d494986f973706d517c8046f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\host_stores.bin",
+      "bytes": 168,
+      "sha256": "defb723d6b68bc91e597b4f054a33de8ade461e5c2788c1833266997e4c5127e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\patched_spans.txt",
+      "bytes": 5407,
+      "sha256": "a7cf7778098ddaee46e17488d891b335bb4be0383b7613ddadde43e87f687bb9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\host_bridges.txt",
+      "bytes": 381,
+      "sha256": "5b3da84970b546cf7f6700faa0cb2df3787f3db4ed0de9ccd64292ca242cfa85"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\Release\\crt_modules.txt",
+      "bytes": 166,
+      "sha256": "cb1adc7688b55387b28a035d34ba4004e030a664f594de311e1c919cdfd87859"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 25186502,
+      "sha256": "1a37fc4e02f071726ddc021bd479dee9b1d2f2b51e6359c9d00b4bd257e7cc46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910\\build\\tree_lifetime_diff\\tree_lifetime_diff.dir\\Release\\native_hardware_layout_tree_lifetime.obj",
+      "bytes": 3075,
+      "sha256": "4f6ba13ea0e515fa6cd974480ad938a38ba31b772f9d69822abbacaf4d2a3bdc"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive names are reconstruction hypotheses, not recovered symbols.",
+    "Borrowed raw tree/node storage and iterator owner identities must remain valid; malformed ranges, concurrent mutation and tree graph corruption are not made safe.",
+    "Host allocator cannot return null successfully; preserving original computed-address guards does not make null a valid node.",
+    "Isolated native instruction execution with documented service/EH adapters is not original ABI replacement or game/runtime validation.",
+    "Tree global startup/shutdown and hardware-layout owner/value lifetime belong to separate packets."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "verification": {
+      "matched_words": 13747,
+      "free_events": [
+        [
+          4026531840,
+          2,
+          7
+        ],
+        [
+          4026531840,
+          2,
+          6
+        ],
+        [
+          4026531840,
+          2,
+          5
+        ],
+        [
+          4026531840,
+          2,
+          4
+        ],
+        [
+          4026531840,
+          2,
+          3
+        ],
+        [
+          4026531840,
+          2,
+          2
+        ],
+        [
+          4026531840,
+          2,
+          1
+        ],
+        [
+          4026531840,
+          3,
+          7
+        ],
+        [
+          4026531840,
+          3,
+          6
+        ],
+        [
+          4026531840,
+          3,
+          4
+        ],
+        [
+          4026531840,
+          3,
+          3
+        ],
+        [
+          4026531840,
+          3,
+          2
+        ],
+        [
+          4026531840,
+          3,
+          1
+        ],
+        [
+          4026531840,
+          4,
+          7
+        ],
+        [
+          4026531840,
+          4,
+          6
+        ],
+        [
+          4026531840,
+          4,
+          5
+        ],
+        [
+          4026531840,
+          4,
+          4
+        ],
+        [
+          4026531840,
+          4,
+          3
+        ],
+        [
+          4026531840,
+          4,
+          2
+        ],
+        [
+          4026531840,
+          4,
+          1
+        ],
+        [
+          4026531840,
+          6,
+          2
+        ],
+        [
+          4026531840,
+          6,
+          3
+        ],
+        [
+          4026531840,
+          6,
+          4
+        ],
+        [
+          4026531840,
+          6,
+          5
+        ],
+        [
+          4026531840,
+          8,
+          7
+        ],
+        [
+          4026531840,
+          8,
+          6
+        ],
+        [
+          4026531840,
+          8,
+          5
+        ],
+        [
+          4026531840,
+          8,
+          4
+        ],
+        [
+          4026531840,
+          8,
+          3
+        ],
+        [
+          4026531840,
+          8,
+          2
+        ],
+        [
+          4026531840,
+          8,
+          1
+        ],
+        [
+          4026531840,
+          10,
+          2
+        ],
+        [
+          4026531840,
+          10,
+          3
+        ],
+        [
+          4026531840,
+          10,
+          4
+        ],
+        [
+          4026531840,
+          10,
+          5
+        ],
+        [
+          4026531840,
+          11,
+          2
+        ],
+        [
+          4026531840,
+          11,
+          3
+        ],
+        [
+          4026531840,
+          11,
+          4
+        ],
+        [
+          4026531840,
+          11,
+          5
+        ],
+        [
+          4026531840,
+          13,
+          2
+        ],
+        [
+          4026531840,
+          13,
+          3
+        ],
+        [
+          4026531840,
+          13,
+          4
+        ],
+        [
+          4026531840,
+          13,
+          5
+        ]
+      ],
+      "invalid_events": [
+        [
+          3120562176,
+          8,
+          1
+        ],
+        [
+          3120562176,
+          9,
+          1
+        ],
+        [
+          3120562176,
+          10,
+          1
+        ],
+        [
+          3120562176,
+          11,
+          1
+        ],
+        [
+          3120562176,
+          11,
+          2
+        ],
+        [
+          3120562176,
+          11,
+          3
+        ],
+        [
+          3120562176,
+          11,
+          4
+        ],
+        [
+          3120562176,
+          11,
+          5
+        ],
+        [
+          3120562176,
+          12,
+          1
+        ]
+      ],
+      "original_stores": [
+        [
+          4,
+          0,
+          11727889
+        ],
+        [
+          4,
+          4,
+          11727893
+        ],
+        [
+          6,
+          0,
+          11727962
+        ],
+        [
+          6,
+          4,
+          11727967
+        ],
+        [
+          7,
+          0,
+          11727962
+        ],
+        [
+          7,
+          4,
+          11727967
+        ],
+        [
+          8,
+          0,
+          11727889
+        ],
+        [
+          8,
+          4,
+          11727893
+        ],
+        [
+          9,
+          0,
+          11727889
+        ],
+        [
+          9,
+          4,
+          11727893
+        ],
+        [
+          10,
+          0,
+          11727962
+        ],
+        [
+          10,
+          4,
+          11727967
+        ],
+        [
+          11,
+          0,
+          11727962
+        ],
+        [
+          11,
+          4,
+          11727967
+        ]
+      ],
+      "host_stores": [
+        [
+          4,
+          0,
+          805336337
+        ],
+        [
+          4,
+          4,
+          805336339
+        ],
+        [
+          6,
+          0,
+          805336416
+        ],
+        [
+          6,
+          4,
+          805336419
+        ],
+        [
+          7,
+          0,
+          805336416
+        ],
+        [
+          7,
+          4,
+          805336419
+        ],
+        [
+          8,
+          0,
+          805336337
+        ],
+        [
+          8,
+          4,
+          805336339
+        ],
+        [
+          9,
+          0,
+          805336337
+        ],
+        [
+          9,
+          4,
+          805336339
+        ],
+        [
+          10,
+          0,
+          805336416
+        ],
+        [
+          10,
+          4,
+          805336419
+        ],
+        [
+          11,
+          0,
+          805336416
+        ],
+        [
+          11,
+          4,
+          805336419
+        ]
+      ],
+      "runtime_postimages": [
+        {
+          "address": 4223696,
+          "length": 5,
+          "offset": 29392,
+          "code": true,
+          "hex": "568bf1837e",
+          "sha256": "729ece47e21499657cd967d9aa375929e5f5c6ce6ea4e5b538612f5b7412c40d",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e90bbe382f",
+          "loaded_postimage_sha256": "fb40ac62238236319961dcc7e9cd15a13c2939585b973d9fb2a469be51441b4d",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 4227360,
+          "length": 5,
+          "offset": 33056,
+          "code": true,
+          "hex": "538b5c2408",
+          "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9dbda382f",
+          "loaded_postimage_sha256": "2f7e8df1981cb981b8063abc8c74d4eb4c08fd20679780adac388331fe109d3c",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 4228896,
+          "length": 5,
+          "offset": 34592,
+          "code": true,
+          "hex": "5355568bf1",
+          "sha256": "d2f427c4948de1a7dfd12b9851267537e99bd6b1b33b57b7fd07e98d10c79de7",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9eba8382f",
+          "loaded_postimage_sha256": "c37c04274c91192d114eef5f02e39ae5a0d80fc0183cc9e7b1199cb2a72a8df3",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 4265728,
+          "length": 95,
+          "offset": 71424,
+          "code": true,
+          "hex": "6aff6818e0c50064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+          "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "6aff68f02f003064a100000000506489250000000051568bf189742404e80d4c7e0033c08d4e0cc7064892d6006aff894114c741180f00000050894424188841048b44242050e8d569ffff8b4c24088bc65e64890d0000000083c410c20400",
+          "loaded_postimage_sha256": "50183df528c15e7456ed4c12a049c001a2414a5f9845cda1e124c39ffb0af479",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 4266192,
+          "length": 101,
+          "offset": 71888,
+          "code": true,
+          "hex": "6aff6858e0c50064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+          "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "6aff680030003064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+          "loaded_postimage_sha256": "6efdb61aea52415eb71c53eaf596553287daa2cc4027548af428337f97f71f9a",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 4461232,
+          "length": 50,
+          "offset": 266928,
+          "code": true,
+          "hex": "568bf1c7064892d600837e2410720c8b461050e8e4527b0083c40433c0c746240f0000008946208846108bce5ee972517b00",
+          "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "568bf1c7064892d600837e2410720c8b461050e8e4527b0083c40433c0c746240f0000008946208846108bce5ee972517b00",
+          "loaded_postimage_sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 4462432,
+          "length": 25,
+          "offset": 268128,
+          "code": true,
+          "hex": "8b44240456508bf1e86301fdffc7066c92d6008bc65ec20400",
+          "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8b44240456508bf1e86301fdffc7066c92d6008bc65ec20400",
+          "loaded_postimage_sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11667552,
+          "length": 28,
+          "offset": 7473248,
+          "code": true,
+          "hex": "8bc18b5008807a25007510eb038d49008bc28b5008807a250074f5c3",
+          "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8bc18b5008807a25007510eb038d49008bc28b5008807a250074f5c3",
+          "loaded_postimage_sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11667584,
+          "length": 27,
+          "offset": 7473280,
+          "code": true,
+          "hex": "8bc18b10807a250075108d9b000000008bc28b10807a250074f6c3",
+          "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8bc18b10807a250075108d9b000000008bc28b10807a250074f6c3",
+          "loaded_postimage_sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11667728,
+          "length": 82,
+          "offset": 7473424,
+          "code": true,
+          "hex": "8b5424048b02568b700889328b7008807e250075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+          "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8b5424048b02568b700889328b7008807e250075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+          "loaded_postimage_sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11668928,
+          "length": 99,
+          "offset": 7474624,
+          "code": true,
+          "hex": "568bf1833e007505e846590d008b46048078250074065ee937590d008b480880792500751a8b0180782500750d8d49008bc88b018078250074f6894e045ec38b40048078250075168b4e043b4808750e8946048bd08b42048078250074ea8946045ec3",
+          "sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "568bf1833e007505e846590d008b46048078250074065ee937590d008b480880792500751a8b0180782500750d8d49008bc88b018078250074f6894e045ec38b40048078250075168b4e043b4808750e8946048bd08b42048078250074ea8946045ec3",
+          "loaded_postimage_sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11676624,
+          "length": 78,
+          "offset": 7482320,
+          "code": true,
+          "hex": "8b5424048b4208568b308972088b30807e250075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+          "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8b5424048b4208568b308972088b30807e250075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+          "loaded_postimage_sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11677872,
+          "length": 53,
+          "offset": 7483568,
+          "code": true,
+          "hex": "5356578b7c2410807f25008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e8d8340d0083c404807e25008bfe74e25f5e5bc20400",
+          "sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "5356578b7c2410807f25008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e8d8340d0083c404807e25008bfe74e25f5e5bc20400",
+          "loaded_postimage_sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11689408,
+          "length": 55,
+          "offset": 7495104,
+          "code": true,
+          "hex": "6a28e8540a0d0083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6402401c6402500c3",
+          "sha256": "51379a0350144891c34143e39eb335be8d91c69152d35602809e3148585c8ddf",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "6a28e8540a0d0083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6402401c6402500c3",
+          "loaded_postimage_sha256": "51379a0350144891c34143e39eb335be8d91c69152d35602809e3148585c8ddf",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11726592,
+          "length": 679,
+          "offset": 7532288,
+          "code": true,
+          "hex": "64a1000000006aff68a8d7cb0050648925000000008b44241883ec488078250055568be9744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e8d7978dff8d44240c508d4c242c8974245ce8a5278eff68a863d8008d4c242c51c74424306c92d600e813790c00538bd8578d4c246c895c2410e83d1effff8b038078250074058b7b08eb188b5308807a250074048bf8eb0b8b4c24703bcb8b79087567807f25008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f250074048bc6eb078bcfe89818ffff89038b5d048b4c2410394b087570807f250074078bc6894308eb638bcfe85618ffff894308eb578948048b1389113b4b0875048bf1eb1a807f25008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53248a41248851248843248b442410b3013858240f85f20000008b4d043b79040f84e3000000385f240f85da0000008b063bf875638b4608807824007512885824568bcdc6462400e8283bffff8b46088078250075728b10385a2475088b4808385924745f8b48083859247512885a24508bcdc6402400e83918ffff8b46088a4e24884824885e248b5008568bcd885a24e8df3affffeb71807824007511885824568bcdc6462400e80818ffff8b068078250075138b5008385a24751e8b083859247517c64024008b55048bfe3b7a048b76040f854dffffffeb2e8b083859247511885a24508bcdc6402400e8843affff8b068a4e24884824885e248b10568bcd885a24e8ac17ffff885f248b44241050e83b740c008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+          "sha256": "9fe114e6cdaee7ef2d25d62c7c2362d7fa21256a788208a8b51de4f0ecd0d6ef",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "64a1000000006aff680031003050648925000000008b44241883ec488078250055568be9744c6a1b33f668e04455018d4c2414c744242c0f00000089742428c644241800e8d7978dff8d44240c508d4c242c8974245ce8a5278eff68a8635f018d4c242c51c74424306c92d600e813790c00538bd8578d4c246c895c2410e83d1effff8b038078250074058b7b08eb188b5308807a250074048bf8eb0b8b4c24703bcb8b79087567807f25008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f250074048bc6eb078bcfe89818ffff89038b5d048b4c2410394b087570807f250074078bc6894308eb638bcfe85618ffff894308eb578948048b1389113b4b0875048bf1eb1a807f25008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53248a41248851248843248b442410b3013858240f85f20000008b4d043b79040f84e3000000385f240f85da0000008b063bf875638b4608807824007512885824568bcdc6462400e8283bffff8b46088078250075728b10385a2475088b4808385924745f8b48083859247512885a24508bcdc6402400e83918ffff8b46088a4e24884824885e248b5008568bcd885a24e8df3affffeb71807824007511885824568bcdc6462400e80818ffff8b068078250075138b5008385a24751e8b083859247517c64024008b55048bfe3b7a048b76040f854dffffffeb2e8b083859247511885a24508bcdc6402400e8843affff8b068a4e24884824885e248b10568bcd885a24e8ac17ffff885f248b44241050e83b740c008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+          "loaded_postimage_sha256": "bb8cb9a296c4152ceb87a16ed800cf4b6004e90e6bccde0914177122f5798273",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11727776,
+          "length": 201,
+          "offset": 7533472,
+          "code": true,
+          "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e854730c008b5c24243bdd75598b44242885c08b6e0474043bc67405e838730c00396c242c753f8b4e048b5104528bcee8c13cffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8e4720c003b5c242c74218d4c2420e88219ffff53578d542418528bcee8b4faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+          "sha256": "1640a9cdf8b79dc1489413d15cc0a391e0cfe1304fef45f0c9c67c048c351e64",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e854730c008b5c24243bdd75598b44242885c08b6e0474043bc67405e838730c00396c242c753f8b4e048b5104528bcee8c13cffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8e4720c003b5c242c74218d4c2420e88219ffff53578d542418528bcee8b4faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+          "loaded_postimage_sha256": "1640a9cdf8b79dc1489413d15cc0a391e0cfe1304fef45f0c9c67c048c351e64",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 11728064,
+          "length": 126,
+          "offset": 7533760,
+          "code": true,
+          "hex": "83ec08a134d5080153558b6c2414568bd88b0057be30d508018bf889742410897c241485f6740881fe30d508017405e81f720c003bfb743c85f67505e812720c003b7e047505e808720c003b6f2074138d4c2410e8a718ffff8b7c24148b742410ebc057568d44241850b930d50801e8ccf9ffff5f5e5d5b83c408c20400",
+          "sha256": "56ed03e5e9f71e813f4df848443dafd905e13fe7c5be6b9813dae7c1542a0e80",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "83ec08a134d58f0153558b6c2414568bd88b0057be30d58f018bf889742410897c241485f6740881fe30d58f017405e81f720c003bfb743c85f67505e812720c003b7e047505e808720c003b6f2074138d4c2410e8a718ffff8b7c24148b742410ebc057568d44241850b930d58f01e8ccf9ffff5f5e5d5b83c408c20400",
+          "loaded_postimage_sha256": "97ffdf7353401ea559ecbdda912545f5a38525e001dcde0be20dc110ec8c7fb3",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12542767,
+          "length": 17,
+          "offset": 8348463,
+          "code": true,
+          "hex": "8bc18360040083600800c7007093d600c3",
+          "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8bc18360040083600800c7007093d600c3",
+          "loaded_postimage_sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12542886,
+          "length": 88,
+          "offset": 8348582,
+          "code": true,
+          "hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+          "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "538b5c2408568bf1c7067093d6008b430889460885c08b430457743185c0742750e814da00008bf84757e8453b000085c059598946047418ff73045750e8bc2f000083c40ceb0983660400eb038946045f8bc65e5bc20400",
+          "loaded_postimage_sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12543060,
+          "length": 22,
+          "offset": 8348756,
+          "code": true,
+          "hex": "83790800c7017093d6007409ff7104e86039000059c3",
+          "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "83790800c7017093d6007409ff7104e86039000059c3",
+          "loaded_postimage_sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12543404,
+          "length": 5,
+          "offset": 8349100,
+          "code": true,
+          "hex": "e917380000",
+          "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e96fd8b92e",
+          "loaded_postimage_sha256": "a6db5f03a8ebc02f78a1209b20e4bca9a676309325ef6d9e16d67a3f87e96d73",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12543727,
+          "length": 5,
+          "offset": 8349423,
+          "code": true,
+          "hex": "558becff35",
+          "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9bccbb92e",
+          "loaded_postimage_sha256": "7f28b382d1f517e96a8a7223f13063129275769c2fd1a3f679e22930545ac9c6",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12543763,
+          "length": 16,
+          "offset": 8349459,
+          "code": true,
+          "hex": "33c05050505050e8d0ffffff83c414c3",
+          "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "33c05050505050e8d0ffffff83c414c3",
+          "loaded_postimage_sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12544027,
+          "length": 5,
+          "offset": 8349723,
+          "code": true,
+          "hex": "558bec83ec",
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9d0c6b92e",
+          "loaded_postimage_sha256": "cc0e17d14ee787e783852f683220c9dffdf6bfccd54a2ab54b2f3cfcb8a89d2b",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12544133,
+          "length": 5,
+          "offset": 8349829,
+          "code": true,
+          "hex": "558bec83ec",
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9a6d9b92e",
+          "loaded_postimage_sha256": "cc5e78318e2daa974aeaa7d6aaa164a606d6715640de80e9bd169fdc5c4f5848",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12544835,
+          "length": 5,
+          "offset": 8350531,
+          "code": true,
+          "hex": "558bec83ec",
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9461fba2e",
+          "loaded_postimage_sha256": "14bdacfecd4a363760b63e753cdcd6f346afbdd4062d2bc70512e6c677ca5412",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12555172,
+          "length": 101,
+          "offset": 8360868,
+          "code": true,
+          "hex": "8b4c24045333db3bcb565774088b7c24143bfb771be8cd6700006a165e89305353535353e822d3ffff83c4148bc6eb318b7424183bf375048819ebd98bd18a06880242463ac374034f75f33bfb75108819e8916700006a225989088bf1ebc033c05f5e5bc3",
+          "sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8b4c24045333db3bcb565774088b7c24143bfb771be8cd6700006a165e89305353535353e822d3ffff83c4148bc6eb318b7424183bf375048819ebd98bd18a06880242463ac374034f75f33bfb75108819e8916700006a225989088bf1ebc033c05f5e5bc3",
+          "loaded_postimage_sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12557768,
+          "length": 5,
+          "offset": 8363464,
+          "code": true,
+          "hex": "6a0c68f02d",
+          "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e953a0b92e",
+          "loaded_postimage_sha256": "01674cf953e99782e0a248d0f7732dbce0a4f56b764f175fc1d991b592e134af",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12558106,
+          "length": 5,
+          "offset": 8363802,
+          "code": true,
+          "hex": "558b6c2408",
+          "sha256": "5cda66d596638726fa3617fb7f791797871e45ad0ae221a318eafa8d5334a495",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e941a0b92e",
+          "loaded_postimage_sha256": "a73a6d952b5e4aa54fb14709a60fe201d64dffd4c02c43908497d83506c0eeb8",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12581771,
+          "length": 5,
+          "offset": 8387467,
+          "code": true,
+          "hex": "e827560000",
+          "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e910e42d74",
+          "loaded_postimage_sha256": "f4171cac71194d15e91d0e94c9f276280c3da67f498393df9a8f2c7f5eafa125",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12598752,
+          "length": 5,
+          "offset": 8404448,
+          "code": true,
+          "hex": "8b4c2404f7",
+          "sha256": "5f85ab0b310f40a69b5b6d3c69c1add39029bf41ce264cbd9e71975b31366573",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "e9d94cb92e",
+          "loaded_postimage_sha256": "55738ddf64752704c8ab3764cde13942d34a14d01366dc2530ac157e62ba9d2d",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12967952,
+          "length": 8,
+          "offset": 8773648,
+          "code": true,
+          "hex": "8b4df0e93c84f9ff",
+          "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8b4df0e93c84f9ff",
+          "loaded_postimage_sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12967960,
+          "length": 10,
+          "offset": 8773656,
+          "code": true,
+          "hex": "b8743fd800e9218bf9ff",
+          "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "b8743f5f01e9218bf9ff",
+          "loaded_postimage_sha256": "4bfcd8243b09198caf40ed9108f3da0a1cc6016fdc172a2eea50df266de2cc91",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12968016,
+          "length": 8,
+          "offset": 8773712,
+          "code": true,
+          "hex": "8b4df0e9fc83f9ff",
+          "sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8b4df0e9fc83f9ff",
+          "loaded_postimage_sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 12968024,
+          "length": 10,
+          "offset": 8773720,
+          "code": true,
+          "hex": "b82440d800e9e18af9ff",
+          "sha256": "7a72ae46a76082c602940eb6fef1fbb68b68b07feb036c6548fcaf85d2e84d5c",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "b824405f01e9e18af9ff",
+          "loaded_postimage_sha256": "8811d05f67d734c36b55536e24effce65c26bf51d3efd2086116addd88df7532",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 13359008,
+          "length": 8,
+          "offset": 9164704,
+          "code": true,
+          "hex": "8d4db0e9289b74ff",
+          "sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "8d4db0e9289b74ff",
+          "loaded_postimage_sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 13359016,
+          "length": 10,
+          "offset": 9164712,
+          "code": true,
+          "hex": "b82460df00e99193f3ff",
+          "sha256": "1550efbddb4b68fa29dd9e6e7e6b8e41cb5c00fb30c361e511f137ebd520e7a6",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "b824606601e99193f3ff",
+          "loaded_postimage_sha256": "eb2d6804e5512eb91223a1d834e626f95504d929bf6e2772478646a3d7974e30",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 13518048,
+          "length": 28,
+          "offset": 9323744,
+          "code": false,
+          "hex": "696e76616c6964206d61702f7365743c543e206974657261746f7200",
+          "sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "696e76616c6964206d61702f7365743c543e206974657261746f7200",
+          "loaded_postimage_sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14172012,
+          "length": 44,
+          "offset": 9977708,
+          "code": false,
+          "hex": "ffffffff10e0c50022059319010000006c3fd800000000000000000000000000000000000000000001000000",
+          "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "ffffffff10e04c0122059319010000006c3f5f01000000000000000000000000000000000000000001000000",
+          "loaded_postimage_sha256": "58a1a3865b874d161db2b6343954b04b174cd0c8cd2ce66819bd7af3f7c5c3cd",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14172160,
+          "length": 28,
+          "offset": 9977856,
+          "code": false,
+          "hex": "000000002080e00000000000ffffffff0000000028000000d0184100",
+          "sha256": "d037d7830611e5a31cf21ad46624ea03580cbd0c558623e20c15b4d1526dc1d1",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "000000002080670100000000ffffffff0000000028000000d018c800",
+          "loaded_postimage_sha256": "744c326c971ebbb0d8a90e0e1bc083da58e431649b1ad2c12f526f7362bd4932",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14172188,
+          "length": 44,
+          "offset": 9977884,
+          "code": false,
+          "hex": "ffffffff50e0c50022059319010000001c40d800000000000000000000000000000000000000000001000000",
+          "sha256": "a75d91d18050b85fd79822428ad231ae53eaa9f3690f53b95d52425b02ebffff",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "ffffffff50e04c0122059319010000001c405f01000000000000000000000000000000000000000001000000",
+          "loaded_postimage_sha256": "a8756ae5e21ae6846eaf2052bf36ad2322d5725a088e5e2c7958d1cf85ed8054",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14181288,
+          "length": 16,
+          "offset": 9986984,
+          "code": false,
+          "hex": "00000000b012440000000000e463d800",
+          "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "00000000b012cb0000000000e4635f01",
+          "loaded_postimage_sha256": "f4e421e143f5cb7fe018debdc0288e38626dfec778cd01cbe84a8daa80801001",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14181348,
+          "length": 44,
+          "offset": 9987044,
+          "code": false,
+          "hex": "03000000f463d8000040d8007c3ce000000000007c81e00000000000ffffffff000000002800000060174400",
+          "sha256": "803c823bf8f2098853c79d808ee520bb609ce65a63e51b0961d182e1fc08d361",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "03000000f4635f0100405f017c3c6701000000007c81670100000000ffffffff00000000280000006017cb00",
+          "loaded_postimage_sha256": "603cd00f179289e5e8dbce52258fbcc7a359d48d069ca7b18be951452262224b",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14639132,
+          "length": 44,
+          "offset": 10444828,
+          "code": false,
+          "hex": "ffffffffa0d7cb0022059319010000001c60df00000000000000000000000000000000000000000001000000",
+          "sha256": "05b72cd9bba082f459a2d40c1bad5e06c7a5495afd28b28577ab4ba9a64e234c",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "ffffffffa0d7520122059319010000001c606601000000000000000000000000000000000000000001000000",
+          "loaded_postimage_sha256": "739f00f48da9133524092eb31b332f0d0de6777046b61716019cb5b2a8eebdeb",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14695548,
+          "length": 28,
+          "offset": 10501244,
+          "code": false,
+          "hex": "00000000f074e10000000000ffffffff000000000c000000a663bf00",
+          "sha256": "9fa41aa7ae4c2be7d89eea68c3e5b98ae3b6fb7822f78c013edb988305f079f4",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "00000000f074680100000000ffffffff000000000c000000a6634601",
+          "loaded_postimage_sha256": "04d3b454ac6f7be61f11a0ddb86b17088eff0abee23a0338880187e7a904fd08",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14712864,
+          "length": 32,
+          "offset": 10518560,
+          "code": false,
+          "hex": "d493d600000000002e3f41566c6f6769635f6572726f72407374644040000000",
+          "sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "d493d600000000002e3f41566c6f6769635f6572726f72407374644040000000",
+          "loaded_postimage_sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14713212,
+          "length": 32,
+          "offset": 10518908,
+          "code": false,
+          "hex": "d493d600000000002e3f41566f75745f6f665f72616e67654073746440400000",
+          "sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "d493d600000000002e3f41566f75745f6f665f72616e67654073746440400000",
+          "loaded_postimage_sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76",
+          "complete_postimage_matches_only_listed_changes": true
+        },
+        {
+          "address": 14775536,
+          "length": 32,
+          "offset": 10581232,
+          "code": false,
+          "hex": "d493d600000000002e3f4156657863657074696f6e40737464404000ffffffff",
+          "sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+          "live_ghidra_matches_installed_pe": true,
+          "loaded_postimage_hex": "d493d600000000002e3f4156657863657074696f6e40737464404000ffffffff",
+          "loaded_postimage_sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+          "complete_postimage_matches_only_listed_changes": true
+        }
+      ],
+      "providers": [
+        {
+          "symbol": "allocate_native_hardware_layout_tree_sentinel_00b25dc0",
+          "provider": "bsp_core.linked:native_hardware_layout_tree_lifetime.obj",
+          "exact_map_line": " 0001:000063e0       ?allocate_native_hardware_layout_tree_sentinel_00b25dc0@bsp@@YAPAXXZ 300073e0 f   bsp_core.linked:native_hardware_layout_tree_lifetime.obj"
+        },
+        {
+          "symbol": "destroy_native_hardware_layout_subtree_00b230b0",
+          "provider": "bsp_core.linked:native_hardware_layout_tree_lifetime.obj",
+          "exact_map_line": " 0001:00006440       ?destroy_native_hardware_layout_subtree_00b230b0@bsp@@YAXPAX0@Z 30007440 f   bsp_core.linked:native_hardware_layout_tree_lifetime.obj"
+        },
+        {
+          "symbol": "erase_native_hardware_layout_range_00b2f3a0",
+          "provider": "bsp_core.linked:native_hardware_layout_tree_lifetime.obj",
+          "exact_map_line": " 0001:00006480       ?erase_native_hardware_layout_range_00b2f3a0@bsp@@YAPAUNativeHardwareLayoutTreeIterator@1@PAXPAU21@U21@2ABUSingletonLifetimeCallbacks@1@@Z 30007480 f   bsp_core.linked:native_hardware_layout_tree_lifetime.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_allocate",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "exact_map_line": " 0001:00006370       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30007370 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_free",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "exact_map_line": " 0001:000063d0       ?singleton_lifetime_free@bsp@@YAXPAX@Z 300073d0 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "increment_native_hardware_layout_iterator_00b20dc0",
+          "provider": "bsp_core.linked:native_hardware_layout_tree.obj",
+          "exact_map_line": " 0001:000068e0       ?increment_native_hardware_layout_iterator_00b20dc0@bsp@@YAXAAUNativeHardwareLayoutTreeIterator@1@ABUSingletonLifetimeCallbacks@1@@Z 300078e0 f   bsp_core.linked:native_hardware_layout_tree.obj"
+        },
+        {
+          "symbol": "erase_native_hardware_layout_iterator_00b2ef00",
+          "provider": "bsp_core.linked:native_hardware_layout_tree.obj",
+          "exact_map_line": " 0001:000065d0       ?erase_native_hardware_layout_iterator_00b2ef00@bsp@@YAPAUNativeHardwareLayoutTreeIterator@1@PAXPAU21@U21@ABUSingletonLifetimeCallbacks@1@@Z 300075d0 f   bsp_core.linked:native_hardware_layout_tree.obj"
+        },
+        {
+          "symbol": "rotate_native_hardware_layout_left_00b22bd0",
+          "provider": "bsp_core.linked:native_hardware_layout_tree.obj",
+          "exact_map_line": " 0001:00006960       ?rotate_native_hardware_layout_left_00b22bd0@bsp@@YAXPAX0@Z 30007960 f   bsp_core.linked:native_hardware_layout_tree.obj"
+        },
+        {
+          "symbol": "rotate_native_hardware_layout_right_00b20910",
+          "provider": "bsp_core.linked:native_hardware_layout_tree.obj",
+          "exact_map_line": " 0001:000069b0       ?rotate_native_hardware_layout_right_00b20910@bsp@@YAXPAX0@Z 300079b0 f   bsp_core.linked:native_hardware_layout_tree.obj"
+        },
+        {
+          "symbol": "native_legacy_sbo_string_assign_counted_00408720",
+          "provider": "bsp_core.linked:native_legacy_sbo_string.obj",
+          "exact_map_line": " 0001:00005ee0       ?native_legacy_sbo_string_assign_counted_00408720@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@PBDI@Z 30006ee0 f   bsp_core.linked:native_legacy_sbo_string.obj"
+        },
+        {
+          "symbol": "native_legacy_sbo_string_assign_substring_00408120",
+          "provider": "bsp_core.linked:native_legacy_sbo_string.obj",
+          "exact_map_line": " 0001:00006000       ?native_legacy_sbo_string_assign_substring_00408120@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@ABU21@II@Z 30007000 f   bsp_core.linked:native_legacy_sbo_string.obj"
+        },
+        {
+          "symbol": "native_legacy_sbo_string_destroy_004072d0",
+          "provider": "bsp_core.linked:native_legacy_sbo_string.obj",
+          "exact_map_line": " 0001:00006130       ?native_legacy_sbo_string_destroy_004072d0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z 30007130 f   bsp_core.linked:native_legacy_sbo_string.obj"
+        }
+      ],
+      "CRT_modules": [
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "boundary_label": "malloc",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "physical_x86_PE_machine": "014c"
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "boundary_label": "free",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "physical_x86_PE_machine": "014c"
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+          "bytes": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "boundary_label": "throw",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+          "physical_x86_PE_machine": "014c"
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+          "bytes": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "boundary_label": "FH3",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+          "physical_x86_PE_machine": "014c"
+        }
+      ],
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-lifetime-20260910",
+        "worker_pins_verified": 35,
+        "source_pins": 12,
+        "current_source_differences": [],
+        "fresh_spans": [
+          {
+            "address": "004072d0",
+            "length": 5,
+            "sha256": "729ece47e21499657cd967d9aa375929e5f5c6ce6ea4e5b538612f5b7412c40d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00408120",
+            "length": 5,
+            "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00408720",
+            "length": 5,
+            "sha256": "d2f427c4948de1a7dfd12b9851267537e99bd6b1b33b57b7fd07e98d10c79de7",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00411700",
+            "length": 95,
+            "sha256": "6f3529f15a3a5ae8c7dec5d3052f724c5d38be5b870b1b8f7c83717f0c802de2",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "004118d0",
+            "length": 101,
+            "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "004412b0",
+            "length": 50,
+            "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00441760",
+            "length": 25,
+            "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b20860",
+            "length": 28,
+            "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b20880",
+            "length": 27,
+            "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b20910",
+            "length": 82,
+            "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b20dc0",
+            "length": 99,
+            "sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b22bd0",
+            "length": 78,
+            "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b230b0",
+            "length": 53,
+            "sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b25dc0",
+            "length": 55,
+            "sha256": "51379a0350144891c34143e39eb335be8d91c69152d35602809e3148585c8ddf",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b2ef00",
+            "length": 679,
+            "sha256": "9fe114e6cdaee7ef2d25d62c7c2362d7fa21256a788208a8b51de4f0ecd0d6ef",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b2f3a0",
+            "length": 201,
+            "sha256": "1640a9cdf8b79dc1489413d15cc0a391e0cfe1304fef45f0c9c67c048c351e64",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b2f4c0",
+            "length": 126,
+            "sha256": "56ed03e5e9f71e813f4df848443dafd905e13fe7c5be6b9813dae7c1542a0e80",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf632f",
+            "length": 17,
+            "sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf63a6",
+            "length": 88,
+            "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6454",
+            "length": 22,
+            "sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf65ac",
+            "length": 5,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf66ef",
+            "length": 5,
+            "sha256": "79b51e2e4c54891c1f108b18058e0f3f4c6996c9ed5b20527ff8612fd13d822c",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6713",
+            "length": 16,
+            "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf681b",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6885",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf93a4",
+            "length": 101,
+            "sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf9dc8",
+            "length": 5,
+            "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf9f1a",
+            "length": 5,
+            "sha256": "5cda66d596638726fa3617fb7f791797871e45ad0ae221a318eafa8d5334a495",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bffb8b",
+            "length": 5,
+            "sha256": "5cfb24d06c2c5ea4c3899dd2d19c2fadb395cad1a5650835c8767cb644d00b54",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00c03de0",
+            "length": 5,
+            "sha256": "5f85ab0b310f40a69b5b6d3c69c1add39029bf41ce264cbd9e71975b31366573",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00c5e010",
+            "length": 8,
+            "sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00c5e018",
+            "length": 10,
+            "sha256": "cc21ce47dc6ea52e3949d9601a0b2e6b9ecb620a2190687d3b89c00d050dfd15",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00c5e050",
+            "length": 8,
+            "sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00c5e058",
+            "length": 10,
+            "sha256": "7a72ae46a76082c602940eb6fef1fbb68b68b07feb036c6548fcaf85d2e84d5c",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00cbd7a0",
+            "length": 8,
+            "sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00cbd7a8",
+            "length": 10,
+            "sha256": "1550efbddb4b68fa29dd9e6e7e6b8e41cb5c00fb30c361e511f137ebd520e7a6",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce44e0",
+            "length": 28,
+            "sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d83f6c",
+            "length": 44,
+            "sha256": "318081b1a0c1059f632bad9f41d3e7ed8b2b8da7d5fe39773d59cf81a255f794",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d84000",
+            "length": 28,
+            "sha256": "d037d7830611e5a31cf21ad46624ea03580cbd0c558623e20c15b4d1526dc1d1",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d8401c",
+            "length": 44,
+            "sha256": "a75d91d18050b85fd79822428ad231ae53eaa9f3690f53b95d52425b02ebffff",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d863a8",
+            "length": 16,
+            "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d863e4",
+            "length": 44,
+            "sha256": "803c823bf8f2098853c79d808ee520bb609ce65a63e51b0961d182e1fc08d361",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00df601c",
+            "length": 44,
+            "sha256": "05b72cd9bba082f459a2d40c1bad5e06c7a5495afd28b28577ab4ba9a64e234c",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00e03c7c",
+            "length": 28,
+            "sha256": "9fa41aa7ae4c2be7d89eea68c3e5b98ae3b6fb7822f78c013edb988305f079f4",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00e08020",
+            "length": 32,
+            "sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00e0817c",
+            "length": 32,
+            "sha256": "6896b506b399075ee5f2c0b30ca3fbf7f49ff5c53360a9672af31bfe7bd1dd76",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00e174f0",
+            "length": 32,
+            "sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da",
+            "live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\bsp_core.linked.lib",
+          "bytes": 25195110,
+          "sha256": "1564fab7addf0d1a321fe4b11e4a98f1c0b0ba960b6a7905c249238d6fa7f3d7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\build_trim.cmd",
+          "bytes": 906,
+          "sha256": "39a78126a4ca9c6194072b83115ef145d2854a5960a70efde2a16d17edfb5601"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\crt_modules.txt",
+          "bytes": 166,
+          "sha256": "cb1adc7688b55387b28a035d34ba4004e030a664f594de311e1c919cdfd87859"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\fixture.obj",
+          "bytes": 214589,
+          "sha256": "1e71fc90f9fb0fa995719b1a732decc97dccb17e008114bd40fae62ccaf47d86"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\host_bridges.txt",
+          "bytes": 381,
+          "sha256": "5b3da84970b546cf7f6700faa0cb2df3787f3db4ed0de9ccd64292ca242cfa85"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\host_stores.bin",
+          "bytes": 168,
+          "sha256": "aa21c6487efdb939313286490336ccd5e92137eb1763e6a3eb73f88c29b10650"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\host_trace.bin",
+          "bytes": 54988,
+          "sha256": "bc4513eacec4ac3f2e0dbbae0208fbaeefed83654db5d2aaaf0d7f67c3a8f936"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\native_stores.bin",
+          "bytes": 168,
+          "sha256": "3342e8600138f96e0e2370a9bd886df22531ab12d494986f973706d517c8046f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\native_trace.bin",
+          "bytes": 54988,
+          "sha256": "bc4513eacec4ac3f2e0dbbae0208fbaeefed83654db5d2aaaf0d7f67c3a8f936"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\patched_spans.txt",
+          "bytes": 5407,
+          "sha256": "773e8765c91ad983e957c1d524986534f2476d44ccdffcf03ebc8ef86622f0fc"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\primary_verified.json",
+          "bytes": 41825,
+          "sha256": "9dcbce566386b3591862657b74ad3f9affb6a2e3310f16f0ece2eef96b844325"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\tree_lifetime_diff.exe",
+          "bytes": 56832,
+          "sha256": "55154167f530770f6ccc8b4bb33f7ae6350af47aa6c7ee1ff79afdb64ede49db"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\tree_lifetime_diff.map",
+          "bytes": 99420,
+          "sha256": "b86b1e7529067b1908294da2afb8b42293b2fd14ea7dbf7414e09586d6248b80"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-tree-lifetime-primary-check\\verify_primary.py",
+          "bytes": 5204,
+          "sha256": "d6b2199d496b7307fb73a1b32f789f8cec65c65a27c3e32a37ae46b620fc5b39"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_hardware_tree_lifetime_primary_check.ps1",
+          "bytes": 1512,
+          "sha256": "848ca1005b6ddcb4a959116f9cc03a208be72bd7f48191b1e4332e8584e136df"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_tree_lifetime_primary_fixture.txt",
+          "bytes": 116,
+          "sha256": "b9960a8c6b8903ad4ed9d4e791423a1b9b4694e51284ab6e1a679fcef36d1616"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_lifetime_pool_static_primary_build.txt",
+          "bytes": 1655,
+          "sha256": "04428840cd8729a8fabd1e5d31ccd08612c7e9d70bf0ed6c7a6942f3ee969117"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_tree_lifetime.cpp",
+          "bytes": 3985,
+          "sha256": "c3ff4c177eb623b85a44237b4fd5096bdfea1f91924742cbeca7d27e3f9bf6d4"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "owned_source_provider": "Frozen current main bsp_core.linked.lib; worker fixture unchanged; pool static uses exact current production source only for existing observation aliases.",
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "body_repairs_and_creation": [
+      {
+        "address": "00b230b0",
+        "end_exclusive": "00b230e5",
+        "length": 53,
+        "sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+        "function_before": "Function: FUN_00b230b0 at 00b230b0\nSignature: undefined FUN_00b230b0(void)\nEntry: 00b230b0\nBody: 00b230b0 - 00b230e4",
+        "documentation_before": {
+          "hash": "6c85321acdb8a276fa16be77196241cabcbc566b91ce99d375ca803065e728b2",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b230b0",
+          "function_name": "FUN_00b230b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 47,
+              "name": "LAB_00b230df"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "returning_free_call_sites": [
+          "00b230cf"
+        ],
+        "function_after": "Function: FUN_00b230b0 at 00b230b0\nSignature: undefined FUN_00b230b0(void)\nEntry: 00b230b0\nBody: 00b230b0 - 00b230e4",
+        "documentation_after": {
+          "hash": "91faa9196beb493ddd6be3332673a1be0e8a01b4d8159e5e8827899c04859f4e",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b230b0",
+          "function_name": "FUN_00b230b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "cVar1",
+              "type": "char",
+              "storage": "(unique, 0x17000, 1)"
+            },
+            {
+              "name": "piVar2",
+              "type": "int *",
+              "storage": "(unique, 0x17200, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 17,
+              "name": "LAB_00b230c1"
+            },
+            {
+              "relative_offset": 47,
+              "name": "LAB_00b230df"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      }
+    ],
+    "definition_and_save_report": {
+      "path": "reports/native_hardware_lifetimes_defined_functions.json",
+      "bytes": 27556,
+      "sha256": "d81ba2ce1fb30fda2cecbbf5d071f8da2df86c3eeadafb8af5ff0dc66a505b0c"
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_tree_lifetime_annotations.json",
+    "bytes": 3439,
+    "sha256": "56bba121f7715a1918b510ab847e714ee04fc2fbef21e83f15034863bad8dba4",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b25dc0",
+      "path": "exports/bsp/functions/00b25dc0/decompiled.c",
+      "bytes": 1235,
+      "sha256": "298b6f2119ca2eeaa8f796f46a5cf7979086fb76757993cdb3ee3f31b69833b9"
+    },
+    {
+      "address": "00b230b0",
+      "path": "exports/bsp/functions/00b230b0/decompiled.c",
+      "bytes": 1140,
+      "sha256": "7665bb80ce67588569d741cc1051b550dbc04a022c65cf76d98df92b9b573c56"
+    },
+    {
+      "address": "00b2f3a0",
+      "path": "exports/bsp/functions/00b2f3a0/decompiled.c",
+      "bytes": 2307,
+      "sha256": "ca4f2009c3e7e4a6ef70be73c7e01632091b7a0e5ab54cc122640d641588956e"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:53:11.513055+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b25dc0",
+      "name": "allocate_native_hardware_layout_tree_sentinel_00b25dc0",
+      "cpp_symbol": "allocate_native_hardware_layout_tree_sentinel_00b25dc0",
+      "source": "src/native_hardware_layout_tree_lifetime.cpp",
+      "native_end_exclusive": "00b25df7",
+      "original_abi": "ECX unused; no stack arguments; EAX actual allocation; RET.",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b230b0",
+      "name": "destroy_native_hardware_layout_subtree_00b230b0",
+      "cpp_symbol": "destroy_native_hardware_layout_subtree_00b230b0",
+      "source": "src/native_hardware_layout_tree_lifetime.cpp",
+      "native_end_exclusive": "00b230e5",
+      "original_abi": "ECX actual tree carried through recursion; stack node; RET4; EAX unspecified.",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b2f3a0",
+      "name": "erase_native_hardware_layout_range_00b2f3a0",
+      "cpp_symbol": "erase_native_hardware_layout_range_00b2f3a0",
+      "source": "src/native_hardware_layout_tree_lifetime.cpp",
+      "native_end_exclusive": "00b2f469",
+      "original_abi": "ECX actual tree; stack output, first owner/node, last owner/node; EAX output; RET14h.",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_TREE_LIFETIME.md",
+    "bytes": 5235,
+    "sha256": "bb72040fcaf49f07388cc035d1be14c8de42e6be774bb427cd18b465224b7bb8"
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "packet": "orch2_settings_startup_owner",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "addresses": [
+    "008d46c0",
+    "008d4df0",
+    "008d4ea0",
+    "008d56c0",
+    "008d6170",
+    "008d7710",
+    "008d8190",
+    "008d8a70",
+    "008d8e50",
+    "008d8f70",
+    "008d99f0",
+    "008d9a80",
+    "008d9ad0",
+    "008d9c30",
+    "008d9f20",
+    "00b1ffd0",
+    "00b1fff0",
+    "00b20000",
+    "00b200b0",
+    "00b200c0",
+    "00b27d80",
+    "00b295c0",
+    "00b2c8e0",
+    "00cd2d80"
+  ],
+  "source": "src/app_bootstrap.cpp",
+  "integration_sources": [
+    "src/game_hosts.cpp",
+    "src/game_hosts_vfs.cpp",
+    "src/game_main.cpp"
+  ],
+  "documentation": "docs/SETTINGS_STARTUP_OWNER.md",
+  "dependencies": [
+    "settings_initial_state",
+    "settings_capabilities",
+    "options_token_reader",
+    "locale_startup_integration"
+  ],
+  "status": "reconstructed_build_fixture_and_startup_process_tested_annotations_saved",
+  "validation": {
+    "tested_base_commit": "38b3143e232a1dd4b4ef3b8c720deab338555a09",
+    "working_source_correction": "Retained-owner corrections committed in7374ec3; revalidated after merging main2644f51 including its hardware-pool static source registration",
+    "win32_release_build": "passed: local/settings-owner-final-build.log",
+    "existing_ctest": {
+      "passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_math_seeds_verified": 8,
+    "combined_fixture": {
+      "result": "passed",
+      "source": "local/settings_owner_fixture.cpp",
+      "log": "local/settings-owner-final-fixture.log",
+      "checks": [
+        "retained fields across loads",
+        "write snapshot before capability tail",
+        "registry and case-insensitive catalog selection",
+        "first desktop and last file resolution matches",
+        "integer vs strict Boolean readers",
+        "single-token unknown handling",
+        "SoundEnabled and HardwareReported leave fields unchanged",
+        "shader-version effect gate and AA selection",
+        "actual VFS catalog and D3D queries",
+        "isolated options write and reload"
+      ],
+      "actual_catalog_entries": 1,
+      "actual_resolutions": 26,
+      "actual_aa_levels": 4,
+      "pixel_shader_version": 768,
+      "game_shader_ceiling": 2
+    },
+    "worker_fixtures": {
+      "settings_initial_state": {
+        "commit": "2b922a8322f00b0945a5dcdbd60ee90b57acf6ca",
+        "result": "passed"
+      },
+      "settings_capabilities": {
+        "commit": "03776bb",
+        "result": "passed",
+        "original_comparator_cases": 4
+      },
+      "options_token_reader": {
+        "commit": "d20c17f",
+        "result": "passed",
+        "execution_log": "local/settings-owner-token-worker-result.log"
+      },
+      "manifest": "local/settings-owner-worker-artifacts.json"
+    },
+    "startup_process": {
+      "pid": 80788,
+      "exit_code": 0,
+      "executable_sha256": "C18E5476D32327036F335D3D6FD5D86C9D9C708099F9CD0F32F1B2ACBFFE993E",
+      "original_files_unchanged": true,
+      "original_file_count": 2,
+      "isolated_settings_root": "local/settings-owner-personal-h1",
+      "log": "local/settings-owner-runtime.log",
+      "window_created": true,
+      "device_created": true,
+      "back_buffer": [
+        640,
+        480
+      ],
+      "frames_presented": 60,
+      "loop_finished": true,
+      "vfs_probes_passed": 3,
+      "unimplemented_host_methods": 31,
+      "render_scope": "Existing milestone clear/present only; gameplay not validated"
+    },
+    "bsp_core_sha256": "3b9620fb75418e04407c89818c4b6e149d0e73224de11dbbf973197494ecf498",
+    "permanent_tests_added": 0
+  },
+  "annotations": {
+    "names_verified": 24,
+    "prior_comment_fields_preserved": 4,
+    "forced_exports": 24,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "stored_body_caveat": "008d9c30 decoded cleanup through008d9ce7 remains outside its stored body ending008d9ca8",
+    "saved": true,
+    "prior_values": "local/settings-owner-annotation-changes.json",
+    "before_comments": "local/settings_owner_comments_before.json",
+    "after_comments": "local/settings_owner_comments_after.json",
+    "export_log": "local/settings-owner-export-refresh.log"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "root_records": [
+    {
+      "address": "008d8190",
+      "name": "BSP_GameSettings_Load",
+      "cpp_symbol": "bsp::load_game_settings_008d8190",
+      "source": "src/app_bootstrap.cpp",
+      "kind": "function",
+      "status": "reconstructed_build_fixture_and_startup_process_tested",
+      "evidence": "Hypothesis, not a recovered symbol. Retained GameSettingsBlock normal-flow load, ECX this, RET; build actual catalog, copy resolutions, CRT options read or desktop/registry plus008d6170 write at008d878a BEFORE common tail. Native scene-token reads distinguish int!=0 and strict Boolean; SoundEnabled consumes only key and unknowns one token. Language selection uses008d56c0 zero-on-miss. Tail uses LOWORD PixelShaderVersion at renderer record+28, clears shadow/oldfilm below0200h, rebuilds AA format15h/71h from byte8c, copies table and performs last-match/index clamp. Win32, isolated fixture and60-frame process run pass. New C++/guarded domain, not native allocator/object ABI or gameplay. docs/SETTINGS_STARTUP_OWNER.md; reports/settings_startup_owner.json.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "validation_report": "reports/settings_startup_owner.json"
+    },
+    {
+      "address": "008d4df0",
+      "name": "BSP_NativeIntVector_Assign",
+      "cpp_symbol": "bsp::game::GameSettingsBinding::copy_supported_antialias_008d4df0",
+      "source": "src/game_hosts_vfs.cpp",
+      "kind": "fragment",
+      "status": "fragment_build_fixture_and_startup_process_tested",
+      "evidence": "Hypothesis, not a recovered symbol. ECX target data/count/capacity vector, stack source pointer, EAX target, RET4. Clear/reserve then copy signed-count stride4 values. Settings loader copies renderer AA samples at008d882e. GameSettingsBinding::copy_supported_antialias_008d4df0 projects nonaliasing valid values through std::vector assignment; native capacity, allocator and object ABI are not reproduced. docs/SETTINGS_STARTUP_OWNER.md.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "validation_report": "reports/settings_startup_owner.json"
+    },
+    {
+      "address": "008d4ea0",
+      "name": "BSP_NativeIntPairVector_Assign",
+      "cpp_symbol": "bsp::game::GameSettingsBinding::copy_supported_resolutions_008d4ea0",
+      "source": "src/game_hosts_vfs.cpp",
+      "kind": "fragment",
+      "status": "fragment_build_fixture_and_startup_process_tested",
+      "evidence": "Hypothesis, not a recovered symbol. ECX target data/count/capacity vector, stack source pointer, EAX target, RET4. Clear/reserve then copy signed-count stride8 two-dword entries. Settings loader copies renderer resolutions at008d81bf. GameSettingsBinding::copy_supported_resolutions_008d4ea0 projects nonaliasing valid pairs through std::vector assignment; native capacity, allocator and object ABI are not reproduced. docs/SETTINGS_STARTUP_OWNER.md.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "validation_report": "reports/settings_startup_owner.json"
+    }
+  ],
+  "validated_source_sha256": {
+    "include/bsp/app_bootstrap.hpp": "95c83c82bde2027bf5a119fad480f7b5bfc58226bd3eba072433f3b77d56d710",
+    "src/app_bootstrap.cpp": "220ef3ea89167a271f7f6f72471c636951c558718e7f4591f86503e592ea9cb5",
+    "include/bsp/game_hosts.hpp": "adb7b3f26273d73fb0d7eac3092fb898be783c2c2eb2dd0a0e2385b08e69b15f",
+    "src/game_hosts.cpp": "bc6c6d33736c39ec8a3e8d53433d6962d3b9ce8c3decd231ab6f442a426efb1a",
+    "include/bsp/game_hosts_vfs.hpp": "0ca8ccf0738501ee5af64fcf2fc168641b680dd80c673cba738d3f6c796d8ede",
+    "src/game_hosts_vfs.cpp": "c7c12ccb62f8856045d7303e60888b3ebc7a30f46ee288f40692274224806a2a",
+    "include/bsp/game_settings.hpp": "339ed065e6c62ec78914428fa73b9f3def50d19963c72dab613bb80e2b80a075",
+    "src/game_settings.cpp": "5531e19291d616ec4028bdc09d6fd699e2b4cb0137de159472d3de44d267d186",
+    "include/bsp/options_token_reader.hpp": "ef09428fd33885d82613a90aae6a3f850d575099342d832316e78483e3484633",
+    "src/options_token_reader.cpp": "6336f596804d1e13c4adcd032d84c320220f0fd753e7e2bafcd3a0ef3c8d8836",
+    "include/bsp/scene_file.hpp": "a4d056794393ef3e45254fc4d3f39d88140488795c98e441f86971dc416670d9",
+    "src/scene_file.cpp": "775532514ab587bd5d7c35e0189e0ed3c0b5c4a67e892f573c72bf2ec794f331",
+    "include/bsp/settings_capabilities.hpp": "57348eb3ff1545b939a45c01274b8733efd23d21f772a4474d98182055d1355d",
+    "src/settings_capabilities.cpp": "2f5f680f37c6be5785cf6093acaa4c7d2d39ea01beba3d7fd4cf676736d0464d",
+    "include/bsp/settings_initial_state.hpp": "e981bebc6d4ca5b514ec347621ad039c9d8989f4d30b36ce21d604750c1a8bbe",
+    "src/settings_initial_state.cpp": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+    "src/game_main.cpp": "c3c82e05457a7da4ae2e1a9161a277161156da9e915b2dbfd693d4251435c9ac",
+    "cmake/startup.cmake": "ffebbbfbd82ac6b816e041d4f20aa4a2d3cbf3487f8f5e413ec46cee8b117abc"
+  },
+  "artifact_sha256": {
+    "local/settings-owner-final-build.log": "f5cc7bafe9c0c2a4e06f3362c1ef8d4dffa8bdabe1d269afedd4b1ada8156045",
+    "local/settings-owner-final-fixture.log": "15daae795753fc42fb1251922a1a55bbee93817e8f6575559cd3d83d13a11a99",
+    "local/settings_owner_fixture.cpp": "54edeb97efe1cb344afefdc74900910a534c0c3a755a4d59b8ea172ac7ed55e8",
+    "local/run_settings_owner_fixture.ps1": "fd7c623b6dd040fae961abbda8884cca038495984bda3d6f22f374344de76d63",
+    "local/run_settings_owner_game.ps1": "34b47393bb0102ffef16d4c3b0bfba206cb671b5732a862310351920580a3214",
+    "local/settings-owner-runtime.log": "d759efa4db854285cbd00df4729dfa00d4e3e3057f5958c91eb2d9b25c9f5e4a",
+    "local/settings-owner-runtime-result.json": "7f169193dffc4b348e9f8d4a2413da744af93256fefe2906d7ecdfcea3ca7699",
+    "local/settings-owner-original-files-before.json": "55ce2f91e55f2cf96a8063388d79258b34401fd39b6c3c9cd3948f4b3cb94cf1",
+    "local/settings-owner-worker-artifacts.json": "9d12a9713fa7d793135a0fff4f36736b7b3bee493e443bb03bcc50efc52ba88c",
+    "local/settings-owner-token-worker-result.log": "34c66f67afe505239bb902c42de192c4f4e4bd9675e70c6b9de378314d39067d",
+    "local/settings-owner-verified-seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/settings-owner-annotation-changes.json": "6bf29c24f8ab0321cf9036baa2d2e1f70bf004046f1e22de5df99c4ff679b605",
+    "local/settings-owner-annotation-verification.json": "63f01a682068efb3fd3d129f65bf3373adb4db20849cd12754d9d30479fbb575",
+    "local/settings-owner-export-refresh.log": "8aa4e6e80d8c7864934e1bf0206822409e2e8a9c010ccbfe0cb1c17a2b36a76d"
+  },
+  "follow_up": [
+    "Wire recovered InputScriptStartup with actual Lua runtime globals and persistent owner before settings load",
+    "Bind locale tables and text resolution to the actual GUI owner and refresh callback",
+    "Share the native renderer API/owner across capability queries and device creation; recover omitted adapter-identifier and full capability state",
+    "Bind profile/DLC updates to the retained settings, hints owner and content-suffix vector",
+    "Replace remaining input/world/scene/gameplay bindings and validate actual gameplay before completion"
+  ]
+}

@@ -415,3 +415,16 @@ The Eidos registry key on the installed game holds `ApplicationDir`, `Patch` and
 ### Correction from docs/GAME_EXECUTABLE.md (milestone 2a)
 
 The options-file token comparison in `008d8190` goes through `00467cc0`, which calls `BSP_CString_CompareInsensitive`; the game's own writer emits `Vsync` while the reader literal at `00d15ef4` is `VSync`, so a file the game wrote round-trips only because the comparison folds case. The reconstruction compared with `==` until the executable milestone exposed it; `src/app_bootstrap.cpp` now folds case. The supported-resolution table and shader-model ceiling come from the renderer vector that phase 4 fills.
+
+## Correction from docs/SETTINGS_STARTUP_OWNER.md
+
+The settings loader now updates its retained GameSettingsBlock and invokes the
+existing008d6170 options writer on missing input, before the common capability
+tail. It no longer creates a fresh partial object or calls a hardware-default
+placeholder. The tail's record+28 is LOWORD(PixelShaderVersion), not a constant
+buffer limit;00b295c0 enumerates AA samples, not post effects. Language misses
+reset index zero. The corrected native scene scanner handles comments, quotes,
+strict Boolean conversions and one-token unknown recovery. SoundEnabled consumes
+only its keyword, leaving the next token for the next iteration. See the new
+document and its report for native addresses, host boundaries and combined
+fixture plus60-frame executable validation.

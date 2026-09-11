@@ -1,0 +1,1416 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_pool_static2",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "generated_utc": "2026-09-11T04:35:44.364022+00:00",
+  "checkout_head_before_packet_commit": "3c1d701b7195ea586907e9affc857b44c59d5592",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "x86",
+    "timestamp": 1245831434,
+    "image_base": "00400000",
+    "entry_point": "00bfd2bd",
+    "sections": [
+      {
+        "name": ".text",
+        "rva": "00001000",
+        "virtual_size": 9306422,
+        "raw_size": 9310208,
+        "raw_offset": 4096,
+        "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+      },
+      {
+        "name": ".rdata",
+        "rva": "008e2000",
+        "virtual_size": 1202980,
+        "raw_size": 1204224,
+        "raw_offset": 9314304,
+        "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+      },
+      {
+        "name": ".data",
+        "rva": "00a08000",
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "raw_offset": 10518528,
+        "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+      },
+      {
+        "name": ".rsrc",
+        "rva": "00ca0000",
+        "virtual_size": 1630400,
+        "raw_size": 1634304,
+        "raw_offset": 10584064,
+        "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+      }
+    ],
+    "imported_dlls": [
+      "fmodex.dll",
+      "DSOUND.dll",
+      "d3d9.dll",
+      "d3dx9_40.dll",
+      "binkw32.dll",
+      "USER32.dll",
+      "ole32.dll",
+      "SHELL32.dll",
+      "xlive.dll",
+      "KERNEL32.dll",
+      "ADVAPI32.dll",
+      "WS2_32.dll",
+      "POWRPROF.dll",
+      "fmod_event.dll",
+      "WINMM.dll",
+      "DINPUT8.dll",
+      "GDI32.dll",
+      "XINPUT1_3.dll"
+    ],
+    "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+  },
+  "guard": "Every bsp.py ghidra query verifies configured project, program, language and image base.",
+  "captured_utc": "2026-09-11T04:28:01.162861+00:00",
+  "functions": [
+    {
+      "address": "00cd7ca0",
+      "end_exclusive": "00cd7cb6",
+      "length": 22,
+      "native_abi": "no arguments; EAX real _atexit result; RET",
+      "name_hypothesis": "BSP_Static_InitializeHardwareLayoutPool",
+      "previous_Ghidra_function": "absent",
+      "source_interface": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+      "complete": true
+    },
+    {
+      "address": "00ce0d40",
+      "end_exclusive": "00ce0d4a",
+      "length": 10,
+      "native_abi": "no arguments; ECX=108FE9C; tailcall B60270",
+      "name_hypothesis": "BSP_Static_DestroyHardwareLayoutPool",
+      "previous_Ghidra_function": "CG_static_init_00ce0d40",
+      "previous_plate_comment": "[BSP inventory 00ce0d40] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)",
+      "source_interface": "destroy_static_native_hardware_layout_pool_00ce0d40",
+      "complete": true
+    }
+  ],
+  "owned_files": [
+    "include/bsp/native_hardware_layout_pool_static.hpp",
+    "src/native_hardware_layout_pool_static.cpp",
+    "docs/NATIVE_HARDWARE_LAYOUT_POOL_STATIC.md",
+    "reports/native_hardware_layout_pool_static_audit.json"
+  ],
+  "host_binding": {
+    "interface": "bind_static_native_hardware_layout_pool_0108fe9c(void*, AllocatorListDomain&)",
+    "actual_storage": "one caller-owned aligned unconstructed38h pool and persistent shared AllocatorListDomain",
+    "order": "genuine D62AF0/B60350 list binding first, then borrowed host pool/list pointer stores",
+    "preconditions": "bind once before initializer publication; exact pool/list and binding remain alive and unchanged through real atexit callback",
+    "no_raw_mutation": "binding writes no pool bytes or shared head and does not initialize, reset or register a callback"
+  },
+  "behavior": {
+    "startup": "actual B604D0 source initialization then std::atexit(actual source shutdown callback); return CRT status directly",
+    "constructor_throw": "propagates before registration; no catch or rollback wrapper",
+    "registration_failure": "return status with constructed pool left intact; not dynamically forced through a fake CRT provider",
+    "shutdown": "actual B60270 source destructor receives same actual pool/list; no extra reset, slot-owner destruction or global free",
+    "original_EH": "no own EH frame in either full native body",
+    "compiled_EH": "no FuncInfo/CxxFrameHandler/EH handler in compiled source; call ordering and direct EAX status verified"
+  },
+  "fresh_live_and_PE_spans": [
+    {
+      "address": "00cd7ca0",
+      "end_exclusive": "00cd7cb6",
+      "length": 22,
+      "kind": "code",
+      "role": "initializer",
+      "raw_offset": 9272480,
+      "bytes_hex": "b99cfe0801e82688e8ff68400dce00e841f3f1ff59c3",
+      "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+      "live_matches_disk": true,
+      "instructions": 6,
+      "returns": [
+        {
+          "address": "00cd7cb5",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00ce0d40",
+      "end_exclusive": "00ce0d4a",
+      "length": 10,
+      "kind": "code",
+      "role": "shutdown",
+      "raw_offset": 9309504,
+      "bytes_hex": "b99cfe0801e926f5e7ff",
+      "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+      "live_matches_disk": true,
+      "instructions": 2,
+      "returns": []
+    },
+    {
+      "address": "00b604d0",
+      "end_exclusive": "00b605a3",
+      "length": 211,
+      "kind": "code",
+      "role": "real_pool_initializer",
+      "raw_offset": 7734480,
+      "bytes_hex": "6aff68de12cc0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706f02ad600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8675009008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e80064090083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+      "live_matches_disk": true,
+      "instructions": 68,
+      "returns": [
+        {
+          "address": "00b605a2",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b60270",
+      "end_exclusive": "00b602fa",
+      "length": 138,
+      "kind": "code",
+      "role": "real_pool_destructor",
+      "raw_offset": 7733872,
+      "bytes_hex": "56578bf933f639772cc707f02ad60076178b47288b0cb051e81f63090083c60183c4043b772c72e98b472885c0740950e8e466090083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+      "live_matches_disk": true,
+      "instructions": 51,
+      "returns": [
+        {
+          "address": "00b602f9",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b60020",
+      "end_exclusive": "00b6002e",
+      "length": 14,
+      "kind": "code",
+      "role": "real_table_free",
+      "raw_offset": 7733280,
+      "bytes_hex": "8b0185c0740750e85d69090059c3",
+      "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+      "live_matches_disk": true,
+      "instructions": 7,
+      "returns": [
+        {
+          "address": "00b6002d",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b60350",
+      "end_exclusive": "00b603f0",
+      "length": 160,
+      "kind": "code",
+      "role": "real_virtual_trim",
+      "raw_offset": 7734096,
+      "bytes_hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b84009000020753d50e8366209008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c044b92000000090893883c04883e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683ba4009000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+      "live_matches_disk": true,
+      "instructions": 58,
+      "returns": [
+        {
+          "address": "00b603e9",
+          "operand": ""
+        },
+        {
+          "address": "00b603ef",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bf6ff5",
+      "end_exclusive": "00bf7007",
+      "length": 18,
+      "kind": "code",
+      "role": "native_atexit_wrapper",
+      "raw_offset": 8351733,
+      "bytes_hex": "ff742404e8bbfffffff7d81bc0f7d85948c3",
+      "sha256": "09942fe4905f48be972c0e6824f517bcc0cde802100baff5d8a61369ddad30b6",
+      "live_matches_disk": true,
+      "instructions": 8,
+      "returns": [
+        {
+          "address": "00bf7006",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00ce353c",
+      "end_exclusive": "00ce3540",
+      "length": 4,
+      "kind": "data",
+      "role": "initializer_table_entry",
+      "raw_offset": 9319740,
+      "bytes_hex": "a07ccd00",
+      "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d62af0",
+      "end_exclusive": "00d62af4",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_pool_profile",
+      "raw_offset": 9841392,
+      "bytes_hex": "5003b600",
+      "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00e188b4",
+      "end_exclusive": "00e188b8",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_allocator_list_head",
+      "raw_offset": null,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108fe9c",
+      "end_exclusive": "0108fed4",
+      "length": 56,
+      "kind": "data",
+      "role": "actual_pool_global",
+      "raw_offset": null,
+      "bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk": true
+    }
+  ],
+  "runtime_postimages": [
+    {
+      "phase": "native",
+      "artifact": {
+        "path": "build/hardware-pool-static-check/pool_static_postimages_native.json",
+        "bytes": 1749,
+        "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+      },
+      "bindings": [
+        {
+          "site": 11928784,
+          "target": 805321200
+        },
+        {
+          "site": 11928176,
+          "target": 805318912
+        },
+        {
+          "site": 12546037,
+          "target": 805338384
+        }
+      ],
+      "only_declared_changes": true,
+      "owned_32_bytes_unchanged": true,
+      "spans": [
+        {
+          "address": "00cd7ca0",
+          "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+          "binding_sites": []
+        },
+        {
+          "address": "00ce0d40",
+          "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+          "binding_sites": []
+        },
+        {
+          "address": "00b604d0",
+          "sha256": "777d4f6d6d804ee2ab7df714a542152fe5531f475e6c4ed451dec4302eff2468",
+          "binding_sites": [
+            "00b604d0"
+          ]
+        },
+        {
+          "address": "00b60270",
+          "sha256": "4e429c9e59d7001a7983551140ebcfcbdddf392c37416389ad5b18edda3e4fae",
+          "binding_sites": [
+            "00b60270"
+          ]
+        },
+        {
+          "address": "00b60020",
+          "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+          "binding_sites": []
+        },
+        {
+          "address": "00b60350",
+          "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+          "binding_sites": []
+        },
+        {
+          "address": "00bf6ff5",
+          "sha256": "4499026a1e15d73f362897ed4e7895cdda876f062af03a9bc3e6e9346709fd15",
+          "binding_sites": [
+            "00bf6ff5"
+          ]
+        },
+        {
+          "address": "00ce353c",
+          "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+          "binding_sites": []
+        },
+        {
+          "address": "00d62af0",
+          "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+          "binding_sites": []
+        },
+        {
+          "address": "00e188b4",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "binding_sites": []
+        },
+        {
+          "address": "0108fe9c",
+          "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+          "binding_sites": []
+        }
+      ]
+    },
+    {
+      "phase": "current",
+      "artifact": {
+        "path": "build/hardware-pool-static-check/pool_static_postimages_current.json",
+        "bytes": 1749,
+        "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+      },
+      "bindings": [
+        {
+          "site": 11928784,
+          "target": 805321200
+        },
+        {
+          "site": 11928176,
+          "target": 805318912
+        },
+        {
+          "site": 12546037,
+          "target": 805338384
+        }
+      ],
+      "only_declared_changes": true,
+      "owned_32_bytes_unchanged": true,
+      "spans": [
+        {
+          "address": "00cd7ca0",
+          "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+          "binding_sites": []
+        },
+        {
+          "address": "00ce0d40",
+          "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+          "binding_sites": []
+        },
+        {
+          "address": "00b604d0",
+          "sha256": "777d4f6d6d804ee2ab7df714a542152fe5531f475e6c4ed451dec4302eff2468",
+          "binding_sites": [
+            "00b604d0"
+          ]
+        },
+        {
+          "address": "00b60270",
+          "sha256": "4e429c9e59d7001a7983551140ebcfcbdddf392c37416389ad5b18edda3e4fae",
+          "binding_sites": [
+            "00b60270"
+          ]
+        },
+        {
+          "address": "00b60020",
+          "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+          "binding_sites": []
+        },
+        {
+          "address": "00b60350",
+          "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+          "binding_sites": []
+        },
+        {
+          "address": "00bf6ff5",
+          "sha256": "4499026a1e15d73f362897ed4e7895cdda876f062af03a9bc3e6e9346709fd15",
+          "binding_sites": [
+            "00bf6ff5"
+          ]
+        },
+        {
+          "address": "00ce353c",
+          "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+          "binding_sites": []
+        },
+        {
+          "address": "00d62af0",
+          "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+          "binding_sites": []
+        },
+        {
+          "address": "00e188b4",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "binding_sites": []
+        },
+        {
+          "address": "0108fe9c",
+          "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+          "binding_sites": []
+        }
+      ]
+    }
+  ],
+  "differential": {
+    "scope": "full untouched original CD7CA0 and CE0D40, explicit ABI entry bridges into complete current init/destroy and real std::atexit",
+    "bridge_sites": [
+      "00b604d0",
+      "00b60270",
+      "00bf6ff5"
+    ],
+    "original_owned_bytes_modified": false,
+    "process": "own suspended child reserves original address range before loader heaps; installed PE read only; main returns normally and host CRT invokes registered shutdown",
+    "callback_observation": "real report callback registered before startup executes after actual registered shutdown; no manual substitute callback invocation",
+    "metrics": {
+      "words": 1805,
+      "events": 19,
+      "frame_words": 95,
+      "registration_status": 0,
+      "init_calls": 1,
+      "actual_exit_shutdown_calls": 1,
+      "allocations": 3,
+      "frees": 3
+    },
+    "byte_equal": true,
+    "native_trace": {
+      "path": "build/hardware-pool-static-check/pool_static_native.bin",
+      "bytes": 7220,
+      "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+    },
+    "source_trace": {
+      "path": "build/hardware-pool-static-check/pool_static_current.bin",
+      "bytes": 7220,
+      "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+    },
+    "actual_domains": "canonical108FE9C raw pool; actual E188B4 head; persistent AllocatorListDomain; genuine trim binding; real CRT allocate/free and Win32 critical section",
+    "path": "construct table; allocate33slots/two944-byte slabs; return first32; real global trim frees empty slab and moves partial slab/tokens; prepend actual base node; enter section twice; return main; actual atexit destructor",
+    "assertions": [
+      "binding leaves raw pool/head unchanged",
+      "one actual initializer and one exit destructor",
+      "successful actual atexit status0",
+      "actual shared-list trim frees empty slab and rewrites surviving token0",
+      "three real allocations and three frees",
+      "held recursion2 drains to0",
+      "surviving predecessor remains actual shared head with null next",
+      "base profileD7A0C0 installed without clearing native stale fields"
+    ],
+    "observation_aliases": "unchanged current singleton_lifetime allocate/free and pool lifecycle functions, forwarded at every call",
+    "scope_limits": "current pool implementations at original caller bridge; inner original pool and CRT code not executed by this fixture; no host CRT exhaustion or game execution"
+  },
+  "dependencies": {
+    "lifetime_worker_commit": "e4bd667",
+    "lifetime_main_commit": "3c1d701",
+    "lifetime_independent_words": 52094,
+    "trim_worker_commit": "dd67627",
+    "trim_main_commit": "2b5709e",
+    "exact_current_dependency_pin_checks": [
+      {
+        "path": "include/bsp/native_hardware_layout_pool_lifetime.hpp",
+        "bytes": 1317,
+        "sha256": "c2afcf0b47f4caf3e54efccb5b83f57cf35e460deff0987acbbeb3fa2f2b502b"
+      },
+      {
+        "path": "src/native_hardware_layout_pool_lifetime.cpp",
+        "bytes": 3934,
+        "sha256": "3af5f5536fef679ccc86410dd6efbe442ea512d5dbc4749c56c9d66d4ab42f11"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_pool_trim.hpp",
+        "bytes": 1040,
+        "sha256": "2c2c01acf016071125cddf5b4d24fa879e9ae9bbbc638f19201c4bd0357ec3ef"
+      },
+      {
+        "path": "src/native_hardware_layout_pool_trim.cpp",
+        "bytes": 2712,
+        "sha256": "bcc55c5a25dc67c8a607de8aa7c010b76d18df1ec822d34450cdaf16c5cf8e83"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "bytes": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "src/allocator_list.cpp",
+        "bytes": 2682,
+        "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ]
+  },
+  "validation": {
+    "strict_MSVC_Win32_build": "passed",
+    "existing_tests": "2/2 passed",
+    "native_math_seed_spans": "8/8 live and PE match",
+    "original_process_exit_pair": "passed",
+    "runtime_postimages": "22 spans across two children; only three declared entry bridges; all32 owned bytes untouched",
+    "new_repository_tests": 0,
+    "ABI_compatible": false,
+    "game_validated": false
+  },
+  "reproduction": [
+    "python local/prepare_hardware_pool_static.py",
+    "./local/build_hardware_pool_static.ps1",
+    "./local/build_hardware_pool_static_check.ps1",
+    "python local/write_hardware_pool_static_audit.py"
+  ],
+  "pins": {
+    "source": [
+      {
+        "path": "include/bsp/native_hardware_layout_pool_static.hpp",
+        "bytes": 1420,
+        "sha256": "0b7f41b71185460f5dec66f9029de7c27ccbde9b3a729b709dad6c2c7702faeb"
+      },
+      {
+        "path": "src/native_hardware_layout_pool_static.cpp",
+        "bytes": 1029,
+        "sha256": "c92e65c9c11cf95c3e69d57fdd14af078bf7eb2977887c17d788c92be990c213"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_pool_lifetime.hpp",
+        "bytes": 1317,
+        "sha256": "c2afcf0b47f4caf3e54efccb5b83f57cf35e460deff0987acbbeb3fa2f2b502b"
+      },
+      {
+        "path": "src/native_hardware_layout_pool_lifetime.cpp",
+        "bytes": 3934,
+        "sha256": "3af5f5536fef679ccc86410dd6efbe442ea512d5dbc4749c56c9d66d4ab42f11"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_pool_trim.hpp",
+        "bytes": 1040,
+        "sha256": "2c2c01acf016071125cddf5b4d24fa879e9ae9bbbc638f19201c4bd0357ec3ef"
+      },
+      {
+        "path": "src/native_hardware_layout_pool_trim.cpp",
+        "bytes": 2712,
+        "sha256": "bcc55c5a25dc67c8a607de8aa7c010b76d18df1ec822d34450cdaf16c5cf8e83"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_pool_allocate.hpp",
+        "bytes": 1558,
+        "sha256": "1d30076416bdeb623a689e8b75c39b3977f5a413497db17fb4f41dcb5bf941bb"
+      },
+      {
+        "path": "src/native_hardware_layout_pool_allocate.cpp",
+        "bytes": 5730,
+        "sha256": "4481c2b2b1d2295a57f6788ba49183bf3c5110c82b9842fade07571a680ed46c"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_owner.hpp",
+        "bytes": 3673,
+        "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+      },
+      {
+        "path": "src/native_hardware_layout_owner.cpp",
+        "bytes": 8337,
+        "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "bytes": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "src/allocator_list.cpp",
+        "bytes": 2682,
+        "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "build/hardware-pool-static-check/actual_pool_lifetime.obj",
+        "bytes": 4217,
+        "sha256": "ce757bcd0a4f187d2d756a73af6a5cd1f10756af65500b1f289963e7cdab1029"
+      },
+      {
+        "path": "build/hardware-pool-static-check/actual_singleton_lifetime.obj",
+        "bytes": 32991,
+        "sha256": "2ada132d24374c3205a59ddfcaf2acdded66104040190a4061884b7df102ad9d"
+      },
+      {
+        "path": "build/hardware-pool-static-check/build_pool_static.cmd",
+        "bytes": 2851,
+        "sha256": "50d808f6f3953443fe07ed7031281dea0c4739d30df42b2184e8b4a2669a6b8e"
+      },
+      {
+        "path": "build/hardware-pool-static-check/hardware_pool_static_check.exe",
+        "bytes": 49664,
+        "sha256": "92d50a26ed7a8907c008ff01086ce853d77f2a1f38bbd44a45de466bf84972d2"
+      },
+      {
+        "path": "build/hardware-pool-static-check/hardware_pool_static_check.map",
+        "bytes": 99722,
+        "sha256": "509c1b15fe6b1fb4d155d0e6605cb9e14062bd2e56b8d2bf0dbd576d481c8753"
+      },
+      {
+        "path": "build/hardware-pool-static-check/hardware_pool_static_check.obj",
+        "bytes": 217118,
+        "sha256": "cc58a366eb18ba301d95e66038ff8a8014452627285a20928186cb6c3e37866a"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_current.bin",
+        "bytes": 7220,
+        "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_current.bin.json",
+        "bytes": 141,
+        "sha256": "e6f5a274a9802bd319a8c32141d6268d1086c59836762d60c075444771edd7b7"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_final.asm",
+        "bytes": 5710,
+        "sha256": "574cf54cd7d7ffd697f1893a340cbab8962f41897fd96f29bb409734cf405203"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_final.obj",
+        "bytes": 2591,
+        "sha256": "ad5f49b1bded3328f19d4ea2240180cfbf0567b6a556a40c4c17c1555799b512"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_native.bin",
+        "bytes": 7220,
+        "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_native.bin.json",
+        "bytes": 141,
+        "sha256": "e6f5a274a9802bd319a8c32141d6268d1086c59836762d60c075444771edd7b7"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_postimages_current.json",
+        "bytes": 1749,
+        "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+      },
+      {
+        "path": "build/hardware-pool-static-check/pool_static_postimages_native.json",
+        "bytes": 1749,
+        "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 25196734,
+        "sha256": "0c4815e0c58cb3efc0adcc30cd14fd6ffb26bdb7bff1afb5a9527eea01bac004"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 10206,
+        "sha256": "5355ca7169d2e5b7deb16e8b57b9568973ff5a4ebb1238699f0c876d8626e552"
+      },
+      {
+        "path": "docs/NATIVE_HARDWARE_LAYOUT_POOL_STATIC.md",
+        "bytes": 6096,
+        "sha256": "c3a324d267c986f795076b2c4c7269c323bf951ba699da4dc0cbe942c8acbe18"
+      },
+      {
+        "path": "local/build_hardware_pool_static.ps1",
+        "bytes": 851,
+        "sha256": "1cbc7f63ed34c9ff8e414e81d1bb87b37e655070e31b260445377c44800fc7d1"
+      },
+      {
+        "path": "local/build_hardware_pool_static_check.ps1",
+        "bytes": 2942,
+        "sha256": "e35f2f834a8f81601c460068bab9105b2a796c23b24956d27c9d2900950ea9a8"
+      },
+      {
+        "path": "local/hardware_pool_static_check.cpp",
+        "bytes": 14554,
+        "sha256": "9f06657b780b76bb29574872c59296d3662f9070a445bd1b7f2ae03aa92c8d0d"
+      },
+      {
+        "path": "local/hardware_pool_static_preparation.json",
+        "bytes": 8160,
+        "sha256": "4218eda59595d040923b2b04810359893b07522524dd02abac5c26cae83568f3"
+      },
+      {
+        "path": "local/hardware_pool_static_spans.hpp",
+        "bytes": 4461,
+        "sha256": "fec8c1d0f78f04f8f6439c64b00b68187e3894c5b6f8d51b43e5acfc74345fa4"
+      },
+      {
+        "path": "local/pool_static_00b60020.asm",
+        "bytes": 164,
+        "sha256": "b596ff1a1cb6faa145bca287b5185675563f505aef2cf096100dfb32bd32d0f5"
+      },
+      {
+        "path": "local/pool_static_00b60270.asm",
+        "bytes": 1512,
+        "sha256": "2706b37fe4e3151f09b55564858688c7bd4eced696faafaa4bad4647d6adb685"
+      },
+      {
+        "path": "local/pool_static_00b60350.asm",
+        "bytes": 1720,
+        "sha256": "52c27c1673ab6675b542ccf18e3a89efd7ee421158e719ba61cfc860c7854331"
+      },
+      {
+        "path": "local/pool_static_00b604d0.asm",
+        "bytes": 2098,
+        "sha256": "53da0ee15d36e2410f19e3783fe911f02d2dd9bc7e09480b01ff98cadd2f8db0"
+      },
+      {
+        "path": "local/pool_static_00bf6ff5.asm",
+        "bytes": 177,
+        "sha256": "ebdd9dfb4683276cb2cca78a5a0693884a7d23a750f497d74d95fea341a48923"
+      },
+      {
+        "path": "local/pool_static_00cd7ca0.asm",
+        "bytes": 140,
+        "sha256": "377a20c6c3b476a61406573a519344adff8874db2a05e1ad126cba1f7e8041ed"
+      },
+      {
+        "path": "local/pool_static_00ce0d40.asm",
+        "bytes": 54,
+        "sha256": "165037eaede67e9d6809c52e4969ad78309afe3f7ca978074c34d8a3ac52ade8"
+      },
+      {
+        "path": "local/pool_static_build.log",
+        "bytes": 14628,
+        "sha256": "9f95a8135c02ed8486310fcfab1e20e461a3ad96e98b08948c8dc456172456ed"
+      },
+      {
+        "path": "local/pool_static_fixture.log",
+        "bytes": 521,
+        "sha256": "a2f02c49ec9410f986880fe02e8aa53c42a5be1c348320d887597556355b38a2"
+      },
+      {
+        "path": "local/pool_static_live_00b60020.txt",
+        "bytes": 69,
+        "sha256": "c3b9d623d2aa1a54bfd39bedbe390455740561f89258b4a68a49aafa7a95cc3d"
+      },
+      {
+        "path": "local/pool_static_live_00b60270.txt",
+        "bytes": 669,
+        "sha256": "36659ba579cda7752c43155306ef1dca9f6afc8783d32e037ff96313d95dc734"
+      },
+      {
+        "path": "local/pool_static_live_00b60350.txt",
+        "bytes": 770,
+        "sha256": "5342ca2dd993f474df995fb000725a2d179925c314bdb348c63d0bec77e933e6"
+      },
+      {
+        "path": "local/pool_static_live_00b604d0.txt",
+        "bytes": 1026,
+        "sha256": "50139e5df2e447b456ab8afbe0f5d0c5b7bc5bbbb0447d2a3c4a77851d534d43"
+      },
+      {
+        "path": "local/pool_static_live_00bf6ff5.txt",
+        "bytes": 98,
+        "sha256": "33b9cecebc09ec33260e361239d2e8c46258ccbc94ef6501e1d8108367e4ee7b"
+      },
+      {
+        "path": "local/pool_static_live_00cd7ca0.txt",
+        "bytes": 114,
+        "sha256": "37e80f09396f9b8e1201ae4ce252ee40ae4b614021486c49ccbc8fe5d2d0327b"
+      },
+      {
+        "path": "local/pool_static_live_00ce0d40.txt",
+        "bytes": 53,
+        "sha256": "d87d7327b14aa6ee822fdf4beca1244d6ed6535e56c1dcc0d5b66c5f5deb674d"
+      },
+      {
+        "path": "local/pool_static_live_00ce353c.txt",
+        "bytes": 29,
+        "sha256": "567ce6e4f67d91ba34c7eeecf17fab73eda06823840404434088932445e2b081"
+      },
+      {
+        "path": "local/pool_static_live_00d62af0.txt",
+        "bytes": 29,
+        "sha256": "3c6931a6fa30eeb3c8eb9c47c19fd074d59c44d10a387bfc0b10c5ac61788f53"
+      },
+      {
+        "path": "local/pool_static_live_00e188b4.txt",
+        "bytes": 29,
+        "sha256": "bc2a4e58dd5714887b0afd386f47ef2ac52394dc9a1f2487f927e4f0264797e8"
+      },
+      {
+        "path": "local/pool_static_live_0108fe9c.txt",
+        "bytes": 276,
+        "sha256": "d3301067795c29a8abb0b79471333a79a78402bcbddfc0b71b8d1077f1bb2e26"
+      },
+      {
+        "path": "local/pool_static_old_ce0d40_comments.txt",
+        "bytes": 310,
+        "sha256": "f2205bafde6a0ab0488b5a9628645e7ac59179cfe19c2ffaf1b34073b1fea009"
+      },
+      {
+        "path": "local/pool_static_old_comments.txt",
+        "bytes": 942,
+        "sha256": "a127c93c037919aa93eb17ae152de44024e18f99bc4c8d1d430adb8d3cdeba3d"
+      },
+      {
+        "path": "local/pool_static_old_proto.txt",
+        "bytes": 810,
+        "sha256": "2542e77dd307354c40b70d5190820e53432342f76929f5c72312b0552369e3da"
+      },
+      {
+        "path": "local/pool_static_sources.cmake",
+        "bytes": 520,
+        "sha256": "e0a6d619b07989afd1979021adc2b1248d85604f4c1fdee65357c8bbd2f09360"
+      },
+      {
+        "path": "local/pool_static_verify_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/prepare_hardware_pool_static.py",
+        "bytes": 4061,
+        "sha256": "7e785097666dbb08d734d9842055af8c91acac074ec7d1dcca1f5713d1d47ca4"
+      },
+      {
+        "path": "local/write_hardware_pool_static_audit.py",
+        "bytes": 11371,
+        "sha256": "2d1f8a45b77c2b560c85c1256f4f62f9d3d6a4c3613da05393805776ad0e313f"
+      },
+      {
+        "path": "reports/native_hardware_layout_pool_lifetime_audit.json",
+        "bytes": 25807,
+        "sha256": "2f01bf2376a1ea3d07eae38488c1cdb6792f5800d3d9573a021168f883ccf800"
+      },
+      {
+        "path": "reports/native_hardware_layout_pool_trim_audit.json",
+        "bytes": 27500,
+        "sha256": "8344326272966da403fb4c7c64e92b714a9d586f6ef4f1b63c8fa4c680a43831"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ]
+  },
+  "source_pin_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-static-20260910",
+  "primary_integration": {
+    "verification": {
+      "matched_words": 1805,
+      "metrics": {
+        "words": 1805,
+        "events": 19,
+        "frame_words": 95,
+        "registration_status": 0,
+        "init_calls": 1,
+        "actual_exit_shutdown_calls": 1,
+        "allocations": 3,
+        "frees": 3
+      },
+      "postimages": [
+        {
+          "phase": "native",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_native.json",
+            "bytes": 1749,
+            "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+          },
+          "bindings": [
+            {
+              "site": 11928784,
+              "target": 805321200
+            },
+            {
+              "site": 11928176,
+              "target": 805318912
+            },
+            {
+              "site": 12546037,
+              "target": 805338384
+            }
+          ],
+          "spans": [
+            {
+              "address": "00cd7ca0",
+              "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00ce0d40",
+              "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b604d0",
+              "sha256": "777d4f6d6d804ee2ab7df714a542152fe5531f475e6c4ed451dec4302eff2468",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb604d0"
+              ]
+            },
+            {
+              "address": "00b60270",
+              "sha256": "4e429c9e59d7001a7983551140ebcfcbdddf392c37416389ad5b18edda3e4fae",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb60270"
+              ]
+            },
+            {
+              "address": "00b60020",
+              "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b60350",
+              "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00bf6ff5",
+              "sha256": "4499026a1e15d73f362897ed4e7895cdda876f062af03a9bc3e6e9346709fd15",
+              "only_declared_changes": true,
+              "sites": [
+                "0xbf6ff5"
+              ]
+            },
+            {
+              "address": "00ce353c",
+              "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00d62af0",
+              "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00e188b4",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+              "only_declared_changes": true,
+              "sites": []
+            }
+          ]
+        },
+        {
+          "phase": "current",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_current.json",
+            "bytes": 1749,
+            "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+          },
+          "bindings": [
+            {
+              "site": 11928784,
+              "target": 805321200
+            },
+            {
+              "site": 11928176,
+              "target": 805318912
+            },
+            {
+              "site": 12546037,
+              "target": 805338384
+            }
+          ],
+          "spans": [
+            {
+              "address": "00cd7ca0",
+              "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00ce0d40",
+              "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b604d0",
+              "sha256": "777d4f6d6d804ee2ab7df714a542152fe5531f475e6c4ed451dec4302eff2468",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb604d0"
+              ]
+            },
+            {
+              "address": "00b60270",
+              "sha256": "4e429c9e59d7001a7983551140ebcfcbdddf392c37416389ad5b18edda3e4fae",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb60270"
+              ]
+            },
+            {
+              "address": "00b60020",
+              "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b60350",
+              "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00bf6ff5",
+              "sha256": "4499026a1e15d73f362897ed4e7895cdda876f062af03a9bc3e6e9346709fd15",
+              "only_declared_changes": true,
+              "sites": [
+                "0xbf6ff5"
+              ]
+            },
+            {
+              "address": "00ce353c",
+              "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00d62af0",
+              "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00e188b4",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+              "only_declared_changes": true,
+              "sites": []
+            }
+          ]
+        }
+      ],
+      "providers": [
+        {
+          "symbol": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_static.obj",
+          "line": " 0001:00006350       ?initialize_static_native_hardware_layout_pool_00cd7ca0@bsp@@YAHXZ 30007350 f   bsp_core.linked:native_hardware_layout_pool_static.obj"
+        },
+        {
+          "symbol": "destroy_static_native_hardware_layout_pool_00ce0d40",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_static.obj",
+          "line": " 0001:00006330       ?destroy_static_native_hardware_layout_pool_00ce0d40@bsp@@YAXXZ 30007330 f   bsp_core.linked:native_hardware_layout_pool_static.obj"
+        },
+        {
+          "symbol": "bind_static_native_hardware_layout_pool_0108fe9c",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_static.obj",
+          "line": " 0001:00006300       ?bind_static_native_hardware_layout_pool_0108fe9c@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30007300 f   bsp_core.linked:native_hardware_layout_pool_static.obj"
+        },
+        {
+          "symbol": "trim_native_hardware_layout_pool_00b60350",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_trim.obj",
+          "line": " 0001:00006900       ?trim_native_hardware_layout_pool_00b60350@bsp@@YAXPAX@Z 30007900 f   bsp_core.linked:native_hardware_layout_pool_trim.obj"
+        },
+        {
+          "symbol": "pool_static_actual_initialize",
+          "provider": "actual_pool_lifetime.obj",
+          "line": " 0001:000058f0       ?pool_static_actual_initialize@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 300068f0 f   actual_pool_lifetime.obj"
+        },
+        {
+          "symbol": "pool_static_actual_destroy",
+          "provider": "actual_pool_lifetime.obj",
+          "line": " 0001:00005890       ?pool_static_actual_destroy@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30006890 f   actual_pool_lifetime.obj"
+        },
+        {
+          "symbol": "pool_static_actual_allocate",
+          "provider": "actual_singleton_lifetime.obj",
+          "line": " 0001:000057d0       ?pool_static_actual_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 300067d0 f   actual_singleton_lifetime.obj"
+        },
+        {
+          "symbol": "pool_static_actual_free",
+          "provider": "actual_singleton_lifetime.obj",
+          "line": " 0001:00005830       ?pool_static_actual_free@bsp@@YAXPAX@Z 30006830 f   actual_singleton_lifetime.obj"
+        }
+      ],
+      "owned32_original_bytes_unchanged": true,
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-static-20260910",
+        "worker_pins_verified": 66,
+        "source_pins": 14,
+        "current_source_differences": [],
+        "fresh_spans": [
+          {
+            "address": "00cd7ca0",
+            "length": 22,
+            "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce0d40",
+            "length": 10,
+            "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b604d0",
+            "length": 211,
+            "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60270",
+            "length": 138,
+            "sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60020",
+            "length": 14,
+            "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60350",
+            "length": 160,
+            "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6ff5",
+            "length": 18,
+            "sha256": "09942fe4905f48be972c0e6824f517bcc0cde802100baff5d8a61369ddad30b6",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce353c",
+            "length": 4,
+            "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d62af0",
+            "length": 4,
+            "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00e188b4",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "0108fe9c",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\actual_pool_lifetime.obj",
+          "bytes": 4181,
+          "sha256": "306f291be79a4fb209435012e71e9f8de6e4f89cf367d9f7eff56a57ee674e18"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\actual_singleton_lifetime.obj",
+          "bytes": 32955,
+          "sha256": "27d611fe229e97302ab8403a593d58a98791670be2d2b5bac6772bfefaa1cc79"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\bsp_core.linked.lib",
+          "bytes": 25195110,
+          "sha256": "1564fab7addf0d1a321fe4b11e4a98f1c0b0ba960b6a7905c249238d6fa7f3d7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\build_pool_static.cmd",
+          "bytes": 2194,
+          "sha256": "4374b03cf5c94f1a8d715a81e942d1475db8acac6ad10bdaad4cb6f056f27d60"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\hardware_pool_static_check.exe",
+          "bytes": 49664,
+          "sha256": "fac849252320ab0e11a0220af63a995c80dcf6cf44a1347b45710d39b11f0889"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\hardware_pool_static_check.map",
+          "bytes": 100111,
+          "sha256": "cca771daacb2f8a51688ee7f02e1a57f05a53c0f3118ed6c173b7c92441d1a33"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\hardware_pool_static_check.obj",
+          "bytes": 217082,
+          "sha256": "17513aeb34f93f6550563ff9b576b463229801392a8b82c4ea9aefe0f25cc929"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_current.bin",
+          "bytes": 7220,
+          "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_current.bin.json",
+          "bytes": 141,
+          "sha256": "e6f5a274a9802bd319a8c32141d6268d1086c59836762d60c075444771edd7b7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_native.bin",
+          "bytes": 7220,
+          "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_native.bin.json",
+          "bytes": 141,
+          "sha256": "e6f5a274a9802bd319a8c32141d6268d1086c59836762d60c075444771edd7b7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_current.json",
+          "bytes": 1749,
+          "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_native.json",
+          "bytes": 1749,
+          "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_hardware_pool_static_primary_check.ps1",
+          "bytes": 2772,
+          "sha256": "24b1d2bf4dbfded65f6ad72fa17b030f261bccabb5de6fae7534f765f01fbb86"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_pool_static_primary_fixture.txt",
+          "bytes": 481,
+          "sha256": "0133330564421ad6bde602fa2acd5c96587379ab598c7877d02bec478d782c73"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_lifetime_pool_static_primary_build.txt",
+          "bytes": 1655,
+          "sha256": "04428840cd8729a8fabd1e5d31ccd08612c7e9d70bf0ed6c7a6942f3ee969117"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_pool_static.cpp",
+          "bytes": 1029,
+          "sha256": "c92e65c9c11cf95c3e69d57fdd14af078bf7eb2977887c17d788c92be990c213"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "owned_source_provider": "Frozen current main bsp_core.linked.lib; worker fixture unchanged; pool static uses exact current production source only for existing observation aliases.",
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "body_repairs_and_creation": [
+      {
+        "address": "00cd7ca0",
+        "end_exclusive": "00cd7cb6",
+        "length": 22,
+        "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+        "missing_before": true,
+        "function_before": "No function found for 00cd7ca0",
+        "plate_before": {
+          "query_result": "No function at address; creation preserves existing code/data comments"
+        },
+        "function_after": "Function: BSP_Static_InitializeHardwareLayoutPool at 00cd7ca0\nSignature: undefined BSP_Static_InitializeHardwareLayoutPool(void)\nEntry: 00cd7ca0\nBody: 00cd7ca0 - 00cd7cb5"
+      }
+    ],
+    "definition_and_save_report": {
+      "path": "reports/native_hardware_lifetimes_defined_functions.json",
+      "bytes": 27556,
+      "sha256": "d81ba2ce1fb30fda2cecbbf5d071f8da2df86c3eeadafb8af5ff0dc66a505b0c"
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_pool_static_annotations.json",
+    "bytes": 2388,
+    "sha256": "06737fcf18aa4d7485a9c2dac6595706507c8ea6e34740a1ecbc93e2a20f22f8",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00cd7ca0",
+      "path": "exports/bsp/functions/00cd7ca0/decompiled.c",
+      "bytes": 981,
+      "sha256": "a0209090829b5a08409f5aa2543789e8a5be50491d63dd88f7a9ef52f3b9fad1"
+    },
+    {
+      "address": "00ce0d40",
+      "path": "exports/bsp/functions/00ce0d40/decompiled.c",
+      "bytes": 1060,
+      "sha256": "fe1fdc845f63b0de3420d02c9c6f715f2315f29f1a039a7b0b674ae7cffd0cba"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:53:11.581061+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00cd7ca0",
+      "name": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+      "cpp_symbol": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+      "source": "src/native_hardware_layout_pool_static.cpp",
+      "native_end_exclusive": "00cd7cb6",
+      "original_abi": "no arguments; EAX real _atexit result; RET",
+      "evidence": "reports/native_hardware_layout_pool_static_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00ce0d40",
+      "name": "destroy_static_native_hardware_layout_pool_00ce0d40",
+      "cpp_symbol": "destroy_static_native_hardware_layout_pool_00ce0d40",
+      "source": "src/native_hardware_layout_pool_static.cpp",
+      "native_end_exclusive": "00ce0d4a",
+      "original_abi": "no arguments; ECX=108FE9C; tailcall B60270",
+      "evidence": "reports/native_hardware_layout_pool_static_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_POOL_STATIC.md",
+    "bytes": 6548,
+    "sha256": "608cd1870e67345ca5c3d434a4aa45cd23293a7f7b780bdbcf4bd167d29f96d3"
+  },
+  "worker_integration_remaining_before_primary_closure": [
+    "primary shared CMake registration",
+    "primary address/name/reconstruction ledger records",
+    "primary Ghidra create exact CD7CA0 body; rename/comment CE0D40 preserving prior plate; save and refresh exports"
+  ],
+  "integration_remaining": []
+}
