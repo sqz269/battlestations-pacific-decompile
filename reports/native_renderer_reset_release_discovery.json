@@ -1,0 +1,1752 @@
+{
+  "packet": "native_renderer_reset_release_discovery",
+  "status": "read_only_discovery_complete_general_release_not_source_ready",
+  "base_commit": "2ec1234cf9c5dddd5fcd7a928d0786e2d6abe590",
+  "owned_addresses": [
+    "00b241c0",
+    "00b262c0"
+  ],
+  "owned_files": [
+    "docs/NATIVE_RENDERER_RESET_RELEASE_DISCOVERY.md",
+    "reports/native_renderer_reset_release_discovery.json"
+  ],
+  "source_implemented": false,
+  "evidence": {
+    "utc": "2026-09-11T20:18:55.413563+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query verifies bsp.gpr and /battlestationspacific.exe target/language/base; fresh spans compared to untouched original PE. No Ghidra/game mutation.",
+    "spans": [
+      {
+        "address": "00b241c0",
+        "length": 664,
+        "role": "complete_owned_general_binding_cache_clear",
+        "bytes_hex": "53558b2d2022ce0056578bf98b3733db3bf374148d460450ffd585c075088b168b028bceffd0891f8b77043bf374158d4e0451ffd585c075088b168b028bceffd0895f048b77083bf374158d4e0451ffd585c075088b168b028bceffd0895f0868d20000008d470c5350e8c1370d00899f38170000899f3c1700008bb78017000083c40c3bf374188d4e0451ffd585c075088b168b028bceffd0899f801700008bb7841700003bf374188d4e0451ffd585c075088b168b028bceffd0899f84170000c78788170000ffffffff8db740170000bd040000008b1e33c03bd8741e8d4b0451ff152022ce0085c075088b138b028bcbffd0c7060000000033c089460489460889460c83c61083ed0175c98db7d0040000bd100000008da4240000000033c0898658ffffff89865cffffff898660ffffff898664ffffff898668ffffff89866cffffff898670ffffff898674ffffff888678ffffff8b1e85db741c8d4b0451ff152022ce0085c075088b138b028bcbffd0c7060000000081c6ac00000083ed01759b8d87981100008d55148bff33c989088948048948086689480c83c04883ea0175ea8bb7d418000085f674208d4e0451ff152022ce0085c075088b168b028bceffd0c787d4180000000000000f57c0f30f1187d8180000f30f1187e8180000f30f1187dc180000f30f1187e0180000f30f1187e4180000f30f1187ec180000f30f1187f0180000f30f1187f4180000f30f1187f8180000f30f1187fc180000f30f118700190000f30f118704190000f30f118708190000f30f11870c190000f30f118710190000f30f118714190000f30f118718190000f30f11871c190000f30f118720190000f30f118724190000f30f118728190000f30f11872c190000f30f118730190000f30f1187341900005f5e5d5bc3",
+        "sha256": "7e2cd8817943cddb628ec0e38b6e5747cf5f238f2556f06844f5c950d8e92f65",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 187,
+        "section": ".text"
+      },
+      {
+        "address": "00b262c0",
+        "length": 468,
+        "role": "complete_owned_resource_release",
+        "bytes_hex": "64a1000000006aff6828d1cb00506489250000000083ec08803ddcd6080100568bf1740d89742408e8e3d700008844240480be8b1d000000c744241400000000751f803ddcd6080100c7442414ffffffff0f846d0100008b44240450e95a01000057c6868b1d00000033ffeb038d49008b168b82300100006a00578bceffd083c70183ff147ce9bf040000008d6424008b168b82340100006a006a008bceffd083ef0175eb8b168b823801000057578bceffd08b8e8c19000085c974078b118b423cffd0558dbe7c190000bd040000008b0f85c974078b118b423cffd083c70483ed0175eb33ff39bea41900005d7e1b8b8ea01900008b0cb98b118b4218ffd083c7013bbea41900007ce58bbe001b00008b8e041b00008bd78d048a3bf8741f8b0f8b118b4220ffd08b8e041b00008b96001b000083c7048d048a3bf875e18bbe0c1b00008b8e101b00008bd78d048a3bf8741f8b0f8b118b423cffd08b8e101b00008b960c1b000083c7048d048a3bf875e18b8e7c1a00008b86781a00006bc92c03c83bc15f74148b967c1a00006bd22c8bc803ca83c02c3bc175f98d4e34e85bddffff803ddcd6080100c7442414ffffffff740e8b542404528b4c240ce87cd600008b4c240c5e64890d0000000083c414c3",
+        "sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 142,
+        "section": ".text"
+      },
+      {
+        "address": "00cbd120",
+        "length": 8,
+        "role": "release_unwind_action",
+        "bytes_hex": "8d4dece9e83fe6ff",
+        "sha256": "76b66fac52eeb1c85f690e93283955c3c9dae11ed065f4860deac1df36f3aec6",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 2,
+        "section": ".text"
+      },
+      {
+        "address": "00cbd128",
+        "length": 10,
+        "role": "release_FH3_handler",
+        "bytes_hex": "b81c58df00e9119af3ff",
+        "sha256": "f2388cd197da71a8be821833fa448df00985591e1dbe456df6d51c36b64e7b92",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 2,
+        "section": ".text"
+      },
+      {
+        "address": "00df5814",
+        "length": 8,
+        "role": "release_unwind_map",
+        "bytes_hex": "ffffffff20d1cb00",
+        "sha256": "e6bdbb33f9b667a801511b4ab0205560db00dd71106313bf7a65df0727d9494b",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00df581c",
+        "length": 36,
+        "role": "release_FuncInfo",
+        "bytes_hex": "22059319010000001458df00000000000000000000000000000000000000000001000000",
+        "sha256": "3543bd22731b592833edceed33694fe5c593527dd423e179690a38194da88053",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00b21110",
+        "length": 22,
+        "role": "complete_ready_guard_cleanup",
+        "bytes_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+        "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 7,
+        "section": ".text"
+      },
+      {
+        "address": "00b33ad0",
+        "length": 46,
+        "role": "complete_ready_guard_entry",
+        "bytes_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+        "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 18,
+        "section": ".text"
+      },
+      {
+        "address": "00b33b00",
+        "length": 67,
+        "role": "complete_ready_guard_leave",
+        "bytes_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+        "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 17,
+        "section": ".text"
+      },
+      {
+        "address": "00b24840",
+        "length": 504,
+        "role": "complete_blocked_vertex_binding_dependency_read_only",
+        "bytes_hex": "6aff6818d0cb0064a100000000506489250000000083ec1c803ddcd608010055568be957896c241c740d896c2424e85df20000884424208b4424388b74243cc1e0048d3c288b8f741700003bce8d8774170000c7442430000000008944240c7537803ddcd6080100c7442430ffffffff0f846e0100008b4c2420518b4c2428e83cf200005f5e5d8b4c241c64890d0000000083c428c2080085c9530f849400000085f60f848c0000008b118b422cffd08b168bd88b422c8bceffd08b8f781700008b168be88b4224894c24188bceffd08b88cc0000008b977c1700008b06894c24148954241c8b50288bceffd23bdd753c8b4c2414394c241875323944241c752c8b4c24108d542440e8c2edffff803ddcd6080100c7442434ffffffff0f84c00000008b54242452e9ad0000008b6c24208b4424108b183bde742a85f68930740a8d460450ff151c22ce0085db74168d4b0451ff152022ce0085c075088b138b028bcbffd033d233db33c085f674298b168b422c8bceffd08b16894424408b42248bceffd08b168b98cc0000008b42288bceffd08b542440535089877c170000528b542448899f781700008b8d101a00008b318b86900100005251ffd08385b41b000001803ddcd6080100c7442434ffffffff740e8b4c2424518b4c242ce8ddf000005b8b4c24285f5e5d64890d0000000083c428c20800",
+        "sha256": "4ad1011fcd017a2680c9d11335211300b8a2053aaa30ae00a6c1d30e2df80451",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 154,
+        "section": ".text"
+      },
+      {
+        "address": "00b23710",
+        "length": 59,
+        "role": "complete_blocked_owner_assignment_helper_read_only",
+        "bytes_hex": "8b02568bf1578b3e3bf8742a85c08906740a83c00450ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd05f8bc65ec3",
+        "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 28,
+        "section": ".text"
+      },
+      {
+        "address": "00b4bf10",
+        "length": 32,
+        "role": "logical_vertex_deleting_terminal",
+        "bytes_hex": "568bf1e8b8f6fffff644240801740b56b918fe0801e846d6ffff8bc65ec20400",
+        "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 11,
+        "section": ".text"
+      },
+      {
+        "address": "00b4b5d0",
+        "length": 280,
+        "role": "logical_vertex_destructor_blocked_base",
+        "bytes_hex": "6aff6830f9cb0064a100000000506489250000000083ec0c568bf189742404c7066c1dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce8bb84feff88442408578b46602500f000003d00100000c644241c01753a8b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e8a2fdffffa194d3f80083800c1a0000ff05f419000050ff151022ce00eb068b4e588b51048b0d94d3f8005556e865b2fdff8b7e688b2d2022ce008d470450ffd585c075088b178b028bcfffd08b7e588d4f0451ffd585c05d75088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e83784feff8bcec7442418ffffffffe8386901008b4c24105e64890d0000000083c418c3",
+        "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 81,
+        "section": ".text"
+      },
+      {
+        "address": "00b62010",
+        "length": 135,
+        "role": "logical_vertex_base_current_retained4C_terminal",
+        "bytes_hex": "6aff68a814cc0064a100000000506489250000000051568bf15789742408c706682bd6008b7e4c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7464c000000008b465085c0741050e83f45090083c404c74650000000008bcec7442414ffffffffe86a1007008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 41,
+        "section": ".text"
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "role": "current_profile_zero_reference_invoker",
+        "bytes_hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 7,
+        "section": ".text"
+      },
+      {
+        "address": "00b27a80",
+        "length": 122,
+        "role": "complete_render_state_binder_writer34_candidate",
+        "bytes_hex": "53568b74240c8bd93973347468578b7b343bfe742b85f6897334740a8d460450ff151c22ce0085ff74168d4f0451ff152022ce0085c075088b178b028bcfffd085f6742933ff397e0c7e22eb038d49008b4e088b54f9048d04f98b0052508bcbe87bc9ffff83c7013b7e0c7ce38383941b0000015f5e5bc20400",
+        "sha256": "ca64998725df6108a55d56acd777e85ec268579c6dfc45a4821035acf3c86b8a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 50,
+        "section": ".text"
+      },
+      {
+        "address": "00b27b00",
+        "length": 130,
+        "role": "complete_noninventoried_texture_stage_binder_writer38",
+        "bytes_hex": "55568b74240c8be93975387470578b7d383bfe742b85f6897538740a8d460450ff151c22ce0085ff74168d4f0451ff152022ce0085c075088b178b028bcfffd085f6743133ff397e0c7e2a5333db8bff8b4e088b5419088d04198b4804528b1051528bcde8a7c9ffff83c70183c30c3b7e0c7cdc5b8385981b0000015f5e5dc20400",
+        "sha256": "910f722862a6acb252559d61b693c0593e447bc8b162b5eec3f56f1fe8e33052",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 55,
+        "section": ".text"
+      },
+      {
+        "address": "00b27b90",
+        "length": 130,
+        "role": "complete_sampler_state_binder_writer3C_candidate",
+        "bytes_hex": "55568b74240c8be939753c7470578b7d3c3bfe742b85f689753c740a8d460450ff151c22ce0085ff74168d4f0451ff152022ce0085c075088b178b028bcfffd085f6743133ff397e0c7e2a5333db8bff8b4e088b5419088d04198b4804528b1051528bcde817caffff83c70183c30c3b7e0c7cdc5b83859c1b0000015f5e5dc20400",
+        "sha256": "11e0c9871d9c35ef2a25adfe65c970452f8fe02d79b2b7e6cd987fb880558b54",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 55,
+        "section": ".text"
+      },
+      {
+        "address": "00b43422",
+        "length": 26,
+        "role": "positive_pass18_and20_to_render_and_sampler_binders",
+        "bytes_hex": "8b4618578b7d04508bcbe84f46feff8b4e20518bcbe85447feff",
+        "sha256": "f1a9416d9610677e3b4abd886f653525dd04d68fffb37d7501e141fb563f5842",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 10,
+        "section": ".text"
+      },
+      {
+        "address": "00b5f793",
+        "length": 130,
+        "role": "concrete_material_owner_profiles_and_pass_publications",
+        "bytes_hex": "c70030b1ce00897804c7002c1ad60089580889580c895810eb0233c06a14894618e86270090083c4043bc3741ac70030b1ce00897804c700341ad60089580889580c895810eb0233c06a14894620e83570090083c4043bc3741ac70030b1ce00897804c7003c1ad60089580889580c895810eb0233c00f57c0f30f1144241089461c",
+        "sha256": "5ea85995aa93240b468ccc756795df45f2dcf2aa2463ea1b834396844fdd054a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 39,
+        "section": ".text"
+      },
+      {
+        "address": "00b420c0",
+        "length": 124,
+        "role": "full_ready_render_state_destructor_including_hidden_tail",
+        "bytes_hex": "6aff68b8f0cb0064a10000000050648925000000005156578bf9897c2408837f10008d7708c7442414000000007d096a008bcee8c8e9ffff837e04007e0c8bff834604ff837e04007ff6c74604000000008b3656e870480b0083c4048bcfc7442414ffffffffe8c50f09008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "6284b0a8868c9feb92eaa0d401f5d271bb44b2922c42b4d66488adf02be7b6e1",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 37,
+        "section": ".text"
+      },
+      {
+        "address": "00b42140",
+        "length": 124,
+        "role": "full_ready_sampler_state_destructor_including_hidden_tail",
+        "bytes_hex": "6aff68d8f0cb0064a10000000050648925000000005156578bf9897c2408837f10008d7708c7442414000000007d096a008bcee868eaffff837e04007e0c8bff834604ff837e04007ff6c74604000000008b3656e8f0470b0083c4048bcfc7442414ffffffffe8450f09008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "e0bdf9b80347baeaf2a1e9125269ea7f71906a99a1c8e4ff49aebaaa6faa119f",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 37,
+        "section": ".text"
+      },
+      {
+        "address": "00b421c0",
+        "length": 124,
+        "role": "full_ready_third_state_destructor_including_hidden_tail",
+        "bytes_hex": "6aff68f8f0cb0064a10000000050648925000000005156578bf9897c2408837f10008d7708c7442414000000007d096a008bcee848e9ffff837e04007e0c8bff834604ff837e04007ff6c74604000000008b3656e870470b0083c4048bcfc7442414ffffffffe8c50e09008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "92948979a0eb783b0f725f593e13ba6ab88db88a514ddf97ec295d844d36d617",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 37,
+        "section": ".text"
+      },
+      {
+        "address": "00b422f0",
+        "length": 30,
+        "role": "full_ready_render_state_deleting_wrapper",
+        "bytes_hex": "568bf1e8c8fdfffff644240801740956e8a7420b0083c4048bc65ec20400",
+        "sha256": "c9059e22b05ad1b9c4da16f614c407c65bc94d91cc1b1c6dc1dfb0e42320b9ec",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 11,
+        "section": ".text"
+      },
+      {
+        "address": "00b42310",
+        "length": 30,
+        "role": "full_ready_sampler_state_deleting_wrapper",
+        "bytes_hex": "568bf1e828fefffff644240801740956e887420b0083c4048bc65ec20400",
+        "sha256": "cd8dc2716b6c940da10d62750c94e0f094e52707f8cd64baab67f8fa9ce5d6d4",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 11,
+        "section": ".text"
+      },
+      {
+        "address": "00b42330",
+        "length": 30,
+        "role": "full_ready_third_state_deleting_wrapper",
+        "bytes_hex": "568bf1e888fefffff644240801740956e867420b0083c4048bc65ec20400",
+        "sha256": "6392d1ba294b5a95922bb946238652a4271f4c8a9e1eb55cf3bf97ded77bee6e",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 11,
+        "section": ".text"
+      },
+      {
+        "address": "00b3dd30",
+        "length": 86,
+        "role": "full_ready_texture_2D_reset_provider",
+        "bytes_hex": "56578bf133ff397e447e1beb038d49008b46408b4cf8048b118b423cffd083c7013b7e447cea8b7e1085ff74108b0f8b510457ffd28b078b480857ffd18b461085c0740f8b10508b4208ffd0c74610000000005f5ec3",
+        "sha256": "79b651f7ffa1321bc2e2a1652f0d397b58b9a77a9a9d4f35add970d4521815e2",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 38,
+        "section": ".text"
+      },
+      {
+        "address": "00b33f10",
+        "length": 1,
+        "role": "full_ready_cube_volume_reset_noop",
+        "bytes_hex": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 1,
+        "section": ".text"
+      },
+      {
+        "address": "00b3d510",
+        "length": 52,
+        "role": "full_ready_surface_reset_provider",
+        "bytes_hex": "568bf1578b7e2c85ff74108b078b480457ffd18b178b420857ffd08b462c85c0740f8b088b510850ffd2c7462c000000005f5ec3",
+        "sha256": "8a7cb88d5e952ed1cd7878fab4dcfcc9b1ef97658f9b4ef66bafc2b956439b2c",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 25,
+        "section": ".text"
+      },
+      {
+        "address": "00b5fe20",
+        "length": 27,
+        "role": "full_ready_query_reset_provider",
+        "bytes_hex": "568bf18b461085c0740f8b088b510850ffd2c74610000000005ec3",
+        "sha256": "9c45583ceed898e5c04ef5b8a6a7100afb71a45a97fc601bd4e1e7751f315ef2",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 12,
+        "section": ".text"
+      },
+      {
+        "address": "00b296de",
+        "length": 21,
+        "role": "recreation_parent_release_sequence",
+        "bytes_hex": "8bcee80bb5ffff8bcee8e4a0ffff8bcee8cdcbffff",
+        "sha256": "634f2248a35bc2f4dba590ff10cfd35d5788430738bfc5119b25a9afcc123562",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 6,
+        "section": ".text"
+      },
+      {
+        "address": "00b2ad35",
+        "length": 14,
+        "role": "reset_processor_release_sequence",
+        "bytes_hex": "8bcee8948affff8bcee87db5ffff",
+        "sha256": "b57860c8491331a6923488843e17569bc10279289de4f65ebbc13dd22dac09a4",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 4,
+        "section": ".text"
+      },
+      {
+        "address": "00d5f1d8",
+        "length": 12,
+        "role": "actual_renderer_current130_134_138_selectors",
+        "bytes_hex": "1047b2004048b200004bb200",
+        "sha256": "d1d488699a057e9905ed7ccb8dab9df561ea84f6ec6fd631ca531ff8b86d2320",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61a2c",
+        "length": 24,
+        "role": "three_material_state_terminal_profiles",
+        "bytes_hex": "e030bd00f022b400e030bd001023b400e030bd003023b400",
+        "sha256": "ea0cff40b28c4ceac32f7bf0dbe6f92d507870deef9b3be13bc2f49347301813",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61d6c",
+        "length": 52,
+        "role": "logical_vertex_profile_through30",
+        "bytes_hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d62b68",
+        "length": 8,
+        "role": "logical_vertex_base_profile_first_two_words",
+        "bytes_hex": "e030bd00a020b600",
+        "sha256": "bb803e174d4ec1f390be2dc4d7683aef8c3c9e19e4ecf6746994b220157757a1",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61de0",
+        "length": 44,
+        "role": "logical_index_profile_through28",
+        "bytes_hex": "e030bd00f0c1b400d08db400609bb400709cb4008094b400808db400908db400a08db400b08db400c08db400",
+        "sha256": "94759e67f346471cd1dace5cc8e7e77b1d0736d4abc62c6fe220387ac398b8ec",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d62af4",
+        "length": 12,
+        "role": "hardware_layout_profile_terminal_and_getter",
+        "bytes_hex": "e030bd007007b60000ffb500",
+        "sha256": "9de1be15d202d1eaf11f78ef55501c98426ca679b0acb46d3cee8a63b310c4a9",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d5e600",
+        "length": 8,
+        "role": "frame_target_group_terminal_profile",
+        "bytes_hex": "e030bd00f0fcb100",
+        "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61948",
+        "length": 40,
+        "role": "texture2D_terminal_getter_reset_restore_profile",
+        "bytes_hex": "e030bd0090f5b30090fab30030ceb30040ceb300803eb300903eb300a0ceb30030ddb30090ddb300",
+        "sha256": "cef4028cda212e93b505419639808ea1c5e0f4177a10ce2ef7d4421db247d56d",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61870",
+        "length": 40,
+        "role": "cube_terminal_getter_reset_restore_profile",
+        "bytes_hex": "e030bd0010f4b30040dfb3005022a80060cfb300803eb300903eb30090cfb300103fb300203fb300",
+        "sha256": "fe465d36c788ed0f1d0f6df19161a008ae99b142c9a4c31ab9405d6df12de184",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d618b0",
+        "length": 40,
+        "role": "volume_terminal_getter_reset_restore_profile",
+        "bytes_hex": "e030bd0030f4b30080e0b3005022a80080d0b300803eb300903eb300c0d0b300103fb300203fb300",
+        "sha256": "ae2296999e340f76a6e0cd6913af54df71b1e2f0d2ca9861a8404e2d4b4ae93d",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d619a0",
+        "length": 68,
+        "role": "surface_terminal_reset_restore_profile",
+        "bytes_hex": "e030bd00b0f5b300f0fabe005022a800f0ccb30080ccb30000cdb30010cdb30020cdb30030cdb30000d5b30040cdb30060cdb30000ddb30070cdb30010d5b30050d5b300",
+        "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d62ad0",
+        "length": 32,
+        "role": "query_profile_release18_restore1C",
+        "bytes_hex": "e030bd0040feb50030fcb50060fcb500a0fcb500e0fcb50020feb50060feb500",
+        "sha256": "a30b2ff83902dc151ecf13b91fde3cc5ea8af297cd98a50488e62891c2ef24ad",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61d1c",
+        "length": 8,
+        "role": "CPU_declaration_terminal_profile",
+        "bytes_hex": "e030bd00a08cb400",
+        "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61e10",
+        "length": 8,
+        "role": "private_index_terminal_profile",
+        "bytes_hex": "e030bd0020bbb400",
+        "sha256": "9347de177bd16c7986cdc9a1768cdad0accd752130cbdecce21eba1fcb627b97",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61e34",
+        "length": 8,
+        "role": "private_vertex_terminal_profile",
+        "bytes_hex": "e030bd0040bbb400",
+        "sha256": "4c3aca5ca6d4601898bf06dfd1503833a5e27b4df9ffd642b6f3ac7dde43f865",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61e58",
+        "length": 8,
+        "role": "pooled_index_terminal_profile",
+        "bytes_hex": "e030bd0010c2b400",
+        "sha256": "b2401aed9d15fb5385bf05f04fe25b92b2eec277f392f1ea41cdf6c6776c1200",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00d61e7c",
+        "length": 8,
+        "role": "pooled_vertex_terminal_profile",
+        "bytes_hex": "e030bd0030c2b400",
+        "sha256": "aed4f4e458012ea7e9987eef53501e32a5bf375522837b3dbb6f10297864ad09",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00ce2210",
+        "length": 20,
+        "role": "actual_leave_enter_increment_decrement_import_slots",
+        "bytes_hex": "8856a000a056a000b856a000d056a000e856a000",
+        "sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      }
+    ],
+    "imports": [
+      {
+        "address": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      {
+        "address": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      },
+      {
+        "address": "00ce221c",
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedIncrement"
+      },
+      {
+        "address": "00ce2220",
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedDecrement"
+      }
+    ]
+  },
+  "counts": {
+    "fresh_spans": 50,
+    "fresh_bytes": 3994,
+    "decoded_instructions": 1136,
+    "owned_complete_bytes": 1132,
+    "source_header_pins": 105
+  },
+  "root_contracts": {
+    "00b241c0": {
+      "start": "00b241c0",
+      "end_exclusive": "00b24458",
+      "length": 664,
+      "original_abi": "ECX actual cache subobject(renderer+34), plainRET, no semantic result, no native EH",
+      "minimum_cache_prefix": "1938h",
+      "reference_schedule": "Capture each pointer once. Null skips slot clear. Nonnull real InterlockedDecrement(captured+4); zero then loads current captured profile/slot0 and invokes with ECX captured, no stack flags. Clear ACTUAL original cell only after terminal returns. A callback replacement of the cell is overwritten by that later clear; no reread/retry/retain of replacement.",
+      "failure": "No native noexcept, unwind cleanup or rollback. Terminal failure leaves current cell uncleared and stops all later resets; earlier changes survive. Do not force throwing raw material owners through noexcept companion dispatch.",
+      "interlocked_import_schedule": "CE2220 target captured in EBP once for first3 and layout/index; stream, bank, target releases reread IAT per call.",
+      "26_owner_cells_in_order": [
+        {
+          "execution_index": 0,
+          "cache_offset": "0000",
+          "renderer_offset": "0034",
+          "kind": "render-state block",
+          "admitted_current_profiles": [
+            "00d61a2c"
+          ],
+          "terminal_chain": "current slot0 BD30E0 -> current slot4 B422F0(flags1) -> fullB420C0 -> shared scalar heap free",
+          "closure": "complete existing raw owner providers under documented valid-extent/new-ABI domain; direct raw bridge required, not noexcept companion",
+          "writer_evidence": "B5F79C profile then pass18 publication B5F7B1; B43422/B4342C forwards pass18 to B27A80; B27A97 publishes renderer34"
+        },
+        {
+          "execution_index": 1,
+          "cache_offset": "0004",
+          "renderer_offset": "0038",
+          "kind": "block applying texture stage states; actual production owner identity unresolved",
+          "admitted_current_profiles": [],
+          "terminal_chain": "captured owner+4 decrement -> current slot0; actual nonnull profile unresolved",
+          "closure": "B27B00 proves12-byte texture-stage rows, not a production D61A3C owner binding",
+          "writer_evidence": "Full noninventoried B27B00 publishes renderer38 atB27B17 and calls fullB24510 atB27B64; no live Ghidra refs and no literal DWORD pointer refs. D61A3C is positively produced at pass1C but no pass1C->B27B00 chain is established."
+        },
+        {
+          "execution_index": 2,
+          "cache_offset": "0008",
+          "renderer_offset": "003c",
+          "kind": "sampler-state block",
+          "admitted_current_profiles": [
+            "00d61a34"
+          ],
+          "terminal_chain": "current slot0 BD30E0 -> current slot4 B42310(flags1) -> fullB42140 -> shared scalar heap free",
+          "closure": "complete existing raw owner providers under documented valid-extent/new-ABI domain; direct raw bridge required, not noexcept companion",
+          "writer_evidence": "B5F7C9 profile then pass20 publication B5F7DE; B43431/B43437 forwards pass20 to B27B90; B27BA7 publishes renderer3C"
+        },
+        {
+          "execution_index": 3,
+          "cache_offset": "1780",
+          "renderer_offset": "17b4",
+          "kind": "hardware vertex layout",
+          "admitted_current_profiles": [
+            "00d62af4"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B60770 -> B60700 -> B48960/records/declarations/tree -> actual0108FE9C pool",
+          "closure": "complete existing actual context for D62AF4; CPU declaration D61D1C->B48CA0 also complete",
+          "writer_evidence": "Full raw B23F20 publishes renderer17B4"
+        },
+        {
+          "execution_index": 4,
+          "cache_offset": "1784",
+          "renderer_offset": "17b8",
+          "kind": "logical index stream",
+          "admitted_current_profiles": [
+            "00d61de0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B4C1F0 -> B4B6F0 -> current physical D61E10/B4BB20 or D61E58/B4C210 -> actual0108FE50 pool",
+          "closure": "complete existing logical/physical owner context",
+          "writer_evidence": "Full raw B24B00 publishes renderer17B8"
+        },
+        {
+          "execution_index": 5,
+          "cache_offset": "1740",
+          "renderer_offset": "1774",
+          "kind": "logical vertex stream0",
+          "admitted_current_profiles": [
+            "00d61d6c"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B4BF10(flags1) -> B4B5D0 -> B62010 current retained4C -> unresolved pointee terminal; only after successful destruction B49570 pool return",
+          "closure": "blocked by nonnull retained4C writer/profile/terminal/allocation; null/reset call is not a lifetime proof",
+          "writer_evidence": "B24840 uses renderer1774+DWORD(index<<4); full reset calls B24840 four times with index0, never indices1..3"
+        },
+        {
+          "execution_index": 6,
+          "cache_offset": "1750",
+          "renderer_offset": "1784",
+          "kind": "logical vertex stream1",
+          "admitted_current_profiles": [
+            "00d61d6c"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B4BF10(flags1) -> B4B5D0 -> B62010 current retained4C -> unresolved pointee terminal; only after successful destruction B49570 pool return",
+          "closure": "blocked by nonnull retained4C writer/profile/terminal/allocation; null/reset call is not a lifetime proof",
+          "writer_evidence": "B24840 uses renderer1774+DWORD(index<<4); full reset calls B24840 four times with index0, never indices1..3"
+        },
+        {
+          "execution_index": 7,
+          "cache_offset": "1760",
+          "renderer_offset": "1794",
+          "kind": "logical vertex stream2",
+          "admitted_current_profiles": [
+            "00d61d6c"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B4BF10(flags1) -> B4B5D0 -> B62010 current retained4C -> unresolved pointee terminal; only after successful destruction B49570 pool return",
+          "closure": "blocked by nonnull retained4C writer/profile/terminal/allocation; null/reset call is not a lifetime proof",
+          "writer_evidence": "B24840 uses renderer1774+DWORD(index<<4); full reset calls B24840 four times with index0, never indices1..3"
+        },
+        {
+          "execution_index": 8,
+          "cache_offset": "1770",
+          "renderer_offset": "17a4",
+          "kind": "logical vertex stream3",
+          "admitted_current_profiles": [
+            "00d61d6c"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B4BF10(flags1) -> B4B5D0 -> B62010 current retained4C -> unresolved pointee terminal; only after successful destruction B49570 pool return",
+          "closure": "blocked by nonnull retained4C writer/profile/terminal/allocation; null/reset call is not a lifetime proof",
+          "writer_evidence": "B24840 uses renderer1774+DWORD(index<<4); full reset calls B24840 four times with index0, never indices1..3"
+        },
+        {
+          "execution_index": 9,
+          "cache_offset": "04d0",
+          "renderer_offset": "0504",
+          "kind": "logical texture bank0",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 10,
+          "cache_offset": "057c",
+          "renderer_offset": "05b0",
+          "kind": "logical texture bank1",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 11,
+          "cache_offset": "0628",
+          "renderer_offset": "065c",
+          "kind": "logical texture bank2",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 12,
+          "cache_offset": "06d4",
+          "renderer_offset": "0708",
+          "kind": "logical texture bank3",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 13,
+          "cache_offset": "0780",
+          "renderer_offset": "07b4",
+          "kind": "logical texture bank4",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 14,
+          "cache_offset": "082c",
+          "renderer_offset": "0860",
+          "kind": "logical texture bank5",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 15,
+          "cache_offset": "08d8",
+          "renderer_offset": "090c",
+          "kind": "logical texture bank6",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 16,
+          "cache_offset": "0984",
+          "renderer_offset": "09b8",
+          "kind": "logical texture bank7",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 17,
+          "cache_offset": "0a30",
+          "renderer_offset": "0a64",
+          "kind": "logical texture bank8",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 18,
+          "cache_offset": "0adc",
+          "renderer_offset": "0b10",
+          "kind": "logical texture bank9",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 19,
+          "cache_offset": "0b88",
+          "renderer_offset": "0bbc",
+          "kind": "logical texture bank10",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 20,
+          "cache_offset": "0c34",
+          "renderer_offset": "0c68",
+          "kind": "logical texture bank11",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 21,
+          "cache_offset": "0ce0",
+          "renderer_offset": "0d14",
+          "kind": "logical texture bank12",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 22,
+          "cache_offset": "0d8c",
+          "renderer_offset": "0dc0",
+          "kind": "logical texture bank13",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 23,
+          "cache_offset": "0e38",
+          "renderer_offset": "0e6c",
+          "kind": "logical texture bank14",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 24,
+          "cache_offset": "0ee4",
+          "renderer_offset": "0f18",
+          "kind": "logical texture bank15",
+          "admitted_current_profiles": [
+            "00d61948",
+            "00d61870",
+            "00d618b0"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B3F590(2D)/B3F410(cube)/B3F430(volume) -> full concrete owner/provider/pool chain",
+          "closure": "complete existing actual texture binding/owner contexts for these three profiles",
+          "writer_evidence": "Full raw B24710 publishes renderer504+DWORD(sampler*AC); reset invokes20 sampler indices, general cache clear visits only first16 owner cells"
+        },
+        {
+          "execution_index": 25,
+          "cache_offset": "18d4",
+          "renderer_offset": "1908",
+          "kind": "frame-target group",
+          "admitted_current_profiles": [
+            "00d5e600"
+          ],
+          "terminal_chain": "BD30E0 -> current+4 B1FCF0 -> B1FC00 -> surface D619A0/B3F5B0, vector disposal and shared scalar free",
+          "closure": "complete existing actual group and surface contexts",
+          "writer_evidence": "Full raw B24E70 publishes renderer1908"
+        }
+      ],
+      "clears": [
+        "After first3 releases, memset(cache+C,0,D2) clears210 validity bytes; values/padding retained.",
+        "Zero cache1738 and173C borrowed pixel/vertex shader identities; these are NOT intrusive owner cells.",
+        "Release layout1780 and index1784; publish base-vertex cache1788=FFFFFFFF.",
+        "Four stream records1740+i*10: release then zero04/08/0C.",
+        "Sixteen ACh banks: before owner release, zero eightDWORDs atowner-A8 throughowner-8C and byteowner-88; release owner4D0+i*AC. Last4 constructed bank owners untouched.",
+        "Twenty48h records starting1198: zero DWORD0/4/8 and WORD C; preserve remaining fields.",
+        "Release target18D4, then XORPSzero/MOVSS24 scalar words in exact native order:18D8,18E8,18DC,18E0,18E4,18EC through1934."
+      ],
+      "preserves": [
+        "gamma1938",
+        "plane set178C..18CF",
+        "18D0",
+        "extra four texture owner cellsF90/103C/10E8/1194",
+        "unwritten padding/value fields"
+      ],
+      "existing_fragment": "Only private all-null constructor slice in native_render_cache_construction; no general release, no null-only replacement proposed"
+    },
+    "00b262c0": {
+      "start": "00b262c0",
+      "end_exclusive": "00b26494",
+      "length": 468,
+      "original_abi": "ECX actual renderer, plainRET, no semantic result",
+      "normal_schedule": [
+        "Optional mutable mode0108D6DC checked before saved-guard writes/entry. Entry returnsAL stored only to guard byte.",
+        "CMP current ready1D8B atB262F1 occurs BEFORE EHstate0 arm atB262F8. Readyfalse still arms then disarms/leaves; no resource/cache access.",
+        "Readytrue publishes ready0 before first virtual call.",
+        "20 calls current renderer+130 with stack(index0..19,null); four calls current+134 all stack(0,0); one current+138 with both EDI zero arguments. Current renderer profile/table is reloaded for each call.",
+        "Current depth198C then current fourcolors197C..1988, null-tested individually, current owner profile+3C; owner pointers not cleared.",
+        "Query list19A0/19A4: initial signedcount>0; current base and current indexed owner each iteration, current slot18; signed live count after callback.",
+        "Texture list1B00/1B04: capture raw cursor; initial end computed once; current owner slot20. After callback reload count FIRST then base; increment old cursor4 then compare to new wrappedend. No stable snapshot, index conversion or null repair.",
+        "Surface list1B0C/1B10: same raw-cursor schedule and count-before-base reload; current owner slot3C.",
+        "2Ch records1A78/1A7C: read count then base for initial end; after nonempty check reread count ONCE and capture final end; raw arithmetic-only loop with no callback or record read/write.",
+        "Call full general B241C0 with renderer+34.",
+        "Normal paths read CURRENT mode before setting stateFFFFFFFF; if enabled push saved fullDWORD (only originalAL byte initialized), reload saved renderer, fullB33B00. No automatic readiness rollback."
+      ],
+      "EH": {
+        "handler": "CBD128[10] loads FuncInfoDF581C then jumpsBF6B43",
+        "FuncInfo_words": [
+          "19930522",
+          "00000001",
+          "00df5814",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "unwind_map": "DF5814: state-1/actionCBD120",
+        "action": "CBD120[8]: LEA ECX,[EBP-14]; JMP B21110",
+        "cleanup": "Full B21110 first reads current mode; if enabled zero-extends guard byte then reads saved renderer and calls fullB33B00. Skipped entry leaves guard bytes uninitialized; no repair when mode later enables.",
+        "timing": "Guard entry and ready-byte CMP precede state0 arming. Normal mode read precedes disarm; normal leave is disarmed, so its exception is not retried by this frame."
+      },
+      "known_renderer_profile": "D5F0A8 +130 B24710(rawcomplete), +134 B24840(onlysemantic/blockedinrawdomain), +138 B24B00(rawcomplete)"
+    }
+  },
+  "reached_release_profiles": [
+    {
+      "role": "depth/fourcolors/registered surfaces",
+      "profile": "D619A0",
+      "slot": "3C",
+      "target": "B3D510",
+      "status": "completeactualsource; capturedCOMAddRef/Release then rereadCOMRelease andclear"
+    },
+    {
+      "role": "queries",
+      "profile": "D62AD0",
+      "slot": "18",
+      "target": "B5FE20",
+      "status": "completeactualsource; nonnullCOM+10 Releaseonce thenclear"
+    },
+    {
+      "role": "registered2Dtextures",
+      "profile": "D61948",
+      "slot": "20",
+      "target": "B3DD30",
+      "status": "completeactualsource; nested current surface profiles and completeB3D510"
+    },
+    {
+      "role": "registeredcube/volume",
+      "profile": [
+        "D61870",
+        "D618B0"
+      ],
+      "slot": "20",
+      "target": "B33F10",
+      "status": "completegenuine one-byteRET; no synthetic no-op"
+    }
+  ],
+  "current_ready_dependencies": {
+    "already_full_raw_not_new_work": [
+      "B237D0 release dynamic buffers",
+      "B23B10 restore resources",
+      "B1FD90 restore dynamic buffers",
+      "B24710 bind texture",
+      "B24B00 bind index",
+      "B23F20 bind hardware layout",
+      "B24E70 frame-target group",
+      "B3D510/B3DD30/B33F10/B5FE20 resetproviders",
+      "B33AD0/B33B00/B21110 actualguards",
+      "B4B3F0/B268E0 removal",
+      "B48CA0 declarationowner",
+      "private/pooled physicalbufferowners",
+      "B49570 logicalvertexpoolreturn",
+      "B20DC0 hardwaretreeiterator",
+      "B60A10 hardwarecreate"
+    ],
+    "shader_boundary": "B241C0 only zeros borrowed PS176C/VS1770 cells; neither intrusive shader owner nor shader terminal is reached. Semantic B21C20/B21D10 bindings remain separate; complete raw shader device-save/restore providers already exist in B29670 graph."
+  },
+  "unresolved": {
+    "general_cache_clear": "Four D61D6C stream owners can reach fullB62010 nonnull retained4C, still unbound; renderer38 production profile also not positively closed.",
+    "general_resource_release": "Current+134 must call fullB24840; null incoming does not avoid old logical stream terminal. Four calls allindex0 do not establish null stream1..3. Final B241C0 is general, not constructor all-null domain.",
+    "retained_chain": "D61D6C[0]=BD30E0 -> rereadcurrent[4]=B4BF10 -> B4B5D0 -> B62010 captures+4C, decrements pointee+4, calls CURRENT slot0 onzero, clears4C onlyafterreturn; raw+50 free is separate.",
+    "unknown_contract_fields": [
+      "positive nonnull+4C writer",
+      "actual pointee allocation/producer",
+      "current profile and slot0/slot4 terminal",
+      "owning allocation/free domain",
+      "terminal EH/lifetime and escaped aliases"
+    ],
+    "prior_negative_limit": "Prior498 heuristic candidates,31 prioritized/excluded and later12 contained writes are bounded evidence only. No prior exclusions or broad+4C scan repeated in this task. Never substitute available retained-memory classes without writer/profile identity."
+  },
+  "proposed_source_packet": {
+    "id": "native_renderer_material_state_binding2",
+    "addresses": [
+      "00b27a80",
+      "00b27b90"
+    ],
+    "full_lengths": [
+      122,
+      130
+    ],
+    "total_bytes": 252,
+    "files": [
+      "include/bsp/native_renderer_material_state_binding.hpp",
+      "src/native_renderer_material_state_binding.cpp",
+      "docs/NATIVE_RENDERER_MATERIAL_STATE_BINDING.md",
+      "reports/native_renderer_material_state_binding_audit.json"
+    ],
+    "readiness": "Ready bounded cache-writer packet within concrete original material-owner/valid-extent domain; does NOT close B241C0/B262C0. Not implemented or leased in this task.",
+    "original_abi": "Each ECX renderer, stacked incomingactual14h owner, RET4; no ownEH/outerguard.",
+    "new_interface": "Explicit rawrenderer/incoming actualowner plus fixed context borrowing actualsyncglobals and two-word current render/sampler profiles. No renderer ownership, companion callback, generic virtual framework or semantic vector.",
+    "positive_identity": "Pass18 D61A2C throughB4342C -> B27A80/renderer34; pass20 D61A34 throughB43437 -> B27B90/renderer3C. Original allocation14h and concrete profile publication captured.",
+    "providers": [
+      "full existing B422F0/B420C0 and B42310/B42140 with actualsharedheap, valid extents and full exceptional basecleanup",
+      "current-profile BD30E0 schedule with flag1, no noexcept companion",
+      "full actualB24460/B24610 and synchronization providers"
+    ],
+    "schedule": "Outer identity skip. Rereadold; publish new before InterlockedIncrement(new+4), then decrement capturedold and currentterminal onzero. Retain original incoming acrosscallbacks; signed current rowcount and current rowbase reload per iteration. Render rows read value thenstate; sampler rows value,state,slot. Final current counter1B94/1B9C wrappedincrement onlyafterreturn, includingnullreplacement.",
+    "withheld": "B27B00 full130 bytes proves texture-stage binder mechanics but no positive production D61A3C binding or caller. Do not infer its profile or rename current project in this pass."
+  },
+  "next_finite_discovery": {
+    "primary_blocker": "Resume nonnull logical retained4C writer-to-owner chain with an explicitly leased next batch of at most12 genuinely decoded, contained non-stack writes/copies from the existing frozen498candidate input, excluding all prior31 and12 identified exclusions; stop at12 and report exact object identity/producer escapes. This is a future proposal, not an additional scan here.",
+    "alternative_profile_gap": "For B27B00, a separate bounded pass can resolve actual E8/E9 references and adjusted aliases to the renderer38 writer, then trace at most6 concrete callers to actual input owner profile; no caller or lifetime is inferred from current negative xrefs."
+  },
+  "source_and_header_pins": [
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/allocator_list.hpp"
+    },
+    {
+      "path": "include/bsp/camera_frame_state.hpp",
+      "bytes": 8365,
+      "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/camera_frame_state.hpp"
+    },
+    {
+      "path": "include/bsp/camera_plane_initialization.hpp",
+      "bytes": 776,
+      "sha256": "0785c22154db5d197ce3102d849ad1301700f851892ddab1cc06f3677172a3d3",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/camera_plane_initialization.hpp"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/camera_projection.hpp"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/camera_transform.hpp"
+    },
+    {
+      "path": "include/bsp/d3d9_buffers.hpp",
+      "bytes": 3262,
+      "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/d3d9_buffers.hpp"
+    },
+    {
+      "path": "include/bsp/d3d9_startup.hpp",
+      "bytes": 1362,
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/d3d9_startup.hpp"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "bytes": 15076,
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/d3d9_states.hpp"
+    },
+    {
+      "path": "include/bsp/d3d9_surface_pool.hpp",
+      "bytes": 3168,
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/d3d9_surface_pool.hpp"
+    },
+    {
+      "path": "include/bsp/d3d9_texture2d_pool.hpp",
+      "bytes": 3214,
+      "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/d3d9_texture2d_pool.hpp"
+    },
+    {
+      "path": "include/bsp/d3d9_vertex_layout.hpp",
+      "bytes": 1257,
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/d3d9_vertex_layout.hpp"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/frame_clock.hpp"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/game_entry.hpp"
+    },
+    {
+      "path": "include/bsp/instance_grouping.hpp",
+      "bytes": 4008,
+      "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/instance_grouping.hpp"
+    },
+    {
+      "path": "include/bsp/instance_sort.hpp",
+      "bytes": 4479,
+      "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/instance_sort.hpp"
+    },
+    {
+      "path": "include/bsp/instance_upload.hpp",
+      "bytes": 6532,
+      "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/instance_upload.hpp"
+    },
+    {
+      "path": "include/bsp/material_sort_metadata.hpp",
+      "bytes": 3332,
+      "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/material_sort_metadata.hpp"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_base.hpp",
+      "bytes": 1382,
+      "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_cube_texture_base.hpp"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "bytes": 2750,
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_cube_texture_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "bytes": 2175,
+      "sha256": "20916e98d5097ba8f413a67cf603dc7089f69849f09b9db5f8ab11a408957ec8",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_cube_texture_pool_allocate.hpp"
+    },
+    {
+      "path": "include/bsp/native_dynamic_buffer_device_release.hpp",
+      "bytes": 637,
+      "sha256": "babfdf147351f9157c834933c1f0c4b25b747f98c96350da8b13cfcb5070dba1",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_dynamic_buffer_device_release.hpp"
+    },
+    {
+      "path": "include/bsp/native_frame_target_getters.hpp",
+      "bytes": 916,
+      "sha256": "c1a1db7c1693baa64d1440b8b054537ca5bfcad4d444648bd087a8aa5623e77a",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_frame_target_getters.hpp"
+    },
+    {
+      "path": "include/bsp/native_frame_target_owner.hpp",
+      "bytes": 3495,
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_frame_target_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_frame_target_vector.hpp",
+      "bytes": 2285,
+      "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_frame_target_vector.hpp"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_construct.hpp",
+      "bytes": 2237,
+      "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_hardware_layout_construct.hpp"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_create_if_missing.hpp",
+      "bytes": 1574,
+      "sha256": "6d53435f294658743c34d8997e3e3864ea3618e0516c046efa1ef97b9e101697",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_hardware_layout_create_if_missing.hpp"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_fields.hpp",
+      "bytes": 1855,
+      "sha256": "11a8ce32277f04e322d95d12e5b047dfd783be33d47769136b7a339635534472",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_hardware_layout_fields.hpp"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "bytes": 3673,
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_hardware_layout_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "bytes": 3491,
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_hardware_layout_tree.hpp"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_legacy_exception_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_legacy_sbo_string.hpp"
+    },
+    {
+      "path": "include/bsp/native_logical_index_owner.hpp",
+      "bytes": 2661,
+      "sha256": "0daa4671a276d7f523c1122478ce9b88923cec31486ef736bde14980eb484f17",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_logical_index_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_logical_texture_named_base.hpp",
+      "bytes": 2598,
+      "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_logical_texture_named_base.hpp"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_pool_return.hpp",
+      "bytes": 1111,
+      "sha256": "ecd38c30ea9df37e3720f4484abbe1973bfd50d8fade17fe360164678a671c5d",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_logical_vertex_pool_return.hpp"
+    },
+    {
+      "path": "include/bsp/native_material_pass_base.hpp",
+      "bytes": 5388,
+      "sha256": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_material_pass_base.hpp"
+    },
+    {
+      "path": "include/bsp/native_material_pass_states.hpp",
+      "bytes": 5387,
+      "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_material_pass_states.hpp"
+    },
+    {
+      "path": "include/bsp/native_occlusion_query_device_reset.hpp",
+      "bytes": 731,
+      "sha256": "c701d1b86601ed377485629c416cea31621609fabfe23c762e6b6b4e56c16d52",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_occlusion_query_device_reset.hpp"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_physical_buffer_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_render_buffer_unregistration.hpp",
+      "bytes": 2244,
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_render_buffer_unregistration.hpp"
+    },
+    {
+      "path": "include/bsp/native_render_cache_construction.hpp",
+      "bytes": 1678,
+      "sha256": "1f06df1915de85f8ff6b112179338bcdad2882d3ab3e8049b8301f10c47d303c",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_render_cache_construction.hpp"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_render_context.hpp"
+    },
+    {
+      "path": "include/bsp/native_render_resource_container_removal.hpp",
+      "bytes": 2076,
+      "sha256": "14ca26673033211047f0796e3a387b2f8773cc99b13c886a63889839e3bf6e6c",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_render_resource_container_removal.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_binding_getters.hpp",
+      "bytes": 2180,
+      "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_binding_getters.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_cached_states.hpp",
+      "bytes": 2075,
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_cached_states.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_frame_targets.hpp",
+      "bytes": 1747,
+      "sha256": "c5943bfdd2f2963405fccd29ab98ce088d917db29666ca989d2a5f6899a6c8a6",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_frame_targets.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_index_binding.hpp",
+      "bytes": 2927,
+      "sha256": "86aa477085b1dce3d029177714ac26a752199e6300dc979331810a8a97563135",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_index_binding.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_readiness.hpp",
+      "bytes": 3402,
+      "sha256": "5cb42380989032741ff8835d3d37cef4ac57b32fa2595a107a77ffea43dadb19",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_reset_readiness.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_resource_restore.hpp",
+      "bytes": 2097,
+      "sha256": "0198b3f63a67ef9379888fbddb5cb2308990d6fffac40e97484facce5a59e01d",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_resource_restore.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_surface_bindings.hpp",
+      "bytes": 1570,
+      "sha256": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_surface_bindings.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_synchronization_actual.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_binding.hpp",
+      "bytes": 3102,
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_texture_binding.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_texture_name_notification.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_stage_state.hpp",
+      "bytes": 1247,
+      "sha256": "e2cd6dc34e77959d83e8d3ab28d0f6f64019874c4cbc0924043b3f7a3c7249a4",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_texture_stage_state.hpp"
+    },
+    {
+      "path": "include/bsp/native_renderer_vertex_layout_binding.hpp",
+      "bytes": 1675,
+      "sha256": "ebf9d62dea25edfdeb5703b110533afd1ab9d71f975fb313f847701e48169939",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_renderer_vertex_layout_binding.hpp"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "bytes": 1488,
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_resource_support.hpp"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_retained_memory_owners.hpp"
+    },
+    {
+      "path": "include/bsp/native_shader_device_reset.hpp",
+      "bytes": 1356,
+      "sha256": "347056dafcbfe3a29f6d109c4f79914f583e4976327bf9c61b51e4d88ee01590",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_shader_device_reset.hpp"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 6280,
+      "sha256": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_string.hpp"
+    },
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "bytes": 4221,
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_surface_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_texture_2d_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_texture_device_reset.hpp",
+      "bytes": 2970,
+      "sha256": "1121a8a641e56894fc6564545a2d3291dbe39241ce608ef657b8a05adbac64bf",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_texture_device_reset.hpp"
+    },
+    {
+      "path": "include/bsp/native_texture_surface_cache_storage.hpp",
+      "bytes": 2361,
+      "sha256": "990878139211164b8259ca4ab2b2f6a36d0261051b3be232134f0e43f538363b",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_texture_surface_cache_storage.hpp"
+    },
+    {
+      "path": "include/bsp/native_tree_out_of_range_exception.hpp",
+      "bytes": 966,
+      "sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_tree_out_of_range_exception.hpp"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "bytes": 3213,
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_vertex_declaration_owner.hpp"
+    },
+    {
+      "path": "include/bsp/native_volume_texture_owner.hpp",
+      "bytes": 2610,
+      "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/native_volume_texture_owner.hpp"
+    },
+    {
+      "path": "include/bsp/random.hpp",
+      "bytes": 791,
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/random.hpp"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/random_threads.hpp"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/render_command_queue.hpp"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/render_tail.hpp"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/singleton_lifetime.hpp"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/storage_pool.hpp"
+    },
+    {
+      "path": "include/bsp/system_fog_constants.hpp",
+      "bytes": 1915,
+      "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/system_fog_constants.hpp"
+    },
+    {
+      "path": "include/bsp/system_fog_slot.hpp",
+      "bytes": 1869,
+      "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/system_fog_slot.hpp"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/system_time_constants.hpp"
+    },
+    {
+      "path": "include/bsp/vertex_declaration.hpp",
+      "bytes": 1462,
+      "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/include/bsp/vertex_declaration.hpp"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "bytes": 6420,
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_cube_texture_owner.cpp"
+    },
+    {
+      "path": "src/native_dynamic_buffer_device_release.cpp",
+      "bytes": 3780,
+      "sha256": "fa5831aba9f17409663e65536fd01f4199d86ef1f45d118b5f3e08534e438b3e",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_dynamic_buffer_device_release.cpp"
+    },
+    {
+      "path": "src/native_frame_target_owner.cpp",
+      "bytes": 6858,
+      "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_frame_target_owner.cpp"
+    },
+    {
+      "path": "src/native_hardware_layout_create_if_missing.cpp",
+      "bytes": 7674,
+      "sha256": "c5075148caecadc8952083d56c5b741fe47222fc27ae8aa2c9b6d7ee53163270",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_hardware_layout_create_if_missing.cpp"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "bytes": 8337,
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_hardware_layout_owner.cpp"
+    },
+    {
+      "path": "src/native_logical_index_owner.cpp",
+      "bytes": 7095,
+      "sha256": "73376e74c792c18fd8ed87d7345e49d7324d8e962882710c812180309ac5a0cf",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_logical_index_owner.cpp"
+    },
+    {
+      "path": "src/native_logical_vertex_pool_return.cpp",
+      "bytes": 2509,
+      "sha256": "acf5b39e00f791c7fe37155e2412cfab0c93556f490aa6c684ad2f070a16f50b",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_logical_vertex_pool_return.cpp"
+    },
+    {
+      "path": "src/native_material_pass_base.cpp",
+      "bytes": 7909,
+      "sha256": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_material_pass_base.cpp"
+    },
+    {
+      "path": "src/native_material_pass_states.cpp",
+      "bytes": 9379,
+      "sha256": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_material_pass_states.cpp"
+    },
+    {
+      "path": "src/native_occlusion_query_device_reset.cpp",
+      "bytes": 1870,
+      "sha256": "d3dd29ed58286326a4f63a49bd87f83eb814db9d7c0c284328d3a5dd2953178e",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_occlusion_query_device_reset.cpp"
+    },
+    {
+      "path": "src/native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_physical_buffer_owner.cpp"
+    },
+    {
+      "path": "src/native_render_buffer_unregistration.cpp",
+      "bytes": 5514,
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_render_buffer_unregistration.cpp"
+    },
+    {
+      "path": "src/native_render_cache_construction.cpp",
+      "bytes": 5022,
+      "sha256": "de64124e56f3bcc1f10c961ad0d47b7f5651898184c9c39cc175eac2f29325f8",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_render_cache_construction.cpp"
+    },
+    {
+      "path": "src/native_renderer_cached_states.cpp",
+      "bytes": 5702,
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_cached_states.cpp"
+    },
+    {
+      "path": "src/native_renderer_frame_targets.cpp",
+      "bytes": 4898,
+      "sha256": "ba7feaa2314821a96bfe3ea6cd0737c23d13a72a7df6d7b4abacfcf1be1abb7d",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_frame_targets.cpp"
+    },
+    {
+      "path": "src/native_renderer_index_binding.cpp",
+      "bytes": 5552,
+      "sha256": "3d1ac30f49516977dfae1452d4d69a94c85086f1d87dc6ac9a73877897f6d2c0",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_index_binding.cpp"
+    },
+    {
+      "path": "src/native_renderer_reset_readiness.cpp",
+      "bytes": 11569,
+      "sha256": "d155d185bcd1583e17bcd101d9adc77b9cef6431b4e5d46b0737eb12a52bbc50",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_reset_readiness.cpp"
+    },
+    {
+      "path": "src/native_renderer_resource_restore.cpp",
+      "bytes": 7240,
+      "sha256": "05a765b85d3c3ccd7f0d23cb30ecae1679e1f827394048755bcbbdeaf3737c47",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_resource_restore.cpp"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_synchronization_actual.cpp"
+    },
+    {
+      "path": "src/native_renderer_texture_binding.cpp",
+      "bytes": 6109,
+      "sha256": "426edcb14ec67173d50e5b103d2e3b392d76e5aeb7c1ad76548ef69d9b00f179",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_texture_binding.cpp"
+    },
+    {
+      "path": "src/native_renderer_texture_stage_state.cpp",
+      "bytes": 3412,
+      "sha256": "b304f58b02865f7274cb23eeca287cc9a76bea05dc1acdf6c8eb95948eda1703",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_texture_stage_state.cpp"
+    },
+    {
+      "path": "src/native_renderer_vertex_layout_binding.cpp",
+      "bytes": 4890,
+      "sha256": "c016e2d22c0d1ff84f2ff1aebcd79a2b50c865619f8683fe1bceb6dcad69c78e",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_renderer_vertex_layout_binding.cpp"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_retained_memory_owners.cpp"
+    },
+    {
+      "path": "src/native_shader_device_reset.cpp",
+      "bytes": 3154,
+      "sha256": "21a2631b1cdecf365bd93bcfdefbb9cd371eec46865921197a6dc6ecfb9cdcce",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_shader_device_reset.cpp"
+    },
+    {
+      "path": "src/native_surface_owner.cpp",
+      "bytes": 8402,
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_surface_owner.cpp"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "bytes": 11544,
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_texture_2d_owner.cpp"
+    },
+    {
+      "path": "src/native_texture_device_reset.cpp",
+      "bytes": 7309,
+      "sha256": "93afa828328f5cc177186765c6c7e92327d71d5612b4bfbf4858748a38295249",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_texture_device_reset.cpp"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "bytes": 9604,
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_vertex_declaration_owner.cpp"
+    },
+    {
+      "path": "src/native_volume_texture_owner.cpp",
+      "bytes": 5380,
+      "sha256": "f17e5c2634b9ef4d53cedcd1f0868bf1befe71ab79aca01c5d8b1496a7f2e29f",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/native_volume_texture_owner.cpp"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "frozen_path": "local/renderer_reset_release_discovery/source_pins/src/singleton_lifetime.cpp"
+    }
+  ],
+  "prior_evidence_pins": [
+    {
+      "path": "reports/native_renderer_stop_pipeline_next.json",
+      "bytes": 112013,
+      "sha256": "617abd3fe07626e05c83d2bc2aae4487ef9557e4f5400a2b8d9c6f0092d78712"
+    },
+    {
+      "path": "reports/native_render_cache_construction_audit.json",
+      "bytes": 53280,
+      "sha256": "8027659fff639dc8145779f7d22964fe39471b823e1ee3c773776a32fa7b98e2"
+    },
+    {
+      "path": "reports/native_logical_vertex_owner_next.json",
+      "bytes": 120075,
+      "sha256": "6b728943c7577f74ec4fab868b045492e47242c94e43bbdc2493597727d6ad20"
+    },
+    {
+      "path": "reports/native_logical_vertex_terminal_next.json",
+      "bytes": 143932,
+      "sha256": "6a861c4c11a8613a1c82571360a52a9f6502380393314561f694b87e740274c5"
+    },
+    {
+      "path": "reports/native_logical_vertex_retained_4c_writers_audit.json",
+      "bytes": 69488,
+      "sha256": "26661a9f69a5ff9f15f08e1b7f3bda6df2ea403cd67d68266270f8afcbf096b8"
+    },
+    {
+      "path": "reports/native_vertex_stream_alias_escape_discovery.json",
+      "bytes": 41815,
+      "sha256": "d3969c65bfcbdc90b08ce29c2031e92e1d01454ddfbfba20f6df993eeed0ca8b"
+    },
+    {
+      "path": "reports/native_material_pass_states.json",
+      "bytes": 39289,
+      "sha256": "ff4fe5c0ba9a299365d475ae3488eca68c3d68a32d7fa3649ad7b7521f451fc6"
+    }
+  ],
+  "validation": {
+    "fresh_live_PE_match": true,
+    "full_normal_and_EH_bytes": true,
+    "source_pins_frozen": true,
+    "build_run": false,
+    "runtime_run": false,
+    "new_tests": false,
+    "Ghidra_mutations": false,
+    "original_game_changes": false,
+    "shared_metadata_edits": false,
+    "limit": "Read-only discovery, original-byte agreement and source-contract review; no build/runtime, original ABI or gameplay proof."
+  }
+}
