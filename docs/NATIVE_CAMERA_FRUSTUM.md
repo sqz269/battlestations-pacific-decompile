@@ -110,5 +110,28 @@ identities, rebuilt-process errno and exception runtime, and documented FPIEEE
 fields rather than unspecified reserved stack bytes. Full-stack x87 faults,
 arbitrary invalid pointers, every control/MXCSR combination, and all OS exception
 modes were not separately sampled. No renderer behavior, camera hierarchy,
-rendering parity, or game validation is claimed. Ghidra, shared metadata, and
-permanent build configuration were not changed by this worker.
+rendering parity, or game validation is claimed. The worker left shared metadata
+and permanent build configuration for the primary integration below.
+
+
+## Primary main-library validation
+
+The primary integrated all three entries, passed the strict Win32 main build
+and both existing CTests, and verified eight fresh seeds. All 205 worker
+artifacts, four runtime modules and ten current source/header/artifact pins
+were checked. Twenty-five guarded live/PE spans again matched all 2,737 bytes.
+
+The unchanged fixture was linked to a frozen copy of the actual main library
+`74d8f91d3e4c526a60efb9d61d45f5b2b9d46803b411766b6c9688d1d36c9895`.
+Its three exact archive objects preserve every worker code/directive section
+and relocation; debug/checksum metadata differences are recorded separately.
+All 16 pairs passed with 32,768 compared arena bytes, 208 original instruction
+mappings, 16 complete COFF/linked/runtime symbols totaling 3,340 bytes and
+62 relocations, and 17 code postimage stages. The probe recompiles no provider.
+
+The read-only bundle at `local/frustum_primary/` retains the full audit,
+source/header snapshots, module pins and artifacts; its manifest SHA256 is
+`3b9b3f07dee4745814e549bfc2b6950203f6c49cbedcd5b306593289f111cfd2`.
+Existing Ghidra names and prior comments were preserved, reviewed evidence
+was appended and saved, and the three exports and function records were refreshed.
+The original-CRT composition and unentered RaiseException limits above remain.
