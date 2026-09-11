@@ -57,6 +57,11 @@ never touching the callee's own flag. Run it on a function whose pseudocode show
 
 ## Leases
 
+Do not lease shared append-only registries: never lease `cmake/startup.cmake` (every worker appends
+one deferred `target_sources` or `add_executable` line and the integration resolver unions the lines),
+`config/parallel_work.json` beyond the integrator's own edits, or ledger shards (they merge by address).
+A whole-file lease on one of these blocks every other orchestrator's workers.
+
 A lease says who is working on which addresses, ranges and output files. The registry lives
 outside every worktree (`coordination_dir` in config/target.json, default `~/.bsp/leases.jsonl`)
 so all checkouts see the same state immediately, without waiting for a merge.
