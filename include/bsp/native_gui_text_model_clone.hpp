@@ -2,8 +2,12 @@
 
 #include "bsp/native_model_owner.hpp"
 #include "bsp/native_mesh_owner.hpp"
+#include "bsp/native_mesh_clone.hpp"
 
 namespace bsp {
+class GuiWidgetOwnerRuntime;
+class GuiNativeGeometryOwners;
+struct NativeMaterialDestructionAccess;
 
 enum class NativeGuiTextModelBaseCopyResult {
     copied,
@@ -42,8 +46,33 @@ void associate_native_gui_text_model_clone_geometry_00b752b0_fragment(
 void finish_native_gui_text_model_clone_00b752b0_fragment(
     NativeModelOwner& source, NativeModelOwner& destination);
 
-// These fragments do NOT implement full B752B0. Its actual model allocation /
-// canonical GuiWidgetOwnerRuntime adoption and current geometry10 B742A0 ->
-// B73F50 deep section/material clone remain required. Raw slots cannot be cast
-// to C++ owners. New MSVC Win32 interfaces, not native binary entry replacements.
+// Acquired references belonging to the caller, not a second native owner.
+// All fields must initially be null. After construction, model retains the
+// native creator reference through all later effects. Mesh.mesh is nonnull
+// only between completed mesh cloning and consuming its creator reference.
+// Exceptions preserve these publications; neither references nor native
+// effects are silently rolled back. Release through their canonical owners.
+struct NativeGuiTextModelCloneAcquired {
+    NativeModelReference* model{};
+    NativeMeshCloneAcquired mesh;
+};
+
+// Compose B752B0 for the actual Text caller flags26h,parent0. Allocates and
+// constructs a Model from the live source name, performs base copy, clones
+// current mesh geometry into the same actual owner domain, associates it,
+// releases the geometry creator, then executes the retained174/pose tail.
+// Positive point-light lists return the explicit boundary AFTER destination
+// construction and before base effects, keeping acquired.model. Do not restart
+// this call on that partial result. Other exceptions are not resumable.
+// Only successful return with copied means the complete supported clone path.
+NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
+    NativeModelOwner& source, GuiWidgetOwnerRuntime&, GuiNativeGeometryOwners&,
+    NativeMaterialDestructionAccess&,
+    const volatile std::uint32_t* material_current_vtable_00d5e520,
+    const volatile std::uint32_t* mesh_current_vtable_00d62d60,
+    NativeGuiTextModelCloneAcquired& acquired);
+
+// Other flags/parent combinations and positive point-light ownership remain
+// outside the composed Text route. Raw slots cannot be cast to C++ owners.
+// New MSVC Win32 interfaces, not native binary entry replacements.
 } // namespace bsp

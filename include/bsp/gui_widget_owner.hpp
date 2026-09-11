@@ -23,6 +23,9 @@ public:
     virtual void set_active60(GuiWidgetOwner&, bool) = 0;
     virtual bool is_visible38(GuiWidgetOwner&) = 0;
     virtual void visibility_changed3c(GuiWidgetOwner&, bool) = 0;
+    // Current70 is required by recursive clip refresh. Profiles without an
+    // established implementation fail explicitly, never silently complete it.
+    virtual void refresh_clip70(GuiWidgetOwner&);
     // Existing base types use00AA8530; cGuiLayer overrides the current slot34.
     virtual void set_visible34(GuiWidgetOwner&, bool);
     // Base and supported Icon/FrameBox readers have no pre-base continuation.
@@ -60,7 +63,7 @@ struct GuiWidgetOwnerEnvironment {
 struct GuiWidgetBaseExtraFields {
     std::int32_t references_04{1};
     float fields_30_44[6]{};
-    bool byte_79{};
+    std::uint8_t byte_79{};
     float fields_7c_80[2]{};
     void* pointers_88_90[3]{};
     float overbright_94{};
@@ -94,6 +97,7 @@ public:
     void propagate_visibility_00aa8450(const GuiWidgetVisibilityArgs&);
     void recompose_00aa7220();
     void refresh_bounds_00aa70e0();
+    void refresh_clip70();
     void set_position_00aa7dc0(const GuiWidgetPoint&);
     void release_scene_nodes_00aa8320();
 private:
@@ -121,6 +125,10 @@ public:
     GuiWidgetOwnerRuntime(const GuiWidgetOwnerRuntime&) = delete;
     GuiWidgetOwnerRuntime& operator=(const GuiWidgetOwnerRuntime&) = delete;
     GuiWidgetOwner& construct_child_00aa6560(GuiLayoutWidget&);
+    // AB9650 construction used by AB98F0 before copying the template model.
+    // Creates the SAME base/type companion, leaving the primary model null;
+    // does not allocate an ordinary named model, attach, or invoke74/78.
+    GuiWidgetOwner& construct_unbound_text_00ab9650(GuiLayoutWidget&);
     // Root native node belongs to the parent page owner, and can be188h group.
     GuiWidgetOwner& construct_root(GuiLayoutWidget&, NativeNodeBinding&);
     //00AA6640 standalone sequence; loader calls construct_child then74 only
@@ -132,6 +140,16 @@ public:
     // retired through the existing node lifetime binding, not a second owner.
     void create_auxiliary_model_00ab8530_fragment(NativeNodeBinding*& publication,
         const std::string& name);
+    // B752D1..B7530A: allocate from the SAME Model pool, then construct from
+    // the source's CURRENT actual name header. No temporary name or source
+    // snapshot. Register the created owner/reference in this runtime's one
+    // model map and return ONE creator reference. Caller keeps it across all
+    // later clone effects; constructor failure returns its raw slot. Source
+    // must be a live Model already registered here and survive callbacks.
+    // Null pool allocation throws: the native subsequent null dereference is
+    // outside this C++ interface. Host registration failure is not native EH.
+    NativeModelReference& create_model_clone_destination_00b752b0_fragment(
+        NativeModelOwner& source);
     GuiWidgetOwner& owner(GuiLayoutWidget&) const;
     GuiWidgetOwner& owner(GuiWidgetTransform&) const;
     NativeNodeBinding& node(std::uint32_t actual_identity) const;

@@ -1,5 +1,6 @@
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/gui_text_type_dispatch.hpp"
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
@@ -95,6 +96,12 @@ GuiWidgetOwner::GuiWidgetOwner(GuiLayoutWidget& layout, GuiWidgetOwnerRuntime& r
 GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
     if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
     return *implementation_;
+}
+void GuiWidgetTypeImplementation::refresh_clip70(GuiWidgetOwner&) {
+    throw std::logic_error("current GUI clip70 profile has no established implementation");
+}
+void GuiWidgetOwner::refresh_clip70() {
+    implementation().refresh_clip70(*this);
 }
 void GuiWidgetTypeImplementation::set_visible34(GuiWidgetOwner& owner, bool visible) {
     owner.set_visible_00aa8530(visible);
@@ -283,6 +290,44 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
         throw std::logic_error("GUI auxiliary model publication must be empty");
     create_model(name, &publication);
 }
+NativeModelReference& GuiWidgetOwnerRuntime::create_model_clone_destination_00b752b0_fragment(
+    NativeModelOwner& source) {
+    auto& environment = environment_.models;
+    const auto found = models_.find(&source.storage.node);
+    if (&source.environment != &environment || source.phase != NativeModelOwner::Phase::live ||
+        found == models_.end() || !found->second || found->second->owner.get() != &source ||
+        !found->second->reference)
+        throw std::logic_error("Model clone source must be this runtime's live canonical owner");
+    auto record = std::make_unique<ModelRecord>();
+    void* const slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
+    if (!slot) throw std::bad_alloc();
+    if (models_.count(slot))
+        throw std::logic_error("canonical Model pool returned an occupied clone slot");
+    bool inserted = false;
+    try {
+        models_.emplace(slot, nullptr);
+        inserted = true;
+        record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
+        // B6D800 returns this SAME header only after allocation. B75030's
+        // existing native-string copy preserves later callback-driven reloads.
+        construct_native_model_00b75030(*record->owner,
+            native_node_name_00b6d800(source.storage.node));
+        models_.at(slot) = std::move(record);
+        auto& retained = *models_.at(slot);
+        retained.reference = std::make_unique<NativeModelReference>(*retained.owner,
+            NativeModelCompanionDisposal{this, retire_model});
+        return *retained.reference;
+    } catch (...) {
+        auto* active = record.get();
+        if (!active && inserted) active = models_.at(slot).get();
+        if (active && active->owner && active->owner->phase == NativeModelOwner::Phase::live)
+            destroy_native_model_00b750c0(*active->owner);
+        if (inserted) models_.erase(slot);
+        record.reset();
+        environment.pool_01090054.return_raw_slot_00b74750(slot);
+        throw;
+    }
+}
 void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& reference) noexcept {
     auto& runtime = *static_cast<GuiWidgetOwnerRuntime*>(context);
     void* slot = &reference.model_owner().storage.node;
@@ -290,12 +335,18 @@ void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& re
 }
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget& layout) {
     if (layout.type != GuiWidgetType::Group && layout.type != GuiWidgetType::Icon &&
-        layout.type != GuiWidgetType::FrameBox && layout.type != GuiWidgetType::ClipBox)
-        throw std::invalid_argument("unsupported retained GUI type: only Group, Icon, FrameBox and ClipBox are composed");
+        layout.type != GuiWidgetType::FrameBox && layout.type != GuiWidgetType::ClipBox &&
+        layout.type != GuiWidgetType::Text)
+        throw std::invalid_argument("unsupported retained GUI widget type");
     auto& result = construct_base(layout);
     try { result.bind_scene_00aa6720(create_model(layout.key)); }
     catch (...) { retire_tree(layout); throw; }
     return result;
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_unbound_text_00ab9650(GuiLayoutWidget& layout) {
+    if (layout.type != GuiWidgetType::Text)
+        throw std::invalid_argument("unbound Text construction requires the actual Text type");
+    return construct_base(layout);
 }
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_root(GuiLayoutWidget& layout, NativeNodeBinding& node) {
     if (layout.type != GuiWidgetType::Screen) throw std::invalid_argument("page root requires Screen type");
