@@ -72,6 +72,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_renderer_binding_getters.cpp
   src/native_renderer_surface_bindings.cpp
   src/native_physical_buffer_owner.cpp
+  src/native_physical_pool_acquire.cpp
   src/native_tree_out_of_range_exception.cpp
   src/native_hardware_layout_tree.cpp
   src/native_hardware_layout_tree_key.cpp

@@ -1,0 +1,62 @@
+[
+  {
+    "address": "00b4ac60",
+    "before": {
+      "address": "00b4ac60",
+      "function_name": "FUN_00b4ac60"
+    },
+    "after": {
+      "address": "00b4ac60",
+      "old_name": "FUN_00b4ac60",
+      "name": "BSP_NativePhysicalBufferPool_AcquireSlot",
+      "saved_body_end": "00b4ad9b",
+      "evidence": "Full316-byte actual38hpool acquisition. Entercapturedpool+C/depth24++, cursor34FFFFFFFF publishescurrentcount2Cbefore644halloc; fullslabctor usesCURRENTcursor. Ifcount==cap30, wrappedcap*2+2 publishedbeforearrayalloc, unsignedcurrentcount/basecopy withzerodeststore skip; currentnonnulloldbasefree thennewbasepublish28. Appendcaptureddslab usingcurrentcount/base, count++. Currentcursor/base/16bitfreecount-- selectsraw30hslot. Exhaustioncapturesnext<count beforecursorFFFFFFFF, scanslatercapturedentryarray/currentcount, selectsfirstnonempty; capturedCSdepth--/Leave. NoEH/lockrollback/allocationrepair. C++393bytecompiledbody, wholecodeverified. Only B4ACF1CALL_RETURN override removed andhiddenADDESP4 atB4ACF6decoded; savedfullrangeunchanged,globalfreemetadata unchanged. Primary strictWin32/twoCTests/eightseeds;10freshguardedspans428bytes including400owned. Actualmainlibrary only, four exact archiveobjects196COFFsections557relocs80functions and entire14883runtimeexecutable bytes checked. Singlefocused original/source replay1182words throughboth actualpoolobjects, capacity2to6/freecontinuation and returnedslotreuse/later-slabscan; full1604byte constructorstorage comparison. Allfouroriginalentries execute;400originalpostimage bytes checkedwithfive declared absoluteaddressrelocations(3CS_IAT,2poolglobals), relativecallsunchanged. OriginalBF55BE/BF6989thunks execute; BF681B/BF65AC fivebyte entrypreimages replaced explicitcurrentCRTservicebridges, helperinternalsunproved. ExistingfullB49500sourceusedbothruns. Importcells captured, DLLentryPEpostimagesnotcaptured. No allocationfailure/callbackmutation/malformedpool/nativeSEH/fullpoollifetime/ABI/gameplayproof. reports/native_physical_pool_acquire_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48df0",
+    "before": {
+      "address": "00b48df0",
+      "function_name": "FUN_00b48df0"
+    },
+    "after": {
+      "address": "00b48df0",
+      "old_name": "FUN_00b48df0",
+      "name": "BSP_NativePhysicalBufferSlab_Initialize",
+      "saved_body_end": "00b48e2f",
+      "evidence": "Full64-byte naked slabconstructor exactoriginalbytes including3byteLEAalignment. ECXraw644h/unusedEDX/stackslabindex/EAXsame/RET4. Writehalf640=32 then32iterationsinterleavereversefreeindex31-i at600+2i andslot2C+30i slabindex. Allotherbytesunchanged. Whole1604storage comparisonoriginal/sourcepassed. Primary strictWin32/twoCTests/eightseeds;10freshguardedspans428bytes including400owned. Actualmainlibrary only, four exact archiveobjects196COFFsections557relocs80functions and entire14883runtimeexecutable bytes checked. Singlefocused original/source replay1182words throughboth actualpoolobjects, capacity2to6/freecontinuation and returnedslotreuse/later-slabscan; full1604byte constructorstorage comparison. Allfouroriginalentries execute;400originalpostimage bytes checkedwithfive declared absoluteaddressrelocations(3CS_IAT,2poolglobals), relativecallsunchanged. OriginalBF55BE/BF6989thunks execute; BF681B/BF65AC fivebyte entrypreimages replaced explicitcurrentCRTservicebridges, helperinternalsunproved. ExistingfullB49500sourceusedbothruns. Importcells captured, DLLentryPEpostimagesnotcaptured. No allocationfailure/callbackmutation/malformedpool/nativeSEH/fullpoollifetime/ABI/gameplayproof. reports/native_physical_pool_acquire_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b350",
+    "before": {
+      "address": "00b4b350",
+      "function_name": "CG_static_dtor_stub_00b4b350"
+    },
+    "after": {
+      "address": "00b4b350",
+      "old_name": "CG_static_dtor_stub_00b4b350",
+      "name": "BSP_NativePhysicalIndexPool_AcquireSlot",
+      "saved_body_end": "00b4b359",
+      "evidence": "Full10-byte original noarg allocation thunk MOVECX,108FDA8/JMPB4AC60, previouslymisnamedstaticdtor. New8bytecontext thunk borrows actualindexpool fromexistingNativePhysicalBufferOwnerContext fieldC andtailcallscompleteacquire. Othercontextfieldsunread; nosecondpool, poolinit, string/support/lifetimeaccess orbufferconstructor. NewsourcecontextABIexplicit. Primary strictWin32/twoCTests/eightseeds;10freshguardedspans428bytes including400owned. Actualmainlibrary only, four exact archiveobjects196COFFsections557relocs80functions and entire14883runtimeexecutable bytes checked. Singlefocused original/source replay1182words throughboth actualpoolobjects, capacity2to6/freecontinuation and returnedslotreuse/later-slabscan; full1604byte constructorstorage comparison. Allfouroriginalentries execute;400originalpostimage bytes checkedwithfive declared absoluteaddressrelocations(3CS_IAT,2poolglobals), relativecallsunchanged. OriginalBF55BE/BF6989thunks execute; BF681B/BF65AC fivebyte entrypreimages replaced explicitcurrentCRTservicebridges, helperinternalsunproved. ExistingfullB49500sourceusedbothruns. Importcells captured, DLLentryPEpostimagesnotcaptured. No allocationfailure/callbackmutation/malformedpool/nativeSEH/fullpoollifetime/ABI/gameplayproof. reports/native_physical_pool_acquire_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b360",
+    "before": {
+      "address": "00b4b360",
+      "function_name": "CG_static_dtor_stub_00b4b360"
+    },
+    "after": {
+      "address": "00b4b360",
+      "old_name": "CG_static_dtor_stub_00b4b360",
+      "name": "BSP_NativePhysicalVertexPool_AcquireSlot",
+      "saved_body_end": "00b4b369",
+      "evidence": "Full10-byte original noarg allocation thunk MOVECX,108FDE0/JMPB4AC60, previouslymisnamedstaticdtor. New8bytecontext thunk borrows actualvertexpool fromexistingNativePhysicalBufferOwnerContext field10 andtailcallscompleteacquire. Otherfieldsunread; nosecondpool orlifetimeinference. NewsourcecontextABIexplicit. Primary strictWin32/twoCTests/eightseeds;10freshguardedspans428bytes including400owned. Actualmainlibrary only, four exact archiveobjects196COFFsections557relocs80functions and entire14883runtimeexecutable bytes checked. Singlefocused original/source replay1182words throughboth actualpoolobjects, capacity2to6/freecontinuation and returnedslotreuse/later-slabscan; full1604byte constructorstorage comparison. Allfouroriginalentries execute;400originalpostimage bytes checkedwithfive declared absoluteaddressrelocations(3CS_IAT,2poolglobals), relativecallsunchanged. OriginalBF55BE/BF6989thunks execute; BF681B/BF65AC fivebyte entrypreimages replaced explicitcurrentCRTservicebridges, helperinternalsunproved. ExistingfullB49500sourceusedbothruns. Importcells captured, DLLentryPEpostimagesnotcaptured. No allocationfailure/callbackmutation/malformedpool/nativeSEH/fullpoollifetime/ABI/gameplayproof. reports/native_physical_pool_acquire_audit.json"
+    },
+    "status": "applied"
+  }
+]
