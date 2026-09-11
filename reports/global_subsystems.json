@@ -7,20 +7,35 @@
       "address": "004dc6a0",
       "name": "construct_global_subsystems_004dc6a0",
       "source": "src/global_subsystems.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_normal_flow_combined_build_and_focused_fixture_tested",
       "abi": "ECX=game; no stack arguments; RET004DC93F",
       "evidence": "Hypothesis, not a recovered symbol. Complete normal-flow004DC6A0 through RET004DC93F; ECX=game. Pooled Game_Global/FileBlock lifetime, ordered individual initialization services, live singleton count/validation reloads and actual effect refcount cleanup, then native-size allocation/publication/loading of traffic,panel,powerup,warnings,weather. Direct canonical panel/dialog and weather owner/load calls. Other callees remain required services, not stubs. src/global_subsystems.cpp; docs/GLOBAL_SUBSYSTEMS.md. New C++ interface, no native SEH/ABI/gameplay claim.",
       "document": "docs/GLOBAL_SUBSYSTEMS.md",
       "last_instruction": "004dc93f",
-      "last_instruction_length": 1
+      "last_instruction_length": 1,
+      "instructions": 197
     }
   ],
   "no_ghidra_function": [],
   "validation": {
-    "build": "pending",
-    "fixture": "pending",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math and native_math_differential2/2 passed",
+    "build_log": "local/global_subsystems_build_final.log",
+    "fixture_logs": [
+      "local/global_subsystems_fixture.log",
+      "local/global_panel_fixture_final.log",
+      "local/global_weather_fixture.log",
+      "local/global_numeric_fixture_final.log"
+    ],
+    "focused_fixtures": 4,
+    "code_revision": "cf8c025bbc70106371819e5f7f7ee1fb9e310630",
+    "library_sha256": "c1fa5f8d6659d88ac1ac877ad2ad3eb2ce018c5068912b923dfd3e2e48a1414c",
+    "native_abi": false,
     "game_validated": false,
-    "native_abi": false
+    "corrections": [
+      "Initial root build exposed C++20 bit_cast in C++17 target; replaced with memcpy preserving same signed bits.",
+      "Combined panel fixture now links existing Lua library; numeric cmd recipe invoked with Windows path syntax. No product changes from fixture-runner failures."
+    ]
   },
   "integrated_callsite": "src/mission_scene_load.cpp:004DFEBB",
   "direct_dependencies": [
@@ -61,7 +76,28 @@
       "readback": "local/global_panel_comments.json",
       "refreshed_exports": "local/global_panel_exports.log"
     },
-    "stored_body_limitation": "00452040 still ends004520B3; full decoded tail through RET0045212E supports source, no body-extension claim."
+    "stored_body_limitation": "00452040 still ends004520B3; full decoded tail through RET0045212E supports source, no body-extension claim.",
+    "numeric_annotations": {
+      "count": 6,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T080719Z.json",
+      "readback": "local/global_numeric_comments.json",
+      "exports": "local/global_numeric_exports.log"
+    },
+    "weather_annotations": {
+      "count": 9,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T080936Z.json",
+      "readback": "local/global_weather_comments.json",
+      "exports": "local/global_weather_exports.log"
+    },
+    "total_names_verified": 28,
+    "retired_overbroad_role_tag": "reports/weather_inventory_tag_correction.json"
   },
-  "independent_review": "Panel worker reviewed full197-instruction004DC6A0 plus00871BA0 return identity; no must-fix. External services, native SEH/ABI and game validation excluded."
+  "independent_review": "Panel worker reviewed full197-instruction004DC6A0 plus00871BA0 return identity; no must-fix. External services, native SEH/ABI and game validation excluded.",
+  "independent_weather_review": "Complete loader ordering and COMISS/x87 normalization reviewed independently; no must-fix for string-keyed naming tables. Existing numeric-key cursor, STL/GC/SEH/ABI limits retained."
 }

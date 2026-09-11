@@ -60,3 +60,10 @@ marker loader006DBEB0, recon registration00803A40, traffic004A43C0/0049D690,
 powerup008EDC60/008ECEC0, and warning0098A020/009870A0. The00432650 singleton
 and00871BA0 effect-acquisition chain also need concrete bindings. Check current
 leases before assigning them. The descriptive powerup role is provisional.
+
+The combined Win32 build and both existing checks passed. Four focused fixtures
+passed against the same library: full startup publication and reference cleanup,
+panel owner lifetime, weather real-Lua loading, and generic Lua numeric conversions.
+All28 names/evidence comments were saved and read back with prior comments intact;
+affected exports were refreshed. The tested revision, library hash, logs and later
+main integration result are retained in the report. No gameplay validation was run.
