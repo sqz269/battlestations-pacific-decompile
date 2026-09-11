@@ -1,0 +1,40 @@
+{
+ "repairs": [
+  {
+   "function": "006aa640",
+   "owner": "agent/orch2-keyboard-restore-20260910e",
+   "when": "2026-09-11T02:41:28Z",
+   "decompile_lines_before": 265,
+   "gaps": [
+    {
+     "site": "006aac02",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "006aac07",
+     "gap_end_exclusive": "006aac2e",
+     "bytes": 39,
+     "after_call": true,
+     "sha256": "3d2947ba971edf4599f7d9592c86a93ecf2f9e33d2d4ebd9a8f7e012d918899e"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "006aac02",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "006aac07",
+      "gap_end_exclusive": "006aac2e",
+      "bytes": 39,
+      "after_call": true,
+      "sha256": "3d2947ba971edf4599f7d9592c86a93ecf2f9e33d2d4ebd9a8f7e012d918899e"
+     },
+     "clear": "Success: Cleared flow override at 006aac02 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 39 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 267,
+   "gaps_remaining": 0
+  }
+ ]
+}

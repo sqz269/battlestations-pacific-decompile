@@ -1,0 +1,64 @@
+{
+  "packet": "orch2_script_runtime",
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "source": "src/lua_script_runtime.cpp",
+  "reused_source": "src/gui_lua_reader.cpp",
+  "documentation": "docs/LUA_SCRIPT_RUNTIME.md",
+  "names_are_hypotheses": true,
+  "ghidra_name_annotations": "pending integrator locked batch after merge; names ledger ready",
+  "entries": [
+    {
+      "address": "00b66ca0",
+      "name": "BSP_LuaStateOwner_LoadAndCallChunk",
+      "native_end_exclusive": "00b66ddc",
+      "original_abi": "ECX owner; stack NativeString path pointer and low-byte obfuscation flag; RET8",
+      "cpp_symbol": "bsp::run_gui_lua_chunk_00b66ca0",
+      "evidence": ["00b66caa..00b66d16 VFS mode2 and stream checks/read", "00b66d40..00b66d61 prefix-to-space and post-marker ROL4", "00b66da2 ignores luaL_loadbuffer status;00b66dc4 lua_call0,MULTRET"],
+      "internal_flow_gap_repaired": "00b66dcf..00b66dd3"
+    },
+    {
+      "address": "00b69d40",
+      "name": "BSP_LuaStateOwner_RunScriptWithOverrides",
+      "native_end_exclusive": "00b69de5",
+      "stored_ghidra_end_inclusive": "00b69dcc",
+      "original_abi": "ECX owner; stack NativeString path pointer and flag; RET8 verified disk tail",
+      "cpp_symbol": "bsp::run_gui_lua_file_00b69d40",
+      "evidence": ["00b69d68 base call before00b69d8b suffix resolution", "00b69da0..00b69dac same flag and sequential8byte entries", "00b69dc8 free;disk00b69dcd..00b69de4 cleanup+RET8"],
+      "stored_ghidra_tail_complete": false
+    },
+    {
+      "address": "00b69e00",
+      "name": "BSP_LuaStateOwner_DoFileCallback",
+      "native_end_exclusive": "00b69f18",
+      "original_abi": "Lua callback receives state in ECX; plain RET and EAX0",
+      "cpp_symbol": "bsp::LuaScriptRuntime::do_file",
+      "evidence": ["00b69e20 borrowed owner00b66c00 reinstalls DoFile global", "00b679b0 arg range start1 and00b677e0/index0 selects arg1", "00b69e60 lua_tolstring followed by unchecked strlen0041e870", "00b69e6f flag0;00b69e82 run with overrides;00b69f08 EAX0"],
+      "previous_name": "FUN_00b69e00"
+    }
+  ],
+  "dependency_boundaries": {
+    "files": "LuaScriptFiles: mode2 complete-byte read, silent absent/notopen/empty; ordered00bdef90 suffix paths",
+    "owner": "PcStorageLuaOwner callback + runtime context, actual cached fundamentals bytes",
+    "library": "linked stock Lua5.1.1",
+    "vfs_integration": "parent-owned separate packet",
+    "shader_adapter": "unchanged explicit-name adapter; not the full native script contract"
+  },
+  "host_adaptations": ["protected pcall then C++ error replaces native panic", "invalid filename types Lua-error instead of native null strlen fault", "DoFile failure message capped1023bytes", "portable file buffers do not reproduce native leaks or huge-file truncation"],
+  "validation": {
+    "verify_seeds": "pass",
+    "build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX pass",
+    "existing_tests": "2of2 pass",
+    "ignored_fixture": "local/lua_script_runtime_fixture.cpp",
+    "fixture_log": "local/lua_script_runtime_fixture.log",
+    "fixture": "pass actual Lua/owner, installed fundamentals+fonts, mode2, ordered duplicates, silent missing/empty, multret, DoFile nested/alias/number/invalidarg, flagged/no-marker bytes, syntax/runtime/nested failure",
+    "installed_scripts": [
+      {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/fundamentals.lua", "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"},
+      {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fonts/fonts.lua", "sha256": "26ebc6c0905f3aff36e95f40195c0fe8693d9f17474d2fcd3e51bcc7091fdd93"}
+    ],
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "flow_reports": ["reports/lua_script_runtime_flow_repair.json", "reports/lua_script_runtime_tail_repair.json"]
+}

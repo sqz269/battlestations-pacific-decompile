@@ -47,3 +47,14 @@ After incorporating the other orchestrator's latest renderer code, `e946697`
 passed the build, both CTests, all three fixtures and both native-file equality
 checks again. All42 reviewed names and comments were saved and read back in
 the existing Ghidra project; their exports were forcibly refreshed.
+
+## Follow-up from docs/PROFILE_READ_INTEGRATION.md
+
+The Lua-owner bootstrap/close, cached fundamentals source, keyboard archive
+reader/runtime sequence, settings restore/reader, profile content commit and
+concrete PcProfileIoHost composition are now reconstructed. The old settings
+writer's ClanText type and downloaded-content key/value order are corrected.
+Combined Win32, existing tests and real Lua/filesystem fixtures passed at8a5ad85;
+original native save hashes remain unchanged. Real VFS override dispatch,
+keyboard-device installation and platform/renderer/content/scene services remain
+required. See the follow-up report for exact evidence and validation boundaries.

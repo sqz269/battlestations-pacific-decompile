@@ -80,7 +80,7 @@ struct GameplaySettings {
     float marker_alpha_80{0.0f};// +80h, "markerAlpha"
     bool cockpit_mode_b2{true}; // +B2h, "CockpitMode"
     bool show_safe_area_b1{true};   // +B1h, "ShowSafeArea"
-    int clan_text_b8{0};        // +B8h, "ClanText"
+    std::string clan_text_b4;   // NativeString +B4h header / +B8h text, "ClanText"
 };
 
 // Audio page fields. All four volumes are written by the audio reset 008d41f0.
@@ -191,6 +191,7 @@ public:
     virtual void begin_section(const GuiLuaVariant& key) = 0;
     virtual void end_section() = 0;                     // virtual +8h
     virtual void write_field(const char* key, const SettingsValue& value) = 0; // virtual +0Ch
+    virtual void write_field(const GuiLuaVariant& key, const SettingsValue& value) = 0;
     // 006a51c0 on the input-settings singleton, the keyboardSetup body.
     // write_keyboard_setup_006a51c0 implements this traversal over InputSettings.
     virtual void write_keyboard_setup() = 0;

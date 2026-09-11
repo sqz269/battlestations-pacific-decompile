@@ -1,4 +1,5 @@
 #include "bsp/game_settings.hpp"
+#include "bsp/gui_lua_reader.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -24,9 +25,9 @@ SettingsKey make_int(const char* name, std::uint16_t offset, int default_value) 
         SettingsValue::from_int(default_value)};
 }
 
-SettingsKey make_int_always(const char* name, std::uint16_t offset) noexcept
+SettingsKey make_string(const char* name, std::uint16_t offset) noexcept
 {
-    return SettingsKey{name, offset, SettingsValueType::Int, false, SettingsValue{}};
+    return SettingsKey{name, offset, SettingsValueType::String, false, SettingsValue{}};
 }
 
 SettingsKey make_float(const char* name, std::uint16_t offset) noexcept
@@ -62,7 +63,7 @@ SettingsValue read_field(const GameSettingsBlock& s, std::uint16_t offset) noexc
     case 0xB0: return SettingsValue::from_bool(s.control.xbox_compatibility_b0);
     case 0xB1: return SettingsValue::from_bool(s.gameplay.show_safe_area_b1);
     case 0xB2: return SettingsValue::from_bool(s.gameplay.cockpit_mode_b2);
-    case 0xB8: return SettingsValue::from_int(s.gameplay.clan_text_b8);
+    case 0xB4: return SettingsValue::from_text(s.gameplay.clan_text_b4.c_str());
     default: return SettingsValue{};
     }
 }
@@ -137,15 +138,15 @@ const std::vector<SettingsKey>& settings_persistence_keys_008d64a0()
         make_bool("invertPlaneY", 0x43, true),      // 008d677a, 00d15cb4
         make_bool("swapMapSticks", 0x44, false),    // 008d67bc, 00d15ca4
         make_bool("HardwareReported", 0x95, false), // 008d6827, 00d15c80
-        make_bool_always("waterDrops", 0x7C),       // 008d686c, 00d15c74
-        make_int_always("oldFilmEffect", 0x90),     // 008d68ae, 00d15c64
-        make_bool_always("MotionBlur", 0x8D),       // 008d68f7, 00ce8fec
+        make_bool("waterDrops", 0x7C, true),        // 008d686c, 00d15c74
+        make_int("oldFilmEffect", 0x90, 1),         // 008d68ae, 00d15c64
+        make_bool("MotionBlur", 0x8D, true),        // 008d68f7, 00ce8fec
         make_float("gamma", 0x64),                  // 008d693c, 00d15c5c
         make_float("markerAlpha", 0x80),            // 008d696c, 00d15c50
         make_bool_always("XboxCompatibilityMode", 0xB0), // 008d699f, 00d15c38
         make_bool_always("ShowSafeArea", 0xB1),     // 008d69ca, 00d15c28
         make_bool_always("CockpitMode", 0xB2),      // 008d69f5, 00d15c1c
-        make_int_always("ClanText", 0xB8),          // 008d6a2b, 00d15c10
+        make_string("ClanText", 0xB4),             // 008d6a25 tag0, +B8h text
     };
     return table;
 }
@@ -256,19 +257,21 @@ void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& 
     writer.write_options_text_008d6170(); //008d64a9; before the first archive call
     writer.begin_section(kSettingsSectionName); // 008d64c4
     for (const SettingsKey& key : settings_persistence_keys_008d64a0()) {
+        if (key.offset == 0x95) { // 008d67f5..008d681c, before HardwareReported
+            writer.begin_section(kKeyboardSetupSectionName);
+            writer.write_keyboard_setup();
+            writer.end_section();
+        }
         const SettingsValue value = read_field(settings, key.offset);
         if (key.omit_when_default && value == key.default_value) {
             continue; // 00bd5680 returned true
         }
         writer.write_field(key.name, value); // virtual +0Ch
     }
-    writer.begin_section(kKeyboardSetupSectionName); // 008d680f
-    writer.write_keyboard_setup();                  // 006a51c0
-    writer.end_section();
     writer.begin_section(kDownloadedContentSectionName); // 008d6a6c
     for (std::size_t i = 0; i < settings.downloaded_content.size(); ++i) {
-        writer.write_field(settings.downloaded_content[i].c_str(),
-            SettingsValue::from_int(static_cast<int>(i))); // 008d6aa8 writes the index
+        writer.write_field(gui_lua_key_by_index(static_cast<std::int32_t>(i)),
+            SettingsValue::from_text(settings.downloaded_content[i].c_str()));
     }
     writer.end_section(); // 008d6ac7
     writer.end_section(); // 008d6ad0

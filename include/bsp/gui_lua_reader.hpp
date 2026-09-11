@@ -32,7 +32,7 @@ namespace bsp {
 // ---------------------------------------------------------------------------
 
 // The bit each entry of the library table at 00D62BB8 answers to, in table
-// order. 00B6A020 walks that table and, for every set bit, runs the standard
+// order. 00B6A020 always opens base, then for every other set bit runs the standard
 // Lua 5.1.1 open sequence: lua_pushcclosure(L, opener, 0) (00A67B20),
 // lua_pushstring(L, name) (00A67A50), lua_call(L, 1, 0) (00A68090).
 enum class GuiLuaLibrary : std::uint32_t {
@@ -392,7 +392,8 @@ struct GuiLuaChunkOutcome {
 
 // 00B66CA0, __thiscall(state, const NativeString *path, char obfuscated),
 // RET 8. `obfuscated` is the second argument; the GUI passes zero, which skips
-// the byte transform at 00B66D1F entirely. That transform is not reconstructed.
+// the byte transform at 00B66D1F entirely. If set, bytes through the first 01h
+// become spaces and subsequent bytes rotate by four bits (no marker: all spaces).
 GuiLuaChunkOutcome run_gui_lua_chunk_00b66ca0(GuiLuaScriptHost& host,
                                               const std::string& path,
                                               bool obfuscated);
@@ -400,7 +401,8 @@ GuiLuaChunkOutcome run_gui_lua_chunk_00b66ca0(GuiLuaScriptHost& host,
 // 00B69D40, __thiscall(state, const NativeString *path, char obfuscated),
 // RET 8. The base path first, then every override the search returns.
 std::vector<GuiLuaChunkOutcome> run_gui_lua_file_00b69d40(GuiLuaScriptHost& host,
-                                                          const std::string& path);
+                                                          const std::string& path,
+                                                          bool obfuscated = false);
 
 // The script half of 00AC6600, in call order: interface/_Common.lua, then
 // interface/<page>.lua, both through 00B69D40 with the obfuscation flag clear.

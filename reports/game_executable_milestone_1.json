@@ -1,0 +1,619 @@
+{
+  "packet": "game_executable_milestone_1",
+  "owner": "agent/cc-game-exe",
+  "target": "bsp_game.exe",
+  "milestone": 1,
+  "definition": "A Win32 process that runs the reconstructed startup spine end to end: entry sequence 008f81f0, the reachable phases of cSkeletonAppMidway::Init 0073d410, the window 00becee0, the Direct3D 9 device 00b2aeb0, the platform message loop 00bec1a0 driving the application frame 00737a50, and the shutdown steps the process owns out of 00737f30. Host methods without a reconstruction record their name and native call site and return a neutral value.",
+  "addresses": {
+    "win_main": "008f81f0",
+    "application_initialize": "0073d410",
+    "platform_construct": "00becda0",
+    "window_configure": "00becee0",
+    "save_storage": "00beb2c0",
+    "device_create": "00b2aeb0",
+    "renderer_construct": "00b32410",
+    "platform_loop": "00bec1a0",
+    "application_frame": "00737a50",
+    "window_close_policy": "004ca2f0",
+    "application_shutdown": "00737f30"
+  },
+  "files": {
+    "executable_entry": "src/game_main.cpp",
+    "host_bindings": "src/game_hosts.cpp",
+    "host_header": "include/bsp/game_hosts.hpp",
+    "documentation": "docs/GAME_EXECUTABLE.md",
+    "cmake_registration": "cmake/startup.cmake"
+  },
+  "validation": {
+    "command": "bsp_game.exe --frames 60 --log local/game_run.log",
+    "exit_code": 0,
+    "window_created": true,
+    "device_created": true,
+    "device_hresult": "0x00000000",
+    "back_buffer": "640x480",
+    "frames_presented": 60,
+    "loop_finished": true,
+    "build": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings",
+    "tests": "ctest reconstructed_math passed, 1/1; no test cases added",
+    "close_path_run": {
+      "command": "bsp_game.exe --log local/game_close.log, then CloseMainWindow() from the shell",
+      "frames_presented": 25450,
+      "close_policy_reached": "004ca2f0 front-end branch, 1 call",
+      "request_loop_exit": "0109cf04+181, 1 call",
+      "loop_finished": true,
+      "exit_code": 0
+    }
+  },
+  "host_method_counts": {
+    "concrete": 43,
+    "unimplemented": 25,
+    "total": 68
+  },
+  "host_methods": [
+    {
+      "method": "StartupHost::com_initialize",
+      "native_address": "008f81f8",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::com_initialize_security",
+      "native_address": "008f820a",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::game_explorer_create",
+      "native_address": "008f8245",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::com_uninitialize",
+      "native_address": "008f82cc",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_initialize",
+      "native_address": "00bd2e20",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::allocate_thread_slot",
+      "native_address": "00bf681b",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_register_current",
+      "native_address": "00bd2fe0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::create_single_instance_mutex",
+      "native_address": "008f8301",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::set_thread_affinity_to_first_processor",
+      "native_address": "008f83fc",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::publish_game_resource_factory",
+      "native_address": "008f840b",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_construct",
+      "native_address": "00737970",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_initialize",
+      "native_address": "0073d410",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 capture_module_directory",
+      "native_address": "00439040",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 construct_allocation_stats",
+      "native_address": "00be2900",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 construct_frame_clock_singleton",
+      "native_address": "00bedfb0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 install_object_handle_resolvers",
+      "native_address": "006ad0d0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 1 parse_command_line",
+      "native_address": "0073ce20",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 1 probe_hardware",
+      "native_address": "0073c3b0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 vfs_provider_manager",
+      "native_address": "00beda60",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 mount_packages",
+      "native_address": "0073cb10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 3 construct_win32_platform",
+      "native_address": "00becda0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "SaveStorageHost::special_folder_path",
+      "native_address": "00beb2f3",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "SaveStorageHost::create_directory",
+      "native_address": "00beb35e",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "Phase 3 initialize_save_storage",
+      "native_address": "00beb2c0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 load_game_settings",
+      "native_address": "008d8190",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::load_arrow_cursor",
+      "native_address": "00becf0f",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::register_class",
+      "native_address": "00becf80",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::adjust_window_rect",
+      "native_address": "00becfd6",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::create_window",
+      "native_address": "00bed01d",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::set_window_long",
+      "native_address": "00bed0a4",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "PlatformWindowHost::set_window_pos",
+      "native_address": "00bed0c9",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::desktop_client_rect",
+      "native_address": "00bed0f3",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::window_color_depth",
+      "native_address": "00bed16b",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::show_window",
+      "native_address": "00bed19c",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 3 configure_platform_window",
+      "native_address": "00becee0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "RendererHost::direct3d_create",
+      "native_address": "00b32410",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "RendererHost::create_device",
+      "native_address": "00b2aeb0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 4 renderer_resources",
+      "native_address": "00b14a10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 input_settings",
+      "native_address": "005547d0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 sound_system_initialize",
+      "native_address": "00a88770",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 locale_tables",
+      "native_address": "00aa09d0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 7 gui_startup",
+      "native_address": "00aa06d0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 8 world_effects_startup",
+      "native_address": "00af0b10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 9 game_entry",
+      "native_address": "00740840",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::platform_run_loop_dispatch",
+      "native_address": "00bec1a0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformLoopCallbacks::pretranslate",
+      "native_address": "00bec20a",
+      "implemented": false,
+      "calls": 2
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_set_frame_slot_color",
+      "native_address": "004c1dd0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_begin_frame_slot",
+      "native_address": "00be3640",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::game_state",
+      "native_address": "00e188a8+5d4",
+      "implemented": false,
+      "calls": 120
+    },
+    {
+      "method": "ApplicationFrameHost::input_action_pressed",
+      "native_address": "004c43c0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::advance_frame_clock",
+      "native_address": "00bedc30",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::frame_interval",
+      "native_address": "00bee070",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::game_on_move",
+      "native_address": "004e4a40",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::exit_requested",
+      "native_address": "00e1ae75",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::tick_vfs_providers",
+      "native_address": "00bdb0b0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::update_loading_queue",
+      "native_address": "004fde20",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_end_frame_slot",
+      "native_address": "00be3660",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_end_frame",
+      "native_address": "00be34d0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "RendererHost::clear_and_present",
+      "native_address": "milestone",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::request_loop_exit",
+      "native_address": "0109cf04+181",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_shutdown",
+      "native_address": "00737f30",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "ApplicationShutdownHost::singleton_teardown",
+      "native_address": "00737f80",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_destruct",
+      "native_address": "008f8444",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::destroy_singleton_lifetime_manager",
+      "native_address": "008f8449",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::close_mutex",
+      "native_address": "008f846e",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_unregister_current",
+      "native_address": "00bd3050",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::release_thread_slot",
+      "native_address": "00bf65ac",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_shutdown",
+      "native_address": "00bd30d0",
+      "implemented": true,
+      "calls": 1
+    }
+  ],
+  "unimplemented_methods": [
+    {
+      "method": "StartupHost::game_explorer_create",
+      "native_address": "008f8245",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::publish_game_resource_factory",
+      "native_address": "008f840b",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 1 probe_hardware",
+      "native_address": "0073c3b0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 vfs_provider_manager",
+      "native_address": "00beda60",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 mount_packages",
+      "native_address": "0073cb10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 load_game_settings",
+      "native_address": "008d8190",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 4 renderer_resources",
+      "native_address": "00b14a10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 input_settings",
+      "native_address": "005547d0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 sound_system_initialize",
+      "native_address": "00a88770",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 locale_tables",
+      "native_address": "00aa09d0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 7 gui_startup",
+      "native_address": "00aa06d0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 8 world_effects_startup",
+      "native_address": "00af0b10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 9 game_entry",
+      "native_address": "00740840",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "PlatformLoopCallbacks::pretranslate",
+      "native_address": "00bec20a",
+      "implemented": false,
+      "calls": 2
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_set_frame_slot_color",
+      "native_address": "004c1dd0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_begin_frame_slot",
+      "native_address": "00be3640",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::game_state",
+      "native_address": "00e188a8+5d4",
+      "implemented": false,
+      "calls": 120
+    },
+    {
+      "method": "ApplicationFrameHost::input_action_pressed",
+      "native_address": "004c43c0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::game_on_move",
+      "native_address": "004e4a40",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::tick_vfs_providers",
+      "native_address": "00bdb0b0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::update_loading_queue",
+      "native_address": "004fde20",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_end_frame_slot",
+      "native_address": "00be3660",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_end_frame",
+      "native_address": "00be34d0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationShutdownHost::singleton_teardown",
+      "native_address": "00737f80",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::destroy_singleton_lifetime_manager",
+      "native_address": "008f8449",
+      "implemented": false,
+      "calls": 1
+    }
+  ],
+  "next_milestones": [
+    "Milestone 2, title page: phase 5 input settings 005547d0 and game settings 008d8190 from the registry, phase 6 locale tables 00aa09d0, phase 7 GUI startup 00aa06d0 with the font registry and the GUI layer draw, so the process reaches game state 1 and draws the logo sequence instead of a cleared back buffer.",
+    "Milestone 3, main menu: phase 9 game entry 00740840 into game state 2, the front-end screen sets and the input edge test at 004c43c0, so the menu responds.",
+    "Supporting work: phase 2 VFS provider manager 00beda60 and package mounts 0073cb10, which every asset-backed milestone depends on."
+  ]
+}

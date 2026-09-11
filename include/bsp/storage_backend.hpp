@@ -38,6 +38,7 @@ public:
     const StorageManagerOperation& operation() const noexcept { return operation_; }
     std::int32_t operation_code_04() const noexcept { return operation_code_04_; }
     bool error_20() const noexcept { return error_20_; }
+    bool storage_available_21() const noexcept { return ready_21_; }
     std::uint32_t write_kind_508() const noexcept { return write_kind_508_; }
     lua_State* storage_lua_38() noexcept { return lua_.storage_lua_38(); }
     bool has_storage_buffer_30() const noexcept { return buffer_present_30_; }
@@ -48,6 +49,8 @@ public:
     // Kind is a DWORD, not bool: 0=quick, 1=player, 2=game. Query additionally
     // requires the valid marker. Requests retain state+08 and existing prompts.
     bool storage_query_1c(std::string_view name, std::uint32_t kind);
+    void reset_storage_operation_00bd3450() noexcept;
+    void immediate_read_00bd4380(std::string_view name, std::uint32_t kind);
     void request_read_00bd3d70(std::string_view name, std::uint32_t kind);
     void request_write_00bd3dc0(std::string_view name);
     void request_single_write_00bd3e10(std::string_view name, std::uint32_t kind);

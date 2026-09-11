@@ -1,0 +1,81 @@
+{
+  "packet": "orch2_lua_owner",
+  "program": "battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "source": "src/lua_state_owner.cpp",
+  "header": "include/bsp/lua_state_owner.hpp",
+  "documentation": "docs/LUA_STATE_OWNER.md",
+  "status": "bounded_stock_lua511_owner_build_and_installed_script_fixture_validated",
+  "functions": [
+    {
+      "address": "00b6a020", "end_inclusive": "00b6a356",
+      "original_name": "BSP_LuaStateOwner_Open",
+      "name": "BSP_LuaStateOwner_Open",
+      "abi": "__thiscall(owner, uint32 mask), RET4 at00b6a354",
+      "implementation": "PcStorageLuaOwner::open_storage_archive_00b6a020",
+      "evidence": "Sets owns byte, creates real Lua state, forces base bit, opens requested table00d62bb8 libraries, records initial top, PC/X360COMP/canonical region assignments, DoFile callback, cached singleton fundamentals loadbuffer then unprotected call. Assembly resolves register arguments.",
+      "native_flow_gaps": 0
+    },
+    {
+      "address": "00b65e80", "end_inclusive": "00b65e9c",
+      "original_name": "FUN_00b65e80",
+      "name": "BSP_LuaStateOwner_Close",
+      "abi": "ECX=owner, RET",
+      "implementation": "PcStorageLuaOwner::close_storage_archive_00b65e80",
+      "evidence": "Immediate lua_close iff owner+4 state and owner+0 owns flag; clears owner+4. No general object invalidation walk.",
+      "native_flow_gaps": 0
+    },
+    {
+      "address": "00884770", "end_inclusive": "0088482c",
+      "original_name": "FUN_00884770",
+      "name": "BSP_LuaFundamentals_GetSingleton",
+      "abi": "no args, EAX singleton pointer, RET",
+      "implementation": "documented native lifecycle; required cached byte input",
+      "evidence": "Global0108ff1c, singleton manager lock, allocate0Ch, constructor00b68340, lifetime registration.",
+      "native_flow_gaps": 0
+    },
+    {
+      "address": "00b68340", "end_inclusive": "00b68458",
+      "original_name": "FUN_00b68340",
+      "name": "BSP_LuaFundamentals_Construct",
+      "abi": "ECX=this, EAX=this, RET",
+      "implementation": "documented VFS cache contract; required cached byte input",
+      "evidence": "0Ch object with vtable00d62c18, bytes+4,size+8. VFS0109ceec opens Scripts\\fundamentals.lua mode2; stream+18h checks opened, +30h size, +24h read. Read-result not checked; failure branch does not initialize valid members.",
+      "native_flow_gaps": 0
+    }
+  ],
+  "lifetime_evidence": {
+    "00b67980": "Global LuaObject kind+4=1,index+8=-10002,tracked byte+10h=0; native root is not a registry reference.",
+    "00b66de0": "ECX owner, stack object/index/remove-stack-byte; RET0Ch. Assembly00b66de6 tests tracked byte and00b66dec jumps to cleanup epilogue00b66f2b without Lua access when zero.",
+    "destructor_chain": "00441a20 ->00441210 ->00b67700 ->00b66de0",
+    "profile_order": "007fefe0 closes owner before reader destruction. Balanced traversal leaves only untracked global root; tracked children must be released before close.",
+    "blanket_native_invalidation": false,
+    "optional_host_observer": "before_close(state,context) retires host registry refs while state is valid; explicit adaptation. Parent borrowed GUI host can model untracked globals directly."
+  },
+  "validation": {
+    "win32_build": "scripts/build.ps1 Release passed",
+    "existing_ctest": "1/1 reconstructed_math passed",
+    "local_fixture": "local/lua_state_owner_fixture.cpp, MSVC Win32 /MD /std:c++20; passed",
+    "fixture_checks": "Actual installed platform functions; mask0x65 selected/absent libraries; case-insensitive USA region; registry retirement before close; close idempotence; reopen mask0 forced base; protected failing-bootstrap closes state.",
+    "installed_fundamentals": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "game_files_modified": false,
+      "tracked_script_copy": false
+    },
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutations": false
+  },
+  "limitations": [
+    "Names are hypotheses except retained Lua library names.",
+    "Stock Lua5.1.1 has a new C ABI and this owner does not reproduce the private native Lua or4C8h owner layout.",
+    "Required DoFile callback must implement engine VFS and overrides; it was not executed by the fixture.",
+    "Global singleton locking/allocation/lifetime and real VFS byte extraction are documented input contracts, not implemented here.",
+    "Host wraps bootstrap in a protected call and throws after cleanup where native errors would panic; live-owner reopen is rejected rather than leaking its old state.",
+    "Close lifetime evidence only covers untracked global handles remaining after balanced child traversal."
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "packet": "orch2_profile_commit",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_each_batch_by": "tools/bsp.py ghidra uses Client.verify"
+  },
+  "reconstructed_functions": [
+    {
+      "address": "008d7a50",
+      "old_name": "FUN_008d7a50",
+      "proposed_name": "BSP_Settings_RestoreFromProfile",
+      "abi": "callback stack argument; RET 4; ECX unused",
+      "evidence": ["008d7a71 reset operation", "008d7a76-008d7b14 gates and name query", "008d7b16-008d7b6f pending callback plus reload game pointer for queued/immediate choice", "008d7b9d-008d7ba5 rejected request invokes argument without clearing pending global"]
+    },
+    {
+      "address": "008d79a0",
+      "old_name": "FUN_008d79a0",
+      "proposed_name": "BSP_Settings_CompleteProfileRestore",
+      "abi": "no arguments; RET",
+      "evidence": ["008d79bf storage state equals zero", "008d79c6-008d79f5 Lua globals and reader/deserializer", "008d79fa-008d7a24 free clear close destroy order", "008d7a29-008d7a3c clear pending callback before invocation"],
+      "flow_repair": "reports/profile_settings_restore_flow_repair.json"
+    },
+    {
+      "address": "008d5030",
+      "old_name": "FUN_008d5030",
+      "proposed_name": "BSP_Settings_RefreshDownloadedContent",
+      "abi": "ECX=settings; no stack arguments; RET",
+      "evidence": ["008d504b-008d50a0 conditional manager construction and recheck", "008d50a6-008d50de ready gate and v24/filter/v14/v20 ordering", "008d50e0-008d5135 register globals then reload true"]
+    },
+    {
+      "address": "007fae70",
+      "old_name": "FUN_007fae70",
+      "proposed_name": "BSP_PlayerProfile_CommitContentState",
+      "abi": "ECX=profile; no stack arguments; RET",
+      "evidence": ["007faea0 refresh downloaded content", "007faea9-007faf0a construct/open mask4/run DLC.lua flags0", "007faf88-007fafaf clear list and mask", "007faff0-007fb05d exactly64 value characters bit63 first", "007fb063-007fb073 mask OR then key string", "007fb0b8-007fb0ed list append", "007fb13b-007fb189 select scene0 then release objects and owner"]
+    }
+  ],
+  "verification": {
+    "build": "MSVC Win32 Release ./scripts/build.ps1 passed",
+    "existing_tests": "2/2 after verify-seeds; reconstructed_math and native_math_differential",
+    "focused_fixture": "local/profile_commit_fixture/main.cpp compiled and passed on Win32 Release",
+    "fixture_lua": "real repository Lua 5.1.1 GuiLua51Host, tracking every acquired/released handle",
+    "fixture_checks": ["deferred callback timing", "rejected request preserves old pending slot", "reentrant callback survives clear-before-call", "game disappears after query and immediate completion on state1", "free clear archive close reader destroy precede callback", "content refresh filter apply finish locale order", "synthetic DLC mask 0x8000000080000001 and two names", "all Lua handles released before owner close", "installed empty DLC table clears stale names and mask", "manager remains absent after allocation attempt and returns without locale work"],
+    "installed_fixture_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/SCRIPTS/datatables/DLC.lua",
+    "native_differential_for_this_packet": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "Names are provisional hypotheses",
+    "008d6dc0 settings reader is a required host operation reconstructed separately by the integrator",
+    "Storage/backend and platform download manager calls are required methods without default fake results",
+    "0043ea80 filtering and manager virtual bodies remain explicit host requirements",
+    "Existing Lua host and separate state-owner/VFS implementation supply execution",
+    "Malformed short/null DLC fields throw in the host projection; native code reads64bytes unconditionally",
+    "Native string/list/SEH allocation layout is not reproduced",
+    "Apply-all-settings008d5b50 remains the existing caller-owned operation"
+  ]
+}

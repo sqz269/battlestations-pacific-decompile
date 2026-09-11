@@ -6,7 +6,8 @@ FetchContent_Declare(lua511
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_MakeAvailable(lua511)
 set(lua511_units lapi lcode ldebug ldo ldump lfunc lgc llex lmem lobject lopcodes
-  lparser lstate lstring ltable ltm lundump lvm lzio lauxlib lbaselib)
+  lparser lstate lstring ltable ltm lundump lvm lzio lauxlib lbaselib
+  loadlib ltablib liolib loslib lstrlib lmathlib ldblib)
 set(lua511_sources)
 foreach(unit IN LISTS lua511_units)
   list(APPEND lua511_sources "${lua511_SOURCE_DIR}/src/${unit}.c")

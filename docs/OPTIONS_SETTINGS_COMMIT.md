@@ -345,3 +345,12 @@ would not fire on this install.
 - `input_stick_modifiers`: 00699B80, 00698730, 006974F0, 006A51C0. Files
   `docs/INPUT_STICK_MODIFIERS.md`. Contract: which Lua modifier vector each of input +4C9h..+4CCh
   gates, and the keyboardSetup serialization body.
+
+## Correction from docs/PROFILE_READ_INTEGRATION.md
+
+Assembly008d6a25..008d6a56 establishes that ClanText above is a string,
+NativeString+B4 header with text pointer+B8, not an integer. DownloadedContent
+uses numeric index keys with string values. Keyboard output precedes
+HardwareReported; waterDrops/oldFilmEffect/MotionBlur omit true/1/true defaults.
+The implementation now follows those facts. See the linked integration evidence
+for the paired reader008d6dc0 and validation limits.

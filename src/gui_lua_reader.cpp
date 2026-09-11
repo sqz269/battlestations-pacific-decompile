@@ -89,7 +89,7 @@ bool store_float_run(const GuiValue& value, void* dest, std::size_t count) noexc
 std::vector<std::string_view> gui_lua_libraries_00b6a020(std::uint32_t mask) {
     std::vector<std::string_view> opened;
     for (std::uint32_t i = 0; i < 8; ++i) {
-        if ((mask & (1u << i)) != 0) {
+        if (i == 0 || (mask & (1u << i)) != 0) {
             opened.push_back(kLibraryNames[i]);
         }
     }
@@ -605,10 +605,18 @@ GuiLuaChunkOutcome run_gui_lua_chunk_00b66ca0(GuiLuaScriptHost& host,
     outcome.file_read = true;
 
     if (obfuscated) {
-        // 00B66D1F..00B66D7B rotates every byte's nibbles and overwrites a
-        // marker. The GUI never sets the flag and the transform is not
-        // reconstructed, so the chunk is refused rather than mangled.
-        return outcome;
+        // 00B66D40..00B66D61: test marker before replacing the prefix byte.
+        // Only bytes AFTER the first 01h rotate; the marker becomes a space.
+        bool prefix = true;
+        for (char& byte : buffer) {
+            const auto value = static_cast<unsigned char>(byte);
+            if (prefix) {
+                if (value == 1) prefix = false;
+                byte = ' ';
+            } else {
+                byte = static_cast<char>((value << 4) | (value >> 4));
+            }
+        }
     }
 
     // 00B66DA2 luaL_loadbuffer with the path as the chunk name, then 00B66DC4
@@ -621,11 +629,12 @@ GuiLuaChunkOutcome run_gui_lua_chunk_00b66ca0(GuiLuaScriptHost& host,
 }
 
 std::vector<GuiLuaChunkOutcome> run_gui_lua_file_00b69d40(GuiLuaScriptHost& host,
-                                                          const std::string& path) {
+                                                          const std::string& path,
+                                                          bool obfuscated) {
     std::vector<GuiLuaChunkOutcome> outcomes;
-    outcomes.push_back(run_gui_lua_chunk_00b66ca0(host, path, false));
+    outcomes.push_back(run_gui_lua_chunk_00b66ca0(host, path, obfuscated));
     for (const std::string& override_path : host.override_paths(path)) {
-        outcomes.push_back(run_gui_lua_chunk_00b66ca0(host, override_path, false));
+        outcomes.push_back(run_gui_lua_chunk_00b66ca0(host, override_path, obfuscated));
     }
     return outcomes;
 }

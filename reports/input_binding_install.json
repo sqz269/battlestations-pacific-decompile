@@ -1,0 +1,97 @@
+{
+  "packet": "orch2_binding_install",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/input_binding_install.cpp",
+  "functions": [
+    {
+      "address": "00a92260",
+      "name": "BSP_InputManager_IsActionRegistered",
+      "end": "00a92284",
+      "abi": "ECX=input manager; stack=uint32 action; EAX=0/1; RET4",
+      "status": "reconstructed_build_tested_native_differential_tested"
+    },
+    {
+      "address": "00a93750",
+      "name": "BSP_InputManager_InstallActionBinding",
+      "end": "00a937c1",
+      "abi": "ECX=input manager; stack=action,slot,five source dwords,float scale; RET20h",
+      "status": "reconstructed_build_tested_native_differential_tested"
+    },
+    {
+      "address": "00a93500",
+      "name": "BSP_InputBindingVector_Resize",
+      "end": "00a93614",
+      "abi": "ECX=binding vector; stack=int32 count; RET4",
+      "status": "reconstructed_build_tested_native_growth_fixture_tested"
+    },
+    {
+      "address": "00a93220",
+      "name": "BSP_InputBindingVector_Reserve",
+      "end": "00a93341",
+      "abi": "ECX=binding vector; stack=int32 capacity; RET4",
+      "status": "reconstructed_build_tested_fixture_tested"
+    },
+    {
+      "address": "00a93100",
+      "name": "BSP_InputBinding_CopyConstruct",
+      "end": "00a93194",
+      "abi": "ECX=destination; stack=source pointer; EAX=destination; RET4",
+      "status": "reconstructed_build_tested_fixture_tested"
+    }
+  ],
+  "representation": "Shared InputActionRecord and InputActionBinding; explicit actual-device groups; new ABI",
+  "validation": {
+    "msvc_win32_release_build": "passed",
+    "existing_ctest": "2/2 passed",
+    "seed_verification": "passed",
+    "focused_fixture": "PASS: native installer/predicate/rebind/preallocated growth; host reserve/shrink/bounds/x87-copy",
+    "native_scope": "installer, predicate, rebind and resize growth with preallocated capacity",
+    "host_only_scope": "reserve deep copy, shrink, invalid-index adapters and x87 signaling-NaN copy",
+    "byte_comparison": {
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "ranges": [
+        {
+          "address": "00a93750",
+          "length": 114,
+          "matches_disk": true,
+          "sha256": "096bceba3e9454bcbf1beb3a216341b368c125250842ad9ed2c5dc7623109978"
+        },
+        {
+          "address": "00a92260",
+          "length": 37,
+          "matches_disk": true,
+          "sha256": "359f1689e258c5373dc6ca53c8fae366980d9bc4818de65c7c8ae76589efdf47"
+        },
+        {
+          "address": "00a93500",
+          "length": 277,
+          "matches_disk": true,
+          "sha256": "cb4f9298e75537bbcf47a79063888890b0310a7abf73c66b7901f43037a5baab"
+        },
+        {
+          "address": "00a91e80",
+          "length": 460,
+          "matches_disk": true,
+          "sha256": "c5d5f6836a669241b867593ee2b428200c49d9cc828e488272023e7f25cac8e9"
+        }
+      ]
+    }
+  },
+  "fixture_sources": {
+    "local\\input_binding_install_fixture.cpp": "997ff43e512befa98e52ba5b635e25b370bcbc0a3677fc97b77324e52b08b468",
+    "local\\capture_input_binding_install.py": "a6ffd65bc97c5dd22b18c3d6489761cca19ef1deaa9cee602867d3f072070d81"
+  },
+  "flow_repair": "reports/input_binding_install_flow_repair.json",
+  "boundaries": [
+    "Host vectors replace allocator/capacity/exception ABI; unused padding is unmodelled",
+    "Caller translates nonzero native cached pointer words to actual InputDevice objects",
+    "Existing rebind class-index and stable-device-group preconditions retained",
+    "Concrete KeyboardRuntimeHost and axis integration belong to primary packet"
+  ],
+  "binary_compatible": false,
+  "game_validated": false
+}

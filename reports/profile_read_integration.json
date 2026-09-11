@@ -1,0 +1,93 @@
+{
+  "packet": "orch2_profile_read_integration",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "008d6dc0",
+      "end_exclusive": "008d76b7",
+      "sha256": "c418755796604de594ff858cb80f3e7506d5610a02fdbc9958407eeeff90ec4e",
+      "source": "src/settings_archive_reader.cpp",
+      "cpp_symbol": "read_settings_archive_008d6dc0",
+      "evidence": "Defaults, compatibility publication, keyboard read/apply, optional ClanText string, numeric downloaded-content list and shader-model<0x200 shadow/film reset. ECX=settings, reader stack pointer, RET4."
+    },
+    {
+      "address": "00bd3450",
+      "end_exclusive": "00bd346a",
+      "sha256": "3a3ab9e7290d12bd2acf023ca07713ff06db6739fdc7bcdebaba83a42c9b47da",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbol": "PcStorageBackend::reset_storage_operation_00bd3450",
+      "evidence": "ECX=manager RET. PC slot+8 returns true, sets available+21 and state+8 from existing error+20; preserves operation code and prompts."
+    },
+    {
+      "address": "00bd4380",
+      "end_exclusive": "00bd43d3",
+      "sha256": "5657de1cd6f07659ee7457cdcfa7231348df9b31d756c29378608042aa5ce56c",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbol": "PcStorageBackend::immediate_read_00bd4380",
+      "evidence": "ECX=manager, native string pointer and DWORD kind, RET8. Copies read name/kind, calls00bd3ec0, sets state+8 from error; no marker stamping, prompt or operation-code reset."
+    }
+  ],
+  "writer_correction": "008d64a0",
+  "reader_lifetime": "00441a20 / 00b67980 / 00b66de0",
+  "validation": {
+    "tested_source_commit": "8a5ad85dfee61ab1678963fa7056a73b6a4ab5e5",
+    "build": "MSVC Win32 Release; both existing CTests passed after eight seed byte matches",
+    "build_log": "local/profile-read-publish-build.log",
+    "integration_fixture": "local/profile_read_fixture.cpp",
+    "integration_log": "local/profile-read-publish-fixture.log",
+    "integration_checks": [
+      "copied native player and quick through real PC filesystem/decompression/Lua owner/read callbacks",
+      "isolated synthetic checkpoint forces nested manager close/read and actual Lua table import",
+      "actual two-file write/read plus isolated options.txt",
+      "ClanText string and numeric DownloadedContent entries roundtrip",
+      "keyboard writer/read/application dispatch",
+      "callback slot/order and actual installed empty DLC commit",
+      "sparse defaults, absent ClanText preservation, DLC clearing and unsigned low-shader gate",
+      "balanced borrowed global reader destruction after Lua close"
+    ],
+    "controlled_services": [
+      "UI rendering",
+      "platform and renderer effects recorded by fixture",
+      "keyboard action installation recorded by fixture",
+      "DLC base file only; engine override resolution remains external"
+    ],
+    "worker_fixtures": "All three worker fixtures recompiled and passed against combined bsp_core",
+    "worker_fixture_log": "local/profile-read-publish-worker-fixtures.log",
+    "preserved_worker_artifacts": "local/worker-validation/profile-read-20260910e/manifest.json",
+    "preserved_artifact_count": 12,
+    "native_save_sources_unchanged": true,
+    "native_save_hashes": {
+      "player": "a3ea2cbdeab70fa3a1fd96a9e2891367628f00675ab6984cfae1926ba4619faf",
+      "quick": "585435f3964f45b797b2ec15d8d0384dd7c9a9aa8398d7a245bc8ad2df9c42e2"
+    },
+    "independent_review": "Keyboard worker checked both settings functions against assembly; Lua worker checked balanced close/reentry lifetime. No blockers.",
+    "registry_correction": "Initial combined multi-source line was dropped by mechanical registry union. Separate deferred entries now compile/link both sources; full build and runtime fixture rerun.",
+    "earlier_tested_sources": [
+      "34bd240",
+      "5113a55",
+      "a6cecae"
+    ]
+  },
+  "annotations": {
+    "names_verified": 17,
+    "prior_comment_fields_preserved": 3,
+    "forced_exports": 17,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotation_record": "local/profile-read-annotation-changes.json"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "worker_commits": {
+    "lua_owner": "9438ac2",
+    "keyboard_restore": "9af4c4f",
+    "profile_commit": "1dec7d5"
+  },
+  "followup": [
+    "actual DoFile VFS override host",
+    "keyboard006aa090 paired-axis test and00a93750 installer/00a91e80 device resolution",
+    "runtime game/platform/renderer/content hosts and scene selection",
+    "native ABI/object allocation proof and gameplay"
+  ]
+}
