@@ -1,0 +1,79 @@
+{
+  "packet": "orch2_game_movie_player",
+  "date": "2026-09-10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_mode": "read_only_verified_bsp_queries; parent owns definitions and annotations",
+  "source": "src/movie_player.cpp",
+  "header": "include/bsp/movie_player.hpp",
+  "documentation": "docs/GAME_MOVIE_PLAYER.md",
+  "status": "reconstructed_control_flow_strict_win32_build_existing_checks_and_one_focused_callback_fixture_passed",
+  "abi_compatible": false,
+  "native_controller_layout": {
+    "size": "0x34",
+    "screen_vtable": "00ceae94",
+    "secondary_vtable": "00ceae7c",
+    "screen_slot": "0x56",
+    "offsets_checked_at_compile_time": ["0x04", "0x08", "0x1c", "0x20", "0x24", "0x28", "0x2c", "0x30"],
+    "constructor_leaves_untouched": ["0x24", "0x28", "0x2c", "padding bytes"],
+    "movie_widget_state_is_projection": true
+  },
+  "corrected_contracts": {
+    "004f8a20": "__thiscall(screen, NativeString const*, byte prefer_shrink_wide, float local_z, byte loop), RET10h",
+    "depth": "004f8a6b..004f8a76 -> 00aa7910; backdrop float(double(local_z)+1.0) at004f8a93..004f8aac",
+    "loop": "00aae320 -> widget+105h -> decoder virtual+28h -> 00a4c720 -> decoder+0Ah -> final-frame BinkGoto(0,0) in00a4cd70",
+    "completion": "plain function pointer widget+F8h; no stack args; native ECX=widget, ignored by004f89d0/00685060",
+    "sink_selection": "shrink only when second argument byte is nonzero and platform+0Dh is zero",
+    "stop": "selected decoder running(false), close; hide backdrop; wanted=false; retain selected and applied",
+    "callback_reentry": "00aadf40 closes decoder then rereads completion pointer before call, no accesses after callback",
+    "default_completion": "skip states1/2/4; otherwise004c7ed0, reread game state, 004cd0f0(0,0,1) only for13/15"
+  },
+  "functions": [
+    {"address":"004f8af0","name":"BSP_MoviePlayer_Construct","old_name":"FUN_004f8af0","cpp_symbol":"construct_movie_player_004f8af0","original_abi":"__thiscall(this); RET; EAX=this"},
+    {"address":"004f8cf0","name":"BSP_MoviePlayer_Initialize","old_name":"FUN_004f8cf0","cpp_symbol":"initialize_movie_player_004f8cf0","original_abi":"__thiscall(this); RET; vtable+10h"},
+    {"address":"004f8970","name":"BSP_MoviePlayer_SetCompletion","old_name":"FUN_004f8970","cpp_symbol":"set_movie_completion_004f8970","original_abi":"__thiscall(this, callback); RET4"},
+    {"address":"004f89a0","name":"BSP_MoviePlayer_IsPlaying","old_name":"FUN_004f89a0","cpp_symbol":"movie_is_playing_004f89a0","original_abi":"__thiscall(this); RET; AL result"},
+    {"address":"004f8a20","name":"BSP_MoviePlayer_Play","old_name":"FUN_004f8a20","cpp_symbol":"play_movie_004f8a20","original_abi":"__thiscall(this, NativeString const*, byte prefer_shrink_wide, float z, byte loop); RET10h"},
+    {"address":"004f8ac0","name":"BSP_MoviePlayer_Stop","old_name":"FUN_004f8ac0","cpp_symbol":"stop_movie_004f8ac0","original_abi":"__thiscall(this); RET"},
+    {"address":"004f8c60","name":"BSP_MoviePlayer_Update","old_name":"FUN_004f8c60","cpp_symbol":"update_movie_player_004f8c60","original_abi":"__thiscall(this, float unused); RET4"},
+    {"address":"004f8f00","name":"BSP_MoviePlayer_CollectChildren","old_name":null,"cpp_symbol":"collect_movie_player_children_004f8f00","original_abi":"__thiscall(this, vector<void*>*); RET4"},
+    {"address":"004f8be0","name":"BSP_MoviePlayer_Destruct","old_name":"FUN_004f8be0","cpp_symbol":"destroy_movie_player_004f8be0","original_abi":"__thiscall(this); RET; no free"},
+    {"address":"004c7ed0","name":"BSP_Game_FinishMovie","old_name":"FUN_004c7ed0","cpp_symbol":"finish_game_movie_004c7ed0","original_abi":"__thiscall(game); RET"},
+    {"address":"004f89d0","name":"BSP_MoviePlayer_DefaultCompletion","old_name":null,"cpp_symbol":"default_movie_completion_004f89d0","original_abi":"callback with no stack args; ECX ignored and replaced with global game; RET"},
+    {"address":"00aae320","name":"BSP_GuiMovie_SetSource","old_name":"FUN_00aae320","cpp_symbol":"set_movie_widget_source_00aae320","original_abi":"__thiscall(widget, NativeString const*, byte loop); RET8"},
+    {"address":"00aafee0","name":"BSP_GuiMovie_SetCompletion","old_name":null,"cpp_symbol":"set_movie_widget_completion_00aafee0","original_abi":"__thiscall(widget, callback); RET4"},
+    {"address":"00ab0eb0","name":"BSP_GuiMovie_Start","old_name":"FUN_00ab0eb0","cpp_symbol":"start_movie_widget_00ab0eb0","original_abi":"__thiscall(widget); RET or callback tail jump preserving widget ECX"},
+    {"address":"00ab0f90","name":"BSP_GuiMovie_OnVisibilityChanged","old_name":null,"cpp_symbol":"movie_widget_visibility_changed_00ab0f90","original_abi":"__thiscall(widget, byte visible); RET4; vtable+3Ch"},
+    {"address":"00aac870","name":"BSP_GuiMovie_Stop","old_name":"FUN_00aac870","cpp_symbol":"stop_movie_widget_00aac870","original_abi":"__thiscall(widget); RET or decoder-close tail jump"},
+    {"address":"00aac8e0","name":"BSP_GuiMovie_IsPlaying","old_name":"FUN_00aac8e0","cpp_symbol":"movie_widget_is_playing_00aac8e0","original_abi":"__thiscall(widget); RET; AL result"},
+    {"address":"00ab04a0","name":"BSP_GuiMovie_Skip","old_name":"FUN_00ab04a0","cpp_symbol":"skip_movie_widget_00ab04a0","original_abi":"__thiscall(widget); RET"},
+    {"address":"00aadf40","name":"BSP_GuiMovie_Update","old_name":null,"cpp_symbol":"update_movie_widget_00aadf40","original_abi":"__thiscall(widget, float delta); RET4; vtable+40h"}
+  ],
+  "reused_reconstruction": ["004f83b0", "0041dd40", "00be0a30 native-string copy fragment"],
+  "no_ghidra_function": [
+    {"start":"004f89d0","final_instruction_address":"004f8a11","final_instruction_length":1,"end_exclusive":"004f8a12","instruction":"RET","state":"missing at analysis time; parent defines"},
+    {"start":"004f8f00","final_instruction_address":"004f8f0d","final_instruction_length":3,"end_exclusive":"004f8f10","instruction":"RET 4","state":"missing at analysis time; parent defines"},
+    {"start":"00aafee0","final_instruction_address":"00aafeea","final_instruction_length":3,"end_exclusive":"00aafeed","instruction":"RET 4","state":"missing at analysis time; parent defines"},
+    {"start":"00aadf40","final_instruction_address":"00aadfa9","final_instruction_length":3,"end_exclusive":"00aadfac","instruction":"RET 4","state":"missing at analysis time; parent defines"},
+    {"start":"00ab0f90","final_instruction_address":"00ab0fc9","final_instruction_length":3,"end_exclusive":"00ab0fcc","instruction":"RET 4","state":"missing at analysis time; parent defines"}
+  ],
+  "validation": {
+    "seed_bytes": "python tools/ghidra_export.py verify-seeds passed; limited existing seed ranges only, not whole-image identity",
+    "build": "scripts/build.ps1 passed, MSVC Win32 Release /W4 /WX /fp:strict",
+    "source_compiled": "movie_player.cpp recorded in local/movie_build.log",
+    "existing_checks": {"reconstructed_math":"passed", "native_math_differential":"passed"},
+    "focused_movie_check": "One local MSVC Win32 fixture passes: completed decoder closes first; close replaces completion; update invokes replacement rather than cached old callback. Ordered GUI update/bind/decoder update/handle/completed/close/callback calls checked.",
+    "focused_check_path": "local/movie_completion_check/check.cpp (ignored local fixture, not added as test framework)",
+    "movie_native_differential": false,
+    "game_validated": false,
+    "visual_validated": false
+  },
+  "boundaries": [
+    "Page load/find/visibility/transform and renderer geometry remain host calls; a real GUI host must invoke reconstructed cGuiMovie activation and update hooks.",
+    "Bink decoder and third-party codec code, texture creation, subtitle parsing/update/cleanup and VFS remain external.",
+    "Native SEH and pooled temporary page-name allocation are not reproduced by C-string host page lookup.",
+    "Secondary callback-owner destructor00695870 remains external.",
+    "Global game backing/input context/cinematic calls remain explicit; higher call-site integration is owned by parent.",
+    "Data layout matches only the34h controller; C++ APIs and MovieWidgetState projection are not native ABI replacements."
+  ]
+}
