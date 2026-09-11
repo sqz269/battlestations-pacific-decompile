@@ -335,6 +335,7 @@ public:
     GameScriptHost* script_host() const noexcept { return scripts_; }
     GameLocaleHost* locale_host() const noexcept { return locale_; }
     GameFontHost* font_host() const noexcept { return fonts_; }
+    const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
 
 private:
@@ -349,6 +350,7 @@ private:
     Win32PlatformState platform_;
     PlatformLoopState loop_;
     FrameClock clock_;
+    ObjectHandleResolverSlots object_resolvers_;
     ApplicationFrameState frame_state_;
     FrameMarkerColor frame_color_;
     SaveStorageRoots save_roots_;

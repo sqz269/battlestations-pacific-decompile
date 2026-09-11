@@ -1,0 +1,98 @@
+{
+  "packet": "orch4_object_handle_resolvers_d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "definitions": "reports/object_handle_resolver_definitions.json",
+  "new_functions": 5,
+  "connected_existing": "006ad0d0",
+  "routines": [
+    {
+      "address": "006ad080",
+      "name": "object_from_handle_006ad080",
+      "source": "src/object_handle_resolvers.cpp",
+      "status": "reconstructed_connected_build_and_focused_fixture_tested",
+      "abi": "ECX=full handle word; EAX=object pointer; RET",
+      "evidence": "Provisional descriptive name, not recovered symbol. Complete body: Full ECX zero test precedes low16 truncation; signed split against00F89A10, subtract current first/second base with32-bit wrap; current table pointer, stride10h entry+C. No generation/upper-bound guard. Native ECX=full handle word; EAX=object pointer; RET. src/object_handle_resolvers.cpp; docs/OBJECT_HANDLE_RESOLVERS.md. Win32 build and existing2/2 tests passed; one real-Lua/native-entry fixture passed. Explicit table views; not native ABI/game/world-loading validated.",
+      "document": "docs/OBJECT_HANDLE_RESOLVERS.md",
+      "last_instruction": "006ad0b9",
+      "last_instruction_length": 1,
+      "instructions": 17,
+      "uncertainty": "Actual object tables and valid selected address required; live Lua table path; native SEH/ABI/game validation excluded."
+    },
+    {
+      "address": "006ad0c0",
+      "name": "handle_from_object_006ad0c0",
+      "source": "src/object_handle_resolvers.cpp",
+      "status": "reconstructed_connected_build_and_focused_fixture_tested",
+      "abi": "ECX=object; EAX=zero-extended16-bit handle; RET",
+      "evidence": "Provisional descriptive name, not recovered symbol. Complete body: Null returns0; nonnull reads word object+174h. Verified previously undefined label body and created bounded function. Native ECX=object; EAX=zero-extended16-bit handle; RET. src/object_handle_resolvers.cpp; docs/OBJECT_HANDLE_RESOLVERS.md. Win32 build and existing2/2 tests passed; one real-Lua/native-entry fixture passed. Explicit table views; not native ABI/game/world-loading validated.",
+      "document": "docs/OBJECT_HANDLE_RESOLVERS.md",
+      "last_instruction": "006ad0ce",
+      "last_instruction_length": 1,
+      "instructions": 6,
+      "uncertainty": "Actual object tables and valid selected address required; live Lua table path; native SEH/ABI/game validation excluded."
+    },
+    {
+      "address": "00888aa0",
+      "name": "object_from_lua_table_00888aa0",
+      "source": "src/object_handle_resolvers.cpp",
+      "status": "reconstructed_connected_build_and_focused_fixture_tested",
+      "abi": "ECX=LuaObject; EAX=user pointer; RET",
+      "evidence": "Provisional descriptive name, not recovered symbol. Complete body: Lookup literal Ptr at00CFAD08 with existing00B67800; convert returned temporary using00B662D0; capture EAX inESI across00B67700 destruction. Real Lua light/full userdata semantics, not pointer-to-pointer or numeric conversion. Native ECX=LuaObject; EAX=user pointer; RET. src/object_handle_resolvers.cpp; docs/OBJECT_HANDLE_RESOLVERS.md. Win32 build and existing2/2 tests passed; one real-Lua/native-entry fixture passed. Explicit table views; not native ABI/game/world-loading validated.",
+      "document": "docs/OBJECT_HANDLE_RESOLVERS.md",
+      "last_instruction": "00888afb",
+      "last_instruction_length": 1,
+      "instructions": 24,
+      "uncertainty": "Actual object tables and valid selected address required; live Lua table path; native SEH/ABI/game validation excluded."
+    },
+    {
+      "address": "00b662d0",
+      "name": "lua_object_to_userdata_00b662d0",
+      "source": "src/object_handle_resolvers.cpp",
+      "status": "reconstructed_connected_build_and_focused_fixture_tested",
+      "abi": "ECX=LuaObject; tail JMP00A67910; EAX=user pointer",
+      "evidence": "Provisional descriptive name, not recovered symbol. Complete body: Loads wrapper state then real state+4 intoECX and object stack index+8 intoEDX; tail-jumps to correctly named lua_touserdata. C++ host uses canonical Lua5.1.1 and registry reference. Native ECX=LuaObject; tail JMP00A67910; EAX=user pointer. src/object_handle_resolvers.cpp; docs/OBJECT_HANDLE_RESOLVERS.md. Win32 build and existing2/2 tests passed; one real-Lua/native-entry fixture passed. Explicit table views; not native ABI/game/world-loading validated.",
+      "document": "docs/OBJECT_HANDLE_RESOLVERS.md",
+      "last_instruction": "00b662da",
+      "last_instruction_length": 5,
+      "instructions": 5,
+      "uncertainty": "Actual object tables and valid selected address required; live Lua table path; native SEH/ABI/game validation excluded."
+    },
+    {
+      "address": "00bd4fc0",
+      "name": "set_object_handle_resolvers_00bd4fc0",
+      "source": "src/object_handle_resolvers.cpp",
+      "status": "reconstructed_connected_build_and_focused_fixture_tested",
+      "abi": "ECX=number callback; EDX=table callback; reverse callback stack; RET4",
+      "evidence": "Provisional descriptive name, not recovered symbol. Complete body: Read third callback stack then store0109CED4,CED8,CEDC in order, no validation. C++ registry now has typed callable fields with explicit native-state arguments. Native ECX=number callback; EDX=table callback; reverse callback stack; RET4. src/object_handle_resolvers.cpp; docs/OBJECT_HANDLE_RESOLVERS.md. Win32 build and existing2/2 tests passed; one real-Lua/native-entry fixture passed. Explicit table views; not native ABI/game/world-loading validated.",
+      "document": "docs/OBJECT_HANDLE_RESOLVERS.md",
+      "last_instruction": "00bd4fd5",
+      "last_instruction_length": 3,
+      "instructions": 5,
+      "uncertainty": "Actual object tables and valid selected address required; live Lua table path; native SEH/ABI/game validation excluded."
+    },
+    {
+      "address": "006ad0d0",
+      "name": "install_object_handle_resolvers_006ad0d0",
+      "source": "src/object_handle_resolvers.cpp",
+      "status": "reconstructed_connected_build_and_focused_fixture_tested",
+      "abi": "cdecl void; RET",
+      "evidence": "Provisional descriptive name, not recovered symbol. Complete body: Concrete006AD080/00888AA0/006AD0C0 callbacks installed through recovered00BD4FC0. GameStartupHost now retains registry instead of local three-null placeholder. Actual table owners/population still required. Native cdecl void; RET. src/object_handle_resolvers.cpp; docs/OBJECT_HANDLE_RESOLVERS.md. Win32 build and existing2/2 tests passed; one real-Lua/native-entry fixture passed. Explicit table views; not native ABI/game/world-loading validated.",
+      "document": "docs/OBJECT_HANDLE_RESOLVERS.md",
+      "last_instruction": "006ad0e4",
+      "last_instruction_length": 1,
+      "instructions": 5,
+      "uncertainty": "Actual object tables and valid selected address required; live Lua table path; native SEH/ABI/game validation excluded."
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "build_log": "local/object_handle_build.log",
+    "fixture": "local/object_handle_fixture.log passed",
+    "new_permanent_tests": 0,
+    "game_validated": false
+  },
+  "integration": "Startup persistent callable registry; live reader adapter; actual table allocation/population remains external.",
+  "ghidra": "Two code labels defined/saved with original bytes; annotations/readback pending integration"
+}

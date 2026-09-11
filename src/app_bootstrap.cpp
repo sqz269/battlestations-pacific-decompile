@@ -107,19 +107,6 @@ std::string capture_module_directory_00439040(const std::string& module_file_nam
 }
 
 // ---------------------------------------------------------------------------
-// 006ad0d0
-// ---------------------------------------------------------------------------
-
-void install_object_handle_resolvers_006ad0d0(ObjectHandleResolverSlots& slots,
-    const void* handle_to_object, const void* context_value,
-    const void* object_to_handle)
-{
-    slots.handle_to_object = handle_to_object;
-    slots.context_value = context_value;
-    slots.object_to_handle = object_to_handle;
-}
-
-// ---------------------------------------------------------------------------
 // 0073ce20
 // ---------------------------------------------------------------------------
 
