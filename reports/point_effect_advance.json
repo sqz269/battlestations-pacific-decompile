@@ -1,0 +1,124 @@
+{
+  "packet": "orch3_point_advance_ah",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_reconstruction_direct_msvc_compile_and_original_byte_actual_owner_fixture_passed",
+  "functions": [
+    {
+      "name": "advance",
+      "address": "00867d00",
+      "end_exclusive": "00867edb",
+      "length": 475,
+      "sha256": "be0a788463577630bf0662686b3634ced8be81b4dfe2f76b4b278d2aecb1ed6c",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00867d0d",
+          "target": "0x866f50",
+          "relative": true
+        },
+        {
+          "address": "00867d49",
+          "target": "0xb6db70",
+          "relative": true
+        },
+        {
+          "address": "00867d69",
+          "target": "0x413920",
+          "relative": true
+        },
+        {
+          "address": "00867d78",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "00867d7f",
+          "target": "0x42d9a0",
+          "relative": true
+        },
+        {
+          "address": "00867d86",
+          "target": "0x867b10",
+          "relative": true
+        },
+        {
+          "address": "00867dd7",
+          "target": "0xb6db70",
+          "relative": true
+        }
+      ],
+      "returns": [
+        {
+          "address": "00867ecd",
+          "bytes": "c20800",
+          "operands": "8"
+        },
+        {
+          "address": "00867ed8",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "cpp_symbol": "advance_point_effect_00867d00",
+      "ghidra_name": "BSP_Effect_AdvanceTransform",
+      "source": "src/point_effect_advance.cpp",
+      "original_abi": "ECX actual114h point; stack float delta, unused reference DWORD; RET8 at867ECD/867ED8; no established return value",
+      "evidence": "AH complete475-byte body: gated restart before x87 age80 spill; actual parent44 released check, conditional B6DB70, full413920 relativeD0*captured parent world, captured node virtual34/current receiver; consumed parent release then stop then09. Full DWORD sample flags, unspilled x87 elapsed gate, sequential x87 previous copy, captured live node MOVSS XYZ, signed count88>1 and COMISS-positive delta, separately spilled numerator/current timer span/quotients, independent displacement differences, successful sample timer+0. Shared x87 stages correct old world_ocean sampling-only helper. Original475-byte/ESP/full normalized114h comparison with actual point/definition/component/rumble/node lifetimes passed x87-64/24 precision, finite threshold, SNaN, signed count, real callback replacement, released-parent stop and restart. docs/POINT_EFFECT_ADVANCE.md; reports/point_effect_advance.json. ABI callee/pointer adapters explicit; FPU status, native EH and gameplay unvalidated. Name is a hypothesis."
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "00867d0d",
+      "native": "00866f50",
+      "function": "00867d00"
+    },
+    {
+      "address": "00867d49",
+      "native": "00b6db70",
+      "function": "00867d00"
+    },
+    {
+      "address": "00867d69",
+      "native": "00413920",
+      "function": "00867d00"
+    },
+    {
+      "address": "00867d7f",
+      "native": "0042d9a0",
+      "function": "00867d00"
+    },
+    {
+      "address": "00867d86",
+      "native": "00867b10",
+      "function": "00867d00"
+    },
+    {
+      "address": "00867dd7",
+      "native": "00b6db70",
+      "function": "00867d00"
+    }
+  ],
+  "validation": {
+    "direct_compile": "MSVC Win32 /O2 /W4 /WX /fp:strict both changed source translation units passed",
+    "native_probe": "local/point-advance-probe-ah.log",
+    "native_extent": "475 complete bytes, both RET8, ESP balanced",
+    "owner_image": "all114h bytes; normalize pointers0C/18/84/8C/110 only",
+    "x87_precision": [
+      "64-bit significand",
+      "24-bit significand"
+    ],
+    "actual_chain": "complete point construction/definition/component/rumble/native node pools/same singleton domains and real teardown",
+    "callee_adapters": "six direct callee bridges invoke canonical actual source; raw8C/110 node words temporarily translate to existing companions; current virtual34 bridge invokes controlled observer then real B6E870",
+    "callback_scope": "world-matrix override changes actual timer/current node using live owners; refresh bridge itself has no mutation",
+    "shared_build": "primary integration pending",
+    "game_validated": false,
+    "native_exception_dispatch": false,
+    "fpu_status_word_compared": false
+  },
+  "remaining": [
+    "Full manager composition and primary build validation are recorded by primary integrator.",
+    "Native object/vtable ABI replacement, unmasked exception delivery, physical rumble and gameplay remain unvalidated."
+  ]
+}

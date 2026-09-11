@@ -1,16 +1,9 @@
 #include "bsp/world_ocean.hpp"
+#include "bsp/point_effect_advance.hpp"
 
 #include <cmath>
 
 namespace bsp {
-namespace {
-
-OceanVec3 subtract(const OceanVec3& a, const OceanVec3& b) noexcept {
-    return OceanVec3{a.x - b.x, a.y - b.y, a.z - b.z};
-}
-
-} // namespace
-
 OceanVec3 cross_004f9b30(const OceanVec3& a, const OceanVec3& b) noexcept {
     // out.x = a[1]*b[2] - a[2]*b[1]
     // out.y = b[0]*a[2] - a[0]*b[2]
@@ -105,38 +98,18 @@ void advance_shore_wave_scroll_00bbec06(
 
 bool advance_effect_sample_00867d00(
     EffectSampleState& state, float delta, const OceanVec3& sampled_position) noexcept {
-    // 00867D2C: the age accumulates before any gate.
-    state.age = delta + state.age;
-
-    if (!state.track_velocity && !state.track_displacement) {
-        return false;
-    }
-
-    const float elapsed = state.sample_timer + delta;
-    if (!(state.sample_interval < elapsed)) {
-        state.sample_timer = elapsed;
-        return false;
-    }
-
-    state.previous_position = state.current_position;
-    state.current_position = sampled_position;
-
-    if (state.sample_count > 1 && delta > 0.0f) {
-        if (state.track_velocity) {
-            // The native code recomputes sample_timer + delta here rather than
-            // reusing the earlier sum, which is the same value.
-            const float span = state.sample_timer + delta;
-            const OceanVec3 travel = subtract(state.current_position, state.previous_position);
-            state.velocity.x = travel.x / span;
-            state.velocity.y = travel.y / span;
-            state.velocity.z = travel.z / span;
-        }
-        if (state.track_displacement) {
-            state.displacement = subtract(state.current_position, state.previous_position);
-        }
-    }
-
-    state.sample_timer = 0.0f;
+    // This semantic adapter receives an already-sampled position. The complete
+    // actual-owner routine performs restart/attachment/node-refresh callbacks.
+    detail::advance_point_effect_age(state.age, delta); // native store867D31
+    const auto count = static_cast<std::uint32_t>(state.sample_count);
+    const std::uint32_t velocity = state.track_velocity ? 1u : 0u;
+    const std::uint32_t displacement = state.track_displacement ? 1u : 0u;
+    const detail::PointEffectSampleFields fields{
+        state.sample_timer, state.sample_interval,
+        &state.previous_position.x, &state.current_position.x,
+        &state.velocity.x, &state.displacement.x, count, velocity, displacement};
+    if (!detail::begin_point_effect_sample(fields, delta)) return false;
+    detail::finish_point_effect_sample(fields, delta, &sampled_position.x);
     return true;
 }
 

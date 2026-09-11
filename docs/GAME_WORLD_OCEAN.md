@@ -263,19 +263,24 @@ then `0081B010(ECX = this+0x10, &iterator)` erases the entry. The iterator is no
 an erase (0081B010 shifts the array down), and the loop reloads `data` and `size` from `+0x10` and
 `+0x14` on every pass, which is what makes the erase safe.
 
-00867D00, per effect instance:
+00867D00, per effect instance (complete reconstruction and precise ordering now
+in [POINT_EFFECT_ADVANCE.md](POINT_EFFECT_ADVANCE.md)):
 
-- `instance+0x80 += delta` unconditionally: the effect age.
+- If byte `+0x0A` is nonzero, restart gated rows through 00866F50. After restart
+  returns, add delta to age `+0x80` through x87 and spill to float.
 - If `instance+0x8C` holds an attachment node: when `attachment+0x44 == 0`, refresh its world
   matrix and push `Matrix_Multiply4x4(local, attachment+0xF0)` through virtual `+0x34` of the
   instance's own node at `instance+0x110`. When `attachment+0x44` is set, the attachment died:
   run 0042D9A0(0) and 00867B10, then set `instance+0x09 = 1` to mark the effect finished.
-- If `instance+0x28` or `instance+0x2C` is set, run the position sampler: `t = instance+0x48 +
-  delta`; when `instance+0x4C < t`, shift `instance+0x3C..0x44` into `instance+0x30..0x38`, latch
-  the new world position from `instance+0x110`'s matrix row `+0x120`, and when `instance+0x88 > 1`
-  and `delta > 0` write `velocity = (current - previous) / t` into `instance+0x5C..0x64` if
-  `+0x28` is set and `displacement = current - previous` into `instance+0x68..0x70` if `+0x2C` is
-  set; then reset `instance+0x48` to zero. Otherwise store `t` and do nothing else.
+- If either full DWORD `+0x28/+0x2C` is nonzero, compare x87 `timer + delta`
+  against interval `+0x4C` before spilling elapsed to float. Only ordered greater
+  samples; other outcomes spill elapsed to `+0x48`. Sampling copies previous XYZ
+  through x87, captures the current node, refreshes it if needed, and latches its
+  `+0x120` translation DWORDs. Derived outputs require signed DWORD `+0x88 > 1`
+  and COMISS-ordered positive delta. Velocity uses separately float-spilled
+  differences divided by a freshly read, float-spilled `timer + delta` after
+  refresh; displacement recomputes its own differences. Successful samples
+  reset `+0x48` to positive zero, including when the derived-output gate fails.
 
 00866C60 publishes the two arguments into the globals `_DAT_00F87608` (delta) and `DAT_00F8760C`
 (node), then walks the second array at `+0x1C`/`+0x20` and dispatches each entry through
@@ -316,7 +321,9 @@ was not recovered.
   write and the cleared layer count.
 - `shore_wave_scroll_step_00bbec06` and `advance_shore_wave_scroll_00bbec06`, the only place the
   ocean spends the delta.
-- `advance_effect_sample_00867d00`, the age accumulator and position sampler.
+- `advance_effect_sample_00867d00`, a sampling-only semantic adapter. It now
+  shares exact x87 stages with the complete actual-owner advancement routine;
+  restart, attachment, stop and live-node refresh belong to that full routine.
 - `session_counts_mission_004b6260` and `adjust_mission_counters_004bcaa0`.
 - `WorldOceanHost` with one method per native call site in this slice, plus
   `arm_mission_start_latch_004e4e00` and `run_ocean_and_effects_tick` as the two sequence
