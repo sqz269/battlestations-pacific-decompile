@@ -3,6 +3,7 @@
 #include "bsp/gameplay_effect_components.hpp"
 
 namespace bsp {
+struct EffectSoundContext;
 // Required native call sites, without a fabricated renderer or texture.
 struct EffectComponentTextureServices {
     virtual ~EffectComponentTextureServices() = default;
@@ -17,6 +18,7 @@ struct EffectScalarComponentContext {
     NativeStringStorage& strings;
     const bool& crt_sse2_conversion;
     EffectComponentTextureServices& textures;
+    EffectSoundContext& sound;
 };
 
 // Native readers: ECX actual component, stack retained LuaObject, RET4.
@@ -42,8 +44,8 @@ void* scalar_delete_effect_square_rumble_0086d120(void*, std::uint32_t, EffectSc
 void* scalar_delete_effect_light_0086d140(void*, std::uint32_t, EffectScalarComponentContext&);
 void* scalar_delete_effect_splash_0086d160(void*, std::uint32_t, EffectScalarComponentContext&);
 
-// Read CURRENT component vtable at each dispatch. Seven read-only native
-// tables have concrete readers and scalar cleanup; every other table goes
+// Read CURRENT component vtable at each dispatch. Seven scalar tables and
+// Sound have concrete readers and scalar cleanup; every other table goes
 // to the required remaining services. Reuse this for definition destruction.
 class GameplayEffectScalarComponentDispatcher final : public GameplayEffectComponentServices {
 public:

@@ -39,6 +39,12 @@ volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
     void* actual_destination_owner, volatile NativeRenderAliasIterator& output,
     NativeRenderAliasIterator input_by_value, SizedStoragePool& actual_string_pool,
     const SingletonLifetimeCallbacks&);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
+    void* actual_destination_owner, volatile NativeRenderAliasIterator& output,
+    NativeRenderAliasIterator input_by_value, ActualNativeStringPoolStorage& actual_string_pool,
+    const SingletonLifetimeCallbacks&);
 
 // These require native Win32 storage and a callable invalid_parameter binding.
 // Returning handlers may repair storage; no validation is strengthened, no

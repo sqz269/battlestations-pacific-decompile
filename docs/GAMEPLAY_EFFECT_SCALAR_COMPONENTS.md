@@ -143,3 +143,11 @@ and their current scalar targets listed in `GAMEPLAY_EFFECT_COMPONENTS.md`;
 startup effect-vector append004D9C00. A renderer resource binding requires
 coordination with its existing owner. Borrowed Lua vector/string coverage
 should be implemented only when a caller needs those paths.
+
+## Correction from docs/GAMEPLAY_EFFECT_SOUND.md
+
+The dispatcher now also handles SoundD0DA18 through concrete0086EF60 and
+0086FB00. Its mandatory context includes Sound sample-cache and current-owner
+bindings. Five component families remain outside concrete dispatch. The new
+Sound/cache documents distinguish component behavior from the required7Ch
+sample constructor and resource lifetime boundary.

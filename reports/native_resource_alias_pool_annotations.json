@@ -1,0 +1,129 @@
+[
+  {
+    "address": "004d48a0",
+    "before": {
+      "address": "004d48a0",
+      "function_name": "BSP_PooledStringList_CopyConstruct",
+      "comment": "[BSP reconstruction 004d48a0]\nFull108-byte main plus17-byte catch004D490C reconstructed. ECX dest, stack src, EAX dest, RET4. New sentinel/count published before current source sentinel/first reads; self construction abandons old graph and copies empty new list. Actual range004D26A0; complete FuncInfoD8EE1C/try/catch maps. Catch destroys current list via004D0A10 then native rethrow. No invented rollback. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX destination owner; stack source owner; EAX destination; RET4. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim."
+    },
+    "after": {
+      "address": "004d48a0",
+      "evidence": "Complete existing004d48a0 algorithm and new actual-owning-pool overload; native ABI: ECX destination; stack source; EAX destination; RET4. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_PooledStringList_CopyConstruct",
+      "name": "BSP_PooledStringList_CopyConstruct",
+      "saved_body_end": "004d490b"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d26a0",
+    "before": {
+      "address": "004d26a0",
+      "function_name": "BSP_RenderAliasList_InsertRange",
+      "comment": "[BSP reconstruction 004d26a0]\nComplete native[004d26a0,004d27b4); ECX actual destination; seven stack DWORDs; RET1Ch; three by-value iterator pairs plus unread word. Complete normal and parent-catch body; retain captures/current argument words, allocate-before-count-before-links, source owner captured before links, rollback bounded by source advances. Evidence reports/native_render_alias_insertion_audit.json; reports/native_render_alias_insertion_verification.json. Independent review and257-word original single/range/catch partial-rollback fixture passed with concrete shared helper/host CRT-EH boundaries; primary strict Win32 build2/2. Descriptive hypothesis/new C++ ABI; not game validated."
+    },
+    "after": {
+      "address": "004d26a0",
+      "evidence": "Complete existing004d26a0 algorithm and new actual-owning-pool overload; native ABI: ECX destination; seven stack DWORDs: three iterator pairs and unread final word; RET1C. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_RenderAliasList_InsertRange",
+      "name": "BSP_RenderAliasList_InsertRange",
+      "saved_body_end": "004d27b3"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004ce6f0",
+    "before": {
+      "address": "004ce6f0",
+      "function_name": "BSP_NativeRenderResourceAliasNode_AllocateCopy",
+      "comment": "[BSP reconstruction 004ce6f0]\nComplete original[004ce6f0,004ce75c); ECX/EDX not inputs; stack next,previous,source-header; EAX actual10h node; RET0C.. Allocate actual10h node viaBF681B before catch activation; store next/previous, copy actual embedded string+8 via0044BCB0, return same allocation. Parent catch004CE75C..004CE770 ordinary-frees captured raw node and rethrows throughBF6885(NULL,NULL). No neighbor-link/count writes and no cleanup of later004CE780 count errors. Uses existing exact NativeRenderResourceAliasNode plus shared native CRT/string pool domains. Evidence reports/native_render_resource_alias_nodes_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "after": {
+      "address": "004ce6f0",
+      "evidence": "Complete existing004ce6f0 algorithm and new actual-owning-pool overload; native ABI: stack next/previous/source header; ECX and EDX unused; EAX node; RET0C. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_NativeRenderResourceAliasNode_AllocateCopy",
+      "name": "BSP_NativeRenderResourceAliasNode_AllocateCopy",
+      "saved_body_end": "004ce75b"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0044bcb0",
+    "before": {
+      "address": "0044bcb0",
+      "function_name": "BSP_NativeString_ConstructCopy",
+      "comment": "[BSP reconstruction 0044bcb0]\nComplete original[0044bcb0,0044bd26); ECX actual8-byte destination header; EDX source header; RET0; no semantic return value.. Complete118-byte string copy constructor. Null destination skips all source reads. Compare identity, zero actual length/data, then self exit; distinct source resizes through0041DD40(preserve1), rereads source length/data and actual destination length/data after allocation, copies destination-length bytes. EH leafC5FFB0 calls original RET-only placement delete00401130; no buffer cleanup or rollback. Host accesses same actual header fields using shared SizedStoragePool, not a second NativeString. Evidence reports/native_render_resource_alias_nodes_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+    },
+    "after": {
+      "address": "0044bcb0",
+      "evidence": "Complete existing0044bcb0 algorithm and new actual-owning-pool overload; native ABI: ECX destination actual header; EDX source actual header; RET; no specified result. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_NativeString_ConstructCopy",
+      "name": "BSP_NativeString_ConstructCopy",
+      "saved_body_end": "0044bd25"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d0990",
+    "before": {
+      "address": "004d0990",
+      "function_name": "BSP_RenderAliasList_EraseNode",
+      "comment": "[BSP reconstruction 004d0990]\nComplete original[004d0990,004d0a0b); ECX destination owner; stack output iterator address, input owner pointer, input node pointer; EAX output address; RET0Ch. Capture destination and by-value input owner/node. Validate input owner nonnull and node not input sentinel. No owner equality check. Compare node with current destination sentinel and capture next even on suppressed branch. Otherwise unlink, release captured string, free captured node, decrement current destination count. Publish output node before input owner and return output address. Captured null input owner remains null after callback and is subsequently dereferenced; caller iterator repair does not change the captured value. Current destination sentinel and count are reloaded at their native points. Link writes reload node next/previous after first neighbor write. Evidence reports/native_render_alias_checked_ops_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation."
+    },
+    "after": {
+      "address": "004d0990",
+      "evidence": "Complete existing004d0990 algorithm and new actual-owning-pool overload; native ABI: ECX destination; stack output/input-owner/input-node; EAX output; RET0C. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_RenderAliasList_EraseNode",
+      "name": "BSP_RenderAliasList_EraseNode",
+      "saved_body_end": "004d0a0a"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d05e0",
+    "before": {
+      "address": "004d05e0",
+      "function_name": "BSP_PooledStringList_ClearStorage",
+      "comment": "[BSP reconstruction 004d05e0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX embedded list; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 004d05e0] update\nComplete original[004d05e0,004d0633); ECX actual list owner, RET0, no semantic return. Complete actual list clear: owner+4 sentinel and +8 count, captured first node, two sentinel reloads, initial compare before zero count, captured data/next, current-sentinel reload after actual pool return and node free. Retains actual sentinel and surrounding storage. Evidence reports/native_render_alias_list_clear_audit.json. Original installed bytes and actual pool/malloc/free fixture match four-event clear and six-event composed lifetime; strict MSVC Win32 build2/2. New C++ ABI, no native EH injection or game validation."
+    },
+    "after": {
+      "address": "004d05e0",
+      "evidence": "Complete existing004d05e0 algorithm and new actual-owning-pool overload; native ABI: ECX actual list owner; RET; no specified result. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_PooledStringList_ClearStorage",
+      "name": "BSP_PooledStringList_ClearStorage",
+      "saved_body_end": "004d0632"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004d0a10",
+    "before": {
+      "address": "004d0a10",
+      "function_name": "BSP_PooledStringList_DestroyStorage",
+      "comment": "[BSP reconstruction 004d0a10]\nFull29-byte list storage destructor including hidden returning-free continuation. ECX actual owner, RET.004D05E0 clear, reload CURRENT sentinel+4, free throughBF65AC, then004D0A24 nulls owner+4. Preserve other callback-mutated fields. False no-return listing truncates atfree; inspect original bytes through004D0A2D. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX actual owner; plain RET; no semantic result. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim."
+    },
+    "after": {
+      "address": "004d0a10",
+      "evidence": "Complete existing004d0a10 algorithm and new actual-owning-pool overload; native ABI: ECX actual list owner; RET; no specified result. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "BSP_PooledStringList_DestroyStorage",
+      "name": "BSP_PooledStringList_DestroyStorage",
+      "saved_body_end": "004d0a2c"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004ce75c",
+    "before": {
+      "address": "004ce75c",
+      "function_name": "Catch_All@004ce75c"
+    },
+    "after": {
+      "address": "004ce75c",
+      "evidence": "Complete21-byte captured-node free/rethrow catch; MOVEDX,[EBP-14];PUSHEDX;CALLBF65AC;ADDESP4;PUSH0;PUSH0;CALLBF6885. Returning-free CALL_RETURN override removed only at4CE760 after full live/PE byte proof; body extends through4CE770, old name/comments preserved. Source captured allocation free/rethrow already complete. Full original catch dynamically unexercised; parent range catch is distinct. reports/native_resource_alias_pool_integration_audit.json",
+      "old_name": "Catch_All@004ce75c",
+      "name": "Catch_All@004ce75c",
+      "saved_body_end": "004ce770"
+    },
+    "status": "applied"
+  }
+]

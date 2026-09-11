@@ -1,0 +1,102 @@
+{
+  "repairs": [
+    {
+      "function": "0086fa90",
+      "owner": "agent/orch4-20260910",
+      "when": "2026-09-11T18:28:44Z",
+      "decompile_lines_before": 18,
+      "gaps": [
+        {
+          "site": "0086facb",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "0086fad0",
+          "gap_end_exclusive": "0086faf3",
+          "bytes": 35,
+          "after_call": true,
+          "sha256": "bcdaa18be7519dbcc87a756bec0ab22e43a3074c25ec49cd357c46a8c84f76cb"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "0086facb",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "0086fad0",
+            "gap_end_exclusive": "0086faf3",
+            "bytes": 35,
+            "after_call": true,
+            "sha256": "bcdaa18be7519dbcc87a756bec0ab22e43a3074c25ec49cd357c46a8c84f76cb"
+          },
+          "clear": "Success: Cleared flow override at 0086facb (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 35 byte(s)"
+        },
+        {
+          "explicit_tail_call": "0086facb",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 0086facb (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "0086faf3",
+      "explicit_body_sha256": "d682b2288fc96267f3ba38bc151c1f5898a5d640bd12a849551e209707c8b4aa",
+      "body_before": "Function: FUN_0086fa90 at 0086fa90\nSignature: undefined FUN_0086fa90(void)\nEntry: 0086fa90\nBody: 0086fa90 - 0086facf",
+      "decompile_lines_after": 21,
+      "gaps_remaining": 1,
+      "body_after": "Function: FUN_0086fa90 at 0086fa90\nSignature: undefined FUN_0086fa90(void)\nEntry: 0086fa90\nBody: 0086fa90 - 0086facf",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    },
+    {
+      "function": "005b8ea0",
+      "owner": "agent/orch4-20260910",
+      "record_recovered_at": "2026-09-11T18:48:16.100345+00:00",
+      "provenance": "The original serialized entry was overwritten by another flow invocation sharing this report. Recovered from the captured pre-gap/post-repair console log and fresh byte/listing checks. Original override response strings are unavailable and are not asserted.",
+      "source_log": "local/effect_sound_p_flow.log",
+      "decompile_lines_before": 60,
+      "decompile_lines_after": 64,
+      "gaps": [
+        {
+          "site": "005b8f6a",
+          "mnemonic": "CALL",
+          "gap_start": "005b8f6f",
+          "gap_end_exclusive": "005b8f82",
+          "bytes": 19,
+          "after_call": true,
+          "sha256": "8570f0dbb0e409e15160df347631ca038d601cc788d8d791dd4bac729d71a790"
+        }
+      ],
+      "saved_operation_logged": true,
+      "disk_live_bytes_equal": true,
+      "gaps_remaining": 0,
+      "fresh_listing_verified": true
+    },
+    {
+      "function": "0086fb00",
+      "owner": "agent/orch4-20260910",
+      "record_recovered_at": "2026-09-11T18:48:16.120203+00:00",
+      "provenance": "The original serialized entry was overwritten by another flow invocation sharing this report. Recovered from the captured pre-gap/post-repair console log and fresh byte/listing checks. Original override response strings are unavailable and are not asserted.",
+      "source_log": "local/effect_sound_p_flow.log",
+      "decompile_lines_before": 14,
+      "decompile_lines_after": 11,
+      "gaps": [
+        {
+          "site": "0086fb10",
+          "mnemonic": "CALL",
+          "gap_start": "0086fb15",
+          "gap_end_exclusive": "0086fb18",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "saved_operation_logged": true,
+      "disk_live_bytes_equal": true,
+      "gaps_remaining": 0,
+      "fresh_listing_verified": true
+    }
+  ],
+  "provenance_note": "Separate record files were used for subsequent flow batches; do not overlap read-modify-write operations on a shared report."
+}

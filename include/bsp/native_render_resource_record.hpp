@@ -8,6 +8,7 @@
 namespace bsp {
 
 struct SingletonLifetimeCallbacks;
+class ActualNativeStringPoolStorage;
 
 struct NativeRenderResourceAliasNode {
     NativeRenderResourceAliasNode* next_00;
@@ -38,6 +39,10 @@ struct NativeRenderResourceRecord {
 // The caller supplies the actual 00419CC0 pool; nodes use lifetime malloc/free.
 void clear_native_render_resource_aliases_004d05e0(
     void* actual_list_owner, SizedStoragePool& actual_string_pool);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+void clear_native_render_resource_aliases_004d05e0(
+    void* actual_list_owner, ActualNativeStringPoolStorage& actual_string_pool);
 
 // Complete 00B30510..00B305B2. Native ECX destination, stack source, RET4,
 // returns destination. Resize/copy the actual name, capture source first/end

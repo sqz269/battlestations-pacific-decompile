@@ -15,6 +15,10 @@ NativeRenderResourceAliasNode* allocate_native_render_alias_sentinel_004c3020();
 // Preserve owner+0 and callback changes to other fields. No null-owner guard.
 void destroy_native_render_alias_list_004d0a10(void* actual_owner,
     SizedStoragePool& actual_string_pool);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+void destroy_native_render_alias_list_004d0a10(void* actual_owner,
+    ActualNativeStringPoolStorage& actual_string_pool);
 
 // Full 004D48A0 plus catch004D490C. ECX destination, stack source, EAX
 // destination, RET4. Publish new sentinel/count before reading source links;
@@ -23,6 +27,11 @@ void destroy_native_render_alias_list_004d0a10(void* actual_owner,
 // existing range helper's own rollback behavior and exception domain.
 void* copy_construct_native_render_alias_list_004d48a0(void* actual_destination_owner,
     const void* actual_source_owner, SizedStoragePool& actual_string_pool,
+    const SingletonLifetimeCallbacks&);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+void* copy_construct_native_render_alias_list_004d48a0(void* actual_destination_owner,
+    const void* actual_source_owner, ActualNativeStringPoolStorage& actual_string_pool,
     const SingletonLifetimeCallbacks&);
 
 // Full 00B2FC60: ECX destination, stack source, EAX destination, RET4.

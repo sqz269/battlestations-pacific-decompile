@@ -1,0 +1,1183 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_reset_readiness4",
+  "lease_packet": "native_renderer_reset_readiness2",
+  "created_utc": "2026-09-11T19:01:09.538623+00:00",
+  "worker": "agent/native_renderer_reset_readiness",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness",
+  "base_main": "b6d949d68dda2b22251fbcd6bd65cd607ffd4b5a",
+  "owned_files": [
+    "src/native_renderer_reset_readiness.cpp",
+    "include/bsp/native_renderer_reset_readiness.hpp",
+    "docs/NATIVE_RENDERER_RESET_READINESS.md",
+    "reports/native_renderer_reset_readiness_audit.json"
+  ],
+  "owned_addresses": [
+    "00b1fd90",
+    "00b20c50",
+    "00b492b0",
+    "00b49180"
+  ],
+  "owned_function_count": 4,
+  "original": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_guarded_live_PE_spans": 16,
+    "fresh_guarded_live_PE_bytes": 1218,
+    "owned_complete_code_bytes": 653,
+    "spans": [
+      {
+        "address": "00b1fd90",
+        "length": 70,
+        "role": "owned_renderer_restore",
+        "bytes_hex": "568bf180be8c1d000000753880be8a1d000000752f8b8e741900008b96101a0000c6868c1d0000018b018b402052ffd08b8e781900008b118b86101a00008b522050ffd25ec3",
+        "sha256": "bbd6b07b5ee4ea6764bab28df153cad3383743b11aad75deee1eb67e6a64fa81",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b20c50",
+        "length": 31,
+        "role": "owned_focus",
+        "bytes_hex": "568bf1807e41007412ff151023ce003b46307507b8010000005ec333c05ec3",
+        "sha256": "ea7ac658dc0fa3d2ac7b95e845cb22f1eae18f27fdcc172b5ae961929c3a810a",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b492b0",
+        "length": 276,
+        "role": "owned_vertex_recreate",
+        "bytes_hex": "56578bf98b4f148bc183e00f33d283f8037726ff2485c493b40033f681c900000100eb19be01000000eb12be02000000eb0bbe03000000eb048b74240cf6c1107405ba010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81ca00400000eb2683ca02eb2183ca40eb1c3d00040000740f3d00050000750e81ca80000000eb0681ca000100008bc12500f000003d00100000750681ca0002000081e100000f0081f900000100750383ca088b44240c8b08536a008d5c241453566a00528b571852508b4168ffd08b77288b4424103bf05b742385c0894728740c8b088b510450ffd28b44240c85f6740c8b068b480856ffd18b44240c85c05f5e74088b10508b4208ffd0c20400",
+        "sha256": "883121513ab4110c9d703ad23549a2eae4dc01a9e7cf1de39ef68285c29fb660",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b49180",
+        "length": 276,
+        "role": "owned_index_recreate",
+        "bytes_hex": "56578bf98b4f148bc183e00f33d283f8037726ff24859492b40033f681c900000100eb19be01000000eb12be02000000eb0bbe03000000eb048b74240cf6c1107405ba010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81ca00400000eb2683ca02eb2183ca40eb1c3d00040000740f3d00050000750e81ca80000000eb0681ca000100008bc12500f000003d00100000750681ca0002000081e100000f0081f900000100750383ca088b44240c8b08536a008d5c241453566a65528b571852508b416cffd08b77288b4424103bf05b742385c0894728740c8b088b510450ffd28b44240c85f6740c8b068b480856ffd18b44240c85c05f5e74088b10508b4208ffd0c20400",
+        "sha256": "fa743f71e17ab319539f009a4e3fdc9bb785906ab40390ac43484f25cda8c83f",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b493c4",
+        "length": 16,
+        "role": "vertex_pool_table",
+        "bytes_hex": "ca92b400d492b400db92b400e292b400",
+        "sha256": "2bd8bcf38c253c83c6d4d9ea89effffea82dfd24ea23db6a9fad36813532d9fd",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b49294",
+        "length": 16,
+        "role": "index_pool_table",
+        "bytes_hex": "9a91b400a491b400ab91b400b291b400",
+        "sha256": "cd7d769f03f7cce0f26f98035f34330c9123d63a00f66fb7797f659f4ca928fb",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00d61e58",
+        "length": 36,
+        "role": "pooled_index_profile",
+        "bytes_hex": "e030bd0010c2b40050b8b40020b8b40080b4b40050c2b40000b8b40040b8b4008091b400",
+        "sha256": "b7737afa19564b630838be9c056951ebc45167662dac96e8ae54d925414e8050",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00d61e7c",
+        "length": 36,
+        "role": "pooled_vertex_profile",
+        "bytes_hex": "e030bd0030c2b40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400b092b400",
+        "sha256": "d74f853720d97ef5f568b327d488040b9a2cb5924c65cdc72197ae3f31597be1",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00d61e10",
+        "length": 36,
+        "role": "excluded_private_index_profile",
+        "bytes_hex": "e030bd0020bbb40050b8b40020b8b40080b4b40050c2b40000b8b40040b8b40010b8b400",
+        "sha256": "797cffe6e5a5f88fd251f853006ced781f96229c71934604a2c5a83014ff9ba6",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00d61e34",
+        "length": 36,
+        "role": "excluded_private_vertex_profile",
+        "bytes_hex": "e030bd0040bbb40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400c0b9b400",
+        "sha256": "0ce96f1496942ff87525bc114a4ba34656127d397a8e80aaf35b1bebc26234ad",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b4bb60",
+        "length": 51,
+        "role": "complete_index_constructor",
+        "bytes_hex": "8bc133c9c70030b1ce00c740040100000089480889480c89481089481489481889481c894820894828894824c700581ed600c3",
+        "sha256": "0ed7446da98417a78c6a1a6569cb25d2961384e409acde3f10c8ae87f398eea6",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b4bbb0",
+        "length": 51,
+        "role": "complete_vertex_constructor",
+        "bytes_hex": "8bc133c9c70030b1ce00c740040100000089480889480c89481089481489481889481c894820894828894824c7007c1ed600c3",
+        "sha256": "6f7b1aaecd09d284753b0c39e5dfcdd72387d9834b87f6392a3458f59e078f21",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b23180",
+        "length": 52,
+        "role": "complete_index_COM_release_for_reset",
+        "bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+        "sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b23270",
+        "length": 52,
+        "role": "complete_vertex_COM_release_for_reset",
+        "bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+        "sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00b2b067",
+        "length": 179,
+        "role": "bounded_renderer_producer_ctor_calls_and1974_1978_stores",
+        "bytes_hex": "b92c000000e8ef0202008944241433ff3bc789bc245401000074098bc8e8270b0200eb0233c0578d54241c5257578986741900008b45006808020000897c242c8b086800000001508b4168c7842470010000ffffffffffd08b8e741900008b118b4424188b52146800000001680010000050ffd28b4424188b088b510850ffd2b92c000000e85f020200894424143bc7899c245401000074098bc8e8590a0200eb0233c0578d54241452576a65898678190000",
+        "sha256": "a8d1a3dd66034ad10507a590f28bd2a129da2cc131bd103b1e622b1506c8e319",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      },
+      {
+        "address": "00ce2310",
+        "length": 4,
+        "role": "original_GetFocus_IAT",
+        "bytes_hex": "a273a000",
+        "sha256": "e743d9a286ef2c7cfcffb826115e1b4125bd42aaedfe5ea05126446a1c7f3b78",
+        "fresh_guarded_live_equals_installed_mapped_PE": true
+      }
+    ],
+    "focus_import": {
+      "dll": "USER32.dll",
+      "name": "GetFocus",
+      "address": "00ce2310"
+    },
+    "ABI": {
+      "00b1fd90": "ECX actual renderer; RET; no formal EAX semantic result established",
+      "00b20c50": "ECX actual platform; EAX exactly0/1; RET",
+      "00b492b0": "ECX actual2Ch wrapper; stacked actual device at entryESP+4; same callee word used as output; unused incoming EDX; RET4; incidental EAX preserved by full raw body",
+      "00b49180": "ECX actual2Ch wrapper; stacked actual device at entryESP+4; same callee word used as output; unused incoming EDX; RET4; incidental EAX preserved by full raw body"
+    }
+  },
+  "implementation": {
+    "status": "four_complete_bodies_reconstructed_strict_build_and_focused_original_full_library_fixture_tested",
+    "new_interface_not_general_binary_drop_in": true,
+    "APIs": [
+      "void __fastcall recreate_native_physical_vertex_buffer_00b492b0(void*,void* unused_edx,void* device)",
+      "void __fastcall recreate_native_physical_index_buffer_00b49180(void*,void* unused_edx,void* device)",
+      "void __fastcall restore_native_renderer_dynamic_buffers_00b1fd90(void*,const NativeRendererResetReadinessProfiles&)",
+      "uint32_t __fastcall native_platform_has_focus_00b20c50(const void*) noexcept"
+    ],
+    "context": {
+      "bytes": 8,
+      "EDX": "new const reference for renderer parent only",
+      "offset00": "borrowed immutable nine-DWORD original D61E58 pooled index profile",
+      "offset04": "borrowed immutable nine-DWORD original D61E7C pooled vertex profile"
+    },
+    "profile_domain": {
+      "proven": [
+        "00d61e58",
+        "00d61e7c"
+      ],
+      "targets": [
+        "00b49180",
+        "00b492b0"
+      ],
+      "unsupported_source_default": "__assume(0); outside explicit interface domain, not native validation or recovery",
+      "original_general_behavior": "unrestricted virtual dispatch through each current wrapper profile+20",
+      "private_profiles_excluded": {
+        "00d61e10": "00b4b810",
+        "00d61e34": "00b4b9c0"
+      },
+      "producer": {
+        "parent": "00b2aeb0",
+        "bounded_start": "00b2b067",
+        "bounded_bytes": 179,
+        "vertex_constructor": "00b4bbb0",
+        "index_constructor": "00b4bb60",
+        "vertex_publication": "renderer+1974",
+        "index_publication": "renderer+1978",
+        "whole_parent_reconstruction_claim": false
+      }
+    },
+    "raw_renderer": {
+      "1974": "first current dynamic wrapper",
+      "1978": "second current dynamic wrapper",
+      "1a10": "current actual D3D9 device",
+      "1d8a": "lost byte, nonzero gates return",
+      "1d8c": "ready byte, nonzero gates return; set1 before first profile access"
+    },
+    "raw_wrapper": {
+      "00": "original profile identity",
+      "14": "flags",
+      "18": "capacity",
+      "28": "owned actual COM pointer"
+    },
+    "raw_platform": {
+      "30": "current HWND after real GetFocus return",
+      "41": "raw nonzero active byte"
+    },
+    "order": [
+      "ready test then lost test",
+      "first wrapper then device then earlyready=1 then current profile/slot20",
+      "first complete recreate call",
+      "current second wrapper then profile then current device then current slot20",
+      "second complete recreate call; no gate reread, HRESULT check, guard or rollback"
+    ],
+    "recreation_contract": {
+      "pool_jump_tables": {
+        "00b493c4": 16,
+        "00b49294": 16
+      },
+      "unsupported_pool": "nibble>3 uses original current device argument pointer bits as pool",
+      "pool0": "OR local flags10000h before usage mapping",
+      "usage": {
+        "flag10": "1",
+        "groupF00:100/200/300/400/500": "2/4000/40/100/80 hex",
+        "groupF000=1000": "200 hex",
+        "groupF0000=10000": "8"
+      },
+      "Create": {
+        "vertex": "device+68 FVF0",
+        "index": "device+6C format65h",
+        "shared_handle": "null",
+        "output": "address of actual by-value device callee slot; never initialized",
+        "HRESULT": "ignored"
+      },
+      "lifetime": "Capture old COM after Create; publish differing output before AddRef; reload actual callee word after AddRef and after captured old Release; final Release current temporary; equality skips publication/AddRef/old-release but retains final temporary release",
+      "terminal_dependency": "Only actual COM methods reached; no wrapper allocator, intrusive count, wrapper destructor or pool-return dependency is introduced"
+    },
+    "existing_semantic_API_preserved": true,
+    "semantic_readiness_correction": "D3D9BufferBinding in d3d9_buffers.hpp is an incompatible semantic layout; old recreate helpers reject unsupported pools and publish conditional successful results. Their labels were insufficient raw-provider evidence."
+  },
+  "dependencies": [
+    {
+      "address": "00b4bb60",
+      "path": "src/native_physical_buffer_owner.cpp",
+      "use": "complete existing raw pooled constructor for fixture setup; not a call dependency of owned bodies"
+    },
+    {
+      "address": "00b4bbb0",
+      "path": "src/native_physical_buffer_owner.cpp",
+      "use": "complete existing raw pooled constructor for fixture setup; not a call dependency of owned bodies"
+    },
+    {
+      "address": "00b23180",
+      "path": "src/native_physical_buffer_access.cpp",
+      "use": "complete existing raw index COM reset-release for fixture cleanup"
+    },
+    {
+      "address": "00b23270",
+      "path": "src/native_physical_buffer_access.cpp",
+      "use": "complete existing raw vertex COM reset-release for fixture cleanup"
+    },
+    {
+      "address": "00ce2310",
+      "path": "USER32.dll!GetFocus",
+      "use": "actual native/source OS focus import"
+    },
+    {
+      "address": "actual current device/IUnknown methods",
+      "path": "actual loaded d3d9.dll",
+      "use": "real CreateVertexBuffer/CreateIndexBuffer/AddRef/Release; no result substitution"
+    }
+  ],
+  "build": {
+    "target": "MSVC Win32 Release actual bsp_core static library",
+    "source_hook": "local/reset_readiness/extra.cmake; ignored CMAKE_PROJECT_INCLUDE_BEFORE deferred target_sources",
+    "strict_build": true,
+    "existing_CTests_passed": 2,
+    "native_seed_checks_passed": 8,
+    "permanent_tests_added": false,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\build.log",
+      "bytes": 2414,
+      "sha256": "3924da774af22f2b27d649aea0941da96b67a5c47150fb1d5cb08ff99eda7025"
+    },
+    "seeds": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  },
+  "fixture": {
+    "status": "focused original/full actual worker library composition passed",
+    "bundle": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness",
+    "pairs": 4,
+    "compared_bytes": 224152,
+    "raw_state_captures": 58,
+    "raw_normalization_fields": [
+      "renderer+1A10",
+      "wrapper0+28",
+      "wrapper1+28",
+      "wrapper2+28"
+    ],
+    "original_owned_code_relocations": 0,
+    "original_data_bindings": [
+      {
+        "address": "00ce2310",
+        "role": "real GetFocus IAT",
+        "target": 1979284320
+      }
+    ],
+    "original_reference": "Complete original parent plus complete original recreation children via literal original pooled profiles, complete original focus; all bodies and tables in fixture-owned PE reservation at original VAs",
+    "source_composition": "Actual full built parent/recreators/focus; full built raw constructors and raw COM cleanup providers; no semantic wrapper or native descendant substitution",
+    "cases": [
+      {
+        "case": 0,
+        "meaning": "real focus inactive/equal/mismatched, then ready and lost gate fast paths with invalid unused profile context/wrappers/device"
+      },
+      {
+        "case": 1,
+        "meaning": "two genuine nonempty pooled bindings; first real vertex creation callback changes second wrapper/profile/current device and both gates; second remains attempted on current state",
+        "creates_per_mode": 2
+      },
+      {
+        "case": 2,
+        "meaning": "real managed index creation; actual callee output address equals expected stack word; callbacks after real AddRef and old Release replace that word twice; displaced genuine references retained by fixture and finally released",
+        "creates_per_mode": 1,
+        "slot_swaps_per_mode": 2
+      },
+      {
+        "case": 3,
+        "meaning": "actual invalid-pool pointer-bit fallthrough to CreateVertexBuffer; observed HRESULT8876086C with actual null output; native clear/old release occurs",
+        "creates_per_mode": 1,
+        "failure_fault_injected": false
+      }
+    ],
+    "UI": "Existing desktop HWND and two actual HAL devices; no window creation/focus mutation/presentation call. No user/game UI interaction.",
+    "real_calls": {
+      "total": 80,
+      "Create_calls": 8,
+      "Create_successes": 6,
+      "Create_actual_failures": 2,
+      "buffer_terminal_zero_releases": 28
+    },
+    "normal_ABI": "Both public cleanup forms and EBX/ESI/EDI/EBP preserved; focus EAX0/1 checked; recreator incidental EAX paired; parent shortcut incidental EAX deliberately not claimed; x87 empty/CW037F/SW0/MXCSR1F80",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\bsp_core.lib",
+      "bytes": 36404448,
+      "sha256": "b8f281256a87e9d48cbd5db11b14778baa890149ae549c24c82dfd21c45c225f"
+    },
+    "exact_archive_members": [
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\native_physical_buffer_access.obj",
+          "bytes": 1740,
+          "sha256": "0c352c39942dbd19f5d42357c04d62075fa9fe59dae6038d56d0b75b2aceb21e"
+        },
+        "archive_member": "bsp_core.dir\\Release\\native_physical_buffer_access.obj",
+        "archive_offset": 29589806
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\native_physical_buffer_owner.obj",
+          "bytes": 13354,
+          "sha256": "a23759901ee38e4c202357be161d823efd39d2706a810455f294522222c85af6"
+        },
+        "archive_member": "bsp_core.dir\\Release\\native_physical_buffer_owner.obj",
+        "archive_offset": 29704830
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\native_renderer_reset_readiness.obj",
+          "bytes": 3241,
+          "sha256": "2b582782b9efbfd5541a53c2113ed6d6cf87e0ae02c74376fc81a33e8113b582"
+        },
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_reset_readiness.obj",
+        "archive_offset": 27277888
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\singleton_lifetime.obj",
+          "bytes": 32975,
+          "sha256": "9eb5626b39807ba778320c0cba5d48800eef7435c8fcdddd90067a96ff47d233"
+        },
+        "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "archive_offset": 30568212
+      }
+    ],
+    "whole_owned_function_proofs": [
+      {
+        "original": "00b49180",
+        "original_bytes": 276,
+        "entry": 4223408,
+        "COFF_bytes": 276,
+        "whole_original_COFF_linked_runtime_equal_after_one_DIR32_relocation": true,
+        "relocation": {
+          "offset": 22,
+          "symbol": "?index_pool_targets@?A0x7fb601ae@bsp@@3QBQBEB",
+          "target": 4235068
+        }
+      },
+      {
+        "original": "00b492b0",
+        "original_bytes": 276,
+        "entry": 4223120,
+        "COFF_bytes": 276,
+        "whole_original_COFF_linked_runtime_equal_after_one_DIR32_relocation": true,
+        "relocation": {
+          "offset": 22,
+          "symbol": "?vertex_pool_targets@?A0x7fb601ae@bsp@@3QBQBEB",
+          "target": 4235084
+        }
+      },
+      {
+        "original": "00b20c50",
+        "original_bytes": 31,
+        "entry": 4223696,
+        "COFF_bytes": 31,
+        "whole_original_COFF_linked_runtime_equal_after_one_DIR32_relocation": true,
+        "relocation": {
+          "offset": 11,
+          "symbol": "__imp__GetFocus@0",
+          "target": 4231464
+        }
+      },
+      {
+        "original": "00b1fd90",
+        "original_bytes": 70,
+        "entry": 4223728,
+        "COFF_bytes": 144,
+        "whole_COFF_linked_runtime_equal": true,
+        "whole_original_byte_equivalence": false,
+        "qualified_two_pooled_profile_context": true,
+        "ordered_original_storage_accesses": [
+          {
+            "address": 4223734,
+            "instruction": "mov al, byte ptr [esi + 0x1d8c]"
+          },
+          {
+            "address": 4223744,
+            "instruction": "mov al, byte ptr [esi + 0x1d8a]"
+          },
+          {
+            "address": 4223754,
+            "instruction": "mov ecx, dword ptr [esi + 0x1974]"
+          },
+          {
+            "address": 4223760,
+            "instruction": "mov edx, dword ptr [esi + 0x1a10]"
+          },
+          {
+            "address": 4223766,
+            "instruction": "mov byte ptr [esi + 0x1d8c], 1"
+          },
+          {
+            "address": 4223773,
+            "instruction": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": 4223796,
+            "instruction": "mov eax, dword ptr [eax + 0x20]"
+          },
+          {
+            "address": 4223818,
+            "instruction": "mov ecx, dword ptr [esi + 0x1978]"
+          },
+          {
+            "address": 4223824,
+            "instruction": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": 4223826,
+            "instruction": "mov edx, dword ptr [esi + 0x1a10]"
+          },
+          {
+            "address": 4223846,
+            "instruction": "mov eax, dword ptr [eax + 0x20]"
+          }
+        ],
+        "assembly": [
+          "004072f0: push esi",
+          "004072f1: mov esi, ecx",
+          "004072f3: push edi",
+          "004072f4: mov edi, edx",
+          "004072f6: mov al, byte ptr [esi + 0x1d8c]",
+          "004072fc: test al, al",
+          "004072fe: jne 0x40737d",
+          "00407300: mov al, byte ptr [esi + 0x1d8a]",
+          "00407306: test al, al",
+          "00407308: jne 0x40737d",
+          "0040730a: mov ecx, dword ptr [esi + 0x1974]",
+          "00407310: mov edx, dword ptr [esi + 0x1a10]",
+          "00407316: mov byte ptr [esi + 0x1d8c], 1",
+          "0040731d: mov eax, dword ptr [ecx]",
+          "0040731f: sub eax, 0xd61e58",
+          "00407324: lea eax, [edi + 4]",
+          "00407327: jne 0x40732b",
+          "00407329: mov eax, edi",
+          "0040732b: mov eax, dword ptr [eax]",
+          "0040732d: push ebx",
+          "0040732e: push edx",
+          "0040732f: xor edx, edx",
+          "00407331: lea ebx, [edi + 4]",
+          "00407334: mov eax, dword ptr [eax + 0x20]",
+          "00407337: cmp eax, 0xb49180",
+          "0040733c: je 0x407345",
+          "0040733e: call 0x407090",
+          "00407343: jmp 0x40734a",
+          "00407345: call 0x4071b0",
+          "0040734a: mov ecx, dword ptr [esi + 0x1978]",
+          "00407350: mov eax, dword ptr [ecx]",
+          "00407352: mov edx, dword ptr [esi + 0x1a10]",
+          "00407358: sub eax, 0xd61e58",
+          "0040735d: cmove ebx, edi",
+          "00407360: mov eax, dword ptr [ebx]",
+          "00407362: pop ebx",
+          "00407363: push edx",
+          "00407364: xor edx, edx",
+          "00407366: mov eax, dword ptr [eax + 0x20]",
+          "00407369: cmp eax, 0xb49180",
+          "0040736e: je 0x407378",
+          "00407370: call 0x407090",
+          "00407375: pop edi",
+          "00407376: pop esi",
+          "00407377: ret ",
+          "00407378: call 0x4071b0",
+          "0040737d: pop edi",
+          "0040737e: pop esi",
+          "0040737f: ret "
+        ]
+      }
+    ],
+    "pool_table_proofs": [
+      {
+        "original": 11834004,
+        "source": 4235068,
+        "symbol": "?index_pool_targets@?A0x7fb601ae@bsp@@3QBQBEB",
+        "original_entries": [
+          11833754,
+          11833764,
+          11833771,
+          11833778
+        ],
+        "linked_entries": [
+          4223434,
+          4223444,
+          4223451,
+          4223458
+        ],
+        "case_offsets": [
+          26,
+          36,
+          43,
+          50
+        ],
+        "complete_static_relocations": true
+      },
+      {
+        "original": 11834308,
+        "source": 4235084,
+        "symbol": "?vertex_pool_targets@?A0x7fb601ae@bsp@@3QBQBEB",
+        "original_entries": [
+          11834058,
+          11834068,
+          11834075,
+          11834082
+        ],
+        "linked_entries": [
+          4223146,
+          4223156,
+          4223163,
+          4223170
+        ],
+        "case_offsets": [
+          26,
+          36,
+          43,
+          50
+        ],
+        "complete_static_relocations": true
+      }
+    ],
+    "mapped_COFF_sections": 328,
+    "mapped_COFF_relocations": 1633,
+    "runtime_immutable_sections": 310,
+    "mapped_functions": 184,
+    "library_functions": 10,
+    "fixture_functions": 174,
+    "whole_code_postimage_phases": 9,
+    "postimage_spans": [
+      {
+        "address": 11664784,
+        "bytes": 70,
+        "label": "original_11664784"
+      },
+      {
+        "address": 11668560,
+        "bytes": 31,
+        "label": "original_11668560"
+      },
+      {
+        "address": 11834032,
+        "bytes": 276,
+        "label": "original_11834032"
+      },
+      {
+        "address": 11833728,
+        "bytes": 276,
+        "label": "original_11833728"
+      },
+      {
+        "address": 11834308,
+        "bytes": 16,
+        "label": "original_11834308"
+      },
+      {
+        "address": 11834004,
+        "bytes": 16,
+        "label": "original_11834004"
+      },
+      {
+        "address": 14032472,
+        "bytes": 36,
+        "label": "original_14032472"
+      },
+      {
+        "address": 14032508,
+        "bytes": 36,
+        "label": "original_14032508"
+      },
+      {
+        "address": 14032400,
+        "bytes": 36,
+        "label": "original_14032400"
+      },
+      {
+        "address": 14032436,
+        "bytes": 36,
+        "label": "original_14032436"
+      },
+      {
+        "address": 11844448,
+        "bytes": 51,
+        "label": "original_11844448"
+      },
+      {
+        "address": 11844528,
+        "bytes": 51,
+        "label": "original_11844528"
+      },
+      {
+        "address": 11678080,
+        "bytes": 52,
+        "label": "original_11678080"
+      },
+      {
+        "address": 11678320,
+        "bytes": 52,
+        "label": "original_11678320"
+      },
+      {
+        "address": 11710567,
+        "bytes": 179,
+        "label": "original_11710567"
+      },
+      {
+        "address": 13509392,
+        "bytes": 4,
+        "label": "original_13509392"
+      },
+      {
+        "address": 4198400,
+        "bytes": 31611,
+        "label": ".text"
+      },
+      {
+        "address": 4231168,
+        "bytes": 13506,
+        "label": ".rdata"
+      },
+      {
+        "address": 136490268,
+        "bytes": 476,
+        "label": "actual_device_table"
+      },
+      {
+        "address": 1767556,
+        "bytes": 476,
+        "label": "observed_device_table"
+      },
+      {
+        "address": 139490012,
+        "bytes": 476,
+        "label": "actual_device_table"
+      },
+      {
+        "address": 1768032,
+        "bytes": 476,
+        "label": "observed_device_table"
+      }
+    ],
+    "buffer_tables": {
+      "objects": 28,
+      "captures": 172,
+      "all_full_original_and_observer_tables_unchanged_per_lifetime": true
+    },
+    "all_map_leading_f_i_tokens_removed": true,
+    "whole_code_proof": "Every mapped local complete COFF section byte and relocation equals linked PE; all mapped immutable code/rdata equals runtime postimages. Includes fixture inline COMDATs, compiler data/tails, all four complete original code bodies, original pool/profile data. Actual COM target/caller identities and imported module entry bytes pinned, loader relocations only except explicit writable non-executable CRT data identity/value.",
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\verified.json",
+      "bytes": 1959437,
+      "sha256": "408fa57aa17e228f543b49eaae7f2524d3a0be7d9a40740e697af884fc467769"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run.log",
+      "bytes": 711,
+      "sha256": "e8f73e753a942ad382ce0e1c6cd2cc882437a46e1ae88f5e2783df7d9661f562"
+    }
+  },
+  "limits": [
+    "Renderer source requires two proven pooled profiles and original immutable context data; native unrestricted dispatch to excluded private profiles is not implemented here.",
+    "Borrowed actual2Ch wrapper storage, no semantic D3D9BufferBinding cast, whole wrapper allocation/destruction or pool-lifetime claim.",
+    "No synthetic HRESULT/NULL policy. Observed real invalid-pool failure does not prove every device failure-output behavior.",
+    "No whole B2AEB0/B2ABD0/B29670 parent closure, game validation, general binary replacement or native SEH ABI claim.",
+    "No runtime claim for every flags/pool branch, pointer fault, concurrent race or post-COM exception path; complete raw byte evidence covers the two recreated code bodies.",
+    "Worker source/build/fixture evidence; primary owns main integration and independent review/replay."
+  ],
+  "shared_mutations": {
+    "CMake": false,
+    "ledgers": false,
+    "Ghidra": false,
+    "installed_game": false,
+    "permanent_tests": false
+  },
+  "owned_input_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\src\\native_renderer_reset_readiness.cpp",
+      "bytes": 10706,
+      "sha256": "68d488488919c5f6d2bbba094aa47c6d521a331473e29f35735975720dc4826b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\include\\bsp\\native_renderer_reset_readiness.hpp",
+      "bytes": 2534,
+      "sha256": "e7d2444883393ac8fb31223dee4a0f73b77ffb0932971e6fa604017ec4bcbdbe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\docs\\NATIVE_RENDERER_RESET_READINESS.md",
+      "bytes": 9948,
+      "sha256": "b85c97a94cce46394bb0d80e46a4bf9f193fada8b06b88d72207cd6aa429e79a"
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\bsp_core.dir\\Release\\native_physical_buffer_access.obj",
+      "bytes": 1740,
+      "sha256": "0c352c39942dbd19f5d42357c04d62075fa9fe59dae6038d56d0b75b2aceb21e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\bsp_core.dir\\Release\\native_physical_buffer_owner.obj",
+      "bytes": 13354,
+      "sha256": "a23759901ee38e4c202357be161d823efd39d2706a810455f294522222c85af6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\bsp_core.dir\\Release\\native_renderer_reset_readiness.obj",
+      "bytes": 3241,
+      "sha256": "2b582782b9efbfd5541a53c2113ed6d6cf87e0ae02c74376fc81a33e8113b582"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+      "bytes": 32975,
+      "sha256": "9eb5626b39807ba778320c0cba5d48800eef7435c8fcdddd90067a96ff47d233"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\bsp_core.vcxproj",
+      "bytes": 120956,
+      "sha256": "2578a4541b749758377c662fa4f0ec87ccf9d5790eaa9d4e4d14d92a1f369939"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\CMakeCache.txt",
+      "bytes": 19180,
+      "sha256": "b9091b9dd644ea39ac9331b96708e35e8e6a7e952ad96bc0422715f823439649"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 36404448,
+      "sha256": "b8f281256a87e9d48cbd5db11b14778baa890149ae549c24c82dfd21c45c225f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\build\\win32\\Testing\\Temporary\\LastTest.log",
+      "bytes": 1781,
+      "sha256": "85e7bebc6e8506399feda0ae5a9c2ceef5bbfa08cf89f84e869df235c801bfd3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\config\\target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\00b1fd90_assembly.txt",
+      "bytes": 811,
+      "sha256": "72653bf4738ed8037f05dd3ab3c0cc2ca180ad93e27c078a56f2241ef85bdb36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\00b20c50_assembly.txt",
+      "bytes": 389,
+      "sha256": "2bcb591d44e0bf79f61baa592eee24900cb009a1031fd44106b3e3d24f8f0dd2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\00b49180_assembly.txt",
+      "bytes": 3111,
+      "sha256": "954982cd27848b4409bdefeb104207ea0967ac54a14543eb92569c54f91ab246"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\00b492b0_assembly.txt",
+      "bytes": 3108,
+      "sha256": "078867f30ff9643e61f5e6d00f9104a7771e5eb14f76acd3f04df190b0dfefbc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\build.log",
+      "bytes": 2414,
+      "sha256": "3924da774af22f2b27d649aea0941da96b67a5c47150fb1d5cb08ff99eda7025"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\build.ps1",
+      "bytes": 906,
+      "sha256": "73a8c88b72d9c25b76ca3ca018c9a88143e4068a4cf7dddbf769bc4805b1751b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\build_probe.ps1",
+      "bytes": 1136,
+      "sha256": "9bd8a7fe97c6134aed5499698739f09c5a2d9e4e7cd43811d1796854f7373f30"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\capture.log",
+      "bytes": 87,
+      "sha256": "37fdf2ffc3fe17ebe9abb0bbb64958869696c6e532717c3a10faed8bf1055259"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\capture.py",
+      "bytes": 2298,
+      "sha256": "d9834e4c203deb44c9db06f96237ac7cd1bebe929c185d9ef6744cb34e9eb5d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\change_reservation.py",
+      "bytes": 1214,
+      "sha256": "d3c36ac024aaf6acaf57bf6ded7c639eada12c9b298edec8286882e975f8e2aa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\emit_audit.py",
+      "bytes": 12146,
+      "sha256": "8f1efff5545f75cf5bde3c9afdc147703ede7adb2893db1d9331db33e82ed465"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\extra.cmake",
+      "bytes": 151,
+      "sha256": "9e23535778ad0a30aa29a2f9a8ace01ed442c500ff06c4dea92a9d3c1a4dc096"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\fixture.cpp",
+      "bytes": 19323,
+      "sha256": "c76af3ee81c62c67c4fce3bf3a9adc1ec4951747649ea7022ec1e8e0503ed912"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\bsp_core.lib",
+      "bytes": 36404448,
+      "sha256": "b8f281256a87e9d48cbd5db11b14778baa890149ae549c24c82dfd21c45c225f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\fixture.obj",
+      "bytes": 10706240,
+      "sha256": "433b44021711eab273eec7347e33fc1a9e4aa42d30557d824c708cc5c38144b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\d3d9_startup.hpp",
+      "bytes": 1362,
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\frame_clock.hpp",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\native_physical_buffer_access.hpp",
+      "bytes": 1430,
+      "sha256": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\native_physical_buffer_owner.hpp",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\native_renderer_reset_readiness.hpp",
+      "bytes": 2534,
+      "sha256": "e7d2444883393ac8fb31223dee4a0f73b77ffb0932971e6fa604017ec4bcbdbe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\native_resource_support.hpp",
+      "bytes": 1488,
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\native_string.hpp",
+      "bytes": 6280,
+      "sha256": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\render_tail.hpp",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\include\\bsp\\system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\native_physical_buffer_access.obj",
+      "bytes": 1740,
+      "sha256": "0c352c39942dbd19f5d42357c04d62075fa9fe59dae6038d56d0b75b2aceb21e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\native_physical_buffer_owner.obj",
+      "bytes": 13354,
+      "sha256": "a23759901ee38e4c202357be161d823efd39d2706a810455f294522222c85af6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\native_renderer_reset_readiness.obj",
+      "bytes": 3241,
+      "sha256": "2b582782b9efbfd5541a53c2113ed6d6cf87e0ae02c74376fc81a33e8113b582"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\singleton_lifetime.obj",
+      "bytes": 32975,
+      "sha256": "9eb5626b39807ba778320c0cba5d48800eef7435c8fcdddd90067a96ff47d233"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\src\\native_physical_buffer_access.cpp",
+      "bytes": 3020,
+      "sha256": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\src\\native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\src\\native_renderer_reset_readiness.cpp",
+      "bytes": 10706,
+      "sha256": "68d488488919c5f6d2bbba094aa47c6d521a331473e29f35735975720dc4826b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\frozen\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\generate_source.py",
+      "bytes": 5115,
+      "sha256": "7c44c554e42f174a706eb8cbaddab1260ccaf45fe6564cf6b01f21ca56815197"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\make_verify.py",
+      "bytes": 1413,
+      "sha256": "fae9f60b8acdd38775bb1e7161e4925b88adf1603d313ea3158eaf00a3062d33"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\object_check.py",
+      "bytes": 2506,
+      "sha256": "60c0448556022d2494ee8c7601d517a07aad3ec9f4b4f90238ffffa540c9c46d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\object_proof.json",
+      "bytes": 1053,
+      "sha256": "2425285464214874eae248835650f9fabb55b49542c6d46916d85909bad9e05b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\original_prototypes.txt",
+      "bytes": 434,
+      "sha256": "df24a8730663cf06768a76304ca75171416a8106a69bbbec1889d57194a6616d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\parent_COFF_assembly.txt",
+      "bytes": 1139,
+      "sha256": "c9c12b412368d845dfd140e2258058586d952983cc44d1e6776606a0e5a87043"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\pins.json",
+      "bytes": 7447,
+      "sha256": "427f37c662971559763a87d6399669060d72f20266dfec5b08deb3afe8df33c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\probe_build.log",
+      "bytes": 13,
+      "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\provenance_helper.py",
+      "bytes": 2781,
+      "sha256": "21f6aec5fcdbf2205e95b8cfa47b2319d9cb221b9fffaad78206e5980ee675e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\refine_evidence.py",
+      "bytes": 3040,
+      "sha256": "c18f95f25329be693fcdd679e8e6c4d72d09e85a5ce0d2477b85d816cc3f9152"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\buffer_tables.bin",
+      "bytes": 23392,
+      "sha256": "cbd4d21209edc1dde03d1335af6da98c75804e82a9f6d2de20c3fd8811b0d5df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\build.cmd",
+      "bytes": 888,
+      "sha256": "56d9d45540187a6ad2caf18738f0cccc7c11820a9ea2d432f245b8ed8a80324b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\calls.txt",
+      "bytes": 4196,
+      "sha256": "a9b1a20b2166c3135a4f43363dc226611fead85beaaf2eb1b246018c4c2299ce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\devices.txt",
+      "bytes": 22,
+      "sha256": "28a8da1ce3017e4e9e03dfd62c1103c079e8c06258bbfba80a7b18d5005ad153"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\fixture.obj",
+      "bytes": 10706240,
+      "sha256": "433b44021711eab273eec7347e33fc1a9e4aa42d30557d824c708cc5c38144b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\frames.bin",
+      "bytes": 4416,
+      "sha256": "2478577870968ee9e88acf54e1ee35d43c7c94679984ba59c685154869067eee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\identities.txt",
+      "bytes": 1024,
+      "sha256": "d9c460e78865a0428107b1a51863471e7ede8944d601ce78b19cf5b9a247ff71"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\imports.txt",
+      "bytes": 2580,
+      "sha256": "c82ad085c0dae7cb0173b9e490d02ad018fa73dbceee0d7f09614a99d4c35b1b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\modules.txt",
+      "bytes": 26058,
+      "sha256": "60b8f50c6ea88bc2b7b4e5eb48f2fffc2fcbf09f2d9e0a18d455a97fcf7615c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\postimages.bin",
+      "bytes": 435807,
+      "sha256": "8f722340d856baf26a6c86cbd483bfc3d2674ff471d63ff563f58784f98a4513"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\raw.bin",
+      "bytes": 448400,
+      "sha256": "07aa5f535165f991b31be1b1068c3fdc7fc29b48bea37086d9d0bc71851bc429"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\reset_readiness_probe.exe",
+      "bytes": 10533888,
+      "sha256": "c6580b27e9d863d2a84bf09eeb6099e3f871bd439a512e7c0a368abcf1dc5753"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\reset_readiness_probe.map",
+      "bytes": 79993,
+      "sha256": "18082773081f8651b867bb1f45ac70540480c21533c304d66c908b3f63ba42d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\runtime_spans.txt",
+      "bytes": 681,
+      "sha256": "8389d49c853a8bda664858f4aac4a8ac00fee4ec2e4069473729fc97b15ca6c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run\\states_raw.bin",
+      "bytes": 447992,
+      "sha256": "cc4d7318ab2046adb2bf26ff935885cf231fa7799ba279527de5b830f334ffb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\run.log",
+      "bytes": 711,
+      "sha256": "e8f73e753a942ad382ce0e1c6cd2cc882437a46e1ae88f5e2783df7d9661f562"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\spans.hpp",
+      "bytes": 7520,
+      "sha256": "10a0adf3a8c114a7dc5aea90093f4dcb90f77b6995a563fe5eef67d26762a457"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\verified.json",
+      "bytes": 1959437,
+      "sha256": "408fa57aa17e228f543b49eaae7f2524d3a0be7d9a40740e697af884fc467769"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\verify.log",
+      "bytes": 148,
+      "sha256": "9e14a3d493c9d508b062aafcc2b6cfe46323843d6edb245253768150032b5b1b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\local\\reset_readiness\\verify.py",
+      "bytes": 19198,
+      "sha256": "ec4af2b0fa0935f55bd183c608105a848b31fd0df8866468ee299bd101790a16"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\scripts\\build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\tools\\bsp.py",
+      "bytes": 55606,
+      "sha256": "61af8bf3c2ff60acb6af58494c9d287b8fc6613ecd8cd5de3c0cee668c787486"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_reset_readiness\\tools\\ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    }
+  ]
+}

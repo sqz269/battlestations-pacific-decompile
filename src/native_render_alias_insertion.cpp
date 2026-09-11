@@ -1,4 +1,5 @@
 #include "bsp/native_render_alias_insertion.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include "bsp/native_alias_count_growth.hpp"
 #include "bsp/native_render_resource_alias_nodes.hpp"
@@ -29,10 +30,11 @@ void append_native_render_alias_004d2660(void* actual_destination_owner,
     current_previous->next_00 = inserted;
 }
 
-void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
-    NativeRenderAliasIterator insertion_position_by_value,
-    NativeRenderAliasIterator source_by_value, NativeRenderAliasIterator end_by_value,
-    SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+template<class Pool>
+static void insert_alias_range_with_pool(void* actual_destination_owner,
+    NativeRenderAliasIterator& insertion_position_by_value,
+    NativeRenderAliasIterator& source_by_value, NativeRenderAliasIterator& end_by_value,
+    Pool& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
     volatile auto& position = insertion_position_by_value;
     volatile auto& source = source_by_value;
     volatile auto& source_end = end_by_value;
@@ -98,6 +100,20 @@ void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
         }
         throw;
     }
+}
+
+void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
+    NativeRenderAliasIterator insertion_position_by_value,
+    NativeRenderAliasIterator source_by_value, NativeRenderAliasIterator end_by_value,
+    SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+    insert_alias_range_with_pool(actual_destination_owner, insertion_position_by_value, source_by_value, end_by_value, actual_string_pool, callbacks);
+}
+
+void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
+    NativeRenderAliasIterator insertion_position_by_value,
+    NativeRenderAliasIterator source_by_value, NativeRenderAliasIterator end_by_value,
+    ActualNativeStringPoolStorage& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+    insert_alias_range_with_pool(actual_destination_owner, insertion_position_by_value, source_by_value, end_by_value, actual_string_pool, callbacks);
 }
 
 } // namespace bsp
