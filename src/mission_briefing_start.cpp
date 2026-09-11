@@ -27,7 +27,7 @@ constexpr MissionBriefingHostStep kHostSteps[] = {
     {0x0059238E, 0x00000000, "MissionBriefingPlayHost", "mark_movie_active", "movie"},
     {0x0059239C, 0x004F8970, "MissionBriefingPlayHost", "set_movie_completion", "movie"},
     {0x005923B3, 0x0058BDF0, "MissionBriefingPlayHost", "start_selected_mission", "pure"},
-    {0x0059244C, 0x0054B530, "MissionBriefingPlayHost", "clear_help_line", "gui"},
+    {0x0059244C, 0x0054B530, "MissionBriefingPlayHost", "clear_command_bar", "gui"},
 
     // 0058BDF0, the start itself.
     {0x0058BE40, 0x0041DD40, "MissionStartHost", "set_current_mission_key", "game state"},
@@ -152,7 +152,7 @@ bool run_briefing_play_005922f0(
     // 00592325: the test is on the size dword of the MovieName string at +58h.
     if (record.extra.movie_name.empty()) {
         host.start_selected_mission();
-        host.clear_help_line();
+        host.clear_command_bar();
         return false;
     }
 

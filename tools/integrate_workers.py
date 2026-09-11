@@ -1,17 +1,21 @@
 """Integrate worker branches: merge into agent/integrate, build there, fast-forward main, apply the
 new reviewed names to Ghidra, refresh snapshot/index, push. Usage:
   python tools/integrate_workers.py agent/winmain-startup agent/app-run-frame [--no-push] [--skip-build]
-Run from the main checkout. Aborts on a merge conflict or a failed build and leaves the integrate
-worktree for inspection. Merge-commit trailers come from local/commit-trailer.txt when it exists."""
+Run from the main checkout or an orchestrator worktree. Aborts on a merge conflict or a failed
+build and leaves the integrate worktree for inspection. Merge-commit trailers come from the
+script checkout's local/commit-trailer.txt, or BSP_COMMIT_TRAILER_FILE when specified."""
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
+from workspace import main_root
 
-MAIN = Path(__file__).resolve().parents[1]
-_TRAILER_FILE = MAIN / 'local/commit-trailer.txt'
+SCRIPT_ROOT = Path(__file__).resolve().parents[1]
+MAIN = main_root()
+_TRAILER_FILE = Path(os.environ.get('BSP_COMMIT_TRAILER_FILE',
+                                   str(SCRIPT_ROOT / 'local/commit-trailer.txt')))
 TRAILER = _TRAILER_FILE.read_text(encoding='utf-8').strip() if _TRAILER_FILE.exists() else ''
-import os
 # a second orchestrator uses its own integrate worktree: BSP_INTEGRATE=<name> selects
 # ../battlestations-pacific-decompile-<name> on branch agent/<name> (create it with bsp.py worktree add <name>)
 INTEGRATE_NAME = os.environ.get('BSP_INTEGRATE', 'integrate')

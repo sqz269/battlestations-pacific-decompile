@@ -1,0 +1,431 @@
+{
+  "packet": "orch5_main_menu_command_bar",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/main_menu_command_bar.cpp",
+  "documentation": "docs/MAIN_MENU_COMMAND_BAR.md",
+  "reconstructed": [
+    {
+      "address": "0054b530",
+      "name": "rebuild_main_menu_command_bar_0054b530",
+      "abi": "ECX screen; five command-byte/native-string-pointer/placement-dword triples; RET 3Ch at 0054c045, length 3",
+      "evidence": "0054b64a..0054b885 argument reads; 0054b970..0054b9c6 placement; full normal-path assembly through 0054c047",
+      "coverage": "complete normal path; native pooled storage and compiler SEH remain external"
+    },
+    {
+      "address": "0054a0c0",
+      "name": "set_main_menu_help_line_0054a0c0",
+      "abi": "ECX screen; native string pointer stack argument; RET 4 at 0054a128, length 3",
+      "evidence": "0054a0e4 argument load; 0054a0ed/a0f7 setters; 0054a0fc mode capture; 0054a123 restore",
+      "coverage": "complete normal path; native pooled storage and compiler SEH remain external"
+    },
+    {
+      "address": "005495a0",
+      "name": "hide_main_menu_glyph_widgets_005495a0",
+      "abi": "ECX screen; no stack arguments; RET at 005495d1, length 1",
+      "evidence": "Five +34h/+48h pairs, virtual +34h false; 005495b0..005495cd",
+      "coverage": "complete normal path; native pooled storage and compiler SEH remain external"
+    },
+    {
+      "address": "005495e0",
+      "name": "hide_main_menu_alternate_widgets_005495e0",
+      "abi": "ECX screen; no stack arguments; RET at 00549611, length 1",
+      "evidence": "Five +84h/+98h pairs, virtual +34h false; 005495f0..0054960d",
+      "coverage": "complete normal path; native pooled storage and compiler SEH remain external"
+    }
+  ],
+  "analyzed_contracts": [
+    {
+      "address": "00531030",
+      "behavior": "Construct native one-byte string plus trailing NUL; ECX destination; stack byte; EAX destination; RET 4"
+    },
+    {
+      "address": "0054ac10",
+      "behavior": "Copy native string and append byte using 0054aa70; ECX source; stack result pointer and byte; EAX result; RET 8"
+    },
+    {
+      "address": "0054aa70",
+      "behavior": "Append one-byte temporary by resize and copy; native string storage remains external"
+    },
+    {
+      "address": "00ab6c30",
+      "behavior": "Auxiliary state stores at +15Ch..+174h and required scene-node parent contract; command caller supplies 1,0,0.05,[0,0,0,1]"
+    },
+    {
+      "address": "00abb000",
+      "behavior": "Existing localised ellipsis contract, command caller supplies width -1.0f and flag 1"
+    }
+  ],
+  "default_slots": [
+    [
+      0
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      0,
+      2
+    ],
+    [
+      3,
+      1,
+      2,
+      4
+    ],
+    [
+      3,
+      1,
+      0,
+      2,
+      4
+    ]
+  ],
+  "placement_overrides": {
+    "0": 3,
+    "2": 4,
+    "other": "default table by active count and compacted ordinal"
+  },
+  "special_glyph_bytes": {
+    "01": "b7 2f b8",
+    "09": "b4 2f b6"
+  },
+  "native_constants": {
+    "00cec380": 960.0,
+    "00ce4d68": 0.03999999910593033,
+    "00ce7638": 0.05000000074505806,
+    "00d7a260": -1.0
+  },
+  "callsite_corrections": [
+    {
+      "address": "0058cc1f",
+      "function": "0058c010",
+      "triples": [
+        [
+          162,
+          "globals.continue",
+          0
+        ],
+        [
+          0,
+          "",
+          1
+        ],
+        [
+          0,
+          "",
+          1
+        ],
+        [
+          163,
+          "globals.back",
+          2
+        ],
+        [
+          0,
+          "",
+          1
+        ]
+      ],
+      "active_slots": [
+        3,
+        4
+      ]
+    },
+    {
+      "address": "0059244c",
+      "function": "005922f0",
+      "triples": [
+        [
+          0,
+          "",
+          1
+        ],
+        [
+          0,
+          "",
+          1
+        ],
+        [
+          0,
+          "",
+          1
+        ],
+        [
+          0,
+          "",
+          1
+        ],
+        [
+          0,
+          "",
+          1
+        ]
+      ],
+      "correction": "MissionBriefingPlayHost::clear_help_line should be clear_command_bar; separate help widgets and cached labels are not cleared"
+    }
+  ],
+  "verification": {
+    "assembly_reviewed": true,
+    "target_function_instruction_count": 845,
+    "target_listing_gaps": 0,
+    "source_registered": true,
+    "build_tested": true,
+    "new_tests": 0,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "note": "Primary standard Win32 build and both existing tests passed after normal source registration; no menu fixture or gameplay test."
+  },
+  "uncertainty": [
+    "Display-mode global's device-level meaning",
+    "Command-bar full owner and widget binder",
+    "SEH and allocation failures excluded",
+    "Semantic strings/arrays replace native pooled/storage lifetime",
+    "Upper argument dword bytes and native layout aliases excluded",
+    "ASCII localization-key comparison does not model arbitrary CRT locales"
+  ],
+  "follow_up_packets": [
+    "command_bar_owner_and_widget_binding",
+    "command_bar_global_and_help_variant_transitions",
+    "command_bar_gui_host_binding"
+  ],
+  "no_ghidra_function": [],
+  "host_steps": [
+    {
+      "address": "0054b555",
+      "native": "005495e0",
+      "function": "0054b530",
+      "operation": "hide alternate widget family",
+      "native_expression": "0x005495e0"
+    },
+    {
+      "address": "0054b55c",
+      "native": "005495a0",
+      "function": "0054b530",
+      "operation": "hide glyph widget family",
+      "native_expression": "0x005495a0"
+    },
+    {
+      "address": "0054b5a7",
+      "native": "00aa7e00",
+      "function": "0054b530",
+      "operation": "find direct child",
+      "native_expression": "0x00aa7e00"
+    },
+    {
+      "address": "0054b5bd",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054b5fa",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054b604",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054b608",
+      "native": "00ab80c0",
+      "function": "0054b530",
+      "operation": "clear glyph children",
+      "native_expression": "0x00ab80c0"
+    },
+    {
+      "address": "0054b918",
+      "native": "004f83b0",
+      "function": "0054b530",
+      "operation": "commit screen visibility",
+      "native_expression": "0x004f83b0"
+    },
+    {
+      "address": "0054b925",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054b9d7",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EAX"
+    },
+    {
+      "address": "0054bc12",
+      "native": "00abbe50",
+      "function": "0054b530",
+      "operation": "set localized C string",
+      "native_expression": "0x00abbe50"
+    },
+    {
+      "address": "0054bc69",
+      "native": "00ab6c30",
+      "function": "0054b530",
+      "operation": "configure glyph auxiliary",
+      "native_expression": "0x00ab6c30"
+    },
+    {
+      "address": "0054bc77",
+      "native": "00abaed0",
+      "function": "0054b530",
+      "operation": "set localized source",
+      "native_expression": "0x00abaed0"
+    },
+    {
+      "address": "0054bc8b",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054bcc3",
+      "native": "00abb000",
+      "function": "0054b530",
+      "operation": "set ellipsized label",
+      "native_expression": "0x00abb000"
+    },
+    {
+      "address": "0054bd2b",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054be4e",
+      "native": "00ab6c30",
+      "function": "0054b530",
+      "operation": "configure glyph auxiliary",
+      "native_expression": "0x00ab6c30"
+    },
+    {
+      "address": "0054be5c",
+      "native": "00abaed0",
+      "function": "0054b530",
+      "operation": "set localized source",
+      "native_expression": "0x00abaed0"
+    },
+    {
+      "address": "0054be73",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EAX"
+    },
+    {
+      "address": "0054beac",
+      "native": "00abb000",
+      "function": "0054b530",
+      "operation": "set ellipsized label",
+      "native_expression": "0x00abb000"
+    },
+    {
+      "address": "0054bf0d",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EAX"
+    },
+    {
+      "address": "0054bf16",
+      "native": "00aa6740",
+      "function": "0054b530",
+      "operation": "read widget size",
+      "native_expression": "0x00aa6740"
+    },
+    {
+      "address": "0054bf5c",
+      "native": "0054b530+indirect",
+      "function": "0054b530",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054a0d6",
+      "native": "004f83b0",
+      "function": "0054a0c0",
+      "operation": "commit screen visibility",
+      "native_expression": "0x004f83b0"
+    },
+    {
+      "address": "0054a0e2",
+      "native": "0054a0c0+indirect",
+      "function": "0054a0c0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "0054a0ed",
+      "native": "00abaed0",
+      "function": "0054a0c0",
+      "operation": "set localized source",
+      "native_expression": "0x00abaed0"
+    },
+    {
+      "address": "0054a0f7",
+      "native": "00abaed0",
+      "function": "0054a0c0",
+      "operation": "set localized source",
+      "native_expression": "0x00abaed0"
+    },
+    {
+      "address": "0054a111",
+      "native": "0054a0c0+indirect",
+      "function": "0054a0c0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EAX"
+    },
+    {
+      "address": "0054a120",
+      "native": "0054a0c0+indirect",
+      "function": "0054a0c0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "005495ba",
+      "native": "005495a0+indirect",
+      "function": "005495a0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "005495c5",
+      "native": "005495a0+indirect",
+      "function": "005495a0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "005495fa",
+      "native": "005495e0+indirect",
+      "function": "005495e0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "00549605",
+      "native": "005495e0+indirect",
+      "function": "005495e0",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    }
+  ],
+  "callsite_verification_scope": "Direct host target calls checked at the exact live instruction; indirect target identity is not mechanically established."
+}

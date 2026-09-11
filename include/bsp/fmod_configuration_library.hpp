@@ -5,6 +5,7 @@
 #include "bsp/sound_resource_asset.hpp"
 #include "bsp/sound_resource_cleanup.hpp"
 #include "bsp/sound_sample.hpp"
+#include "bsp/sound_instance.hpp"
 
 #include <memory>
 #include <string>
@@ -24,7 +25,8 @@ struct FmodConfigurationCall {
 // opaque FMOD objects must come from this same loaded library instance.
 class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
-    public SoundResourceCleanupFmodHost, public SoundSampleFmodHost {
+    public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
+    public SoundChannelFmodHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
@@ -69,6 +71,20 @@ public:
     FmodResult event_get_parameter_by_index(void*, std::int32_t, void**) override;
     FmodResult event_parameter_get_range(void*, float*, float*) override;
     FmodResult event_parameter_get_info(void*, std::int32_t*, char**) override;
+
+    FmodResult system_play_sound(void*, std::int32_t, void*, bool, void**) override;
+    FmodResult channel_set_loop_count(void*, std::int32_t) override;
+    FmodResult channel_set_loop_points(void*, std::uint32_t, std::uint32_t,
+        std::uint32_t, std::uint32_t) override;
+    FmodResult channel_set_speaker_mix(void*, const std::array<float, 8>&) override;
+    FmodResult channel_stop(void*) override;
+    FmodResult channel_is_virtual(void*, std::optional<bool>&) override;
+    FmodResult channel_is_playing(void*, bool*) override;
+    FmodResult channel_set_frequency(void*, float) override;
+    FmodResult channel_set_volume(void*, float) override;
+    FmodResult channel_set_3d_pan_level(void*, float) override;
+    FmodResult channel_set_paused(void*, std::uint8_t) override;
+    FmodResult channel_get_audibility(void*, float*) override;
 
     FmodResult event_system_create(void**) override;
     FmodResult event_system_get_system_object(void*, void**) override;
