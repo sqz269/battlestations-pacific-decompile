@@ -74,3 +74,9 @@ Original native save hashes were rechecked unchanged. UI/renderer/device effects
 are recorded fixture services, not gameplay or render proof. Initial CMake
 registration was corrected to individual deferred entries; both new modules were
 compiled and linked before these passing checks.
+
+After merging the other orchestrators' input, sound, memory and texture work,
+validation was repeated at8a5ad85: both CTests and all four focused fixtures pass.
+Seventeen Ghidra names/comments are saved and verified by readback; all three
+prior comment fields are preserved and all seventeen exports forcibly refreshed.
+The exact logs and annotation change record remain in ignored local evidence.

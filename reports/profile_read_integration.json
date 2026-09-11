@@ -31,11 +31,11 @@
   "writer_correction": "008d64a0",
   "reader_lifetime": "00441a20 / 00b67980 / 00b66de0",
   "validation": {
-    "tested_source_commit": "34bd240",
+    "tested_source_commit": "8a5ad85dfee61ab1678963fa7056a73b6a4ab5e5",
     "build": "MSVC Win32 Release; both existing CTests passed after eight seed byte matches",
-    "build_log": "local/profile-read-full-build.log",
+    "build_log": "local/profile-read-publish-build.log",
     "integration_fixture": "local/profile_read_fixture.cpp",
-    "integration_log": "local/profile-read-fixture.log",
+    "integration_log": "local/profile-read-publish-fixture.log",
     "integration_checks": [
       "copied native player and quick through real PC filesystem/decompression/Lua owner/read callbacks",
       "isolated synthetic checkpoint forces nested manager close/read and actual Lua table import",
@@ -53,7 +53,7 @@
       "DLC base file only; engine override resolution remains external"
     ],
     "worker_fixtures": "All three worker fixtures recompiled and passed against combined bsp_core",
-    "worker_fixture_log": "local/profile-read-worker-fixtures.log",
+    "worker_fixture_log": "local/profile-read-publish-worker-fixtures.log",
     "preserved_worker_artifacts": "local/worker-validation/profile-read-20260910e/manifest.json",
     "preserved_artifact_count": 12,
     "native_save_sources_unchanged": true,
@@ -62,9 +62,21 @@
       "quick": "585435f3964f45b797b2ec15d8d0384dd7c9a9aa8398d7a245bc8ad2df9c42e2"
     },
     "independent_review": "Keyboard worker checked both settings functions against assembly; Lua worker checked balanced close/reentry lifetime. No blockers.",
-    "registry_correction": "Initial combined multi-source line was dropped by mechanical registry union. Separate deferred entries now compile/link both sources; full build and runtime fixture rerun."
+    "registry_correction": "Initial combined multi-source line was dropped by mechanical registry union. Separate deferred entries now compile/link both sources; full build and runtime fixture rerun.",
+    "earlier_tested_sources": [
+      "34bd240",
+      "5113a55",
+      "a6cecae"
+    ]
   },
-  "annotations": "pending",
+  "annotations": {
+    "names_verified": 17,
+    "prior_comment_fields_preserved": 3,
+    "forced_exports": 17,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotation_record": "local/profile-read-annotation-changes.json"
+  },
   "abi_compatible": false,
   "game_validated": false,
   "worker_commits": {
