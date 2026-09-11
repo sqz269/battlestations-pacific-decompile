@@ -1,0 +1,23 @@
+# Ghidra listing defects the bridge cannot repair
+
+Addresses: 004e4a40, 00643c0c, 004c9800
+
+The GhidraMCP bridge offers `disassemble_bytes`, `create_function`, `delete_function` and
+`clear_instruction_flow_override`, but no way to clear code units, clear a fall-through override or
+set a function body. Three defects survive every bridge-side attempt and are repaired by
+`tools/ghidra_scripts/RepairListingDefects.java`, run from Ghidra's Script Manager (see the header of
+that file). Until it runs, `python tools/bsp.py show`/`ghidra decompile` on these routines is
+incomplete and `tools/verify_report_calls.py` reports call sites inside them as "in no Ghidra
+function"; read them from the disk bytes (`disasm-raw`) and the docs that already did.
+
+| Start | Inclusive end | Defect | Evidence |
+| --- | --- | --- | --- |
+| 004e4a40 | 004e5537 | `BSP_Game_OnMove` (GGame::OnMove) has an 8-byte body: flow stops after `MOV EAX,FS:[0]` at 004e4a42 although 004e4a48 disassembles and no flow override is set (`reports/onmove_function_repair.json`: deleted and re-created twice, body unchanged). The routine runs to the `ret 4` at 004e5535 (745 instructions, two RETs, docs/GAME_ON_MOVE_MAP.md). | `python tools/bsp.py ghidra proto 004e4a40 --brief` -> `body 004e4a40 - 004e4a47` |
+| 00643c0c | 00643c18 | one-byte-late decode inside `BSP_InGameHudMarkersScreen_Update` 006435d0 (`TEST AL,0xd4` at 00643c0d instead of the instruction at 00643c0c); re-disassembly did not replace the code units (`reports/hud_markers_listing_resync.json`). | `python tools/bsp.py ghidra proto 00643c20 --brief` -> no function |
+| 004c9800 | 004c981d | `BSP_SceneRecordPlayerSlot_Construct` sits under a defined data item, so `create_function` refuses ("entryPoint may not be created on defined data"); the bytes are code (`push esi; push 004c6760; push 004c6750; ...`). | `reports/scene_records_function_definitions.json` |
+
+After the script runs and the program is saved: `python tools/bsp.py snapshot --force`, `python
+tools/bsp.py index`, then `python tools/ghidra_flow_repair.py 004e4a40 006435d0` to close any
+`_free` gaps the fresh disassembly exposes, and `python tools/ghidra_annotate.py --apply
+--addresses 004c9800` to apply the deferred name. Add new rows here and in the script's `RANGES`
+table when a bridge-side define fails for the same reasons.
