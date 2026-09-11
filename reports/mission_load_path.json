@@ -1,0 +1,175 @@
+{
+  "packet": "cc_mission_load",
+  "owner": "agent/cc-mission-load",
+  "doc": "docs/MISSION_LOAD_PATH.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "sources": [
+    "include/bsp/mission_load_path.hpp",
+    "src/mission_load_path.cpp",
+    "src/mission_scene_probe.cpp"
+  ],
+  "state": "reconstructed, build-tested, fixture-tested against 259 installed .scn files",
+  "routines": [
+    {
+      "address": "005c5600",
+      "name": "BSP_MissionTree_StartSelectedMission",
+      "abi": "__thiscall void(MissionTreeScreen* this), ECX only, RET, SEH handler 00c72dd8",
+      "state": "analysed, decision reconstructed",
+      "reconstruction": "decide_mission_tree_start_005c5600",
+      "evidence": "full listing 005c5600..005c57cd; side index from SETZ on record+0B8h at 005c5633, side block stride 0x154 from IMUL at 005c563c, branch on side_block+4h at 005c573a"
+    },
+    {
+      "address": "004e2770",
+      "name": "BSP_Game_SetPendingScene",
+      "abi": "__thiscall void(GGame* this, const char* scenePath, const char* weatherOverride), ECX = game, two stack arguments, RET 8 at 004e27d2",
+      "state": "reconstructed",
+      "reconstruction": "run_set_pending_scene_004e2770",
+      "evidence": "full listing 004e2770..004e27d2"
+    },
+    {
+      "address": "004e1d70",
+      "name": "BSP_Game_BuildSceneRecord",
+      "abi": "__thiscall int(GGame* this, const char* scenePath, char arm, int unused, const char* weatherOverride), ECX = game, four stack arguments, RET 0x10, SEH handler 00c676c6",
+      "state": "reconstructed (arms and record fields; the storage-pool string plumbing not modelled)",
+      "reconstruction": "run_build_scene_record_004e1d70",
+      "evidence": "operator new(0x109c) at 004e1f30 and 004e213d; arm test at 004e1e99; 0046df00 at 004e20da (guarded by record+914h) and 004e21b1 (unguarded); 004c2c80 at 004e21c1; award tracker at 004e21c6/004e21cd",
+      "new_name": true
+    },
+    {
+      "address": "004c6890",
+      "name": "BSP_Game_SelectSceneRecord",
+      "abi": "__thiscall void(GGame* this, int index), ECX = game, one stack argument, RET 4 at 004c6afa",
+      "state": "reconstructed",
+      "reconstruction": "run_select_scene_record_004c6890",
+      "evidence": "full listing 004c6890..004c6afa"
+    },
+    {
+      "address": "00439020",
+      "name": "BSP_Game_RequestMissionStart",
+      "abi": "__cdecl void(), seven instructions, RET at 0043903a",
+      "state": "reconstructed",
+      "reconstruction": "mission_start_state_requests_00439020",
+      "evidence": "004d7920(game, 6) at 00439028 then 004d7920(game, 0Ah) at 00439035"
+    },
+    {
+      "address": "004bf930",
+      "name": "BSP_SceneRecordList_DestroyAll",
+      "abi": "__thiscall void(SceneRecordList* this), ECX = list, no stack arguments, RET",
+      "state": "analysed",
+      "evidence": "listing 004bf930..004bf993; payload virtual +0h with 1 at 004bf950",
+      "new_name": true
+    },
+    {
+      "address": "004c2c80",
+      "name": "BSP_SceneRecordList_PushBack",
+      "abi": "__thiscall void(SceneRecordList* this, void* payload), ECX = list, one stack argument",
+      "state": "analysed (link-and-count shape only)",
+      "evidence": "sole caller 004e1d70 at 004e21c1 with ECX = game+5F0h",
+      "new_name": true
+    },
+    {
+      "address": "004bb160",
+      "name": "BSP_Game_ResetParticipantTable",
+      "abi": "__thiscall void(GGame* this), ECX = game",
+      "state": "referenced; settles the slot-record base",
+      "evidence": "004bb169..004bb1c3 writes game+18CCh..18E8h with the eight literal addresses game+1008h, 1120h, 1238h, 1350h, 1468h, 1580h, 1698h, 17B0h"
+    },
+    {
+      "address": "004bb440",
+      "name": "BSP_Game_ClaimParticipantRecord",
+      "abi": "__thiscall int(GGame* this, ...), ECX = game, RET 0x24",
+      "state": "referenced; settles the slot-record field offsets",
+      "evidence": "scans game+748h with stride 0x118 testing the in-use byte at +8h (004bb450), then writes +8h, +0Bh, +19h, +50h, +58h, +78h, +80h"
+    }
+  ],
+  "structures": {
+    "scene_record": {
+      "size": "0x109c",
+      "side_blocks": "record+0h, stride 0x120, count at record+988h, capped at 8 by the layout",
+      "side_block_fields": {"+4h": "selector -> slot +28h", "+8h": "-> slot +24h"},
+      "scene_path": "+90Ch length, +910h data",
+      "file_present": "+914h, set only by the reuse arm",
+      "script_table": "+928h, stride 8",
+      "locale_table_list": "+980h/+984h",
+      "side_block_count": "+988h",
+      "mission_id": "+1098h"
+    },
+    "scene_record_list": {
+      "header": "game+5F0h {int count; Node* head; Node* tail}",
+      "node": "0xc bytes {Node* prev; Node* next; SceneRecord* payload}",
+      "selected": "game+5FCh record, game+60Ch index"
+    },
+    "slot_record": {
+      "base": "game+1008h",
+      "stride": "0x118",
+      "count": 8,
+      "participant_array_base": "game+748h",
+      "fields": {
+        "+8h": "in-use byte",
+        "+24h": "from side block +8h",
+        "+28h": "selector, from side block +4h; reaches mission_side_suffix through the participant record",
+        "+50h": "name, strcpy of the empty literal 00ce3a0c",
+        "+70h": "second name, strcpy of the empty literal 00ce3a0c"
+      }
+    }
+  },
+  "corrections": [
+    {
+      "target": "docs/MISSION_SCENE_LOAD.md",
+      "was": "004c6890 picks the script slot with the same 8-or-9 rule 004dfb70 uses",
+      "is": "the two rules differ on slot 9: 004c6958 keeps it, 004e0896 replaces it with 8",
+      "evidence": "004c6933..004c6967 against 004e087b..004e08aa"
+    },
+    {
+      "target": "docs/MISSION_SCENE_LOAD.md",
+      "was": "the eight slot records at game+1010h + i*118h, record+4h becomes slot +20h and record+8h becomes slot +1Ch",
+      "is": "the records are based at game+1008h, so the offsets are +28h and +24h and the byte at game+1010h is slot+8h",
+      "evidence": "004bb169..004bb1c3 and the matching writes at 004bb477..004bb4bf"
+    },
+    {
+      "target": "include/bsp/mission_tree_screens.hpp",
+      "was": "set_pending_scene(scene, int flags)",
+      "is": "the second argument is a const char* weather/descriptor override forwarded to 0046df00 argument 5; 005c5682 pushes null",
+      "evidence": "004e27ba..004e27c2 and 004e20ca / 004e21a1"
+    }
+  ],
+  "probe": {
+    "target": "bsp_mission_scene_probe",
+    "source": "src/mission_scene_probe.cpp",
+    "default_mission": "universe/Scenes/missions/USN/usn_2_java.scn",
+    "default_mission_reason": "smallest single-player campaign scene (48680 bytes); mission-tree entry at scripts/datatables/missiontree.lua line 3404",
+    "default_result": {
+      "unique_id": 1,
+      "entities": 34,
+      "classes": {"DestroyerGen": 32, "NavPoint": 2},
+      "short_name": "usn_2",
+      "vfs_blocks": ["1_usn_2", "3_usn_2", "4_usn_2", "5_usn_2", "6_usn_2"],
+      "recovered_errors": 0,
+      "cross_check": "grep of the installed file reports the same 34 entity blocks and the same two class tokens"
+    },
+    "sweep": {
+      "files": 259,
+      "exit_zero": 259,
+      "entities": 133655,
+      "distinct_class_tokens": 22,
+      "unregistered_class_tokens": 0,
+      "recovered_errors": 21,
+      "files_with_recovered_errors": 9,
+      "files_with_no_entities": 1,
+      "no_entity_file": "universe/scenes/missions/chg/usn_finale.scn",
+      "sample_recovered_error": "multi/scene12.scn line 46101: template \"Entities\\SpawnPoint\" is missing its terminating ';'; the reader records the error and resumes, as 008d9930 does"
+    }
+  },
+  "host_steps": {
+    "total": 68,
+    "needing_a_subsystem_owner": 57,
+    "table": "bsp::mission_load_host_steps in src/mission_load_path.cpp"
+  },
+  "no_ghidra_function": [],
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX; bsp_mission_scene_probe links against bsp_core",
+  "tests_added": 0
+}
