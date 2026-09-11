@@ -1,0 +1,596 @@
+{
+  "packet": "native_renderer_surface_bindings",
+  "status": "integrated_two_actual_surface_binders_original_COM_ABI_composition_real_Win32_and_native_EH_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_behavior": [
+    {
+      "address": "00b23d80",
+      "old_name": "BSP_D3D9Renderer_BindColorSurface",
+      "name": "BSP_D3D9Renderer_BindColorSurface",
+      "evidence": "Actual nonnullwrapper+2C captured BEFOREcurrentdevice+1A10/table+94. Nullslot0 dereferences actualdefaultwrapper+197C then+2C beforedevice; othernullslotsunbind. Only supplied nonnullwrapper increments CURRENT DWORD+1BA0 after COM returns, even failure/nullCOM. No wrapperretain/release/cache. Actual optionalguard: renderer savedbeforeenter,ALafter; entryoutsideEHstate0; COM+counterprotected; normalleaveafterdisarm. ExceptionusesactualB21110/currentmode. Newinterfacepassesdefinedlowbyte instead of nativeignoredDWORDpadding. Original ABI: ECX actualrenderer; stackslot,wrapper;RET8;no stableHRESULTreturn. Evidence reports/native_renderer_surface_bindings_audit.json and docs/NATIVE_RENDERER_SURFACE_BINDINGS.md. Primary-library ONEoriginalcaller fixture27comparisons2898DWORDs, originalEHmaps/actions+3actualsyncbodies, realWin32locks; strictWin32+2CTest. Controlled fixture-onlyCOM/HRESULTs: actualD3D9attempt0adapters/8876086c. No driver/surface/render/fullpipeline/ABI/game validation claim."
+    },
+    {
+      "address": "00b21690",
+      "old_name": "BSP_D3D9Renderer_BindDepthSurface",
+      "name": "BSP_D3D9Renderer_BindDepthSurface",
+      "evidence": "Actualdevice+1A10 captured BEFOREnonnullwrapper+2C thencaptureddevice currenttable+9C. Nullwrapper passesnull. Only nonnullwrapper increments CURRENT DWORD+1BCC after COM returns, even failure/nullCOM. No wrapperretain/release/cache. Actual optionalguard: renderer savedbeforeenter,ALafter; entryoutsideEHstate0; COM+counterprotected; normalleaveafterdisarm. ExceptionusesactualB21110/currentmode. Newinterfacepassesdefinedlowbyte instead of nativeignoredDWORDpadding. Original ABI: ECX actualrenderer; stackwrapper;RET4;no stableHRESULTreturn. Evidence reports/native_renderer_surface_bindings_audit.json and docs/NATIVE_RENDERER_SURFACE_BINDINGS.md. Primary-library ONEoriginalcaller fixture27comparisons2898DWORDs, originalEHmaps/actions+3actualsyncbodies, realWin32locks; strictWin32+2CTest. Controlled fixture-onlyCOM/HRESULTs: actualD3D9attempt0adapters/8876086c. No driver/surface/render/fullpipeline/ABI/game validation claim."
+    }
+  ],
+  "records": [
+    {
+      "kind": "function",
+      "address": "00b23d80",
+      "name": "bind_native_renderer_color_surface_00b23d80",
+      "cpp_symbol": "bind_native_renderer_color_surface_00b23d80",
+      "source": "src/native_renderer_surface_bindings.cpp",
+      "native_end_exclusive": "00b23e4f",
+      "original_abi": "ECX actualrenderer; stackslot,wrapper;RET8;no stableHRESULTreturn",
+      "evidence": "reports/native_renderer_surface_bindings_audit.json",
+      "status": "complete_actual_storage_original_caller_COM_ABI_composition_and_real_Win32_fixture_checked",
+      "native_differential_fixture": true,
+      "fixture_COM_domain": "controlled ABI observation object, not real device",
+      "previous_interfaces": [],
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b21690",
+      "name": "bind_native_renderer_depth_surface_00b21690",
+      "cpp_symbol": "bind_native_renderer_depth_surface_00b21690",
+      "source": "src/native_renderer_surface_bindings.cpp",
+      "native_end_exclusive": "00b21732",
+      "original_abi": "ECX actualrenderer; stackwrapper;RET4;no stableHRESULTreturn",
+      "evidence": "reports/native_renderer_surface_bindings_audit.json",
+      "status": "complete_actual_storage_original_caller_COM_ABI_composition_and_real_Win32_fixture_checked",
+      "native_differential_fixture": true,
+      "fixture_COM_domain": "controlled ABI observation object, not real device",
+      "previous_interfaces": [
+        {
+          "address": "00b21690",
+          "name": "bind_depth_surface",
+          "source": "src/d3d9_states.cpp",
+          "status": "device_probe_checked",
+          "abi_compatible": false,
+          "kind": "function"
+        }
+      ],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "evidence": {
+    "spans": [
+      {
+        "address": "00b23d80",
+        "end_exclusive": "00b23e4f",
+        "length": 207,
+        "role": "complete_color_binder",
+        "disk_offset": 7486848,
+        "sha256": "804abb888e6d511df739c72320e39600dbc5ae0d076ea3e3b83e6266722616fa",
+        "hex": "64a1000000006aff6818cfcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e823fd0000884424048b4c242085c9c74424140000000074238b492c8b86101a00008b108b9294000000518b4c24205150ffd28386a01b000001eb3b8b44241c85c0751f8b867c1900008b502c8bb6101a00008b0e8b8194000000526a0056ffd0eb148bb6101a00008b0e8b91940000006a005056ffd2803ddcd6080100c7442414ffffffff5e740d8b04248b4c240450e8c2fc00008b4c240864890d0000000083c414c20800",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00b21690",
+        "end_exclusive": "00b21732",
+        "length": 162,
+        "role": "complete_depth_binder",
+        "disk_offset": 7476880,
+        "sha256": "bbbc544b2cef1e63efc7742fc00a83e63c62dd155d919b68452190dc7d2d4881",
+        "hex": "64a1000000006aff6858cdcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e813240100884424048b4c241c85c9c744241400000000741e8b86101a00008b492c8b108b929c0000005150ffd28386cc1b000001eb138bb6101a00008b068b889c0000006a0056ffd1803ddcd6080100c7442414ffffffff5e740d8b14248b4c240452e8df2301008b4c240864890d0000000083c414c20400",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cbcf10",
+        "end_exclusive": "00cbcf22",
+        "length": 18,
+        "role": "color_unwind_and_handler",
+        "disk_offset": 9162512,
+        "sha256": "ffe295ffc3b39dd7b990790ebaa4fcbc5fc5729584d9d06b11d0579a2a33c7fc",
+        "hex": "8d4dece9f841e6ffb83455df00e9219cf3ff",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cbcd50",
+        "end_exclusive": "00cbcd62",
+        "length": 18,
+        "role": "depth_unwind_and_handler",
+        "disk_offset": 9162064,
+        "sha256": "d279429be712907a38c161a5706478a578e64c3c13b21984841c236f184aa528",
+        "hex": "8d4dece9b843e6ffb8c452df00e9e19df3ff",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00df5534",
+        "end_exclusive": "00df5558",
+        "length": 36,
+        "role": "color_FuncInfo",
+        "disk_offset": 10442036,
+        "sha256": "7e7e30cf5ba630242740411c6e919203f8e465b22b65b135865ecf05490a394d",
+        "hex": "22059319010000002c55df00000000000000000000000000000000000000000001000000",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00df52c4",
+        "end_exclusive": "00df52e8",
+        "length": 36,
+        "role": "depth_FuncInfo",
+        "disk_offset": 10441412,
+        "sha256": "92a6f07cd124a9ed7abbefceb7ca0a7552c369504558a279b75efa91cb9265da",
+        "hex": "2205931901000000bc52df00000000000000000000000000000000000000000001000000",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00df552c",
+        "end_exclusive": "00df5534",
+        "length": 8,
+        "role": "color_unwind_map",
+        "disk_offset": 10442028,
+        "sha256": "46041b3560a8718caf4f0b58f6b16dfc505e5a8a1d2728c6f83ee781f011d6e6",
+        "hex": "ffffffff10cfcb00",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00df52bc",
+        "end_exclusive": "00df52c4",
+        "length": 8,
+        "role": "depth_unwind_map",
+        "disk_offset": 10441404,
+        "sha256": "16672899d8b3b7ed2e81f9ebde065554313e0940bf24898809c9f187959e61e2",
+        "hex": "ffffffff50cdcb00",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d619a0",
+        "end_exclusive": "00d619a8",
+        "length": 8,
+        "role": "surface_owner_profile",
+        "disk_offset": 9836960,
+        "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+        "hex": "e030bd00b0f5b300",
+        "live_matches_installed": true
+      }
+    ],
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verified_project": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe"
+  },
+  "fixture": {
+    "worker_proof_path": "J:\\PROG\\battlestations-pacific-decompile-native-surface-binding-fixture-20260910\\local\\native_surface_binding_fixture_proof.json",
+    "worker_proof_sha256": "eae85d89b04bc8b22f2a73b88005e582f84c73fc691faae2d4d7bc2e313a2d5c",
+    "proof": {
+      "spans": [
+        {
+          "address": "00b23d80",
+          "end_exclusive": "00b23e4f",
+          "length": 207,
+          "role": "complete_color_binder",
+          "disk_offset": 7486848,
+          "sha256": "804abb888e6d511df739c72320e39600dbc5ae0d076ea3e3b83e6266722616fa",
+          "hex": "64a1000000006aff6818cfcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e823fd0000884424048b4c242085c9c74424140000000074238b492c8b86101a00008b108b9294000000518b4c24205150ffd28386a01b000001eb3b8b44241c85c0751f8b867c1900008b502c8bb6101a00008b0e8b8194000000526a0056ffd0eb148bb6101a00008b0e8b91940000006a005056ffd2803ddcd6080100c7442414ffffffff5e740d8b04248b4c240450e8c2fc00008b4c240864890d0000000083c414c20800",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b21690",
+          "end_exclusive": "00b21732",
+          "length": 162,
+          "role": "complete_depth_binder",
+          "disk_offset": 7476880,
+          "sha256": "bbbc544b2cef1e63efc7742fc00a83e63c62dd155d919b68452190dc7d2d4881",
+          "hex": "64a1000000006aff6858cdcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e813240100884424048b4c241c85c9c744241400000000741e8b86101a00008b492c8b108b929c0000005150ffd28386cc1b000001eb138bb6101a00008b068b889c0000006a0056ffd1803ddcd6080100c7442414ffffffff5e740d8b14248b4c240452e8df2301008b4c240864890d0000000083c414c20400",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00cbcf10",
+          "end_exclusive": "00cbcf22",
+          "length": 18,
+          "role": "color_unwind_and_handler",
+          "disk_offset": 9162512,
+          "sha256": "ffe295ffc3b39dd7b990790ebaa4fcbc5fc5729584d9d06b11d0579a2a33c7fc",
+          "hex": "8d4dece9f841e6ffb83455df00e9219cf3ff",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00cbcd50",
+          "end_exclusive": "00cbcd62",
+          "length": 18,
+          "role": "depth_unwind_and_handler",
+          "disk_offset": 9162064,
+          "sha256": "d279429be712907a38c161a5706478a578e64c3c13b21984841c236f184aa528",
+          "hex": "8d4dece9b843e6ffb8c452df00e9e19df3ff",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00df5534",
+          "end_exclusive": "00df5558",
+          "length": 36,
+          "role": "color_FuncInfo",
+          "disk_offset": 10442036,
+          "sha256": "7e7e30cf5ba630242740411c6e919203f8e465b22b65b135865ecf05490a394d",
+          "hex": "22059319010000002c55df00000000000000000000000000000000000000000001000000",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00df52c4",
+          "end_exclusive": "00df52e8",
+          "length": 36,
+          "role": "depth_FuncInfo",
+          "disk_offset": 10441412,
+          "sha256": "92a6f07cd124a9ed7abbefceb7ca0a7552c369504558a279b75efa91cb9265da",
+          "hex": "2205931901000000bc52df00000000000000000000000000000000000000000001000000",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00df552c",
+          "end_exclusive": "00df5534",
+          "length": 8,
+          "role": "color_unwind_map",
+          "disk_offset": 10442028,
+          "sha256": "46041b3560a8718caf4f0b58f6b16dfc505e5a8a1d2728c6f83ee781f011d6e6",
+          "hex": "ffffffff10cfcb00",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00df52bc",
+          "end_exclusive": "00df52c4",
+          "length": 8,
+          "role": "depth_unwind_map",
+          "disk_offset": 10441404,
+          "sha256": "16672899d8b3b7ed2e81f9ebde065554313e0940bf24898809c9f187959e61e2",
+          "hex": "ffffffff50cdcb00",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d619a0",
+          "end_exclusive": "00d619a8",
+          "length": 8,
+          "role": "surface_owner_profile",
+          "disk_offset": 9836960,
+          "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+          "hex": "e030bd00b0f5b300",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b33ad0",
+          "end_exclusive": "00b33afe",
+          "length": 46,
+          "kind": "code",
+          "disk_offset": 7551696,
+          "original_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+          "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33ae2",
+              "operand": ""
+            },
+            {
+              "address": "00b33af9",
+              "operand": ""
+            },
+            {
+              "address": "00b33afd",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [
+            "00b33aec: call dword ptr [0xce2218]"
+          ],
+          "hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3"
+        },
+        {
+          "address": "00b33b00",
+          "end_exclusive": "00b33b43",
+          "length": 67,
+          "kind": "code",
+          "disk_offset": 7551744,
+          "original_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+          "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33b40",
+              "operand": "4"
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [
+            "00b33b1d: call dword ptr [0xce2210]"
+          ],
+          "hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400"
+        },
+        {
+          "address": "00b21110",
+          "end_exclusive": "00b21126",
+          "length": 22,
+          "kind": "code",
+          "disk_offset": 7475472,
+          "original_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+          "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b21125",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [],
+          "hex": "803ddcd6080100740c0fb6018b490450e8db290100c3"
+        }
+      ],
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "verified_project": "C:/Users/sqz269/bsp.gpr",
+      "verified_program": "/battlestationspacific.exe",
+      "code_bytes": 540,
+      "verified_bytes": 636,
+      "relocations": [
+        {
+          "site": "00b23d9a",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b23e21",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b216aa",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b21704",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b33ad2",
+          "expected": "0108d6e0"
+        },
+        {
+          "site": "00b33ad9",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b33aee",
+          "expected": "00ce2218"
+        },
+        {
+          "site": "00b33b02",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b33b08",
+          "expected": "0108d6e0"
+        },
+        {
+          "site": "00b33b1f",
+          "expected": "00ce2210"
+        },
+        {
+          "site": "00b33b25",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b33b2b",
+          "expected": "0108d6e0"
+        },
+        {
+          "site": "00b33b34",
+          "expected": "0108d6dd"
+        },
+        {
+          "site": "00b33b3c",
+          "expected": "0108d6dd"
+        },
+        {
+          "site": "00b21112",
+          "expected": "0108d6dc"
+        },
+        {
+          "site": "00b23d89",
+          "expected": "00cbcf18"
+        },
+        {
+          "site": "00b21699",
+          "expected": "00cbcd58"
+        },
+        {
+          "site": "00cbcf19",
+          "expected": "00df5534"
+        },
+        {
+          "site": "00cbcd59",
+          "expected": "00df52c4"
+        },
+        {
+          "site": "00df553c",
+          "expected": "00df552c"
+        },
+        {
+          "site": "00df52cc",
+          "expected": "00df52bc"
+        },
+        {
+          "site": "00df5530",
+          "expected": "00cbcf10"
+        },
+        {
+          "site": "00df52c0",
+          "expected": "00cbcd50"
+        }
+      ],
+      "fixture_runtime_bridge": {
+        "address": "00bf6b43",
+        "target": "actual MSVC __CxxFrameHandler3"
+      },
+      "source_sha256": {
+        "local/include/bsp/native_renderer_surface_bindings.hpp": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27",
+        "local/native_renderer_surface_bindings.cpp": "af57c4b07b98c0e71f5f2fb56f73faa654da5f4034913d6d4a589b7441f2fc67",
+        "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "src/native_renderer_synchronization_actual.cpp": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+      },
+      "completed_utc": "2026-09-11T01:08:06.926608+00:00",
+      "status": "strict_win32_compiled_and_one_private_original_caller_composition_fixture_passed",
+      "comparisons": 27,
+      "matching_trace_dwords": 2898,
+      "executed_complete_native_functions": [
+        "00b23d80",
+        "00b21690",
+        "00b33ad0",
+        "00b33b00",
+        "00b21110"
+      ],
+      "executed_native_function_bytes": 504,
+      "executed_original_unwind_funclets": [
+        "00cbcf10",
+        "00cbcd50"
+      ],
+      "native_handler_bodies_verified_but_replaced_at_registration": [
+        "00cbcf18",
+        "00cbcd58"
+      ],
+      "registered_handler_bridges": [
+        {
+          "push_immediate": "00b23d89",
+          "original": "00cbcf18",
+          "fixture_host_handler": "color_handler",
+          "original_relocated_FuncInfo": "00df5534"
+        },
+        {
+          "push_immediate": "00b21699",
+          "original": "00cbcd58",
+          "fixture_host_handler": "depth_handler",
+          "original_relocated_FuncInfo": "00df52c4"
+        }
+      ],
+      "handler_bridge_reason": "Windows did not dispatch directly registered private-image handlers (unhandled 0xe06d7363). Host-image naked MOV EAX, relocated native FuncInfo; JMP actual __CxxFrameHandler3 entries preserve original maps/actions and pass.",
+      "external_boundary": {
+        "COM": "Explicit fixture-only COM-ABI observation object with only device vtable slots +94/+9C, opaque fixture surface tags, controlled HRESULTs and fixture-only C++ throws. Same unchanged object/domain for native and source. No production mocks or callback API changes.",
+        "Win32": "Actual initialized TrackedCriticalSection objects and real EnterCriticalSection/LeaveCriticalSection calls. Both paths share observation hooks that always forward to saved real APIs.",
+        "CxxFrameHandler3": "Actual host MSVC runtime, receiving original relocated native FuncInfo/unwind maps. Original native unwind actions execute the complete original B21110 -> B33B00 chain."
+      },
+      "real_d3d9_attempt": {
+        "status": "unavailable_before_comparison",
+        "adapter_count": 0,
+        "CreateDevice_hresult": "8876086c",
+        "device_type": "D3DDEVTYPE_HAL",
+        "process_session": 1,
+        "explorer_session": 1,
+        "window_station": "WinSta0",
+        "desktop": "Default",
+        "session_name": "Console",
+        "read_only_Windows_video_status": [
+          "NVIDIA GeForce RTX 5090: OK, 2560x1440",
+          "AMD Radeon(TM) Graphics: OK, 1920x1080"
+        ],
+        "diagnosis_limit": "Cause of D3D9 zero-adapter result unresolved; no display, game, driver or desktop state changes."
+      },
+      "coverage": [
+        "Nonnull color wrapper; null slot-zero fallback; null nonzero slot; null COM stored inside nonnull wrapper.",
+        "Depth nonnull/null wrapper and null COM stored inside nonnull wrapper.",
+        "Controlled failed HRESULT still increments only the supplied nonnull-wrapper counter, with unsigned DWORD wrapping.",
+        "Disabled mode leaves guard unread; enabled null lock balances global nesting without OS lock calls.",
+        "Mode can disable during COM and skip cleanup, preserving acquired physical lock until fixture cleanup.",
+        "Changing renderer+4 during COM makes cleanup leave the current second physical lock and preserve the first acquired physical lock.",
+        "Mode is reloaded after actual LeaveCriticalSection before observed-mode update.",
+        "Fixture COM throw executes original native EH guard destruction before propagation and leaves counter unchanged.",
+        "Fixture EnterCriticalSection throw occurs before native caller EH activation and before captured lock depth increment.",
+        "Fixture LeaveCriticalSection throw propagates with EH scope already disarmed and no second cleanup.",
+        "Entire ordered traces equal; wrapper bytes and all other renderer bytes preserved."
+      ],
+      "validation_limits": [
+        "No real D3D9 device/surface or driver behavior was validated; composition fixture controls external COM results.",
+        "Fixture C++ exceptions across COM/Win32 observation boundaries test recovered scope ordering; they do not claim actual Windows COM APIs normally throw.",
+        "Header/source copies match current main bytes; strict standalone MSVC Win32 /O2 /W4 /WX /fp:strict /EHsc /MD compile succeeded.",
+        "New C++ source interface, not original thiscall/RET ABI compatibility; no game or rendering validation.",
+        "No tracked files, production changes, shared metadata edits, or new tracked tests in this worker packet."
+      ],
+      "artifact_sha256": {
+        "local/native_surface_binding_check.cpp": "5608278761f3e7e6f28bd9e91198b84cf70a54cd74a5d6cc6d09c9aa8a5acaa6",
+        "local/native_surface_fixture_data.hpp": "aa57ccb0c2a0d64c4f45868afddf3db5e084412fa16bcf0683f63bceda184905",
+        "local/build_native_surface_binding_check.ps1": "2d208abba82d267a9b9ec162a54855750024a8721fa99d199e0d3ba3ba2375cf",
+        "local/native_surface_binding_build.log": "f69fe573e76928e279dcc1bebd5dde00937427d6147ed759049631b190b115b8",
+        "local/native_surface_binding_real_d3d9_attempt.log": "d97c5a0fe8e9ae9f75fb4788fed6e4533c08fc2d37480760286c0031654ed912",
+        "local/native_surface_binding_real_d3d9_source_hash.txt": "bafd72153039ac765eec4f5dde706a77bb461d0f20ad9290b93c8751bd036e1b",
+        "local/surface_fixture_seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "build/surface-binding-check/native_surface_binding_check.exe": "54c0b5d8886eb1ee7f7ba22e729b3557f0c22a246ad39a3384bd5d61751bf1db"
+      },
+      "compiled_machine": "014c MSVC Win32 x86"
+    },
+    "worker_source_identical": true,
+    "worker_artifacts_verified": true
+  },
+  "source_interface_limits": [
+    "Borrow actual renderer/surface storage and actual synchronization global view; no independent owner.",
+    "Normal leave passes initialized low byte rather than ignored native wholeDWORDguard padding.",
+    "No stable nativeHRESULTreturn exposed.",
+    "Uninitialized skipped-entry guard is not repaired if mode becomes enabled before cleanup.",
+    "RealD3D9 unavailable: zero adapters; passingfixture controlledCOMABI plus realWin32, no driver/render proof."
+  ],
+  "primary_integration": {
+    "new_complete_functions": 1,
+    "upgraded_complete_functions": 1,
+    "primary_library_binders_and_synchronization": true,
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_renderer_surface_bindings.hpp",
+        "sha256": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27"
+      },
+      {
+        "path": "src/native_renderer_surface_bindings.cpp",
+        "sha256": "af57c4b07b98c0e71f5f2fb56f73faa654da5f4034913d6d4a589b7441f2fc67"
+      },
+      {
+        "path": "docs/NATIVE_RENDERER_SURFACE_BINDINGS.md",
+        "sha256": "ea7286929a466bf74e3fd14cbbcf8ca67fa815fd98f50a1574ca3626119d7831"
+      },
+      {
+        "path": "local/native_surface_primary_fixture.txt",
+        "sha256": "310a18322ab71a5a38b9fa73c7b781b0720047cc3d6a4090902e0d8cd27a66c0"
+      },
+      {
+        "path": "local/build_native_surface_binding_check.ps1",
+        "sha256": "0878f84fe395095407e168c08ea99c675568ee0c66d225b6d2c29ddf09ef958d"
+      },
+      {
+        "path": "build/surface-binding-check/native_surface_binding_check.exe",
+        "sha256": "9508c2543fe8838dc09bbb6d409ec288bb1b453da24f37cadd6aa94976b4ae3f"
+      }
+    ],
+    "build": {
+      "path": "reports/native_surface_bindings_primary_build.txt",
+      "sha256": "71e3eda8deb8b76cabc58916eefbe47c67a9c44ae1625bd14a60cfe3d2a60630",
+      "passed": true,
+      "tests": 2
+    },
+    "annotations_applied": true,
+    "status": "integrated_two_actual_surface_binders_original_COM_ABI_composition_real_Win32_and_native_EH_checked",
+    "saved_annotations": {
+      "path": "reports/native_surface_bindings_annotations.json",
+      "sha256": "670f9e0520dc293dedef2059497a20cfd7caff6a7f40285676501002556ca315",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b23d80",
+        "path": "exports/bsp/functions/00b23d80/decompiled.c",
+        "sha256": "a35eeb72c4c0f8d4477993ea4b99ff511cc98ef8b660eac83a4f6280a981080a"
+      },
+      {
+        "address": "00b21690",
+        "path": "exports/bsp/functions/00b21690/decompiled.c",
+        "sha256": "c19f3b22c329c17083bfe3f63e6c3d29721f0285b68c9fbd91149ea796805bd4"
+      }
+    ],
+    "closure_utc": "2026-09-11T01:15:03.473950+00:00"
+  },
+  "new_tracked_tests": 0,
+  "native_ABI_installed": false,
+  "real_D3D9_validated": false,
+  "game_validated": false
+}

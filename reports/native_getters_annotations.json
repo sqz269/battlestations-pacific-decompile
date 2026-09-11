@@ -1,0 +1,119 @@
+[
+  {
+    "address": "00b3cea0",
+    "before": {
+      "address": "00b3cea0",
+      "function_name": "BSP_D3D9Texture2D_GetNativeTexture"
+    },
+    "after": {
+      "address": "00b3cea0",
+      "old_name": "BSP_D3D9Texture2D_GetNativeTexture",
+      "name": "BSP_D3D9Texture2D_GetNativeTexture",
+      "evidence": "texture+10 -> borrowed IDirect3DTexture9*. Original ABI: ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments. Complete native naked leaf; all 4 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=True. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48ce0",
+    "before": {
+      "address": "00b48ce0",
+      "function_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+      "comment": "[BSP reconstruction 00b48ce0]\nRecovered vtable+24h getter; returns stream+68h pointer. Vertex binding reads declaration stride at+ cch.\n\n[BSP reconstruction 00b48ce0] update\nRecovered vtable+24h getter; returns stream+68h pointer. Vertex binding reads declaration stride at+ cch. | Actual stream decode builder uses native stream declaration owner [ECX+68], with declaration count getter00B47900 and per-element decode getter00B61E10. Host stream references are retained throughout the call; no independently fabricated declaration domain. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation."
+    },
+    "after": {
+      "address": "00b48ce0",
+      "old_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+      "name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+      "evidence": "logical vertex+68 -> borrowed CPU engine declaration. Original ABI: ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments. Complete native naked leaf; all 4 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=True. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48d10",
+    "before": {
+      "address": "00b48d10",
+      "function_name": "BSP_D3D9LogicalVertexStream_GetByteOffset",
+      "comment": "[BSP reconstruction 00b48d10]\nRecovered vtable+28h getter; returns DWORD stream+5ch, passed as SetStreamSource offset."
+    },
+    "after": {
+      "address": "00b48d10",
+      "old_name": "BSP_D3D9LogicalVertexStream_GetByteOffset",
+      "name": "BSP_D3D9LogicalVertexStream_GetByteOffset",
+      "evidence": "logical vertex+5C -> raw uint32 offset. Original ABI: ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments. Complete native naked leaf; all 4 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=True. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48cf0",
+    "before": {
+      "address": "00b48cf0",
+      "function_name": "BSP_D3D9LogicalVertexStream_GetBuffer",
+      "comment": "[BSP reconstruction 00b48cf0]\nRecovered vtable+2ch; loads physical wrapper stream+58h then tailcalls wrapper+1ch. Concrete physical getter00b4b9f0 bytes8b4128c3 returns COM buffer+28h."
+    },
+    "after": {
+      "address": "00b48cf0",
+      "old_name": "BSP_D3D9LogicalVertexStream_GetBuffer",
+      "name": "BSP_D3D9LogicalVertexStream_GetBuffer",
+      "evidence": "logical vertex+58 -> physical owner -> current table+1C -> tail JMP EDX. Original ABI: ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame. Complete native naked leaf; all 10 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=False. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48dc0",
+    "before": {
+      "address": "00b48dc0",
+      "function_name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "comment": "[BSP reconstruction 00b48dc0]\nRecovered vtable+28h; loads physical wrapper stream+8h then tailcalls wrapper+1ch. Concrete physical getter00b4b840 bytes8b4128c3 returns COM buffer+28h."
+    },
+    "after": {
+      "address": "00b48dc0",
+      "old_name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "evidence": "logical index+08 -> physical owner -> current table+1C -> tail JMP EDX. Original ABI: ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame. Complete native naked leaf; all 10 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=False. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b9f0",
+    "before": {
+      "address": "00b4b9f0",
+      "function_name": "BSP_D3D9PhysicalVertexBuffer_GetNativeBuffer"
+    },
+    "after": {
+      "address": "00b4b9f0",
+      "old_name": "BSP_D3D9PhysicalVertexBuffer_GetNativeBuffer",
+      "name": "BSP_D3D9PhysicalVertexBuffer_GetNativeBuffer",
+      "evidence": "physical vertex+28 -> borrowed IDirect3DVertexBuffer9*. Original ABI: ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments. Complete native naked leaf; all 4 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=True. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b840",
+    "before": {
+      "address": "00b4b840",
+      "function_name": "BSP_D3D9PhysicalIndexBuffer_GetNativeBuffer"
+    },
+    "after": {
+      "address": "00b4b840",
+      "old_name": "BSP_D3D9PhysicalIndexBuffer_GetNativeBuffer",
+      "name": "BSP_D3D9PhysicalIndexBuffer_GetNativeBuffer",
+      "evidence": "physical index+28 -> borrowed IDirect3DIndexBuffer9*. Original ABI: ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments. Complete native naked leaf; all 4 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=True. No installed binary/game claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5ff00",
+    "before": {
+      "address": "00b5ff00",
+      "function_name": "BSP_D3D9VertexLayout_GetNativeDeclaration",
+      "comment": "[BSP reconstruction 00b5ff00]\nFour-byte thiscall getter MOV EAX,[ECX+40h]; RET. Vtable00d62af4 slot+8 installed by constructor00b60cb0. Direct borrowed COM declaration pointer, no lazy creation. Original disk bytes match saved Ghidra. Getter used by renderer00b23f20."
+    },
+    "after": {
+      "address": "00b5ff00",
+      "old_name": "BSP_D3D9VertexLayout_GetNativeDeclaration",
+      "name": "BSP_D3D9VertexLayout_GetNativeDeclaration",
+      "evidence": "hardware layout+40 -> borrowed IDirect3DVertexDeclaration9*. Original ABI: ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments. Complete native naked leaf; all 4 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=True. No installed binary/game claim."
+    },
+    "status": "applied"
+  }
+]

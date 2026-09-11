@@ -1,0 +1,979 @@
+{
+  "captured_utc": "2026-09-11T00:53:57.623948+00:00",
+  "source_base": "913b5419dcf2fd64e74885520e0301a08dc5276e",
+  "project": "bsp",
+  "program": "battlestationspacific.exe",
+  "project_verification": "tools/bsp.py ghidra bytes invokes Client.verify before each of the 18 live reads",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b3cea0",
+      "native_end_exclusive": "00b3cea4",
+      "length": 4,
+      "hex": "8b4110c3",
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "disk_offset": 7589536,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_texture_get_com_00b3cea0",
+      "decorated_symbol": "?native_texture_get_com_00b3cea0@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 787,
+        "section_size": 4,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": true,
+      "suggested_ghidra_name": "BSP_D3D9Texture2D_GetNativeTexture",
+      "behavior": "texture+10 -> borrowed IDirect3DTexture9*",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b48ce0",
+      "native_end_exclusive": "00b48ce4",
+      "length": 4,
+      "hex": "8b4168c3",
+      "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+      "disk_offset": 7638240,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_logical_vertex_stream_get_declaration_00b48ce0",
+      "decorated_symbol": "?native_logical_vertex_stream_get_declaration_00b48ce0@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 771,
+        "section_size": 4,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": true,
+      "suggested_ghidra_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+      "behavior": "logical vertex+68 -> borrowed CPU engine declaration",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b48d10",
+      "native_end_exclusive": "00b48d14",
+      "length": 4,
+      "hex": "8b415cc3",
+      "sha256": "e8a390f77a2c35edee25e41f4902293a876d5b3af20791cc05da79c2f55d4983",
+      "disk_offset": 7638288,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_logical_vertex_stream_get_offset_00b48d10",
+      "decorated_symbol": "?native_logical_vertex_stream_get_offset_00b48d10@bsp@@YIIPBX@Z",
+      "coff": {
+        "file_offset": 775,
+        "section_size": 4,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": true,
+      "suggested_ghidra_name": "BSP_D3D9LogicalVertexStream_GetByteOffset",
+      "behavior": "logical vertex+5C -> raw uint32 offset",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b48cf0",
+      "native_end_exclusive": "00b48cfa",
+      "length": 10,
+      "hex": "8b49588b018b501cffe2",
+      "sha256": "8eb76e331df34562f4dee65474396e5cdb7ad4afeff7bbfacf8b5d0a419afc6b",
+      "disk_offset": 7638256,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_logical_vertex_stream_get_buffer_00b48cf0",
+      "decorated_symbol": "?native_logical_vertex_stream_get_buffer_00b48cf0@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 761,
+        "section_size": 10,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": false,
+      "suggested_ghidra_name": "BSP_D3D9LogicalVertexStream_GetBuffer",
+      "behavior": "logical vertex+58 -> physical owner -> current table+1C -> tail JMP EDX",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b48dc0",
+      "native_end_exclusive": "00b48dca",
+      "length": 10,
+      "hex": "8b49088b018b501cffe2",
+      "sha256": "7d66b7281691dd0c0078942cf0c04c60450fa6769b9d26b925ec72a39c451dc1",
+      "disk_offset": 7638464,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_logical_index_stream_get_buffer_00b48dc0",
+      "decorated_symbol": "?native_logical_index_stream_get_buffer_00b48dc0@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 751,
+        "section_size": 10,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": false,
+      "suggested_ghidra_name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "behavior": "logical index+08 -> physical owner -> current table+1C -> tail JMP EDX",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b4b9f0",
+      "native_end_exclusive": "00b4b9f4",
+      "length": 4,
+      "hex": "8b4128c3",
+      "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "disk_offset": 7649776,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_physical_vertex_buffer_get_com_00b4b9f0",
+      "decorated_symbol": "?native_physical_vertex_buffer_get_com_00b4b9f0@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 783,
+        "section_size": 4,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": true,
+      "suggested_ghidra_name": "BSP_D3D9PhysicalVertexBuffer_GetNativeBuffer",
+      "behavior": "physical vertex+28 -> borrowed IDirect3DVertexBuffer9*",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b4b840",
+      "native_end_exclusive": "00b4b844",
+      "length": 4,
+      "hex": "8b4128c3",
+      "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "disk_offset": 7649344,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_physical_index_buffer_get_com_00b4b840",
+      "decorated_symbol": "?native_physical_index_buffer_get_com_00b4b840@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 779,
+        "section_size": 4,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": true,
+      "suggested_ghidra_name": "BSP_D3D9PhysicalIndexBuffer_GetNativeBuffer",
+      "behavior": "physical index+28 -> borrowed IDirect3DIndexBuffer9*",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b5ff00",
+      "native_end_exclusive": "00b5ff04",
+      "length": 4,
+      "hex": "8b4140c3",
+      "sha256": "68b70ba1e6ad2356c69cac8e846649e599945994fa7690a0bf4af28fa25c24a5",
+      "disk_offset": 7732992,
+      "live_ghidra_matches_installed_pe": true,
+      "compiled_object_bytes_identical": true,
+      "cpp_symbol": "native_vertex_layout_get_com_00b5ff00",
+      "decorated_symbol": "?native_vertex_layout_get_com_00b5ff00@bsp@@YIPAXPBX@Z",
+      "coff": {
+        "file_offset": 791,
+        "section_size": 4,
+        "symbol_offset_in_section": 0,
+        "relocations": 0
+      },
+      "noexcept": true,
+      "suggested_ghidra_name": "BSP_D3D9VertexLayout_GetNativeDeclaration",
+      "behavior": "hardware layout+40 -> borrowed IDirect3DVertexDeclaration9*",
+      "scope": "complete native hardware leaf",
+      "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+      "source": "src/native_renderer_binding_getters.cpp",
+      "header": "include/bsp/native_renderer_binding_getters.hpp",
+      "status": "complete_native_hardware_leaf_byte_identical_strict_win32_and_concrete_host_route_checked",
+      "original_binary_replacement_installed": false,
+      "game_validated": false
+    }
+  ],
+  "table_cells": [
+    {
+      "profile": "texture 2D",
+      "original_table": "00d61948",
+      "slot_bytes": 28,
+      "cell_address": "00d61964",
+      "target_address": "00b3cea0",
+      "disk_offset": 9836900,
+      "hex": "a0ceb300",
+      "length": 4,
+      "sha256": "f7071c0376170a7a9a1aa999584605edd662f9444355d2848ab1a3899541a543",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_texture_get_com_00b3cea0"
+    },
+    {
+      "profile": "logical vertex declaration",
+      "original_table": "00d61d6c",
+      "slot_bytes": 36,
+      "cell_address": "00d61d90",
+      "target_address": "00b48ce0",
+      "disk_offset": 9837968,
+      "hex": "e08cb400",
+      "length": 4,
+      "sha256": "c2024f81685402b967b0d9fbbfa5b52b2250695315fee75aa88aee2d019b485f",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_logical_vertex_stream_get_declaration_00b48ce0"
+    },
+    {
+      "profile": "logical vertex offset",
+      "original_table": "00d61d6c",
+      "slot_bytes": 40,
+      "cell_address": "00d61d94",
+      "target_address": "00b48d10",
+      "disk_offset": 9837972,
+      "hex": "108db400",
+      "length": 4,
+      "sha256": "a1a7f414d031b78bb8b3f593568148c1e4b0d7c20a5afd8b1a23eadaef993cc9",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_logical_vertex_stream_get_offset_00b48d10"
+    },
+    {
+      "profile": "logical vertex physical buffer",
+      "original_table": "00d61d6c",
+      "slot_bytes": 44,
+      "cell_address": "00d61d98",
+      "target_address": "00b48cf0",
+      "disk_offset": 9837976,
+      "hex": "f08cb400",
+      "length": 4,
+      "sha256": "304de17dab824aa9cb9f10e09af4037c1c5834ac9f9f5d271c948084f3efd49f",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_logical_vertex_stream_get_buffer_00b48cf0"
+    },
+    {
+      "profile": "logical index physical buffer",
+      "original_table": "00d61de0",
+      "slot_bytes": 40,
+      "cell_address": "00d61e08",
+      "target_address": "00b48dc0",
+      "disk_offset": 9838088,
+      "hex": "c08db400",
+      "length": 4,
+      "sha256": "cac879b86486c4d7108cd385b1a671b24d8b30aa40ea51b013c6f23268579807",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_logical_index_stream_get_buffer_00b48dc0"
+    },
+    {
+      "profile": "heap physical vertex",
+      "original_table": "00d61e34",
+      "slot_bytes": 28,
+      "cell_address": "00d61e50",
+      "target_address": "00b4b9f0",
+      "disk_offset": 9838160,
+      "hex": "f0b9b400",
+      "length": 4,
+      "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_physical_vertex_buffer_get_com_00b4b9f0"
+    },
+    {
+      "profile": "pooled physical vertex",
+      "original_table": "00d61e7c",
+      "slot_bytes": 28,
+      "cell_address": "00d61e98",
+      "target_address": "00b4b9f0",
+      "disk_offset": 9838232,
+      "hex": "f0b9b400",
+      "length": 4,
+      "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_physical_vertex_buffer_get_com_00b4b9f0"
+    },
+    {
+      "profile": "heap physical index",
+      "original_table": "00d61e10",
+      "slot_bytes": 28,
+      "cell_address": "00d61e2c",
+      "target_address": "00b4b840",
+      "disk_offset": 9838124,
+      "hex": "40b8b400",
+      "length": 4,
+      "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_physical_index_buffer_get_com_00b4b840"
+    },
+    {
+      "profile": "pooled physical index",
+      "original_table": "00d61e58",
+      "slot_bytes": 28,
+      "cell_address": "00d61e74",
+      "target_address": "00b4b840",
+      "disk_offset": 9838196,
+      "hex": "40b8b400",
+      "length": 4,
+      "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_physical_index_buffer_get_com_00b4b840"
+    },
+    {
+      "profile": "hardware vertex layout",
+      "original_table": "00d62af4",
+      "slot_bytes": 8,
+      "cell_address": "00d62afc",
+      "target_address": "00b5ff00",
+      "disk_offset": 9841404,
+      "hex": "00ffb500",
+      "length": 4,
+      "sha256": "1ef30ee2f643da9d057296297db2f0aa328290ee1cc8188f8caf8fa8ed32acc4",
+      "live_ghidra_matches_installed_pe": true,
+      "host_callable_target": "native_vertex_layout_get_com_00b5ff00"
+    }
+  ],
+  "verified_ranges": 18,
+  "verified_live_and_pe_bytes": 84,
+  "compiled_instruction_bytes_identical": 44,
+  "object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\build\\native-renderer-binding-getters-check\\native_renderer_binding_getters.obj",
+    "sha256": "025abdeaa820690fb0cd94065f2b9a7daa7d6597a98f4c319594c1ff55d373c3",
+    "code_relocations": 0
+  },
+  "route_check": {
+    "passed": true,
+    "callable_table_cells": 10,
+    "physical_profile_tail_routes": 4,
+    "private_fixture": true,
+    "tracked_tests_added": 0,
+    "source": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_route_check.cpp",
+    "log": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_private_check.txt",
+    "original_runtime_executed": false
+  },
+  "prior_annotations": [
+    {
+      "address": "00b48ce0",
+      "annotation": {
+        "address": "00b48ce0",
+        "function_name": "BSP_D3D9LogicalVertexStream_GetDeclaration",
+        "comment": "[BSP reconstruction 00b48ce0]\nRecovered vtable+24h getter; returns stream+68h pointer. Vertex binding reads declaration stride at+ cch.\n\n[BSP reconstruction 00b48ce0] update\nRecovered vtable+24h getter; returns stream+68h pointer. Vertex binding reads declaration stride at+ cch. | Actual stream decode builder uses native stream declaration owner [ECX+68], with declaration count getter00B47900 and per-element decode getter00B61E10. Host stream references are retained throughout the call; no independently fabricated declaration domain. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation."
+      }
+    },
+    {
+      "address": "00b48d10",
+      "annotation": {
+        "address": "00b48d10",
+        "function_name": "BSP_D3D9LogicalVertexStream_GetByteOffset",
+        "comment": "[BSP reconstruction 00b48d10]\nRecovered vtable+28h getter; returns DWORD stream+5ch, passed as SetStreamSource offset."
+      }
+    },
+    {
+      "address": "00b48cf0",
+      "annotation": {
+        "address": "00b48cf0",
+        "function_name": "BSP_D3D9LogicalVertexStream_GetBuffer",
+        "comment": "[BSP reconstruction 00b48cf0]\nRecovered vtable+2ch; loads physical wrapper stream+58h then tailcalls wrapper+1ch. Concrete physical getter00b4b9f0 bytes8b4128c3 returns COM buffer+28h."
+      }
+    },
+    {
+      "address": "00b48dc0",
+      "annotation": {
+        "address": "00b48dc0",
+        "function_name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+        "comment": "[BSP reconstruction 00b48dc0]\nRecovered vtable+28h; loads physical wrapper stream+8h then tailcalls wrapper+1ch. Concrete physical getter00b4b840 bytes8b4128c3 returns COM buffer+28h."
+      }
+    },
+    {
+      "address": "00b5ff00",
+      "annotation": {
+        "address": "00b5ff00",
+        "function_name": "BSP_D3D9VertexLayout_GetNativeDeclaration",
+        "comment": "[BSP reconstruction 00b5ff00]\nFour-byte thiscall getter MOV EAX,[ECX+40h]; RET. Vtable00d62af4 slot+8 installed by constructor00b60cb0. Direct borrowed COM declaration pointer, no lazy creation. Original disk bytes match saved Ghidra. Getter used by renderer00b23f20."
+      }
+    }
+  ],
+  "missing_ghidra_function_definitions": [
+    "00b3cea0",
+    "00b4b9f0",
+    "00b4b840"
+  ],
+  "annotations_applied": false,
+  "scope": "Eight complete actual borrowed binding getter hardware leaves; no resource lifecycle or complete table installation",
+  "api_frozen_and_primary_approved_before_validation": true,
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_renderer_binding_getters.hpp",
+      "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+    },
+    {
+      "path": "src/native_renderer_binding_getters.cpp",
+      "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_BINDING_GETTERS.md",
+      "sha256": "f10a29e4320150427aa034cb0256e446261546868d244cdf77c949c7ed46a0f2"
+    }
+  ],
+  "discovery_reference": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-actual-binding-profiles-next-20260910\\local\\actual_binding_profile_verified.json",
+    "sha256": "c55f1e0a1c0ad5c2c1d877ad3933f691e184438429aeadacb62bab170449e637"
+  },
+  "prior_prototypes": "No function found for 00b3cea0\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00b3cea0'})\nFunction: BSP_D3D9LogicalVertexStream_GetDeclaration at 00b48ce0\nSignature: undefined BSP_D3D9LogicalVertexStream_GetDeclaration(void)\nEntry: 00b48ce0\nBody: 00b48ce0 - 00b48ce3\n{\n \"function_name\": \"BSP_D3D9LogicalVertexStream_GetDeclaration\",\n \"address\": \"00b48ce0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"6ab55398e03c24000dd627c08088c279c2eb8342f453686ae2114b736ddc709c\"\n ]\n}\nFunction: BSP_D3D9LogicalVertexStream_GetByteOffset at 00b48d10\nSignature: undefined BSP_D3D9LogicalVertexStream_GetByteOffset(void)\nEntry: 00b48d10\nBody: 00b48d10 - 00b48d13\n{\n \"function_name\": \"BSP_D3D9LogicalVertexStream_GetByteOffset\",\n \"address\": \"00b48d10\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"38fca7584759080de1fff4dfd97670664ae0b75d47e2d7480f64503379c33a27\"\n ]\n}\nFunction: BSP_D3D9LogicalVertexStream_GetBuffer at 00b48cf0\nSignature: undefined BSP_D3D9LogicalVertexStream_GetBuffer(void)\nEntry: 00b48cf0\nBody: 00b48cf0 - 00b48cf9\n{\n \"function_name\": \"BSP_D3D9LogicalVertexStream_GetBuffer\",\n \"address\": \"00b48cf0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 4,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"74968294561c2e7f1e2f321cdab20048bd43cbee7a2a462bc7c653aef8a50673\"\n ]\n}\nFunction: BSP_D3D9LogicalIndexStream_GetBuffer at 00b48dc0\nSignature: undefined BSP_D3D9LogicalIndexStream_GetBuffer(void)\nEntry: 00b48dc0\nBody: 00b48dc0 - 00b48dc9\n{\n \"function_name\": \"BSP_D3D9LogicalIndexStream_GetBuffer\",\n \"address\": \"00b48dc0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 4,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"1e87e404f9011868ee5e6745b885e4f195759ec73ecce496038eab8055dd8546\"\n ]\n}\nNo function found for 00b4b9f0\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00b4b9f0'})\nNo function found for 00b4b840\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00b4b840'})\nFunction: BSP_D3D9VertexLayout_GetNativeDeclaration at 00b5ff00\nSignature: undefined BSP_D3D9VertexLayout_GetNativeDeclaration(void)\nEntry: 00b5ff00\nBody: 00b5ff00 - 00b5ff03\n{\n \"function_name\": \"BSP_D3D9VertexLayout_GetNativeDeclaration\",\n \"address\": \"00b5ff00\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"a56a51a85c57682fca78c3a589fb7e79a7ccd7b7bdd704a78af940ae589eb6f3\"\n ]\n}\n",
+  "validation": {
+    "strict_private_win32_compile_and_link": true,
+    "flags": [
+      "/std:c++17",
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/W4",
+      "/WX"
+    ],
+    "link_flags": [
+      "/OPT:REF",
+      "/OPT:NOICF",
+      "/INCREMENTAL:NO"
+    ],
+    "production_source_separate_translation_unit": true,
+    "compiled_byte_comparison": "44 instruction bytes, 8 complete entries, zero code relocations",
+    "concrete_host_routes": "10 callable table cells; logical vertex/index through heap and pooled physical profiles; no custom target callbacks",
+    "registered_build_command": "./scripts/build.ps1",
+    "registered_build_passed": true,
+    "existing_ctests_passed": 2,
+    "existing_native_seed_bytes_matched": 8,
+    "new_source_registered_in_cmake": false,
+    "new_source_registration_owner": "primary integrator",
+    "tracked_tests_added": 0,
+    "fixture_bounded_to_one_route_check": true
+  },
+  "private_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_route_check.cpp",
+      "sha256": "1672d7a3aa4e6c1028f76eaa21a98c6b72d4af05ad307ac27830841b79085cf4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\build_native_renderer_binding_getters_check.ps1",
+      "sha256": "38e0ddcf8ebfc90c64e4700b2cc7165d1b24719ae8b5a0d9cb9910d07a091da3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\verify_native_renderer_binding_getters.py",
+      "sha256": "0b73d8b1f47d00ad65ac3faea04563e358d27cfec8fb2f55584ca0e6d1c68f79"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\finalize_native_renderer_binding_getters_audit.py",
+      "sha256": "748e2388bff643097dbcbfb9105e5dd6077975ed8baa23bdb92d3f38ed2df706"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_private_check.txt",
+      "sha256": "7ff464a3cfa7f893f6b8374d812df7e27c746da6e6eab953c98562bf518ae283"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_verification.json",
+      "sha256": "fd65102247772ae42893994828d2bbbde32ed65f7d0c8d1c24a81fc237c423c2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_annotation_before.json",
+      "sha256": "ebb5b541b101731aaaa33c32b9368754dc4a81eb592f80c0396bf3cf4568e627"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_prior_proto.txt",
+      "sha256": "b197c1d5abbf8211ac1d8da758b515d367c7acf8650a91633e4a4cb9268dc575"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_seed_check.txt",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_existing_build.txt",
+      "sha256": "8815ac21b35a3ae40db8e3557a3001ce1e45ec094aae9a148f99da5069a25489"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\build\\native-renderer-binding-getters-check\\native_renderer_binding_getters_check.exe",
+      "sha256": "4a724ecd31ed3fb1ebca7f79b006b758965f270bb0b74ba45be3e87d275fcf47"
+    }
+  ],
+  "contract": {
+    "borrowed_storage_only": true,
+    "logical_vertex_physical_owner_offset": "58h",
+    "logical_index_physical_owner_offset": "08h",
+    "current_physical_table_read_at": "physical owner+00h",
+    "indirect_getter_slot": "current physical table+1Ch",
+    "host_precondition": "The actual current physical table must contain the matching callable compiled concrete getter. Numeric original vtable addresses alone do not establish this.",
+    "indirect_noexcept": false,
+    "complete_tables_installed": false,
+    "cpu_declaration_is_not_com_declaration": true,
+    "heap_and_pool_getter_identity_does_not_close_lifetime": true
+  },
+  "primary_integration": {
+    "status": "integrated_eight_complete_native_getters_primary_object_byte_identical_and_host_routes_checked",
+    "worker_commit": "f0c984e38d9ce3c54b21b664126b4b37d94fc010",
+    "new_complete_functions": 8,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b3cea0",
+        "name": "native_texture_get_com_00b3cea0",
+        "cpp_symbol": "native_texture_get_com_00b3cea0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b3cea4",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48ce0",
+        "name": "native_logical_vertex_stream_get_declaration_00b48ce0",
+        "cpp_symbol": "native_logical_vertex_stream_get_declaration_00b48ce0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48ce4",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48d10",
+        "name": "native_logical_vertex_stream_get_offset_00b48d10",
+        "cpp_symbol": "native_logical_vertex_stream_get_offset_00b48d10",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48d14",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48cf0",
+        "name": "native_logical_vertex_stream_get_buffer_00b48cf0",
+        "cpp_symbol": "native_logical_vertex_stream_get_buffer_00b48cf0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48cfa",
+        "original_abi": "ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48dc0",
+        "name": "native_logical_index_stream_get_buffer_00b48dc0",
+        "cpp_symbol": "native_logical_index_stream_get_buffer_00b48dc0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48dca",
+        "original_abi": "ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b4b9f0",
+        "name": "native_physical_vertex_buffer_get_com_00b4b9f0",
+        "cpp_symbol": "native_physical_vertex_buffer_get_com_00b4b9f0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b4b9f4",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b4b840",
+        "name": "native_physical_index_buffer_get_com_00b4b840",
+        "cpp_symbol": "native_physical_index_buffer_get_com_00b4b840",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b4b844",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b5ff00",
+        "name": "native_vertex_layout_get_com_00b5ff00",
+        "cpp_symbol": "native_vertex_layout_get_com_00b5ff00",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b5ff04",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "ranges": [
+        {
+          "address": "00b3cea0",
+          "length": 4,
+          "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 735,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48ce0",
+          "length": 4,
+          "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 719,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48d10",
+          "length": 4,
+          "sha256": "e8a390f77a2c35edee25e41f4902293a876d5b3af20791cc05da79c2f55d4983",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 723,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48cf0",
+          "length": 10,
+          "sha256": "8eb76e331df34562f4dee65474396e5cdb7ad4afeff7bbfacf8b5d0a419afc6b",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 709,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48dc0",
+          "length": 10,
+          "sha256": "7d66b7281691dd0c0078942cf0c04c60450fa6769b9d26b925ec72a39c451dc1",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 699,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b4b9f0",
+          "length": 4,
+          "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 731,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b4b840",
+          "length": 4,
+          "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 727,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b5ff00",
+          "length": 4,
+          "sha256": "68b70ba1e6ad2356c69cac8e846649e599945994fa7690a0bf4af28fa25c24a5",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 739,
+          "object_relocations": 0
+        },
+        {
+          "address": "00d61964",
+          "length": 4,
+          "sha256": "f7071c0376170a7a9a1aa999584605edd662f9444355d2848ab1a3899541a543",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61d90",
+          "length": 4,
+          "sha256": "c2024f81685402b967b0d9fbbfa5b52b2250695315fee75aa88aee2d019b485f",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61d94",
+          "length": 4,
+          "sha256": "a1a7f414d031b78bb8b3f593568148c1e4b0d7c20a5afd8b1a23eadaef993cc9",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61d98",
+          "length": 4,
+          "sha256": "304de17dab824aa9cb9f10e09af4037c1c5834ac9f9f5d271c948084f3efd49f",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e08",
+          "length": 4,
+          "sha256": "cac879b86486c4d7108cd385b1a671b24d8b30aa40ea51b013c6f23268579807",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e50",
+          "length": 4,
+          "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e98",
+          "length": 4,
+          "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e2c",
+          "length": 4,
+          "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e74",
+          "length": 4,
+          "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d62afc",
+          "length": 4,
+          "sha256": "1ef30ee2f643da9d057296297db2f0aa328290ee1cc8188f8caf8fa8ed32acc4",
+          "live_PE_match": true
+        }
+      ],
+      "private_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_route_check.cpp",
+          "sha256": "1672d7a3aa4e6c1028f76eaa21a98c6b72d4af05ad307ac27830841b79085cf4"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\build_native_renderer_binding_getters_check.ps1",
+          "sha256": "38e0ddcf8ebfc90c64e4700b2cc7165d1b24719ae8b5a0d9cb9910d07a091da3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\verify_native_renderer_binding_getters.py",
+          "sha256": "0b73d8b1f47d00ad65ac3faea04563e358d27cfec8fb2f55584ca0e6d1c68f79"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\finalize_native_renderer_binding_getters_audit.py",
+          "sha256": "748e2388bff643097dbcbfb9105e5dd6077975ed8baa23bdb92d3f38ed2df706"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_private_check.txt",
+          "sha256": "7ff464a3cfa7f893f6b8374d812df7e27c746da6e6eab953c98562bf518ae283"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_verification.json",
+          "sha256": "fd65102247772ae42893994828d2bbbde32ed65f7d0c8d1c24a81fc237c423c2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_annotation_before.json",
+          "sha256": "ebb5b541b101731aaaa33c32b9368754dc4a81eb592f80c0396bf3cf4568e627"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_prior_proto.txt",
+          "sha256": "b197c1d5abbf8211ac1d8da758b515d367c7acf8650a91633e4a4cb9268dc575"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_seed_check.txt",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_existing_build.txt",
+          "sha256": "8815ac21b35a3ae40db8e3557a3001ce1e45ec094aae9a148f99da5069a25489"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\build\\native-renderer-binding-getters-check\\native_renderer_binding_getters_check.exe",
+          "sha256": "4a724ecd31ed3fb1ebca7f79b006b758965f270bb0b74ba45be3e87d275fcf47"
+        }
+      ],
+      "source_artifacts": [
+        {
+          "path": "include/bsp/native_renderer_binding_getters.hpp",
+          "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+        },
+        {
+          "path": "src/native_renderer_binding_getters.cpp",
+          "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+        },
+        {
+          "path": "docs/NATIVE_RENDERER_BINDING_GETTERS.md",
+          "sha256": "f10a29e4320150427aa034cb0256e446261546868d244cdf77c949c7ed46a0f2"
+        }
+      ],
+      "primary_object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_renderer_binding_getters.obj",
+        "sha256": "948f9e487fff004e173c9407259d35a10fbb3f0161f8c045552b81401a61fdbc",
+        "all44bytes_identical": true,
+        "relocations": 0
+      }
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_renderer_binding_getters.hpp",
+        "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+      },
+      {
+        "path": "src/native_renderer_binding_getters.cpp",
+        "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+      },
+      {
+        "path": "local/native_binding_getters_primary_route.txt",
+        "sha256": "04ca8998be443042574510705f398c15026843bd2ef059018893f6207b2ad624"
+      },
+      {
+        "path": "local/build_native_renderer_binding_getters_check.ps1",
+        "sha256": "4407788dc11c4430128de401f9c5f5771e5d1af0168ca57ca93c46dccd1553af"
+      },
+      {
+        "path": "build/native-renderer-binding-getters-check/native_renderer_binding_getters_check.exe",
+        "sha256": "a66826e5cf1e0e861560ab2dd61cacde4ec67d29d191ab6b78b999feedb230b8"
+      }
+    ],
+    "primary_library_routes": true,
+    "build": {
+      "path": "reports/native_binding_getters_primary_build.txt",
+      "sha256": "71e3eda8deb8b76cabc58916eefbe47c67a9c44ae1625bd14a60cfe3d2a60630",
+      "tests": 2,
+      "passed": true
+    },
+    "defined_functions": {
+      "path": "reports/native_binding_getters_defined_functions.json",
+      "sha256": "73778ff1b4c674c8ab5b8b485a89bcd9c1da7d04f3f5844497903578f68b9d02",
+      "project_saved": true
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_getters_annotations.json",
+      "sha256": "927176acb49dddfccd9e6c252d857087ec4326b58e71624bc8e215065d3ad870",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b3cea0",
+        "path": "exports/bsp/functions/00b3cea0/decompiled.c",
+        "sha256": "4bb9f99800f1c7aba49af66db6903102c1d8be33924f9b421032125d59d75641"
+      },
+      {
+        "address": "00b48ce0",
+        "path": "exports/bsp/functions/00b48ce0/decompiled.c",
+        "sha256": "aa53c0f5ae9bc9576d6cf3a4e39044df1695b59658b554242045948b51728af8"
+      },
+      {
+        "address": "00b48d10",
+        "path": "exports/bsp/functions/00b48d10/decompiled.c",
+        "sha256": "fc2e46f589119d8d0c5d31432142b2b5755b187b836cd9f2a808d8405561428b"
+      },
+      {
+        "address": "00b48cf0",
+        "path": "exports/bsp/functions/00b48cf0/decompiled.c",
+        "sha256": "5e90ff0b51c8e1c368f87bb13cb0988dfec550901f08a94fff5ca9259b13b74a"
+      },
+      {
+        "address": "00b48dc0",
+        "path": "exports/bsp/functions/00b48dc0/decompiled.c",
+        "sha256": "6031f87a870ad85a8723a88495c7edccbe44b657ac4970a48f94ea5d018ca649"
+      },
+      {
+        "address": "00b4b9f0",
+        "path": "exports/bsp/functions/00b4b9f0/decompiled.c",
+        "sha256": "9cf2f6e4726a96af3be70e00f84e55647649a8478d380faa992134c70c9d98ca"
+      },
+      {
+        "address": "00b4b840",
+        "path": "exports/bsp/functions/00b4b840/decompiled.c",
+        "sha256": "9d486de9ede64a4ff000ea943c4af8987ef97ece1ab2bef9205863f0a751f979"
+      },
+      {
+        "address": "00b5ff00",
+        "path": "exports/bsp/functions/00b5ff00/decompiled.c",
+        "sha256": "882c260eac583c50cb0860228b91568b2754227d4c5288c67f18884c687e2591"
+      }
+    ],
+    "closure_utc": "2026-09-11T01:05:07.107093+00:00"
+  },
+  "shared_cmake_or_ledger_edits": false,
+  "ghidra_mutated": false,
+  "abi_compatible": false,
+  "native_hardware_entry_instruction_bytes_identical": true,
+  "game_validated": false,
+  "limitations": [
+    "The eight instruction bodies and their narrow ECX/EAX/RET behavior are exact; no binary replacement or complete profile is installed.",
+    "The single private route check runs compiled host entries, not the installed game, and builds only reachable getter table cells.",
+    "No resource allocation, reference management, COM retain/release, lazy creation, pool return or renderer lifecycle is implemented here.",
+    "The code loads the current physical table in native order. Concurrent mutation and arbitrary replacement-target exception behavior were not tested.",
+    "Three native entry addresses had no Ghidra function definition at capture; creating them and metadata integration remain primary-owned."
+  ]
+}
