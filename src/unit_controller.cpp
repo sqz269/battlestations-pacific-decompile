@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "bsp/unit_instance.hpp"
+
 namespace bsp {
 namespace {
 
@@ -224,6 +226,109 @@ UnitControllerStepResult run_unit_controller_apply_forces_009329c0(UnitControlle
     // +68h and +74h keep their values into the next step.
     state.force_sum = OceanVec3{};
     state.torque_sum = OceanVec3{};
+    return result;
+}
+
+// ---------------------------------------------------------------------------
+// 0092BE80, 0082583E, 00815370 and 00815AA0. docs/UNIT_CONTROLLER.md.
+// ---------------------------------------------------------------------------
+
+float unit_effect_intensity_gate_0082583e(float body_axis_speed) noexcept {
+    // 00825850: FLDZ, FCOMIP against the returned speed, JBE keeps the 1.0f the
+    // caller already staged. The jump is taken on an unordered compare too, so
+    // only an ordered negative speed reaches the XORPS at 00825858.
+    if (0.0f > body_axis_speed) {
+        return kUnitEffectGateAstern;
+    }
+    return kUnitEffectGateAhead;
+}
+
+std::size_t set_effect_group_scalar_00815370(EffectGroupHost& host, const EffectGroupSpans& spans,
+                                             float value) {
+    std::size_t calls = 0;
+    // 00815384..008153A8: each pointer is tested before the virtual.
+    for (std::size_t i = 0; i < spans.primary_count; ++i) {
+        if (!host.primary_present(i)) {
+            continue;
+        }
+        host.primary_set_scalar(i, value);
+        ++calls;
+    }
+    // 008153C0..008153D6: no test at all. A null element here is a fault in the
+    // shipped image, not a skipped iteration; the reconstruction keeps that.
+    for (std::size_t i = 0; i < spans.secondary_count; ++i) {
+        host.secondary_set_scalar(i, value);
+        ++calls;
+    }
+    return calls;
+}
+
+UnitEffectIntensityResult publish_unit_effect_intensity_00815aa0(UnitEffectIntensityState& state,
+                                                                 UnitEffectIntensityHost& host,
+                                                                 float gate) {
+    UnitEffectIntensityResult result{};
+
+    // 00815AA3..00815AC2 is the 006FF270 expression inlined; 00815AE8 multiplies
+    // it by the caller's gate.
+    const float intensity = unit_intensity_scale_006ff270(host.global_intensity_override(),
+                                                          state.intensity_override,
+                                                          state.intensity_scale);
+    result.value = intensity * gate;
+
+    // 00815ACA and 00815AFC, before the latch: the bow and stern water anchors.
+    const int pre_latch_fields[2] = {0x9F0, 0x9F4};
+    for (int field : pre_latch_fields) {
+        if (host.group_present(field, 0)) {
+            host.group_set_scalar(field, 0, result.value);
+            ++result.groups_updated;
+        }
+    }
+
+    // 00815B29..00815B3F: FUCOMIP against +9D0h, TEST AH,44h, JNP to the return
+    // at 00815D0D. Equal means the rest of the routine is skipped.
+    if (!(state.published_latch != result.value)) {
+        return result;
+    }
+    state.published_latch = result.value; // 00815B5C
+    result.latch_changed = true;
+
+    // 00815B45..00815BF5 and 00815C53..00815CB5, the single-pointer fields, with
+    // the two array walks between them in native order.
+    std::size_t field_index = 0;
+    for (; field_index < 6; ++field_index) {
+        const int field = kUnitEffectGroupFields[field_index];
+        if (host.group_present(field, 0)) {
+            host.group_set_scalar(field, 0, result.value);
+            ++result.groups_updated;
+        }
+    }
+
+    // 00815C19..00815C51: the part vector at +A14h, count at +A18h, signed and
+    // compared with JL, so a negative count runs zero iterations.
+    for (std::size_t i = 0; i < host.part_count(); ++i) {
+        if (host.group_present(0xA14, i)) {
+            host.group_set_scalar(0xA14, i, result.value);
+            ++result.groups_updated;
+        }
+    }
+
+    for (; field_index < sizeof(kUnitEffectGroupFields) / sizeof(kUnitEffectGroupFields[0]);
+         ++field_index) {
+        const int field = kUnitEffectGroupFields[field_index];
+        if (host.group_present(field, 0)) {
+            host.group_set_scalar(field, 0, result.value);
+            ++result.groups_updated;
+        }
+    }
+
+    // 00815CD5..00815D03: the five attachment slots at +B54h, a fixed count.
+    for (std::size_t i = 0; i < kUnitAttachSlotCount; ++i) {
+        if (host.group_present(0xB54, i)) {
+            host.group_set_scalar(0xB54, i, result.value);
+            ++result.groups_updated;
+        }
+    }
+
     return result;
 }
 
