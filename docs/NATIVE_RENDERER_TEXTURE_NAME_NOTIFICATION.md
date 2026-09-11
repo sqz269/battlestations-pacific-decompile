@@ -154,3 +154,21 @@ Reproduction inputs remain under the worker's ignored `local/` directory:
 only the new source through a private CMake deferred include. The integrator must
 register `src/native_renderer_texture_name_notification.cpp` in the shared target
 and owns later Ghidra definition, naming, comment, export and ledger work.
+
+## Primary integration
+
+The complete B32250 function was defined in the existing Ghidra program and
+registered in the shared primary library. The original fixture, relinked to
+that library's actual notification entry, matches 4,700 normal observation
+words and 658 terminal words across the two isolated exception pairs. Both
+pairs terminate with exit 86 and identical side effects, including absence of
+local cleanup before the outer unwind terminates. The map identifies the
+notification provider in `bsp_core`; instrumented string/synchronization/free
+services remain explicitly separate unchanged production sources.
+
+The 37 captured spans total 2,746 bytes; 12 global bytes are verified PE virtual
+zero-fill and saved-analysis zeros rather than bytes present in the file or
+proof of a running game's initialization. Original preimages and relocation
+guards are checked during execution. The complete primary postimage was not
+separately dumped. Combined strict Win32 compilation and both existing CTests
+pass; native ABI and game/render validation remain outside this evidence.

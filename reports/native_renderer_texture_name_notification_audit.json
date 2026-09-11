@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_renderer_texture_name_notification",
-  "status": "complete_actual_storage_original_key_guard_and_search_phase_EH_compared_strict_win32_checked",
+  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
   "captured_utc": "2026-09-11T03:04:12.833381+00:00",
   "base_commit": "237cf46c58c6f7d86b118f7527ff1c0e72eb6007",
   "owned_files": [
@@ -710,7 +710,9 @@
       "raw_offset": 4294967295,
       "bytes_hex": "0000000000000000",
       "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
-      "live_matches_disk": true
+      "live_matches_disk": false,
+      "evidence_domain": "PE virtual zero-filled storage and live Ghidra zeros; no raw file bytes or live game state",
+      "PE_loader_zero_fill_matches": true
     },
     {
       "address": "00f8d394",
@@ -720,7 +722,9 @@
       "raw_offset": 4294967295,
       "bytes_hex": "00000000",
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "live_matches_disk": true
+      "live_matches_disk": false,
+      "evidence_domain": "PE virtual zero-filled storage and live Ghidra zeros; no raw file bytes or live game state",
+      "PE_loader_zero_fill_matches": true
     },
     {
       "address": "00ce2218",
@@ -1769,5 +1773,209 @@
     "matched_overlap_events": 15,
     "overlap": "Source points to destination+1 inside the same real32-byte allocation; count31. This exercises forward-direction overlap (destination below source); backward-overlap support is separately established by original assembly. Full resulting31bytes checked before nested allocation and actual base returned at size32.",
     "scope": "Only this direct copy and its private bridge changed; existing shared resize/path code remains unchanged; no backward-overlap runtime claim for the fixture."
+  },
+  "native_differential_fixture": true,
+  "primary_integration": {
+    "new_complete_functions": 1,
+    "upgraded_complete_functions": 0,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b32250",
+        "name": "notify_native_renderer_texture_name_removal_00b32250",
+        "cpp_symbol": "notify_native_renderer_texture_name_removal_00b32250",
+        "source": "src/native_renderer_texture_name_notification.cpp",
+        "native_end_exclusive": "00b32340",
+        "original_abi": "ECX actual renderer receiver; stack original8byte native name header; RET4; no semantic EAX result.",
+        "evidence": "reports/native_renderer_texture_name_notification_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "worker_audit": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-texture-name-notification-20260910\\reports\\native_renderer_texture_name_notification_audit.json",
+        "sha256": "0ca1acf6882456eb4a68800c4f0f32631fb2236464456025440e06dfeb46a64f"
+      },
+      "artifact_pins": 119,
+      "source_pins": 26,
+      "primary_providers": [
+        {
+          "address": "00b32250",
+          "map_line": "0001:000060a0       ?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z 300070a0 f   bsp_core:native_renderer_texture_name_notification.obj"
+        }
+      ],
+      "primary_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\actual_lifetime.obj",
+          "sha256": "df4c95bff30eb34d862e1b8b6aa79a45a1b25a589a185bf9c4932e1b332ccd7a"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\actual_string.obj",
+          "sha256": "61675274190710f5e33b8901462ed281ab33ea01651a9c28424b531b81d9bb3c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\actual_synchronization.obj",
+          "sha256": "53cf34a5297e6004e6910fc172c99a0dfed343f1f6380602560159edbcf7210a"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\native_renderer_texture_name_notification_check.exe",
+          "sha256": "aa61bec8a09c586040cb619c469adc0bd7d31f97cf691e109639346a27f363a9"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\native_renderer_texture_name_notification_check.obj",
+          "sha256": "e76bc0958782cad1d0e6d424661018bdf89c3007d5e8a6532f3392bbeccea03b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\notification_outer_terminate_host.bin",
+          "sha256": "647ea8a2015715101e6d790a11a381c63bdaea5924b829f27702e486c70380c3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\notification_outer_terminate_native.bin",
+          "sha256": "647ea8a2015715101e6d790a11a381c63bdaea5924b829f27702e486c70380c3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\notification_primary.map",
+          "sha256": "667bd834b335667a3e20f5c4e9175426dba5e1a6d3af1af46888d71985f5a793"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\notification_terminate_host.bin",
+          "sha256": "9cb78375df176e4b5463bc6448ce79a636f3d4a5011a00f6f2b7385cc52db003"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\notification_terminate_native.bin",
+          "sha256": "9cb78375df176e4b5463bc6448ce79a636f3d4a5011a00f6f2b7385cc52db003"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\texture-name-notification-primary-check\\notification_trace.json",
+          "sha256": "143e85da907351bba99cfe133fbfcc5456e66b0e4bb5828121c4e5753bff90b1"
+        }
+      ],
+      "native_spans": 37,
+      "native_bytes": 2746,
+      "PE_zero_fill_bytes": 12,
+      "original_operand_preimages": 26,
+      "matching_words": 4700,
+      "terminal_words": 658,
+      "terminal_both_pairs_equal": true,
+      "original_postimage_scope": "Runtime original preimages and operand guards checked; primary reviewed exact relocation/registration/IAT/10entry service patch loop. No separate complete postimage dump is claimed. Twelve captured global bytes are PE virtual zero-fill, not raw file bytes or live game state.",
+      "boundaries": [
+        "C++ interface and compiler EH layout are new; this is not a drop-in native function or binary EH compatibility proof.",
+        "Only currently supported actual storage/profile domains are implemented; arbitrary resources and skipped-entry/enabled-cleanup are outside preconditions.",
+        "Three entry-prefix spans do not claim complete allocator/CRT runtime reconstruction.",
+        "The fixture executes complete owned/nested native instructions plus explicitly declared actual C++ dependency ABI bridges, not an entirely native dependency closure.",
+        "Renderer/table/game runtime visual behavior was not exercised."
+      ],
+      "primary_run": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_notification_primary_fixture.txt",
+        "sha256": "f7c4dd970816172890f8d75fbaa1541e5759915dd1ef78e9ba6872a6a9ef72a2"
+      }
+    },
+    "source_pins": [
+      {
+        "path": "src/native_renderer_texture_name_notification.cpp",
+        "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+      },
+      {
+        "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+        "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+      }
+    ],
+    "build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_named_notification_primary_build.txt",
+      "sha256": "c14e5e543c38a04c2f4c6c673cd07e7f64d7bed8d9a49b567998cf7ca7526752",
+      "tests": 2,
+      "passed": true
+    },
+    "library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "7b508cc303c284706002de8019400f2828b1a1146128f0bc9c0e398f9677aef6"
+    },
+    "annotations_applied": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "definition_repair": {
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "functions": [
+        {
+          "address": "00b32250",
+          "end_exclusive": "00b32340",
+          "length": 240,
+          "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+          "missing_before": true,
+          "function_before": "No function found for 00b32250",
+          "plate_before": {
+            "query_result": "No function at address; creation preserves existing code/data comments"
+          },
+          "function_after": "Function: BSP_D3D9Renderer_NotifyTextureNameRemoval at 00b32250\nSignature: undefined BSP_D3D9Renderer_NotifyTextureNameRemoval(void)\nEntry: 00b32250\nBody: 00b32250 - 00b3233f"
+        }
+      ],
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b32250",
+            "end_address": "00b32340"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b32250",
+            "end_address": "00b3233f",
+            "bytes_disassembled": 240,
+            "message": "Successfully disassembled 240 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b32250",
+            "name": "BSP_D3D9Renderer_NotifyTextureNameRemoval",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b32250",
+            "function_name": "BSP_D3D9Renderer_NotifyTextureNameRemoval",
+            "entry_point": "00b32250",
+            "body_size": 240,
+            "message": "Function created successfully at 00b32250",
+            "warnings": [
+              "Function name 'BSP_D3D9Renderer_NotifyTextureNameRemoval' \u2014 main part 'D3D9Renderer_NotifyTextureNameRemoval' is not PascalCase. Expected: D3d9rendererNotifytexturenameremoval",
+              "Function name 'BSP_D3D9Renderer_NotifyTextureNameRemoval' \u2014 main part 'D3D9Renderer_NotifyTextureNameRemoval' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'BSP_D3D9Renderer_NotifyTextureNameRemoval' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ],
+      "status": "Native renderer notification definition saved; existing code and comments preserved"
+    },
+    "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+    "annotation_journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T031257Z.json",
+      "sha256": "25e2269e4b3a3adc830384130c5a8b3561ed39561fda8a7167dfb06c45921c59"
+    },
+    "saved_project": true,
+    "exports_force_refreshed": true
   }
 }

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "native_logical_texture_named_base",
   "generated_utc": "2026-09-11T03:04:31.823390+00:00",
-  "status": "five_complete_entries_reconstructed_strict_Win32_build_and_original_byte_caller_fixture_passed_pending_primary_integration",
+  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
   "base_commit": "22e54f6244898db6e25964efbfba858864cac1b9",
   "owned_addresses": [
     "00b34120",
@@ -1295,5 +1295,201 @@
     "The complete native BF7680 algorithm is evidence only; it is not executed by this fixture.",
     "Native profile constants are stored as raw DWORDs; this packet does not bind or invoke a complete logical-texture vtable.",
     "Concurrent mutations, malformed inaccessible storage, general native ABI compatibility and game validation are not claimed."
-  ]
+  ],
+  "native_differential_fixture": true,
+  "primary_integration": {
+    "new_complete_functions": 5,
+    "upgraded_complete_functions": 0,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b34120",
+        "name": "construct_native_logical_texture_named_base_00b34120",
+        "cpp_symbol": "construct_native_logical_texture_named_base_00b34120",
+        "source": "src/native_logical_texture_named_base.cpp",
+        "native_end_exclusive": "00b341d0",
+        "original_abi": "ECX actual owner, stack actual name header/COM/flags, EAX owner, RET0C. Count1, current string copy then raw COM/flags/shared serial. No COM AddRef.",
+        "evidence": "reports/native_logical_texture_named_base_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b34230",
+        "name": "construct_native_logical_texture_named_profile_00b34230",
+        "cpp_symbol": "construct_native_logical_texture_named_profile_00b34230",
+        "source": "src/native_logical_texture_named_base.cpp",
+        "native_end_exclusive": "00b34255",
+        "original_abi": "ECX actual owner, same3stack words, EAX owner, RET0C. FullB34120 then profileD5F228.",
+        "evidence": "reports/native_logical_texture_named_base_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b33f50",
+        "name": "destroy_native_logical_texture_named_base_00b33f50",
+        "cpp_symbol": "destroy_native_logical_texture_named_base_00b33f50",
+        "source": "src/native_logical_texture_named_base.cpp",
+        "native_end_exclusive": "00b33fb7",
+        "original_abi": "ECX actual owner, RET, EAX unspecified. ProfileD5F1F4; return captured name buffer using captured current length+1; header preserved; base afterward and in unwind.",
+        "evidence": "reports/native_logical_texture_named_base_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b34010",
+        "name": "unwind_native_logical_texture_named_base_00b34010",
+        "cpp_symbol": "unwind_native_logical_texture_named_base_00b34010",
+        "source": "src/native_logical_texture_named_base.cpp",
+        "native_end_exclusive": "00b34015",
+        "original_abi": "ECX actual owner; full5byte JMP B33F50.",
+        "evidence": "reports/native_logical_texture_named_base_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b33e40",
+        "name": "native_logical_texture_name_address_00b33e40",
+        "cpp_symbol": "native_logical_texture_name_address_00b33e40",
+        "source": "src/native_logical_texture_named_base.cpp",
+        "native_end_exclusive": "00b33e44",
+        "original_abi": "ECX actual owner; EAX owner+8; RET; full4bytes, no callback.",
+        "evidence": "reports/native_logical_texture_named_base_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "proof": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\proof.json",
+        "sha256": "d64ffa7e768d0a14795f05d281588ab052bd144e2fda258549b2275b8c63561f"
+      },
+      "artifact_pins": 24,
+      "source_pins": 8,
+      "primary_providers": [
+        {
+          "address": "00b34120",
+          "map_line": "0001:000069b0       ?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z 300079b0 f   bsp_core:native_logical_texture_named_base.obj"
+        },
+        {
+          "address": "00b34230",
+          "map_line": "0001:00006a70       ?construct_native_logical_texture_named_profile_00b34230@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z 30007a70 f   bsp_core:native_logical_texture_named_base.obj"
+        },
+        {
+          "address": "00b33f50",
+          "map_line": "0001:00006b40       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30007b40 f   bsp_core:native_logical_texture_named_base.obj"
+        },
+        {
+          "address": "00b34010",
+          "map_line": "0001:00006b80       ?unwind_native_logical_texture_named_base_00b34010@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30007b80 f   bsp_core:native_logical_texture_named_base.obj"
+        },
+        {
+          "address": "00b33e40",
+          "map_line": "0001:00006b70       ?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z 30007b70 f   bsp_core:native_logical_texture_named_base.obj"
+        }
+      ],
+      "primary_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\fixture.obj",
+          "sha256": "3c2d08bcf1118afba5be307b5fce174e3e8ef879a3ef7554af1a1df3f75e5347"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\host_behavior_trace.txt",
+          "sha256": "f0e9605ed1b2d698594102baaec2daac0aded027c1495cc7f1762388b73f7ca7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\host_bridges.txt",
+          "sha256": "1339dd14f02fa817b0bcc9429fc1bd606b7211c9fe15cdfc9c20d8cd9dda25ca"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\host_crt_throw_trace.txt",
+          "sha256": "19db08ccfce2f267fc792931ccc169cd65c83ed1699612fa5598cc92b2c5173e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\native_named_base_primary.map",
+          "sha256": "b275b7ad36734b9c6a1e8332aca4f67b0208e1be24e2710cce7247d4c2345a7b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\native_named_base_primary_check.exe",
+          "sha256": "7eeeb917b341adaecab82be0bfa55220d945867ad9e9162a272261dab62a7020"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\original_behavior_trace.txt",
+          "sha256": "f0e9605ed1b2d698594102baaec2daac0aded027c1495cc7f1762388b73f7ca7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\original_crt_throw_trace.txt",
+          "sha256": "19db08ccfce2f267fc792931ccc169cd65c83ed1699612fa5598cc92b2c5173e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\patched_spans.txt",
+          "sha256": "87586fa8e7e35770bb7ee2f0dbe85de5e2a671c5528f431055c5739fe5e65a1e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-texture-named-base-primary-check\\runtime_modules.txt",
+          "sha256": "55d820e156a0519d6c13109d33e1925a2906e797e3a0fe5cad3f7132a1398969"
+        }
+      ],
+      "native_spans": 19,
+      "native_bytes": 1592,
+      "primary_postimages_verified": 19,
+      "matching_words": 1410,
+      "CRT_events_per_side": 1,
+      "boundaries": [
+        "Original singleton first-use construction and native sized-pool algorithm instructions are explicit host boundaries.",
+        "Release is noexcept under NativeStringStorage; an original pool-getter failure during destruction and 00CBE090 destructor-unwind execution are not compared.",
+        "Shared resize retains its existing C++ copy and allocator-domain policies; this packet only changes the direct named-constructor copy to overlap-safe memmove.",
+        "The complete native BF7680 algorithm is evidence only; it is not executed by this fixture.",
+        "Native profile constants are stored as raw DWORDs; this packet does not bind or invoke a complete logical-texture vtable.",
+        "Concurrent mutations, malformed inaccessible storage, general native ABI compatibility and game validation are not claimed."
+      ],
+      "primary_run": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_named_base_primary_fixture.txt",
+        "sha256": "663017ec778a0eb6decbea54d2249f1d84aba79e3db6c07bb47e9429327f2234"
+      }
+    },
+    "source_pins": [
+      {
+        "path": "src/native_logical_texture_named_base.cpp",
+        "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+      },
+      {
+        "path": "include/bsp/native_logical_texture_named_base.hpp",
+        "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+      }
+    ],
+    "build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_named_notification_primary_build.txt",
+      "sha256": "c14e5e543c38a04c2f4c6c673cd07e7f64d7bed8d9a49b567998cf7ca7526752",
+      "tests": 2,
+      "passed": true
+    },
+    "library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "7b508cc303c284706002de8019400f2828b1a1146128f0bc9c0e398f9677aef6"
+    },
+    "annotations_applied": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+    "annotation_journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T031257Z.json",
+      "sha256": "25e2269e4b3a3adc830384130c5a8b3561ed39561fda8a7167dfb06c45921c59"
+    },
+    "saved_project": true,
+    "exports_force_refreshed": true
+  }
 }
