@@ -1,0 +1,77 @@
+#pragma once
+#include "bsp/native_string.hpp"
+#include <cstddef>
+#include <cstdint>
+struct lua_State;
+
+namespace bsp {
+struct NativeLuaStateStorage;
+// Actual14h object. This owns a position on the Lua STACK, not a registry ref.
+// Addresses remain stable while tracked. No implicit cleanup or initialization.
+struct NativeLuaObjectStorage {
+    NativeLuaStateStorage* owner_00;
+    std::int32_t kind_04,index_08;
+    std::uint32_t opaque_0c;
+    std::uint8_t tracked_10;
+    std::byte padding_11[3];
+};
+struct NativeLuaTrackedSlot {
+    NativeLuaObjectStorage* references_00[5];
+    std::int32_t count_14;
+};
+// Full4C8h owner layout. The constructor clears the50 COUNTS at28+18*i;
+// their five reference pointers begin at14+18*i and retain their preimage.
+struct NativeLuaStateStorage {
+    std::uint8_t owns_00;
+    std::byte padding_01[3];
+    lua_State* state_04;
+    std::uint32_t opaque_08;
+    std::int32_t stack_offset_0c;
+    std::uint32_t opaque_10;
+    NativeLuaTrackedSlot slots_14[50];
+    std::int32_t high_water_4c4;
+};
+static_assert(sizeof(NativeLuaObjectStorage)==0x14);
+static_assert(offsetof(NativeLuaObjectStorage,tracked_10)==0x10);
+static_assert(sizeof(NativeLuaTrackedSlot)==0x18);
+static_assert(sizeof(NativeLuaStateStorage)==0x4c8);
+static_assert(offsetof(NativeLuaStateStorage,slots_14)==0x14);
+static_assert(offsetof(NativeLuaStateStorage,high_water_4c4)==0x4c4);
+
+// Full original bodies, explicit C++ interfaces over actual storage. The
+// linked Lua5.1.1 API is a library dependency, not reimplemented game code.
+NativeLuaObjectStorage* construct_native_lua_object_00b65f50(void* fresh) noexcept;
+NativeLuaStateStorage* construct_native_lua_state_00b66bd0(void* fresh) noexcept;
+// B66C00, ECX fresh owner, stack borrowed lua_State*, EAX same, RET4.
+// Native installs00B69E00 as global DoFile with ZERO upvalues. Supply that
+// application's real callback; no default/no-op/VFS substitution is provided.
+NativeLuaStateStorage* construct_native_lua_borrowed_state_00b66c00(
+    void* fresh,lua_State&,int (*do_file_00b69e00)(lua_State*));
+// B66C60: luaL_loadstring of name.data (empty if null), pcall(0,-1,0) on
+// successful load only. Preserve all result/error stack values; return status.
+int execute_native_lua_string_00b66c60(NativeLuaStateStorage&,const NativeString&);
+// No blanket reference invalidation. Close only nonnull state when owns!=0,
+// then clear state04 unconditionally, leaving ownership/tracking metadata stale.
+void close_native_lua_state_00b669a0(NativeLuaStateStorage&);
+NativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage&,void* fresh);
+// B67800 always uses the supplied owner, even for kind0. Kind3 reads globals;
+// all other kinds use current index08 AFTER pushing the C-string key. Output
+// is a tracked kind2 object at actual top. Unchecked slots<50/refs<5 are caller
+// contracts; lua_checkstack's return is ignored just as in the original.
+NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
+    NativeLuaObjectStorage& table,void* fresh,const char* key);
+NativeLuaObjectStorage* native_lua_get_by_string_00b68100(
+    NativeLuaObjectStorage& table,void* fresh,const NativeString& key);
+bool native_lua_is_number_00b66050(const NativeLuaObjectStorage&);
+float native_lua_number_00b66270(const NativeLuaObjectStorage&);
+std::int32_t native_lua_integer_00b66290(const NativeLuaObjectStorage&,const bool& crt_sse2_conversion);
+// Tracked byte0 is a no-op even with a closed/null owner. Otherwise remove
+// first matching pointer by last-swap. A zero refcount can pop/remove index,
+// shift subsequent slot records and decrement EVERY moved object's index.
+// High-water and stale pointer cells are NOT cleared/decremented.
+void release_native_lua_tracked_object_00b66de0(
+    NativeLuaStateStorage*,NativeLuaObjectStorage&,std::int32_t index,std::uint8_t remove_stack);
+// Kind0 skips everything; otherwise release using captured owner/index and
+// then clear CURRENT kind04 only. The other16 bytes remain unchanged.
+void destroy_native_lua_object_00b67700(NativeLuaObjectStorage&);
+} // namespace bsp

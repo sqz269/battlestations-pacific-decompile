@@ -1,0 +1,85 @@
+[
+  {
+    "address": "00c083d5",
+    "before": {
+      "address": "00c083d5",
+      "function_name": "__fload_withFB",
+      "comment": "Library Function - Single Match\n __fload_withFB\n\nLibrary: Visual Studio"
+    },
+    "after": {
+      "address": "00c083d5",
+      "name": "__fload_withFB",
+      "evidence": "Complete 67-byte original __fload_withFB; retain the correct library symbol. Original EDX points to live eight-byte input; return pushes ST0 and leaves classification in EAX/EFLAGS. The new fastcall declaration is for assembly callers only. It preserves every high/low reread, overlapping ten-byte temporary and both RET paths under the current x87 environment. The complete main archived body matches all 67 original bytes and 21 instructions, with zero relocations, providers or normalizations. Primary verified 34 sealed worker files, 33 report pins and a fresh 67-byte span; the full object has four COFF sections. No linked-address, runtime, original-caller/SEH, pow/gamma or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_crt_x87_double_load_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c08390",
+    "before": {
+      "address": "00c08390",
+      "function_name": "LIBCRT_unmatched_00c08390",
+      "comment": "[BSP inventory 00c08390] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c08390",
+      "name": "BSP_CRT_X87_Exp2Sequence",
+      "evidence": "Complete 21-byte x87 exponent sequence. Assembly-only ST0 input is replaced by the original FRNDINT/F2XM1/FSCALE result, using two free x87 slots; GPRs and integer flags are unchanged. The full main archived body is byte-identical to the original with zero relocations or providers. Together with BFED32, primary verified 39 sealed worker files, all report pins, three fresh spans totaling 69 bytes and five complete object sections. Current FP control, precision, status and exception behavior remain the instruction contract. Descriptive name is a reconstruction hypothesis. No runtime, original-caller, full pow/gamma or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_crt_x87_power_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bfed32",
+    "before": {
+      "address": "00bfed32",
+      "function_name": "LIBCRT_unmatched_00bfed32",
+      "comment": "[BSP inventory 00bfed32] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00bfed32",
+      "name": "BSP_CRT_X87_ClassifyPowerExponent",
+      "evidence": "Complete 40-byte x87 power-exponent comparison sequence; assembly callers only. It consumes ST0, returns comparison outcomes in CL and the last waiting status read in AX, and preserves upper ECX/EAX bits. Only BFED40 changes: FMUL [E15850] becomes a same-length six-byte FMUL [EDX+disp32(0)] through a borrowed live immutable half cell. Every other byte, branch and both waiting 9B DF E0 sequences are unchanged. CL denotes comparison outcomes; reduced precision can round a large odd integer half, so universal finite parity is not claimed. Full main archived body and zero relocations/providers checked; the two-leaf packet has 39 worker pins and three fresh spans totaling 69 bytes. Descriptive name is a hypothesis. No runtime, original-caller, full pow/gamma or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_crt_x87_power_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19e90",
+    "before": {
+      "address": "00b19e90",
+      "function_name": "FUN_00b19e90"
+    },
+    "after": {
+      "address": "00b19e90",
+      "name": "BSP_ResourceRegistry_CreateResource",
+      "evidence": "Complete 108-byte actual registry lookup for four established read-only eight-byte factory views D64470/AC/E8/F0 and current BBC6F0/BBC810 selectors. Original ECX registry, stack raw name, EAX resource or zero, RET4; new explicit C++ context. Full B19D60 executes first; capture owner then current head before returning validation, read node afterward, compare captured head, then validate against fresh owner head. Read current node+14/factory+0/profile+4 and forward the full creator result. No name copy, retain, cleanup or registry-vtable access. Unknown profiles/selectors are explicit source-only boundaries. Primary verified 98 sealed files, 59 report pins, 18 current inputs and 21 fresh spans/959 bytes. Seven original-parent/main-provider pairs match 327 words; returning invalid calls occur in stricmp, while owner-invalid branches remain static. Four exact objects contain 110 code sections/6985 bytes/244 relocations; 15 linked sections/1132 bytes pass nonrelocation-byte checks. All 32 literal profile bytes remain unchanged/read-only. Original helpers are bridged, not executed. No registry lifetime, resource deletion, original caller/SEH or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_resource_registry_lookup_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b27a80",
+    "before": {
+      "address": "00b27a80",
+      "function_name": "BSP_D3D9Renderer_BindRenderStateBlock",
+      "comment": "[BSP reconstruction 00b27a80]\nThiscallRET4. Logical identity skips; retain-new/release-old then ordered 8-byte state/value entries. No outer optional guard; individual cached setters guard. Null releases block without restoring API states; blockcounter increments on replacements includingnull. Typed shared ownership port checked realdevice order, skip, retention andnull behavior."
+    },
+    "after": {
+      "address": "00b27a80",
+      "name": "BSP_D3D9Renderer_BindRenderStateBlock",
+      "evidence": "Complete 122-byte render-state block binder, with the parallel 130-byte B27B90 sampler binder. Original ECX renderer, stack incoming owner and RET4; new EDX borrowed context adds one saved stack cell. Identity skip precedes context access. Recapture old, publish/retain incoming, then release old through current D61A2C/D61A34 slot0 BD30E0 and fresh slot4 full deleting providers. Each row reloads current data and signed count around full cached setters; final wrapping block counter increments only after return, including null replacement. No outer guard, EH or rollback. Primary verified 304 sealed files, 29 current inputs (owned CPP has CRLF/LF-only byte drift), and 27 fresh spans/1804 bytes. Full original binders and BD30E0 execute with explicit full-source child bridges in an immutable 4096-byte relocated capsule. Main proof checks 218 mapped COFF sections, 690 relocations, 71 imports and 13652 runtime code bytes. All 74 raw comparisons and eight real HAL calls pass, including real old-owner deletion and row/count/counter mutation. Only enumerated pointer/profile fields normalize. Fixture COM-call view forwards the real calls; actual device and 119 table words remain unchanged. Original children/child EH, full COM object, caller ABI and gameplay remain unproved. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_renderer_material_state_binding_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b27b90",
+    "before": {
+      "address": "00b27b90",
+      "function_name": "BSP_D3D9Renderer_BindSamplerStateBlock",
+      "comment": "[BSP reconstruction 00b27b90]\nThiscallRET4. Logical identity skips; retain-new/release-old then ordered 12-byte sampler/state/value entries. No outer optional guard; individual cached setters guard. Null releases block without restoring API states; blockcounter increments on replacements includingnull. Typed shared ownership port checked realdevice order, skip, retention andnull behavior."
+    },
+    "after": {
+      "address": "00b27b90",
+      "name": "BSP_D3D9Renderer_BindSamplerStateBlock",
+      "evidence": "Complete 130-byte sampler-state block binder. It shares the verified actual owner/publication/release schedule with B27A80, applies current 12-byte rows in value/state/slot load order through full B24610, rereads current signed count after each call, and increments current renderer+1B9C only after return. Original ECX/stack/RET4; new EDX context and saved stack cell. Actual supported owner profile is D61A34 with full BD30E0/current B42310 deletion. The primary two-binder main-library proof verified 304 worker files, 29 current inputs, 27 fresh spans/1804 bytes, 218 mapped sections/690 relocations, 71 imports and 13652 runtime code bytes. All 74 raw comparisons and eight real HAL calls pass; original child bodies and child EH are not executed. The existing sampler metadata is correct: B24610 pushes CBCFD8, whose FuncInfo is DF563C with map DF5634/action CBCFD0. CBCFB8 belongs to B24510. No original caller/SEH, full COM-object or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_renderer_material_state_binding_audit.json"
+    },
+    "status": "applied"
+  }
+]
