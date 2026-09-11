@@ -32,6 +32,7 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
+#include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/input_settings.hpp"
@@ -48,6 +49,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/mission_named_call_args.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
@@ -1845,6 +1847,40 @@ int main() {
                          bsp::ScenePropertyType::IntArray, 8) == 32,
             "an installed `IA` property line decodes its leading token as the element "
             "count and yields eight values");
+    }
+
+    {
+        // 00887750's nargs accounting, which is easy to "correct" the wrong way.
+        // EBX is cleared at 00887780 and only the self-key block sets it to one,
+        // 0088793C adds the record count verbatim even for a tag-4 record that
+        // pushes nothing, and stack_first == 0 is the sentinel at 008877F2 that
+        // also stops stack_last from being normalised.
+        const bsp::MissionLuaStackRange none = bsp::resolve_named_call_stack_range(0, -1, 12);
+        const bsp::MissionLuaStackRange relative = bsp::resolve_named_call_stack_range(-3, -1, 12);
+        std::vector<bsp::MissionLuaArgument> arguments(2);
+        arguments[0].type = bsp::MissionLuaArgumentType::Number;
+        arguments[1].type = bsp::MissionLuaArgumentType::Skipped;
+        const bsp::NamedCallArgumentCounts without_self
+            = bsp::named_call_argument_count(false, arguments, none);
+        const bsp::NamedCallArgumentCounts with_self
+            = bsp::named_call_argument_count(true, arguments, relative);
+        check(!none.active && none.count == 0 && relative.active && relative.first == 10
+                  && relative.last == 12 && relative.count == 3 && without_self.declared == 2
+                  && without_self.pushed == 1 && with_self.declared == 6 && with_self.pushed == 5,
+            "the named call counts a skipped record in nargs but not on the stack, starts at zero "
+            "without a self key, and treats stack_first zero as the no-forwarding sentinel");
+    }
+
+    {
+        // 0081F1A2..0081F1C3: the instance keeps the pre-increment value and the
+        // global 00F87151 wraps only once it exceeds 0Bh, so twelve consecutive
+        // instances take 0..11 and the thirteenth takes 0 again.
+        const bsp::UnitSlotCounterStep last = bsp::unit_slot_counter_step(11);
+        const bsp::UnitSlotCounterStep before = bsp::unit_slot_counter_step(10);
+        check(last.stored == 11 && last.next == 0 && before.stored == 10
+                  && before.next == 11,
+            "the unit construction slot counter stores the pre-increment value and "
+            "wraps after 11, not at it");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -230,9 +230,11 @@ struct MissionLuaHostServices {
     virtual int lua_pcall(int nargs, int nresults, int errfunc_index) = 0;
     // 00a67810 with index -1 and a null length pointer.
     virtual std::string lua_tolstring_at_top() = 0;
-    // 00887220: pop the top values into the caller's result vector. mode is the
-    // literal the native passes, 2 for chunks and 4 for named calls.
-    virtual int collect_results(int count, int mode) = 0;
+    // 00887220: pop the top values into the caller's result vector. The third
+    // argument is not a mode: it is the maximum table-expansion depth 00886e00
+    // enforces while recording the values (2 for chunks, 4 for named calls);
+    // docs/MISSION_NAMED_CALL_ARGS.md, packet cc2_named_call_args.
+    virtual int collect_results(int count, int max_depth) = 0;
 
     // -- named dispatch, 00887750 --------------------------------------------
     virtual void lua_getglobal(const char* name) = 0; // 006b8460 -> lua_getfield

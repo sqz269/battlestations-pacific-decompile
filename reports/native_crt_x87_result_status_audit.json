@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T22:22:41.724690+00:00",
-  "status": "Complete bounded raw163-byte source and declared provider composition proved in actual strict library; no runtime claim",
+  "status": "complete_raw_x87_result_status_main_archive_full_instruction_literal_and_provider_closure_checked",
   "base_commit": "8be289439a1494aa9cbde5189cfbd1db7e0345e4",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_result_status",
   "ownership": {
@@ -1333,5 +1333,70 @@
       "bytes": 8472,
       "sha256": "c89881bdb0553cb318fd6786213c9b92dd48cde3d87a042d12824e6a1244b00a"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_raw_x87_result_status_main_archive_full_instruction_literal_and_provider_closure_checked",
+    "main_library_sha256": "b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\destroy_result_nested_build_frozen\\manifest.json",
+      "bytes": 27555,
+      "sha256": "7dd0ca10e24911bd21cdedb9d442a8ae48d4cf6df4b277343df8446592241730"
+    },
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "exact_archive_objects": 3,
+    "whole_COFF_sections": 91,
+    "owned_bytes": 163,
+    "owned_instructions": 57,
+    "literal_adaptations": 6,
+    "owned_CALL_relocations": 2,
+    "shared_dispatch_bytes": 83,
+    "unary_thunk_bytes": 5,
+    "original_owned_execution": false,
+    "boundary": "All163 bytes/57 instructions, six current literal reads and two provider calls proved; completeCFG visits allthree packedCW POP/RET exits. Complete83-byte errorcore/unary5-byte JMP+17h and concrete C27489 wholecompiled section/EBX save-restore checked. Three actual archive members/91 wholeCOFF sections. Persistent actual LegacyCrtMathRuntime/E16BD0/owningerrno and established FPIEEE,precision01,FP/status,Win32 exception and volatile-register limits remain. No runtime/linked-address/nativeSEH/originalcallerABI, fullpow/SSE2/gamma or game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_result_status_primary\\sealed.json",
+      "bytes": 20605,
+      "sha256": "fe1244d0b81bf7d0777e8384a59e9fe46523e7e74c0fd177a7007efe79b9268b"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_destroy_result_nested_annotations.json",
+    "bytes": 12952,
+    "sha256": "9edc1ebe9b583a5cfc911924b804c81aca233f65b2377e28dbd76fbd69e9d094"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c08479",
+      "name": "BSP_CRT_X87_FinishResultStatus",
+      "cpp_symbol": "bsp::finish_native_crt_x87_result_status_tail_00c08479",
+      "source": "src/native_crt_x87_result_status.cpp",
+      "native_end_exclusive": "00c0851c",
+      "status": "complete_raw_x87_result_status_main_archive_full_instruction_literal_and_provider_closure_checked",
+      "evidence": "reports/native_crt_x87_result_status_audit.json",
+      "original_abi": "Complete original register/stack/current storage and FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c08479",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c08479\\decompiled.c",
+      "bytes": 2396,
+      "sha256": "6bf4e57095ab4e146f4f822f0772ef536db5e6e99fd9d8bce1c549aa4f0e4037"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_X87_RESULT_STATUS.md",
+    "bytes": 9528,
+    "sha256": "47d431a32ab2059509c3f8809b241d1e7a950a56bddbf2130e0f41315f186a41"
+  },
+  "closure_utc": "2026-09-11T22:34:40.146475+00:00"
 }
