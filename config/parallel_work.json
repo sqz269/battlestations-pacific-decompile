@@ -7425,6 +7425,64 @@
         "include/bsp/native_crt_pow_special.hpp"
       ],
       "evidence": "reports/native_crt_pow_special_audit.json"
+    },
+    {
+      "id": "native_resource_registry_destroy2",
+      "packet": "native_resource_registry_destroy2",
+      "state": "complete_actual_registry_destroy_reset_main_archive_native_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b1b5f0",
+        "00b19760"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RESOURCE_REGISTRY_DESTROY.md",
+        "reports/native_resource_registry_destroy_audit.json",
+        "src/native_resource_registry_destroy.cpp",
+        "include/bsp/native_resource_registry_destroy.hpp"
+      ],
+      "evidence": "reports/native_resource_registry_destroy_audit.json"
+    },
+    {
+      "id": "native_crt_x87_result_status1",
+      "packet": "native_crt_x87_result_status1",
+      "state": "complete_raw_x87_result_status_main_archive_full_instruction_literal_and_provider_closure_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c08479"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_X87_RESULT_STATUS.md",
+        "reports/native_crt_x87_result_status_audit.json",
+        "src/native_crt_x87_result_status.cpp",
+        "include/bsp/native_crt_x87_result_status.hpp"
+      ],
+      "evidence": "reports/native_crt_x87_result_status_audit.json"
+    },
+    {
+      "id": "native_renderer_capability_nested_arrays4",
+      "packet": "native_renderer_capability_nested_arrays4",
+      "state": "complete_raw_capability_nested_arrays_main_archive_instruction_EH_translation_and_native_composition_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b23120",
+        "00b25e60",
+        "00b29d40",
+        "00b2ae20"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_CAPABILITY_NESTED_ARRAYS.md",
+        "reports/native_renderer_capability_nested_arrays_audit.json",
+        "src/native_renderer_capability_nested_arrays.cpp",
+        "include/bsp/native_renderer_capability_nested_arrays.hpp"
+      ],
+      "evidence": "reports/native_renderer_capability_nested_arrays_audit.json"
     }
   ],
   "snapshot_after_analysis": {
