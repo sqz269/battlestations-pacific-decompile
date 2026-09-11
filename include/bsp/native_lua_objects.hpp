@@ -97,4 +97,15 @@ std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage&,
 // ECX object, stack output/fallback, EAX output, RET8; no prior-output cleanup.
 NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage&,
     void* fresh,const char* fallback,NativeStringStorage&);
+bool native_lua_is_string_00b660a0(const NativeLuaObjectStorage&);
+// Kind2/exact NUMBER yields a float32-rounded result; every other value
+// returns the supplied float. Original ECX object, stack float, ST0, RET4.
+float native_lua_number_or_00b66330(const NativeLuaObjectStorage&,float fallback);
+// B679B0: kind3, start index1, top in opaque0C, untracked; RET4/EAXoutput.
+NativeLuaObjectStorage* native_lua_call_frame_00b679b0(NativeLuaStateStorage&,void* fresh);
+// B67720: kind2 table lookup pushes integer key and registers actual output;
+// every other kind creates untracked kind2 at current base index+offset.
+NativeLuaObjectStorage* native_lua_get_by_index_00b67720(NativeLuaObjectStorage&,void* fresh,std::int32_t);
+// Full32-byte wrapper, RET8/EAXoriginal output pointer.
+NativeLuaObjectStorage* native_lua_argument_at_00b677e0(NativeLuaObjectStorage&,void* fresh,std::int32_t);
 } // namespace bsp

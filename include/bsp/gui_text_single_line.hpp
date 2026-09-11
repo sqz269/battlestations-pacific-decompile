@@ -35,7 +35,8 @@ struct GuiTextSingleLineContinuation {
     // AB98F0 arguments2/5/6 ALL use native_position->data(). This one float3
     // keeps its address across frame/optional moves and is separate from pen x
     // in placement. Native initializes y/z once, then overwrites only x before
-    // each glyph call. Possible callee writes must not alias the pen accumulator.
+    // each glyph call. Full-body review establishes that the callee reads arg2
+    // (including late child-tail x); slots5/6 are unused, not output pointers.
     std::unique_ptr<std::array<float, 3>> native_position;
     std::uint32_t quad_index;
     std::uint32_t first_vertex;

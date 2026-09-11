@@ -1,0 +1,142 @@
+{
+  "packet": "cc_unit_lists",
+  "owner": "agent/cc-unit-lists",
+  "docs": ["docs/LOCAL_PLAYER_UNIT_LISTS.md", "docs/FIXED_STEP_COUNTDOWN.md"],
+  "sources": [
+    "include/bsp/local_player_unit_lists.hpp",
+    "src/local_player_unit_lists.cpp",
+    "include/bsp/fixed_step_countdown.hpp",
+    "src/fixed_step_countdown.cpp"
+  ],
+  "summary": "004C3CB0's body 004C3D06..004C4098 as documented structs, three classification rules and a host; the eight vtable[5Ch] kind codes named from the class-id space; 008079B0 as the 3-second recon table refresh.",
+
+  "routines": [
+    {"address": "004c3cb0", "name": "BSP_Game_BuildLocalPlayerUnitLists", "body": "004c3cb0-004c409d", "abi": "__thiscall void(GGame*), RET", "reconstruction": "build_local_player_unit_lists_004c3cb0, classify_walk0_unit, classify_walk1_unit, classify_walk2_unit", "coverage": "complete"},
+    {"address": "00484540", "name": "BSP_UnitList_PushBack", "body": "00484540-00484594", "abi": "__thiscall void(List*, void*), RET 4", "reconstruction": "unit_list_push_back_00484540", "coverage": "complete"},
+    {"address": "004bf8e0", "name": "BSP_UnitList_Clear", "body": "004bf8e0-004bf925", "abi": "__thiscall void(List*), RET", "reconstruction": "unit_list_clear_004bf8e0", "coverage": "complete"},
+    {"address": "004c2be0", "name": "BSP_UnitList_AppendAll", "body": "004c2be0-004c2c3b", "abi": "__thiscall void(List* dst, List* src), RET 4", "reconstruction": "unit_list_append_all_004c2be0", "coverage": "complete"},
+    {"address": "004bfdf0", "name": "BSP_Game_ClearLocalPlayerUnitLists", "body": "004bfdf0-004bfe47", "abi": "__thiscall void(GGame*), tail call", "reconstruction": "clear_all_unit_lists_004bfdf0", "coverage": "complete"},
+    {"address": "008ddf90", "name": "BSP_SzurkeNyil_ContainsUnit", "body": "008ddf90-008ddfd9", "abi": "__thiscall char(SzurkeNyil*, unit), RET 4", "reconstruction": "objective_set_contains_008ddf90", "coverage": "complete for 008DDF90; 008DDF00 and 008DD310 are the STL find, modelled as a set lookup"},
+    {"address": "008079b0", "name": "BSP_Recon_ServicePeriodicRefresh", "body": "008079b0-00807a41", "abi": "__stdcall void(float), RET 4", "reconstruction": "step_recon_countdown_008079b0, run_recon_refresh_008079b0", "coverage": "complete"},
+    {"address": "00807a50", "name": "BSP_Recon_ForceRefreshNow", "body": "00807a50-00807a6b", "abi": "void(), RET", "reconstruction": "force_recon_refresh_00807a50", "coverage": "complete"},
+    {"address": "008053c0", "name": "BSP_Recon_EnsureSlot", "body": "008053c0-00805423", "abi": "__fastcall void(int index), RET", "reconstruction": "ensure_recon_slot_008053c0", "coverage": "complete for the lazy-creation rule; the constructor body is a host call"},
+    {"address": "008073c0", "name": null, "body": "008073c0-008079a5", "reconstruction": "host method rebuild_slot_008073c0", "coverage": "partial: 008073D0..00807416 and 00807634..008076E2 read; 00807419..00807633 and 008076E5..008079A5 not read"},
+    {"address": "00806b10", "name": null, "body": "00806b10-00806ccd", "reconstruction": "host method publish_recon_report_00806b10", "coverage": "partial: 00806B10..00806BAE read; 00806BAE..00806CCD not read"},
+    {"address": "008050e0", "name": null, "body": "008050e0-0080522c", "reconstruction": "none", "coverage": "partial: the three 61h-element arrays and the five {count, head, tail} triples only"}
+  ],
+
+  "host_steps": [
+    {"host_method": "clear_all_lists_004bfdf0", "address": "004c3ce3", "native": "004bfdf0", "function": "004c3cb0", "note": "clears all eight lists before the walks"},
+    {"host_method": "registry_walk_units(kWalk0)", "address": "004c3cf8", "native": "inline", "function": "004c3cb0", "note": "head [[game+18CCh+slot*4]+30h]+DDCh; the walk is inline code, not a call"},
+    {"host_method": "registry_walk_units(kWalk1)", "address": "004c3d61", "native": "inline", "function": "004c3cb0", "note": "head +DE8h"},
+    {"host_method": "registry_walk_units(kWalk2)", "address": "004c3eb4", "native": "inline", "function": "004c3cb0", "note": "head +E00h"},
+    {"host_method": "unit_filter_flags", "address": "004c3d0c", "native": "inline", "function": "004c3cb0", "note": "unit+5Ch set, +5Dh/+60h/+5Eh clear; copies at 004c3d76 and 004c3ec8"},
+    {"host_method": "unit_is_kind_of(2Ah)", "address": "004c3d29", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 0; true drops the unit"},
+    {"host_method": "unit_is_kind_of(06h)", "address": "004c3d38", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 0; also at 004c3da3, 004c3ef5"},
+    {"host_method": "append_00484540(kWalk0Ships)", "address": "004c3d45", "native": "00484540", "function": "004c3cb0", "note": "ECX = game+1964h"},
+    {"host_method": "append_00484540(kWalk0Rest)", "address": "004c3d51", "native": "00484540", "function": "004c3cb0", "note": "ECX = game+1970h, unconditional for a surviving unit"},
+    {"host_method": "append_00484540(kShips) inlined", "address": "004c3dab", "native": "00bf681b", "function": "004c3cb0", "note": "the inlined push_back onto game+197Ch allocates its own node; copies at 004c3efd, 004c3f5f, 004c3fc1"},
+    {"host_method": "unit_is_kind_of(18h)", "address": "004c3e05", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 1; walk 2 at 004c3f57"},
+    {"host_method": "unit_is_kind_of(0Fh)", "address": "004c3e1f", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 1 only; true drops the unit"},
+    {"host_method": "unit_is_kind_of(45h)", "address": "004c3e32", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 1; walk 2 at 004c3fb9"},
+    {"host_method": "unit_is_kind_of(46h)", "address": "004c3e49", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 1; walk 2 at 004c4018"},
+    {"host_method": "unit_is_kind_of(1Bh)", "address": "004c3e60", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 1; walk 2 at 004c402f"},
+    {"host_method": "unit_is_kind_of(35h)", "address": "004c3e77", "native": "unit+vtable5C", "function": "004c3cb0", "note": "walk 1 only"},
+    {"host_method": "unit_in_local_objective_set_008ddf90", "address": "004c3e90", "native": "008ddf90", "function": "004c3cb0", "note": "ECX = [game+21A4h + [00E188A8+18ECh]*4]"},
+    {"host_method": "append_00484540(walk 1 target)", "address": "004c3ea0", "native": "00484540", "function": "004c3cb0", "note": "the shared append; ECX was set by the branch that reached it"},
+    {"host_method": "append_00484540(walk 2 target)", "address": "004c403c", "native": "00484540", "function": "004c3cb0", "note": "the same shape in walk 2"},
+    {"host_method": "append_all_004c2be0(kMerged, kShips)", "address": "004c405b", "native": "004c2be0", "function": "004c3cb0", "note": "ECX = game+19B8h for all five"},
+    {"host_method": "append_all_004c2be0(kMerged, kSquadrons)", "address": "004c4069", "native": "004c2be0", "function": "004c3cb0"},
+    {"host_method": "append_all_004c2be0(kMerged, kAirfields)", "address": "004c4077", "native": "004c2be0", "function": "004c3cb0"},
+    {"host_method": "append_all_004c2be0(kMerged, kShipyards)", "address": "004c4085", "native": "004c2be0", "function": "004c3cb0"},
+    {"host_method": "append_all_004c2be0(kMerged, kLandForts)", "address": "004c4093", "native": "004c2be0", "function": "004c3cb0"},
+
+    {"host_method": "unit_list_clear_004bf8e0 (list 0 of 8)", "address": "004bfdf9", "native": "004bf8e0", "function": "004bfdf0", "note": "seven more at 004bfe04..004bfe3b, the eighth is the tail JMP at 004bfe47"},
+    {"host_method": "free(node) in the clear loop", "address": "004bf917", "native": "00bf65ac", "function": "004bf8e0", "note": "the back edge 004bf922 JNZ 004bf8e8 makes this a clear, not a pop"},
+    {"host_method": "operator new(0Ch) in push_back", "address": "00484546", "native": "00bf681b", "function": "00484540"},
+    {"host_method": "operator new(0Ch) per appended value", "address": "004c2bf8", "native": "00bf681b", "function": "004c2be0"},
+    {"host_method": "set lookup", "address": "008ddfcb", "native": "008ddf00", "function": "008ddf90"},
+    {"host_method": "_Tree find", "address": "008ddf18", "native": "008dd310", "function": "008ddf00"},
+
+    {"host_method": "advance_step_countdown_008079b0", "address": "00875ca5", "native": "008079b0", "function": "00875bb0", "note": "argument = [00D0DE84] = 0.05f, the fixed step"},
+    {"host_method": "rebuild_slot_008073c0", "address": "00807a08", "native": "008073c0", "function": "008079b0", "note": "ECX = the slot; runs for every present slot on an expired period"},
+    {"host_method": "publish_recon_report_00806b10", "address": "00807a24", "native": "00806b10", "function": "008079b0", "note": "only when slot+25h is set; argument [[00E188A8+1A08h]+4]"},
+    {"host_method": "force_recon_refresh_00807a50 -> the pass", "address": "00807a66", "native": "008079b0", "function": "00807a50", "note": "argument 0.0f after 00807A5E set the countdown to -1.0e-4f"},
+    {"host_method": "clear one of the five triples", "address": "008073ea", "native": "008042b0", "function": "008073c0", "note": "four more at 008073f5..00807416"},
+    {"host_method": "push the global recon table", "address": "00806b37", "native": "006b8190", "function": "00806b10", "note": "argument \"recon\" at 00CE74A0"},
+    {"host_method": "descend into recon[slot+28h]", "address": "00806b45", "native": "00803750", "function": "00806b10", "note": "BSP_ReconTableScope_ConstructIndexed, docs/RECON_VALUES.md"},
+    {"host_method": "clear recon[i].enemy", "address": "00806b59", "native": "006b8390", "function": "00806b10", "note": "own, neutral, unknown at 00806b6f, 00806b71, 00806b7d"},
+    {"host_method": "pop the recon table", "address": "00806b9d", "native": "006b8210", "function": "00806b10"},
+    {"host_method": "operator new(12A0h) for a slot", "address": "008053e9", "native": "00bf681b", "function": "008053c0"},
+    {"host_method": "construct the slot", "address": "00805404", "native": "008050e0", "function": "008053c0", "note": "argument = the slot index"}
+  ],
+
+  "class_ids": {
+    "note": "The argument of the unit vtable slot 5Ch, bool IsKindOf(int), RET 4. Descriptor vtable layout: +4h scalar deleting destructor, +0Ch const char* GetClassName (MOV EAX,imm32; RET), +18h IsKindOf, +28h the instance creator. Ids are unique inside the instance space (chains rooted at 0 that end with CMP EAX,[ECX+0C4h]) but reused across descriptor families: MDummySubmarine answers 8 and MDummyKamikazePlane answers 23 so a decoy reports the class it imitates.",
+    "queried_by_004c3cb0": [
+      {"code": "0x06", "class": "the ship base class", "name": null, "is_kind_of": "009635e0", "chain": "[6,5,4]", "derived": "MDestroyer 7, MSubmarine 8, MMothership 9, MCruiser 10, MCargo 11, MLandingShip 12, MBattleship 13, MTorpedoBoat 14"},
+      {"code": "0x0f", "class": "the plane base class", "name": null, "is_kind_of": "007cfd00", "chain": "[15,5,4]", "derived": "MPlaneBomber 16, MPlaneTorpedoBomber 17, MPlaneDiveBomber 18, MPlaneFighter 19, MReconPlane 20, MSmallReconPlane 21, MLargeReconPlane 22, MPlaneKamikaze 23"},
+      {"code": "0x18", "class": "the plane squadron", "name": null, "is_kind_of": "007efb00", "chain": "[24,2,1,0]", "evidence": "vtable 00D087C0 slot 5Ch; installed by the 0x414-byte squadron constructor 007F2C60 at 007F2CAF (PlaneSquadronGen, docs/SCENE_UNIT_CREATORS.md)"},
+      {"code": "0x1b", "class": "MLandFort", "name": "MLandFort", "is_kind_of": "00749030", "chain": "[27,5,4]", "derived": "MCommandBuilding 28"},
+      {"code": "0x2a", "class": "MBomb, the ordnance base", "name": "MBomb", "is_kind_of": "006ea2a0", "chain": "[42,41]", "evidence": "name getter 006EA290; the instance base constructor 006E2670 writes [ESI+0C4h]=2Ah at 006E271E and installs vtable 00CF9438 whose IsKindOf 006E2790 = [42,2,1,0]", "derived": "MTorpedo 43, MDepthCharge 44, a decoy base 45 (MDummyTarget 46, 47, 48), MParatrooper 49, MRocket 51, MWaterMine 52"},
+      {"code": "0x35", "class": "MDummyTarget (vehicle family)", "name": "MDummyTarget", "is_kind_of": "009600a0", "chain": "[53,5,4]", "evidence": "descriptor vtable 00D1AA58, name getter 00960090; the DummyTargetVehicle row of docs/SCENE_UNIT_CREATORS.md"},
+      {"code": "0x45", "class": "MAirfield", "name": "MAirfield", "is_kind_of": "0095ff30", "chain": "[69,5,4]", "evidence": "descriptor vtable 00D1A9A0, name getter 0095FF20 -> 00D1A9CC; creator 006D3110 -> constructor 006D1C20 installs instance vtable 00CF8C08, whose IsKindOf 006D20E0 answers [5,4,2,1,0], +0C4h and 45h"},
+      {"code": "0x46", "class": "MShipyard", "name": "MShipyard", "is_kind_of": "0095ffa0", "chain": "[70,5,4]", "evidence": "descriptor vtable 00D1A9DC, name getter 0095FF90 -> 00D1AA08; creator 00848380; the shipyard instance IsKindOf 00846C00 answers [5,4,2,1,0], +0C4h and 46h"}
+    ],
+    "list_mapping": [
+      {"list": "game+1964h", "filled_by": "walk 0", "rule": "IsKindOf(06h)"},
+      {"list": "game+1970h", "filled_by": "walk 0", "rule": "every filtered unit that is not IsKindOf(2Ah)"},
+      {"list": "game+197Ch", "filled_by": "walks 1, 2", "rule": "IsKindOf(06h)"},
+      {"list": "game+1988h", "filled_by": "walks 1, 2", "rule": "IsKindOf(18h)"},
+      {"list": "game+1994h", "filled_by": "walks 1, 2", "rule": "IsKindOf(45h)"},
+      {"list": "game+19A0h", "filled_by": "walks 1, 2", "rule": "IsKindOf(46h)"},
+      {"list": "game+19ACh", "filled_by": "walks 1, 2", "rule": "IsKindOf(1Bh)"},
+      {"list": "game+19B8h", "filled_by": "walk 1, then the merge tail", "rule": "IsKindOf(35h) or 008DDF90; then +197Ch, +1988h, +1994h, +19A0h, +19ACh appended in that order"}
+    ]
+  },
+
+  "corrections": [
+    {"what": "004bfdf0", "was": "pops the head off each of eight lists, which looks like a defect worth confirming against a run (docs/IN_MISSION_SUBSYSTEM_TICK.md)", "is": "clears each of the eight lists completely; there is no defect", "evidence": "004BF922 JNZ 004BF8E8, the back edge after --count and free(node) in 004BF8E0"},
+    {"what": "kind 18h", "was": "kUnitTraitHasDrivenSubUnit (bsp/unit_instance.hpp), kUnitCategoryPlaneAlt (bsp/award_trackers.hpp)", "is": "the plane squadron class, id 24", "evidence": "007EFB00 = [24,2,1,0] at +5Ch of 00D087C0, installed by the squadron constructor 007F2C60 at 007F2CAF"},
+    {"what": "kind 0Fh", "was": "kUnitTraitPublishesAnchor (bsp/unit_instance.hpp)", "is": "the plane base class, id 15", "evidence": "007CFD00 = [15,5,4]; ids 16..23 are the named plane classes"},
+    {"what": "kind 05h", "was": "kUnitTraitDirectlyControlled (bsp/unit_instance.hpp)", "is": "the vehicle base class; every VehicleClass descriptor chain ends [.., 5, 4]", "evidence": "00749010 = [5,4]; 6, 15, 25, 27, 53, 69 and 70 all derive from it"},
+    {"what": "kind 1Bh", "was": "kUnitCategoryGunnery (bsp/award_trackers.hpp)", "is": "MLandFort, with MCommandBuilding derived", "evidence": "name getter at 00CFF790+0Ch -> \"MLandFort\"; IsKindOf 00749030 = [27,5,4]"},
+    {"what": "kind 0Bh", "was": "kUnitCategoryReconPlane (bsp/award_trackers.hpp)", "is": "MCargo; MReconPlane is id 20", "evidence": "descriptor vtable 00D1ADBC, name getter -> \"MCargo\", IsKindOf 00963D00 = [11,6,5,4]"},
+    {"what": "unit +5Dh", "was": "simulate, default true (bsp/unit_instance.hpp UnitInstanceState)", "is": "a byte 004C3CB0 requires clear for a unit to be listed", "evidence": "004C3D11 CMP byte ptr [EDI+5Dh],BL / 004C3D14 JNZ, repeated at 004C3D7F and 004C3ED1"},
+    {"what": "008079b0", "was": "the countdown global the first per-step call maintains, unread (docs/IN_MISSION_SUBSYSTEM_TICK.md follow-ups)", "is": "a 3-second periodic driver that rebuilds three recon contexts and rewrites the Lua recon[0..2] tables", "evidence": "008079CE FADD qword [00D7A2B0] = 3.0; the three-slot loop 008079F7..00807A36; 00806B10's push of \"recon\" through BSP_LuaInstance_PushGlobalTableIfNil and BSP_ReconTableScope_ConstructIndexed"}
+  ],
+
+  "no_ghidra_function": [
+    {"start": "004f2590", "end": "004f25ab", "what": "__thiscall bool(unit) forwarding to 008DDF90", "boundary": "004F25AB RET; 004F25AC..004F25AF are CC"},
+    {"start": "004f25b0", "end": "004f25cb", "what": "an identical second copy", "boundary": "004F25CB RET; the next function starts at 004F25D0"},
+    {"start": "006e2790", "end": "006e27bb", "what": "IsKindOf of the ordnance instance base (42)", "boundary": "MOV EAX,1 / RET 4 at 006E27B4..006E27BB"},
+    {"start": "006e8400", "end": "006e840c", "what": "IsKindOf of MBullet's descriptor (41), SETNZ form", "boundary": "006E840A RET 4; 006E840D is CC"},
+    {"start": "006e8410", "end": "006e8415", "what": "MBullet name getter", "boundary": "MOV EAX,00CFA15C / RET"},
+    {"start": "006ea290", "end": "006ea295", "what": "MBomb name getter", "boundary": "MOV EAX,00CFA4D4 / RET"},
+    {"start": "006ea2a0", "end": "006ea2ba", "what": "IsKindOf of MBomb's descriptor (42)", "boundary": "MOV EAX,1 / RET 4 at 006EA2B3..006EA2BA"},
+    {"start": "006d20e0", "end": "006d2115", "what": "IsKindOf of the MAirfield instance, adds 45h", "boundary": "MOV EAX,1 / RET 4 at 006D210E..006D2115"},
+    {"start": "006f5890", "end": "006f58c5", "what": "IsKindOf of the MLandFort instance (27)", "boundary": "the same tail form"},
+    {"start": "007004b0", "end": "007004e5", "what": "IsKindOf of the MDummyTarget instance (53)", "boundary": "the same tail form"},
+    {"start": "0074e400", "end": "0074e435", "what": "IsKindOf of the plane instance base (15)", "boundary": "the same tail form"},
+    {"start": "007cfd00", "end": "007cfd1f", "what": "IsKindOf of the plane descriptor base (15)", "boundary": "the same tail form"},
+    {"start": "007efb00", "end": "007efb2b", "what": "IsKindOf of the squadron instance (24)", "boundary": "the same tail form"},
+    {"start": "00846c00", "end": "00846c35", "what": "IsKindOf of the MShipyard instance, adds 46h", "boundary": "the same tail form"},
+    {"start": "00749030", "end": "0074904f", "what": "IsKindOf of the MLandFort descriptor (27)", "boundary": "the same tail form"},
+    {"start": "009635e0", "end": "009635ff", "what": "IsKindOf of the ship descriptor base (6)", "boundary": "the same tail form"},
+    {"start": "00960030", "end": "0096004f", "what": "IsKindOf of the MLandVehicle descriptor (25)", "boundary": "the same tail form"},
+    {"start": "009600a0", "end": "009600bf", "what": "IsKindOf of the MDummyTarget descriptor (53)", "boundary": "the same tail form"},
+    {"start": "0095ff30", "end": "0095ff4f", "what": "IsKindOf of the MAirfield descriptor (69)", "boundary": "MOV EAX,1 / RET 4 at 0095FF48..0095FF4F; 0095FF50 is the next function's PUSH ESI"},
+    {"start": "0095ffa0", "end": "0095ffbf", "what": "IsKindOf of the MShipyard descriptor (70)", "boundary": "the same tail form; 0095FFC0 is the next function"},
+    {"start": "00803b80", "end": "00803b90", "what": "00F874B8 = -1.0e-4f, void()", "boundary": "MOVSS [00F874B8],XMM0 at 00803B88..00803B8F, RET at 00803B90; 00803B91..00803B9F are CC"},
+    {"start": "006f23c0", "end": "006f23cb", "what": "00F874B8 = 0.0f, void()", "boundary": "XORPS at 006F23C0, MOVSS at 006F23C3..006F23CA, RET at 006F23CB; 006F23CC is CC"}
+  ],
+
+  "follow_ups": [
+    {"packet": "unit_registry_five_lists", "addresses": ["008050e0", "008073c0", "008042b0", "00804e10", "00805490"], "question": "What the five {count, head, tail} triples at +DD8h..+E08h separate"},
+    {"packet": "unit_list_consumers", "addresses": ["00586eff", "005403b4", "0056e9bb", "00525fb3", "00526377", "0059cedc", "005d3580", "00687387", "00746f93"], "question": "Who reads the eight lists; naming them from a consumer would confirm the commandable-units reading"},
+    {"packet": "unit_class_id_table", "addresses": ["0042b8f0", "0047f190", "004f1750", "006d1610", "006d1650", "006dfe50", "006e7c00"], "question": "The unnamed roots 0, 1, 2, 4, 5, 6, 15, 41 and all 86 IsKindOf implementations as one table; correcting the three headers listed under corrections"},
+    {"packet": "szurkenyil_objective_set", "addresses": ["008df900", "008da160", "008ddf00", "008dd310"], "question": "What populates the eight SzurkeNyil sets at game+21A4h"},
+    {"packet": "recon_report_values", "addresses": ["00806b10", "006b8390", "00885a70"], "question": "The rest of 00806B10: what it writes into the nineteen category tables under each relation"},
+    {"packet": "recon_slot_indices", "addresses": ["008053c0", "00803ba0", "00805240"], "question": "Who calls 008053C0 and 00803BA0, and what distinguishes recon[0], recon[1] and recon[2]"}
+  ]
+}

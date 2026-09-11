@@ -1,0 +1,28 @@
+[
+  {
+    "address": "00b1b660",
+    "before": {
+      "address": "00b1b660",
+      "function_name": "CG_scalar_deleting_dtor_00b1b660"
+    },
+    "after": {
+      "address": "00b1b660",
+      "name": "BSP_ResourceRegistry_ScalarDelete_D5E594",
+      "evidence": "Complete30-byte raw scalar-deleting entry selected by profile00d5e594. Original ECX registry, currentflagsDWORD atentryESP+4, EAX capturedpointer, RET4. SaveESI/captureECX, full destructor first, THEN testbit0 ofcurrentLOWBYTEflag; conditionallyfree CAPTUREDallocation, returncapturedpointerbits, restoreESI. Preserve originally missingADDESP4 afterfree. Newfastcall addsEDX=fixed12-byte actual publication/pool/invalid-service reference bindings, never snapshotsnative state. Full18-byte fastcall destructor bridge and5-byte cdecl free tail; no genericcallbacks/partialdestructor/newguard. All60 ownedbytes22instructions exact after4directCALLbindings;11exact archive objects451wholeCOFFsections. Ten providerobjects are byte-identical to prior executed full-destructor proof. StrictmainWin32/2existingCTests/8freshseeds passed on librarycbea7a203aa3fe6964f0eee1a6ad5b6177506ad803cd8ac4e93cf6bedaea74cd. Newwrappers not runtimeexecuted; no linkedaddress/nativeSEH/originalcallerABI/provider volatileequivalence, constructor/getter or game claim. Descriptive name hypothesis, original generatedname preserved in annotation journal. reports/native_resource_registry_scalar_delete_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1b710",
+    "before": {
+      "address": "00b1b710",
+      "function_name": "CG_scalar_deleting_dtor_00b1b710"
+    },
+    "after": {
+      "address": "00b1b710",
+      "name": "BSP_ResourceRegistry_ScalarDelete_D5E59C",
+      "evidence": "Complete30-byte raw scalar-deleting entry selected by profile00d5e59c. Original ECX registry, currentflagsDWORD atentryESP+4, EAX capturedpointer, RET4. SaveESI/captureECX, full destructor first, THEN testbit0 ofcurrentLOWBYTEflag; conditionallyfree CAPTUREDallocation, returncapturedpointerbits, restoreESI. Preserve originally missingADDESP4 afterfree. Newfastcall addsEDX=fixed12-byte actual publication/pool/invalid-service reference bindings, never snapshotsnative state. Full18-byte fastcall destructor bridge and5-byte cdecl free tail; no genericcallbacks/partialdestructor/newguard. All60 ownedbytes22instructions exact after4directCALLbindings;11exact archive objects451wholeCOFFsections. Ten providerobjects are byte-identical to prior executed full-destructor proof. StrictmainWin32/2existingCTests/8freshseeds passed on librarycbea7a203aa3fe6964f0eee1a6ad5b6177506ad803cd8ac4e93cf6bedaea74cd. Newwrappers not runtimeexecuted; no linkedaddress/nativeSEH/originalcallerABI/provider volatileequivalence, constructor/getter or game claim. Descriptive name hypothesis, original generatedname preserved in annotation journal. reports/native_resource_registry_scalar_delete_audit.json"
+    },
+    "status": "applied"
+  }
+]

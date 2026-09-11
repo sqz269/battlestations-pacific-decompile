@@ -1,0 +1,111 @@
+[
+  {
+    "address": "00c08330",
+    "before": {
+      "address": "00c08330",
+      "function_name": "LIBCRT_unmatched_00c08330",
+      "comment": "[BSP inventory 00c08330] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c08330",
+      "name": "BSP_CRT_X87_DispatchBinaryError",
+      "evidence": "Complete binary error entry reaches23-byte prefix C08330..C08347 plus shared51-byte tail C08350..C08383 (74 reached bytes, not a contiguous83-byte binary body). New naked source core contains the whole83-byte physical union. EAX type,ECX actual name,EDX operation,ST0 result; entryESP return,+4 actual packedCW,+8 enclosing return,+C arg1,+14 arg2. Binary reads each current arg2 DWORD before shared result FSTP; type/name/arg1/result32-byte exception record retains original stores. Direct full C27489 source call gets actual record and savedCW pointer; only normal return reloads current result and compares/rereads savedCW for FLDCW. No added EH or rollback. Complete83-byte core has only one direct C27489 CALL relocation; separate unary5-byte JMP has17h addend. Both full actual archive objects and87 COFF sections proved. Persistent actual LegacyCrtMathRuntime/E16BD0/owning errno binding required. Established provider restrictions on reservedFPIEEE initialization, precision01, volatile outputs and FP/status/Win32 exception scope remain. No new operation1D runtime, linked runtime, native SEH/caller ABI, pow/gamma or game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_crt_x87_error_dispatch_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c08347",
+    "before": {
+      "address": "00c08347",
+      "function_name": "__startOneArgErrorHandling",
+      "comment": "Library Function - Single Match\n __startOneArgErrorHandling\n\nLibrary: Visual Studio 2005 Release\n\n[BSP reconstruction 00c08347]\n[BSP reconstruction 00c08347] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00c08347",
+      "name": "__startOneArgErrorHandling",
+      "evidence": "Retain correct CRT library name __startOneArgErrorHandling. Complete60-byte unary reached body shares51-byte tail with binary entry. New source unary entry is exactly one5-byte JMP thunk to binary core+17h, retaining the original unary prologue and leaving argument2 unwritten. EAX type,ECX name,EDX operation,ST0 result; entryESP return,+4 packedCW,+8 enclosing return,+C arg1. Complete provider call and current-result/CW normal-return schedule as binary; no new cleanup or validation. New thunk is an explicit source entry binding, not original-address ABI. Complete83-byte core has only one direct C27489 CALL relocation; separate unary5-byte JMP has17h addend. Both full actual archive objects and87 COFF sections proved. Persistent actual LegacyCrtMathRuntime/E16BD0/owning errno binding required. Established provider restrictions on reservedFPIEEE initialization, precision01, volatile outputs and FP/status/Win32 exception scope remain. No new operation1D runtime, linked runtime, native SEH/caller ABI, pow/gamma or game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_crt_x87_error_dispatch_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19f90",
+    "before": {
+      "address": "00b19f90",
+      "function_name": "BSP_ResourceRegistryTree_EraseIterator",
+      "comment": "[BSP reconstruction 00b19f90]\nComplete 716-byte actual resource-registry tree erase at B19F90..B1A25C. Original ECX tree; stack hidden output iterator and input iterator owner/node; RET0C. This is a full red-black-tree erase with invalid-iterator exception branch, not a throw-only helper. Preserve two-child successor transplant, actual links/color/nil, direct complete rotations and iterator advance. Invalid iterator constructs the native owning out_of_range payload through complete 411700/408720 and D6926C profile; ThrowInfo D863A8 uses full 441760 copy and 4412B0 destructor. Normal disposal captures key data/length and uses actual 419CC0/BD1510, then returning BF65AC. Restored 58-byte tail B1A222..B1A25C reads current unsigned count after free, decrements only when nonzero, captures advanced owner/output/node before potentially aliasing output stores. Full original spans and concrete dependencies reviewed; source erase and native exception carrier composition remain pending. Prior STL_xlen_throw identification superseded by complete control flow. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json"
+    },
+    "after": {
+      "address": "00b19f90",
+      "name": "BSP_ResourceRegistryTree_EraseIterator",
+      "evidence": "Complete716-byte actual registry iterator erase. ECX actual tree; stack output pointer,input owner/node by value; EAX output,RET0C. Nil before owner validation constructs actual owning27-byte counted-message exception via completed408720 then411700/D6926C; state0/CBC620 cleans only successfully assigned temporary. Non-nil advances independent input, retains original disposal target, complete direct or two-child successor transplant and both mirrored rebalance sides with current near-child/head rereads. Capture key data/length+1 before actual pool getter/return, free original node, then current unsigned nonzero count decrement and captured advanced owner/node publication. No owner-equals-tree requirement, key/value transplant or factory release. Unchanged focused fixture matches231 words for five original/source operations: mirrored near-child rotations, three-node partial range with11 returning invalid-handler calls, fullclear, captured-head repairs and aliased output. Actual free changes count13/0 and pool getter mutates captured key. Both owned entries, subtree, increment and rotations execute; extrema installed/static only here. Nine exact objects/198 code sections14256bytes461relocations;82 linked sections8238bytes checked outside relocation operands, not every resolved target. Separate source owning-exception payload/copy/destruction check; original EH static. Inherited actual pool-release noexcept/recreation-failure boundary and host RTTI/SEH/caller ABI limits remain. No full registry/factory/game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_resource_registry_erase_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1a2f0",
+    "before": {
+      "address": "00b1a2f0",
+      "function_name": "FUN_00b1a2f0"
+    },
+    "after": {
+      "address": "00b1a2f0",
+      "name": "BSP_ResourceRegistryTree_EraseRange",
+      "evidence": "Complete201-byte actual registry range erase. ECX tree; stack output,first owner/node,last owner/node; EAX output,RET14. Capture first owner/current minimum before first returning validation, first node after. Full path captures last owner/current head before second validation, compares current last node, then destroys current root and publishes empty root/count/min/max through distinct current-head rereads; capture result minimum before output owner store. Partial path independently advances first, calls complete single erase on old by-value iterator (second independent increment), ignores erase result, reloads first node then owner. Preserve returning invalid handlers, aliases and partial progress; no rollback. Unchanged focused fixture matches231 words for five original/source operations: mirrored near-child rotations, three-node partial range with11 returning invalid-handler calls, fullclear, captured-head repairs and aliased output. Actual free changes count13/0 and pool getter mutates captured key. Both owned entries, subtree, increment and rotations execute; extrema installed/static only here. Nine exact objects/198 code sections14256bytes461relocations;82 linked sections8238bytes checked outside relocation operands, not every resolved target. Separate source owning-exception payload/copy/destruction check; original EH static. Inherited actual pool-release noexcept/recreation-failure boundary and host RTTI/SEH/caller ABI limits remain. No full registry/factory/game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_resource_registry_erase_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b22b30",
+    "before": {
+      "address": "00b22b30",
+      "function_name": "FUN_00b22b30"
+    },
+    "after": {
+      "address": "00b22b30",
+      "name": "BSP_RendererCapabilityRecords_Reserve",
+      "evidence": "Complete130-byte stride12 capability reserve. ECX actual three-DWORD data/signedcount/signedcapacity header, stack signedrequest,RET4. New fastcall interface uses explicit ignoredEDX. Signed clamp at1/capacity early return; wrapping12x allocation through fixed actual singleton allocator bridge. Fresh pointer overwrites actual request argument slot atB22B60 and is reloaded after copy atB22B97. Reread current count/base per iteration, individual DWORD loads/stores and computed-null destination skip. Free current old pointer before fresh data/captured capacity; count untouched. Restored saved10-byte returning-free tail B22BA3..B22BAD afterB22B9E; global free metadata unchanged. Unchanged focused original/full-main-library allocator-mutation comparison passes both widths and negative-request no-growth. All225 original bytes/90 instructions exact except four bound direct provider CALL operands. Two exact members,8 ownedCOFF/96 mappedsections332relocations,58 actual imports and8368 whole runtime code bytes verified. Original private4096-byte page unchanged after execution; four raw124-byte traces compare with only explicit data-pointer identity normalization. Existing actual malloc/free providers are used through fixed source bridges. No allocationfailure/new-handler/null-destination/nativeSEH/callerABI, nested/gather/gamma or game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_renderer_capability_array_reserves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b236b0",
+    "before": {
+      "address": "00b236b0",
+      "function_name": "FUN_00b236b0"
+    },
+    "after": {
+      "address": "00b236b0",
+      "name": "BSP_RendererCapabilityDwords_Reserve",
+      "evidence": "Complete95-byte DWORD capability reserve. ECX actual data/signedcount/signedcapacity header, stack signedrequest,RET4. New fastcall interface has explicit ignoredEDX. Signedclamp1, capacity early return, wrapping4x fixed actual allocation. Current count/base and per-DWORD copy/null destination behavior retained; free current old pointer before fresh data/captured capacity and never write count. Restored saved9-byte returning-free tail B23701..B2370A afterB236FC; free thunk/global metadata preserved. All95 instruction bytes are exact after two declared direct provider CALL bindings. Unchanged focused original/full-main-library allocator-mutation comparison passes both widths and negative-request no-growth. All225 original bytes/90 instructions exact except four bound direct provider CALL operands. Two exact members,8 ownedCOFF/96 mappedsections332relocations,58 actual imports and8368 whole runtime code bytes verified. Original private4096-byte page unchanged after execution; four raw124-byte traces compare with only explicit data-pointer identity normalization. Existing actual malloc/free providers are used through fixed source bridges. No allocationfailure/new-handler/null-destination/nativeSEH/callerABI, nested/gather/gamma or game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_renderer_capability_array_reserves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c19dc0",
+    "before": {
+      "address": "00c19dc0",
+      "function_name": "__d_inttype",
+      "comment": "Library Function - Single Match\n __d_inttype\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00c19dc0",
+      "name": "__d_inttype",
+      "evidence": "Retain correct CRT name __d_inttype. Complete100-byte assembly-only entry; two rawDWORD argument slots, plainRET, EAX0/1/2, one free x87slot. Full fpclass and frnd providers receive original eight-byte stack arguments only; extra readable two bytes remain allocated caller locals. Current input loads, FLD/FSTP round trips, FRND comparisons and half-product precision behavior retained. Single same-six-byte FMUL operand changes actualD7A280 to borrowedEBX+disp32(0); EBX/EDI never written anywhere in complete owned/provider call set. No C++ double result, host arithmetic or FP guard. All418 owned and256 complete provider bytes proved, with six independently decoded same-length literal memory adaptations and five zero-addend CALL relocations. Eleven complete COFF sections/two actual archive objects retained. Every direct target is in the complete checked set; EBX/EDI no-write and original eight-byte nested arguments proved. Current FP environment and assembly-only caller obligations remain. No linked/runtime/SEH/caller ABI, fullpow/SSE2/gamma or game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_crt_pow_special_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c19e24",
+    "before": {
+      "address": "00c19e24",
+      "function_name": "LIBCRT_unmatched_00c19e24",
+      "comment": "[BSP inventory 00c19e24] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c19e24",
+      "name": "BSP_CRT_Pow_HandleSpecialOperands",
+      "evidence": "Complete318-byte integer/x87 pow special-operand body (noSSE). Assembly-only four rawDWORDx/y arguments plus current output pointer, plainRET, EAXESI status0/1; some0 paths do not write output. Three free x87slots, exact unordered/sign/pop/store behavior. Caller borrows EBX=actualD7A280 half and EDI=actualE165A0 region; five same-six-byte FLD operand changes read infinity+0,negativeqNaN+8,negativezero+20h only when reached. No literal snapshots, additional instructions, argument copies or default result. Full direct __d_inttype/classification/rounding closure preserves both bound registers. All418 owned and256 complete provider bytes proved, with six independently decoded same-length literal memory adaptations and five zero-addend CALL relocations. Eleven complete COFF sections/two actual archive objects retained. Every direct target is in the complete checked set; EBX/EDI no-write and original eight-byte nested arguments proved. Current FP environment and assembly-only caller obligations remain. No linked/runtime/SEH/caller ABI, fullpow/SSE2/gamma or game claim. Same frozen main library 5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8; strict Win32,2 existing CTests and8 fresh seeds passed. reports/native_crt_pow_special_audit.json"
+    },
+    "status": "applied"
+  }
+]

@@ -251,3 +251,17 @@ can run `python tools/ghidra_flow_repair.py <fn> --apply` to remove them.
 | `sentity_init_all` | 00925f20 0057c1a0 00922f30 00922f80 | the three init phases and the progress callback, shared with the scene-file reader |
 | `session_step_vs_frame` | 00778450 0076ffc0 0076f210 00778560 | the same two routines run once per step with `mode = 1` and once per frame with `mode = 0`; the difference is unread |
 | `world_expired_objects` | 00903610 009035e0 | the two-step grace period and what the `+50h` sub-list holds |
+
+## Correction from docs/ENTITY_THINK_DISPATCH.md
+
+Packet `cc2-entity-think-dispatch` (main b50e9e8c) re-read item 8 from the listing after the
+`_free` fall-through repair and corrects three claims that came from pseudocode truncated by
+the non-returning free: (1) the walk does not stop after the first erase; (2) `00928330` is a
+loop that clears the whole pending list at `00F89ABC`, not a single removal; (3) `00F89AB4` is
+the head field of the 0Ch-byte list object at `00F89AB0` (`+0h` count, `+4h` head, `+8h` tail),
+not the list itself, and the 3.0 refill constant is a double. The node is 0Ch bytes
+`{prev, next, entity}`; the think name, delay flag and remaining delay live on the entity at
+`+1D8h`/`+1DCh`/`+1E0h`; the think function is invoked by name with no arguments through
+`BSP_MissionLuaHost_CallNamedThreadSafe(entity+178h, name, 0, 0, -1)` and re-resolved every
+call; an untimed `SetThink` is a three-second heartbeat because it shares the collectgarbage
+countdown `00F89A04`; `00898150` arms a delay clamped to 0.5f.

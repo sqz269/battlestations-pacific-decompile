@@ -148,7 +148,15 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_crt_x87_power_leaves.cpp
   src/native_crt_double_classification.cpp
   src/native_crt_x87_control.cpp
+  src/native_crt_x87_error_dispatch.cpp
+  src/native_crt_x87_result_status.cpp
+  src/native_crt_pow_special.cpp
   src/native_resource_registry_tree_leaves.cpp
+  src/native_resource_registry_erase.cpp
+  src/native_resource_registry_destroy.cpp
+  src/native_resource_registry_scalar_delete.cpp
+  src/native_renderer_capability_array_reserves.cpp
+  src/native_renderer_capability_nested_arrays.cpp
   src/native_renderer_material_state_binding.cpp
   src/native_vfs_lookup_routes.cpp
   src/native_renderer_texture_stage_state.cpp

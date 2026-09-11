@@ -1,0 +1,314 @@
+{
+  "packet": "cc_world_update",
+  "owner": "agent/cc-unit-tick",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc-unit-tick",
+  "ghidra": "read-only: no renames, comments, prototypes or saves",
+  "docs": [
+    "docs/WORLD_ENTITY_UPDATE.md",
+    "docs/WORLD_TIMED_ATTACHMENTS.md",
+    "docs/UNIT_CONTROLLER.md"
+  ],
+  "sources": [
+    "include/bsp/world_entity_update.hpp",
+    "src/world_entity_update.cpp",
+    "include/bsp/unit_controller.hpp",
+    "src/unit_controller.cpp"
+  ],
+  "build": "scripts/build.ps1 clean, Win32 MSVC /W4 /WX; ctest reconstructed_math passed",
+
+  "routines": [
+    {
+      "address": "00904bf0",
+      "name": "BSP_World_UpdateEntities",
+      "abi": "void __thiscall(world, float scaledDelta), RET 4 at 00904C32",
+      "body": "00904bf0-00904c34",
+      "coverage": "complete",
+      "reconstruction": "bsp::update_world_entities_00904bf0 in include/bsp/unit_instance.hpp (pre-existing, not redone)",
+      "note": "Chain head is [[world+4]]; the only gate is the byte entity+5Ch at 00904C00."
+    },
+    {
+      "address": "00904600",
+      "name": "BSP_World_UpdateMatrixInterpolators",
+      "abi": "void __thiscall(world, float), RET 4 at 00904BE0; the float argument is never read",
+      "body": "00904600-00904be2",
+      "coverage": "complete, including the undisassembled range 00904BCA-00904BD5 read from the disk image",
+      "reconstruction": "bsp::run_matrix_interpolator_pass_00904600"
+    },
+    {
+      "address": "00905080",
+      "name": "BSP_World_AddMatrixInterpolator",
+      "abi": "void __thiscall(world, entity, float, float, float, float, float, float, float), RET 20h at 009051DA",
+      "body": "00905080-009051dc",
+      "coverage": "complete",
+      "reconstruction": "bsp::add_matrix_interpolator_00905080",
+      "argument_count_evidence": "RET 20h at 009051DA, that is eight stack dwords, not the pushes at the call site"
+    },
+    {
+      "address": "008ade00",
+      "name": "BSP_Lua_MW_AddMatrixInterpolator",
+      "abi": "undefined4 __cdecl(), MSVC SEH frame 00C9D2D0",
+      "body": "008ade00-008ae025",
+      "coverage": "partial: 008ADEB0-008ADF96 read (argument marshalling and the call). 008ADE00-008ADEAF, the one-shot profiler-label init, and 008ADF97-008AE025, the Lua object teardown and the failure path that builds 'luaMW_AddMatrixInterpolator failed:', were not read.",
+      "reconstruction": "none; the Lua binding name and argument order only"
+    },
+    {
+      "address": "009037f0",
+      "name": "BSP_World_AllocateEntityChains",
+      "abi": "void __thiscall(world, char activeFlag, char unused), RET 8 at 0090383E and 00903846",
+      "body": "009037f0-00903848",
+      "coverage": "complete",
+      "reconstruction": "constants only, in include/bsp/world_entity_update.hpp"
+    },
+    {
+      "address": "0042ed50",
+      "name": "BSP_SceneNode_InvalidateSubtreePose",
+      "abi": "void __thiscall(node), RET 0 at 0042ED75",
+      "body": "0042ed50-0042ed75",
+      "coverage": "complete",
+      "reconstruction": "MatrixInterpolatorHost::entity_invalidate_subtree_pose"
+    },
+    {
+      "address": "009045c0",
+      "name": "STL_list_buynode_009045c0",
+      "abi": "void* __thiscall(listBase, next, prev, const value*), RET at 009045FE",
+      "body": "009045c0-009045fe",
+      "coverage": "partial: 009045C0-009045F2 read. 00904250, the value copy-constructor it calls at 009045F3, was not read.",
+      "reconstruction": "none; the node size 6Ch is the recovered fact"
+    },
+    {
+      "address": "004cb030",
+      "name": "BSP_World_Construct",
+      "abi": "World* __fastcall(World*), RET 0",
+      "body": "004cb030-004cb0ad",
+      "coverage": "partial for this packet: re-read only for the world+4B0h list initialisation at 004CB07B-004CB098. The rest is docs/GAME_WORLD_CONSTRUCT.md's.",
+      "reconstruction": "pre-existing, in include/bsp/world_construct.hpp"
+    },
+    {
+      "address": "0092d730",
+      "name": "BSP_UnitController_GetBodyAxisSpeed",
+      "abi": "float __thiscall(controller), RET 0 at 0092D76E, result on the x87 stack",
+      "body": "0092d730-0092d76e",
+      "coverage": "complete",
+      "reconstruction": "bsp::unit_forward_speed_0092d730 in include/bsp/unit_motion.hpp (pre-existing, not redone)"
+    },
+    {
+      "address": "0092be80",
+      "name": "BSP_UnitController_UpdateStub",
+      "abi": "void __thiscall(controller, float), RET 4",
+      "body": "0092be80-0092be82",
+      "coverage": "complete; the body is one instruction",
+      "reconstruction": "bsp::unit_controller_update_0092be80 (pre-existing)"
+    },
+    {
+      "address": "00815aa0",
+      "name": "BSP_UnitInstance_PublishEffectIntensity",
+      "abi": "void __thiscall(unit, float gate), RET 4 at 00815D0A and 00815D13",
+      "body": "00815aa0-00815d15",
+      "coverage": "complete",
+      "reconstruction": "bsp::publish_unit_effect_intensity_00815aa0"
+    },
+    {
+      "address": "00815370",
+      "name": "BSP_EffectGroup_SetScalar",
+      "abi": "void __thiscall(group, float value), RET 4 at 008153DC",
+      "body": "00815370-008153dd",
+      "coverage": "complete",
+      "reconstruction": "bsp::set_effect_group_scalar_00815370"
+    }
+  ],
+
+  "host_steps": [
+    {"step": 1, "address": "004c40ad", "native": "00875bb0", "function": "004c40a0",
+     "method": "step_fixed_simulation_00875bb0", "owner": "docs/IN_MISSION_SUBSYSTEM_TICK.md"},
+    {"step": 2, "address": "004c40b4", "native": "004c3cb0", "function": "004c40a0",
+     "method": "build_local_player_unit_lists_004c3cb0", "owner": "docs/LOCAL_PLAYER_UNIT_LISTS.md"},
+    {"step": 3, "address": "004c40ce", "native": "00904bf0", "function": "004c40a0",
+     "method": "update_world_entities_00904bf0", "owner": "cc_world_update",
+     "note": "world->vtable[0Ch], CALL EDX"},
+    {"step": 4, "address": "00904c18", "native": "008255b0", "function": "00904bf0",
+     "method": "update_entity", "owner": "docs/UNIT_INSTANCE_UPDATE.md",
+     "note": "entity->vtable[0DCh](scaledDelta), CALL EAX; 008255B0 is the MDestroyer target"},
+    {"step": 5, "address": "0082584b", "native": "0092d730", "function": "008255b0",
+     "method": "controller_body_axis_speed", "owner": "cc_world_update",
+     "note": "ECX = [unit+1018h], loaded at 00825832"},
+    {"step": 6, "address": "0082586b", "native": "00815aa0", "function": "008255b0",
+     "method": "publish_effect_intensity", "owner": "cc_world_update",
+     "note": "argument is the 0/1 sternway gate, not the delta"},
+    {"step": 7, "address": "008259df", "native": "0092be80", "function": "008255b0",
+     "method": "controller_update", "owner": "docs/UNIT_CONTROLLER_UPDATE.md",
+     "note": "the callee body is one RET"},
+    {"step": 8, "address": "00825d5a", "native": "008252c0", "function": "008255b0",
+     "method": "update_engine_audio", "owner": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"step": 9, "address": "00825d6c", "native": "00956600", "function": "008255b0",
+     "method": "update_unit_timers", "owner": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"step": 10, "address": "00825d7e", "native": "00834e90", "function": "008255b0",
+     "method": "update_propellers", "owner": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"step": 11, "address": "00825db4", "native": "00815370", "function": "008255b0",
+     "method": "set_effect_group_scalar", "owner": "cc_world_update",
+     "note": "once per part, with 006FF270(unit)"},
+    {"step": 12, "address": "00904c2b", "native": "00904600", "function": "00904bf0",
+     "method": "update_matrix_interpolators", "owner": "cc_world_update"},
+    {"step": 13, "address": "00904ae3", "native": "00cfc3d0+0x88", "function": "00904600",
+     "method": "entity_set_local_matrix", "owner": "follow-up entity_local_matrix_slot",
+     "note": "CALL EDX through the entity vptr; the MDestroyer target was not resolved"},
+    {"step": 14, "address": "00904b09", "native": "0042ed50", "function": "00904600",
+     "method": "entity_invalidate_subtree_pose", "owner": "cc_world_update",
+     "note": "the root's own clear at 00904AF7/00904AFE is this callee inlined"},
+    {"step": 15, "address": "00904b2a", "native": "00cfc3d0+0xd8", "function": "00904600",
+     "method": "entity_refresh", "owner": "follow-up entity_refresh_virtual",
+     "note": "CALL EDX; the MDestroyer target 00955970 has no Ghidra function"},
+    {"step": 16, "address": "004c40dd", "native": "00447b80", "function": "004c40a0",
+     "method": "update_game_dynamics_00447b80", "owner": "docs/GAME_DYNAMICS_LIST.md"}
+  ],
+
+  "interpolator_pass_calls": [
+    {"address": "009047b1", "native": "00b64640", "function": "00904600",
+     "method": "rotation about x from -(phase * record+10h)"},
+    {"address": "0090488f", "native": "00b646e0", "function": "00904600",
+     "method": "rotation about y from -(phase * record+14h)"},
+    {"address": "00904997", "native": "00b64780", "function": "00904600",
+     "method": "rotation about z from -(phase * record+18h)"},
+    {"address": "00904ac3", "native": "00413920", "function": "00904600",
+     "method": "first of four chained multiplies; ECX = left, stack (dst, right), RET 8"},
+    {"address": "00904bc5", "native": "00bf65ac", "function": "00904600",
+     "method": "_free on the retired node"}
+  ],
+
+  "producer_calls": [
+    {"address": "0090509e", "native": "009045c0", "function": "00905080",
+     "method": "buy the 6Ch-byte node"},
+    {"address": "009050a9", "native": "00904e50", "function": "00905080",
+     "method": "_Mysize += 1 with the max_size guard 28F5C28h"},
+    {"address": "0090519d", "native": "004134f0", "function": "00905080",
+     "method": "copy entity+74h into record+20h"},
+    {"address": "008adf55", "native": "00b66270", "function": "008ade00",
+     "method": "Lua argument slot 3 as a number: the duration"},
+    {"address": "008adf69", "native": "00888760", "function": "008ade00",
+     "method": "Lua argument slot 2 as vector3: the rotation offset"},
+    {"address": "008adf80", "native": "00888aa0", "function": "008ade00",
+     "method": "Lua argument slot 0 as an object handle: the entity"},
+    {"address": "008adf92", "native": "00905080", "function": "008ade00",
+     "method": "register the interpolator, ECX = [game+19CCh]"},
+    {"address": "004cb088", "native": "004c3080", "function": "004cb030",
+     "method": "buy the world+4B0h list head sentinel"},
+    {"address": "004de67d", "native": "004cb030", "function": "004de610",
+     "method": "construct the world"},
+    {"address": "004de69c", "native": "009037f0", "function": "004de610",
+     "method": "allocate the two chain headers at world+4h and world+8h"},
+    {"address": "00815af7", "native": "00815370", "function": "00815aa0",
+     "method": "the bow water anchor, the first group update, ahead of the change latch"}
+  ],
+
+  "matrix_interpolator_record": {
+    "node_size": "0x6C",
+    "value_size": "0x64",
+    "value_offset_in_node": "0x08",
+    "size_evidence": [
+      "PUSH 6Ch at 009045C2, the buy-node allocation",
+      "MOV ESI,28F5C28h at 00904E70: 0xFFFFFFFF / 100, and list::max_size divides by sizeof(value_type)"
+    ],
+    "fields": [
+      {"offset": "0x00", "type": "ptr", "meaning": "the entity being animated", "producer": "009050d3"},
+      {"offset": "0x04", "type": "float", "meaning": "translation offset x", "producer": "009050f8"},
+      {"offset": "0x08", "type": "float", "meaning": "translation offset y", "producer": "00905103"},
+      {"offset": "0x0C", "type": "float", "meaning": "translation offset z", "producer": "00905111"},
+      {"offset": "0x10", "type": "float", "meaning": "rotation about x, radians", "producer": "00905138"},
+      {"offset": "0x14", "type": "float", "meaning": "rotation about y, radians", "producer": "00905146"},
+      {"offset": "0x18", "type": "float", "meaning": "rotation about z, radians", "producer": "00905154"},
+      {"offset": "0x1C", "type": "float", "meaning": "duration in seconds", "producer": "00905178"},
+      {"offset": "0x20", "type": "float[16]", "meaning": "entity+74h captured at registration", "producer": "0090519d"},
+      {"offset": "0x60", "type": "float", "meaning": "DAT_00F876A4 at registration", "producer": "009051cf"}
+    ],
+    "list_base": {
+      "_Myfirstiter": "world+0x4B0",
+      "_Myhead": "world+0x4B4",
+      "_Mysize": "world+0x4B8, decremented at 00904BCD"
+    },
+    "composition": "out = ((((RotZ(-p*rz) * RotY(-p*ry)) * RotX(-p*rx)) * Translate(p*offset)) * record.base), p = clamp((clock - start) / duration, 0, 1)"
+  },
+
+  "names_added": [
+    {"address": "00904600", "name": "BSP_World_UpdateMatrixInterpolators", "kind": "hypothesis, MatrixInterpolator half recovered"},
+    {"address": "00905080", "name": "BSP_World_AddMatrixInterpolator", "kind": "hypothesis, MatrixInterpolator half recovered"},
+    {"address": "008ade00", "name": "BSP_Lua_MW_AddMatrixInterpolator", "kind": "Lua name recovered from the binding table and the literal"},
+    {"address": "009037f0", "name": "BSP_World_AllocateEntityChains", "kind": "hypothesis"},
+    {"address": "0042ed50", "name": "BSP_SceneNode_InvalidateSubtreePose", "kind": "hypothesis"},
+    {"address": "00815370", "name": "BSP_EffectGroup_SetScalar", "kind": "hypothesis"},
+    {"address": "00815aa0", "name": "BSP_UnitInstance_PublishEffectIntensity", "kind": "hypothesis"},
+    {"address": "009045c0", "name": "STL_list_buynode_009045c0", "kind": "library shape"}
+  ],
+  "evidence_appended": ["00904bf0", "004cb030", "0092d730"],
+
+  "corrections": [
+    {
+      "target": "include/bsp/world_construct.hpp",
+      "was": "kWorldActivationChainHeadOffset = 0x04, comment 'memset only'",
+      "is": "world+4h holds a pointer to a heap 0Ch-byte chain header; the entity chain head is that header's first dword, so the walk reads [[world+4]]",
+      "evidence": "009037F0 allocates at 00903808 and stores at 00903822; 00904BF4 loads world+4 and 00904BF7 dereferences it"
+    },
+    {
+      "target": "docs/UNIT_INSTANCE_UPDATE.md",
+      "was": "00904600 walks a std::list at +4B0h with DAT_00F876A4 deadlines",
+      "is": "the record stores a start time at +60h and a duration at +1Ch; the clock is compared against start + duration",
+      "evidence": "009051CF writes the clock at registration; 00904B49 compares clock - start against +1Ch"
+    },
+    {
+      "target": "docs/UNIT_INSTANCE_UPDATE.md",
+      "was": "world+4B0h is a list of timed attachments",
+      "is": "it is the matrix interpolator list registered by the Lua binding AddMatrixInterpolator",
+      "evidence": "008ADE00 builds 'luaMW_AddMatrixInterpolator failed:' and is registered as AddMatrixInterpolator; it is 00905080's only caller"
+    },
+    {
+      "target": "Ghidra pseudocode of 00904600",
+      "was": "the erase path ends in return, so one record retires per frame and _Mysize is never decremented",
+      "is": "the erase continues the walk and decrements _Mysize; any number of records can expire in one pass",
+      "evidence": "00904BCA..00904BD5 on disk is ADD ESP,4 / ADD dword [EDI+8],-1 / JMP 00904618, left undisassembled because 00BF65AC is marked CALL_RETURN"
+    },
+    {
+      "target": "docs/GAME_WORLD_ENTITIES.md",
+      "was": "00903670's chain starts at [this+4]",
+      "is": "it starts at [[this+4]]; [this+4] is the header object",
+      "evidence": "009037F0 and the same double indirection at 00904BF4/00904BF7"
+    },
+    {
+      "target": "docs/UNIT_INSTANCE_UPDATE.md step 4",
+      "was": "00815AA0 was unidentified",
+      "is": "00815AA0 multiplies the sternway gate by the 006FF270 intensity and publishes the product to twelve emitter-group pointers and two arrays, behind a change latch at unit+9D0h",
+      "evidence": "00815AA0..00815D15 read in full"
+    }
+  ],
+
+  "no_ghidra_function": [],
+  "flow_gaps": [
+    {
+      "function": "00904600",
+      "start": "00904bca",
+      "end": "00904bd5",
+      "bytes": "83 c4 04 83 47 08 ff e9 42 fa ff ff",
+      "start_evidence": "CALL 00BF65AC at 00904BC5 is five bytes, so the next instruction starts at 00904BCA",
+      "end_evidence": "the stored listing resumes at 00904BD6 with POP EDI",
+      "action": "python tools/ghidra_flow_repair.py 00904600 --apply before re-exporting"
+    }
+  ],
+
+  "follow_up_packets": [
+    {"packet": "entity_local_matrix_slot", "addresses": ["00cfc3d0+0x88", "004134f0"], "doc": "docs/ENTITY_LOCAL_MATRIX.md"},
+    {"packet": "entity_refresh_virtual", "addresses": ["00955970", "00cfc3d0+0xd8"], "doc": "docs/ENTITY_REFRESH_VIRTUAL.md",
+     "note": "00955970 has no Ghidra function and is not named by this packet"},
+    {"packet": "world_deferred_destroy", "addresses": ["00904390", "009041a0", "00904c40"], "doc": "docs/WORLD_DEFERRED_DESTROY.md"},
+    {"packet": "unit_emitter_groups", "addresses": ["00815370", "00cfc3d0"], "doc": "docs/UNIT_EMITTER_GROUPS.md"},
+    {"packet": "unit_ship_motion_entry", "addresses": ["00825f20"], "doc": "docs/UNIT_SHIP_MOTION_ENTRY.md"},
+    {"packet": "unit_water_anchors", "addresses": ["004842c0"], "doc": "docs/UNIT_WATER_ANCHORS.md"},
+    {"packet": "world_matrix_interpolator_lua", "addresses": ["008ade00", "00888aa0"], "doc": "docs/WORLD_MATRIX_INTERPOLATOR_LUA.md"}
+  ],
+
+  "uncertainties": [
+    "The entity vtable slot 88h target was not resolved; only the call site and its one matrix argument are established.",
+    "00955970, the slot 0D8h target, has no Ghidra function; only its first 24 instructions were read from the disk image.",
+    "world+8h's second chain header has no reader in anything this packet read.",
+    "00904250, the value copy-constructor 009045C0 calls, was not read.",
+    "The emitter vtable slot 14h body was not read; 'set a scalar' is the shape of its one float argument.",
+    "00C32000 and 00C31F40 are physics-library leaves; reading axis+18h..+20h as a forward axis comes from how 0092D730 combines it with a velocity.",
+    "00651760 issues unit orders without calling the input singleton getter; its order source is not established."
+  ]
+}

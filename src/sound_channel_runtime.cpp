@@ -91,4 +91,30 @@ void SoundChannelRuntime::stop_slot08(SoundLevelEntry* entry, std::uint8_t flag)
     if (checked(entry).native_vtable_00 == 0x00d5b4c8) { stop_sound_event_00a89170(event(entry), flag, *events_); return; }
     stop_sound_channel_00a7a570(channel(entry), flag, context_);
 }
+void* SoundChannelRuntime::handle_slot18(SoundLevelEntry* entry) {
+    if (checked(entry).native_vtable_00 == 0x00d5b4c8) return sound_event_handle_00a88b90(event(entry));
+    return sound_channel_handle_00a79a30(channel(entry));
+}
+float SoundChannelRuntime::audibility_slot1c(SoundLevelEntry* entry,
+    SoundGameplayFmodHost& fmod, SoundEventQueryLockBindings& lock) {
+    if (checked(entry).native_vtable_00 == 0x00d5b4c8)
+        return sound_event_audibility_00a89d00(event(entry), *events_, fmod, lock);
+    return sound_channel_audibility_00a7a710(channel(entry), context_);
+}
+float SoundChannelRuntime::progress_slot20(SoundLevelEntry* entry, SoundGameplayFmodHost& fmod) {
+    if (checked(entry).native_vtable_00 == 0x00d5b4c8) return sound_event_progress_00a89c60();
+    return sound_channel_progress_00a7a6b0(channel(entry), fmod);
+}
+void SoundChannelRuntime::configure_slot3c(SoundLevelEntry* entry, SoundGameplayFmodHost& fmod) {
+    auto& s = checked(entry);
+    if (s.native_vtable_00 == 0x00d5b510)
+        configure_spatial_sound_channel_00a8a700(static_cast<SpatialSoundChannelInstance&>(s), context_, fmod);
+    else sound_instance_noop_00a7be90();
+}
+void SoundChannelRuntime::pause_slot40(SoundLevelEntry* entry, std::uint8_t paused) {
+    if (checked(entry).native_vtable_00 == 0x00d5b4c8) {
+        set_sound_event_paused_00a891f0(event(entry), paused, *events_); return;
+    }
+    set_sound_channel_paused_00a799a0(channel(entry), paused);
+}
 } // namespace bsp

@@ -2,6 +2,7 @@
 
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_transform.hpp"
+#include "bsp/effect_admission.hpp"
 #include "bsp/render_command_queue.hpp"
 #include "bsp/system_time_constants.hpp"
 
@@ -63,7 +64,7 @@ public:
     // REQUIRED actual 0086A650, including template-entry visibility writes.
     // A success-assuming predicate is not an implementation of this boundary.
     virtual bool eligible_0086a650(RenderCommandReference& actual_template,
-        const std::array<float, 3>& test_xyz, CameraTransform& reference) = 0;
+        EffectPointView test_xyz, CameraTransform& reference) = 0;
     virtual void* allocate_00bf681b(std::size_t native_bytes) = 0;
     virtual void free_00bf65ac(void* raw) noexcept = 0;
     // REQUIRED actual 008680B0. The caller transfers ONE extra template ref,
@@ -71,12 +72,13 @@ public:
     // separately retains the template in actual owner+84. Success transfers
     // the raw allocation and returns its canonical companion borrowing the
     // actual +04 count (native initial value1); never a new diagnostic count.
-    // Native stack: template, parent, 0, matrix, transform byte, option byte,
-    // tail word. The matrix is the actual mutable F87610 object, not a snapshot.
+    // Native stack: template, parent, third word, matrix, transform byte,
+    // option byte, tail word. Matrix is the original object supplied by the
+    // entrypoint (caller matrix or mutable F87610), never a snapshot.
     // On throw unwind constructed subobjects/argument; caller frees raw.
     virtual RenderCommandReference& construct_008680b0(void* raw,
         RenderCommandReference* consumed_template, CameraTransform* parent,
-        std::uint32_t zero, const CameraMatrix& actual_matrix_00f87610,
+        std::uint32_t third_word, const CameraMatrix& actual_matrix,
         std::uint8_t transform_byte, std::uint8_t option_byte,
         std::uint32_t tail_word) = 0;
 };
@@ -98,5 +100,34 @@ RenderCommandReference*& create_point_effect_008689c0(
     const std::array<float, 3>& captured_xyz, std::uint8_t transform_byte,
     std::uint8_t option_byte, std::uint32_t tail_word,
     CameraMatrix& actual_matrix_00f87610, PointEffectConstruction&);
+
+// Additional complete native creation entrypoints. All require a nonnull
+// CONSUMED template reference; unlike8689C0 they call admission unconditionally.
+// The fresh output word is untouched on a throwing getter/admission/allocation/
+// constructor failure; input release occurs after the captured lock is left.
+// 868420: ECX out, EDX third_word; stack template,matrix,option,tail; RET10.
+// Admission borrows original matrix+30; constructor parent=null, transform=0.
+RenderCommandReference*& create_point_effect_matrix_00868420(
+    RenderCommandReference*& output, std::uint32_t third_word,
+    RenderCommandReference& consumed_template, const CameraMatrix& original_matrix,
+    std::uint8_t option_byte, std::uint32_t tail_word, PointEffectConstruction&);
+// 8685E0: ECX out, EDX third_word; stack template,XYZ,option,tail; RET10.
+// Copy XYZ sequentially to F87640/44/48 under lock BEFORE admission. Admission
+// receives the original live XYZ address; construction reads CURRENT F87610.
+RenderCommandReference*& create_point_effect_position_008685e0(
+    RenderCommandReference*& output, std::uint32_t third_word,
+    RenderCommandReference& consumed_template, EffectPointView original_xyz,
+    std::uint8_t option_byte, std::uint32_t tail_word,
+    CameraMatrix& actual_matrix_00f87610, PointEffectConstruction&);
+// 8687C0: ECX out, EDX parent; stack template,matrix,transform,option,tail; RET14.
+// If transform!=0, require parent and compute full4x4 matrix*parent.world solely
+// for admission. Construction still receives the ORIGINAL live matrix, parent,
+// third_word=0 and original low transform byte. With transform0, admission
+// borrows original matrix+30 directly and parent may be null.
+RenderCommandReference*& create_point_effect_parent_matrix_008687c0(
+    RenderCommandReference*& output, CameraTransform* parent,
+    RenderCommandReference& consumed_template, const CameraMatrix& original_matrix,
+    std::uint8_t transform_byte, std::uint8_t option_byte, std::uint32_t tail_word,
+    PointEffectConstruction&);
 
 } // namespace bsp

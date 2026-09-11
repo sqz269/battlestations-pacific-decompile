@@ -45,7 +45,8 @@ struct GuiTextWrappedContinuation {
     FontGlyphPlacement placement{};
     // Native arguments2/5/6 ALL alias this one float3. Stable allocation
     // survives moving this caller frame into optional/outer continuations.
-    // It is distinct from pen locals: child-tail writes must not alias pen_x.
+    // It is distinct from pen locals. Full-body review proves arg2 is read
+    // through the child tail, while slots5/6 are unused, not output pointers.
     std::unique_ptr<std::array<float, 3>> native_position;
     std::int32_t signed_height{};
     float height_float{};

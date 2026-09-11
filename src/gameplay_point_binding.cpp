@@ -104,7 +104,7 @@ std::uint32_t GameplayPointRows::current_virtual(void* raw, std::size_t index) c
         if (tables_[i].original_identity == identity) return tables_[i].actual_words[index];
     throw std::invalid_argument("Current gameplay component table has no actual binding");
 }
-std::uint8_t GameplayPointRows::virtual_1c(void* row, const std::array<float, 3>& point,
+std::uint8_t GameplayPointRows::virtual_1c(void* row, EffectPointView point,
     CameraTransform& reference) {
     const auto function = current_virtual(row, 7);
     if (function == 0x0086b7d0u) return admit_effect_component_0086b7d0(row, point, reference);
@@ -120,7 +120,7 @@ RenderCommandReference* GameplayPointRows::create_virtual_18(void* row,
 GameplayPointRumbleComponents::GameplayPointRumbleComponents(NativeGamepadForceEvents& events,
     GameplayPointRemainingComponents& remaining) noexcept : events_(events), remaining_(remaining) {}
 std::uint8_t GameplayPointRumbleComponents::admit_current(std::uint32_t function, void* row,
-    const std::array<float, 3>& point, CameraTransform& reference) {
+    EffectPointView point, CameraTransform& reference) {
     return remaining_.admit_current(function, row, point, reference);
 }
 RenderCommandReference* GameplayPointRumbleComponents::create_current(std::uint32_t function,
@@ -150,7 +150,7 @@ CameraTransform& GameplayPointConstruction::reference_transform_e188a8_19fc() {
     return rows_.reference_e188a8_19fc();
 }
 bool GameplayPointConstruction::eligible_0086a650(RenderCommandReference& definition,
-    const std::array<float, 3>& point, CameraTransform& reference) {
+    EffectPointView point, CameraTransform& reference) {
     return admit_point_effect_0086a650(rows_.template_rows(definition), point, reference, rows_);
 }
 void* GameplayPointConstruction::allocate_00bf681b(std::size_t bytes) {

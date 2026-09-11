@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T21:40:13.787698+00:00",
-  "status": "complete shared original instruction body and two reached source entry paths proved; concrete provider object frozen; strict build passed",
+  "status": "complete_shared_error_entries_main_archive_full_instruction_provider_binding_and_strict_Win32_checked",
   "base_commit": "a0c55a6e29ce30ff9d057c9b685b6d21754394c8",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_error_dispatch",
   "ownership": {
@@ -845,5 +845,110 @@
       "bytes": 7559,
       "sha256": "15f6ba7d27763bb93e7b3a9c0915f290b4debe5bdf3903dfcf703809db947ad2"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_shared_error_entries_main_archive_full_instruction_provider_binding_and_strict_Win32_checked",
+    "main_library_sha256": "5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\error_erase_reserves_special_build_frozen\\manifest.json",
+      "bytes": 26871,
+      "sha256": "20e67dc6a422214cada2caa8045746c20ae8e17ac0a524deb7760ad00846f077"
+    },
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 46,
+    "report_pins": 45,
+    "fresh_spans": 3,
+    "fresh_bytes": 339,
+    "current_source_byte_drift": [],
+    "whole_COFF_sections": 87,
+    "exact_archive_objects": 2,
+    "shared_physical_bytes": 83,
+    "binary_reached_bytes": 74,
+    "unary_reached_bytes": 60,
+    "shared_tail_bytes": 51,
+    "new_unary_thunk_bytes": 5,
+    "original_owned_execution": false,
+    "boundary": "Complete83-byte core has only one direct C27489 CALL relocation; separate unary5-byte JMP has17h addend. Both full actual archive objects and87 COFF sections proved. Persistent actual LegacyCrtMathRuntime/E16BD0/owning errno binding required. Established provider restrictions on reservedFPIEEE initialization, precision01, volatile outputs and FP/status/Win32 exception scope remain. No new operation1D runtime, linked runtime, native SEH/caller ABI, pow/gamma or game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_error_dispatch_primary\\sealed.json",
+      "bytes": 16327,
+      "sha256": "1edbe6b7799e4fbcb3364f314e13aa33c6b1d152f7728427eb2eea1a54b00560"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_error_erase_reserves_special_annotations.json",
+    "bytes": 16456,
+    "sha256": "b10cf9720fbc6581797d35cb147c86d48f7cd9a664972769d9c7bb787962a20f"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c08330",
+      "name": "BSP_CRT_X87_DispatchBinaryError",
+      "cpp_symbol": "bsp::dispatch_native_crt_binary_error_00c08330",
+      "source": "src/native_crt_x87_error_dispatch.cpp",
+      "native_end_exclusive": "00c08383",
+      "status": "complete_shared_error_entries_main_archive_full_instruction_provider_binding_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_error_dispatch_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_reached_ranges": [
+        [
+          "00c08330",
+          "00c08347"
+        ],
+        [
+          "00c08350",
+          "00c08383"
+        ]
+      ],
+      "native_reached_bytes": 74,
+      "shared_physical_union_bytes": 83,
+      "native_entry_prefix_end_exclusive": "00c08347"
+    },
+    {
+      "kind": "function",
+      "address": "00c08347",
+      "name": "__startOneArgErrorHandling",
+      "cpp_symbol": "bsp::dispatch_native_crt_unary_error_00c08347",
+      "source": "src/native_crt_x87_error_dispatch.cpp",
+      "native_end_exclusive": "00c08383",
+      "status": "complete_shared_error_entries_main_archive_full_instruction_provider_binding_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_error_dispatch_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c08330",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c08330\\decompiled.c",
+      "bytes": 2198,
+      "sha256": "ddfcff0e1a0ade1475b28e64d59aa4583f0da5add2e68e2e40f9ff9525abcc8e"
+    },
+    {
+      "address": "00c08347",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c08347\\decompiled.c",
+      "bytes": 2503,
+      "sha256": "158c8646eeb99411f655d339eab038d4958122d275e80252d3f8f70b54e5ac58"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\native_crt_x87_error_dispatch.md",
+    "bytes": 8581,
+    "sha256": "53eace40aa4d316e395608c8830d0a19b8a3ef28c192d5ac7a9605ac87e829e7"
+  },
+  "closure_utc": "2026-09-11T22:20:32.364617+00:00"
 }

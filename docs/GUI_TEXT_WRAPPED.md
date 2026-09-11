@@ -106,9 +106,10 @@ child factory/lifetime remain a prerequisite: the caller continuation alone
 must not be used to reconstruct those locals after mutable callbacks.
 The two extra native pointer arguments alias the same position local as arg2.
 That SAME float3 has a stable allocation in the caller frame, distinct from
-pen x/y, and survives moves into outer continuations. The optional child tail
-can use all three aliases; the current ordinary writer does not receive those
-additional slots. Consume a pending frame once.
+pen x/y, and survives moves into outer continuations. Full AB98F0 inspection
+confirms that arg2 is read, including a late x read, while arguments5/6 are
+never read. Their aliases are ABI evidence, not additional output storage.
+Consume a pending frame once.
 Never run the content post-builder material/color/shadow tail while pending.
 
 Call evidence and cleanup are recorded in `reports/gui_text_wrapped.json`.

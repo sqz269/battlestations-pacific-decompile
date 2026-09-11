@@ -1,0 +1,1176 @@
+{
+  "packet": "cc2_vehicle_class_lua_load",
+  "doc": "docs/VEHICLE_CLASS_LUA_LOAD.md",
+  "owner": "agent/cc2-vehicle-class-lua-load",
+  "summary": "0087C640 the parent-most (damageable) class constructor, so descriptor +0h..+6Bh is attributed; 00837DE0 the session-mode-dependent gameplay-settings tuning block selector; and the eight per-ship-class leaf overrides of descriptor vtable slot +8h, whose class names were recovered from the literal after each leaf vtable. 006FE6A0 MDestroyer reads no Lua key at all: its +560h..+570h writes are copies out of the settings block. 00960230 and 00831840 were already decoded in docs/VEHICLE_CLASS_FIELDS.md and docs/SHIP_CLASS_FIELDS.md and are not repeated.",
+  "corrections": [
+    {
+      "target": "006FE6A0",
+      "was": "docs/VEHICLE_CLASS_DESCRIPTORS.md line 235: the MDestroyer override of slot +8h 'writes +560h..+570h', listed alongside the Lua field readers",
+      "is": "006FE6A0 opens no LuaObject and reads no key. After chaining to 00831840 it calls 00424C40 then 00837DE0 twice and copies two dwords out of the returned tuning block into +560h..+56Ch and +570h",
+      "evidence": "the whole body 006FE6A0-006FE6EC: no SEH frame, no 00B678xx call, MOV EAX,[EAX+0Ch] at 006FE6B9 and MOV ECX,[EAX+8] at 006FE6E0"
+    },
+    {
+      "target": "00854230 SwimDepth1",
+      "was": "SwimDepth1 reads as a field of its own alongside SwimDepth2 and SwimDepth3",
+      "is": "SwimDepth1 writes the same slot +810h as PeriscopeDepth and is read only when PeriscopeDepth left it negative; it is the legacy alias, not a second field",
+      "evidence": "XORPS XMM0,XMM0 / COMISS XMM0,[ESI+810h] / JBE 00854378 at 00854332"
+    }
+  ],
+  "routines": [
+    {
+      "address": "0087c640",
+      "name": "BSP_DamageableClass_ConstructBase",
+      "body": "0087c640-0087c6e9",
+      "convention": "__fastcall(void* this) -> this",
+      "seh": "00c9686f",
+      "coverage": "complete",
+      "note": "vptrs 00CEB130 then 00D0E13C; vtable 00D0E13C slot +8h is 0087CA80, the damageable pre-reader 00960230 chains to"
+    },
+    {
+      "address": "00877fa0",
+      "name": "std_Tree_Buynode",
+      "body": "00877fa0-00877fd6",
+      "convention": "__cdecl() -> node",
+      "coverage": "complete",
+      "note": "operator_new(58h), zero +0/+4/+8, _Color(+54h)=1, _Isnil(+55h)=0"
+    },
+    {
+      "address": "00837de0",
+      "name": "BSP_GameplaySettings_GetShipTuningBlock",
+      "body": "00837de0-00837dfa",
+      "convention": "__fastcall(settings) -> block, RET 0",
+      "coverage": "complete",
+      "note": "settings+0F0h when (*00E188A8)+1FE4h is non-zero, else settings+080h"
+    },
+    {
+      "address": "006e00f0",
+      "name": "BSP_BattleshipClass_ReadLuaFields",
+      "body": "006e00f0-006e019d",
+      "class": "MBattleship",
+      "vtable": "00d1adf8",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "006eb4a0",
+      "name": "BSP_CargoClass_ReadLuaFields",
+      "body": "006eb4a0-006eb5b3",
+      "class": "MCargo",
+      "vtable": "00d1adbc",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "006fb550",
+      "name": "BSP_CruiserClass_ReadLuaFields",
+      "body": "006fb550-006fb655",
+      "class": "MCruiser",
+      "vtable": "00d1ad38",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "006fe6a0",
+      "name": "BSP_DestroyerClass_ReadLuaFields",
+      "body": "006fe6a0-006fe6ec",
+      "class": "MDestroyer",
+      "vtable": "00d1acf8",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "0074c630",
+      "name": "BSP_LandingShipClass_ReadLuaFields",
+      "body": "0074c630-0074cc46",
+      "class": "MLandingShip",
+      "vtable": "00d1ad78",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 6,
+      "coverage": "partial: the LandingTroopClasses walk 0074c796-0074ca53 is traced but its destination slots are not, because 004B1400 and 0047B3C0 were not read"
+    },
+    {
+      "address": "00759590",
+      "name": "BSP_MothershipClass_ReadLuaFields",
+      "body": "00759590-007598ab",
+      "class": "MMothership",
+      "vtable": "00d1aebc",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 7,
+      "coverage": "complete"
+    },
+    {
+      "address": "00854230",
+      "name": "BSP_SubmarineClass_ReadLuaFields",
+      "body": "00854230-00854649",
+      "class": "MSubmarine",
+      "vtable": "00d1ae38",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 13,
+      "coverage": "complete"
+    },
+    {
+      "address": "00857f40",
+      "name": "BSP_TorpedoBoatClass_ReadLuaFields",
+      "body": "00857f40-00858077",
+      "class": "MTorpedoBoat",
+      "vtable": "00d1ae78",
+      "convention": "__thiscall(descriptor, LuaObject* row), RET 4",
+      "keys": 3,
+      "coverage": "complete"
+    }
+  ],
+  "leaf_classes": [
+    {
+      "reader": "006e00f0",
+      "vtable": "00d1adf8",
+      "name_literal": "00d1ae28",
+      "class": "MBattleship",
+      "lua_type": "BattleShip",
+      "shipped_rows": 40
+    },
+    {
+      "reader": "006eb4a0",
+      "vtable": "00d1adbc",
+      "name_literal": "00d1adec",
+      "class": "MCargo",
+      "lua_type": "Cargo",
+      "shipped_rows": 13
+    },
+    {
+      "reader": "006fb550",
+      "vtable": "00d1ad38",
+      "name_literal": "00d1ad68",
+      "class": "MCruiser",
+      "lua_type": "Cruiser",
+      "shipped_rows": 41
+    },
+    {
+      "reader": "006fe6a0",
+      "vtable": "00d1acf8",
+      "name_literal": "00d1ad28",
+      "class": "MDestroyer",
+      "lua_type": "Destroyer",
+      "shipped_rows": 31
+    },
+    {
+      "reader": "0074c630",
+      "vtable": "00d1ad78",
+      "name_literal": "00d1ada8",
+      "class": "MLandingShip",
+      "lua_type": "LandingShip",
+      "shipped_rows": 6
+    },
+    {
+      "reader": "00759590",
+      "vtable": "00d1aebc",
+      "name_literal": "00d1aeec",
+      "class": "MMothership",
+      "lua_type": "MotherShip",
+      "shipped_rows": 18
+    },
+    {
+      "reader": "00854230",
+      "vtable": "00d1ae38",
+      "name_literal": "00d1ae68",
+      "class": "MSubmarine",
+      "lua_type": "Submarine",
+      "shipped_rows": 9
+    },
+    {
+      "reader": "00857f40",
+      "vtable": "00d1ae78",
+      "name_literal": "00d1aea8",
+      "class": "MTorpedoBoat",
+      "lua_type": "TorpedoBoat",
+      "shipped_rows": 3
+    }
+  ],
+  "leaf_class_mapping_note": "The class names are recovered data, the literal that follows each leaf vtable at +30h. The lua_type column is inferred from key co-occurrence in the shipped file; the factory's own Type dispatch was not read.",
+  "keys": [
+    {
+      "leaf": "MBattleship",
+      "path": "Battlecruiser",
+      "key_string": "00cf92f0",
+      "getter": "00b662f0 GetBooleanOrDefault",
+      "offset": "+808h",
+      "type": "byte",
+      "default": "false (PUSH 0 at 006e0127)",
+      "site": "006e0122",
+      "store": "006e013c",
+      "note": ""
+    },
+    {
+      "leaf": "MCargo",
+      "path": "SubType == Junk",
+      "key_string": "00cfa9d0",
+      "getter": "00b660a0 IsString, 00b662b0 GetString, 00425850",
+      "offset": "+808h",
+      "type": "byte",
+      "default": "false (cleared at 006eb515)",
+      "site": "006eb51c",
+      "store": "006eb560",
+      "note": "the literal Junk is 00cfa9c8; the compare is case-insensitive"
+    },
+    {
+      "leaf": "MCargo",
+      "path": "SubType == TroopTransport",
+      "key_string": "00cfa9d0",
+      "getter": "00425850 on the same string",
+      "offset": "+809h",
+      "type": "byte",
+      "default": "false (cleared at 006eb50e)",
+      "site": "006eb51c",
+      "store": "006eb571",
+      "note": "the literal TroopTransport is 00cfa9b8"
+    },
+    {
+      "leaf": "MCruiser",
+      "path": "HeavyCruiser",
+      "key_string": "00ceb14c",
+      "getter": "00b662f0",
+      "offset": "+808h",
+      "type": "byte",
+      "default": "false (PUSH 0 at 006fb587)",
+      "site": "006fb582",
+      "store": "006fb59c",
+      "note": "re-read at 006fb5af to choose the tuning pair"
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "BigLandingShip",
+      "key_string": "00cffd08",
+      "getter": "00b662f0",
+      "offset": "+808h",
+      "type": "byte",
+      "default": "false (PUSH EBX, zeroed at 0074c66f)",
+      "site": "0074c66a",
+      "store": "0074c687",
+      "note": "re-read at 0074ca5e to choose the tuning pair"
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "LandedDamage",
+      "key_string": "00cffcf8",
+      "getter": "00b66380 GetIntegerOrDefault",
+      "offset": "+80ch",
+      "type": "int32",
+      "default": "0 (PUSH EBX)",
+      "site": "0074c6a5",
+      "store": "0074c6c1",
+      "note": ""
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "LandedCapturePower",
+      "key_string": "00cffce4",
+      "getter": "00b66380",
+      "offset": "+810h",
+      "type": "int32",
+      "default": "0 (PUSH EBX)",
+      "site": "0074c6df",
+      "store": "0074c6fb",
+      "note": ""
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "LandingTroopType",
+      "key_string": "00cffcd0",
+      "getter": "00b66380",
+      "offset": "+814h",
+      "type": "int32",
+      "default": "1 (PUSH 1 at 0074c71e)",
+      "site": "0074c719",
+      "store": "0074c736",
+      "note": "also indexes globals.LandingTroopClasses in the walk at 0074c796"
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "Rocketer",
+      "key_string": "00cffcc4",
+      "getter": "00b662f0",
+      "offset": "+809h",
+      "type": "byte",
+      "default": "false (PUSH EBX)",
+      "site": "0074c754",
+      "store": "0074c770",
+      "note": ""
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "SubType == LCVP",
+      "key_string": "00cfa9d0",
+      "getter": "00b660a0, 00b662b0, 00425850",
+      "offset": "+818h",
+      "type": "byte",
+      "default": "false",
+      "site": "0074cb02",
+      "store": "0074cb81",
+      "note": "literal LCVP at 00cffcbc; the three bytes are cleared at 0074caed..0074cafb"
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "SubType == LSM",
+      "key_string": "00cfa9d0",
+      "getter": "00425850 on the same string",
+      "offset": "+81ah",
+      "type": "byte",
+      "default": "false",
+      "site": "0074cb02",
+      "store": "0074cba1",
+      "note": "literal LSM at 00cffcb8"
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "SubType default",
+      "key_string": "00cfa9d0",
+      "getter": "fallthrough",
+      "offset": "+819h",
+      "type": "byte",
+      "default": "true",
+      "site": "0074cb02",
+      "store": "0074cbaa",
+      "note": "also set at 0074cbce when the value is not a string; exactly one of the three is set"
+    },
+    {
+      "leaf": "MLandingShip",
+      "path": "globals.LandingTroopClasses[].Classes[]",
+      "key_string": "00ce69ac",
+      "getter": "00b67980 globals, 00b67800, 00b67720, 00b67080/00b67190 with 00b66420 as the end test",
+      "offset": "none decoded",
+      "type": "table walk",
+      "default": "none",
+      "site": "0074c7b2",
+      "store": "0",
+      "note": "element Type at 00ce4780 selects Soldier (00ce693c, ClassName 00ce6930 -> 004b1400) or Vehicle (00ce6928, ClassId 00ce6920 -> 00964790 -> 0047b3c0); read from the globals table, not the row"
+    },
+    {
+      "leaf": "MMothership",
+      "path": "RunwayWidth",
+      "key_string": "00cf8ae8",
+      "getter": "00b66270 GetNumber, no guard",
+      "offset": "+820h",
+      "type": "float",
+      "default": "none",
+      "site": "007595ca",
+      "store": "007595e1",
+      "note": ""
+    },
+    {
+      "leaf": "MMothership",
+      "path": "RunwayLength",
+      "key_string": "00cf8ad8",
+      "getter": "00b66270, no guard",
+      "offset": "+824h",
+      "type": "float",
+      "default": "none",
+      "site": "00759606",
+      "store": "0075961d",
+      "note": ""
+    },
+    {
+      "leaf": "MMothership",
+      "path": "CarrierEscort",
+      "key_string": "00d01918",
+      "getter": "00b662f0",
+      "offset": "+82ch",
+      "type": "byte",
+      "default": "false (PUSH 0 at 00759644)",
+      "site": "0075963f",
+      "store": "0075965c",
+      "note": ""
+    },
+    {
+      "leaf": "MMothership",
+      "path": "MaxLandingPlanes",
+      "key_string": "00d01900",
+      "getter": "00b67690 Assign, 00b65fb0 IsNil, 00b66290 GetInteger",
+      "offset": "+828h",
+      "type": "int32",
+      "default": "0 (else arm at 007596d8)",
+      "site": "0075968e",
+      "store": "007596d0",
+      "note": ""
+    },
+    {
+      "leaf": "MMothership",
+      "path": "DeckCamera.Position",
+      "key_string": "00ce68b4",
+      "getter": "00b67a80",
+      "offset": "+860h..+868h",
+      "type": "three floats",
+      "default": "none",
+      "site": "00759706",
+      "store": "00759811",
+      "note": "also 0075981f and 0075982d; read from the DeckCamera sub-table opened at 007596ea"
+    },
+    {
+      "leaf": "MMothership",
+      "path": "DeckCamera.HorzAngle",
+      "key_string": "00d018e8",
+      "getter": "00b66270",
+      "offset": "none directly",
+      "type": "float, negated",
+      "default": "none",
+      "site": "0075973d",
+      "store": "0",
+      "note": "FCHS at 0075979f, then 00b646e0 builds one axis of the basis"
+    },
+    {
+      "leaf": "MMothership",
+      "path": "DeckCamera.VertAngle",
+      "key_string": "00d018dc",
+      "getter": "00b66270",
+      "offset": "none directly",
+      "type": "float, negated",
+      "default": "none",
+      "site": "00759773",
+      "store": "0",
+      "note": "FCHS at 007597c3, then 00b64640; 00413920 multiplies and 004134f0 copies the product into +830h at 00759806, a 30h-byte basis"
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "PeriscopeWave",
+      "key_string": "00d0c2f8",
+      "getter": "00b66a60 IsInteger, 00b66290, 00870cd0",
+      "offset": "+80ch",
+      "type": "effect handle",
+      "default": "none; the slot keeps its memset zero",
+      "site": "00854263",
+      "store": "008542a5",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "PeriscopeDepth",
+      "key_string": "00d0c2e8",
+      "getter": "00b66330 GetFloatOrDefault",
+      "offset": "+810h",
+      "type": "float",
+      "default": "-1.0f (00d7a260)",
+      "site": "00854304",
+      "store": "0085431f",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "SwimDepth1",
+      "key_string": "00d0c2dc",
+      "getter": "00b66330",
+      "offset": "+810h",
+      "type": "float",
+      "default": "-1.0f (00d7a260)",
+      "site": "0085434a",
+      "store": "00854365",
+      "note": "same slot as PeriscopeDepth, read only when that left it negative (COMISS/JBE at 00854332); the legacy alias, not a second field"
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "SwimDepth2",
+      "key_string": "00d0c2d0",
+      "getter": "00b66330",
+      "offset": "+814h",
+      "type": "float",
+      "default": "-1.0f (00d7a260)",
+      "site": "00854384",
+      "store": "0085439f",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "SwimDepth3",
+      "key_string": "00d0c2c4",
+      "getter": "00b66330",
+      "offset": "+818h",
+      "type": "float",
+      "default": "-1.0f (00d7a260)",
+      "site": "008543be",
+      "store": "008543d9",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "PeriscopeMoveRange",
+      "key_string": "00d0c2b0",
+      "getter": "00b66330",
+      "offset": "+81ch",
+      "type": "float",
+      "default": "10.0f (00ce38b8)",
+      "site": "008543f8",
+      "store": "00854413",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "UpDownStopTime",
+      "key_string": "00d0c2a0",
+      "getter": "00b66330",
+      "offset": "+82ch",
+      "type": "float",
+      "default": "5.0f (00ce3850)",
+      "site": "00854432",
+      "store": "0085444d",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "UpSpeed",
+      "key_string": "00d0c298",
+      "getter": "00b66330",
+      "offset": "+830h",
+      "type": "float",
+      "default": "1.2f (00ce3814)",
+      "site": "0085446c",
+      "store": "00854487",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "DownSpeed",
+      "key_string": "00d0c28c",
+      "getter": "00b66330",
+      "offset": "+834h",
+      "type": "float",
+      "default": "1.2f (00ce3814)",
+      "site": "008544a6",
+      "store": "008544c1",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "UpDownAccel",
+      "key_string": "00d0c280",
+      "getter": "00b66330",
+      "offset": "+824h",
+      "type": "float",
+      "default": "0.25f (00ce3868)",
+      "site": "008544e0",
+      "store": "008544fb",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "UpDownRotation",
+      "key_string": "00d0c270",
+      "getter": "00b66330",
+      "offset": "+828h",
+      "type": "float",
+      "default": "0.034906585f (00d0c26c, two degrees)",
+      "site": "0085451a",
+      "store": "00854535",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "AirRunOutTime",
+      "key_string": "00d0c25c",
+      "getter": "00b66330",
+      "offset": "+838h",
+      "type": "float",
+      "default": "120.0f (00d05804)",
+      "site": "00854554",
+      "store": "0085456f",
+      "note": ""
+    },
+    {
+      "leaf": "MSubmarine",
+      "path": "AirReloadTime",
+      "key_string": "00d0c24c",
+      "getter": "00b66330",
+      "offset": "+83ch",
+      "type": "float",
+      "default": "5.0f (00ce3850)",
+      "site": "0085458e",
+      "store": "008545a9",
+      "note": ""
+    },
+    {
+      "leaf": "MTorpedoBoat",
+      "path": "TurboTime",
+      "key_string": "00d061f0",
+      "getter": "00b66330",
+      "offset": "+808h",
+      "type": "float",
+      "default": "10.0f (00ce38b8)",
+      "site": "00857f72",
+      "store": "00857f90",
+      "note": ""
+    },
+    {
+      "leaf": "MTorpedoBoat",
+      "path": "TurboStrength",
+      "key_string": "00d061cc",
+      "getter": "00b66330",
+      "offset": "+80ch",
+      "type": "float",
+      "default": "3.0f (00ce3854)",
+      "site": "00857fb3",
+      "store": "00857fd1",
+      "note": ""
+    },
+    {
+      "leaf": "MTorpedoBoat",
+      "path": "TurboRechargingTime",
+      "key_string": "00d061dc",
+      "getter": "00b66330",
+      "offset": "+810h",
+      "type": "float",
+      "default": "10.0f (00ce38b8)",
+      "site": "00857ff4",
+      "store": "00858012",
+      "note": ""
+    }
+  ],
+  "tuning_block": {
+    "selector": "00837de0",
+    "session_mode": "(*00E188A8) + 1FE4h",
+    "block_when_mode_zero": "+080h",
+    "block_otherwise": "+0F0h",
+    "block_stride": "+070h",
+    "settings_singleton": {
+      "getter": "00424c40",
+      "storage": "00f8753c",
+      "size": "0x76c",
+      "constructor": "00424a10",
+      "note": "00424A10 does not initialise +80h..+F0h; the only candidate producer seen is 0083B5E0, a 6412-instruction Lua-driven loader that was not read"
+    },
+    "descriptor_slots": {
+      "array": "+560h..+56ch, four dwords",
+      "scalar": "+570h"
+    },
+    "sources": [
+      {
+        "leaf": "MMothership",
+        "gate": "always",
+        "array_source": "+04h",
+        "scalar_source": "+00h"
+      },
+      {
+        "leaf": "MDestroyer",
+        "gate": "always",
+        "array_source": "+0ch",
+        "scalar_source": "+08h"
+      },
+      {
+        "leaf": "MTorpedoBoat",
+        "gate": "always",
+        "array_source": "+14h",
+        "scalar_source": "+10h"
+      },
+      {
+        "leaf": "MLandingShip",
+        "gate": "BigLandingShip false",
+        "array_source": "+1ch",
+        "scalar_source": "+18h"
+      },
+      {
+        "leaf": "MLandingShip",
+        "gate": "BigLandingShip true",
+        "array_source": "+24h",
+        "scalar_source": "+20h"
+      },
+      {
+        "leaf": "MBattleship",
+        "gate": "always",
+        "array_source": "+2ch",
+        "scalar_source": "+28h"
+      },
+      {
+        "leaf": "MCargo",
+        "gate": "always",
+        "array_source": "+34h",
+        "scalar_source": "+30h"
+      },
+      {
+        "leaf": "MCruiser",
+        "gate": "HeavyCruiser false",
+        "array_source": "+3ch",
+        "scalar_source": "+38h"
+      },
+      {
+        "leaf": "MCruiser",
+        "gate": "HeavyCruiser true",
+        "array_source": "+44h",
+        "scalar_source": "+40h"
+      },
+      {
+        "leaf": "MSubmarine",
+        "gate": "always",
+        "array_source": "+60h, +64h, +68h, +6ch (four distinct)",
+        "scalar_source": "+5ch"
+      }
+    ],
+    "unused_block_range": "+48h..+58h is read by none of the nine call sites",
+    "ninth_caller": {
+      "address": "00424d00",
+      "note": "the AvoidZone / AvoidZoneG parser BSP_Game_LoadMissionScene runs; it calls 00424C40 then 00837DE0 the same way, confirming the receiver is the settings singleton and not a descriptor"
+    }
+  },
+  "damageable_base": {
+    "address": "0087c640",
+    "vptrs": [
+      "00ceb130 (grandparent, inlined ctor)",
+      "00d0e13c (own)"
+    ],
+    "vtable_slot_8": "0087ca80, the shared damageable pre-reader 00960230 chains to at 00960267",
+    "writes": {
+      "+0h": "vptr",
+      "+4h": "refcount = 1 at 0087c665",
+      "+40h": "-1 at 0087c699",
+      "+44h": "byte zero at 0087c6a0",
+      "+60h..+68h": "an empty MSVC red-black tree, 0087c6ac..0087c6d7",
+      "zeroed": [
+        "+0ch",
+        "+10h",
+        "+14h",
+        "+1ch",
+        "+20h",
+        "+24h",
+        "+28h",
+        "+2ch",
+        "+30h",
+        "+38h",
+        "+3ch",
+        "+50h",
+        "+58h",
+        "+5ch"
+      ]
+    },
+    "untouched": {
+      "offsets": [
+        "+8h",
+        "+18h",
+        "+34h",
+        "+48h",
+        "+4ch",
+        "+54h"
+      ],
+      "note": "+34h Unique, +48h HP, +4Ch Armour and +54h Name are exactly the scalars the Lua pre-reader 0087CA80 fills (docs/VEHICLE_CLASS_FIELDS.md); +8h and +18h stay unattributed. +6Ch, the secondary vptr, is written by 00749050"
+    },
+    "tree_node": {
+      "allocator": "00877fa0",
+      "size": "0x58",
+      "layout": "_Left +0h, _Parent +4h, _Right +8h, _Myval +0ch (48h bytes), _Color +54h, _Isnil +55h",
+      "sentinel": "_Isnil = 1 at 0087c6c2; _Parent, _Left, _Right point at the node itself at 0087c6c9, 0087c6cf, 0087c6d4",
+      "value_type": "not decoded; 0087CA80's Damage.Sections[] walk is the likely owner"
+    },
+    "other_callers": [
+      "00440770",
+      "00442b90"
+    ]
+  },
+  "host_steps": [
+    {
+      "address": "0087c6b6",
+      "native": "00877fa0",
+      "function": "0087c640",
+      "name": "std_Tree_Buynode",
+      "this": "the tree at +60h",
+      "args": "none",
+      "ret": "the 58h head node",
+      "gate": "always"
+    },
+    {
+      "address": "006e014f",
+      "native": "00424c40",
+      "function": "006e00f0",
+      "name": "gameplay settings singleton",
+      "this": "none",
+      "args": "none",
+      "ret": "the 76ch settings object",
+      "gate": "always"
+    },
+    {
+      "address": "006e0156",
+      "native": "00837de0",
+      "function": "006e00f0",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "settings+80h or +F0h",
+      "gate": "always"
+    },
+    {
+      "address": "006eb4cd",
+      "native": "00837de0",
+      "function": "006eb4a0",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always"
+    },
+    {
+      "address": "006eb552",
+      "native": "00425850",
+      "function": "006eb4a0",
+      "name": "BSP_NativeString_EqualsCStringInsensitive",
+      "this": "the SubType string",
+      "args": "\"Junk\" 00cfa9c8",
+      "ret": "bool into +808h",
+      "gate": "SubType is a string"
+    },
+    {
+      "address": "006eb566",
+      "native": "00425850",
+      "function": "006eb4a0",
+      "name": "BSP_NativeString_EqualsCStringInsensitive",
+      "this": "the SubType string",
+      "args": "\"TroopTransport\" 00cfa9b8",
+      "ret": "bool into +809h",
+      "gate": "SubType is a string"
+    },
+    {
+      "address": "006fb5bf",
+      "native": "00837de0",
+      "function": "006fb550",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "HeavyCruiser true"
+    },
+    {
+      "address": "006fb60e",
+      "native": "00837de0",
+      "function": "006fb550",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "HeavyCruiser false"
+    },
+    {
+      "address": "006fe6a8",
+      "native": "00831840",
+      "function": "006fe6a0",
+      "name": "BSP_ShipClass_ReadLuaFields",
+      "this": "descriptor",
+      "args": "the row",
+      "ret": "void",
+      "gate": "always, before the leaf's own body"
+    },
+    {
+      "address": "006fe6ad",
+      "native": "00424c40",
+      "function": "006fe6a0",
+      "name": "gameplay settings singleton",
+      "this": "none",
+      "args": "none",
+      "ret": "settings",
+      "gate": "always"
+    },
+    {
+      "address": "006fe6b4",
+      "native": "00837de0",
+      "function": "006fe6a0",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always"
+    },
+    {
+      "address": "006fe6db",
+      "native": "00837de0",
+      "function": "006fe6a0",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always, the second fetch for +570h"
+    },
+    {
+      "address": "0074c9ed",
+      "native": "00964790",
+      "function": "0074c630",
+      "name": "BSP_VehicleClass_GetOrCreate",
+      "this": "none",
+      "args": "the element ClassId",
+      "ret": "the descriptor",
+      "gate": "element Type is Vehicle"
+    },
+    {
+      "address": "0074c9f4",
+      "native": "0047b3c0",
+      "function": "0074c630",
+      "name": "landing-troop registration (contract, body unread)",
+      "this": "the descriptor",
+      "args": "not decoded",
+      "ret": "not decoded",
+      "gate": "element Type is Vehicle"
+    },
+    {
+      "address": "0074c97f",
+      "native": "004b1400",
+      "function": "0074c630",
+      "name": "soldier-type resolve (contract, body unread)",
+      "this": "none",
+      "args": "the ClassName string",
+      "ret": "not decoded",
+      "gate": "element Type is Soldier"
+    },
+    {
+      "address": "0074cb70",
+      "native": "00bf7fbf",
+      "function": "0074c630",
+      "name": "__stricmp",
+      "this": "none",
+      "args": "the SubType string, \"LCVP\"",
+      "ret": "match",
+      "gate": "SubType is a string"
+    },
+    {
+      "address": "0074ca6e",
+      "native": "00837de0",
+      "function": "0074c630",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "BigLandingShip true"
+    },
+    {
+      "address": "0074caac",
+      "native": "00837de0",
+      "function": "0074c630",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "BigLandingShip false"
+    },
+    {
+      "address": "007597b0",
+      "native": "00b646e0",
+      "function": "00759590",
+      "name": "axis rotation from the negated HorzAngle (contract, body unread)",
+      "this": "the output matrix",
+      "args": "&angle",
+      "ret": "the matrix",
+      "gate": "DeckCamera present"
+    },
+    {
+      "address": "007597d4",
+      "native": "00b64640",
+      "function": "00759590",
+      "name": "axis rotation from the negated VertAngle (contract, body unread)",
+      "this": "the output matrix",
+      "args": "&angle",
+      "ret": "the matrix",
+      "gate": "DeckCamera present"
+    },
+    {
+      "address": "007597fa",
+      "native": "00413920",
+      "function": "00759590",
+      "name": "BSP_Matrix_Multiply4x4",
+      "this": "the product",
+      "args": "the two rotations",
+      "ret": "the product",
+      "gate": "DeckCamera present"
+    },
+    {
+      "address": "00759806",
+      "native": "004134f0",
+      "function": "00759590",
+      "name": "BSP_Matrix_Copy4x4X87",
+      "this": "descriptor+830h",
+      "args": "the product",
+      "ret": "dest",
+      "gate": "DeckCamera present"
+    },
+    {
+      "address": "0075983c",
+      "native": "00837de0",
+      "function": "00759590",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always"
+    },
+    {
+      "address": "0085428d",
+      "native": "00870cd0",
+      "function": "00854230",
+      "name": "BSP_EffectHandle_Acquire",
+      "this": "none",
+      "args": "the PeriscopeWave id",
+      "ret": "the handle into +80ch",
+      "gate": "00b66a60 IsInteger at 00854272"
+    },
+    {
+      "address": "008545c3",
+      "native": "00837de0",
+      "function": "00854230",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always, one of five fetches"
+    },
+    {
+      "address": "00854617",
+      "native": "00837de0",
+      "function": "00854230",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always, the fetch for +570h"
+    },
+    {
+      "address": "00858030",
+      "native": "00837de0",
+      "function": "00857f40",
+      "name": "tuning block selector",
+      "this": "settings",
+      "args": "none",
+      "ret": "block",
+      "gate": "always"
+    },
+    {
+      "address": "00857f61",
+      "native": "00831840",
+      "function": "00857f40",
+      "name": "BSP_ShipClass_ReadLuaFields",
+      "this": "descriptor",
+      "args": "the row",
+      "ret": "void",
+      "gate": "always, before the leaf's own body"
+    }
+  ],
+  "no_ghidra_function": [],
+  "installed_file_check": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/datatables/autoload/vehicleclasses.lua",
+    "method": "read-only parse by local/leafkeys.py in the worktree: split on VehicleClass[n] =, record each row's Type and its indent-level-1 keys",
+    "rows": 633,
+    "distinct_top_level_keys": 197,
+    "note": "197 excludes Type, which this parser records separately; the two earlier packets' independent parsers report 198 counting it",
+    "leaf_key_paths_consumed": 29,
+    "leaf_key_row_counts": {
+      "AirReloadTime": 9,
+      "AirRunOutTime": 9,
+      "Battlecruiser": 8,
+      "BigLandingShip": 4,
+      "CarrierEscort": 5,
+      "DeckCamera": 26,
+      "DownSpeed": 9,
+      "HeavyCruiser": 25,
+      "LandedCapturePower": 5,
+      "LandedDamage": 5,
+      "LandingTroopType": 6,
+      "MaxLandingPlanes": 0,
+      "PeriscopeDepth": 8,
+      "PeriscopeMoveRange": 8,
+      "PeriscopeWave": 7,
+      "Rocketer": 1,
+      "RunwayLength": 21,
+      "RunwayWidth": 21,
+      "SubType": 16,
+      "SwimDepth1": 0,
+      "SwimDepth2": 0,
+      "SwimDepth3": 0,
+      "TurboRechargingTime": 24,
+      "TurboStrength": 26,
+      "TurboTime": 26,
+      "UpDownAccel": 0,
+      "UpDownRotation": 0,
+      "UpDownStopTime": 0,
+      "UpSpeed": 9
+    },
+    "leaf_keys_no_row_provides": [
+      "MaxLandingPlanes",
+      "SwimDepth1",
+      "SwimDepth2",
+      "SwimDepth3",
+      "UpDownAccel",
+      "UpDownRotation",
+      "UpDownStopTime"
+    ],
+    "deck_camera_subkeys": [
+      "HorzAngle",
+      "Position",
+      "VertAngle"
+    ],
+    "authored_but_unconsumed_for_their_type": {
+      "DeckCamera on BattleShip rows": [
+        "South Dakota 1945",
+        "King George V 1942",
+        "Iowa 1944",
+        "Montana 1945",
+        "North Carolina 1945",
+        "Lexington 1945",
+        "Louisiana 1945"
+      ],
+      "the Black Cat row (comment HSF Hiei)": "authors Battlecruiser, RunwayWidth, RunwayLength, TurboTime, TurboStrength, TurboRechargingTime and DeckCamera at once; only Battlecruiser reaches a reader",
+      "caveat": "this rests on the Type-to-leaf mapping, which is inferred, not read from the factory's dispatch"
+    },
+    "turbo_keys_belong_mostly_to_planes": "TurboTime appears in 26 rows but only the 3 TorpedoBoat rows (plus the Black Cat BattleShip row) reach 00857F40; Fighter 13, SmallReconPlane 5, DiveBomber 2 and Kamikaze 2 are read by the plane override 007D1F70, still only tabulated"
+  },
+  "not_read": {
+    "non_ship_overrides_of_slot_8": [
+      "006d0b80 runway",
+      "00700e40 door",
+      "00749210 structure",
+      "0074d4a0 wreckable",
+      "007d1f70 plane",
+      "00960230 the base itself"
+    ],
+    "ship_overrides_outstanding": "none; all eight leaf overrides were read",
+    "bodies_read_only_for_their_role": [
+      "004b1400",
+      "0047b3c0",
+      "00b646e0",
+      "00b64640",
+      "00b67a80",
+      "0083b5e0",
+      "00424d00"
+    ]
+  },
+  "uncertainties": [
+    "What descriptor+560h..+56Ch and +570h hold is not established: a four-element array plus one scalar, per-class and session-mode dependent, with only MSubmarine varying across the four. No reader of those offsets was found.",
+    "settings+80h..+F0h has no identified producer; 00424A10 does not write it.",
+    "The Type-to-leaf mapping is inferred from key co-occurrence; the class names themselves are recovered literals.",
+    "The 48h-byte value type of the tree node at 0087C640+60h was not decoded, nor were +8h and +18h of the damageable base.",
+    "No run-time evidence: bsp_game.exe does not reach the vehicle-class factory."
+  ],
+  "followups": [
+    {
+      "packet": "ship_tuning_block",
+      "addresses": [
+        "0083b5e0",
+        "00424a10",
+        "00424c40"
+      ],
+      "contract": "Find what fills settings+80h..+F0h and what reads descriptor+560h..+570h"
+    },
+    {
+      "packet": "landing_troop_classes",
+      "addresses": [
+        "0074c796",
+        "004b1400",
+        "0047b3c0"
+      ],
+      "contract": "Decode where the LandingTroopClasses walk puts its resolved classes"
+    },
+    {
+      "packet": "plane_class_fields",
+      "addresses": [
+        "007d1f70"
+      ],
+      "contract": "The 77-key plane reader, which owns most of the Turbo* rows"
+    }
+  ],
+  "state": {
+    "0087c640, 00837de0, and the eight leaf overrides": "exported, analysed, reconstructed, build-tested, installed-file-checked",
+    "00877fa0": "exported, analysed, name recorded",
+    "00424c40, 00424a10, 00424d00, 0083b5e0": "exported, read for their role only, not named by this packet",
+    "004b1400, 0047b3c0, 00b646e0, 00b64640, 00b67a80": "read at the call site only; the names here are contracts"
+  }
+}

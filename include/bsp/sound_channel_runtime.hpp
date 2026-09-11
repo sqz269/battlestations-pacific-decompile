@@ -2,6 +2,7 @@
 #include "bsp/sound_system_update.hpp"
 #include "bsp/sound_spatial_instance.hpp"
 #include "bsp/sound_event_instance.hpp"
+#include "bsp/sound_gameplay_methods.hpp"
 
 namespace bsp {
 // Active-entry/lifetime binding for D5ABF8 and optional D5B510/D5B4C8 projections.
@@ -30,6 +31,11 @@ public:
     bool completed_slot0c(SoundLevelEntry*) override;
     bool nonvirtual_slot14(SoundLevelEntry*) override;
     void stop_slot08(SoundLevelEntry*, std::uint8_t) override;
+    void* handle_slot18(SoundLevelEntry*);
+    float audibility_slot1c(SoundLevelEntry*, SoundGameplayFmodHost&, SoundEventQueryLockBindings&);
+    float progress_slot20(SoundLevelEntry*, SoundGameplayFmodHost&);
+    void configure_slot3c(SoundLevelEntry*, SoundGameplayFmodHost&);
+    void pause_slot40(SoundLevelEntry*, std::uint8_t);
 private:
     SoundInstance& checked(SoundLevelEntry*);
     SoundChannelInstance& channel(SoundLevelEntry*);

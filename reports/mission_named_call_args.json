@@ -1,0 +1,537 @@
+{
+  "packet": "cc2_named_call_args",
+  "owner": "agent/cc2-named-call-args",
+  "doc": "docs/MISSION_NAMED_CALL_ARGS.md",
+  "ghidra": "read-only; no renames, comments, prototypes or saves",
+  "summary": "The seven stack arguments of 00887750 attributed from their ESP slots, the third literal of 00887220 identified as a maximum table-expansion depth rather than a mode, the 14h-byte ResultSink and its two instantiations, the deferred-call record 00887E50 builds under the 004C1570 critical section and 00888230 drains, and 008874C0 identified as the unreached destructor of a pending-results holder.",
+  "arguments_00887750": {
+    "abi": "__thiscall(MissionLuaHost* this), RET 1Ch, seven stack arguments",
+    "frame": "return address at [ESP+2Ch] after the SEH prologue and PUSH EBX/ESI; PUSH EBP at 008877BF and PUSH EDI at 008877C6 shift every slot by 8",
+    "slots": [
+      {
+        "index": 1,
+        "slot": "[ESP+30h]",
+        "slot_after_push": "[ESP+38h]",
+        "type": "const NativeString*",
+        "name": "self_key",
+        "read_at": "008878c7",
+        "optional": true,
+        "note": "block runs only when the pointer is non-null and the size word [EDI] is non-zero (008878cd)"
+      },
+      {
+        "index": 2,
+        "slot": "[ESP+34h]",
+        "slot_after_push": "[ESP+3Ch]",
+        "type": "const NativeString*",
+        "name": "name",
+        "read_at": "0088785a",
+        "optional": false,
+        "note": "ECX into the '.' splitter 00bd20a0"
+      },
+      {
+        "index": 3,
+        "slot": "[ESP+38h]",
+        "slot_after_push": "[ESP+40h]",
+        "type": "const ArgVector*",
+        "name": "args",
+        "read_at": "0088790f",
+        "optional": true,
+        "note": "{+0h first record, +4h count}, 14h-byte records"
+      },
+      {
+        "index": 4,
+        "slot": "[ESP+3Ch]",
+        "slot_after_push": "[ESP+44h]",
+        "type": "int",
+        "name": "stack_first",
+        "read_at": "008877e8",
+        "optional": true,
+        "note": "zero disables forwarding and also suppresses the normalisation of argument 5"
+      },
+      {
+        "index": 5,
+        "slot": "[ESP+40h]",
+        "slot_after_push": "[ESP+48h]",
+        "type": "int",
+        "name": "stack_last",
+        "read_at": "00887812",
+        "optional": true,
+        "note": "read only when argument 4 is non-zero"
+      },
+      {
+        "index": 6,
+        "slot": "[ESP+44h]",
+        "slot_after_push": "[ESP+4Ch]",
+        "type": "ResultSink*",
+        "name": "results",
+        "read_at": "008877c0",
+        "optional": true,
+        "note": "also read at 008879a5 to decide whether to collect"
+      },
+      {
+        "index": 7,
+        "slot": "[ESP+48h]",
+        "slot_after_push": "[ESP+50h]",
+        "type": "char",
+        "name": "force",
+        "read_at": "00887782",
+        "optional": false,
+        "note": "read once; 0088784a overwrites the same slot with the debugtrap error-handler index, read back at 00887971"
+      }
+    ],
+    "nargs": {
+      "accumulator": "EBX, cleared at 00887780",
+      "self_key": "MOV EBX,1 at 008878dc, inside the self-key block only, so nargs starts at 0 when argument 1 is absent",
+      "records": "ADD EBX,[ECX+4h] at 0088793c, the container count verbatim",
+      "stack_range": "LEA EBX,[EBX+EAX+1] at 00887953",
+      "divergence": "a tag-4 record pushes nothing, so nargs can exceed the values actually on the stack"
+    },
+    "index_normalisation": "top + index + 1 when negative (00887808, 00887822); the whole block is gated on stack_first != 0 at 008877f2, and the lua_gettop at 008877f4 is dead"
+  },
+  "result_depth": {
+    "collector": "00887220",
+    "builder": "00886e00",
+    "builder_abi": "__thiscall(ResultSink* this, LuaVariant* out, int stack_index, int depth, int max_depth)",
+    "finding": "the third literal 00887220 receives is max_depth, not a mode selector: 00886e00 guards its whole body with depth < max_depth and recurses with depth+1 (00886f02 LEA EBP,[EDI+1]) and the same max_depth reloaded from [ESP+F8h] at 00886f77",
+    "limits": [
+      {
+        "caller": "006b89f0",
+        "value": 2,
+        "meaning": "chunk results"
+      },
+      {
+        "caller": "008879b3",
+        "value": 4,
+        "meaning": "named call results"
+      },
+      {
+        "caller": "008874c7",
+        "value": 4,
+        "meaning": "pending-results scope, unreached"
+      }
+    ],
+    "truncation": "at depth == max_depth the record keeps the constructed state: vtable 00d0e6f4, tag -1, three zero dwords, which is distinct from tag 6 nil",
+    "tags": [
+      {
+        "lua_type": 0,
+        "lua": "nil",
+        "setter": "00886920 then [out+4h] = 6",
+        "tag": 6
+      },
+      {
+        "lua_type": 7,
+        "lua": "userdata",
+        "setter": "00886920 then [out+4h] = 6",
+        "tag": 6
+      },
+      {
+        "lua_type": 1,
+        "lua": "boolean",
+        "reader": "006b8000",
+        "setter": "008869f0",
+        "tag": 0,
+        "note": "CVTSI2SS, so a boolean becomes the number 0.0 or 1.0"
+      },
+      {
+        "lua_type": 2,
+        "lua": "lightuserdata",
+        "reader": "006b80a0",
+        "setter": "00886b30",
+        "tag": 4
+      },
+      {
+        "lua_type": 3,
+        "lua": "number",
+        "reader": "006b8020",
+        "setter": "008869d0",
+        "tag": 0
+      },
+      {
+        "lua_type": 4,
+        "lua": "string",
+        "reader": "006b8060",
+        "setter": "00886a10",
+        "tag": 1
+      },
+      {
+        "lua_type": 5,
+        "lua": "table",
+        "reader": "006b85b0 lua_next walk",
+        "tag": 5
+      },
+      {
+        "lua_type": 6,
+        "lua": "function",
+        "reader": "literal \"<Function>\" at 00d0e78c",
+        "setter": "00886a10",
+        "tag": 1
+      },
+      {
+        "lua_type": "other",
+        "lua": "LUA_TNONE or thread",
+        "setter": "006b86b0(1, buf) assertion"
+      }
+    ]
+  },
+  "result_sink": {
+    "size": "14h",
+    "fields": {
+      "+0h": "vtable 00d0e798, written by 008875d0",
+      "+4h": "LuaMachine*, stored at 008877dd from [host+4h]",
+      "+8h": "LuaVariant* begin",
+      "+Ch": "int size",
+      "+10h": "int capacity"
+    },
+    "reset": "00887750 resizes the item vector to zero at 008877d5 only when [sink+4h] already held a machine",
+    "instantiations": [
+      "008c83da in BSP_LuaBinding_DebugTrap",
+      "004276ad in FUN_00427190, the chunk path"
+    ],
+    "reader": "00885a30, __thiscall(ResultSink*, NativeString* out), walks the 14h-byte elements through 008855b0"
+  },
+  "deferred_call_record": {
+    "list": {
+      "+8h": "list object",
+      "+Ch": "head node",
+      "+10h": "size"
+    },
+    "fields": {
+      "node+8h": "NativeString self_key, 00425f40 at 008881a0",
+      "node+10h": "NativeString name, 0041dd40 resize then 00bf7680 memcpy",
+      "node+18h": "LuaVariant vector, deep copied by 00887560 at 008881ed",
+      "node+24h": "int stack_first, written at 008881e4",
+      "node+28h": "int stack_last, written at 008881db"
+    },
+    "confirmation": "00888230 calls 00887e50(node+8h, node+10h, node+18h, node[9], node[10]) at 00888264",
+    "lock": "004c1570 singleton over 00f878fc, CRITICAL_SECTION at +4h; EnterCriticalSection [00ce2218] at 00888120, LeaveCriticalSection [00ce2210] at 0088820d",
+    "order": "push_back then front-pop: FIFO",
+    "hazard": "stack_first and stack_last are copied verbatim and replayed on the draining thread's Lua stack",
+    "node_size": "2Ch from operator_new in 00887c30: 8 bytes of list links and a 24h-byte payload",
+    "destructor": "008876b0 releases only the argument vector at record+10h (006b88e0 then 00bf6989 on its buffer); it never frees the two NativeString buffers, so the node 00888230 destroys before freeing leaks its name and self key. Static reading of a 39h-byte body, no run-time evidence."
+  },
+  "scope_object_00d0e6ec": {
+    "layout": "{vtable 00d0e6ec, int saved = [0109ceec]+14h}",
+    "destructor": "00885350: when [0109ceec]+14h exceeds the saved value it builds the empty string 00ce3a0c and calls 00bdc9b0 BSP_VFS_LeaveFileBlock on [0109ceec]",
+    "finding": "a virtual-file-system block-nesting unwinder, not a mutex; 00887750 releases it only on the refusal path at 008877a7"
+  },
+  "pending_results_00d0e6f0": {
+    "layout": "{vtable 00d0e6f0, ResultSink* sink at +4h, int base at +8h, char armed at +Ch}",
+    "destructors": [
+      "008874c0 non-deleting",
+      "00887500 scalar deleting"
+    ],
+    "behaviour": "collects -1-base values at depth limit 4 and pops -base slots",
+    "finding": "unreached: the vtable constant 00d0e6f0 is written only at 008874c7 and 00887507, both inside those destructors, and 008874c0 has no xrefs"
+  },
+  "host_steps": [
+    {
+      "step": "lifecycle gate",
+      "address": "008877a7",
+      "native": "00885350",
+      "function": "00887750",
+      "note": "release the VFS block scope and return when force is clear and game+1FE4h == 2"
+    },
+    {
+      "step": "reset the sink's items",
+      "address": "008877d5",
+      "native": "006b88e0",
+      "function": "00887750",
+      "note": "vector resize to 0 on sink+8h"
+    },
+    {
+      "step": "saved_top",
+      "address": "008877e3",
+      "native": "006b7e70",
+      "function": "00887750"
+    },
+    {
+      "step": "push the debugtrap error handler",
+      "address": "00887832",
+      "native": "006b8460",
+      "function": "00887750",
+      "note": "name literal 00d0e79c"
+    },
+    {
+      "step": "split the name on '.'",
+      "address": "0088786a",
+      "native": "00bd20a0",
+      "function": "00887750",
+      "note": "separator in DL at 00887863"
+    },
+    {
+      "step": "resolve segment 0",
+      "address": "00887883",
+      "native": "006b8460",
+      "function": "00887750"
+    },
+    {
+      "step": "resolve a later segment",
+      "address": "008878a5",
+      "native": "006b8120",
+      "function": "00887750"
+    },
+    {
+      "step": "index the parent table",
+      "address": "008878af",
+      "native": "006b8470",
+      "function": "00887750"
+    },
+    {
+      "step": "drop the parent table",
+      "address": "008878b9",
+      "native": "006b7ea0",
+      "function": "00887750"
+    },
+    {
+      "step": "push thisTable",
+      "address": "008878e1",
+      "native": "006b8460",
+      "function": "00887750",
+      "note": "literal 00ce7494"
+    },
+    {
+      "step": "push the self key",
+      "address": "008878f6",
+      "native": "006b8120",
+      "function": "00887750"
+    },
+    {
+      "step": "index thisTable",
+      "address": "00887900",
+      "native": "006b8470",
+      "function": "00887750"
+    },
+    {
+      "step": "drop thisTable",
+      "address": "0088790a",
+      "native": "006b7ea0",
+      "function": "00887750"
+    },
+    {
+      "step": "push one argument record",
+      "address": "0088792c",
+      "native": "00885da0",
+      "function": "00887750",
+      "note": "loop stride 14h at 00887931"
+    },
+    {
+      "step": "forward one stack slot",
+      "address": "0088795b",
+      "native": "006b7e90",
+      "function": "00887750"
+    },
+    {
+      "step": "call",
+      "address": "00887989",
+      "native": "006b8530",
+      "function": "00887750",
+      "note": "nargs EBX, nresults -1, errfunc from the reused argument 7 slot"
+    },
+    {
+      "step": "collect results",
+      "address": "008879b6",
+      "native": "00887220",
+      "function": "00887750",
+      "note": "count = gettop delta, depth limit 4"
+    },
+    {
+      "step": "restore the top",
+      "address": "008879bf",
+      "native": "006b7e80",
+      "function": "00887750"
+    },
+    {
+      "step": "build one result variant",
+      "address": "008872bf",
+      "native": "00886e00",
+      "function": "00887220",
+      "note": "depth 0, max_depth forwarded"
+    },
+    {
+      "step": "append the variant",
+      "address": "008872cb",
+      "native": "006edf00",
+      "function": "00887220"
+    },
+    {
+      "step": "destroy the temporary",
+      "address": "008872e1",
+      "native": "00886920",
+      "function": "00887220"
+    },
+    {
+      "step": "recurse into a table member",
+      "address": "00886f97",
+      "native": "00886e00",
+      "function": "00886e00",
+      "note": "depth+1, same max_depth"
+    },
+    {
+      "step": "forward to the full dispatcher",
+      "address": "00887b4d",
+      "native": "00887750",
+      "function": "00887b30",
+      "note": "results 0, force 1"
+    },
+    {
+      "step": "worker-thread test",
+      "address": "00887e84",
+      "native": "004c1130",
+      "function": "00887e50"
+    },
+    {
+      "step": "take the queue lock singleton",
+      "address": "00888101",
+      "native": "004c1570",
+      "function": "00887e50"
+    },
+    {
+      "step": "allocate the queue node",
+      "address": "00888161",
+      "native": "00887c30",
+      "function": "00887e50"
+    },
+    {
+      "step": "grow the list size",
+      "address": "0088816c",
+      "native": "00885f10",
+      "function": "00887e50"
+    },
+    {
+      "step": "copy the self key",
+      "address": "008881a0",
+      "native": "00425f40",
+      "function": "00887e50"
+    },
+    {
+      "step": "size the name string",
+      "address": "008881b7",
+      "native": "0041dd40",
+      "function": "00887e50"
+    },
+    {
+      "step": "copy the name bytes",
+      "address": "008881cb",
+      "native": "00bf7680",
+      "function": "00887e50"
+    },
+    {
+      "step": "deep copy the arguments",
+      "address": "008881ed",
+      "native": "00887560",
+      "function": "00887e50"
+    },
+    {
+      "step": "destroy the temporary record",
+      "address": "008881fb",
+      "native": "008876b0",
+      "function": "00887e50"
+    },
+    {
+      "step": "release the VFS block scope",
+      "address": "008880e7",
+      "native": "00885350",
+      "function": "00887e50"
+    },
+    {
+      "step": "collect for the pending-results holder",
+      "address": "008874ea",
+      "native": "00887220",
+      "function": "008874c0",
+      "note": "unreached class"
+    },
+    {
+      "step": "pop the called function and its results",
+      "address": "008874f7",
+      "native": "006b85f0",
+      "function": "008874c0",
+      "note": "unreached class"
+    },
+    {
+      "step": "construct the result sink",
+      "address": "008c83da",
+      "native": "008875d0",
+      "function": "008c8390"
+    },
+    {
+      "step": "dispatch debug.traceback",
+      "address": "008c843e",
+      "native": "00887750",
+      "function": "008c8390",
+      "note": "the only named call in the image that passes a sink"
+    },
+    {
+      "step": "flatten the sink to text",
+      "address": "008c8483",
+      "native": "00885a30",
+      "function": "008c8390"
+    }
+  ],
+  "call_sites": [
+    {
+      "site": "0045f4df",
+      "address": "0045f4df",
+      "native": "00887e50",
+      "function": "0045f440",
+      "this": "[game+1A08h]",
+      "args": "0, local NativeString(name), the caller's args from [ESP+50h], 0, -1",
+      "gate": "00b66200 global is defined and not nil",
+      "read": true
+    },
+    {
+      "site": "005b8d1c",
+      "address": "005b8d1c",
+      "native": "00887e50",
+      "function": "005b8c30",
+      "this": "[game+1A08h]",
+      "args": "0, local NativeString, 0, 0, -1",
+      "gate": "BL at 005b8cd3",
+      "read": true
+    },
+    {
+      "site": "004525d1",
+      "address": "004525d1",
+      "native": "00887e50",
+      "function": "00452360",
+      "this": "[game+1A08h]",
+      "args": "0, command+8h, 0, 0, -1 with EBP proven zero from 00452538",
+      "gate": "the command's virtual +4h returns 4 at 004525b0",
+      "read": true
+    },
+    {
+      "site": "00929139",
+      "address": "00929139",
+      "native": "00887e50",
+      "function": "009290a0",
+      "this": "[game+1A08h]",
+      "args": "entity+178h, then its own four arguments forwarded unchanged",
+      "gate": "none",
+      "read": true
+    },
+    {
+      "site": "00888264",
+      "address": "00888264",
+      "native": "00887e50",
+      "function": "00888230",
+      "this": "the host",
+      "args": "node+8h, node+10h, node+18h, node+24h, node+28h",
+      "gate": "[host+10h] != 0",
+      "read": true
+    }
+  ],
+  "coverage": {
+    "00887750": "complete",
+    "00887e50": "complete for the gates and the queue path",
+    "00887b30": "complete",
+    "00887220": "complete",
+    "00886e00": "partial: the table case's appenders 007814e0, 00781430, 006ee0d0 and 006ee4e0 were not read",
+    "008874c0": "complete, and unreached",
+    "00887e50_call_sites": "partial: 5 of 42 read"
+  },
+  "no_ghidra_function": [],
+  "reconstruction": {
+    "header": "include/bsp/mission_named_call_args.hpp",
+    "source": "src/mission_named_call_args.cpp",
+    "state": "reconstructed and build-tested; not ABI compatible and not game validated"
+  }
+}

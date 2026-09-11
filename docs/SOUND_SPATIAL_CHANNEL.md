@@ -100,3 +100,10 @@ compatibility entry remains available, while SoundChannelRuntime::create_spatial
 uses both recovered constructors and dispatches D5B510 or D5B4C8 through their own
 lifetime and update paths. The installed combined fixture covers both branches;
 event playback additionally requires the fixture's sound/muzzle VFS mount.
+
+## Correction from docs/SOUND_GAMEPLAY_METHODS.md
+
+Spatial bank slot3C 00A8A700 is now reconstructed with its actual options copy and
+cleanup. Installed FMOD getters verify min/max distance and both rolloff branches.
+The runtime also exposes handle, audibility, PCM progress and deferred pause methods.
+Application sound/voice composition and native ABI/audible/gameplay validation remain open.
