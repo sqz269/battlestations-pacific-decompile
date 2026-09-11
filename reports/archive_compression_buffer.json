@@ -69,9 +69,11 @@
     "multi_block_container_bytes": 196728,
     "independent_review": "Native x87 capacity, single-flush boundary, XOR framing and ownership order match assembly",
     "fixture": "local/archive_compression_probe.cpp",
-    "log": "local/archive-compression-probe.log"
+    "log": "local/archive-compression-probe.log",
+    "final_merged_code_head": "e9466978a94aac5798fd5f2de514dbfdbbca8d9f",
+    "final_native_equality_log": "local/archive-compression-final-probe.log"
   },
-  "annotations": "pending",
+  "annotations": "All four owned names/comments saved and read back; forced exports refreshed. Compressor/finalizer stored bodies remain incomplete as documented.",
   "abi_compatible": false,
   "game_validated": false
 }

@@ -22,9 +22,31 @@
     "worker_artifacts_preserved": 13,
     "worker_artifact_manifest": "local/worker-validation/storage-20260910d/manifest.json",
     "independent_compression_review": "No blocking mismatch in full raw instruction ranges",
-    "independent_backend_review": "No blocking mismatch in native save mode transitions, marker errors or framing handoff; external Lua environment not validated"
+    "independent_backend_review": "No blocking mismatch in native save mode transitions, marker errors or framing handoff; external Lua environment not validated",
+    "final_merged_code_head": "e9466978a94aac5798fd5f2de514dbfdbbca8d9f",
+    "final_merged_build": "Win32 Release and both existing CTests passed after newer main source merge",
+    "final_merged_fixtures": "All three fixtures and native file equality passed again",
+    "final_build_log": "local/storage-backend-final-build.log",
+    "final_fixture_log": "local/storage-backend-final-fixtures.log",
+    "final_native_file_log": "local/archive-compression-final-probe.log",
+    "additional_source_merge": {
+      "head": "8652982",
+      "build": "Win32 Release and both existing CTests passed",
+      "fixtures": "All three focused fixtures passed",
+      "build_log": "local/storage-backend-8652982-build.log",
+      "fixture_log": "local/storage-backend-8652982-fixtures.log"
+    }
   },
-  "annotations": "pending",
+  "annotations": {
+    "count": 42,
+    "saved": true,
+    "names_and_comment_markers_readback_verified": true,
+    "pre_existing_comment_fields": 0,
+    "exports_refreshed": 42,
+    "mutation_record": "local/storage-backend-annotation-changes.json",
+    "before": "local/storage_backend_comments_before.json",
+    "after": "local/storage_backend_comments_after.json"
+  },
   "abi_compatible": false,
   "game_validated": false,
   "remaining_boundaries": [
