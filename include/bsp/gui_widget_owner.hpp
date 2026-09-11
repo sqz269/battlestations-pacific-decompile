@@ -8,6 +8,8 @@
 namespace bsp {
 class GuiWidgetOwner;
 class GuiWidgetOwnerRuntime;
+class GuiTextLifetime;
+class GuiTextChildDeletion;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
 // creation performs the derived constructor, before node binding/parenting.
@@ -76,6 +78,9 @@ public:
     GuiWidgetBaseExtraFields& extra_fields() noexcept { return extra_; }
     NativeNodeBinding* node_binding() noexcept { return node_; }
     NativeModelReference* model_reference() noexcept;
+    // Borrowed canonical companion, published before Text constructor callbacks.
+    // Not another Text state or factory registration. Null after typed teardown.
+    GuiTextLifetime* text_lifetime() noexcept { return text_lifetime_; }
     GuiWidgetTypeImplementation& implementation();
 
     void bind_scene_00aa6720(NativeNodeBinding*) noexcept;
@@ -93,12 +98,15 @@ public:
     void release_scene_nodes_00aa8320();
 private:
     friend class GuiWidgetOwnerRuntime;
+    friend class GuiTextLifetime;
+    friend class GuiTextChildDeletion;
     GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&);
     GuiLayoutWidget& layout_;
     GuiWidgetOwnerRuntime& runtime_;
     GuiWidgetSceneFlags scene_;
     GuiWidgetBaseExtraFields extra_;
     NativeNodeBinding* node_{};
+    GuiTextLifetime* text_lifetime_{};
     std::unique_ptr<GuiWidgetTypeImplementation> implementation_;
 };
 
@@ -142,6 +150,7 @@ public:
     GuiWidgetOwnerEnvironment& environment() noexcept { return environment_; }
 private:
     friend class GuiWidgetOwner;
+    friend class GuiTextChildDeletion;
     struct ModelRecord;
     GuiWidgetOwnerEnvironment environment_;
     std::unordered_map<GuiLayoutWidget*, std::unique_ptr<GuiWidgetOwner>> widgets_;
