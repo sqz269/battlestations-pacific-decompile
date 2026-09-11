@@ -1,7 +1,7 @@
 {
   "schema": "bsp.native_renderer_default_surfaces.v1",
   "created_utc": "2026-09-11T20:15:13.344760+00:00",
-  "status": "full_raw_source_strict_build_and_qualified_original_parent_full_library_fixture_passed_pending_primary_integration",
+  "status": "complete_actual_storage_primary_main_library_original_parent_COM_mutation_EH_and_strict_Win32_checked",
   "base_commit": "7b823f51e2337c189063ebe41ab7704f7be8440e",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_renderer_default_surfaces",
   "owned_files": [
@@ -1298,5 +1298,114 @@
       "bytes": 4800,
       "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
     }
-  ]
+  ],
+  "primary_integration": {
+    "strict_main_Win32": true,
+    "existing_CTests": 2,
+    "fresh_native_seeds": 8,
+    "actual_main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\default_surfaces_primary\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 38023424,
+      "sha256": "52e9417a646b876a2248029394b2918dcd8d045a29c1ca16421162900e4b62bd"
+    },
+    "worker_pins_verified": 79,
+    "fresh_guarded_spans": 14,
+    "fresh_guarded_bytes": 772,
+    "owned_original_bytes": 562,
+    "fixture_compiles_source_providers": false,
+    "source_owned_entries_unchanged": true,
+    "fixture_body_unchanged": true,
+    "shared_native_string_delta_review": "111d55be BE0A30 actual-header adapter and changed inlining explicitly reviewed; complete raw41DD40 and other initialized object sections/relocations unchanged. No assertion that the entire shared object equals its older worker version.",
+    "abi_compatible": false,
+    "game_validated": false,
+    "current_source_headers": 27,
+    "additional_fixture_inputs": 3,
+    "exact_archive_objects": 10,
+    "counts": {
+      "fresh_original_spans": 14,
+      "fresh_bytes": 772,
+      "owned_original_bytes": 562,
+      "mapped_COFF_sections": 538,
+      "relocations": 1897,
+      "whole_functions": 310,
+      "library_functions": 127,
+      "runtime_immutable_sections": 504,
+      "runtime_phases": 9,
+      "runtime_spans": 16,
+      "original_source_pairs": 4,
+      "matched_DWORDs": 193981,
+      "matched_bytes": 775924,
+      "observed_real_COM_calls": 190
+    },
+    "original_full_parent_executed": true,
+    "full_original_child_providers_executed": false,
+    "native_constructor_states_exercised": [
+      0,
+      1
+    ],
+    "compiled_parent_bytes": 811,
+    "module_exceptions": [
+      {
+        "target": 1623867536,
+        "module": "C:\\WINDOWS\\SysWOW64\\apphelp.dll",
+        "signature": [
+          "Valid",
+          "CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+        ]
+      }
+    ],
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\default_surfaces_primary\\local\\default_surfaces\\verified.json",
+      "bytes": 2637243,
+      "sha256": "fb412552aafaaa06e0036f676fe7b4eeb2a14482101dcd0a88bf5e4545934126"
+    },
+    "build_input_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\default_cache_publish_build_frozen\\manifest.json",
+      "bytes": 6682,
+      "sha256": "c14ff96393bd1f39c2237a3a68fbcf9671791b3e0d5cac9e11a36175df9f5075"
+    },
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\default_surfaces_primary\\sealed.json",
+      "bytes": 36547,
+      "sha256": "682d3d35a8b9f116b27ab267b02c371f4f0530223eb366d06c5d143c1646da6c"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_default_cache_publish_annotations.json",
+    "bytes": 28006,
+    "sha256": "88a6331cd23dbb1d953f41970b94a6bbc95c147711741e871fd8801198af5ea6"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b238d0",
+      "name": "capture_native_renderer_default_surfaces_00b238d0",
+      "cpp_symbol": "bsp::capture_native_renderer_default_surfaces_00b238d0",
+      "source": "src/native_renderer_default_surfaces.cpp",
+      "native_end_exclusive": "00b23b02",
+      "original_abi": "ECX actual renderer, RET, no recovered HRESULT or incidental EAX value contract",
+      "source_abi": "__fastcall ECX raw renderer, EDX const borrowed context pointer",
+      "status": "complete_actual_storage_primary_main_library_original_parent_COM_mutation_EH_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_default_surfaces_audit.json",
+      "original_full_parent_fixture": true,
+      "full_original_children_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "682d3d35a8b9f116b27ab267b02c371f4f0530223eb366d06c5d143c1646da6c"
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b238d0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b238d0\\decompiled.c",
+      "bytes": 6893,
+      "sha256": "b7a66ba816f493e1545590aa3fcf81dfdd084e88b98f06474134d68f22f52843"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_DEFAULT_SURFACES.md",
+    "bytes": 11202,
+    "sha256": "5b742d8e2b926f78e1f31a15f1fac7f0de121003cd3fe23d2da14046a80bdc5a"
+  },
+  "closure_utc": "2026-09-11T20:42:44.104953+00:00"
 }

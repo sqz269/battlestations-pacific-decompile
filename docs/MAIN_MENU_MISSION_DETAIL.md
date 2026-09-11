@@ -87,11 +87,14 @@ are now `CampaignJapan`, `CampaignUs`, `CampaignJapanDlc`, `CampaignUsDlc` and
 
 ## The widgets the page binds
 
-`005861B0` loads three pages with `00AA5840` and keeps their roots:
+`005861B0` loads five pages with `00AA5840`. The three roots used here are
 `FE_worldmap_historical` at `+2F0h` (`0058629C`), `FE_briefing_grid` at `+244h`
-(`0058641A`) and `FE_briefing` at `+248h` (`005864A0`). Every `00AA7E00` lookup
-in `005861B0` runs against `+2F0h`. `00AA7E00` finds an existing child one level
-deep; it creates nothing (`docs/APP_INIT_FONTS_GUI.md`).
+(`0058641A`) and `FE_briefing` at `+248h` (`005864A0`). The other pages are
+`FE_main_listbox` and `FE_main`. The 55 direct-child lookups use those page
+roots and nested groups; they do not all use `+2F0h`. The complete binding
+table and register provenance are in `MAIN_MENU_LAYOUT_BINDING.md` and its
+report. `00AA7E00` finds an existing child one level deep; it creates nothing
+(`docs/APP_INIT_FONTS_GUI.md`).
 
 The widgets `0058C010` drives, with the `005861B0` store that binds each:
 

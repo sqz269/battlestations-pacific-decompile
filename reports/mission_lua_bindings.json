@@ -1,0 +1,378 @@
+{
+  "packet": "cc_mission_natives",
+  "worktree": "agent/cc-mission-natives",
+  "ghidra": "read-only",
+  "docs": [
+    "docs/LUA_BINDING_TABLE.md",
+    "docs/MISSION_LUA_SELF_TABLE.md",
+    "docs/LUA_BINDING_ENTITY.md"
+  ],
+  "binding_table": {
+    "address": "00e0b7b8",
+    "sentinel_row": "00e0c938",
+    "row_bytes": 8,
+    "rows": 560,
+    "distinct_handlers": 557,
+    "handlers_without_ghidra_function": 24,
+    "generator": "tools/lua_bindings_export.py",
+    "export": "config/lua_bindings.json",
+    "registered_by": {
+      "address": "00884be0",
+      "native": "006b8610",
+      "containing_function": "00884be0",
+      "note": "the registration loop, from docs/MISSION_LUA_HOST.md; not re-read by this packet"
+    }
+  },
+  "self_table": {
+    "global": "thisTable",
+    "string_literal": "00ce7494",
+    "key_rule": "decimal text of the u16 at entity+174h",
+    "key_cache_on_entity": "entity+178h, a NativeString",
+    "creation_host_steps": [
+      {
+        "step": "build the globals object over the mission LuaStateOwner at game+1A0Ch",
+        "address": "004e0203",
+        "native": "00b67980",
+        "containing_function": "004dfb70"
+      },
+      {
+        "step": "read the current global thisTable",
+        "address": "004e021a",
+        "native": "00b67800",
+        "containing_function": "004dfb70"
+      },
+      {
+        "step": "test it for nil (lua_type == LUA_TNIL for a bound object, LUA_TNONE for kind 0)",
+        "address": "004e0225",
+        "native": "00b65fb0",
+        "containing_function": "004dfb70"
+      },
+      {
+        "step": "assign a fresh table when it was nil",
+        "address": "004e029b",
+        "native": "00b67580",
+        "containing_function": "004dfb70"
+      },
+      {
+        "step": "publish the LobbySettings table",
+        "address": "004e02d0",
+        "native": "005e2f00",
+        "containing_function": "004dfb70"
+      },
+      {
+        "step": "clear the global recon",
+        "address": "004e0321",
+        "native": "00b67350",
+        "containing_function": "004dfb70"
+      }
+    ],
+    "per_entity_host_steps": [
+      {
+        "step": "format the decimal key from the u16 id",
+        "address": "00928a2f",
+        "native": "004260b0",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "cache the key on the entity at +178h",
+        "address": "00928a54",
+        "native": "0041dd40",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "read the entity's current self object",
+        "address": "00928a9f",
+        "native": "00927b40",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "clear a stale slot",
+        "address": "00928aff",
+        "native": "00b67350",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "assign a fresh table under the key",
+        "address": "00928b53",
+        "native": "00b67580",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "self.ID = key, as a string",
+        "address": "00928ba5",
+        "native": "00b67630",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "self.Dead = false",
+        "address": "00928bc7",
+        "native": "00b673a0",
+        "containing_function": "00928a00"
+      },
+      {
+        "step": "self.Ptr = lightuserdata(entity)",
+        "address": "00928c2f",
+        "native": "00b67530",
+        "containing_function": "00928a00"
+      }
+    ],
+    "getter": {
+      "step": "thisTable[entity->keyString]",
+      "address": "00927ba5",
+      "native": "00b68100",
+      "containing_function": "00927b40",
+      "callers": 25
+    },
+    "class_field_setters": [
+      {
+        "step": "self.Class = VehicleClass[index]",
+        "address": "009293e0",
+        "native": "00b675d0",
+        "containing_function": "009292b0"
+      },
+      {
+        "step": "self.Class = DeviceClass[entity->[354h]->[6Ch]]",
+        "address": "00440ed2",
+        "native": "00b675d0",
+        "containing_function": "00440e10"
+      }
+    ]
+  },
+  "named_call_self": {
+    "routine": "00887750",
+    "abi": "__thiscall, RET 1Ch, seven stack arguments; argument 1 is the NativeString self key",
+    "guard": "00887 8cd tests the NativeString size word, not the data pointer",
+    "host_steps": [
+      {
+        "step": "lua_getglobal(\"thisTable\")",
+        "address": "008878e1",
+        "native": "006b8460",
+        "containing_function": "00887750"
+      },
+      {
+        "step": "lua_pushstring(key), empty string at 00f87904 when the data pointer is null",
+        "address": "008878f6",
+        "native": "006b8120",
+        "containing_function": "00887750"
+      },
+      {
+        "step": "lua_gettable(-2)",
+        "address": "00887900",
+        "native": "006b8470",
+        "containing_function": "00887750"
+      },
+      {
+        "step": "lua_remove(-2)",
+        "address": "0088790a",
+        "native": "006b7ea0",
+        "containing_function": "00887750"
+      }
+    ]
+  },
+  "create_script": {
+    "handler": "00898750",
+    "host_steps": [
+      {
+        "step": "allocate the 0x1E4 script entity",
+        "address": "00898841",
+        "native": "00bf55be",
+        "containing_function": "00898750"
+      },
+      {
+        "step": "construct it",
+        "address": "0089886f",
+        "native": "00928630",
+        "containing_function": "00898750"
+      },
+      {
+        "step": "argument count, to decide the forwarded stack range",
+        "address": "00898940",
+        "native": "00b65eb0",
+        "containing_function": "00898750"
+      },
+      {
+        "step": "read Lua argument 0 as the function name",
+        "address": "00898959",
+        "native": "00b677e0",
+        "containing_function": "00898750"
+      },
+      {
+        "step": "register the name against the entity with the forwarded range [first, -1]",
+        "address": "0089898b",
+        "native": "009290a0",
+        "containing_function": "00898750"
+      },
+      {
+        "step": "the registration forwards to the thread-safe named call with the self key",
+        "address": "00929139",
+        "native": "00887e50",
+        "containing_function": "009290a0"
+      }
+    ],
+    "forwarded_range": "00898945 CMP EAX,1 / 0089894a MOV EDI,2; 00887ee1 and 00887f05 normalise both ends, a first index of zero means no arguments"
+  },
+  "entity_return_convention": {
+    "bindings": 19,
+    "reference_reading": "00898e30",
+    "host_steps": [
+      {
+        "step": "read the u16 entity id at +174h",
+        "instruction": "00898f98 MOVZX EAX, word ptr [EAX + 0x174]",
+        "containing_function": "00898e30",
+        "note": "an instruction, not a call, so it carries no address/native pair"
+      },
+      {
+        "step": "find the entity by name, NativeString passed by value",
+        "address": "00898f8b",
+        "native": "0088b1b0",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "format the decimal key",
+        "address": "00898fa7",
+        "native": "004260b0",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "frame[\"thisTable\"], which is the global because the frame object is kind 3",
+        "address": "00898fc4",
+        "native": "00b67910",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "thisTable[key]",
+        "address": "00898fda",
+        "native": "00b678e0",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "lua_pushvalue of the stored table",
+        "address": "00898fe9",
+        "native": "00b663d0",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "lua_pushnil on the not-found branch",
+        "address": "0089903c",
+        "native": "00b66430",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "return lua_gettop(L) - frame.base",
+        "address": "00899045",
+        "native": "00b66400",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "open the frame object: kind 3, slot base 1, entry top cached at +0Ch",
+        "address": "00898f09",
+        "native": "00b679b0",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "read Lua argument 0",
+        "address": "00898f20",
+        "native": "00b677e0",
+        "containing_function": "00898e30"
+      },
+      {
+        "step": "that argument as a string",
+        "address": "00898f2f",
+        "native": "00b662b0",
+        "containing_function": "00898e30"
+      }
+    ],
+    "reverse_direction": {
+      "step": "table[\"Ptr\"] then lua_touserdata; already named and reconstructed",
+      "address": "00888ac3",
+      "native": "00b67800",
+      "containing_function": "00888aa0",
+      "reconstruction": "object_from_lua_table_00888aa0 in src/object_handle_resolvers.cpp",
+      "callers": 278
+    },
+    "entity_returning_handlers": [
+      "00892860", "00896750", "00898750", "00898e30", "008990b0", "00899af0",
+      "0089c360", "0089cfe0", "0089d250", "0089d470", "008a6de0", "008a9460",
+      "008ab070", "008c2c50", "008c3610", "008c3880", "008cefc0", "008cf350",
+      "00944fd0"
+    ],
+    "not_entity_returning": {
+      "Effect": "008a9730"
+    }
+  },
+  "routines": [
+    {
+      "name": "mission_entity_self_key",
+      "address": "00884240",
+      "also": "004260b0",
+      "coverage": "complete for 00884240; 004260b0's NativeString allocation is not modelled, only its decimal result"
+    },
+    {
+      "name": "mission_binding_returns_entity",
+      "address": "00e0b7b8",
+      "coverage": "complete for the nineteen rows whose own bodies carry 00ce7494"
+    },
+    {
+      "name": "mission_binding_argument_slot",
+      "address": "00b67720",
+      "coverage": "partial: the non-kind-2 branch 00b677b7-00b677d4 only; the kind-2 branch 00b67735-00b67772 is unread"
+    },
+    {
+      "name": "mission_binding_result_count",
+      "address": "00b66400",
+      "coverage": "complete"
+    },
+    {
+      "name": "mission_named_call_self",
+      "address": "00887750",
+      "coverage": "partial: the self-key guard and push 008878c7-0089790f only; arguments 2 through 7 of the routine are unread"
+    },
+    {
+      "name": "mission_self_table_needs_creation",
+      "address": "004dfb70",
+      "coverage": "partial: 004e01f7-004e02ac only; the rest of BSP_Game_LoadMissionScene is another packet's"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "the vtable 00ce7494 (docs/MISSION_LUA_MACHINE.md, mission_lua_self_table follow-up row)",
+      "is": "00ce7494 is the string \"thisTable\"",
+      "evidence": "python tools/bsp.py ghidra bytes 00ce7494 gives 74 68 69 73 54 61 62 6c 65 00; all thirty-three referencing functions push it as a name argument to 00b67800, 00b67910 or 006b8460"
+    },
+    {
+      "was": "00884240 is one of the two functions that populate the thisTable self object",
+      "is": "00884240 is _vsprintf_s(dst, 8, fmt, va), eleven instructions, sole caller 00885da0; it formats the self key and writes into no table",
+      "evidence": "00884240-00884259; PUSH 0x8 at 00884250 is the buffer size; 00885da0 case 3 passes \"%d\" at 00ce3a34"
+    },
+    {
+      "was": "the FindEntity and Effect rows are the entity-returning bindings",
+      "is": "Effect 008a9730 returns no entity; nineteen other rows do",
+      "evidence": "008a9730 never references 00ce7494 and never calls 00b67910 or 00b663d0; it scans a parameter table with 00b67080 and takes entities through 008889c0 and 00888aa0"
+    }
+  ],
+  "probe": {
+    "executable": "bsp_mission_script_probe",
+    "new_flags": ["--no-self-table", "--recon-tables", "--sweep", "--quiet"],
+    "installed_scripts": 299,
+    "loaded_and_ran_clean_with_recon_tables": 299,
+    "loaded_and_ran_clean_without_recon_tables": 297,
+    "previous_figure": 293,
+    "remaining_failures_without_recon_tables": [
+      "COTP-USN/usn_02_battle_of_cape_esperance",
+      "COTP-USN/PRCPUS/usn_02_battle_of_cape_esperance"
+    ],
+    "remaining_failure_reason": "commandhelpers.lua:12343 indexes the global recon, which 004e0305 nils on every mission load and whose only builder 00803a40 has the bring-up step 004dc6a0 as its sole caller",
+    "bindings_reached_at_load_time": 140,
+    "bindings_reached_by_one_script_only": 20,
+    "variant_rule": "no variant-suffixed mission script ships; Scripts/missions holds 299 files, all .lua",
+    "divergences": [
+      "one C function plus a row-index upvalue instead of 560 distinct natives, as before this packet",
+      "the sweep reuses one Lua state across missions and clears the four entry-point globals between them, because rebuilding the global folders per mission costs about 200k lines",
+      "entity tables are minted per call with a synthetic id; the native's ids come from real entities",
+      "self.Class takes the first row of VehicleClass, falling back to DeviceClass, because the probe has no entity kind to select with"
+    ]
+  },
+  "validation": "Win32 /W4 /WX build clean, the existing CTest passes, sweep run against the installed copy",
+  "game_validated": false,
+  "abi_compatible": false
+}

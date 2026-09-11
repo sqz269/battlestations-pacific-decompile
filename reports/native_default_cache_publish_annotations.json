@@ -1,0 +1,245 @@
+[
+  {
+    "address": "00b238d0",
+    "before": {
+      "address": "00b238d0",
+      "function_name": "BSP_D3D9Renderer_CaptureDefaultSurfaces",
+      "comment": "[BSP reconstruction 00b238d0]\nGets render target 0 and depth surface; constructs 34h surface wrappers via 00b3f630(surface,0,0), installs intrusive references at +197ch/+198ch, releases temporary wrapper/getter references, then binds depth via 00b21690. Assembly confirms COM ownership despite broken decompiler stack tracking. Full routine not ported.\n\n[BSP reconstruction 00b238d0] update\nECX renderer,RET. GetRT0, extra GetDesc, constructwrapper(surface,0,0), replace+197C retainbeforerelease, drop getter; getdepth, sameconstructor(surface,0,0), replace+198C and drop getter, binddepth00b21690. BOTH recreation-kind fields zero, including depth. Typed COM ownership fragment implemented; fullintrusivewrapper/registry/allocator and redundant accessor refpairs unported. ExistingD3D9probe checks reacquisition and binding. See docs/DEFAULT_SURFACES.md.\n\n[BSP reconstruction 00b238d0] update\nECX renderer,RET. GetRT0, extra GetDesc, constructwrapper(surface,0,0), replace+197C retainbeforerelease, drop getter; getdepth, sameconstructor(surface,0,0), replace+198C and drop getter, binddepth00b21690. BOTH recreation-kind fields zero, including depth. Typed COM ownership fragment implemented; fullintrusivewrapper/allocator/support-singleton lifetime and redundant accessor refpairs unported. ExistingD3D9probe checks reacquisition and binding. See docs/DEFAULT_SURFACES.md. Correction:00b3e730 called byconstructor only ensures/registers its ownsingleton for shutdown, not the surface. Default capture does not append renderer resetlist; explicit offscreenfactory00b2a7c0 does. See SURFACE_REGISTRATION_AUDIT."
+    },
+    "after": {
+      "address": "00b238d0",
+      "old_name": "BSP_D3D9Renderer_CaptureDefaultSurfaces",
+      "name": "BSP_D3D9Renderer_CaptureDefaultSurfaces",
+      "saved_body_end": "00b23b01",
+      "evidence": "Complete562-byte raw default-surface capture. New ECX renderer/EDX borrowed12-byte context; original ECX only, RET. Canonical bound surface pool must equal actual owner context pool. Preserve captured/current device and output cells, color GetDesc, conditional canonical allocation, constructor flags0/kind0 for BOTH color and depth, shared volatile raw unwind spill, old-owner capture BEFORE disarm, incoming publication before atomic retain/old release, and unconditional temporary decrement. Only reached terminal D619A0[BD30E0,B3F5B0]; BD30E0 rereads current profile/slot4, then full delete flags1. Color cleanup conditional pair then current Release; depth current Release first, then fresh conditional pair. Final current198C uses full B21690 and its own optional guard. No outer guard, HRESULT recovery, rollback or generalized COM cleanup. Constructor-only C++ noexcept cleanup returns current raw spill; no native SEH/frame ABI claim. Primary main strict Win32/two CTests/eight seeds;79 worker pins,27 current files plus3 fixture inputs,14 fresh spans772 bytes. Same frozen main library,ten exact archive members;538 mapped COFF sections1897 relocs310 complete functions127 library,504 runtime immutable sections,9 postimage phases16 spans. Four original-parent/full-library pairs (baseline, mutation, color-constructor throw, depth-constructor throw) match193981 DWORDs775924 bytes190 actual COM calls; native states0/1 observed. Original parent except one handler operand relocation; original BD30E0 and handler/maps/funclets execute; six explicit full-library/FH3 bridges, not original child execution. Shared BE0A30 changes reviewed and included in current linked/runtime proof. reports/native_renderer_default_surfaces_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cbcef0",
+    "before": {
+      "address": "00cbcef0",
+      "function_name": "Unwind@00cbcef0"
+    },
+    "after": {
+      "address": "00cbcef0",
+      "old_name": "Unwind@00cbcef0",
+      "name": "Unwind@00cbcef0",
+      "saved_body_end": "00cbcef7",
+      "evidence": "Complete8-byte constructor-only unwind action: reload current original EBP-30 raw allocation spill and tail-jump full canonical B3DCC0. State 0 predecessor-1. Ordinary original constructor failure reached this action; no new standalone C++ function claim.  Primary main strict Win32/two CTests/eight seeds;79 worker pins,27 current files plus3 fixture inputs,14 fresh spans772 bytes. Same frozen main library,ten exact archive members;538 mapped COFF sections1897 relocs310 complete functions127 library,504 runtime immutable sections,9 postimage phases16 spans. Four original-parent/full-library pairs (baseline, mutation, color-constructor throw, depth-constructor throw) match193981 DWORDs775924 bytes190 actual COM calls; native states0/1 observed. Original parent except one handler operand relocation; original BD30E0 and handler/maps/funclets execute; six explicit full-library/FH3 bridges, not original child execution. Shared BE0A30 changes reviewed and included in current linked/runtime proof. reports/native_renderer_default_surfaces_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cbcef8",
+    "before": {
+      "address": "00cbcef8",
+      "function_name": "Unwind@00cbcef8"
+    },
+    "after": {
+      "address": "00cbcef8",
+      "old_name": "Unwind@00cbcef8",
+      "name": "Unwind@00cbcef8",
+      "saved_body_end": "00cbceff",
+      "evidence": "Complete8-byte constructor-only unwind action: reload current original EBP-30 raw allocation spill and tail-jump full canonical B3DCC0. State 1 predecessor-1. Ordinary original constructor failure reached this action; no new standalone C++ function claim.  Primary main strict Win32/two CTests/eight seeds;79 worker pins,27 current files plus3 fixture inputs,14 fresh spans772 bytes. Same frozen main library,ten exact archive members;538 mapped COFF sections1897 relocs310 complete functions127 library,504 runtime immutable sections,9 postimage phases16 spans. Four original-parent/full-library pairs (baseline, mutation, color-constructor throw, depth-constructor throw) match193981 DWORDs775924 bytes190 actual COM calls; native states0/1 observed. Original parent except one handler operand relocation; original BD30E0 and handler/maps/funclets execute; six explicit full-library/FH3 bridges, not original child execution. Shared BE0A30 changes reviewed and included in current linked/runtime proof. reports/native_renderer_default_surfaces_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bbc6f0",
+    "before": {
+      "address": "00bbc6f0",
+      "function_name": "FUN_00bbc6f0"
+    },
+    "after": {
+      "address": "00bbc6f0",
+      "old_name": "FUN_00bbc6f0",
+      "name": "BSP_CausticsTextureSource_Create",
+      "saved_body_end": "00bbc73f",
+      "evidence": "Allocate exactly 34h through existing object CRT service, arm only captured-allocation unwind after allocation returns; if nonnull call full C30470 and write final D64478; otherwise return zero. No factory/profile input read. Preserve uninitialized bytes and the native absence of resource destruction on constructor failure. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bbc810",
+    "before": {
+      "address": "00bbc810",
+      "function_name": "FUN_00bbc810"
+    },
+    "after": {
+      "address": "00bbc810",
+      "old_name": "FUN_00bbc810",
+      "name": "BSP_ShoreWaveTextureSource_Create",
+      "saved_body_end": "00bbc85f",
+      "evidence": "Same full allocation/constructor/failure schedule as BBC6F0, with final resource profile D644B4. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c30470",
+    "before": {
+      "address": "00c30470",
+      "function_name": "FUN_00c30470"
+    },
+    "after": {
+      "address": "00c30470",
+      "old_name": "FUN_00c30470",
+      "name": "BSP_TextureSource_Construct",
+      "saved_body_end": "00c30492",
+      "evidence": "Call B19980 first; write D79B54 at +0; zero DWORDs +10,+14,+18,+8 in order, then byte+1C; return same pointer. Do not initialize other bytes or install a C++ vtable. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19980",
+    "before": {
+      "address": "00b19980",
+      "function_name": "FUN_00b19980"
+    },
+    "after": {
+      "address": "00b19980",
+      "old_name": "FUN_00b19980",
+      "name": "BSP_TextureResourceBase_Construct",
+      "saved_body_end": "00b19995",
+      "evidence": "Write original identity CEB130 at +0, refcount DWORD +4=1, original identity D5E554 at +0, return pointer; no null/type/read validation. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19e40",
+    "before": {
+      "address": "00b19e40",
+      "function_name": "BSP_ResourceCache_CopyRequestedName"
+    },
+    "after": {
+      "address": "00b19e40",
+      "old_name": "BSP_ResourceCache_CopyRequestedName",
+      "name": "BSP_ResourceCache_CopyRequestedName",
+      "saved_body_end": "00b19e8f",
+      "evidence": "Capture output/requested and their identity comparison before zeroing both output words. Identity then skips copying without freeing prior output. Distinct path resizes through complete current actual-header provider with preserve=true, rereads source length, then current destination length/source data/destination data in native order for memcpy. No cleanup armed for resize/copy failure. Options and incoming ECX are not read. After native pointer captures, omit zero-byte memcpy, as required by the established actual-header C++ boundary. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004ddb20",
+    "before": {
+      "address": "004ddb20",
+      "function_name": "FUN_004ddb20"
+    },
+    "after": {
+      "address": "004ddb20",
+      "old_name": "FUN_004ddb20",
+      "name": "BSP_ResourceCache_RetainResource",
+      "saved_body_end": "004ddb34",
+      "evidence": "Capture resource; call real InterlockedIncrement at resource+4; return captured resource. No null guard, resource profile read, clone, allocation or destructor dispatch. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19b90",
+    "before": {
+      "address": "00b19b90",
+      "function_name": "FUN_00b19b90"
+    },
+    "after": {
+      "address": "00b19b90",
+      "old_name": "FUN_00b19b90",
+      "name": "BSP_ResourceFactoryTree_LowerBound",
+      "saved_body_end": "00b19be2",
+      "evidence": "Tree+4=head, head+4=root, node nil+19. Candidate initially captured head. While non-nil compare current node+C header against current key with zero-length empty rules and current CRT _stricmp; less descends right+8, otherwise capture node and descend left+0. No tree copy, allocation, ownership, validation or population. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19d60",
+    "before": {
+      "address": "00b19d60",
+      "function_name": "FUN_00b19d60"
+    },
+    "after": {
+      "address": "00b19d60",
+      "old_name": "FUN_00b19d60",
+      "name": "BSP_ResourceFactoryTree_Find",
+      "saved_body_end": "00b19dc5",
+      "evidence": "Call lower_bound before null-owner returning CRT validation. Compare candidate to current head; reverse comparator uses complete actual-header 443D00. Miss rereads current head. Capture output owner and node before writing output+0 then output+4, preserving aliasing and returning-CRT continuation. Do not skip invalid stores or substitute exceptions. Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cc4b70",
+    "before": {
+      "address": "00cc4b70",
+      "function_name": "Unwind@00cc4b70"
+    },
+    "after": {
+      "address": "00cc4b70",
+      "old_name": "Unwind@00cc4b70",
+      "name": "Unwind@00cc4b70",
+      "saved_body_end": "00cc4b7a",
+      "evidence": "Complete11-byte creator unwind action MOV EAX,[EBP-10]; PUSH EAX; CALL returning BF65AC; POP ECX; RET. State0 predecessor-1. Restored hidden two-byte post-free tail in saved analysis. Evidence-only action, no extra reconstructed source entry. No original creator exception was injected and the source catch is optimized away.  Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00cc4bb0",
+    "before": {
+      "address": "00cc4bb0",
+      "function_name": "Unwind@00cc4bb0"
+    },
+    "after": {
+      "address": "00cc4bb0",
+      "old_name": "Unwind@00cc4bb0",
+      "name": "Unwind@00cc4bb0",
+      "saved_body_end": "00cc4bba",
+      "evidence": "Complete11-byte creator unwind action MOV EAX,[EBP-10]; PUSH EAX; CALL returning BF65AC; POP ECX; RET. State0 predecessor-1. Restored hidden two-byte post-free tail in saved analysis. Evidence-only action, no extra reconstructed source entry. No original creator exception was injected and the source catch is optimized away.  Primary main strict Win32/two CTests/eight seeds;77 sealed worker pins plus56 report pins,13 current files plus6 declaration-only fixture headers,25 fresh spans1213 bytes including503 owned and22 EH-action bytes. One unchanged fixture links only the same frozen main library: all eight original bodies execute with explicit current CRT/resize/comparator bridges;232 trace words match worker exactly. Six exact archive objects166 complete code sections10193 bytes326 relocations; only these six library members link. Owned lower-bound is inlined into source find; its standalone COMDAT is not linked. Main shared BE0A30 methods changed separately and are not linked here. Creator EH/null-allocation static-only; source catch optimized away. Returning invalid callbacks occur in actual stricmp, NOT find null-owner site. No original helper internals/runtime-code-postimage/native SEH/game claim. reports/native_resource_cache_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5e490",
+    "before": {
+      "address": "00b5e490",
+      "function_name": "FUN_00b5e490"
+    },
+    "after": {
+      "address": "00b5e490",
+      "old_name": "FUN_00b5e490",
+      "name": "BSP_RendererSurfaceSave_PublishFilename",
+      "saved_body_end": "00b5e4fa",
+      "evidence": "Complete107-byte queue publisher; native ECX worker/stack rawheader/RET4, new fixed EDX context and saved EBP. Enter captured48/depth; capture currentproducer-selected destination header. Exact identity skips resize/copy. Full actual41DD40 preserve1 then current source length gate, current destination length/source data/destination data captures; host memmove for valid nonwrapping overlapping ranges, zero-byte omitted. Reread producer, DWORD-wrapped increment and signed modulo5; reread current lock48 for depth decrement/Leave. No EH/unlock rollback or queue-policy repair. Primary main strict Win32/two CTests/eight seeds;91 worker pins23 current files21 fresh spans2187 bytes (overlaps included),351 owned bytes. Seven exact main archive objects266 mapped COFF sections746 relocations81 imports8 actual COM/D3DX observations, all16643 runtime code bytes. Same frozen main library, unchanged fixture, one real hidden8x8 HAL capture/full pooled publisher/actual save worker:64 pixels FF336699 and BMP RGB51,102,153,Pitch32; thread returned0. Full107/235/9 original to113/243/9 compiled instruction comparisons allow only documented changes. Original bodies NOT executed. No failure/mutation/other pitch/full-lifetime/native SEH/ABI/game claim. reports/native_renderer_surface_save_publish_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b23c50",
+    "before": {
+      "address": "00b23c50",
+      "function_name": "BSP_D3D9Renderer_CopyRenderTargetToOpaqueSurface",
+      "comment": "[BSP reconstruction 00b23c50]\nRecovered vtable+110h. Nonempty argument triggers surface allocation, D3DXLoadSurfaceFromSurface from current render target, LockRect alpha bits OR ff000000, then output helper00b5e490. Exact output format/API and pitch behavior need assembly review; not ported."
+    },
+    "after": {
+      "address": "00b23c50",
+      "old_name": "BSP_D3D9Renderer_CopyRenderTargetToOpaqueSurface",
+      "name": "BSP_RendererSurfaceSave_CaptureOpaqueRenderTarget",
+      "saved_body_end": "00b23d3a",
+      "evidence": "Complete235-byte capture parent, compiled243 after documented context/selector/import changes. Zero raw source length skips all renderer/context reads. Full acquire B5E380 on embedded1D2C with currentdevice1A10. Capture current D5F0A8 profile before surface1D24 publication, read borrowed full300-byte window current+128 afterward and invoke completeB24DC0. Source wrapper+2C before currentdestination1D24; actual d3dx9_40 D3DXLoadSurfaceFromSurface(dst,0,0,src,0,0,1,0), ignored HRESULT. Current GetDesc/LockRect; capture pBits once, contiguous DWORD OR FF000000 ignores Pitch and rereads wrapped Height*Width after every store. Current UnlockRect and extra final GetDesc before full B5E490. No EH/null/HRESULT recovery/COM cleanup. Borrowed concrete import/module/string-pool/profile domain; existing save binding fixed through every thread return. Primary main strict Win32/two CTests/eight seeds;91 worker pins23 current files21 fresh spans2187 bytes (overlaps included),351 owned bytes. Seven exact main archive objects266 mapped COFF sections746 relocations81 imports8 actual COM/D3DX observations, all16643 runtime code bytes. Same frozen main library, unchanged fixture, one real hidden8x8 HAL capture/full pooled publisher/actual save worker:64 pixels FF336699 and BMP RGB51,102,153,Pitch32; thread returned0. Full107/235/9 original to113/243/9 compiled instruction comparisons allow only documented changes. Original bodies NOT executed. No failure/mutation/other pitch/full-lifetime/native SEH/ABI/game claim. reports/native_renderer_surface_save_publish_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b24dc0",
+    "before": {
+      "address": "00b24dc0",
+      "function_name": "BSP_D3D9Renderer_GetField197C_Provisional",
+      "comment": "[BSP reconstruction 00b24dc0]\nHypothesis, not a recovered symbol. Provisional. Renderer virtual +128h: mov eax,[ecx+197Ch]; ret 4 (one ignored stack argument). Field meaning not established (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator."
+    },
+    "after": {
+      "address": "00b24dc0",
+      "old_name": "BSP_D3D9Renderer_GetField197C_Provisional",
+      "name": "BSP_D3D9Renderer_GetField197C_Provisional",
+      "saved_body_end": "00b24dc8",
+      "evidence": "Complete exact9-byte MOV EAX,[ECX+197C]; RET4 getter. Stack scalar and new reserved EDX ignored. No owner lifetime or index interpretation inferred; still provisional field name. Primary main strict Win32/two CTests/eight seeds;91 worker pins23 current files21 fresh spans2187 bytes (overlaps included),351 owned bytes. Seven exact main archive objects266 mapped COFF sections746 relocations81 imports8 actual COM/D3DX observations, all16643 runtime code bytes. Same frozen main library, unchanged fixture, one real hidden8x8 HAL capture/full pooled publisher/actual save worker:64 pixels FF336699 and BMP RGB51,102,153,Pitch32; thread returned0. Full107/235/9 original to113/243/9 compiled instruction comparisons allow only documented changes. Original bodies NOT executed. No failure/mutation/other pitch/full-lifetime/native SEH/ABI/game claim. reports/native_renderer_surface_save_publish_audit.json"
+    },
+    "status": "applied"
+  }
+]

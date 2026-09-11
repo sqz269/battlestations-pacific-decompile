@@ -151,3 +151,6 @@ concrete inputs; current negative xrefs do not establish dead code or lifetime.
 
 Frozen discovery and source pins are under ignored
 `local/renderer_reset_release_discovery/`. No build/runtime result is claimed.
+
+
+Primary verified all 232 sealed worker files, 112 additional report pins and 50 freshly guarded spans (3,994 bytes). General clear/reset still lacks actual texture-stage profile provenance and logical-vertex retained4C owner terminal/lifetime. Four reset vertex calls all use(0,0). Shader cells176C/1770 are borrowed zeros. B27A80/B27B90 source work is separate. Immutable discovery evidence: `local/reset_release_discovery_primary/`. No source, original-body execution or gameplay claim is added by this review.
