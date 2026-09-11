@@ -1,0 +1,67 @@
+{
+  "packet": "orch2_game_profile_reset",
+  "analysis_date": "2026-09-10",
+  "status": "six_normal_flow_host_projections_built_and_focused_fixture_checked",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read_only_worker; bsp.py ghidra verifies project/program before every batch",
+  "source": "src/profile_reset.cpp",
+  "header": "include/bsp/profile_reset.hpp",
+  "document": "docs/GAME_PROFILE_RESET.md",
+  "reconstructed": [
+    {"address": "007fdb20", "name": "reset_profile_007fdb20", "abi": "ECX profile, no stack args, RET", "scope": "field/container reset; existing settings and unlock implementations reused; native score object lifecycle external"},
+    {"address": "007f9290", "name": "set_profile_name_007f9290", "abi": "ECX profile, NativeString pointer, RET 4", "scope": "assign player_name_3c; mirror nonempty display_name_50 else player_name_3c, capped31bytes/NUL, to game+1ff0"},
+    {"address": "007f9340", "name": "set_profile_display_name_007f9340", "abi": "ECX profile, NativeString pointer, RET 4", "scope": "assign display_name_50; mirror nonempty display_name_50 else player_name_3c, capped31bytes/NUL, to game+1ff0"},
+    {"address": "007ff100", "name": "request_profile_read_007ff100", "abi": "ECX profile, NativeString pointer, callback, RET 8", "scope": "storage query and request, callback slot, immediate reset branch"},
+    {"address": "007fefe0", "name": "complete_profile_read_007fefe0", "abi": "no args, RET", "scope": "state1 discard versus reader/deserialize/settings/commit dispatch; backend external"},
+    {"address": "007fa710", "name": "request_profile_write_007fa710", "abi": "ECX profile, NativeString pointer, callback, char force, RET 0c", "scope": "force bypasses comparison; zero/nonzero header distinction then case insensitive C-string prefixes; unconditional name and callback assignment"}
+  ],
+  "analyzed_only": [
+    {"address": "007fee20", "finding": "profile constructor builds containers then calls reset; does not initialize +64 pointer, XUID or version"},
+    {"address": "00920e10", "finding": "24h mission progress constructor creates large record tree and two string/int trees"},
+    {"address": "007fd780", "finding": "destroys three trees in reverse order; full raw extent through007fd843, exported body still truncated"},
+    {"address": "005070c0", "finding": "case insensitive NativeString/int map operator[]; uses existing C++ map, no duplicate library implementation"},
+    {"address": "00590e60", "finding": "selected-profile caller resets at00591042, sets name at00591058, optionally requests write at005910fb"},
+    {"address": "0067cc60", "finding": "existing sign-in implementation retained; checked reset, name, XUID, read/write callsites"},
+    {"address": "007fa670", "finding": "write completion dispatcher not implemented; no Ghidra function at analysis time"}
+  ],
+  "no_ghidra_function": [
+    {"start": "007fefe0", "named_by_packet": true, "final_instruction": "007ff0f5", "instruction": "RET", "instruction_length": 1, "inclusive_end": "007ff0f5", "early_return": "007ff044"},
+    {"start": "007fa670", "named_by_packet": false, "final_instruction": "007fa70c", "instruction": "RET", "instruction_length": 1, "inclusive_end": "007fa70c", "early_return": "007fa6c5"}
+  ],
+  "ghidra_tail_limitation": {"start": "007fd780", "stored_body_end": "007fd7c9", "raw_final_instruction": "007fd843", "instruction_length": 1, "inclusive_end": "007fd843", "free_calls": ["007fd7c5", "007fd7f5", "007fd824"], "primary_repair_status": "decoded tail and cleared overrides; stored function body remains short; report profile_tail_flow_repair.json belongs to primary"},
+  "corrections_to_prior_docs": [
+    "+30h is total of mission-progress +18h counters, not SelectedMissionID; actual SelectedMissionID is string+68h",
+    "nine boolean entries+14h are SavedLobbyFilters, not campaign mission slots",
+    "0067ce4c ->007ff100 reads/deserializes;0067cea4 ->007fa710 requests write; old PressStartHost queue_save/queue_load names are inverted",
+    "reset preserves XUID+48h, version+e8h, byte+58h, vector+bch and external game+1ff0 name buffer",
+    "independent review correction: both setters mirror display+50h if nonempty else player+3Ch; verified007f92c7..007f92cf and007f9377..007f937e",
+    "independent review correction:00449af0 distinguishes zero/nonzero header lengths, then00449b29 __stricmp stops at embeddedNUL; full-view comparison was incorrect"
+  ],
+  "explicit_external_contracts": [
+    "native mission score object allocation/destruction and rich score record ownership",
+    "storage manager queries, state and asynchronous task registration",
+    "archive reader, full007fdf00 deserializer, native buffer ownership",
+    "selected-user controls008d45d0 and settings restore008d7a50",
+    "settings application008d5b50, profile DLC refresh/commit007fae70",
+    "write completion007fa670/007fa220 and storage backend"
+  ],
+  "validation": {
+    "verify_seeds": "passed; 8/8 original byte spans matched disk",
+    "build": "scripts/build.ps1 Release passed MSVC Win32 /W4 /WX /fp:strict",
+    "existing_ctest": "2/2 passed: reconstructed_math, native_math_differential",
+    "targeted_probe": "same local compiled fixture extended and passed: prior reset/callback checks plus display alias precedence, clearing alias fallback, embeddedNUL comparison and empty-versus-nonempty header distinction",
+    "build_log": "local/profile_reset_review_build.log",
+    "probe_log": "local/profile_reset_review_probe.log",
+    "abi_compatible": false,
+    "real_save_tested": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "new names are hypotheses, not recovered symbols",
+    "+94h record scalar semantics and +08h string-list meaning are not assigned",
+    "normal-flow projection does not reproduce native SEH cleanup or allocator layout",
+    "constructor requires valid prior storage; no invented blanket zero-initialization",
+    "state1 branch meaning retained numerically rather than guessed storage-error enum"
+  ]
+}
