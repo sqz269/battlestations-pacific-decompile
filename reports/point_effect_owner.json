@@ -1,0 +1,88 @@
+{
+  "packet": "orch3_point_effect_owner_l",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verified_live_function_count": 63100,
+  "source": "src/point_effect_owner.cpp",
+  "header": "include/bsp/point_effect_owner.hpp",
+  "evidence": "docs/POINT_EFFECT_OWNER.md",
+  "functions": [
+    {
+      "address": "0049c940",
+      "name": "create_point_announcement_0049c940",
+      "scope": "Complete allocation/constructor-call/raw-free-on-unwind wrapper with mandatory actual 0049C000 constructor boundary",
+      "native_abi": "ECX manager; stack captured XYZ, secondary XYZ, signed descriptor; EAX owner/null; RET0C",
+      "native_last_instruction": "0049c9b6",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "0049c9b8",
+      "instructions": 40,
+      "bytes": 121,
+      "gaps": []
+    },
+    {
+      "address": "008689c0",
+      "name": "create_point_effect_008689c0",
+      "scope": "Complete orchestration in the declared nonthrowing terminal-reference domain; actual manager, eligibility, allocation and constructor bindings required",
+      "native_abi": "ECX fresh output-slot; EDX parent transform; stack consumed template, XYZ, transform byte, option byte, tail word; EAX output-slot; RET14",
+      "native_last_instruction": "00868be5",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00868be7",
+      "instructions": 172,
+      "bytes": 552,
+      "gaps": [],
+      "reused": ["CameraMatrix", "CameraTransform", "refresh_camera_world_00b6db70", "transform_point_004142e0", "RenderCommandReference borrowing actual +04", "retain_render_command_reference", "release_render_command_reference", "SystemSingletonCriticalSection", "singleton_enter_critical_section", "singleton_leave_critical_section"],
+      "exception_evidence": "C9515C -> DC6FDC, map DC7000: state3 raw-free C95149; state2 unlock C95128/411EE0; state1 original template release C95120/41DE40; state0 conditional output cleanup C95130; unassigned state4 temporary cleanup C95154. Callee 8680B0 consumes extra argument using C94FD0/41DE40 on EH and its normal tail."
+    }
+  ],
+  "fragment": {
+    "address": "0049c000",
+    "name": "copy_point_record_xyz_0049c1db",
+    "scope": "Six ordered x87 XYZ load/store operations only, after selection/validation of actual record+08 storage",
+    "instructions": ["0049c1db", "0049c1e1", "0049c1e6", "0049c1e9", "0049c1ec", "0049c1f1"],
+    "last_store_length": 3,
+    "last_store_inclusive_end": "0049c1f3",
+    "native_enclosing_abi": "ECX raw owner; stack base owner, point, secondary XYZ, descriptor; EAX owner; RET10",
+    "native_enclosing_instructions": 512,
+    "native_enclosing_envelope_bytes": 1751,
+    "native_last_instruction": "0049c6d4",
+    "native_last_instruction_length": 3,
+    "native_inclusive_end": "0049c6d6",
+    "full_constructor_reconstructed": false,
+    "gaps": [{"start":"0049c0bd","inclusive_end":"0049c0bf","bytes":"8d4900","decoded":"LEA ECX,[ECX]","length":3,"assessment":"Unreachable padding after unconditional JMP, not a missing call"}]
+  },
+  "missing_function_starts": [
+    {"address":"00c63303","kind":"EH handler","bytes":10,"last_instruction":"00c63308","last_instruction_length":5,"inclusive_end":"00c6330c","evidence":"live handler bytes and FuncInfo D8B428"},
+    {"address":"00c6333b","kind":"EH handler","bytes":10,"last_instruction":"00c63340","last_instruction_length":5,"inclusive_end":"00c63344","evidence":"live handler bytes, disk disasm and FuncInfo D8B488"},
+    {"address":"00c95022","kind":"EH handler","bytes":10,"last_instruction":"00c95027","last_instruction_length":5,"inclusive_end":"00c9502b","evidence":"live handler bytes and FuncInfo DC6E94"},
+    {"address":"00c9515c","kind":"EH handler","bytes":10,"last_instruction":"00c95161","last_instruction_length":5,"inclusive_end":"00c95165","evidence":"live handler bytes, disk disasm and FuncInfo DC6FDC"}
+  ],
+  "truncated_helper_body": {"address":"00c63330","listed_end_call":"00c63334","disk_tail":[{"address":"00c63339","instruction":"POP ECX","length":1},{"address":"00c6333a","instruction":"RET","length":1}],"inclusive_end":"00c6333a"},
+  "required_boundaries": [
+    "Complete 0049C000 constructor: 00496920, 004AED50, 004AB9A0, 00495E20, 00BD2F10, 00BF7420, 00BF6713 and owner destruction",
+    "Actual 00866440 manager and its 00866230 constructor; actual section+18 counter and OS critical section",
+    "Current E188A8+19FC reference transform and actual parent transform/field lifetimes",
+    "Actual template owners and 0086A650 visibility/eligibility writes",
+    "Complete 008680B0 constructor, member retention, argument cleanup, actual returned-owner count and terminal destruction/registration",
+    "00BF681B allocation and 00BF65AC deallocation; no success-assuming factory",
+    "UnitTimerHost binding integration remains external to this packet"
+  ],
+  "verification": {
+    "build_command": "./scripts/build.ps1",
+    "build_log": "local/point_effect_owner_build.log",
+    "build_result": "PASS MSVC Win32 /W4 /WX",
+    "existing_ctests": {"reconstructed_math":"PASS", "native_math_differential":"PASS"},
+    "focused_fixture_source": "local/point_effect_owner_fixture.cpp",
+    "focused_fixture_source_sha256": "26E165AC2B6A4435130B3E875AE87B4E3EB8D692385CAF09EB5F54D1BF93D6C1",
+    "focused_fixture_command": "cmd /c local\\run_point_effect_owner_fixture.cmd",
+    "focused_fixture_log": "local/point_effect_owner_fixture.log",
+    "focused_fixture_result": "PASS point snapshot, optional eligibility transform, trailing arguments, captured lock, actual-count projections, getter/eligibility/allocation/constructor failure cleanup, announcement gating/reload/copy",
+    "fixture_location": "Ignored local/ in assigned worktree; no permanent test suite",
+    "new_wrappers_native_differential_tested": false
+  },
+  "ghidra_mutated": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "whole_00956600_closed": false,
+  "uncertainty": "Descriptive names are hypotheses. This is bounded orchestration and actual storage copying, not reconstruction of unresolved object constructors or live host bindings. Reused intrusive interfaces require nonthrowing terminal callbacks; arbitrary throwing native destructor behavior is outside this host domain."
+}
