@@ -68,3 +68,10 @@ Hashes, source ownership, further validation and annotation records are in
   the destructive reload and same-path check; do not substitute initial load.
 - Compose global singleton lifetime and native renderer texture-cache ownership
   across startup owners before claiming the original allocator/refcount ABI.
+
+The font registry destructor's three erroneous free call-site overrides were
+cleared under the Ghidra write lock. Internal continuations are restored and the
+tail is disassembled through RET00ac37c0, but the stored function body still ends
+at00ac379a. Its supported script-based extension is disabled by the current
+bridge configuration. No function was deleted/recreated; the byte-verified tail
+and this remaining analysis limit are recorded in the flow-repair report.
