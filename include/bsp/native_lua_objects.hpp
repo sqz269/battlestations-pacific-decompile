@@ -89,4 +89,12 @@ void native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,
     NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
 void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,
     NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
+// Exact NUMBER or the full signed fallback DWORD; unlike integer coercion,
+// numeric strings take the fallback. ECX object, stack fallback, EAX, RET4.
+std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage&,
+    std::int32_t fallback,const bool& crt_sse2_conversion);
+// Exact STRING or supplied C-string fallback, then construct fresh8h output.
+// ECX object, stack output/fallback, EAX output, RET8; no prior-output cleanup.
+NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage&,
+    void* fresh,const char* fallback,NativeStringStorage&);
 } // namespace bsp

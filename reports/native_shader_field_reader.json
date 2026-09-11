@@ -1,0 +1,441 @@
+{
+  "packet": "orch2_native_shader_field_reader_aj",
+  "functions": [
+    {
+      "address": "00b573f0",
+      "name": "BSP_ShaderField_FromLuaTable",
+      "cpp": "read_native_shader_field_00b573f0",
+      "source": "src/native_shader_field_reader.cpp",
+      "coverage": "complete",
+      "original_abi": "Incoming ECX unused; stack actual Lua table; EAX allocated1Ch field; RET4",
+      "evidence": "Full576-byte actual field reader: accepted integral-number key ORDINAL selects name,type,count,semantic,index; extras iterated/ignored. ExactSTRING name elseundef, type/semantic coercion, count/index exactNUMBER else0. Mask/index0; missing type/count/semantic preserve three stack preimages exposed as explicit C++ inputs. Cached name length/data feed final copy and normal cleanup; unwind uses current header. Five-state map includes raw-field free on output-name failure, no output-name dtor."
+    },
+    {
+      "address": "00b419b0",
+      "name": "BSP_ShaderDescriptor_AppendFieldTable",
+      "cpp": "append_native_shader_field_table_00b419b0",
+      "source": "src/native_shader_field_reader.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX unused; stack Shader/output-header/NativeString field-name; RET0C",
+      "evidence": "Full346-byte actual field-table append: NativeString C-string lookup, TABLE gate/release/freshlookup; EVERY outer value parsed regardlessofkey; preserve Lua order/prior pointers. Grow max(cap+5,10), append captured1Ch field. Four-state value/key/table cleanup. Explicit host per-entry stack-preimage provider preserves uninitialized inner locals; no invented defaults. Actual descriptorD0/DC ownership and seven installed fields fixture-tested."
+    },
+    {
+      "address": "00b34680",
+      "name": "BSP_PointerArray_ReserveMinimumTen",
+      "cpp": "reserve_native_shader_field_pointers_00b34680",
+      "source": "src/native_shader_field_reader.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual0Ch pointer-array header; stack signed request; RET4",
+      "evidence": "Full95-byte minimum-ten pointer reserve: signed request/cap comparison, request*4 shared allocation, live count/data copy, freeold BEFORE pointer/cap publication. Locked repair atB346CC restores nine-byte tail B346D1..D9; callee flags unchanged."
+    },
+    {
+      "address": "00b66380",
+      "name": "BSP_LuaReference_GetIntegerOrDefault",
+      "cpp": "native_lua_integer_or_00b66380",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual20-byte Lua object; stack signed fallback; EAX result; RET4",
+      "evidence": "Full71-byte actual helper: onlykind2 and exactNUMBER converts; float32 spill before liveCRT SSE2/x87 conversion. Everyotherkind/type returns full fallback DWORD. Numericstrings do not coerce here; NaN/infinity andwidevalues use existing hardware kernels without added rejection."
+    },
+    {
+      "address": "00b685c0",
+      "name": "BSP_LuaObject_ConstructStringOrDefault",
+      "cpp": "native_lua_string_or_00b685c0",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual20-byte object, EDXunused; stack fresh8h string/fallback C-string; EAX output; RET8",
+      "evidence": "Full99-byte actual helper: kind2/exactSTRING uses borrowed Lua string, allothers use suppliedfallback. Construct through0041E870 C-string copy; numericNUMBER does not coerce to string. No input release or previous-output cleanup. EmbeddedNUL truncation and13values/fivekinds comparedagainst originalinstructions."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b57410",
+      "native": "00b65f50",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b5741f",
+      "native": "00b65f50",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57449",
+      "native": "00b67080",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57455",
+      "native": "00b66420",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57466",
+      "native": "00b66a60",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57485",
+      "native": "00b685c0",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b5749e",
+      "native": "0041dd40",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b574b5",
+      "native": "00bf7680",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b574d5",
+      "native": "00419cc0",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b574dc",
+      "native": "00bd1510",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b574f4",
+      "native": "00b67190",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57500",
+      "native": "00b66420",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b5750f",
+      "native": "00bf681b",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b5753e",
+      "native": "0041dd40",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b5754f",
+      "native": "00bf7680",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57581",
+      "native": "00b66290",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b5759a",
+      "native": "00b66380",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b575b1",
+      "native": "00b66290",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b575ce",
+      "native": "00b66380",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b575ee",
+      "native": "00419cc0",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b575f5",
+      "native": "00bd1510",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57603",
+      "native": "00b67700",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b57614",
+      "native": "00b67700",
+      "function": "00b573f0"
+    },
+    {
+      "address": "00b419db",
+      "native": "00b68100",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b419ea",
+      "native": "00b661b0",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b419fd",
+      "native": "00b67700",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a12",
+      "native": "00b68100",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a24",
+      "native": "00b65f50",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a32",
+      "native": "00b65f50",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a4a",
+      "native": "00b67080",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a58",
+      "native": "00b66420",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a70",
+      "native": "00b573f0",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41a8f",
+      "native": "00b34680",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41ab3",
+      "native": "00b67190",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41ac1",
+      "native": "00b66420",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41ad3",
+      "native": "00b67700",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41ae0",
+      "native": "00b67700",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b41af1",
+      "native": "00b67700",
+      "function": "00b419b0"
+    },
+    {
+      "address": "00b346a0",
+      "native": "00bf55be",
+      "function": "00b34680"
+    },
+    {
+      "address": "00b346cc",
+      "native": "00bf6989",
+      "function": "00b34680"
+    },
+    {
+      "address": "00b66397",
+      "native": "00a675a0",
+      "function": "00b66380"
+    },
+    {
+      "address": "00b663a9",
+      "native": "00a67770",
+      "function": "00b66380"
+    },
+    {
+      "address": "00b663b6",
+      "native": "00bf7420",
+      "function": "00b66380"
+    },
+    {
+      "address": "00b685e0",
+      "native": "00a675a0",
+      "function": "00b685c0"
+    },
+    {
+      "address": "00b685f4",
+      "native": "00a67810",
+      "function": "00b685c0"
+    },
+    {
+      "address": "00b68600",
+      "native": "0041e870",
+      "function": "00b685c0"
+    },
+    {
+      "address": "00b68617",
+      "native": "0041e870",
+      "function": "00b685c0"
+    },
+    {
+      "address": "00b443ce",
+      "native": "00b419b0",
+      "function": "00b43b00",
+      "output_offset": 208,
+      "field": "VertexInput"
+    },
+    {
+      "address": "00b44447",
+      "native": "00b419b0",
+      "function": "00b43b00",
+      "output_offset": 220,
+      "field": "Interpolators"
+    }
+  ],
+  "no_ghidra_function": [],
+  "storage": {
+    "field_bytes": 28,
+    "name_bytes": 8,
+    "array_header_bytes": 12,
+    "lua_object_bytes": 20,
+    "lua_owner_bytes": 1224,
+    "offsets": {
+      "name": 0,
+      "scalar_type": 8,
+      "component_count": 12,
+      "component_mask": 16,
+      "semantic": 20,
+      "semantic_index": 24
+    },
+    "vtable": false,
+    "reference_count": false
+  },
+  "parser": {
+    "key_rule": "Actual kind2 NUMBER passing float32 integral predicate; accepted ordinal, not numeric key value",
+    "ordinal_fields": [
+      "exact STRING or undef",
+      "coercing integer type",
+      "exact NUMBER count or0",
+      "coercing integer semantic",
+      "exact NUMBER index or0"
+    ],
+    "ignores_extra_ordinals": true,
+    "initial_name": "",
+    "initial_mask": 0,
+    "initial_index": 0,
+    "missing_fields": "scalar_type/component_count/semantic are uninitialized native stack inputs",
+    "stack_input_interface": "NativeShaderFieldStackPreimage and required per-entry NativeShaderFieldStackInputs",
+    "cached_name_length_and_pointer": true,
+    "normal_cleanup_uses_cached_name": true,
+    "unwind_cleanup_uses_current_name_header": true,
+    "raw_field_free_on_output_name_failure": true,
+    "output_name_destructor_on_failure": false
+  },
+  "traversal": {
+    "fresh_lookup_after_table_gate": true,
+    "field_name_c_string_semantics": true,
+    "all_outer_keys_accepted": true,
+    "values_require_iteration": true,
+    "order": "lua_next",
+    "growth": "max(capacity+5,10)",
+    "preserves_existing": true,
+    "manager_receiver_unused_by_callee": true,
+    "cleanup": [
+      "value",
+      "key",
+      "table"
+    ],
+    "new_field_rollback_on_reserve_failure": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_packet_functions_executed": 5,
+    "prior_dependency_bodies_relocated": 26,
+    "default_lua_values": 13,
+    "default_object_kinds": 5,
+    "field_shapes": 11,
+    "integer_modes": [
+      "SSE2",
+      "x87"
+    ],
+    "paired_actual_field_bytes": 28,
+    "name_pointer_normalized": true,
+    "paired_strings": true,
+    "paired_allocation_release_traces": true,
+    "native_stack_seed_offsets_from_entry": [
+      -80,
+      -76,
+      -72
+    ],
+    "per_entry_stack_inputs": true,
+    "seeded_append_count": 13,
+    "seeded_append_capacity": 15,
+    "embedded_nul_names": true,
+    "field_key_embedded_nul": true,
+    "missing_boolean_empty_tables_preserve_output": true,
+    "descriptor_d0_dc_cleanup": true,
+    "installed_field_count": 7,
+    "installed_fields": {
+      "debugshader": {
+        "VertexInput": [
+          "Position",
+          "Color"
+        ],
+        "Interpolators": [
+          "Color"
+        ]
+      },
+      "alphablend": {
+        "VertexInput": [
+          "Position",
+          "Normal",
+          "UV"
+        ],
+        "Interpolators": [
+          "UV"
+        ]
+      }
+    },
+    "rebuilt_output_name_allocation_failure": true,
+    "rebuilt_failure_balances_lua_and_temporary_strings": true,
+    "original_exception_execution": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "corrections": [
+    {
+      "was": "B573F0/B419B0 were implemented only through semantic ShaderField/std::string projections with malformed-input errors.",
+      "is": "Full actual1Ch/native8h storage path with explicit native stack-preimage inputs and actual descriptor D0/DC cleanup.",
+      "evidence": "docs/NATIVE_SHADER_FIELD_READER.md; appended correction in docs/SHADER_FIELD_TABLES.md"
+    },
+    {
+      "was": "B346CC false CALL_RETURN omitted publication after free.",
+      "is": "Nine-byte tail restored under lock; full95-byte function exported and fixture-executed.",
+      "evidence": "local/native-shader-field-reader-flow-repair.json"
+    }
+  ],
+  "fixture_boundaries": {
+    "lua": "StockLua5.1.1 via register/stack ABI adapters; no VM reimplementation.",
+    "allocations": "Previously verified actual NativeString/shared heap and descriptor cleanup implementations.",
+    "stack_seed": "Trampoline supplies exactly three original unwritten stack cells before entry; per-entry provider supplies identical values to rebuilt code. Native stack reuse is not inferred.",
+    "exceptions": "Original nine-state metadata/thunks inspected, not executed. Rebuilt bad_alloc injection verifies Lua and temporary-string cleanup; raw heap-free behavior is established by source and unwind evidence.",
+    "dependencies": "26 preserved dependency bodies retained for adapter reuse; only reached paths execute in this fixture.",
+    "installed_dofile": "Required callback selects installed loose dx9_lua.inc; native VFS routing not claimed."
+  },
+  "limitations": [
+    "Explicit C++ storage/stack inputs are not drop-in original ABI replacements.",
+    "Full B43B00 descriptor loading and downstream actual publication/source compilation remain open.",
+    "Native missing-field stack contents and arbitrary stack reuse must come from explicit caller inputs.",
+    "Original exception ABI, arbitrary callback-driven header mutation and gameplay/rendering remain unvalidated.",
+    "Iterable values, valid counts/extents, stable tracked-object addresses and50-slot/five-reference bounds are native caller contracts."
+  ]
+}
