@@ -272,21 +272,38 @@ int last_matching_resolution(const std::vector<Resolution>& table, int width, in
     return index;
 }
 
+namespace {
+// 008d8190 compares each option token through 00467cc0, which calls
+// BSP_CString_CompareInsensitive; the game's own writer emits `Vsync` while the
+// reader literal at 00d15ef4 is `VSync`, so the comparison must fold case for a
+// file the game wrote to round-trip (docs/GAME_EXECUTABLE.md, milestone 2a).
+bool options_token_is(const std::string& name, const char* literal) noexcept {
+    std::string::size_type i = 0;
+    for (; literal[i] != '\0'; ++i) {
+        if (i >= name.size()) return false;
+        const unsigned char a = static_cast<unsigned char>(name[i]);
+        const unsigned char b = static_cast<unsigned char>(literal[i]);
+        if (std::tolower(a) != std::tolower(b)) return false;
+    }
+    return i == name.size();
+}
+}
+
 void apply_options_token(GameSettings& settings, const std::string& name,
     const std::string& value, const std::vector<Resolution>& resolutions,
     std::vector<std::string>::size_type& consumed_extra,
     const std::string* second_value)
 {
     consumed_extra = 0;
-    if (name == "Language") {
+    if (options_token_is(name, "Language")) {
         settings.language = value;
-    } else if (name == "Fullscreen") {
+    } else if (options_token_is(name, "Fullscreen")) {
         settings.fullscreen_1e = parse_long(value) != 0;
-    } else if (name == "HiResShadow") {
+    } else if (options_token_is(name, "HiResShadow")) {
         settings.hires_shadow_1d = parse_long(value) != 0;
-    } else if (name == "NoLOD") {
+    } else if (options_token_is(name, "NoLOD")) {
         settings.no_lod_1c = parse_long(value) != 0;
-    } else if (name == "Resolution") {
+    } else if (options_token_is(name, "Resolution")) {
         settings.width_14 = static_cast<int>(parse_long(value));
         settings.height_18 = second_value
             ? static_cast<int>(parse_long(*second_value)) : 0;
@@ -298,30 +315,30 @@ void apply_options_token(GameSettings& settings, const std::string& name,
         }
         settings.resolution_index_78 = last_matching_resolution(resolutions,
             settings.width_14, settings.height_18, settings.resolution_index_78);
-    } else if (name == "VSync") {
+    } else if (options_token_is(name, "VSync")) {
         settings.vsync_60 = parse_long(value) != 0;
-    } else if (name == "ShaderModel") {
+    } else if (options_token_is(name, "ShaderModel")) {
         settings.shader_model_88 = static_cast<int>(parse_long(value));
-    } else if (name == "Antialias") {
+    } else if (options_token_is(name, "Antialias")) {
         settings.antialias_index_5c = 0;
         settings.antialias_58 = static_cast<int>(parse_long(value));
-    } else if (name == "Clouds") {
+    } else if (options_token_is(name, "Clouds")) {
         settings.clouds_74 = parse_long(value) != 0;
-    } else if (name == "Foliage") {
+    } else if (options_token_is(name, "Foliage")) {
         settings.foliage_86 = parse_long(value) != 0;
-    } else if (name == "Shadow") {
+    } else if (options_token_is(name, "Shadow")) {
         settings.shadow_84 = parse_long(value) != 0;
         settings.shadow_85 = settings.shadow_84;
-    } else if (name == "Reflection") {
+    } else if (options_token_is(name, "Reflection")) {
         settings.reflection_6c = parse_long(value) != 0;
-    } else if (name == "TextureDetail") {
+    } else if (options_token_is(name, "TextureDetail")) {
         settings.texture_detail_68 = static_cast<int>(parse_long(value));
-    } else if (name == "ObjectDetail") {
+    } else if (options_token_is(name, "ObjectDetail")) {
         settings.object_detail_54 = static_cast<int>(parse_long(value));
-    } else if (name == "SoundEnabled") {
+    } else if (options_token_is(name, "SoundEnabled")) {
         // Recognised, its value consumed, and then discarded: the native jumps
         // straight back to the loop head with no store (008d85d9).
-    } else if (name == "Firewall") {
+    } else if (options_token_is(name, "Firewall")) {
         settings.firewall_94 = parse_long(value) != 0;
     } else {
         // "Options: unknown token %s"
