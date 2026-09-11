@@ -59,26 +59,43 @@ void reset_profile_007fdb20(
 }
 
 namespace {
-void assign_profile_name(
-    std::string& destination, std::array<char, 32>& game_name, std::string_view name)
+void mirror_profile_name(const ProfileResetState& profile, std::array<char, 32>& game_name)
 {
-    destination = name;
-    const auto count = std::min({destination.size(), destination.find('\0'), std::size_t{31}});
-    std::copy_n(destination.data(), count, game_name.data());
+    // Both native setters select +50h when its header length is nonzero,
+    // otherwise +3Ch, regardless of which field was just assigned.
+    const auto& selected = profile.display_name_50.empty()
+        ? profile.player_name_3c : profile.display_name_50;
+    const auto count = std::min({selected.size(), selected.find('\0'), std::size_t{31}});
+    std::copy_n(selected.data(), count, game_name.data());
     game_name[count] = '\0';
+}
+
+bool saved_names_differ(std::string_view previous, std::string_view next)
+{
+    // 00449AF0 checks header lengths first, then __stricmp sees only each
+    // null-terminated prefix. A nonempty header beginning with NUL still
+    // differs from an empty header even though both C strings look empty.
+    if (previous.empty()) return !next.empty();
+    if (next.empty()) return true;
+    previous = previous.substr(0, previous.find('\0'));
+    next = next.substr(0, next.find('\0'));
+    const NativeStringCaseInsensitiveLess less;
+    return less(previous, next) || less(next, previous);
 }
 } // namespace
 
 void set_profile_name_007f9290(
     ProfileResetState& profile, std::array<char, 32>& game_name, std::string_view name)
 {
-    assign_profile_name(profile.player_name_3c, game_name, name);
+    profile.player_name_3c = name;
+    mirror_profile_name(profile, game_name);
 }
 
 void set_profile_display_name_007f9340(
     ProfileResetState& profile, std::array<char, 32>& game_name, std::string_view name)
 {
-    assign_profile_name(profile.display_name_50, game_name, name);
+    profile.display_name_50 = name;
+    mirror_profile_name(profile, game_name);
 }
 
 void request_profile_read_007ff100(
@@ -130,11 +147,10 @@ void request_profile_write_007fa710(
     ProfileResetState& profile, ProfileIoState& io, ProfileIoHost& host,
     std::string_view name, ProfileCompletion completion, bool force)
 {
-    const NativeStringCaseInsensitiveLess less;
-    const bool changed = less(profile.save_name_34, name) || less(name, profile.save_name_34);
+    const bool should_queue = force || saved_names_differ(profile.save_name_34, name);
     profile.save_name_34 = name;
     io.completion = std::move(completion);
-    if (force || changed) {
+    if (should_queue) {
         host.request_write_00bd3dc0(profile.save_name_34);
         host.register_task_006adb50(ProfileIoTask::WriteCompleted);
     }

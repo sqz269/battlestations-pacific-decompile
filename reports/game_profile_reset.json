@@ -10,11 +10,11 @@
   "document": "docs/GAME_PROFILE_RESET.md",
   "reconstructed": [
     {"address": "007fdb20", "name": "reset_profile_007fdb20", "abi": "ECX profile, no stack args, RET", "scope": "field/container reset; existing settings and unlock implementations reused; native score object lifecycle external"},
-    {"address": "007f9290", "name": "set_profile_name_007f9290", "abi": "ECX profile, NativeString pointer, RET 4", "scope": "player_name_3c plus first31bytes and terminator to game+1ff0"},
-    {"address": "007f9340", "name": "set_profile_display_name_007f9340", "abi": "ECX profile, NativeString pointer, RET 4", "scope": "display_name_50 plus first31bytes and terminator to game+1ff0"},
+    {"address": "007f9290", "name": "set_profile_name_007f9290", "abi": "ECX profile, NativeString pointer, RET 4", "scope": "assign player_name_3c; mirror nonempty display_name_50 else player_name_3c, capped31bytes/NUL, to game+1ff0"},
+    {"address": "007f9340", "name": "set_profile_display_name_007f9340", "abi": "ECX profile, NativeString pointer, RET 4", "scope": "assign display_name_50; mirror nonempty display_name_50 else player_name_3c, capped31bytes/NUL, to game+1ff0"},
     {"address": "007ff100", "name": "request_profile_read_007ff100", "abi": "ECX profile, NativeString pointer, callback, RET 8", "scope": "storage query and request, callback slot, immediate reset branch"},
     {"address": "007fefe0", "name": "complete_profile_read_007fefe0", "abi": "no args, RET", "scope": "state1 discard versus reader/deserialize/settings/commit dispatch; backend external"},
-    {"address": "007fa710", "name": "request_profile_write_007fa710", "abi": "ECX profile, NativeString pointer, callback, char force, RET 0c", "scope": "case insensitive old-name/force guard; unconditional name and callback assignment"}
+    {"address": "007fa710", "name": "request_profile_write_007fa710", "abi": "ECX profile, NativeString pointer, callback, char force, RET 0c", "scope": "force bypasses comparison; zero/nonzero header distinction then case insensitive C-string prefixes; unconditional name and callback assignment"}
   ],
   "analyzed_only": [
     {"address": "007fee20", "finding": "profile constructor builds containers then calls reset; does not initialize +64 pointer, XUID or version"},
@@ -34,7 +34,9 @@
     "+30h is total of mission-progress +18h counters, not SelectedMissionID; actual SelectedMissionID is string+68h",
     "nine boolean entries+14h are SavedLobbyFilters, not campaign mission slots",
     "0067ce4c ->007ff100 reads/deserializes;0067cea4 ->007fa710 requests write; old PressStartHost queue_save/queue_load names are inverted",
-    "reset preserves XUID+48h, version+e8h, byte+58h, vector+bch and external game+1ff0 name buffer"
+    "reset preserves XUID+48h, version+e8h, byte+58h, vector+bch and external game+1ff0 name buffer",
+    "independent review correction: both setters mirror display+50h if nonempty else player+3Ch; verified007f92c7..007f92cf and007f9377..007f937e",
+    "independent review correction:00449af0 distinguishes zero/nonzero header lengths, then00449b29 __stricmp stops at embeddedNUL; full-view comparison was incorrect"
   ],
   "explicit_external_contracts": [
     "native mission score object allocation/destruction and rich score record ownership",
@@ -48,9 +50,9 @@
     "verify_seeds": "passed; 8/8 original byte spans matched disk",
     "build": "scripts/build.ps1 Release passed MSVC Win32 /W4 /WX /fp:strict",
     "existing_ctest": "2/2 passed: reconstructed_math, native_math_differential",
-    "targeted_probe": "one local compiled fixture passed: reset preserves identity/version, reentrant callback sees cleared slot and keeps replacement callback, restore order, unchanged-name write does not queue, immediate reset does not consume global slot",
-    "build_log": "local/profile_reset_build.log",
-    "probe_log": "local/profile_reset_probe.log",
+    "targeted_probe": "same local compiled fixture extended and passed: prior reset/callback checks plus display alias precedence, clearing alias fallback, embeddedNUL comparison and empty-versus-nonempty header distinction",
+    "build_log": "local/profile_reset_review_build.log",
+    "probe_log": "local/profile_reset_review_probe.log",
     "abi_compatible": false,
     "real_save_tested": false,
     "game_validated": false

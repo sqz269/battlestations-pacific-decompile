@@ -24,9 +24,9 @@ Offsets are relative to `game+650h`. Reset is `007fdb20..007fdef9`.
 | +20h/+24h/+28h/+2Ch | 0/0/0/9 | `filterPlayerCount`, `filterFreeSlots`, `filterLatency`, `arraySize` in `007fdf00` |
 | +30h | -1 | `007fdeaf`; overwritten with sum of mission-progress +18h counters at `007fed8c..007fed94`, not selected mission ID |
 | +34h | empty | save/archive name, assigned by both `007ff100` and `007fa710` |
-| +3Ch | `globals.newplayer` | player name; `007f9290` also mirrors its first 31 bytes into `game+1FF0h` |
+| +3Ch | `globals.newplayer` | player name; `007f9290` also updates `game+1FF0h` with display-name precedence |
 | +48h/+4Ch | untouched | XUID written at `0067ccdd/0067cce0` after reset |
-| +50h | empty | display name; `007f9340` has the same game-name mirror side effect |
+| +50h | empty | display name; both setters mirror this when its length is nonzero, otherwise +3Ch |
 | +59h | 1 | `Voice`, serializer `007fdf99..007fdfb8` |
 | +5Ch/+60h | 1/1 | `Difficulty`/`SelectedDifficulty`, `007fdfe2/007fe01b` |
 | +64h | destroyed, reallocated as 24h | three-tree mission-progress object; allocator-null result remains null |
@@ -42,8 +42,13 @@ Offsets are relative to `game+650h`. Reset is `007fdb20..007fdef9`.
 
 The reset also leaves byte +58h and the vector at +BCh alone. The projection
 omits these unconsumed fields rather than inventing a reset or an element type.
-Reset does **not** update the separate name buffer at game+1FF0h. Only the name
-setters copy their new string there, stopping at a null byte or 31 bytes.
+Reset does **not** update the separate name buffer at game+1FF0h. Both name
+setters choose the nonempty-header display name at +50h, falling back to +3Ch,
+then copy until a null byte or 31 bytes. `007f92c7..007f92cf` and
+`007f9377..007f937e` prove that changing the player name does not replace an
+existing displayed alias, while clearing the display name reveals the player
+name. The test is header length, so a nonempty display name beginning with NUL
+does not fall back to the player name.
 
 `00920e10` constructs three empty trees at +00h, +0Ch and +18h. The first has
 large score records (node sentinel byte +29Dh); the other two have string/int
@@ -93,8 +98,10 @@ external contracts. The supplied storage state is not replaced with a guessed
 success/error enum. Exception/SEH cleanup is outside this normal-flow projection.
 
 `007fa710` is `__thiscall(profile, name, callback, char force)`, `RET 0Ch`.
-It compares the **old** profile+34h and supplied name case-insensitively via
-`00449af0`, unless forced. It always assigns the name and `00F87458`, even when
+It compares the **old** profile+34h and supplied name via `00449af0`, unless
+forced. That helper first distinguishes zero/nonzero header lengths at
+`00449af0..00449b1e`, then calls `__stricmp` at `00449b29`, stopping at embedded
+NUL bytes in both nonempty strings. It always assigns the name and `00F87458`, even when
 unchanged. Only force/name difference calls `00bd3dc0(name)` and schedules
 `007fa670`. That callback and the later `007fa220` write backend are not
 reconstructed here. No default completion is fabricated for the unchanged arm.

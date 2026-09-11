@@ -75,8 +75,9 @@ struct ProfileResetHost {
 void reset_profile_007fdb20(
     ProfileResetState& profile, GameSettingsBlock& settings, ProfileResetHost& host);
 
-// These setters also update the separate game+1FF0h name buffer with at most
-// 31 bytes. Reset itself deliberately does not update that buffer.
+// Both setters mirror the display name when its header is nonempty, otherwise
+// the player name, into game+1FF0h (at most 31 bytes). Reset itself deliberately
+// does not update that buffer. An embedded NUL ends the copied C-string prefix.
 void set_profile_name_007f9290(
     ProfileResetState& profile, std::array<char, 32>& game_name, std::string_view name);
 void set_profile_display_name_007f9340(
@@ -130,8 +131,9 @@ void complete_profile_read_007fefe0(
     ProfileIoHost& host);
 
 // 007fa710: __thiscall(profile, NativeString* name, callback, char force), RET C.
-// Even when the case-insensitive name is unchanged, it assigns the new spelling
-// and replaces the callback slot; it simply does not queue a write in that arm.
+// The native name comparison distinguishes empty/nonempty headers, then compares
+// nonempty names case-insensitively only up to NUL. Even when unchanged, it
+// assigns the new spelling and callback slot without queuing a write.
 void request_profile_write_007fa710(
     ProfileResetState& profile, ProfileIoState& io, ProfileIoHost& host,
     std::string_view name, ProfileCompletion completion, bool force);
