@@ -1,0 +1,665 @@
+{
+  "schema_version": 1,
+  "packet": "native_shader_owner_array_reset_discovery",
+  "captured_utc": "2026-09-11T08:51:35.225912+00:00",
+  "source_base_commit": "1085a30c28970d7256c579040d2d15a6b9e7774a",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "verification": {
+    "project_file_exists": true,
+    "guarded_client": "Every read used tools/bsp.py ghidra; client() calls Client.verify() before dispatch, checking project name, program path, language and image base.",
+    "whole_image_identity": false,
+    "source_changed": false,
+    "ghidra_mutated": false,
+    "native_fixture_run": false,
+    "build_run": false,
+    "game_validated": false
+  },
+  "body_and_table_evidence": [
+    {
+      "label": "owner_release",
+      "start": "00b188a0",
+      "end_exclusive": "00b188f4",
+      "byte_count": 84,
+      "saved_sha256": "dbcc3306bdbd177feeec8cb6075ededabf0018b27d3b8f3860095105b7c3a565",
+      "installed_sha256": "dbcc3306bdbd177feeec8cb6075ededabf0018b27d3b8f3860095105b7c3a565",
+      "saved_equals_installed": true,
+      "bytes_hex": "56578bf933f6663977387645538d49000fbf47383bf072078d4e0166894f388b5cb70c85db741e8d530452ff152022ce0085c075088b038b108bcbffd2c744b70c000000000fbf473883c6013bf072c05b5f5ec3",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b188a0 --length 84"
+    },
+    {
+      "label": "owner_reload",
+      "start": "00b19000",
+      "end_exclusive": "00b191ce",
+      "byte_count": 462,
+      "saved_sha256": "efac483a85ca420e0c670bd25547e6678b8ce87779d1490f34ab2211f4899c56",
+      "installed_sha256": "efac483a85ca420e0c670bd25547e6678b8ce87779d1490f34ab2211f4899c56",
+      "saved_equals_installed": true,
+      "bytes_hex": "558bec83e4f86aff64a10000000068f0c5cb00506489250000000083ec14535556578bf933db33ed66399f940000000f8686010000eb098da424000000008bff895c2410895c24140fbf87940000003be8895c242c720a8d4d0166898f940000008b0d34d4f8008d54ef3c528d44241c50e8fa2b00008b4424183bc3c644242c0174186a01508d4c2418e8b14c90ff395c2418744f8b54241ceb360fbf8f940000003be9720a8d5501668997940000008d74ef3c8d4424103bc674288b066a01508d4c2418e8764c90ff391e74168b56048b4c24108b442414515250e89fe50d0083c40c395c241074748b0d94d3f8008b118b5264538d44241450ffd28bf00fbf47383be872078d4d0166894f388b5caf0c3bde742c85f68974af0c740a8d560452ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd085f674168d4e0451ff152022ce0085c075088b168b028bceffd033db8b4c241c3bcbc644242c0074178b4424186a0183c0015051e8450b90ff8bc8e88e830b008b4c24143bcbc744242cffffffff74178b4424106a0183c0015051e81e0b90ff8bc8e867830b000fbf8f9400000083c5013be90f8285feffff8b4c24245f64890d000000005e5d5b8be55dc3",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b19000 --length 462"
+    },
+    {
+      "label": "renderer_reload",
+      "start": "00b24dd0",
+      "end_exclusive": "00b24e11",
+      "byte_count": 65,
+      "saved_sha256": "546c5e92b87cea6a70b1ecf786b9a6f721a51ae8e4e043eef7ee854cb622152b",
+      "installed_sha256": "546c5e92b87cea6a70b1ecf786b9a6f721a51ae8e4e043eef7ee854cb622152b",
+      "saved_equals_installed": true,
+      "bytes_hex": "56578bf98b87a01a00008bb79c1a00006bc02c03c63bf074258da424000000008b4e28e80842ffff8b8fa01a00006bc92c038f9c1a000083c62c3bf175e25f5ec3",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b24dd0 --length 65"
+    },
+    {
+      "label": "renderer_release",
+      "start": "00b24e20",
+      "end_exclusive": "00b24e61",
+      "byte_count": 65,
+      "saved_sha256": "1ce8fa23f78500b6ea52082a257209562fc5596929488a1f3be84be3f7d3467d",
+      "installed_sha256": "1ce8fa23f78500b6ea52082a257209562fc5596929488a1f3be84be3f7d3467d",
+      "saved_equals_installed": true,
+      "bytes_hex": "56578bf98b87a01a00008bb79c1a00006bc02c03c63bf074258da424000000008b4e28e8583affff8b8fa01a00006bc92c038f9c1a000083c62c3bf175e25f5ec3",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b24e20 --length 65"
+    },
+    {
+      "label": "override_lookup",
+      "start": "00b1bc70",
+      "end_exclusive": "00b1bd1d",
+      "byte_count": 173,
+      "saved_sha256": "777f8f5afa7e2cc968c3bd63a00703134d7a6842e69693e90c62db6730385ef0",
+      "installed_sha256": "777f8f5afa7e2cc968c3bd63a00703134d7a6842e69693e90c62db6730385ef0",
+      "saved_equals_installed": true,
+      "bytes_hex": "6aff68e9c8cb0064a100000000506489250000000083ec2c568d44241c5083c104c744240800000000e8e2bc04008b4c2444518d54240c528bc8c744244001000000e849c404008d4c241cc644243803e83bba04008d4c2408e8e2a2040084c08b742440740e6838d4f8008bcee88e2b90ffeb0f680c3ace00568d4c2410e8cdc804008d4c2408c744240401000000c644243800e8f7b904008b4c24308bc65e64890d0000000083c438c20800",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b1bc70 --length 173"
+    },
+    {
+      "label": "name_lookup_adapter",
+      "start": "00b68100",
+      "end_exclusive": "00b6812b",
+      "byte_count": 43,
+      "saved_sha256": "caef88f8e937f5c0e192b031b0132533ac69c5e9e9f056ad6b73610a649225a2",
+      "installed_sha256": "caef88f8e937f5c0e192b031b0132533ac69c5e9e9f056ad6b73610a649225a2",
+      "saved_equals_installed": true,
+      "bytes_hex": "518b44240c8b400485c0c70424000000007505b82cff0801568b74240c5056e8dcf6ffff8bc65e59c20800",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b68100 --length 43"
+    },
+    {
+      "label": "exact_string_adapter",
+      "start": "00b685c0",
+      "end_exclusive": "00b68623",
+      "byte_count": 99,
+      "saved_sha256": "a51e963e0593b462888ec81e4ec449c6992a6352649a84d814d50ac93c2f810d",
+      "installed_sha256": "a51e963e0593b462888ec81e4ec449c6992a6352649a84d814d50ac93c2f810d",
+      "saved_equals_installed": true,
+      "bytes_hex": "51568bf18b460485c0c744240400000000743983f80275348b068b48048b5608e8bbefefff83f80475228b0e8b49048b56086a00e817f2efff8b74240c508bcee86b628bff8bc65e59c208008b5424108b74240c528bcee854628bff8bc65e59c20800",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b685c0 --length 99"
+    },
+    {
+      "label": "renderer_texture_loader",
+      "start": "00b319b0",
+      "end_exclusive": "00b31ab1",
+      "byte_count": 257,
+      "saved_sha256": "6f9a8dd2ce45b3b51b4d3efd4e61a6086783e229bcf5197544c882b76fb7c0a5",
+      "installed_sha256": "6f9a8dd2ce45b3b51b4d3efd4e61a6086783e229bcf5197544c882b76fb7c0a5",
+      "saved_equals_installed": true,
+      "bytes_hex": "64a1000000006aff6800dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e8eb200000884424148b7c242c33f68d44240c3bc7c744242400000000c744240c000000008974241074288b076a01508d4c2414e827c38eff39378b74241074128b4c240c8b5704515256e8505c0c0083c40c8d4c240cc644242401e8bfb198ff8b4424306a016a00508d4c2418518d8d741a0000e8e6f0ffff85f68bf8c64424240074178b44240c6a0183c0015056e84b828eff8bc8e894fa0900803ddcd6080100c7442424ffffffff740e8b5424148b4c241852e8652000008b4c241c8bc75f5e5d64890d0000000083c41cc20800",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b319b0 --length 257"
+    },
+    {
+      "label": "deleting_dispatch",
+      "start": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "byte_count": 14,
+      "saved_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "installed_sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "saved_equals_installed": true,
+      "bytes_hex": "85c974098b018b50046a01ffd2c3",
+      "verification_command": "python tools/bsp.py ghidra bytes 00bd30e0 --length 14"
+    },
+    {
+      "label": "texture2d_terminal",
+      "start": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "byte_count": 32,
+      "saved_sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "installed_sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "saved_equals_installed": true,
+      "bytes_hex": "568bf1e848fdfffff644240801740b56b938db0801e826e3ffff8bc65ec20400",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b3f590 --length 32"
+    },
+    {
+      "label": "cube_terminal",
+      "start": "00b3f410",
+      "end_exclusive": "00b3f430",
+      "byte_count": 32,
+      "saved_sha256": "854a0644361726fda417159185e8440fbc537700d7d1f5315545503e6bb3816b",
+      "installed_sha256": "854a0644361726fda417159185e8440fbc537700d7d1f5315545503e6bb3816b",
+      "saved_equals_installed": true,
+      "bytes_hex": "568bf1e8b8f6fffff644240801740b56b970db0801e816e5ffff8bc65ec20400",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b3f410 --length 32"
+    },
+    {
+      "label": "volume_terminal",
+      "start": "00b3f430",
+      "end_exclusive": "00b3f450",
+      "byte_count": 32,
+      "saved_sha256": "96e85ab766eb77a1b235bb9a8de5058506e4fe7b2983ca33c5452a338c08c6eb",
+      "installed_sha256": "96e85ab766eb77a1b235bb9a8de5058506e4fe7b2983ca33c5452a338c08c6eb",
+      "saved_equals_installed": true,
+      "bytes_hex": "568bf1e838f7fffff644240801740b56b9a8db0801e816e4ffff8bc65ec20400",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b3f430 --length 32"
+    },
+    {
+      "label": "reload_unwind_actions_handler",
+      "start": "00cbc5e0",
+      "end_exclusive": "00cbc5fa",
+      "byte_count": 26,
+      "saved_sha256": "5c291d7584592dd189e72928aa9e7849f77f46e68a9821f8b3f64ac0e9670e01",
+      "installed_sha256": "5c291d7584592dd189e72928aa9e7849f77f46e68a9821f8b3f64ac0e9670e01",
+      "saved_equals_installed": true,
+      "bytes_hex": "8d4de0e9381776ff8d4de8e9301776ffb89848df00e949a5f3ff",
+      "verification_command": "python tools/bsp.py ghidra bytes 00cbc5e0 --length 26"
+    },
+    {
+      "label": "reload_unwind_map_info",
+      "start": "00df4888",
+      "end_exclusive": "00df48bc",
+      "byte_count": 52,
+      "saved_sha256": "970ea854b41e130bcdac4a60c7051210bbf0ec6ed8caf0e23269ad38e02bcdc5",
+      "installed_sha256": "970ea854b41e130bcdac4a60c7051210bbf0ec6ed8caf0e23269ad38e02bcdc5",
+      "saved_equals_installed": true,
+      "bytes_hex": "ffffffffe0c5cb0000000000e8c5cb0022059319020000008848df00000000000000000000000000000000000000000001000000",
+      "verification_command": "python tools/bsp.py ghidra bytes 00df4888 --length 52"
+    },
+    {
+      "label": "override_unwind_actions_handler",
+      "start": "00cbc8c0",
+      "end_exclusive": "00cbc8f3",
+      "byte_count": 51,
+      "saved_sha256": "1e30ab33a7f35e5a3cf02ef738e1099940d9c2fad863022253eb256e8cf4f40d",
+      "installed_sha256": "1e30ab33a7f35e5a3cf02ef738e1099940d9c2fad863022253eb256e8cf4f40d",
+      "saved_equals_installed": true,
+      "bytes_hex": "8d4de0e938aeeaff8d4dcce930aeeaff8b45c883e0010f840c0000008365c8fe8b4d04e9381476ffc3b8f04cdf00e950a2f3ff",
+      "verification_command": "python tools/bsp.py ghidra bytes 00cbc8c0 --length 51"
+    },
+    {
+      "label": "override_unwind_map_info",
+      "start": "00df4cd0",
+      "end_exclusive": "00df4d14",
+      "byte_count": 68,
+      "saved_sha256": "9e0ea0a364a8513ac7f1cbbc67d35322c54686e8da86a473877dae1024f69ee0",
+      "installed_sha256": "9e0ea0a364a8513ac7f1cbbc67d35322c54686e8da86a473877dae1024f69ee0",
+      "saved_equals_installed": true,
+      "bytes_hex": "ffffffffd0c8cb0000000000c0c8cb0001000000c8c8cb0000000000c8c8cb002205931904000000d04cdf00000000000000000000000000000000000000000001000000",
+      "verification_command": "python tools/bsp.py ghidra bytes 00df4cd0 --length 68"
+    },
+    {
+      "label": "renderer_load_slot",
+      "start": "00d5f10c",
+      "end_exclusive": "00d5f110",
+      "byte_count": 4,
+      "saved_sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5",
+      "installed_sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5",
+      "saved_equals_installed": true,
+      "bytes_hex": "b019b300",
+      "verification_command": "python tools/bsp.py ghidra bytes 00d5f10c --length 4"
+    },
+    {
+      "label": "renderer_reset_slots",
+      "start": "00d5f1c8",
+      "end_exclusive": "00d5f1d0",
+      "byte_count": 8,
+      "saved_sha256": "af13e708ce42e48cca414e62f35b7a8b3d5154a6302a732b809ab95cc288c743",
+      "installed_sha256": "af13e708ce42e48cca414e62f35b7a8b3d5154a6302a732b809ab95cc288c743",
+      "saved_equals_installed": true,
+      "bytes_hex": "d04db200204eb200",
+      "verification_command": "python tools/bsp.py ghidra bytes 00d5f1c8 --length 8"
+    },
+    {
+      "label": "texture2d_release_slots",
+      "start": "00d61948",
+      "end_exclusive": "00d61950",
+      "byte_count": 8,
+      "saved_sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+      "installed_sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+      "saved_equals_installed": true,
+      "bytes_hex": "e030bd0090f5b300",
+      "verification_command": "python tools/bsp.py ghidra bytes 00d61948 --length 8"
+    },
+    {
+      "label": "cube_release_slots",
+      "start": "00d61870",
+      "end_exclusive": "00d61878",
+      "byte_count": 8,
+      "saved_sha256": "930f024c1a3a6280d5bef743f72841863f1bdd5ff7c68ea02d37965d1a0bf623",
+      "installed_sha256": "930f024c1a3a6280d5bef743f72841863f1bdd5ff7c68ea02d37965d1a0bf623",
+      "saved_equals_installed": true,
+      "bytes_hex": "e030bd0010f4b300",
+      "verification_command": "python tools/bsp.py ghidra bytes 00d61870 --length 8"
+    },
+    {
+      "label": "volume_release_slots",
+      "start": "00d618b0",
+      "end_exclusive": "00d618b8",
+      "byte_count": 8,
+      "saved_sha256": "d426b2edd7208a74b3fa5b21fe9c5a26afd19f8cd4cdc5f7f3f4c422053d44fe",
+      "installed_sha256": "d426b2edd7208a74b3fa5b21fe9c5a26afd19f8cd4cdc5f7f3f4c422053d44fe",
+      "saved_equals_installed": true,
+      "bytes_hex": "e030bd0030f4b300",
+      "verification_command": "python tools/bsp.py ghidra bytes 00d618b0 --length 8"
+    },
+    {
+      "label": "effect_registry_profile",
+      "start": "00d5f074",
+      "end_exclusive": "00d5f088",
+      "byte_count": 20,
+      "saved_sha256": "b3bc8f1479371092926cb91c5953196dcc56f8b506fbd5dab4ee226a084e9853",
+      "installed_sha256": "b3bc8f1479371092926cb91c5953196dcc56f8b506fbd5dab4ee226a084e9853",
+      "saved_equals_installed": true,
+      "bytes_hex": "3022b30040e9b200b0ebb200f01fb3001020b300",
+      "verification_command": "python tools/bsp.py ghidra bytes 00d5f074 --length 20"
+    },
+    {
+      "label": "renderer_registry_initialization_fragment",
+      "start": "00b32590",
+      "end_exclusive": "00b325b8",
+      "byte_count": 40,
+      "saved_sha256": "40de90f021021e170e91bf9e8e0193b26c21f9adec0bdbf82ec2efed66d8280e",
+      "installed_sha256": "40de90f021021e170e91bf9e8e0193b26c21f9adec0bdbf82ec2efed66d8280e",
+      "saved_equals_installed": true,
+      "bytes_hex": "899e9c1a0000899ea01a0000899ea41a0000899ea81a0000c786981a000074f0d500899eac1a0000",
+      "verification_command": "python tools/bsp.py ghidra bytes 00b32590 --length 40"
+    }
+  ],
+  "source_evidence": [
+    {
+      "path": "include/bsp/native_renderer_texture_binding.hpp",
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762",
+      "git_blob": "938c8413e1e61da6d78ee062ef380cd28274885c"
+    },
+    {
+      "path": "src/native_renderer_texture_binding.cpp",
+      "sha256": "426edcb14ec67173d50e5b103d2e3b392d76e5aeb7c1ad76548ef69d9b00f179",
+      "git_blob": "e5ede74158f82d426b6ada7524b79bf5967beac5"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "git_blob": "28ac6a6a771515dc54df56d630a91438b24fb2de"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "git_blob": "65f5ff828bcfed5f544912349feeeb9167349359"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645",
+      "git_blob": "eed3f124714bc50f12aaecae9c0e248564347565"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e",
+      "git_blob": "e6533899322a1a26e20f1c52783bf1a7df254ed4"
+    },
+    {
+      "path": "include/bsp/native_volume_texture_owner.hpp",
+      "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f",
+      "git_blob": "fc1bab6bec29a064d8f0561182723d0e3eff44dd"
+    },
+    {
+      "path": "src/native_volume_texture_owner.cpp",
+      "sha256": "f17e5c2634b9ef4d53cedcd1f0868bf1befe71ab79aca01c5d8b1496a7f2e29f",
+      "git_blob": "48b4a3d525712c7226e9e2d90485e82834233088"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4",
+      "git_blob": "f7bdb348179c97900ce1922294fd5141dd406bd1"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab",
+      "git_blob": "316d98b9747ca45b92d8acce8565073e6157c0d0"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+      "git_blob": "f2931c0d57ece6cad3942fcb392ef58ec765643c"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+      "git_blob": "61ce392ec489e7aea683c1825e2bf8fc0d7fdac8"
+    },
+    {
+      "path": "include/bsp/gui_lua_runtime.hpp",
+      "sha256": "b057b33c8a42c73b3a3c31614d07634ded19018790d2e0d52b1e279193afd221",
+      "git_blob": "d2ca35ef6e880b7b4803e65dd3e51fc4907ea450"
+    },
+    {
+      "path": "src/gui_lua_runtime.cpp",
+      "sha256": "26837a78aca1ad98ad6264edb6dc1390fd4a3ab64887ec3b61d52a3da1febf84",
+      "git_blob": "94ce3ca8b997d2e817fb37226d4182bec3eb2a1e"
+    },
+    {
+      "path": "include/bsp/d3d9_texture.hpp",
+      "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+      "git_blob": "367a10c4990334e7188a86a16673a74953bc56e3"
+    },
+    {
+      "path": "src/d3d9_texture.cpp",
+      "sha256": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab",
+      "git_blob": "65de21688a438c48900ea5b61563bccf783dca2b"
+    },
+    {
+      "path": "include/bsp/resource_lookup.hpp",
+      "sha256": "8e410e293d0df1b98c69cb7bb911a643033c628d99d7fe4bfbcd91e4e86bb79a",
+      "git_blob": "542366e429c7f18c4193f526b01a8784177cdb3d"
+    },
+    {
+      "path": "src/resource_lookup.cpp",
+      "sha256": "ad90a68ed7933f91dd80f13d2d24c99125e731958012782dd00c01b9f6247ea3",
+      "git_blob": "f3d0e860ded3301d40959b05aa8a0372f4978136"
+    }
+  ],
+  "decision": {
+    "ready": [
+      "00b188a0",
+      "00b24e20"
+    ],
+    "blocked": [
+      "00b19000",
+      "00b24dd0"
+    ],
+    "ready_domain": "Borrow actual shader-owner/renderer raw storage and existing NativeRendererTextureBindingContext; admit current texture profiles D61948, D61870 and D618B0 with complete existing terminal providers. No registry construction or synthetic state.",
+    "barrier": "Native Lua override B1BC70 and full renderer B319B0/resource-manager B30B40/loader closure are incomplete; service callbacks and typed fragments do not close them."
+  },
+  "primary_contracts": [
+    {
+      "address": "00b188a0",
+      "abi": "ECX actual shader owner; no stack args; plain RET; no semantic EAX",
+      "eh": "none",
+      "behavior": [
+        "initial short comparison skips only zero",
+        "unsigned index; current signed-short +38 sign-extended to unsigned DWORD at growth and continuation checks",
+        "capture owner+0C+index*4; decrement nonnull texture+4; dispatch current slot0 exactly at zero",
+        "store owner slot zero only after returned nonnull release; no zero store for initially null slot",
+        "preserve +38 high-water count, all names, error texture and secondary object fields",
+        "propagate terminal exception before slot zero; no compensation"
+      ]
+    },
+    {
+      "address": "00b24e20",
+      "abi": "ECX actual renderer; no stack args; plain RET; no semantic EAX",
+      "eh": "none",
+      "profile_slot": "00d5f0a8+124",
+      "behavior": [
+        "initial current count+1AA0 then base+1A9C; DWORD end=base+count*2C",
+        "direct B188A0 on captured record+28 with no retain/null guard",
+        "after returned child read current count then base; advance old cursor 2C; equality termination",
+        "no registry header writes/allocation/clear"
+      ]
+    },
+    {
+      "address": "00b19000",
+      "abi": "ECX actual shader owner; no stack args; plain RET; no semantic EAX",
+      "eh": "FH3 handler CBC5F0, info DF4898, two cleanup states, no catches",
+      "behavior": [
+        "current name count +94 and unsigned index with signed-short bound",
+        "current F8D434 manager; full B1BC70 into separate native output header",
+        "nonempty override wins, otherwise copy current registered name using actual native resize and post-allocation reads",
+        "empty selected name preserves old slot",
+        "current F8D394 renderer table+64 with selected header and flag0",
+        "identity change publishes new then retains new then releases captured old",
+        "always release nonnull loader temporary, including pointer identity",
+        "normal override cleanup state0 then selected cleanup state-1; no texture compensation"
+      ]
+    },
+    {
+      "address": "00b24dd0",
+      "abi": "ECX actual renderer; no stack args; plain RET; no semantic EAX",
+      "eh": "none",
+      "profile_slot": "00d5f0a8+120",
+      "behavior": [
+        "same actual renderer loop ordering as B24E20",
+        "direct complete B19000 on record+28"
+      ]
+    }
+  ],
+  "reached_indirects": [
+    {
+      "site": "00b188db",
+      "kind": "current texture slot0 after InterlockedDecrement reaches zero",
+      "supported_profiles": {
+        "00d61948": [
+          "00bd30e0",
+          "00b3f590"
+        ],
+        "00d61870": [
+          "00bd30e0",
+          "00b3f410"
+        ],
+        "00d618b0": [
+          "00bd30e0",
+          "00b3f430"
+        ]
+      },
+      "provider_status": "complete for admitted profiles; B24710 source already composes full BD30E0 semantics with fresh table+4 and deleting flag1"
+    },
+    {
+      "site": "00b190fb",
+      "kind": "current global renderer table+64",
+      "current_profile": "00d5f0a8",
+      "current_target": "00b319b0",
+      "provider_status": "named but full source missing"
+    },
+    {
+      "sites": [
+        "00b19140",
+        "00b1915a"
+      ],
+      "kind": "captured old or loader temporary current slot0 after decrement zero",
+      "provider_status": "same admitted actual texture terminal closure as B188A0"
+    }
+  ],
+  "dependency_status": [
+    {
+      "addresses": [
+        "00419cc0",
+        "0041dd40",
+        "0041dd20",
+        "00bd1510"
+      ],
+      "status": "actual shared-pool/string providers available with their established domains"
+    },
+    {
+      "addresses": [
+        "00b1bc70",
+        "00b67980",
+        "00b67800",
+        "00b67700",
+        "00b65fb0",
+        "00b68100",
+        "00b685c0"
+      ],
+      "status": "native Lua override/output/0x14-byte LuaObject storage and lifetime closure incomplete; GuiLua51Host uses host handles"
+    },
+    {
+      "addresses": [
+        "00b319b0",
+        "00b30b40",
+        "00b31c20",
+        "00b31bd0"
+      ],
+      "status": "named or exported, no complete actual loading/cache/fallback source closure"
+    },
+    {
+      "addresses": [
+        "00b2c2d0"
+      ],
+      "status": "typed successful 2D fragment only; full actual VFS/cache/image-types/exception route incomplete"
+    },
+    {
+      "addresses": [
+        "00bdf4c0"
+      ],
+      "status": "typed ordered-resource-lookup fragment only; full native operation incomplete"
+    }
+  ],
+  "corrected_string_contract": {
+    "nil_fallback_address": "00f8d438",
+    "interpretation": "address of C-string bytes passed to 0041E870 constructor, not an 8-byte string header",
+    "saved_first_byte": 0,
+    "runtime_constant_proven": false,
+    "name_lookup": "B68100 reads header+4 C-string pointer; null substitutes 0108FF2C; stored length not used as Lua key length",
+    "non_nil_conversion": "B685C0 accepts bound kind2 and exact lua_type4 then lua_tolstring with null length; otherwise C-string fallback CE3A0C",
+    "constructor": "0041E870 zeroes output header, scans C-string and copies including terminator; historical Assign name does not establish assignment"
+  },
+  "eh": {
+    "00b19000": {
+      "handler": "00cbc5f0",
+      "info": "00df4898",
+      "map": "00df4888",
+      "catch_count": 0,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbc5e0",
+          "effect": "destroy selected native header at EH frame-20 via 41DD20"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbc5e8",
+          "effect": "destroy override native header at EH frame-18 via 41DD20"
+        }
+      ]
+    },
+    "00b1bc70": {
+      "handler": "00cbc8e9",
+      "info": "00df4cf0",
+      "map": "00df4cd0",
+      "catch_count": 0,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbc8d0",
+          "effect": "destroy constructed output only if frame-38 bit0 armed"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbc8c0",
+          "effect": "destroy globals at frame-20"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cbc8c8",
+          "effect": "destroy lookup at frame-34"
+        },
+        {
+          "state": 3,
+          "next": 0,
+          "action": "00cbc8c8",
+          "effect": "destroy lookup at frame-34"
+        }
+      ]
+    }
+  },
+  "recommended_packets": [
+    {
+      "id": "native_shader_owner_texture_release2",
+      "status": "ready_for_implementation_review",
+      "owned_addresses": [
+        "00b188a0",
+        "00b24e20"
+      ],
+      "owned_files": [
+        "include/bsp/native_shader_owner_texture_release.hpp",
+        "src/native_shader_owner_texture_release.cpp",
+        "docs/NATIVE_SHADER_OWNER_TEXTURE_RELEASE.md",
+        "reports/native_shader_owner_texture_release.json"
+      ],
+      "shared_integration": "Primary owns CMake, names/reconstruction shards and Ghidra annotation review",
+      "contract": "Use actual raw renderer/owner plus existing NativeRendererTextureBindingContext. Local concrete terminal dispatch, no new callbacks or synthetic registry."
+    },
+    {
+      "id": "native_shader_owner_override_discovery",
+      "status": "ready_independent_discovery",
+      "owned_addresses": [
+        "00b1bc70",
+        "00b68100",
+        "00b685c0"
+      ],
+      "read_only_dependencies": [
+        "00b67980",
+        "00b67800",
+        "00b67700",
+        "00b65fb0",
+        "00f8d434"
+      ],
+      "owned_files": [
+        "docs/NATIVE_SHADER_OWNER_OVERRIDE_DISCOVERY.md",
+        "reports/native_shader_owner_override_discovery.json"
+      ],
+      "caution": "Check active leases for shared Lua family before claiming; establish original 14h object ownership and provider contracts first."
+    },
+    {
+      "id": "native_renderer_texture_loader_closure_discovery",
+      "status": "ready_independent_discovery",
+      "owned_addresses": [
+        "00b319b0",
+        "00b30b40",
+        "00b31c20",
+        "00b31bd0",
+        "00b2c2d0"
+      ],
+      "read_only_dependencies": [
+        "00bdf4c0"
+      ],
+      "owned_files": [
+        "docs/NATIVE_RENDERER_TEXTURE_LOADER_CLOSURE_DISCOVERY.md",
+        "reports/native_renderer_texture_loader_closure_discovery.json"
+      ]
+    },
+    {
+      "id": "native_shader_owner_texture_reload2",
+      "status": "blocked_on_actual_providers",
+      "owned_addresses": [
+        "00b19000",
+        "00b24dd0"
+      ],
+      "blocked_by": [
+        "native_shader_owner_override_discovery",
+        "native_renderer_texture_loader_closure_discovery"
+      ],
+      "planned_files": [
+        "include/bsp/native_shader_owner_texture_reload.hpp",
+        "src/native_shader_owner_texture_reload.cpp",
+        "docs/NATIVE_SHADER_OWNER_TEXTURE_RELOAD.md",
+        "reports/native_shader_owner_texture_reload.json"
+      ]
+    }
+  ],
+  "scope_limits": [
+    "No whole-image identity claim",
+    "No source edits or Ghidra mutation",
+    "No build or native differential fixture executed",
+    "No raw ABI entry or in-game validation",
+    "Three supported current texture profiles do not prove arbitrary native profile closure",
+    "Borrowed storage must stay valid at observed reads/writes; wrapped unsigned bounds and cursor equality are not repaired",
+    "Constructor zero stores do not prove runtime count/base/fallback immutability"
+  ]
+}
