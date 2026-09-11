@@ -2,6 +2,7 @@
 
 #include "bsp/frame_clock.hpp"
 #include "bsp/input_enumeration.hpp"
+#include "bsp/gamepad_input_device.hpp"
 
 #ifndef DIRECTINPUT_VERSION
 #define DIRECTINPUT_VERSION 0x0800
@@ -47,7 +48,7 @@ struct JoystickBinding {
 // Typed projection, not native B48h object/vtable/refcount layout. DirectInput
 // device/effect COM references are BORROWED: native destruction unloads effects
 // but does not Release either effects or device. The application tracks them.
-class JoystickInputDevice final : public InputStateDevice {
+class JoystickInputDevice final : public GamepadInputDevice {
 public:
     explicit JoystickInputDevice(JoystickInputServices&);
     ~JoystickInputDevice() override;
@@ -59,6 +60,7 @@ public:
     bool poll_00a98e30(float seconds);
     bool activity_00a93f30() const;
     void set_relative_binding_00a98bb0(std::uint32_t code, bool relative);
+    void write_gamepad_force(std::uint32_t channel, float value) override;
 
     // A98B90/A992F0 callback state, also used by the native dynamic data format.
     IDirectInputDevice8A* direct_input{}; // +220
@@ -75,6 +77,7 @@ public:
     std::vector<DIOBJECTDATAFORMAT> format_objects; // data_format.rgodf/+288
     std::array<JoystickBinding, 90> bindings; // +29C
     std::uint32_t effect_kind{}; // +B10: constructor0 constant,1 ramp
+    std::int32_t direction_mode{}; // +B14: A99998 initializes zero
     std::uint32_t feedback_axis_count{}; // +B18
     std::array<DWORD, 2> feedback_axis_offsets{{0xffffffffu, 0xffffffffu}}; // +B1C
     std::array<IDirectInputEffect*, 2> effects{}; // +B24, Unload only

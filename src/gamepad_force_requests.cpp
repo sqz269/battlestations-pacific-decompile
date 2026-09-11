@@ -262,12 +262,15 @@ void pump_current_gamepad_force_requests_00a95960(float seconds, GamepadForceCon
 }
 void destroy_gamepad_force_state_00a95a80(InputDevice& device, GamepadForceContext& context) {
     auto& state = context.host.force_state(device);
+    destroy_gamepad_force_state_00a95a80(state, context.enabled_e12f2c);
+}
+void destroy_gamepad_force_state_00a95a80(GamepadForceState& state, const bool& enabled) {
     destroy_requests_in_order(state);
     const auto previous = state.amplitudes;
     state.amplitudes.fill(0.0f);
     // A95AA2 already installed D5B670; its +38 slot is BF698E (_purecall).
     // Do not silently route that base-destructor call to the derived device.
-    if (context.enabled_e12f2c && (previous[0] != 0.0f || previous[1] != 0.0f))
+    if (enabled && (previous[0] != 0.0f || previous[1] != 0.0f))
         throw std::logic_error("native gamepad base destruction reaches purecall with enabled nonzero amplitudes");
     // Remaining native work destroys the empty STL sentinel and base layout.
 }

@@ -113,6 +113,9 @@ void remove_current_gamepad_force_request_00a957f0(std::uint32_t id,
 void clear_gamepad_force_requests_00a95890(InputDevice&, GamepadForceContext&);
 void pump_current_gamepad_force_requests_00a95960(float seconds, GamepadForceContext&);
 void destroy_gamepad_force_state_00a95a80(InputDevice&, GamepadForceContext&);
+// Same recovered base teardown over canonical state after derived destruction.
+// Read the actual enable flag after deleting requests; do not snapshot it early.
+void destroy_gamepad_force_state_00a95a80(GamepadForceState&, const bool& enabled_e12f2c);
 // Consumes the request on absent device (deletes it) or successful insertion.
 // Native duplicate keys leave it unowned; callers must prevent exhausted-ID
 // collisions or independently retain that incoming allocation.

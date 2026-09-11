@@ -1,0 +1,11 @@
+{
+  "packet": "orch3_force_device_binding_g",
+  "source": "src/gamepad_input_device.cpp",
+  "classification": "composition of recovered gamepad base, force and concrete device bodies",
+  "canonical_state": "one GamepadForceState member per JoystickInputDevice/XInputDevice; same E12F2C as XInput polling; current groups resolved on each request",
+  "evidence": ["docs/GAMEPAD_FORCE_REQUESTS.md", "docs/JOYSTICK_INPUT.md", "docs/XINPUT_DEVICE.md"],
+  "corrections": ["joystick B14 initializes zero at A99998", "A95A80 occurs after derived destructor; enabled nonzero output is fatal native purecall state"],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": "strict MSVC Win32 /W4 /WX build and both existing CTests passed; existing ignored XInput fixture recompiled against new core and extended with one canonical request-to-motor/SDK/disable/clear scenario and mismatched-flag rejection; 131072 signed16 cases still passed; process exit0; no hardware calls"
+}

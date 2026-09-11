@@ -123,7 +123,10 @@ DWORD XInputLibrary::set_state(DWORD user, XINPUT_VIBRATION& state) { return imp
 XInputGetStateFunction XInputLibrary::get_state_function() const noexcept { return impl_->get; }
 
 XInputDevice::XInputDevice(std::uint32_t user, XInputApi& api, XInputDeviceGlobals& globals) noexcept
-    : user_index(user), api_(api), globals_(globals) {}
+    : GamepadInputDevice(&globals.rumble_enabled), user_index(user), api_(api), globals_(globals) {}
+void XInputDevice::write_gamepad_force(std::uint32_t channel, float value) {
+    set_motor_value_00a9a9c0(channel, value);
+}
 int XInputDevice::device_class() const { return 2; }
 std::int32_t XInputDevice::identifier_00a9a5f0() const noexcept { return 0; }
 float XInputDevice::value_24(std::uint32_t code) const {

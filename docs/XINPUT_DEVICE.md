@@ -80,3 +80,14 @@ Evidence: `reports/xinput_device.json`, `reports/xinput_function_definitions.jso
 `local/xinput-device-build.log`. Remaining work includes shared gamepad force
 requests/owner lifetime and executable input-owner binding. This is not original
 ABI, live-hardware or gameplay validation.
+
+## Correction from docs/GAMEPAD_INPUT_DEVICE.md
+
+The typed joystick and XInput classes now share a GamepadInputDevice base with
+one canonical force-request map and amplitude pair per device. The recovered
+request pipeline drives the real motor/effect setters, and base teardown follows
+derived cleanup. Enabled nonzero amplitudes at base destruction preserve the
+native purecall failure boundary. This closes the earlier empty-tree projection
+for typed objects; it does not establish native ABI or gameplay parity. Joystick
++B14 direction mode is initialized to zero at A99998. See GAMEPAD_FORCE_REQUESTS.md
+and GAMEPAD_INPUT_DEVICE.md for the request and lifetime contracts.

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/input_focus_reset.hpp"
+#include "bsp/gamepad_input_device.hpp"
 #include "bsp/native_string.hpp"
 
 #include <Xinput.h>
@@ -53,11 +54,10 @@ struct XInputDeviceGlobals {
         "^FE.opt_button_right_stick_x", "^FE.opt_button_right_stick_y"}};
 };
 
-// New typed interface. Native allocation240h, vtableD5BB48. The common base's
-// force-request tree is constructed empty and remains outside this API; native
-// A95A80 teardown of that empty tree has no device calls. This does not model
-// arbitrary externally populated A954C0 force requests or native object layout.
-class XInputDevice final : public InputStateDevice {
+// New typed interface. Native allocation240h, vtableD5BB48. The common base owns
+// the canonical request tree and amplitude pair, with recovered base teardown.
+// This does not reproduce native object layout or calling convention.
+class XInputDevice final : public GamepadInputDevice {
 public:
     // A9A5A0, ECX=this, index stack, RET4. Canonical history arrays are zeroed by
     // InputStateDevice; native also zeroes sample/vibration and connection flag.
@@ -69,6 +69,7 @@ public:
     bool poll_00a9a7f0(float ignored_seconds); // thiscall, RET4, AL bool
     DWORD stop_vibration_00a9a790(); // thiscall, RET, EAX SDK result
     void set_motor_value_00a9a9c0(std::uint32_t motor, float value); // RET8
+    void write_gamepad_force(std::uint32_t channel, float value) override;
     NativeString& control_name_00a9aa40(NativeString&, std::uint32_t code,
         NativeStringStorage& = crt_string_storage()) const; // native RET8
     bool activity_00a93f30() const;
@@ -84,7 +85,7 @@ private:
 };
 
 // A9A7C0: base teardown then free iff bit0; no implicit vibration reset.
-// Standard-new-compatible typed storage, with the empty force-tree boundary.
+// Standard-new-compatible typed storage, including canonical force teardown.
 XInputDevice* delete_xinput_device_00a9a7c0(XInputDevice&, std::uint32_t flags);
 
 // Chain before JoystickFocusDeviceHost and behind KeyboardMouseFocusDeviceHost

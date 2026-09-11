@@ -159,7 +159,7 @@ JoystickInputDevice::JoystickInputDevice(JoystickInputServices& services) : serv
 
 JoystickInputDevice::~JoystickInputDevice() {
     // A991F0 order: previous/current arrays, reverse object-name destruction,
-    // format array, effect Unload in index order, product name, empty base tree.
+    // format array, effect Unload in index order, product name, then base tree.
     std::vector<std::int32_t>().swap(previous_state);
     std::vector<std::int32_t>().swap(current_state);
     for (auto it = objects.rbegin(); it != objects.rend(); ++it)
@@ -169,11 +169,15 @@ JoystickInputDevice::~JoystickInputDevice() {
     for (auto* effect : effects) if (effect) effect->Unload();
     product_name.release_to(services_.strings);
     // No Release on direct_input or either effect; these are externally owned.
-    // Force-request insertion/processing is a separate, unexposed game family;
-    // A95D70 constructed its empty registry with zero channel amplitudes.
+    // GamepadInputDevice now performs A95A80 after the derived destructor.
 }
 
 int JoystickInputDevice::device_class() const { return 2; }
+void JoystickInputDevice::write_gamepad_force(std::uint32_t channel, float value) {
+    JoystickForceOutputState output{effects, effect_kind, direction_mode,
+        activity_deadline, services_.current_clock_01090ab0_vslot14};
+    set_joystick_force_00a98cc0(output, channel, value);
+}
 void JoystickInputDevice::on_slot_reset() {
     if (!direct_input) throw std::runtime_error("joystick reset requires its COM device");
     direct_input->SendForceFeedbackCommand(2);
