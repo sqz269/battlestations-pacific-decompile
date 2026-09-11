@@ -7013,6 +7013,39 @@
         "reports/native_physical_pool_acquire_audit.json"
       ],
       "evidence": "reports/native_physical_pool_acquire_audit.json"
+    },
+    {
+      "id": "orch4_sound_active_s",
+      "packet": "orch4_sound_active_s",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_manager_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a7e630",
+        "00a87bf0",
+        "00a7c1c0",
+        "00a7d640",
+        "00a7d680",
+        "00a79990",
+        "00bee050",
+        "00a7c080",
+        "00a7d5c0",
+        "00a7e490"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_system_update.hpp",
+        "src/sound_system_update.cpp",
+        "include/bsp/sound_channel_runtime.hpp",
+        "src/sound_channel_runtime.cpp",
+        "include/bsp/voice_playback.hpp",
+        "include/bsp/voice_slot_start.hpp",
+        "src/voice_slot_start.cpp",
+        "include/bsp/sound_system_owner.hpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_system_update.json",
+      "discovery_evidence": "docs/SOUND_SYSTEM_UPDATE.md"
     }
   ],
   "snapshot_after_analysis": {
