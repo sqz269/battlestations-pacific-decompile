@@ -99,8 +99,9 @@ private:
     SingletonLifetimeCallbacks next_;
 };
 
-// Deliberately no NativeStringStorage bridge: actual-state 00BD1120 allocation,
-// 00BD1510 sized release and 00BD12A0 ring push remain mandatory prerequisites.
-// See docs/NATIVE_STRING_POOL_OWNER.md for their exact contracts and boundaries.
+// The actual-state BD1120/BD1510/BD12A0 layer and NativeStringStorage bridge
+// are provided separately by native_string_pool_storage.hpp. The owner report
+// records this packet's earlier boundary; docs/NATIVE_STRING_POOL_STORAGE.md
+// records its subsequent implementation and remaining integration limits.
 
 } // namespace bsp

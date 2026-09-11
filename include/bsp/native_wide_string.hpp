@@ -7,7 +7,8 @@ namespace bsp {
 // Operate on the caller's actual eight-byte Win32 header: uint32 length at +0,
 // pointer to 16-bit code units at +4. No temporary string or allocator is held
 // in the header. The caller supplies its existing NativeStringStorage owner;
-// PooledStringStorage routes to the recovered sized pool used by the native.
+// ActualNativeStringPoolStorage binds the actual native owner; PooledStringStorage
+// is the earlier semantic pool projection.
 // These C++ entry points do not reproduce the original calling conventions.
 // Evidence, alias ordering and remaining boundaries: docs/NATIVE_WIDE_STRING.md.
 

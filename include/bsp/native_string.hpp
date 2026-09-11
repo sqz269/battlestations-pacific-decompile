@@ -17,7 +17,10 @@ namespace bsp {
 
 // The allocation contract 0041dd40 depends on. Every release repeats the size
 // that was allocated, because the native pool picks its free list from that
-// number. allocate must not return null.
+// number. The native large-block malloc can return null; these native string
+// bodies do not translate that failure into an exception or a fallback buffer.
+// Host allocators may have a stronger throwing contract. See also the actual
+// pool bridge in native_string_pool_storage.hpp and its exception-domain limit.
 class NativeStringStorage {
 public:
     virtual ~NativeStringStorage() = default;
@@ -25,7 +28,7 @@ public:
     virtual void release(char* block, std::uint32_t size) noexcept = 0;
 };
 
-// Routes through a SizedStoragePool, as the native does through 00419cc0.
+// Semantic SizedStoragePool projection; not the actual 00419cc0 owner layout.
 class PooledStringStorage final : public NativeStringStorage {
 public:
     explicit PooledStringStorage(SizedStoragePool& pool) noexcept : pool_(&pool) {}
