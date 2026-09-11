@@ -1,0 +1,471 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a95bd0",
+    "end_address": "00a95bd6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a95bd0",
+    "end_address": "00a95bd5",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a95bd0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadInputDevice_GetClass"
+   },
+   "result": {
+    "success": true,
+    "address": "00a95bd0",
+    "function_name": "BSP_GamepadInputDevice_GetClass",
+    "entry_point": "00a95bd0",
+    "body_size": 6,
+    "message": "Function created successfully at 00a95bd0",
+    "warnings": [
+     "Function name 'BSP_GamepadInputDevice_GetClass' \u2014 main part 'GamepadInputDevice_GetClass' is not PascalCase. Expected: GamepadinputdeviceGetclass",
+     "Function name 'BSP_GamepadInputDevice_GetClass' \u2014 main part 'GamepadInputDevice_GetClass' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadInputDevice_GetClass' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a95bd0",
+   "end": "00a95bd6",
+   "name": "BSP_GamepadInputDevice_GetClass",
+   "after": "Function: BSP_GamepadInputDevice_GetClass at 00a95bd0\nSignature: undefined BSP_GamepadInputDevice_GetClass(void)\nEntry: 00a95bd0\nBody: 00a95bd0 - 00a95bd5"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98750",
+    "end_address": "00a9877a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98750",
+    "end_address": "00a98779",
+    "bytes_disassembled": 42,
+    "message": "Successfully disassembled 42 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98750",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_QueryRelative"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98750",
+    "function_name": "BSP_JoystickInputDevice_QueryRelative",
+    "entry_point": "00a98750",
+    "body_size": 42,
+    "message": "Function created successfully at 00a98750",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_QueryRelative' \u2014 main part 'JoystickInputDevice_QueryRelative' is not PascalCase. Expected: JoystickinputdeviceQueryrelative",
+     "Function name 'BSP_JoystickInputDevice_QueryRelative' \u2014 main part 'JoystickInputDevice_QueryRelative' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_QueryRelative' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98750",
+   "end": "00a9877a",
+   "name": "BSP_JoystickInputDevice_QueryRelative",
+   "after": "Function: BSP_JoystickInputDevice_QueryRelative at 00a98750\nSignature: undefined BSP_JoystickInputDevice_QueryRelative(void)\nEntry: 00a98750\nBody: 00a98750 - 00a98779"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98780",
+    "end_address": "00a9891a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98780",
+    "end_address": "00a98919",
+    "bytes_disassembled": 410,
+    "message": "Successfully disassembled 410 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98780",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_BindingDown"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98780",
+    "function_name": "BSP_JoystickInputDevice_BindingDown",
+    "entry_point": "00a98780",
+    "body_size": 410,
+    "message": "Function created successfully at 00a98780",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_BindingDown' \u2014 main part 'JoystickInputDevice_BindingDown' is not PascalCase. Expected: JoystickinputdeviceBindingdown",
+     "Function name 'BSP_JoystickInputDevice_BindingDown' \u2014 main part 'JoystickInputDevice_BindingDown' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_BindingDown' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98780",
+   "end": "00a9891a",
+   "name": "BSP_JoystickInputDevice_BindingDown",
+   "after": "Function: BSP_JoystickInputDevice_BindingDown at 00a98780\nSignature: undefined BSP_JoystickInputDevice_BindingDown(void)\nEntry: 00a98780\nBody: 00a98780 - 00a98919"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98940",
+    "end_address": "00a98b66"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98940",
+    "end_address": "00a98b65",
+    "bytes_disassembled": 550,
+    "message": "Successfully disassembled 550 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98940",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_BindingValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98940",
+    "function_name": "BSP_JoystickInputDevice_BindingValue",
+    "entry_point": "00a98940",
+    "body_size": 550,
+    "message": "Function created successfully at 00a98940",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_BindingValue' \u2014 main part 'JoystickInputDevice_BindingValue' is not PascalCase. Expected: JoystickinputdeviceBindingvalue",
+     "Function name 'BSP_JoystickInputDevice_BindingValue' \u2014 main part 'JoystickInputDevice_BindingValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_BindingValue' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98940",
+   "end": "00a98b66",
+   "name": "BSP_JoystickInputDevice_BindingValue",
+   "after": "Function: BSP_JoystickInputDevice_BindingValue at 00a98940\nSignature: undefined BSP_JoystickInputDevice_BindingValue(void)\nEntry: 00a98940\nBody: 00a98940 - 00a98b65"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98b90",
+    "end_address": "00a98bad"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98b90",
+    "end_address": "00a98bac",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98b90",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_CountObjectsCallbackA"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98b90",
+    "function_name": "BSP_JoystickInputDevice_CountObjectsCallbackA",
+    "entry_point": "00a98b90",
+    "body_size": 29,
+    "message": "Function created successfully at 00a98b90",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_CountObjectsCallbackA' \u2014 main part 'JoystickInputDevice_CountObjectsCallbackA' is not PascalCase. Expected: JoystickinputdeviceCountobjectscallbacka",
+     "Function name 'BSP_JoystickInputDevice_CountObjectsCallbackA' \u2014 main part 'JoystickInputDevice_CountObjectsCallbackA' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_CountObjectsCallbackA' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98b90",
+   "end": "00a98bad",
+   "name": "BSP_JoystickInputDevice_CountObjectsCallbackA",
+   "after": "Function: BSP_JoystickInputDevice_CountObjectsCallbackA at 00a98b90\nSignature: undefined BSP_JoystickInputDevice_CountObjectsCallbackA(void)\nEntry: 00a98b90\nBody: 00a98b90 - 00a98bac"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98bb0",
+    "end_address": "00a98bc5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98bb0",
+    "end_address": "00a98bc4",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98bb0",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_SetRelativeBinding"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98bb0",
+    "function_name": "BSP_JoystickInputDevice_SetRelativeBinding",
+    "entry_point": "00a98bb0",
+    "body_size": 21,
+    "message": "Function created successfully at 00a98bb0",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_SetRelativeBinding' \u2014 main part 'JoystickInputDevice_SetRelativeBinding' is not PascalCase. Expected: JoystickinputdeviceSetrelativebinding",
+     "Function name 'BSP_JoystickInputDevice_SetRelativeBinding' \u2014 main part 'JoystickInputDevice_SetRelativeBinding' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_SetRelativeBinding' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98bb0",
+   "end": "00a98bc5",
+   "name": "BSP_JoystickInputDevice_SetRelativeBinding",
+   "after": "Function: BSP_JoystickInputDevice_SetRelativeBinding at 00a98bb0\nSignature: undefined BSP_JoystickInputDevice_SetRelativeBinding(void)\nEntry: 00a98bb0\nBody: 00a98bb0 - 00a98bc4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98bd0",
+    "end_address": "00a98c48"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98bd0",
+    "end_address": "00a98c47",
+    "bytes_disassembled": 120,
+    "message": "Successfully disassembled 120 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98bd0",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_QueryDown"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98bd0",
+    "function_name": "BSP_JoystickInputDevice_QueryDown",
+    "entry_point": "00a98bd0",
+    "body_size": 120,
+    "message": "Function created successfully at 00a98bd0",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_QueryDown' \u2014 main part 'JoystickInputDevice_QueryDown' is not PascalCase. Expected: JoystickinputdeviceQuerydown",
+     "Function name 'BSP_JoystickInputDevice_QueryDown' \u2014 main part 'JoystickInputDevice_QueryDown' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_QueryDown' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98bd0",
+   "end": "00a98c48",
+   "name": "BSP_JoystickInputDevice_QueryDown",
+   "after": "Function: BSP_JoystickInputDevice_QueryDown at 00a98bd0\nSignature: undefined BSP_JoystickInputDevice_QueryDown(void)\nEntry: 00a98bd0\nBody: 00a98bd0 - 00a98c47"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a98c50",
+    "end_address": "00a98cb2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a98c50",
+    "end_address": "00a98cb1",
+    "bytes_disassembled": 98,
+    "message": "Successfully disassembled 98 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a98c50",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_QueryValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00a98c50",
+    "function_name": "BSP_JoystickInputDevice_QueryValue",
+    "entry_point": "00a98c50",
+    "body_size": 98,
+    "message": "Function created successfully at 00a98c50",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_QueryValue' \u2014 main part 'JoystickInputDevice_QueryValue' is not PascalCase. Expected: JoystickinputdeviceQueryvalue",
+     "Function name 'BSP_JoystickInputDevice_QueryValue' \u2014 main part 'JoystickInputDevice_QueryValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_QueryValue' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a98c50",
+   "end": "00a98cb2",
+   "name": "BSP_JoystickInputDevice_QueryValue",
+   "after": "Function: BSP_JoystickInputDevice_QueryValue at 00a98c50\nSignature: undefined BSP_JoystickInputDevice_QueryValue(void)\nEntry: 00a98c50\nBody: 00a98c50 - 00a98cb1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a99150",
+    "end_address": "00a99160"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a99150",
+    "end_address": "00a9915f",
+    "bytes_disassembled": 16,
+    "message": "Successfully disassembled 16 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a99150",
+    "disassemble_first": false,
+    "name": "BSP_JoystickObject_InitializeName_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a99150",
+    "function_name": "BSP_JoystickObject_InitializeName_Provisional",
+    "entry_point": "00a99150",
+    "body_size": 16,
+    "message": "Function created successfully at 00a99150",
+    "warnings": [
+     "Function name 'BSP_JoystickObject_InitializeName_Provisional' \u2014 main part 'JoystickObject_InitializeName_Provisional' is not PascalCase. Expected: JoystickobjectInitializenameProvisional",
+     "Function name 'BSP_JoystickObject_InitializeName_Provisional' \u2014 main part 'JoystickObject_InitializeName_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickObject_InitializeName_Provisional' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a99150",
+   "end": "00a99160",
+   "name": "BSP_JoystickObject_InitializeName_Provisional",
+   "after": "Function: BSP_JoystickObject_InitializeName_Provisional at 00a99150\nSignature: undefined BSP_JoystickObject_InitializeName_Provisional(void)\nEntry: 00a99150\nBody: 00a99150 - 00a9915f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a99160",
+    "end_address": "00a9917d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a99160",
+    "end_address": "00a9917c",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a99160",
+    "disassemble_first": false,
+    "name": "BSP_JoystickObject_DestroyName_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a99160",
+    "function_name": "BSP_JoystickObject_DestroyName_Provisional",
+    "entry_point": "00a99160",
+    "body_size": 29,
+    "message": "Function created successfully at 00a99160",
+    "warnings": [
+     "Function name 'BSP_JoystickObject_DestroyName_Provisional' \u2014 main part 'JoystickObject_DestroyName_Provisional' is not PascalCase. Expected: JoystickobjectDestroynameProvisional",
+     "Function name 'BSP_JoystickObject_DestroyName_Provisional' \u2014 main part 'JoystickObject_DestroyName_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickObject_DestroyName_Provisional' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a99160",
+   "end": "00a9917d",
+   "name": "BSP_JoystickObject_DestroyName_Provisional",
+   "after": "Function: BSP_JoystickObject_DestroyName_Provisional at 00a99160\nSignature: undefined BSP_JoystickObject_DestroyName_Provisional(void)\nEntry: 00a99160\nBody: 00a99160 - 00a9917c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a99920",
+    "end_address": "00a99931"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a99920",
+    "end_address": "00a99930",
+    "bytes_disassembled": 17,
+    "message": "Successfully disassembled 17 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a99920",
+    "disassemble_first": false,
+    "name": "BSP_JoystickInputDevice_ObjectCallbackA"
+   },
+   "result": {
+    "success": true,
+    "address": "00a99920",
+    "function_name": "BSP_JoystickInputDevice_ObjectCallbackA",
+    "entry_point": "00a99920",
+    "body_size": 17,
+    "message": "Function created successfully at 00a99920",
+    "warnings": [
+     "Function name 'BSP_JoystickInputDevice_ObjectCallbackA' \u2014 main part 'JoystickInputDevice_ObjectCallbackA' is not PascalCase. Expected: JoystickinputdeviceObjectcallbacka",
+     "Function name 'BSP_JoystickInputDevice_ObjectCallbackA' \u2014 main part 'JoystickInputDevice_ObjectCallbackA' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_JoystickInputDevice_ObjectCallbackA' does not start with a recognized verb. First word 'Joystick' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a99920",
+   "end": "00a99931",
+   "name": "BSP_JoystickInputDevice_ObjectCallbackA",
+   "after": "Function: BSP_JoystickInputDevice_ObjectCallbackA at 00a99920\nSignature: undefined BSP_JoystickInputDevice_ObjectCallbackA(void)\nEntry: 00a99920\nBody: 00a99920 - 00a99930"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

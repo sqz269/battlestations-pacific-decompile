@@ -1,0 +1,758 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008722d0",
+    "end_address": "008722ff"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008722d0",
+    "end_address": "008722fe",
+    "bytes_disassembled": 47,
+    "message": "Successfully disassembled 47 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008722d0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_ConstantRequestConstruct"
+   },
+   "result": {
+    "success": true,
+    "address": "008722d0",
+    "function_name": "BSP_GamepadForce_ConstantRequestConstruct",
+    "entry_point": "008722d0",
+    "body_size": 47,
+    "message": "Function created successfully at 008722d0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_ConstantRequestConstruct' \u2014 main part 'GamepadForce_ConstantRequestConstruct' is not PascalCase. Expected: GamepadforceConstantrequestconstruct",
+     "Function name 'BSP_GamepadForce_ConstantRequestConstruct' \u2014 main part 'GamepadForce_ConstantRequestConstruct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_ConstantRequestConstruct' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008722d0",
+   "end": "008722ff",
+   "name": "BSP_GamepadForce_ConstantRequestConstruct",
+   "after": "Function: BSP_GamepadForce_ConstantRequestConstruct at 008722d0\nSignature: undefined BSP_GamepadForce_ConstantRequestConstruct(void)\nEntry: 008722d0\nBody: 008722d0 - 008722fe"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872350",
+    "end_address": "00872387"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872350",
+    "end_address": "00872386",
+    "bytes_disassembled": 55,
+    "message": "Successfully disassembled 55 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872350",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_FadingRequestConstruct"
+   },
+   "result": {
+    "success": true,
+    "address": "00872350",
+    "function_name": "BSP_GamepadForce_FadingRequestConstruct",
+    "entry_point": "00872350",
+    "body_size": 55,
+    "message": "Function created successfully at 00872350",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_FadingRequestConstruct' \u2014 main part 'GamepadForce_FadingRequestConstruct' is not PascalCase. Expected: GamepadforceFadingrequestconstruct",
+     "Function name 'BSP_GamepadForce_FadingRequestConstruct' \u2014 main part 'GamepadForce_FadingRequestConstruct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_FadingRequestConstruct' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872350",
+   "end": "00872387",
+   "name": "BSP_GamepadForce_FadingRequestConstruct",
+   "after": "Function: BSP_GamepadForce_FadingRequestConstruct at 00872350\nSignature: undefined BSP_GamepadForce_FadingRequestConstruct(void)\nEntry: 00872350\nBody: 00872350 - 00872386"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008723f0",
+    "end_address": "0087244f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008723f0",
+    "end_address": "0087244e",
+    "bytes_disassembled": 95,
+    "message": "Successfully disassembled 95 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008723f0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_AlternatingRequestConstruct"
+   },
+   "result": {
+    "success": true,
+    "address": "008723f0",
+    "function_name": "BSP_GamepadForce_AlternatingRequestConstruct",
+    "entry_point": "008723f0",
+    "body_size": 95,
+    "message": "Function created successfully at 008723f0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_AlternatingRequestConstruct' \u2014 main part 'GamepadForce_AlternatingRequestConstruct' is not PascalCase. Expected: GamepadforceAlternatingrequestconstruct",
+     "Function name 'BSP_GamepadForce_AlternatingRequestConstruct' \u2014 main part 'GamepadForce_AlternatingRequestConstruct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_AlternatingRequestConstruct' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008723f0",
+   "end": "0087244f",
+   "name": "BSP_GamepadForce_AlternatingRequestConstruct",
+   "after": "Function: BSP_GamepadForce_AlternatingRequestConstruct at 008723f0\nSignature: undefined BSP_GamepadForce_AlternatingRequestConstruct(void)\nEntry: 008723f0\nBody: 008723f0 - 0087244e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872310",
+    "end_address": "00872314"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872310",
+    "end_address": "00872313",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872310",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_ConstantRequestChannel"
+   },
+   "result": {
+    "success": true,
+    "address": "00872310",
+    "function_name": "BSP_GamepadForce_ConstantRequestChannel",
+    "entry_point": "00872310",
+    "body_size": 4,
+    "message": "Function created successfully at 00872310",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_ConstantRequestChannel' \u2014 main part 'GamepadForce_ConstantRequestChannel' is not PascalCase. Expected: GamepadforceConstantrequestchannel",
+     "Function name 'BSP_GamepadForce_ConstantRequestChannel' \u2014 main part 'GamepadForce_ConstantRequestChannel' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_ConstantRequestChannel' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872310",
+   "end": "00872314",
+   "name": "BSP_GamepadForce_ConstantRequestChannel",
+   "after": "Function: BSP_GamepadForce_ConstantRequestChannel at 00872310\nSignature: undefined BSP_GamepadForce_ConstantRequestChannel(void)\nEntry: 00872310\nBody: 00872310 - 00872313"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872320",
+    "end_address": "00872324"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872320",
+    "end_address": "00872323",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872320",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_ConstantRequestValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00872320",
+    "function_name": "BSP_GamepadForce_ConstantRequestValue",
+    "entry_point": "00872320",
+    "body_size": 4,
+    "message": "Function created successfully at 00872320",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_ConstantRequestValue' \u2014 main part 'GamepadForce_ConstantRequestValue' is not PascalCase. Expected: GamepadforceConstantrequestvalue",
+     "Function name 'BSP_GamepadForce_ConstantRequestValue' \u2014 main part 'GamepadForce_ConstantRequestValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_ConstantRequestValue' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872320",
+   "end": "00872324",
+   "name": "BSP_GamepadForce_ConstantRequestValue",
+   "after": "Function: BSP_GamepadForce_ConstantRequestValue at 00872320\nSignature: undefined BSP_GamepadForce_ConstantRequestValue(void)\nEntry: 00872320\nBody: 00872320 - 00872323"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872330",
+    "end_address": "00872342"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872330",
+    "end_address": "00872341",
+    "bytes_disassembled": 18,
+    "message": "Successfully disassembled 18 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872330",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_ConstantRequestExpired"
+   },
+   "result": {
+    "success": true,
+    "address": "00872330",
+    "function_name": "BSP_GamepadForce_ConstantRequestExpired",
+    "entry_point": "00872330",
+    "body_size": 18,
+    "message": "Function created successfully at 00872330",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_ConstantRequestExpired' \u2014 main part 'GamepadForce_ConstantRequestExpired' is not PascalCase. Expected: GamepadforceConstantrequestexpired",
+     "Function name 'BSP_GamepadForce_ConstantRequestExpired' \u2014 main part 'GamepadForce_ConstantRequestExpired' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_ConstantRequestExpired' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872330",
+   "end": "00872342",
+   "name": "BSP_GamepadForce_ConstantRequestExpired",
+   "after": "Function: BSP_GamepadForce_ConstantRequestExpired at 00872330\nSignature: undefined BSP_GamepadForce_ConstantRequestExpired(void)\nEntry: 00872330\nBody: 00872330 - 00872341"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008723a0",
+    "end_address": "008723a4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008723a0",
+    "end_address": "008723a3",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008723a0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_FadingRequestChannel"
+   },
+   "result": {
+    "success": true,
+    "address": "008723a0",
+    "function_name": "BSP_GamepadForce_FadingRequestChannel",
+    "entry_point": "008723a0",
+    "body_size": 4,
+    "message": "Function created successfully at 008723a0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_FadingRequestChannel' \u2014 main part 'GamepadForce_FadingRequestChannel' is not PascalCase. Expected: GamepadforceFadingrequestchannel",
+     "Function name 'BSP_GamepadForce_FadingRequestChannel' \u2014 main part 'GamepadForce_FadingRequestChannel' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_FadingRequestChannel' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008723a0",
+   "end": "008723a4",
+   "name": "BSP_GamepadForce_FadingRequestChannel",
+   "after": "Function: BSP_GamepadForce_FadingRequestChannel at 008723a0\nSignature: undefined BSP_GamepadForce_FadingRequestChannel(void)\nEntry: 008723a0\nBody: 008723a0 - 008723a3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008723b0",
+    "end_address": "008723cc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008723b0",
+    "end_address": "008723cb",
+    "bytes_disassembled": 28,
+    "message": "Successfully disassembled 28 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008723b0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_FadingRequestValue"
+   },
+   "result": {
+    "success": true,
+    "address": "008723b0",
+    "function_name": "BSP_GamepadForce_FadingRequestValue",
+    "entry_point": "008723b0",
+    "body_size": 28,
+    "message": "Function created successfully at 008723b0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_FadingRequestValue' \u2014 main part 'GamepadForce_FadingRequestValue' is not PascalCase. Expected: GamepadforceFadingrequestvalue",
+     "Function name 'BSP_GamepadForce_FadingRequestValue' \u2014 main part 'GamepadForce_FadingRequestValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_FadingRequestValue' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008723b0",
+   "end": "008723cc",
+   "name": "BSP_GamepadForce_FadingRequestValue",
+   "after": "Function: BSP_GamepadForce_FadingRequestValue at 008723b0\nSignature: undefined BSP_GamepadForce_FadingRequestValue(void)\nEntry: 008723b0\nBody: 008723b0 - 008723cb"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008723d0",
+    "end_address": "008723e5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008723d0",
+    "end_address": "008723e4",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008723d0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_FadingRequestExpired"
+   },
+   "result": {
+    "success": true,
+    "address": "008723d0",
+    "function_name": "BSP_GamepadForce_FadingRequestExpired",
+    "entry_point": "008723d0",
+    "body_size": 21,
+    "message": "Function created successfully at 008723d0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_FadingRequestExpired' \u2014 main part 'GamepadForce_FadingRequestExpired' is not PascalCase. Expected: GamepadforceFadingrequestexpired",
+     "Function name 'BSP_GamepadForce_FadingRequestExpired' \u2014 main part 'GamepadForce_FadingRequestExpired' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_FadingRequestExpired' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008723d0",
+   "end": "008723e5",
+   "name": "BSP_GamepadForce_FadingRequestExpired",
+   "after": "Function: BSP_GamepadForce_FadingRequestExpired at 008723d0\nSignature: undefined BSP_GamepadForce_FadingRequestExpired(void)\nEntry: 008723d0\nBody: 008723d0 - 008723e4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872460",
+    "end_address": "00872464"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872460",
+    "end_address": "00872463",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872460",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_AlternatingRequestChannel"
+   },
+   "result": {
+    "success": true,
+    "address": "00872460",
+    "function_name": "BSP_GamepadForce_AlternatingRequestChannel",
+    "entry_point": "00872460",
+    "body_size": 4,
+    "message": "Function created successfully at 00872460",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_AlternatingRequestChannel' \u2014 main part 'GamepadForce_AlternatingRequestChannel' is not PascalCase. Expected: GamepadforceAlternatingrequestchannel",
+     "Function name 'BSP_GamepadForce_AlternatingRequestChannel' \u2014 main part 'GamepadForce_AlternatingRequestChannel' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_AlternatingRequestChannel' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872460",
+   "end": "00872464",
+   "name": "BSP_GamepadForce_AlternatingRequestChannel",
+   "after": "Function: BSP_GamepadForce_AlternatingRequestChannel at 00872460\nSignature: undefined BSP_GamepadForce_AlternatingRequestChannel(void)\nEntry: 00872460\nBody: 00872460 - 00872463"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872470",
+    "end_address": "00872493"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872470",
+    "end_address": "00872492",
+    "bytes_disassembled": 35,
+    "message": "Successfully disassembled 35 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872470",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_AlternatingRequestValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00872470",
+    "function_name": "BSP_GamepadForce_AlternatingRequestValue",
+    "entry_point": "00872470",
+    "body_size": 35,
+    "message": "Function created successfully at 00872470",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_AlternatingRequestValue' \u2014 main part 'GamepadForce_AlternatingRequestValue' is not PascalCase. Expected: GamepadforceAlternatingrequestvalue",
+     "Function name 'BSP_GamepadForce_AlternatingRequestValue' \u2014 main part 'GamepadForce_AlternatingRequestValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_AlternatingRequestValue' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872470",
+   "end": "00872493",
+   "name": "BSP_GamepadForce_AlternatingRequestValue",
+   "after": "Function: BSP_GamepadForce_AlternatingRequestValue at 00872470\nSignature: undefined BSP_GamepadForce_AlternatingRequestValue(void)\nEntry: 00872470\nBody: 00872470 - 00872492"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008724a0",
+    "end_address": "008724b5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008724a0",
+    "end_address": "008724b4",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008724a0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_AlternatingRequestExpired"
+   },
+   "result": {
+    "success": true,
+    "address": "008724a0",
+    "function_name": "BSP_GamepadForce_AlternatingRequestExpired",
+    "entry_point": "008724a0",
+    "body_size": 21,
+    "message": "Function created successfully at 008724a0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_AlternatingRequestExpired' \u2014 main part 'GamepadForce_AlternatingRequestExpired' is not PascalCase. Expected: GamepadforceAlternatingrequestexpired",
+     "Function name 'BSP_GamepadForce_AlternatingRequestExpired' \u2014 main part 'GamepadForce_AlternatingRequestExpired' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_AlternatingRequestExpired' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008724a0",
+   "end": "008724b5",
+   "name": "BSP_GamepadForce_AlternatingRequestExpired",
+   "after": "Function: BSP_GamepadForce_AlternatingRequestExpired at 008724a0\nSignature: undefined BSP_GamepadForce_AlternatingRequestExpired(void)\nEntry: 008724a0\nBody: 008724a0 - 008724b4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008724e0",
+    "end_address": "008724ff"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008724e0",
+    "end_address": "008724fe",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008724e0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_ConstantRequestDeletingDestructor"
+   },
+   "result": {
+    "success": true,
+    "address": "008724e0",
+    "function_name": "BSP_GamepadForce_ConstantRequestDeletingDestructor",
+    "entry_point": "008724e0",
+    "body_size": 28,
+    "message": "Function created successfully at 008724e0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_ConstantRequestDeletingDestructor' \u2014 main part 'GamepadForce_ConstantRequestDeletingDestructor' is not PascalCase. Expected: GamepadforceConstantrequestdeletingdestructor",
+     "Function name 'BSP_GamepadForce_ConstantRequestDeletingDestructor' \u2014 main part 'GamepadForce_ConstantRequestDeletingDestructor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_ConstantRequestDeletingDestructor' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "008724e0",
+   "end": "008724ff",
+   "name": "BSP_GamepadForce_ConstantRequestDeletingDestructor",
+   "after": "Function: BSP_GamepadForce_ConstantRequestDeletingDestructor at 008724e0\nSignature: undefined BSP_GamepadForce_ConstantRequestDeletingDestructor(void)\nEntry: 008724e0\nBody: 008724e0 - 008724fe"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872500",
+    "end_address": "0087251f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872500",
+    "end_address": "0087251e",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872500",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_FadingRequestDeletingDestructor"
+   },
+   "result": {
+    "success": true,
+    "address": "00872500",
+    "function_name": "BSP_GamepadForce_FadingRequestDeletingDestructor",
+    "entry_point": "00872500",
+    "body_size": 28,
+    "message": "Function created successfully at 00872500",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_FadingRequestDeletingDestructor' \u2014 main part 'GamepadForce_FadingRequestDeletingDestructor' is not PascalCase. Expected: GamepadforceFadingrequestdeletingdestructor",
+     "Function name 'BSP_GamepadForce_FadingRequestDeletingDestructor' \u2014 main part 'GamepadForce_FadingRequestDeletingDestructor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_FadingRequestDeletingDestructor' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872500",
+   "end": "0087251f",
+   "name": "BSP_GamepadForce_FadingRequestDeletingDestructor",
+   "after": "Function: BSP_GamepadForce_FadingRequestDeletingDestructor at 00872500\nSignature: undefined BSP_GamepadForce_FadingRequestDeletingDestructor(void)\nEntry: 00872500\nBody: 00872500 - 0087251e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872520",
+    "end_address": "0087253f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872520",
+    "end_address": "0087253e",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872520",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_AlternatingRequestDeletingDestructor"
+   },
+   "result": {
+    "success": true,
+    "address": "00872520",
+    "function_name": "BSP_GamepadForce_AlternatingRequestDeletingDestructor",
+    "entry_point": "00872520",
+    "body_size": 28,
+    "message": "Function created successfully at 00872520",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_AlternatingRequestDeletingDestructor' \u2014 main part 'GamepadForce_AlternatingRequestDeletingDestructor' is not PascalCase. Expected: GamepadforceAlternatingrequestdeletingdestructor",
+     "Function name 'BSP_GamepadForce_AlternatingRequestDeletingDestructor' \u2014 main part 'GamepadForce_AlternatingRequestDeletingDestructor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_AlternatingRequestDeletingDestructor' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872520",
+   "end": "0087253f",
+   "name": "BSP_GamepadForce_AlternatingRequestDeletingDestructor",
+   "after": "Function: BSP_GamepadForce_AlternatingRequestDeletingDestructor at 00872520\nSignature: undefined BSP_GamepadForce_AlternatingRequestDeletingDestructor(void)\nEntry: 00872520\nBody: 00872520 - 0087253e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a93f90",
+    "end_address": "00a93fbf"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a93f90",
+    "end_address": "00a93fbe",
+    "bytes_disassembled": 47,
+    "message": "Successfully disassembled 47 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a93f90",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_ConstantRequestUpdate"
+   },
+   "result": {
+    "success": true,
+    "address": "00a93f90",
+    "function_name": "BSP_GamepadForce_ConstantRequestUpdate",
+    "entry_point": "00a93f90",
+    "body_size": 47,
+    "message": "Function created successfully at 00a93f90",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_ConstantRequestUpdate' \u2014 main part 'GamepadForce_ConstantRequestUpdate' is not PascalCase. Expected: GamepadforceConstantrequestupdate",
+     "Function name 'BSP_GamepadForce_ConstantRequestUpdate' \u2014 main part 'GamepadForce_ConstantRequestUpdate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_ConstantRequestUpdate' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a93f90",
+   "end": "00a93fbf",
+   "name": "BSP_GamepadForce_ConstantRequestUpdate",
+   "after": "Function: BSP_GamepadForce_ConstantRequestUpdate at 00a93f90\nSignature: undefined BSP_GamepadForce_ConstantRequestUpdate(void)\nEntry: 00a93f90\nBody: 00a93f90 - 00a93fbe"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a93fc0",
+    "end_address": "00a93fcd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a93fc0",
+    "end_address": "00a93fcc",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a93fc0",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_FadingRequestUpdate"
+   },
+   "result": {
+    "success": true,
+    "address": "00a93fc0",
+    "function_name": "BSP_GamepadForce_FadingRequestUpdate",
+    "entry_point": "00a93fc0",
+    "body_size": 13,
+    "message": "Function created successfully at 00a93fc0",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_FadingRequestUpdate' \u2014 main part 'GamepadForce_FadingRequestUpdate' is not PascalCase. Expected: GamepadforceFadingrequestupdate",
+     "Function name 'BSP_GamepadForce_FadingRequestUpdate' \u2014 main part 'GamepadForce_FadingRequestUpdate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_FadingRequestUpdate' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a93fc0",
+   "end": "00a93fcd",
+   "name": "BSP_GamepadForce_FadingRequestUpdate",
+   "after": "Function: BSP_GamepadForce_FadingRequestUpdate at 00a93fc0\nSignature: undefined BSP_GamepadForce_FadingRequestUpdate(void)\nEntry: 00a93fc0\nBody: 00a93fc0 - 00a93fcc"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a94510",
+    "end_address": "00a94544"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a94510",
+    "end_address": "00a94543",
+    "bytes_disassembled": 52,
+    "message": "Successfully disassembled 52 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a94510",
+    "disassemble_first": false,
+    "name": "BSP_GamepadForce_AlternatingRequestUpdate"
+   },
+   "result": {
+    "success": true,
+    "address": "00a94510",
+    "function_name": "BSP_GamepadForce_AlternatingRequestUpdate",
+    "entry_point": "00a94510",
+    "body_size": 52,
+    "message": "Function created successfully at 00a94510",
+    "warnings": [
+     "Function name 'BSP_GamepadForce_AlternatingRequestUpdate' \u2014 main part 'GamepadForce_AlternatingRequestUpdate' is not PascalCase. Expected: GamepadforceAlternatingrequestupdate",
+     "Function name 'BSP_GamepadForce_AlternatingRequestUpdate' \u2014 main part 'GamepadForce_AlternatingRequestUpdate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamepadForce_AlternatingRequestUpdate' does not start with a recognized verb. First word 'Gamepad' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a94510",
+   "end": "00a94544",
+   "name": "BSP_GamepadForce_AlternatingRequestUpdate",
+   "after": "Function: BSP_GamepadForce_AlternatingRequestUpdate at 00a94510\nSignature: undefined BSP_GamepadForce_AlternatingRequestUpdate(void)\nEntry: 00a94510\nBody: 00a94510 - 00a94543"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
