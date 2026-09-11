@@ -4718,8 +4718,8 @@
       "id": "native_diagnostic_sink_lifetime3",
       "packet": "native_diagnostic_sink_lifetime3",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_FH3_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "004c14c0",
         "004bbca0",
@@ -4734,14 +4734,15 @@
       "source_ready": true,
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_buffer_device_reset_next.json",
-      "scope": "236 native bytes plus original FH3 records. Four-byte owner; raw8-byte guard points to actual lifetime section.native_section (counter physically+18). Real lifetime/CRT/Win32 providers already available; no GUI semantic singleton or invented registration callbacks."
+      "scope": "236 native bytes plus original FH3 records. Four-byte owner; raw8-byte guard points to actual lifetime section.native_section (counter physically+18). Real lifetime/CRT/Win32 providers already available; no GUI semantic singleton or invented registration callbacks.",
+      "evidence": "reports/native_diagnostic_sink_lifetime_audit.json"
     },
     {
       "id": "native_physical_buffer_lock2",
       "packet": "native_physical_buffer_lock2",
       "worker": "material_effect_plane",
       "done": false,
-      "state": "worker_assembly_source_and_fixture_preparation_pending_actual_diagnostic_provider",
+      "state": "worker_source_and_real_COM_fixture_complete_provenance_review_in_progress",
       "function_addresses": [
         "00b4b850",
         "00b4ba00"
@@ -4752,7 +4753,7 @@
         "docs/NATIVE_PHYSICAL_BUFFER_LOCK.md",
         "reports/native_physical_buffer_lock_audit.json"
       ],
-      "source_ready": false,
+      "source_ready": true,
       "prerequisite_packets": [
         "native_diagnostic_sink_lifetime3"
       ],
