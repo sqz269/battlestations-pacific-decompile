@@ -1,0 +1,354 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_native_mesh_pool_m",
+  "completed_utc": "2026-09-11T07:12:07.805704+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "executable_modified": false,
+  "function_evidence": [
+    {
+      "address": "00b727f0",
+      "end_exclusive": "00b72833",
+      "length": 67,
+      "native_abi": "ECX raw slab; one stack slab-index DWORD; EAX slab; RET4.",
+      "original_name": "BSP_MeshObjectPool_ConstructChunk",
+      "cpp_symbol": "initialize_slab_00b727f0",
+      "last_instruction_address": "00b72830",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4",
+      "disk_offset": 7809008,
+      "raw_preimage_hex": "538b5c2408568bc15766c78040180000200033d28db8bc0000008db000180000b91f0000002bca66890e891f83c20183c60281c7c000000083fa207ce35f5e5bc20400",
+      "disk_sha256": "e1858a52538167e3ac31c13fd95fc79991adf591c3525f6eb577c3a6ec4b4197",
+      "live_sha256": "e1858a52538167e3ac31c13fd95fc79991adf591c3525f6eb577c3a6ec4b4197",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b727f0\",\n  \"annotation\": {\n   \"address\": \"00b727f0\",\n   \"function_name\": \"BSP_MeshObjectPool_ConstructChunk\",\n   \"comment\": \"[BSP reconstruction 00b727f0]\\nSet uint16 freecount+1840=32; free-list uint16[32] at+1800=31..0; store chunk index in each C0h-stride slot+BC. No payload construction or zero-fill. Original ABI: ECX1844h chunk; one stack chunk-index DWORD; EAX same chunk; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_ConstructChunk"
+    },
+    {
+      "address": "00b728d0",
+      "end_exclusive": "00b728de",
+      "length": 14,
+      "native_abi": "ECX pool+28 pointer-table member; RET.",
+      "original_name": "FUN_00b728d0",
+      "cpp_symbol": "NativeMeshPool::free_table_unwind_00b728d0",
+      "last_instruction_address": "00b728dd",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 7809232,
+      "raw_preimage_hex": "8b0185c0740750e8ad40080059c3",
+      "disk_sha256": "4427abad6c00389228b8f363e09fd3ef60ffbc66de1017e55dc39391207e29ae",
+      "live_sha256": "4427abad6c00389228b8f363e09fd3ef60ffbc66de1017e55dc39391207e29ae",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b728d0\",\n  \"annotation\": {\n   \"address\": \"00b728d0\",\n   \"function_name\": \"FUN_00b728d0\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_FreePointerTable"
+    },
+    {
+      "address": "00b72ce0",
+      "end_exclusive": "00b72d6a",
+      "length": 138,
+      "native_abi": "ECX pool; RET; no mesh destructor calls.",
+      "original_name": "FUN_00b72ce0",
+      "cpp_symbol": "NativeMeshPool::destroy_00b72ce0",
+      "last_instruction_address": "00b72d69",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 7810272,
+      "raw_preimage_hex": "56578bf933f639772cc707502dd60076178b47288b0cb051e8af38080083c60183c4043b772c72e98b472885c0740950e8743c080083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "disk_sha256": "8a2fc519983864edc40c214d60a235b35e03f8b01e346e464f84fa0196945dbf",
+      "live_sha256": "8a2fc519983864edc40c214d60a235b35e03f8b01e346e464f84fa0196945dbf",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b72ce0\",\n  \"annotation\": {\n   \"address\": \"00b72ce0\",\n   \"function_name\": \"FUN_00b72ce0\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_Destroy"
+    },
+    {
+      "address": "00b72da0",
+      "end_exclusive": "00b72e08",
+      "length": 104,
+      "native_abi": "ECX pool; one stack slot pointer; RET4; EAX unspecified.",
+      "original_name": "BSP_MeshObjectPool_ReturnSlot",
+      "cpp_symbol": "NativeMeshPool::return_slot_00b72da0",
+      "last_instruction_address": "00b72e05",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4",
+      "disk_offset": 7810464,
+      "raw_preimage_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b98bc0000008b4e288b0c992bc18bd0b8abaaaa2af7eac1fa058bc2c1e81f03c20fb79140180000668984510018000066838140180000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "disk_sha256": "b94a0f76c9270caa64ff1100cd4fc6b20ffc316e38f092f962b041d4e29af849",
+      "live_sha256": "b94a0f76c9270caa64ff1100cd4fc6b20ffc316e38f092f962b041d4e29af849",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b72da0\",\n  \"annotation\": {\n   \"address\": \"00b72da0\",\n   \"function_name\": \"BSP_MeshObjectPool_ReturnSlot\",\n   \"comment\": \"[BSP reconstruction 00b72da0]\\nUnder critical section+0C, read chunk index at slot+BC, compute slot index=(slot-chunk)/C0, push uint16 atchunk+1800[count+1840], increment count; unsigned-min currentchunk+34. No object destruction or per-slot CRT free. Original ABI: ECX pool; one stack slot pointer; RET4; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_ReturnSlot"
+    },
+    {
+      "address": "00b72f70",
+      "end_exclusive": "00b72f7c",
+      "length": 12,
+      "native_abi": "Incoming ECX slot; push ECX; select0108FFF8; callB72DA0; RET.",
+      "original_name": "FUN_00b72f70",
+      "cpp_symbol": "return_native_mesh_slot_00b72f70",
+      "last_instruction_address": "00b72f7b",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 7810928,
+      "raw_preimage_hex": "51b9f8ff0801e825feffffc3",
+      "disk_sha256": "cb845297ed9c3cd635be5f63710a4817fdcaf8bd24b3b5adf5fc371344dface5",
+      "live_sha256": "cb845297ed9c3cd635be5f63710a4817fdcaf8bd24b3b5adf5fc371344dface5",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b72f70\",\n  \"annotation\": {\n   \"address\": \"00b72f70\",\n   \"function_name\": \"FUN_00b72f70\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_ReturnStaticSlot"
+    },
+    {
+      "address": "00b73890",
+      "end_exclusive": "00b73963",
+      "length": 211,
+      "native_abi": "ECX pool; EAX pool; RET; EH state map00DFAB58 and descriptor00DFAB70.",
+      "original_name": "FUN_00b73890",
+      "cpp_symbol": "NativeMeshPool::initialize_00b73890",
+      "last_instruction_address": "00b73962",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 7813264,
+      "raw_preimage_hex": "6aff68be1bcc0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706502dd600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8a71c08008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e84030080083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "disk_sha256": "eacd86e817dece22e7fe1ccae4ae7c7a90391dae1e283b73edecb65cdeba5425",
+      "live_sha256": "eacd86e817dece22e7fe1ccae4ae7c7a90391dae1e283b73edecb65cdeba5425",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b73890\",\n  \"annotation\": {\n   \"address\": \"00b73890\",\n   \"function_name\": \"FUN_00b73890\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_Construct"
+    },
+    {
+      "address": "00b73970",
+      "end_exclusive": "00b73a10",
+      "length": 160,
+      "native_abi": "ECX pool; RET; no internal critical-section entry.",
+      "original_name": "FUN_00b73970",
+      "cpp_symbol": "NativeMeshPool::trim_empty_slabs_00b73970",
+      "last_instruction_address": "00b73a0f",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 7813488,
+      "raw_preimage_hex": "56578bf133ff397e2c765deb038d49008b46288b04b86683b84018000020754050e8162c08008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c731c8b56288b04ba05bc000000b920000000893805c000000083e90175f483ef0183c7013b7e2c72a833c039462cc74634ffffffff76278b4e288da424000000008b116683ba4018000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+      "disk_sha256": "4cd5a0aead90a31677946cf6c600828bd3255704f02a8eb322a50335aa204dd3",
+      "live_sha256": "4cd5a0aead90a31677946cf6c600828bd3255704f02a8eb322a50335aa204dd3",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b73970\",\n  \"annotation\": {\n   \"address\": \"00b73970\",\n   \"function_name\": \"FUN_00b73970\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_TrimEmptyChunks"
+    },
+    {
+      "address": "00b73a10",
+      "end_exclusive": "00b73b4c",
+      "length": 316,
+      "native_abi": "ECX pool; no stack arguments; EAX C0h slot; RET.",
+      "original_name": "BSP_MeshObjectPool_AllocateSlot",
+      "cpp_symbol": "NativeMeshPool::allocate_slot_00b73a10",
+      "last_instruction_address": "00b73b4b",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 7813648,
+      "raw_preimage_hex": "5355568bf1578d5e0c53ff151822ce008343180183cdff396e340f85920000008b462c6844180000894634e8db2d080083c40485c0740f8b4e34518bc8e89eedffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e84a1b08008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e8e32e080083c404897e288b462c8b4e288d048185c07402892883462c0183cdff8b56348b46288b049066818040180000ffff0fb788401800000fb7d10fb79450001800008d3c52c1e70603f86685c975488b463483c0013b462c896e34733a8b4e288d0c81eb078da424000000008b116683ba4018000000751c83c00183c1043b462c72e9016b1853ff151022ce008bc75f5e5d5bc3894634016b1853ff151022ce008bc75f5e5d5bc3",
+      "disk_sha256": "84fa8138df2d940edccf3ad2bb9d8197b10e86a5504a25e384bae2559f772ae8",
+      "live_sha256": "84fa8138df2d940edccf3ad2bb9d8197b10e86a5504a25e384bae2559f772ae8",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b73a10\",\n  \"annotation\": {\n   \"address\": \"00b73a10\",\n   \"function_name\": \"BSP_MeshObjectPool_AllocateSlot\",\n   \"comment\": \"[BSP reconstruction 00b73a10]\\nUnder pool+0C critical section, use/grow chunk pointer vector+28/+2C/+30; current+34 usesFFFFFFFF sentinel. New chunk1844h contains32 slots; pop uint16 free index at+1800 using decremented+1840 count. Scan later chunks after exhaustion. Free old pointer-array allocation and continue. Original ABI: ECX pool context; no stack arguments; EAX C0h-stride slot pointer; RET. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_AllocateSlot"
+    },
+    {
+      "address": "00b73b60",
+      "end_exclusive": "00b73b6a",
+      "length": 10,
+      "native_abi": "Incoming ECX ignored; select0108FFF8; tailB73A10; EAX slot.",
+      "original_name": "BSP_MeshObject_AllocationContextEntry",
+      "cpp_symbol": "allocate_native_mesh_slot_00b73b60",
+      "last_instruction_address": "00b73b65",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb73a10",
+      "disk_offset": 7813984,
+      "raw_preimage_hex": "b9f8ff0801e9a6feffff",
+      "disk_sha256": "5335b00fb639ebd563221cca93458c27eedd4ef5b72bffb13acf3a297cd8bc36",
+      "live_sha256": "5335b00fb639ebd563221cca93458c27eedd4ef5b72bffb13acf3a297cd8bc36",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00b73b60\",\n  \"annotation\": {\n   \"address\": \"00b73b60\",\n   \"function_name\": \"BSP_MeshObject_AllocationContextEntry\",\n   \"comment\": \"[BSP reconstruction 00b73b60]\\nBSP reconstruction hypothesis: Ten-byte context entry used as allocation route. Does not forward callerBC size. ExistingCG_static_dtor_stub name misclassifies it; target allocation/failure semantics unexamined. ABI: Incoming ECX ignored; overwrite ECX with0108fff8 and tail-jump00b73a10; return behavior inherited from deferred target. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: Incoming ECX ignored; overwrite ECX with0108fff8 and tail-jump00b73a10; return behavior inherited from deferred target.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObject_AllocationContextEntry"
+    },
+    {
+      "address": "00cd7e40",
+      "end_exclusive": "00cd7e56",
+      "length": 22,
+      "native_abi": "No arguments; select0108FFF8, callB73890, registerCE0E40 via CRT atexit; EAX registration result; RET.",
+      "original_name": null,
+      "cpp_symbol": "initialize_static_native_mesh_pool_00cd7e40",
+      "last_instruction_address": "00cd7e55",
+      "last_instruction_length": 1,
+      "last_instruction": "ret",
+      "disk_offset": 9272896,
+      "raw_preimage_hex": "b9f8ff0801e846bae9ff68400ece00e8a1f1f1ff59c3",
+      "disk_sha256": "b6a3f43c0f464337430c916749c75ca61be5070216f19ad9d65034e105888c58",
+      "live_sha256": "b6a3f43c0f464337430c916749c75ca61be5070216f19ad9d65034e105888c58",
+      "live_matches_disk": true,
+      "ghidra_comments_before": null,
+      "proposed_name": "BSP_MeshObjectPool_InitializeStatic"
+    },
+    {
+      "address": "00ce0e40",
+      "end_exclusive": "00ce0e4a",
+      "length": 10,
+      "native_abi": "No arguments; select0108FFF8 and tailB72CE0.",
+      "original_name": "CG_static_init_00ce0e40",
+      "cpp_symbol": "destroy_static_native_mesh_pool_00ce0e40",
+      "last_instruction_address": "00ce0e45",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb72ce0",
+      "disk_offset": 9309760,
+      "raw_preimage_hex": "b9f8ff0801e9961ee9ff",
+      "disk_sha256": "11d2186140ef1d14979f28dd54fd5a9c1c8617517995ddf38f17687347c6a9db",
+      "live_sha256": "11d2186140ef1d14979f28dd54fd5a9c1c8617517995ddf38f17687347c6a9db",
+      "live_matches_disk": true,
+      "ghidra_comments_before": "[\n {\n  \"address\": \"00ce0e40\",\n  \"annotation\": {\n   \"address\": \"00ce0e40\",\n   \"function_name\": \"CG_static_init_00ce0e40\",\n   \"comment\": \"[BSP inventory 00ce0e40] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\"\n  }\n }\n]\n",
+      "proposed_name": "BSP_MeshObjectPool_DestroyStatic"
+    }
+  ],
+  "ghidra_flow_report": "00b73944: 67 listed instructions, 1 gap(s)\n  after CALL 0x00bf6989 at 00b73944: 00b73949..00b7394c (3 bytes)\n00b73991: 36 listed instructions, 2 gap(s)\n  after JMP 0x00b73980 at 00b7397b: 00b7397d..00b73980 (3 bytes)  [not after a CALL; left alone]\n  after CALL 0x00bf65ac at 00b73991: 00b73996..00b739d0 (58 bytes)\n00b72cf8: 46 listed instructions, 2 gap(s)\n  after CALL 0x00bf65ac at 00b72cf8: 00b72cfd..00b72d08 (11 bytes)\n  after CALL 0x00bf6989 at 00b72d10: 00b72d15..00b72d18 (3 bytes)\n00b72d10: 46 listed instructions, 2 gap(s)\n  after CALL 0x00bf65ac at 00b72cf8: 00b72cfd..00b72d08 (11 bytes)\n  after CALL 0x00bf6989 at 00b72d10: 00b72d15..00b72d18 (3 bytes)\n00b728d7: 6 listed instructions, 1 gap(s)\n  after CALL 0x00bf6989 at 00b728d7: 00b728dc..00b728dd (1 bytes)\n00b73aa1: 111 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+  "missing_function_definitions": [
+    {
+      "address": "00cd7e40",
+      "end_exclusive": "00cd7e56",
+      "last_instruction_address": "00cd7e55",
+      "last_instruction_length": 1
+    }
+  ],
+  "ghidra_repairs_needed": [
+    "00b73944",
+    "00b73991",
+    "00b72cf8",
+    "00b72d10",
+    "00b728d7"
+  ],
+  "original_abi_compatible": false,
+  "game_validated": false,
+  "status": "actual_storage_reconstructed_strict_win32_build_and_focused_host_fixture_checked; primary Ghidra annotation/function repair and integration pending",
+  "implemented_contract": {
+    "canonical_owner": "0108fff8",
+    "native_owner_bytes": 56,
+    "shared_allocator_head": "00e188b4",
+    "native_vtable": "00d62d50",
+    "native_virtual0": "00b73970",
+    "slot_bytes": 192,
+    "payload_bytes": 188,
+    "slot_slab_index_offset": 188,
+    "slots_per_slab": 32,
+    "slab_bytes": 6212,
+    "free_indices_offset": 6144,
+    "free_count_offset": 6208,
+    "untouched_tail_offset": 6210,
+    "critical_section": "Actual Win32 CRITICAL_SECTION at owner+0C; explicit signed recursion at+24. Allocation/return enter and leave. Trim has no internal lock.",
+    "constructor": "Same allocator list prepend/profile; actual section and fields; firstFFFFFFFF; publish cap32 then allocate128-byte table; verified three native EH leaves.",
+    "allocation": "Publish first before slab allocation and read live index after allocation; publish2*cap+2 before table allocation; copy/free/install table; append slab; pop actual WORD free stack. No local unwind, rollback or automatic unlock.",
+    "return": "Read actual trailing slabID; signed32 offset/C0; push WORD slot index; increment live WORD count after push; unsigned-min first free.",
+    "compaction": "Free complete slabs, move last table pointer, decrement count, rewrite all32 moved trailing IDs, retry same index, recalculate first free.",
+    "destruction": "All slabs then table, positive actual recursion drain, section delete, shared-element base unlink; no payload destructor and no stale-field clearing.",
+    "static_lifetime": "Explicit same-owner binding; actual default CRT atexit registration and result; no rollback on registration failure; no individual-slot heap fallback.",
+    "dependencies": [
+      "AllocatorListDomain with actual shared head and virtual-zero owner binding",
+      "singleton_lifetime_allocate/free concrete CRT new-handler boundary",
+      "Win32 critical section API"
+    ],
+    "outside_scope": [
+      "Mesh payload constructor/destructor and renderer/resource behavior",
+      "Ghidra mutation/export refresh by primary",
+      "Native ABI compatibility and gameplay validation"
+    ]
+  },
+  "constructor_unwind": {
+    "state_descriptor": "00dfab70",
+    "state_map": "00dfab58",
+    "state_map_hex": "ffffffffa01bcc0000000000a81bcc0001000000b31bcc00",
+    "leaves": [
+      {
+        "address": "00cc1ba0",
+        "target": "00403970",
+        "owner_offset": 0
+      },
+      {
+        "address": "00cc1ba8",
+        "target": "00402f70",
+        "owner_offset": 12
+      },
+      {
+        "address": "00cc1bb3",
+        "target": "00b728d0",
+        "owner_offset": 40
+      }
+    ]
+  },
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 /W4 /WX",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds; matched installed PE",
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "host_fixture": {
+      "command": "local/build_mesh_probe.cmd; cl /std:c++20 /EHsc /W4 /WX /O2 /MD /link /MANIFEST:EMBED",
+      "result": "native_mesh_pool_probe.cpp\nPASS: shared native pool list, 1025 slots, table32->66, payload reuse, moved32 slab IDs, trim retry, canonical startup/shutdown, recursive section drain",
+      "scope": "Focused actual Win32 mesh/model allocator list,1025 slots/table32->66, payload reuse, moved32 IDs, trim retry, canonical atexit result/callback, two real recursion entries drained",
+      "original_mesh_instructions_executed": false
+    },
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_mesh_pool.hpp",
+      "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "tracked": true
+    },
+    {
+      "path": "src/native_mesh_pool.cpp",
+      "sha256": "9413a39470c9ce1dd2668f04975b0e81412ad326db0f3e7eca9a9cead540595b",
+      "tracked": true
+    },
+    {
+      "path": "docs/NATIVE_MESH_POOL.md",
+      "sha256": "af31b8971e46c475085090c3c9942106d5928e1d4d97c0f8b1be083155745fce",
+      "tracked": true
+    },
+    {
+      "path": "local/native_mesh_pool_probe.cpp",
+      "sha256": "9f0cf372d37d8899f8fe7c4e385f2b666f4ce5e7fa6a3e380337d6d8c741a515",
+      "tracked": false
+    },
+    {
+      "path": "local/native_mesh_pool_probe.exe",
+      "sha256": "5075d09b7c71ebb3e352227ce9030c454724b44cbc8c8a9435994fe17eb5e4ff",
+      "tracked": false
+    },
+    {
+      "path": "local/native_mesh_pool_probe.log",
+      "sha256": "aa06837ce7a63e7e52f9f7d6673ca2f102a2b5b2c462d44fcff6695ce830157c",
+      "tracked": false
+    },
+    {
+      "path": "local/native_mesh_pool_build_final.log",
+      "sha256": "6128162c350c3f1f76dfa17bdd8717408631bcde06a9c1c0291085974a900356",
+      "tracked": false
+    },
+    {
+      "path": "local/native_mesh_pool_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "tracked": false
+    }
+  ]
+}
