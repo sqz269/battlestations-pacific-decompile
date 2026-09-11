@@ -292,7 +292,7 @@
       "local/config_singleton_i_global_fixture_pass.log"
     ],
     "library_sha256": "14cc7f5fb025b77fd108548462d05ce195f0945916d100ca08e2fbc21d1a9983",
-    "code_revision": "record after source commit",
+    "code_revision": "82891f17612449a1d90616060047de5a44489afe",
     "fixture_scope": "Concrete singleton lazy registration and lock balance, scalar flags, explicit untouched allocation bytes, effect stop/slot reload/repopulation/reverse passes, string release order, unconditional global clear; existing full startup fixture uses concrete getter.",
     "fixture_setup_correction": "Existing startup fixture first supplied null destroy_registered; concrete domain rejects missing owner dispatcher. Fixture now supplies actual global-config deleting dispatch; production unchanged.",
     "native_abi": false,
@@ -302,7 +302,16 @@
     "flow": "reports/global_config_flow.json",
     "fixed_call_gaps": 6,
     "remaining_call_gaps": 0,
-    "inventory_tag_corrections": "reports/global_config_tags.json"
+    "inventory_tag_corrections": "reports/global_config_tags.json",
+    "annotations": {
+      "count": 14,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T155359Z.json",
+      "readback": "local/config_singleton_i_comments.json",
+      "exports": "local/config_singleton_i_final_exports.log"
+    }
   },
   "followups": [
     "Recover actual configuration population callers00432750/004329D0 and consuming world fields after checking leases.",
