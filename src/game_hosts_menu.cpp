@@ -11,6 +11,7 @@
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
+#include "bsp/game_hosts_mission.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
@@ -159,6 +160,10 @@ struct GameMenuHost::Impl {
     MainMenuPathState path{};
     MainMenuPathStep path_step{MainMenuPathStep::PressStartPoll};
     bool pumped_this_frame{false};
+
+    // --- milestone 2e, the scripted mission selection -----------------------
+    std::unique_ptr<GameMissionHost> mission;
+    bool mission_running{false};
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
         long press_start_frame_in);
@@ -982,8 +987,24 @@ public:
         ++owner_.summary.screens_registered;
         owner_.log.implemented("FrontEndScreen::register", "004f71d0");
         if (record->slot == kMainMenuPathScreenId) {
+            // 00582F30 chains 004F71D0 and then calls its own slot +14h, which
+            // is 005861B0: FE_main plus the three page roots the mission-detail
+            // page drives and the widget handles it keeps.
             owner_.attach_page(*record, "FE_main");
+            if (owner_.mission != nullptr) {
+                GuiLayoutPage* main_page =
+                    record->pages.empty() ? nullptr : record->pages.back();
+                owner_.mission->bind_main_menu_layout_005861b0(main_page);
+                owner_.mission->build_top_level_page_00584ae0();
+                owner_.log.implemented("MainMenuScreen::bind_layout", "005861b0");
+            }
             owner_.summary.main_menu_pages_loaded = record->pages.size();
+        } else if (record->slot == kInterfaceMissionTree && owner_.mission != nullptr) {
+            // 005CAAF0, the mission-tree screen's own slot +10h override. It
+            // reads Scripts/datatables/MissionTree.lua rather than binding a
+            // GUI layout, which is why the recovered class table names a data
+            // table where the other six name a page.
+            owner_.mission->load_mission_tree_005caaf0();
         } else {
             owner_.log.unimplemented("FrontEndScreen::bind_layout", "004f7590");
         }
@@ -1481,10 +1502,18 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
 // ---------------------------------------------------------------------------
 
 GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
-    long press_start_frame)
-    : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {}
+    long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
+    std::string menu_select)
+    : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
+    if (!menu_select.empty()) {
+        impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
+            locale, std::move(menu_select));
+    }
+}
 
 GameMenuHost::~GameMenuHost() = default;
+
+GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 
 void GameMenuHost::run_title_init_004c9a70() {
     Impl& host = *impl_;
@@ -1560,6 +1589,15 @@ void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
     }
 
     host.advance_path(raw_delta);
+
+    // Milestone 2e. The scripted selection runs once the shell has published the
+    // main-menu screen, which is the point at which the native player would be
+    // looking at it. One step per frame, so the run can be photographed at any
+    // stage with --screenshot-frame.
+    if (host.mission != nullptr && host.path_step == MainMenuPathStep::ScreenVisible) {
+        if (host.mission->advance(raw_delta)) host.mission_running = true;
+    }
+
     host.summary.game_state = host.state.value;
     host.frame_state.render_queue_open = false;
 }

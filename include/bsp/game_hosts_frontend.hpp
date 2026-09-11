@@ -188,6 +188,12 @@ public:
     // calls on its prompt widget every frame.
     void set_widget_visible(GuiLayoutWidget& widget, bool visible);
     void set_widget_color(GuiLayoutWidget& widget, float r, float g, float b, float a);
+    // Milestone 2e. 00ABAED0 called on a Text widget at run time rather than by
+    // the page loader: the mission-detail page builder pushes the selected
+    // record's `background` key into the briefing text widget this way. The
+    // cached run is dropped so the next draw resolves and lays out the new
+    // source through the same path an authored string takes.
+    void set_widget_text_source(GuiLayoutWidget& widget, std::string source);
     // Makes the sprite bridge rebuild its quad list on the next draw, so a
     // visibility change or a newly loaded page is on screen the same frame.
     void invalidate_bridge();
