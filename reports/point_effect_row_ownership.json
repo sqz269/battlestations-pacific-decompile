@@ -1,0 +1,111 @@
+{
+  "packet": "orch3_effect_row_ownership_o",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/point_effect_row_ownership.cpp",
+  "header": "include/bsp/point_effect_row_ownership.hpp",
+  "evidence": "docs/POINT_EFFECT_ROW_OWNERSHIP.md",
+  "status": "complete_typed_helpers_and_bounded_row_stage_strict_win32_compiled_fixture_and_two_ctests_passed",
+  "abi_compatible": false,
+  "game_validated": false,
+  "complete_point_effect_constructor": false,
+  "functions": [
+    {
+      "address": "006fbeb0",
+      "name": "assign_point_effect_entry_reference_006fbeb0",
+      "saved_name": "FUN_006fbeb0",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_RetainedReference_AssignFromSlot",
+      "native_abi": "ECX destination slot; stack source slot pointer; EAX destination; RET4",
+      "native_last_instruction": "006fbeee",
+      "native_inclusive_end": "006fbef0",
+      "instruction_count": 29,
+      "body_complete": true,
+      "evidence": [
+        "6FBEB0..B4 source load precedes6FBEBA old destination capture",
+        "6FBEC2 publish before6FBECA incoming actual-count increment",
+        "6FBED8 old actual-count decrement;6FBEE8 current virtual00 at zero",
+        "Identity does not write or change either count; no destination rewrite after terminal"
+      ]
+    },
+    {
+      "address": "006cf070",
+      "name": "clear_point_effect_entry_reference_006cf070",
+      "saved_name": "FUN_006cf070",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_RetainedReference_ReleaseThenClearSlot",
+      "native_abi": "ECX slot; no stack arguments; RET; no established return result",
+      "native_last_instruction": "006cf098",
+      "native_inclusive_end": "006cf098",
+      "instruction_count": 19,
+      "body_complete": true,
+      "evidence": [
+        "6CF074 capture old;6CF07E decrement actual+04",
+        "6CF08E current virtual00 at zero;6CF090 clear captured slot after return",
+        "Null branch does not write slot; terminal reentry replacement is overwritten"
+      ]
+    }
+  ],
+  "constructor_stage_for_integrator": {
+    "address": "008680b0",
+    "name": "initialize_point_effect_rows_008682d5",
+    "native_start": "008682d5",
+    "native_inclusive_end": "0086838c",
+    "source": "src/point_effect_row_ownership.cpp",
+    "status": "bounded_stage_actual_factory_required",
+    "parent_owns_fragment_ledger": true,
+    "corrected_constructor_abi": "ECX114h; seven DWORD stack slots: consumed template,parent,thirdword,matrixptr,transformbyte,optionbyte,tailword; EAX same storage; RET1C",
+    "operations": [
+      "Current template count resize via canonical8672A0",
+      "Current node refresh then current global19FC reference refresh via canonicalB6DB70",
+      "Option check; recapture current template pointer extent once",
+      "Current captured-slot row gate10 and admitted1C; required current virtual18(instance)",
+      "Reload instance entries backing after factory; original byte offset assignment via6FBEB0",
+      "Consume original returned temporary after assignment; preserve captured extent and live later slots"
+    ],
+    "eh": {
+      "factory_call_state": 5,
+      "successful_result_assignment_state": 7,
+      "temporary_funclet": "00c9501a",
+      "temporary_funclet_jump": "00c9501d ->006cf070",
+      "normal_release_state": 5,
+      "canonical_terminal_may_throw": false,
+      "outer_constructor_unwind_implemented": false
+    }
+  },
+  "canonical_dependencies": [
+    "RenderCommandReference canonical companions borrowing actual owner+04 and real terminal action",
+    "assign_render_command_reference and release_render_command_reference",
+    "EffectAdmissionTemplateView borrowing actual native pointer slots/count",
+    "resize_point_effect_entry_array_008672a0",
+    "NativeNodeBinding and refresh_camera_world_00b6db70",
+    "PointEffectRowRuntime required actual current virtual18, without default implementation"
+  ],
+  "validation": {
+    "strict_win32_compile": "passed",
+    "seed_verification": "passed; eight native math seeds match current Ghidra and disk",
+    "normal_build_and_ctest": "scripts/build.ps1 Release passed; reconstructed_math and native_math_differential passed",
+    "new_source_registered_in_worker_cmake": false,
+    "fixture": "passed: borrowed actual counts, captured template extent and live later row replacement, output backing reload after factory, retain-before-old-terminal, nested terminal assignment preserves replacement, original returned temporary consumed, null result, skipped row preservation, source/destination identity, terminal reentry replacement overwritten by clear, node/global world refresh before option gate",
+    "fixture_source": "local/point_effect_row_probe.cpp",
+    "fixture_compile": "MSVC Win32 /std:c++17 /O2 /W4 /WX /fp:strict /MD /EHsc; strict new-source and existing entry-array objects plus bsp_core.lib; /link /MANIFEST:EMBED",
+    "fixture_setup_correction": "Initial probe supplied null required scene callbacks and terminated during NativeNodeBinding construction; corrected fixture uses canonical object_accepts_scene_type_006ef860 and set_node_scene_00b6ed80; final fixture passed",
+    "build_log": "local/point_effect_row_build.txt",
+    "native_differential_for_ownership_bodies": false,
+    "permanent_tests_added": false,
+    "fixture_source_sha256": "126012f3a41c7d6fe3f7710a68434cc685251541ddf14aaa9c6e17d21758cec0",
+    "fixture_executable_sha256": "126cfadc40a81bf2f093bc14d3906847177581df66d83b7dd3935ee1739700c9",
+    "implementation_sha256": "f001475a48da80d28ac5ab2e853a8be747823251daf05e2845c7e68cc57dc0d8"
+  },
+  "annotation_status": "proposed_only_integrator_handles_annotation_save_and_export",
+  "limits": [
+    "Required actual row factory is not recovered or replaced with a default result",
+    "Typed ABI only; companions never call integer original-image vtable identities",
+    "Nonthrowing terminal contract; full native exception/member unwind not implemented",
+    "Actual captured spans, output slots, and companions must remain valid through reentry",
+    "No manager insertion, incoming template argument consumption, or full constructor",
+    "No game installation changes or native game entry"
+  ]
+}
