@@ -103,3 +103,11 @@ Close the actual plain-node retained terminal and stable scene/type binding,
 then compose the already recovered point-effect prefix, allocation, registration,
 matrix and row stages with the manager insertion and whole-constructor unwind.
 This packet does not establish original exception ABI or gameplay compatibility.
+
+## Correction from docs/NATIVE_PLAIN_NODE_LIFETIME.md
+
+Packet `orch3_plain_node_lifetime_r` implements B6F8D0 terminal pool return and
+the canonical plain-node reference companion, including actual name-storage
+cleanup and current type/matrix/scene dispatch. Its tested two-reference path
+matches the point-effect teardown sequence. Whole-constructor composition,
+manager insertion, row factories and outer unwind still remain separate work.

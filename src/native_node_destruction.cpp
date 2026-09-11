@@ -1,4 +1,5 @@
 #include "bsp/native_node_destruction.hpp"
+#include "bsp/point_effect_matrix_setters.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <algorithm>
 #include <stdexcept>
@@ -22,10 +23,8 @@ void destroy_point_light_array(NativeNodeStorage& node) noexcept {
     singleton_lifetime_free(node.point_lights_164.begin);
     // Native leaves the freed pointer and capacity words unchanged.
 }
-void destroy_name(NativeNodeDestructionRuntime& runtime, NativeNodeStorage& node) noexcept {
-    if (node.name_54.data())
-        runtime.strings.release_00bd1510(node.name_54.data(), node.name_54.length() + 1u);
-    // Native does not clear either name word.
+void destroy_name(NativeStringStorage& strings, NativeNodeStorage& node) noexcept {
+    destroy_native_string_header_0041dd20(&node.name_54, strings);
 }
 void destroy_reference_base(NativeNodeStorage& node) noexcept {
     node.vtable_00 = 0x00d5c104u;
@@ -175,13 +174,15 @@ void remove_native_node_scene_00b6ee10(SceneAttachmentRuntime& runtime,
         }
     }
 }
-void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding) {
+void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding,
+    NativeStringStorage& strings) {
     if (&runtime.scenes.resolve(binding.transform) != &binding.scene_attachment)
         throw std::logic_error("native node destructor requires its existing scene dispatch binding");
     auto& node = binding.storage;
     auto& transform = binding.transform;
     node.vtable_00 = 0x00d62c88u;
     binding.scene_attachment.is_type = runtime.node_virtual_0c;
+    binding.scene_attachment.set_world_matrix = set_native_node_world_matrix_00b6e870;
     binding.scene_attachment.world_changed = native_node_world_changed_00b6dbe0;
     binding.scene_attachment.attach_scene = set_node_scene_00b6ed80;
     binding.scene_attachment.remove_scene = remove_native_node_scene_00b6ee10;
@@ -211,14 +212,19 @@ void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeN
         // CC1A01 / DFA900 / DFA8E8 state 2 ->1 ->0: B6F3E0 array,
         // 41DD20 name, AA6E10/BD30F0 reference base. No physical slot return.
         destroy_point_light_array(node);
-        destroy_name(runtime, node);
+        destroy_name(strings, node);
         destroy_reference_base(node);
         throw;
     }
     // These three recovered cleanup operations cannot throw in this interface.
     destroy_point_light_array(node);
-    destroy_name(runtime, node);
+    destroy_name(strings, node);
     destroy_reference_base(node);
+}
+
+void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding) {
+    PooledStringStorage strings(runtime.strings);
+    destroy_native_node_00b6f440(runtime, binding, strings);
 }
 
 } // namespace bsp

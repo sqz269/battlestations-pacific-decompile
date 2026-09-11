@@ -1,0 +1,163 @@
+{
+  "packet": "orch3_plain_node_lifetime_r",
+  "sources": [
+    "src/native_plain_node.cpp",
+    "src/native_node_destruction.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_plain_node.hpp",
+    "include/bsp/native_node_destruction.hpp"
+  ],
+  "documentation": "docs/NATIVE_PLAIN_NODE_LIFETIME.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "00b6f440",
+      "end_exclusive": "00b6f569",
+      "length": 297,
+      "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_disk_equal": true,
+      "kind": "function"
+    },
+    {
+      "address": "00b6f8d0",
+      "end_exclusive": "00b6f8f0",
+      "length": 32,
+      "sha256": "25a492eec235610cfd17f266f34ee2112de2daf6d0feb8241c4e55e520fc9bbe",
+      "live_disk_equal": true,
+      "kind": "function"
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_disk_equal": true,
+      "kind": "function"
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_disk_equal": true,
+      "kind": "function"
+    },
+    {
+      "address": "00d62c88",
+      "end_exclusive": "00d62ce0",
+      "length": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_disk_equal": true,
+      "kind": "data"
+    }
+  ],
+  "reconstructed": [
+    "Complete B6F8D0 scalar destructor",
+    "NativePlainNodeReference: actual04, existing scene/lifetime maps, currenttable dispatch and required retirement",
+    "Explicit SAME NativeStringStorage in B6F440; compatible semantic overload",
+    "D62C88 phase includes canonical virtual34 world-matrix setter"
+  ],
+  "ownership": "No new node/pool/count/scene registry. Caller supplies constructed stable binding, actual pool/string storage/current table and canonical raw-owner retirement. No access after terminal callback.",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/plain-node-lifetime-r-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/plain-node-lifetime-r-fixture.log",
+    "fixture_source": "local/plain_node_probe_r.cpp",
+    "native_cases": [
+      "Fresh unattached nodes, flags2/1, name lengths7/149, full178h dead-slot comparison with name pointer normalized",
+      "Same freecounts, balanced depth, actual string-ring state, CEB130 base profile",
+      "OriginalBD30E0 null branch and currentvirtual4 to copied scalar(flag1)"
+    ],
+    "composition_cases": [
+      "Actualcount1->2; canonicalB6DFA0/logical18->1; actualzero-only ownerlookup->terminal",
+      "Bound plain-node world-matrix setter writes same physical local matrix",
+      "Reference retirement reacquires same raw slot and deletes companion after lifetime unbinding",
+      "C++ missing retained binding: membercleanup, baseprofile, no scalar pool return",
+      "Existing runtime legacy string allocator remains unused"
+    ],
+    "rebindings": [
+      "B6F488 canonical parent-null projection on the same scene/node binding",
+      "B6F4FE canonical scene removal on same binding",
+      "B6F511 canonical point-array shrink",
+      "B6F519 current ordinary free",
+      "B6F536 actual string pool getter",
+      "B6F53D actual string pool return",
+      "B6F552 copied original7-byte reference base destructor",
+      "B6F8D3 copied original direct destructor",
+      "B6F8E1 actual fixture node-pool immediate",
+      "B6F8E5 canonical actual raw return",
+      "Originalvirtual00 only: current vtable pointer rebound to callable copied scalar"
+    ],
+    "unexecuted_native_branches": [
+      "Nonnull attachment, parent/root/child and retained130 branches",
+      "Original exception dispatcher; handler immediate unchanged"
+    ],
+    "type_evidence": "Existing LightTypeBootstrap predicate over explicit fixture descriptors; does not prove global type startup",
+    "cpp_destructor_failure_executed": true,
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Whole point-effect constructor, real row factories, manager insertion and outer member/template unwind",
+    "Remaining shared runtime GUI/light/model string consumers still use their existing semantic adapter",
+    "Original exception ABI and gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/plain_node_probe_r.cpp": "3928c2ae32ba1662c1efe7f33812dd32a821930560d8dc5cc3773f12ea64b219",
+    "local/run_plain_node_probe_r.cmd": "908067baf8dfea6440103b0387e82df3f8a71498f274372ffe4abd993ce2a660",
+    "local/plain_node_native_bytes_r.hpp": "62d707e72bb710ea1db0fa7108fc1377370ac16907c4e7d0aa15877261ca242a",
+    "local/plain-node-byte-evidence-r.json": "64cdeedd5b08da08fe186af5089dffbbfd7b4bb4c500c36c6adecc4580b0c1c2"
+  },
+  "ghidra_annotation_audit": [
+    {
+      "address": "00b6f440",
+      "before": {
+        "address": "00b6f440",
+        "function_name": "BSP_Node_Destroy",
+        "comment": "[BSP reconstruction 00b6f440]\n[BSP reconstruction] UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free point-light array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568. Original ABI: ECX node; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b6f440] update\n[BSP reconstruction] UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free point-light array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568. Original ABI: ECX node; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | Native[00b6f440,00b6f569), ECX owner; no stack arguments; RET; Complete direct body and reconstructed cleanup unwind. Current implementation uses actual prefix and same transform/scene/root storage. Direct node destruction no longer needs precleared hierarchy: set only dying owner to node0C/40/50/54 phase, preserve parent/root/child reloads, real130 count/zero callback, replacement170 from scene callbacks, array/name/base cleanup and unwind. Physical pool return/association forget remain separate. Required actualB6F570 predicate; no hardcodedtypeIDs. Four entire496-byte slots matched original13body execution after pointer identity normalization; nonempty ownership/reentry/unwind host-only. docs/NATIVE_NODE_DESTRUCTION.md; reports/native_node_destruction_audit.json. Descriptive names/new ABI, no game claim. Integration: docs/NATIVE_LIGHT_OWNER_INTEGRATION.md; reports/native_light_owner_integration_audit.json"
+      },
+      "after": {
+        "address": "00b6f440",
+        "name": "BSP_Node_Destroy",
+        "evidence": "[BSP reconstruction] UnregisterA0 then setparent00B6E680(0); detach root registration/repropagate child registration if present; release/clear130, clear130 again; remove current scene recursively via00B6EE10; clear/free point-light array164; return pooled name58 with length54+1; refcount base destructor. Post00B6F310 path has parent/root/firstchild null so setparent equality returns and registration traversal is empty. Typed implementation covers that path and rejects direct terminal destruction before virtual18 or callbacks rebuilding dying hierarchy/scene. Raw bytes after free at00B6F519 continue through name cleanup and RET00B6F568. Original ABI: ECX node; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | Native[00b6f440,00b6f569), ECX owner; no stack arguments; RET; Complete direct body and reconstructed cleanup unwind. Current implementation uses actual prefix and same transform/scene/root storage. Direct node destruction no longer needs precleared hierarchy: set only dying owner to node0C/40/50/54 phase, preserve parent/root/child reloads, real130 count/zero callback, replacement170 from scene callbacks, array/name/base cleanup and unwind. Physical pool return/association forget remain separate. Required actualB6F570 predicate; no hardcodedtypeIDs. Four entire496-byte slots matched original13body execution after pointer identity normalization; nonempty ownership/reentry/unwind host-only. docs/NATIVE_NODE_DESTRUCTION.md; reports/native_node_destruction_audit.json. Descriptive names/new ABI, no game claim. Integration: docs/NATIVE_LIGHT_OWNER_INTEGRATION.md; reports/native_light_owner_integration_audit.json | Packet orch3_plain_node_lifetime_r: direct explicit NativeStringStorage overload uses SAME construction allocator via canonical41DD20; old runtimeSizedStoragePool adapter retained. Plain-node path uses actualnative singleton/ring storage, without accessing runtime legacystringmember. D62C88 destructor phase now also installs actual virtual34=B6E870, alongside type/world/scene callbacks. 297-byte original body compared over fresh unattached178h slots with name lengths7/149; flags2/1 scalarbehavior and reconstructed C++ cleanup-without-poolreturn checked. docs/NATIVE_PLAIN_NODE_LIFETIME.md; reports/native_plain_node_lifetime.json. Original nonnull attachment/hierarchy/retained branches and originalEH not executed in this fixture."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00b6f8d0",
+      "before": {
+        "address": "00b6f8d0",
+        "function_name": "FUN_00b6f8d0"
+      },
+      "after": {
+        "address": "00b6f8d0",
+        "name": "BSP_Node_ScalarDeletingDestructor",
+        "evidence": "Hypothesis, not a recovered symbol. Complete[B6F8D0,B6F8F0), ECX actual174h node in178h slot, stackflags, EAX capturedoriginal, RET4. Unconditional B6F440 then flags&1 returns captured slot viaB6E490 actual0108FF58; no local unwind/rawreturn after destructor failure. Canonical NativePlainNodeReference borrows actual04 and same scene/lifetime runtime; validates currentD62C88 virtual00=BD30E0/+04=B6F8D0; logical18/scene54 use shared actual bindings; required retirement after poolreturn/unbinding, no lateraccess. StrictWin32, original destructor/scalar/virtual0 and actualstring/nodepool fixtures passed. docs/NATIVE_PLAIN_NODE_LIFETIME.md; reports/native_plain_node_lifetime.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00bd30e0",
+      "before": {
+        "address": "00bd30e0",
+        "function_name": "BSP_RefCounted_InvokeDeletingDestructor",
+        "comment": "[BSP reconstruction 00bd30e0]\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bd30e0] update\nECX object; no stack args; plain RET If nonnull call vtable+4 with deleting flag1; no refcount decrement in this helper. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\nNo reference-count decrement here: ifECX nonnull call virtual+4 with flag1; plainRET. Inflater, memory-wrapper and backing slot0 entries all point here. Callers decrement before dispatch. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX nullable object; no stack args; RET; invoke virtual+4 with flag1. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bd30e0] update\nECX object; no stack arguments; plain RET. Existing recovered name preserved: if object nonnull call vtable+4 with flag1; no reference count decrement. Matched complete body00bd30e0-00bd30ed to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX object; no stack arguments; plain RET. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bd30e0] update\nNative [00bd30e0,00bd30ee); ECX nullable owner; plain RET; nonnull calls current deleting virtual4 with flag1. Existing generic name/body evidence preserved. NativeCameraReference supplies the NONNULL D62CF0 camera path only: validate current0 BD30E0 and current4 B71FE0, no count decrement or44 gate; then existing camera scalar delete1. Foreign/base profiles are unsupported. Shared queue terminal interface requires nonthrowing dependencies. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+      },
+      "after": {
+        "address": "00bd30e0",
+        "name": "BSP_RefCounted_InvokeDeletingDestructor",
+        "evidence": "ECX object; no stack arguments; plain RET. Existing recovered name preserved: if object nonnull call vtable+4 with flag1; no reference count decrement. Matched complete body00bd30e0-00bd30ed to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX object; no stack arguments; plain RET. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Native [00bd30e0,00bd30ee); ECX nullable owner; plain RET; nonnull calls current deleting virtual4 with flag1. Existing generic name/body evidence preserved. NativeCameraReference supplies the NONNULL D62CF0 camera path only: validate current0 BD30E0 and current4 B71FE0, no count decrement or44 gate; then existing camera scalar delete1. Foreign/base profiles are unsupported. Shared queue terminal interface requires nonthrowing dependencies. Component: reports/native_camera_reference_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof. | Packet orch3_plain_node_lifetime_r preserves this existing name and complete14-byte body. Original null path and currentvirtual4(flag1) dispatch into copied B6F8D0/B6F440 passed. NativePlainNodeReference validates actualD62C88 table and uses the real reconstructed scalar path; it performs no extra reference decrement. docs/NATIVE_PLAIN_NODE_LIFETIME.md; reports/native_plain_node_lifetime.json. New C++ terminal interface; no originalEH/gameplay proof."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All three names/evidence saved and read back, prior comments preserved; all three affected exports refreshed."
+}
