@@ -277,6 +277,20 @@
       "before_log": "local/ghidra-annotations-20260911T153357Z.json",
       "readback": "local/owner_h_comments.json",
       "exports": "local/owner_h_annotated_exports.log"
+    },
+    "final_integration": {
+      "tested_revision": "063506cb5adfb59a5bf1c2d0d993ae8070b2b3c8",
+      "main_base": "15482729",
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "2/2 passed",
+      "log": "local/owner_h_integrate.log",
+      "library_sha256": "ee3efbb847e10224695db3da6f6d329aa7300c0d88fbb4b5e562c848fe2326e0",
+      "saved_annotations": 58,
+      "annotation_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T153741Z.json",
+      "main_fast_forwarded_to_tested_revision": true,
+      "fixture_provenance": "Four focused fixtures passed on the earlier same-batch source60af126 library, recorded separately. Final combined build includes concurrent main changes; those focused fixtures were not rerun on this final library.",
+      "native_abi": false,
+      "game_validated": false
     }
   }
 }

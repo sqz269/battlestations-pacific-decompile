@@ -144,3 +144,10 @@ report separates this evidence from earlier batches and final main integration.
 The00432650 configuration singleton and00871BA0 acquisition chain remain the
 next concrete startup dependencies. Full runtime destruction, native ABI/SEH
 compatibility and gameplay validation remain outstanding.
+
+Final owner integration merged concurrent main15482729 before building, tested
+`063506cb5adfb59a5bf1c2d0d993ae8070b2b3c8`, and fast-forwarded main to that exact revision.
+The Win32 build and both existing tests passed; Ghidra saved all58 annotations.
+Four focused fixtures passed on the earlier source60af126 library, with its
+separate hash retained in the report. This remains build/fixture evidence,
+not native ABI or gameplay validation.
