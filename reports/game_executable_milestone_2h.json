@@ -1,0 +1,731 @@
+{
+  "packet": "cc_exe_2h",
+  "owner": "agent/cc-exe-2h",
+  "milestone": "bsp_game.exe milestone 2h",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only for this packet",
+  "title": "The scene contents pass creates the mission's entities, and the in-mission HUD pages are on screen",
+  "sources": [
+    "src/game_hosts_scene_contents.cpp",
+    "include/bsp/game_hosts_scene_contents.hpp",
+    "src/game_hosts_hud.cpp",
+    "include/bsp/game_hosts_hud.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+  "command": "bsp_game.exe --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 120 --mission-complete-frame 90 --screenshot local/run_2h.png --screenshot-mission-frame 60 --log local/game_run_2h.log --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+  "run": {
+    "exit_code": 0,
+    "host_methods_concrete": 290,
+    "host_methods_unimplemented": 318,
+    "scene_entities_visited_per_pass": 34,
+    "scene_entities_generated": 34,
+    "scene_entities_rejected": 0,
+    "scene_entities_created": 32,
+    "registration_bodies": 32,
+    "party_class_marks": 32,
+    "effective_game_mode": 8,
+    "property_library_files": 15,
+    "property_groups": 22,
+    "enum_tables": 33,
+    "enum_symbols": 1522,
+    "hud_screens_registered": 42,
+    "hud_pages_loaded": 52,
+    "hud_widgets_bound": 204,
+    "hud_widgets_requested": 373,
+    "level1_screen_ids": [
+      "29h",
+      "49h",
+      "44h",
+      "35h"
+    ],
+    "level1_input_contexts": [
+      "04h",
+      "11h",
+      "12h",
+      "0Ch",
+      "0Bh"
+    ],
+    "level1_pages": [
+      "GUI_powerups",
+      "GUI_unit",
+      "GUI_selector",
+      "GUI_minimap"
+    ],
+    "sprite_bridge_quads_on_the_mission_frame": 70,
+    "sprite_bridge_glyph_quads_on_the_mission_frame": 29,
+    "unit_pass_entities_ticked": 0,
+    "hud_update_frames": 90,
+    "hud_audio_environment": "Underwater"
+  },
+  "scene_contents_steps": [
+    {
+      "method": "MissionLoad::load_scene_contents",
+      "address": "004e03e5",
+      "native": "004d4df0",
+      "function": "004dfb70",
+      "owner": "scene graph",
+      "status": "concrete",
+      "note": "milestone 2f recorded this row; it now runs bsp::load_scene_contents_004d4df0 over GameSceneContentsHost"
+    },
+    {
+      "method": "SceneContents::log_loading_scene",
+      "address": "004d4e4b",
+      "native": "004254b0",
+      "function": "004d4df0",
+      "owner": "diagnostics",
+      "status": "concrete",
+      "note": "the scope marker \"Loading scene %s\""
+    },
+    {
+      "method": "SceneContents::open_file_block",
+      "address": "004d4eea",
+      "native": "00be0a30",
+      "function": "004d4df0",
+      "owner": "vfs",
+      "status": "unimplemented",
+      "note": "the \"2_\" block; its name is derived and reported, the block object is the VFS owner's"
+    },
+    {
+      "method": "SceneContents::preload_record_effects",
+      "address": "004d4fe1",
+      "native": "004d0ee0",
+      "function": "004d4df0",
+      "owner": "effects",
+      "status": "unimplemented"
+    },
+    {
+      "method": "SceneContents::acquire_effect",
+      "address": "004d502b",
+      "native": "00871ba0",
+      "function": "004d4df0",
+      "owner": "effects",
+      "status": "unimplemented",
+      "note": "the PlaneRumble effect published at 00e18a78"
+    },
+    {
+      "method": "SceneContents::clear_pending_class_ids",
+      "address": "004d5499",
+      "native": "004c8aa0",
+      "function": "004d4df0",
+      "owner": "scene graph",
+      "status": "unimplemented"
+    },
+    {
+      "method": "SceneContents::clear_scene_database_nodes",
+      "address": "004d54a4",
+      "native": "00468c90",
+      "function": "004d4df0",
+      "owner": "scene graph",
+      "status": "unimplemented"
+    },
+    {
+      "method": "SceneContents::read_scene_file_registration",
+      "address": "004d54de",
+      "native": "0046df00",
+      "function": "004d4df0",
+      "owner": "scene file",
+      "status": "concrete",
+      "note": "pass 2, bsp::run_scene_file_reader_0046df00 with instantiate=0 registration=1"
+    },
+    {
+      "method": "SceneContents::read_scene_file_instantiate",
+      "address": "004d5530",
+      "native": "0046df00",
+      "function": "004d4df0",
+      "owner": "scene file",
+      "status": "concrete",
+      "note": "pass 3, instantiate=1 registration=0"
+    },
+    {
+      "method": "SceneContents::scatter_clouds",
+      "address": "004d56c5",
+      "native": "004ba870",
+      "function": "004d4df0",
+      "owner": "world",
+      "status": "unimplemented",
+      "note": "the scene record's cloud areas are all Num=0 on this mission"
+    }
+  ],
+  "entity_block_steps": [
+    {
+      "method": "SceneContents::generation_gate",
+      "address": "0046d426",
+      "native": "0046c550",
+      "function": "0046cf40",
+      "status": "concrete",
+      "note": "bsp::scene_entity_generation_gate_0046c550 with the always-generate set recovered from 0046f160"
+    },
+    {
+      "method": "SceneContents::registration_type_lookup",
+      "address": "0046d448",
+      "native": "008f2260",
+      "function": "0046cf40",
+      "status": "concrete",
+      "note": "the `Type` lookup that selects the registration arm; present on all 32 DestroyerGen and absent on both NavPoints"
+    },
+    {
+      "method": "SceneContents::register_vehicle_class_preload",
+      "address": "0046d51a",
+      "native": "0095c640",
+      "function": "0046cf40",
+      "owner": "vehicle class",
+      "status": "unimplemented",
+      "note": "ECX is the Type property's resolved integer at +0Ch; the list it appends to is 00f8a09c"
+    },
+    {
+      "method": "SceneContents::register_multiplayer_stock",
+      "address": "0046d531",
+      "native": "0046bf70",
+      "function": "0046cf40",
+      "owner": "multiplayer stock",
+      "status": "unimplemented"
+    },
+    {
+      "method": "SceneContents::registration_creator",
+      "address": "0046d540",
+      "native": "004e98e0",
+      "function": "0046cf40",
+      "status": "concrete",
+      "note": "descriptor[2] through a register-indirect call; 004e98e0 is JMP 004e96d0 and bsp::register_scene_unit_004e96d0 runs it"
+    },
+    {
+      "method": "SceneContents::class_creator",
+      "address": "0046d5a4",
+      "native": "004f0520",
+      "function": "0046cf40",
+      "status": "concrete",
+      "note": "descriptor[1] through a register-indirect call; bsp::create_scene_unit_004f0520 for DestroyerGen, and 004e99b0 for NavPoint is a record"
+    },
+    {
+      "method": "SceneContents::property_bag_holder_allocate",
+      "address": "0046d5b2",
+      "native": "00bf681b",
+      "function": "0046cf40",
+      "owner": "scene graph",
+      "status": "unimplemented"
+    },
+    {
+      "method": "SceneContents::property_bag_holder",
+      "address": "0046d5cd",
+      "native": "00922e20",
+      "function": "0046cf40",
+      "owner": "scene graph",
+      "status": "unimplemented",
+      "note": "the 0Ch holder stored at entity+C0h, vtable 00d03d94"
+    }
+  ],
+  "unit_creator_steps": [
+    {
+      "method": "SceneUnit::type_property",
+      "address": "004f0531",
+      "native": "008f2260",
+      "function": "004f0520",
+      "status": "concrete"
+    },
+    {
+      "method": "SceneUnit::vehicle_class_descriptor",
+      "address": "004f053d",
+      "native": "00964790",
+      "function": "004f0520",
+      "owner": "vehicle class",
+      "status": "unimplemented",
+      "note": "the descriptor is a native object with a leaf constructor and two vtables; the creator is handed the executable's own token and the resolved Type"
+    },
+    {
+      "method": "SceneUnit::create_instance_from_descriptor",
+      "address": "004f054b",
+      "native": "006fe590",
+      "function": "004f0520",
+      "owner": "unit",
+      "status": "unimplemented",
+      "note": "the descriptor's vtable +28h; for MDestroyer operator new(1188h) plus 006fe460 and 009553d0. The executable's own entity record stands in so the rest of the creator body runs, the same substitution milestone 2c makes for the seven main-menu screen classes"
+    },
+    {
+      "method": "SceneUnit::placement_deferred",
+      "address": "004f054f",
+      "native": "004c1130",
+      "function": "004f0520",
+      "owner": "scene load state",
+      "status": "unimplemented",
+      "note": "returns the record's false, so all 32 take the placement branch"
+    },
+    {
+      "method": "SceneUnit::place_instance",
+      "address": "004f0584",
+      "native": "00928860",
+      "function": "004f0520",
+      "owner": "scene graph",
+      "status": "unimplemented",
+      "note": "the instance's vtable +98h with the world parent *(*(00e188a8)+19cch), which construct_world 004de610 would build"
+    },
+    {
+      "method": "SceneUnit::hierarchy_deferral",
+      "address": "004f058e",
+      "native": "004f03c0",
+      "function": "004f0520",
+      "status": "not reached",
+      "note": "the deferred branch; 004c1130's answer is false here"
+    },
+    {
+      "method": "SceneUnit::set_instance_name",
+      "address": "004f05b6",
+      "native": "0041dd40",
+      "function": "004f0520",
+      "status": "concrete",
+      "note": "instance+154h resize then a memcpy into +158h, over the executable's own record"
+    },
+    {
+      "method": "SceneUnit::queue_entity_command",
+      "native": "00469610",
+      "owner": "scene graph",
+      "status": "unimplemented",
+      "note": "reached through 004e6b30 for all 32 units; every one authors \"Command\" { Command = E CommandType : Cruise }"
+    }
+  ],
+  "scene_database_constructor": [
+    {
+      "method": "SceneDatabase::create_singleton",
+      "address": "0046f384",
+      "native": "0046f160",
+      "function": "0046f350",
+      "status": "read-only analysis",
+      "note": "operator new(170h) at 0046f36b then the constructor, stored to 00e18680; 0046f350 itself is called from BSP_Game_OnInit 004e3aa0 at 004e3e60"
+    },
+    {
+      "method": "SceneDatabase::construct_set_158",
+      "address": "0046f212",
+      "native": "004682b0",
+      "function": "0046f160",
+      "status": "read-only analysis",
+      "note": "the std::set at this+158h"
+    },
+    {
+      "method": "SceneDatabase::construct_set_164",
+      "address": "0046f23f",
+      "native": "004682b0",
+      "function": "0046f160",
+      "status": "read-only analysis",
+      "note": "the std::set at this+164h, the always-generate set 0046c550 searches at 0046c741"
+    },
+    {
+      "method": "SceneDatabase::insert_always_generate_47",
+      "address": "0046f2fa",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "status": "read-only analysis",
+      "note": "ECX = EBP = this+164h, value 47h (Path) written into the key slot at 0046f2f2"
+    },
+    {
+      "method": "SceneDatabase::insert_always_generate_3d",
+      "address": "0046f30f",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "status": "read-only analysis",
+      "note": "ECX = EBP = this+164h, value 3Dh (Cloud) from EBX, loaded at 0046f2d5"
+    },
+    {
+      "method": "SceneDatabase::insert_set158_44",
+      "address": "0046f27c",
+      "native": "0046ac50",
+      "function": "0046f160",
+      "status": "read-only analysis",
+      "note": "ECX = EDI = this+158h, value 44h (Landscape); the four that follow are 5Eh, 1Dh, 47h and 3Dh at 0046f295, 0046f2ae, 0046f2c7 and 0046f2e1"
+    }
+  ],
+  "property_library_steps": [
+    {
+      "method": "PropertyLibrary::load_enums_folder",
+      "address": "008f710e",
+      "native": "008f6fc0",
+      "function": "008f7100",
+      "status": "read-only analysis",
+      "note": "the extension literal at 00d1655c is \".enums\""
+    },
+    {
+      "method": "PropertyLibrary::load_props_folder",
+      "address": "008f711b",
+      "native": "008f6fc0",
+      "function": "008f7100",
+      "status": "read-only analysis",
+      "note": "the extension literal at 00d16554 is \".props\", so the enum tables load first"
+    },
+    {
+      "method": "PropertyLibrary::enumerate_directory",
+      "address": "008f701b",
+      "native": "00886280",
+      "function": "008f6fc0",
+      "status": "concrete",
+      "note": "the executable runs the same enumeration through bsp::enumerate_resources_00bdd990_fragment over the mounted VFS"
+    },
+    {
+      "method": "PropertyLibrary::load",
+      "address": "008f7079",
+      "native": "00557a90",
+      "function": "008f6fc0",
+      "status": "read-only analysis",
+      "note": "the per-file step; 008f67b0 is what it reaches"
+    },
+    {
+      "method": "PropertyLibrary::construct_tokenizer",
+      "address": "008f68da",
+      "native": "008d9cf0",
+      "function": "008f67b0",
+      "status": "concrete",
+      "note": "the same 838h tokenizer the scene reader builds, with the delimiter literal \";{}=:()\" at 00d16534; the executable uses bsp::SceneLexer with that set"
+    },
+    {
+      "method": "PropertyLibrary::intern_name",
+      "address": "008f6a7f",
+      "native": "00469b60",
+      "function": "008f67b0",
+      "status": "concrete"
+    },
+    {
+      "method": "PropertyLibrary::parse_property_block",
+      "address": "008f6ad7",
+      "native": "008f5a00",
+      "function": "008f67b0",
+      "status": "concrete",
+      "note": "bsp::parse_scene_property_block_008f5a00, the same parser the .scn entity body goes through"
+    }
+  ],
+  "hud_steps": [
+    {
+      "method": "InGameInterface::construct_manager",
+      "address": "004e046c",
+      "native": "0068a990",
+      "function": "004dfb70",
+      "owner": "gui",
+      "status": "concrete",
+      "note": "packet cc_hud_updates merged during this packet's turn, so the constructor and the Init are bsp::construct_in_game_interface_0068a990 and bsp::init_in_game_interface_0068cc70 rather than records; the 42 leaf screen classes are still not reconstructed"
+    },
+    {
+      "method": "InGameInterface::push_interface_request",
+      "address": "0068d73a",
+      "native": "004cc460",
+      "function": "0068cc70",
+      "owner": "gui",
+      "status": "unimplemented",
+      "note": "PUSH EBX (null payload) then PUSH 20h: Init's own first request is INTF_SCENE3D. The executable applies that id rather than inventing one"
+    },
+    {
+      "method": "InGameInterface::screen_register",
+      "native": "004f71d0",
+      "status": "concrete",
+      "note": "run once per HUD screen through bsp::register_front_end_screen_004f71d0 into the same 95-slot registry at 00e18b60 the front-end screens use"
+    },
+    {
+      "method": "InGameInterface::screen_load_page",
+      "native": "00aa5840",
+      "status": "concrete",
+      "note": "52 page loads over 47 distinct pages, from kHudScreenLayouts"
+    },
+    {
+      "method": "InGameInterface::screen_find_child",
+      "native": "00aa7e00",
+      "status": "concrete",
+      "note": "204 of 373 named widgets are direct children of one of their screen's own pages; the other 169 are nested deeper, which 00aa7e00 cannot reach on its own"
+    },
+    {
+      "method": "InGameInterface::apply_pending_interface",
+      "native": "0068aca0",
+      "status": "concrete",
+      "note": "bsp::apply_in_game_interface_0068aca0 with id 20h and a null payload, which is the one arm of the 20h body that publishes"
+    },
+    {
+      "method": "InGameInterface::set_level1_screen_set",
+      "native": "004f8530",
+      "status": "concrete",
+      "note": "bsp::set_front_end_screen_set_level at level 1, which runs the recompute 004f7620"
+    },
+    {
+      "method": "InGameInterface::set_level1_input_contexts",
+      "address": "004d8ab8",
+      "native": "004d6410",
+      "function": "004d8a50",
+      "status": "concrete",
+      "note": "004d8a50's tail is PUSH 1 then CALL 004d6410, the same level setter 004d8c00 reaches with 4"
+    },
+    {
+      "method": "MainMenuManager::deleting_destructor",
+      "address": "004dfda6",
+      "native": "00687300",
+      "function": "004dfb70",
+      "owner": "front end",
+      "status": "unimplemented",
+      "note": "a register-indirect call through the manager's vtable slot 0; the vtable at 00cf774c has 00687300 there"
+    },
+    {
+      "method": "MainMenuManager::destroy",
+      "address": "00687303",
+      "native": "00686c90",
+      "function": "00687300",
+      "status": "concrete",
+      "note": "the executable runs the two effects of the body that reach recovered code: the per-screen exit-and-commit and the deactivate"
+    },
+    {
+      "method": "MainMenuManager::commit_screen_visibility",
+      "address": "00686db9",
+      "native": "004f83b0",
+      "function": "00686c90",
+      "status": "concrete",
+      "note": "for each of the seven screens the destructor collects, after clearing +4h and +5h at 00686db1 and 00686db5"
+    },
+    {
+      "method": "FrontEndManager::deactivate",
+      "address": "00686e2e",
+      "native": "00683aa0",
+      "function": "00686c90",
+      "status": "concrete",
+      "note": "its tail publishes the empty level-4 screen set 004f8710 and the empty level-4 input contexts 004d8c00, which is what takes the front-end pages off the screen"
+    },
+    {
+      "method": "MissionFrame::update_interface_only",
+      "native": "004c40f0",
+      "status": "concrete",
+      "note": "milestone 2f recorded it because the registry had nothing in it; the HUD screens are in it now, so the call services the pending request and pumps"
+    },
+    {
+      "method": "InGameInterface::publish_manager_global",
+      "address": "0068ccfe",
+      "native": "0068ccfe",
+      "function": "0068cc70",
+      "status": "concrete",
+      "note": "the second write of 00e198c4; the object is this process's own bsp::InGameInterfaceManager"
+    },
+    {
+      "method": "InGameInterface::base_init",
+      "address": "0068cd04",
+      "native": "00683a90",
+      "function": "0068cc70",
+      "status": "concrete",
+      "note": "a bare RET in this build"
+    },
+    {
+      "method": "InGameInterface::allocate_screen",
+      "native": "00bf681b",
+      "status": "unimplemented",
+      "note": "42 sites inside 0068cc70, one per screen; the registry-slot 29h screen at +CCh goes through 00bf55be instead"
+    },
+    {
+      "method": "InGameInterface::screen_constructor",
+      "native": "0068cc70",
+      "status": "unimplemented",
+      "note": "the 37 leaf constructors kInGameHudScreens carries, all of them call sites inside 0068cc70; one record stands for the set"
+    },
+    {
+      "method": "InGameInterface::activate_manager",
+      "native": "00684700",
+      "status": "unimplemented",
+      "note": "manager+3Ch, the byte 006840fe and the frame's step 17 test. The manager's vtable slot +08h is 00684700 itself and nothing in the reconstructed load reaches that dispatch, so the executable raises the byte and records the routine"
+    },
+    {
+      "method": "MissionFrame::in_game_interface_active",
+      "address": "004e524c",
+      "native": "004e524c",
+      "status": "concrete",
+      "note": "the gate 00e198c4 != 0 && [00e198c4]+3Ch != 0, which now answers from the object"
+    },
+    {
+      "method": "InGameInterface::update",
+      "native": "0068c1f0",
+      "status": "concrete",
+      "note": "bsp::update_in_game_interface_0068c1f0, step 17 of the in-mission frame at 004e5252, 90 calls. Every screen, camera and controlled-unit read inside it is a record with its own address; the spectate walk finds no units because its list hangs off the world 004de610 would build, and the audio tail reaches 00a7b710 with Underwater, the recovered rule's answer for a zero camera height and a zero water height"
+    }
+  ],
+  "corrections": [
+    {
+      "target": "include/bsp/scene_entity_factory.hpp, kSceneRegistrationPassClassIds and the comment above it",
+      "was": "\"On the registration pass the reader keeps only entities whose class id is one of these six, plus the 4Dh/44h fallback below\"",
+      "is": "the six ids are the ones that SKIP the registration body. 0046d453 branches on whether the bag carries `Type`: with `Type` present and a class id that is none of 47h, 19h, 1Bh, 1Ch, 34h or 4Dh, the main body at 0046d50b runs 0095c640, 0046bf70 and descriptor[2]; a match on any of the six, and the `Type`-absent path at 0046d547, both fall into the tail at 0046d54b, which runs 0046bf70 and descriptor[2] only for class ids 4Dh and 44h. DestroyerGen is 07h and therefore takes the main body, which is what docs/SCENE_UNIT_CREATORS.md's registration table already said",
+      "evidence": "the listing 0046d433..0046d57c: CMP byte [ESP+204h],0 / JZ 0046d57e at 0046d433; PUSH 00ce4780 / CALL 008f2260 / TEST EAX,EAX / JZ 0046d547 at 0046d441..0046d453; the six CMP/JZ 0046d54b pairs; the fallthrough at 0046d50b; and CMP EAX,4Dh / CMP EAX,44h / JNZ 0046d5e4 at 0046d54d..0046d555. The run creates 32 DestroyerGen registration bodies and 0 for NavPoint, whose bag has no `Type`"
+    },
+    {
+      "target": "docs/SCENE_ENTITY_FACTORY.md, \"Uncertainties\": the set at this+164h",
+      "was": "\"read-only evidence shows the std::set<int> and the 00468DB0 find, but nothing was found that inserts into it. Until that is recovered the exemption list is unknown\"",
+      "is": "the scene-database constructor 0046f160 fills it. 0046f232 takes EBP = this+164h, 0046f23f constructs the set through 004682b0, and 0046f2fa and 0046f30f insert 47h (Path) and 3Dh (Cloud) through 0046ac50. The sibling set at this+158h is filled in the same block with 44h, 5Eh, 1Dh, 47h and 3Dh. 0046f160 is the constructor 0046f350 runs on a 170h allocation and stores at 00e18680, and 0046f350 is called once from BSP_Game_OnInit 004e3aa0 at 004e3e60",
+      "evidence": "the listing 0046f205..0046f314, and the run: the executable supplies {47h, 3Dh} as the always-generate set and no entity of this mission is in it, so every gate answer comes from the game-mode arm"
+    },
+    {
+      "target": "docs/SCENE_UNIT_CREATORS.md, the `Type` resolution section",
+      "was": "\"The enum symbol tables are not in any shipped data file, so the reconstruction can only hand back the token; the resolved id is an input\"",
+      "is": "they are in the shipped data. universe/library/global.enums declares `enum ShipClasses`, `enum VehicleClasses`, `enum PlaneClasses`, `enum Party`, `enum Races` and 28 more; universe/library/*.props declare six others. They are loaded by CPropTreeLibrary::Load 008f67b0, whose two top-level keywords are the literals `properties` and `enum`, and whose caller 008f7100 enumerates \".enums\" and then \".props\" under the library directory through 008f6fc0 and 00886280",
+      "evidence": "the literal \"CPropTreeLibrary::Load \" at 00d1653c pushed at 008f6812, \".props\" at 00d16554 and \".enums\" at 00d1655c pushed at 008f711b and 008f7106, the delimiter \";{}=:()\" at 00d16534 handed to the tokenizer at 008f68da, and 008f6ad7 CALL 008f5a00. The run resolves all 32 units: DeRuyter=20, Clemson=25, Fubuki=73, Kagero=276, Kuma=70, Myoko=293, Northampton=19, PACK3_Fiji=263, PACK3_Icarus=265, Shiratsuyu=289, York=21, and Party Allied=0 / Japanese=1"
+    },
+    {
+      "target": "the entity property bag an authored .scn hands 0046c550",
+      "was": "implicitly, the authored property block alone (which is all bsp::SceneEntity::properties carries)",
+      "is": "the authored block merged over the schema of every group in its `properties ( ... )` list. `properties MultiEntity` in universe/library/global.enums declares GenerateInGame = B true and GenerateInEngineMovie = B true, and `properties GameUnit (MultiEntity)` inherits it, so every GameUnit entity defaults to GenerateInGame. Without the merge the mode-8 arm of 0046c550 at 0046cc5b reads [eax+0Ch] of a key the bag does not carry and rejects the entity; with it, all 32 DestroyerGen generate, which is what the mission's own script requires because usn_2_java.lua calls FindEntity(\"DeRuyter\") rather than creating it",
+      "evidence": "0046cf40 step 6 merges each group name through 008f54f0 before step 7 parses the authored body through 008f5a00, so an authored assignment overwrites a group default; the shipped entity blocks author an empty \"MultiType\" { } and no GenerateInGame at all; the run's before-and-after is 0 created against 32 created"
+    },
+    {
+      "target": "include/bsp/scene_unit_creators.hpp, kVehicleClassIndexTableEntries",
+      "was": "0x1000, \"(4010h - 10h) / 4: the `Type` value is an index into a fixed 4096-entry table\"",
+      "is": "0x800. include/bsp/vehicle_class.hpp has the same singleton with a forward map of 800h entries at +10h and an inverse map of 800h entries at +2010h, which is what fills 10h..4010h. The two headers disagree about the same field",
+      "evidence": "kVehicleClassIndexMapSize = 0x800 with forward[+10h] and inverse[+2010h] in include/bsp/vehicle_class.hpp, against (0x4010-0x10)/4 in include/bsp/scene_unit_creators.hpp"
+    },
+    {
+      "target": "milestone 2f, \"A mission is running behind an unchanged picture\"",
+      "was": "the front-end pages stay on screen for the whole mission because the load released the main-menu manager as a host record",
+      "is": "the release is not a record: 004dfda6 calls the manager's vtable slot 0, which the vtable at 00cf774c gives as 00687300, the deleting destructor. It calls BSP_MainMenu_Destroy 00686c90, which exits each of the seven screens it owns, clears both flag bytes and commits through 004f83b0 at 00686db9, then calls BSP_FrontEndManager_Deactivate 00683aa0 at 00686e2e, whose tail publishes the empty level-4 screen set and input contexts. The front-end pages come down through recovered code",
+      "evidence": "the listing 00686cce..00686e61 and the run log: the sprite bridge drops from 705 quads to 13 on the frame the release runs"
+    },
+    {
+      "target": "include/bsp/mission_scene_load.hpp, MissionSceneLoadState::script_slot and script_slot_forced",
+      "was": "named for the mission script slot alone",
+      "is": "they are game+614h and game+61Ch, the two fields BSP_Game_GetEffectiveGameMode 004bca50 reads as the raw game mode and its forced flag. The mission script slot and the scene generation mode are the same field, which is why a single-player load resolves both to 8",
+      "evidence": "004bca50's body reads [ECX+61Ch] and [ECX+614h]; 004e087b picks the script slot from the same field; bsp::normalise_mission_script_slot and bsp::effective_game_mode_004bca50 implement the same rule"
+    },
+    {
+      "target": "include/bsp/scene_file.hpp, SceneFileReaderHost::instantiate_entity",
+      "was": "hands the host the composed world frame only",
+      "is": "0046cf40 passes the entity's own localframe as argument 4 and the parent's world frame inline as arguments 7..22, and 0046c550 uses them differently: argument 4 supplies the x and z the area test starts from and the parent frame is what the null-parent branch 0046c6e5 composes with. A host that receives only the product cannot reproduce that for a nested entity. Every entity of this mission is top level, so the run is unaffected and the executable reports the nested count",
+      "evidence": "0046c57a reads [local+30h] and [local+38h]; 0046c6e5 composes local with the by-value parent snapshot; bsp::visit_entity in src/scene_file.cpp multiplies the two before calling the host"
+    },
+    {
+      "target": "this milestone's own first pass, and milestone 2f's records for the in-mission interface manager",
+      "was": "0068a990, 0068cc70 and 0068c1f0 were unimplemented records, and the level-1 set was applied over a screen walk this file wrote",
+      "is": "packet cc_hud_updates merged during this packet's turn with include/bsp/in_mission_interface_runtime.hpp, so the constructor, the Init and the per-frame update all run as reconstructions. Milestone 2f's MissionFrame::in_game_interface_active [004e524c] and update_in_game_interface [0068c1f0] records are gone",
+      "evidence": "the run log: InGameInterface::construct_manager and manager_init are concrete, InGameInterface::update runs 90 times over the 120 frame run, and the level-1 set is unchanged at {29h, 49h, 44h, 35h}"
+    }
+  ],
+  "executable_decisions": [
+    "The property-group and enum library reader. CPropTreeLibrary::Load 008f67b0 is not reconstructed, so the executable reads universe/library itself: the VFS enumeration is the recovered 00bdd990 fragment, the tokenizer is bsp::SceneLexer with 008f67b0's own delimiter set, and each `properties` body goes through bsp::parse_scene_property_block_008f5a00. Only the top-level `properties`/`enum` dispatch and the group merge are the executable's. Without it the gate's answer for every MultiType-carrying entity is wrong.",
+    "SceneUnitCreatorHost::create_instance_from_descriptor hands back the executable's own entity record rather than a native unit instance, so the rest of 004f0520 runs. The native allocation is recorded at 006fe590 and nothing about the record claims the 1188h layout. This is the substitution milestone 2c makes for the seven main-menu screen classes.",
+    "The 42 in-mission HUD screens are the executable's own registry records built from bsp::kInGameHudScreens and bsp::kHudScreenLayouts. The manager 0068a990 and its Init 0068cc70 stay records; what runs is the registration, the page load and the widget lookup, all through recovered routines.",
+    "The vehicle-class registry's forward index map is filled with the identity. 00592640 and 00506550 reset all 800h pairs to the identity and rewrite one, and 00592640 is the footer command this run already takes, so the fill is the state the native leaves rather than an invention. Without it 0095ba60 finds no class index and marks no party.",
+    "The three mission-detail page roots are hidden when the manager is destroyed. The native releases them with the main-menu screen's own layout references; the executable holds them directly and hides them at the same point.",
+    "--screenshot-mission-frame N names an in-mission frame of 004e4a40 rather than an application frame, so a capture can be aimed at the HUD without counting frames from the injected press.",
+    "The manager's active byte at +3Ch. 00684700 sets it through the manager's vtable slot +08h; Ghidra reports three direct callers of 00684700 and none is this manager, and nothing in the reconstructed load reaches that dispatch. The executable raises the byte so the request Init pushes can be serviced and the frame's step 17 can run, and records 00684700. The other half of 00684700, deactivating every other registered manager, has already happened because the load destroyed the main-menu manager through 00686c90."
+  ],
+  "unit_pass_evidence": {
+    "created_unit_records": 32,
+    "entities_ticked_per_frame": 0,
+    "reason": "every container the frame's unit passes and the fixed step's rows 9 to 13 walk hangs off the world object construct_world 004de610 would build. That step is still a load record, so the entity manager reference at game+21A0h is null, 00481640's gate at world+4ACh is closed and the fixed step's gate at 00875e69 reads a world that does not exist. The unit records exist and nothing ticks them.",
+    "blocking_step": {
+      "method": "MissionSceneLoadHost::construct_world",
+      "address": "004e01de",
+      "native": "004de610",
+      "function": "004dfb70",
+      "owner": "world"
+    }
+  },
+  "regression_checks": [
+    {
+      "command": "--frames 120 --press-start-frame 30",
+      "exit_code": 0,
+      "host_methods": "154 concrete, 80 unimplemented",
+      "matches": "milestone 2d and 2g"
+    },
+    {
+      "command": "--frames 40",
+      "exit_code": 0,
+      "host_methods": "129 concrete, 49 unimplemented",
+      "matches": "milestone 2d and 2g"
+    },
+    {
+      "command": "--vfs-probe fonts/fonts.lua",
+      "exit_code": 0
+    },
+    {
+      "command": "--vfs-probe does/not/exist.lua",
+      "exit_code": 3
+    },
+    {
+      "command": "--frames 300 --press-start-frame 30 --menu-select USN02 --mission-frames 60",
+      "exit_code": 0,
+      "host_methods": "283 concrete, 300 unimplemented",
+      "note": "summary mission exit reachable=0, as milestone 2f and 2g report without --mission-complete-frame"
+    },
+    {
+      "command": "--frames 3000 --mission-frames 2000 --mission-complete-frame 1990",
+      "exit_code": 0,
+      "host_methods": "290 concrete, 318 unimplemented",
+      "note": "23 fixed steps; the count is wall-clock driven and 2g's own long run reported 18"
+    },
+    {
+      "command": "--press-start-frame 30 --menu-select USN02 --mission-frames 60, closed with CloseMainWindow",
+      "exit_code": 0,
+      "frames_presented": 52219,
+      "host_methods": "284 concrete, 300 unimplemented",
+      "note": "CloseRequestPolicy::front_end_branch 004ca2f0 recorded once"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "004e98e0",
+      "end": "004e98e0",
+      "note": "JMP 004e96d0, the registration creator of DestroyerGen, SubmarineGen, LandingShipGen and TBoatGen. Already recorded by docs/SCENE_UNIT_CREATORS.md; still undefined, so the 0046d540 row of this report is verified as indirect rather than against a function body"
+    }
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "prop_tree_library",
+      "addresses": [
+        "008f67b0",
+        "008f6fc0",
+        "008f7100",
+        "008f5a00",
+        "00469b60",
+        "008f54f0"
+      ],
+      "contract": "CPropTreeLibrary::Load in full: the `properties`/`enum` grammar, the group inheritance the parenthesised name declares, the merge rule of 008f54f0's third argument, and where the loaded library is published so 008f2260 resolves a key against it"
+    },
+    {
+      "packet": "scene_unit_class_factory",
+      "addresses": [
+        "00964790",
+        "006fe590",
+        "00437f50"
+      ],
+      "contract": "the vehicle-class descriptor and the unit instance its vtable +28h allocates, which is the one boundary between a created entity record and a real unit"
+    },
+    {
+      "packet": "construct_world",
+      "addresses": [
+        "004de610"
+      ],
+      "contract": "the world object at game+19CCh, its +4ACh byte and the entity manager at game+21A0h. Every unit pass of the frame and of the fixed step is waiting on it"
+    },
+    {
+      "packet": "scene_fixed_entity_classes",
+      "addresses": [
+        "004e99b0",
+        "004ea650",
+        "004f1a60",
+        "004f1460"
+      ],
+      "contract": "the twelve fixed-size creators; 004e99b0 NavPoint is the one this mission needs"
+    },
+    {
+      "packet": "hud_screen_updates",
+      "addresses": [
+        "00649860",
+        "006435d0",
+        "005c0f20",
+        "00648290"
+      ],
+      "contract": "the three central screens' update virtuals, which are analysed and not reconstructed. cc_hud_updates has since merged and this packet runs its constructor, Init and per-frame update; what is left is the per-screen work those three virtuals do"
+    },
+    {
+      "packet": "hud_widget_clone",
+      "addresses": [
+        "00649860",
+        "00648290",
+        "00aa64c0"
+      ],
+      "contract": "the per-unit widget clone the HUD root update makes from the GUI_powerups and GUI_unit templates, which is why the templates are drawn in place today"
+    }
+  ],
+  "known_defects": []
+}

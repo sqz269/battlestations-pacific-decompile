@@ -1,0 +1,1285 @@
+{
+  "schema": "bsp.native_crt_pointer_decode_support_audit.v1",
+  "packet": "native_crt_pointer_decode_support3",
+  "base_commit": "c38fd702c771ec7ee830700db035be391cea65a1",
+  "observed_main_commit": "d73899741d8301077db4ae91479a86ff92b29e93",
+  "utc": "2026-09-11T23:05:34.707957+00:00",
+  "owned_files": [
+    "src/native_crt_pointer_decode_support.cpp",
+    "include/bsp/native_crt_pointer_decode_support.hpp",
+    "docs/NATIVE_CRT_POINTER_DECODE_SUPPORT.md",
+    "reports/native_crt_pointer_decode_support_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00c04efb",
+      "original_bytes": 108,
+      "saved_name": "LIBCRT_unmatched_00c04efb",
+      "cpp_symbol": "bsp::native_crt_pointer_decode_module_gate_00c04efb",
+      "complete": true,
+      "native_ABI": "No arguments, EAX0or1, plain RET; nonvolatile registers preserved.",
+      "source_ABI": "Explicit context reference argument; C++ frame and incidental volatile registers/EFLAGS/fault sites qualified."
+    },
+    {
+      "address": "00bfbb61",
+      "original_bytes": 60,
+      "saved_name": "__get_winmajor",
+      "cpp_symbol": "bsp::get_native_crt_winmajor_00bfbb61",
+      "complete": true,
+      "native_ABI": "cdecl DWORD* output; EAX0or22; plain RET; captures output before checks.",
+      "source_ABI": "Additional context reference; actual five-zero BF66EF operation via existing returning service, not literal native outgoing stack."
+    },
+    {
+      "address": "00c05920",
+      "original_bytes": 136,
+      "saved_name": "_strcmp",
+      "cpp_symbol": "bsp::native_crt_strcmp_00c05920",
+      "complete": true,
+      "native_ABI": "cdecl two readable raw byte pointers; EAX -1/0/+1, EFLAGS/EAX/ECX/EDX effects, EBX/ESI/EDI/EBP preserved, plain RET.",
+      "source_ABI": "Naked MSVC Win32 function; linked136 bytes exactly original, no relocations or host semantic comparator."
+    }
+  ],
+  "complete_function_count": 3,
+  "complete_original_bytes": 304,
+  "status": {
+    "reconstructed": true,
+    "build_tested": true,
+    "static_original_comparator_bytes_checked": true,
+    "actual_archive_and_link_checked": true,
+    "fixture_tested": false,
+    "owned_native_or_source_runtime_executed": false,
+    "ABI_compatible": false,
+    "game_validated": false
+  },
+  "native_evidence": {
+    "utc": "2026-09-11T22:53:25.173657+00:00",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each live query routes through tools/bsp.py ghidra / Client.verify()",
+    "installed_PE": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "disk_spans": [
+      {
+        "address": "00c04efb",
+        "length": 108,
+        "end_exclusive": "00c04f67",
+        "kind": "owned_full_function",
+        "bytes_hex": "558bec5151535633f68d45fc4633db508975f8895dfce84b6cffff837dfc05597e048bc6eb425753ff155c21ce008b703c03f066395e060fb746148d7c301876235768b89fd600e8d909000085c05959740e0fb746064383c7283bd872e3eb048365f8008b45f85f5e5bc9c3",
+        "sha256": "41fb70b1def2a1805b37abce72aaaf2bc1239a6accf838a82a3b0ea92d5cda84",
+        "section": ".text",
+        "section_flags": "60000020",
+        "fresh_guarded_Ghidra_query": true,
+        "file_offset": 8408827,
+        "installed_PE_match": true,
+        "instruction_count": 48
+      },
+      {
+        "address": "00bfbb61",
+        "length": 60,
+        "end_exclusive": "00bfbb9d",
+        "kind": "owned_full_function",
+        "bytes_hex": "8b4424045633f63bc6751de81a4000005656565656c70016000000e86eabffff83c4146a16585ec3393584dd090174db8b0d90dd0901890833c05ec3",
+        "sha256": "ae8c7e0db8242c255db52267491487b5e32f5f934b9bc1eaf0b832463dc6a3a0",
+        "section": ".text",
+        "section_flags": "60000020",
+        "fresh_guarded_Ghidra_query": true,
+        "file_offset": 8371041,
+        "installed_PE_match": true,
+        "instruction_count": 25
+      },
+      {
+        "address": "00c05920",
+        "length": 136,
+        "end_exclusive": "00c059a8",
+        "kind": "owned_full_function",
+        "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+        "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+        "section": ".text",
+        "section_flags": "60000020",
+        "fresh_guarded_Ghidra_query": true,
+        "file_offset": 8411424,
+        "installed_PE_match": true,
+        "instruction_count": 55
+      },
+      {
+        "address": "00bffb8b",
+        "length": 19,
+        "end_exclusive": "00bffb9e",
+        "kind": "existing_owning_errno_service_evidence",
+        "bytes_hex": "e82756000085c07506b8e859e100c383c008c3",
+        "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+        "section": ".text",
+        "section_flags": "60000020",
+        "fresh_guarded_Ghidra_query": true,
+        "file_offset": 8387467,
+        "installed_PE_match": true,
+        "instruction_count": 7
+      },
+      {
+        "address": "00bf66ef",
+        "length": 36,
+        "end_exclusive": "00bf6713",
+        "kind": "existing_returning_invalid_service_evidence",
+        "bytes_hex": "558becff3564dd0901e8e1e8000085c05974035dffe06a02e8e7e70000595de9a8feffff",
+        "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+        "section": ".text",
+        "section_flags": "60000020",
+        "fresh_guarded_Ghidra_query": true,
+        "file_offset": 8349423,
+        "installed_PE_match": true,
+        "instruction_count": 14
+      },
+      {
+        "address": "00d69fb8",
+        "length": 8,
+        "end_exclusive": "00d69fc0",
+        "kind": "exact_NUL_literal",
+        "bytes_hex": "2e6d697863727400",
+        "sha256": "094293c6f1b7ea1526a02250e55111420a359b16d6dc32a1a9ad0b7f8c6127e6",
+        "section": ".rdata",
+        "section_flags": "40000040",
+        "fresh_guarded_Ghidra_query": true,
+        "file_offset": 9871288,
+        "installed_PE_match": true
+      }
+    ],
+    "separate_virtual_zero_fill": [
+      {
+        "address": "0109dd84",
+        "length": 4,
+        "end_exclusive": "0109dd88",
+        "kind": "current_OS_platform_zero_fill",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "section": ".data",
+        "section_flags": "c0000040",
+        "fresh_guarded_Ghidra_query": true,
+        "disk_backed": false,
+        "current_runtime_value_proven": false
+      },
+      {
+        "address": "0109dd90",
+        "length": 4,
+        "end_exclusive": "0109dd94",
+        "kind": "current_OS_major_zero_fill",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "section": ".data",
+        "section_flags": "c0000040",
+        "fresh_guarded_Ghidra_query": true,
+        "disk_backed": false,
+        "current_runtime_value_proven": false
+      }
+    ]
+  },
+  "discovery_dependency": {
+    "commit": "e76604975974bd622c9324be64c26de89ef30064",
+    "sealed_manifest_sha256": "7d7b6b2093aaf5f0bf46ed00532dda421952b43df75e9921e440ad0a26346b21",
+    "qualification": "Prior full decoder/libm/core and writer evidence preserved; only3 prerequisite functions reconstructed here."
+  },
+  "actual_context": {
+    "type": "bsp::NativeCrtPointerDecodeSupportContext",
+    "bindings": "Four valid/stable borrowed references; no private state or allocator.",
+    "current_words": [
+      "109DD84 OS-platform",
+      "109DD90 winmajor"
+    ],
+    "errno": "Existing LegacyCrtMathRuntime::errno_location_00bffb8b actual owning-CRT service, read current function member at call.",
+    "invalid": "Existing SingletonLifetimeCallbacks::invalid_parameter(context), read current fields after errno store; may return.",
+    "excluded_global": "matherr_bypass_00e16bd0 is not read or repurposed",
+    "actual_module": "Direct imported GetModuleHandleA(nullptr); no module/provider parameter.",
+    "raw_storage": "Actual current module NT and section header storage must support the native DWORD/WORD/BYTE reads; no added validation."
+  },
+  "native_schedules": {
+    "BFBB61": [
+      "Capture caller output",
+      "Null output short-circuits platform read",
+      "Current platform0 also fails",
+      "Call actual owning errno",
+      "Native pushes five zero arguments; source represents all-zero invalid operation via established service",
+      "Store errno22 before returning invalid service",
+      "If service returns: return22, no source output store or retry",
+      "Success: read current major, store captured output, return0"
+    ],
+    "C04EFB": [
+      "Initialize major0/result1",
+      "Call complete getter, ignore its status",
+      "Signed major>5 return1",
+      "Actual GetModuleHandleA(nullptr)",
+      "Read DWORDmodule+3C; NT=module+wrappedDWORD",
+      "Read WORDNT+6 initialcount",
+      "Read WORDNT+14 optionalheadersize even ifinitialcount0",
+      "Compute firstsectionNT+18+size",
+      "Ifcount0 return1",
+      "Call complete nakedstrcmp(aligned8byte .mixcrt,currentsection)",
+      "Equal return0",
+      "Mismatch reload current WORDcount BEFORE DWORDindex++ and section+=40",
+      "Unsignedindex>=capturedcount returns1; otherwiseloop"
+    ],
+    "C05920": [
+      "Capture two stack pointers",
+      "BYTE/WORD first-string alignment reads",
+      "Aligned DWORD first loads before zero/mismatch decisions",
+      "Second-string BYTE comparisons unsigned",
+      "Carry normalized SBB/SHL/ADD -> -1/+1",
+      "Equality XOR EAX0",
+      "Original internal NOP/identity MOV EDI,EDI retained"
+    ],
+    "no_added_behavior": [
+      "null/PE/image/header/range validation",
+      "synthetic module",
+      "private errno",
+      "new policy callback",
+      "handler retry",
+      "output cleanup",
+      "exception translation",
+      "CRT startup/decoder fallback"
+    ]
+  },
+  "dependencies": [
+    {
+      "provider": "C05920 full actual naked source",
+      "use": "Both linked comparator CALLs in gate",
+      "source_complete": true
+    },
+    {
+      "provider": "BFBB61 full actual source",
+      "use": "Inlined complete getter in gate plus standalone exported entry",
+      "source_complete": true
+    },
+    {
+      "provider": "BFFB8B / LegacyCrtMathRuntime errno service",
+      "use": "Actual owning service interface",
+      "native_runtime_complete": false,
+      "remaining": "Original19-byte accessor calls C051B7 PTD getter and selects PTD+8/E159E8; original startup/getter closure remains incomplete."
+    },
+    {
+      "provider": "BF66EF / established returning invalid service",
+      "use": "Native five-zero operation through current established service",
+      "native_runtime_complete": false,
+      "remaining": "Original36-byte dispatcher decodes109DD64 through C04FDE, tailcalls currenthandler or C04EF3/WatsonBF65BB. No general dispatcher closure claimed."
+    },
+    {
+      "provider": "GetModuleHandleA",
+      "use": "Actual linked Win32 KERNEL32 import; raw current module",
+      "original_boundary": true
+    },
+    {
+      "provider": "D69FB8 literal",
+      "use": "Exact8 bytes .mixcrt NUL; new aligned readonly source literal",
+      "bytes_equivalent": true,
+      "absolute_address_identity_claim": false
+    },
+    {
+      "provider": "C04FDE / C0F0E4 / C28545 / C19260 / C19279",
+      "use": "Downstream separate packets",
+      "new_source_claim": false
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 via ignored additive hook; /W4 /WX /fp:strict",
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "result": "passed"
+      },
+      {
+        "name": "native_math_differential",
+        "result": "passed"
+      }
+    ],
+    "seed_count": 8,
+    "all_seeds_match_installed_PE": true,
+    "tests_scope": "Existing tests only; no owned3-entry runtime coverage claimed.",
+    "focused_proof": "Static original136-byte comparator equality and actual all5 linked relocation/provider bindings, reviewed full getter/gate assembly.",
+    "new_runtime_fixture": false,
+    "static_link_artifact_executed": false,
+    "compile_TLog": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+      "entry": [
+        "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE-CRT-POINTER-DECODE-SUPPORT3\\SRC\\NATIVE_CRT_POINTER_DECODE_SUPPORT.CPP",
+        "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE-CRT-POINTER-DECODE-SUPPORT3\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE-CRT-POINTER-DECODE-SUPPORT3\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE-CRT-POINTER-DECODE-SUPPORT3\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE-CRT-POINTER-DECODE-SUPPORT3\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-native-crt-pointer-decode-support3/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE-CRT-POINTER-DECODE-SUPPORT3\\SRC\\NATIVE_CRT_POINTER_DECODE_SUPPORT.CPP"
+      ]
+    },
+    "source_changed_after_approved_build": false
+  },
+  "archive_provenance": {
+    "archive": "build\\win32\\Release\\bsp_core.lib",
+    "archive_sha256": "e30a50a138732dd126f39d9cb4965f89ebe1c47a9c4f63e655a3d2c0c10f4f2f",
+    "object_count": 1,
+    "all_code_sections": 6,
+    "all_code_bytes": 513,
+    "all_code_relocations": 5,
+    "objects": [
+      {
+        "object": "native_crt_pointer_decode_support.obj",
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+        "length": 3738,
+        "sha256": "1c18f370cd6314fd3f1b6537c9975fa0f573d6fc255ad89f9dc1958c71e119fd",
+        "sections": [
+          {
+            "index": 7,
+            "names": [
+              "??_H@YGXPAXIIP6EPAX0@Z@Z"
+            ],
+            "bytes": 38,
+            "sha256": "5d5ca69c6d6d3098b8363a8af646dbc82f870d51ce6628d3ed6d19261c4fc147",
+            "bytes_hex": "558bec568b751085f67416538b5d14578b7d088bcfffd3037d0c83ee0175f45f5b5e5dc21000",
+            "relocations": []
+          },
+          {
+            "index": 8,
+            "names": [
+              "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z"
+            ],
+            "bytes": 68,
+            "sha256": "2e72b6652d8459283c6801db9caa8f9a8aac51afdfc09d419082f5a57303041f",
+            "bytes_hex": "558bec8b4d08568b750c85c974138b06833800740c8b46045e8b00890133c05dc38b46088b4004ffd0c700160000008b460cff308b4008ffd083c404b8160000005e5dc3",
+            "relocations": []
+          },
+          {
+            "index": 9,
+            "names": [
+              "?image_dword@?A0x70a3539e@bsp@@YAII@Z"
+            ],
+            "bytes": 19,
+            "sha256": "ebb1379c4c99656ff4f2ea0b7b26654019551284302a201fafd511c6c0eddfb5",
+            "bytes_hex": "558bec518b45088b008945fc8b45fc8be55dc3",
+            "relocations": []
+          },
+          {
+            "index": 10,
+            "names": [
+              "?image_word@?A0x70a3539e@bsp@@YAGI@Z"
+            ],
+            "bytes": 22,
+            "sha256": "d5597c3ae033701b79e90ac0b171c35a8c8fa95f20f7a471c2bac9b7e57d7b7a",
+            "bytes_hex": "558bec518b4508668b00668945fc668b45fc8be55dc3",
+            "relocations": []
+          },
+          {
+            "index": 11,
+            "names": [
+              "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+            ],
+            "bytes": 230,
+            "sha256": "9985be6fbd2b08c808c2436a9ef3f3ea498574c559f58ad8c56b5ef7473014ad",
+            "bytes_hex": "558bec83ec10568b75088b0683380074078b46048b00eb1d8b46088b4004ffd0c700160000008b460cff308b4008ffd083c40433c083f8057e0ab8010000005e8be55dc353576a00ff15000000008bd08d4a3c894df88b45f88b008945f48b4df403ca8d5906895dfc8b45fc668b00668945f88d41148945f08b45f0668b00668945fc0fb775fc33ff83c61803f166397df87446566800000000e80000000083c40885c0742b895df08b45f0668b00668945f80fb745f84783c6283bf8731b566800000000e80000000083c40885c075d55f5b33c05e8be55dc35f5bb8010000005e8be55dc3",
+            "relocations": [
+              {
+                "offset": 74,
+                "target": "__imp__GetModuleHandleA@4",
+                "type": 6
+              },
+              {
+                "offset": 150,
+                "target": "?mixcrt_name@?A0x70a3539e@bsp@@3QBDB",
+                "type": 6
+              },
+              {
+                "offset": 155,
+                "target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+                "type": 20
+              },
+              {
+                "offset": 193,
+                "target": "?mixcrt_name@?A0x70a3539e@bsp@@3QBDB",
+                "type": 6
+              },
+              {
+                "offset": 198,
+                "target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+                "type": 20
+              }
+            ]
+          },
+          {
+            "index": 12,
+            "names": [
+              "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+            ],
+            "bytes": 136,
+            "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+            "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+            "relocations": []
+          }
+        ],
+        "archive_match": {
+          "member": "bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+          "offset": 9416688,
+          "length": 3738
+        }
+      }
+    ],
+    "linked_code": [
+      {
+        "object": "native_crt_pointer_decode_support.obj",
+        "section": 8,
+        "address": "00401010",
+        "names": [
+          "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "bytes": 68,
+        "sha256": "2e72b6652d8459283c6801db9caa8f9a8aac51afdfc09d419082f5a57303041f",
+        "bytes_hex": "558bec8b4d08568b750c85c974138b06833800740c8b46045e8b00890133c05dc38b46088b4004ffd0c700160000008b460cff308b4008ffd083c404b8160000005e5dc3",
+        "COFF_nonrelocated_bytes_match": true
+      },
+      {
+        "object": "native_crt_pointer_decode_support.obj",
+        "section": 11,
+        "address": "00401060",
+        "names": [
+          "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "bytes": 230,
+        "sha256": "94cf7c0487a1d010a0201fcbc2bfa8c3d9d1b6ba974cf1d813ff1dccddd6bc36",
+        "bytes_hex": "558bec83ec10568b75088b0683380074078b46048b00eb1d8b46088b4004ffd0c700160000008b460cff308b4008ffd083c40433c083f8057e0ab8010000005e8be55dc353576a00ff15002040008bd08d4a3c894df88b45f88b008945f48b4df403ca8d5906895dfc8b45fc668b00668945f88d41148945f08b45f0668b00668945fc0fb775fc33ff83c61803f166397df874465668e0204000e85100000083c40885c0742b895df08b45f0668b00668945f80fb745f84783c6283bf8731b5668e0204000e82600000083c40885c075d55f5b33c05e8be55dc35f5bb8010000005e8be55dc3",
+        "COFF_nonrelocated_bytes_match": true
+      },
+      {
+        "object": "native_crt_pointer_decode_support.obj",
+        "section": 12,
+        "address": "00401150",
+        "names": [
+          "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+        ],
+        "bytes": 136,
+        "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+        "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+        "COFF_nonrelocated_bytes_match": true
+      }
+    ],
+    "linked_code_sections": 3,
+    "linked_code_bytes": 434,
+    "selected_map_symbols": [
+      {
+        "symbol": "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z",
+        "address": 4198416,
+        "object": "native_crt_pointer_decode_support.obj"
+      },
+      {
+        "symbol": "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z",
+        "address": 4198496,
+        "object": "native_crt_pointer_decode_support.obj"
+      },
+      {
+        "symbol": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+        "address": 4198736,
+        "object": "native_crt_pointer_decode_support.obj"
+      }
+    ],
+    "all_three_owned_entries_linked": true,
+    "static_link_manifest_embedded": true,
+    "link_artifact_executed": false
+  },
+  "binding_proof": {
+    "static_link_executed": false,
+    "original_strcmp_bytes": 136,
+    "linked_strcmp_bytes": 136,
+    "exact_original_strcmp_bytes": true,
+    "strcmp_byte_differences": [],
+    "bindings": [
+      {
+        "entry": [
+          "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "offset": 74,
+        "COFF_target": "__imp__GetModuleHandleA@4",
+        "type": 6,
+        "linked_target": "00402000",
+        "resolved_import": {
+          "dll": "KERNEL32.dll",
+          "name": "GetModuleHandleA"
+        },
+        "verified_classification": "actual_GetModuleHandleA_import"
+      },
+      {
+        "entry": [
+          "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "offset": 150,
+        "COFF_target": "?mixcrt_name@?A0x70a3539e@bsp@@3QBDB",
+        "type": 6,
+        "linked_target": "004020e0",
+        "exact_mixcrt_literal": {
+          "bytes_hex": "2e6d697863727400",
+          "aligned8": true,
+          "section": ".rdata",
+          "flags": "40000040"
+        },
+        "verified_classification": "exact_aligned8_mixcrt_literal"
+      },
+      {
+        "entry": [
+          "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "offset": 155,
+        "COFF_target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+        "type": 20,
+        "linked_target": "00401150",
+        "resolved_current_library_symbols": [
+          "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+        ],
+        "exact_current_comparator_CALL_confirmed": true,
+        "verified_classification": "CALL_exact_current_library_comparator"
+      },
+      {
+        "entry": [
+          "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "offset": 193,
+        "COFF_target": "?mixcrt_name@?A0x70a3539e@bsp@@3QBDB",
+        "type": 6,
+        "linked_target": "004020e0",
+        "exact_mixcrt_literal": {
+          "bytes_hex": "2e6d697863727400",
+          "aligned8": true,
+          "section": ".rdata",
+          "flags": "40000040"
+        },
+        "verified_classification": "exact_aligned8_mixcrt_literal"
+      },
+      {
+        "entry": [
+          "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+        ],
+        "offset": 198,
+        "COFF_target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+        "type": 20,
+        "linked_target": "00401150",
+        "resolved_current_library_symbols": [
+          "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+        ],
+        "exact_current_comparator_CALL_confirmed": true,
+        "verified_classification": "CALL_exact_current_library_comparator"
+      }
+    ],
+    "GetModuleHandleA_import_confirmed": true,
+    "aligned8_exact_literal_confirmed": true,
+    "all_five_relocations_classified": true,
+    "both_CALLs_target_exact_current_comparator": true,
+    "linked_PE_sha256": "88fef6e7f0eeb2aef0da2eb88b142ade859352078c4f6e5612e2250c9c80513b",
+    "qualified_limits": "Static compiled binding evidence, not runtime calls/fault/handler mutation coverage. All archive code sections retained separately; relocation targets resolved here only where listed."
+  },
+  "compiled_layout": {
+    "standalone_getter_bytes": 68,
+    "gate_bytes": 230,
+    "strcmp_bytes": 136,
+    "gate": "Getter and raw module reads inlined; two loop comparator CALL sites point to exactcurrent symbol.",
+    "unused_archived_code": "Standalone image_dword19/image_word22 plus compiler helper38 retained in full six-section archive evidence; not linked/executed."
+  },
+  "uncertainty": [
+    "Getter/gate have new C++ context/privateframe/volatile-register/EFLAGS/fault-site ABI; no native SEH continuation proof.",
+    "Existing actual errno and returning invalid-service interfaces are explicit source boundaries, not complete original CRT initialization/dispatcher.",
+    "No runtime callback/module mutation/fault coverage; static proof and existing tests remain separate.",
+    "No current original game OS/TLS/callback population or downstream decoder/libm/pow source closure claimed."
+  ],
+  "input_artifact_pins": [
+    {
+      "path": "src/native_crt_pointer_decode_support.cpp",
+      "length": 4315,
+      "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+    },
+    {
+      "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+      "length": 2673,
+      "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+    },
+    {
+      "path": "include/bsp/legacy_crt_math.hpp",
+      "length": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "length": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/system_camera_axes.hpp",
+      "length": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+    },
+    {
+      "path": "src/legacy_crt_math.cpp",
+      "length": 11469,
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "length": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "docs/NATIVE_CRT_SSE2_POW_SUPPORT_DISCOVERY.md",
+      "length": 20968,
+      "sha256": "d5dcc0e24df8eb371218c0b994666aa61537ea99dc005d703096fa848320ac61"
+    },
+    {
+      "path": "reports/native_crt_sse2_pow_support_discovery.json",
+      "length": 155191,
+      "sha256": "7a3b8b3e477622f0365588ba66d6cf72fcc3ea382871869f012e646cc9464eae"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "length": 13686,
+      "sha256": "37c54e64d11b8e9beafddab3e9b5fb2afa1b48cae6f6728a3bcd1164c81ddbc7"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "length": 44531,
+      "sha256": "f3c4f4ba56dd60f3645172522c31c197b2b06254b820b62546b483ccbf97d5f2"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "length": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "tools/bsp.py",
+      "length": 56330,
+      "sha256": "dbaf1d47cd88a74e7c21e49f0db1724715a72a783ca883d60d768ce7a5f941e1"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "length": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "tools/workspace.py",
+      "length": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "config/target.json",
+      "length": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/pointer_support_build_hook.cmake",
+      "length": 206,
+      "sha256": "096b3c147d0c66670481c0a3598e00876a14bf2ecb5c0dbdd0b88c410daeb42d"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "length": 19224,
+      "sha256": "ca56d4f0c8bad0529713ea9323b48ca56448e449f7aad6a64cc6e6f1e79cb1d2"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "length": 138849,
+      "sha256": "3cb187ccf0dd307230b0d5cdae18ab679c46664b615ab567d4b2929212cd91c9"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "length": 1254376,
+      "sha256": "f34a6c845995fe046e928f0ed847c4b8f8dbc29711176023f94280cd01ab6fa4"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+      "length": 18246796,
+      "sha256": "cca7cbacb8a4fb29c13b6d85ab5efa1e8fddaf9f2e958beca684abf84238a3e0"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.write.1.tlog",
+      "length": 304094,
+      "sha256": "46f826859ec33bfbc94968a67f0c46edab26c0d7b0c111afd350d34694c4fc24"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib.command.1.tlog",
+      "length": 229938,
+      "sha256": "ca96042393ddd309f212cfbce2a2ddd0f67a868388f0012f74971226baaa2288"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib-link.read.1.tlog",
+      "length": 340854,
+      "sha256": "8c09244bc275cebfdcb442b80b0421d152f66f57938d29f2b15dc3aa7d3736f9"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/Lib-link.write.1.tlog",
+      "length": 169938,
+      "sha256": "f0d1d85b861c8929add10c625451d5fbd7b0d43acd18d1d8960de7976475b373"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_pointer_decode_support.obj",
+      "length": 3738,
+      "sha256": "1c18f370cd6314fd3f1b6537c9975fa0f573d6fc255ad89f9dc1958c71e119fd"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "length": 41281126,
+      "sha256": "e30a50a138732dd126f39d9cb4965f89ebe1c47a9c4f63e655a3d2c0c10f4f2f"
+    },
+    {
+      "path": "build/pointer-support-link/pointer_support_link.exe",
+      "length": 9728,
+      "sha256": "88fef6e7f0eeb2aef0da2eb88b142ade859352078c4f6e5612e2250c9c80513b"
+    },
+    {
+      "path": "build/pointer-support-link/pointer_support_link.obj",
+      "length": 1601,
+      "sha256": "5217bc6f6c9a9120525b069de380ca2c057ba11d355c3fb5a854604c472984af"
+    },
+    {
+      "path": "build/pointer-support-link/pointer_support_link.map",
+      "length": 23598,
+      "sha256": "91bbd196905b5fb22f826490c008f1b284533b24e9058e2720065fcdde7ce476"
+    },
+    {
+      "path": "build/pointer-support-link/link_pointer_support.cmd",
+      "length": 765,
+      "sha256": "bb63a182b86f5acc2b2b389487b262a7e374a2f46ddbdb39e1ceb279b2c60b13"
+    },
+    {
+      "path": "local/pointer_support_configure.log",
+      "length": 973,
+      "sha256": "14af67e23cbd077f39470352389a08f308db683e79b4f77627ca6ffd524807bf"
+    },
+    {
+      "path": "local/pointer_support_build.log",
+      "length": 24587,
+      "sha256": "fca67e4b890a921f7aed03eca05106fae022d83bb1f3a30d1a2383f639a407ba"
+    },
+    {
+      "path": "local/pointer_support_seeds.log",
+      "length": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/pointer_support_link.log",
+      "length": 108,
+      "sha256": "7d6f46b995f0d5b38b799d4ae85579a2b27a8e74df66e58fa650e3996652d019"
+    }
+  ],
+  "metadata_handoff": {
+    "Ghidra_mutations": false,
+    "shared_ledger_mutations": false,
+    "shared_CMake_mutations": false,
+    "primary_registration": "Add source to shared build and full-function records after current main rebuild; preserve __get_winmajor/_strcmp library names.",
+    "extent_repairs_needed": false
+  },
+  "immutable_handoff": {
+    "path": "local/pointer_support_handoff",
+    "manifest": "local/pointer_support_handoff/manifest.json",
+    "manifest_self_hash": "External final handoff; not recursively embedded."
+  },
+  "primary_review": {
+    "utc": "2026-09-11T23:52:10.304113+00:00",
+    "passed": true,
+    "worker_commit": "0882ea2baa5b7896af5ecfd8f01e8647f165f6e6",
+    "cherry_pick": "3e9d0219",
+    "preparation": {
+      "worker_seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\local\\pointer_support_handoff\\manifest.json",
+        "bytes": 12159,
+        "sha256": "0248c0cf12bb2a92841520399fa4060dd40d9a8b64047afb8cf4bfda05f263f5"
+      },
+      "worker_pins_verified": 66,
+      "input_artifact_pins_verified": 35,
+      "current_source_header_inputs": [
+        {
+          "path": "src/native_crt_pointer_decode_support.cpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\src\\native_crt_pointer_decode_support.cpp",
+            "bytes": 4315,
+            "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_crt_pointer_decode_support.cpp",
+            "bytes": 4315,
+            "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\native_crt_pointer_decode_support.hpp",
+            "bytes": 2673,
+            "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_crt_pointer_decode_support.hpp",
+            "bytes": 2673,
+            "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/legacy_crt_math.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\legacy_crt_math.hpp",
+            "bytes": 1108,
+            "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\legacy_crt_math.hpp",
+            "bytes": 1108,
+            "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\singleton_lifetime.hpp",
+            "bytes": 4372,
+            "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+            "bytes": 4372,
+            "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/system_camera_axes.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\system_camera_axes.hpp",
+            "bytes": 3143,
+            "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_camera_axes.hpp",
+            "bytes": 3143,
+            "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "src/legacy_crt_math.cpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\src\\legacy_crt_math.cpp",
+            "bytes": 11469,
+            "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\legacy_crt_math.cpp",
+            "bytes": 11469,
+            "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\src\\singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          "LF_normalized_equal": true
+        }
+      ],
+      "fresh_disk_spans": 6,
+      "fresh_disk_bytes": 367,
+      "separate_virtual_spans": 2,
+      "separate_virtual_bytes": 8,
+      "full_primary_source_native_and_proof_review": true,
+      "main_build_pending": false,
+      "main_library": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\bsp_core.lib",
+        "bytes": 41631884,
+        "sha256": "1236e69abd41bb262459541b615bcaad738f7be795ffd4249ad6018520d4fd98"
+      },
+      "main_build_manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\manifest.json",
+        "bytes": 12841,
+        "sha256": "ac9490eebd9dad26ae2f5c0e59f9020be31a56a60ad21ff500896482c88fb96d"
+      },
+      "reviewed_build_input_drift": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\reviewed_drift\\startup_change.json",
+        "bytes": 2121,
+        "sha256": "948d90fae1584a985c287b82c63133dc98a7f1fc315a175dfec07dc266485188"
+      }
+    },
+    "archive_proof": {
+      "archive": "build\\win32\\Release\\bsp_core.lib",
+      "archive_sha256": "1236e69abd41bb262459541b615bcaad738f7be795ffd4249ad6018520d4fd98",
+      "object_count": 1,
+      "all_code_sections": 6,
+      "all_code_bytes": 513,
+      "all_code_relocations": 5,
+      "objects": [
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "path": "build\\win32\\bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+          "length": 3702,
+          "sha256": "1d1eaf224eebfd5bc6cb82f1977e12f8adb9f466d225cc54b661d9817741c771",
+          "sections": [
+            {
+              "index": 7,
+              "names": [
+                "??_H@YGXPAXIIP6EPAX0@Z@Z"
+              ],
+              "bytes": 38,
+              "sha256": "5d5ca69c6d6d3098b8363a8af646dbc82f870d51ce6628d3ed6d19261c4fc147",
+              "bytes_hex": "558bec568b751085f67416538b5d14578b7d088bcfffd3037d0c83ee0175f45f5b5e5dc21000",
+              "relocations": []
+            },
+            {
+              "index": 8,
+              "names": [
+                "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z"
+              ],
+              "bytes": 68,
+              "sha256": "2e72b6652d8459283c6801db9caa8f9a8aac51afdfc09d419082f5a57303041f",
+              "bytes_hex": "558bec8b4d08568b750c85c974138b06833800740c8b46045e8b00890133c05dc38b46088b4004ffd0c700160000008b460cff308b4008ffd083c404b8160000005e5dc3",
+              "relocations": []
+            },
+            {
+              "index": 9,
+              "names": [
+                "?image_dword@?A0x60f55e52@bsp@@YAII@Z"
+              ],
+              "bytes": 19,
+              "sha256": "ebb1379c4c99656ff4f2ea0b7b26654019551284302a201fafd511c6c0eddfb5",
+              "bytes_hex": "558bec518b45088b008945fc8b45fc8be55dc3",
+              "relocations": []
+            },
+            {
+              "index": 10,
+              "names": [
+                "?image_word@?A0x60f55e52@bsp@@YAGI@Z"
+              ],
+              "bytes": 22,
+              "sha256": "d5597c3ae033701b79e90ac0b171c35a8c8fa95f20f7a471c2bac9b7e57d7b7a",
+              "bytes_hex": "558bec518b4508668b00668945fc668b45fc8be55dc3",
+              "relocations": []
+            },
+            {
+              "index": 11,
+              "names": [
+                "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+              ],
+              "bytes": 230,
+              "sha256": "9985be6fbd2b08c808c2436a9ef3f3ea498574c559f58ad8c56b5ef7473014ad",
+              "bytes_hex": "558bec83ec10568b75088b0683380074078b46048b00eb1d8b46088b4004ffd0c700160000008b460cff308b4008ffd083c40433c083f8057e0ab8010000005e8be55dc353576a00ff15000000008bd08d4a3c894df88b45f88b008945f48b4df403ca8d5906895dfc8b45fc668b00668945f88d41148945f08b45f0668b00668945fc0fb775fc33ff83c61803f166397df87446566800000000e80000000083c40885c0742b895df08b45f0668b00668945f80fb745f84783c6283bf8731b566800000000e80000000083c40885c075d55f5b33c05e8be55dc35f5bb8010000005e8be55dc3",
+              "relocations": [
+                {
+                  "offset": 74,
+                  "target": "__imp__GetModuleHandleA@4",
+                  "type": 6
+                },
+                {
+                  "offset": 150,
+                  "target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+                  "type": 6
+                },
+                {
+                  "offset": 155,
+                  "target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+                  "type": 20
+                },
+                {
+                  "offset": 193,
+                  "target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+                  "type": 6
+                },
+                {
+                  "offset": 198,
+                  "target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+                  "type": 20
+                }
+              ]
+            },
+            {
+              "index": 12,
+              "names": [
+                "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+              ],
+              "bytes": 136,
+              "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+              "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+              "relocations": []
+            }
+          ],
+          "archive_match": {
+            "member": "bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+            "offset": 34442796,
+            "length": 3702
+          }
+        }
+      ],
+      "linked_code": [
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "section": 8,
+          "address": "00401010",
+          "names": [
+            "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "bytes": 68,
+          "sha256": "2e72b6652d8459283c6801db9caa8f9a8aac51afdfc09d419082f5a57303041f",
+          "bytes_hex": "558bec8b4d08568b750c85c974138b06833800740c8b46045e8b00890133c05dc38b46088b4004ffd0c700160000008b460cff308b4008ffd083c404b8160000005e5dc3",
+          "COFF_nonrelocated_bytes_match": true
+        },
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "section": 11,
+          "address": "00401060",
+          "names": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "bytes": 230,
+          "sha256": "94cf7c0487a1d010a0201fcbc2bfa8c3d9d1b6ba974cf1d813ff1dccddd6bc36",
+          "bytes_hex": "558bec83ec10568b75088b0683380074078b46048b00eb1d8b46088b4004ffd0c700160000008b460cff308b4008ffd083c40433c083f8057e0ab8010000005e8be55dc353576a00ff15002040008bd08d4a3c894df88b45f88b008945f48b4df403ca8d5906895dfc8b45fc668b00668945f88d41148945f08b45f0668b00668945fc0fb775fc33ff83c61803f166397df874465668e0204000e85100000083c40885c0742b895df08b45f0668b00668945f80fb745f84783c6283bf8731b5668e0204000e82600000083c40885c075d55f5b33c05e8be55dc35f5bb8010000005e8be55dc3",
+          "COFF_nonrelocated_bytes_match": true
+        },
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "section": 12,
+          "address": "00401150",
+          "names": [
+            "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+          ],
+          "bytes": 136,
+          "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+          "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+          "COFF_nonrelocated_bytes_match": true
+        }
+      ],
+      "linked_code_sections": 3,
+      "linked_code_bytes": 434,
+      "selected_map_symbols": [
+        {
+          "symbol": "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z",
+          "address": 4198416,
+          "object": "native_crt_pointer_decode_support.obj"
+        },
+        {
+          "symbol": "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z",
+          "address": 4198496,
+          "object": "native_crt_pointer_decode_support.obj"
+        },
+        {
+          "symbol": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+          "address": 4198736,
+          "object": "native_crt_pointer_decode_support.obj"
+        }
+      ],
+      "all_three_owned_entries_linked": true,
+      "static_link_manifest_embedded": true,
+      "link_artifact_executed": false
+    },
+    "binding_proof": {
+      "static_link_executed": false,
+      "original_strcmp_bytes": 136,
+      "linked_strcmp_bytes": 136,
+      "exact_original_strcmp_bytes": true,
+      "strcmp_byte_differences": [],
+      "bindings": [
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 74,
+          "COFF_target": "__imp__GetModuleHandleA@4",
+          "type": 6,
+          "linked_target": "00402000",
+          "resolved_import": {
+            "dll": "KERNEL32.dll",
+            "name": "GetModuleHandleA"
+          },
+          "verified_classification": "actual_GetModuleHandleA_import"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 150,
+          "COFF_target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+          "type": 6,
+          "linked_target": "004020e0",
+          "exact_mixcrt_literal": {
+            "bytes_hex": "2e6d697863727400",
+            "aligned8": true,
+            "section": ".rdata",
+            "flags": "40000040"
+          },
+          "verified_classification": "exact_aligned8_mixcrt_literal"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 155,
+          "COFF_target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+          "type": 20,
+          "linked_target": "00401150",
+          "resolved_current_library_symbols": [
+            "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+          ],
+          "exact_current_comparator_CALL_confirmed": true,
+          "verified_classification": "CALL_exact_current_library_comparator"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 193,
+          "COFF_target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+          "type": 6,
+          "linked_target": "004020e0",
+          "exact_mixcrt_literal": {
+            "bytes_hex": "2e6d697863727400",
+            "aligned8": true,
+            "section": ".rdata",
+            "flags": "40000040"
+          },
+          "verified_classification": "exact_aligned8_mixcrt_literal"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 198,
+          "COFF_target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+          "type": 20,
+          "linked_target": "00401150",
+          "resolved_current_library_symbols": [
+            "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+          ],
+          "exact_current_comparator_CALL_confirmed": true,
+          "verified_classification": "CALL_exact_current_library_comparator"
+        }
+      ],
+      "GetModuleHandleA_import_confirmed": true,
+      "aligned8_exact_literal_confirmed": true,
+      "all_five_relocations_classified": true,
+      "both_CALLs_target_exact_current_comparator": true,
+      "linked_PE_sha256": "5d53adbb4fa54438a1791ee58fcbfab6ccc265c72f03b3fa24f21d79839880e4",
+      "qualified_limits": "Static compiled binding evidence, not runtime calls/fault/handler mutation coverage. All archive code sections retained separately; relocation targets resolved here only where listed."
+    },
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\manifest.json",
+      "bytes": 12841,
+      "sha256": "ac9490eebd9dad26ae2f5c0e59f9020be31a56a60ad21ff500896482c88fb96d"
+    },
+    "reviewed_build_registration_drift": {
+      "path": "cmake/startup.cmake",
+      "before_sha256": "867414060481f6ade9a0a2a533884155bf9f74b4f7fab540d219ae97ee9ad3c3",
+      "after_sha256": "784ebead0b73d3f92d83cf1a4c25876b1de13eaf7cc477794874e2bbd60aaefa",
+      "only_added_bsp_core_sources": [
+        "src/controlled_unit.cpp",
+        "src/native_lua_fundamentals.cpp",
+        "src/native_lua_script_overrides.cpp",
+        "src/native_memory_stream.cpp",
+        "src/native_vfs_open_route.cpp",
+        "src/ship_motion.cpp",
+        "src/sound_configuration_shutdown.cpp",
+        "src/sound_listener.cpp",
+        "src/sound_sample_cache_shutdown.cpp",
+        "src/sound_shutdown.cpp"
+      ],
+      "additional_unrelated_probe_statements": [
+        "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL add_executable bsp_ship_motion_probe src/ship_motion_probe.cpp)",
+        "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_compile_options bsp_ship_motion_probe PRIVATE /W4 /WX /fp:strict)",
+        "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_link_libraries bsp_ship_motion_probe PRIVATE bsp_core)"
+      ],
+      "other_nonblank_lines_equal": true,
+      "existing_target_source_multiset_preserved": true,
+      "generated_project_addition_membership": {
+        "src/controlled_unit.cpp": false,
+        "src/native_lua_fundamentals.cpp": false,
+        "src/native_lua_script_overrides.cpp": false,
+        "src/native_memory_stream.cpp": false,
+        "src/native_vfs_open_route.cpp": false,
+        "src/ship_motion.cpp": false,
+        "src/sound_configuration_shutdown.cpp": false,
+        "src/sound_listener.cpp": false,
+        "src/sound_sample_cache_shutdown.cpp": false,
+        "src/sound_shutdown.cpp": false
+      },
+      "qualification": "Other owned harnesses added unrelated bsp_core CPP registrations and a separate ship-motion probe, and reordered existing declarations; blank-line changes have no CMake effect. Every other25 prebuild input remains byte-identical. Actual generated project/compiler records and selected archive membership establish the exact built pointer-support source; no claim that all26 inputs remained unchanged or every later addition was built."
+    },
+    "qualification": "25 source/header/build inputs remained unchanged. Concurrent startup.cmake changes were explicitly audited as added unrelated source/probe registration and reordered declarations. Frozen before/after files and actual generated project/compiler records pin this build; later additions are not claimed built. Initial freeze refusal and premature link attempt did not execute code; immutable library replay subsequently passed.",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_pointer_decode_support_annotations.json",
+      "bytes": 3275,
+      "sha256": "ed898e1739acea846de1405d1a9895b58f3881d3570c23228d27e4a35fe7c1e1"
+    },
+    "registered_reconstruction_records": [
+      {
+        "kind": "function",
+        "address": "00c04efb",
+        "name": "native_crt_pointer_decode_module_gate_00c04efb",
+        "cpp_symbol": "bsp::native_crt_pointer_decode_module_gate_00c04efb",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "native_end_exclusive": "00c04f67",
+        "status": "complete_source_primary_archive_and_link_checked",
+        "evidence": "reports/native_crt_pointer_decode_support_audit.json",
+        "original_abi": "No arguments, EAX0or1, plain RET; nonvolatile registers preserved.",
+        "source_abi": "Explicit context reference argument; C++ frame and incidental volatile registers/EFLAGS/fault sites qualified.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bfbb61",
+        "name": "get_native_crt_winmajor_00bfbb61",
+        "cpp_symbol": "bsp::get_native_crt_winmajor_00bfbb61",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "native_end_exclusive": "00bfbb9d",
+        "status": "complete_source_primary_archive_and_link_checked",
+        "evidence": "reports/native_crt_pointer_decode_support_audit.json",
+        "original_abi": "cdecl DWORD* output; EAX0or22; plain RET; captures output before checks.",
+        "source_abi": "Additional context reference; actual five-zero BF66EF operation via existing returning service, not literal native outgoing stack.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00c05920",
+        "name": "native_crt_strcmp_00c05920",
+        "cpp_symbol": "bsp::native_crt_strcmp_00c05920",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "native_end_exclusive": "00c059a8",
+        "status": "complete_source_primary_archive_and_link_checked",
+        "evidence": "reports/native_crt_pointer_decode_support_audit.json",
+        "original_abi": "cdecl two readable raw byte pointers; EAX -1/0/+1, EFLAGS/EAX/ECX/EDX effects, EBX/ESI/EDI/EBP preserved, plain RET.",
+        "source_abi": "Naked MSVC Win32 function; linked136 bytes exactly original, no relocations or host semantic comparator.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00c04efb",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c04efb\\decompiled.c",
+        "bytes": 1742,
+        "sha256": "632a4a90468690c73eef8167fc763f89dddc52392ac3d2d6068d5dc1da880a70"
+      },
+      {
+        "address": "00bfbb61",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfbb61\\decompiled.c",
+        "bytes": 1180,
+        "sha256": "e8d81570ec777011938a6552d44bfa36301df288ec9d1edc89e795ae45011a9c"
+      },
+      {
+        "address": "00c05920",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c05920\\decompiled.c",
+        "bytes": 2379,
+        "sha256": "d4bfc760c21db1548285acae01f6b9c32086bc235ce80a21941eed8a75256284"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POINTER_DECODE_SUPPORT.md",
+      "bytes": 8996,
+      "sha256": "f9401a6cc9b21bb4fa2e27cb68a79b2bab5a20abfd80de2e1ee4fc624b667a8f"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_primary\\sealed.json",
+      "bytes": 19340,
+      "sha256": "c81446befbf3b1ee8dd7881169f40fa0a81620dc381d77c45f8ccee8bd72da22"
+    }
+  }
+}

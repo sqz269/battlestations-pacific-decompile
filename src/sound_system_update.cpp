@@ -93,11 +93,12 @@ void resize_sound_entries_00a7c1c0(SoundSystemOwner& owner, std::int32_t request
     while (count < entries.size()) {
         auto* slot = &entries.back(); auto* entry = *slot;
         entries.pop_back(); // native count decreases before release
+        // pop_back ends the C++ pointer object's lifetime. Native only lowers
+        // the count: release callbacks may still read the captured live slot.
+        new(slot) SoundLevelEntry*(entry);
         if (entry) {
             lifetime.release_reference(entry);
-            // Recreate the trivial pointer in allocated, now-outside-count
-            // storage to preserve the native post-callback dead-slot clear.
-            new(slot) SoundLevelEntry*(nullptr);
+            *slot = nullptr;
         }
     }
     entries.resize(count, nullptr);

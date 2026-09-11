@@ -1,0 +1,208 @@
+[
+  {
+    "address": "00a9e0b0",
+    "before": {
+      "address": "00a9e0b0",
+      "function_name": "BSP_GuiWidget_SetPivot",
+      "comment": "[BSP reconstruction 00a9e0b0]\nHypothesis, not a recovered symbol. __thiscall(widget, const float pivot[2]), RET 4. No Ghidra function: raw listing 00A9E0B0-00A9E0C4. Copies the two floats into +18h/+1Ch and calls 00AA7220 to recompose. Widget vtable +30h in both tables. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md."
+    },
+    "after": {
+      "address": "00a9e0b0",
+      "name": "BSP_GuiWidget_SetPivot",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget, const float pivot[2]), RET 4. No Ghidra function: raw listing 00A9E0B0-00A9E0C4. Copies the two floats into +18h/+1Ch and calls 00AA7220 to recompose. Widget vtable +30h in both tables. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Now a live defined function A9E0B0..A9E0C6; actual owner implementation preserves sequential x87 pair reads/stores and AA7220 atA9E0BF. RET4 atA9E0C4. docs/GUI_WIDGET_ATTACH_ACTUAL.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa1380",
+    "before": {
+      "address": "00aa1380",
+      "function_name": "FUN_00aa1380"
+    },
+    "after": {
+      "address": "00aa1380",
+      "name": "BSP_GuiText_DefaultOrCopyFactory",
+      "evidence": "Hypothesis, not a recovered symbol. Previously FUN_00aa1380. ECX source, EAX allocation/Text or null, RET atAA1403. AB79E0 pool slot then null source AB9650 or nonnull ABB2C0. New actual factory supports default-source branch with one opaque pool allocation and existing canonical lifetime; C++ base fields initialize before allocation, unlike native callback order. Copy source/null-allocation/native ABI remain excluded. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa6bc0",
+    "before": {
+      "address": "00aa6bc0",
+      "function_name": "FUN_00aa6bc0"
+    },
+    "after": {
+      "address": "00aa6bc0",
+      "name": "BSP_GuiWidget_SetListenerFields",
+      "evidence": "Hypothesis, not a recovered symbol. Previous FUN_00aa6bc0. ECX widget,listener/lowbyte stack,RET8 atAA6BD1. Store borrowedDC then rawbyte79; no retain/call/propagation. Exact source now in gui_widget_attach.cpp; docs/GUI_WIDGET_ATTACH_ACTUAL.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aaa5a0",
+    "before": {
+      "address": "00aaa5a0",
+      "function_name": "BSP_GuiWidget_AttachChild",
+      "comment": "[BSP reconstruction 00aaa5a0]\nHypothesis, not a recovered symbol. __thiscall(parent, GuiWidget* child, void* insert_position), RET 8. Detaches the child from an existing parent through 00AA83A0, splices it into the parent's std::list at +64h (push_back through 00A9B790 and 00A9D480 when the position is null, otherwise 00A9D6C0), sets child+70h to the parent, and calls BSP_Node_SetParent_Provisional at 00AAA61D with ECX = the child's node at +4Ch and the parent's node as the argument. Ghidra shows only the parent's node because it drops the ECX argument. Neither node pointer is tested. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md."
+    },
+    "after": {
+      "address": "00aaa5a0",
+      "name": "BSP_GuiWidget_AttachChild",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(parent, GuiWidget* child, void* insert_position), RET 8. Detaches the child from an existing parent through 00AA83A0, splices it into the parent's std::list at +64h (push_back through 00A9B790 and 00A9D480 when the position is null, otherwise 00A9D6C0), sets child+70h to the parent, and calls BSP_Node_SetParent_Provisional at 00AAA61D with ECX = the child's node at +4Ch and the parent's node as the argument. Ghidra shows only the parent's node because it drops the ECX argument. Neither node pointer is tested. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | New actual-owner detached allocation/nullposition append branch updates existing logical lists and current parent relation before actual node parenting. Other insertpositions remain external. docs/GUI_WIDGET_ATTACH_ACTUAL.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6ad0",
+    "before": {
+      "address": "00ab6ad0",
+      "function_name": "BSP_GuiText_SetAlpha",
+      "comment": "[BSP reconstruction 00ab6ad0]\nHypothesis, not a recovered symbol. GUI Text widget vtable +4Ch. __thiscall(this, float alpha), RET 4, established from the listing 00AB6AD0..00AB6B43 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base alpha setter 00AA6980, then, when the shadow drawable +188h exists, multiplies the shadow alpha +174h by the incoming alpha and writes the product into the shadow material parameter at +0Ch, so the shadow alpha is always relative to the widget alpha. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json."
+    },
+    "after": {
+      "address": "00ab6ad0",
+      "name": "BSP_GuiText_SetAlpha",
+      "evidence": "Hypothesis, not a recovered symbol. GUI Text widget vtable +4Ch. __thiscall(this, float alpha), RET 4, established from the listing 00AB6AD0..00AB6B43 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base alpha setter 00AA6980, then, when the shadow drawable +188h exists, multiplies the shadow alpha +174h by the incoming alpha and writes the product into the shadow material parameter at +0Ch, so the shadow alpha is always relative to the widget alpha. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Hypothesis, not a recovered symbol. Live function now defined AB6AD0..AB6B45, RET4 atAB6B43; supersedes earlier no-function note. Concrete current4C uses x87-spilled base alpha, actual current main/shadow model-section-material domains and original alpha times live shadow alpha; only alpha writes. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6bd0",
+    "before": {
+      "address": "00ab6bd0",
+      "function_name": "BSP_TextContext_GetNormalizedTextHeight",
+      "comment": "[BSP reconstruction 00ab6bd0]\nProvisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE."
+    },
+    "after": {
+      "address": "00ab6bd0",
+      "name": "BSP_TextContext_GetNormalizedTextHeight",
+      "evidence": "Provisional descriptive name. ECX context, no stack args, RET, ST0 result after float32 store/reload. If context+FC nonzero return float(context+178/double720); else sign-extend font+14 and divide by720, or zero for null font. Does not multiply mutable vertical scale00e12fd4. docs/FONT_LAYOUT_BOUNDARY.md;88 bytes match PE. | Hypothesis, not a recovered symbol. Complete actual runtime helper uses current multiline+178 or actual font signed+14, live double720, float32 spill/ST0 return. Does not use descriptor scale or E12FD4. RET atAB6C27. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6d70",
+    "before": {
+      "address": "00ab6d70",
+      "function_name": "BSP_GuiText_ApplyAlignToBounds",
+      "comment": "[BSP reconstruction 00ab6d70]\nHypothesis, not a recovered symbol. GUI Text widget vtable +64h. __thiscall(this, float* left, float* top, float* right, float* bottom), RET 10h, established from the listing 00AB6D70..00AB6ED8 because Ghidra has no function starting here (enclosing candidate 00AB6D30). Horizontal half: w = measured width +114h divided by the double 960 at 00CEC380, p = the double at 00D5C5C8 (about 0.012). Align +100h mode 0 writes right = left + w + p, mode 2 writes left = right - w - p, mode 1 spreads w/2 + p around the midpoint of the pair, mode 3 leaves the rectangle alone because only 0, 1 and 2 are tested. Vertical half dispatches on VerticalAlign +104h into 00AB6BD0. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json."
+    },
+    "after": {
+      "address": "00ab6d70",
+      "name": "BSP_GuiText_ApplyAlignToBounds",
+      "evidence": "Hypothesis, not a recovered symbol. GUI Text widget vtable +64h. __thiscall(this, float* left, float* top, float* right, float* bottom), RET 10h, established from the listing 00AB6D70..00AB6ED8 because Ghidra has no function starting here (enclosing candidate 00AB6D30). Horizontal half: w = measured width +114h divided by the double 960 at 00CEC380, p = the double at 00D5C5C8 (about 0.012). Align +100h mode 0 writes right = left + w + p, mode 2 writes left = right - w - p, mode 1 spreads w/2 + p around the midpoint of the pair, mode 3 leaves the rectangle alone because only 0, 1 and 2 are tested. Vertical half dispatches on VerticalAlign +104h into 00AB6BD0. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Hypothesis, not a recovered symbol. Live function now defined AB6D70..AB6EDA, RET10 atAB6ED8; supersedes earlier no-function/horizontal-only coverage. Full x87 bounds uses horizontal Align for top/bottom predicates, vertical Align only for center, captures half with unconditional FLD before endpoints, and restores original horizontal words when byte1F0 zero. New API excludes transient stack/unmasked x87 fault equivalence. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab9650",
+    "before": {
+      "address": "00ab9650",
+      "function_name": "BSP_GuiText_Construct",
+      "comment": "[BSP reconstruction 00ab9650]\nHypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json.\n\n[BSP reconstruction 00ab9650] update\nHypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Canonical GuiTextLifetime now owns one Text projection/shadow/glyph-vector/shader identity and verified extra fields, initializing derived state with live constants then actual AB8530. Partial: AA9390(3) already supplied by same GuiWidgetOwner; native vtable/SEH/container ABI excluded. Constructor DOES NOT write1D4,1DC..1E8; existing semantic defaults are not native stores. docs/GUI_TEXT_LIFETIME.md\n\n[BSP reconstruction 00ab9650] update\nHypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Single borrowed GuiTextLifetime association in existing GuiWidgetOwner: publish after derived defaults before AB98D8/AB8530 callbacks, clear publication on failed construction including cleanup exceptions; no secondText projection/factory. Typed canonical lifetime dependency is parent229fb285. docs/GUI_TEXT_CHILD_LIFETIME.md; reports/gui_text_child_lifetime.json. Hypothesis names, Ghidra unchanged. | Preserved prior integration evidence: AA9390(3) already supplied by the same GuiWidgetOwner; native constructor does not write1D4 or1DC..1E8, so semantic defaults are not native stores. The canonical Text projection, shadow, glyph-vector and shader identity remain singular. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "after": {
+      "address": "00ab9650",
+      "name": "BSP_GuiText_Construct",
+      "evidence": "Hypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Single borrowed GuiTextLifetime association in existing GuiWidgetOwner: publish after derived defaults before AB98D8/AB8530 callbacks, clear publication on failed construction including cleanup exceptions; no secondText projection/factory. Typed canonical lifetime dependency is parent229fb285. docs/GUI_TEXT_CHILD_LIFETIME.md; reports/gui_text_child_lifetime.json. Hypothesis names, Ghidra unchanged. | Preserved prior integration evidence: AA9390(3) already supplied by the same GuiWidgetOwner; native constructor does not write1D4 or1DC..1E8, so semantic defaults are not native stores. The canonical Text projection, shadow, glyph-vector and shader identity remain singular. docs/GUI_TEXT_LIFETIME.md | Hypothesis, not a recovered symbol. Canonical runtime factory now attaches one actual pool allocation and one existing GuiTextLifetime to GuiWidgetOwnerRuntime; primary-null child construction separately exposed; no74/78 before actual model binding. Native ECX/no stack args, EAXthis, RET atAB98EE. docs/GUI_TEXT_RUNTIME_FACTORY.md; reports/gui_text_runtime_factory.json. Combined strict Win32 build and both existing tests passed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab98f0",
+    "before": {
+      "address": "00ab98f0",
+      "function_name": "BSP_TextContext_WriteGlyphQuad",
+      "comment": "[BSP reconstruction 00ab98f0]\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md.\n\n[BSP reconstruction 00ab98f0] update\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab98f0] update\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Run-time evidence, packet cc_exe_2d: bsp_game.exe milestone 2d drives write_font_quad_00ab98f0_fragment over the wrapped layout of the two title Text widgets and draws the result through the executable's sprite bridge. 55 glyph quads (46 for press_start_Text at Viper19, 9 for title_Text) are readable in local/title.png and local/run.png. The writer's /960 and /720 normalisation puts the quads in the same 0..1 GUI space the bridge already draws Icon rectangles in, so the widget's resolved position with its own pivot subtracted is the only placement the executable adds.\n\n[BSP reconstruction 00ab98f0] update\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Run-time evidence, packet cc_exe_2d: bsp_game.exe milestone 2d drives write_font_quad_00ab98f0_fragment over the wrapped layout of the two title Text widgets and draws the result through the executable's sprite bridge. 55 glyph quads (46 for press_start_Text at Viper19, 9 for title_Text) are readable in local/title.png and local/run.png. The writer's /960 and /720 normalisation puts the quads in the same 0..1 GUI space the bridge already draws Icon rectangles in, so the widget's resolved position with its own pivot subtracted is the only placement the executable adds. | Mapped native writer adapter over SAME GuiTextLifetime, actual logical08/0C/10/28/34..44/64 and actual index slice. Reuses x87 kernel directly into mapped vertices; six index stores in original order/low16 wrap. After current substitution gate, blank actual UV pairs and report needs_glyph_child atAB9D33. Covered98F0..9D32 plus ordinary returns; optional actual Text allocation/setup/attach/position tail9D33..9FAD excluded. AB9FD0/ABA270 consumers read only; full metrics/material/font resources remain separate. docs/GUI_TEXT_GEOMETRY.md; reports/gui_text_geometry.json. Hypothesis names retained; Ghidra unchanged.\n\n[BSP reconstruction 00ab98f0] update\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Run-time evidence, packet cc_exe_2d: bsp_game.exe milestone 2d drives write_font_quad_00ab98f0_fragment over the wrapped layout of the two title Text widgets and draws the result through the executable's sprite bridge. 55 glyph quads (46 for press_start_Text at Viper19, 9 for title_Text) are readable in local/title.png and local/run.png. The writer's /960 and /720 normalisation puts the quads in the same 0..1 GUI space the bridge already draws Icon rectangles in, so the widget's resolved position with its own pivot subtracted is the only placement the executable adds. | Mapped native writer adapter over SAME GuiTextLifetime, actual logical08/0C/10/28/34..44/64 and actual index slice. Reuses x87 kernel directly into mapped vertices; six index stores in original order/low16 wrap. After current substitution gate, blank actual UV pairs and report needs_glyph_child atAB9D33. Covered98F0..9D32 plus ordinary returns; optional actual Text allocation/setup/attach/position tail9D33..9FAD excluded. AB9FD0/ABA270 consumers read only; full metrics/material/font resources remain separate. docs/GUI_TEXT_GEOMETRY.md; reports/gui_text_geometry.json. Hypothesis names retained; Ghidra unchanged. | Optional-child audit: original args5/6 are unused in FULL body despite single/wrapped arg2/5/6 alias equality; actualarg2 is initialx/y and lateAB9F5E/62 x input. Exact borrowed ten-arg continuation remains stoppedAB9D33 before raw TextpoolAB78A0. Native order ctor -> parent glyph-vector append -> reference Model clone(0x26,0) -> bind/ensure -> style/content -> actualattach -> pivot/position. Producer00531130 stores borrowed listener1AC/referenceText1B0. Only independent actual UTF16 leafAB81C0 newly executed by C++ module; child tail remains unimplemented. See GUI_TEXT_GLYPH_CHILD.md/report39rows0failed. | Finalposition-only actualowner fragment9EC2..9FAD nowusesSAME canonicalborrowedGuiWidgetOwner reference1B0 viaexistingruntime/companionassociation; livewritten1B8/1BC orreference-length andlateORIGINALarg2.x; native x87floatspills; existinginverseposition thenactualrecompose/bounds. ALLearlierchildcreation/clone/recursivecontent/attachment/current30 mustalreadycomplete; nofactory/completionclaim. docs/GUI_TEXT_GLYPH_REFERENCE.md; strictWin32 and27callrows0failed."
+    },
+    "after": {
+      "address": "00ab98f0",
+      "name": "BSP_TextContext_WriteGlyphQuad",
+      "evidence": "ECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Run-time evidence, packet cc_exe_2d: bsp_game.exe milestone 2d drives write_font_quad_00ab98f0_fragment over the wrapped layout of the two title Text widgets and draws the result through the executable's sprite bridge. 55 glyph quads (46 for press_start_Text at Viper19, 9 for title_Text) are readable in local/title.png and local/run.png. The writer's /960 and /720 normalisation puts the quads in the same 0..1 GUI space the bridge already draws Icon rectangles in, so the widget's resolved position with its own pivot subtracted is the only placement the executable adds. | Mapped native writer adapter over SAME GuiTextLifetime, actual logical08/0C/10/28/34..44/64 and actual index slice. Reuses x87 kernel directly into mapped vertices; six index stores in original order/low16 wrap. After current substitution gate, blank actual UV pairs and report needs_glyph_child atAB9D33. Covered98F0..9D32 plus ordinary returns; optional actual Text allocation/setup/attach/position tail9D33..9FAD excluded. AB9FD0/ABA270 consumers read only; full metrics/material/font resources remain separate. docs/GUI_TEXT_GEOMETRY.md; reports/gui_text_geometry.json. Hypothesis names retained; Ghidra unchanged. | Optional-child audit: original args5/6 are unused in FULL body despite single/wrapped arg2/5/6 alias equality; actualarg2 is initialx/y and lateAB9F5E/62 x input. Exact borrowed ten-arg continuation remains stoppedAB9D33 before raw TextpoolAB78A0. Native order ctor -> parent glyph-vector append -> reference Model clone(0x26,0) -> bind/ensure -> style/content -> actualattach -> pivot/position. Producer00531130 stores borrowed listener1AC/referenceText1B0. Only independent actual UTF16 leafAB81C0 newly executed by C++ module; child tail remains unimplemented. See GUI_TEXT_GLYPH_CHILD.md/report39rows0failed. | Finalposition-only actualowner fragment9EC2..9FAD nowusesSAME canonicalborrowedGuiWidgetOwner reference1B0 viaexistingruntime/companionassociation; livewritten1B8/1BC orreference-length andlateORIGINALarg2.x; native x87floatspills; existinginverseposition thenactualrecompose/bounds. ALLearlierchildcreation/clone/recursivecontent/attachment/current30 mustalreadycomplete; nofactory/completionclaim. docs/GUI_TEXT_GLYPH_REFERENCE.md; strictWin32 and27callrows0failed. | AB9D33..AB9FAD supported actual-owner tail now composed: primary-null Text factory, parent glyph-vector publication before current reference Model clone26,parent0; creator transfer, sections, visibility, live listener/reference font, shadow, actual shader/codeunit pooled temporaries, ABA8D0 plus final50, cleanup, actualattach/pivot/position. Pending frames retain child, acquired resources and UTF16 until inner completion; positive-light/domain boundaries explicit. Strict Win32 compile; all1747 bytes and tail635/literal21 match installed PE. Driver/source integration pending; no native-tail execution or game validation. docs/GUI_TEXT_GLYPH_CHILD_RUNTIME.md; reports/gui_text_glyph_child_runtime.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aba8d0",
+    "before": {
+      "address": "00aba8d0",
+      "function_name": "BSP_TextContext_UpdateUtf16Geometry",
+      "comment": "[BSP reconstruction 00aba8d0]\nECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aba8d0] update\nECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Owning fixed-font/prepared-shader host projection implemented in src/font_geometry_owner.cpp. Stable heap wrappers, retained resources, case-insensitive skip, changed-empty count/width clear retaining buffers/stale metrics, fresh changed-text geometry. Existing A/wrapped draws now use owner; lifecycle/move/fresh-buffer checks pass. Optional child/localization/scene/reset and original ABI remain outside scope. docs/FONT_GEOMETRY_OWNER.md.\n\n[BSP reconstruction 00aba8d0] update\nECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Owning fixed-font/prepared-shader host projection implemented in src/font_geometry_owner.cpp. Stable heap wrappers, retained resources, case-insensitive skip, changed-empty count/width clear retaining buffers/stale metrics, fresh changed-text geometry. Existing A/wrapped draws now use owner; lifecycle/move/fresh-buffer checks pass. Optional child/localization/scene/reset and original ABI remain outside scope. docs/FONT_GEOMETRY_OWNER.md. | Concrete partial prefix00ABA8D0..00ABA9BE plus common cleanup in src/gui_text_content.cpp; changed-empty actual main/shadow counts, live CRT-mode comparison and repeated uppercase. Nonempty tail returns pending; full Text owner not supplied. docs/GUI_TEXT_CONTENT.md reports/gui_text_content.json | ECX Text/UTF16 wrapper stack/RET4; exact nonempty preparationABA9BF..ABAB69/77: actual buffers, captured main material, shader/borrowed parameter+clip registration, live pair1DC producer, main layout, selected builder. Stops beforeABAB6A/78; no fake builder success. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json | ECX Text/UTF16 wrapper stack/RET4; post-builderABAB7D..ABAE89 plus cleanup ONLY after actual selected builder returns. Current Text color50, actual shared streams/materials, duplicate blend registration, late current font signedheight, Model position and reloaded shadow parenting. Same GuiTextLifetime; no second cache/owner. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json | Actual owner composition now joins prefix/preparation to real AB9FD0 or ABA270 then color/shadow tail only after builder completion. Stable outer temporary and pending caller frame preserved. Optional glyph-child and native-uninitialized cases remain explicit; no game/runtime or native pool ABI claim. docs/GUI_TEXT_RUNTIME_CONTENT.md"
+    },
+    "after": {
+      "address": "00aba8d0",
+      "name": "BSP_TextContext_UpdateUtf16Geometry",
+      "evidence": "ECX context; one UTF16 wrapper stack argument; RET4; side effects. Ensure draw sections before copied/transformed text comparison. __wcsicmp equality skips rebuild. Changed empty clears main/shadow +10/+18 only after width reset and text assignment. Nonempty calls buffer factory, selects single-line for +FC=0 otherwise wrapped, then shares vertex/index objects with shadow. Later apparent bool argument is saved EnsureFontShader AL in consumed argument slot, not caller input. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Owning fixed-font/prepared-shader host projection implemented in src/font_geometry_owner.cpp. Stable heap wrappers, retained resources, case-insensitive skip, changed-empty count/width clear retaining buffers/stale metrics, fresh changed-text geometry. Existing A/wrapped draws now use owner; lifecycle/move/fresh-buffer checks pass. Optional child/localization/scene/reset and original ABI remain outside scope. docs/FONT_GEOMETRY_OWNER.md. | Concrete partial prefix00ABA8D0..00ABA9BE plus common cleanup in src/gui_text_content.cpp; changed-empty actual main/shadow counts, live CRT-mode comparison and repeated uppercase. Nonempty tail returns pending; full Text owner not supplied. docs/GUI_TEXT_CONTENT.md reports/gui_text_content.json | ECX Text/UTF16 wrapper stack/RET4; exact nonempty preparationABA9BF..ABAB69/77: actual buffers, captured main material, shader/borrowed parameter+clip registration, live pair1DC producer, main layout, selected builder. Stops beforeABAB6A/78; no fake builder success. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json | ECX Text/UTF16 wrapper stack/RET4; post-builderABAB7D..ABAE89 plus cleanup ONLY after actual selected builder returns. Current Text color50, actual shared streams/materials, duplicate blend registration, late current font signedheight, Model position and reloaded shadow parenting. Same GuiTextLifetime; no second cache/owner. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json | Actual owner composition now joins prefix/preparation to real AB9FD0 or ABA270 then color/shadow tail only after builder completion. Stable outer temporary and pending caller frame preserved. Optional glyph-child and native-uninitialized cases remain explicit; no game/runtime or native pool ABI claim. docs/GUI_TEXT_RUNTIME_CONTENT.md | docs/GUI_TEXT_CHILD_DRIVER.md; reports/gui_text_child_driver.json. Same actual factory/tail/domain; original saved arguments, recursive final50 and builder cleanup order; explicit pending and reentry guards. No original ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b72bd0",
+    "before": {
+      "address": "00b72bd0",
+      "function_name": "FUN_00b72bd0"
+    },
+    "after": {
+      "address": "00b72bd0",
+      "name": "BSP_Mesh_CopyLodPhaseArray",
+      "evidence": "Hypothesis, not a recovered symbol. ECX destination+10; stack source+10; RET4. full valid native array domain; all four DWORDs of active entries then live count. Explicit actual canonical creators; strict MSVC Win32 compile and 14 native call-site rows passed. docs/NATIVE_MESH_CLONE.md; reports/native_mesh_clone.json. New C++ interfaces, not native ABI or game validation. Worker Ghidra read-only; parent handles saved annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b73f50",
+    "before": {
+      "address": "00b73f50",
+      "function_name": "BSP_Mesh_CopyCloneState",
+      "comment": "[BSP reconstruction 00b73f50]\nHypothesis, not a recovered symbol. ECX source; stack destination,flags; RET8. analyzed outer flow/Text flags26 route only; copy callees and actual new-owner registration external. docs/NATIVE_GUI_TEXT_MODEL_CLONE.md; reports/native_gui_text_model_clone.json. No complete clone factory, native ABI, or gameplay claim; worker Ghidra read-only."
+    },
+    "after": {
+      "address": "00b73f50",
+      "name": "BSP_Mesh_CopyCloneState",
+      "evidence": "Hypothesis, not a recovered symbol. ECX source; stack destination,flags; RET8. analyzed outer flow/Text flags26 route only; copy callees and actual new-owner registration external. docs/NATIVE_GUI_TEXT_MODEL_CLONE.md; reports/native_gui_text_model_clone.json. No complete clone factory, native ABI, or gameplay claim; worker Ghidra read-only. | Hypothesis, not a recovered symbol. ECX source; stack destination,flags; RET8. complete successful flags26 stream-sharing and copied-section/material branch including physical LOD, optional payloads, pooled weight-name copies and pending creators on exceptions. Explicit actual canonical creators; strict MSVC Win32 compile and 14 native call-site rows passed. docs/NATIVE_MESH_CLONE.md; reports/native_mesh_clone.json. New C++ interfaces, not native ABI or game validation. Worker Ghidra read-only; parent handles saved annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b742a0",
+    "before": {
+      "address": "00b742a0",
+      "function_name": "BSP_Mesh_CloneCurrent10",
+      "comment": "[BSP reconstruction 00b742a0]\nHypothesis, not a recovered symbol. ECX source; stack flags,ignored second DWORD; EAX selected mesh; RET8. analyzed-only flags2 ownership branch; no implementation. docs/NATIVE_GUI_TEXT_MODEL_CLONE.md; reports/native_gui_text_model_clone.json. No complete clone factory, native ABI, or gameplay claim; worker Ghidra read-only."
+    },
+    "after": {
+      "address": "00b742a0",
+      "name": "BSP_Mesh_CloneCurrent10",
+      "evidence": "Hypothesis, not a recovered symbol. ECX source; stack flags,ignored second DWORD; EAX selected mesh; RET8. analyzed-only flags2 ownership branch; no implementation. docs/NATIVE_GUI_TEXT_MODEL_CLONE.md; reports/native_gui_text_model_clone.json. No complete clone factory, native ABI, or gameplay claim; worker Ghidra read-only. | Hypothesis, not a recovered symbol. ECX source; stack flags,ignored second DWORD; EAX selected mesh; RET8. complete successful flags26 branch through actual pool constructor and canonical acquired creator transport; null faults become explicit diagnostics. Explicit actual canonical creators; strict MSVC Win32 compile and 14 native call-site rows passed. docs/NATIVE_MESH_CLONE.md; reports/native_mesh_clone.json. New C++ interfaces, not native ABI or game validation. Worker Ghidra read-only; parent handles saved annotations."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b752b0",
+    "before": {
+      "address": "00b752b0",
+      "function_name": "BSP_Model_CloneCurrent10",
+      "comment": "[BSP reconstruction 00b752b0]\nHypothesis, not a recovered symbol. ECX source; stack flags,parent; EAX clone; RET8. partial: B75331..B753F1 association and final tail; allocation/current geometry clone B752B0..B75330 external. docs/NATIVE_GUI_TEXT_MODEL_CLONE.md; reports/native_gui_text_model_clone.json. No complete clone factory, native ABI, or gameplay claim; worker Ghidra read-only."
+    },
+    "after": {
+      "address": "00b752b0",
+      "name": "BSP_Model_CloneCurrent10",
+      "evidence": "Hypothesis, not a recovered symbol. ECX source; stack flags,parent; EAX clone; RET8. partial: B75331..B753F1 association and final tail; allocation/current geometry clone B752B0..B75330 external. docs/NATIVE_GUI_TEXT_MODEL_CLONE.md; reports/native_gui_text_model_clone.json. No complete clone factory, native ABI, or gameplay claim; worker Ghidra read-only. | Canonical Text clone composition now allocates/constructs from current source NativeString in the same GuiWidgetOwnerRuntime model registry, performs actual mesh clone and late scalar/tail effects. Caller holds partial resources after native constructor region. Positive lights/other flags remain explicit. docs/GUI_MODEL_CLONE_TRANSPORT.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b85ef0",
+    "before": {
+      "address": "00b85ef0",
+      "function_name": "FUN_00b85ef0"
+    },
+    "after": {
+      "address": "00b85ef0",
+      "name": "BSP_DrawSection_CopyConstruct",
+      "evidence": "Actual section copy retains material/+38/active streams/layout/+5C in native order; five x87 transfers +24..34, live stream count, raw unowned+54. Preserves unused slots and padding. ECX destination, stack source, EAX destination, RET4; end-exclusive B860D1. State0 unwind restores base only. Evidence: docs/NATIVE_MESH_SECTION.md; reports/native_mesh_section_copy.json. Full Win32 build and installed-code differential passed. Descriptive name is a hypothesis; not drop-in ABI/game validation. Previous Ghidra name FUN_00b85ef0, no observed comments. Worker remains read-only in Ghidra."
+    },
+    "status": "applied"
+  }
+]

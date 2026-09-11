@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T23:22:30.933408+00:00",
-  "status": "read-only discovery complete;177-byte constructor packet and separate50-byte base leaves ready;getter rawmanager closure remains qualified",
+  "status": "primary_reviewed_read_only_complete_native_contract_and_next_source_readiness",
   "base_commit": "d73899741d8301077db4ae91479a86ff92b29e93",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_resource_registry_construction_discovery",
   "ownership": {
@@ -1492,5 +1492,422 @@
       "bytes": 13982,
       "sha256": "01396ea9b95fc99ea87898fa77bbd483791262344e0d80c02740d7c18804060e"
     }
-  ]
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\sealed.json",
+      "bytes": 10641,
+      "sha256": "a948104203951e460614e3b34c40ab29279a945abddb76aa668deeb04ef3da53"
+    },
+    "verified_worker_pins": 52,
+    "verified_input_pins": 26,
+    "current_input_checks": [
+      {
+        "path": "config/target.json",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\config\\target.json",
+          "bytes": 405,
+          "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\target.json",
+          "bytes": 405,
+          "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "docs/NATIVE_DIAGNOSTIC_SINK_LIFETIME.md",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\docs\\NATIVE_DIAGNOSTIC_SINK_LIFETIME.md",
+          "bytes": 8956,
+          "sha256": "5a590ee170b63a902909fe3af924c16417fd26b199cfea96320248f943d1b278"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_DIAGNOSTIC_SINK_LIFETIME.md",
+          "bytes": 9104,
+          "sha256": "2dd0e7c3baa43e2c78cc05987378d022afacebb914672303745c8a4e9507b400"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "docs/NATIVE_RESOURCE_REGISTRY_DESTROY.md",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\docs\\NATIVE_RESOURCE_REGISTRY_DESTROY.md",
+          "bytes": 8981,
+          "sha256": "542129092df64da28338550f7f614e61ffdf1acd44754b2d111d9806a975fe57"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_DESTROY.md",
+          "bytes": 9116,
+          "sha256": "22254c272c28bcdc0154114a629a1de8cde77eb0ba57788d6d36ec6d99e5c392"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "docs/NATIVE_RESOURCE_REGISTRY_SCALAR_DELETE.md",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\docs\\NATIVE_RESOURCE_REGISTRY_SCALAR_DELETE.md",
+          "bytes": 4448,
+          "sha256": "ffeef6a40d0b82c07987b62b0cb52a6017b779c7d931fb13f8750a1707eb20a3"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_SCALAR_DELETE.md",
+          "bytes": 4518,
+          "sha256": "c60ee038c212fdbb7a78f411dc0647ba1f27cd9d1ae0338c110ccade9541cc38"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "docs/SINGLETON_LIFETIME.md",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\docs\\SINGLETON_LIFETIME.md",
+          "bytes": 8640,
+          "sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\SINGLETON_LIFETIME.md",
+          "bytes": 8640,
+          "sha256": "0536f66fb71f519de7933fcc2e2656fa3b60fc7c91ede645dee66f02f3256c4f"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "reports/native_diagnostic_sink_lifetime_audit.json",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\reports\\native_diagnostic_sink_lifetime_audit.json",
+          "bytes": 203562,
+          "sha256": "f24994c30a90bfac87e74767e86ba9afa3c0d03374ec945d0316cdc14a04d4dd"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_diagnostic_sink_lifetime_audit.json",
+          "bytes": 209341,
+          "sha256": "cda29b9c1bba65924b9ff6b09433dd3abc3414b367742935395318d14e3dcafb"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "reports/native_resource_registry_destroy_audit.json",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\reports\\native_resource_registry_destroy_audit.json",
+          "bytes": 62423,
+          "sha256": "b0fc2e6c0257bc355243682bf4a56b7e74899e4287b2e5e2f0def8b7a55c3195"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_resource_registry_destroy_audit.json",
+          "bytes": 63917,
+          "sha256": "fc26f7a622bcef8f7f38d467059bf58a212f1fa52078b6812e43bf6aa52d5372"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "reports/native_resource_registry_scalar_delete_audit.json",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\reports\\native_resource_registry_scalar_delete_audit.json",
+          "bytes": 520753,
+          "sha256": "e5ed4a9d728be95d5eb903e8688d27c7ccfe523ba5a98ac8c83cb7f38512bf8c"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_resource_registry_scalar_delete_audit.json",
+          "bytes": 536537,
+          "sha256": "7e9ae3414be4bdba3d7209d8bc28bfe9de17fa113ffe047da5403001b3a1314c"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "reports/singleton_lifetime_audit.json",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\reports\\singleton_lifetime_audit.json",
+          "bytes": 28284,
+          "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\singleton_lifetime_audit.json",
+          "bytes": 28284,
+          "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\src\\native_diagnostic_sink_lifetime.cpp",
+          "bytes": 3472,
+          "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_diagnostic_sink_lifetime.cpp",
+          "bytes": 3472,
+          "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\src\\native_renderer_worker_lifetime.cpp",
+          "bytes": 6911,
+          "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_renderer_worker_lifetime.cpp",
+          "bytes": 6911,
+          "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/native_resource_registry_destroy.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\src\\native_resource_registry_destroy.cpp",
+          "bytes": 2365,
+          "sha256": "a7d71184eb97813771339d048292afbecdf02cf21da8021ffe7f9590bc5f78b7"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_resource_registry_destroy.cpp",
+          "bytes": 2365,
+          "sha256": "a7d71184eb97813771339d048292afbecdf02cf21da8021ffe7f9590bc5f78b7"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/native_resource_registry_erase.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\src\\native_resource_registry_erase.cpp",
+          "bytes": 11384,
+          "sha256": "99ebbecf42f13963b2695f7191b53096dae2f32e9a28a01dcbb4755f5e6c4d1b"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_resource_registry_erase.cpp",
+          "bytes": 11384,
+          "sha256": "99ebbecf42f13963b2695f7191b53096dae2f32e9a28a01dcbb4755f5e6c4d1b"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/native_resource_registry_scalar_delete.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\src\\native_resource_registry_scalar_delete.cpp",
+          "bytes": 1508,
+          "sha256": "a4b91450da734d3ff026a8142e9c26639ccaabe15472acdd2b82d693d077acc9"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_resource_registry_scalar_delete.cpp",
+          "bytes": 1508,
+          "sha256": "a4b91450da734d3ff026a8142e9c26639ccaabe15472acdd2b82d693d077acc9"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\tools\\bsp.py",
+          "bytes": 56400,
+          "sha256": "bac030ca00d080b57cfea12d722307a2eb74127a7c36eeb7dc65d4f342c92bbe"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\bsp.py",
+          "bytes": 56400,
+          "sha256": "bac030ca00d080b57cfea12d722307a2eb74127a7c36eeb7dc65d4f342c92bbe"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\tools\\ghidra_export.py",
+          "bytes": 13401,
+          "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\ghidra_export.py",
+          "bytes": 13401,
+          "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+          "bytes": 1471,
+          "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+          "bytes": 1471,
+          "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_renderer_worker_lifetime.hpp",
+          "bytes": 2431,
+          "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_renderer_worker_lifetime.hpp",
+          "bytes": 2431,
+          "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_resource_registry_destroy.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_resource_registry_destroy.hpp",
+          "bytes": 1603,
+          "sha256": "c60895e2f80155ae0a13748892cd0dd86e95cfe8dc42b1150f4e59e1bfb5e14f"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_resource_registry_destroy.hpp",
+          "bytes": 1603,
+          "sha256": "c60895e2f80155ae0a13748892cd0dd86e95cfe8dc42b1150f4e59e1bfb5e14f"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_resource_registry_erase.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_resource_registry_erase.hpp",
+          "bytes": 2347,
+          "sha256": "ab8b1bf2b438840d9c6470cae6e8b35e7ae3da29dfde777f24735e97f64afc94"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_resource_registry_erase.hpp",
+          "bytes": 2347,
+          "sha256": "ab8b1bf2b438840d9c6470cae6e8b35e7ae3da29dfde777f24735e97f64afc94"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_resource_registry_scalar_delete.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_resource_registry_scalar_delete.hpp",
+          "bytes": 2321,
+          "sha256": "765a3be8d56d4af9e265ca51cc47e8bb22837147df336a684ccf9e05a9eac7d9"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_resource_registry_scalar_delete.hpp",
+          "bytes": 2321,
+          "sha256": "765a3be8d56d4af9e265ca51cc47e8bb22837147df336a684ccf9e05a9eac7d9"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_resource_registry_tree_leaves.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_resource_registry_tree_leaves.hpp",
+          "bytes": 2953,
+          "sha256": "96232ce20dce86fc606bba1aca448a6df0c4dfd871300b2bfc7bfdf7e97d4f29"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_resource_registry_tree_leaves.hpp",
+          "bytes": 2953,
+          "sha256": "96232ce20dce86fc606bba1aca448a6df0c4dfd871300b2bfc7bfdf7e97d4f29"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\native_string_pool_storage.hpp",
+          "bytes": 2488,
+          "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_pool_storage.hpp",
+          "bytes": 2488,
+          "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/structured_resource_registry.hpp",
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_resource_registry_construction_discovery\\local\\registry_construction\\source_contracts\\include\\bsp\\structured_resource_registry.hpp",
+          "bytes": 3578,
+          "sha256": "ebd22f6577773929c1673b695ab586c819d55b10dc2433f26d6d4516aed83dcd"
+        },
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\structured_resource_registry.hpp",
+          "bytes": 3578,
+          "sha256": "ebd22f6577773929c1673b695ab586c819d55b10dc2433f26d6d4516aed83dcd"
+        },
+        "LF_normalized_equal": true
+      }
+    ],
+    "fresh_guarded_spans": 32,
+    "fresh_guarded_bytes": 1408,
+    "disk_backed_spans": 30,
+    "disk_backed_bytes": 1400,
+    "separate_virtual_spans": [
+      {
+        "address": "00f8d41c",
+        "length": 4,
+        "section_rva": 10518528,
+        "section_raw_bytes": 65536,
+        "section_virtual_bytes": 2719452,
+        "disk_backed": false,
+        "qualification": "Saved Ghidra virtual initial image only; no current-runtime claim."
+      },
+      {
+        "address": "01090aa0",
+        "length": 4,
+        "section_rva": 10518528,
+        "section_raw_bytes": 65536,
+        "section_virtual_bytes": 2719452,
+        "disk_backed": false,
+        "qualification": "Saved Ghidra virtual initial image only; no current-runtime claim."
+      }
+    ],
+    "full_primary_native_source_and_readiness_review": true,
+    "source_added": false,
+    "build_performed": false,
+    "runtime_performed": false,
+    "Ghidra_mutation": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\registry_construction_discovery_primary\\sealed.json",
+      "bytes": 8612,
+      "sha256": "c826374ee423e443e19c725cbaafd0111923956b5491450bd3cf0e9b1e21cdcf"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_CONSTRUCTION_DISCOVERY.md",
+    "bytes": 14563,
+    "sha256": "1b6d56ae2c6ad690a25daa7959953d100a2bbc15858b1406fe65d4b45b00cb8f"
+  }
 }

@@ -1,0 +1,67 @@
+{
+  "packet": "orch5_model_clone_transport",
+  "source": "src/native_gui_text_model_clone.cpp",
+  "owner_source": "src/gui_widget_owner.cpp",
+  "original_abi": "ECX source, flags/parent stack, EAX clone, RET8 atB753EF",
+  "start": "00b752b0",
+  "end_inclusive": "00b753f1",
+  "abi_compatible": false,
+  "supported": "Text flags26,parent0; complete actual allocation/name/base/mesh-association/tail for existing no-positive-light domain",
+  "remaining": [
+    "positive actual point-light owner arrays",
+    "other clone flags/parent values",
+    "native failure/EH/binary ABI",
+    "actual executable configuration and gameplay"
+  ],
+  "host_steps": [
+    {
+      "address": "00b752d1",
+      "native": "00b74d00",
+      "function": "00b752b0",
+      "evidence": "actual existing Model pool allocation"
+    },
+    {
+      "address": "00b752ea",
+      "native": "00b6d800",
+      "function": "00b752b0",
+      "evidence": "current source header after allocation"
+    },
+    {
+      "address": "00b752f2",
+      "native": "00b75030",
+      "function": "00b752b0",
+      "evidence": "existing actual constructor from borrowed header"
+    },
+    {
+      "address": "00b75312",
+      "native": "00b6f150",
+      "function": "00b752b0",
+      "evidence": "source ECX, destination/flags26/parent0 stack"
+    },
+    {
+      "address": "00b7532f",
+      "native": "00b742a0",
+      "function": "00b752b0",
+      "evidence": "resolved current geometry10: D62D70=A042B700; separately validated live profile"
+    },
+    {
+      "address": "00b7534e",
+      "native": "00b75170",
+      "function": "00b752b0",
+      "evidence": "late17C/178 source reads after mesh clone"
+    },
+    {
+      "address": "00ab9d87",
+      "native": "00b752b0",
+      "function": "00ab98f0",
+      "evidence": "resolved current Model10 D62DF8=B052B700; caller flags26,parent0"
+    }
+  ],
+  "tail_transfer": {
+    "site": "00cc1c73",
+    "target": "00b748c0",
+    "kind": "JMP",
+    "evidence": "constructor unwind saved raw slot"
+  },
+  "validation": "Exact live function bodies/profiles inspected; combined build recorded in batch; no new runtime claim"
+}

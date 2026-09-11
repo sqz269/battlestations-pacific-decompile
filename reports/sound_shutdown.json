@@ -1,0 +1,1459 @@
+{
+  "packet": "orch4_sound_shutdown_w",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a883b0",
+      "name": "scalar_delete_sound_system_00a883b0",
+      "proposed_name": "BSP_SoundSystem_ScalarDeletingDestructor",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; stack byte flags; EAX old pointer; RET4",
+      "meaning": "Call A882C0; free if low flags bit0; return original receiver. RET4.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a883ce",
+      "last_instruction": "00a883cb",
+      "last_instruction_length": 3,
+      "sha256": "ab887d76176223cfc791a38c80facdbeaf9f0eaaa8780e25f15820d5127f26b4",
+      "byte_span": 30,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack byte flags; EAX old pointer; RET4. Call A882C0; free if low flags bit0; return original receiver. RET4. Span SHA256 ab887d76176223cfc791a38c80facdbeaf9f0eaaa8780e25f15820d5127f26b4. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified."
+    },
+    {
+      "address": "00a882c0",
+      "name": "destroy_sound_system_00a882c0",
+      "proposed_name": "BSP_SoundSystem_Destruct",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; RET",
+      "meaning": "Install D5B44C; get lifetime manager then unregister current F8BBCC; reload alternate and call deleting slot0 flags1 then clear; A7F560; A7E240; free current174 and clear; A816B0. DEC3DC unwind state0 calls base A816B0.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a88364",
+      "last_instruction": "00a88363",
+      "last_instruction_length": 1,
+      "sha256": "561edd1ada6dece16c65b7d606f0fd9f3416a4bec685cc17ed2bbc0cde98d3ed",
+      "byte_span": 164,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; RET. Install D5B44C; get lifetime manager then unregister current F8BBCC; reload alternate and call deleting slot0 flags1 then clear; A7F560; A7E240; free current174 and clear; A816B0. DEC3DC unwind state0 calls base A816B0. Span SHA256 561edd1ada6dece16c65b7d606f0fd9f3416a4bec685cc17ed2bbc0cde98d3ed. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified."
+    },
+    {
+      "address": "00a817d0",
+      "name": "scalar_delete_sound_system_base_00a817d0",
+      "proposed_name": "BSP_SoundSystemBase_ScalarDeletingDestructor",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; stack byte flags; EAX old pointer; RET4",
+      "meaning": "Call A816B0; free if low flags bit0; return original receiver. RET4.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a817ee",
+      "last_instruction": "00a817eb",
+      "last_instruction_length": 3,
+      "sha256": "5f449f23621a394c24e5a3248e59c31c6661e1b913d17f3a295eeb7165139029",
+      "byte_span": 30,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack byte flags; EAX old pointer; RET4. Call A816B0; free if low flags bit0; return original receiver. RET4. Span SHA256 5f449f23621a394c24e5a3248e59c31c6661e1b913d17f3a295eeb7165139029. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified."
+    },
+    {
+      "address": "00a816b0",
+      "name": "destroy_sound_system_base_00a816b0",
+      "proposed_name": "BSP_SoundSystem_DestructBase",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; RET",
+      "meaning": "Ordinary base destructor, not vector-deleting. Install D5B000; shrink0/free systemDSP134, groups128; listenerA4 destructor; class98 and entry8C shrink0/free; reverse 3 pointer80 then reverse3 pointer74; types38 shrink0/free; unregisterA7B230. DEBB18 eight unwind states release only remaining members. Stored body still ends A816F2; decoded tail A816F3..A817CF separate.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a817d0",
+      "last_instruction": "00a817cf",
+      "last_instruction_length": 1,
+      "sha256": "0351c757bb11ae616eba91eb65d1970c8023515a10ef71cc7e7348268fb77ccf",
+      "byte_span": 288,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; RET. Ordinary base destructor, not vector-deleting. Install D5B000; shrink0/free systemDSP134, groups128; listenerA4 destructor; class98 and entry8C shrink0/free; reverse 3 pointer80 then reverse3 pointer74; types38 shrink0/free; unregisterA7B230. DEBB18 eight unwind states release only remaining members. Stored body still ends A816F2; decoded tail A816F3..A817CF separate. Span SHA256 0351c757bb11ae616eba91eb65d1970c8023515a10ef71cc7e7348268fb77ccf. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified.",
+      "stored_body_end_inclusive": "00a816f2"
+    },
+    {
+      "address": "00a7b9c0",
+      "name": "stop_retained_sound_pointers_00a7b9c0",
+      "proposed_name": "BSP_SoundSystem_StopRetainedPointers",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; RET",
+      "meaning": "Ascending paired slots0..2: nonnull74 virtual8(0), reload74 atomic decrement4/zero slot0 then clear; release80 atomic decrement4/zero slot0 then clear. No assumed pointee class for arrays; required virtual/reference host.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a7ba37",
+      "last_instruction": "00a7ba36",
+      "last_instruction_length": 1,
+      "sha256": "431c43b666a459af835ffc5de939bd693e06e8f0f200760b56672efd84213656",
+      "byte_span": 119,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; RET. Ascending paired slots0..2: nonnull74 virtual8(0), reload74 atomic decrement4/zero slot0 then clear; release80 atomic decrement4/zero slot0 then clear. No assumed pointee class for arrays; required virtual/reference host. Span SHA256 431c43b666a459af835ffc5de939bd693e06e8f0f200760b56672efd84213656. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified."
+    },
+    {
+      "address": "00a7e240",
+      "name": "close_sound_system_00a7e240",
+      "proposed_name": "BSP_SoundSystem_Close",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; RET",
+      "meaning": "Stop retained slots, pop active entries with release/clear before current count decrement; current manager virtual4 twice with separately fresh identity matrix and by-value zero velocity, no dt input; delete current resource54 virtual0 flags1 without clearing54; reload EventSystem48 and call explicit-self virtual4 release; memory2B stats. Does not clear44/48.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a7e3fa",
+      "last_instruction": "00a7e3f9",
+      "last_instruction_length": 1,
+      "sha256": "f029023051653a59d478469bdcfe272bd8bcc997ac1bfc6254f6fb596ed970b1",
+      "byte_span": 442,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; RET. Stop retained slots, pop active entries with release/clear before current count decrement; current manager virtual4 twice with separately fresh identity matrix and by-value zero velocity, no dt input; delete current resource54 virtual0 flags1 without clearing54; reload EventSystem48 and call explicit-self virtual4 release; memory2B stats. Does not clear44/48. Span SHA256 f029023051653a59d478469bdcfe272bd8bcc997ac1bfc6254f6fb596ed970b1. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified."
+    },
+    {
+      "address": "00a85ae0",
+      "name": "scalar_delete_sound_resource_owner_00a85ae0",
+      "proposed_name": "BSP_SoundResourceOwner_ScalarDeletingDestructor",
+      "source": "src/sound_shutdown.cpp",
+      "document": "docs/SOUND_SHUTDOWN.md",
+      "coverage": "complete sequence within documented canonical object and host domains",
+      "status": "reconstructed_build_and_installed_shutdown_fixture_tested",
+      "abi": "ECX=self; stack byte flags; EAX old pointer; RET4",
+      "meaning": "A85A50 then free allocation if flag bit0, return original receiver. Native caller A7E240 leaves resource54 pointer word unchanged; canonical ownership slot separates allocation ownership from dead word.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "end_exclusive": "00a85afe",
+      "last_instruction": "00a85afb",
+      "last_instruction_length": 3,
+      "sha256": "51615b1aa4ec0968955c2763d834bd5c27a5ad7e3f846c5e93e377c7ceda7598",
+      "byte_span": 30,
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack byte flags; EAX old pointer; RET4. A85A50 then free allocation if flag bit0, return original receiver. Native caller A7E240 leaves resource54 pointer word unchanged; canonical ownership slot separates allocation ownership from dead word. Span SHA256 51615b1aa4ec0968955c2763d834bd5c27a5ad7e3f846c5e93e377c7ceda7598. docs/SOUND_SHUTDOWN.md. Win32 and installed no-sound bank/event shutdown fixture passed; native pointer74 variants and alternate engine remain required virtual hosts; native ABI and gameplay unverified."
+    }
+  ],
+  "integrated_address_count": 24,
+  "existing_function_corrected": "00a7c1c0",
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00a883b3",
+      "native": "00a882c0",
+      "caller": "00a883b0"
+    },
+    {
+      "address": "00a883c0",
+      "native": "00bf65ac",
+      "caller": "00a883b0"
+    },
+    {
+      "address": "00a882eb",
+      "native": "00415350",
+      "caller": "00a882c0"
+    },
+    {
+      "address": "00a882f9",
+      "native": "00bcfca0",
+      "caller": "00a882c0"
+    },
+    {
+      "address": "00a8831c",
+      "native": "00a7f560",
+      "caller": "00a882c0"
+    },
+    {
+      "address": "00a88323",
+      "native": "00a7e240",
+      "caller": "00a882c0"
+    },
+    {
+      "address": "00a88333",
+      "native": "00bf6989",
+      "caller": "00a882c0"
+    },
+    {
+      "address": "00a8834f",
+      "native": "00a816b0",
+      "caller": "00a882c0"
+    },
+    {
+      "address": "00a817d3",
+      "native": "00a816b0",
+      "caller": "00a817d0"
+    },
+    {
+      "address": "00a817e0",
+      "native": "00bf65ac",
+      "caller": "00a817d0"
+    },
+    {
+      "address": "00a816e6",
+      "native": "00a7a980",
+      "caller": "00a816b0"
+    },
+    {
+      "address": "00a816ee",
+      "native": "00bf6989",
+      "caller": "00a816b0"
+    },
+    {
+      "address": "00a7e249",
+      "native": "00a7b9c0",
+      "caller": "00a7e240"
+    },
+    {
+      "address": "00a7e3ed",
+      "native": "00c2ddee",
+      "caller": "00a7e240"
+    },
+    {
+      "address": "00a85ae3",
+      "native": "00a85a50",
+      "caller": "00a85ae0"
+    },
+    {
+      "address": "00a85af0",
+      "native": "00bf65ac",
+      "caller": "00a85ae0"
+    }
+  ],
+  "integrated_byte_spans": [
+    {
+      "address": "00a883b0",
+      "end_exclusive": "00a883ce",
+      "last_instruction": "00a883cb",
+      "last_instruction_length": 3,
+      "sha256": "ab887d76176223cfc791a38c80facdbeaf9f0eaaa8780e25f15820d5127f26b4",
+      "byte_span": 30,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a882c0",
+      "end_exclusive": "00a88364",
+      "last_instruction": "00a88363",
+      "last_instruction_length": 1,
+      "sha256": "561edd1ada6dece16c65b7d606f0fd9f3416a4bec685cc17ed2bbc0cde98d3ed",
+      "byte_span": 164,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a817d0",
+      "end_exclusive": "00a817ee",
+      "last_instruction": "00a817eb",
+      "last_instruction_length": 3,
+      "sha256": "5f449f23621a394c24e5a3248e59c31c6661e1b913d17f3a295eeb7165139029",
+      "byte_span": 30,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a816b0",
+      "end_exclusive": "00a817d0",
+      "last_instruction": "00a817cf",
+      "last_instruction_length": 1,
+      "sha256": "0351c757bb11ae616eba91eb65d1970c8023515a10ef71cc7e7348268fb77ccf",
+      "byte_span": 288,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7b9c0",
+      "end_exclusive": "00a7ba37",
+      "last_instruction": "00a7ba36",
+      "last_instruction_length": 1,
+      "sha256": "431c43b666a459af835ffc5de939bd693e06e8f0f200760b56672efd84213656",
+      "byte_span": 119,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7e240",
+      "end_exclusive": "00a7e3fa",
+      "last_instruction": "00a7e3f9",
+      "last_instruction_length": 1,
+      "sha256": "f029023051653a59d478469bdcfe272bd8bcc997ac1bfc6254f6fb596ed970b1",
+      "byte_span": 442,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a85ae0",
+      "end_exclusive": "00a85afe",
+      "last_instruction": "00a85afb",
+      "last_instruction_length": 3,
+      "sha256": "51615b1aa4ec0968955c2763d834bd5c27a5ad7e3f846c5e93e377c7ceda7598",
+      "byte_span": 30,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7d380",
+      "end_exclusive": "00a7d40f",
+      "last_instruction": "00a7d40c",
+      "last_instruction_length": 3,
+      "sha256": "3a32c96b1fb0ee8be666d91c74a017c8a486faf41c8477d6527bbe952f369c80",
+      "byte_span": 143,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7bce0",
+      "end_exclusive": "00a7bd47",
+      "last_instruction": "00a7bd46",
+      "last_instruction_length": 1,
+      "sha256": "a771c67e5d9ed5ecae35010e8ea5b677c01bddd8c3267ab7d235307ce128aea4",
+      "byte_span": 103,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7bd50",
+      "end_exclusive": "00a7bd6e",
+      "last_instruction": "00a7bd6b",
+      "last_instruction_length": 3,
+      "sha256": "05f5034ef94560eb16d5891bd4da7cd3fa8acb38a9caa13d3d71a1392deef097",
+      "byte_span": 30,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7f9f0",
+      "end_exclusive": "00a7fac2",
+      "last_instruction": "00a7fabf",
+      "last_instruction_length": 3,
+      "sha256": "a817c5f3b8928896519a2abf5bb587ed267c319531f672cb7fc2e6ca536382df",
+      "byte_span": 210,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7f050",
+      "end_exclusive": "00a7f0c3",
+      "last_instruction": "00a7f0c0",
+      "last_instruction_length": 3,
+      "sha256": "703228cdda58bdff6069d9e5e3ceff70d2ebd34e36ca2776d712dba2c6441665",
+      "byte_span": 115,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7d750",
+      "end_exclusive": "00a7d844",
+      "last_instruction": "00a7d841",
+      "last_instruction_length": 3,
+      "sha256": "5a50310871d89302953ec5fdc5568a52d161bcfe2b378ebe18e13cd3c51ecbfb",
+      "byte_span": 244,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7d910",
+      "end_exclusive": "00a7d98e",
+      "last_instruction": "00a7d98b",
+      "last_instruction_length": 3,
+      "sha256": "57b243eeb6ae4dd74b1212117a15c8d6cac477f61cf994373f3a39f045c174c6",
+      "byte_span": 126,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7fe00",
+      "end_exclusive": "00a7fe5d",
+      "last_instruction": "00a7fe5c",
+      "last_instruction_length": 1,
+      "sha256": "55b6e2a4632ca4bc5d43c69aafa640f0df5b05834960cabf655e0fe53f2e268b",
+      "byte_span": 93,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7f560",
+      "end_exclusive": "00a7f63e",
+      "last_instruction": "00a7f63d",
+      "last_instruction_length": 1,
+      "sha256": "aa326b55b3b429c3b97ca7f4f52217f45c5281df8275db90cd88efd7e3a515f3",
+      "byte_span": 222,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7aaf0",
+      "end_exclusive": "00a7ab85",
+      "last_instruction": "00a7ab84",
+      "last_instruction_length": 1,
+      "sha256": "efb061dd4c4b56b67e3e1846c93a7c6420c82987b417d0b830eb1d982bd71a0e",
+      "byte_span": 149,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7bfe0",
+      "end_exclusive": "00a7c052",
+      "last_instruction": "00a7c051",
+      "last_instruction_length": 1,
+      "sha256": "98b169355eb54c97cb9fd721424406be9c40e3a65d5d6889c66471bf24cc4197",
+      "byte_span": 114,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7c6c0",
+      "end_exclusive": "00a7c732",
+      "last_instruction": "00a7c731",
+      "last_instruction_length": 1,
+      "sha256": "99614a99dfcc93096f558377b59f82a60c54a2b8d042d026d1926ae1332747f7",
+      "byte_span": 114,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7a980",
+      "end_exclusive": "00a7a9d0",
+      "last_instruction": "00a7a9cd",
+      "last_instruction_length": 3,
+      "sha256": "db1367caa3c603d1b5754b004026d8dd72b4f298dd51f523e22e0598482e96b7",
+      "byte_span": 80,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7f240",
+      "end_exclusive": "00a7f2b8",
+      "last_instruction": "00a7f2b5",
+      "last_instruction_length": 3,
+      "sha256": "aef8eacadcca69836e934a5cbe4ba09369a4a0dd26201d51be6a5ce3d742c0a5",
+      "byte_span": 120,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7fcc0",
+      "end_exclusive": "00a7fd31",
+      "last_instruction": "00a7fd2e",
+      "last_instruction_length": 3,
+      "sha256": "7b7484e84e3e4cb7abb7caa8e32c3a675e2b94e73deddcc18dec7308380341ac",
+      "byte_span": 113,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a886c0",
+      "end_exclusive": "00a8874a",
+      "last_instruction": "00a88749",
+      "last_instruction_length": 1,
+      "sha256": "ce4335fe406140ed51bd396028847af088b81cc37d6ba4413b8963edda595a14",
+      "byte_span": 138,
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a88750",
+      "end_exclusive": "00a8876e",
+      "last_instruction": "00a8876b",
+      "last_instruction_length": 3,
+      "sha256": "b03469fc2002f251181319095744fbe4a3d3a7717438cb518a3e47b80c43ef46",
+      "byte_span": 30,
+      "disk_analysis_equal": true
+    }
+  ],
+  "decoded_tails": [
+    {
+      "function": "00a816b0",
+      "stored_body_end_inclusive": "00a816f2",
+      "decoded_end_exclusive": "00a817d0",
+      "stored_body_complete": false,
+      "instructions": [
+        {
+          "tail_site": "00a816f3",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a816f6",
+          "instruction": "lea",
+          "operands": "edi, [esi + 0x128]",
+          "bytes_hex": "8dbe28010000"
+        },
+        {
+          "tail_site": "00a816fc",
+          "instruction": "push",
+          "operands": "0",
+          "bytes_hex": "6a00"
+        },
+        {
+          "tail_site": "00a816fe",
+          "instruction": "mov",
+          "operands": "ecx, edi",
+          "bytes_hex": "8bcf"
+        },
+        {
+          "tail_site": "00a81700",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x18], 6",
+          "bytes_hex": "c644241806"
+        },
+        {
+          "tail_site": "00a81705",
+          "instruction": "call",
+          "operands": "0xa7f240",
+          "bytes_hex": "e836dbffff"
+        },
+        {
+          "tail_site": "00a8170a",
+          "instruction": "mov",
+          "operands": "edi, dword ptr [edi]",
+          "bytes_hex": "8b3f"
+        },
+        {
+          "tail_site": "00a8170c",
+          "instruction": "push",
+          "operands": "edi",
+          "bytes_hex": "57"
+        },
+        {
+          "tail_site": "00a8170d",
+          "instruction": "call",
+          "operands": "0xbf6989",
+          "bytes_hex": "e877521700"
+        },
+        {
+          "tail_site": "00a81712",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a81715",
+          "instruction": "lea",
+          "operands": "ecx, [esi + 0xa4]",
+          "bytes_hex": "8d8ea4000000"
+        },
+        {
+          "tail_site": "00a8171b",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x14], 5",
+          "bytes_hex": "c644241405"
+        },
+        {
+          "tail_site": "00a81720",
+          "instruction": "call",
+          "operands": "0xa7fe00",
+          "bytes_hex": "e8dbe6ffff"
+        },
+        {
+          "tail_site": "00a81725",
+          "instruction": "lea",
+          "operands": "edi, [esi + 0x98]",
+          "bytes_hex": "8dbe98000000"
+        },
+        {
+          "tail_site": "00a8172b",
+          "instruction": "push",
+          "operands": "0",
+          "bytes_hex": "6a00"
+        },
+        {
+          "tail_site": "00a8172d",
+          "instruction": "mov",
+          "operands": "ecx, edi",
+          "bytes_hex": "8bcf"
+        },
+        {
+          "tail_site": "00a8172f",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x18], 4",
+          "bytes_hex": "c644241804"
+        },
+        {
+          "tail_site": "00a81734",
+          "instruction": "call",
+          "operands": "0xa7c2c0",
+          "bytes_hex": "e887abffff"
+        },
+        {
+          "tail_site": "00a81739",
+          "instruction": "mov",
+          "operands": "edi, dword ptr [edi]",
+          "bytes_hex": "8b3f"
+        },
+        {
+          "tail_site": "00a8173b",
+          "instruction": "push",
+          "operands": "edi",
+          "bytes_hex": "57"
+        },
+        {
+          "tail_site": "00a8173c",
+          "instruction": "call",
+          "operands": "0xbf6989",
+          "bytes_hex": "e848521700"
+        },
+        {
+          "tail_site": "00a81741",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a81744",
+          "instruction": "lea",
+          "operands": "edi, [esi + 0x8c]",
+          "bytes_hex": "8dbe8c000000"
+        },
+        {
+          "tail_site": "00a8174a",
+          "instruction": "push",
+          "operands": "0",
+          "bytes_hex": "6a00"
+        },
+        {
+          "tail_site": "00a8174c",
+          "instruction": "mov",
+          "operands": "ecx, edi",
+          "bytes_hex": "8bcf"
+        },
+        {
+          "tail_site": "00a8174e",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x18], 3",
+          "bytes_hex": "c644241803"
+        },
+        {
+          "tail_site": "00a81753",
+          "instruction": "call",
+          "operands": "0xa7c1c0",
+          "bytes_hex": "e868aaffff"
+        },
+        {
+          "tail_site": "00a81758",
+          "instruction": "mov",
+          "operands": "edi, dword ptr [edi]",
+          "bytes_hex": "8b3f"
+        },
+        {
+          "tail_site": "00a8175a",
+          "instruction": "push",
+          "operands": "edi",
+          "bytes_hex": "57"
+        },
+        {
+          "tail_site": "00a8175b",
+          "instruction": "call",
+          "operands": "0xbf6989",
+          "bytes_hex": "e829521700"
+        },
+        {
+          "tail_site": "00a81760",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a81763",
+          "instruction": "push",
+          "operands": "0x4c3810",
+          "bytes_hex": "6810384c00"
+        },
+        {
+          "tail_site": "00a81768",
+          "instruction": "push",
+          "operands": "3",
+          "bytes_hex": "6a03"
+        },
+        {
+          "tail_site": "00a8176a",
+          "instruction": "push",
+          "operands": "4",
+          "bytes_hex": "6a04"
+        },
+        {
+          "tail_site": "00a8176c",
+          "instruction": "lea",
+          "operands": "eax, [esi + 0x80]",
+          "bytes_hex": "8d8680000000"
+        },
+        {
+          "tail_site": "00a81772",
+          "instruction": "push",
+          "operands": "eax",
+          "bytes_hex": "50"
+        },
+        {
+          "tail_site": "00a81773",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x24], 2",
+          "bytes_hex": "c644242402"
+        },
+        {
+          "tail_site": "00a81778",
+          "instruction": "call",
+          "operands": "0xbf7c6e",
+          "bytes_hex": "e8f1641700"
+        },
+        {
+          "tail_site": "00a8177d",
+          "instruction": "push",
+          "operands": "0x524180",
+          "bytes_hex": "6880415200"
+        },
+        {
+          "tail_site": "00a81782",
+          "instruction": "push",
+          "operands": "3",
+          "bytes_hex": "6a03"
+        },
+        {
+          "tail_site": "00a81784",
+          "instruction": "push",
+          "operands": "4",
+          "bytes_hex": "6a04"
+        },
+        {
+          "tail_site": "00a81786",
+          "instruction": "lea",
+          "operands": "ecx, [esi + 0x74]",
+          "bytes_hex": "8d4e74"
+        },
+        {
+          "tail_site": "00a81789",
+          "instruction": "push",
+          "operands": "ecx",
+          "bytes_hex": "51"
+        },
+        {
+          "tail_site": "00a8178a",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x24], 1",
+          "bytes_hex": "c644242401"
+        },
+        {
+          "tail_site": "00a8178f",
+          "instruction": "call",
+          "operands": "0xbf7c6e",
+          "bytes_hex": "e8da641700"
+        },
+        {
+          "tail_site": "00a81794",
+          "instruction": "lea",
+          "operands": "edi, [esi + 0x38]",
+          "bytes_hex": "8d7e38"
+        },
+        {
+          "tail_site": "00a81797",
+          "instruction": "push",
+          "operands": "0",
+          "bytes_hex": "6a00"
+        },
+        {
+          "tail_site": "00a81799",
+          "instruction": "mov",
+          "operands": "ecx, edi",
+          "bytes_hex": "8bcf"
+        },
+        {
+          "tail_site": "00a8179b",
+          "instruction": "mov",
+          "operands": "byte ptr [esp + 0x18], 0",
+          "bytes_hex": "c644241800"
+        },
+        {
+          "tail_site": "00a817a0",
+          "instruction": "call",
+          "operands": "0xa7fcc0",
+          "bytes_hex": "e81be5ffff"
+        },
+        {
+          "tail_site": "00a817a5",
+          "instruction": "mov",
+          "operands": "edi, dword ptr [edi]",
+          "bytes_hex": "8b3f"
+        },
+        {
+          "tail_site": "00a817a7",
+          "instruction": "push",
+          "operands": "edi",
+          "bytes_hex": "57"
+        },
+        {
+          "tail_site": "00a817a8",
+          "instruction": "call",
+          "operands": "0xbf6989",
+          "bytes_hex": "e8dc511700"
+        },
+        {
+          "tail_site": "00a817ad",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a817b0",
+          "instruction": "mov",
+          "operands": "ecx, esi",
+          "bytes_hex": "8bce"
+        },
+        {
+          "tail_site": "00a817b2",
+          "instruction": "mov",
+          "operands": "dword ptr [esp + 0x14], 0xffffffff",
+          "bytes_hex": "c7442414ffffffff"
+        },
+        {
+          "tail_site": "00a817ba",
+          "instruction": "call",
+          "operands": "0xa7b230",
+          "bytes_hex": "e8719affff"
+        },
+        {
+          "tail_site": "00a817bf",
+          "instruction": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]",
+          "bytes_hex": "8b4c240c"
+        },
+        {
+          "tail_site": "00a817c3",
+          "instruction": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "tail_site": "00a817c4",
+          "instruction": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "tail_site": "00a817c5",
+          "instruction": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "tail_site": "00a817cc",
+          "instruction": "add",
+          "operands": "esp, 0x10",
+          "bytes_hex": "83c410"
+        },
+        {
+          "tail_site": "00a817cf",
+          "instruction": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    },
+    {
+      "function": "00a7fe00",
+      "stored_body_end_inclusive": "00a7fe39",
+      "decoded_end_exclusive": "00a7fe5d",
+      "stored_body_complete": false,
+      "instructions": [
+        {
+          "tail_site": "00a7fe3a",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a7fe3d",
+          "instruction": "mov",
+          "operands": "ecx, esi",
+          "bytes_hex": "8bce"
+        },
+        {
+          "tail_site": "00a7fe3f",
+          "instruction": "mov",
+          "operands": "dword ptr [esp + 0x14], 0xffffffff",
+          "bytes_hex": "c7442414ffffffff"
+        },
+        {
+          "tail_site": "00a7fe47",
+          "instruction": "call",
+          "operands": "0xbd30f0",
+          "bytes_hex": "e8a4321500"
+        },
+        {
+          "tail_site": "00a7fe4c",
+          "instruction": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]",
+          "bytes_hex": "8b4c240c"
+        },
+        {
+          "tail_site": "00a7fe50",
+          "instruction": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "tail_site": "00a7fe51",
+          "instruction": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "tail_site": "00a7fe52",
+          "instruction": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "tail_site": "00a7fe59",
+          "instruction": "add",
+          "operands": "esp, 0x10",
+          "bytes_hex": "83c410"
+        },
+        {
+          "tail_site": "00a7fe5c",
+          "instruction": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    },
+    {
+      "function": "00a7bfe0",
+      "stored_body_end_inclusive": "00a7c019",
+      "decoded_end_exclusive": "00a7c052",
+      "stored_body_complete": false,
+      "instructions": [
+        {
+          "tail_site": "00a7c01a",
+          "instruction": "mov",
+          "operands": "eax, dword ptr [esi + 4]",
+          "bytes_hex": "8b4604"
+        },
+        {
+          "tail_site": "00a7c01d",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a7c020",
+          "instruction": "test",
+          "operands": "eax, eax",
+          "bytes_hex": "85c0"
+        },
+        {
+          "tail_site": "00a7c022",
+          "instruction": "mov",
+          "operands": "dword ptr [esp + 0x14], 0xffffffff",
+          "bytes_hex": "c7442414ffffffff"
+        },
+        {
+          "tail_site": "00a7c02a",
+          "instruction": "je",
+          "operands": "0xa7c041",
+          "bytes_hex": "7415"
+        },
+        {
+          "tail_site": "00a7c02c",
+          "instruction": "mov",
+          "operands": "esi, dword ptr [esi]",
+          "bytes_hex": "8b36"
+        },
+        {
+          "tail_site": "00a7c02e",
+          "instruction": "push",
+          "operands": "1",
+          "bytes_hex": "6a01"
+        },
+        {
+          "tail_site": "00a7c030",
+          "instruction": "add",
+          "operands": "esi, 1",
+          "bytes_hex": "83c601"
+        },
+        {
+          "tail_site": "00a7c033",
+          "instruction": "push",
+          "operands": "esi",
+          "bytes_hex": "56"
+        },
+        {
+          "tail_site": "00a7c034",
+          "instruction": "push",
+          "operands": "eax",
+          "bytes_hex": "50"
+        },
+        {
+          "tail_site": "00a7c035",
+          "instruction": "call",
+          "operands": "0x419cc0",
+          "bytes_hex": "e886dc99ff"
+        },
+        {
+          "tail_site": "00a7c03a",
+          "instruction": "mov",
+          "operands": "ecx, eax",
+          "bytes_hex": "8bc8"
+        },
+        {
+          "tail_site": "00a7c03c",
+          "instruction": "call",
+          "operands": "0xbd1510",
+          "bytes_hex": "e8cf541500"
+        },
+        {
+          "tail_site": "00a7c041",
+          "instruction": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]",
+          "bytes_hex": "8b4c240c"
+        },
+        {
+          "tail_site": "00a7c045",
+          "instruction": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "tail_site": "00a7c046",
+          "instruction": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "tail_site": "00a7c047",
+          "instruction": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "tail_site": "00a7c04e",
+          "instruction": "add",
+          "operands": "esp, 0x10",
+          "bytes_hex": "83c410"
+        },
+        {
+          "tail_site": "00a7c051",
+          "instruction": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    },
+    {
+      "function": "00a7c6c0",
+      "stored_body_end_inclusive": "00a7c6f9",
+      "decoded_end_exclusive": "00a7c732",
+      "stored_body_complete": false,
+      "instructions": [
+        {
+          "tail_site": "00a7c6fa",
+          "instruction": "mov",
+          "operands": "eax, dword ptr [esi + 4]",
+          "bytes_hex": "8b4604"
+        },
+        {
+          "tail_site": "00a7c6fd",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a7c700",
+          "instruction": "test",
+          "operands": "eax, eax",
+          "bytes_hex": "85c0"
+        },
+        {
+          "tail_site": "00a7c702",
+          "instruction": "mov",
+          "operands": "dword ptr [esp + 0x14], 0xffffffff",
+          "bytes_hex": "c7442414ffffffff"
+        },
+        {
+          "tail_site": "00a7c70a",
+          "instruction": "je",
+          "operands": "0xa7c721",
+          "bytes_hex": "7415"
+        },
+        {
+          "tail_site": "00a7c70c",
+          "instruction": "mov",
+          "operands": "esi, dword ptr [esi]",
+          "bytes_hex": "8b36"
+        },
+        {
+          "tail_site": "00a7c70e",
+          "instruction": "push",
+          "operands": "1",
+          "bytes_hex": "6a01"
+        },
+        {
+          "tail_site": "00a7c710",
+          "instruction": "add",
+          "operands": "esi, 1",
+          "bytes_hex": "83c601"
+        },
+        {
+          "tail_site": "00a7c713",
+          "instruction": "push",
+          "operands": "esi",
+          "bytes_hex": "56"
+        },
+        {
+          "tail_site": "00a7c714",
+          "instruction": "push",
+          "operands": "eax",
+          "bytes_hex": "50"
+        },
+        {
+          "tail_site": "00a7c715",
+          "instruction": "call",
+          "operands": "0x419cc0",
+          "bytes_hex": "e8a6d599ff"
+        },
+        {
+          "tail_site": "00a7c71a",
+          "instruction": "mov",
+          "operands": "ecx, eax",
+          "bytes_hex": "8bc8"
+        },
+        {
+          "tail_site": "00a7c71c",
+          "instruction": "call",
+          "operands": "0xbd1510",
+          "bytes_hex": "e8ef4d1500"
+        },
+        {
+          "tail_site": "00a7c721",
+          "instruction": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]",
+          "bytes_hex": "8b4c240c"
+        },
+        {
+          "tail_site": "00a7c725",
+          "instruction": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "tail_site": "00a7c726",
+          "instruction": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "tail_site": "00a7c727",
+          "instruction": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "tail_site": "00a7c72e",
+          "instruction": "add",
+          "operands": "esp, 0x10",
+          "bytes_hex": "83c410"
+        },
+        {
+          "tail_site": "00a7c731",
+          "instruction": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    },
+    {
+      "function": "00a886c0",
+      "stored_body_end_inclusive": "00a88718",
+      "decoded_end_exclusive": "00a8874a",
+      "stored_body_complete": false,
+      "instructions": [
+        {
+          "tail_site": "00a88719",
+          "instruction": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "tail_site": "00a8871c",
+          "instruction": "mov",
+          "operands": "ecx, edi",
+          "bytes_hex": "8bcf"
+        },
+        {
+          "tail_site": "00a8871e",
+          "instruction": "mov",
+          "operands": "dword ptr [esi + 4], 0",
+          "bytes_hex": "c7460400000000"
+        },
+        {
+          "tail_site": "00a88725",
+          "instruction": "mov",
+          "operands": "dword ptr [esi + 8], 0",
+          "bytes_hex": "c7460800000000"
+        },
+        {
+          "tail_site": "00a8872c",
+          "instruction": "mov",
+          "operands": "dword ptr [esp + 0x1c], 0xffffffff",
+          "bytes_hex": "c744241cffffffff"
+        },
+        {
+          "tail_site": "00a88734",
+          "instruction": "call",
+          "operands": "0xa88180",
+          "bytes_hex": "e847faffff"
+        },
+        {
+          "tail_site": "00a88739",
+          "instruction": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]",
+          "bytes_hex": "8b4c2414"
+        },
+        {
+          "tail_site": "00a8873d",
+          "instruction": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "tail_site": "00a8873e",
+          "instruction": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "tail_site": "00a8873f",
+          "instruction": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "tail_site": "00a88746",
+          "instruction": "add",
+          "operands": "esp, 0x18",
+          "bytes_hex": "83c418"
+        },
+        {
+          "tail_site": "00a88749",
+          "instruction": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    }
+  ],
+  "read_only_evidence": [
+    {
+      "address": "00d5b000",
+      "length": 20,
+      "bytes_hex": "d017a80030e6a7008e69bf0040f6a70010f7a700",
+      "sha256": "e6bd4205449a930ac30410c1a906a7ff63aee2d4c79519856424894dc0694b82",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00d5b44c",
+      "length": 20,
+      "bytes_hex": "b083a800f07ba800607ba80040f6a70010f7a700",
+      "sha256": "69eb65bf56647b4602ca35f9af1542320642d5d7753f5e58f7e7727ded2d8a8f",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00d5b210",
+      "length": 16,
+      "bytes_hex": "e05aa800a02ea800b035a800c054a800",
+      "sha256": "d178d54e94e5e2df7b46701621edaba0d4ef14211f8b813b422708c7790867ac",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "bytes_hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00debb18",
+      "length": 100,
+      "bytes_hex": "22059319080000003cbbde00000000000000000000000000000000000000000001000000ffffffff005bcb0000000000085bcb0001000000135bcb0002000000295bcb0003000000415bcb00040000004f5bcb00050000005d5bcb00060000006b5bcb00",
+      "sha256": "46f8c1b30699c4754d4db2a07d9c72e94cc16ff4628eda3cc87d9e40ee983333",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00dec3d4",
+      "length": 44,
+      "bytes_hex": "ffffffff4062cb002205931901000000d4c3de00000000000000000000000000000000000000000001000000",
+      "sha256": "ef9a0798517069b78af4b11f005347dde9e18839954bff60d09df26279ee0d65",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb5b00",
+      "length": 121,
+      "bytes_hex": "8b4df0e92857dcff8b4df083c138e94db9dcff68804152006a036a048b45f083c07450e84621f4ffc36810384c006a036a048b45f0058000000050e82e21f4ffc38b4df081c18c000000e98195dcff8b4df081c198000000e97397dcff8b4df081c1a4000000e995a2dcff8b4df081c128010000e9b7a3dcff",
+      "sha256": "f7bdbf5855e26893a9997397cfb48dbd6cd92d5cccc28efe4eecb1e5d8795073",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb6240",
+      "length": 8,
+      "bytes_hex": "8b4df0e968b4dcff",
+      "sha256": "d3e99a4c75d3bd8013e96e57c91601ee3c9c142b79903c2a78155df0f755c80c",
+      "disk_analysis_equal": true
+    }
+  ],
+  "worker_reports": [
+    "reports/sound_listener_ownership.json",
+    "reports/sound_configuration_shutdown.json",
+    "reports/sound_sample_cache_shutdown.json"
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_shutdown_w_build.log",
+    "fixture": "local/sound_shutdown_fixture.cpp",
+    "fixture_log": "local/sound_shutdown_w_fixture.log",
+    "fixture_sha256": "426637f99b00980a6ff8844ffe486332420139f7d1174153dd26991116f7a122",
+    "runner": "local/run_sound_shutdown_fixture.ps1",
+    "runner_sha256": "c922b61887701325aa5e355fde0a442d9fd670ec31a1885507561ffec00e089f",
+    "manifest_embedded": true,
+    "code_sha256": {
+      "include/bsp/sound_shutdown.hpp": "ef1abdb5cd9a4a85421b7de4c772be0da0c5806588ad607d767077bce029af6d",
+      "src/sound_shutdown.cpp": "d04fc310cdbc6735fec58d754f041a7e2c7dfdfaaf107400c7e9cf5abe825448",
+      "include/bsp/sound_system_owner.hpp": "084816045ea192a436411dab572354a96542a805ab2180334e5830f5c29f7974",
+      "include/bsp/fmod_configuration_library.hpp": "defef8ae8c2b65e8539e46595cb4d0b5ea38bb47d41848d797680c3b4ffdf046",
+      "src/fmod_configuration_library.cpp": "bbd5f4b1daacf67f08d85e69ebb871aa84d7b884511cd5a2e2355d8c6d16c558",
+      "src/sound_system_update.cpp": "a1314a4c4653022027d8e9ef90bdcc1dc32139d37a77c03516fe682a68463fb9",
+      "include/bsp/sound_listener.hpp": "331718caa3413b8886778fb0232a2178b02ed8aa47db893de8f35ad787f070d6",
+      "src/sound_listener.cpp": "2179ce901cff6e48e7e9c6c1bc14dc78b576c67127aba2119ca2fa0f940a6c5b",
+      "include/bsp/sound_configuration.hpp": "06f3585b512506defb15fce912350febdefd09353efd832bdfe48c6aa9272874",
+      "src/sound_configuration.cpp": "5728388a223d9f39acd061117e5527f7e0fc564e8c3e0eeabad24cb1e9e10066",
+      "include/bsp/sound_configuration_shutdown.hpp": "3ac3a44a169bfc83473d02c7807d5553413ba430928328d6f4fa741889ea8f8a",
+      "src/sound_configuration_shutdown.cpp": "618a9c191f39a3e32947747b7e41d61b1d2e553159ee57d03fc77587a3b68b40",
+      "include/bsp/sound_sample_cache_shutdown.hpp": "5ef611c8b6fa023a577487fa23db0d44d0d7be6585075c0d630e8ad7a9e89da7",
+      "src/sound_sample_cache_shutdown.cpp": "ef763412066de4f8cbb887f20833a3c14ac970e99ad8efdc429114c0a0f3f34c"
+    },
+    "library_sha256": "a6b89621f6a07b84cfeaa5156eaa84a05aaed95ce56a607b18754ab4e70ceece",
+    "seed_log": "local/sound_shutdown_w_verify_seeds.log",
+    "focused": "Both installed bank and event fixtures execute full sound destruction with manager-retained active entry, error-resource ownership/cache removal, configured group DSP and three extra DSPs, two extra groups, system-owned DSP, two actual listeners, two final listener updates, field174 allocation, EventSystem release, base cleanup and auxiliary teardown. Dead handles preserved. Base scalar leaves live resource allocation intact. Existing manager callback additionally reads the removed pointer slot after count decrement and before clear.",
+    "accounting": "Observed wrapped DWORD after resource destruction (bank4294880320, event4294578320 in this run); cache teardown resets it to0. Event data release adjusts resource size using library memory deltas; no early balancing assertion or invented increment.",
+    "native_differential_sound": false,
+    "native_abi": false,
+    "audible_playback": false,
+    "game_validated": false,
+    "new_permanent_tests": 0,
+    "libraries": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"
+      }
+    ],
+    "call_site_check": "66 report call rows, 0 failures; indirect targets and five decoded tails have separate evidence limits. local/sound_shutdown_w_call_check.log",
+    "seed_functions_verified": 8,
+    "source_revision": "c1cdfa96d526c50795cd5660ad972b44e293d3b1"
+  },
+  "ghidra": {
+    "prototypes": "reports/sound_shutdown_prototypes.json",
+    "prototype_count": 24,
+    "flow_repairs": "reports/sound_shutdown_flow.json",
+    "stored_body_tails_still_short": [
+      "00a816b0",
+      "00a886c0",
+      "00a7fe00",
+      "00a7bfe0",
+      "00a7c6c0"
+    ],
+    "no_return_flags_changed": false,
+    "annotations": {
+      "count": 25,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260911T233612Z.json",
+      "readback": "local/sound_shutdown_w_comments.json",
+      "exports": "local/sound_shutdown_w_all_exports.log",
+      "all24_prototypes_verified_after_annotation": true
+    }
+  },
+  "corrections": [
+    {
+      "was": "Base scalar C++ delete implicitly destroyed live resource54 allocation.",
+      "is": "Detach host ownership before manager deletion; native base never touches54.",
+      "evidence": "A817D0/A816B0; focused live-allocation check."
+    },
+    {
+      "was": "A7C1C0 pointer object lifetime restarted after callback.",
+      "is": "Restart before callback and clear afterwards.",
+      "evidence": "A7C200..A7C229; independent review."
+    },
+    {
+      "was": "Configuration listeners were copied std::strings without native record ownership.",
+      "is": "Actual16-byte listeners and retained raw pointer table.",
+      "evidence": "A7D380 producer and listener worker probe."
+    }
+  ],
+  "retained_pointer_producer": {
+    "function": "00a7f2f0",
+    "source_path": "004ed910 -> 004eddca/A83FD0 -> 004edde4 -> 004ede43/A7F2F0",
+    "slot74_assignment": "00a7f50f -> 0054d4c0",
+    "slot80_assignment": "00a7f519 -> 004e7bb0",
+    "slot80_type": "actual7Ch SoundSample from identified producer",
+    "slot74_profiles": [
+      "00d5ad58",
+      "00d5ada0",
+      "00d5ade8"
+    ],
+    "constructors": [
+      "00a7da40",
+      "00a7db80",
+      "00a7dcd0"
+    ],
+    "additional_ownership": "14h record5C, pooled name then retained sample destroyed through004c7fa0 beforeA7bf40",
+    "exhaustive_writers": false,
+    "worker_evidence": "J:/PROG/battlestations-pacific-decompile-orch4-cache-close-w/local/cache-followup-*"
+  },
+  "boundaries": [
+    "Required pointer74 channel-variant and alternate-engine virtual hosts remain to compose.",
+    "Three configuration resize functions cover shrink/equal only; no growth reconstruction claim.",
+    "Canonical containers do not reproduce all dead native headers, allocation behavior or SEH ABI.",
+    "Resource ownership slot cannot be reset/reassigned during its destructor.",
+    "Five decoded tails remain outside stored function bodies.",
+    "No application sound startup or gameplay proof."
+  ],
+  "followups": [
+    {
+      "packet": "sound_retained_channel_variants",
+      "addresses": [
+        "00a7f2f0",
+        "00a7da40",
+        "00a7db80",
+        "00a7dcd0",
+        "00a7db20",
+        "00a7dc70",
+        "00a7ddb0",
+        "00a7c5f0",
+        "004c7fa0"
+      ],
+      "scope": "Recover real pointer74 producers, owned source records, virtual update and destruction; bind alongside actual sample80 ownership."
+    },
+    {
+      "packet": "sound_application_composition",
+      "scope": "Bind A88770 and shutdown to application shared services and lifetime callbacks; current phase5 remains unimplemented."
+    }
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_shutdown_fixture_tested",
+    "validated_revision": "4931b360a9b92905335ebb8cfc14756588fc8db4",
+    "main_base": "8d115caf",
+    "integration_log": "local/sound_shutdown_w_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_shutdown_w_integrate.log",
+    "library_sha256": "58d3fc152fc1480e3e60cd7aa2f8781c60a45a762f5f5f10a5ff7d4ce16be46d",
+    "installed_fixture_log": "local/sound_shutdown_w_combined_fixture.log",
+    "fixture_revision": "4931b360a9b92905335ebb8cfc14756588fc8db4",
+    "fixture_sha256": "426637f99b00980a6ff8844ffe486332420139f7d1174153dd26991116f7a122",
+    "saved_annotations": 25,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T233916Z.json",
+    "refreshed_exports": "local/sound_shutdown_w_all_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
+}

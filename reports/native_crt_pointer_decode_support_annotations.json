@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00c04efb",
+    "before": {
+      "address": "00c04efb",
+      "function_name": "LIBCRT_unmatched_00c04efb",
+      "comment": "[BSP inventory 00c04efb] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00c04efb",
+      "name": "BSP_CRT_PointerDecodeModuleGate",
+      "evidence": "Complete108 original bytes. Actual current OS getter ignored status; signedmajor>5 permits. Otherwise actual GetModuleHandleA(nullptr), original DWORD/WORD raw mapped-header reads including zero-section optional-header size, exact aligned8 .mixcrt literal, current count reload before increment and28h advance, complete raw strcmp. Explicit borrowed context, translated frame/volatile/EFLAGS/fault/nativeSEH limits. Primary exact main archive checked: oneobject,all6CODEsections513B/5relocs,3linkedsections434B,all5bindings actualWin32IAT/alignedliteral/exactcomparatorCALLs. StrictWin32/2existingCTests/8seeds passed. No new entry/runtime/fixture/nativecallerABI/game claim. reports/native_crt_pointer_decode_support_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bfbb61",
+    "before": {
+      "address": "00bfbb61",
+      "function_name": "__get_winmajor",
+      "comment": "Library Function - Single Match\n __get_winmajor\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00bfbb61",
+      "name": "__get_winmajor",
+      "evidence": "Complete60 original bytes. Capture output before null/platform checks; null short-circuits platform. Actual owning errno22 then established returning five-zero invalid service; return22 without source output write. Success copies current major, returns0. Additional borrowed context; original provider startup/outgoing stack/nativeSEH identity not claimed. Retain correct library name. Primary exact main archive checked: oneobject,all6CODEsections513B/5relocs,3linkedsections434B,all5bindings actualWin32IAT/alignedliteral/exactcomparatorCALLs. StrictWin32/2existingCTests/8seeds passed. No new entry/runtime/fixture/nativecallerABI/game claim. reports/native_crt_pointer_decode_support_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c05920",
+    "before": {
+      "address": "00c05920",
+      "function_name": "_strcmp",
+      "comment": "Library Function - Single Match\n _strcmp\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00c05920",
+      "name": "_strcmp",
+      "evidence": "Complete136 original bytes, all linked instruction bytes exactly equal original, zero relocations. Naked cdecl two raw pointers; first byte/WORD alignment and alignedDWORD reads, unsigned -1/0/+1, original wide-read/fault boundaries and volatile/flag schedule. Retain correct library name. Primary exact main archive checked: oneobject,all6CODEsections513B/5relocs,3linkedsections434B,all5bindings actualWin32IAT/alignedliteral/exactcomparatorCALLs. StrictWin32/2existingCTests/8seeds passed. No new entry/runtime/fixture/nativecallerABI/game claim. reports/native_crt_pointer_decode_support_audit.json"
+    },
+    "status": "applied"
+  }
+]

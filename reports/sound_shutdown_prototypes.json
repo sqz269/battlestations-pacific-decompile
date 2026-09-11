@@ -1,0 +1,502 @@
+{
+  "reason": "Restore original ECX/stack inputs, AL versus EAX results and ST0 float return. Fastcall unused_edx models storage only.",
+  "entries": [
+    {
+      "address": "00a883b0",
+      "name": "BSP_SoundSystem_ScalarDeletingDestructor",
+      "proposed": "void* __fastcall BSP_SoundSystem_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a883b0 at 00a883b0\nSignature: undefined CG_scalar_deleting_dtor_00a883b0(void)\nEntry: 00a883b0\nBody: 00a883b0 - 00a883cd",
+      "apply": "Successfully set prototype for function at 00a883b0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a883b0 at 00a883b0\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a883b0(void * self, void * unused_edx, byte flags)\nEntry: 00a883b0\nBody: 00a883b0 - 00a883cd",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_ScalarDeletingDestructor at 00a883b0\nSignature: void * __fastcall BSP_SoundSystem_ScalarDeletingDestructor(void * self, void * unused_edx, byte flags)\nEntry: 00a883b0\nBody: 00a883b0 - 00a883cd",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a882c0",
+      "name": "BSP_SoundSystem_Destruct",
+      "proposed": "void __fastcall BSP_SoundSystem_Destruct(void* self)",
+      "before": "Function: FUN_00a882c0 at 00a882c0\nSignature: undefined FUN_00a882c0(void)\nEntry: 00a882c0\nBody: 00a882c0 - 00a88363",
+      "apply": "Successfully set prototype for function at 00a882c0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_Destruct at 00a882c0\nSignature: void __fastcall BSP_SoundSystem_Destruct(void * self)\nEntry: 00a882c0\nBody: 00a882c0 - 00a88363",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_Destruct at 00a882c0\nSignature: void __fastcall BSP_SoundSystem_Destruct(void * self)\nEntry: 00a882c0\nBody: 00a882c0 - 00a88363",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a817d0",
+      "name": "BSP_SoundSystemBase_ScalarDeletingDestructor",
+      "proposed": "void* __fastcall BSP_SoundSystemBase_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a817d0 at 00a817d0\nSignature: undefined CG_scalar_deleting_dtor_00a817d0(void)\nEntry: 00a817d0\nBody: 00a817d0 - 00a817ed",
+      "apply": "Successfully set prototype for function at 00a817d0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a817d0 at 00a817d0\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a817d0(void * self, void * unused_edx, byte flags)\nEntry: 00a817d0\nBody: 00a817d0 - 00a817ed",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystemBase_ScalarDeletingDestructor at 00a817d0\nSignature: void * __fastcall BSP_SoundSystemBase_ScalarDeletingDestructor(void * self, void * unused_edx, byte flags)\nEntry: 00a817d0\nBody: 00a817d0 - 00a817ed",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a816b0",
+      "name": "BSP_SoundSystem_DestructBase",
+      "proposed": "void __fastcall BSP_SoundSystem_DestructBase(void* self)",
+      "before": "Function: CG_vector_deleting_dtor_00a816b0 at 00a816b0\nSignature: undefined CG_vector_deleting_dtor_00a816b0(void)\nEntry: 00a816b0\nBody: 00a816b0 - 00a816f2",
+      "apply": "Successfully set prototype for function at 00a816b0 with __fastcall calling convention",
+      "after": "Function: CG_vector_deleting_dtor_00a816b0 at 00a816b0\nSignature: void __fastcall CG_vector_deleting_dtor_00a816b0(void * self)\nEntry: 00a816b0\nBody: 00a816b0 - 00a816f2",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_DestructBase at 00a816b0\nSignature: void __fastcall BSP_SoundSystem_DestructBase(void * self)\nEntry: 00a816b0\nBody: 00a816b0 - 00a816f2",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7b9c0",
+      "name": "BSP_SoundSystem_StopRetainedPointers",
+      "proposed": "void __fastcall BSP_SoundSystem_StopRetainedPointers(void* self)",
+      "before": "Function: FUN_00a7b9c0 at 00a7b9c0\nSignature: undefined FUN_00a7b9c0(void)\nEntry: 00a7b9c0\nBody: 00a7b9c0 - 00a7ba36",
+      "apply": "Successfully set prototype for function at 00a7b9c0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_StopRetainedPointers at 00a7b9c0\nSignature: void __fastcall BSP_SoundSystem_StopRetainedPointers(void * self)\nEntry: 00a7b9c0\nBody: 00a7b9c0 - 00a7ba36",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_StopRetainedPointers at 00a7b9c0\nSignature: void __fastcall BSP_SoundSystem_StopRetainedPointers(void * self)\nEntry: 00a7b9c0\nBody: 00a7b9c0 - 00a7ba36",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7e240",
+      "name": "BSP_SoundSystem_Close",
+      "proposed": "void __fastcall BSP_SoundSystem_Close(void* self)",
+      "before": "Function: FUN_00a7e240 at 00a7e240\nSignature: undefined FUN_00a7e240(void)\nEntry: 00a7e240\nBody: 00a7e240 - 00a7e3f9",
+      "apply": "Successfully set prototype for function at 00a7e240 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_Close at 00a7e240\nSignature: void __fastcall BSP_SoundSystem_Close(void * self)\nEntry: 00a7e240\nBody: 00a7e240 - 00a7e3f9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_Close at 00a7e240\nSignature: void __fastcall BSP_SoundSystem_Close(void * self)\nEntry: 00a7e240\nBody: 00a7e240 - 00a7e3f9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a85ae0",
+      "name": "BSP_SoundResourceOwner_ScalarDeletingDestructor",
+      "proposed": "void* __fastcall BSP_SoundResourceOwner_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a85ae0 at 00a85ae0\nSignature: undefined CG_scalar_deleting_dtor_00a85ae0(void)\nEntry: 00a85ae0\nBody: 00a85ae0 - 00a85afd",
+      "apply": "Successfully set prototype for function at 00a85ae0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a85ae0 at 00a85ae0\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a85ae0(void * self, void * unused_edx, byte flags)\nEntry: 00a85ae0\nBody: 00a85ae0 - 00a85afd",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundResourceOwner_ScalarDeletingDestructor at 00a85ae0\nSignature: void * __fastcall BSP_SoundResourceOwner_ScalarDeletingDestructor(void * self, void * unused_edx, byte flags)\nEntry: 00a85ae0\nBody: 00a85ae0 - 00a85afd",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7d380",
+      "name": "BSP_SoundListener_ConstructCopy",
+      "proposed": "void* __fastcall BSP_SoundListener_ConstructCopy(void* self, void* unused_edx, void* source)",
+      "before": "Function: FUN_00a7d380 at 00a7d380\nSignature: undefined FUN_00a7d380(void)\nEntry: 00a7d380\nBody: 00a7d380 - 00a7d40e",
+      "apply": "Successfully set prototype for function at 00a7d380 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListener_ConstructCopy at 00a7d380\nSignature: void * __fastcall BSP_SoundListener_ConstructCopy(void * self, void * unused_edx, void * source)\nEntry: 00a7d380\nBody: 00a7d380 - 00a7d40e",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListener_ConstructCopy at 00a7d380\nSignature: void * __fastcall BSP_SoundListener_ConstructCopy(void * self, void * unused_edx, void * source)\nEntry: 00a7d380\nBody: 00a7d380 - 00a7d40e",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7bce0",
+      "name": "BSP_SoundListener_Destroy",
+      "proposed": "void __fastcall BSP_SoundListener_Destroy(void* self)",
+      "before": "Function: FUN_00a7bce0 at 00a7bce0\nSignature: undefined FUN_00a7bce0(void)\nEntry: 00a7bce0\nBody: 00a7bce0 - 00a7bd46",
+      "apply": "Successfully set prototype for function at 00a7bce0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListener_Destroy at 00a7bce0\nSignature: void __fastcall BSP_SoundListener_Destroy(void * self)\nEntry: 00a7bce0\nBody: 00a7bce0 - 00a7bd46",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListener_Destroy at 00a7bce0\nSignature: void __fastcall BSP_SoundListener_Destroy(void * self)\nEntry: 00a7bce0\nBody: 00a7bce0 - 00a7bd46",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7bd50",
+      "name": "BSP_SoundListener_ScalarDeletingDestructor",
+      "proposed": "void* __fastcall BSP_SoundListener_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a7bd50 at 00a7bd50\nSignature: undefined CG_scalar_deleting_dtor_00a7bd50(void)\nEntry: 00a7bd50\nBody: 00a7bd50 - 00a7bd6d",
+      "apply": "Successfully set prototype for function at 00a7bd50 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a7bd50 at 00a7bd50\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a7bd50(void * self, void * unused_edx, byte flags)\nEntry: 00a7bd50\nBody: 00a7bd50 - 00a7bd6d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListener_ScalarDeletingDestructor at 00a7bd50\nSignature: void * __fastcall BSP_SoundListener_ScalarDeletingDestructor(void * self, void * unused_edx, byte flags)\nEntry: 00a7bd50\nBody: 00a7bd50 - 00a7bd6d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7f9f0",
+      "name": "BSP_SoundListenerTable_AppendCopy",
+      "proposed": "void __fastcall BSP_SoundListenerTable_AppendCopy(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_SoundListenerTable_AppendCopy at 00a7f9f0\nSignature: undefined BSP_SoundListenerTable_AppendCopy(void)\nEntry: 00a7f9f0\nBody: 00a7f9f0 - 00a7fac1",
+      "apply": "Successfully set prototype for function at 00a7f9f0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListenerTable_AppendCopy at 00a7f9f0\nSignature: void __fastcall BSP_SoundListenerTable_AppendCopy(void * self, void * unused_edx, void * source)\nEntry: 00a7f9f0\nBody: 00a7f9f0 - 00a7fac1",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListenerTable_AppendCopy at 00a7f9f0\nSignature: void __fastcall BSP_SoundListenerTable_AppendCopy(void * self, void * unused_edx, void * source)\nEntry: 00a7f9f0\nBody: 00a7f9f0 - 00a7fac1",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7f050",
+      "name": "BSP_SoundListenerTable_AppendRetained",
+      "proposed": "void __fastcall BSP_SoundListenerTable_AppendRetained(void* self, void* unused_edx, void** source)",
+      "before": "Function: FUN_00a7f050 at 00a7f050\nSignature: undefined FUN_00a7f050(void)\nEntry: 00a7f050\nBody: 00a7f050 - 00a7f0c2",
+      "apply": "Successfully set prototype for function at 00a7f050 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListenerTable_AppendRetained at 00a7f050\nSignature: void __fastcall BSP_SoundListenerTable_AppendRetained(void * self, void * unused_edx, void * * source)\nEntry: 00a7f050\nBody: 00a7f050 - 00a7f0c2",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListenerTable_AppendRetained at 00a7f050\nSignature: void __fastcall BSP_SoundListenerTable_AppendRetained(void * self, void * unused_edx, void * * source)\nEntry: 00a7f050\nBody: 00a7f050 - 00a7f0c2",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7d750",
+      "name": "BSP_SoundListenerTable_Reserve",
+      "proposed": "void __fastcall BSP_SoundListenerTable_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7d750 at 00a7d750\nSignature: undefined FUN_00a7d750(void)\nEntry: 00a7d750\nBody: 00a7d750 - 00a7d843",
+      "apply": "Successfully set prototype for function at 00a7d750 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListenerTable_Reserve at 00a7d750\nSignature: void __fastcall BSP_SoundListenerTable_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a7d750\nBody: 00a7d750 - 00a7d843",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListenerTable_Reserve at 00a7d750\nSignature: void __fastcall BSP_SoundListenerTable_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a7d750\nBody: 00a7d750 - 00a7d843",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7d910",
+      "name": "BSP_SoundListenerTable_Resize",
+      "proposed": "void __fastcall BSP_SoundListenerTable_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7d910 at 00a7d910\nSignature: undefined FUN_00a7d910(void)\nEntry: 00a7d910\nBody: 00a7d910 - 00a7d98d",
+      "apply": "Successfully set prototype for function at 00a7d910 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListenerTable_Resize at 00a7d910\nSignature: void __fastcall BSP_SoundListenerTable_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a7d910\nBody: 00a7d910 - 00a7d98d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListenerTable_Resize at 00a7d910\nSignature: void __fastcall BSP_SoundListenerTable_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a7d910\nBody: 00a7d910 - 00a7d98d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7fe00",
+      "name": "BSP_SoundListenerOwner_Destroy",
+      "proposed": "void __fastcall BSP_SoundListenerOwner_Destroy(void* self)",
+      "before": "Function: FUN_00a7fe00 at 00a7fe00\nSignature: undefined FUN_00a7fe00(void)\nEntry: 00a7fe00\nBody: 00a7fe00 - 00a7fe39",
+      "apply": "Successfully set prototype for function at 00a7fe00 with __fastcall calling convention",
+      "after": "Function: BSP_SoundListenerOwner_Destroy at 00a7fe00\nSignature: void __fastcall BSP_SoundListenerOwner_Destroy(void * self)\nEntry: 00a7fe00\nBody: 00a7fe00 - 00a7fe39",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundListenerOwner_Destroy at 00a7fe00\nSignature: void __fastcall BSP_SoundListenerOwner_Destroy(void * self)\nEntry: 00a7fe00\nBody: 00a7fe00 - 00a7fe39",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7f560",
+      "name": "BSP_SoundConfigurationEffects_Shutdown",
+      "proposed": "void __fastcall BSP_SoundConfigurationEffects_Shutdown(void* self)",
+      "before": "Function: FUN_00a7f560 at 00a7f560\nSignature: undefined FUN_00a7f560(void)\nEntry: 00a7f560\nBody: 00a7f560 - 00a7f63d",
+      "apply": "Successfully set prototype for function at 00a7f560 with __fastcall calling convention",
+      "after": "Function: BSP_SoundConfigurationEffects_Shutdown at 00a7f560\nSignature: void __fastcall BSP_SoundConfigurationEffects_Shutdown(void * self)\nEntry: 00a7f560\nBody: 00a7f560 - 00a7f63d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundConfigurationEffects_Shutdown at 00a7f560\nSignature: void __fastcall BSP_SoundConfigurationEffects_Shutdown(void * self)\nEntry: 00a7f560\nBody: 00a7f560 - 00a7f63d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7aaf0",
+      "name": "BSP_SoundConfiguredGroup_ReleaseEffects",
+      "proposed": "void __fastcall BSP_SoundConfiguredGroup_ReleaseEffects(void* self)",
+      "before": "Function: FUN_00a7aaf0 at 00a7aaf0\nSignature: undefined FUN_00a7aaf0(void)\nEntry: 00a7aaf0\nBody: 00a7aaf0 - 00a7ab84",
+      "apply": "Successfully set prototype for function at 00a7aaf0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundConfiguredGroup_ReleaseEffects at 00a7aaf0\nSignature: void __fastcall BSP_SoundConfiguredGroup_ReleaseEffects(void * self)\nEntry: 00a7aaf0\nBody: 00a7aaf0 - 00a7ab84",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundConfiguredGroup_ReleaseEffects at 00a7aaf0\nSignature: void __fastcall BSP_SoundConfiguredGroup_ReleaseEffects(void * self)\nEntry: 00a7aaf0\nBody: 00a7aaf0 - 00a7ab84",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7bfe0",
+      "name": "BSP_SoundConfiguredGroup_DestroyStorage",
+      "proposed": "void __fastcall BSP_SoundConfiguredGroup_DestroyStorage(void* self)",
+      "before": "Function: FUN_00a7bfe0 at 00a7bfe0\nSignature: undefined FUN_00a7bfe0(void)\nEntry: 00a7bfe0\nBody: 00a7bfe0 - 00a7c019",
+      "apply": "Successfully set prototype for function at 00a7bfe0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundConfiguredGroup_DestroyStorage at 00a7bfe0\nSignature: void __fastcall BSP_SoundConfiguredGroup_DestroyStorage(void * self)\nEntry: 00a7bfe0\nBody: 00a7bfe0 - 00a7c019",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundConfiguredGroup_DestroyStorage at 00a7bfe0\nSignature: void __fastcall BSP_SoundConfiguredGroup_DestroyStorage(void * self)\nEntry: 00a7bfe0\nBody: 00a7bfe0 - 00a7c019",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7c6c0",
+      "name": "BSP_SoundConfiguredType_DestroyStorage",
+      "proposed": "void __fastcall BSP_SoundConfiguredType_DestroyStorage(void* self)",
+      "before": "Function: FUN_00a7c6c0 at 00a7c6c0\nSignature: undefined FUN_00a7c6c0(void)\nEntry: 00a7c6c0\nBody: 00a7c6c0 - 00a7c6f9",
+      "apply": "Successfully set prototype for function at 00a7c6c0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundConfiguredType_DestroyStorage at 00a7c6c0\nSignature: void __fastcall BSP_SoundConfiguredType_DestroyStorage(void * self)\nEntry: 00a7c6c0\nBody: 00a7c6c0 - 00a7c6f9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundConfiguredType_DestroyStorage at 00a7c6c0\nSignature: void __fastcall BSP_SoundConfiguredType_DestroyStorage(void * self)\nEntry: 00a7c6c0\nBody: 00a7c6c0 - 00a7c6f9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7a980",
+      "name": "BSP_SoundSystemDsps_Resize_Provisional",
+      "proposed": "void __fastcall BSP_SoundSystemDsps_Resize_Provisional(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7a980 at 00a7a980\nSignature: undefined FUN_00a7a980(void)\nEntry: 00a7a980\nBody: 00a7a980 - 00a7a9cf",
+      "apply": "Successfully set prototype for function at 00a7a980 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystemDsps_Resize_Provisional at 00a7a980\nSignature: void __fastcall BSP_SoundSystemDsps_Resize_Provisional(void * self, void * unused_edx, int requested)\nEntry: 00a7a980\nBody: 00a7a980 - 00a7a9cf",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystemDsps_Resize_Provisional at 00a7a980\nSignature: void __fastcall BSP_SoundSystemDsps_Resize_Provisional(void * self, void * unused_edx, int requested)\nEntry: 00a7a980\nBody: 00a7a980 - 00a7a9cf",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7f240",
+      "name": "BSP_SoundConfiguredGroups_Resize_Provisional",
+      "proposed": "void __fastcall BSP_SoundConfiguredGroups_Resize_Provisional(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7f240 at 00a7f240\nSignature: undefined FUN_00a7f240(void)\nEntry: 00a7f240\nBody: 00a7f240 - 00a7f2b7",
+      "apply": "Successfully set prototype for function at 00a7f240 with __fastcall calling convention",
+      "after": "Function: BSP_SoundConfiguredGroups_Resize_Provisional at 00a7f240\nSignature: void __fastcall BSP_SoundConfiguredGroups_Resize_Provisional(void * self, void * unused_edx, int requested)\nEntry: 00a7f240\nBody: 00a7f240 - 00a7f2b7",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundConfiguredGroups_Resize_Provisional at 00a7f240\nSignature: void __fastcall BSP_SoundConfiguredGroups_Resize_Provisional(void * self, void * unused_edx, int requested)\nEntry: 00a7f240\nBody: 00a7f240 - 00a7f2b7",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7fcc0",
+      "name": "BSP_SoundConfiguredTypes_Resize_Provisional",
+      "proposed": "void __fastcall BSP_SoundConfiguredTypes_Resize_Provisional(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7fcc0 at 00a7fcc0\nSignature: undefined FUN_00a7fcc0(void)\nEntry: 00a7fcc0\nBody: 00a7fcc0 - 00a7fd30",
+      "apply": "Successfully set prototype for function at 00a7fcc0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundConfiguredTypes_Resize_Provisional at 00a7fcc0\nSignature: void __fastcall BSP_SoundConfiguredTypes_Resize_Provisional(void * self, void * unused_edx, int requested)\nEntry: 00a7fcc0\nBody: 00a7fcc0 - 00a7fd30",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundConfiguredTypes_Resize_Provisional at 00a7fcc0\nSignature: void __fastcall BSP_SoundConfiguredTypes_Resize_Provisional(void * self, void * unused_edx, int requested)\nEntry: 00a7fcc0\nBody: 00a7fcc0 - 00a7fd30",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a886c0",
+      "name": "BSP_SoundSampleCache_Destroy",
+      "proposed": "void __fastcall BSP_SoundSampleCache_Destroy(void* self)",
+      "before": "Function: FUN_00a886c0 at 00a886c0\nSignature: undefined FUN_00a886c0(void)\nEntry: 00a886c0\nBody: 00a886c0 - 00a88718",
+      "apply": "Successfully set prototype for function at 00a886c0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleCache_Destroy at 00a886c0\nSignature: void __fastcall BSP_SoundSampleCache_Destroy(void * self)\nEntry: 00a886c0\nBody: 00a886c0 - 00a88718",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_Destroy at 00a886c0\nSignature: void __fastcall BSP_SoundSampleCache_Destroy(void * self)\nEntry: 00a886c0\nBody: 00a886c0 - 00a88718",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a88750",
+      "name": "BSP_SoundSampleCache_ScalarDeletingDestructor",
+      "proposed": "void* __fastcall BSP_SoundSampleCache_ScalarDeletingDestructor(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a88750 at 00a88750\nSignature: undefined CG_scalar_deleting_dtor_00a88750(void)\nEntry: 00a88750\nBody: 00a88750 - 00a8876d",
+      "apply": "Successfully set prototype for function at 00a88750 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a88750 at 00a88750\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a88750(void * self, void * unused_edx, uint flags)\nEntry: 00a88750\nBody: 00a88750 - 00a8876d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_ScalarDeletingDestructor at 00a88750\nSignature: void * __fastcall BSP_SoundSampleCache_ScalarDeletingDestructor(void * self, void * unused_edx, uint flags)\nEntry: 00a88750\nBody: 00a88750 - 00a8876d",
+      "verified_after_annotation": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a883b0",
+        "prototype": "void* __fastcall BSP_SoundSystem_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a883b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a882c0",
+        "prototype": "void __fastcall BSP_SoundSystem_Destruct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a882c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a817d0",
+        "prototype": "void* __fastcall BSP_SoundSystemBase_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a817d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a816b0",
+        "prototype": "void __fastcall BSP_SoundSystem_DestructBase(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a816b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7b9c0",
+        "prototype": "void __fastcall BSP_SoundSystem_StopRetainedPointers(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7b9c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7e240",
+        "prototype": "void __fastcall BSP_SoundSystem_Close(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7e240 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a85ae0",
+        "prototype": "void* __fastcall BSP_SoundResourceOwner_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a85ae0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7d380",
+        "prototype": "void* __fastcall BSP_SoundListener_ConstructCopy(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7d380 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7bce0",
+        "prototype": "void __fastcall BSP_SoundListener_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7bce0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7bd50",
+        "prototype": "void* __fastcall BSP_SoundListener_ScalarDeletingDestructor(void* self, void* unused_edx, byte flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7bd50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f9f0",
+        "prototype": "void __fastcall BSP_SoundListenerTable_AppendCopy(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f9f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f050",
+        "prototype": "void __fastcall BSP_SoundListenerTable_AppendRetained(void* self, void* unused_edx, void** source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f050 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7d750",
+        "prototype": "void __fastcall BSP_SoundListenerTable_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7d750 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7d910",
+        "prototype": "void __fastcall BSP_SoundListenerTable_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7d910 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7fe00",
+        "prototype": "void __fastcall BSP_SoundListenerOwner_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7fe00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f560",
+        "prototype": "void __fastcall BSP_SoundConfigurationEffects_Shutdown(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f560 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7aaf0",
+        "prototype": "void __fastcall BSP_SoundConfiguredGroup_ReleaseEffects(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7aaf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7bfe0",
+        "prototype": "void __fastcall BSP_SoundConfiguredGroup_DestroyStorage(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7bfe0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7c6c0",
+        "prototype": "void __fastcall BSP_SoundConfiguredType_DestroyStorage(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7c6c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7a980",
+        "prototype": "void __fastcall BSP_SoundSystemDsps_Resize_Provisional(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7a980 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f240",
+        "prototype": "void __fastcall BSP_SoundConfiguredGroups_Resize_Provisional(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f240 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7fcc0",
+        "prototype": "void __fastcall BSP_SoundConfiguredTypes_Resize_Provisional(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7fcc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a886c0",
+        "prototype": "void __fastcall BSP_SoundSampleCache_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a886c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a88750",
+        "prototype": "void* __fastcall BSP_SoundSampleCache_ScalarDeletingDestructor(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a88750 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

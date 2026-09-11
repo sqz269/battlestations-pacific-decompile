@@ -59,12 +59,12 @@ void call_with_number(GuiLuaHost& lua, const GuiLuaRef& config,
     check_memory(result, fmod);
 }
 
-bool listener_matches(const std::string& stored, const char* name,
+bool listener_matches(const NativeString& stored, const char* name,
     SoundLevelNameHost& names)
 {
-    if (stored.empty()) return !name || !*name;
-    if (!name) return false;
-    return names.compare_class_name_case_insensitive(stored.c_str(), name) == 0;
+    if (!stored.data()) return !name || !*name;
+    if (!name) return stored.length() == 0;
+    return names.compare_class_name_case_insensitive(stored.data(), name) == 0;
 }
 
 struct NativeName {
@@ -76,24 +76,15 @@ struct NativeName {
     ~NativeName() { value.release_to(crt_string_storage()); }
 };
 
-void append_sound_listener_00a7f9f0(SoundConfigurationState& state, const char* name,
-    SoundLevelNameHost& names)
-{
-    // 00A7F9F0 compares all equal-length nonempty names but ignores results:
-    // duplicate listener entries are still appended.
-    const std::string copied = name ? name : "";
-    for (const auto& existing : state.listeners_ac) {
-        if (existing.size() == copied.size() && !existing.empty())
-            (void)names.compare_class_name_case_insensitive(
-                existing.c_str(), copied.c_str());
+struct ConfiguredListenerTemporary {
+    NativeStringStorage& strings;
+    SoundListener value;
+    ConfiguredListenerTemporary(NativeStringStorage& storage, const char* text)
+        : strings(storage) {
+        value.name_08.assign_0041e870(strings, text ? text : "");
     }
-    if (state.listeners_ac.size() ==
-        static_cast<std::size_t>(state.listener_capacity_b4)) {
-        state.listener_capacity_b4 = std::max(2 * state.listener_capacity_b4, 1);
-        state.listeners_ac.reserve(state.listener_capacity_b4);
-    }
-    state.listeners_ac.push_back(copied);
-}
+    ~ConfiguredListenerTemporary() { destroy_sound_listener_00a7bce0(value, strings); }
+};
 
 struct DspParameter {
     const char* key;
@@ -215,7 +206,7 @@ std::int32_t find_sound_listener_00a7ae00(const SoundConfigurationState& state,
     const char* name, SoundLevelNameHost& names)
 {
     for (std::size_t index = 0; index < state.listeners_ac.size(); ++index)
-        if (listener_matches(state.listeners_ac[index], name, names))
+        if (listener_matches(state.listeners_ac[index]->name_08, name, names))
             return static_cast<std::int32_t>(index);
     return 0;
 }
@@ -225,7 +216,7 @@ void select_sound_listener_00a7ae80(SoundConfigurationState& state,
 {
     state.selected_listener_104 = -1;
     for (std::size_t index = 0; index < state.listeners_ac.size(); ++index) {
-        if (!listener_matches(state.listeners_ac[index], name, names)) continue;
+        if (!listener_matches(state.listeners_ac[index]->name_08, name, names)) continue;
         state.selected_listener_104 = static_cast<std::int32_t>(index);
         state.selected_listener_108 = static_cast<std::int32_t>(index);
         return;
@@ -307,14 +298,18 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
         LuaRefOwner listeners{lua, lua.get_by_name(globals.ref, "Listeners")};
         each_lua_entry(lua, listeners.ref, [&](const GuiLuaRef&, const GuiLuaRef& value) {
             const char* text = lua.to_string(value);
-            const std::string name = text ? text : "";
-            append_sound_listener_00a7f9f0(state, name.c_str(), fmod);
-            const auto index = find_sound_listener_00a7ae00(state, name.c_str(), fmod);
+            NativeStringStorage& strings = state.listeners_ac.string_storage();
+            ConfiguredListenerTemporary temporary(strings, text);
+            append_sound_listener_00a7f9f0(state, temporary.value, fmod, strings);
+            const char* name = temporary.value.name_08.data();
+            if (!name) name = "";
+            const auto index = find_sound_listener_00a7ae00(state, name, fmod);
             if (state.current_listener_10c != index) {
                 state.previous_listener_110 = state.current_listener_10c;
                 state.current_listener_10c = index;
-                select_sound_listener_00a7ae80(state, name.c_str(), fmod);
+                select_sound_listener_00a7ae80(state, name, fmod);
             }
+            // Native releases the temporary name only after find/select, A80C2F..6A.
         });
     }
     {
