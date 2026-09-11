@@ -90,7 +90,7 @@
       "names_and_evidence_readback_verified": true,
       "before_log": "local\\ghidra-annotations-20260911T073948Z.json",
       "readback": "local/dialog_wave_comments.json",
-      "exports": "force refresh requested for all40; local/dialog_wave_exports.log"
+      "exports": "All40 force-refreshed successfully; local/dialog_wave_exports.log"
     },
     "repairs": [
       "reports/dialog_config_flow_repair.json",
@@ -171,5 +171,22 @@
     "Message resource loading and observer dispatch population",
     "Actual world handle-table owners",
     "Running game rebuild and gameplay validation"
-  ]
+  ],
+  "final_integration": {
+    "tested_revision": "e4f3add2231d1000815e3af26f75efc86c73e678",
+    "main_after_integration": "e4f3add2231d1000815e3af26f75efc86c73e678",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "log": "local/dialog_integrate_final.log",
+    "library_sha256": "ee9bb0a206dab17013d3300911dbf9d7b4254c9b45d2608331ca3e6945b1a2d8",
+    "fixture_scope": "Five focused fixtures used the earlier same-wave library documented above; final merge incorporates other orchestrators startup/input/renderer work. No new gameplay/runtime validation.",
+    "ghidra_applied_again": "40 names saved by integration helper; main/local/ghidra-annotations-20260911T074218Z.json",
+    "index": {
+      "functions": 62655,
+      "calls": 131973,
+      "datarefs": 32747,
+      "docs": 597,
+      "doc_addresses": 10857
+    }
+  }
 }

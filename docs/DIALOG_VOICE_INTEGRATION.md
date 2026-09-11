@@ -39,6 +39,12 @@ Source evidence, native ABIs, scope and validation are recorded in:
 The combined build, fixture results, exact revisions and Ghidra readback are
 recorded in `reports/dialog_voice_integration.json`. Existing tests and focused
 fixtures establish the stated code paths; they do not establish a running game.
+The integration helper built `e4f3add2231d1000815e3af26f75efc86c73e678`
+successfully and both existing tests passed. All40 reviewed names/evidence
+comments were saved and read back with previous comments preserved, and their
+exports refreshed. This supersedes the corresponding remaining-dependency
+entries in `PANEL_OBSERVER_INTEGRATION.md` for publication, message resolution,
+dialog data loading and canonical edge deletion.
 
 Remaining work includes the panel owner constructor `00452660`, actual palette
 sentinel/lifetime helpers `0044AB50` and their cleanup, and the `004DC6A0`
