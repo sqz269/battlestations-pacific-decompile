@@ -12,7 +12,7 @@
       "end": "00ab923f",
       "coverage": "complete",
       "abi": "ECX Text; destination/source UTF16 wrappers, float width; EAX destination; RET0Ch at00AB9226 and00AB923D (length3)",
-      "evidence": "Complete supported scalar/string normal path; standard string storage, finite signed32 arithmetic, null-free strings; no pool/SEH or geometry ABI"
+      "evidence": "Complete supported scalar/string normal path; standard string storage, native masked FISTP conversion and low16 narrowing, null-free strings; no pool/SEH or geometry ABI"
     },
     {
       "address": "00abb000",
@@ -35,7 +35,7 @@
     {
       "was": "FONT_CONTEXT_OWNERSHIP.md and prior00ABB000 name evidence said ordered zero width selects context+20.",
       "evidence": "00D7A260 bytes00 00 80 BF; UCOMISS at00ABB065 followed by LAHF00ABB06C, TEST AH,44h00ABB06D, JP00ABB070; both command sites load this same constant.",
-      "is": "Ordered -1.0f selects context+20; zero remains zero; unordered NaN retains its width and is rejected by the new finite-domain guard."
+      "is": "Ordered -1.0f selects context+20; zero remains zero; NaN stays unchanged and reaches native FISTP. Masked invalid gives integer-indefinite then low16 zero."
     }
   ],
   "host_steps": [
@@ -804,7 +804,18 @@
   "limits": [
     "Semantic C++ interface, not original ABI.",
     "Source-cache equality reuses existing ASCII-only key fold.",
-    "Malformed strings, nonfinite arithmetic, signed32 conversion failures and pool/SEH behavior excluded.",
+    "Malformed strings, exact unmasked trap timing and native pool/SEH behavior excluded; masked invalid/overflow follows native FISTP.",
     "No claim that font/resource/render owners or complete command GUI adapter are implemented."
-  ]
+  ],
+  "primary_numeric_review": {
+    "change": "Removed invented finite/range guards and extra FCOMIP comparisons; direct native FISTP under caller masks",
+    "evidence": [
+      "00ab8f51",
+      "00ab8ff4",
+      "00ab9062",
+      "00ab90e4"
+    ],
+    "focused_probe": "PASS; local/text_ellipsis_probe.log: public ellipsis NaN width, low16/dot-reservation wrapping, invalid flag and control-word restoration",
+    "limits": "Exact unmasked trap timing, malformed strings and native pool/SEH remain outside projection"
+  }
 }

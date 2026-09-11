@@ -1,0 +1,33 @@
+{
+  "branch":"agent/orch5-20260911",
+  "status":"reviewed_strict_compile_and_focused_probes_passed_source_registration_pending",
+  "worker_commits":{"ellipsis":"68ac50d5","style":"5696c25a","content_prefix_ready_dependency_pending":"c79cb75b"},
+  "modules":["src/gui_widget_detach.cpp","src/gui_text_ellipsis.cpp","src/gui_text_style.cpp"],
+  "validation":{
+    "strict_new_source_compilation":true,
+    "existing_registered_targets_build_passed":true,
+    "existing_tests_passed":["reconstructed_math","native_math_differential"],
+    "normal_new_source_registration":false,
+    "normal_new_source_combined_build":false,
+    "numeric_call_rows":92,
+    "direct_calls_verified":90,
+    "indirect_targets_separately_grounded":2,
+    "failed_call_rows":0,
+    "focused_probes":["Actual retained-owner detach allocation/hierarchy","Public ellipsis masked-NaN low16/dot wrap and control word"],
+    "new_persistent_test_targets":0,
+    "native_abi_compatible":false,
+    "game_validated":false,
+    "logs":["local/gui_widget_detach_probe.log","local/text_ellipsis_probe.log","local/orch5_text_call_verification.log","local/orch5_text_existing_targets_build.log"]
+  },
+  "ghidra":{
+    "project":"C:/Users/sqz269/bsp.gpr",
+    "program":"/battlestationspacific.exe",
+    "saved":true,
+    "new_function":"00ab7200",
+    "flow_repair_site":"00a9bdc0",
+    "records":["reports/gui_widget_detach_flow.json","reports/orch5_text_style_definitions.json","reports/orch5_text_annotations.json","reports/orch5_text_source_name_annotation.json"],
+    "affected_exports_refreshed":true
+  },
+  "registration_lease":"agent/orch3-20260910:orch3_gamepad_event_owners_ad owns cmake/startup.cmake",
+  "remaining":["normal source registration after lease release","actual buffer/material initializer integration","canonical Text lifetime/factory","nonempty text geometry continuation","complete command bar and menu runtime binding","gameplay validation"]
+}

@@ -17,9 +17,9 @@ namespace bsp {
 //
 // Requires the decoded FontData belonging to widget.font, with both identities
 // stable for the whole call (including locale callbacks). The caller supplies
-// the actual locale tables/runtime. Null-free text,
-// signed32 length, finite scalars and signed32 arithmetic conversions form the
-// supported domain; rejected inputs throw. Float environment/trap timing,
+// the actual locale tables/runtime. Text must be null-free and fit signed32
+// length. Native FISTP handles overflow/NaN/infinity using the caller's x87
+// masks; masked invalid yields integer-indefinite then low16 zero. Trap timing,
 // native string pools and SEH are excluded. No geometry or owner is created.
 // Names are hypotheses; see docs/GUI_TEXT_ELLIPSIS.md.
 std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
@@ -32,7 +32,7 @@ std::u16string ellipsize_gui_text_00ab8f00(const GuiTextWidget& widget,
 //00AB8F00. Same cached source returns nullopt without reconsidering width,
 // font or localize. An engaged empty string is a real changed-source update.
 // Zero is an explicit zero target; NaN does not select widget width and the
-// finite-domain guard rejects it after the native conversion callback.
+// native FISTP consumes it after the native conversion callback.
 //
 // The caller MUST submit an engaged result to the actual00ABA8D0 owner, then
 // invoke Text virtual50 using its CURRENT color, even if geometry is unchanged.

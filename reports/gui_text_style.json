@@ -1,42 +1,182 @@
 {
-  "packet":"orch5_gui_text_style",
-  "status":"concrete_style_operations_strict_compile_passed",
-  "ghidra_project":"C:/Users/sqz269/bsp.gpr",
-  "ghidra_program":"/battlestationspacific.exe",
-  "ghidra_mutations":false,
-  "functions":[
-    {"address":"00ab6b50","name":"BSP_GuiText_SetColor","coverage":"complete for actual canonical model/material owners","original_abi":"ECX Text; RGBA pointer stack; RET4","last_instruction":"00ab6bc1","last_instruction_length":3,"end_inclusive":"00ab6bc3","source":"src/gui_text_style.cpp"},
-    {"address":"00ab6c30","name":"BSP_GuiText_ConfigureShadow","coverage":"complete; exact raw enable byte","original_abi":"ECX Text; stack enable low byte, position DWORD, offset float, color pointer; RET10h","last_instruction":"00ab6caa","last_instruction_length":3,"end_inclusive":"00ab6cac","source":"src/gui_text_style.cpp"},
-    {"address":"00ab7200","name":"BSP_GuiText_ApplyStateColor","coverage":"partial input domain: complete body for hidden widgets or non-hidden state0..3; unsupported non-hidden other-index raw access00AB7215..00AB7220","status":"partial_projection","original_abi":"ECX Text; state DWORD stack; RET4","last_instruction":"00ab7281","last_instruction_length":3,"end_inclusive":"00ab7283","length":132,"source":"src/gui_text_style.cpp"}
+  "packet": "orch5_gui_text_style",
+  "status": "concrete_style_operations_strict_compile_passed",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00ab6b50",
+      "name": "BSP_GuiText_SetColor",
+      "coverage": "complete for actual canonical model/material owners",
+      "original_abi": "ECX Text; RGBA pointer stack; RET4",
+      "last_instruction": "00ab6bc1",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab6bc3",
+      "source": "src/gui_text_style.cpp"
+    },
+    {
+      "address": "00ab6c30",
+      "name": "BSP_GuiText_ConfigureShadow",
+      "coverage": "complete; exact raw enable byte",
+      "original_abi": "ECX Text; stack enable low byte, position DWORD, offset float, color pointer; RET10h",
+      "last_instruction": "00ab6caa",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab6cac",
+      "source": "src/gui_text_style.cpp"
+    },
+    {
+      "address": "00ab7200",
+      "name": "BSP_GuiText_ApplyStateColor",
+      "coverage": "partial input domain: complete body for hidden widgets or non-hidden state0..3; unsupported non-hidden other-index raw access00AB7215..00AB7220",
+      "status": "partial_projection",
+      "original_abi": "ECX Text; state DWORD stack; RET4",
+      "last_instruction": "00ab7281",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab7283",
+      "length": 132,
+      "source": "src/gui_text_style.cpp"
+    }
   ],
-  "host_steps":[
-    {"function":"00ab6b50","address":"00ab6b59","native":"00aa6870","binding":"same-owner base color publication and existing Text base-color mirror"},
-    {"function":"00ab6b50","address":"00ab6b68","native":"00b74650","binding":"actual shadow model geometry test"},
-    {"function":"00ab6b50","address":"00ab6b79","native":"00b74640","binding":"actual shadow model geometry"},
-    {"function":"00ab6b50","address":"00ab6b80","native":"00b72b40","binding":"actual geometry count58"},
-    {"function":"00ab6b50","address":"00ab6b93","native":"00b74640","binding":"reload shadow model geometry"},
-    {"function":"00ab6b50","address":"00ab6b9a","native":"00b732c0","binding":"actual element zero"},
-    {"function":"00ab6b50","address":"00ab6bb3","native":"00b179f0","binding":"same live NativeMaterialReference diffuse alias; write only alpha"},
-    {"function":"00ab6c30","address":"00ab6c8e","native":"00b6e680","binding":"actual node parent with original raw enable argument"},
-    {"function":"00ab6c30","address":"00ab6ca4","native":"00b6d890","binding":"reload byte and shadow slot before optional root clear"},
-    {"function":"00ab7200","address":"00ab727c","native":"00ab6b50","dispatch":"current Text virtual50","vtable_evidence":"00D5C718 50 6B AB 00"}
+  "host_steps": [
+    {
+      "function": "00ab6b50",
+      "address": "00ab6b59",
+      "native": "00aa6870",
+      "binding": "same-owner base color publication and existing Text base-color mirror"
+    },
+    {
+      "function": "00ab6b50",
+      "address": "00ab6b68",
+      "native": "00b74650",
+      "binding": "actual shadow model geometry test"
+    },
+    {
+      "function": "00ab6b50",
+      "address": "00ab6b79",
+      "native": "00b74640",
+      "binding": "actual shadow model geometry"
+    },
+    {
+      "function": "00ab6b50",
+      "address": "00ab6b80",
+      "native": "00b72b40",
+      "binding": "actual geometry count58"
+    },
+    {
+      "function": "00ab6b50",
+      "address": "00ab6b93",
+      "native": "00b74640",
+      "binding": "reload shadow model geometry"
+    },
+    {
+      "function": "00ab6b50",
+      "address": "00ab6b9a",
+      "native": "00b732c0",
+      "binding": "actual element zero"
+    },
+    {
+      "function": "00ab6b50",
+      "address": "00ab6bb3",
+      "native": "00b179f0",
+      "binding": "same live NativeMaterialReference diffuse alias; write only alpha"
+    },
+    {
+      "function": "00ab6c30",
+      "address": "00ab6c8e",
+      "native": "00b6e680",
+      "binding": "actual node parent with original raw enable argument"
+    },
+    {
+      "function": "00ab6c30",
+      "address": "00ab6ca4",
+      "native": "00b6d890",
+      "binding": "reload byte and shadow slot before optional root clear"
+    },
+    {
+      "function": "00ab7200",
+      "address": "00ab727c",
+      "native": "00ab6b50",
+      "dispatch": "current Text virtual50",
+      "vtable_evidence": "00D5C718 50 6B AB 00"
+    }
   ],
-  "shadow_config_callers":[
-    {"function":"00549fc0","address":"0054a09a","native":"00ab6c30","arguments":"raw enable from+61Fh, position0, offset, color; callee RET10h"},
-    {"function":"0054b530","address":"0054bc69","native":"00ab6c30","arguments":"enabled1, position0, offset00CE7638, black alpha1; RET10h"},
-    {"function":"0054b530","address":"0054be4e","native":"00ab6c30","arguments":"enabled1, position0, offset00CE7638, black alpha1; RET10h"},
-    {"function":"00ab98f0","address":"00ab9e05","native":"00ab6c30","arguments":"enabled1 from EBX assigned00AB9D9D, position0, default offset, black alpha1; RET10h"}
+  "shadow_config_callers": [
+    {
+      "function": "00549fc0",
+      "address": "0054a09a",
+      "native": "00ab6c30",
+      "arguments": "raw enable from+61Fh, position0, offset, color; callee RET10h"
+    },
+    {
+      "function": "0054b530",
+      "address": "0054bc69",
+      "native": "00ab6c30",
+      "arguments": "enabled1, position0, offset00CE7638, black alpha1; RET10h"
+    },
+    {
+      "function": "0054b530",
+      "address": "0054be4e",
+      "native": "00ab6c30",
+      "arguments": "enabled1, position0, offset00CE7638, black alpha1; RET10h"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9e05",
+      "native": "00ab6c30",
+      "arguments": "enabled1 from EBX assigned00AB9D9D, position0, default offset, black alpha1; RET10h"
+    }
   ],
-  "no_ghidra_function":[
-    {"address":"00ab7200","last_instruction":"00ab7281","last_instruction_length":3,"end_inclusive":"00ab7283","length":132,"evidence":"Full disk listing and live bytes matched;00AB7284 is INT3 padding. Parent official locked definition needed; worker read-only."}
+  "producer_evidence": {
+    "owner77": "00A9C380 visible argument true writes0 at00A9C3D2; false writes1 at00A9C3E7; existing scene_flags.hidden reused",
+    "shadow_enable": "00AB6C4D stores raw CL; GuiTextWidget.shadowed changed to uint8_t rather than adding duplicate state",
+    "state_colors": "existing MISColors reader and constructor fields normal11C/focus12C/selected13C/disabled14C"
+  },
+  "corrections": [
+    {
+      "was": "GuiTextWidget.shadowed bool normalized raw enable bytes",
+      "is": "same canonical field is uint8_t",
+      "evidence": "00AB6C4D raw-byte store; caller0054A090 MOVZX from+61Fh"
+    },
+    {
+      "was": "Text state-color consumer and slot80 unbound",
+      "is": "raw00AB7200 uses actual hidden flag, chooses existing color and publishes concrete Text50",
+      "evidence": "00AB7207/720D/721A, state1 x87 block7243..726F, call727C and vtable00D5C748"
+    }
   ],
-  "producer_evidence":{"owner77":"00A9C380 visible argument true writes0 at00A9C3D2; false writes1 at00A9C3E7; existing scene_flags.hidden reused", "shadow_enable":"00AB6C4D stores raw CL; GuiTextWidget.shadowed changed to uint8_t rather than adding duplicate state", "state_colors":"existing MISColors reader and constructor fields normal11C/focus12C/selected13C/disabled14C"},
-  "corrections":[
-    {"was":"GuiTextWidget.shadowed bool normalized raw enable bytes","is":"same canonical field is uint8_t","evidence":"00AB6C4D raw-byte store; caller0054A090 MOVZX from+61Fh"},
-    {"was":"Text state-color consumer and slot80 unbound","is":"raw00AB7200 uses actual hidden flag, chooses existing color and publishes concrete Text50","evidence":"00AB7207/720D/721A, state1 x87 block7243..726F, call727C and vtable00D5C748"}
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 W4 WX O2 fp:strict; src/gui_text_style.cpp and existing src/gui_text.cpp",
+    "report_call_verifier": "After locked raw definition:14 numeric rows,0 failed;13 direct calls and1 indirect site separately grounded",
+    "new_tests": 0,
+    "new_test_targets": 0,
+    "executed_new_operations": false,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "standard_combined_build": "primary integration"
+  },
+  "remaining_prerequisites": [
+    "canonical Text type/factory/lifetime binding",
+    "actual secondary model+188 allocation and lifetime",
+    "actual font/glyph geometry and material construction",
+    "existing actual node/material domains",
+    "caller association of the existing Text projection with its same widget owner"
   ],
-  "validation":{"strict_compile":"PASS MSVC Win32 W4 WX O2 fp:strict; src/gui_text_style.cpp and existing src/gui_text.cpp","report_call_verifier":"RUN:14 rows checked,13 passed,1 failed solely because raw00AB727C has no Ghidra containing function. Parent definition of00AB7200 required before passing rerun.","new_tests":0,"new_test_targets":0,"executed_new_operations":false,"native_differential":false,"abi_compatible":false,"game_validated":false,"standard_combined_build":"primary integration"},
-  "remaining_prerequisites":["canonical Text type/factory/lifetime binding", "actual secondary model+188 allocation and lifetime", "actual font/glyph geometry and material construction", "existing actual node/material domains", "caller association of the existing Text projection with its same widget owner"],
-  "uncertainty":"State80 non-hidden indices outside0..3 are explicitly unsupported. Native ABI/SEH/malformed storage and exact exceptional FP timing not reproduced. No extra shadow/model/material owner created.",
-  "tool_issues":["Ghidra has no function at00AB7200; truthful raw call row retained for parent definition.","PowerShell wildcard path search corrected to explicit existing files."]
+  "uncertainty": "State80 non-hidden indices outside0..3 are explicitly unsupported. Native ABI/SEH/malformed storage and exact exceptional FP timing not reproduced. No extra shadow/model/material owner created.",
+  "tool_issues": [
+    "Ghidra has no function at00AB7200; truthful raw call row retained for parent definition.",
+    "PowerShell wildcard path search corrected to explicit existing files."
+  ],
+  "undefined_at_worker_analysis": [
+    {
+      "address": "00ab7200",
+      "last_instruction": "00ab7281",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab7283",
+      "length": 132,
+      "evidence": "Full disk listing and live bytes matched;00AB7284 is INT3 padding. Parent official locked definition needed; worker read-only."
+    }
+  ],
+  "no_ghidra_function": [],
+  "primary_definition": "reports/orch5_text_style_definitions.json"
 }

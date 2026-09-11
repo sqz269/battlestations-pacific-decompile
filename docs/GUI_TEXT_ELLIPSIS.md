@@ -8,9 +8,9 @@ That value selects the current label width at `widget+20h`. The earlier
 [context ownership audit](FONT_CONTEXT_OWNERSHIP.md) incorrectly called the
 sentinel zero: live bytes at `00d7a260` are `00 00 80 BF`. The ordered
 `UCOMISS`/`LAHF`/`TEST AH,44h`/`JP` sequence at `00abb065..00abb070` makes
-zero an explicit zero target and leaves a NaN unchanged. The new interface
-rejects NaN at its finite arithmetic boundary after the conversion callback;
-it does not silently replace NaN with the widget width.
+zero an explicit zero target and leaves a NaN unchanged. Native x87 `FISTP`
+then consumes that width after the conversion callback. It is not replaced
+with the widget width.
 
 | Routine | Original ABI and boundary | Coverage |
 |---|---|---|
@@ -44,11 +44,13 @@ the meanings of font `+48h`, glyph `+12h`, Text `+108h/+1d8h` and size `+20h`;
 this module adds no record offsets or independent font/widget state. It reads
 the font flag after copying the source and the scale for each arithmetic step.
 Inputs and transformed output must be null-free and fit signed32 lengths.
-Arithmetic scalars must be finite when consumed, and pre-truncation results
-must lie in `[-2147483648,2147483648)`. Guards throw instead of emulating
-malformed pointers, overflow/indefinite integers, allocation failure or traps.
-The x87 control word is restored after every accepted integer conversion;
-floating exception flags and trap timing are not equivalence claims.
+The primary removed the worker's invented finite/range guards after checking
+`00AB8F51`, `00AB8FF4`, `00AB9062` and `00AB90E4`: each native conversion uses
+`FISTP` directly. The same instruction now handles overflow, infinity and NaN
+under the caller's x87 masks; masked invalid stores integer-indefinite, then
+the native low16 narrowing yields zero. Each conversion restores the control
+word. Exact unmasked trap timing, malformed pointers, allocation failures and
+native pool/SEH representation are not equivalence claims.
 
 `prepare_gui_text_ellipsis_00abb000_fragment` reuses `GuiTextWidget` and
 `GuiTextHost`. It checks the existing source cache, stores a changed source,

@@ -1,54 +1,28 @@
 #include "bsp/gui_text_ellipsis.hpp"
 
-#include <cstring>
 #include <limits>
 #include <stdexcept>
 
 namespace bsp {
 namespace {
-bool finite_float(float value) noexcept {
-    std::uint32_t bits;
-    std::memcpy(&bits, &value, sizeof(bits));
-    return (bits & 0x7f800000u) != 0x7f800000u;
-}
-
 //00AB8F18..00AB8F63. Retain the x87 product through signed32 conversion;
-// do not round it to float/double before truncation. Added bounds checks
-// restrict the supported domain without changing an accepted calculation.
+// do not round it to float/double before truncation. FISTP also preserves
+// the native masked-invalid integer-indefinite result, whose low16 is zero.
 std::uint16_t target_width(float normalized) {
-    if (!finite_float(normalized))
-        throw std::invalid_argument("Text ellipsis requires a finite width");
     const double multiplier = 960.0;
-    const double upper = 2147483648.0;
-    const double lower = -2147483648.0;
     std::uint16_t saved_control, truncation_control;
     std::int32_t converted;
-    bool supported;
     __asm {
         fnstcw saved_control
         fld normalized
         fmul multiplier
-        fld upper
-        fcomip st(0), st(1)
-        jbe target_unsupported
-        fld lower
-        fcomip st(0), st(1)
-        ja target_unsupported
         mov ax, saved_control
         or ax, 0c00h
         mov truncation_control, ax
         fldcw truncation_control
         fistp converted
         fldcw saved_control
-        mov supported, 1
-        jmp target_done
-    target_unsupported:
-        fstp st(0)
-        mov supported, 0
-    target_done:
     }
-    if (!supported)
-        throw std::out_of_range("Text ellipsis width exceeds signed32 conversion domain");
     return static_cast<std::uint16_t>(converted);
 }
 
@@ -57,16 +31,11 @@ std::uint16_t target_width(float normalized) {
 // occurs at current x87 precision; only FISTP uses temporary truncation.
 std::uint16_t change_width(std::uint16_t current, std::uint16_t advance,
     float scale, bool subtract, bool three_dots = false) {
-    if (!finite_float(scale))
-        throw std::invalid_argument("Text ellipsis requires a finite font scale");
     const std::int32_t unsigned_current = current;
     const std::int32_t unsigned_advance = advance;
     const double three = 3.0;
-    const double upper = 2147483648.0;
-    const double lower = -2147483648.0;
     std::uint16_t saved_control, truncation_control;
     std::int32_t converted;
-    bool supported;
     __asm {
         fnstcw saved_control
         cmp subtract, 0
@@ -86,27 +55,13 @@ std::uint16_t change_width(std::uint16_t current, std::uint16_t advance,
     width_single_advance:
         fsubp st(1), st(0)
     width_convert:
-        fld upper
-        fcomip st(0), st(1)
-        jbe width_unsupported
-        fld lower
-        fcomip st(0), st(1)
-        ja width_unsupported
         mov ax, saved_control
         or ax, 0c00h
         mov truncation_control, ax
         fldcw truncation_control
         fistp converted
         fldcw saved_control
-        mov supported, 1
-        jmp width_done
-    width_unsupported:
-        fstp st(0)
-        mov supported, 0
-    width_done:
     }
-    if (!supported)
-        throw std::out_of_range("Text ellipsis advance exceeds signed32 conversion domain");
     return static_cast<std::uint16_t>(converted);
 }
 } // namespace
