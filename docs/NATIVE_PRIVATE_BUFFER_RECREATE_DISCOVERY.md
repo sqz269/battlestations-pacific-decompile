@@ -67,3 +67,10 @@ shared metadata, build files, tests or installed-game files were changed.
 The tracked report pins all fresh bytes, original data-reference observations,
 bounded writer assembly, and the current source-contract files. No runtime or
 general private-owner compatibility claim is made.
+
+
+Primary review verified all eleven worker pins and reread all seven guarded
+spans, 246 bytes. Both complete three-byte leaves and the distinct private
+profile provenance agree. The read-only primary bundle is
+`local/private_recreate_discovery_primary/`. This review adds no source or
+Ghidra definition; parent profile expansion remains a separate change.

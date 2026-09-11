@@ -136,3 +136,21 @@ native worker body, or native caller ABI validation is claimed.
 All evidence is sealed under ignored `local/renderer_worker_lifetime/`; the
 tracked audit records the capture/proof hashes and exact provider map. No shared
 CMake, Ghidra, names, ledgers, original game files, or permanent tests changed.
+
+
+## Primary integration
+
+The unchanged source is registered in main CMake. The main strict Win32 build,
+both existing CTests and eight fresh seeds passed. Primary verified 123 worker
+pins, 19 current source/header files and 21 fresh spans (1,437 bytes). Five
+exact archive objects from the actual main library preserve all reviewed code
+and relocation contents. The unchanged actual-library lifecycle probe passed:
+220 complete COFF sections, 665 relocations, 72 import providers and 13,411
+runtime executable bytes were verified. This probe did not run original
+machine bodies. The immutable bundle is `local/worker_lifetime_primary/`.
+
+Five distinct raw records now coexist with the older typed interfaces. Primary
+defined the missing 16-byte empty-header function, replaced misleading generic
+constructor/deleting-destructor names, saved comments with old values retained,
+and refreshed all five exports. The current storage, C++ exception, worker-body
+and gameplay limits above remain.

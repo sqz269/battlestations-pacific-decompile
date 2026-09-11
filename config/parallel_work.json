@@ -6814,6 +6814,47 @@
       ],
       "scope": "Four complete raw reset-readiness entries; parent admitted pooled profiles only, full original/provider COM fixture verified.",
       "evidence": "reports/native_renderer_reset_readiness_audit.json"
+    },
+    {
+      "id": "native_renderer_worker_lifetime5",
+      "packet": "native_renderer_worker_lifetime5",
+      "state": "five_complete_raw_entries_main_Win32_actual_library_lifecycle_and_full_COFF_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b5e270",
+        "00b5e2f0",
+        "00b5e050",
+        "00bd1860",
+        "00415270"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_worker_lifetime.hpp",
+        "src/native_renderer_worker_lifetime.cpp",
+        "docs/NATIVE_RENDERER_WORKER_LIFETIME.md",
+        "reports/native_renderer_worker_lifetime_audit.json"
+      ],
+      "evidence": "reports/native_renderer_worker_lifetime_audit.json"
+    },
+    {
+      "id": "native_resource_record_copy2",
+      "packet": "native_resource_record_copy2",
+      "state": "two_complete_actual_record_entries_main_Win32_original_copy_unwind_destructor_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "004d6f70",
+        "004d45a0"
+      ],
+      "code_ownership": [
+        "src/native_resource_record_copy.cpp",
+        "include/bsp/native_resource_record_copy.hpp",
+        "docs/NATIVE_RESOURCE_RECORD_COPY.md",
+        "reports/native_resource_record_copy_audit.json"
+      ],
+      "evidence": "reports/native_resource_record_copy_audit.json"
     }
   ],
   "snapshot_after_analysis": {
