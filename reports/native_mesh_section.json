@@ -1,0 +1,443 @@
+{
+  "packet": "orch2_native_mesh_section_n",
+  "source": "src/native_mesh_section.cpp",
+  "header": "include/bsp/native_mesh_section.hpp",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_unchanged": true,
+    "ghidra_mutations": false,
+    "verification": "Every bsp.py ghidra query/export verifies configured bsp project and exact program identity before reading."
+  },
+  "functions": [
+    {
+      "address": "00533fa0",
+      "last_instruction": "00533ff5",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00533ff6",
+      "length": 86,
+      "sha256": "608bf105abca0a9250c2043ea622d1fd59041535811de990fd898dbbcdc09bf3",
+      "name_hypothesis": "BSP_DrawSection_Create",
+      "original_abi": "No semantic input; EAX section pointer; RET",
+      "behavior": "Allocate canonical section slot; null skips constructor.",
+      "ghidra_name_observed": "BSP_DrawSection_Create"
+    },
+    {
+      "address": "00b857f0",
+      "last_instruction": "00b85857",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b85858",
+      "length": 104,
+      "sha256": "8910e51ee2bbebe56a951b8c258ca298c806e421c9498d5c786bb884e862db29",
+      "name_hypothesis": "BSP_DrawSection_Construct",
+      "original_abi": "ECX actual60h section; EAX same; RET",
+      "behavior": "Initialize only proven fields; preserve unused stream slots and padding; constant read precedes stores.",
+      "ghidra_name_observed": "FUN_00b857f0"
+    },
+    {
+      "address": "00b85ee0",
+      "last_instruction": "00b85ee5",
+      "last_length": 5,
+      "last_text": "jmp 0xb85d30",
+      "end_exclusive": "00b85eea",
+      "length": 10,
+      "sha256": "718d30395f55f8eac12e6b1a5fc3ed17694708e9b9c665ad7d00ada307976208",
+      "name_hypothesis": "BSP_DrawSectionPool_AllocateStaticSlot",
+      "original_abi": "Incoming ECX size ignored; canonical010901D4; EAX slot; tail JMP B85D30",
+      "behavior": "Canonical section-pool wrapper; not a static destructor.",
+      "ghidra_name_observed": "CG_static_dtor_stub_00b85ee0"
+    },
+    {
+      "address": "00b85d30",
+      "last_instruction": "00b85e5f",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b85e60",
+      "length": 304,
+      "sha256": "7c88787256604af29fab36a5d5753d035433a4bb4ec98f0c72bfedceca2c9463",
+      "name_hypothesis": "BSP_DrawSectionPool_AllocateSlot",
+      "original_abi": "ECX actual38h pool; EAX64h slot; RET",
+      "behavior": "Critical-section allocation;64 slots/slab; table growth2*capacity+2; preserve allocation failure publication/unlock semantics.",
+      "ghidra_name_observed": "FUN_00b85d30"
+    },
+    {
+      "address": "00b85650",
+      "last_instruction": "00b8568d",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b85690",
+      "length": 64,
+      "sha256": "271ade9c3e47cb5c26b640500fc49c879d657d40c37f80f1b925af450f9407c6",
+      "name_hypothesis": "BSP_DrawSectionPoolSlab_Construct",
+      "original_abi": "ECX1984h slab; stack slab index; EAX same; RET4",
+      "behavior": "Initialize64 reversed WORD free indices and separate +60 metadata per64h slot.",
+      "ghidra_name_observed": "FUN_00b85650"
+    },
+    {
+      "address": "00b859b0",
+      "last_instruction": "00b85a12",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b85a15",
+      "length": 101,
+      "sha256": "7aae6f31b4ee271883bd28d6d3cb7ab1ad43be5a911414d9f37a8d0d0b5508db",
+      "name_hypothesis": "BSP_DrawSectionPool_ReturnSlot",
+      "original_abi": "ECX pool; stack slot; RET4",
+      "behavior": "Read slot+60 slab index; signed exact division by100; push index and update first free slab under actual lock.",
+      "ghidra_name_observed": "FUN_00b859b0"
+    },
+    {
+      "address": "00b85b20",
+      "last_instruction": "00b85b2b",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b85b2c",
+      "length": 12,
+      "sha256": "ecdcf37421fcafbf7dc408a8598df06dc92c6f73e3082b5a3d69fca69d63ac7a",
+      "name_hypothesis": "BSP_DrawSectionPool_ReturnStaticSlot",
+      "original_abi": "ECX slot; canonical010901D4; RET",
+      "behavior": "Canonical section slot return wrapper.",
+      "ghidra_name_observed": "FUN_00b85b20"
+    },
+    {
+      "address": "00b85bb0",
+      "last_instruction": "00b85c82",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b85c83",
+      "length": 211,
+      "sha256": "68c64e9fcc96ff2cba06e1c7ae309d822595c0f2d6d59180842be7181fcfcf1f",
+      "name_hypothesis": "BSP_DrawSectionPool_Construct",
+      "original_abi": "ECX38h pool; EAX same; RET",
+      "behavior": "Shared allocator-list publication, actual critical section, initial32-word table; three original unwind states.",
+      "ghidra_name_observed": "FUN_00b85bb0"
+    },
+    {
+      "address": "00b858f0",
+      "last_instruction": "00b85979",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b8597a",
+      "length": 138,
+      "sha256": "1aa8475c49f0a56b53e992235bef76454c08a21c8456f43f499431fb30f817eb",
+      "name_hypothesis": "BSP_DrawSectionPool_Destroy",
+      "original_abi": "ECX38h pool; RET",
+      "behavior": "Free every slab and table; drain recursive section; delete section; unlink shared allocator list.",
+      "ghidra_name_observed": "FUN_00b858f0"
+    },
+    {
+      "address": "00b85c90",
+      "last_instruction": "00b85d2f",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b85d30",
+      "length": 160,
+      "sha256": "051ec60df048bed8fcd10c1de9554c6b1638ac8887b68d308139905b966dcd2a",
+      "name_hypothesis": "BSP_DrawSectionPool_TrimEmptySlabs",
+      "original_abi": "ECX38h pool; RET",
+      "behavior": "Free empty64-slot slabs; swap last; rewrite moved slot+60 metadata; retry index; recalculate first free slab.",
+      "ghidra_name_observed": "FUN_00b85c90"
+    },
+    {
+      "address": "00b85720",
+      "last_instruction": "00b8572d",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b8572e",
+      "length": 14,
+      "sha256": "5a6ae83a1acc5d0205d15e24d7e8104f9ff4810530bb7cedaa18c143b52f9cc6",
+      "name_hypothesis": "BSP_DrawSectionPoolTable_Destroy",
+      "original_abi": "ECX table header; RET",
+      "behavior": "Free nonnull table and retain header bytes; original pool constructor unwind member.",
+      "ghidra_name_observed": "FUN_00b85720"
+    },
+    {
+      "address": "00b85600",
+      "last_instruction": "00b85607",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b8560a",
+      "length": 10,
+      "sha256": "6a2064dd434e5604bc4cec23692146d3e27ab6a160cbec70b91e37c997b6145c",
+      "name_hypothesis": "BSP_DrawSection_SetIndexed",
+      "original_abi": "ECX section; stack byte; RET4",
+      "behavior": "Store indexed-selection byte at+58.",
+      "ghidra_name_observed": "FUN_00b85600"
+    },
+    {
+      "address": "00b85b80",
+      "last_instruction": "00b85b9f",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b85ba2",
+      "length": 34,
+      "sha256": "294c3682b5d9f32fb7916dc60451f45df23f5a487be7103a3f2729bf57cf2685",
+      "name_hypothesis": "BSP_DrawSection_AppendVertexStream",
+      "original_abi": "ECX section; stack nonnull actual stream; RET4",
+      "behavior": "Retain stream actual+04 before append+3C/count+4C; four slots, unchecked capacity.",
+      "ghidra_name_observed": "FUN_00b85b80"
+    },
+    {
+      "address": "00b86390",
+      "last_instruction": "00b86415",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b86416",
+      "length": 134,
+      "sha256": "5a9cd83ea83f31a05635a911ae09aae4745ff100648cc01ec70b99fe4acf6ada",
+      "name_hypothesis": "BSP_DrawSection_ClearResources",
+      "original_abi": "ECX section; RET",
+      "behavior": "Release then clear material+20, selected streams with live count, layout+50; preserve stream count.",
+      "ghidra_name_observed": "FUN_00b86390"
+    },
+    {
+      "address": "00b86420",
+      "last_instruction": "00b864ba",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b864bb",
+      "length": 155,
+      "sha256": "f948b8fd7adeaff00c581d937fa61834b2292cc473b3994bdf607251954b33c6",
+      "name_hypothesis": "BSP_DrawSection_Destroy",
+      "original_abi": "ECX section; RET",
+      "behavior": "PublishD63194; release+38,+5C; clear resources; baseCEB130 on normal return or state0 unwind.",
+      "ghidra_name_observed": "FUN_00b86420"
+    },
+    {
+      "address": "00b864c0",
+      "last_instruction": "00b864f8",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b864fb",
+      "length": 59,
+      "sha256": "51dee5eb0319720cdd2304584027431a52930a4603929cc4965e2d92d339cb99",
+      "name_hypothesis": "BSP_DrawSection_SetMaterial",
+      "original_abi": "ECX section; stack material pointer; RET4",
+      "behavior": "Retained actual material+20 assignment; equal skips, publish/retain new before release old.",
+      "ghidra_name_observed": "BSP_DrawSection_SetMaterial"
+    },
+    {
+      "address": "00b86500",
+      "last_instruction": "00b8653e",
+      "last_length": 3,
+      "last_text": "ret 8",
+      "end_exclusive": "00b86541",
+      "length": 65,
+      "sha256": "ebf8ac7f487a34d545e3ddceced98372efdb7dbf28d3a9979602379a06e3131b",
+      "name_hypothesis": "BSP_DrawSection_SetVertexStream",
+      "original_abi": "ECX section; stack index and actual stream pointer; RET8",
+      "behavior": "Retained actual selected stream assignment; does not change selected count.",
+      "ghidra_name_observed": "FUN_00b86500"
+    },
+    {
+      "address": "00b86550",
+      "last_instruction": "00b8659e",
+      "last_length": 1,
+      "last_text": "ret",
+      "end_exclusive": "00b8659f",
+      "length": 79,
+      "sha256": "b6ab5966ea8e3efed1f312889159258d0d75b2509e97aacb22719f0726efdfc1",
+      "name_hypothesis": "BSP_DrawSection_ClearVertexStreams",
+      "original_abi": "ECX section; RET",
+      "behavior": "Release and null visited selected streams using live count; reset count only after loop.",
+      "ghidra_name_observed": "BSP_DrawSection_ClearVertexStreams"
+    },
+    {
+      "address": "00b865a0",
+      "last_instruction": "00b8664c",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b8664f",
+      "length": 175,
+      "sha256": "2bea4cdbde496711878d8baa0b57860646c0fd5f31e70ff142b833070f446f60",
+      "name_hypothesis": "BSP_DrawSection_RebuildVertexLayout",
+      "original_abi": "ECX section; stack actual mesh; RET4",
+      "behavior": "Existing layout clears streams; absent layout keeps selection; zero count retains actual mesh+64; current stream virtual24 descriptors and current renderer virtual40 result to+50.",
+      "ghidra_name_observed": "BSP_DrawSection_RebuildVertexLayout"
+    },
+    {
+      "address": "00b86650",
+      "last_instruction": "00b86688",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b8668b",
+      "length": 59,
+      "sha256": "4e959297836483c7a2ab35df01bb9bff138d1a829c2ed1cff7812a61bc593402",
+      "name_hypothesis": "BSP_DrawSection_SetVertexLayout",
+      "original_abi": "ECX section; stack actual layout pointer; RET4",
+      "behavior": "Retained actual layout+50 assignment.",
+      "ghidra_name_observed": "FUN_00b86650"
+    },
+    {
+      "address": "00b86690",
+      "last_instruction": "00b866ad",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b866b0",
+      "length": 32,
+      "sha256": "1ef5885bf3045ae48d6fb2d2752d3e0330b8f759870702ad3f1ff1e3014644fb",
+      "name_hypothesis": "BSP_DrawSection_ScalarDeletingDestructor",
+      "original_abi": "ECX section; stack flags; EAX original address; RET4",
+      "behavior": "Destroy then canonical010901D4 pool return iff flags&1; never heap-free payload.",
+      "ghidra_name_observed": "FUN_00b86690"
+    },
+    {
+      "address": "00b417e0",
+      "last_instruction": "00b41818",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b4181b",
+      "length": 59,
+      "sha256": "128370894f3ef682a01ce94ddcab4ada704cb7de3e2597e5b4263523f82e91a5",
+      "name_hypothesis": "BSP_DrawSection_SetInstanceGeneratorBinding",
+      "original_abi": "ECX section; stack binding pointer; RET4",
+      "behavior": "Retained actual instance-generator binding+5C assignment.",
+      "ghidra_name_observed": "BSP_DrawSection_SetInstanceGeneratorBinding"
+    }
+  ],
+  "false_free_continuations": [
+    {
+      "address": "00b85d30",
+      "free_call": "00b85dc1",
+      "continuation": "00b85dc6",
+      "last_instruction": "00b85e5f",
+      "last_length": 1,
+      "end_exclusive": "00b85e60"
+    },
+    {
+      "address": "00b85bb0",
+      "free_call": "00b85c64",
+      "continuation": "00b85c69",
+      "last_instruction": "00b85c82",
+      "last_length": 1,
+      "end_exclusive": "00b85c83"
+    },
+    {
+      "address": "00b858f0",
+      "free_call": "00b85908",
+      "continuation": "00b8590d",
+      "last_instruction": "00b85979",
+      "last_length": 1,
+      "end_exclusive": "00b8597a"
+    },
+    {
+      "address": "00b858f0",
+      "free_call": "00b85920",
+      "continuation": "00b85925",
+      "last_instruction": "00b85979",
+      "last_length": 1,
+      "end_exclusive": "00b8597a"
+    },
+    {
+      "address": "00b85c90",
+      "free_call": "00b85cb1",
+      "continuation": "00b85cb6",
+      "last_instruction": "00b85d2f",
+      "last_length": 1,
+      "end_exclusive": "00b85d30"
+    },
+    {
+      "address": "00b85720",
+      "free_call": "00b85727",
+      "continuation": "00b8572c",
+      "last_instruction": "00b8572d",
+      "last_length": 1,
+      "end_exclusive": "00b8572e"
+    },
+    {
+      "address": "00b857a0",
+      "free_call": "00b857e3",
+      "continuation": "00b857e8",
+      "last_instruction": "00b857ef",
+      "last_length": 1,
+      "end_exclusive": "00b857f0"
+    },
+    {
+      "address": "00b85a30",
+      "free_call": "00b85a7d",
+      "continuation": "00b85a82",
+      "last_instruction": "00b85aa1",
+      "last_length": 3,
+      "end_exclusive": "00b85aa4"
+    }
+  ],
+  "missing_functions_read_only": [
+    {
+      "address": "00b85980",
+      "last_instruction": "00b8599a",
+      "last_length": 3,
+      "end_exclusive": "00b8599d",
+      "meaning_hypothesis": "Rewrite64 slab-index DWORDs at slot+60; not separately implemented."
+    },
+    {
+      "address": "00b859a0",
+      "last_instruction": "00b859ad",
+      "last_length": 1,
+      "end_exclusive": "00b859ae",
+      "meaning_hypothesis": "Return AL whether slab free WORD count equals64; not separately implemented."
+    },
+    {
+      "address": "00b866b0",
+      "last_instruction": "00b866b2",
+      "last_length": 3,
+      "end_exclusive": "00b866b5",
+      "meaning_hypothesis": "XOR EAX,EAX; RET4 leaf after real section deleting destructor; not separately implemented."
+    }
+  ],
+  "pool": {
+    "canonical_address": "010901d4",
+    "profile": "00d6319c",
+    "virtual0": "00b85c90",
+    "object_bytes": 96,
+    "slot_bytes": 100,
+    "slab_index_offset": 96,
+    "slots_per_slab": 64,
+    "slab_bytes": 6532,
+    "free_indices_offset": 6400,
+    "free_count_offset": 6528,
+    "initial_table_capacity": 32,
+    "shared_allocator_list": true,
+    "no_heap_payload_fallback": true
+  },
+  "ownership": {
+    "material": "retained +20",
+    "next_section": "retained +38",
+    "vertex_streams": "four retained identities +3C..48; count+4C",
+    "vertex_layout": "retained +50",
+    "word_54": "uninterpreted, non-retained copied word",
+    "indexed": "byte+58 only selects indexed drawing when mesh index exists",
+    "generator_binding": "retained +5C",
+    "index_stream": "owned by mesh+60, not stored as retained owner in section",
+    "reference": "same actual atomic+04; currentD63194 slotsBD30E0/B86690; canonical companion retirement after pool return"
+  },
+  "unwind": {
+    "section": "DFB918 state0 -> CC24F0 -> BD30F0 base only; do not retry owner releases",
+    "pool_constructor": "DFB894 three states -> CC2480 base unlink, CC2488 section destroy, CC2493 table destroy",
+    "allocation": "No allocation unwind unlock or rollback is added"
+  },
+  "validation": {
+    "win32_build": true,
+    "existing_ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "focused_probe": "local/native_mesh_section_probe.cpp; /MANIFEST:EMBED; ignored",
+    "native_constructor_differential": "104 installed instruction bytes, only absolute MOVSS constant operand relocated to private copied data; all100 output bytes match including untouched payload/pool bytes",
+    "host_fixture": "2049 slots;32->66 table growth; moved64 slot IDs; same+04 terminal companion, ordered owner releases, selected-stream preservation and existing-layout rebuild publication",
+    "native_pool_differential": false,
+    "native_destructor_differential": false,
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  },
+  "remaining_services": [
+    "Canonical pool/list initialization lifetime and caller shutdown; CRT static bootstrap not connected here.",
+    "Real current material/stream/layout/generator identities with canonical NativeRenderActualOwners.",
+    "Current stream virtual24 and renderer virtual40 dispatch through explicit NativeMeshSectionLayoutServices; existing B2F710 actual layout factory/tree/pool can implement renderer service.",
+    "Material/effect construction and B85610/B451D0 attachment remain external.",
+    "Section copy/assignment and draw submission remain external."
+  ],
+  "integration_correction": "Earlier MESH_SUBSET_LOD_FIELDS wording that B85610 assigns mesh+60 is incomplete: it forwards opaque mesh index argument to material effect B451D0 only when material+20/effect+7C exist; +50 is layout and +54 has no retained index semantics."
+}
