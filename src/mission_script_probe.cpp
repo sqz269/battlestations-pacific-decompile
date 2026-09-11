@@ -18,9 +18,10 @@
 //
 // Usage: bsp_mission_script_probe [game-root] [mission-name]
 //            [--stub-dofile] [--skip-global-folders] [--skip-lobby-settings]
-//            [--no-self-table] [--recon-tables] [--sweep] [--quiet]
+//            [--no-self-table] [--recon-tables] [--core-bindings] [--sweep] [--quiet]
 // Defaults to the installed copy and "usn/usn_2_java".
 
+#include "bsp/lua_binding_core.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_lua_machine.hpp"
@@ -36,6 +37,7 @@ extern "C" {
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -89,6 +91,13 @@ struct ProbeState {
     bool model_self_table{true};
     bool install_recon_tables{false};
     bool verbose{true};
+    // --core-bindings: route the ten bindings of docs/LUA_BINDING_CORE.md through
+    // src/lua_binding_core.cpp instead of the stub, so the script sees the value the native
+    // would have pushed rather than nothing at all.
+    bool core_bindings{false};
+    // How many times a reconstructed routine ran, and in how many distinct scripts.
+    std::map<std::string, int> core_binding_calls;
+    std::map<std::string, std::set<std::string>> core_binding_scripts;
     std::vector<NativeCall> calls;
     std::map<std::string, int> call_counts;
     std::vector<std::string> dofile_paths;
@@ -170,6 +179,290 @@ std::string push_new_entity_table(lua_State* L)
     return key;
 }
 
+// ---------------------------------------------------------------------------
+// --core-bindings: the ten routines of include/bsp/lua_binding_core.hpp, run for real
+// ---------------------------------------------------------------------------
+//
+// The stub below returns nothing for every row. For the ten bindings packet cc_lua_core
+// reconstructed, that is now a choice rather than a limit: this adapter gives them the same
+// argument surface and the same result surface the native uses, so a script gets the value the
+// native would have pushed. The host records every native step the probe cannot perform
+// instead of inventing one; nothing here stands in for unrecovered game behaviour.
+
+// Argument slots follow mission_binding_argument_slot: index 0 is Lua slot 1.
+class ProbeArgumentReader final : public bsp::LuaBindingArgumentReader {
+public:
+    explicit ProbeArgumentReader(lua_State* state) : state_(state) {}
+    int count() override { return lua_gettop(state_); }
+    int get_integer(int index) override
+    {
+        // 00b66290 narrows with the CRT __ftol, which truncates toward zero; lua_tointeger
+        // does the same for the values a script can pass here.
+        return static_cast<int>(lua_tointeger(state_, slot(index)));
+    }
+    double get_number(int index) override
+    {
+        return static_cast<double>(lua_tonumber(state_, slot(index)));
+    }
+    bool get_boolean(int index) override { return lua_toboolean(state_, slot(index)) != 0; }
+    std::string get_string(int index) override
+    {
+        const char* text = lua_tostring(state_, slot(index));
+        return text != nullptr ? std::string(text) : std::string();
+    }
+    bool is_string(int index) override { return lua_isstring(state_, slot(index)) != 0; }
+    bool is_nil(int index) override { return lua_isnil(state_, slot(index)) != 0; }
+    bool is_entity_table(int index) override { return entity_at(index) != nullptr; }
+    void* entity_at(int index) override
+    {
+        // object_from_lua_table_00888aa0's rule: the entity is the light userdata the table
+        // carries in `Ptr`. The probe's pointers are minted by push_new_entity_table and are
+        // never dereferenced, here or anywhere else in this file.
+        const int at = slot(index);
+        if (lua_istable(state_, at) == 0) {
+            return nullptr;
+        }
+        lua_getfield(state_, at, bsp::kEntitySelfFieldPtr);
+        void* pointer = lua_islightuserdata(state_, -1) ? lua_touserdata(state_, -1) : nullptr;
+        lua_pop(state_, 1);
+        return pointer;
+    }
+
+private:
+    static int slot(int index) { return bsp::mission_binding_argument_slot(index); }
+    lua_State* state_;
+};
+
+class ProbeResultWriter final : public bsp::LuaBindingResultWriter {
+public:
+    explicit ProbeResultWriter(lua_State* state) : state_(state) {}
+    void push_number(int value) override
+    {
+        lua_pushnumber(state_, static_cast<lua_Number>(value));
+    }
+    void push_boolean(bool value) override { lua_pushboolean(state_, value ? 1 : 0); }
+    void push_nil() override { lua_pushnil(state_); }
+
+private:
+    lua_State* state_;
+};
+
+// The two game fields GetDifficulty reads. The probe is not a game, so these are the values a
+// campaign load would have left: mission_tree_screens.hpp's launch path writes the effective
+// difficulty at game+6ACh and clears the non-campaign flag at game+1FE4h for a campaign
+// mission. Choosing the campaign side keeps every branch of the ten that a campaign takes.
+const int kProbeNonCampaignFlag = 0;
+const int kProbeEffectiveDifficulty = 1;
+
+class ProbeCoreHost final : public bsp::LuaBindingCoreHost {
+public:
+    explicit ProbeCoreHost(lua_State* state) : state_(state) {}
+
+    int game_non_campaign_flag() override { return kProbeNonCampaignFlag; }
+    int game_effective_difficulty() override { return kProbeEffectiveDifficulty; }
+
+    void log_prepare_class(int class_id) override
+    {
+        static_cast<void>(class_id);
+        record("log_prepare_class");
+    }
+
+    bool resolve_global_integer(const std::string& dotted_path, int& value) override
+    {
+        // This one the probe can do for real: the datatable scripts the machine loads build the
+        // global VehicleClass table, so the native walk of 00b68d70 over
+        // "VehicleClass.<n>.Race" has the same answer here.
+        //
+        // 00b68d70's rule, already reconstructed by docs/LOCALE_TEXT_LOOKUP.md and implemented
+        // for the locale root in src/locale_lua_context.cpp: a segment is looked up as a string
+        // first and, when that is nil, converted with the CRT _atol (a base-10 _strtol, not a
+        // whole-token validator) and looked up again as a number. The numeric fallback is only
+        // taken when the conversion is non-zero or the segment is the single character '0'.
+        // Without it `VehicleClass.5` never resolves, because the datatable builds the rows
+        // under integer keys. This adapter reproduces the table-kind half of that rule; the
+        // pseudo-object half the locale root needs does not apply to a plain global table.
+        record("resolve_global_integer");
+        value = 0;
+        std::size_t begin = 0;
+        lua_pushvalue(state_, LUA_GLOBALSINDEX);
+        bool reached = true;
+        while (begin < dotted_path.size()) {
+            std::size_t end = begin;
+            while (end < dotted_path.size() && dotted_path[end] != '.') {
+                ++end;
+            }
+            if (end == begin || lua_istable(state_, -1) == 0) {
+                reached = false;
+                break;
+            }
+            lua_pushlstring(state_, dotted_path.data() + begin, end - begin);
+            lua_gettable(state_, -2);
+            if (lua_isnil(state_, -1) != 0) {
+                const std::string segment = dotted_path.substr(begin, end - begin);
+                const long parsed = std::strtol(segment.c_str(), nullptr, 10);
+                const bool numeric = parsed != 0 || segment == "0";
+                if (!numeric) {
+                    reached = false;
+                    break;
+                }
+                lua_pop(state_, 1);
+                lua_pushnumber(state_, static_cast<lua_Number>(parsed));
+                lua_gettable(state_, -2);
+            }
+            lua_remove(state_, -2); // drop the table the segment came from
+            begin = end < dotted_path.size() ? end + 1 : end;
+        }
+        const bool ok = reached && lua_isnumber(state_, -1) != 0;
+        if (ok) {
+            value = static_cast<int>(lua_tointeger(state_, -1));
+        }
+        lua_pop(state_, 1);
+        return ok;
+    }
+
+    void vehicle_class_mark_party_required(int class_id, int party) override
+    {
+        static_cast<void>(class_id);
+        static_cast<void>(party);
+        record("vehicle_class_mark_party_required");
+    }
+    void vehicle_class_get_or_create(int class_id, bool read_race) override
+    {
+        static_cast<void>(class_id);
+        static_cast<void>(read_race);
+        record("vehicle_class_get_or_create");
+    }
+    void music_director_set_level(int level) override
+    {
+        static_cast<void>(level);
+        record("music_director_set_level");
+    }
+    void session_send_music_level(int level) override
+    {
+        static_cast<void>(level);
+        record("session_send_music_level");
+    }
+    bool entity_vcall_5c(void* entity, int selector) override
+    {
+        static_cast<void>(entity);
+        static_cast<void>(selector);
+        record("entity_vcall_5c");
+        // The concrete vtable was never resolved, so the probe takes the branch that sends no
+        // session message. Recorded here rather than assumed silently.
+        return false;
+    }
+    void entity_vcall_2c(void* entity, int party, std::uint32_t entity_field_58) override
+    {
+        static_cast<void>(entity);
+        static_cast<void>(party);
+        static_cast<void>(entity_field_58);
+        record("entity_vcall_2c");
+    }
+    void session_route_party_message(void* entity, int party) override
+    {
+        static_cast<void>(entity);
+        static_cast<void>(party);
+        record("session_route_party_message");
+    }
+    void scoring_set_real_play_time_running(bool running) override
+    {
+        real_play_time_running_ = running;
+        record("scoring_set_real_play_time_running");
+    }
+    void scoring_set_final_scoring_function_name(const std::string& name) override
+    {
+        final_scoring_function_ = name;
+        record("scoring_set_final_scoring_function_name");
+    }
+    void message_map_load(const std::string& name, int index) override
+    {
+        static_cast<void>(index);
+        message_maps_.insert(name);
+        record("message_map_load");
+    }
+    void call_0088b6d0_0076a9f0_00765590(const std::string& name, int index) override
+    {
+        static_cast<void>(name);
+        static_cast<void>(index);
+        record("call_0088b6d0_0076a9f0_00765590");
+    }
+    void entity_set_think_script_name(void* entity, const std::string& name) override
+    {
+        static_cast<void>(entity);
+        think_names_.insert(name);
+        record("entity_set_think_script_name");
+    }
+    void set_entity_message_suppression(void* entity, bool suppressed) override
+    {
+        static_cast<void>(entity);
+        static_cast<void>(suppressed);
+        record("set_entity_message_suppression");
+    }
+    void set_global_message_suppression(bool suppressed) override
+    {
+        global_messages_suppressed_ = suppressed;
+        record("set_global_message_suppression");
+    }
+    void message_system_drain_queue() override { record("message_system_drain_queue"); }
+
+    // What the probe kept, for the run report.
+    bool real_play_time_running() const { return real_play_time_running_; }
+    const std::string& final_scoring_function() const { return final_scoring_function_; }
+    bool global_messages_suppressed() const { return global_messages_suppressed_; }
+    std::size_t message_map_count() const { return message_maps_.size(); }
+    std::size_t think_name_count() const { return think_names_.size(); }
+
+private:
+    static void record(const char* step) { g_probe.core_binding_calls[step] += 1; }
+
+    lua_State* state_;
+    bool real_play_time_running_{false};
+    std::string final_scoring_function_;
+    bool global_messages_suppressed_{false};
+    std::set<std::string> message_maps_;
+    std::set<std::string> think_names_;
+};
+
+// One host per state; the ten routines keep no state of their own.
+ProbeCoreHost* g_core_host = nullptr;
+
+// Runs the reconstructed routine for `name` when --core-bindings is on. Returns -1 when the
+// name is not one of the ten, which is the caller's signal to fall back to the stub.
+int run_core_binding(lua_State* L, const char* name)
+{
+    if (!g_probe.core_bindings || g_core_host == nullptr) {
+        return -1;
+    }
+    ProbeArgumentReader args(L);
+    ProbeResultWriter results(L);
+    int produced = -1;
+    if (std::strcmp(name, "SETLOG") == 0) {
+        produced = bsp::lua_binding_setlog();
+    } else if (std::strcmp(name, "GetDifficulty") == 0) {
+        produced = bsp::lua_binding_get_difficulty(results, *g_core_host);
+    } else if (std::strcmp(name, "PrepareClass") == 0) {
+        produced = bsp::lua_binding_prepare_class(args, *g_core_host);
+    } else if (std::strcmp(name, "Music_Control_SetLevel") == 0) {
+        produced = bsp::lua_binding_music_control_set_level(args, *g_core_host);
+    } else if (std::strcmp(name, "SetParty") == 0) {
+        produced = bsp::lua_binding_set_party(args, results, *g_core_host);
+    } else if (std::strcmp(name, "Scoring_RealPlayTimeRunning") == 0) {
+        produced = bsp::lua_binding_scoring_real_play_time_running(args, results, *g_core_host);
+    } else if (std::strcmp(name, "Scoring_SetFinalScoringFunctionName") == 0) {
+        produced = bsp::lua_binding_scoring_set_final_scoring_function_name(args, *g_core_host);
+    } else if (std::strcmp(name, "LoadMessageMap") == 0) {
+        produced = bsp::lua_binding_load_message_map(args, *g_core_host);
+    } else if (std::strcmp(name, "SetThink") == 0) {
+        produced = bsp::lua_binding_set_think(args, *g_core_host);
+    } else if (std::strcmp(name, "EnableMessages") == 0) {
+        produced = bsp::lua_binding_enable_messages(args, *g_core_host);
+    }
+    if (produced >= 0 && !g_probe.current_script.empty()) {
+        g_probe.core_binding_scripts[name].insert(g_probe.current_script);
+    }
+    return produced;
+}
+
 // Every binding is installed as this one C function plus an index upvalue.
 // 006b8610 uses nup = 0 because each native row is a distinct function; the
 // probe needs identity at call time, so it carries the row index instead. That
@@ -184,6 +477,10 @@ int binding_stub(lua_State* L)
     g_probe.call_counts[row.name] += 1;
     if (!g_probe.current_script.empty()) {
         g_probe.calls_by_script[row.name][g_probe.current_script] += 1;
+    }
+    const int core_results = run_core_binding(L, row.name);
+    if (core_results >= 0) {
+        return core_results;
     }
     if (!g_probe.model_self_table || !bsp::mission_binding_returns_entity(row.name)) {
         return 0;
@@ -741,6 +1038,19 @@ int run_sweep(lua_State* L)
            const std::pair<std::size_t, std::string>& b) {
             return a.first != b.first ? a.first > b.first : a.second < b.second;
         });
+    if (g_probe.core_bindings) {
+        std::cout << "\nreconstructed bindings, scripts reached / calls made:\n";
+        for (const std::pair<const std::string, std::set<std::string>>& row
+                : g_probe.core_binding_scripts) {
+            std::cout << "  " << row.second.size() << "  " << row.first << "  ("
+                      << g_probe.call_counts[row.first] << " calls)\n";
+        }
+        std::cout << "native steps the host recorded rather than performed:\n";
+        for (const std::pair<const std::string, int>& row : g_probe.core_binding_calls) {
+            std::cout << "  " << row.second << "  " << row.first << "\n";
+        }
+    }
+
     std::cout << "\nbindings reached at load time: " << ranked.size() << " of "
               << bsp::mission_lua_binding_count() << "\n";
     std::cout << "scripts binding\n";
@@ -772,6 +1082,8 @@ int main(int argc, char** argv)
             g_probe.model_self_table = false;
         } else if (argument == "--recon-tables") {
             g_probe.install_recon_tables = true;
+        } else if (argument == "--core-bindings") {
+            g_probe.core_bindings = true;
         } else if (argument == "--sweep") {
             sweep = true;
         } else if (argument == "--quiet") {
@@ -787,7 +1099,11 @@ int main(int argc, char** argv)
 
     std::cout << "game root      : " << g_probe.game_root << "\n";
     std::cout << "mission name   : " << mission_name << "\n";
-    std::cout << "DoFile         : " << (g_probe.follow_dofile ? "followed" : "stubbed") << "\n\n";
+    std::cout << "DoFile         : " << (g_probe.follow_dofile ? "followed" : "stubbed") << "\n";
+    std::cout << "core bindings  : "
+              << (g_probe.core_bindings ? "the ten of docs/LUA_BINDING_CORE.md run for real"
+                                        : "stubbed with every other row")
+              << "\n\n";
 
     // -- the machine, 006b8740 ----------------------------------------------
     lua_State* L = luaL_newstate();
@@ -796,6 +1112,10 @@ int main(int argc, char** argv)
         return 1;
     }
     lua_atpanic(L, probe_panic);
+    // The reconstructed routines read and push through this state; the host outlives every
+    // binding call and is released with the state at the end of main.
+    ProbeCoreHost core_host(L);
+    g_core_host = &core_host;
     lua_gc(L, bsp::kLuaGcSetPause, bsp::kMissionLuaGcPause);
     open_standard_libraries(L);
 

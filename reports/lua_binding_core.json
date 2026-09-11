@@ -1,0 +1,581 @@
+{
+  "packet": "cc_lua_core",
+  "owner": "agent/cc-lua-core",
+  "docs": [
+    "docs/LUA_BINDING_CORE.md",
+    "docs/LUA_BINDING_SPAWN.md",
+    "docs/LUA_BINDING_ALIASES.md"
+  ],
+  "sources": [
+    "include/bsp/lua_binding_core.hpp",
+    "src/lua_binding_core.cpp",
+    "include/bsp/lua_binding_spawn.hpp",
+    "src/lua_binding_spawn.cpp",
+    "src/mission_script_probe.cpp"
+  ],
+  "note": "Ghidra was read-only for this packet. Every name is a hypothesis, not a recovered symbol.",
+  "routines": [
+    {
+      "address": "008c8f70",
+      "name": "BSP_LuaBinding_PrepareClass",
+      "global": "PrepareClass",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "body": "008c8f70-008c9343",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "008c4d10",
+      "name": "BSP_LuaBinding_Music_Control_SetLevel",
+      "global": "Music_Control_SetLevel",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "008ae030",
+      "name": "BSP_LuaBinding_GetDifficulty",
+      "global": "GetDifficulty",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "0088c620",
+      "name": "BSP_LuaBinding_SETLOG",
+      "global": "SETLOG",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "body": "0088c620-0088c74b",
+      "results": 0,
+      "coverage": "complete",
+      "note": "25 instructions, no branch into game code; reads no argument and writes no game state"
+    },
+    {
+      "address": "008a8930",
+      "name": "BSP_LuaBinding_SetParty",
+      "global": "SetParty",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "008b87f0",
+      "name": "BSP_LuaBinding_Scoring_RealPlayTimeRunning",
+      "global": "Scoring_RealPlayTimeRunning",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "008c61c0",
+      "name": "BSP_LuaBinding_LoadMessageMap",
+      "global": "LoadMessageMap",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "008b8640",
+      "name": "BSP_LuaBinding_Scoring_SetFinalScoringFunctionName",
+      "global": "Scoring_SetFinalScoringFunctionName",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "00897fb0",
+      "name": "BSP_LuaBinding_SetThink",
+      "global": "SetThink",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "008cfe40",
+      "name": "BSP_LuaBinding_EnableMessages",
+      "global": "EnableMessages",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "00944680",
+      "name": "BSP_LuaBinding_Spawn",
+      "global": "Spawn",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, result count in EAX",
+      "body": "00944680-00944fc0",
+      "results": 1,
+      "coverage": "partial: the placement helpers 00941fa0, 009426d0, 004bc120 and 00942cb0 were not read"
+    },
+    {
+      "address": "0094c480",
+      "name": "BSP_LuaBinding_SpawnNew",
+      "global": "SpawnNew",
+      "abi": "thunk, __fastcall(lua_State* in ECX) -> __thiscall(*(00f89b3c), lua_State*)",
+      "body": "0094c480-0094c48c",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "00946380",
+      "name": "BSP_LuaBinding_SpawnNewIDIsRequested",
+      "global": "SpawnNewIDIsRequested",
+      "abi": "thunk, __fastcall(lua_State* in ECX) -> __thiscall(*(00f89b3c), lua_State*)",
+      "body": "00946380-0094638c",
+      "results": 1,
+      "coverage": "complete"
+    },
+    {
+      "address": "00946390",
+      "name": "BSP_LuaBinding_SpawnNewIDRemove",
+      "global": "SpawnNewIDRemove",
+      "abi": "thunk, __fastcall(lua_State* in ECX) -> __thiscall(*(00f89b3c), lua_State*)",
+      "body": "00946390-0094639c",
+      "results": 0,
+      "coverage": "complete"
+    },
+    {
+      "address": "00949750",
+      "name": "BSP_SpawnManager_LuaSpawnNew",
+      "abi": "__thiscall(spawn manager, lua_State*), RET 4",
+      "body": "00949750-0094a13f",
+      "coverage": "partial: the groupMembers element pass and the area/lookAt geometry were not read"
+    },
+    {
+      "address": "00945850",
+      "name": "BSP_SpawnManager_LuaIsIDRequested",
+      "abi": "__thiscall(spawn manager, lua_State*), RET 4",
+      "body": "00945850-00945a1c",
+      "coverage": "complete"
+    },
+    {
+      "address": "00945a20",
+      "name": "BSP_SpawnManager_LuaRemoveByID",
+      "abi": "__thiscall(spawn manager, lua_State*), RET 4",
+      "body": "00945a20-00945c25",
+      "coverage": "complete for the routine; the record destructor 009442a0 was not read"
+    },
+    {
+      "address": "00949530",
+      "name": "BSP_SpawnManager_EnqueueRequest",
+      "abi": "__thiscall(spawn manager, ...), RET",
+      "body": "00949530-0094960d",
+      "coverage": "complete"
+    },
+    {
+      "address": "00948cc0",
+      "name": "BSP_SpawnRequest_Construct",
+      "abi": "__thiscall(record, ...), RET",
+      "body": "00948cc0-009492fe",
+      "coverage": "complete for the field writes; the post-pass at 00948f1x was not read"
+    },
+    {
+      "address": "00896a90",
+      "name": "BSP_LuaBinding_AddAirBaseStock",
+      "global": "AddAirBaseStock / AddAirBasePlanes",
+      "abi": "__fastcall(lua_State* in ECX), RET 0",
+      "body": "00896a90-00896cb3",
+      "coverage": "partial: read to settle the aliasing question, not reconstructed"
+    },
+    {
+      "address": "008b0c10",
+      "name": "BSP_LuaBinding_MissionNarrative",
+      "global": "MissionNarrative / MissionNarrativeEnqueue",
+      "abi": "__fastcall(lua_State* in ECX), RET 0, returns the literal 0",
+      "body": "008b0c10-008b0e07",
+      "coverage": "partial: read to settle the aliasing question, not reconstructed"
+    },
+    {
+      "address": "0088e560",
+      "name": "BSP_LuaBinding_SetMotionBlurParams",
+      "global": "SetMotionBlurParams / SetMBP",
+      "abi": "__fastcall(lua_State* in ECX), RET 0",
+      "body": "0088e560-0088e783",
+      "coverage": "partial: read to settle the aliasing question, not reconstructed"
+    },
+    {
+      "address": "0088a330",
+      "name": "BSP_Entity_SetThinkScriptName",
+      "abi": "__thiscall(entity, const char* name), RET 4",
+      "body": "0088a330-0088a387",
+      "coverage": "complete, including the flow gap at 0088a360"
+    },
+    {
+      "address": "00905340",
+      "name": "BSP_MissionScoring_SetRealPlayTimeRunning",
+      "abi": "__thiscall(scoring, bool in [ESP+4]), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "0090bfc0",
+      "name": "BSP_MissionScoring_SetFinalScoringFunctionName",
+      "abi": "__thiscall(scoring, NativeString*), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a788a0",
+      "name": "BSP_MusicDirector_SetLevel",
+      "abi": "__thiscall(*(00f8bbcc), int level), RET 4",
+      "coverage": "partial: the track switch after the name comparison was not read"
+    },
+    {
+      "address": "0077edf0",
+      "name": "BSP_MessageSystem_EntitySuppressSlot",
+      "abi": "__thiscall(map at *(00f8a0c4)+d4h, uint* key), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00b664b0",
+      "name": "BSP_LuaObject_PushInteger",
+      "abi": "__thiscall(LuaObject frame, int), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00b66450",
+      "name": "BSP_LuaObject_PushBoolean",
+      "abi": "__thiscall(LuaObject frame, value), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00b677e0",
+      "name": "BSP_LuaObject_ArgumentAt",
+      "abi": "__thiscall(LuaObject frame, out LuaObject*, int index)",
+      "coverage": "complete"
+    },
+    {
+      "address": "004263b0",
+      "name": "BSP_NativeString_ConcatInt",
+      "abi": "__thiscall(NativeString, out NativeString*, int)",
+      "coverage": "complete for the concatenation"
+    }
+  ],
+  "host_steps": [
+    {
+      "host": "log_prepare_class",
+      "address": "008c9099",
+      "native": "004254b0",
+      "containing": "008c8f70",
+      "contract": "variadic log sink, format plus one int (ADD ESP,8)"
+    },
+    {
+      "host": "resolve_global_integer",
+      "address": "008c91ba",
+      "native": "00b68d70",
+      "containing": "008c8f70",
+      "contract": "dot path over the globals; folds the is-integer test at 008c926c"
+    },
+    {
+      "host": "vehicle_class_mark_party_required",
+      "address": "008c9297",
+      "native": "0095ba60",
+      "containing": "008c8f70",
+      "contract": "body read; per-party required-class bitmap"
+    },
+    {
+      "host": "vehicle_class_get_or_create",
+      "address": "008c92be",
+      "native": "00964790",
+      "containing": "008c8f70",
+      "contract": "body read; vehicle-class descriptor factory, DL=1"
+    },
+    {
+      "host": "music_director_set_level",
+      "address": "008c4e1d",
+      "native": "00a788a0",
+      "containing": "008c4d10",
+      "contract": "body read, partial"
+    },
+    {
+      "host": "session_send_music_level",
+      "address": "008c4e74",
+      "native": "0076d280",
+      "containing": "008c4d10",
+      "contract": "body read; session message 2ah, vtable 00d0319c"
+    },
+    {
+      "host": "session_route_party_message",
+      "address": "008a8ac4",
+      "native": "0077c2a0",
+      "containing": "008a8930",
+      "contract": "unread; ledger name predates this packet"
+    },
+    {
+      "host": "session_message_construct",
+      "address": "008a8a8f",
+      "native": "0075b430",
+      "containing": "008a8930",
+      "contract": "unread; base id 7fh"
+    },
+    {
+      "host": "scoring_set_real_play_time_running",
+      "address": "008b8901",
+      "native": "00905340",
+      "containing": "008b87f0",
+      "contract": "body read in full, three instructions"
+    },
+    {
+      "host": "scoring_set_final_scoring_function_name",
+      "address": "008b8766",
+      "native": "0090bfc0",
+      "containing": "008b8640",
+      "contract": "body read; NativeString assign at scoring+147h"
+    },
+    {
+      "host": "message_map_load",
+      "address": "008c6308",
+      "native": "00706760",
+      "containing": "008c61c0",
+      "contract": "partial: language and content ownership, then a file block"
+    },
+    {
+      "host": "call_0088b6d0_0076a9f0_00765590",
+      "address": "008c63c3",
+      "native": "0088b6d0",
+      "containing": "008c61c0",
+      "contract": "unread, named by address"
+    },
+    {
+      "host": "call_0088b6d0_0076a9f0_00765590",
+      "address": "008c63de",
+      "native": "0076a9f0",
+      "containing": "008c61c0",
+      "contract": "unread, named by address"
+    },
+    {
+      "host": "call_0088b6d0_0076a9f0_00765590",
+      "address": "008c63ee",
+      "native": "00765590",
+      "containing": "008c61c0",
+      "contract": "unread, named by address"
+    },
+    {
+      "host": "entity_set_think_script_name",
+      "address": "008980e8",
+      "native": "0088a330",
+      "containing": "00897fb0",
+      "contract": "body read including the flow gap at 0088a360"
+    },
+    {
+      "host": "entity_from_lua_table",
+      "address": "008980af",
+      "native": "00888aa0",
+      "containing": "00897fb0",
+      "contract": "already reconstructed, object_from_lua_table_00888aa0"
+    },
+    {
+      "host": "entity_from_lua_table",
+      "address": "008a8a33",
+      "native": "00888aa0",
+      "containing": "008a8930",
+      "contract": "already reconstructed"
+    },
+    {
+      "host": "entity_from_lua_table",
+      "address": "008cff4e",
+      "native": "00888aa0",
+      "containing": "008cfe40",
+      "contract": "already reconstructed"
+    },
+    {
+      "host": "set_entity_message_suppression",
+      "address": "008cffe4",
+      "native": "0077edf0",
+      "containing": "008cfe40",
+      "contract": "body read; map find-or-insert keyed on the entity pointer"
+    },
+    {
+      "host": "message_system_drain_queue",
+      "address": "008d000a",
+      "native": "0096bf70",
+      "containing": "008cfe40",
+      "contract": "partial: critical section at +24h, list at +e4h"
+    },
+    {
+      "host": "entity_refresh_world_pose",
+      "address": "0094482d",
+      "native": "00414db0",
+      "containing": "00944680",
+      "contract": "already reconstructed, BSP_EntityPose_RefreshWorld"
+    },
+    {
+      "host": "entity_refresh_world_pose",
+      "address": "009449f9",
+      "native": "00414db0",
+      "containing": "00944680",
+      "contract": "the mode-1 branch"
+    },
+    {
+      "host": "entity_refresh_world_pose",
+      "address": "00944a11",
+      "native": "00414db0",
+      "containing": "00944680",
+      "contract": "the mode-1 branch, second guard"
+    },
+    {
+      "host": "find_spawn_position",
+      "address": "00944c44",
+      "native": "00941fa0",
+      "containing": "00944680",
+      "contract": "unread"
+    },
+    {
+      "host": "find_spawn_position",
+      "address": "00944c64",
+      "native": "009426d0",
+      "containing": "00944680",
+      "contract": "unread"
+    },
+    {
+      "host": "find_spawn_position",
+      "address": "00944cc4",
+      "native": "004bc120",
+      "containing": "00944680",
+      "contract": "unread"
+    },
+    {
+      "host": "place_spawn_directly",
+      "address": "00944ef6",
+      "native": "00942cb0",
+      "containing": "00944680",
+      "contract": "unread; fed by 00438e10 at 00944ead"
+    },
+    {
+      "host": "create_scene_object",
+      "address": "00944d8a",
+      "native": "004c6ba0",
+      "containing": "00944680",
+      "contract": "body read in full; forwards to 0046d930 and calls 004c3840 when game+1fe4h is non-zero"
+    },
+    {
+      "host": "after_scene_object_created",
+      "address": "00944d93",
+      "native": "00874d00",
+      "containing": "00944680",
+      "contract": "partial"
+    },
+    {
+      "host": "scene_resolve_deferred_references",
+      "address": "00944e9b",
+      "native": "0046aab0",
+      "containing": "00944680",
+      "contract": "already named BSP_SceneDatabase_ResolveDeferredReferences"
+    },
+    {
+      "host": "entity_key_from_id",
+      "address": "00944e03",
+      "native": "004260b0",
+      "containing": "00944680",
+      "contract": "already reconstructed, decimal text of the id"
+    },
+    {
+      "host": "entity_tail_get_self_table",
+      "address": "00944e23",
+      "native": "00b67910",
+      "containing": "00944680",
+      "contract": "the thisTable literal; this is why Spawn is entity-returning"
+    },
+    {
+      "host": "entity_tail_push_value",
+      "address": "00944e48",
+      "native": "00b663d0",
+      "containing": "00944680",
+      "contract": "lua_checkstack then lua_pushvalue"
+    },
+    {
+      "host": "enqueue_request",
+      "address": "00949f97",
+      "native": "00949530",
+      "containing": "00949750",
+      "contract": "allocate dch, construct, link, increment the count"
+    },
+    {
+      "host": "spawn_request_allocate",
+      "address": "00949550",
+      "native": "00bf681b",
+      "containing": "00949530",
+      "contract": "operator new, dch bytes"
+    },
+    {
+      "host": "spawn_request_construct",
+      "address": "009495be",
+      "native": "00948cc0",
+      "containing": "00949530",
+      "contract": "body read; the producer for the record layout"
+    },
+    {
+      "host": "spawn_request_link",
+      "address": "009495e2",
+      "native": "00943c00",
+      "containing": "00949530",
+      "contract": "unread; the list insert"
+    },
+    {
+      "host": "remove_requests_with_id",
+      "address": "00945ba2",
+      "native": "00bf65ac",
+      "containing": "00945a20",
+      "contract": "the free whose CALL_RETURN override hides 00945ba7..00945bb3"
+    },
+    {
+      "host": "alias_entity_from_lua_table",
+      "address": "00896b93",
+      "native": "00888aa0",
+      "containing": "00896a90",
+      "contract": "already reconstructed"
+    }
+  ],
+  "corrections": [
+    {
+      "what": "0088a330 decompilation drops a reachable block",
+      "was": "if (entity->think_name) { free(entity->think_name); return; }",
+      "is": "the pointer is nulled and the routine falls through to duplicate the new name and clear entity+1dch",
+      "evidence": "python tools/bsp.py ghidra flow 0088a330 reports one gap after the free at 0088a35b; the disk bytes at 0088a360 are 83 c4 04 c7 86 d8 01 00 00 00 00 00 00, i.e. ADD ESP,4 then MOV dword [ESI+1d8h],0, and the listing resumes at 0088a36d",
+      "fix": "python tools/ghidra_flow_repair.py 0088a330 --apply"
+    },
+    {
+      "what": "00945a20 decompilation drops a reachable block, changing the contract",
+      "was": "SpawnNewIDRemove removes the first record whose id matches",
+      "is": "it removes every matching record and decrements the manager's count for each",
+      "evidence": "python tools/bsp.py ghidra flow 00945a20 reports one gap after the free at 00945ba2; the disk bytes at 00945ba7 are ADD ESP,4 / ADD dword [EDI+8],-1 / JMP 0x945b07, and 00945b07 is the top of the scan loop; EDI is ECX from 00945a46, so [EDI+8] is the manager's element count",
+      "fix": "python tools/ghidra_flow_repair.py 00945a20 --apply"
+    },
+    {
+      "what": "00949750 has a cosmetic flow gap of the same kind",
+      "was": "a dropped block after the free at 0094a071",
+      "is": "the three bytes at 0094a076 are ADD ESP,4",
+      "evidence": "python tools/bsp.py ghidra flow 00949750; python tools/bsp.py disasm-raw 0094a076 --length 4",
+      "fix": "python tools/ghidra_flow_repair.py 00949750 --apply"
+    },
+    {
+      "what": "the entity-returning binding set is 20, not 19",
+      "was": "docs/LUA_BINDING_TABLE.md and include/bsp/mission_lua_bindings.hpp carry nineteen handlers that end in the thisTable tail",
+      "is": "Spawn 00944680 is the twentieth; it had no Ghidra function when that export ran, so the call graph did not carry it",
+      "evidence": "python tools/bsp.py callees 00944680 lists both 00b67910 and 00b663d0; the same query over the other 23 newly defined handlers lists neither, and none of the three spawn thunk targets 00949750, 00945850, 00945a20 reaches the tail either"
+    },
+    {
+      "what": "docs/LUA_BINDING_TABLE.md's open question about the three aliased handlers",
+      "was": "open: whether the two names differ in behaviour by an argument",
+      "is": "they cannot differ; 006b8610 registers with nup = 0 and none of the three handlers calls an upvalue accessor or lua_getinfo",
+      "evidence": "python tools/bsp.py callees over 00896a90, 008b0c10 and 0088e560 lists no debug or upvalue entry point; docs/MISSION_LUA_MACHINE.md established the nup = 0 registration"
+    }
+  ],
+  "run_evidence": {
+    "command": "build/win32/Release/bsp_mission_script_probe.exe --sweep --recon-tables [--core-bindings] --quiet",
+    "installed_scripts": 299,
+    "load_clean_stubbed": 299,
+    "load_clean_reconstructed": 299,
+    "create_script_bodies_raising_stubbed": 160,
+    "create_script_bodies_raising_reconstructed": 156,
+    "scripts_fixed": [
+      "COTP-IJN/PRCPIJN/jm10",
+      "chg/chg_8_periscope",
+      "chg/chg_9_coup",
+      "ijn/ESMP/04_solomon_sea"
+    ],
+    "rows_reached_at_load_time": 140,
+    "prepare_class_calls": 2616,
+    "prepare_class_path_resolutions": 2623,
+    "prepare_class_paths_that_resolved": 2571,
+    "note": "The paths resolve only once the probe reproduces 00b68d70's base-10 numeric fallback, because vehicleclasses.lua keys its rows by integer. Without it the count is 0."
+  }
+}
