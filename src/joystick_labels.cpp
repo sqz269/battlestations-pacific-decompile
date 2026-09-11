@@ -2,6 +2,7 @@
 #include "bsp/native_string_append.hpp"
 
 #include <cstring>
+#include <exception>
 #include <stdexcept>
 
 namespace bsp {
@@ -11,16 +12,32 @@ public:
     SuffixString(const char* text, NativeStringStorage& storage) : storage_(storage) {
         value.assign_0041e870(storage_, text);
     }
-    ~SuffixString() { value.release_to(storage_); }
+    ~SuffixString() { destroy_native_string_header_0041dd20(&value, storage_); }
     NativeString value;
 private:
     NativeStringStorage& storage_;
+};
+class ResultUnwind {
+public:
+    ResultUnwind(NativeString& output, NativeStringStorage& storage) noexcept
+        : output_(output), storage_(storage), exceptions_(std::uncaught_exceptions()) {}
+    ~ResultUnwind() {
+        // CB6A70 tests the constructed-result flag, then calls A41DD20.
+        // That native destructor frees storage without clearing its header.
+        if (std::uncaught_exceptions() > exceptions_)
+            destroy_native_string_header_0041dd20(&output_, storage_);
+    }
+private:
+    NativeString& output_;
+    NativeStringStorage& storage_;
+    int exceptions_;
 };
 }
 
 NativeString& joystick_control_name_00a99710(const JoystickInputDevice& device,
     NativeString& output, std::uint32_t code, NativeStringStorage& storage) {
     output.assign_0041e870(storage, ""); // CE3A0C is NUL, not a display fallback
+    ResultUnwind result_unwind(output, storage);
     if (code >= device.bindings.size()) throw std::out_of_range("Native joystick binding index");
     const auto& binding = device.bindings[code];
     if (binding.kind == 0) return output;

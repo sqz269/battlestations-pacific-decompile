@@ -7,7 +7,7 @@
       "address": "00a99710",
       "name": "BSP_JoystickInputDevice_ControlName",
       "source": "src/joystick_labels.cpp",
-      "scope": "full normal body and temporary suffix cleanup; output exception cleanup unresolved",
+      "scope": "full normal body and recovered temporary/result unwind actions; compiler frame ABI not supplied",
       "abi": "ECX device; output pointer/code stack; EAX output; RET8",
       "end_exclusive": "00a998f2"
     },
@@ -24,5 +24,6 @@
   "missing_function_starts": [],
   "abi_compatible": false,
   "game_validated": false,
-  "validation": "Strict MSVC Win32 C++17 /W4 /WX build and both existing CTests passed; local/joystick-labels-g-build.log; no hardware or gameplay calls"
+  "validation": "Strict MSVC Win32 /W4 /WX build and both existing CTests passed; focused ignored fixture verifies label, relocated self-append, suffix-before-output release on append allocation failure, retained native result header; process exit0; no hardware calls",
+  "unwind_evidence": "reports/orch3_joystick_label_unwind_g.json"
 }

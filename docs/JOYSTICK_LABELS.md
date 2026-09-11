@@ -25,6 +25,11 @@ suffix pointer before resizing the output. Neither operation adds separators.
 
 These are new typed interfaces. Native invalid pointers, wrapped lengths and
 invalid indices remain outside the supported domain; index guards run after
-the output constructor. Temporary suffix cleanup is implemented. The native
-exception cleanup of the caller-provided result has not been fully recovered,
-so this packet claims normal control flow rather than full exception ABI.
+the output constructor. Native cleanup is established by FuncInfo DECEEC and
+the five-entry unwind map DECF10. States1..4 destroy the suffix through CB6AA1,
+CB6A99, CB6A89 or CB6A91, then transition to state0. CB6A70 tests/clears the
+constructed-result bit and invokes 41DD20 on the caller-provided output.
+The C++ cleanup preserves this order and actual-header destructor behavior:
+storage is freed while the output length/pointer remain unchanged. The failed
+result is not a live owning string and must not be freed again. This recovers
+the cleanup actions, without reproducing compiler SEH metadata or frame ABI.
