@@ -41,7 +41,7 @@ no renames, comments or saves were applied.
 | +20h | widget `titleLogo_Icon`; visible in mode 0 only | 0057CD46, 0057CDAC |
 | +24h | widget `title_Text`; the mode 1 caption | 0057CDBE, 0057CDD2 |
 | +28h | widget `loadingLogo_FrameBox`; the caption's plate | 0057CE79, 0057CE2D |
-| +2Ch | int, last tick; `-1` on reset | 0057C99F |
+| +2Ch | signed converted progress units; `-1` on reset | 0057C99F |
 | +30h | float, monotonic maximum progress; `0.0f` on reset | 0057C99A |
 | +34h | not observed | |
 | +38h..+47h | `ClockTimestamp` of the current hint's appearance | 0057C393..0057C3A9 |
@@ -397,3 +397,15 @@ where the note in the source says so.
   00AA4040's callers install (0060D6E0 is the second caller), files
   `docs/RENDER_WORKER_CALLBACKS.md`. Contract: whether every callback repeats
   the worker's own delta computation with a private accumulator.
+
+## Correction: progress units at+2C (2026-09-11)
+
+`LoadingHintRotation.last_tick` is now `progress_units`, matching the SAME
+singleton field written by `0057BEC0`. `0057CE83` loads00E194B4 and the call at
+`0057CE89` passes it to reset0057C990, whose store at0057C99F sets+2C to-1.
+The report function raises+2C from conversion of original incoming progress
+times128; BF7420 is a conversion service, not a clock. The float+30 still feeds
+hint travel at0057C4C6, while actual hint age comes from the separate clock
+01090AB0/+20 and timestamp+38. This correction changes no reset or hint timing
+behavior and establishes no additional+2C consumer. See
+[FRONTEND_PROGRESS_CONVERSION.md](FRONTEND_PROGRESS_CONVERSION.md).

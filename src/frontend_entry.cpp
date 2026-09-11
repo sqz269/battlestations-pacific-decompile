@@ -1,7 +1,56 @@
 #include "bsp/frontend_entry.hpp"
+#include <cstddef>
+#include <stdexcept>
+
+#if !defined(_MSC_VER) || !defined(_M_IX86)
+#error Native loading progress requires MSVC Win32 x87 assembly.
+#endif
 
 namespace bsp {
+static_assert(offsetof(LoadingProgressCrtAccess, sse2_conversion_0109eea4) == 4);
+static_assert(offsetof(LoadingProgressCrtAccess, convert_st0_00bf7420) == 8);
 namespace {
+// ECX/+30 field and EDX/+2C field are semantic projection addresses; stack
+// contains incoming and required CRT access. The floating schedule is native.
+__declspec(naked) void __fastcall report_progress_kernel(
+    float*, std::int32_t*, float, const LoadingProgressCrtAccess*) {
+    __asm {
+        push ebx
+        push esi
+        push edi
+        mov esi, edx
+        mov edi, ecx
+        sub esp, 4
+        mov ebx, dword ptr [esp + 24]
+        fld dword ptr [edi]
+        fstp dword ptr [esp]
+        fld dword ptr [esp + 20]
+        fld dword ptr [esp]
+        fcomip st, st(1)
+        jbe incoming_selected
+        movss xmm0, dword ptr [esp]
+        jmp multiply_original_incoming
+    incoming_selected:
+        movss xmm0, dword ptr [esp + 20]
+    multiply_original_incoming:
+        mov edx, dword ptr [ebx]
+        fmul qword ptr [edx]
+        movss dword ptr [edi], xmm0
+        mov ecx, dword ptr [ebx + 4]
+        call dword ptr [ebx + 8]
+        mov ecx, dword ptr [esi]
+        cmp ecx, eax
+        jg finished
+        jz finished
+        mov dword ptr [esi], eax
+    finished:
+        add esp, 4
+        pop edi
+        pop esi
+        pop ebx
+        ret 8
+    }
+}
 // 00CE8254 and 00CE8274. The only "SLM_" strings in the image.
 constexpr const char* kLoadBlockCold = "GILoading::SLM_LOAD_FRONTEND";
 constexpr const char* kLoadBlockReturn = "GILoading::SLM_LOAD_FRONTEND_RETURN";
@@ -107,18 +156,14 @@ void publish_loading_screen_config(LoadingScreenConfig& globals, const LoadingSc
     globals.image_visible = source.image_visible;
 }
 
-void report_loading_progress(LoadingScreen* screen, float progress, std::int32_t tick) noexcept {
+void report_loading_progress(LoadingScreen* screen, float progress,
+    const LoadingProgressCrtAccess& access) {
     if (screen == nullptr) {
         return; // 0057bec9
     }
-    if (progress > screen->progress) {
-        screen->progress = progress;
-    }
-    // 0057bf04/0057bf06: JG then JZ, so the store runs only when the stored tick
-    // is strictly below the sampled one.
-    if (screen->last_tick < tick) {
-        screen->last_tick = tick;
-    }
+    if (!access.scale_00cef258 || !access.sse2_conversion_0109eea4 || !access.convert_st0_00bf7420)
+        throw std::invalid_argument("loading progress requires actual scale/global and ST0 CRT conversion");
+    report_progress_kernel(&screen->progress, &screen->progress_units, progress, &access);
 }
 
 void begin_loading_screen(LoadingScreen& screen, LoadingScreenMode mode,

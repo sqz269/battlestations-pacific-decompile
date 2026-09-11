@@ -184,7 +184,7 @@ void reset_loading_hints_0057c990(LoadingScreenElementState& screen,
     LoadingHintList& hints, LoadingScreenElementHost& host) {
     LoadingHintRotation& rotation = screen.rotation;
     rotation.progress = 0.0f; // 0057C99A
-    rotation.last_tick = -1; // 0057C99F
+    rotation.progress_units = -1; // 0057C99F; not a clock sample
     rotation.advanced_at_progress = 0.0f; // 0057C9A2
     rotation.progress_step = loading_hint_step(hints); // 0057C9DB
     hints.current = -1; // 0057C9E0, the cursor at 00E0877C

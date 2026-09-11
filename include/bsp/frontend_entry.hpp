@@ -78,8 +78,8 @@ void publish_loading_screen_config(LoadingScreenConfig& globals, const LoadingSc
 // element pointers that vtable +10h fills; only their use is recovered.
 struct LoadingScreen {
     FrontEndScreen base{}; // +4h wanted, +5h active
-    std::int32_t last_tick{0}; // +2Ch, monotonic max of the 00bf7420 counter
-    float progress{0.0f}; // +30h, monotonic max of the reported progress
+    std::int32_t progress_units{0}; // +2Ch, signed max of converted incoming*128
+    float progress{0.0f}; // +30h, incoming wins when equal or unordered
     LoadingScreenMode mode{LoadingScreenMode::MenuBackground};
     bool configured{false}; // false when the mode matched neither 0 nor 1
     // Stands for "00E194B4 is not null" at 0057cc8d, which is the allocation
@@ -88,16 +88,28 @@ struct LoadingScreen {
     bool created{false};
 };
 
-// Dead multiply at 0057beef: the maximum is multiplied by the double 128.0 at
-// 00CEF258 on the x87 stack and the product is never stored, because the store
-// at 0057bef5 is an SSE MOVSS of the unscaled maximum. ST0 is also left loaded.
-// Both decoders agree, so this is in the shipped code, not a decode artifact.
-inline constexpr double kLoadingProgressDeadScale = 128.0;
+// Required existing CRT BF7420 dispatch. Input is x87 ST0, not a C++ argument;
+// consume exactly that input and return native EAX. ECX identifies the ACTUAL
+// current0109EEA4 global, which the service must read at conversion time:
+// nonzero FSTP double/CVTTSD2SI; zero existing BF7456 x87 conversion. Preserve
+// native control/status/exception effects. Never substitute a clock or cast.
+using LoadingProgressConvertSt0 = std::int32_t (__fastcall*)(
+    const volatile std::uint32_t* actual_0109eea4) noexcept;
+struct LoadingProgressCrtAccess {
+    const volatile double* scale_00cef258; // Actual shipped value128.0.
+    const volatile std::uint32_t* sse2_conversion_0109eea4;
+    LoadingProgressConvertSt0 convert_st0_00bf7420;
+};
 
-// 0057bec0. __stdcall(float), RET 4, no ECX; a null global is a no-op. Raises
-// both fields to their argument, never lowers them. tick is the 00bf7420
-// (LIBCRT clock) result the native body fetches itself.
-void report_loading_progress(LoadingScreen* screen, float progress, std::int32_t tick) noexcept;
+// Whole0057BEC0..0057BF0F; original stdcall(float), RET4, null global no-op.
+// Preserve old FLD/FSTP, incoming FLD, old FLD/FCOMIP, JBE selecting incoming
+// for equal/unordered values; +30 is stored BEFORE conversion. ST0 still holds
+// the ORIGINAL incoming, multiplied by actualCEF258; +2C is signed max(old,
+// converted). These fields need not agree for NaNs or decreasing reports.
+// New C++ service ABI; no BF7420 kernel duplication or actual screen overlay.
+// Null screen bypasses all service validation and performs no floating work.
+void report_loading_progress(LoadingScreen* screen, float progress,
+    const LoadingProgressCrtAccess&);
 
 // One method per native call site the loading screen reaches. Nothing here has a
 // default: none of it stands in for unrecovered behaviour.
