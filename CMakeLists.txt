@@ -70,6 +70,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_renderer_binding_getters.cpp
   src/native_renderer_surface_bindings.cpp
   src/native_physical_buffer_owner.cpp
+  src/native_tree_out_of_range_exception.cpp
   src/native_vertex_declaration_owner.cpp
   src/native_render_buffer_unregistration.cpp
   src/native_render_cache_construction.cpp

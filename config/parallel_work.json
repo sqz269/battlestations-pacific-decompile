@@ -3400,6 +3400,25 @@
         "docs/NATIVE_LOGICAL_VERTEX_OWNER_NEXT.md",
         "reports/native_logical_vertex_owner_next.json"
       ]
+    },
+    {
+      "id": "native_tree_out_of_range_exception",
+      "packet": "native_tree_out_of_range_exception",
+      "worker": "main",
+      "done": true,
+      "state": "integrated_complete_actual_storage_thin_composition_source_bytes_and_build_checked",
+      "function_addresses": [
+        "00441760",
+        "004412b0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_tree_out_of_range_exception.hpp",
+        "src/native_tree_out_of_range_exception.cpp",
+        "docs/NATIVE_TREE_OUT_OF_RANGE_EXCEPTION.md",
+        "reports/native_tree_out_of_range_exception_audit.json"
+      ],
+      "evidence": "reports/native_tree_out_of_range_exception_audit.json",
+      "native_differential_fixture": false
     }
   ],
   "snapshot_after_analysis": {
@@ -4438,6 +4457,12 @@
       "worker": "material_effect_plane",
       "state": "discovering_actual_logical_vertex_retained_owner_profiles_and_lifetime_dependencies",
       "validation": null
+    },
+    {
+      "packet": "native_tree_out_of_range_exception",
+      "worker": "main",
+      "state": "integrated_complete_actual_storage_thin_composition_source_bytes_and_build_checked",
+      "validation": "reports/native_tree_out_of_range_exception_audit.json"
     }
   ],
   "next_dispatch": [
