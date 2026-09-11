@@ -3,6 +3,18 @@
   "status": "reconstructed_pending_integrated_build",
   "addresses": [
     "0053bc00",
+    "007371d0",
+    "0073bae0",
+    "00aa5840",
+    "00aa5e20",
+    "00aa7e00",
+    "00aaa710",
+    "00ac3400",
+    "00ac3610",
+    "00ac3690",
+    "00ac36f0",
+    "00ac3910",
+    "00ac6600",
     "00be9620",
     "00be9630",
     "00be9760"
@@ -90,5 +102,10 @@
     "GUI scene and widget binding absent; actual GUI sequence not enabled in executable.",
     "No original singleton allocator/refcount ABI or renderer texture-cache identity.",
     "No font draw, shader parity or gameplay validation; payload meaning beyond Fingerprint_Text use unknown."
-  ]
+  ],
+  "worker_commits": {
+    "font_registry_startup": "754ba28",
+    "gui_resource_owner": "d206cdb",
+    "gui_page_script": "aadb78c"
+  }
 }
