@@ -126,3 +126,32 @@ game rendering or whole-renderer lifecycle was validated.
 
 The parent renderer binder `B24E70` and the already closed getter leaves
 are not part of this six-function packet.
+
+## Primary integration
+
+The primary registered the owner and renderer parent sources in CMake and
+passed the strict main Win32 build and both existing CTests. It verified
+32 immutable worker pins, 26 fresh live/PE spans (1,045 bytes), and eight
+fresh native seed ranges. The unchanged owner fixture linked only the
+frozen actual main library
+`9be94991d23f1951ad8913d1cc7cc0390f9a3d416cecea12eda78ac7601610db`.
+All nine linked archive members match the frozen actual build objects;
+25 provider source/header files are snapshotted. Twenty-three files match
+the worker; the two reviewed differences add an unused camera overload
+declaration and clarify string contract comments.
+
+The independent replay passed all seven original-owner/library pairs:
+2,406 matching DWORDs and 88 actual COM Release calls. Fourteen complete
+COFF/linked/runtime symbols match every relocation, the entire fixture
+text remains unchanged, and twenty original spans match across fifteen
+stages. Full vector and surface behavior is supplied by the established
+library implementations through declared original-call ABI bridges. The
+malformed negative-capacity allocation case remains explicit fault
+injection and does not establish genuine allocation exhaustion.
+
+The primary removed the false returning-free overrides at B1FCC5 and
+B1FD00, restored the complete destruction tail and verified scalar EAX
+returns the original owner. It preserved old names, comments and labels,
+saved reviewed names/evidence in the original Ghidra project, refreshed
+all six exports and registered complete reconstruction records. Parent
+renderer fixture validation and gameplay remain separate boundaries.
