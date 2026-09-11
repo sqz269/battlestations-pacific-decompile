@@ -4,12 +4,32 @@
   "worktree": "J:/PROG/battlestations-pacific-decompile-orch3-20260910",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
-  "workers": ["input_action_classifier", "sound_manager_levels", "session_teardown_latches"],
+  "workers": [
+    "input_action_classifier",
+    "sound_manager_levels",
+    "session_teardown_latches"
+  ],
   "integration_changes": [
-    {"address": "00a92c40", "source": "src/input_tick.cpp", "behavior": "Calls recovered listener classifier directly using explicit timing thresholds."},
-    {"address": "00a926f0", "source": "src/input_tick.cpp", "behavior": "Delegates modifier comparisons to CRT stricmp; native-string helper is understood for fixed nonempty holdPress."},
-    {"address": "00a92aa0", "source": "src/input_tick.cpp", "behavior": "Modifier header +0 is an explicit uint32 string length, replacing the previous object-pointer projection."},
-    {"address": "004da6c0", "source": "src/mission_state_entry.cpp", "behavior": "Reads AudioSettings.master_20 after earlier native host calls, replacing constant zero."}
+    {
+      "address": "00a92c40",
+      "source": "src/input_tick.cpp",
+      "behavior": "Calls recovered listener classifier directly using explicit timing thresholds."
+    },
+    {
+      "address": "00a926f0",
+      "source": "src/input_tick.cpp",
+      "behavior": "Delegates modifier comparisons to CRT stricmp; native-string helper is understood for fixed nonempty holdPress."
+    },
+    {
+      "address": "00a92aa0",
+      "source": "src/input_tick.cpp",
+      "behavior": "Modifier header +0 is an explicit uint32 string length, replacing the previous object-pointer projection."
+    },
+    {
+      "address": "004da6c0",
+      "source": "src/mission_state_entry.cpp",
+      "behavior": "Reads AudioSettings.master_20 after earlier native host calls, replacing constant zero."
+    }
   ],
   "reviewed_evidence": [
     "00425850 listing: native string header in ECX, data +4, length +0, CRT stricmp nonnull branch, AL result and RET 4.",
@@ -25,8 +45,18 @@
     "combined_win32_release_build": "pending",
     "existing_ctests": "pending",
     "focused_regression": "tests/math_tests.cpp mission entry observes master-volume change made by the prior local-slot callback",
-    "classifier_native_differential": "pending review of worker report",
-    "saved_annotations": "pending integration"
+    "classifier_native_differential": {
+      "state_comparisons": 25088,
+      "passed": true,
+      "reference": "reports/input_action_classifier.json",
+      "review": "Parent reviewed native-byte match record, comparator source and PASS log; probe sources and log preserved in this worktree local/."
+    },
+    "saved_annotations": "pending integration",
+    "independent_reviews": {
+      "sound": "Input worker found no semantic defects after focused native listing review",
+      "mission_and_input_integration": "Session worker found no code regressions; clarified conditional suppression in the game-closed UI wording"
+    },
+    "sound_focused_probe": "Worker local floating-point and mask probe passed; parent reviewed log and preserved probe source in local/"
   },
   "no_ghidra_function": [],
   "abi_compatible": false,
