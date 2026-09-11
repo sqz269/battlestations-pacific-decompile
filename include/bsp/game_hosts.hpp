@@ -32,6 +32,8 @@
 
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/settings_capabilities.hpp"
+#include "bsp/renderer_capabilities.hpp"
 #include "bsp/profile_manager.hpp"
 #include "bsp/app_frame.hpp"
 #include "bsp/frame_clock.hpp"
@@ -50,6 +52,8 @@ namespace bsp::game {
 // stays independent of the VFS types.
 class GameVfsHost;
 class GameSettingsBinding;
+class GameScriptHost;
+class GameLocaleHost;
 
 // One host method, or one initialize phase, observed during a run.
 struct GameHostMethodRecord {
@@ -154,7 +158,10 @@ private:
 // renderer frame routine behind renderer virtual +20h is not reconstructed.
 class GameDeviceHost {
 public:
-    explicit GameDeviceHost(GameHostLog& log) : log_(log) {}
+    // The application's renderer API outlives this device, settings queries and
+    // any device recreation. This object releases only the device it creates.
+    GameDeviceHost(GameHostLog& log, IDirect3D9& api, NativeRendererParametersOwner& parameters)
+        : log_(log), api_(api), renderer_parameters_(parameters) {}
     GameDeviceHost(const GameDeviceHost&) = delete;
     GameDeviceHost& operator=(const GameDeviceHost&) = delete;
     ~GameDeviceHost();
@@ -169,10 +176,12 @@ public:
     unsigned long long presented() const noexcept { return presented_; }
     const D3DPRESENT_PARAMETERS& parameters() const noexcept { return parameters_; }
     IDirect3DDevice9* device() const noexcept { return device_; }
+    IDirect3D9& renderer_api() noexcept { return api_; }
 
 private:
     GameHostLog& log_;
-    IDirect3D9* api_{};
+    IDirect3D9& api_;
+    NativeRendererParametersOwner& renderer_parameters_;
     IDirect3DDevice9* device_{};
     D3DPRESENT_PARAMETERS parameters_{};
     DWORD behavior_flags_{};
@@ -268,6 +277,13 @@ struct GameRunSummary {
     int settings_antialias{};
     std::size_t probes_resolved{};
     std::size_t probes_requested{};
+    bool input_scripts_ready{};
+    std::size_t input_devices{};
+    std::size_t input_names{};
+    std::size_t controller_names{};
+    bool renderer_api_shared{};
+    std::size_t locale_keys{};
+    std::size_t locale_files{};
 };
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
@@ -311,6 +327,9 @@ public:
     const GameSettings& settings() const noexcept { return settings_.options_file; }
     const GameSettingsBlock& settings_block() const noexcept { return settings_; }
     GameSettingsBinding* settings_binding() const noexcept { return settings_host_; }
+    GameScriptHost* script_host() const noexcept { return scripts_; }
+    GameLocaleHost* locale_host() const noexcept { return locale_; }
+    NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
 
 private:
     void run_initialize_phases();
@@ -336,6 +355,12 @@ private:
     ProfileHintsOwner profile_hints_;
     std::vector<std::string> content_suffixes_;
     GameSettingsBinding* settings_host_{};
+    GameScriptHost* scripts_{};
+    GameLocaleHost* locale_{};
+    IDirect3D9* renderer_api_{};
+    NativeRendererParametersOwner* renderer_parameters_{};
+    SettingsRendererCapabilities renderer_capabilities_;
+    RendererCapabilities renderer_full_capabilities_;
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};

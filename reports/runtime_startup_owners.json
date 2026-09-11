@@ -1,0 +1,17 @@
+{
+  "packet": "orch2_runtime_startup_owners",
+  "status": "implementation_awaiting_combined_validation",
+  "addresses": ["0073d410", "005547d0", "006ab6b0", "006a7be0", "0073c960", "00aa09d0", "00aa0d30", "00aa06d0"],
+  "source": ["include/bsp/game_hosts.hpp", "include/bsp/game_hosts_vfs.hpp", "src/game_hosts.cpp", "src/game_hosts_vfs.cpp", "src/game_main.cpp"],
+  "evidence": "docs/RUNTIME_STARTUP_OWNERS.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": {},
+  "worker_commits": {},
+  "follow_up": [
+    "Bind actual input device construction, polling and profile/preset application to retained InputSettings",
+    "Load fonts and GUI resources through the retained page registry and live text services",
+    "Apply settings/profile state at the original post-game-entry call sites, including Lua region and compatibility publication",
+    "Complete renderer resource ownership and world/scene/gameplay bindings; validate gameplay before completion"
+  ]
+}

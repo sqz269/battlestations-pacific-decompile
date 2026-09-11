@@ -332,29 +332,56 @@ std::size_t GameVfsHost::package_entries_mounted() const noexcept {
 // GameSettingsBinding
 // ---------------------------------------------------------------------------
 
-GameSettingsBinding::GameSettingsBinding(GameHostLog& log, VfsMountContext& mounts,
-    const VfsCandidateRegistrations& registrations, const std::vector<std::string>& suffixes,
-    ProfileHintsOwner& hints, std::string personal_root)
-    : log_(log), text_host_(std::move(personal_root)),
-      locale_source_(mounts, registrations, suffixes,
-          [&hints] { return static_cast<std::uint32_t>(hints.field_08); }) {
-    api_ = Direct3DCreate9(D3D_SDK_VERSION);
-    if (!api_) throw std::runtime_error("Settings renderer Direct3DCreate9 failed");
-    try {
-        Win32SettingsCapabilityQueries queries(*api_);
-        enumerate_settings_resolutions_00b27d80(capabilities_, queries);
-        if (!gather_settings_shader_caps_00b2c8e0(capabilities_, queries))
-            throw std::runtime_error("Settings renderer GetDeviceCaps failed");
-    } catch (...) {
-        api_->Release();
-        api_ = nullptr;
-        throw;
-    }
+GameScriptHost::GameScriptHost(GameHostLog& log, VfsMountContext& mounts,
+    const std::vector<std::string>& suffixes, LuaRuntimeGlobals globals)
+    : globals_(std::move(globals)), files_(mounts, suffixes), runtime_(files_),
+      input_(files_, runtime_, globals_) {
+    // The singleton constructor loads immediately; the explicit call at
+    // 0073da9b observes +4 already set and keeps the same persistent state.
+    input_.load_data_tables_006a7be0();
+    log.implemented("Phase 5 input_script_tables", "006ab6b0/006a7be0");
+    log.notef("input scripts devices=%zu input_names=%zu controller_names=%zu "
+        "presets_lua=%p data_tables_started=%d runtime_settings_loaded=%d",
+        input_.settings().devices.size(), input_.settings().input_names.size(),
+        input_.settings().controller_input_names.size(),
+        static_cast<void*>(input_.control_presets_lua()), input_.data_tables_started() ? 1 : 0,
+        input_.settings().runtime_settings_loaded ? 1 : 0);
 }
 
-GameSettingsBinding::~GameSettingsBinding() {
-    if (api_) api_->Release();
+void GameLocaleHost::initialize(LocaleTableSource& source, const std::string& language) {
+    bool changed = false;
+    std::string error;
+    if (!tables_.set_language_00aa09d0(source, *this, language, changed, error))
+        throw std::runtime_error("Locale language selection: " + error);
+    tables_.register_table_00aa0d30("globals");
+    if (!tables_.reload_00aa06d0(source, false, error))
+        throw std::runtime_error("Locale table startup: " + error);
+    log_.implemented("Phase 6 locale_set_language", "00aa09d0");
+    log_.implemented("Phase 6 locale_register_globals", "00aa0d30");
+    log_.implemented("Phase 6 locale_load_tables", "00aa06d0");
+    log_.notef("locale language=%s keys=%zu files=%zu registered=%zu gui_created=%d",
+        tables_.language().c_str(), tables_.size(), tables_.loaded_files().size(),
+        tables_.registered_tables().size(), gui_created() ? 1 : 0);
 }
+
+GuiLocaleRefreshManager& GameLocaleHost::gui() {
+    if (!gui_) gui_ = std::make_unique<GuiLocaleRefreshManager>();
+    return *gui_;
+}
+
+void GameLocaleHost::refresh_locale_00aa4650() {
+    gui().refresh_locale_00aa4650();
+    log_.implemented("LocaleGuiRefreshHost::refresh_locale", "00aa4650");
+}
+
+GameSettingsBinding::GameSettingsBinding(GameHostLog& log, VfsMountContext& mounts,
+    const VfsCandidateRegistrations& registrations, const std::vector<std::string>& suffixes,
+    ProfileHintsOwner& hints, IDirect3D9& api, SettingsRendererCapabilities& capabilities,
+    std::string personal_root)
+    : log_(log), text_host_(std::move(personal_root)),
+      locale_source_(mounts, registrations, suffixes,
+          [&hints] { return static_cast<std::uint32_t>(hints.field_08); }),
+      api_(api), capabilities_(capabilities) {}
 
 void GameSettingsBinding::build_language_catalog_008d7bc0() {
     bsp::build_language_catalog_008d7bc0(languages_, locale_source_);
@@ -441,7 +468,7 @@ std::uint32_t GameSettingsBinding::pixel_shader_version_28() const {
 }
 
 void GameSettingsBinding::rebuild_antialias_levels_00b295c0(std::uint32_t format) {
-    Win32SettingsCapabilityQueries queries(*api_);
+    Win32SettingsCapabilityQueries queries(api_);
     rebuild_settings_antialias_00b295c0(capabilities_, queries, format);
     log_.implemented("GameSettingsHost::rebuild_antialias_levels", "00b295c0");
     log_.notef("settings AA surface format=%u supported levels=%zu", format, capabilities_.antialias_levels.size());
