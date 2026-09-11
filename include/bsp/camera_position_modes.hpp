@@ -1,0 +1,76 @@
+#pragma once
+
+#include "bsp/pose_refresh.hpp"
+#include "bsp/system_camera_axes.hpp"
+
+namespace bsp {
+
+// Borrowed fields only: these views neither own nor initialize native state.
+// All identities, slots, records and poses must remain alive through each call.
+struct CameraPositionRecordView {
+    void*& parent_14;
+    void*& target_24;
+    std::array<float, 3>& point_28;
+    float& theta_34;
+    float& rho_38;
+    std::uint32_t& kind_48;
+};
+
+struct CameraPositionView {
+    std::array<float, 3>& position_394;
+    float& theta_3c4;
+    float& rho_3c8;
+    float& divisor_460;
+    void*& path_464;
+    float& parameter_468;
+    void**& records_begin_47c;
+    void**& records_end_480;
+    void*& configuration_4d0;
+};
+
+class CameraPositionHost : public PoseRefreshResolver {
+public:
+    // Pure lookup of the actual object/field; no copies, replacement identities,
+    // allocation, side effects or unsupported-owner defaults are permitted.
+    virtual CameraPositionRecordView& resolve_position_record(void* actual_record) = 0;
+    virtual float& resolve_configuration_scale_54(void* actual_configuration) = 0;
+
+    // Required unreconstructed native operations. The sampler receives the
+    // actual path +464 owner and actual writable camera +394 vector, then a
+    // disjoint uninitialized output vector, exactly as at 007954F7.
+    virtual void sample_path_007b04c0(void* actual_path, float parameter,
+        std::array<float, 3>& position, std::array<float, 3>& output,
+        std::uint32_t flags) = 0;
+    virtual void extract_matrix_angles_0042d2e0(const CameraMatrix& actual_matrix,
+        float& output_x, float& output_y, float& output_z) = 0;
+    // Bind the genuine CRT range-failure operation; it does not return.
+    [[noreturn]] virtual void range_error_00bf6713() = 0;
+};
+
+// Native stack float / RET4 / ST0 float. Staged sqrt/atan identity with ordered
+// clamps to promoted binary32 +/-pi/2. Uses genuine current host CRT entries;
+// original CRT dispatch globals, diagnostics and exceptional policy stay external.
+float __stdcall camera_asin_clamped_0042cf10(float value);
+
+// Native ECX matrix, EDX output XYZ, EAX same output, RET. Required 42D2E0
+// boundary writes the three actual output references in its native order.
+float* matrix_angles_006e47a0(const CameraMatrix&, float* output_xyz,
+    CameraPositionHost&);
+
+// Native ECX camera; three by-value stack floats; RET0Ch. Writes rho first,
+// then theta. The original object layout is represented by the borrowed view.
+void aim_camera_at_point_00794070(CameraPositionView&,
+    std::array<float, 3> point, const CameraAxesCrtAccess&);
+
+// Native ECX camera; stack actual target owner, scale; RET8. Ordered-negative
+// scale loads configuration+54. Uses the actual target's canonical pose view.
+void aim_camera_at_target_00794130(CameraPositionView&, void* actual_target,
+    float scale, CameraPositionHost&, const CameraAxesCrtAccess&);
+
+// Native ECX camera; stack unsigned record index; RET4. Valid pointer ranges
+// are required; null start or unsigned index >= length invokes genuine CRT.
+// Captures the selected actual record once; unknown kinds preserve all fields.
+void apply_camera_position_mode_007954a0(CameraPositionView&, std::uint32_t index,
+    CameraPositionHost&, const CameraAxesCrtAccess&);
+
+} // namespace bsp
