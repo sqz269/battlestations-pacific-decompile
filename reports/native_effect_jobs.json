@@ -1,0 +1,295 @@
+{
+  "packet": "orch3_native_effect_jobs_ah",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "reconstructed_direct_strict_win32_and_focused_native_fixture_passed_pending_primary_integration",
+  "functions": [
+    {
+      "name": "dispatch",
+      "address": "00866c60",
+      "end_exclusive": "00866cca",
+      "length": 106,
+      "sha256": "3dcef2534439bf0c2e94a25d900502fe47c356dd095531252d8881f5392e668f",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866c90",
+          "target": "0x4c1130",
+          "relative": true
+        },
+        {
+          "address": "00866c9a",
+          "target": "0x8667f0",
+          "relative": true
+        },
+        {
+          "address": "00866ca8",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "00866cb3",
+          "target": "0x4c1130",
+          "relative": true
+        },
+        {
+          "address": "00866cc3",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00866cc7",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "cpp_symbol": "dispatch_native_effect_entries_00866c60",
+      "ghidra_name": "BSP_EffectManager_DispatchEntries",
+      "native_abi": "__thiscall(manager,float delta,void* reference), RET8",
+      "source": "src/native_effect_jobs.cpp"
+    },
+    {
+      "name": "get",
+      "address": "008667f0",
+      "end_exclusive": "008668be",
+      "length": 206,
+      "sha256": "2cd0a6e678fa70debede46ec74dfb65e58fdb127c4ba044377566fa2be86aff5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866816",
+          "target": "0x415350",
+          "relative": true
+        },
+        {
+          "address": "0086682f",
+          "target": "dword ptr [0xce2218]",
+          "relative": false
+        },
+        {
+          "address": "0086684c",
+          "target": "0xbf681b",
+          "relative": true
+        },
+        {
+          "address": "0086688e",
+          "target": "0x415350",
+          "relative": true
+        },
+        {
+          "address": "00866895",
+          "target": "0xbd0c30",
+          "relative": true
+        },
+        {
+          "address": "008668a3",
+          "target": "dword ptr [0xce2210]",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "008668bd",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "cpp_symbol": "native_effect_job_singleton_008667f0",
+      "ghidra_name": "BSP_EffectJob_GetSingleton",
+      "native_abi": "cdecl(), EAX currentF87658, RET",
+      "source": "src/native_effect_jobs.cpp"
+    },
+    {
+      "name": "callback",
+      "address": "008663b0",
+      "end_exclusive": "008663cf",
+      "length": 31,
+      "sha256": "8507755e11511b788c860e5f8aaafb7d475b1a99bc8ad24f4daa1e7b748ef2dd",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008663ca",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "008663cc",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "execute_native_effect_job_008663b0",
+      "ghidra_name": "BSP_EffectJob_ExecuteCurrentEvent",
+      "native_abi": "ECX job ignored, stack raw event, RET4",
+      "source": "src/native_effect_jobs.cpp"
+    },
+    {
+      "name": "adjustor",
+      "address": "008663d0",
+      "end_exclusive": "008663d8",
+      "length": 8,
+      "sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [],
+      "cpp_symbol": "delete_native_effect_job_secondary_008663d0",
+      "ghidra_name": "BSP_EffectJob_DeleteSecondary",
+      "native_abi": "__thiscall(secondary,uint flags), ECX-=4 tail866400",
+      "source": "src/native_effect_jobs.cpp"
+    },
+    {
+      "name": "scalar",
+      "address": "00866400",
+      "end_exclusive": "00866434",
+      "length": 52,
+      "sha256": "051cac50301c84f6c5a31f508acceaaf61d15a0d7c798906f2836c28c79bbd75",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00866426",
+          "target": "0xbf65ac",
+          "relative": true
+        }
+      ],
+      "returns": [
+        {
+          "address": "00866431",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "delete_native_effect_job_00866400",
+      "ghidra_name": "CG_scalar_deleting_dtor_00866400",
+      "native_abi": "__thiscall(primary,uint flags), RET4, EAX originalprimary",
+      "source": "src/native_effect_jobs.cpp"
+    }
+  ],
+  "exception_evidence": [
+    {
+      "name": "maps",
+      "address": "00dc6b74",
+      "end_exclusive": "00dc6b98",
+      "length": 36,
+      "sha256": "c8b4c4741d18760cb1d067b0a86e464421a7318f051a33156909732ced83b9be",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "funclets",
+      "address": "00c94d40",
+      "end_exclusive": "00c94d55",
+      "length": 21,
+      "sha256": "410e179370e0cfe02b5e240b2f5e519aca4c3ce5c86d569a7cd75402c77bae4a",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    }
+  ],
+  "owner": {
+    "global_address": "00f87658",
+    "native_bytes": 8,
+    "primary_table": "00d0d3e8",
+    "primary_word0": "008663b0",
+    "secondary_offset": 4,
+    "secondary_table": "00d0d3e4",
+    "secondary_word0": "008663d0",
+    "intrusive_count": false,
+    "registration": "captured secondary pointer before second415350 call",
+    "shared_domain": "actual application01090AA0; no new domain"
+  },
+  "dependencies": [
+    "004c1130 actual frame owner0109CF08 and real worker execution",
+    "00be3020 actual nonowning queue with CURRENT virtual04 validation",
+    "00be3150 CURRENT virtual08 actual dispatch using real scope0109DBE4",
+    "00415350/00bd0c30 same actual singleton domain",
+    "PointEffectChildEvents required current event28",
+    "NativeGamepadForceEvents::find_actual pure existing canonical lookup"
+  ],
+  "validation": {
+    "direct_win32_compile": "local/effect-jobs-compile-ah.log",
+    "fixture": "local/effect-jobs-probe-ah.log",
+    "fixture_source": "local/effect_jobs_probe_ah.cpp",
+    "native_executed": [
+      "complete206byte8667F0 normal/null/fastpath",
+      "complete52byte866400 flags0/2/1",
+      "complete8byte8663D0 flags0/2/1",
+      "complete106byte866C60 empty branch and real frame/worker dispatch"
+    ],
+    "cpp_extra": [
+      "allocation exception unlock",
+      "current enqueue04 table rejection",
+      "actual registration validation exception preserves publication/no free and releases captured lock"
+    ],
+    "actual_domains": [
+      "SingletonLifetimeDomain registration and shutdown",
+      "actual OS critical section and recursion18",
+      "actual138A8 frame owner and worker pool",
+      "actual Win32 suspended worker/start/done events and thread entry",
+      "actual0109DBE4 scope and RandomThreads registry"
+    ],
+    "fixture_adapters": [
+      "original lifetime getter returns layout view of same actual manager/OS section",
+      "allocation/free wrappers use same canonical allocator with explicitnull/exception injection",
+      "original empty dispatcher uses actual frame getter and pool dispatch wrappers"
+    ],
+    "manifest_embedded": true
+  },
+  "limits": [
+    "New C++ ABI; integer native vtables not directly executable C++ ABI",
+    "Standalone fixture has no nonempty phase2 or original31bytecallback execution; primary application fixture owns that integration",
+    "No original EH dispatcher execution",
+    "No native invalid-pointer/table-fault ordering claim: C++ pure currentevent projection follows x87store",
+    "No arbitrary asynchronous tablemutation parity claim",
+    "No gameplay or physical device validation",
+    "Unknown current event and job implementations remain required"
+  ],
+  "documentation": "docs/NATIVE_EFFECT_JOBS.md",
+  "native_call_sites": [
+    {
+      "function": "00866c60",
+      "address": "00866c90",
+      "native": "004c1130"
+    },
+    {
+      "function": "00866c60",
+      "address": "00866c9a",
+      "native": "008667f0"
+    },
+    {
+      "function": "00866c60",
+      "address": "00866cb3",
+      "native": "004c1130"
+    },
+    {
+      "function": "008667f0",
+      "address": "00866816",
+      "native": "00415350"
+    },
+    {
+      "function": "008667f0",
+      "address": "0086684c",
+      "native": "00bf681b"
+    },
+    {
+      "function": "008667f0",
+      "address": "0086688e",
+      "native": "00415350"
+    },
+    {
+      "function": "008667f0",
+      "address": "00866895",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "00866400",
+      "address": "00866426",
+      "native": "00bf65ac"
+    }
+  ]
+}

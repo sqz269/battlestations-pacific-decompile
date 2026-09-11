@@ -83,6 +83,13 @@ void NativeFrameJobExecution::delete_event(NativeEventOwnerStorage* owner) {
     require_event(*owner, 0, 0x00bd19b0u);
     (void)delete_native_event_owner_00bd19b0(owner, 1);
 }
+void NativeFrameJobExecution::require_enqueue_virtual_04(const NativeFrameJobPoolStorage& pool) const {
+    const auto identity = pool.native_vtable_00;
+    const auto* table = identity == 0x00d68650u ? base_table_
+        : identity == 0x00ce7554u ? frame_table_ : nullptr;
+    if (!table || table[1] != 0x00be3020u)
+        throw std::invalid_argument("Missing current native frame job enqueue binding");
+}
 void NativeFrameJobExecution::require_dispatch_virtual_08(const NativeFrameJobPoolStorage& pool) const {
     const auto identity = pool.native_vtable_00;
     const auto* table = identity == 0x00d68650u ? base_table_

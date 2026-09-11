@@ -90,6 +90,7 @@ public:
     void cancel(NativeGamepadForceEventReference&);
     // Pure lookup of an already existing companion; no retain/allocation.
     NativeGamepadForceEventReference* find(RenderCommandReference&) const noexcept;
+    NativeGamepadForceEventReference* find_actual(const void* actual_event) const noexcept;
     void update(NativeGamepadForceEventReference&, float, void* actual_reference_node);
     // Resolve current+30 BEFORE clearing active+0C, then invoke that method.
     void deactivate(NativeGamepadForceEventReference&);
