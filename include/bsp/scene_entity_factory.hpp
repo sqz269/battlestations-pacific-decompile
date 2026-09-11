@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "bsp/scene_file.hpp"
+#include "bsp/camera_projection.hpp"
 
 namespace bsp {
 
@@ -161,7 +162,7 @@ struct SceneDeferredEntityRecord {
 };
 
 // Remaining services reached by 0046C550 outside the parsed entity block.
-// Parent-pose geometry is called directly through the canonical pose binding.
+// Both geometry branches call the canonical matrix/pose bindings directly.
 // No default implementation stands in for the remaining external behaviour.
 struct SceneEntityGateHost {
     virtual ~SceneEntityGateHost() = default;
@@ -171,12 +172,6 @@ struct SceneEntityGateHost {
 
     // One six-float row of the play-area array; `slot` is scene_mode_area_slot.
     virtual SceneModeArea mode_area(int slot) = 0;
-
-    // arg3 == 0 at 0046C6E5: 00413920 multiplies the entity's local frame by the
-    // parent frame and the product's +30h / +38h become X and Z.
-    virtual void compose_world_frame(const float local_frame[16],
-                                     const float parent_frame[16],
-                                     float out[16]) = 0;
 
     // captured parent->vtable[10h](), used only to fill the deferred record.
     // The same original argument identity is passed even after other host calls.
@@ -196,8 +191,12 @@ struct SceneEntityGateInputs {
     std::string class_name;                     // argument 1
     std::string entity_name;                    // argument 2
     const ScenePropertyBlock* properties{nullptr};  // argument 5
-    const float* local_frame{nullptr};          // argument 4, 16 floats
-    const float* parent_frame{nullptr};         // arguments 7..22, 16 floats
+    // Both bindings are required. Local is the live argument-4 matrix; its
+    // pointer is captured once. Parent supplies the 16 DWORDs passed inline as
+    // arguments 7..22; the gate byte-copies them once before any gate services.
+    // The caller must keep local storage alive, including through host calls.
+    const CameraMatrix* local_frame{nullptr};
+    const CameraMatrix* parent_frame{nullptr};
     void* parent_identity{nullptr};            // actual nullable argument 3, borrowed
     bool record_already_built{false};           // argument 23 already non-null
 };
@@ -223,7 +222,9 @@ struct SceneEntityGateResult {
 };
 
 // Typed control-flow projection of 0046C550 with explicit remaining services.
-// The parent-pose branch uses the actual identity and canonical pose resolver.
+// Both geometry branches call canonical matrix/pose routines directly.
+// Missing matrix bindings throw invalid_argument before any host or resolver
+// call; native code requires actual frame data and provides no identity fallback.
 // `always_generate_class_ids` is the std::set at this+164h,
 // searched at 0046C741 by 00468DB0; what fills it was not recovered, so it is an
 // input here rather than a table.

@@ -1,10 +1,13 @@
-# Scene generation-gate parent pose binding
+# Scene generation-gate geometry bindings
 
 Packet `orch3_scene_parent_pose_k` replaces the parent-offset callback in the
 existing typed `0046C550` generation gate with actual canonical pose refresh
 and native x87 field additions. Its reconstructed range is the **interior
 44-byte fragment 0046C6B7..0046C6E2**, not a newly completed whole function.
-The gate's other services remain explicit. No unit-placement constructor or
+Packet `orch3_scene_null_parent_geometry_k` additionally closes the **42-byte
+interior null-parent fragment 0046C6E5..0046C70E** with canonical matrix
+multiplication and removes the invented identity-frame fallbacks. Neither
+packet completes the whole generation gate. Other services remain explicit. No unit-placement constructor or
 scene/renderer owner is introduced.
 
 ## Input and host migration
@@ -29,6 +32,18 @@ and its input type; no other tracked caller or host implementation required
 migration in this checkout. External callers must supply the actual parent
 identity and canonical resolver and update their naming override. No unrelated
 shared consumer file was changed.
+
+Both frame fields now point to canonical `CameraMatrix` objects and are required
+on every gate call. The gate captures the live `local_frame` pointer and copies
+the 64 bytes supplied by `parent_frame` into its own argument snapshot before
+any gate service. It rejects a missing binding with `std::invalid_argument`;
+native code unconditionally reads the local matrix and always receives the
+parent matrix inline, so it has no corresponding missing-frame recovery.
+The typed exception diagnoses an invalid binding; it does not reproduce a
+native access violation. The parent-frame snapshot represents by-value argument
+storage, not a cached pose or another transform hierarchy. Deferred-record frame
+copies also use the captured local pointer and parent argument snapshot. The
+`compose_world_frame` host method is removed.
 
 ## Recovered fragment and original interface
 
@@ -74,7 +89,8 @@ matrix or hierarchy storage. The caller's FPU state is retained.
 ## Other paths and lifetime boundaries
 
 A null parent does not enter the helper or resolve a pose. It retains the
-existing `compose_world_frame` service for native C6E5..C70F. The no-MultiType
+native local-times-parent matrix branch through the canonical multiply below.
+The no-MultiType
 early return still builds its deferred record without a pose refresh, even
 when a parent exists. Mode/property lookups, parent naming, deferred record
 ownership and multiplayer stock registration remain required services. This
@@ -89,6 +105,48 @@ the native surrounding branch already prevents that call. No retention,
 deletion or hierarchy ownership changes occur. Native dirty cycles and other
 pose invalid-state limits remain those in `POSE_REFRESH.md`.
 
+## Null-parent stack and operand evidence
+
+After the prologue, let S denote ESP: the entry return address is at S+74h,
+argument 4 (the local matrix pointer) is at S+84h, and arguments 7..22 occupy
+S+90h..S+CCh. The prologue's three SEH pushes, 58h local allocation and four
+saved-register pushes account for this 74h displacement. EDI captures argument
+4 at C573; MOVSS reads its indices 12 and 14 at C57A/C587 before property lookup.
+There is no null check or default matrix on this path.
+
+This by-value interpretation is supported by caller assembly, not only a
+decompiler parameter list: within `0046CF40`, D3E2 reserves 40h on the stack,
+D3E5 saves that destination in EDI, and D3E9/D3F5 set ECX=16 and REP MOVSD the
+matrix before the call at D426. The second call at D655 repeats the 40h reserve
+at D611 and sixteen-DWORD copy at D616/D622. These are read-only observations;
+the caller is not reconstructed or edited by this packet.
+
+| Address | Exact null-parent operation |
+| --- | --- |
+| `0046C6E5` / `0046C6EC` | Form S+90h, push the inline right matrix address |
+| `0046C6ED` / `0046C6F1` | Form current ESP+2Ch = S+28h, push disjoint destination |
+| `0046C6F2` / `0046C6F4` | ECX=EDI captured live left matrix, call 00413920 |
+| `0046C6F9` / `0046C6FE` | MOVSS returned product +30h into X at S+1Ch |
+| `0046C704` / `0046C709` | Only then MOVSS product +38h into Z at S+24h |
+
+Canonical `00413920` takes ECX=left, stack destination/right, returns destination
+in EAX and uses RET 8. Its entry reads right at ESP+48h and destination at
+ESP+44h after its own 40h allocation, confirming this call's operand order.
+The result is **local * inline parent**, with full matrix multiplication, not
+just a translation sum. The new helper uses distinct temporary product storage,
+then explicit MOVSS transfers in the native X-before-Z order. The final MOVSS
+at C709 is six bytes and ends C70E; the next instruction at C70F is the common
+continuation. All 42 bytes/10 instructions are present, with no gap or separate
+function return.
+
+The local matrix remains live through multiplication and deferred copying;
+only its pointer is captured. Aliasing the caller's two matrix sources is
+allowed: the parent bytes are snapshotted first and the multiply destination
+is distinct. X/Z helper outputs must be distinct locals outside the inputs.
+Arbitrary partial overlap, concurrent source mutation and native stack aliasing
+are not part of the typed interface. No native calling-convention replacement,
+whole-gate exception parity, or validation of every upstream caller is claimed.
+
 ## Validation
 
 `./scripts/build.ps1` passed strict MSVC Win32 Release `/W4 /WX` and both existing
@@ -97,9 +155,16 @@ one scene-gate composition group, rather than adding a permanent test suite.
 Its recording scene services exercise actual recursive pose storage, local
 X/Z plus refreshed parent translation selecting the expected area, null-parent
 resolver bypass, captured parent identity during deferred naming after a host
-mutates the input projection, and the no-MultiType early bypass. All passed via
+mutates the input projection, and the no-MultiType early bypass. The follow-up
+replaces the null-parent fixture callback with actual noncommuting matrices:
+local translation (1,0,2) multiplied by the supplied basis/translation yields
+X=14,Z=37 and selects the expected area; reverse multiplication would not.
+It also checks both missing frame bindings fail before resolver or mode-host
+calls and that deferred copying retains the local pointer and parent snapshot
+after the host changes input bindings and the parent source. All passed via
 `local/run_pose_refresh_fixture.cmd`; output is
-`local/scene-pose-binding-fixture.log`.
+`local/scene-null-parent-fixture.log`; the latest strict build/2CTest log is
+`local/scene-null-parent-build.log`.
 
 The fixture retains the prior isolated native pose-control comparison using
 shared canonical matrix calls. The newly added scene cases are composed
