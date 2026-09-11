@@ -2,7 +2,7 @@
   "schema": 1,
   "packet": "native_crt_double_classification3",
   "utc": "2026-09-11T21:10:10.687271+00:00",
-  "status": "complete_source_strict_actual_archive_and_instruction_proof_pending_primary_integration",
+  "status": "complete_three_original_classifiers_rounder_main_archive_COFF_and_strict_Win32_checked",
   "base_commit": "39f9528f8c7d3299508d241f50eae8cc7e630e63",
   "owned_functions": [
     {
@@ -816,5 +816,126 @@
     "No Ghidra names/comments, shared CMake/metadata or original game files changed."
   ],
   "evidence_directory": "local/crt_double_classification",
-  "immutable_seal": "local/crt_double_classification/sealed.json; final manifest self hash in handoff"
+  "immutable_seal": "local/crt_double_classification/sealed.json; final manifest self hash in handoff",
+  "primary_integration": {
+    "status": "complete_three_original_classifiers_rounder_main_archive_COFF_and_strict_Win32_checked",
+    "main_library_sha256": "aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 37,
+    "report_pins": 9,
+    "fresh_spans": 3,
+    "fresh_bytes": 256,
+    "whole_COFF_sections": 6,
+    "whole_COFF_relocations": 1,
+    "owned_original_bytes": 256,
+    "owned_instructions": 112,
+    "original_owned_execution": false,
+    "current_source_newline_only_drift": [
+      {
+        "path": "src/native_crt_double_classification.cpp",
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_crt_double_classification.cpp",
+          "bytes": 3402,
+          "sha256": "b21d367921a8ce037c8ea769bd715d5e9704a27808965049db2e30ffb87ba945"
+        },
+        "worker": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-double-classification\\local\\crt_double_classification\\frozen\\src\\native_crt_double_classification.cpp",
+          "bytes": 3554,
+          "sha256": "8efd8cc1340f94e50e6a5bb5a127bc48cc27ab0692cf2db0bfebe61f04402cdb"
+        },
+        "review": "Exact decoded source text equality; CRLF/LF-only byte-hash difference."
+      }
+    ],
+    "boundary": "Primary checked37 sealed worker files,9 report pins,3 fresh full spans256bytes and the complete six-section main object. The sole direct-call REL32 resolves to full same-object sptype and reproduces the original148-byte fpclass body. Owned CPP differs only by CRLF/LF; decoded text is identical. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\crt_double_classification_primary\\sealed.json",
+      "bytes": 8059,
+      "sha256": "e15bc3e00b24dca68b55d47b20c51ad8e82993c837bf946bfa8daf0e86efecc4"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_classification_control_tree_annotations.json",
+    "bytes": 19546,
+    "sha256": "548546db7e9c835c625b43decc9530bfbcaf5f334b2a9fcc6cec21c4df6e2bfc"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c12f3e",
+      "name": "__sptype",
+      "cpp_symbol": "bsp::native_crt_sptype_00c12f3e",
+      "source": "src/native_crt_double_classification.cpp",
+      "native_end_exclusive": "00c12f99",
+      "status": "complete_three_original_classifiers_rounder_main_archive_COFF_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_double_classification_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bfa52f",
+      "name": "__fpclass",
+      "cpp_symbol": "bsp::native_crt_fpclass_00bfa52f",
+      "source": "src/native_crt_double_classification.cpp",
+      "native_end_exclusive": "00bfa5c3",
+      "status": "complete_three_original_classifiers_rounder_main_archive_COFF_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_double_classification_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00c28548",
+      "name": "__frnd",
+      "cpp_symbol": "bsp::native_crt_frnd_st0_00c28548",
+      "source": "src/native_crt_double_classification.cpp",
+      "native_end_exclusive": "00c28559",
+      "status": "complete_three_original_classifiers_rounder_main_archive_COFF_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_double_classification_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c12f3e",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c12f3e\\decompiled.c",
+      "bytes": 1619,
+      "sha256": "25ae095f4dec8ee60d2314bcd4421e2c2143efff45eab8dfdb86e86f677fc92f"
+    },
+    {
+      "address": "00bfa52f",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfa52f\\decompiled.c",
+      "bytes": 2093,
+      "sha256": "e1bdec20eafbe7c99e84873012d9a7316c610e1e21053915dc8bfc8bfd275152"
+    },
+    {
+      "address": "00c28548",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c28548\\decompiled.c",
+      "bytes": 1211,
+      "sha256": "c7e08717056e3392c0e85de5044fcd2229269f6a684c57296d7ff6fffd6bdf90"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_DOUBLE_CLASSIFICATION.md",
+    "bytes": 6898,
+    "sha256": "5dda22b43bcc5f5632086119d67bb91e5bc05ce868f75e3d251bc2934dea01c1"
+  },
+  "closure_utc": "2026-09-11T21:44:44.448454+00:00"
 }

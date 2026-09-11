@@ -1,0 +1,849 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-11T21:40:13.787698+00:00",
+  "status": "complete shared original instruction body and two reached source entry paths proved; concrete provider object frozen; strict build passed",
+  "base_commit": "a0c55a6e29ce30ff9d057c9b685b6d21754394c8",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_error_dispatch",
+  "ownership": {
+    "packet": "native_crt_x87_error_dispatch2",
+    "addresses": [
+      "00c08330",
+      "00c08347"
+    ],
+    "shared_tail": "00c08350..00c08383",
+    "files": [
+      "src/native_crt_x87_error_dispatch.cpp",
+      "include/bsp/native_crt_x87_error_dispatch.hpp",
+      "docs/NATIVE_CRT_X87_ERROR_DISPATCH.md",
+      "reports/native_crt_x87_error_dispatch_audit.json"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original": [
+    {
+      "address": "00c08330",
+      "length": 83,
+      "end_exclusive": "00c08383",
+      "role": "complete_shared_physical_union",
+      "bytes_hex": "558bec83c4e08945e08b45188945f08b451c8945f4eb09558bec83c4e08945e0dd5df8894de48b45108b4d148945e8894dec8d45088d4de0505152e819f1010083c40cdd45f866817d087f027403d96d08c9c3",
+      "sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 32,
+      "assembly": [
+        "00c08330: push ebp",
+        "00c08331: mov ebp, esp",
+        "00c08333: add esp, -0x20",
+        "00c08336: mov dword ptr [ebp - 0x20], eax",
+        "00c08339: mov eax, dword ptr [ebp + 0x18]",
+        "00c0833c: mov dword ptr [ebp - 0x10], eax",
+        "00c0833f: mov eax, dword ptr [ebp + 0x1c]",
+        "00c08342: mov dword ptr [ebp - 0xc], eax",
+        "00c08345: jmp 0xc08350",
+        "00c08347: push ebp",
+        "00c08348: mov ebp, esp",
+        "00c0834a: add esp, -0x20",
+        "00c0834d: mov dword ptr [ebp - 0x20], eax",
+        "00c08350: fstp qword ptr [ebp - 8]",
+        "00c08353: mov dword ptr [ebp - 0x1c], ecx",
+        "00c08356: mov eax, dword ptr [ebp + 0x10]",
+        "00c08359: mov ecx, dword ptr [ebp + 0x14]",
+        "00c0835c: mov dword ptr [ebp - 0x18], eax",
+        "00c0835f: mov dword ptr [ebp - 0x14], ecx",
+        "00c08362: lea eax, [ebp + 8]",
+        "00c08365: lea ecx, [ebp - 0x20]",
+        "00c08368: push eax",
+        "00c08369: push ecx",
+        "00c0836a: push edx",
+        "00c0836b: call 0xc27489",
+        "00c08370: add esp, 0xc",
+        "00c08373: fld qword ptr [ebp - 8]",
+        "00c08376: cmp word ptr [ebp + 8], 0x27f",
+        "00c0837c: je 0xc08381",
+        "00c0837e: fldcw word ptr [ebp + 8]",
+        "00c08381: leave ",
+        "00c08382: ret "
+      ]
+    },
+    {
+      "address": "00c27489",
+      "length": 252,
+      "end_exclusive": "00c27585",
+      "role": "existing_complete_concrete_87except_provider",
+      "bytes_hex": "558bec83e4f081ec84000000a19055e10033c4898424800000008b45100fb70853568b750c8b064857894c240c742b48742448741d48741648741f484874074875746a10eb16c70601000000eb686a12eb0a6a11eb066a04eb026a085b518d7e185753e873befeff83c40c85c075478b450883f810741183f816740c83f81d740783642450feeb158b4c2450dd461083e1e3dd5c244083c903894c2450578d4e085150538d44241c508d44242450e8e6bdfeff83c41868ffff0000ff742410e85ac3feff833e0859597414833dd06be10000750b56e8e20f000085c0597508ff36e8d6bffeff598b8c248c0000005f5e5b33cce89f6bfdff8be55dc3",
+      "sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 102,
+      "assembly": [
+        "00c27489: push ebp",
+        "00c2748a: mov ebp, esp",
+        "00c2748c: and esp, 0xfffffff0",
+        "00c2748f: sub esp, 0x84",
+        "00c27495: mov eax, dword ptr [0xe15590]",
+        "00c2749a: xor eax, esp",
+        "00c2749c: mov dword ptr [esp + 0x80], eax",
+        "00c274a3: mov eax, dword ptr [ebp + 0x10]",
+        "00c274a6: movzx ecx, word ptr [eax]",
+        "00c274a9: push ebx",
+        "00c274aa: push esi",
+        "00c274ab: mov esi, dword ptr [ebp + 0xc]",
+        "00c274ae: mov eax, dword ptr [esi]",
+        "00c274b0: dec eax",
+        "00c274b1: push edi",
+        "00c274b2: mov dword ptr [esp + 0xc], ecx",
+        "00c274b6: je 0xc274e3",
+        "00c274b8: dec eax",
+        "00c274b9: je 0xc274df",
+        "00c274bb: dec eax",
+        "00c274bc: je 0xc274db",
+        "00c274be: dec eax",
+        "00c274bf: je 0xc274d7",
+        "00c274c1: dec eax",
+        "00c274c2: je 0xc274e3",
+        "00c274c4: dec eax",
+        "00c274c5: dec eax",
+        "00c274c6: je 0xc274cf",
+        "00c274c8: dec eax",
+        "00c274c9: jne 0xc2753f",
+        "00c274cb: push 0x10",
+        "00c274cd: jmp 0xc274e5",
+        "00c274cf: mov dword ptr [esi], 1",
+        "00c274d5: jmp 0xc2753f",
+        "00c274d7: push 0x12",
+        "00c274d9: jmp 0xc274e5",
+        "00c274db: push 0x11",
+        "00c274dd: jmp 0xc274e5",
+        "00c274df: push 4",
+        "00c274e1: jmp 0xc274e5",
+        "00c274e3: push 8",
+        "00c274e5: pop ebx",
+        "00c274e6: push ecx",
+        "00c274e7: lea edi, [esi + 0x18]",
+        "00c274ea: push edi",
+        "00c274eb: push ebx",
+        "00c274ec: call 0xc13364",
+        "00c274f1: add esp, 0xc",
+        "00c274f4: test eax, eax",
+        "00c274f6: jne 0xc2753f",
+        "00c274f8: mov eax, dword ptr [ebp + 8]",
+        "00c274fb: cmp eax, 0x10",
+        "00c274fe: je 0xc27511",
+        "00c27500: cmp eax, 0x16",
+        "00c27503: je 0xc27511",
+        "00c27505: cmp eax, 0x1d",
+        "00c27508: je 0xc27511",
+        "00c2750a: and dword ptr [esp + 0x50], 0xfffffffe",
+        "00c2750f: jmp 0xc27526",
+        "00c27511: mov ecx, dword ptr [esp + 0x50]",
+        "00c27515: fld qword ptr [esi + 0x10]",
+        "00c27518: and ecx, 0xffffffe3",
+        "00c2751b: fstp qword ptr [esp + 0x40]",
+        "00c2751f: or ecx, 3",
+        "00c27522: mov dword ptr [esp + 0x50], ecx",
+        "00c27526: push edi",
+        "00c27527: lea ecx, [esi + 8]",
+        "00c2752a: push ecx",
+        "00c2752b: push eax",
+        "00c2752c: push ebx",
+        "00c2752d: lea eax, [esp + 0x1c]",
+        "00c27531: push eax",
+        "00c27532: lea eax, [esp + 0x24]",
+        "00c27536: push eax",
+        "00c27537: call 0xc13322",
+        "00c2753c: add esp, 0x18",
+        "00c2753f: push 0xffff",
+        "00c27544: push dword ptr [esp + 0x10]",
+        "00c27548: call 0xc138a7",
+        "00c2754d: cmp dword ptr [esi], 8",
+        "00c27550: pop ecx",
+        "00c27551: pop ecx",
+        "00c27552: je 0xc27568",
+        "00c27554: cmp dword ptr [0xe16bd0], 0",
+        "00c2755b: jne 0xc27568",
+        "00c2755d: push esi",
+        "00c2755e: call 0xc28545",
+        "00c27563: test eax, eax",
+        "00c27565: pop ecx",
+        "00c27566: jne 0xc27570",
+        "00c27568: push dword ptr [esi]",
+        "00c2756a: call 0xc13545",
+        "00c2756f: pop ecx",
+        "00c27570: mov ecx, dword ptr [esp + 0x8c]",
+        "00c27577: pop edi",
+        "00c27578: pop esi",
+        "00c27579: pop ebx",
+        "00c2757a: xor ecx, esp",
+        "00c2757c: call 0xbfe120",
+        "00c27581: mov esp, ebp",
+        "00c27583: pop ebp",
+        "00c27584: ret "
+      ]
+    },
+    {
+      "address": "00e16bd0",
+      "length": 4,
+      "end_exclusive": "00e16bd4",
+      "role": "actual_matherr_bypass_initial_cell",
+      "bytes_hex": "94260000",
+      "sha256": "ee668c09cd59ec598c72c344113e4dc44d6a14a89da2358cf8a8fb2f47c3c865",
+      "fresh_guarded_live_equals_installed_PE": true
+    }
+  ],
+  "naming": {
+    "C08330": "descriptive source hypothesis; original LIBCRT_unmatched entry",
+    "C08347": "original __startOneArgErrorHandling library name preserved; new source name descriptive"
+  },
+  "public_interfaces": [
+    {
+      "name": "bsp::dispatch_native_crt_binary_error_00c08330",
+      "declaration": "void __cdecl dispatch_native_crt_binary_error_00c08330()",
+      "raw_original_reached_bytes": 74,
+      "body": "23-byte binary prefix plus shared51-byte tail",
+      "argument2": "current words read/stored before result FSTP"
+    },
+    {
+      "name": "bsp::dispatch_native_crt_unary_error_00c08347",
+      "declaration": "void __cdecl dispatch_native_crt_unary_error_00c08347()",
+      "raw_original_reached_bytes": 60,
+      "body": "new5-byte JMP thunk to core+17h, original9-byte unary prologue plus shared51-byte tail",
+      "argument2": "unwritten; no copied or initialized value",
+      "new_entry_binding_not_original_address_or_ABI": true
+    }
+  ],
+  "abi": {
+    "assembly_callers_only": true,
+    "ordinary_cpp_call_safe": false,
+    "register_inputs": {
+      "EAX": "error type",
+      "ECX": "actual name pointer",
+      "EDX": "operation",
+      "ST0": "current result"
+    },
+    "entry_stack_hex_offsets": {
+      "00": "this dispatch return",
+      "04": "actual packed saved CW",
+      "08": "enclosing return or opaque slot",
+      "0c": "current first argument qword",
+      "14": "current second argument qword for binary"
+    },
+    "normal_result": "Current record.result FLDed into ST0 after concrete provider returns",
+    "final_flags": "CMP current saved CW word,027Fh; conditional FLDCW and LEAVE/RET do not change integer flags",
+    "general_registers": "EBP and nonvolatile registers survive; EAX/ECX/EDX incidental original equality is not promised through C++ provider",
+    "stack_cleanup": "RET consumes only dispatch return; packedCW/enclosing frame remain caller-owned",
+    "native_EH_guard": false,
+    "new_exception_cleanup": false,
+    "automatic_CW_restore_on_nonlocal_exit": false
+  },
+  "record": {
+    "bytes": 32,
+    "offsets": {
+      "type": 0,
+      "name": 4,
+      "argument1": 8,
+      "argument2": 16,
+      "result": 24
+    },
+    "static_assertions": true,
+    "ownership": "raw wrapper stack, alive through provider call",
+    "shared_store_order": [
+      "FSTP current ST0 to result",
+      "store name",
+      "load/store actual first-argument words"
+    ],
+    "callback_or_policy": false,
+    "result_reloaded_after_normal_return": true,
+    "saved_CW_compared_and_conditionally_reread": true
+  },
+  "provider": {
+    "name": "bsp::legacy_crt_87except_00c27489",
+    "binding": "direct fixed cdecl CALL; no callback slot",
+    "arguments": [
+      "operation",
+      "actual32-byte record pointer",
+      "actual caller saved-CW pointer"
+    ],
+    "required_context": "existing persistent bound LegacyCrtMathRuntime with actual E16BD0 cell and owning errno accessor",
+    "operation_1d_supported_by_source": true,
+    "operation_1d_argument2_initialized_by_binary_entry": true,
+    "provider_writes_saved_CW_pointer": false,
+    "current_continuation_result_observed": true,
+    "inherited_evidence_limits": [
+      "Actual installed owner provides persistent runtime global and errno accessor binding",
+      "Original CRT TLS/startup initialization is borrowed service boundary; not reconstructed",
+      "Reserved FPIEEE stack bytes initialized tozero and reserved x87 precision encoding01 not contracted",
+      "Unused binary32 __raise_exc_ex variant not exposed",
+      "Native differential checks x87 exceptionflags, not complete instruction/data pointer or condition-code state",
+      "No gameplay validation"
+    ],
+    "new_runtime_or_generic_callback": false,
+    "original_C27489_bytes_match_own_Cpp_body_claim": false,
+    "new_operation_1d_runtime_case": false,
+    "full_native_FP_state_or_SEH_ABI_equivalence": false
+  },
+  "source_review": "Primary reviewed both complete original listings and complete CPP/HPP; approved unchanged, including new unary thunk and provider/volatile-register restrictions.",
+  "validation": {
+    "fresh_guarded_live_PE_spans": 3,
+    "fresh_guarded_bytes": 339,
+    "owned_physical_original_bytes": 83,
+    "core_full_original_equal_after_one_CALL_relocation": true,
+    "core_CALL_operand_offset": 60,
+    "unary_new_thunk_bytes": 5,
+    "unary_thunk_relocation_addend": 23,
+    "unary_thunk_single_JMP_no_extra_state_effects": true,
+    "binary_reached_original_bytes": 74,
+    "unary_reached_original_bytes": 60,
+    "shared_tail_bytes": 51,
+    "complete_instruction_and_CFG_check": true,
+    "actual_archive_objects": 2,
+    "whole_COFF_sections": 87,
+    "fixed_provider_symbol_resolves_in_same_actual_archive": true,
+    "strict_release_win32_build": true,
+    "compiler_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "existing_CTests_passed": 2,
+    "fresh_seed_matches": 8,
+    "new_permanent_tests": 0,
+    "focused_runtime_fixture": false,
+    "linked_runtime_postimages": false,
+    "game_or_display_calls": false
+  },
+  "actual_artifacts": {
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 39237566,
+      "sha256": "50baf4104d23f99ba02add535941ee15ad02864bbc346ed8624ccc939af995c6"
+    },
+    "archive_objects": [
+      {
+        "name": "native_crt_x87_error_dispatch",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_x87_error_dispatch.obj",
+          "bytes": 2705,
+          "sha256": "97a286aeae2b9e9ceb559b54490a7d99c0af4ac8ab6a6581a3be7b548cf1cdbc"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_x87_error_dispatch.obj",
+          "offset": 29880816,
+          "bytes": 2705,
+          "sha256": "97a286aeae2b9e9ceb559b54490a7d99c0af4ac8ab6a6581a3be7b548cf1cdbc"
+        }
+      },
+      {
+        "name": "legacy_crt_math",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/legacy_crt_math.obj",
+          "bytes": 18524,
+          "sha256": "5f878b386fbdd1a9c647f498ff9e860ce34a870eb1e518abbabe869dee8f8906"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\legacy_crt_math.obj",
+          "offset": 33400784,
+          "bytes": 18524,
+          "sha256": "5f878b386fbdd1a9c647f498ff9e860ce34a870eb1e518abbabe869dee8f8906"
+        }
+      }
+    ],
+    "core": {
+      "symbol": "?dispatch_native_crt_binary_error_00c08330@bsp@@YAXXZ",
+      "bytes": 83,
+      "COFF_bytes_hex": "558bec83c4e08945e08b45188945f08b451c8945f4eb09558bec83c4e08945e0dd5df8894de48b45108b4d148945e8894dec8d45088d4de0505152e80000000083c40cdd45f866817d087f027403d96d08c9c3",
+      "COFF_sha256": "6df77e4c47c71625a427b7f1d3294bceef86c9c99f4dc4ab87aca480a9e5c699",
+      "original_sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3",
+      "original_equal_after_only_declared_CALL_relocation": true,
+      "relocations": [
+        {
+          "offset": 60,
+          "symbol_index": 24,
+          "symbol": "?legacy_crt_87except_00c27489@bsp@@YAXHPAUCameraAxesCrtException@1@PAG@Z",
+          "symbol_value": 0,
+          "type": 20,
+          "COFF_addend": 0,
+          "original_target": "00c27489"
+        }
+      ],
+      "instruction_count": 32,
+      "binary_reached_instruction_offsets": [
+        0,
+        1,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18,
+        21,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53,
+        56,
+        57,
+        58,
+        59,
+        64,
+        67,
+        70,
+        76,
+        78,
+        81,
+        82
+      ],
+      "binary_reached_bytes": 74,
+      "unary_reached_instruction_offsets": [
+        23,
+        24,
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53,
+        56,
+        57,
+        58,
+        59,
+        64,
+        67,
+        70,
+        76,
+        78,
+        81,
+        82
+      ],
+      "unary_reached_bytes": 60,
+      "shared_tail_bytes": 51
+    },
+    "unary_thunk": {
+      "symbol": "?dispatch_native_crt_unary_error_00c08347@bsp@@YAXXZ",
+      "bytes": 5,
+      "COFF_bytes_hex": "e917000000",
+      "sha256": "8c3a1c871ef49dce0aba8376a0ae49780f8f49ad436e88aefa8a495fc0a47a54",
+      "relocation": {
+        "offset": 1,
+        "symbol_index": 22,
+        "symbol": "?dispatch_native_crt_binary_error_00c08330@bsp@@YAXXZ",
+        "symbol_value": 0,
+        "type": 20,
+        "COFF_addend": 23,
+        "resolved_original_entry": "00c08347"
+      },
+      "decoded_single_JMP": true,
+      "extra_stack_register_flags_FP_effects": false,
+      "new_source_entry_binding_not_original_address_or_ABI": true
+    },
+    "fixed_provider": {
+      "symbol": "?legacy_crt_87except_00c27489@bsp@@YAXHPAUCameraAxesCrtException@1@PAG@Z",
+      "object": "legacy_crt_math",
+      "section": {
+        "index": 36,
+        "name": ".text$mn",
+        "size": 420,
+        "data_offset": 7273,
+        "sha256": "5ca6b51e86a3870936a8c1e53d9f39cd22c4efc4a4ff29c0c3b147d4b19b42a0",
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 29,
+            "symbol_index": 249,
+            "symbol": "___security_cookie",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 40,
+            "symbol_index": 176,
+            "symbol": "?runtime_binding@?A0x3f8dc69d@bsp@@3U?$atomic@PBULegacyCrtMathRuntime@bsp@@@std@@A",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 90,
+            "symbol_index": 146,
+            "symbol": "$LN28",
+            "symbol_value": 388,
+            "type": 6
+          },
+          {
+            "offset": 142,
+            "symbol_index": 136,
+            "symbol": "?handle_00c13364@?A0x3f8dc69d@bsp@@YA_NIAANI@Z",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 162,
+            "symbol_index": 144,
+            "symbol": "_memset",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 243,
+            "symbol_index": 138,
+            "symbol": "?raise_00c13322@?A0x3f8dc69d@bsp@@YAXAAUIeeeRecord@12@AAIIHAAUCameraAxesCrtException@2@@Z",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 304,
+            "symbol_index": 142,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 344,
+            "symbol_index": 142,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 356,
+            "symbol_index": 212,
+            "symbol": "??_C@_0CL@PIJCHJM@Legacy?5CRT?5math?5runtime?5has?5not?5@",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 367,
+            "symbol_index": 113,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 372,
+            "symbol_index": 206,
+            "symbol": "__TI2?AVlogic_error@std@@",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 384,
+            "symbol_index": 143,
+            "symbol": "__CxxThrowException@8",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 388,
+            "symbol_index": 147,
+            "symbol": "$LN5",
+            "symbol_value": 94,
+            "type": 6
+          },
+          {
+            "offset": 392,
+            "symbol_index": 148,
+            "symbol": "$LN7",
+            "symbol_value": 101,
+            "type": 6
+          },
+          {
+            "offset": 396,
+            "symbol_index": 149,
+            "symbol": "$LN8",
+            "symbol_value": 108,
+            "type": 6
+          },
+          {
+            "offset": 400,
+            "symbol_index": 150,
+            "symbol": "$LN9",
+            "symbol_value": 115,
+            "type": 6
+          },
+          {
+            "offset": 404,
+            "symbol_index": 147,
+            "symbol": "$LN5",
+            "symbol_value": 94,
+            "type": 6
+          },
+          {
+            "offset": 408,
+            "symbol_index": 154,
+            "symbol": "$LN12",
+            "symbol_value": 256,
+            "type": 6
+          },
+          {
+            "offset": 412,
+            "symbol_index": 151,
+            "symbol": "$LN10",
+            "symbol_value": 122,
+            "type": 6
+          },
+          {
+            "offset": 416,
+            "symbol_index": 152,
+            "symbol": "$LN11",
+            "symbol_value": 130,
+            "type": 6
+          }
+        ]
+      },
+      "whole_compiled_section_bytes_hex": "538bdc83ec0883e4f083c404558b6b04896c24048bec81eca8000000a10000000033c58945fc8b0d000000008b4310568b730c57898d7cffffff85c90f84210100000fb7108b0648899578ffffff83f8070f87a9000000ff248500000000bf08000000eb22bf04000000eb1bbf11000000eb14bf12000000eb0dc70601000000eb7ebf10000000528d46185057e80000000083c40c84c075616a708d45806a0050e8000000008b4b0883c40c83f910740a83f916740583f91d75298d4610898570ffffff8d45b089856cffffff8b8570ffffff8b956cffffffdd00dd1ac745c0030000005651578d8578ffffff508d458050e80000000083c4148b8d7cffffff9bd9bd74ffffffd9ad78ffffff833e0874048b018b008b0683f801751e8b4104ffd0c700210000005f5e8b4dfc33cde8000000008be55d8be35bc383f802740583f803750b8b4104ffd0c700220000008b4dfc5f33cd5ee8000000008be55d8be35bc368000000008d8d60ffffffe80000000068000000008d8560ffffff50e8000000000000000000000000000000000000000000000000000000000000000000000000",
+      "compiled_section_sha256": "5ca6b51e86a3870936a8c1e53d9f39cd22c4efc4a4ff29c0c3b147d4b19b42a0",
+      "original_byte_equality_claim": false,
+      "operation_1d_supported_by_source": true,
+      "new_operation_1d_runtime_claim": false
+    }
+  },
+  "limitations": [
+    "New unary5-byte thunk is explicit source entry adaptation, not original address or general ABI compatibility.",
+    "Complete owned instruction proof and provider-object provenance do not claim linked-runtime or game validation.",
+    "Existing provider FP/SEH/runtime service boundaries remain; no new op1D runtime test is claimed.",
+    "Unary argument2 remains unspecified stack bytes; caller must use the binary entry when a valid second operand is required.",
+    "No full pow/gamma completion, shared CMake registration, metadata or Ghidra changes in this worker packet."
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/x87_error_dispatch/00c08330_assembly.txt",
+      "bytes": 981,
+      "sha256": "f2fae71613d2005876deecdf9fc7c628f711f9b63800ba51e39a21eecdb5825a"
+    },
+    {
+      "path": "local/x87_error_dispatch/00c08330_original.bin",
+      "bytes": 83,
+      "sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3"
+    },
+    {
+      "path": "local/x87_error_dispatch/00c27489_assembly.txt",
+      "bytes": 2524,
+      "sha256": "9d145e638f65b53156d278a01c6f02bae46690b538fd3b512d2db3a80bfda5d2"
+    },
+    {
+      "path": "local/x87_error_dispatch/00c27489_original.bin",
+      "bytes": 252,
+      "sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498"
+    },
+    {
+      "path": "local/x87_error_dispatch/build.log",
+      "bytes": 22754,
+      "sha256": "ec0e2c02c97749d9072403bad0d57ca682df59ee19cdcf4547c91840d1830a20"
+    },
+    {
+      "path": "local/x87_error_dispatch/build_library.ps1",
+      "bytes": 832,
+      "sha256": "4f357e445b7246b42870907ffb4073c3ffd343fabcb928493a62fd984d0821b0"
+    },
+    {
+      "path": "local/x87_error_dispatch/capture.py",
+      "bytes": 2478,
+      "sha256": "5c75b738503e66005a25a51b8da639c71edb616e3ef1c3488d4b3b9bbd971ffc"
+    },
+    {
+      "path": "local/x87_error_dispatch/configure.log",
+      "bytes": 968,
+      "sha256": "9cf2632c18f360eed7e1770d64d18f26f6801df6253f4a7a61476716823e967d"
+    },
+    {
+      "path": "local/x87_error_dispatch/extra.cmake",
+      "bytes": 129,
+      "sha256": "ce148cfdaf71b6119fa8b91a143498811e9578a73f59585f1df7b44d60328a5a"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/bsp_core.lib",
+      "bytes": 39237566,
+      "sha256": "50baf4104d23f99ba02add535941ee15ad02864bbc346ed8624ccc939af995c6"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 1115570,
+      "sha256": "e6337fad1ccf18d41f3043a02e24b4777e5393540aadd97cab8ed584e3ecffe4"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/build/win32/bsp_core.vcxproj",
+      "bytes": 128617,
+      "sha256": "8a9e3465f196d1ecc0dc2c09770e868d6890371e38d5d89b9869d511f48504d7"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/build/win32/CMakeCache.txt",
+      "bytes": 19165,
+      "sha256": "d36655b1d06e5f8057d63991f86371723fe80eb8348a6fa5ea96524e95249366"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1773,
+      "sha256": "8cdcbb51902ae189da522f75087038bc609709082916189f2dbb55b06374fc0a"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/cmake/startup.cmake",
+      "bytes": 39533,
+      "sha256": "2688e0d3ddb9c2d309c6e00f9225d73ce9df7e3ea59a8b3ba44b1b55823e360d"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/CMakeLists.txt",
+      "bytes": 13264,
+      "sha256": "30bb345b405038c0585c5fdfabc0a78642c8f75f86fa45e349d61f3297504ab4"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/core83_compiled.bin",
+      "bytes": 83,
+      "sha256": "6df77e4c47c71625a427b7f1d3294bceef86c9c99f4dc4ab87aca480a9e5c699"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/docs/LEGACY_CRT_MATH.md",
+      "bytes": 5953,
+      "sha256": "4b19307fd3088714af624429e6d85b9d9bf9515b9800d7d2d83f999450cbbe4d"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/docs/NATIVE_CRT_POW_FALLBACK_SUPPORT_DISCOVERY.md",
+      "bytes": 16080,
+      "sha256": "88a6b0927ca153d89060dd64afa3df101a4b950bf283fca588d8e878962f133c"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/include/bsp/legacy_crt_math.hpp",
+      "bytes": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/include/bsp/native_crt_x87_error_dispatch.hpp",
+      "bytes": 2553,
+      "sha256": "62f1ccc668389168fe0d54f48bb7b3b25fca8ef9a8d6b337958b13e8a3dca438"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/include/bsp/system_camera_axes.hpp",
+      "bytes": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/legacy_87except_compiled_section.bin",
+      "bytes": 420,
+      "sha256": "5ca6b51e86a3870936a8c1e53d9f39cd22c4efc4a4ff29c0c3b147d4b19b42a0"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/legacy_crt_math.obj",
+      "bytes": 18524,
+      "sha256": "5f878b386fbdd1a9c647f498ff9e860ce34a870eb1e518abbabe869dee8f8906"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/legacy_crt_math_archive_member.obj",
+      "bytes": 18524,
+      "sha256": "5f878b386fbdd1a9c647f498ff9e860ce34a870eb1e518abbabe869dee8f8906"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/native_crt_x87_error_dispatch.obj",
+      "bytes": 2705,
+      "sha256": "97a286aeae2b9e9ceb559b54490a7d99c0af4ac8ab6a6581a3be7b548cf1cdbc"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/native_crt_x87_error_dispatch_archive_member.obj",
+      "bytes": 2705,
+      "sha256": "97a286aeae2b9e9ceb559b54490a7d99c0af4ac8ab6a6581a3be7b548cf1cdbc"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/reports/legacy_crt_math_audit.json",
+      "bytes": 25570,
+      "sha256": "e5172c26e634b5138da1815242caed1a02bdb6f5115ff59eb6b991ba7a061b19"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/src/legacy_crt_math.cpp",
+      "bytes": 11469,
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/src/native_crt_x87_error_dispatch.cpp",
+      "bytes": 2668,
+      "sha256": "a800a9c61a9d652e765bea27e4cd9b0c8790b2afcdb60ad4ec1703a9e50aeb4a"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/tools/bsp.py",
+      "bytes": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/x87_error_dispatch/frozen/unary_thunk5_compiled.bin",
+      "bytes": 5,
+      "sha256": "8c3a1c871ef49dce0aba8376a0ae49780f8f49ad436e88aefa8a495fc0a47a54"
+    },
+    {
+      "path": "local/x87_error_dispatch/guarded_capture.json",
+      "bytes": 4215,
+      "sha256": "d1dc8fd5d2548b2791eaf6ffebd0a2a1448807915d22c53435a28646cffc8b68"
+    },
+    {
+      "path": "local/x87_error_dispatch/object_proof.json",
+      "bytes": 101466,
+      "sha256": "e4ecf1847350c8ac56930b3f18b75811e5f6b2f70d0146d1dcc2459666a5db5b"
+    },
+    {
+      "path": "local/x87_error_dispatch/pins.json",
+      "bytes": 7409,
+      "sha256": "cbe8a634b9b9377b04519c90c85c0ae07fe5d6a8a16c406813c6b01df3bceb41"
+    },
+    {
+      "path": "local/x87_error_dispatch/prove.py",
+      "bytes": 9866,
+      "sha256": "ccb17880c5742b0b0d953c6be52ed7df69659ff69690323497974eb5be7a58d1"
+    },
+    {
+      "path": "local/x87_error_dispatch/seal.py",
+      "bytes": 7648,
+      "sha256": "7542ab9e4952bb39e33c27db22203d86fb4f8bf5a183d5251df6360de69d8a8d"
+    },
+    {
+      "path": "local/x87_error_dispatch/seeds.json",
+      "bytes": 2976,
+      "sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    {
+      "path": "src/native_crt_x87_error_dispatch.cpp",
+      "bytes": 2668,
+      "sha256": "a800a9c61a9d652e765bea27e4cd9b0c8790b2afcdb60ad4ec1703a9e50aeb4a"
+    },
+    {
+      "path": "include/bsp/native_crt_x87_error_dispatch.hpp",
+      "bytes": 2553,
+      "sha256": "62f1ccc668389168fe0d54f48bb7b3b25fca8ef9a8d6b337958b13e8a3dca438"
+    },
+    {
+      "path": "docs/NATIVE_CRT_X87_ERROR_DISPATCH.md",
+      "bytes": 7559,
+      "sha256": "15f6ba7d27763bb93e7b3a9c0915f290b4debe5bdf3903dfcf703809db947ad2"
+    }
+  ]
+}

@@ -36,8 +36,10 @@ const char* mission_scene_load_block_label(std::uint32_t request) noexcept;
 
 // The five numbered VFS file blocks 004dfb70 opens around the load phases. Each
 // name is the prefix below concatenated with derive_scene_short_name of the
-// scene path. There is no "2_" block: the GvSpace_Init block sits between the
-// "1_" and "3_" blocks.
+// scene path. 004dfb70 itself opens no "2_" block; the "2_" block is opened
+// inside 004d4df0 (load_scene_contents) around scene-file passes 2 and 3
+// (docs/MISSION_SCENE_CONTENTS.md), and the GvSpace_Init block sits between
+// the "1_" and "3_" blocks of this routine.
 enum class MissionLoadPhase {
     WorldConstruction = 1, // "1_", 004dff44; scene file pass 1 and the world
     MissionScript = 3, // "3_", 004e0971; Scripts/missions/<name>.lua
@@ -192,7 +194,7 @@ struct MissionSceneLoadHost {
     virtual void reset_shader_globals() = 0; // 00951560 on 00F89A08 and 00F89A5C
     virtual bool lua_global_exists(const char* name) = 0; // 00b65fb0 on "thisTable"
     virtual void lua_clear_global(const char* name) = 0; // 00b67580
-    virtual void lua_reset_state() = 0; // 005e2f00
+    virtual void sync_lobby_settings_from_lua() = 0; // 005e2f00 BSP_Game_SyncLobbySettingsFromLua: opens the LobbySettings global and walks the thirteen slots of 00e08908 (docs/MISSION_LUA_MACHINE.md); it resets no Lua state (2f correction 3)
     virtual void lua_declare_global(const char* name) = 0; // 00b67350 on "recon"
     virtual void resolve_named_scene_objects() = 0; // 004f2800
 

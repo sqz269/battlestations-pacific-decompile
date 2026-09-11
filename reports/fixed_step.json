@@ -1,0 +1,243 @@
+{
+ "packet": "cc_fixed_step",
+ "owner": "agent/cc-fixed-step",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "program": "/battlestationspacific.exe",
+ "access": "read-only Ghidra; no annotation applied by this worker",
+ "docs": [
+  "docs/FIXED_STEP_FANOUT.md",
+  "docs/FIXED_STEP_JOB_WAVES.md"
+ ],
+ "sources": [
+  "include/bsp/fixed_step_fanout.hpp",
+  "src/fixed_step_fanout.cpp",
+  "include/bsp/fixed_step_job_waves.hpp",
+  "src/fixed_step_job_waves.cpp"
+ ],
+ "build": "scripts/build.ps1 Win32 Release /W4 /WX clean; ctest reconstructed_math passed; no new test added",
+ "routines": [
+  {
+   "name": "run_fixed_step_subsystem_fanout_00875e0c",
+   "address": "00875e0c",
+   "native": "00875e0c",
+   "range": "00875e0c-00875edf",
+   "containing_function": "00875bb0",
+   "coverage": "complete: all sixteen call sites and the world gate; the callee bodies are summarised in the doc, not reconstructed"
+  },
+  {
+   "name": "run_fixed_step_tail_00875fd1",
+   "address": "00875fd1",
+   "native": "00875fd1",
+   "range": "00875fd1-00875ff7",
+   "containing_function": "00875bb0",
+   "coverage": "complete: the four-test gate and the single call; the callee 00a317f0 is one RET"
+  },
+  {
+   "name": "fixed_step_world_gate_open",
+   "address": "00875e69",
+   "native": "00875e69",
+   "range": "00875e69-00875e7f",
+   "containing_function": "00875bb0",
+   "coverage": "complete"
+  },
+  {
+   "name": "fixed_step_wave_admits",
+   "address": "00875cc0",
+   "native": "00875cc0",
+   "range": "00875cc0-00875cd0, 00875d30-00875d40, 00875da0-00875db0, 00875f70-00875f77",
+   "containing_function": "00875bb0",
+   "coverage": "complete: the four admission tests"
+  },
+  {
+   "name": "run_fixed_step_job_wave_group / run_fixed_step_job_waves",
+   "address": "00875caa",
+   "native": "00875caa",
+   "range": "00875caa-00875df9 and 00875f55-00875fc0",
+   "containing_function": "00875bb0",
+   "coverage": "complete for the loop, the queued-count rule and the dispatch; the element virtuals are host methods"
+  },
+  {
+   "name": "fixed_step_subnode_action",
+   "address": "008759b0",
+   "native": "008759b0",
+   "range": "008759b0-00875a76",
+   "coverage": "partial: the per-sub-node decision only; the sub-node vtable[+0Ch] callee and the lock singleton 00875280 are unread"
+  },
+  {
+   "name": "job wave descriptor table",
+   "address": "008754d0",
+   "native": "008754d0",
+   "coverage": "complete: four factories, their singletons, allocation sizes and both vtable slots"
+  }
+ ],
+ "host_steps": [
+  {"host_method": "simulate_physics_world_00c5c540", "address": "00875e0c", "native": "00c5c540", "function": "00875bb0", "this": "[[00e188a8]+18h]", "args": "0.05f", "ret": "RET 4", "gated": false, "owner": "physics", "contract": "the mitengine Dynamics world Simulate: profiler scope 'Simulate', body transforms copied to proxies, then its own substep loop bounded by world[0Dh]"},
+  {"host_method": "apply_dynamics_buoyancy_004462d0", "address": "00875e24", "native": "004462d0", "function": "00875bb0", "this": "[[00e188a8]+30h]", "args": "0.05f", "ret": "RET 4", "gated": false, "owner": "unit", "contract": "already reconstructed, docs/GAME_DYNAMICS_LIST.md"},
+  {"host_method": "refresh_moved_spatial_nodes_0098bdb0", "address": "00875e33", "native": "0042e630", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": false, "owner": "registry", "contract": "double-checked lazy singleton, operator new(0x16018), ctor 0042d450 is a memset; supplies the this for the next call and takes no argument"},
+  {"host_method": "refresh_moved_spatial_nodes_0098bdb0", "address": "00875e3a", "native": "0098bdb0", "function": "00875bb0", "this": "EAX of 0042e630", "args": "0.05f", "ret": "RET 4", "gated": false, "owner": "registry", "contract": "walks [singleton+16014h] via +48h and refreshes every node whose +8h byte is clear through 0098bc70: pose refresh, world matrix and cached inverse copy, re-registration when the packed key changes"},
+  {"host_method": "run_fixed_step_callbacks_00874de0", "address": "00875e3f", "native": "00874de0", "function": "00875bb0", "this": "", "args": "none (the callee loads 00d0de84 at 00874df2)", "ret": "RET", "gated": false, "owner": "engine", "contract": "runs vtable[+10h](0.05f) on the list at 00e0b748 and unlinks nodes whose +19h repeating byte is clear"},
+  {"host_method": "drain_deferred_entity_events_00926700", "address": "00875e44", "native": "00926700", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": false, "owner": "entity", "contract": "drains the queue at 00f899c4 (count 00f899c8) through 009239a0 and clears the pending byte 00e18684"},
+  {"host_method": "drain_queued_lua_calls_00888230", "address": "00875e55", "native": "00888230", "function": "00875bb0", "this": "[[00e188a8]+1a08h]", "args": "none", "ret": "RET", "gated": false, "owner": "script", "contract": "drains the mission Lua host's queued named calls through BSP_MissionLuaHost_CallNamedThreadSafe 00887e50"},
+  {"host_method": "run_due_entity_think_00929460", "address": "00875e64", "native": "00929460", "function": "00875bb0", "this": "", "args": "0.05f", "ret": "RET 4", "gated": false, "owner": "script", "contract": "think timers at entity+1e0h over the list at 00f89ab4, the collectgarbage() countdown at 00f89a04, and one dead node reaped per call"},
+  {"host_method": "pump_session_00778450", "address": "00875e91", "native": "00778450", "function": "00875bb0", "this": "00e188a8+1ef0h", "args": "0.05f", "ret": "RET 4", "gated": true, "owner": "session", "contract": "session timer at +278h, global 00f8a2fc vtable[+5ch](step), then the peer pumps when [session+f4h] is set"},
+  {"host_method": "apply_pending_entity_creates_0077ec20", "address": "00875e96", "native": "0077ec20", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": true, "owner": "session", "contract": "instantiates queued replicated creates from the list at 00f871a4 unless the id slot is taken ('Duplicated Create %d received')"},
+  {"host_method": "flush_pending_tick_registrations_00874c90", "address": "00875e9b", "native": "00874c90", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": true, "owner": "engine", "contract": "splices every pending tick element into group [element+14h] of the five 68h-stride groups at 00f876c0 and empties the pending list"},
+  {"host_method": "init_pending_entities_00925f20", "address": "00875ea2", "native": "00925f20", "function": "00875bb0", "this": "CL = 0 (00875ea0 XOR CL,CL)", "args": "none on the stack", "ret": "RET", "gated": true, "owner": "entity", "contract": "SEntity::InitAll: three passes over the pending list at 00f899d0 calling entity vtable[+9ch], [+a0h], [+a4h] with progress through 0057c1a0"},
+  {"host_method": "flush_outbound_session_0076ffc0", "address": "00875ebf", "native": "0076ffc0", "function": "00875bb0", "this": "00e188a8+1ef0h", "args": "0.05f, mode 1", "ret": "RET 8", "gated": true, "owner": "session", "contract": "host pre-send, 0076f210(step, mode), FlushPeerBuffers, and the state 0Dh -> 10h end-of-mission transition"},
+  {"host_method": "drain_deferred_entity_events_00926700", "address": "00875ec4", "native": "00926700", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": false, "owner": "entity", "contract": "the second drain of the same queue, after the gated block"},
+  {"host_method": "flush_pending_entity_queues_009273a0", "address": "00875ec9", "native": "009273a0", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": false, "owner": "entity", "contract": "returns at once when 00f899b0 and 00f899bc are both zero; otherwise applies 00926fa0 to the lists at 00f899a8 and 00f899b4, empties both and frees every node"},
+  {"host_method": "release_expired_world_objects_00903610", "address": "00875eda", "native": "00903610", "function": "00875bb0", "this": "[[00e188a8]+19cch]", "args": "none", "ret": "RET", "gated": false, "owner": "world", "contract": "counter at node+6ch reaches 3 before the node's +50h sub-list is drained through 009035e0 and the node destroyed: a two-step grace period"},
+  {"host_method": "run_tail_hook_00a317f0", "address": "00875ff7", "native": "00a317f0", "function": "00875bb0", "this": "", "args": "none", "ret": "RET", "gated": false, "owner": "world", "contract": "a single RET in this build; the four-test gate at 00875fd1..00875ff5 is the only behaviour"}
+ ],
+ "job_wave_steps": [
+  {"host_method": "queue_job wave 1 pool", "address": "00875cd5", "native": "004c1130", "function": "00875bb0", "contract": "BSP_FrameJobPool_GetSingleton"},
+  {"host_method": "queue_job wave 1 factory", "address": "00875cdd", "native": "008755a0", "function": "00875bb0", "contract": "descriptor singleton 00f878d4, body 008750a0"},
+  {"host_method": "queue_job wave 1", "address": "00875ceb", "native": "00be3020+vtable04", "function": "00875bb0", "contract": "CALL EAX through [[pool+4h]+4h](descriptor, element), RET 8"},
+  {"host_method": "dispatch_group wave 1 pool", "address": "00875cf8", "native": "004c1130", "function": "00875bb0", "contract": "only when the group queued at least one element (00875cf4)"},
+  {"host_method": "dispatch_group wave 1", "address": "00875d0e", "native": "00be3150+vtable08", "function": "00875bb0", "contract": "CALL EDX through [[pool+4h]+8h](byte at 00e0b6ce), RET 4"},
+  {"host_method": "queue_job wave 2 pool", "address": "00875d45", "native": "004c1130", "function": "00875bb0", "contract": ""},
+  {"host_method": "queue_job wave 2 factory", "address": "00875d4d", "native": "00875750", "function": "00875bb0", "contract": "descriptor singleton 00f878dc, body 00875b90"},
+  {"host_method": "queue_job wave 2", "address": "00875d5b", "native": "00be3020+vtable04", "function": "00875bb0", "contract": "CALL EAX"},
+  {"host_method": "dispatch_group wave 2 pool", "address": "00875d68", "native": "004c1130", "function": "00875bb0", "contract": ""},
+  {"host_method": "dispatch_group wave 2", "address": "00875d7e", "native": "00be3150+vtable08", "function": "00875bb0", "contract": "CALL EDX"},
+  {"host_method": "queue_job wave 3 pool", "address": "00875db5", "native": "004c1130", "function": "00875bb0", "contract": ""},
+  {"host_method": "queue_job wave 3 factory", "address": "00875dbd", "native": "008754d0", "function": "00875bb0", "contract": "descriptor singleton 00f878d0, body 00874fe0"},
+  {"host_method": "queue_job wave 3", "address": "00875dcb", "native": "00be3020+vtable04", "function": "00875bb0", "contract": "CALL EAX"},
+  {"host_method": "dispatch_group wave 3 pool", "address": "00875dd8", "native": "004c1130", "function": "00875bb0", "contract": ""},
+  {"host_method": "dispatch_group wave 3", "address": "00875dee", "native": "00be3150+vtable08", "function": "00875bb0", "contract": "CALL EDX"},
+  {"host_method": "interpolation leftover store", "address": "00875f43", "native": "00875670", "function": "00875bb0", "contract": "the descriptor whose +8h takes the leftover accumulator at 00875f50"},
+  {"host_method": "queue_job interpolation pool", "address": "00875f7c", "native": "004c1130", "function": "00875bb0", "contract": ""},
+  {"host_method": "queue_job interpolation factory", "address": "00875f84", "native": "00875670", "function": "00875bb0", "contract": "descriptor singleton 00f878d8, body 00875160"},
+  {"host_method": "queue_job interpolation", "address": "00875f92", "native": "00be3020+vtable04", "function": "00875bb0", "contract": "CALL EAX"},
+  {"host_method": "dispatch_group interpolation pool", "address": "00875f9f", "native": "004c1130", "function": "00875bb0", "contract": ""},
+  {"host_method": "dispatch_group interpolation", "address": "00875fb5", "native": "00be3150+vtable08", "function": "00875bb0", "contract": "CALL EDX"}
+ ],
+ "job_body_steps": [
+  {"comment": "sites inside the eight vtable targets that have no Ghidra function; tools/verify_report_calls.py cannot check them, so these rows use 'site' instead of 'address'"},
+  {"host_method": "run_wave1_job_008750a0 element vtable[+4h]", "site": "008750b6", "native": "element+vtable04", "body": "008750a0", "contract": "CALL EDX with 0.05f"},
+  {"host_method": "run_wave1_job_008750a0 element vtable[+0Ch]", "site": "008750bf", "native": "element+vtable0c", "body": "008750a0", "contract": "CALL EDX, no argument"},
+  {"host_method": "run_wave1_job_008750a0 pose refresh", "site": "008750c4", "native": "00414db0", "body": "008750a0", "contract": "BSP_EntityPose_RefreshWorld(payload)"},
+  {"host_method": "run_wave1_job_008750a0 pose refresh (cached inverse path)", "site": "008750d7", "native": "00414db0", "body": "008750a0", "contract": "only when payload+10ch is clear"},
+  {"host_method": "run_wave1_job_008750a0 inverse", "site": "008750ef", "native": "00b63d50", "body": "008750a0", "contract": "BSP_Matrix_BuildOrthogonalScaledAffineInverse(payload+110h, payload+cch); inlined copy of 00414e10"},
+  {"host_method": "run_wave2_job_00875b90", "site": "00875b9e", "native": "008759b0", "body": "00875b90", "contract": "the element's sub-list at element+1ch with 0.05f"},
+  {"host_method": "run_wave3_job_00874fe0 element vtable[+8h]", "site": "00874ff6", "native": "element+vtable08", "body": "00874fe0", "contract": "CALL EDX with 0.05f"},
+  {"host_method": "run_wave3_job_00874fe0 pose refresh", "site": "00874ffb", "native": "00414db0", "body": "00874fe0", "contract": "BSP_EntityPose_RefreshWorld(payload)"},
+  {"host_method": "run_interpolation_job_00875160 element vtable[+4h]", "site": "00875172", "native": "element+vtable04", "body": "00875160", "contract": "CALL EAX with [descriptor+8h], the leftover accumulator"}
+ ],
+ "no_ghidra_function": [
+  {"start": "00874fb0", "end_inclusive": "00874fb7", "end_exclusive": "00874fb8", "evidence": "vtable slot 00d0dea8 points here; SUB ECX,4 then JMP 0x875010 ends at 00874fb7, INT3 padding from 00874fb8"},
+  {"start": "00874fe0", "end_inclusive": "00875003", "end_exclusive": "00875004", "evidence": "vtable slot 00d0deac points here; RET 4 at 00875001 ends at 00875003, INT3 padding from 00875004"},
+  {"start": "00875070", "end_inclusive": "00875077", "end_exclusive": "00875078", "evidence": "vtable slot 00d0deb0 points here; SUB ECX,4 then JMP 0x875100, INT3 padding from 00875078"},
+  {"start": "008750a0", "end_inclusive": "008750f7", "end_exclusive": "008750f8", "evidence": "vtable slot 00d0deb4 points here; RET 4 at 008750f5 ends at 008750f7, INT3 padding from 008750f8"},
+  {"start": "00875160", "end_inclusive": "00875176", "end_exclusive": "00875177", "evidence": "vtable slot 00d0debc points here; RET 4 at 00875174 ends at 00875176, INT3 padding from 00875177"},
+  {"start": "00875180", "end_inclusive": "00875187", "end_exclusive": "00875188", "evidence": "vtable slot 00d0deb8 points here; SUB ECX,4 then JMP 0x8751b0, INT3 padding from 00875188"},
+  {"start": "00875210", "end_inclusive": "00875217", "end_exclusive": "00875218", "evidence": "vtable slot 00d0dec0 points here; SUB ECX,4 then JMP 0x875240, INT3 padding from 00875218"},
+  {"start": "00875b90", "end_inclusive": "00875ba5", "end_exclusive": "00875ba6", "evidence": "vtable slot 00d0dec4 points here; RET 4 at 00875ba3 ends at 00875ba5, INT3 padding from 00875ba6 up to the driver 00875bb0"}
+ ],
+ "tick_element_base_vtable": {
+  "address": "00d0dec8",
+  "slots": ["00875920 scalar deleting dtor", "0042bb70 RET 4", "0042bb80 RET 4", "0042bb90 RET", "0042bba0 RET 4", "0042bbb0 XOR AL,AL then RET"],
+  "end": "00d0dee0 is zero, so the table is six slots",
+  "used_by_the_waves": {"+04h": "wave 1 and the interpolation wave, one float", "+08h": "wave 3, one float", "+0ch": "wave 1, no argument"},
+  "note": "every slot after the destructor is a do-nothing default; 0042bbb0 is the only predicate and it answers false"
+ },
+ "ghidra_flow_gaps": [
+  {"function": "0077ec20", "gap": "0077ed6a-0077ed77", "after": "CALL 00bf65ac at 0077ed65"},
+  {"function": "00926700", "gap": "0092679d-009267ad", "after": "CALL 00bf65ac at 00926798"},
+  {"function": "00888230", "gap": "00888299-008882a0", "after": "CALL 00bf65ac at 00888294"},
+  {"function": "00925f20", "gap": "0092635a-00926367", "after": "CALL 00bf65ac at 00926355"},
+  {"function": "00929460", "gap": "00929531-00929534", "after": "CALL 00bf65ac at 0092952c"},
+  {"function": "009273a0", "gap": "00927428-00927435, 0092745e-0092746b, 0092755b-00927568, 0092756e-009275ad, 009275b3-009275bf", "after": "five CALL 00bf65ac sites"}
+ ],
+ "names": [
+  {"address": "00c5c540", "name": "DYN_PhysicsWorld_Simulate", "was": "DYN_physics_00c5c540"},
+  {"address": "0042e630", "name": "BSP_SpatialIndex_GetSingleton", "was": "FUN_0042e630"},
+  {"address": "0098bdb0", "name": "BSP_SpatialIndex_RefreshMovedNodes", "was": "FUN_0098bdb0"},
+  {"address": "00874de0", "name": "BSP_FixedStepCallbackList_Run", "was": "FUN_00874de0"},
+  {"address": "00926700", "name": "BSP_DeferredEntityEventQueue_Drain", "was": "FUN_00926700"},
+  {"address": "00888230", "name": "BSP_MissionLuaHost_DrainQueuedCalls", "was": "FUN_00888230"},
+  {"address": "00929460", "name": "BSP_EntityThinkList_RunDue", "was": "FUN_00929460"},
+  {"address": "00778450", "name": "BSP_Session_PumpStep", "was": "FUN_00778450"},
+  {"address": "0077ec20", "name": "BSP_Replication_ApplyPendingEntityCreates", "was": "FUN_0077ec20"},
+  {"address": "00874c90", "name": "BSP_TickRegistry_FlushPendingGroups", "was": "FUN_00874c90"},
+  {"address": "00925f20", "name": "BSP_SEntity_InitAll", "was": "FUN_00925f20"},
+  {"address": "0076ffc0", "name": "BSP_Session_FlushOutboundStep", "was": "FUN_0076ffc0"},
+  {"address": "009273a0", "name": "BSP_EntityEventQueues_FlushPending", "was": "FUN_009273a0"},
+  {"address": "00903610", "name": "BSP_World_ReleaseExpiredObjects", "was": "FUN_00903610"},
+  {"address": "00a317f0", "name": "BSP_FixedStep_TailHookStub", "was": "TRIV_body_00a317f0"},
+  {"address": "008754d0", "name": "BSP_StepJobWave3_GetDescriptor", "was": "FUN_008754d0"},
+  {"address": "008755a0", "name": "BSP_StepJobWave1_GetDescriptor", "was": "FUN_008755a0"},
+  {"address": "00875670", "name": "BSP_StepJobInterpolation_GetDescriptor", "was": "FUN_00875670"},
+  {"address": "00875750", "name": "BSP_StepJobWave2_GetDescriptor", "was": "FUN_00875750"},
+  {"address": "00875890", "name": "BSP_TickRegistration_Construct", "was": "FUN_00875890"},
+  {"address": "00875a80", "name": "BSP_FixedStepCallback_Register", "was": "FUN_00875a80"},
+  {"address": "008759b0", "name": "BSP_TickElement_RunSubNodes", "was": "FUN_008759b0"},
+  {"address": "00874fe0", "name": "BSP_StepJobWave3_Run", "was": "(no Ghidra function)"},
+  {"address": "008750a0", "name": "BSP_StepJobWave1_Run", "was": "(no Ghidra function)"},
+  {"address": "00875160", "name": "BSP_StepJobInterpolation_Run", "was": "(no Ghidra function)"},
+  {"address": "00875b90", "name": "BSP_StepJobWave2_Run", "was": "(no Ghidra function)"}
+ ],
+ "corrections": [
+  {
+   "was": "docs/IN_MISSION_SUBSYSTEM_TICK.md: call site 00875e33 -> 0042e630 takes 0.05f",
+   "is": "0042e630 is __cdecl int(void), RET at 0042e6dd, and takes nothing; the float pushed at 00875e2f belongs to 0098bdb0",
+   "evidence": "0098bdb0 is RET 4 at 0098bdd5; a __cdecl callee with an argument would need an ADD ESP,4 the site does not have"
+  },
+  {
+   "was": "same doc: 00875e3a -> 0098bdb0 contract unread",
+   "is": "__thiscall void(this, float) on the 0042e630 singleton; refreshes every node whose +8h byte is clear",
+   "evidence": "00875e38 MOV ECX,EAX; body 0098bdb0-0098bdd7; the walk is [this+16014h] then +48h"
+  },
+  {
+   "was": "same doc: 00875ea2 -> 00925f20 this 'none'",
+   "is": "__fastcall void(char) with the argument false in CL",
+   "evidence": "00875ea0 XOR CL,CL; 0092638a is C3, so no stack argument is popped and CL is the only input"
+  },
+  {
+   "was": "same doc: 00875ebf -> 0076ffc0 args '0.05f, 1'",
+   "is": "(step, mode) with mode = 1; RET 8",
+   "evidence": "00875ead PUSH 1 precedes the float store at 00875eb6, so the float is the lower argument; 007700dc RET 0x8; BSP_Multiplayer_Tick 00778560 passes mode 0"
+  },
+  {
+   "was": "same doc: 'the intrusive circular lists at 00F876C8 with stride 68h (&DAT_00F876F4 - 2Ch)'",
+   "is": "the group starts at 00f876c0; 00f876c8 is the head sentinel's next field and 00f876f4 is a second sentinel node 34h bytes later, so the list is bounded by two sentinels, not circular",
+   "evidence": "00874cb8 ADD ECX,0xF876C0 with ECX = index*68h, 00874cca LEA ESI,[ECX+0x34] and 00874cc4 [ECX+0x38], against 00875cb7 MOV ESI,[EBX-0x2C]"
+  },
+  {
+   "was": "same doc: wave 2 'tests the same two bytes in the opposite order' (left open as a possible difference)",
+   "is": "the two orders are one predicate; no admitted set differs",
+   "evidence": "00875cc3/00875cc9 against 00875d33/00875d3a, both branching to the same skip label"
+  },
+  {
+   "was": "same doc: the four job factories unread",
+   "is": "four identical lazy singletons; only 00875670 carries state (the leftover at +8h), which is why it allocates 0Ch and the others 8",
+   "evidence": "008756ca PUSH 0xC against 0087552a/008755fa/008757aa PUSH 0x8, each before CALL 0x00bf681b; 00875f50 stores 00f876ac into [EAX+8]"
+  },
+  {
+   "was": "same doc: the sixteen fan-out rows 'contract: unread'",
+   "is": "each row now carries a contract, an owner area and its RET form",
+   "evidence": "docs/FIXED_STEP_FANOUT.md"
+  }
+ ],
+ "uncertainty": [
+  "'spatial index' for 0042e630/0098bdb0 is a reading of a four-byte key built from a transformed point (0098a750 -> 004142e0, 0098ad60 -> CRT float helpers); the singleton, the walk, the matrix copy and the re-registration are proven, the meaning of the key is not",
+  "'damage/impact' for the 00926700 queue is a reading of the explosion-path producer 00819a20 and the entity vtable[+24h](sourceId, position, extra) dispatch; the queue and the drain are proven, the event kind is not",
+  "009273a0 is partial: 00926fa0's payload past 009269b0 was not followed, so what the two lists at 00f899a8 and 00f899b4 carry is unknown",
+  "group indices: eight of the nine 00875890 sites pass 0 and one (007f2c9a, the plane-squadron path) passes 3; groups 1, 2 and 4 have no constructor site in this reading",
+  "no run-time evidence: bsp_game.exe does not reach 00875bb0 yet (the executable's fixed-step host is another worker's packet), so every claim here is static"
+ ],
+ "follow_ups": [
+  {"packet": "spatial_index_rebucket", "addresses": ["0042e630", "0042d450", "0098bdb0", "0098bc70", "0098a310", "0098a3d0", "0098a750", "0098ad60"]},
+  {"packet": "deferred_entity_event_queue", "addresses": ["00926700", "00926e80", "009239a0", "00924990"]},
+  {"packet": "entity_pending_queues", "addresses": ["009273a0", "00926fa0", "009269b0", "00924a50"]},
+  {"packet": "entity_think_dispatch", "addresses": ["00929460", "00929150", "00928330", "00928380"]},
+  {"packet": "sentity_init_all", "addresses": ["00925f20", "0057c1a0", "00922f30", "00922f80"]},
+  {"packet": "session_step_vs_frame", "addresses": ["00778450", "0076ffc0", "0076f210", "00778560"]},
+  {"packet": "world_expired_objects", "addresses": ["00903610", "009035e0"]},
+  {"packet": "tick_element_overrides", "addresses": ["00875920", "0042bb70", "0042bb80", "0042bb90", "007f2c60", "006e7b00", "00929e50", "0087b670"]},
+  {"packet": "tick_element_sublist", "addresses": ["008759b0", "00875280", "00875340"]},
+  {"packet": "job_pool_dispatch", "addresses": ["004c1130", "00be3020", "00be3150", "00be4800"]},
+  {"packet": "tick_group_semantics", "addresses": ["00874c90", "00875890", "007f2c60"]}
+ ],
+ "events": []
+}
