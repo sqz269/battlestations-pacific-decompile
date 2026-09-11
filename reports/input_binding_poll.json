@@ -1,0 +1,123 @@
+{
+  "packet": "orch3_input_binding_poll",
+  "date": "2026-09-10",
+  "worktree": "agent/orch3-input-poll-20260910b",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read_only; target verified by bsp.py ghidra on each batch",
+  "functions": [
+    {
+      "address": "00a92370",
+      "name": "BSP_InputAction_PollBindings",
+      "implementation": "poll_input_action_bindings_00a92370",
+      "abi": "ECX=30h action; no stack arguments; RET",
+      "final_instruction_address": "00a926e0",
+      "final_instruction_length": 1,
+      "status": "reconstructed_build_tested_native_differential_tested",
+      "evidence": "Hypothesis, not a recovered symbol. Full implementation supersedes game_frame_input_tick prologue-only coverage: docs/INPUT_BINDING_POLL.md. Calls existing previous/current shift once; scans all cached primaries through 00a92090 and all +14h flags independently of resolved; required modifier slot20 accepts nonzero while forbidden rejects exactly 1. Accepted primary slot24 value may combine paired class2 codes 3C/3D or 3E/3F through 00a91d60, then optional +01h response curve, action-wide unit scale or +30h scale, strongest same-sign or additive opposite-sign accumulation, and short-circuit slot20 down OR. Exact x87/SSE accumulation preserves signed-zero and unordered branches. Current callers 00a92a20,00a92c40,00a92d40; earlier sole-caller note is obsolete. Explicit device/CRT service boundary; valid stable storage required. MSVC Win32 Release build and 6000 optimized local native differential poll comparisons passed, excluding NaN payloads/FPU exceptions and game validation. New typed interface, not native ABI.",
+      "source": "src/input_binding_poll.cpp"
+    },
+    {
+      "address": "00a922a0",
+      "name": "BSP_InputManager_RebindAllActions",
+      "implementation": "rebind_all_input_actions_00a922a0",
+      "abi": "ECX=input singleton; no stack arguments; RET",
+      "final_instruction_address": "00a922d2",
+      "final_instruction_length": 1,
+      "status": "reconstructed_build_tested",
+      "evidence": "Hypothesis, not a recovered symbol. docs/INPUT_BINDING_POLL.md. Walk singleton+4h/count+8h at 30h action stride, including disabled records; invoke existing recovered 00a91e80 directly on each record-owned bindings vector. Reuses InputBindingDeviceGroups and class/stable-storage preconditions from docs/INPUT_ACTION_CLASSIFIER.md. Assembly reviewed, MSVC Win32 Release build and existing CTests passed; no native differential or gameplay validation of this walk. New typed interface, not native ABI.",
+      "source": "src/input_binding_poll.cpp"
+    },
+    {
+      "address": "00a92090",
+      "name": "BSP_InputAction_HasDeviceQuery1C",
+      "implementation": "any_input_binding_query_00a92090",
+      "abi": "ECX=30h action; AL boolean result; RET",
+      "final_instruction_address": "00a920d4",
+      "final_instruction_length": 1,
+      "status": "reconstructed_build_tested_native_differential_tested",
+      "evidence": "Provisional slot-neutral name, not a recovered symbol. docs/INPUT_BINDING_POLL.md. Walk +10h/count+14h at 34h stride; skip null primary cached device +0Ch, query device vtable+1Ch(code at binding+10h), return AL=1 at first nonzero byte, otherwise AL=0. Does not test resolved byte or modifiers. MSVC Win32 Release built; native bytes exercised by all 6000 optimized full-poll differential comparisons, including ordered service traces. Slot semantics and concrete devices remain external; no native ABI/gameplay claim.",
+      "source": "src/input_binding_poll.cpp"
+    },
+    {
+      "address": "00a91d60",
+      "name": "BSP_InputBinding_AdjustPairedValue",
+      "implementation": "adjust_input_binding_pair_00a91d60",
+      "abi": "stack primary float then paired float; ST0 result; RET8",
+      "final_instruction_address": "00a91e1b",
+      "final_instruction_length": 3,
+      "status": "reconstructed_build_tested_native_differential_tested",
+      "evidence": "Provisional name, not a recovered symbol. docs/INPUT_BINDING_POLL.md. Current decompiler drops the ST0 return and CRT x87 input. Select maximum absolute component (paired on equality/unordered), spill reciprocal and normalized components to binary32, retain x87 sum-of-squares intermediate then spill; call actual CRT sqrt 00bf7030 through explicit service, spill returned root, multiply original primary and spill; cap only above +1, preserve negative/unordered. No zero/NaN sanitization. Exact arithmetic around external CRT; no CRT port. Win32 Release build plus 400 direct paired-value and 6000 containing poll differential comparisons passed with /O2 /fp:strict under shared supplied sqrt and default masked FPU. NaN payloads, CRT exception effects, native ABI and gameplay not established.",
+      "source": "src/input_binding_poll.cpp"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_repairs": [],
+  "signature_corrections": [
+    {
+      "address": "00a91d60",
+      "issue": "Pseudocode drops ST0 return and misrepresents the CRT sqrt argument; assembly confirms stack float primary/paired, ST0 result, RET8. Existing function extent is complete."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 Release, passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "source_registration": "Confirmed src/input_binding_poll.cpp in bsp_core.vcxproj; temporary ignored CMAKE_PROJECT_TOP_LEVEL_INCLUDES because shared cmake/startup.cmake is leased to another harness. Integrator must register the source.",
+    "verified_existing_seeds": 8,
+    "native_differential": {
+      "pair_comparisons": 400,
+      "poll_comparisons": 6000,
+      "result": "all_passed",
+      "compiler": "/O2 /W4 /WX /fp:strict, MSVC Win32",
+      "comparison": "Exact previous/current down bytes, ordered service trace, float bits except NaN payloads",
+      "fixture": "Verified native poll/query/pair bytes; three relative calls and seven constants relocated, branch bytes unchanged; shared explicit device and float-spilled x87 sqrt service",
+      "coverage": "Deterministic empty/multiple/resolved/unresolved bindings; null cache scan; required/forbidden 0/1/2; class/code/paired gates; scale override; curve; signed zeros, finite boundaries, subnormals, infinities, quiet NaNs",
+      "native_bytes": {
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "functions": [
+          {
+            "address": "00a92370",
+            "length": 881,
+            "matches_disk": true,
+            "sha256": "a0ec5cbc5e11d364263871441782b8f55270f5de9cfcbd7008c25f0515fe9ad1"
+          },
+          {
+            "address": "00a91d60",
+            "length": 190,
+            "matches_disk": true,
+            "sha256": "d8fb1ff2cf60fb49c6c660ac49d28f5932d3eb9a25c4ba6c2e8edc53a93dc13e"
+          },
+          {
+            "address": "00a92090",
+            "length": 69,
+            "matches_disk": true,
+            "sha256": "7eaf6bfdf5cd198188610508329b9ddafc6bceb813e2fa033656325fd4992e75"
+          }
+        ]
+      },
+      "local_probe": "local/input_poll_probe.cpp",
+      "local_log": "local/input-poll-probe.log",
+      "tracked_tests_added": 0
+    },
+    "rebind": "assembly reviewed and build tested; no native differential run",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "corrections": [
+    "current_hold and previous_hold are signed input values, not elapsed hold times",
+    "binding+14h forces unit scale action-wide even on an unresolved binding",
+    "required modifiers accept any nonzero AL; forbidden modifiers reject exactly 1",
+    "paired-axis adjustment caps above +1 only; negative values remain uncapped",
+    "value nonzero gate retains NaN; accumulator propagates unordered through sum and retains accumulator on signed-zero equality",
+    "MSVC optimized scalar accumulation changed signed-zero selection; final implementation retains native x87/SSE branch sequence"
+  ],
+  "remaining_contracts": [
+    "actual device virtual slot1C/20/24 behavior",
+    "actual CRT sqrt/environment/error binding",
+    "valid stable binding/modifier/device storage and native rebind class-index preconditions",
+    "signaling-NaN payloads, FPU exception flags, non-default control modes, native ABI and gameplay unverified"
+  ]
+}

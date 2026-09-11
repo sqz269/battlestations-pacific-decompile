@@ -25,15 +25,17 @@ void update_input_action_listener_00a91a50(InputActionListener& listener,
     float seconds, bool down_previous, bool down_current,
     const InputActionTimingThresholds& thresholds) noexcept;
 
-// The 14h-stride modifier record's fields read/written by 00a91e80. Native
-// +0Ch input code and +10h are not touched by this routine and are not modelled.
+// The 14h-stride modifier record's fields read/written by 00a91e80/00a92370.
+// Native +10h is not touched by either routine and remains unmodelled.
 struct InputActionModifierBinding {
     std::int32_t device_class{0};       // +00h
     std::uint32_t device_index{0};      // +04h, unsigned vector index
     InputDevice* cached_device{nullptr}; // +08h
+    std::uint32_t input_code{0};         // +0Ch, passed to device vtable+20h
 };
 
-// Fields of the 34h-stride binding at action+10h/count+14h touched by 00a91e80.
+// Fields of the 34h-stride binding at action+10h/count+14h touched by
+// 00a91e80 and 00a92370. Member order is not a native layout declaration.
 // Required/forbidden roles are supported by the +20h virtual predicates in
 // 00a92370; their cached pointers are the only modifier fields rebind changes.
 struct InputActionBinding {
@@ -43,6 +45,10 @@ struct InputActionBinding {
     InputDevice* cached_device{nullptr};   // +0Ch
     std::vector<InputActionModifierBinding> required_modifiers;  // +18h/count+1Ch
     std::vector<InputActionModifierBinding> forbidden_modifiers; // +24h/count+28h
+    bool response_curve{false};           // +01h, quarter-slope then 7/4-slope
+    std::uint32_t input_code{0};          // +10h, passed to device virtuals
+    bool force_unit_scale{false};         // +14h, affects every binding in the action
+    float scale{1.0f};                    // +30h, bypassed if any +14h is nonzero
 };
 
 // Vectors at backend+6Ch+class*24h: begin +04h, end +08h, pointer stride 4.
