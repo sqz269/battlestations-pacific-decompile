@@ -1,6 +1,6 @@
 {
   "packet": "native_renderer_gather_capabilities1",
-  "status": "complete_raw_source_with_explicit_host_scratch_CRT_boundaries_strict_build_static_proof_passed",
+  "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
   "source_base": "6daabf3be789c7d3863c95816b8799879cd15d16",
   "owned_functions": [
     {
@@ -798,5 +798,68 @@
       "bytes": 13257,
       "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+    "main_library_sha256": "e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_gather_build_frozen\\manifest.json",
+      "bytes": 28651,
+      "sha256": "b565fed09f76cacab0ab64c99aa09c8fc611522351a9fe053917cb333887267c"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seeds": 8,
+    "owned_original_bytes": 4094,
+    "owned_original_instructions": 885,
+    "exact_archive_objects": 7,
+    "whole_owned_COFF_sections": 27,
+    "all_mapped_sections": 125,
+    "all_mapped_relocations": 324,
+    "static_imports": 52,
+    "boundary": "Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation.",
+    "original_owned_execution": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_gather_capabilities_primary\\sealed.json",
+      "bytes": 43177,
+      "sha256": "40b8a9ff92e34b5b3f909b1b61f008ec98763db92c426d5a4817b999938c0b00"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_pow_gather_pointer_annotations.json",
+    "bytes": 5341,
+    "sha256": "c65b40e1408435ba1265407de7e927154932f774b2f3005cc4ec52116d3eaac7"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b2c8e0",
+      "name": "gather_native_renderer_capabilities_00b2c8e0",
+      "cpp_symbol": "bsp::gather_native_renderer_capabilities_00b2c8e0",
+      "source": "src/native_renderer_gather_capabilities.cpp",
+      "native_end_exclusive": "00b2d8de",
+      "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "evidence": "reports/native_renderer_gather_capabilities_audit.json",
+      "original_abi": "Complete per-entry native contract in header and audit.",
+      "source_abi": "Explicit per-entry source binding and preconditions in header and audit; not general binary replacement.",
+      "original_owned_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b2c8e0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2c8e0\\decompiled.c",
+      "bytes": 16517,
+      "sha256": "0c12d34644438cb9f010d515683e4114df4704c6e8b260112ccd5ac5b9369b0c"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_GATHER_CAPABILITIES.md",
+    "bytes": 13691,
+    "sha256": "77a0bcdd7e1af41e8ae2db425a21ce8f6a94ca3b7fa9a19a568731c632eba554"
+  }
 }

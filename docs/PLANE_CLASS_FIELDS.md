@@ -321,3 +321,12 @@ null. The `007C3700` consumer transforms that point using the instance matrix.
 The follow-up records the native call sites, reconstructed boundary and the
 saved Ghidra repair of 17 missing free-call fallthrough instructions in
 `007D3E60`. The full model loader and effect update remain outside that packet.
+
+## Correction from docs/GAME_TUNING_SINGLETON.md (packet cc2_game_tuning)
+
+The uncertainty above that the `6D0h` tuning object is "loaded from `Scripts\global\luaMW_init.lua`
+by `007E2A20`" is wrong about the source. `007E2A20` runs `luaMW_init.lua` (constants and the
+DEG/KMH helpers only) and then `Scripts\datatables\PlaneGlobals.lua`; every key it stores is a path
+inside the global `PlaneGlobals` table (439 stores, 423 distinct key paths). The `+31Ch` write-back at
+`007D213C` is a guard on the `AccelCheatMul <= 1.0f` branch that stores the same `1.0f` it compared
+against, so it cannot accumulate, and the installed `AccelCheatMul` of 1.5 never takes that branch.

@@ -5,6 +5,7 @@
 namespace bsp {
 
 struct PointEffectReferenceArray;
+class RenderCommandReference;
 
 // Complete 008670A0 / 008672A0 bodies over the same pointer/count/capacity
 // header used by PointEffectInstanceStorage. Original ABI: ECX=header, one
@@ -21,6 +22,22 @@ void reserve_point_effect_entry_array_008670a0(
 // The loop reloads actual count/storage, and finally stores requested_count.
 void resize_point_effect_entry_array_008672a0(
     PointEffectReferenceArray&, std::int32_t requested_count);
+
+// Complete 00867210. ECX=header, stack argument points to a slot iterator,
+// RET4. Capture *position; replace that entry with the current tail using
+// publish/retain/release. Reload the header after terminal reentry, release
+// and clear the newly current tail, then decrement the current count. Caller
+// supplies a nonempty array and a valid iterator; position is never advanced.
+void erase_point_effect_entry_array_unordered_00867210(
+    PointEffectReferenceArray&, RenderCommandReference** const* position) noexcept;
+
+// Complete 00867320. ECX=header, stack argument points to a borrowed source
+// slot, RET4. Grow only when count==capacity, using signed max(1, wrapped
+// capacity*2). Null the captured destination BEFORE reading *source, retain
+// the loaded entry, then increment the current count. The source slot must
+// remain valid across reserve; destination aliasing deliberately reads null.
+void append_point_effect_entry_array_00867320(
+    PointEffectReferenceArray&, RenderCommandReference* const* source);
 
 // MSVC Win32 only. Caller supplies valid spans/lifetimes and a nonnegative
 // resize count. Reserve's four-byte allocation product wraps exactly as the

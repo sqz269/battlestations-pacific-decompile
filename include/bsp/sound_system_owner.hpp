@@ -13,6 +13,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace bsp {
@@ -35,6 +36,37 @@ struct SoundResourceOwner {
     std::int32_t capacity_0c{};
     std::uint32_t total_resource_size_10{};
     SoundOwnedResource* error_resource_14{};
+};
+
+// Native A7E240 leaves +54 unchanged after its deleting virtual call. Keep
+// that observable pointer word separate from C++ allocation ownership. After
+// destroy_storage_preserving_word(), get() is a dead value, never dereferenceable.
+class SoundResourceOwnerSlot {
+public:
+    SoundResourceOwnerSlot() noexcept = default;
+    SoundResourceOwnerSlot(const SoundResourceOwnerSlot&) = delete;
+    SoundResourceOwnerSlot& operator=(const SoundResourceOwnerSlot&) = delete;
+    SoundResourceOwnerSlot& operator=(std::unique_ptr<SoundResourceOwner> owner) noexcept {
+        owned_ = std::move(owner);
+        word_ = owned_.get();
+        return *this;
+    }
+    SoundResourceOwner* get() const noexcept { return word_; }
+    SoundResourceOwner* operator->() const noexcept { return word_; }
+    SoundResourceOwner& operator*() const noexcept { return *word_; }
+    explicit operator bool() const noexcept { return word_ != nullptr; }
+    void reset(SoundResourceOwner* value = nullptr) noexcept {
+        owned_.reset(value);
+        word_ = value;
+    }
+    // The caller has already run A85A50 while word_ still identifies its owner.
+    void destroy_storage_preserving_word() noexcept { owned_.reset(); }
+    // A817D0 frees only the base manager allocation. It never owns/destructs
+    // the pointer in +54, even when that referenced allocation is still live.
+    SoundResourceOwner* release_storage_preserving_word() noexcept { return owned_.release(); }
+private:
+    std::unique_ptr<SoundResourceOwner> owned_;
+    SoundResourceOwner* word_{};
 };
 
 // The temporary 48h native record at 00A85969..00A859A3. Unknown names stay
@@ -125,7 +157,7 @@ struct SoundSystemOwner {
 
     std::uint32_t native_vtable_00{};
     std::uint8_t flag_50{};
-    std::unique_ptr<SoundResourceOwner> resource_owner_54;
+    SoundResourceOwnerSlot resource_owner_54;
     std::array<std::uint32_t, 4> words_58{};
     std::uint8_t flag_68{};
     std::uint8_t flag_69{};

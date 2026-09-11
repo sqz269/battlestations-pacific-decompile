@@ -190,3 +190,8 @@ FMOD calls. Platform pretranslation/focus remain explicit fixture observers;
 no audible playback, native ABI or gameplay claim follows. The current singleton
 and +54 cache stay published until resource cleanup finishes. Earlier unresolved
 loader/cleanup statements above describe this document's original snapshot.
+
+
+## Correction from docs/SOUND_SHUTDOWN.md
+
+A882C0/A816B0 and scalar wrappers now compose explicit effect, playback, resource, FMOD, member and singleton teardown. Resource54 keeps its dead pointer word after derived deletion; base-only scalar deletion leaves a live referenced resource allocation untouched. A886C0/A88750 auxiliary teardown and actual listener-table ownership are integrated. See SOUND_SHUTDOWN.md, SOUND_SAMPLE_CACHE_SHUTDOWN.md and SOUND_LISTENER_OWNERSHIP.md for evidence and remaining native ABI/application limits.

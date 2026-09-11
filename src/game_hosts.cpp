@@ -260,6 +260,16 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--screenshot-frame needs a non-negative frame number";
                 return false;
             }
+        } else if (std::strcmp(argument, "--screenshot-mission-frame") == 0) {
+            if (index + 1 >= argc) {
+                error = "--screenshot-mission-frame needs a frame number";
+                return false;
+            }
+            screenshot_mission_frame = std::strtol(argv[++index], nullptr, 10);
+            if (screenshot_mission_frame < 0) {
+                error = "--screenshot-mission-frame needs a non-negative frame number";
+                return false;
+            }
         } else if (std::strcmp(argument, "--menu-select") == 0) {
             if (index + 1 >= argc) {
                 error = "--menu-select needs a mission id";
@@ -484,6 +494,14 @@ void GameFrameHost::profiler_begin_frame_slot() {
     log_.implemented("ApplicationFrameHost::profiler_begin_frame_slot", "00be3640");
 }
 
+unsigned long long GameFrameHost::mission_frames_run() const noexcept {
+    // Milestone 2h: the count the mission frame host keeps of the in-mission
+    // frames of 004e4a40 it has run, so --screenshot-mission-frame can name one.
+    if (menu_ == nullptr) return 0ull;
+    const GameMissionHost* mission = menu_->mission();
+    return mission != nullptr ? mission->summary().mission_frames_run : 0ull;
+}
+
 int GameFrameHost::game_state() {
     // 00737acc, repeated at 00737b33: MOV ECX,[00e188a8] then MOV EAX,[ECX+5D4h]. A field
     // load off the GGame singleton pointer, not a call, which is why one frame counts two.
@@ -603,9 +621,15 @@ void GameLoopCallbacks::frame() {
         && frames_ + 1 >= static_cast<unsigned long long>(frame_limit_);
     // --screenshot-frame N names a frame instead, so a run can photograph the title
     // page before the injected press-start as well as the menu after it.
-    const bool wanted_frame = screenshot_frame_ >= 0
-        ? frames_ == static_cast<unsigned long long>(screenshot_frame_)
-        : (last_frame || frame_host_.global_exit());
+    // --screenshot-mission-frame N, milestone 2h: the application frame on which
+    // in-mission frame N ran, so the HUD can be photographed over the mission.
+    // It takes precedence over --screenshot-frame when both are given.
+    const bool wanted_frame = screenshot_mission_frame_ >= 0
+        ? frame_host_.mission_frames_run()
+            == static_cast<unsigned long long>(screenshot_mission_frame_)
+        : (screenshot_frame_ >= 0
+            ? frames_ == static_cast<unsigned long long>(screenshot_frame_)
+            : (last_frame || frame_host_.global_exit()));
     if (capture_ && !capture_requested_ && wanted_frame) {
         capture_requested_ = true;
         device_.request_capture(capture_);
@@ -1157,7 +1181,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
         *device_, loop_, options_.frame_limit, std::move(capture),
-        options_.screenshot_frame);
+        options_.screenshot_frame, options_.screenshot_mission_frame);
 }
 
 void GameStartupHost::platform_run_loop_dispatch() {

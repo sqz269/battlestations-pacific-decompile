@@ -6,6 +6,10 @@
 namespace bsp {
 class RenderCommandReference;
 
+// Complete0086B7B0: XOR AL,AL; RET. Base component virtual+08, no inputs
+// inspected and upper EAX unchanged. Not a fallback for unknown predicates.
+std::uint8_t effect_component_restart_false_0086b7b0(const void*) noexcept;
+
 // Complete0086B7D0..0086B7D4. Native ECX component, two unused stack
 // arguments (point, reference); AL=1, RET8. Upper EAX remains stale. This is
 // the verified base virtual+1C leaf, not a fallback for unknown predicates.

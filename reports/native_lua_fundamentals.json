@@ -1,0 +1,446 @@
+{
+  "packet": "orch2_fundamentals_am",
+  "functions": [
+    {
+      "address": "00884770",
+      "name": "BSP_LuaFundamentals_GetSingleton",
+      "cpp": "get_native_lua_fundamentals_00884770",
+      "source": "src/native_lua_fundamentals.cpp",
+      "coverage": "complete_within_returning_cleanup_host_domain",
+      "original_abi": "No arguments, EAX owner, RET",
+      "disk_end_inclusive": "0088482c",
+      "disk_end_exclusive": "0088482d",
+      "stored_listing_complete": true,
+      "evidence": "Captured shared section, double check, exact0Ch raw allocation/constructor, publish then second manager lookup/register, final reload after unlock. State1 constructor failure frees raw owner; state0 unlock only. Original instruction fixture uses real domain.",
+      "coverage_domain": "NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage covers a returning pool getter during cleanup; C++ failure while lazily recreating the pool terminates and is excluded from native EH equivalence. See include/bsp/native_string_pool_storage.hpp."
+    },
+    {
+      "address": "00b68340",
+      "name": "BSP_LuaFundamentals_Construct",
+      "cpp": "construct_native_lua_fundamentals_00b68340",
+      "source": "src/native_lua_fundamentals.cpp",
+      "coverage": "complete_within_returning_cleanup_host_domain",
+      "original_abi": "ECX actual raw owner, EAX same owner, RET",
+      "disk_end_inclusive": "00b68458",
+      "disk_end_exclusive": "00b68459",
+      "stored_listing_complete": true,
+      "evidence": "Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained.",
+      "coverage_domain": "NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage covers a returning pool getter during cleanup; C++ failure while lazily recreating the pool terminates and is excluded from native EH equivalence. See include/bsp/native_string_pool_storage.hpp."
+    },
+    {
+      "address": "00b667d0",
+      "name": "BSP_LuaFundamentals_DestroySingletonBase",
+      "cpp": "destroy_native_lua_fundamentals_base_00b667d0",
+      "source": "src/native_lua_fundamentals.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner, RET",
+      "disk_end_inclusive": "00b667e0",
+      "disk_end_exclusive": "00b667e1",
+      "stored_listing_complete": true,
+      "evidence": "Complete17 bytes. Unconditionally clear0108FF1C and writeCE3818 atowner00, leave data04/size08. Sole native caller constructor state0 unwindCC1530."
+    },
+    {
+      "address": "00b66b80",
+      "name": "BSP_LuaFundamentals_ScalarDeletingDestructor",
+      "cpp": "delete_native_lua_fundamentals_00b66b80",
+      "source": "src/native_lua_fundamentals.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner, stack flags, EAX original address, RET4",
+      "disk_end_inclusive": "00b66bc5",
+      "disk_end_exclusive": "00b66bc6",
+      "stored_listing_complete": false,
+      "evidence": "Complete70 diskbytes including stored gaps B66B96..9F and B66BBD..BF. WriteD62C18, free capturednonnull data then clear04, unconditionally clear publication/writeCE3818, flags&1 free owner, preserve08. No unregister. Original instructions executed with flags0/1."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00884796",
+      "native": "00415350",
+      "function": "00884770",
+      "contract": "first canonical manager lookup"
+    },
+    {
+      "address": "008847af",
+      "native": "win32+EnterCriticalSection",
+      "function": "00884770",
+      "contract": "enter captured section"
+    },
+    {
+      "address": "008847cc",
+      "native": "00bf681b",
+      "function": "00884770",
+      "contract": "allocate raw12 bytes, ADD ESP4"
+    },
+    {
+      "address": "008847e3",
+      "native": "00b68340",
+      "function": "00884770",
+      "contract": "construct raw owner"
+    },
+    {
+      "address": "008847f6",
+      "native": "00415350",
+      "function": "00884770",
+      "contract": "second manager after publication"
+    },
+    {
+      "address": "00884804",
+      "native": "00bd0c30",
+      "function": "00884770",
+      "contract": "register current publication, RET4"
+    },
+    {
+      "address": "00884812",
+      "native": "win32+LeaveCriticalSection",
+      "function": "00884770",
+      "contract": "leave captured section"
+    },
+    {
+      "address": "00b6837d",
+      "native": "0041dd40",
+      "function": "00b68340",
+      "contract": "resize native path length24 preserve1, RET8"
+    },
+    {
+      "address": "00b68398",
+      "native": "00bf7680",
+      "function": "00b68340",
+      "contract": "copy current path length+1, ADD ESP0C"
+    },
+    {
+      "address": "00b683b7",
+      "native": "0109ceec+vtable04",
+      "function": "00b68340",
+      "contract": "ECX current manager, stack path/mode2; actual callable VFS boundary"
+    },
+    {
+      "address": "00b683c2",
+      "native": "stream+vtable18",
+      "function": "00b68340",
+      "contract": "ECX stream, no stack args; low-byte gate"
+    },
+    {
+      "address": "00b683e8",
+      "native": "stream+vtable30",
+      "function": "00b68340",
+      "contract": "ECX stream, EDX:EAX length; retain EAX only"
+    },
+    {
+      "address": "00b683ee",
+      "native": "00bf55be",
+      "function": "00b68340",
+      "contract": "exact lowDWORD source allocation, ADD ESP4"
+    },
+    {
+      "address": "00b6840a",
+      "native": "stream+vtable24",
+      "function": "00b68340",
+      "contract": "ECX stream, stack bytes/current size/count pointer; ignore count/result"
+    },
+    {
+      "address": "00b68410",
+      "native": "win32+InterlockedDecrement",
+      "function": "00b68340",
+      "contract": "stream references04"
+    },
+    {
+      "address": "00b68420",
+      "native": "stream+vtable00",
+      "function": "00b68340",
+      "contract": "current slot atzero refs, ECX stream, no stack args"
+    },
+    {
+      "address": "00b68439",
+      "native": "00419cc0",
+      "function": "00b68340",
+      "contract": "pool getter consumes none of the three already-pushed return arguments"
+    },
+    {
+      "address": "00b68440",
+      "native": "00bd1510",
+      "function": "00b68340",
+      "contract": "return capturedpath pointer/current length+1/unused1; RET0C"
+    },
+    {
+      "address": "00b66b91",
+      "native": "00bf6989",
+      "function": "00b66b80",
+      "contract": "free nonnull source, ADD ESP4 then cleardata04 in stored gap"
+    },
+    {
+      "address": "00b66bb8",
+      "native": "00bf65ac",
+      "function": "00b66b80",
+      "contract": "free owner for flags&1, ADD ESP4 in stored gap"
+    },
+    {
+      "address": "00c970bc",
+      "native": "00bf65ac",
+      "function": "00c970b8",
+      "contract": "getter state1 raw owner free; disk POP ECX/RET missing from storedbody"
+    },
+    {
+      "address": "00884c74",
+      "native": "00884770",
+      "function": "00884be0",
+      "contract": "first of pair captures size08, second captures data04"
+    },
+    {
+      "address": "00884c7c",
+      "native": "00884770",
+      "function": "00884be0",
+      "contract": "first of pair captures size08, second captures data04"
+    },
+    {
+      "address": "00b6a323",
+      "native": "00884770",
+      "function": "00b6a020",
+      "contract": "first of pair captures size08, second captures data04"
+    },
+    {
+      "address": "00b6a32b",
+      "native": "00884770",
+      "function": "00b6a020",
+      "contract": "first of pair captures size08, second captures data04"
+    }
+  ],
+  "annotations": [
+    {
+      "address": "00884770",
+      "was": "BSP_LuaFundamentals_GetSingleton",
+      "evidence": "Captured shared section, double check, exact0Ch raw allocation/constructor, publish then second manager lookup/register, final reload after unlock. State1 constructor failure frees raw owner; state0 unlock only. Original instruction fixture uses real domain.",
+      "applied_to_ghidra": false,
+      "is": "BSP_LuaFundamentals_GetSingleton"
+    },
+    {
+      "address": "00b68340",
+      "was": "BSP_LuaFundamentals_Construct",
+      "evidence": "Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained.",
+      "applied_to_ghidra": false,
+      "is": "BSP_LuaFundamentals_Construct"
+    },
+    {
+      "address": "00b667d0",
+      "was": "FUN_00b667d0",
+      "evidence": "Complete17 bytes. Unconditionally clear0108FF1C and writeCE3818 atowner00, leave data04/size08. Sole native caller constructor state0 unwindCC1530.",
+      "applied_to_ghidra": false,
+      "is": "BSP_LuaFundamentals_DestroySingletonBase"
+    },
+    {
+      "address": "00b66b80",
+      "was": "CG_scalar_deleting_dtor_00b66b80",
+      "evidence": "Complete70 diskbytes including stored gaps B66B96..9F and B66BBD..BF. WriteD62C18, free capturednonnull data then clear04, unconditionally clear publication/writeCE3818, flags&1 free owner, preserve08. No unregister. Original instructions executed with flags0/1.",
+      "applied_to_ghidra": false,
+      "is": "BSP_LuaFundamentals_ScalarDeletingDestructor"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "std::string cache with throwing missing-file/read checks",
+      "evidence": "B68340 producer full assembly, separate from prior src/vfs_lua_scripts.cpp projection",
+      "is": "actual12-byte record and exact raw allocation; failed gate retains payload preimage and stream; short read ignored"
+    },
+    {
+      "was": "B66B80 pseudocode returns after first free",
+      "evidence": "two live-PE matched gaps plus full70-byte original fixture",
+      "is": "free falls through to data04 clear, publication/base cleanup and optional owner free"
+    }
+  ],
+  "unwind": [
+    {
+      "function": "00b68340",
+      "func_info": "00dfa3b4",
+      "states": [
+        {
+          "state": 1,
+          "to_state": 0,
+          "branch_site": "00cc153b",
+          "target": "0041dd20",
+          "behavior": "path cleanup"
+        },
+        {
+          "state": 0,
+          "to_state": -1,
+          "branch_site": "00cc1533",
+          "target": "00b667d0",
+          "behavior": "clear publication/base only"
+        }
+      ]
+    },
+    {
+      "function": "00884770",
+      "func_info": "00dc9440",
+      "states": [
+        {
+          "state": 1,
+          "to_state": 0,
+          "call_site": "00c970bc",
+          "target": "00bf65ac",
+          "behavior": "free raw construction allocation"
+        },
+        {
+          "state": 0,
+          "to_state": -1,
+          "branch_site": "00c970b3",
+          "target": "00411ee0",
+          "behavior": "captured guard cleanup"
+        }
+      ]
+    }
+  ],
+  "stored_body_gaps": [
+    {
+      "function": "00b66b80",
+      "start": "00b66b96",
+      "end_inclusive": "00b66b9f",
+      "end_exclusive": "00b66ba0",
+      "instructions": [
+        "ADD ESP,4",
+        "MOV [ESI+4],0"
+      ]
+    },
+    {
+      "function": "00b66b80",
+      "start": "00b66bbd",
+      "end_inclusive": "00b66bbf",
+      "end_exclusive": "00b66bc0",
+      "instructions": [
+        "ADD ESP,4"
+      ]
+    },
+    {
+      "function": "00c970b8",
+      "start": "00c970c1",
+      "end_inclusive": "00c970c2",
+      "end_exclusive": "00c970c3",
+      "instructions": [
+        "POP ECX",
+        "RET"
+      ]
+    }
+  ],
+  "spans": [
+    {
+      "label": "construct",
+      "address": "00b68340",
+      "end_inclusive": "00b68458",
+      "end_exclusive": "00b68459",
+      "bytes": 281,
+      "sha256": "7a9579485fa41a033d4a6c009b7e7dce11d1df96f36344e1d553fb3abc194180",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "get",
+      "address": "00884770",
+      "end_inclusive": "0088482c",
+      "end_exclusive": "0088482d",
+      "bytes": 189,
+      "sha256": "87c0b25c289f74e8f3b6b4700268b923ea528c9467e9ea468d11e46886ebc913",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "base",
+      "address": "00b667d0",
+      "end_inclusive": "00b667e0",
+      "end_exclusive": "00b667e1",
+      "bytes": 17,
+      "sha256": "3675bae8456a7279e9f6630ea8734129abbb70f6298b350a620fd5e60a9fd17b",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "delete",
+      "address": "00b66b80",
+      "end_inclusive": "00b66bc5",
+      "end_exclusive": "00b66bc6",
+      "bytes": 70,
+      "sha256": "df123e73bf8d2dfc1f61577dc2baefe1237502dc0bbc3039608e7f944d769444",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "path",
+      "address": "00d0e6f8",
+      "end_inclusive": "00d0e710",
+      "end_exclusive": "00d0e711",
+      "bytes": 25,
+      "sha256": "40c8e02427f02faad6f739c2092b98ab9473d2368b50d951fd927021d7c0149b",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "ctor_eh",
+      "address": "00cc1530",
+      "end_inclusive": "00cc1549",
+      "end_exclusive": "00cc154a",
+      "bytes": 26,
+      "sha256": "c81f90b1470a7aa11da9767424582b28e27f7a4e8c810992c605f0dc0929bd71",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "ctor_map",
+      "address": "00dfa3a4",
+      "end_inclusive": "00dfa3d7",
+      "end_exclusive": "00dfa3d8",
+      "bytes": 52,
+      "sha256": "3751adc7f43febe0ab69e7e3529266d9ae099d254f88970a5677bcbeaf4fe169",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "get_eh",
+      "address": "00c970b0",
+      "end_inclusive": "00c970cc",
+      "end_exclusive": "00c970cd",
+      "bytes": 29,
+      "sha256": "21b8fb485eaaf5b5ed67515e473954b75478d93f0304d7fbcc11609ae654d454",
+      "matches_initial_pe_image": true
+    },
+    {
+      "label": "get_map",
+      "address": "00dc9430",
+      "end_inclusive": "00dc9463",
+      "end_exclusive": "00dc9464",
+      "bytes": 52,
+      "sha256": "02cb2346c15d2a7e6e41c523574e6ff6b630b38ff2ded45a50d653dbdd140bd0",
+      "matches_initial_pe_image": true
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed",
+    "existing_ctests": "reconstructed_math and native_math_differential passed 2/2",
+    "seed_verification": "ghidra_export.py verify-seeds passed",
+    "native_fixture": "local/fundamentals-probe.cpp, /W4 /WX /O2 /fp:strict /MANIFEST:EMBED, passed",
+    "fixture_output": "PASS: 10 constructor executions in five paired cases; both native getters/base/scalar flags; three shared domain shutdowns; rebuilt read unwind.",
+    "original_bodies_executed": [
+      "00884770",
+      "00b68340",
+      "00b667d0",
+      "00b66b80"
+    ],
+    "constructor_paired_cases": 5,
+    "shared_domain_shutdowns": 3,
+    "rebuilt_read_exception": true,
+    "original_fh3_throwing_paths_executed": false,
+    "verify_report_calls": "17 direct rows checked, 0 failures; 8 indirect slot/import boundaries",
+    "pool_recreation_failure_during_cleanup_exercised": false,
+    "rebuilt_read_exception_cleanup_getter_returned": true
+  },
+  "external_contracts": [
+    "Actual callable VFS0109CEEC manager and returned stream ownership/slot implementations",
+    "Existing host CRT allocation/new-handler and OS critical-section boundaries",
+    "Original FH3 exception identity and ABI",
+    "NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage covers a returning pool getter during cleanup; C++ failure while lazily recreating the pool terminates and is excluded from native EH equivalence. See include/bsp/native_string_pool_storage.hpp."
+  ],
+  "scope": "Four actual bodies, no consumer/game wiring, no installed fundamentals script fixture or game validation, no permanent tests. Worker Ghidra read-only; names staged for integrator.",
+  "artifact_hashes": {
+    "src/native_lua_fundamentals.cpp": "96e51e8efb3d2686f04551c2c3096038be47ab78a1cb31d83e70118b0e1d201f",
+    "include/bsp/native_lua_fundamentals.hpp": "5332b4330d67a8858c9102462159c099c1b02403083c71dff3aa539e8238d56b",
+    "docs/NATIVE_LUA_FUNDAMENTALS.md": "8936266f141f7e6dae18dc67336217ace7a2d663326f39e9744b7f95b5dbc795",
+    "include/bsp/native_lua_bootstrap.hpp": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "local/fundamentals-probe.cpp": "78b855f0385d7ac1689b028590925ffb9e50e76547005fa8214d50a4b5156cb1",
+    "local/fundamentals-probe.exe": "911a8731f155d30f3ffd69e2917184096768220cce886380708f96b8f02ce009",
+    "local/fundamentals-build.log": "c530e6981d52018b759a8c253111b20ce235a261093ba87d2ae7ffd4a55023c5",
+    "local/fundamentals-probe-result.log": "e0c896d3051c8da3fc9b88fbc2e2958a860321e6d755affb42abebdb4ec96051"
+  }
+}

@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
@@ -26,6 +27,7 @@
 #include "bsp/simulation_gate.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/unit_forces.hpp"
+#include "bsp/world_deferred_destroy.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/scene_entity_factory.hpp"
@@ -59,6 +61,7 @@
 #include "bsp/vehicle_class_fields.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/entity_identity.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include <algorithm>
 #include <cmath>
@@ -1973,6 +1976,104 @@ int main() {
                   && std::fabs(countdown - (3.0f - 0.06f)) < 1e-5f,
             "an armed think fires once when its clamped delay runs out, then waits for the "
             "three-second script countdown instead of firing every step");
+    }
+
+    {
+        // 007D20F3..007D2144. The installed Scripts\datatables\PlaneGlobals.lua sets
+        // Dynamics/AccelCheatMul = 1.5 and AccelCheatMulMul = 1.15, so the plane class
+        // reader takes the scaling branch and 007D213C never runs. Below 1.0f the clamp
+        // runs, writes exactly 1.0f and is idempotent, which is why it is a guard and
+        // not a progressive per-class mutation of shared tuning.
+        bsp::GameTuningBlock block{};
+        block.dynamics_accel_cheat_mul = 1.5F;
+        block.dynamics_accel_cheat_mul_mul = 1.15F;
+        const float scaled = bsp::game_tuning_apply_accel_cheat_007d20f3(block, 2.0F);
+
+        bsp::GameTuningBlock low{};
+        low.dynamics_accel_cheat_mul = 0.8F;
+        low.dynamics_accel_cheat_mul_mul = 1.15F;
+        const float first = bsp::game_tuning_apply_accel_cheat_007d20f3(low, 2.0F);
+        const float clamped_once = low.dynamics_accel_cheat_mul;
+        const float second = bsp::game_tuning_apply_accel_cheat_007d20f3(low, 2.0F);
+
+        check(scaled == 1.5F * 1.15F * 2.0F
+                  && block.dynamics_accel_cheat_mul == 1.5F
+                  && first == 2.0F && clamped_once == 1.0F
+                  && second == 2.0F && low.dynamics_accel_cheat_mul == 1.0F
+                  && offsetof(bsp::GameTuningBlock, dynamics_accel_cheat_mul)
+                         == bsp::kGameTuningAccelCheatMul,
+            "the installed AccelCheatMul 1.5 scales Accel and leaves the tuning block "
+            "untouched, and a value below 1.0f clamps to exactly 1.0f idempotently");
+    }
+
+    {
+        // 00951560 leaves slot 0 out of the free list, so the table's first id
+        // is reserved; 009517C0 pops the free list's tail while 009516D0 pushes
+        // a released id at its head, so a recycled id is only reissued after
+        // every never-used one. Both halves are easy to invert.
+        bsp::EntityIdTable table = bsp::entity_id_table_construct_00951660(0, 4);
+        const char entity_a = 0, entity_b = 0, entity_c = 0, entity_d = 0;
+        const std::uint16_t first = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_a);
+        const std::uint16_t second = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_b);
+        bsp::entity_id_table_release_009516d0(table, first);
+        const std::uint16_t third = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_c);
+        const std::uint16_t recycled = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_d);
+        check(first == 1 && second == 2 && third == 3 && recycled == first
+                  && bsp::entity_id_table_lookup(table, recycled) == &entity_d
+                  && bsp::entity_id_table_lookup(table, 0) == nullptr,
+            "the entity id table reserves its first id, hands out never-used ids in ascending "
+            "order and only then reissues a released one");
+    }
+
+    {
+        // 009041B5..009041C2. The drain's membership test decides whether the
+        // header is rewritten at all: a node with no predecessor and no
+        // successor is still on the chain when the count is 1, and is not on it
+        // when the count is higher. Reading that test as a plain "unlink the
+        // head" loses the second case and corrupts the count.
+        struct DrainHost final : bsp::WorldDeferredDestroyHost {
+            std::uint32_t prev[4]{};
+            std::uint32_t next[4]{};
+            std::vector<std::uint32_t> destroyed;
+            bsp::DeferredDestroyChain* chain{nullptr};
+            std::uint32_t detach_on_destroy{0};
+            std::uint32_t prev_sibling(std::uint32_t n) override { return prev[n]; }
+            std::uint32_t next_sibling(std::uint32_t n) override { return next[n]; }
+            void set_prev_sibling(std::uint32_t n, std::uint32_t v) override { prev[n] = v; }
+            void set_next_sibling(std::uint32_t n, std::uint32_t v) override { next[n] = v; }
+            void destroy_node(std::uint32_t n) override
+            {
+                destroyed.push_back(n);
+                // The native destructor removes the node itself when the loop's
+                // membership test declined to.
+                if (n == detach_on_destroy && chain != nullptr) {
+                    chain->head = next[n] != 0 ? next[n] : 2u;
+                    chain->count -= 1;
+                }
+            }
+        };
+
+        bsp::DeferredDestroyChain linked_chain{1, 2, 2};
+        DrainHost linked_host;
+        linked_host.next[1] = 2;
+        linked_host.prev[2] = 1;
+        const bsp::WorldDeferredDestroyResult linked
+            = bsp::drain_entity_chain_009041a0(linked_host, linked_chain);
+
+        bsp::DeferredDestroyChain detached_chain{1, 2, 2};
+        DrainHost detached_host; // node 1 carries neither link while count is 2
+        detached_host.chain = &detached_chain;
+        detached_host.detach_on_destroy = 1;
+        const bsp::WorldDeferredDestroyResult detached
+            = bsp::drain_entity_chain_009041a0(detached_host, detached_chain);
+
+        check(linked.destroyed == 2 && linked.unlinked == 2 && linked.skipped_unlink == 0
+                  && linked_chain.count == 0 && linked_chain.head == 0 && linked_chain.tail == 0
+                  && !linked.stalled && detached.destroyed == 2 && detached.unlinked == 1
+                  && detached.skipped_unlink == 1 && detached_chain.count == 0
+                  && !detached.stalled,
+            "the deferred-destroy drain unlinks a head that is on the chain and destroys an "
+            "unlinked head without touching the header");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
