@@ -1,0 +1,90 @@
+{
+  "packet": "orch4_panel_publish_e",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra": "http://127.0.0.1:8089"
+  },
+  "functions": [
+    {
+      "address": "00451c90",
+      "name": "BSP_PanelSequence_PublishRows",
+      "source": "src/panel_publication.cpp",
+      "header": "include/bsp/panel_publication.hpp",
+      "document": "docs/PANEL_PUBLICATION.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=panel owner; RET",
+      "last_instruction": "00451e42",
+      "last_instruction_length": 1,
+      "end_inclusive": "00451e42",
+      "evidence": "Complete144-instruction assembly:00451CBD captures current entry through00451920;00451CD0 reloads voice manager each count check; signed00451D07/JGE; unsigned slot checks;00451D7E character lookup even inactive;00451D85 and00451DDE separately reload dispatch manager;00451D98/DF7 call concrete005B6910; empty temporary cleanup follows dispatch.",
+      "uncertainty": "Typed canonical owners/vectors, not native binary layout; retained entry and slot identities must survive callbacks. Corrupt vectors and native SEH not reproduced. Existing palette_0c field spelling actually supplies character-map name here."
+    },
+    {
+      "address": "0044f220",
+      "name": "BSP_PanelCharacterMap_LookupOrInsert",
+      "source": "src/panel_publication.cpp",
+      "header": "include/bsp/panel_publication.hpp",
+      "document": "docs/PANEL_PUBLICATION.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=map at panel+4; NativeString* stack; EAX=mapped int32 pointer; RET4",
+      "last_instruction": "0044f30b",
+      "last_instruction_length": 3,
+      "end_inclusive": "0044f30d",
+      "evidence": "Complete86-instruction assembly;0044A730 lower_bound and00443D00 exact CRT comparator gates;0044F29E..2A0 explicitly clear absent mapped value to zero;0044ED30 hint insert;0044CD80 proves independent node NativeString copy.0044F286 captures temporary data pointer,0044F2CC reloads length for release before return of node+14. Existing values retain identity.",
+      "uncertainty": "Standard-map library projection reuses actual CRT comparator and pooled strings. Native tree/debug-iterator/allocator/size-limit/exception ABI and map-mutating insertion-copy reentry are not reproduced. No new STL or CRT port."
+    },
+    {
+      "address": "005b6910",
+      "name": "BSP_VoicePanel_HidePublishedRow",
+      "retired_incorrect_name": "STL_inst_005b6910",
+      "ledger_replace": true,
+      "retire_tag": "stl_instantiation",
+      "source": "src/panel_publication.cpp",
+      "header": "include/bsp/panel_publication.hpp",
+      "document": "docs/PANEL_PUBLICATION.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=voice manager; row index/enabled word/NativeString*/character int stack; RET10",
+      "last_instruction": "005b695a",
+      "last_instruction_length": 3,
+      "end_inclusive": "005b695c",
+      "evidence": "Complete28-instruction assembly: unsigned row bounds;005B693F returning00BF6713;005B6947 reloads rows then widget;005B694D pushes literal0 to widget vslot34; RET10 consumes all four arguments. Last three arguments are never read. Game-specific34h row and widget operation disprove old STL_inst heuristic; parent independently confirmed.",
+      "uncertainty": "Descriptive game-routine name, not a recovered symbol. Returning validation can repair rows; unrepaired invalid storage and native ABI/SEH are outside typed projection."
+    }
+  ],
+  "new_host_lifecycle": {
+    "clear_panel_character_map": "Unaddressed explicit owning-key cleanup; extract each standard-map node and release its NativeString through existing0041DD20."
+  },
+  "library_dependencies_inspected_not_new_reconstructions": [
+    "0044a730",
+    "0044ed30",
+    "0044dea0",
+    "0044d4b0",
+    "0044cd80"
+  ],
+  "integration": {
+    "types": "panel_publication_types.hpp: PanelCharacterMap",
+    "loader_api": "lookup_panel_character_0044f220(map,name,strings) -> int32_t&",
+    "publication_api": "publish_panel_rows_00451c90(PanelSequenceContext&, PanelPublicationContext&)",
+    "context": "PanelPublicationContext{PanelCharacterMap& characters_04,const SingletonLifetimeCallbacks& validation}",
+    "parent_pending": "Canonical panel+4 embedding and old publication callback replacement with pure context getter/direct call."
+  },
+  "analysis_changes": {
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "owned_function_flow_gaps": [],
+    "missing_function_starts": [],
+    "registry_owner": "parent handles central names/evidence/reconstruction ledger integration"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 MSVC Win32 Release passed; local/panel-publication-build-final.log",
+    "existing_tests": "reconstructed_math 1/1 passed; native differential test not configured in this new worktree",
+    "focused_fixture": "PASS inactive missing-name zero insertion, manager reload after allocation callback, returning invalid-parameter row repair, captured entry across current-name change, missing-slot branch, constant hide, case-insensitive value identity and pooled-key cleanup",
+    "fixture_source": "local/panel-publication-probe.cpp",
+    "fixture_recipe": "./local/run-panel-publication-probe.ps1 -SourceRoot <checkout> [-CoreLibrary <bsp_core.lib>]",
+    "fixture_log": "local/panel-publication-probe.log",
+    "library_sha256": "84362620E21D64E803E7E82A76404310EF00DA03D8A07B8672A89426CCDE8C28",
+    "game_validated": false,
+    "native_abi_tested": false
+  }
+}
