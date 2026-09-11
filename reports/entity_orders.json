@@ -1,0 +1,1090 @@
+{
+ "packet": "cc2_entity_orders",
+ "worktree": "agent/cc2-entity-orders",
+ "ghidra": "read-only",
+ "names_are_hypotheses": true,
+ "docs": [
+  "docs/ENTITY_ORDER_MESSAGE.md",
+  "docs/SCENE_COMMAND_TYPES.md"
+ ],
+ "subject": "What 0077D600 does with a command object and a resolved target, the MT_COMMAND session message 007798D0 builds, where 0077C2A0 sends it, and the 26 command-type objects of the registry at 00E19A6C.",
+ "headline": "0077D600 normalises the target descriptor, notifies the owning AI group and issues the order as one MT_COMMAND session message (type byte 58h) routed by 0077C2A0; the command travels as a single byte, the registration ordinal of one of 26 command-type globals in 00E08EF8..00E08FC7.",
+ "routines": [
+  {
+   "address": "0077d600",
+   "name": "BSP_Entity_IssueCommand",
+   "abi": "__thiscall(entity /*ECX*/, void* command, const SceneCommandTarget* target, int flags), RET 0Ch at 0077d7ea",
+   "coverage": "complete: 0077d600-0077d7ea",
+   "notes": "Ghidra drops ECX at the 00521ea0, 0041e870, 00a2bd90, 007798d0 and 0077c2a0 sites; the listing supplies it. Local descriptor copy at [ESP+18h], temporary pooled string at [ESP+10h], message object at [ESP+30h], all in the post-PUSH-EDI frame."
+  },
+  {
+   "address": "007798d0",
+   "name": "BSP_EntityOrderMessage_Construct",
+   "abi": "__thiscall(message /*ECX*/, void* command, const SceneCommandTarget* target, std::uint8_t flags), RET 0Ch at 00779939, returns this",
+   "coverage": "complete: 007798d0-00779939"
+  },
+  {
+   "address": "00521ea0",
+   "name": "BSP_CommandTarget_ResolveObject",
+   "abi": "__fastcall(SceneCommandTarget* d /*ECX*/), RET 0",
+   "coverage": "complete: 00521ea0-00521eea",
+   "notes": "Not a singleton getter. Same body 0077d600 inlines at 0077d676..0077d6b3."
+  },
+  {
+   "address": "00a2bd90",
+   "name": "BSP_AiGroup_ForwardCommand",
+   "abi": "__thiscall(aiGroup /*ECX*/, void* command, const SceneCommandTarget* target), RET 8 on the null path, tail JMP otherwise",
+   "coverage": "complete: 00a2bd90-00a2bda3"
+  },
+  {
+   "address": "006f9110",
+   "name": "BSP_CommandRegistry_CollectByCategory",
+   "abi": "__fastcall(entity /*ECX*/, int category /*EDX*/, void* outList /*[ESP+4]*/), RET 4",
+   "coverage": "complete: 006f9110-006f9184"
+  },
+  {
+   "address": "00523900",
+   "name": "BSP_CommandMenu_SetCategory",
+   "abi": "__thiscall(menu, int category), RET 4",
+   "coverage": "complete: 00523900-0052393c",
+   "notes": "No direct callers; reached through a vtable."
+  },
+  {
+   "address": "006f7d40",
+   "name": "BSP_CommandList_Append",
+   "abi": "__thiscall(list /*ECX*/, void* object), RET 4",
+   "coverage": "complete: 006f7d40-006f7d94"
+  },
+  {
+   "address": "00cce500",
+   "name": "CG_command_type_ctor_00cce500",
+   "abi": "void(), CRT static initialiser, RET",
+   "coverage": "complete: 00cce500-00cce536; the same template repeats at +40h through 00cceb40",
+   "notes": "Reads and pre-increments 00E19A68, appends through 006f7d40, sets the derived vtable, registers the 00cdc6a0+40h*k destructor with atexit 00bf6ff5."
+  },
+  {
+   "address": "00cdc6a0",
+   "name": "CG_command_type_dtor_00cdc6a0",
+   "abi": "void(), atexit handler, RET",
+   "coverage": "complete: 00cdc6a0-00cdc6d0; the same template repeats at +40h through 00cdcce0",
+   "notes": "Writes the base vtable 00cfb378 over the object and unlinks it through 00522b70. These are the destructors, not the initialisers."
+  },
+  {
+   "address": "0077c2a0",
+   "name": "BSP_Session_RouteMessage",
+   "abi": "__thiscall(entity /*ECX*/, message, routeFlagsOverride, out), RET 0Ch",
+   "coverage": "partial: routing decision only (0077c2a0-0077c310, 0077c3c6-0077c467); 0077c311-0077c3c5 and the peer-walk internals are contract: unread"
+  }
+ ],
+ "host_table": [
+  {
+   "step": "resolve target object",
+   "address": "0077d6bd",
+   "native": "00521ea0",
+   "containing_function": "0077d600",
+   "this": "none (__fastcall, ECX = the local descriptor)",
+   "args": "ECX = [ESP+18h]",
+   "ret": "target object or 0",
+   "gate": "kind != 0 and the inline resolve left a pointer"
+  },
+  {
+   "step": "command name",
+   "address": "0077d6dd",
+   "native": "indirect vtable[4] on the command",
+   "containing_function": "0077d600",
+   "this": "the command object",
+   "args": "none",
+   "ret": "const char*",
+   "gate": "IsKindOf(0Fh) true"
+  },
+  {
+   "step": "string construct",
+   "address": "0077d6e4",
+   "native": "0041e870",
+   "containing_function": "0077d600",
+   "this": "[ESP+10h], a local pooled string",
+   "args": "the command name",
+   "ret": "none",
+   "gate": "IsKindOf(0Fh) true"
+  },
+  {
+   "step": "resolve again",
+   "address": "0077d6ed",
+   "native": "00521ea0",
+   "containing_function": "0077d600",
+   "this": "none (ECX = the local descriptor)",
+   "args": "ECX = [ESP+18h]",
+   "ret": "target object",
+   "gate": "IsKindOf(0Fh) true"
+  },
+  {
+   "step": "string free",
+   "address": "0077d767",
+   "native": "00419cc0",
+   "containing_function": "0077d600",
+   "this": "none",
+   "args": "chars, len+1, 1",
+   "ret": "a pool block",
+   "gate": "the string char pointer is non-null"
+  },
+  {
+   "step": "string free",
+   "address": "0077d76e",
+   "native": "00bd1510",
+   "containing_function": "0077d600",
+   "this": "the 00419cc0 result",
+   "args": "none",
+   "ret": "none",
+   "gate": "same"
+  },
+  {
+   "step": "attackmove re-resolve",
+   "address": "0077d782",
+   "native": "00521ea0",
+   "containing_function": "0077d600",
+   "this": "none (ECX = the local descriptor)",
+   "args": "ECX = [ESP+18h]",
+   "ret": "ignored; the side effect is the cached pointer",
+   "gate": "command+4h == [00e08f7c], the attackmove ordinal"
+  },
+  {
+   "step": "AI group notify",
+   "address": "0077d7a7",
+   "native": "00a2bd90",
+   "containing_function": "0077d600",
+   "this": "entity+16Ch",
+   "args": "command, the caller's descriptor (ESI)",
+   "ret": "none",
+   "gate": "entity+16Ch != 0 and (entity+284h == 0 or [entity+284h+14h] == entity)"
+  },
+  {
+   "step": "build message",
+   "address": "0077d7be",
+   "native": "007798d0",
+   "containing_function": "0077d600",
+   "this": "[ESP+30h], the stack message",
+   "args": "command, the local descriptor, flags",
+   "ret": "the message",
+   "gate": "always"
+  },
+  {
+   "step": "base construct",
+   "address": "007798d5",
+   "native": "0075b430",
+   "containing_function": "007798d0",
+   "this": "the message",
+   "args": "58h",
+   "ret": "none",
+   "gate": "always"
+  },
+  {
+   "step": "route",
+   "address": "0077d7d3",
+   "native": "0077c2a0",
+   "containing_function": "0077d600",
+   "this": "the entity",
+   "args": "the message, 0, 0",
+   "ret": "none",
+   "gate": "always"
+  },
+  {
+   "step": "local delivery",
+   "address": "0077c44d",
+   "native": "0076e520",
+   "containing_function": "0077c2a0",
+   "this": "[00e188a8]+1EF0h, the session",
+   "args": "message, entity",
+   "ret": "none",
+   "gate": "routeFlags & 1"
+  },
+  {
+   "step": "network send",
+   "address": "0077c423",
+   "native": "00770b50",
+   "containing_function": "0077c2a0",
+   "this": "[00e188a8]+1EF0h, the session",
+   "args": "peer+50h, message",
+   "ret": "none",
+   "gate": "routeFlags & 4, once per peer in entity+2A4h"
+  },
+  {
+   "step": "registry clear",
+   "address": "006f911b",
+   "native": "005234f0",
+   "containing_function": "006f9110",
+   "this": "the out list",
+   "args": "none",
+   "ret": "none",
+   "gate": "always"
+  },
+  {
+   "step": "entity class query",
+   "address": "006f9139",
+   "native": "indirect vtable[5Ch] = 006fe530",
+   "containing_function": "006f9110",
+   "this": "the entity",
+   "args": "2",
+   "ret": "bool",
+   "gate": "every node"
+  },
+  {
+   "step": "category id",
+   "address": "006f9147",
+   "native": "indirect vtable[0Ch] on the registry object",
+   "containing_function": "006f9110",
+   "this": "node+8h",
+   "args": "none",
+   "ret": "int",
+   "gate": "IsKindOf(2) true"
+  },
+  {
+   "step": "command name",
+   "address": "006f915d",
+   "native": "indirect vtable[4] on the registry object",
+   "containing_function": "006f9110",
+   "this": "node+8h",
+   "args": "none",
+   "ret": "const char*",
+   "gate": "the category matched"
+  },
+  {
+   "step": "entity accepts name",
+   "address": "006f9164",
+   "native": "indirect vtable[168h] on the entity",
+   "containing_function": "006f9110",
+   "this": "the entity",
+   "args": "the command name",
+   "ret": "bool",
+   "gate": "the category matched"
+  },
+  {
+   "step": "append result",
+   "address": "006f9172",
+   "native": "006f7d40",
+   "containing_function": "006f9110",
+   "this": "the out list",
+   "args": "node+8h",
+   "ret": "none",
+   "gate": "the entity accepted the name"
+  },
+  {
+   "step": "menu list clear",
+   "address": "00523910",
+   "native": "005234f0",
+   "containing_function": "00523900",
+   "this": "menu+3Ch",
+   "args": "none",
+   "ret": "none",
+   "gate": "always"
+  },
+  {
+   "step": "collect by category",
+   "address": "00523923",
+   "native": "006f9110",
+   "containing_function": "00523900",
+   "this": "none (ECX = [00e188d8], the player unit)",
+   "args": "EDX = menu+2Ch, stack = menu+3Ch",
+   "ret": "none",
+   "gate": "[00e188d8] != 0"
+  },
+  {
+   "step": "registry unlink",
+   "address": "00cdc6cb",
+   "native": "00522b70",
+   "containing_function": "00cdc6a0",
+   "this": "00e19a6c, the registry list",
+   "args": "the node whose object is 00e08ef8",
+   "ret": "none",
+   "gate": "the object is still in the list at exit"
+  },
+  {
+   "step": "node allocate",
+   "address": "006f7d46",
+   "native": "00bf681b",
+   "containing_function": "006f7d40",
+   "this": "none",
+   "args": "0Ch",
+   "ret": "the node or 0",
+   "gate": "always"
+  }
+ ],
+ "tail_jumps": [
+  {
+   "address": "00a2bd9f",
+   "native": "indirect vtable[24h] on aiGroup+564Ch",
+   "containing_function": "00a2bd90",
+   "note": "JMP EAX forwarding both stack arguments; Ghidra reports it as an unrecovered jumptable"
+  }
+ ],
+ "raw_listing_call_sites": [
+  {
+   "step": "registry append",
+   "site": "00cce51c",
+   "callee": "006f7d40",
+   "containing_range": "00cce500-00cce536",
+   "this": "00e19a6c, the registry list",
+   "args": "00e08ef8, the command object",
+   "gate": "static initialisation",
+   "note": "the constructor has no Ghidra function; decoded from ghidra bytes, so this row is not a verifiable address/native pair"
+  },
+  {
+   "step": "register destructor",
+   "site": "00cce530",
+   "callee": "00bf6ff5",
+   "containing_range": "00cce500-00cce536",
+   "this": "none",
+   "args": "00cdc6a0",
+   "gate": "static initialisation",
+   "note": "the constructor has no Ghidra function; decoded from ghidra bytes, so this row is not a verifiable address/native pair"
+  }
+ ],
+ "message_wire_layout": {
+  "type": "58h = MT_COMMAND (00e0ab68[0x58] -> 00d0267c)",
+  "vtable": "00d03630",
+  "size_reserved": "0x30 bytes at [ESP+30h] in 0077d600; last field ends at +3Ch",
+  "fields": [
+   {
+    "offset": "+0h",
+    "size": 4,
+    "value": "vptr 00d02c68 then 00d03630",
+    "producer": "0075b44b, 007798e1"
+   },
+   {
+    "offset": "+4h",
+    "size": 4,
+    "value": "3 then 1",
+    "producer": "0075b436, 007798da"
+   },
+   {
+    "offset": "+8h",
+    "size": 4,
+    "value": "0",
+    "producer": "0075b43d"
+   },
+   {
+    "offset": "+0Ch",
+    "size": 4,
+    "value": "0, send tick filled by the session",
+    "producer": "0075b444"
+   },
+   {
+    "offset": "+10h",
+    "size": 1,
+    "value": "58h, the message type",
+    "producer": "0075b451"
+   },
+   {
+    "offset": "+14h",
+    "size": 4,
+    "value": "[[00e188a8]+slot*4+18CCh] for slot = [[00e188a8]+18ECh] in 0..7, else 0",
+    "producer": "0075b454-0075b47d"
+   },
+   {
+    "offset": "+18h",
+    "size": 2,
+    "value": "0; the router writes sender+174h",
+    "producer": "007798e9, 0077c40e"
+   },
+   {
+    "offset": "+1Ah",
+    "size": 1,
+    "value": "0; the router sets 1 on the client relay branch",
+    "producer": "007798ed, 0077c36b"
+   },
+   {
+    "offset": "+1Ch",
+    "size": 1,
+    "value": "0; the router sets 1 when [00e18db7] and message->vtable[0Ch](49h)",
+    "producer": "007798f0, 0077c398"
+   },
+   {
+    "offset": "+20h",
+    "size": 1,
+    "value": "low byte of command+4h, the command registration ordinal",
+    "producer": "0077992f, 00779933"
+   },
+   {
+    "offset": "+21h",
+    "size": 1,
+    "value": "the flags argument",
+    "producer": "007798f3, 007798f7"
+   },
+   {
+    "offset": "+24h",
+    "size": 2,
+    "value": "descriptor +0h/+1h as one word (kind, position_valid)",
+    "producer": "007798fe, 00779901"
+   },
+   {
+    "offset": "+26h",
+    "size": 2,
+    "value": "descriptor +2h, the target entity id",
+    "producer": "00779905, 00779909"
+   },
+   {
+    "offset": "+28h",
+    "size": 4,
+    "value": "descriptor +4h, the resolved target pointer",
+    "producer": "0077990d, 00779914"
+   },
+   {
+    "offset": "+2Ch/+30h/+34h",
+    "size": 4,
+    "value": "descriptor +8h/+0Ch/+10h, the position (x87 FLD/FSTP)",
+    "producer": "00779917-00779926"
+   },
+   {
+    "offset": "+38h",
+    "size": 4,
+    "value": "descriptor +14h",
+    "producer": "00779929, 0077992c"
+   }
+  ],
+  "unwritten": [
+   "+1Dh..+1Fh",
+   "+22h..+23h"
+  ],
+  "serialisation": "contract: unread - which fields the stream routines put on the wire was not established"
+ },
+ "handle_tables": {
+  "rule": "id < [00f89a10] ? [00f89a54] + (id - [00f89a0c])*0x10 + 0Ch : [00f89aa8] + (id - [00f89a60])*0x10 + 0Ch",
+  "entry_stride": 16,
+  "object_offset": "+0Ch",
+  "signed_compare": "JGE at 0077d683"
+ },
+ "command_registry": {
+  "counter": "00e19a68, pre-incremented, ends at 26",
+  "container": "00e19a6c {count +0h, head +4h, tail +8h}",
+  "head": "00e19a70",
+  "node": "{prev +0h, next +4h, object +8h}, 0Ch bytes from 00bf681b",
+  "object": "{vptr +0h, int ordinal +4h}, 8 bytes, 00e08ef8..00e08fc7",
+  "constructors": "00cce500 + 40h*k, k = 0..25, run by the CRT table at 00ce2bec in ascending order",
+  "destructors": "00cdc6a0 + 40h*k",
+  "base_vtable": "00cfb378 {006f7f90 dtor, 006f7f30 name, 006f7f40 predicate, 00bf698e __purecall id, 006f7f50}",
+  "classes": [
+   {
+    "ordinal": 1,
+    "object": "00e08ef8",
+    "vtable": "00cfb3a4",
+    "name_fn": "006f8010",
+    "name": "settarget",
+    "category": 1,
+    "requires_target": true,
+    "dtor": "006f91a0"
+   },
+   {
+    "ordinal": 2,
+    "object": "00e08f00",
+    "vtable": "00cfb3b8",
+    "name_fn": "006f80b0",
+    "name": "cleartarget",
+    "category": 0,
+    "requires_target": false,
+    "dtor": "006f91f0"
+   },
+   {
+    "ordinal": 3,
+    "object": "00e08f08",
+    "vtable": "00cfb3cc",
+    "name_fn": "006f8150",
+    "name": "clearorders",
+    "category": 0,
+    "requires_target": false,
+    "dtor": "006f9240"
+   },
+   {
+    "ordinal": 4,
+    "object": "00e08f10",
+    "vtable": "00cfb3e0",
+    "name_fn": "006f81f0",
+    "name": "artillery",
+    "category": 1,
+    "requires_target": true,
+    "dtor": "006f9290"
+   },
+   {
+    "ordinal": 5,
+    "object": "00e08f18",
+    "vtable": "00cfb400",
+    "name_fn": "006f8290",
+    "name": "torpedo",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f92e0"
+   },
+   {
+    "ordinal": 6,
+    "object": "00e08f20",
+    "vtable": "00cfb41c",
+    "name_fn": "006f8330",
+    "name": "divebomb",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f9330"
+   },
+   {
+    "ordinal": 7,
+    "object": "00e08f28",
+    "vtable": "00cfb43c",
+    "name_fn": "006f83d0",
+    "name": "levelbomb",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f9380"
+   },
+   {
+    "ordinal": 8,
+    "object": "00e08f30",
+    "vtable": "00cfb45c",
+    "name_fn": "006f8470",
+    "name": "dropkamikaze",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f93d0"
+   },
+   {
+    "ordinal": 9,
+    "object": "00e08f38",
+    "vtable": "00cfb480",
+    "name_fn": "006f8510",
+    "name": "depthcharge",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f9420"
+   },
+   {
+    "ordinal": 10,
+    "object": "00e08f40",
+    "vtable": "00cfb4bc",
+    "name_fn": "006f8650",
+    "name": "strafe",
+    "category": 1,
+    "requires_target": true,
+    "dtor": "006f94c0"
+   },
+   {
+    "ordinal": 11,
+    "object": "00e08f48",
+    "vtable": "00cfb4a0",
+    "name_fn": "006f85b0",
+    "name": "rocket",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f9470"
+   },
+   {
+    "ordinal": 12,
+    "object": "00e08f50",
+    "vtable": "00cfb4d8",
+    "name_fn": "006f86f0",
+    "name": "kamikaze",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f9510"
+   },
+   {
+    "ordinal": 13,
+    "object": "00e08f58",
+    "vtable": "00cfb4f8",
+    "name_fn": "006f8790",
+    "name": "dogfight",
+    "category": 1,
+    "requires_target": true,
+    "dtor": "006f9560"
+   },
+   {
+    "ordinal": 14,
+    "object": "00e08f60",
+    "vtable": "00cfb518",
+    "name_fn": "006f8830",
+    "name": "follow",
+    "category": 3,
+    "requires_target": true,
+    "dtor": "006f95b0"
+   },
+   {
+    "ordinal": 15,
+    "object": "00e08f68",
+    "vtable": "00cfb534",
+    "name_fn": "006f8920",
+    "name": "moveto",
+    "category": 3,
+    "requires_target": true,
+    "dtor": "006f9600"
+   },
+   {
+    "ordinal": 16,
+    "object": "00e08f70",
+    "vtable": "00cfb554",
+    "name_fn": "006f8a30",
+    "name": "cruise",
+    "category": 3,
+    "requires_target": false,
+    "dtor": "006f9650"
+   },
+   {
+    "ordinal": 17,
+    "object": "00e08f78",
+    "vtable": "00cfb590",
+    "name_fn": "00521ef0",
+    "name": "attackmove",
+    "category": 2,
+    "requires_target": true,
+    "dtor": "006f96f0"
+   },
+   {
+    "ordinal": 18,
+    "object": "00e08f80",
+    "vtable": "00cfb63c",
+    "name_fn": "006f8ef0",
+    "name": "moveonpath",
+    "category": 3,
+    "requires_target": false,
+    "dtor": "006f98d0"
+   },
+   {
+    "ordinal": 19,
+    "object": "00e08f88",
+    "vtable": "00cfb5a4",
+    "name_fn": "006f8c00",
+    "name": "stop",
+    "category": 3,
+    "requires_target": false,
+    "dtor": "006f9740"
+   },
+   {
+    "ordinal": 20,
+    "object": "00e08f90",
+    "vtable": "00cfb5c0",
+    "name_fn": "006f8c90",
+    "name": "retreat",
+    "category": 3,
+    "requires_target": false,
+    "dtor": "006f9790"
+   },
+   {
+    "ordinal": 21,
+    "object": "00e08f98",
+    "vtable": "00cfb5dc",
+    "name_fn": "006f8d20",
+    "name": "returntobase",
+    "category": 3,
+    "requires_target": false,
+    "dtor": "006f97e0"
+   },
+   {
+    "ordinal": 22,
+    "object": "00e08fa0",
+    "vtable": "00cfb600",
+    "name_fn": "006f8db0",
+    "name": "land",
+    "category": 3,
+    "requires_target": true,
+    "dtor": "006f9830"
+   },
+   {
+    "ordinal": 23,
+    "object": "00e08fa8",
+    "vtable": "00cfb61c",
+    "name_fn": "006f8e50",
+    "name": "closetoship",
+    "category": 3,
+    "requires_target": true,
+    "dtor": "006f9880"
+   },
+   {
+    "ordinal": 24,
+    "object": "00e08fb0",
+    "vtable": "00cfb660",
+    "name_fn": "006f9000",
+    "name": "Leave",
+    "category": 0,
+    "requires_target": false,
+    "dtor": "006f9920"
+   },
+   {
+    "ordinal": 25,
+    "object": "00e08fb8",
+    "vtable": "00cfb67c",
+    "name_fn": "006f90a0",
+    "name": "disband",
+    "category": 0,
+    "requires_target": false,
+    "dtor": "006f9970"
+   },
+   {
+    "ordinal": 26,
+    "object": "00e08fc0",
+    "vtable": "00cfb570",
+    "name_fn": "006f8ad0",
+    "name": "tutorial",
+    "category": 3,
+    "requires_target": false,
+    "dtor": "006f96a0"
+   }
+  ]
+ },
+ "call_sites_0077d600_read": [
+  {
+   "address": "0046ac0b",
+   "native": "0077d600",
+   "containing_function": "0046aab0",
+   "command": "ESI, the matched registry object",
+   "flags": "1"
+  },
+  {
+   "address": "005252ed",
+   "native": "0077d600",
+   "containing_function": "00525250",
+   "command": "EDX from 00523130",
+   "flags": "playerUnit->IsKindOf(18h) at 005252da"
+  },
+  {
+   "address": "008a2d17",
+   "native": "0077d600",
+   "containing_function": "008a2bc0",
+   "command": "00e08f68 moveto",
+   "flags": "1"
+  },
+  {
+   "address": "0077f8d7",
+   "native": "0077d600",
+   "containing_function": "0077f7b0",
+   "command": "00e08f08 clearorders",
+   "flags": "1"
+  },
+  {
+   "address": "0077f92f",
+   "native": "0077d600",
+   "containing_function": "0077f7b0",
+   "command": "00e08f88 stop",
+   "flags": "1"
+  }
+ ],
+ "call_sites_0077d600_shape_only": [
+  {
+   "address": "00465172",
+   "native": "0077d600",
+   "containing_function": "004650f0"
+  },
+  {
+   "address": "00535b7d",
+   "native": "0077d600",
+   "containing_function": "00535b20"
+  },
+  {
+   "address": "005f9afa",
+   "native": "0077d600",
+   "containing_function": "005f9aa0"
+  },
+  {
+   "address": "005f9b96",
+   "native": "0077d600",
+   "containing_function": "005f9b20"
+  },
+  {
+   "address": "005f9c1e",
+   "native": "0077d600",
+   "containing_function": "005f9bb0"
+  },
+  {
+   "address": "005f9cda",
+   "native": "0077d600",
+   "containing_function": "005f9c40"
+  },
+  {
+   "address": "005faba1",
+   "native": "0077d600",
+   "containing_function": "005faae0"
+  },
+  {
+   "address": "0065d14c",
+   "native": "0077d600",
+   "containing_function": "0065d070"
+  },
+  {
+   "address": "0065d1c7",
+   "native": "0077d600",
+   "containing_function": "0065d070"
+  },
+  {
+   "address": "0067a7cd",
+   "native": "0077d600",
+   "containing_function": "00675c40"
+  },
+  {
+   "address": "0067aaa2",
+   "native": "0077d600",
+   "containing_function": "00675c40"
+  },
+  {
+   "address": "006ccf91",
+   "native": "0077d600",
+   "containing_function": "006ccda0"
+  },
+  {
+   "address": "006cd014",
+   "native": "0077d600",
+   "containing_function": "006ccda0"
+  },
+  {
+   "address": "006cd04a",
+   "native": "0077d600",
+   "containing_function": "006ccda0"
+  },
+  {
+   "address": "006cd0cd",
+   "native": "0077d600",
+   "containing_function": "006ccda0"
+  },
+  {
+   "address": "006cd49d",
+   "native": "0077d600",
+   "containing_function": "006cd350"
+  },
+  {
+   "address": "007f340f",
+   "native": "0077d600",
+   "containing_function": "007f31a0"
+  },
+  {
+   "address": "007c3ef8",
+   "native": "0077d600",
+   "containing_function": "007c3ea0"
+  },
+  {
+   "address": "008454c9",
+   "native": "0077d600",
+   "containing_function": "00844fc0"
+  },
+  {
+   "address": "008465f2",
+   "native": "0077d600",
+   "containing_function": "00846320"
+  },
+  {
+   "address": "00894597",
+   "native": "0077d600",
+   "containing_function": "00894440"
+  },
+  {
+   "address": "0089a850",
+   "native": "0077d600",
+   "containing_function": "0089a660"
+  },
+  {
+   "address": "008a2ec7",
+   "native": "0077d600",
+   "containing_function": "008a2d70"
+  },
+  {
+   "address": "008a3077",
+   "native": "0077d600",
+   "containing_function": "008a2f20"
+  },
+  {
+   "address": "008a3273",
+   "native": "0077d600",
+   "containing_function": "008a30d0"
+  },
+  {
+   "address": "008a42a7",
+   "native": "0077d600",
+   "containing_function": "008a4150"
+  },
+  {
+   "address": "008a4532",
+   "native": "0077d600",
+   "containing_function": "008a4300"
+  },
+  {
+   "address": "008a472a",
+   "native": "0077d600",
+   "containing_function": "008a4590"
+  },
+  {
+   "address": "008a4907",
+   "native": "0077d600",
+   "containing_function": "008a47b0"
+  },
+  {
+   "address": "008a4ab7",
+   "native": "0077d600",
+   "containing_function": "008a4960"
+  },
+  {
+   "address": "008a4eac",
+   "native": "0077d600",
+   "containing_function": "008a4c90"
+  },
+  {
+   "address": "008a507f",
+   "native": "0077d600",
+   "containing_function": "008a4f00"
+  },
+  {
+   "address": "008a52b6",
+   "native": "0077d600",
+   "containing_function": "008a50d0"
+  },
+  {
+   "address": "008a5467",
+   "native": "0077d600",
+   "containing_function": "008a5310"
+  },
+  {
+   "address": "008a7569",
+   "native": "0077d600",
+   "containing_function": "008a7400"
+  },
+  {
+   "address": "008a7729",
+   "native": "0077d600",
+   "containing_function": "008a75c0"
+  },
+  {
+   "address": "008a78e9",
+   "native": "0077d600",
+   "containing_function": "008a7780"
+  },
+  {
+   "address": "008a7aa9",
+   "native": "0077d600",
+   "containing_function": "008a7940"
+  },
+  {
+   "address": "009fff09",
+   "native": "0077d600",
+   "containing_function": "009ffeb0"
+  },
+  {
+   "address": "00a0216a",
+   "native": "0077d600",
+   "containing_function": "00a02020"
+  },
+  {
+   "address": "00a120eb",
+   "native": "0077d600",
+   "containing_function": "00a11ff0"
+  },
+  {
+   "address": "00a14a6e",
+   "native": "0077d600",
+   "containing_function": "00a13b60"
+  },
+  {
+   "address": "00a14ea7",
+   "native": "0077d600",
+   "containing_function": "00a14dd0"
+  }
+ ],
+ "call_sites_0077d600_unresolved": [
+  {
+   "function": "00a2f6f0",
+   "note": "listed as a caller by the index; no CALL 0x0077d600 appears in its listing. contract: unread"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "range": "00cce500-00cce536",
+   "inclusive_end": "00cce536",
+   "what": "the first command-type constructor; read with ghidra bytes and decoded by hand"
+  },
+  {
+   "range": "00cce4f0-00cce4fb",
+   "inclusive_end": "00cce4fb",
+   "what": "the CRT entry before it, an atexit registration for 00cdcd20, which does not touch the counter"
+  },
+  {
+   "range": "00cce540-00cceb76",
+   "inclusive_end": "00cceb76",
+   "what": "constructors 2..26, the same 0x37-byte template at stride 0x40"
+  },
+  {
+   "range": "00ce2be8-00ce2c53",
+   "inclusive_end": "00ce2c53",
+   "what": "the CRT initialiser pointer table, 27 entries in ascending address order"
+  },
+  {
+   "range": "00e0ab68-00e0accb",
+   "inclusive_end": "00e0accb",
+   "what": "the message-type name pointer table; index 58h is 00d0267c"
+  },
+  {
+   "range": "00d0267c-00d02685",
+   "inclusive_end": "00d02685",
+   "what": "the literal MT_COMMAND"
+  },
+  {
+   "range": "00cfb378-00cfb68f",
+   "inclusive_end": "00cfb68f",
+   "what": "the base command vtable and the 26 derived vtables"
+  },
+  {
+   "range": "00d03630-00d0366f",
+   "inclusive_end": "00d0366f",
+   "what": "the MT_COMMAND message vtable"
+  },
+  {
+   "range": "006f8010-006f90af",
+   "inclusive_end": "006f90af",
+   "what": "the per-class name, predicate and category bodies, each MOV imm / RET"
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/SCENE_DEFERRED_REFS.md",
+   "was": "the 00521EA0 singleton vtable[5Ch](0Fh)",
+   "is": "00521EA0 is __fastcall(SceneCommandTarget*), the descriptor's id-to-pointer resolver; vtable[5Ch] is IsKindOf on the object it returns",
+   "evidence": "0077d6b9 LEA ECX,[ESP+0x18] before the call; the body reads +0h/+2h/+4h and caches into +4h; the same code is inlined at 0077d676"
+  },
+  {
+   "doc": "docs/SCENE_DEFERRED_REFS.md",
+   "was": "replaces the target with singleton+9D4h",
+   "is": "with target+9D4h",
+   "evidence": "0077d6ed LEA ECX,[ESP+0x18]; CALL 00521ea0; MOV EAX,[EAX+0x9d4]"
+  },
+  {
+   "doc": "docs/SCENE_DEFERRED_REFS.md",
+   "was": "a session message with the tag \" Mv\"",
+   "is": "no tag; the message type byte is 58h = MT_COMMAND and 00d03630 is the vtable whose slot 0 is 00764d20, the pointer whose bytes print as \" Mv\"",
+   "evidence": "007798d1 PUSH 0x58 into 0075b451 [EAX+0x10]; 00e0ab68[0x58] -> 00d0267c"
+  },
+  {
+   "doc": "docs/SCENE_DEFERRED_REFS.md",
+   "was": "the static initialisers at 00CDC6A0..00CDC7E0 populate the registry",
+   "is": "00cdc6a0+40h*k are the atexit destructors; the constructors are 00cce500+40h*k",
+   "evidence": "00cdc6a7 writes the base vtable 00cfb378 and 00cdc6cb calls the unlink 00522b70; 00cce51c calls the append 006f7d40 and 00cce526 writes the derived vtable 00cfb3a4"
+  },
+  {
+   "doc": "docs/SCENE_DEFERRED_REFS.md",
+   "was": "00E19A70 is the head of a list {?, next@+4h, object@+8h}",
+   "is": "the container is 00e19a6c {count, head, tail}; 00e19a70 is the head; nodes are {prev, next, object}",
+   "evidence": "006f7d40 with ECX = 00e19a6c from 00cce50d: MOV [ECX],[ESI+8] (prev), MOV [ESI+8],ECX (tail), ADD [ESI],1 (count)"
+  },
+  {
+   "doc": "docs/SCENE_DEFERRED_REFS.md",
+   "was": "thirteen authored spellings collapse to eleven command types",
+   "is": "the same table's thirteen spellings collapse to ten; flagged, not re-scanned",
+   "evidence": "Cruise/cruise, Follow/follow and Moveto/MoveTo are the three case pairs in the table at lines 185-192"
+  }
+ ],
+ "uncertainties": [
+  "The pooled string built from the command name at 0077d6e4 is freed at 0077d767 without being read.",
+  "vtable[8] as \"requires a named target\" is provisional; moveto answers true while most Moveto scene records name no target. What is proven is the 0046aba6 drop rule.",
+  "The category labels for vtable[0Ch] values 0/1/2/3 are a reading; only the split is proven.",
+  "[00e0af1c], the default routing flags, was not read at run time, so no claim is made about whether a local session applies the order in the same frame.",
+  "entity+284h is a back-pointer whose +14h is the owning entity; its class was not established.",
+  "Which MT_COMMAND fields the stream routines serialise was not read."
+ ],
+ "tooling_problems": [
+  "python tools/bsp.py ghidra xrefs caps its output and has no --start; tools/bsp.py callers was used for the full caller list.",
+  "00cce500 and the CRT table have no Ghidra function or data type, so they were read with ghidra bytes and decoded by hand."
+ ],
+ "build": "./scripts/build.ps1, Win32 MSVC, warnings as errors",
+ "reconstruction": [
+  "include/bsp/entity_orders.hpp",
+  "src/entity_orders.cpp"
+ ],
+ "tests": "no new test case; the existing suite was run"
+}
