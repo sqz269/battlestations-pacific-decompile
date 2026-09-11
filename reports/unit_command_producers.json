@@ -1,0 +1,310 @@
+{
+  "packet": "unit_command_producers",
+  "owner": "agent/cc-unit-orders",
+  "date": "2026-09-10",
+  "doc": "docs/UNIT_COMMAND_PRODUCERS.md",
+  "program": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutations": "none; this worker was read-only"
+  },
+  "summary": "The writers of unit+102Ch and +1034h were found (they are the three routines the previous packet listed as readers), the +9A0h/+9A4h pair has four Lua writers, and the player order path from the HUD to unit+994h/+998h/+99Ch was recovered. Nothing in the image writes unit+980h or +984h in any encoding, which is a negative result proved by an exhaustive scan rather than an unfound producer.",
+  "negative_result": {
+    "fields": ["unit+980h", "unit+984h"],
+    "claim": "no instruction in battlestationspacific.exe stores to [reg+980h] or [reg+984h]",
+    "store_encodings_scanned": [
+      "F3 0F 11 (movss)", "F2 0F 11 (movsd)", "0F 11 (movups)", "0F 13 (movlps)",
+      "66 0F D6 (movq)", "0F 17 (movhps)", "66 0F 13 (movlpd)",
+      "D9 /2 and D9 /3 (fst/fstp dword)", "DD /2 and DD /3 (fst/fstp qword)",
+      "89 /r (mov r32)", "C7 /0 (mov imm32)",
+      "the same set again with a SIB byte"
+    ],
+    "shifted_bases_scanned": {
+      "unit+010h": "970h/974h", "unit+024h": "95Ch/960h", "unit+170h": "810h/814h",
+      "unit+1E4h": "79Ch/7A0h", "unit+310h": "670h/674h", "unit+38Ch": "5F4h/5F8h",
+      "unit+72Ch": "254h/258h", "unit+1018h": "FFFFF968h"
+    },
+    "computed_address_forms_scanned": [
+      "lea reg,[reg+980h]", "add eax,980h (05)", "add reg,980h (81 /0)",
+      "push 980h (68)", "mov reg,980h (B8..BF)",
+      "SIB store with any 09xx displacement"
+    ],
+    "only_hits": [
+      {"address": "004DA32B", "instruction": "mov [esi+980h], ebx", "function": "004DA2A0", "verdict": "unrelated scene loader"},
+      {"address": "004DA331", "instruction": "mov [esi+984h], ebx", "function": "004DA2A0", "verdict": "unrelated scene loader"},
+      {"address": "00854230", "instruction": "fstp [esi+810h]/[esi+814h]", "verdict": "Lua ship-class descriptor reader, not a unit"},
+      {"address": "00857F40", "instruction": "fstp [esi+810h]", "verdict": "Lua ship-class descriptor reader, not a unit"}
+    ],
+    "readers_found": [
+      "00826C61 in 00825F20", "00825331 in 008252C0", "008350CE in 00834E90",
+      "00834A78 in 00834A70", "00823AD1 in 00822C20", "0081857C in 00818340",
+      "00813D4B and 00813D54 in 00813CA0", "0064A9F9", "0064AF0D", "0064B9B7",
+      "0064DCEB", "0065024C", "009025CE in 00902290", "009EC93C in 009EC7C0"
+    ],
+    "remaining_explanations": [
+      "a block copy over a region containing +980h..+984h",
+      "a member function of an object embedded in the unit below +980h writing at a small displacement"
+    ],
+    "constructor_note": "0081ED40 zeroes +9A0h, +9A4h, +9E8h, +9ECh, +9F0h, +9F4h, +102Ch, +1030h, +1034h and +1038h but not +980h or +984h, so their initial value comes from a bulk clear."
+  },
+  "functions": [
+    {
+      "address": "0080DAD0",
+      "name": "BSP_UnitInstance_PublishOrderRecord",
+      "signature": "void __thiscall(unit, const record*)",
+      "ret": 4,
+      "body": ["0080DAD0", "0080DB4D"],
+      "state": "reconstructed_build_tested",
+      "callers": ["00816A40"],
+      "callees": [],
+      "writes": [
+        {"field": "slot+00h", "address": "0080DAE6", "value": "record[0]"},
+        {"field": "slot+04h", "address": "0080DAF3", "value": "record[1]"},
+        {"field": "slot+1Ch", "address": "0080DB0A", "value": "record byte at +1Ch"},
+        {"field": "slot+08h", "address": "0080DB1B", "value": "0"},
+        {"field": "unit+998h", "address": "0080DB34", "value": "slot+04h"},
+        {"field": "unit+994h", "address": "0080DB43", "value": "slot+00h"},
+        {"field": "unit+99Ch", "address": "0080DB4A", "value": "slot byte at +1Ch"}
+      ],
+      "notes": "slot = unit + 838h + [unit+97Ch]*20h (imul at 0080DADD); the index is reloaded before every write and is not advanced; no bound check"
+    },
+    {
+      "address": "00816A40",
+      "name": "BSP_UnitInstance_IssueOrder",
+      "signature": "void __cdecl(a, b, c)",
+      "ret": 0,
+      "body": ["00816A40", "00816AF1"],
+      "state": "reconstructed_build_tested",
+      "callers": ["0064B870", "00651760", "0067C4F0"],
+      "callees": ["00815440", "0080DAD0", "0075B430", "0077C2A0"],
+      "notes": "builds a 20h-byte order record through 00815440, publishes it, and when game+1FE4h == 2 (00816A69, DAT_00E188A8) copies the same eight dwords into session message 8Eh (00816A76) and sends it through 0077C2A0"
+    },
+    {
+      "address": "009D4FB0",
+      "name": "BSP_UnitInstance_RaiseTurnAssistLoad",
+      "signature": "void __thiscall(unit, float request)",
+      "ret": 4,
+      "body": ["009D4FB0", "009D4FD0"],
+      "state": "reconstructed_build_tested",
+      "ghidra_function": false,
+      "listing": "fld [ecx+102Ch]; fld [esp+4]; fcomip st,st(1); fstp st(0); jbe 009D4FCE; movss xmm0,[esp+4]; movss [ecx+102Ch],xmm0; ret 4",
+      "rule": "the field is raised only when the request is strictly greater; an unordered compare takes the jbe",
+      "xrefs": "none; a dead out-of-line copy of an inline function"
+    },
+    {
+      "address": "009D4FE0",
+      "name": "BSP_UnitInstance_RaiseSecondaryLoad",
+      "signature": "void __thiscall(unit, float request)",
+      "ret": 4,
+      "body": ["009D4FE0", "009D5000"],
+      "state": "reconstructed_build_tested",
+      "ghidra_function": false,
+      "listing": "same sequence as 009D4FB0 with +1034h",
+      "xrefs": "none"
+    },
+    {
+      "address": "009F3F80",
+      "name": "BSP_ShipBot_RequestLoadLevels",
+      "signature": "void __thiscall(this, float dt)",
+      "ret": 4,
+      "body": ["009F3F80", "009F4D06"],
+      "state": "analysed",
+      "callers": ["009F4DA0"],
+      "unit_pointer": "this+3FCh",
+      "latch_sites": [
+        {"address": "009F438C", "field": "+102Ch", "level": "computed"},
+        {"address": "009F4606", "field": "+1034h", "level": "1.5f (00CE380C)", "listing_confirmed": true},
+        {"address": "009F462A", "field": "+102Ch", "level": "1.5f (00CE380C)"},
+        {"address": "009F4912", "field": "+1034h", "gate": "1.5 (00CE3D78, double)", "level": "1.5f"},
+        {"address": "009F4A51", "field": "+102Ch", "gate": "0.5 (00D7A280, double)", "level": "0.5f (00CE3800)"},
+        {"address": "009F4AB4", "field": "+1034h", "level": "computed"}
+      ]
+    },
+    {
+      "address": "009DE5B0",
+      "name": "BSP_ShipBot_RaiseTurnAssistInline",
+      "signature": "void __thiscall(this, float)",
+      "ret": 4,
+      "body": ["009DE5B0", "009DF117"],
+      "state": "analysed",
+      "callers": ["009ED6B0"],
+      "latch_sites": [{"address": "009DE853", "field": "+102Ch"}]
+    },
+    {
+      "address": "0089D9D0",
+      "name": "BSP_LuaBinding_PlaneSetYawControl",
+      "signature": "int __fastcall(lua_State*)",
+      "ret": 0,
+      "body": ["0089D9D0", "0089DB61"],
+      "state": "analysed",
+      "writes": [{"field": "unit+998h", "address": "0089DB05", "instruction": "fstp [esi+998h]"}],
+      "strings": ["luaMW_PlaneSetYawCtrl failed:", "luakod"],
+      "clamp": "none"
+    },
+    {
+      "address": "0089DB70",
+      "name": "BSP_LuaBinding_PlaneSetPitchControl",
+      "signature": "int __fastcall(lua_State*)",
+      "ret": 0,
+      "body": ["0089DB70", "0089DD01"],
+      "state": "analysed",
+      "writes": [{"field": "unit+99Ch", "address": "0089DCA5", "instruction": "fstp [esi+99Ch]"}],
+      "clamp": "none",
+      "uncertainty": "the pitch reading follows the position in the block, not a recovered string"
+    },
+    {
+      "address": "0089DD10",
+      "name": "BSP_LuaBinding_PlaneSetRollControl",
+      "signature": "int __fastcall(lua_State*)",
+      "ret": 0,
+      "body": ["0089DD10", "0089DEA1"],
+      "state": "analysed",
+      "writes": [{"field": "unit+9A0h", "address": "0089DE45", "instruction": "fstp [esi+9A0h]"}],
+      "strings": ["luaMW_PlaneSetRollCtrl"],
+      "clamp": "none"
+    },
+    {
+      "address": "0089DEB0",
+      "name": "BSP_LuaBinding_PlaneSetPowerControl",
+      "signature": "int __fastcall(lua_State*)",
+      "ret": 0,
+      "body": ["0089DEB0", "0089E041"],
+      "state": "analysed",
+      "writes": [{"field": "unit+9A4h", "address": "0089DFE5", "instruction": "fstp [esi+9A4h]"}],
+      "strings": ["luaMW_PlaneSetPowerCtrl"],
+      "clamp": "none"
+    },
+    {
+      "address": "0099B450",
+      "name": "BSP_PilotBot_SeedPlanSlots",
+      "signature": "void __fastcall(bot)",
+      "ret": 0,
+      "body": ["0099B450", "0099B588"],
+      "state": "reconstructed_build_tested",
+      "unit_pointer": "bot+2F0h",
+      "slots": [
+        {"unit_field": "+9F0h", "committed": "+274h", "pending": "+278h", "flag": "+27Ch", "timer": "+2D8h"},
+        {"unit_field": "+9E4h", "committed": "+280h", "pending": "+284h", "flag": "+288h", "timer": "+2D4h"},
+        {"unit_field": "+9ECh", "committed": "+28Ch", "pending": "+290h", "flag": "+294h", "timer": "+2CCh"},
+        {"unit_field": "+9E8h", "committed": "+298h", "pending": "+29Ch", "flag": "+2A0h", "timer": "+2D0h"},
+        {"unit_field": "+9F4h", "committed": "+2A4h", "pending": "+2A8h", "flag": "+2ACh", "timer": "+2D8h"}
+      ],
+      "listing": "0099B450 mov eax,[ecx+2F0h]; 0099B456 movss xmm0,[eax+9F0h]; 0099B45E movss [ecx+278h],xmm0; 0099B466 movss [ecx+274h],xmm0"
+    },
+    {
+      "address": "0099D300",
+      "name": "BSP_PilotBot_PlanControls",
+      "signature": "void __thiscall(bot, float dt)",
+      "ret": 4,
+      "body": ["0099D300", "0099EBAB"],
+      "state": "analysed",
+      "callers": ["009998A0"],
+      "unit_pointer": "bot+2F0h",
+      "override_intake": [
+        {"unit_field": "+998h", "slot_pending": "+284h", "commit": "0099D5D8"},
+        {"unit_field": "+99Ch", "slot_pending": "+29Ch", "commit": "0099D63A"},
+        {"unit_field": "+9A0h", "slot_pending": "+290h", "commit": "0099D69C"},
+        {"unit_field": "+9A4h", "slot_pending": "none; feeds a heading after 007B4ED0"}
+      ],
+      "clamp": "if (-1.0f <= v) { if (1.0f < v) v = 1.0f; } else v = -1.0f;  (00D7A260, 00D7A24C)",
+      "slot_read": "pending flag ? pending : committed (0099E996, 0099EABF)"
+    },
+    {
+      "address": "009998A0",
+      "name": "BSP_PilotBot_Update",
+      "signature": "void __thiscall(bot, float dt)",
+      "ret": 4,
+      "state": "analysed",
+      "callers": [],
+      "order": ["0099B450", "0099C270", "state vtable +64h", "0099B740", "009FC7C0", "009FD0E0", "009A17D0", "0099D300"],
+      "note": "Ghidra gives this function and 009A17D0 a this four bytes below the one it gives 0099B450 and 0099D300"
+    },
+    {
+      "address": "009EC7C0",
+      "name": "BSP_ShipBot_ComputeThrottleCeiling",
+      "signature": "float10 __thiscall(this, float, float, float)",
+      "state": "analysed",
+      "callers": ["009F3F80"],
+      "reads": ["unit+980h", "[unit+73Ch]+24h", "[unit+73Ch]+28h", "this+3C4h", "this+364h"],
+      "tuning_fields": ["+6CCh", "+6D0h", "+6D4h", "+6E0h", "+6E4h", "+6E8h", "+6ECh"],
+      "floor": "-0.625f (00D21A78) below -0.625 (00D21A80)"
+    },
+    {
+      "address": "00813CA0",
+      "name": "BSP_UnitStateMessage_Build",
+      "signature": "msg* __thiscall(msg, unit*)",
+      "state": "analysed",
+      "callers": ["00816B00"],
+      "message_id": "8Ch",
+      "carries": [
+        {"msg": "+40h", "unit": "+980h", "address": "00813D4B"},
+        {"msg": "+44h", "unit": "+984h", "address": "00813D54"},
+        {"msg": "+28h..+30h", "unit": "+6A4h..+6ACh"},
+        {"msg": "+20h", "source": "unit vtable +50h"},
+        {"msg": "+24h", "source": "0092D700 result +4h"},
+        {"msg": "+34h..+3Ch", "source": "0092D6A0 result"}
+      ],
+      "note": "the apply side of message 8Ch was not found and is the most likely home of the missing +980h/+984h write"
+    }
+  ],
+  "no_ghidra_function": [
+    {"address": "009D4FB0", "end": "009D4FCE", "role": "max latch setter for unit+102Ch, void __thiscall(unit, float), RET 4"},
+    {"address": "009D4FE0", "end": "009D4FFE", "role": "max latch setter for unit+1034h, void __thiscall(unit, float), RET 4"},
+    {"address": "009D4EA0", "end": "009D4EA9", "role": "float setter, movss [ecx+40h] then byte [ecx+4Ch]=1, RET 4; read but not named"},
+    {"address": "009D4EC0", "end": "009D4EC9", "role": "float setter, movss [ecx+48h] then byte [ecx+4Ch]=1, RET 4; read but not named"},
+    {"address": "009D4EE0", "end": "009D4EE3", "role": "float getter, fld [ecx+44h], RET 0; read but not named"},
+    {"address": "009D4EF0", "end": "009D4EF3", "role": "float getter, fld [ecx+40h], RET 0; read but not named"},
+    {"address": "009D4F00", "end": "009D4F03", "role": "float getter, fld [ecx+48h], RET 0; read but not named"}
+  ],
+  "constants": {
+    "00D7A260": "-1.0f, the control clamp low bound",
+    "00D7A24C": "1.0f, the control clamp high bound",
+    "00D7A208": "-0.0f, the negation idiom the decompiler renders as a subtraction",
+    "00CE380C": "1.5f, the high latch level",
+    "00CE3800": "0.5f, the low latch level",
+    "00CE3D78": "1.5 (double), the high latch gate",
+    "00D7A280": "0.5 (double), the low latch gate",
+    "00D21A80": "-0.625 (double), the throttle ceiling floor gate",
+    "00D21A78": "-0.625f, the throttle ceiling floor"
+  },
+  "offsets": [
+    {"offset": "0x838", "name": "kUnitOffOrderSlots", "evidence": "0080DAE6"},
+    {"offset": "0x20", "name": "kUnitOrderSlotStride", "evidence": "0080DADD"},
+    {"offset": "0x97C", "name": "kUnitOffOrderSlotIndex", "evidence": "0080DAD6"},
+    {"offset": "0x994", "name": "kUnitOffCurrentOrderParamA", "evidence": "0080DB43"},
+    {"offset": "0x998", "name": "kUnitOffCurrentOrderParamB / kUnitOffScriptYawControl", "evidence": "0080DB34, 0089DB05"},
+    {"offset": "0x99C", "name": "kUnitOffCurrentOrderKind / kUnitOffScriptPitchControl", "evidence": "0080DB4A, 0089DCA5"},
+    {"offset": "0x9A0", "name": "kUnitOffHelmsmanThrust (existing)", "evidence": "0089DE45"},
+    {"offset": "0x9A4", "name": "kUnitOffHelmsmanToTurn (existing)", "evidence": "0089DFE5"},
+    {"offset": "0x102C", "name": "kUnitOffTurnAssistLoad (existing)", "evidence": "009D4FC6"},
+    {"offset": "0x1034", "name": "kUnitOffTurnAssistLoad2 (existing)", "evidence": "009D4FF6"}
+  ],
+  "uncertainties": [
+    "The order record's two leading words move through x87 and their type is not settled; the slot array's length at +838h was not recovered.",
+    "00815440, which fills the order record from 00816A40's three arguments, was not read.",
+    "The bot class at 0099B450/0099D300 is taken to be the aircraft pilot bot from its segment keywords and from the luaMW_Plane* writers of the block it reads; on the ship layout the five floats it seeds from are kUnitOffSteeringJam, kUnitOffBowAnchorSink and kUnitOffSternAnchorSink.",
+    "Ghidra gives 009998A0 and 009A17D0 a this four bytes below the one it gives 0099B450 and 0099D300; only 0099B450 was settled from the listing.",
+    "Four of the six inlined latch sites in 009F3F80 come from the decompilation alone.",
+    "00914EF0 BSP_BotScheduler_Update was read only through its ledger record and callee list; the ship AI's order output stage was not located.",
+    "Whether the ship AI writes any command field at all is open."
+  ],
+  "remaining": [
+    "the writer of unit+980h/+984h: the apply side of session message 8Ch, or a block copy over +978h..+998h",
+    "00815440 and the HUD callers 0064B870, 00651760, 0067C4F0",
+    "the writer of unit+1030h and +1038h",
+    "the ship AI order output stage from 00914EF0's callees 00911E80, 00912A60, 00914390"
+  ],
+  "follow_up_packets": [
+    {"id": "unit_state_message_apply", "addresses": ["00813CA0", "00816B00", "0077C2A0"], "files": ["docs/UNIT_STATE_MESSAGE.md"], "contract": "Find the receive side of unit state message 8Ch and settle whether it writes unit+980h/+984h."},
+    {"id": "unit_order_record", "addresses": ["00815440", "00816A40", "0064B870", "00651760", "0067C4F0"], "files": ["docs/UNIT_ORDER_RECORD.md"], "contract": "Recover the 20h-byte order record's fields and the HUD commands that build it."},
+    {"id": "bot_scheduler_output", "addresses": ["00914EF0", "00911E80", "00912A60", "00914390"], "files": ["docs/BOT_SCHEDULER_OUTPUT.md"], "contract": "Follow the bot scheduler to the per-unit AI that issues ship orders and find where its plan leaves the AI object."},
+    {"id": "ai_load_requesters", "addresses": ["009F3F80", "009F4DA0", "009DE5B0", "009ED6B0", "009EC7C0"], "files": ["docs/AI_LOAD_REQUESTS.md"], "contract": "Trace the six latch levels inside 009F3F80 back to their sources and settle what +102Ch and +1034h mean to the motion side."}
+  ],
+  "reconstruction": {
+    "header": "include/bsp/unit_orders.hpp",
+    "source": "src/unit_orders.cpp",
+    "build": "MSVC Win32 Release, warnings as errors, passed; ctest reconstructed_math passed",
+    "new_tests": 0,
+    "notes": "The bound check in publish_unit_order_0080dad0 has no native counterpart and is marked as such. Offsets already in include/bsp/unit_forces.hpp and include/bsp/unit_motion.hpp are reused, not redefined."
+  }
+}
