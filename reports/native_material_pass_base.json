@@ -1,0 +1,1115 @@
+{
+  "packet": "orch2_native_material_pass_base_aa",
+  "utc": "2026-09-11T18:14:55.212368+00:00",
+  "tested_source_commit": "af7543498d7e36f8f7ab23edc084ee08f4a214e9",
+  "source_sha256": {
+    "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+    "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+    "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+    "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "cmake/startup.cmake": "1da7a030419d49c433a23bc85ff21f4b281d81f1162b2b282492c700659d1d8a",
+    "CMakeLists.txt": "96c96c79537b94551e1e7bba9a9c0d6783329ded9d7c5489b70c5c347403dd86"
+  },
+  "artifacts_sha256": {
+    "local/native-material-pass-base-annotation-addresses.json": "22df7c11f36b583cc36db9319e66f74435eed996bc28e5deb2de813cb48059ae",
+    "local/native-material-pass-base-annotation-verification.json": "77e4bb89d0033c060876a0a8eccadbac1d261ba94076eba886e83817622f9baa",
+    "local/native-material-pass-base-annotations.log": "ba6c6dbb2f1301163b173bb3aa3545f8dd4c823d7977a5a450a9264b83ed2ce0",
+    "local/native-material-pass-base-base_ctor-assembly.txt": "ff9d29cc6079de8fd0be2a3380f0461e5d4e3a3d9085654de277138d0b714fcf",
+    "local/native-material-pass-base-base_ctor-bytes.txt": "edea69cad11aca805b03e4fc89c4bfba98eb6fd85a215df50e242344e2f442f2",
+    "local/native-material-pass-base-base_ctor.bin": "30f75b11b4212d9b5b3b25a493d8b4e051adf7f92958e64a00e763974421c342",
+    "local/native-material-pass-base-base_delete-assembly.txt": "3052c76497dae8eb25795e809e0bdad7313949f69cee8711f47595e598e4c9f0",
+    "local/native-material-pass-base-base_delete-bytes.txt": "348fa9ee64deca560b4be7aa5493ed3062ec6a05f89007a93bf3ad19896164eb",
+    "local/native-material-pass-base-base_delete.bin": "a21478291a2a9fea2aba299b4e12000fe28982ae0931a10533aaff697e14c316",
+    "local/native-material-pass-base-base_dtor-assembly.txt": "ff11d1af9abeeeed8a3d4769d621b0e1c3a5dda67eb46125434e5f08d577a469",
+    "local/native-material-pass-base-base_dtor-bytes.txt": "b10dead9047dad183500c25b9210f1b062919977a0f23871205fd0d45bddb270",
+    "local/native-material-pass-base-base_dtor.bin": "05d272d3638564657e6da6335fbd4091097751660f99cf0ca6d4e3f175308708",
+    "local/native-material-pass-base-base_table-bytes.txt": "6db3d658ff78738f771de5e496c910313c0a84f012d648c0803b712f08b7ea82",
+    "local/native-material-pass-base-base_table.bin": "213a15838ca85b23084d21cd938e866c257e00f573d1824afa2b880a2d406dfd",
+    "local/native-material-pass-base-build.log": "02426cccc451ca874ac1ef173644faea90858ca5df38ee4c38321f3212a83ef8",
+    "local/native-material-pass-base-comments-after.json": "a3b76bf05737e9cb680d674814ff057b87cc70f3a74a458fb432795eee7e8bba",
+    "local/native-material-pass-base-comments-after.log": "717ca6ebac6bdc3a46adfcc5dbe14a8fbde2d8db6057be59ca1e416038c438a8",
+    "local/native-material-pass-base-comments-before.json": "a3f3e69cb2c1ce75cc93d389f1bc8d41ae0375745728b04374069a52feff106b",
+    "local/native-material-pass-base-comments-before.log": "fafe39a2af5eb4391f334b683a8ed349fbebaec1f34317e0007e4d27609fda8a",
+    "local/native-material-pass-base-constructor-unwind-map.log": "b8e9dd8a09951d9b14e9a0a4c768e9ea938efa261ec45e55d94026a1b71ed1e0",
+    "local/native-material-pass-base-context_table-bytes.txt": "544b5b0a7db1485e297eadf0ca408d1dde58b4ba9ce88e1e18684423e24c0168",
+    "local/native-material-pass-base-context_table.bin": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+    "local/native-material-pass-base-dtor-raw-assembly.txt": "5c84d4e2e76c61068197aa3afa613e1fc816b5eac4a572e517aabc2a4c684163",
+    "local/native-material-pass-base-dtor-raw.log": "5a7d92af5629a30936bc19a3f358023544db6d749fb709f64a0497d4bb68a108",
+    "local/native-material-pass-base-eh-raw-assembly.txt": "b39798d3909e859874d0806b8781ecdaee427ae230803fd8cc184263cc8571fc",
+    "local/native-material-pass-base-eh-raw.log": "9deccb2eb845fd765555d3b83190ef96e29ecfbd18c874d88213f4ebc4f7976b",
+    "local/native-material-pass-base-export-refresh.log": "14a568c81bdb75c7b62ae980a374460dc7e37a7837f4a7dc3d8761b32a9efb27",
+    "local/native-material-pass-base-flow-after.log": "6e5783de3d8a8fe49dda00451adfd82e995ab1be002a9a231b766bac377c2ed1",
+    "local/native-material-pass-base-flow-repair.json": "ce3e70637c4d3b57541ac05c79e6061de972c8c8f0cc2557790d0b62369c73fa",
+    "local/native-material-pass-base-ledger.log": "06131eca6434d0250daccf2d8eb5257a8502c03d80fff2b62b04a8c805d53f89",
+    "local/native-material-pass-base-names-after.txt": "c54a61839cb850aee834c845058e21439a3d4aa40ed92db825c7599ef37b6492",
+    "local/native-material-pass-base-names-before.txt": "3270c160e2fb91515f93c9b759911cef00feba9634745dc0d84d298e46dc9d44",
+    "local/native-material-pass-base-names-expected.json": "4308210a16c898e4c17b41d8014dd4ff5639dcf92bf662e4f2b2dd3d77cf3dad",
+    "local/native-material-pass-base-native.hpp": "028416ceb2af0bdcc5e300f6e6cf5637cf89858111563d899fc32d68c8c7637d",
+    "local/native-material-pass-base-pair-array-dtor.log": "1389bb1085e10fb6112b4f338fd4d50f87c89fbfbc2a6cfdaf356110b1749529",
+    "local/native-material-pass-base-pair_dtor-assembly.txt": "0f3bc732a6eb9753c035af6c8d32e65db884908bc440e2f4c2abfc77262067f4",
+    "local/native-material-pass-base-pair_dtor-bytes.txt": "087da083edc87baeec580c1a80836537d2b1a790d976d86ef9ebb25eddbe1bc0",
+    "local/native-material-pass-base-pair_dtor.bin": "3fc33e3db5e95deb724d45c8a5fd90ebdfd27d877a0affba09fffbb28e969a16",
+    "local/native-material-pass-base-pair_reserve-assembly.txt": "8938a17e30d82aa0bcb5c13c6c1f85da8c887ca3e7e4b20ddc578f7b17066a9a",
+    "local/native-material-pass-base-pair_reserve-bytes.txt": "9f9350aa3bfc0ea42580e03deca6ab617bfe9d32704a35ca8eae965d1fc5b5c9",
+    "local/native-material-pass-base-pair_reserve.bin": "d10f0b3f05e892371be03729f01f1bb009795f4f617c506a5918f4a066a7f58c",
+    "local/native-material-pass-base-pair_resize-assembly.txt": "072365040b14d8abd7675878869bb584bf37e7aa6a4d18af6b65c107e8e0a039",
+    "local/native-material-pass-base-pair_resize-bytes.txt": "80cb4d1110213cc61bb125f42a1ac9a7a6350cc5fa0f315fdbddd150d9a2ab34",
+    "local/native-material-pass-base-pair_resize.bin": "77b387d77567ef88960753ac104bab6c17a2c38164b74728d2cc1a046610dc34",
+    "local/native-material-pass-base-probe-first-result.log": "dd001a65b05c1c0f9ac630e9a168d436f1eeb99b348f080df84043e89a03d3dc",
+    "local/native-material-pass-base-probe-implicit-return.asm": "db80c21a4b2a70f2481c07d6d8cccf101f37808b27971e5af1e92e68f67e63f3",
+    "local/native-material-pass-base-probe-result.log": "dd001a65b05c1c0f9ac630e9a168d436f1eeb99b348f080df84043e89a03d3dc",
+    "local/native-material-pass-base-probe-support.hpp": "a011ecf2ab04fdddf8631deff020df61ce288fbcbbd594e50fef30cc60f7fcee",
+    "local/native-material-pass-base-probe.asm": "12d59a74374520a672407b6151ee3ef3c3b6730d6adfb6bb7e516cd95dd4ae8e",
+    "local/native-material-pass-base-probe.cpp": "646bb039dcedd0734d36baa30d4b460ece998b63f11109be8f4fe8f7214fdb3b",
+    "local/native-material-pass-base-probe.exe": "715486b118fd1a1eedd51bf1d4f0f4dee46e87fd2f114817b3335272181e0a02",
+    "local/native-material-pass-base-probe.obj": "f0674193dfb4203bdaac3f797acc25181cc932421c8f848586e6ed65d46b6cc3",
+    "local/native-material-pass-base-probe_compile.log": "7144b643596907995eaab25150a7dfa268f1a0c2d8df6b527bd3fe5e086b0549",
+    "local/native-material-pass-base-profile.log": "6db3d658ff78738f771de5e496c910313c0a84f012d648c0803b712f08b7ea82",
+    "local/native-material-pass-base-ranges-before-annotations.log": "3270c160e2fb91515f93c9b759911cef00feba9634745dc0d84d298e46dc9d44",
+    "local/native-material-pass-base-render-array-dtor.log": "06d888df83c4c0e2def8d1cdf760a117a31ca0fa381fbd84299f5c944035ef5d",
+    "local/native-material-pass-base-render_dtor-assembly.txt": "76715dfed9e28686ddde57973d0b586dae088092691b2e8a4ee5bf52bdfb5780",
+    "local/native-material-pass-base-render_dtor-bytes.txt": "ef648e5acf0934ef9f5b9c614bdb4a8aee541d6e651cd44f357f88f050f13199",
+    "local/native-material-pass-base-render_dtor.bin": "204f92ba8bfc93f00c39f8fcb6779ef407e1354c2dec572732c2dee1b80bb845",
+    "local/native-material-pass-base-root_cleanup-assembly.txt": "70a1116b82da09b4abf4355e11782a49936e1a4f04b0631ba92b9f26393a181d",
+    "local/native-material-pass-base-root_cleanup-bytes.txt": "70dd7eb346a51253a9544d411d29ded471c070fd58a692837543dd64a8683923",
+    "local/native-material-pass-base-root_cleanup.bin": "76624e074c00f00bd720cf9e736db18e821cf2e00098c99ba21f56952d10d1f3",
+    "local/native-material-pass-base-root_ctor-assembly.txt": "ffc33be6d01a144a88f8db169e98e4033d6a1efe8395b5c534ec569a414de3e1",
+    "local/native-material-pass-base-root_ctor-bytes.txt": "7847c9da001b579267e432564979cb9f7a003558438d3133b95a510d945c820b",
+    "local/native-material-pass-base-root_ctor.bin": "4c7fa47d911752f22376aeb11c394e0b94d8cf9ca0d327dbef782060eaa66f02",
+    "local/native-material-pass-base-root_table-bytes.txt": "6d268ca41ff71584c5d52d527a93e7075010320ad6a1f05f67f37def2c31329a",
+    "local/native-material-pass-base-root_table.bin": "9b56445310d35df492bd3a1e67cde460222dd4f3b35c82e4a685bd8b73c32a35",
+    "local/native-material-pass-base-sampler-array-dtor.log": "77709f9b8bff74e095ac93d8e3b4d3027fbeeaacd0df49678cbd0885247885c2",
+    "local/native-material-pass-base-sampler_dtor-assembly.txt": "ff3074199b490c54843f749e872d5bea9292f6d0de57a69fffd85bc686814859",
+    "local/native-material-pass-base-sampler_dtor-bytes.txt": "105b63661a4ca359d0d9c84a8b8480e597f2409f6da3c92620befc636c88c5a3",
+    "local/native-material-pass-base-sampler_dtor.bin": "93e0299fe2d78bcc6f8e41d2f52e6cb51d736088946e273e2728e3012f7d5654",
+    "local/native-material-pass-base-source-commit.txt": "00c8262468ccd782712a6fde5d55396d1e34fe715f65d03ecf9522195655de0f",
+    "local/native-material-pass-base-spans.json": "8e38130a88dd7b6b81ebc262bbc08a3dc64905559a09f30be6ab4eec8a7095c5",
+    "local/native-material-pass-base-third-array-dtor.log": "1af78ea1199264373b354fca2bd137e655b388ec77e7d95d75d5057d49ed77af",
+    "local/native-material-pass-base-third_dtor-assembly.txt": "7ba5eb3321636a32fa452d823748da58870ffa897a35fdd0c0092afa3dcd9b6e",
+    "local/native-material-pass-base-third_dtor-bytes.txt": "e90500d552d6746842ef52ce16ad4ba8383314e05622b35dddcc53c9f4b77401",
+    "local/native-material-pass-base-third_dtor.bin": "baeb7cef760046a7e5e9fae0bb2eab8e41b3445e9413db5414115d0546a8ace0",
+    "local/native-material-pass-base-unwind-metadata.log": "8e31bd84677c84ee6e43bd9e4090bc11fc4607bb0b14b88324555767ad25d94a",
+    "local/native-material-pass-base-unwind-thunks.log": "7b37c49e5631fe10db6e57445697f80e10a57215851357af73d57cfd7cb72ad7",
+    "local/native-material-pass-base-unwind_code-assembly.txt": "6dcaca71fc185da4645fb61f7c4d7455ba421155249621200c5c0fcc2965e06a",
+    "local/native-material-pass-base-unwind_code-bytes.txt": "c91f649dd2c99c85b4980b487c9062b0711577f3bc39095d8efbccd1cc6b1b92",
+    "local/native-material-pass-base-unwind_code.bin": "ef11edbd4a7a2c3279584e02f22464c129dcf5225f981b12d73e1c9b4c8145bf",
+    "local/native-material-pass-base-unwind_meta_table-bytes.txt": "8986d4edd20a80c560fc0c8980e70c327aba813310d8eb306502de4d23ca20fb",
+    "local/native-material-pass-base-unwind_meta_table.bin": "f851a96f9ac5e253f70a377e0b19654debe184ff165fcee77cbb77ecd34938db",
+    "local/prepare_native_material_pass_base.py": "274d41080c7e677929958df49841f0c2ead5e53c1d679f22db0166ede62e3820",
+    "local/prepare_native_material_pass_base_probe.py": "1e1c228c1c830d251bc321ae3b259fa25a8faca7d0abf06cda3a7f9edcd690e9",
+    "local/run_native_material_pass_base_probe.ps1": "3a3d2781acf9afe51e69cb0ea36aa492acb10ff8fd3b7994fa0e3e248312818f",
+    "local/record_native_material_pass_base.py": "62ecd016abe9d1217bd4cc70bfcc065ba4276d4c751dfe6aeba502c04a4b90b2",
+    "local/native_material_pass_base_annotations.py": "ff6f2ae0558407d3a4dec25845787e68398c996a121d374ebe005eb840f572b3",
+    "local/finalize_native_material_pass_base.py": "934fc7c6a6999b2cc7052d83adce278684a511324e97be56fc343ebdd5f67127",
+    "local/decode_native_material_pass_base.py": "43e297f38703817eb8d3ac0dbc9c836453dbaf4ce7dab7734aa2d2d5065a658f",
+    "local/native-material-pass-states-native.hpp": "740f1bab485a50c15e73c371d54f82bd89e94b53cda67f83a185f216a64571cf",
+    "local/native-material-pass-states-probe.cpp": "034e3ffbada40265a6278e03d1d270afc7f62ce611252e5aecdd5d0c496318a4",
+    "local/native-material-pass-base-tested/bsp_core.lib": "a951c23c9be2d36c2d6121518999117fe9f47e2d2121b70a6a093e7449c98957",
+    "local/native-material-pass-base-tested/bsp_game.exe": "816fca0611825b6a01edeeef1557c325e490c7137cd76077603c5ef2e53fb81b",
+    "local/native-material-pass-base-tested/LastTest.log": "2ce571893bbd43cfd6ca645c6e7c229ac32b916d3b11c86180d8ae38702499be"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-material-pass-base-tested/bsp_core.lib",
+      "sha256": "a951c23c9be2d36c2d6121518999117fe9f47e2d2121b70a6a093e7449c98957"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-material-pass-base-tested/bsp_game.exe",
+      "sha256": "816fca0611825b6a01edeeef1557c325e490c7137cd76077603c5ef2e53fb81b"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-material-pass-base-tested/LastTest.log",
+      "sha256": "2ce571893bbd43cfd6ca645c6e7c229ac32b916d3b11c86180d8ae38702499be"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "root_ctor",
+      "address": "00b17940",
+      "end_exclusive": "00b17964",
+      "bytes": 36,
+      "sha256": "4c7fa47d911752f22376aeb11c394e0b94d8cf9ca0d327dbef782060eaa66f02",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "root_cleanup",
+      "address": "00b17970",
+      "end_exclusive": "00b17975",
+      "bytes": 5,
+      "sha256": "76624e074c00f00bd720cf9e736db18e821cf2e00098c99ba21f56952d10d1f3",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 0,
+          "target": 12398832
+        }
+      ]
+    },
+    {
+      "label": "pair_reserve",
+      "address": "00b40c80",
+      "end_exclusive": "00b40ce8",
+      "bytes": 104,
+      "sha256": "d10f0b3f05e892371be03729f01f1bb009795f4f617c506a5918f4a066a7f58c",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 32,
+          "target": 12539326
+        },
+        {
+          "offset": 85,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "pair_resize",
+      "address": "00b40e00",
+      "end_exclusive": "00b40e50",
+      "bytes": 80,
+      "sha256": "77b387d77567ef88960753ac104bab6c17a2c38164b74728d2cc1a046610dc34",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 14,
+          "target": 11799680
+        }
+      ]
+    },
+    {
+      "label": "pair_dtor",
+      "address": "00b5f3f0",
+      "end_exclusive": "00b5f407",
+      "bytes": 23,
+      "sha256": "3fc33e3db5e95deb724d45c8a5fd90ebdfd27d877a0affba09fffbb28e969a16",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11800064
+        },
+        {
+          "offset": 13,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "render_dtor",
+      "address": "00b41bd0",
+      "end_exclusive": "00b41c0d",
+      "bytes": 61,
+      "sha256": "204f92ba8bfc93f00c39f8fcb6779ef407e1354c2dec572732c2dee1b80bb845",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 11,
+          "target": 11799232
+        },
+        {
+          "offset": 51,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "third_dtor",
+      "address": "00b41ca0",
+      "end_exclusive": "00b41cdd",
+      "bytes": 61,
+      "sha256": "baeb7cef760046a7e5e9fae0bb2eab8e41b3445e9413db5414115d0546a8ace0",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 11,
+          "target": 11799360
+        },
+        {
+          "offset": 51,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "sampler_dtor",
+      "address": "00b41d90",
+      "end_exclusive": "00b41dcd",
+      "bytes": 61,
+      "sha256": "93e0299fe2d78bcc6f8e41d2f52e6cb51d736088946e273e2728e3012f7d5654",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 11,
+          "target": 11799520
+        },
+        {
+          "offset": 51,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "base_ctor",
+      "address": "00b5f720",
+      "end_exclusive": "00b5f98e",
+      "bytes": 622,
+      "sha256": "30f75b11b4212d9b5b3b25a493d8b4e051adf7f92958e64a00e763974421c342",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 34,
+          "target": 11630912
+        },
+        {
+          "offset": 100,
+          "target": 12544027
+        },
+        {
+          "offset": 148,
+          "target": 12544027
+        },
+        {
+          "offset": 193,
+          "target": 12544027
+        },
+        {
+          "offset": 263,
+          "target": 11922496
+        },
+        {
+          "offset": 280,
+          "target": 11922496
+        },
+        {
+          "offset": 290,
+          "target": 11922496
+        },
+        {
+          "offset": 300,
+          "target": 11922496
+        },
+        {
+          "offset": 311,
+          "target": 11922496
+        },
+        {
+          "offset": 321,
+          "target": 11922496
+        },
+        {
+          "offset": 331,
+          "target": 11922496
+        },
+        {
+          "offset": 344,
+          "target": 11922496
+        },
+        {
+          "offset": 357,
+          "target": 11922496
+        },
+        {
+          "offset": 370,
+          "target": 11922496
+        },
+        {
+          "offset": 381,
+          "target": 11922496
+        },
+        {
+          "offset": 392,
+          "target": 11922496
+        },
+        {
+          "offset": 406,
+          "target": 11922496
+        },
+        {
+          "offset": 420,
+          "target": 11922496
+        },
+        {
+          "offset": 434,
+          "target": 11922496
+        },
+        {
+          "offset": 448,
+          "target": 11922496
+        },
+        {
+          "offset": 461,
+          "target": 11922496
+        },
+        {
+          "offset": 478,
+          "target": 11922496
+        },
+        {
+          "offset": 491,
+          "target": 11922496
+        },
+        {
+          "offset": 519,
+          "target": 11922784
+        },
+        {
+          "offset": 531,
+          "target": 11922784
+        },
+        {
+          "offset": 543,
+          "target": 11922784
+        },
+        {
+          "offset": 555,
+          "target": 11922784
+        },
+        {
+          "offset": 567,
+          "target": 11922784
+        },
+        {
+          "offset": 578,
+          "target": 11922784
+        },
+        {
+          "offset": 596,
+          "target": 11922496
+        }
+      ]
+    },
+    {
+      "label": "base_dtor",
+      "address": "00b5f510",
+      "end_exclusive": "00b5f69e",
+      "bytes": 398,
+      "sha256": "05d272d3638564657e6da6335fbd4091097751660f99cf0ca6d4e3f175308708",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 210,
+          "target": 11799520
+        },
+        {
+          "offset": 238,
+          "target": 12544393
+        },
+        {
+          "offset": 262,
+          "target": 11799360
+        },
+        {
+          "offset": 286,
+          "target": 12544393
+        },
+        {
+          "offset": 310,
+          "target": 11799232
+        },
+        {
+          "offset": 334,
+          "target": 12544393
+        },
+        {
+          "offset": 352,
+          "target": 11800064
+        },
+        {
+          "offset": 360,
+          "target": 12544393
+        },
+        {
+          "offset": 374,
+          "target": 12398832
+        }
+      ]
+    },
+    {
+      "label": "base_delete",
+      "address": "00b5f990",
+      "end_exclusive": "00b5f9ae",
+      "bytes": 30,
+      "sha256": "a21478291a2a9fea2aba299b4e12000fe28982ae0931a10533aaff697e14c316",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11924752
+        },
+        {
+          "offset": 16,
+          "target": 12543404
+        }
+      ]
+    },
+    {
+      "label": "base_table",
+      "address": "00d62a80",
+      "end_exclusive": "00d62a94",
+      "bytes": 20,
+      "sha256": "213a15838ca85b23084d21cd938e866c257e00f573d1824afa2b880a2d406dfd",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "root_table",
+      "address": "00d5e508",
+      "end_exclusive": "00d5e510",
+      "bytes": 8,
+      "sha256": "9b56445310d35df492bd3a1e67cde460222dd4f3b35c82e4a685bd8b73c32a35",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "context_table",
+      "address": "00d5e5c4",
+      "end_exclusive": "00d5e5cc",
+      "bytes": 8,
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "unwind_code",
+      "address": "00cc11a0",
+      "end_exclusive": "00cc121e",
+      "bytes": 126,
+      "sha256": "ef11edbd4a7a2c3279584e02f22464c129dcf5225f981b12d73e1c9b4c8145bf",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11630960
+        },
+        {
+          "offset": 14,
+          "target": 11924464
+        },
+        {
+          "offset": 25,
+          "target": 11803600
+        },
+        {
+          "offset": 36,
+          "target": 11803808
+        },
+        {
+          "offset": 47,
+          "target": 11804048
+        },
+        {
+          "offset": 57,
+          "target": 12544835
+        },
+        {
+          "offset": 67,
+          "target": 11630960
+        },
+        {
+          "offset": 78,
+          "target": 11924464
+        },
+        {
+          "offset": 89,
+          "target": 11803600
+        },
+        {
+          "offset": 100,
+          "target": 11803808
+        },
+        {
+          "offset": 111,
+          "target": 11804048
+        },
+        {
+          "offset": 121,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "unwind_meta_table",
+      "address": "00df9ed8",
+      "end_exclusive": "00df9f70",
+      "bytes": 152,
+      "sha256": "f851a96f9ac5e253f70a377e0b19654debe184ff165fcee77cbb77ecd34938db",
+      "matches_disk": true,
+      "external_branches": []
+    }
+  ],
+  "storage": {
+    "root_bytes": 24,
+    "base_bytes": 92,
+    "atomic_offset": 4,
+    "state_slots": [
+      24,
+      28,
+      32
+    ],
+    "embedded_headers": [
+      36,
+      48,
+      60,
+      72
+    ],
+    "retained_slots": [
+      84,
+      88
+    ]
+  },
+  "implementation": {
+    "actual_storage": true,
+    "private_reference_count": false,
+    "private_child_registry": false,
+    "child_allocation_publication_order": [
+      24,
+      32,
+      28
+    ],
+    "render_defaults": 20,
+    "sampler_defaults": 96,
+    "render_capacity": 32,
+    "sampler_capacity": 128,
+    "release_order": [
+      24,
+      32,
+      28,
+      84,
+      88
+    ],
+    "slot_clear_after_callback": true,
+    "embedded_cleanup_order": [
+      72,
+      60,
+      48,
+      36
+    ],
+    "constructor_unwind_releases_published_state_owners": false,
+    "constructor_unwind_cleanup_targets": [
+      "00b41d90",
+      "00b41ca0",
+      "00b41bd0",
+      "00b5f3f0",
+      "00b17970"
+    ],
+    "pair_reserve_matches_render_reserve_after_call_normalization": true,
+    "base_profile": "00d62a80:00bd30e0/00b5f990"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_complete_packet_functions_executed": 10,
+    "original_root_cleanup_thunk_executed": true,
+    "root_storage_comparison_bytes": 24,
+    "constructor_comparison_bytes": 1464,
+    "destructor_comparison_bytes": 92,
+    "pointer_identity_normalized": true,
+    "all_defaults_match": true,
+    "direct_array_cleanup_comparisons": 4,
+    "resize_growth_zeroes_new_rows": true,
+    "resize_shrink_preserves_rows": true,
+    "negative_capacity_arrays_at_count_one": true,
+    "callback_publishes_later_retained_slot": true,
+    "child_release_order_verified": true,
+    "state_owner_retirements": 9,
+    "context_owner_retirements": 6,
+    "base_owner_retirements": 1,
+    "shared_count_two_preserves_owner_before_final_zero": true,
+    "original_scalar_flags": 2,
+    "rebuilt_scalar_flags": 1,
+    "final_fixture_exit_code": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_boundaries": {
+    "crt": "Original allocation/free targets rebound to existing shared host domain; Windows InterlockedDecrement import rebound to current callable API.",
+    "child_dispatch": "Original parent virtual0 uses fixture relocated numeric child table, restored to its original profile in the adapter before canonical terminal dispatch over same+04.",
+    "constructor": "Actual root/base constructors, actual14h state owners and all default rows. No mocked state vector/copy-on-write store.",
+    "unwind": "Both five-state maps and all cleanup targets independently checked from PE-matched spans; no native exception delivery or constructor allocation-failure execution.",
+    "fixture_exit_fix": "First generated main epilogue omitted implicit return-value initialization after inline-assembly adapter expansion; explicit return0 verified in compiler output and process exit."
+  },
+  "ghidra": {
+    "addresses": [
+      "00b17940",
+      "00b40c80",
+      "00b40e00",
+      "00b5f3f0",
+      "00b41bd0",
+      "00b41ca0",
+      "00b41d90",
+      "00b5f720",
+      "00b5f510",
+      "00b5f990"
+    ],
+    "names_verified": 10,
+    "prior_comment_fields_preserved": 1,
+    "forced_exports": 10,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [],
+    "preserved_library_thunks": [
+      "00b17970:00bd30f0"
+    ],
+    "flow_repairs": [
+      {
+        "function": "00b40c80",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:56:10Z",
+        "decompile_lines_before": 31,
+        "gaps": [
+          {
+            "site": "00b40cd5",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b40cda",
+            "gap_end_exclusive": "00b40ce3",
+            "bytes": 9,
+            "after_call": true,
+            "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b40cd5",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b40cda",
+              "gap_end_exclusive": "00b40ce3",
+              "bytes": 9,
+              "after_call": true,
+              "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+            },
+            "clear": "Success: Cleared flow override at 00b40cd5 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 9 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 34,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b5f990",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:56:10Z",
+        "decompile_lines_before": 14,
+        "gaps": [
+          {
+            "site": "00b5f9a0",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b5f9a5",
+            "gap_end_exclusive": "00b5f9a8",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b5f9a0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b5f9a5",
+              "gap_end_exclusive": "00b5f9a8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00b5f9a0 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 11,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "00b5f510",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:56:19Z",
+        "decompile_lines_before": 70,
+        "gaps": [
+          {
+            "site": "00b5f5fe",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b5f603",
+            "gap_end_exclusive": "00b5f69e",
+            "bytes": 155,
+            "after_call": true,
+            "sha256": "3593bc022df90a9dadecec8f75b0d076205ca79e46f763fc0dd422ec1e370607"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b5f5fe",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b5f603",
+              "gap_end_exclusive": "00b5f69e",
+              "bytes": 155,
+              "after_call": true,
+              "sha256": "3593bc022df90a9dadecec8f75b0d076205ca79e46f763fc0dd422ec1e370607"
+            },
+            "clear": "Success: Cleared flow override at 00b5f5fe (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 155 byte(s)"
+          },
+          {
+            "explicit_tail_call": "00b5f5fe",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f5fe (was: NONE, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "00b5f62e",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f62e (was: CALL_RETURN, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "00b5f65e",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f65e (was: CALL_RETURN, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "00b5f678",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f678 (was: CALL_RETURN, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "00b5f69e",
+        "explicit_body_sha256": "05d272d3638564657e6da6335fbd4091097751660f99cf0ca6d4e3f175308708",
+        "body_before": "Function: FUN_00b5f510 at 00b5f510\nSignature: undefined FUN_00b5f510(void)\nEntry: 00b5f510\nBody: 00b5f510 - 00b5f602",
+        "decompile_lines_after": 98,
+        "gaps_remaining": 1,
+        "body_after": "Function: FUN_00b5f510 at 00b5f510\nSignature: undefined FUN_00b5f510(void)\nEntry: 00b5f510\nBody: 00b5f510 - 00b5f602",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      },
+      {
+        "function": "00b5f510",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:57:44Z",
+        "decompile_lines_before": 98,
+        "gaps": [
+          {
+            "site": "00b5f5fe",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b5f603",
+            "gap_end_exclusive": "00b5f69e",
+            "bytes": 155,
+            "after_call": true,
+            "sha256": "3593bc022df90a9dadecec8f75b0d076205ca79e46f763fc0dd422ec1e370607"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b5f5fe",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b5f603",
+              "gap_end_exclusive": "00b5f69e",
+              "bytes": 155,
+              "after_call": true,
+              "sha256": "3593bc022df90a9dadecec8f75b0d076205ca79e46f763fc0dd422ec1e370607"
+            },
+            "clear": "Success: Cleared flow override at 00b5f5fe (was: NONE, now: NONE)",
+            "disassemble": "Successfully disassembled 155 byte(s)"
+          },
+          {
+            "explicit_tail_call": "00b5f5fe",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f5fe (was: NONE, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "00b5f62e",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f62e (was: NONE, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "00b5f65e",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f65e (was: NONE, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "00b5f678",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f678 (was: NONE, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "00b5f69e",
+        "explicit_body_sha256": "05d272d3638564657e6da6335fbd4091097751660f99cf0ca6d4e3f175308708",
+        "body_before": "Function: FUN_00b5f510 at 00b5f510\nSignature: undefined FUN_00b5f510(void)\nEntry: 00b5f510\nBody: 00b5f510 - 00b5f602",
+        "decompile_lines_after": 98,
+        "gaps_remaining": 1,
+        "body_after": "Function: FUN_00b5f510 at 00b5f510\nSignature: undefined FUN_00b5f510(void)\nEntry: 00b5f510\nBody: 00b5f510 - 00b5f602",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      },
+      {
+        "function": "00b5f3f0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:57:53Z",
+        "decompile_lines_before": 9,
+        "gaps": [
+          {
+            "site": "00b5f3fd",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b5f402",
+            "gap_end_exclusive": "00b5f407",
+            "bytes": 5,
+            "after_call": true,
+            "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b5f3fd",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b5f402",
+              "gap_end_exclusive": "00b5f407",
+              "bytes": 5,
+              "after_call": true,
+              "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+            },
+            "clear": "Success: Cleared flow override at 00b5f3fd (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 5 byte(s)"
+          },
+          {
+            "explicit_tail_call": "00b5f3fd",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b5f3fd (was: NONE, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "00b5f407",
+        "explicit_body_sha256": "3fc33e3db5e95deb724d45c8a5fd90ebdfd27d877a0affba09fffbb28e969a16",
+        "body_before": "Function: FUN_00b5f3f0 at 00b5f3f0\nSignature: undefined FUN_00b5f3f0(void)\nEntry: 00b5f3f0\nBody: 00b5f3f0 - 00b5f401",
+        "decompile_lines_after": 9,
+        "gaps_remaining": 1,
+        "body_after": "Function: FUN_00b5f3f0 at 00b5f3f0\nSignature: undefined FUN_00b5f3f0(void)\nEntry: 00b5f3f0\nBody: 00b5f3f0 - 00b5f401",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      },
+      {
+        "function": "00b41bd0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:59:28Z",
+        "decompile_lines_before": 19,
+        "gaps": [
+          {
+            "site": "00b41c03",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b41c08",
+            "gap_end_exclusive": "00b41c0d",
+            "bytes": 5,
+            "after_call": true,
+            "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b41c03",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b41c08",
+              "gap_end_exclusive": "00b41c0d",
+              "bytes": 5,
+              "after_call": true,
+              "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+            },
+            "clear": "Success: Cleared flow override at 00b41c03 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 5 byte(s)"
+          },
+          {
+            "explicit_tail_call": "00b41c03",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b41c03 (was: NONE, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "00b41c0d",
+        "explicit_body_sha256": "204f92ba8bfc93f00c39f8fcb6779ef407e1354c2dec572732c2dee1b80bb845",
+        "body_before": "Function: FUN_00b41bd0 at 00b41bd0\nSignature: undefined FUN_00b41bd0(void)\nEntry: 00b41bd0\nBody: 00b41bd0 - 00b41c07",
+        "decompile_lines_after": 19,
+        "gaps_remaining": 1,
+        "body_after": "Function: FUN_00b41bd0 at 00b41bd0\nSignature: undefined FUN_00b41bd0(void)\nEntry: 00b41bd0\nBody: 00b41bd0 - 00b41c07",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      },
+      {
+        "function": "00b41ca0",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:59:36Z",
+        "decompile_lines_before": 19,
+        "gaps": [
+          {
+            "site": "00b41cd3",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b41cd8",
+            "gap_end_exclusive": "00b41cdd",
+            "bytes": 5,
+            "after_call": true,
+            "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b41cd3",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b41cd8",
+              "gap_end_exclusive": "00b41cdd",
+              "bytes": 5,
+              "after_call": true,
+              "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+            },
+            "clear": "Success: Cleared flow override at 00b41cd3 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 5 byte(s)"
+          },
+          {
+            "explicit_tail_call": "00b41cd3",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b41cd3 (was: NONE, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "00b41cdd",
+        "explicit_body_sha256": "baeb7cef760046a7e5e9fae0bb2eab8e41b3445e9413db5414115d0546a8ace0",
+        "body_before": "Function: FUN_00b41ca0 at 00b41ca0\nSignature: undefined FUN_00b41ca0(void)\nEntry: 00b41ca0\nBody: 00b41ca0 - 00b41cd7",
+        "decompile_lines_after": 19,
+        "gaps_remaining": 1,
+        "body_after": "Function: FUN_00b41ca0 at 00b41ca0\nSignature: undefined FUN_00b41ca0(void)\nEntry: 00b41ca0\nBody: 00b41ca0 - 00b41cd7",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      },
+      {
+        "function": "00b41d90",
+        "owner": "agent/orch2-20260910",
+        "when": "2026-09-11T17:59:39Z",
+        "decompile_lines_before": 19,
+        "gaps": [
+          {
+            "site": "00b41dc3",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b41dc8",
+            "gap_end_exclusive": "00b41dcd",
+            "bytes": 5,
+            "after_call": true,
+            "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b41dc3",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b41dc8",
+              "gap_end_exclusive": "00b41dcd",
+              "bytes": 5,
+              "after_call": true,
+              "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+            },
+            "clear": "Success: Cleared flow override at 00b41dc3 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 5 byte(s)"
+          },
+          {
+            "explicit_tail_call": "00b41dc3",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 00b41dc3 (was: NONE, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "00b41dcd",
+        "explicit_body_sha256": "93e0299fe2d78bcc6f8e41d2f52e6cb51d736088946e273e2728e3012f7d5654",
+        "body_before": "Function: FUN_00b41d90 at 00b41d90\nSignature: undefined FUN_00b41d90(void)\nEntry: 00b41d90\nBody: 00b41d90 - 00b41dc7",
+        "decompile_lines_after": 19,
+        "gaps_remaining": 1,
+        "body_after": "Function: FUN_00b41d90 at 00b41d90\nSignature: undefined FUN_00b41d90(void)\nEntry: 00b41d90\nBody: 00b41d90 - 00b41dc7",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      }
+    ],
+    "remaining_internal_gaps_in_stored_bodies": 0,
+    "incomplete_stored_destructor_bodies": [
+      {
+        "address": "00b5f510",
+        "stored_end": "00b5f602",
+        "verified_end_exclusive": "00b5f69e"
+      },
+      {
+        "address": "00b5f3f0",
+        "stored_end": "00b5f401",
+        "verified_end_exclusive": "00b5f407"
+      },
+      {
+        "address": "00b41bd0",
+        "stored_end": "00b41c07",
+        "verified_end_exclusive": "00b41c0d"
+      },
+      {
+        "address": "00b41ca0",
+        "stored_end": "00b41cd7",
+        "verified_end_exclusive": "00b41cdd"
+      },
+      {
+        "address": "00b41d90",
+        "stored_end": "00b41dc7",
+        "verified_end_exclusive": "00b41dcd"
+      }
+    ],
+    "body_extension": "No Java script attempt in this packet; preceding packet established disabled arbitrary scripting. Five stored tails remain incomplete.",
+    "saved": true
+  },
+  "limitations": [
+    "Root word meanings and paired/third row semantics remain partly unresolved.",
+    "Constructor failure preserves the native lack of state-owner unwind releases; already-published owners may remain allocated.",
+    "Caller must bind constructed actual child owners in its canonical owner domain before terminal releases.",
+    "Valid readable extents required; negative-capacity tested extents fit reserve(0), which clamps to one row.",
+    "Five Ghidra stored body ranges still exclude decoded tails; full reconstruction uses PE-matched bytes through RET.",
+    "Derived88h pass and pool, shader loading, original exception delivery, original flags1 execution, draw and gameplay remain open."
+  ]
+}
