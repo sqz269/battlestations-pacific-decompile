@@ -1,0 +1,549 @@
+{
+  "packet": "orch2_native_material_pass_owner_ac",
+  "utc": "2026-09-11T19:07:35.922956+00:00",
+  "tested_source_commit": "da8142a1e12b82dfbf6caff290d801e6228c8efc",
+  "source_sha256": {
+    "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+    "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+    "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+    "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+    "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+    "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+    "include/bsp/native_material_pools.hpp": "d2dbf93353178feebd657b3c4713a8db5e4e8bf90edfb1fd9a17f672d4b068e5",
+    "src/native_material_pools.cpp": "9dc0a1193df2bd0adc0d9e0ce140cba863029f0f1cc16dfe8debc361307b102a",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/native_string.hpp": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+    "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+    "cmake/startup.cmake": "d57c19d68a41b8d5845ce9f98330f9d2d268b0a166efd531becd4f67f527fe02",
+    "CMakeLists.txt": "1c99142673930b561d139ad48a1b6f264fe40a7a71a1305181f058298fedc12c"
+  },
+  "artifacts_sha256": {
+    "local/native-material-pass-owner-annotation-addresses.json": "c06f1a032f4b3414b91cf7c7b2951a75bea04c23b43462b63aeb852772899463",
+    "local/native-material-pass-owner-annotation-verification.json": "aa02941c17a3c8a3869b23d0db7e34c2490cab6e8b612391b506db6438a3bb9c",
+    "local/native-material-pass-owner-annotations.log": "0d7a9bcb36e281d7b72f825633a28bfd67d2f2120f7c3d4a79216a92487d7716",
+    "local/native-material-pass-owner-base-support.hpp": "daf4d0b8f94bc8d6985e28fcf2eacccaf078e899123150a5fe9bf9373775fffa",
+    "local/native-material-pass-owner-binding_dtor-assembly.txt": "a45999edd857d70c68882dd66935f469af0bd06bb26731b45ccc61de7ccb70c0",
+    "local/native-material-pass-owner-binding_dtor-bytes.txt": "28b73b932cb6c7f36452b98c85ccc1f03b3ae33d30dfc3516daf218b9ebe6797",
+    "local/native-material-pass-owner-binding_dtor.bin": "8b374c14a2f456a74d3818c47706ea6f10a1d62da0707d5cdf55afdcfad19e82",
+    "local/native-material-pass-owner-binding_unwind_code-assembly.txt": "493ad6d905e9f2d973c2a1e5bc5d31d83d2216141ceb7a12d16e9118a31a8faa",
+    "local/native-material-pass-owner-binding_unwind_code-bytes.txt": "87e7b6ea25984ac26ecd1958edf89f8d7b8af272885533d44ca49d157534ea3c",
+    "local/native-material-pass-owner-binding_unwind_code.bin": "70867b5c04bbf5049e20c3a05d667594e98344eee931937f0f04a97b2c21df6a",
+    "local/native-material-pass-owner-binding_unwind_meta_table-bytes.txt": "b4c3880673caf6619740119b8e7cbe899f293df47e1f6b56d095f9048a4a595a",
+    "local/native-material-pass-owner-binding_unwind_meta_table.bin": "cddeb9d6675608b98db3a023d95e6e03e81ed2acb20c14fc98b2336ce91443e5",
+    "local/native-material-pass-owner-build.log": "b45a0aee3ccad0472f1dea740730f9a728e1b3a38d644f710ba6dc40bdb41e50",
+    "local/native-material-pass-owner-comments-after.json": "ea6ad20175e503a2ab22d380ea250c25dce8f2b58d35cb03d706e656bc9db2f4",
+    "local/native-material-pass-owner-comments-after.log": "18b07b1393846f278857e203da68c8434feb4a7a17e19072297dda7f2eebc3f2",
+    "local/native-material-pass-owner-comments-before.json": "fe1cffe810def3fdb06701ef2c5c3bd48629b6b0acbf130aac2527458d05c2a3",
+    "local/native-material-pass-owner-comments-before.log": "57385eea1b16bde66720114805fc016d381fc06d47a53fb568f11f2c13f225a2",
+    "local/native-material-pass-owner-context_table-bytes.txt": "544b5b0a7db1485e297eadf0ca408d1dde58b4ba9ce88e1e18684423e24c0168",
+    "local/native-material-pass-owner-context_table.bin": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+    "local/native-material-pass-owner-ctor_unwind_code-assembly.txt": "91c203572bc4555fa1f50102fa78964245e18fd4be64705fc9d2f763560db1ff",
+    "local/native-material-pass-owner-ctor_unwind_code-bytes.txt": "f15c2683e211b67aeefafce0ae12bb6dbd7e0073e71fe4946d34ea44928d91ee",
+    "local/native-material-pass-owner-ctor_unwind_code.bin": "cef05b7e486bb9811584596d55b1cdfc024e2215198533a1e7d7c2916bfe156a",
+    "local/native-material-pass-owner-ctor_unwind_meta_table-bytes.txt": "0d4b30666da08a2255b527ce1b7a89713c47e2476f6c6ff469f07a5ff7a21209",
+    "local/native-material-pass-owner-ctor_unwind_meta_table.bin": "889e271208952e6a1c34cf4db124c9590bb07fcee61fb64d7aa8b6dee64cf933",
+    "local/native-material-pass-owner-dtor_unwind_code-assembly.txt": "bf03d6e6777258641e72fe7d8fb162ba3ec2fcdf231aef385e95f64f338d1da9",
+    "local/native-material-pass-owner-dtor_unwind_code-bytes.txt": "e16e22b0a411249bd5a0c125ce5839cfd6d757f517ff92f9b10bb8573b22961f",
+    "local/native-material-pass-owner-dtor_unwind_code.bin": "2f80a32b4a3fd19f914b6edccd49fa751e2940173b560ad1492d4415004f6285",
+    "local/native-material-pass-owner-dtor_unwind_meta_table-bytes.txt": "89cfc79c51382434bdcad1b0477e092ffe280aca0390912bac36c911542f9c02",
+    "local/native-material-pass-owner-dtor_unwind_meta_table.bin": "2683339c1f3b44873f92d6feb632b0a2e8e181d2df201680d89b76a80f40f5d0",
+    "local/native-material-pass-owner-export-refresh.log": "544c0526a6af175967d73887958c4165eed2ca6cb23ddac5864560ff08da180e",
+    "local/native-material-pass-owner-flow-after.log": "61edb262f934f4daf6f159dce764054abd238d5148f39dd324454683be29397e",
+    "local/native-material-pass-owner-get_effect-assembly.txt": "145e2cdfbc3a3ddab561f0f9a19b7c9a704081a6894ef5c0d7dbc3f85857fc93",
+    "local/native-material-pass-owner-get_effect-bytes.txt": "05a36828edf4503236d2e7bc8377419fc256ff41ed317db2d396cb4e20d275b2",
+    "local/native-material-pass-owner-get_effect.bin": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+    "local/native-material-pass-owner-ledger.log": "4bb230cc3ab34472c22833a2f693c964c97341aaf815984c3037b6f894d0a3a6",
+    "local/native-material-pass-owner-names-after.txt": "a44db5ba427e379f107cce30806e1d0773c76947d13844fd1fc449cf223b7bb4",
+    "local/native-material-pass-owner-names-before.txt": "30b27c63867aafbf1d29a2d9e226c7225f9ce59a010fdf57d0efc75094f8e312",
+    "local/native-material-pass-owner-names-expected.json": "fcfc278b03d66e7eab207933cf37d2abc8da31049c75e3665ee9bf942f7bb97b",
+    "local/native-material-pass-owner-native.hpp": "3c1b6d9c89540d87bfa0855441f7581955df1ca89ae502e549fdcc798535d238",
+    "local/native-material-pass-owner-pass_ctor-assembly.txt": "814218c25c53dcbb4837546300a4072fc73469df7fd51e6f407c233348ea255d",
+    "local/native-material-pass-owner-pass_ctor-bytes.txt": "0d379ae1353ddb0ed36e0a2d60a871db4ff532f5cb7a0b94ce182965de1ff304",
+    "local/native-material-pass-owner-pass_ctor.bin": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+    "local/native-material-pass-owner-pass_delete-assembly.txt": "8df4f96790376a280fa9474000891523afc18f175811e49c369d8ae801ea65b7",
+    "local/native-material-pass-owner-pass_delete-bytes.txt": "d5ef1bc4366beef2ad064f86ca99b02f7d54d66a30f9811efb850c28678aad24",
+    "local/native-material-pass-owner-pass_delete.bin": "0cf571219f3dfde677f4fd2113a72115c198edf54ea78d3db621421fb5e258cc",
+    "local/native-material-pass-owner-pass_dtor-assembly.txt": "c27e90ba95df3466a3b73d902f7e20f1d336d1c13ba42c4984c99943edae6ce4",
+    "local/native-material-pass-owner-pass_dtor-bytes.txt": "e5e1e6e52f9ca1c0547db467c93059c936b04b92417dd9382b371e42de3dbb04",
+    "local/native-material-pass-owner-pass_dtor.bin": "14bc5b6052fb2b12bcee08dbdae38f116fad42284412628049c4c7e00f26b383",
+    "local/native-material-pass-owner-pass_table-bytes.txt": "949f683503391d8b7ab43c8a8e6bb3e6ea7261edd91d1096dc089c416c4e41b3",
+    "local/native-material-pass-owner-pass_table.bin": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+    "local/native-material-pass-owner-pool-native.hpp": "d3cfca686c3b607539119f5e132c435fddba96375380a5cfcb27e482ad199082",
+    "local/native-material-pass-owner-probe-result.log": "fd2dac6e39c782aab9fdccdc15792ef4ba0516e0eba62233d46e999f9d029169",
+    "local/native-material-pass-owner-probe.asm": "b651f2142a8e59ff84ad33150005c4659acb9790b68f7a3ed138285e9bba5542",
+    "local/native-material-pass-owner-probe.cpp": "8cc18a0e5a5ee4e338e1fed8ab79b934e7600a6cded48eeabd0b73f0e56a2e5a",
+    "local/native-material-pass-owner-probe.exe": "4f22ab1cd5f9e919b6ed659479b0c406347f4402420a1cefc17b37fd610a24a9",
+    "local/native-material-pass-owner-probe.obj": "ada34f1222dfc2eb0d13b16c204ea60a972c73c0b69afb5becf57832ac7d5ee4",
+    "local/native-material-pass-owner-probe_compile.log": "9b32054879b7a43dc739949c3db3ee30d21f4010af8e69a4cc750e206d572754",
+    "local/native-material-pass-owner-set_effect-assembly.txt": "a1194b82aa87189d64c4b4d99d1a06314e375a9b51042e117512cf0652699e45",
+    "local/native-material-pass-owner-set_effect-bytes.txt": "6dfc714c34380aa09b3e0cd1752494e4bf7a4cc2e72bd15312ffec1d8bd6aba3",
+    "local/native-material-pass-owner-set_effect.bin": "5940df69b60defd9e87bf6c4f1f44706b7d3bc501eab25edf30198be533ee258",
+    "local/native-material-pass-owner-spans.json": "a80564ec39196efa36dfb26ab2ce55b1f83d26c21339e3aeef17491b1f1361b0",
+    "local/native-material-pass-owner-tested-source.txt": "8e4f043ddb471dac6a76d87225691cb6354ed16a2037b88e20dff16b7d2b72ff",
+    "local/native-material-pass-owner-unwind-verification.json": "21fb8f8bfc08ce0009ee3e345b27455c5da9751309d07e251506f4d1721cc327",
+    "local/native-material-pass-owner-white_table-bytes.txt": "dafa28ae82efe76c56400f89a83ab78330a411ff7b706b30d4ba644e721a30eb",
+    "local/native-material-pass-owner-white_table.bin": "53aa3f7487d39522ef125316fe165fc20a9b3a1a906c2f182379509bb59a2008",
+    "local/prepare_native_material_pass_owner.py": "ad63a7ac859c61d5ea931793040998f2f7ce7705b8e5c41795321cc9b37bde63",
+    "local/prepare_native_material_pass_owner_probe.py": "405616f134b4ab4b70ce5b8d6fa8916302d9fc19da181f5e6675a7901f49dde4",
+    "local/run_native_material_pass_owner_probe.ps1": "7bdbca5a9f7054422c1fed67cf847272a311f1101d5d9aa769f37567bc18071c",
+    "local/record_native_material_pass_owner.py": "061c884f12d67bc574cfefa363788f4b79e1cd9b0073a297d52b23d099022387",
+    "local/native_material_pass_owner_annotations.py": "66e80c5417e59a12b737133fa9df52dcf40edbcfbb580d9f2a7aac567054229a",
+    "local/check_native_material_pass_owner_unwind.py": "2acad44e523053f27b4d083b7043e333ae10a468206de1a3e77096b78556041f",
+    "local/finalize_native_material_pass_owner.py": "7a3ab9f49af1ff3263de87a0cc6c4cbaa2f1b73009777bb17ef8b94641e6390f",
+    "local/native-material-pass-base-probe-support.hpp": "a011ecf2ab04fdddf8631deff020df61ce288fbcbbd594e50fef30cc60f7fcee",
+    "local/native-material-pass-base-native.hpp": "028416ceb2af0bdcc5e300f6e6cf5637cf89858111563d899fc32d68c8c7637d",
+    "local/native-material-pass-states-native.hpp": "740f1bab485a50c15e73c371d54f82bd89e94b53cda67f83a185f216a64571cf",
+    "local/ghidra-annotations-20260911T190444Z.json": "b73839eb922e65daa49800db0d9366a892a85be3eee926784d4d30f7f6e95407",
+    "local/native-material-pass-owner-tested/bsp_core.lib": "4c933c8e4cb3959d3095abd066f9c04e6562646982741dccca67faa587e6976f",
+    "local/native-material-pass-owner-tested/bsp_game.exe": "fd2ff08f085d4b88196185219c2aa24700e4a5987a82470e064113e1f755e7f6",
+    "local/native-material-pass-owner-tested/LastTest.log": "9eda32d0521e3f902fdfff4d29db44fc183f2cd8d82fe38a594ae86be1d5e9da"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-material-pass-owner-tested/bsp_core.lib",
+      "sha256": "4c933c8e4cb3959d3095abd066f9c04e6562646982741dccca67faa587e6976f"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-material-pass-owner-tested/bsp_game.exe",
+      "sha256": "fd2ff08f085d4b88196185219c2aa24700e4a5987a82470e064113e1f755e7f6"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-material-pass-owner-tested/LastTest.log",
+      "sha256": "9eda32d0521e3f902fdfff4d29db44fc183f2cd8d82fe38a594ae86be1d5e9da"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "pass_ctor",
+      "address": "00b44b10",
+      "end_exclusive": "00b44be6",
+      "bytes": 214,
+      "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 32,
+          "target": 11925280
+        },
+        {
+          "offset": 95,
+          "target": 4316480
+        },
+        {
+          "offset": 122,
+          "target": 12547712
+        },
+        {
+          "offset": 183,
+          "target": 4299968
+        },
+        {
+          "offset": 190,
+          "target": 12391696
+        }
+      ]
+    },
+    {
+      "label": "pass_dtor",
+      "address": "00b454e0",
+      "end_exclusive": "00b455bf",
+      "bytes": 223,
+      "sha256": "14bc5b6052fb2b12bcee08dbdae38f116fad42284412628049c4c7e00f26b383",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 60,
+          "target": 11805264
+        },
+        {
+          "offset": 66,
+          "target": 12543404
+        },
+        {
+          "offset": 199,
+          "target": 11924752
+        }
+      ]
+    },
+    {
+      "label": "binding_dtor",
+      "address": "00b42250",
+      "end_exclusive": "00b422d0",
+      "bytes": 128,
+      "sha256": "8b374c14a2f456a74d3818c47706ea6f10a1d62da0707d5cdf55afdcfad19e82",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 99,
+          "target": 4299968
+        },
+        {
+          "offset": 106,
+          "target": 12391696
+        }
+      ]
+    },
+    {
+      "label": "pass_delete",
+      "address": "00b46910",
+      "end_exclusive": "00b46930",
+      "bytes": 32,
+      "sha256": "0cf571219f3dfde677f4fd2113a72115c198edf54ea78d3db621421fb5e258cc",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11818208
+        },
+        {
+          "offset": 21,
+          "target": 11799104
+        }
+      ]
+    },
+    {
+      "label": "set_effect",
+      "address": "00b172b0",
+      "end_exclusive": "00b172ba",
+      "bytes": 10,
+      "sha256": "5940df69b60defd9e87bf6c4f1f44706b7d3bc501eab25edf30198be533ee258",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "get_effect",
+      "address": "00b172c0",
+      "end_exclusive": "00b172c4",
+      "bytes": 4,
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "pass_table",
+      "address": "00d61be8",
+      "end_exclusive": "00d61bfc",
+      "bytes": 20,
+      "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "context_table",
+      "address": "00d5e5c4",
+      "end_exclusive": "00d5e5cc",
+      "bytes": 8,
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "white_table",
+      "address": "00ce77a4",
+      "end_exclusive": "00ce77ae",
+      "bytes": 10,
+      "sha256": "53aa3f7487d39522ef125316fe165fc20a9b3a1a906c2f182379509bb59a2008",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "ctor_unwind_code",
+      "address": "00cbf3c0",
+      "end_exclusive": "00cbf3da",
+      "bytes": 26,
+      "sha256": "cef05b7e486bb9811584596d55b1cdfc024e2215198533a1e7d7c2916bfe156a",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11924752
+        },
+        {
+          "offset": 11,
+          "target": 4316448
+        },
+        {
+          "offset": 21,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "ctor_unwind_meta_table",
+      "address": "00df7d14",
+      "end_exclusive": "00df7d48",
+      "bytes": 52,
+      "sha256": "889e271208952e6a1c34cf4db124c9590bb07fcee61fb64d7aa8b6dee64cf933",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "dtor_unwind_code",
+      "address": "00cbf480",
+      "end_exclusive": "00cbf492",
+      "bytes": 18,
+      "sha256": "2f80a32b4a3fd19f914b6edccd49fa751e2940173b560ad1492d4415004f6285",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11924752
+        },
+        {
+          "offset": 13,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "dtor_unwind_meta_table",
+      "address": "00df7e4c",
+      "end_exclusive": "00df7e78",
+      "bytes": 44,
+      "sha256": "2683339c1f3b44873f92d6feb632b0a2e8e181d2df201680d89b76a80f40f5d0",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "binding_unwind_code",
+      "address": "00cbf110",
+      "end_exclusive": "00cbf125",
+      "bytes": 21,
+      "sha256": "70867b5c04bbf5049e20c3a05d667594e98344eee931937f0f04a97b2c21df6a",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 6,
+          "target": 4316448
+        },
+        {
+          "offset": 16,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "binding_unwind_meta_table",
+      "address": "00df7a84",
+      "end_exclusive": "00df7ab0",
+      "bytes": 44,
+      "sha256": "cddeb9d6675608b98db3a023d95e6e03e81ed2acb20c14fc98b2336ce91443e5",
+      "matches_disk": true,
+      "external_branches": []
+    }
+  ],
+  "reused_verified_native_dependencies": [
+    {
+      "path": "local/native-material-pass-base-probe-support.hpp",
+      "sha256": "a011ecf2ab04fdddf8631deff020df61ce288fbcbbd594e50fef30cc60f7fcee",
+      "source_report": "reports/native_material_pass_base.json"
+    },
+    {
+      "path": "local/native-material-pass-base-native.hpp",
+      "sha256": "028416ceb2af0bdcc5e300f6e6cf5637cf89858111563d899fc32d68c8c7637d",
+      "source_report": "reports/native_material_pass_base.json"
+    },
+    {
+      "path": "local/native-material-pass-states-native.hpp",
+      "sha256": "740f1bab485a50c15e73c371d54f82bd89e94b53cda67f83a185f216a64571cf",
+      "source_report": "reports/native_material_pass_states.json"
+    },
+    {
+      "path": "local/native-material-pass-owner-pool-native.hpp",
+      "sha256": "d3cfca686c3b607539119f5e132c435fddba96375380a5cfcb27e482ad199082",
+      "source_report": "reports/native_material_pass_pool.json",
+      "original_function_used": "00b40a40"
+    }
+  ],
+  "storage": {
+    "payload_bytes": 136,
+    "base_bytes": 92,
+    "slot_bytes": 140,
+    "atomic_offset": 4,
+    "binding_slots_offset": 92,
+    "binding_slots": 4,
+    "binding_count_offset": 108,
+    "shader_offsets": [
+      112,
+      116
+    ],
+    "index_offsets": [
+      120,
+      124
+    ],
+    "byte_offset": 128,
+    "preserved_padding_offsets": [
+      129,
+      130,
+      131
+    ],
+    "fallback_offset": 132,
+    "slot_slab_id_offset": 136,
+    "binding_bytes": 16,
+    "binding_retained_offset": 4,
+    "binding_name_offset": 8,
+    "native_profile": "00d61be8:00bd30e0/00b46910"
+  },
+  "implementation": {
+    "actual_storage": true,
+    "private_reference_count": false,
+    "private_child_registry": false,
+    "constructor_leaves_binding_slots_unwritten": true,
+    "constructor_leaves_padding_unwritten": true,
+    "actual_base_and_state_owners": true,
+    "shared_actual_string_storage": true,
+    "current_callable_renderer_offset": 100,
+    "fallback_name": "white.tga",
+    "fallback_flags": 0,
+    "extra_fallback_retain": false,
+    "temporary_release_after_fallback_publication": true,
+    "canonical_state_registration": "Explicit nonthrowing host metadata registration after base construction and before throwing string/renderer operations; no retain, copy or replacement of actual owners.",
+    "live_unsigned_binding_count": true,
+    "binding_count_cleared": false,
+    "release_order": [
+      "bindings5c..68",
+      "fallback84",
+      "vertex70",
+      "pixel74",
+      "base"
+    ],
+    "slot_clear_after_callback": true,
+    "binding_header_left_stale": true,
+    "delete_bit0_returns_actual_pool_slot": true,
+    "actual_pool_global": "0108fbf8",
+    "companion_retirement_after_pool_return": true,
+    "borrowed_effect_offset": 20,
+    "borrowed_effect_ownership_operations": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_complete_packet_functions_executed": 6,
+    "original_base_state_dependencies_executed": true,
+    "original_pool_return_executed": true,
+    "constructor_comparison_bytes": 1508,
+    "destructor_comparison_bytes": 136,
+    "pointer_identity_normalized": true,
+    "unwritten_binding_and_padding_preimages_match": true,
+    "owned_fallback_count_one": true,
+    "original_scalar_flags": 1,
+    "rebuilt_scalar_flags": 1,
+    "binding_count_callback_growth": [
+      1,
+      2
+    ],
+    "callback_publishes_later_pixel_owner": true,
+    "callback_and_string_order": [
+      0,
+      40,
+      1,
+      41,
+      10,
+      20,
+      21,
+      100,
+      102,
+      101
+    ],
+    "borrowed_effect_count_before_after": [
+      7,
+      7
+    ],
+    "same_slot_reuse_verified": true,
+    "shared_count_two_preserves_pass_before_final_zero": true,
+    "pool_return_before_companion_retirement": true,
+    "rebuilt_acquisition_failure_cleans_temporary_and_base": true,
+    "constructor_failure_leaves_raw_slot_allocated": true,
+    "state_owner_retirements": 12,
+    "context_owner_retirements": 15,
+    "pass_companion_retirements": 1,
+    "final_fixture_exit_code": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_boundaries": {
+    "original_imports": "Current CRT/shared heap and Win32 imports rebound; original string calls bridge to the actual string pool/header implementation.",
+    "child_dispatch": "Original parent decrements same physical04, calls relocated virtual0 adapter, which restores numeric native profile before canonical terminal dispatch.",
+    "fallback_and_shaders": "Actual generic18h context owners exercise real canonical lifetime; actual texture/shader constructors and loading are not exercised.",
+    "constructor_failure": "Controlled C++ renderer acquisition exception only; original native exception delivery remains unexecuted.",
+    "unwind": "Three metadata maps and four concrete cleanup thunks independently checked from six PE-matched spans.",
+    "native_dependencies": "Prior frozen full base/state captures and B40A40 pool-return bytes are reused by hash without overwriting their evidence."
+  },
+  "ghidra": {
+    "addresses": [
+      "00b44b10",
+      "00b454e0",
+      "00b42250",
+      "00b46910",
+      "00b172b0",
+      "00b172c0"
+    ],
+    "names_verified": 6,
+    "prior_comment_fields_preserved": 4,
+    "forced_exports": 6,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [],
+    "flow_repairs": [],
+    "complete_stored_body_ranges": true,
+    "remaining_internal_gaps": 0,
+    "unwind_verification": [
+      {
+        "owner": "ctor",
+        "func_info": "00df7d24",
+        "states": 2,
+        "targets": [
+          "00b5f510",
+          "0041dd20"
+        ],
+        "verified": true
+      },
+      {
+        "owner": "dtor",
+        "func_info": "00df7e54",
+        "states": 1,
+        "targets": [
+          "00b5f510"
+        ],
+        "verified": true
+      },
+      {
+        "owner": "binding",
+        "func_info": "00df7a8c",
+        "states": 1,
+        "targets": [
+          "0041dd20"
+        ],
+        "verified": true
+      }
+    ],
+    "saved": true
+  },
+  "limitations": [
+    "Binding word00, index78/7C and other pass methods are not interpreted by this lifetime packet.",
+    "Canonical state registration must finish without throwing before later constructor operations; terminal callbacks and string release must remain nonthrowing.",
+    "Valid actual child identities, readable binding extents0..4 and canonical pool provenance are caller contracts.",
+    "Native allocation failure and original exception encoding/delivery are not validated; caller raw-slot cleanup remains outside the constructor.",
+    "Full pass copy, shader/texture loading, binary ABI, draw and gameplay remain open."
+  ]
+}
