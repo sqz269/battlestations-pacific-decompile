@@ -1,0 +1,77 @@
+{
+  "packet": "orch2_locale_file_loading",
+  "base_commit": "c33924f6f0ac6a80667b85db66754e729fa83954",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live": true
+  },
+  "addresses": [
+    "00aa0020",
+    "00aa06d0",
+    "00aa09d0"
+  ],
+  "source": [
+    "include/bsp/locale_tables.hpp",
+    "src/locale_tables.cpp"
+  ],
+  "evidence": "docs/LOCALE_FILE_LOADING.md; reports/locale_file_loading.json",
+  "abi_compatible": false,
+  "game_validated": false,
+  "gui_runtime_validated": false,
+  "validation": {
+    "win32_release_build": "passed: local/locale_file_loading_verified_build.log",
+    "existing_ctest": {
+      "passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_math_seeds_verified": 8,
+    "focused_ignored_fixture": "passed: local/locale_file_loading_fixture.cpp; local/locale_file_loading_fixture.log",
+    "installed_table": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/lockit/englishauthentic.lan",
+      "bytes": 999674,
+      "sha256": "89a4e97f656b9e4372863af13312ea929ab234dbabbef3803146d7d02f6a4acd",
+      "records": 6864,
+      "unique_case_insensitive_keys": 6856,
+      "briefing_lookup": "Briefing"
+    },
+    "checked": [
+      "ordered variants before original",
+      "duplicate key overwrite order",
+      "numbered resolve separated from reads",
+      "base sidecar only",
+      "two-byte sidecar prefix",
+      "sidecar clear before failed open",
+      "partial-record map mutation",
+      "malformed pairs retain complete prefix",
+      "first-token EOF and embedded NUL",
+      "same-language and registration gates",
+      "forced reload retains absent keys",
+      "required GUI callback order",
+      "provider miss after successful probe is failure"
+    ]
+  },
+  "flow_repair": {
+    "report": "reports/locale_file_loading_flow_repair.json",
+    "call_site": "00aa0626",
+    "tail_start": "00aa062b",
+    "tail_end_exclusive": "00aa0679",
+    "tail_bytes_decoded": 78,
+    "ret_10h": "00aa0676",
+    "stored_function_body_tail_complete": false
+  },
+  "remaining": [
+    "Native ABI/layout and pooled allocations",
+    "Actual GUI tree refresh and singleton ownership",
+    "Sidecar prefix/pair semantic meaning",
+    "Original diagnostics/exception behavior and undefined malformed-input handling",
+    "Game runtime validation"
+  ],
+  "source_sha256": {
+    "include/bsp/locale_tables.hpp": "d329dab131890e42439951c914b770f7f762604218fefe898fa0c0890dfd7f72",
+    "src/locale_tables.cpp": "7022af9ed43b107e7724bc6eb2fdbdf8b651cf0288da0cfedcf402ba9407c603"
+  }
+}
