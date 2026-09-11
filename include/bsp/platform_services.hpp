@@ -9,6 +9,8 @@
 
 namespace bsp {
 
+struct XLiveManagerOwner;
+
 // Concrete native call composition. Lookup, reset and tick all reload the same
 // published input binding. InputFocusResetHost supplies only the genuine lazy
 // action-manager getter. The caller owns construction, registration, lifetime
@@ -20,6 +22,13 @@ public:
     PlatformServices(Win32PlatformState&, PlatformCursorGlobals,
         InputFocusBackendState* volatile& current_input,
         XLiveSystemPumpContext* volatile& current_online,
+        InputFocusResetHost&, InputFocusDeviceHost&,
+        PlatformApplicationServiceHost&, XLiveLibrary&) noexcept;
+    // Full owner construction publishes this one F8ABE8 slot. Every lookup
+    // derives the current context from that owner, including callback changes.
+    PlatformServices(Win32PlatformState&, PlatformCursorGlobals,
+        InputFocusBackendState* volatile& current_input,
+        XLiveManagerOwner* volatile& current_online_owner,
         InputFocusResetHost&, InputFocusDeviceHost&,
         PlatformApplicationServiceHost&, XLiveLibrary&) noexcept;
     bool pretranslate(MSG&) override;
@@ -36,10 +45,12 @@ public:
 private:
     InputFocusBackendState* current_backend_00f8bbf4() override;
     InputTickState& input_manager_004bec00() override;
+    XLiveSystemPumpContext* current_online_context() const noexcept;
     Win32PlatformState& platform_;
     PlatformCursorGlobals cursor_;
     InputFocusBackendState* volatile& input_;
-    XLiveSystemPumpContext* volatile& online_;
+    XLiveSystemPumpContext* volatile* online_{};
+    XLiveManagerOwner* volatile* online_owner_{};
     InputFocusResetHost& reset_;
     InputFocusDeviceHost& devices_;
     PlatformApplicationServiceHost& application_;

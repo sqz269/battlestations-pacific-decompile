@@ -1,0 +1,82 @@
+{
+  "packet": "orch3_runtime_composition_f",
+  "branch": "agent/orch3-20260910",
+  "worker_commits": {
+    "updates": "17bd0ec",
+    "owner": "5d37c79",
+    "enumeration": "302bbc1"
+  },
+  "integrated_commits": [
+    "29f92ce",
+    "573f922",
+    "848985b"
+  ],
+  "complete_normal_bodies": 19,
+  "separate_value_projections": [
+    "004c5e60"
+  ],
+  "worker_reports": [
+    "reports/xlive_updates.json",
+    "reports/xlive_manager_owner.json",
+    "reports/input_enumeration.json"
+  ],
+  "composition": [
+    "PlatformServices reloads the canonical XLiveManagerOwner slot and derives its same pump context",
+    "RecoveredXLiveGameServices composes existing LocaleTextResolver with recovered update helpers",
+    "XLiveLibrary forwards actual ordinal5022 with recovered 0x218 output layout",
+    "Explicit absolute-path dependencies held until XLive unload and cleaned after failed construction"
+  ],
+  "validation": {
+    "win32_release": true,
+    "existing_ctests_passed": 2,
+    "worker_native_seed_matches_each": 8,
+    "concrete_service_compile_and_link": true,
+    "actual_xlive_library_load": true,
+    "actual_5030_wm_null_result": false,
+    "actual_xlive_probe_exit": 0,
+    "sdk_initialized": false,
+    "registry_or_updater_called": false,
+    "live_input_enumeration": false,
+    "gameplay": false,
+    "sdk_data_formats": {
+      "mouse_objects_matched": 11,
+      "keyboard_objects_matched": 256
+    },
+    "logs": [
+      "local/runtime-composition-f-build.log",
+      "local/runtime-composition-f-link-probe.log",
+      "local/xlive-private-adapter-probe.out",
+      "local/xlive-private-adapter-probe.err"
+    ]
+  },
+  "ghidra": {
+    "new_functions": 1,
+    "call_flow_gaps_repaired": 6,
+    "callee_no_return_changed": false,
+    "names_applied_and_readback_matched": 20,
+    "exports_refreshed": 21,
+    "saved": true,
+    "reports": [
+      "reports/orch3_input_function_definitions_f.json",
+      "reports/orch3_owner_input_flow_repairs_f.json",
+      "reports/orch3_runtime_annotations_f.json"
+    ]
+  },
+  "private_runtime": {
+    "source": "bundled redist/gfwlivesetup.exe CAB at offset0x8c00, then pkg/xLiveRedist.msi / XLive.cab",
+    "dll_sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+    "credential_sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+    "extracted_signatures_valid": true,
+    "game_or_windows_installation_changed": false,
+    "explicit_preload_required_by_observed_probe": true,
+    "system_copy_preference_cause": "unresolved"
+  },
+  "remaining_contracts": [
+    "Separately owned bsp_game executable host has not been wired to this composition",
+    "Real startup SDK initialization, renderer bindings, callbacks and local IPC services",
+    "Joysticks, lazy input owner and explicit native COM lifetime binding",
+    "Async SDK operation lifetimes and original native teardown omissions",
+    "Locale resolver still requires loaded tables and actual context/CRT host",
+    "Typed C++ APIs are not original ABI replacements; undefined native outputs use documented guards"
+  ]
+}

@@ -1,4 +1,5 @@
 #include "bsp/platform_services.hpp"
+#include "bsp/xlive_manager_owner.hpp"
 
 #include <stdexcept>
 
@@ -8,8 +9,24 @@ PlatformServices::PlatformServices(Win32PlatformState& platform,
     XLiveSystemPumpContext* volatile& online, InputFocusResetHost& reset,
     InputFocusDeviceHost& devices, PlatformApplicationServiceHost& application,
     XLiveLibrary& library) noexcept
-    : platform_(platform), cursor_(cursor), input_(input), online_(online),
+    : platform_(platform), cursor_(cursor), input_(input), online_(&online),
       reset_(reset), devices_(devices), application_(application), library_(library) {}
+
+PlatformServices::PlatformServices(Win32PlatformState& platform,
+    PlatformCursorGlobals cursor, InputFocusBackendState* volatile& input,
+    XLiveManagerOwner* volatile& online, InputFocusResetHost& reset,
+    InputFocusDeviceHost& devices, PlatformApplicationServiceHost& application,
+    XLiveLibrary& library) noexcept
+    : platform_(platform), cursor_(cursor), input_(input), online_owner_(&online),
+      reset_(reset), devices_(devices), application_(application), library_(library) {}
+
+XLiveSystemPumpContext* PlatformServices::current_online_context() const noexcept {
+    if (online_owner_) {
+        auto* owner = *online_owner_;
+        return owner ? &owner->context : nullptr;
+    }
+    return *online_;
+}
 
 bool PlatformServices::pretranslate(MSG& message) { return library_.pretranslate(message); }
 void PlatformServices::frame() {
@@ -19,7 +36,7 @@ void PlatformServices::update_cursor_focus_00becb20(bool loading) {
     update_platform_cursor_focus_00becb20(platform_, loading, cursor_, *this);
 }
 PlatformManagerFlags* PlatformServices::current_platform_manager_00f8abe8() noexcept {
-    auto* context = online_;
+    auto* context = current_online_context();
     return context ? &context->flags : nullptr;
 }
 const InputBindingDeviceGroups* PlatformServices::current_input_device_groups_00f8bbf4()
@@ -28,7 +45,7 @@ const InputBindingDeviceGroups* PlatformServices::current_input_device_groups_00
     return backend ? &backend->groups : nullptr;
 }
 void PlatformServices::pump_platform_manager_00a409f0(PlatformManagerFlags& flags) {
-    auto* context = online_;
+    auto* context = current_online_context();
     if (!context || &context->flags != &flags)
         throw std::logic_error("platform cursor requires the current online manager binding");
     pump_xlive_system_00a409f0(*context);
