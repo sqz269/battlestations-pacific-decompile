@@ -1,0 +1,3254 @@
+[
+  {
+    "name": "AAFlakBot",
+    "reader": "008fc6d0",
+    "stride": 32,
+    "allocation_size": 204,
+    "vtable": "00d17dec",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "GoodRatio",
+        "key_address": "00d17e44",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fc6fd",
+        "store_address": "008fc71a",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AngleErrMin",
+        "key_address": "00d17e38",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fc739",
+        "store_address": "008fc74d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AngleErrMin",
+        "key_address": "00d17e38",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fc769",
+        "store_address": "008fc77d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AngleErrBad",
+        "key_address": "00d17e2c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "008fc799",
+        "store_address": "008fc7ad",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DistErrMin",
+        "key_address": "00d17e20",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 28,
+        "lookup_address": "008fc7c9",
+        "store_address": "008fc7dd",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DistErrMax",
+        "key_address": "00d17e14",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 32,
+        "lookup_address": "008fc7f9",
+        "store_address": "008fc80d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DistErrBad",
+        "key_address": "00d17e08",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 36,
+        "lookup_address": "008fc829",
+        "store_address": "008fc83d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "BulletThrowMul",
+        "key_address": "00d17df8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 40,
+        "lookup_address": "008fc859",
+        "store_address": "008fc86d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "TailGunnerBot",
+    "reader": "008fca10",
+    "stride": 36,
+    "allocation_size": 228,
+    "vtable": "00d17e50",
+    "rows": [
+      {
+        "kind": "float_default",
+        "key": "AimPeriodMin",
+        "key_address": "00d17ecc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fca3d",
+        "store_address": "008fca65",
+        "fallback_bits": 1045220557,
+        "fallback_address": "00ce54a0",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "AimPeriodMax",
+        "key_address": "00d17ebc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fca84",
+        "store_address": "008fcaa2",
+        "fallback_bits": 1056964608,
+        "fallback_address": "00ce3800",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "AngleError",
+        "key_address": "00d17eb0",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fcabe",
+        "store_address": "008fcadc",
+        "fallback_bits": 1069547520,
+        "fallback_address": "00ce380c",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "ShootRange",
+        "key_address": "00d17ea4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "008fcaf8",
+        "store_address": "008fcb16",
+        "fallback_bits": 1145569280,
+        "fallback_address": "00ce3950",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "BulletThrowMul",
+        "key_address": "00d17df8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 28,
+        "lookup_address": "008fcb32",
+        "store_address": "008fcb4c",
+        "fallback_bits": 1065353216,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "SectionTargetChance",
+        "key_address": "00d17e90",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 32,
+        "lookup_address": "008fcb68",
+        "store_address": "008fcb7c",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "EngineRoomWeight",
+        "key_address": "00d17e7c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 36,
+        "lookup_address": "008fcb98",
+        "store_address": "008fcbac",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "MagazineWeight",
+        "key_address": "00d17e6c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 40,
+        "lookup_address": "008fcbc8",
+        "store_address": "008fcbdc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "FueltankWeight",
+        "key_address": "00d17e5c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 44,
+        "lookup_address": "008fcbf8",
+        "store_address": "008fcc0c",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "AAGunnerBot",
+    "reader": "008fcd60",
+    "stride": 16,
+    "allocation_size": 108,
+    "vtable": "00d17edc",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "AngleDiffErrorRatio",
+        "key_address": "00d17f0c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fcd8d",
+        "store_address": "008fcdaa",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "Dist2AngleErrRatio",
+        "key_address": "00d17ef8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fcdc9",
+        "store_address": "008fcddd",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "ConstAngleError",
+        "key_address": "00d17ee8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fcdf9",
+        "store_address": "008fce0d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "BulletThrowMul",
+        "key_address": "00d17df8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "008fce29",
+        "store_address": "008fce3d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "PilotBot",
+    "reader": "009973b0",
+    "stride": 584,
+    "allocation_size": 3516,
+    "vtable": "00d17de0",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "DiveBombTargetHError",
+        "key_address": "00d1f2e4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 60,
+        "lookup_address": "009973e4",
+        "store_address": "00997411",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombTargetVError",
+        "key_address": "00d1f2cc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 64,
+        "lookup_address": "0099742c",
+        "store_address": "00997443",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombCalcTargetPosError",
+        "key_address": "00d1f2b0",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 56,
+        "lookup_address": "00997462",
+        "store_address": "00997479",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombReleaseAlt",
+        "key_address": "00d1f29c",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 68,
+        "lookup_address": "00997498",
+        "store_address": "009974c5",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombReleaseAlt",
+        "key_address": "00d1f29c",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 72,
+        "lookup_address": "009974f5",
+        "store_address": "00997523",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "DiveBombNewReleaseMul",
+        "key_address": "00d1f284",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 76,
+        "lookup_address": "00997552",
+        "store_address": "00997573",
+        "fallback_bits": 1058642330,
+        "fallback_address": "00ce3d30",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombMaxPowerCtrl",
+        "key_address": "00d1f26c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 80,
+        "lookup_address": "00997592",
+        "store_address": "009975a9",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombMinPowerCtrl",
+        "key_address": "00d1f254",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 84,
+        "lookup_address": "009975c8",
+        "store_address": "009975df",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombMaxBrakeCtrl",
+        "key_address": "00d1f23c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 88,
+        "lookup_address": "009975fe",
+        "store_address": "00997615",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombMinBrakeCtrl",
+        "key_address": "00d1f224",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 92,
+        "lookup_address": "00997634",
+        "store_address": "0099764b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombAimPitchRatio",
+        "key_address": "00d1f20c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 96,
+        "lookup_address": "0099766a",
+        "store_address": "00997681",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombTargetPointSelectPrec",
+        "key_address": "00d1f1ec",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 100,
+        "lookup_address": "009976a0",
+        "store_address": "009976b7",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombAimPrecDist",
+        "key_address": "00d1f1d8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 104,
+        "lookup_address": "009976d6",
+        "store_address": "009976ed",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombAimPrecMul",
+        "key_address": "00d1f1c4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 108,
+        "lookup_address": "0099770c",
+        "store_address": "00997723",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombAimPrecPullPlus",
+        "key_address": "00d1f1ac",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 112,
+        "lookup_address": "00997742",
+        "store_address": "00997759",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombAimPrecPullMinus",
+        "key_address": "00d1f190",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 116,
+        "lookup_address": "00997778",
+        "store_address": "0099778f",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombThrowMul",
+        "key_address": "00d1f17c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 120,
+        "lookup_address": "009977ae",
+        "store_address": "009977c5",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombSectionDamageChance",
+        "key_address": "00d1f160",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 124,
+        "lookup_address": "009977e4",
+        "store_address": "009977fb",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombEngineRoomWeight",
+        "key_address": "00d1f144",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 128,
+        "lookup_address": "0099781a",
+        "store_address": "00997831",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombMagazineWeight",
+        "key_address": "00d1f12c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 132,
+        "lookup_address": "00997853",
+        "store_address": "0099786a",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DiveBombFueltankWeight",
+        "key_address": "00d1f114",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 136,
+        "lookup_address": "0099788c",
+        "store_address": "009978a3",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeSectionDamageChance",
+        "key_address": "00d1f0f8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 140,
+        "lookup_address": "009978c5",
+        "store_address": "009978dc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeEngineRoomWeight",
+        "key_address": "00d1f0dc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 144,
+        "lookup_address": "009978fe",
+        "store_address": "00997915",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeMagazineWeight",
+        "key_address": "00d1f0c4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 148,
+        "lookup_address": "00997937",
+        "store_address": "0099794e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeFueltankWeight",
+        "key_address": "00d1f0ac",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 152,
+        "lookup_address": "00997970",
+        "store_address": "00997987",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeTargetPrecision",
+        "key_address": "00d1f094",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 156,
+        "lookup_address": "009979a9",
+        "store_address": "009979c0",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeTargetHError",
+        "key_address": "00d1f07c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 160,
+        "lookup_address": "009979e2",
+        "store_address": "009979f9",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeTargetVError",
+        "key_address": "00d1f064",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 164,
+        "lookup_address": "00997a1b",
+        "store_address": "00997a32",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeTargetProjTimeError",
+        "key_address": "00d1f048",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 168,
+        "lookup_address": "00997a54",
+        "store_address": "00997a6b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeManeuverPrecisionTimer",
+        "key_address": "00d1f028",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 180,
+        "lookup_address": "00997a8d",
+        "store_address": "00997aa4",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeManeuverPrecisionMul",
+        "key_address": "00d1f008",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 172,
+        "lookup_address": "00997ac6",
+        "store_address": "00997af4",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "KamikazeManeuverPrecisionMul",
+        "key_address": "00d1f008",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 176,
+        "lookup_address": "00997b26",
+        "store_address": "00997b54",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpReleaseAlt",
+        "key_address": "00d1eff8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "00997b86",
+        "store_address": "00997b9d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpReleaseDistNear",
+        "key_address": "00d1efe4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "00997bbc",
+        "store_address": "00997bd3",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpReleaseDistFar",
+        "key_address": "00d1efd0",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "00997bf2",
+        "store_address": "00997c09",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpReleaseDropCloserMul",
+        "key_address": "00d1efb4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "00997c28",
+        "store_address": "00997c49",
+        "fallback_bits": 1058642330,
+        "fallback_address": "00ce3d30",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpFlikFlakTime",
+        "key_address": "00d1efa0",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 28,
+        "lookup_address": "00997c68",
+        "store_address": "00997c96",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpFlikFlakTime",
+        "key_address": "00d1efa0",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 32,
+        "lookup_address": "00997cc5",
+        "store_address": "00997cf3",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpCalcTargetPosError",
+        "key_address": "00d1ef88",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 36,
+        "lookup_address": "00997d22",
+        "store_address": "00997d39",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpTargetHError",
+        "key_address": "00d1ef74",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 40,
+        "lookup_address": "00997d58",
+        "store_address": "00997d6f",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpTargetVError",
+        "key_address": "00d1ef60",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 44,
+        "lookup_address": "00997d8e",
+        "store_address": "00997da5",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpTargetPointSelectPrec",
+        "key_address": "00d1ef44",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 48,
+        "lookup_address": "00997dc4",
+        "store_address": "00997ddb",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpThrowMul",
+        "key_address": "00d1ef34",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 52,
+        "lookup_address": "00997dfa",
+        "store_address": "00997e11",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "LevelBombTargetHError",
+        "key_address": "00d1ef1c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 184,
+        "lookup_address": "00997e30",
+        "store_address": "00997e47",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "LevelBombTargetVError",
+        "key_address": "00d1ef04",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 188,
+        "lookup_address": "00997e69",
+        "store_address": "00997e80",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "LevelBombCalcTargetPosError",
+        "key_address": "00d1eee8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 192,
+        "lookup_address": "00997ea2",
+        "store_address": "00997eb9",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "LevelBombTargetPointSelectPrec",
+        "key_address": "00d1eec8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 196,
+        "lookup_address": "00997edb",
+        "store_address": "00997ef2",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "LevelBombThrowMul",
+        "key_address": "00d1eeb4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 200,
+        "lookup_address": "00997f14",
+        "store_address": "00997f2b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DepthChargeTargetHError",
+        "key_address": "00d1ee9c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 204,
+        "lookup_address": "00997f4d",
+        "store_address": "00997f64",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DepthChargeTargetVError",
+        "key_address": "00d1ee84",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 208,
+        "lookup_address": "00997f86",
+        "store_address": "00997f9d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DepthChargeCalcTargetPosError",
+        "key_address": "00d1ee64",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 212,
+        "lookup_address": "00997fbf",
+        "store_address": "00997fd6",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DepthChargeCancelTargetDist",
+        "key_address": "00d1ee48",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 216,
+        "lookup_address": "00997ff8",
+        "store_address": "0099800f",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DepthChargeTargetPointSelectPrec",
+        "key_address": "00d1ee24",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 220,
+        "lookup_address": "00998031",
+        "store_address": "00998048",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DepthChargeThrowMul",
+        "key_address": "00d1ee10",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 224,
+        "lookup_address": "0099806a",
+        "store_address": "00998081",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimDistortAngle",
+        "key_address": "00d1ee00",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 556,
+        "lookup_address": "009980a3",
+        "store_address": "009980d1",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimDistortAngle",
+        "key_address": "00d1ee00",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 560,
+        "lookup_address": "00998103",
+        "store_address": "00998131",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimDistortChangeSpeed",
+        "key_address": "00d1ede8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 564,
+        "lookup_address": "00998166",
+        "store_address": "0099817d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimShootDistance",
+        "key_address": "00d1edd4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 572,
+        "lookup_address": "009981a5",
+        "store_address": "009981bc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimDontShootArea",
+        "key_address": "00d1edc0",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 568,
+        "lookup_address": "009981e4",
+        "store_address": "009981fb",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimShootTime",
+        "key_address": "00d1edb0",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 580,
+        "lookup_address": "00998220",
+        "store_address": "00998251",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimShootTime",
+        "key_address": "00d1edb0",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 576,
+        "lookup_address": "00998289",
+        "store_address": "009982b7",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimShootDelayTime",
+        "key_address": "00d1ed9c",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 588,
+        "lookup_address": "009982ef",
+        "store_address": "00998320",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AimShootDelayTime",
+        "key_address": "00d1ed9c",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 584,
+        "lookup_address": "0099835b",
+        "store_address": "0099838c",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "AimBulletThrowMul",
+        "key_address": "00d1ed88",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 592,
+        "lookup_address": "009983c7",
+        "store_address": "009983e4",
+        "fallback_bits": 1065353216,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeTooCloseDistance",
+        "key_address": "00d1ed70",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 228,
+        "lookup_address": "0099840c",
+        "store_address": "00998423",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeGoAwayDistance",
+        "key_address": "00d1ed58",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 232,
+        "lookup_address": "0099844b",
+        "store_address": "00998462",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeAttackAngle",
+        "key_address": "00d1ed44",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 236,
+        "lookup_address": "0099848a",
+        "store_address": "009984a1",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeTargetPointSelectPrec",
+        "key_address": "00d1ed28",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 240,
+        "lookup_address": "009984c9",
+        "store_address": "009984e0",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeSectionDamageChance",
+        "key_address": "00d1ed0c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 244,
+        "lookup_address": "00998508",
+        "store_address": "0099851f",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeEngineRoomWeight",
+        "key_address": "00d1ecf4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 248,
+        "lookup_address": "00998547",
+        "store_address": "0099855e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeMagazineWeight",
+        "key_address": "00d1ecdc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 252,
+        "lookup_address": "00998586",
+        "store_address": "0099859d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrafeFueltankWeight",
+        "key_address": "00d1ecc4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 256,
+        "lookup_address": "009985c5",
+        "store_address": "009985dc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeTooClose",
+        "key_address": "00d1ecb4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 260,
+        "lookup_address": "00998604",
+        "store_address": "0099861b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeGoAwayDistance",
+        "key_address": "00d1ec9c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 264,
+        "lookup_address": "00998643",
+        "store_address": "0099865a",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeAttackAngle",
+        "key_address": "00d1ec88",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 268,
+        "lookup_address": "00998682",
+        "store_address": "00998699",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeTargetPrec",
+        "key_address": "00d1ec74",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 272,
+        "lookup_address": "009986c1",
+        "store_address": "009986df",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeFireAngle",
+        "key_address": "00d1ec64",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 284,
+        "lookup_address": "00998700",
+        "store_address": "00998717",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeHomingAngle",
+        "key_address": "00d1ec50",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 276,
+        "lookup_address": "0099873f",
+        "store_address": "00998756",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeRepeatTime",
+        "key_address": "00d1ec3c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 280,
+        "lookup_address": "0099877b",
+        "store_address": "00998792",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeFireDist",
+        "key_address": "00d1ec2c",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 288,
+        "lookup_address": "009987b7",
+        "store_address": "009987e5",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeFireDist",
+        "key_address": "00d1ec2c",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 292,
+        "lookup_address": "0099881a",
+        "store_address": "0099884b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeFireDist",
+        "key_address": "00d1ec2c",
+        "scope": "root",
+        "array_index": 3,
+        "offset": 296,
+        "lookup_address": "00998883",
+        "store_address": "009988b1",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeThrowMul",
+        "key_address": "00d1ec1c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 300,
+        "lookup_address": "009988e9",
+        "store_address": "00998900",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeSectionDamageChance",
+        "key_address": "00d1ec00",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 304,
+        "lookup_address": "00998928",
+        "store_address": "0099893f",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeEngineRoomWeight",
+        "key_address": "00d1ebe8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 308,
+        "lookup_address": "00998967",
+        "store_address": "0099897e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeMagazineWeight",
+        "key_address": "00d1ebd0",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 312,
+        "lookup_address": "009989a6",
+        "store_address": "009989bd",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "StrikeFueltankWeight",
+        "key_address": "00d1ebb8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 316,
+        "lookup_address": "009989e5",
+        "store_address": "009989fc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DogfightFollowDist",
+        "key_address": "00d1eba4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 536,
+        "lookup_address": "00998a24",
+        "store_address": "00998a3b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DogfightBoringTime",
+        "key_address": "00d1eb90",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 540,
+        "lookup_address": "00998a63",
+        "store_address": "00998a7a",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DogfightAvoidTime",
+        "key_address": "00d1eb7c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 544,
+        "lookup_address": "00998aa2",
+        "store_address": "00998ab9",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DogfightTurnAfterChance",
+        "key_address": "00d1eb64",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 548,
+        "lookup_address": "00998ae1",
+        "store_address": "00998af8",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DogfightManeuverChangeTime",
+        "key_address": "00d1eb48",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 552,
+        "lookup_address": "00998b20",
+        "store_address": "00998b37",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "RocketCheckTime",
+        "key_address": "00d1eb38",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 320,
+        "lookup_address": "00998b5f",
+        "store_address": "00998b90",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "RocketCheckTime",
+        "key_address": "00d1eb38",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 324,
+        "lookup_address": "00998bcb",
+        "store_address": "00998bfc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700",
+          "0x00b65f50"
+        ]
+      },
+      {
+        "kind": "scope",
+        "key": "Rocket_SmallPlane",
+        "key_address": "00d1eb24",
+        "lookup_address": "00998c4c",
+        "scope": "root",
+        "assign_address": "00998c5e"
+      },
+      {
+        "kind": "float",
+        "key": "RocketChance",
+        "key_address": "00d1eb14",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 328,
+        "lookup_address": "00998c87",
+        "store_address": "00998c9b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 332,
+        "lookup_address": "00998cc5",
+        "store_address": "00998cd9",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackAngle",
+        "key_address": "00d1eb08",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 368,
+        "lookup_address": "00998d03",
+        "store_address": "00998d17",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackTime",
+        "key_address": "00d1eafc",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 356,
+        "lookup_address": "00998d41",
+        "store_address": "00998d55",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "HomingAngle",
+        "key_address": "00d1eaf0",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 372,
+        "lookup_address": "00998d7f",
+        "store_address": "00998d93",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "int",
+        "key": "NumRockets",
+        "key_address": "00d1eae4",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 360,
+        "lookup_address": "00998dbd",
+        "store_address": "00998ddd",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00bf7420",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "RocketDelay",
+        "key_address": "00d1ead8",
+        "scope": "Rocket_SmallPlane",
+        "array_index": 0,
+        "offset": 364,
+        "lookup_address": "00998e00",
+        "store_address": "00998e14",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "scope",
+        "key": "Rocket_LargePlane",
+        "key_address": "00d1eac4",
+        "lookup_address": "00998e3c",
+        "scope": "root",
+        "assign_address": "00998e4e"
+      },
+      {
+        "kind": "float",
+        "key": "RocketChance",
+        "key_address": "00d1eb14",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 380,
+        "lookup_address": "00998e77",
+        "store_address": "00998e8b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 388,
+        "lookup_address": "00998eb5",
+        "store_address": "00998ec9",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackAngle",
+        "key_address": "00d1eb08",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 420,
+        "lookup_address": "00998ef3",
+        "store_address": "00998f07",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackTime",
+        "key_address": "00d1eafc",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 408,
+        "lookup_address": "00998f31",
+        "store_address": "00998f45",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "HomingAngle",
+        "key_address": "00d1eaf0",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 424,
+        "lookup_address": "00998f6f",
+        "store_address": "00998f83",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "int",
+        "key": "NumRockets",
+        "key_address": "00d1eae4",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 412,
+        "lookup_address": "00998fad",
+        "store_address": "00998fcd",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00bf7420",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "RocketDelay",
+        "key_address": "00d1ead8",
+        "scope": "Rocket_LargePlane",
+        "array_index": 0,
+        "offset": 416,
+        "lookup_address": "00998ff0",
+        "store_address": "00999004",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "scope",
+        "key": "Rocket_Ship",
+        "key_address": "00d1eab8",
+        "lookup_address": "0099902c",
+        "scope": "root",
+        "assign_address": "0099903e"
+      },
+      {
+        "kind": "float",
+        "key": "RocketChance",
+        "key_address": "00d1eb14",
+        "scope": "Rocket_Ship",
+        "array_index": 0,
+        "offset": 432,
+        "lookup_address": "00999067",
+        "store_address": "0099907b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "Rocket_Ship",
+        "array_index": 1,
+        "offset": 444,
+        "lookup_address": "009990a5",
+        "store_address": "009990d2",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "Rocket_Ship",
+        "array_index": 2,
+        "offset": 448,
+        "lookup_address": "00999110",
+        "store_address": "0099913d",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "Rocket_Ship",
+        "array_index": 3,
+        "offset": 452,
+        "lookup_address": "0099917b",
+        "store_address": "009991a8",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackAngle",
+        "key_address": "00d1eb08",
+        "scope": "Rocket_Ship",
+        "array_index": 0,
+        "offset": 472,
+        "lookup_address": "009991e6",
+        "store_address": "009991fa",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackTime",
+        "key_address": "00d1eafc",
+        "scope": "Rocket_Ship",
+        "array_index": 0,
+        "offset": 460,
+        "lookup_address": "00999224",
+        "store_address": "00999238",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "HomingAngle",
+        "key_address": "00d1eaf0",
+        "scope": "Rocket_Ship",
+        "array_index": 0,
+        "offset": 476,
+        "lookup_address": "00999262",
+        "store_address": "00999276",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "int",
+        "key": "NumRockets",
+        "key_address": "00d1eae4",
+        "scope": "Rocket_Ship",
+        "array_index": 0,
+        "offset": 464,
+        "lookup_address": "009992a0",
+        "store_address": "009992c0",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00bf7420",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "RocketDelay",
+        "key_address": "00d1ead8",
+        "scope": "Rocket_Ship",
+        "array_index": 0,
+        "offset": 468,
+        "lookup_address": "009992e3",
+        "store_address": "009992f7",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "scope",
+        "key": "Rocket_Landfort",
+        "key_address": "00d1eaa8",
+        "lookup_address": "0099931f",
+        "scope": "root",
+        "assign_address": "00999331"
+      },
+      {
+        "kind": "float",
+        "key": "RocketChance",
+        "key_address": "00d1eb14",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 484,
+        "lookup_address": "0099935a",
+        "store_address": "0099936e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 508,
+        "lookup_address": "00999398",
+        "store_address": "009993ac",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackAngle",
+        "key_address": "00d1eb08",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 524,
+        "lookup_address": "009993d6",
+        "store_address": "009993ea",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AttackTime",
+        "key_address": "00d1eafc",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 512,
+        "lookup_address": "00999414",
+        "store_address": "00999428",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "HomingAngle",
+        "key_address": "00d1eaf0",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 528,
+        "lookup_address": "00999452",
+        "store_address": "00999466",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "int",
+        "key": "NumRockets",
+        "key_address": "00d1eae4",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 516,
+        "lookup_address": "00999490",
+        "store_address": "009994b0",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00bf7420",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "RocketDelay",
+        "key_address": "00d1ead8",
+        "scope": "Rocket_Landfort",
+        "array_index": 0,
+        "offset": 520,
+        "lookup_address": "009994d3",
+        "store_address": "009994e7",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ArtillerySubDirectorBot",
+    "reader": "008fcf30",
+    "stride": 40,
+    "allocation_size": 252,
+    "vtable": "00d17f20",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "MaxErrorRadius",
+        "key_address": "00d17fb4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fcf5d",
+        "store_address": "008fcf7b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "ErrorRangeMul",
+        "key_address": "00d17fa4",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fcf9a",
+        "store_address": "008fcfae",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "MinErrorMul",
+        "key_address": "00d17f98",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fcfca",
+        "store_address": "008fcfde",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "ApproachMulMin",
+        "key_address": "00d17f88",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "008fcffa",
+        "store_address": "008fd00e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "ApproachMulMax",
+        "key_address": "00d17f78",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 28,
+        "lookup_address": "008fd02a",
+        "store_address": "008fd03e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "DeviationMul",
+        "key_address": "00d17f68",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 32,
+        "lookup_address": "008fd05a",
+        "store_address": "008fd06e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AngleChange",
+        "key_address": "00d17f5c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 36,
+        "lookup_address": "008fd08a",
+        "store_address": "008fd09e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "ErrorDistIncStartTime",
+        "key_address": "00d17f44",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 40,
+        "lookup_address": "008fd0ba",
+        "store_address": "008fd0ce",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "ErrorDistIncFullTime",
+        "key_address": "00d17f2c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 44,
+        "lookup_address": "008fd0ea",
+        "store_address": "008fd0fe",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "BulletThrowMul",
+        "key_address": "00d17df8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 48,
+        "lookup_address": "008fd11a",
+        "store_address": "008fd12e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ArtilleryGunnerBot",
+    "reader": "008fd370",
+    "stride": 28,
+    "allocation_size": 180,
+    "vtable": "00d17fc4",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "MaxAngleError",
+        "key_address": "00d17fe8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fd39d",
+        "store_address": "008fd3c1",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "Power",
+        "key_address": "00d059bc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fd3e0",
+        "store_address": "008fd3f4",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TargetPointRefreshTime",
+        "key_address": "00d17fd0",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fd410",
+        "store_address": "008fd424",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "SectionTargetChance",
+        "key_address": "00d17e90",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "008fd440",
+        "store_address": "008fd454",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "EngineRoomWeight",
+        "key_address": "00d17e7c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 28,
+        "lookup_address": "008fd470",
+        "store_address": "008fd484",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "MagazineWeight",
+        "key_address": "00d17e6c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 32,
+        "lookup_address": "008fd4a0",
+        "store_address": "008fd4b4",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "FueltankWeight",
+        "key_address": "00d17e5c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 36,
+        "lookup_address": "008fd4d0",
+        "store_address": "008fd4e4",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "TorpedoBot",
+    "reader": "008fd640",
+    "stride": 20,
+    "allocation_size": 132,
+    "vtable": "00d17ff8",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "AngleErrMin",
+        "key_address": "00d17e38",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fd66d",
+        "store_address": "008fd68b",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AngleErrMax",
+        "key_address": "00d1802c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fd6aa",
+        "store_address": "008fd6be",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "FireTargetAccuracy",
+        "key_address": "00d18018",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fd6da",
+        "store_address": "008fd6ee",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "AnyTargetAccuracy",
+        "key_address": "00d18004",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "008fd70a",
+        "store_address": "008fd71e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "BulletThrowMul",
+        "key_address": "00d17df8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 28,
+        "lookup_address": "008fd73a",
+        "store_address": "008fd74e",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "DepthChargeBot",
+    "reader": "008fd880",
+    "stride": 20,
+    "allocation_size": 132,
+    "vtable": "00d18038",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "AttackDist",
+        "key_address": "00d06edc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "008fd8ad",
+        "store_address": "008fd8cb",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "BulletThrowMul",
+        "key_address": "00d17df8",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 16,
+        "lookup_address": "008fd8ea",
+        "store_address": "008fd8fe",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "ContinuousFireTime",
+        "key_address": "00d18050",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 20,
+        "lookup_address": "008fd91a",
+        "store_address": "008fd938",
+        "fallback_bits": 1056964608,
+        "fallback_address": "00ce3800",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "FireDelay",
+        "key_address": "00d18044",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 24,
+        "lookup_address": "008fd954",
+        "store_address": "008fd981",
+        "fallback_bits": 0,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66330",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "FireDelay",
+        "key_address": "00d18044",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 28,
+        "lookup_address": "008fd9ab",
+        "store_address": "008fd9dc",
+        "fallback_bits": 1056964608,
+        "fallback_address": "00ce3800",
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66330",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "NavigatorBot",
+    "reader": "009d53b0",
+    "stride": 36,
+    "allocation_size": 228,
+    "vtable": "00d217dc",
+    "rows": [
+      {
+        "kind": "float",
+        "key": "SubAttackDistMultiplier",
+        "key_address": "00d214dc",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 12,
+        "lookup_address": "009d53de",
+        "store_address": "009d53fc",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b66270",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpedoPredict",
+        "key_address": "00d214cc",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 16,
+        "lookup_address": "009d541b",
+        "store_address": "009d5442",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float",
+        "key": "TorpedoPredict",
+        "key_address": "00d214cc",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 20,
+        "lookup_address": "009d546c",
+        "store_address": "009d5494",
+        "fallback_bits": null,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66270",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpedoObservation",
+        "key_address": "00d214b8",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 28,
+        "lookup_address": "009d54bd",
+        "store_address": "009d54eb",
+        "fallback_bits": 1065353216,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66330",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpedoObservation",
+        "key_address": "00d214b8",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 32,
+        "lookup_address": "009d5514",
+        "store_address": "009d5546",
+        "fallback_bits": 1082130432,
+        "fallback_address": "00ce3d34",
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66330",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpedoObservationSubAddon",
+        "key_address": "00d2149c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 36,
+        "lookup_address": "009d556f",
+        "store_address": "009d558d",
+        "fallback_bits": 1073741824,
+        "fallback_address": "00ce3958",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpedoSpdErr",
+        "key_address": "00d2148c",
+        "scope": "root",
+        "array_index": 1,
+        "offset": 40,
+        "lookup_address": "009d55a9",
+        "store_address": "009d55d7",
+        "fallback_bits": 0,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66330",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpedoSpdErr",
+        "key_address": "00d2148c",
+        "scope": "root",
+        "array_index": 2,
+        "offset": 44,
+        "lookup_address": "009d5600",
+        "store_address": "009d562e",
+        "fallback_bits": 0,
+        "fallback_address": null,
+        "calls": [
+          "0x00b67800",
+          "0x00b67720",
+          "0x00b66330",
+          "0x00b67700",
+          "0x00b67700"
+        ]
+      },
+      {
+        "kind": "float_default",
+        "key": "TorpedoPredictReferenceLength",
+        "key_address": "00d2146c",
+        "scope": "root",
+        "array_index": 0,
+        "offset": 24,
+        "lookup_address": "009d5657",
+        "store_address": "009d5675",
+        "fallback_bits": 1120403456,
+        "fallback_address": "00ce3d08",
+        "calls": [
+          "0x00b67800",
+          "0x00b66330",
+          "0x00b67700"
+        ]
+      }
+    ]
+  }
+]
