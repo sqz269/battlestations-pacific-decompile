@@ -1,0 +1,322 @@
+{
+  "packet": "orch5_text_glyph_reference",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_glyph_reference.cpp",
+  "header": "include/bsp/gui_text_glyph_reference.hpp",
+  "shared_header": "include/bsp/gui_text_lifetime.hpp",
+  "documentation": "docs/GUI_TEXT_GLYPH_REFERENCE.md",
+  "reconstructed": [
+    {
+      "address": "00531130",
+      "name": "set_gui_text_glyph_reference_00531130",
+      "coverage": "partial_projection_canonical_typed_strings_and_borrowed_pointer_stores",
+      "end": "005311be",
+      "final_instruction": "005311bc",
+      "final_instruction_length": 3,
+      "abi": "ECX Text; three DWORD stack args UTF16 wrapper,listener,referenceText; RET0Ch",
+      "domain": "Source is same std::u16string object or distinct canonical string without embedded terminator. SAME retained owner runtime and live canonical companions. Nullable borrowed listener/reference.",
+      "excluded": "Actual004C53E0 pooled header resize/allocation/return callbacks, equal-length allocation behavior, raw header aliases, bytes after embedded terminator, native SEH/x86 ABI",
+      "operations": "Validate same owner/companion domains; self-object string skips work; other source assignment precedes listener1AC then reference1B0 stores. No retain, geometry, mode or offset changes."
+    },
+    {
+      "address": "00531380",
+      "name": "begin_gui_text_prompt_glyph_offsets_00531380_fragment",
+      "additional_entry": "copy_gui_text_prompt_glyph_offsets_00531380_fragment",
+      "coverage": "partial_projection_observed_direct_offset_store_blocks",
+      "ranges": [
+        "00531903-00531935",
+        "00531989-005319a6",
+        "005319fa-00531a17",
+        "00531a6b-00531a88"
+      ],
+      "end": "00531af1",
+      "final_instruction": "00531af1",
+      "final_instruction_length": 1,
+      "abi": "Containing native screen ECX; no args;RET",
+      "excluded": "All other screen setup, callback-text producer calls, precedingAA6BC0(0,0), following current50, temporary storage/EH cleanup",
+      "operations": "First block FLDZ/FDIV liveCEC380; byte1B4=1 before x floatspill; store1B8 then currentCED318 into1BC; return same capturedx for later blocks across callbacks; C++ metadata marked only after both stores."
+    },
+    {
+      "address": "00ab98f0",
+      "name": "position_gui_text_glyph_child_00ab98f0_fragment",
+      "coverage": "partial_projection_actual_owner_final_position_only",
+      "ranges": [
+        "00ab9ec2-00ab9fad"
+      ],
+      "end": "00ab9fc2",
+      "final_instruction": "00ab9fc0",
+      "final_instruction_length": 3,
+      "abi": "Containing ECXText; ten DWORD stackargs;RET28h",
+      "precondition": "Actual child creation, glyph-vector append, model clone/bind, buffer ensure, all styles, recursive fullcontent/current50, attachment and current30 pivot have already completed. Same live originalarg2 float3 and canonical parent/child/runtime.",
+      "excluded": "All operations beforeAB9EC2, including optionalchildAB9D33..AB9EC1; nativeSEH and drop-inABI",
+      "operations": "Resolve current reference through same runtime and companion association; existing resolved-position arithmetic; live mode/offsets or reloadedreference currenttextlength; exactx87 localspills including latearg2.x normalization; existinginverse transform -> actual ownerrecompose -> actualbounds.",
+      "existing_arithmetic": "resolved_position/local_position_for_resolved from gui_widget; inherited numerical limits remain; no floating-trap parity claim."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0053114a",
+      "native": "004c53e0",
+      "function": "00531130",
+      "operation": "Native source wrapper length then( length,1 preserve);RET8. Callee fullbody read; C++ typed string projection excludes actual pooled resize callbacks."
+    },
+    {
+      "address": "00ab9ecd",
+      "native": "00aa6750",
+      "function": "00ab98f0",
+      "operation": "Current reference Text from liveparent1B0, outputfloat3;RET4; existing resolved_position over SAME owner transform"
+    },
+    {
+      "address": "00ab9fa9",
+      "native": "00aa8240",
+      "function": "00ab98f0",
+      "operation": "Existing child receivescomputedresolvedfloat3;RET4; sameowner inverseposition then actualrecompose/bounds"
+    },
+    {
+      "address": "00aa826c",
+      "native": "00aa6750",
+      "function": "00aa8240",
+      "operation": "Existing inverse transform consumes currentparent pivot before its recursive resolvedposition;RET4"
+    },
+    {
+      "address": "00aa82ce",
+      "native": "00aa7220",
+      "function": "00aa8240",
+      "operation": "Parented branch after localpositionstores; actualownerrecompose; noargsRET"
+    },
+    {
+      "address": "00aa82d5",
+      "native": "00aa70e0",
+      "function": "00aa8240",
+      "operation": "AFTER recompose, actualboundsrefresh with currentbounds gate/currentnode; noargsRET"
+    },
+    {
+      "address": "00aa8302",
+      "native": "00aa7220",
+      "function": "00aa8240",
+      "operation": "No-parent branch after directpositionstores;actualrecompose;noargsRET"
+    },
+    {
+      "address": "00aa8309",
+      "native": "00aa70e0",
+      "function": "00aa8240",
+      "operation": "No-parent branch actualboundsrefresh afterrecompose;noargsRET"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "005318f2",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX button fromscreen28/2C/30/34; args(substitution UTF16wrapper,screen+10 listener,samebuttonText reference);RET0Ch"
+    },
+    {
+      "address": "0053196f",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX button fromscreen28/2C/30/34; args(substitution UTF16wrapper,screen+10 listener,samebuttonText reference);RET0Ch"
+    },
+    {
+      "address": "005319e0",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX button fromscreen28/2C/30/34; args(substitution UTF16wrapper,screen+10 listener,samebuttonText reference);RET0Ch"
+    },
+    {
+      "address": "00531a51",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX button fromscreen28/2C/30/34; args(substitution UTF16wrapper,screen+10 listener,samebuttonText reference);RET0Ch"
+    },
+    {
+      "address": "0054d13d",
+      "native": "00531130",
+      "function": "0054c050",
+      "operation": "ECX loopText[ESI], ESI startsowner48/count5; args(wrapper,EBP listener,sameText reference);RET0Ch; full register provenance"
+    },
+    {
+      "address": "005d2b03",
+      "native": "00531130",
+      "function": "005d26d0",
+      "operation": "ECX screenText20/24/28; args(wrapper,screen+C listener,sameText reference);RET0Ch"
+    },
+    {
+      "address": "005d2b50",
+      "native": "00531130",
+      "function": "005d26d0",
+      "operation": "ECX screenText20/24/28; args(wrapper,screen+C listener,sameText reference);RET0Ch"
+    },
+    {
+      "address": "005d2b91",
+      "native": "00531130",
+      "function": "005d26d0",
+      "operation": "ECX screenText20/24/28; args(wrapper,screen+C listener,sameText reference);RET0Ch"
+    },
+    {
+      "address": "0062168b",
+      "native": "00531130",
+      "function": "0061fbe0",
+      "operation": "ECXESI lastassignedfromEAX at62160C; args(wrapper,current[ESP+14] listener,sameESI Textreference);RET0Ch"
+    },
+    {
+      "address": "00aba1f8",
+      "native": "00ab98f0",
+      "function": "00ab9fd0",
+      "operation": "Native writer singleline caller: ten DWORD stackargs; actual2/5/6 same stablefloat3 pointer;RET28h; fullcallee5/6unused"
+    },
+    {
+      "address": "00aba730",
+      "native": "00ab98f0",
+      "function": "00aba270",
+      "operation": "Native writer wrapped caller: ten DWORD stackargs; actual2/5/6 same stablefloat3pointer;RET28h; fullcallee5/6unused"
+    }
+  ],
+  "surrounding_prompt_steps_unimplemented": [
+    {
+      "address": "005318fe",
+      "native": "00aa6bc0",
+      "function": "00531380",
+      "operation": "After00531130 re-fetch currentbutton and setbase borrowedDC=null then79=0 withargs(0,0);RET8; beforeoffsetfragment"
+    },
+    {
+      "address": "0053197b",
+      "native": "00aa6bc0",
+      "function": "00531380",
+      "operation": "After00531130 re-fetch currentbutton and setbase borrowedDC=null then79=0 withargs(0,0);RET8; beforeoffsetfragment"
+    },
+    {
+      "address": "005319ec",
+      "native": "00aa6bc0",
+      "function": "00531380",
+      "operation": "After00531130 re-fetch currentbutton and setbase borrowedDC=null then79=0 withargs(0,0);RET8; beforeoffsetfragment"
+    },
+    {
+      "address": "00531a5d",
+      "native": "00aa6bc0",
+      "function": "00531380",
+      "operation": "After00531130 re-fetch currentbutton and setbase borrowedDC=null then79=0 withargs(0,0);RET8; beforeoffsetfragment"
+    },
+    {
+      "address": "00531963",
+      "native": "00ab6b50",
+      "function": "00531380",
+      "operation": "Followingoffsetblock re-fetchcurrentbutton and current50(&whiteRGBA), TextprofileD5C6C8+50;RET4; notcalledbyoffsethelpers"
+    },
+    {
+      "address": "005319d4",
+      "native": "00ab6b50",
+      "function": "00531380",
+      "operation": "Followingoffsetblock re-fetchcurrentbutton and current50(&whiteRGBA), TextprofileD5C6C8+50;RET4; notcalledbyoffsethelpers"
+    },
+    {
+      "address": "00531a45",
+      "native": "00ab6b50",
+      "function": "00531380",
+      "operation": "Followingoffsetblock re-fetchcurrentbutton and current50(&whiteRGBA), TextprofileD5C6C8+50;RET4; notcalledbyoffsethelpers"
+    },
+    {
+      "address": "00531ab6",
+      "native": "00ab6b50",
+      "function": "00531380",
+      "operation": "Followingoffsetblock re-fetchcurrentbutton and current50(&whiteRGBA), TextprofileD5C6C8+50;RET4; notcalledbyoffsethelpers"
+    }
+  ],
+  "state_operations": [
+    {
+      "address": "0053117b",
+      "function": "00531130",
+      "operation": "Nonemptycopy branch storelistener1AC first; following531181 storereference1B0"
+    },
+    {
+      "address": "00531195",
+      "function": "00531130",
+      "operation": "Self-object branch storelistener1AC; following53119B storereference1B0"
+    },
+    {
+      "address": "005311af",
+      "function": "00531130",
+      "operation": "Emptycopy branch storelistener1AC; following5311B5 storereference1B0"
+    },
+    {
+      "address": "00531903",
+      "function": "00531380",
+      "operation": "FLDZ thenFDIV liveCEC380 at531905; mode1B4=BL at53190E BEFORE floatspill531914; x1B8store53191E thenliveCED318load531926/y1BCstore53192E"
+    },
+    {
+      "address": "00531989",
+      "function": "00531380",
+      "operation": "Secondmode; x1B8at53198F fromSAMEcapturedfirstlocal; y1BCat53199F loadedliveafterx"
+    },
+    {
+      "address": "005319fa",
+      "function": "00531380",
+      "operation": "Thirdmode; x1B8at531A00 fromSAMEcapturedfirstlocal; y1BCat531A10"
+    },
+    {
+      "address": "00531a6b",
+      "function": "00531380",
+      "operation": "Fourthmode; x1B8at531A71 fromSAMEcapturedfirstlocal; y1BCat531A81"
+    },
+    {
+      "address": "00ab9ed2",
+      "function": "00ab98f0",
+      "operation": "Livebyte1B4 branch onlyafterreference resolvedposition captured"
+    },
+    {
+      "address": "00ab9edb",
+      "function": "00ab98f0",
+      "operation": "Currentxoffsetload/spill; currentyoffsetload/spill at9EEA/9EF0; bothbefore sums"
+    },
+    {
+      "address": "00ab9f1f",
+      "function": "00ab98f0",
+      "operation": "Nonoffsetbranchreload CURRENT reference pointer beforelength==1comparison9F25"
+    },
+    {
+      "address": "00ab9f5e",
+      "function": "00ab98f0",
+      "operation": "Otherwise reload ORIGINALarg2 pointer thenreadx; subtractdouble26/dividedouble960/addreferencex; floatspill9F79 BEFORE xsubtraction9F81"
+    },
+    {
+      "address": "00ab9fa7",
+      "function": "00ab98f0",
+      "operation": "Current childECX tofinalAA8240 call; childcurrentparentinverse is preserved"
+    }
+  ],
+  "canonical_state": {
+    "reference_1b0": "Existing field now borrowed GuiWidgetOwner*, explicitnewC++ABI. No nativepointer reinterpretation. Validate SAMEruntime.owner(layout), Text/id3, owner's existingtext_lifetime and companionowneridentity.",
+    "listener_1ac": "Existing borrowed void*, no retain/release/type invention",
+    "offsets": "field_1b8 andfield_1bc have no initializers: nativeAB9650/ABB2C0 leavebothunwritten",
+    "validity": "glyph_offsets_written defaultfalse is C++ metadata only; trueafteractualproducerwritesbothfloats; mode/referenceassignmentdoesnotestablishvalidity",
+    "constructor_copy": "AB9650 clears1AC/1B0 andinitializesbyte1B4;ABB2C0 clears1AC/1B0 andcopiesbyte1B4 withoutoffsetstores",
+    "audit": "Beforechange, whole-worktree andparent/content/lifetimeworker source search found onlygeometrynullgate usingpointer_1B0; no casts/assignments outside existingnullfieldinitializer."
+  },
+  "register_provenance": {
+    "prompt_ebx": "Whole00531380 listing filter:EBX=1 at5313A8; no later replacement before allfourBL mode stores.",
+    "producer_ebx": "Whole00531130 listing:EBX=ECX originalText at531132; LEAEBX,[EBX]53115A is no-op; poponlyafterpointerstores.",
+    "final_parent_child": "FullAB98F0 filter:EDI originalparent survives;ESI actualchild fromAB9D54;EBX=1 byAB9D9D usedlengthcomparison. Originalarg2 slotS+60 never overwritten.",
+    "caller_621": "Full0061FBE0 ESI writes endwithtargetEAXat62160C before62168B."
+  },
+  "corrections": [
+    {
+      "was": "Native+1B0 had only an untyped borrowed void* projection and no canonical dereference convention.",
+      "is": "The same slot now borrows a GuiWidgetOwner* in the newC++ABI; resolve through existingruntime/companion association. Native rawpointers cannotbe casttoit.",
+      "evidence": "00531130 producer stores argument3; ninecallers passsameText;AB9D7C..9ECD reference accessesmodel/font/text/position; current-use audit."
+    },
+    {
+      "was": "Canonical Text lacked native-unwritten1B8/1BC storage and could notrepresent whether a producer established their values.",
+      "is": "Bothfloats remain uninitialized; separateC++ metadata guards reads. Firstpromptblock computes/spillsx, laterblocks reusecapturedx; yreloadfollows eachxstore.",
+      "evidence": "AB9650 andABB2C0 fullbodies;00531903..531A88 store blocks; fullEBXfilter."
+    }
+  ],
+  "verification": {
+    "strict_compile": "Passed MSVCWin32 C++17 /EHsc /W4 /WX /O2 /fp:strict for gui_text_glyph_reference.cpp plus unchanged gui_text_lifetime.cpp/gui_text_geometry.cpp, parentdependencyheaderoverlay",
+    "report_calls": "Passed stronger live verifier: 27 numeric call rows, 0 failures; four current50 indirect targets additionally grounded in Text profile D5C6C8",
+    "tests_added": 0,
+    "runtime_game": false,
+    "native_differential": false,
+    "limits": "Factorydisabled; no fulloptionalchildexecution; no rawUTF16allocationcallbacks/nativeABI/renderclaim; parentcombinedbuild"
+  }
+}
