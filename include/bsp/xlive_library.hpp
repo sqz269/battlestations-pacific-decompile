@@ -20,6 +20,9 @@ public:
 
     // IAT00CE25DC, thunk00C2F1D2, ordinal5030; BOOL __stdcall(MSG*).
     bool pretranslate(MSG& message);
+    // Borrowed HMODULE for the separately audited SDK forwarding adapter.
+    // The library and every pending SDK operation must outlive that adapter.
+    void* module_handle() const noexcept;
     void* notify_create_listener(std::uint64_t areas) override;
     bool notify_get_next(void*, std::uint32_t, std::uint32_t&, std::uint32_t&) override;
     XLiveAcceptedInvite invite_get_accepted_info(std::uint32_t) override;

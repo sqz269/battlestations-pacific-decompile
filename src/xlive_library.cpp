@@ -33,6 +33,7 @@ struct XLiveLibrary::Impl {
 XLiveLibrary::XLiveLibrary(const std::wstring& path)
     : impl_(std::make_unique<Impl>(path)) {}
 XLiveLibrary::~XLiveLibrary() = default;
+void* XLiveLibrary::module_handle() const noexcept { return impl_->module; }
 bool XLiveLibrary::pretranslate(MSG& message) {
     return impl_->call<BOOL>(5030, &message) != FALSE;
 }
