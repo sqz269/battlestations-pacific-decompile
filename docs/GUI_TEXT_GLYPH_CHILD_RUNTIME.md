@@ -95,3 +95,13 @@ convention replacement. Component boundaries such as actual renderer/font
 availability, supported content formats and positive-light ownership remain
 explicit. The recursive completion driver that links mapped-writer pending
 frames to this tail is a separate integration task.
+
+## Integration correction
+
+`docs/GUI_TEXT_CHILD_DRIVER.md` records the now-integrated recursive driver and
+source registration. Resume marks cleanup in progress before releasing the
+UTF16 allocation, preventing callbacks from repeating release/attachment.
+The content frame also guards same-frame driver and builder reentry. Combined
+Win32 compilation and both existing tests pass; see
+`reports/orch5_text_factory_batch.json`. Native-tail execution and game/render
+validation remain unperformed.

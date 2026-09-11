@@ -31,6 +31,10 @@
       "uncertainty": "Descriptive names are hypotheses. +34's semantic meaning and +54's payload meaning remain uninterpreted. Original x86 ABI wrappers and game execution are not supplied."
     }
   ],
+  "caller_steps": [
+    {"address": "00b725d6", "native": "00b85ef0", "function": "00b725a0", "evidence": "push source, ECX actual nonnull copied allocation"},
+    {"address": "00b74098", "native": "00b85ef0", "function": "00b73f50", "evidence": "flags26 mesh path pushes captured current source section"}
+  ],
   "validation": {
     "seed_bytes": "python tools/ghidra_export.py verify-seeds: eight seed windows match installed PE",
     "strict_compile": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /MD passed for changed source and focused probe",

@@ -32,9 +32,10 @@ void append_gui_widget_child_00aaa5a0(GuiWidgetOwnerRuntime& owners,
     // phase; a missing node must not undo the already completed GUI insertion.
     auto* const parent_node = owners.owner(parent).node_binding();
     auto* const child_node = owners.owner(child).node_binding();
-    if (!parent_node || !child_node)
-        throw std::logic_error("GUI append reached native parenting without both actual node owners");
-    set_native_node_parent_00b6e680(parenting, child_node->transform, &parent_node->transform);
+    if (!child_node)
+        throw std::logic_error("GUI append reached native parenting without its actual child node");
+    set_native_node_parent_00b6e680(parenting, child_node->transform,
+        parent_node ? &parent_node->transform : nullptr);
 }
 
 void set_gui_widget_listener_00aa6bc0(GuiWidgetOwner& owner, void* listener,

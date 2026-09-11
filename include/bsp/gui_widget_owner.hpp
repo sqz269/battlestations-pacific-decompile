@@ -26,6 +26,10 @@ public:
     // Current70 is required by recursive clip refresh. Profiles without an
     // established implementation fail explicitly, never silently complete it.
     virtual void refresh_clip70(GuiWidgetOwner&);
+    // Host-only preflight for retained C++ continuations before scalar deletion
+    // starts. Not another native slot or side effect. Types with pending frames
+    // reject deletion here; existing types have no such continuation metadata.
+    virtual void before_scalar_deletion4(GuiWidgetOwner&) {}
     // Existing base types use00AA8530; cGuiLayer overrides the current slot34.
     virtual void set_visible34(GuiWidgetOwner&, bool);
     // Base and supported Icon/FrameBox readers have no pre-base continuation.

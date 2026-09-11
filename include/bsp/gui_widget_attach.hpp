@@ -9,8 +9,9 @@ namespace bsp {
 // returned handle. No copy or second widget tree is made. Successful C++ vector
 // allocations are the domain; native std::list/SEH ABI is not reproduced.
 // On a later parenting exception the child stays published under the parent;
-// the consumed handle must not be reused. Both actual node owners are required
-// at the native call phase. No bounds, visibility or current74/78 is added.
+// the consumed handle must not be reused. The actual child node is required;
+// a null parent node selects the established native null-parent operation.
+// No bounds, visibility or current74/78 is added.
 void append_gui_widget_child_00aaa5a0(GuiWidgetOwnerRuntime&,
     NativeNodeParentingRuntime&, GuiLayoutWidget& parent,
     std::unique_ptr<GuiLayoutWidget>& detached_child);

@@ -49,7 +49,8 @@ void finish_native_gui_text_model_clone_00b752b0_fragment(
 // Acquired references belonging to the caller, not a second native owner.
 // All fields must initially be null. After construction, model retains the
 // native creator reference through all later effects. Mesh.mesh is nonnull
-// only between completed mesh cloning and consuming its creator reference.
+// after mesh construction/registration until consuming its creator reference,
+// including partially completed mesh copying after a later exception.
 // Exceptions preserve these publications; neither references nor native
 // effects are silently rolled back. Release through their canonical owners.
 struct NativeGuiTextModelCloneAcquired {

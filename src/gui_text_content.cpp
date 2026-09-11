@@ -203,7 +203,7 @@ GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
 
     text.measured_width = 0.0f; //00ABA95C, before child callbacks
     clear_gui_text_glyph_children_00ab80c0(
-        binding, e.buffers.widgets, e.buffers.parenting, e.calls); //00ABA964
+        binding, e.buffers.widgets, e.buffers.parenting, e.calls.glyph_child_calls()); //00ABA964
     auto* main_model = binding.widget.model_reference();
     if (!main_model || &main_model->model_owner().node != binding.widget.node_binding() ||
         &main_model->model_owner().environment.nodes != &e.buffers.parenting.nodes ||

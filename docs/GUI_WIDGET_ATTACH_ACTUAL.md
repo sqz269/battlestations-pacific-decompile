@@ -12,8 +12,9 @@ allocation handle. Null handles are inert. The API does not implement the
 native nonnull list-iterator insertion branch.
 
 At AAA616 the native loads parent+4C before child+4C. The implementation
-preserves that order after publishing the GUI links. Missing actual nodes fail
-at this phase and do not undo the list effects. It adds no bounds, visibility,
+preserves that order after publishing the GUI links. A missing actual child
+node fails at this phase and does not undo the list effects. A null parent
+node is valid and selects the established native null-parent path. It adds no bounds, visibility,
 construction74 or loaded78 call. Both vectors reserve before typed publication;
 host allocation exceptions and the original std::list/SEH ABI are excluded.
 Callbacks use the supplied same NativeNodeParentingRuntime, without another

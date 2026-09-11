@@ -20,6 +20,7 @@ void require_services(GuiTextRuntimeFactoryServices& s) {
         &content.wrapped.widgets == &b.widgets &&
         &content.wrapped.parenting == &b.parenting &&
         &content.wrapped.children == &s.children &&
+        &content.content.calls.glyph_child_calls() == &s.children &&
         &content.nonempty.style.widgets == &b.widgets,
         "Text factory requires the same canonical widget, buffer and child domains");
     require(&s.properties.font_names.names.actual_owners == &actual &&

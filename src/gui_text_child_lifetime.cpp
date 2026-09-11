@@ -58,6 +58,10 @@ void GuiTextChildDeletion::delete_text_child_virtual4(GuiLayoutWidget& child,
     if (lifetime->phase_ != GuiTextLifetime::Phase::live ||
         lifetime->scalar_phase_ != GuiTextScalarDeletionPhase::not_started)
         throw GuiTextDeletionBoundary("constructing, reentrant or suspended Text deletion is outside this interface");
+    // A canonical type implementation may retain mapped content or child70
+    // continuations. Reject their destruction before native phase/flag stores,
+    // resource release or child traversal; destructor-time detection is too late.
+    owner.implementation().before_scalar_deletion4(owner);
     // Flag1 must have real C++ ownership transport BEFORE running effects.
     // Attached storage stays in its parent's one list until native self-detach.
     const bool in_parent = child.parent && std::any_of(child.parent->children.begin(),

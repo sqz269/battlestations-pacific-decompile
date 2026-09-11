@@ -1,0 +1,55 @@
+{
+  "address": "00aba8d0",
+  "source": "src/gui_text_runtime_content.cpp",
+  "original_abi": "ECX Text; UTF16 wrapper stack; RET4; new C++ API only",
+  "scope": "Existing prefix/builders/post-tail plus optional actual child-tail ownership and recursive completion",
+  "host_steps": [
+    {
+      "address": "00aba964",
+      "native": "00ab80c0",
+      "function": "00aba8d0",
+      "contract": "Prefix clear uses same actual child deletion domain as constructor/wrapped builder."
+    },
+    {
+      "address": "00abab6a",
+      "native": "00aba270",
+      "function": "00aba8d0",
+      "contract": "Actual wrapped builder; outer frame retained until completion."
+    },
+    {
+      "address": "00abab78",
+      "native": "00ab9fd0",
+      "function": "00aba8d0",
+      "contract": "Actual single-line builder; outer frame retained until completion."
+    },
+    {
+      "address": "00aba1f8",
+      "native": "00ab98f0",
+      "function": "00ab9fd0",
+      "contract": "Saved original single-line child arguments, stable aliased float3."
+    },
+    {
+      "address": "00aba730",
+      "native": "00ab98f0",
+      "function": "00aba270",
+      "contract": "Saved wrapped child arguments; same stable float3 and original lowword height/codeunit."
+    },
+    {
+      "address": "00ab9e61",
+      "native": "00aba8d0",
+      "function": "00ab98f0",
+      "contract": "Actual recursive child content; final50 remains in existing submission before UTF16 release."
+    }
+  ],
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": "Independent bounded ownership/reentry reviews; call checks and combined build recorded in batch report.",
+  "remaining": [
+    "positive actual point-light arrays",
+    "undefined wrapped format/alignment",
+    "native failure/SEH and interrupted moved-builder exceptions",
+    "retained page loader for suspended properties",
+    "actual gameplay/render validation"
+  ]
+}

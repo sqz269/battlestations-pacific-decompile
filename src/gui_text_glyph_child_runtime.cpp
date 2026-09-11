@@ -204,6 +204,9 @@ GuiTextGlyphChildTailStatus resume_gui_text_glyph_child_tail_after_content(
         throw std::logic_error("glyph tail content resume requires its saved pending content phase");
     try {
         if (frame.implementation().has_pending_operation()) return frame.status;
+        // The UTF16 header stays unchanged after release. Mark this phase
+        // non-resumable BEFORE cleanup/attachment callbacks can reenter it.
+        frame.status = GuiTextGlyphChildTailStatus::domain_required;
         finish_after_content(frame);
         return frame.status;
     } catch (...) { return domain_failure(frame); }

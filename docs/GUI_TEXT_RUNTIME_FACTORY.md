@@ -173,3 +173,15 @@ source is separately strict-compiled because CMake registration is integrator
 owned. The integrator runs the combined build after registration. This packet
 adds no tests or runtime stubs. No
 native differential, gameplay, menu, or rendering validation is claimed.
+
+## Integration correction
+
+The parent integration registers this source with the actual Model/mesh clone
+and glyph-child tail, and adds the recursive completion driver described in
+`docs/GUI_TEXT_CHILD_DRIVER.md`. A locale comparator adapter returns the same
+concrete child-deletion transport from `glyph_child_calls()`; both the content
+prefix and factory validate/use that reference. The combined Win32 build passes
+both existing tests. The preceding worker-only compile and registration notes
+remain historical evidence; batch validation is in
+`reports/orch5_text_factory_batch.json`. Explicit unsupported/pending/native-ABI
+and gameplay boundaries remain unchanged.
