@@ -47,9 +47,10 @@ struct GuiMaterialBindingServices {
 void register_gui_clip_parameters_00aa9f10(GuiWidgetOwner&, MaterialCloneState&,
     const GuiMaterialBindingServices&);
 
-// Raw native accessors; allocation underlying node must cover through+183h.
+// Raw native accessors; +180 is geometry only in the actual model class.
+// A cGroup root stores its child-array capacity integer at the same offset.
 //00B74650 ECX node/model ->EAX bool, RET at00B7465B/1.
-bool gui_model_has_geometry_00b74650(const NativeNodeBinding&) noexcept;
+bool gui_model_has_geometry_00b74650(const NativeModelOwner&) noexcept;
 //00B72B40 ECX actual mesh ->DWORD+58, RET at00B72B43/1.
 std::uint32_t gui_mesh_element_count_00b72b40(const void* actual_mesh) noexcept;
 
@@ -57,6 +58,8 @@ std::uint32_t gui_mesh_element_count_00b72b40(const void* actual_mesh) noexcept;
 // color (and its existing alpha projection), then checks raw node+180 and
 // mesh+58. Only element0's SAME material diffuse quartet is written; no dirty
 // flag, child traversal, alpha multiplication or named-parameter registration.
+// Requires this runtime's canonical live model companion before any write.
+// An inherited +50 table entry alone does not validate a group-backed Screen.
 // Native ECX widget, stack float4 pointer, RET4 at00AA68E7/3.
 void set_gui_color_00aa6870(GuiWidgetOwner&, const float (&rgba)[4],
     const GuiMaterialBindingServices&);
@@ -66,6 +69,7 @@ void set_gui_color_00aa6870(GuiWidgetOwner&, const float (&rgba)[4],
 // widget's own current Color to current+50 (AA6870 for these supported types).
 // The services and their referenced actual storage must outlive callbacks and
 // every material registration. This does not create missing native resources.
+// Color publication rejects roots without a canonical model companion.
 void bind_gui_material_callbacks(GuiGeometryRuntimeServices&, GuiWidgetOwner&,
     GuiMaterialBindingServices);
 } // namespace bsp

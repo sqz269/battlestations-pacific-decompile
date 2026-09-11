@@ -82,9 +82,9 @@ void register_gui_clip_parameters_00aa9f10(GuiWidgetOwner& widget,
     }
 }
 
-bool gui_model_has_geometry_00b74650(const NativeNodeBinding& node) noexcept {
+bool gui_model_has_geometry_00b74650(const NativeModelOwner& model) noexcept {
     static_assert(sizeof(void*) == 4, "GUI native material access requires Win32");
-    return read_word<void*>(&node.storage, 0x180) != nullptr;
+    return read_word<void*>(&model.storage.node, 0x180) != nullptr;
 }
 std::uint32_t gui_mesh_element_count_00b72b40(const void* mesh) noexcept {
     return read_word<std::uint32_t>(mesh, 0x58);
@@ -92,12 +92,17 @@ std::uint32_t gui_mesh_element_count_00b72b40(const void* mesh) noexcept {
 
 void set_gui_color_00aa6870(GuiWidgetOwner& widget, const float (&rgba)[4],
     const GuiMaterialBindingServices& services) {
+    const auto* node = widget.node_binding();
+    auto* reference = widget.model_reference();
+    require(node && reference &&
+        &reference->model_owner().node == node &&
+        &reference->model_owner().storage.node == &node->storage &&
+        reference->model_owner().phase == NativeModelOwner::Phase::live,
+        "GUI color publication requires the same live canonical model; group roots are unsupported");
     // Native scalar DWORD copy order also handles the common self-source call.
     copy_color_words(widget.layout().color, rgba);
     std::memcpy(&widget.layout().transform.alpha, &widget.layout().color[3], sizeof(float));
-    const auto* node = widget.node_binding();
-    require(node != nullptr, "GUI color publication needs the same bound native node");
-    if (!gui_model_has_geometry_00b74650(*node)) return;
+    if (!gui_model_has_geometry_00b74650(reference->model_owner())) return;
     void* geometry = read_word<void*>(&node->storage, 0x180);
     if (gui_mesh_element_count_00b72b40(geometry) == 0) return;
     // Native reloads model geometry before resolving element zero.

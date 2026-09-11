@@ -114,3 +114,20 @@ Remaining required owners are explicit:
 Only after these actual services exist should callers install the callbacks
 and treat the GUI geometry path as connected. Installation itself is not proof
 of retained widget lifetime or an operational draw path.
+
+## Correction from docs/GUI_GEOMETRY_MATERIAL_INTEGRATION.md
+
+An inherited AA6870 slot does not make an arbitrary native node a model.
+AA5840's plain-page branch constructs a cGroup via B8F450/B8DB80 and supplies
+it to AC6600/AA6720. Its +180 field is the child-array capacity integer, while
+AA6870/B74650 interpret model+180 as geometry. The proven Icon/FrameBox geometry
+callers use model-backed child widgets. No arbitrary Screen color-call safety
+is inferred from the shared vtable entry.
+
+The integrated adapter therefore requires the same canonical live
+NativeModelReference before any color write, and the raw accessor accepts a
+NativeModelOwner. Roots without that companion are unsupported, including
+actual group roots. This host precondition bounds the recovered function; it
+does not add a native class check or claim that the original game calls this
+slot on a group root. Actual model-backed resource roots need their canonical
+association established before this adapter can support them.
