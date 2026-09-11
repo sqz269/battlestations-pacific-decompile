@@ -104,3 +104,11 @@ It retains exact bytes, disassembly, checks and source-provider hashes. The
 assigned report records the same boundary. This packet changes no C++ code,
 shared CMake, Ghidra annotations or metadata. No build, fixture, original-ABI
 compatibility or gameplay claim is made.
+
+
+Primary review verified all 43 worker pins and reread twenty guarded spans,
+1,753 bytes. The complete 461-instruction capture and dependency boundary
+were retained. B24BF0 received a descriptive name, with existing comments
+preserved and reviewed evidence appended, saved and re-exported. The
+read-only primary proof is `local/renderer_binding_reset_discovery_primary/`.
+No source body, runtime behavior or readiness was promoted by this review.

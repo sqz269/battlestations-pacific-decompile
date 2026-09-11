@@ -1,0 +1,18 @@
+[
+  {
+    "address": "00b60a10",
+    "before": {
+      "address": "00b60a10",
+      "function_name": "BSP_D3D9VertexLayout_CreateIfMissing",
+      "comment": "[BSP reconstruction 00b60a10]\nIf COM pointer+40h null, converts stored stream declarations with same cross-stream usage counters and END as00b60790, calls CreateVertexDeclaration then recomputes total stride. Conversion/API/stride path ported; diagnostics omitted and new API returns HRESULT/S_FALSE."
+    },
+    "after": {
+      "address": "00b60a10",
+      "evidence": "Full666-byte B60A10 including native four-byte alignment gap; ECXactualowner/no stack/RET, newEDXfixedcontext. Current owner+40 hit skips allotherfields/context. Capture unsigned owner+38 ONCE, copy existing owner+8+0Ci pointers into4slots, then signed captured traversal. Current declaration+0Cdata/+10count, 14usage DWORD counters and16packed element slots retain ordering; no stream append/release. Each stream full12-char VertexFormat diagnostic with state0 armed afterinitialcopy/recordidentity, record resize/second memcpy gated captured temporarylength only, support0108FEDC via actual sharedlifetime; state1 then exact captured normal releases, currentheader unwind providers. Terminator then currentrenderer/currentdeviceCOM+158 writes directly owner+40 ignoringHRESULT; full B47D60 rereads current owner list/count/strides. Strict main2CTests/8seeds;84workerpins,27currentfiles24literal2EOLonly1canonicalheaderupdate with all8mainprovidercode/relocs unchanged;8fresh spans803bytes. Unchanged fulloriginal666+stride40 versus actual main-library mutation sequence20788observablebytes plus protected-unusedfields/nullcontext earlyhit. Actual owningpool4allocations/4releases, current stream/declaration/renderer mutation, actualHAL CreateVertexDeclaration/GetDeclarationS_OK, postAPIcurrentstride123. Full0x5000arenas retained; only returned COM identity normalized; whole0x8AD4A0pool images retained but not equated.8exactarchive members254completeCOFFsections136library97linked sourceentries19originalrelocations5immutablepostimage phases68import6COMrecords. Full string/diagnostic/support/pool providers shared through fixedcontext ABI bridges, not independent originalinternals. NativeFH3 states static; no injectedexception/failedHRESULT, invalidscratchdomain, nativeSEH/callerABI/device-recreate-loop/game claim. reports/native_hardware_layout_create_if_missing_audit.json",
+      "old_name": "BSP_D3D9VertexLayout_CreateIfMissing",
+      "name": "BSP_D3D9VertexLayout_CreateIfMissing",
+      "saved_body_end": "00b60ca9"
+    },
+    "status": "applied"
+  }
+]

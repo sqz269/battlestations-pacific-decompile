@@ -122,3 +122,32 @@ observations checked against the loaded DLL files.
 Failure HRESULTs and injected exceptions were not tested; cleanup states were
 checked statically. This fixture does not establish native caller ABI,
 out-of-domain behavior, a complete device-recreation loop or gameplay behavior.
+
+
+## Primary main-library integration
+
+All entries are registered in main. Strict MSVC Win32 compilation, both existing
+CTests and all eight native seeds passed.
+
+The primary verified all 84 worker artifacts and 27 current source/header
+files: 24 literal matches, two with CRLF/LF differences only, and the canonical
+camera_transform header update. Every linked provider object retains the same
+code and relocations. Eight fresh guarded spans matched all 803 original bytes.
+
+The unchanged original-parent/stride versus full-library sequence passed again,
+comparing 20,788 observable bytes plus the protected early hit. Real HAL
+CreateVertexDeclaration and GetDeclaration returned S_OK; current stream data,
+renderer and post-API stride mutations agreed. Only the returned COM identity
+is normalized in the two complete arena images. Complete pool images are
+retained as evidence; their allocator histories are not asserted equal.
+
+All eight exact archive members, 254 complete COFF sections (136 library),
+97 source entries, nineteen original relocation operands and five immutable
+runtime postimage stages passed. The original cleanup maps remain static
+evidence: failed HRESULTs, injected exceptions and native SEH ABI are untested.
+
+The actual main library SHA256 is `afebfdb70e5013aa459ff7bdd15a27db70cc2e28126a6ce3229e43375a5f68ac`.
+The read-only primary bundle is `local/hardware_layout_create_primary/`, seal
+`e3de6d249a776dc1bdaea8e610774b942146781cf314fd0c36bc3dfbcf1f56d8`. Reviewed evidence was appended to preserved
+Ghidra names/comments, saved, exported and registered in the sharded ledger.
+Full original caller ABI and gameplay remain unvalidated.

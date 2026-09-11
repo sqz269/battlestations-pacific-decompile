@@ -404,5 +404,47 @@
     "No generic callbacks, invented retained profiles, null-only terminal or semantic binding substitution.",
     "No claim that previous bounded writer exclusions establish whole-program/lifetime absence.",
     "Read-only target analysis; no Ghidra/shared-metadata/CMake or parent B29670 edits."
-  ]
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\local\\renderer_binding_reset_discovery\\sealed.json",
+      "bytes": 7552,
+      "sha256": "79c69df2bb84b0f19129d686705b85207ecf1cb0b66cf746917508de3b319502"
+    },
+    "worker_pins_verified": 43,
+    "fresh_guarded_spans": 20,
+    "fresh_guarded_bytes": 1753,
+    "complete_decoded_instructions": 461,
+    "full_parent_bytes": 453,
+    "source_added": false,
+    "reconstructed_functions": 0,
+    "remaining": "B24840 -> B23710/logical owner B4BF10/B4B5D0/B62010 -> unresolved actual nonnull retained+4C writer/profile/terminal/allocation domain. Constructor null and bounded negative searches are not lifetime proof.",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_binding_reset_discovery_primary\\sealed.json",
+      "bytes": 5579,
+      "sha256": "c0feeb8e59b5e9a016f40e28e5872696643387517b6bef3aa22b18ad990b3f19"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_binding_reset_discovery_primary\\verified.json",
+      "bytes": 743,
+      "sha256": "85c6e95bf8b1a3cc17a0b3fc315668fa595c1e47f3e5fdf1e31f32d63171e1aa"
+    }
+  },
+  "annotations_applied": true,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_renderer_binding_reset_annotations.json",
+    "bytes": 1462,
+    "sha256": "d3437c3171ebf583b2237b709dd244a26f0857e5c11fb6012f2b3286433174b6"
+  },
+  "refreshed_export": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b24bf0\\decompiled.c",
+    "bytes": 3095,
+    "sha256": "f66d3398d8b78fff4c6a6374d5f6cac1abed9677ea826a7925c3ca08051ae500"
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_BINDING_RESET.md",
+    "bytes": 6620,
+    "sha256": "8429e9c0d78d95317f0414da75fb0fb916a09c004525ac379cfac9524c2ebc9e"
+  }
 }

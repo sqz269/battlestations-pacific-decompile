@@ -6593,6 +6593,101 @@
       "prerequisite_packets": [],
       "scope": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
       "evidence": "reports/native_vfs_lookup_leaves_audit.json"
+    },
+    {
+      "id": "native_hardware_layout_create_if_missing1",
+      "packet": "native_hardware_layout_create_if_missing1",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00b60a10"
+      ],
+      "code_ownership": [
+        "src/native_hardware_layout_create_if_missing.cpp",
+        "include/bsp/native_hardware_layout_create_if_missing.hpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_CREATE_IF_MISSING.md",
+        "reports/native_hardware_layout_create_if_missing_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified",
+      "evidence": "reports/native_hardware_layout_create_if_missing_audit.json"
+    },
+    {
+      "id": "native_renderer_viewport_clear6",
+      "packet": "native_renderer_viewport_clear6",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_viewport_clear_primary_main_Win32_original_COM_guard_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00b1f730",
+        "00b1f740",
+        "00b1f7b0",
+        "00b1f7d0",
+        "00b21430",
+        "00b26770"
+      ],
+      "code_ownership": [
+        "src/native_renderer_viewport_clear.cpp",
+        "include/bsp/native_renderer_viewport_clear.hpp",
+        "docs/NATIVE_RENDERER_VIEWPORT_CLEAR.md",
+        "reports/native_renderer_viewport_clear_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_raw_viewport_clear_primary_main_Win32_original_COM_guard_composition_and_COFF_verified",
+      "evidence": "reports/native_renderer_viewport_clear_audit.json"
+    },
+    {
+      "id": "native_vfs_lookup_routes",
+      "packet": "native_vfs_lookup_routes",
+      "worker": "main",
+      "done": true,
+      "state": "complete_qualified_lookup_routes_primary_main_Win32_original_pool_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00bb8640",
+        "00bba080",
+        "00bd8fe0",
+        "00bd90d0",
+        "00bd90f0",
+        "00bdb5d0",
+        "00bdb5e0",
+        "00bdbc00",
+        "00bdd0a0",
+        "00bdd440",
+        "00bdd600"
+      ],
+      "code_ownership": [
+        "src/native_vfs_lookup_routes.cpp",
+        "include/bsp/native_vfs_lookup_routes.hpp",
+        "docs/NATIVE_VFS_LOOKUP_ROUTES.md",
+        "reports/native_vfs_lookup_routes_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_qualified_lookup_routes_primary_main_Win32_original_pool_composition_and_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_routes_audit.json"
+    },
+    {
+      "id": "native_renderer_binding_reset1",
+      "packet": "native_renderer_binding_reset1",
+      "state": "discovery_verified_not_ready_unresolved_logical_retained_4c_terminal",
+      "done": false,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00b24bf0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_BINDING_RESET.md",
+        "reports/native_renderer_binding_reset_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_logical_vertex_owner"
+      ],
+      "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
+      "evidence": "reports/native_renderer_binding_reset_audit.json"
     }
   ],
   "snapshot_after_analysis": {

@@ -233,5 +233,130 @@
     "The real HAL API and GetDeclaration returned S_OK. Failure HRESULT and exception injection are not covered. Two cleanup states and native unwind targets are checked statically; native SEH, asynchronous mutation and throwing release/pool-lazy-recreation are outside this fixture and the existing noexcept storage boundary.",
     "One mutation sequence plus protected unused-fields/null-context cache hit; valid four-stream/14-usage/16-output scratch domain only. No invalid-count overflow, gameplay, device-recreation loop or broad hardware compatibility claim."
   ],
-  "readiness": "Ready for primary source integration and strict main library rebuild/provenance replay; no shared CMake/metadata/Ghidra edits in this packet."
+  "readiness": "Primary main registration, strict build, unchanged native composition and full object/link/runtime proof completed.",
+  "functions": [
+    {
+      "address": "00b60a10",
+      "end_exclusive": "00b60caa",
+      "symbol": "create_native_hardware_layout_if_missing_00b60a10",
+      "original_ABI": {
+        "ecx": "actual owner, raw hierarchy-independent hardware layout storage",
+        "stack_arguments": [],
+        "epilogue": "RET",
+        "return_value": "no semantic result",
+        "eh": "native FS:[0] registration; CC1346 -> DFA0EC (FH3), two states at DFA0DC"
+      }
+    }
+  ],
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\hardware_layout_create_primary\\sealed.json",
+      "bytes": 166712,
+      "sha256": "e3de6d249a776dc1bdaea8e610774b942146781cf314fd0c36bc3dfbcf1f56d8"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\hardware_layout_create_primary\\preparation.json",
+      "bytes": 188504,
+      "sha256": "62655b04f0c199b81ada8632d0cec244b9068b0fef1b1670cb6148197a976b68"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\hardware_layout_create_primary\\local\\hardware_layout_create_if_missing_fixture\\verified.json",
+      "bytes": 323626,
+      "sha256": "c2dbc156b991f1104a2291eeb36507ccc7ff66b6d621910c27be4b2570f7520c"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\hardware_layout_create_primary\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 36719182,
+      "sha256": "afebfdb70e5013aa459ff7bdd15a27db70cc2e28126a6ce3229e43375a5f68ac"
+    },
+    "strict_main_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_layout_viewport_vfs_routes_primary_build.txt",
+      "bytes": 2353,
+      "sha256": "d4a02205f880fc9f9d2095e55cebf5abeebb640f8608a84a5a654c6967fc5ac8"
+    },
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "fixture_source_unchanged": true,
+    "source_recompiled_in_fixture": false,
+    "new_permanent_tests": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_artifacts_verified": 84,
+    "current_source_header_files": 27,
+    "literal_current_files": 24,
+    "EOL_only_files": 2,
+    "canonical_camera_transform_header_update": 1,
+    "all_main_provider_code_and_relocations_unchanged": true,
+    "fresh_guarded_spans": 8,
+    "fresh_guarded_bytes": 803,
+    "owned_original_bytes": 666,
+    "original_dependency_stride_bytes": 40,
+    "exact_main_archive_members": 8,
+    "complete_COFF_sections": 254,
+    "library_COFF_sections": 136,
+    "linked_source_entries": 97,
+    "original_relocations": 19,
+    "paired_sequence": 1,
+    "protected_hit_pair": true,
+    "compared_observable_bytes": 20788,
+    "arena_bytes_per_image": 20480,
+    "returned_COM_identity_only_normalized": true,
+    "whole_pool_images_retained_not_equated": true,
+    "immutable_runtime_postimage_stages": 5,
+    "actual_import_records": 68,
+    "actual_COM_records": 6,
+    "failed_HRESULT_tested": false,
+    "throwing_unwind_tested": false
+  },
+  "worker_handoff_readiness": "Ready for primary source integration and strict main library rebuild/provenance replay; no shared CMake/metadata/Ghidra edits in this packet.",
+  "status": "complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified",
+  "main_registered": true,
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_hardware_layout_create_if_missing_annotations.json",
+    "bytes": 2622,
+    "sha256": "881c393ef03b79a8a63fad3e9637f82b331b19ef47546cf879161771a84f4944",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b60a10",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b60a10\\decompiled.c",
+      "bytes": 5681,
+      "sha256": "ec212dd4810d39548c5417ec0d8e3bc1c6898056361b112e4623b599e88505ab"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_HARDWARE_LAYOUT_CREATE_IF_MISSING.md",
+    "bytes": 9360,
+    "sha256": "bac5bcc218b3dcfadda5f0c8d90c02159d4c9bbf5bd3734c1e0d57c3a9923585"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b60a10",
+      "name": "create_native_hardware_layout_if_missing_00b60a10",
+      "cpp_symbol": "bsp::create_native_hardware_layout_if_missing_00b60a10",
+      "source": "src/native_hardware_layout_create_if_missing.cpp",
+      "native_end_exclusive": "00b60caa",
+      "original_abi": {
+        "ecx": "actual owner, raw hierarchy-independent hardware layout storage",
+        "stack_arguments": [],
+        "epilogue": "RET",
+        "return_value": "no semantic result",
+        "eh": "native FS:[0] registration; CC1346 -> DFA0EC (FH3), two states at DFA0DC"
+      },
+      "status": "complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified",
+      "evidence": "reports/native_hardware_layout_create_if_missing_audit.json",
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T18:43:05.139374+00:00"
 }
