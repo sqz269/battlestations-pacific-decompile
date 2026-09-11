@@ -2,6 +2,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
+#include "bsp/gui_startup.hpp"
 #include "bsp/vfs_candidates.hpp"
 #include <cstring>
 #include <stdexcept>
@@ -81,6 +82,13 @@ GameFontHost::GameFontHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& s
 GameFontHost::~GameFontHost() = default;
 
 void GameFontHost::initialize(const std::string& language_font_path) {
+    load_descriptors_00ac3910(std::string(kFontRootPrefix), std::string(kFontDescriptorPath),
+        language_font_path);
+    preload_fingerprint_payload_00be9760();
+}
+
+void GameFontHost::load_descriptors_00ac3910(const std::string& root,
+    const std::string& descriptor, const std::string& language_font_path) {
     auto& host = *impl_;
     if (host.initialized) throw std::logic_error("Application font startup already completed");
     const FontStreamResolver streams = [&host](const std::string& name,
@@ -96,21 +104,26 @@ void GameFontHost::initialize(const std::string& language_font_path) {
     };
     std::string error;
     if (!host.fonts.load_lua_descriptors_00ac3910(host.scripts.files(), host.scripts.globals(),
-            load, "Fonts\\", "Fonts/Fonts.lua", language_font_path, error))
+            load, root, descriptor, language_font_path, error))
         throw std::runtime_error("Font registry startup: " + error);
     host.log.implemented("Phase 7 font registry resources", "00ac3910");
+    host.log.notef("fonts owned=%zu resource_opens=%zu mip_reduction=%u",
+        host.fonts.fonts().size(), host.opens, host.mip_reduction);
+    host.initialized = true;
+}
 
+void GameFontHost::preload_fingerprint_payload_00be9760() {
+    auto& host = *impl_;
     //0073bc0d..bc17 forces the payload preload, discarding its data pointer.
     //This is application RAII, not the original global singleton allocator ABI.
     std::shared_ptr<MemoryStream> payload;
+    std::string error;
     if (!host.read("fonts/arial19.dat", payload, error))
         throw std::runtime_error("Fingerprint preload: " + error);
     host.fingerprint.load_00be9760(*payload);
     host.log.implemented("Phase 7 fingerprint payload preload", "00be9760");
-    host.log.notef("fonts owned=%zu resource_opens=%zu fingerprint_defined_bytes=%zu decoded=%d mip_reduction=%u",
-        host.fonts.fonts().size(), host.opens, host.fingerprint.defined_size(),
-        host.fingerprint.decoded() ? 1 : 0, host.mip_reduction);
-    host.initialized = true;
+    host.log.notef("fingerprint_defined_bytes=%zu decoded=%d", host.fingerprint.defined_size(),
+        host.fingerprint.decoded() ? 1 : 0);
 }
 
 FontRegistryStartup& GameFontHost::registry() noexcept { return impl_->fonts; }

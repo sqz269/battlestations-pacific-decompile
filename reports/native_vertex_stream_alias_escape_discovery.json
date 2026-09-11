@@ -1,0 +1,893 @@
+{
+  "packet": "native_vertex_stream_alias_escape_discovery",
+  "status": "bounded_alias_routes_excluded_nonnull_logical_4c_owner_not_identified",
+  "utc": "2026-09-11T15:57:12.649601+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "worktree_head": "70a2356f6bcdec0bc2f62c68a3cc76360fbb2021",
+  "prior_discovery": {
+    "path": "reports\\native_vertex_stream_owner_discovery.json",
+    "sha256": "bd580724741e8875ca81ad2c52badb405c10ca501e575fbca9e2b2885e96b735",
+    "original_commit": "45a5a1b",
+    "integrated_commit": "70a2356",
+    "spans": 49,
+    "provider_count": 12,
+    "prior_claims_used_as_candidates_not_whole_program_proof": true
+  },
+  "guarded_queries": {
+    "entrypoint": "python tools/bsp.py ghidra",
+    "verification": "tools/bsp.py ghidra_client calls Client.verify before each query; verifies configured bsp project/program",
+    "project_file_exists": true,
+    "bytes_query_count": 39,
+    "every_live_span_compared_against_installed_PE": true,
+    "corrected_fragment_boundary_requery": "00b33537 length90 includes complete CALL ending00b33591"
+  },
+  "spans": [
+    {
+      "address": "00b28a40",
+      "end_exclusive": "00b28a89",
+      "length": 73,
+      "role": "full_registration_body",
+      "bytes_hex": "568db1ac1a00008d442408508bcee8adc8ffff8b4608394604751403c083f8017f05b801000000508bcee8a1a2ffff8b4e048b168d048a85c074068b4c24088908834604015ec20400",
+      "sha256": "e7bf38461098c405212a1c4bf851f0c3c069918c92cafcf1b0efa5041c4a943d",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b22d10",
+      "end_exclusive": "00b22d6f",
+      "length": 95,
+      "role": "full_pointer_array_reserve_including_returning_free_tail",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e889280d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8283c0d0083c404891e897e085b5f5ec20400",
+      "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b25300",
+      "end_exclusive": "00b25368",
+      "length": 104,
+      "role": "full_pointer_array_remove_swap_last",
+      "bytes_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400cc",
+      "sha256": "9085973f7bdb02851908391e17483e7396007071afe6eb2fd8518cb560c68c31",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b287c0",
+      "end_exclusive": "00b288aa",
+      "length": 234,
+      "role": "full_registered_logical_factory",
+      "bytes_hex": "6aff6838d2cb0064a1000000005064892500000000515556578bf9b974000000e88b2b02008944240c33ed3bc5896c241874188b4c24248b542428518b4c242452518bc8e8f73302008be88b87b41a00003987b01a00008db7ac1a0000c7442418ffffffff751403c083f8017f05b801000000508bcee8d5a4ffff8b56048b068d049085c074028928834604018b178b42588bcfffd03c01753a8b87b81900003987b41900008db7b0190000751403c083f8017f05b801000000508bcee88ea4ffff8b4e048b168d048a85c074028928834604018b4c24105f5e8bc55d64890d0000000083c410c20c00",
+      "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4bc00",
+      "end_exclusive": "00b4bef6",
+      "length": 758,
+      "role": "full_standard_logical_constructor",
+      "bytes_hex": "6aff68b0f9cb0064a100000000506489250000000083ec108b44242456578bf15089742410e8f661010033ffc7066c1dd600897e58897e68897e6c897e70803ddcd6080100897c242074138b0d94d3f800894c2414e8767efeff88442410538b5c24348bc383e00f83f803c6442424018bcb772fff2485f8beb400897c240c81c900000100eb1cc744240c01000000eb12c744240c02000000eb08c744240c03000000f6c1107405bf010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81cf00400000eb2683cf02eb2183cf40eb1c3d00040000740f3d00050000750e81cf80000000eb0681cf000100008bd181e200f0000081fa00100000750681cf0002000081e100000f0081f900000100750383cf088b0d94d3f8008bc32500f000003d00100000558b6c24307555e87241fdff89465883c00450ff151c22ce008b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e875f4ffffa194d3f80005f419000083cfff01781850ff151022ce00897e5c8b7c2434e9fd000000c744243000000000e85541fdff8b4c24348b89cc0000008b100fafcd6a008d5c2434538b5c24185333db535751508b4268ffd0395c2430754d3bc374493d7c01768874423d0e000780743b8b0d94d3f800e88cd8fdff8b0d94d3f800e80141fdff8b4c24348b89cc0000008b100fafcd538d5c2434538b5c24185333db535751508b4268ffd06a2ce800aa0a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700341ed60089581489581889581c895820895828895824eb0233c08b7c24348b5c24388946588b97cc0000000fafd5528b5424348bc88b008b40145352ffd08b4424308b088b510850ffd2c7465c00000000896e64895e608b5e683bdf5d742b85ff897e68740a83c70457ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd0803ddcd6080100c6442424005b740e8b4c2410518b4c2418e81f7cfeff8b4c24185f8bc65e64890d0000000083c41cc20c00",
+      "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4a9b0",
+      "end_exclusive": "00b4aa94",
+      "length": 228,
+      "role": "full_shared_physical_logical_constructor",
+      "bytes_hex": "6aff6818f8cb0064a100000000506489250000000051535556578b7c24288bf15789742414e8467401008b44242433ed8bdd3bdf896c241cc7066c1dd600896e58896e5c896e68896e6c896e70894664c7466001000000742b3bfd897e68740a83c70457ff151c22ce003bdd74168d4b0451ff152022ce0085c075088b138b028bcbffd08b7e588b44242c3bf8742b3bc5894658740a83c00450ff151c22ce003bfd74168d4f0451ff152022ce0085c075088b178b028bcfffd08b4c2430894e5c8b0d94d3f80056e8c3dffdff8b4c24145f8bc65e5d5b64890d0000000083c410c21000",
+      "sha256": "263395697f964d336e8a77f0537016227b5ac6193e069c41f2f420454cd77e8c",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b61e20",
+      "end_exclusive": "00b61f84",
+      "length": 356,
+      "role": "full_logical_base_constructor",
+      "bytes_hex": "6aff688814cc0064a10000000050648925000000005153568bf1c70630b1ce00578974240cc7460401000000a1e0fe08018b7c242033db89464883c001a3e0fe080183c8ffc706682bd600895e5089461089461c894628895e18895e24895e3089463489463889463c894640894644895e08895e4c8b87cc00000053538bcf895c242089460cc7465400000040e8de5dfeff84c0742453538bcfe8815dfeff53538bcf894610e8155efeff53538bcf894618e8495dfeff894614536a038bcfe8ac5dfeff84c07427536a038bcfe84e5dfeff536a038bcf89461ce8e15dfeff536a038bcf894624e8145dfeff894620536a058bcfe8775dfeff84c07427536a058bcfe8195dfeff536a058bcf894628e8ac5dfeff536a058bcf894630e8df5cfeff89462c536a0a8bcfe8425dfeff84c0741c536a0a8bcfe8045dfeff83f804750d536a0a8bcfe8d55cfeff8946348b4c24105f8bc65e5b64890d0000000083c410c20400",
+      "sha256": "65814249bf85c9940a1681dbf7028b3ebbcf7109de5ce21cc2f15003569b9185",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b93800",
+      "end_exclusive": "00b93874",
+      "length": 116,
+      "role": "full_compressed_format_payload_loader",
+      "bytes_hex": "5356578b7c24108bcfe812f3fdff83e801508bcfe847fafdff8b108bc88b4224ffd08bc8e8d740fbff33c98bf0ba20000000f7e20f90c1f7d90bc851e87d1d06008b4c241883c404c1e6058bd85653e8cc610500538bcfe8c4f2fdff83e801508bcfe8f9f9fdff8bc8e822e5fcff5f5e5bc20800",
+      "sha256": "9f2d4f057b392410b7cdaa9737a67ddf37ed202331afc86c3939af2e329eb4a1",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b93e60",
+      "end_exclusive": "00b93f8e",
+      "length": 302,
+      "role": "full_vertex_stream_payload_loader",
+      "bytes_hex": "6aff68382ecc0064a100000000506489250000000083ec0853558b6c242456578bcde8695b05008bd88d442410508bcde87b6105008b0d94d3f8008b118b52388d44241050c744242400000000ffd28b0d94d3f8008bf88b018b505c576a0153ffd28bf08d470450ff152022ce0085c075088b178b028bcfffd08b168bbfcc0000008b42100faffb6a006a00538bceffd057508bcde8265b05008b44241485c0741e681cebd50050e8b240060083c40885c00f94c084c074078bcde8205d05008b168b42148bceffd08b7c2428568bcfe8ebebfdff508bcfe873fcfdff8d4e0451ff152022ce0085c075088b168b028bceffd08b44241485c05f5e5dc7442414ffffffff5b74168b0c246a0183c1015150e84a5d88ff8bc8e893d503008b4c240864890d0000000083c414c20800",
+      "sha256": "94e15c85f1c62d564db2a45199251d085833a2f1bccdb970280367888f7cc787",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b85b80",
+      "end_exclusive": "00b85ba2",
+      "length": 34,
+      "role": "full_section_append",
+      "bytes_hex": "56578b7c240c8d4704508bf1ff151c22ce008b4e4c897c8e3c83464c015f5ec20400",
+      "sha256": "294c3682b5d9f32fb7916dc60451f45df23f5a487be7103a3f2729bf57cf2685",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b73bb0",
+      "end_exclusive": "00b73c0f",
+      "length": 95,
+      "role": "full_mesh_stream_assignment",
+      "bytes_hex": "8b4424043b417c567c19ba01000000908b717cc744b1640000000001517c3b417c7ded8b7481648b54240c3bf2742c85d289548164740a83c20452ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20800",
+      "sha256": "6a187200728c3f4e5d5acfb2e3a206ec6d6c71c622c9867475ab3d634c95a108",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b73260",
+      "end_exclusive": "00b7326b",
+      "length": 11,
+      "role": "full_mesh_stream_getter",
+      "bytes_hex": "8b4424048b448164c20400",
+      "sha256": "19cbbaa2310751119aad04e714502f2ae2d3f195bd38020eac0f0b922f2e2763",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b72b20",
+      "end_exclusive": "00b72b24",
+      "length": 4,
+      "role": "full_mesh_stream_count_getter",
+      "bytes_hex": "8b417cc3",
+      "sha256": "087a4a4a1d3591c4f4697b2aeda95e2b286c2de3930f398f72f4d12404d5c677",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b48ce0",
+      "end_exclusive": "00b48ce4",
+      "length": 4,
+      "role": "full_logical_declaration_getter",
+      "bytes_hex": "8b4168c3",
+      "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b47900",
+      "end_exclusive": "00b47904",
+      "length": 4,
+      "role": "full_declaration_element_count_getter",
+      "bytes_hex": "8b4110c3",
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b61d90",
+      "end_exclusive": "00b61d9a",
+      "length": 10,
+      "role": "full_logical_compressed_payload_setter",
+      "bytes_hex": "8b442404894150c20400",
+      "sha256": "2916e2994197d4418c7a26f60f4933c75db70f143977f040b32a03a89face977",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b49980",
+      "end_exclusive": "00b49a7c",
+      "length": 252,
+      "role": "full_logical_lock",
+      "bytes_hex": "64a1000000006aff6898f7cb00506489250000000083ec08803ddcd608010056578bf174178b3d94d3f8008bcf897c240ce81aa1feff88442408eb048b7c240c53558b46602500f000003d00100000c74424200000000075298b4e5885c974228b5424288b46688d6e5c8956648b80cc0000006a00558be80faf6c24340fafc2eb358b4e5885c9743c8b46688b90cc0000008bc20faf44242885c075068b46640fafc28b6c2430558d6c242c558b6e70036c24340fafea8b198b53086a015550ffd2894608803ddcd60801008b76085dc744241cffffffff5b740c8b442408508bcfe899a0feff8b4c24105f8bc65e64890d0000000083c414c20c00",
+      "sha256": "e0e9868dcdc34f988d7d34bd33637d8d819c9ea453cd27e0138f91428abb44f6",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b49a80",
+      "end_exclusive": "00b49b0b",
+      "length": 139,
+      "role": "full_logical_unlock",
+      "bytes_hex": "64a1000000006aff68b8f7cb00506489250000000083ec08803ddcd608010056578bf174178b3d94d3f8008bcf897c240ce81aa0feff88442408eb048b7c240c8b4e5885c9c74424180000000074078b018b500cffd2c7460800000000803ddcd6080100c7442418ffffffff740c8b442408508bcfe806a0feff8b4c24105f5e64890d0000000083c414c3",
+      "sha256": "16573b9f263996213c20821e791cd1e9a65c16de48cd9d388288308a3061eb6c",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4ba00",
+      "end_exclusive": "00b4baac",
+      "length": 172,
+      "role": "full_physical_vertex_lock",
+      "bytes_hex": "538b5c240c55568bf18b461c03c33b46187e05e8a85a97ff807c24200057c744241800000000bf000800007405bf10080000f7461400100000741d837e1c00bf001000007505bf0020000085db7405e86c5a97ff834624018b462885c08b6c2414741b8b08578d54241c528b561c5503d352508b412cffd08b442418eb0cb8b8d4f800c7461c000000008b4e1c8b542420890af74614001000005f740503eb016e1c834620015e5d5bc21400",
+      "sha256": "87189e6531e1e1825214ba9459615786a4eef618c5f5020aab1ce8f276115b61",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4b9d0",
+      "end_exclusive": "00b4b9e8",
+      "length": 24,
+      "role": "full_physical_vertex_unlock",
+      "bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+      "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00be9a20",
+      "end_exclusive": "00be9a3b",
+      "length": 27,
+      "role": "full_node_raw_read_adapter",
+      "bytes_hex": "8b018b5424088d4820518b4c240852518b4808e8b8680000c20800",
+      "sha256": "0a73183483c1fd1134d0059fd8a2a747545ca2011203ded09d5bd82bfddd84c7",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00bf02f0",
+      "end_exclusive": "00bf0315",
+      "length": 37,
+      "role": "full_reader_raw_read_adapter",
+      "bytes_hex": "8b098b018b40248d542408528b54240c528b54240c52ffd08b44240c8b4c24082908c20c00",
+      "sha256": "84d124db8b1cee8fb9bdedd1077a2eb987a91b8038456cd9b81bd8d920139996",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00d61d6c",
+      "end_exclusive": "00d61da0",
+      "length": 52,
+      "role": "complete_13_slot_logical_profile",
+      "bytes_hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+      "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00d61e34",
+      "end_exclusive": "00d61e54",
+      "length": 32,
+      "role": "physical_vertex_profile_first_8_slots_not_complete_profile_claim",
+      "bytes_hex": "e030bd0040bbb40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400",
+      "sha256": "2d4b40c3f7d39406ed62acf269aa68c1b61f0f02b518e38965dbf363c9c785ed",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00d5f0e0",
+      "end_exclusive": "00d5f108",
+      "length": 40,
+      "role": "renderer_profile_slots_38_through_5c",
+      "bytes_hex": "e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200",
+      "sha256": "5a127d273744673e8283310ab3c5505d505eb38d99bbbdee8baf93c66635eb54",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00d62b68",
+      "end_exclusive": "00d62b9c",
+      "length": 52,
+      "role": "complete_13_slot_base_profile",
+      "bytes_hex": "e030bd00a020b6007094b400a0aab4008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf00b0aab400",
+      "sha256": "954f4db150fba6b80028197b9cc667ac621ed6e2c8421f32f72fdddcf88ea182",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "role": "full_refcount_zero_trampoline",
+      "bytes_hex": "85c974098b018b50046a01ffd2c3",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4bf10",
+      "end_exclusive": "00b4bf30",
+      "length": 32,
+      "role": "full_logical_scalar_delete",
+      "bytes_hex": "568bf1e8b8f6fffff644240801740b56b918fe0801e846d6ffff8bc65ec20400",
+      "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b4b5d0",
+      "end_exclusive": "00b4b6e8",
+      "length": 280,
+      "role": "full_logical_destructor",
+      "bytes_hex": "6aff6830f9cb0064a100000000506489250000000083ec0c568bf189742404c7066c1dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce8bb84feff88442408578b46602500f000003d00100000c644241c01753a8b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e8a2fdffffa194d3f80083800c1a0000ff05f419000050ff151022ce00eb068b4e588b51048b0d94d3f8005556e865b2fdff8b7e688b2d2022ce008d470450ffd585c075088b178b028bcfffd08b7e588d4f0451ffd585c05d75088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e83784feff8bcec7442418ffffffffe8386901008b4c24105e64890d0000000083c418c3",
+      "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b62010",
+      "end_exclusive": "00b62097",
+      "length": 135,
+      "role": "full_base_destructor_including_unlisted_returning_free_tail",
+      "bytes_hex": "6aff68a814cc0064a100000000506489250000000051568bf15789742408c706682bd6008b7e4c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7464c000000008b465085c0741050e83f45090083c404c74650000000008bcec7442414ffffffffe86a1007008b4c240c5f5e64890d0000000083c410c3",
+      "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b86550",
+      "end_exclusive": "00b8659f",
+      "length": 79,
+      "role": "full_section_stream_clear",
+      "bytes_hex": "53558be933db395d4c7e3e56578d7d3c8b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c7070000000083c30183c7043b5d4c7cd35f5ec7454c000000005d5bc3895d4c5d5bc3",
+      "sha256": "b6ab5966ea8e3efed1f312889159258d0d75b2509e97aacb22719f0726efdfc1",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b865a0",
+      "end_exclusive": "00b8664f",
+      "length": 175,
+      "role": "full_section_layout_rebuild_including_alignment_bytes",
+      "bytes_hex": "83ec145356578bf133ff397e50742ae89cffffff8b5e503bdf74198d430450ff152022ce0085c075088b138b028bcbffd0897e50397e50756d397e4c75218b4c242457e878ccfeff8bd88d4b0451ff151c22ce008b564c895c963c83464c01397e4c897c241c7e298d5e3ceb038d49008b0b8b018b5024ffd28b4c241c89448c0c8344241c0183c70183c3043b7e4c7cdf8b0d94d3f8008b118b52408d44240c50ffd28946505f5e5b83c414c20400",
+      "sha256": "2bea4cdbde496711878d8baa0b57860646c0fd5f31e70ff142b833070f446f60",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b73e60",
+      "end_exclusive": "00b73f4e",
+      "length": 238,
+      "role": "full_mesh_destructor",
+      "bytes_hex": "6aff68f11bcc0064a10000000050648925000000005153568bf1578974240cc706602dd6008b7e6085ffc744241802000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c74660000000008b467c8d7e648d1c873bfb742755908b2f85ed74178d4d0451ff152022ce0085c075098b55008b028bcdffd083c7043bfb75dc5d8bcee824fdffff8dbeb00000006a008bcfc644241c01e810328bff8b3f57e8812a080083c4048d7e546a008bcfc644241c00e824f9ffff8b3f57e8652a080083c4048bcec7442418ffffffffc70604c1d500e8b4f105008b4c24105f5e5b64890d0000000083c410c3",
+      "sha256": "eee55fd1be680cc58cc366fcdf902f9f9dad88e700abd102acd0778f962bb22f",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b49d00",
+      "end_exclusive": "00b49dbe",
+      "length": 190,
+      "role": "full_logical_vertex_device_save",
+      "bytes_hex": "51568bf18b46602500f000003d001000000f84a40000008b4e5885c90f84990000008b118b421cffd085c00f848a0000008b4e588b118b421c57ffd08bf885ff74108b0f8b510457ffd28b078b480857ffd18b4e588b118b4218ffd050e85cb80a008b4e5883c4046a018d54240c5289466cc7442410000000008b398b47186a016a00ffd08b4e588b570850ffd28b4e588bf88b018b5018ffd2508b466c5750e8dbd80a008b4e588b118b420c83c40cffd08b4e58e8b694fdff5f5e59c3",
+      "sha256": "7519e06467c849647526eae78c062149df41f0d097432a661f593424337d2527",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b49dc0",
+      "end_exclusive": "00b49f70",
+      "length": 432,
+      "role": "full_logical_vertex_device_restore",
+      "bytes_hex": "83ec08568bf18b46602500f000003d001000000f84920100008b4e5885c90f84870100008b118b421cffd085c00f85780100008b4e60538bc15783e00f33ff83f8037726ff2485709fb40033db81c900000100eb19bb01000000eb12bb02000000eb0bbb03000000eb048b5c2410f6c1107405bf010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81cf00400000eb2683cf02eb2183cf40eb1c3d00040000740f3d00050000750e81cf80000000eb0681cf000100008bd181e200f0000081fa00100000750681cf0002000081e100000f0081f900000100750383cf088b0d94d3f800c744240c00000000e83260fdff8b086a008d542410528b56688b92cc0000000faf5664536a005752508b4168ffd08b46688b80cc0000000faf46648b4e588b118b5214508b4660508b44241450ffd28b44240c8b088b510850ffd28b4e586a018d44241450c7442418000000008b398b57186a016a00ffd28b4e58508b4708ffd08b4e588b118bf88b4218ffd08b4e6c505157e837d70a008b4e588b118b420c83c40cffd08b4e6c51e82aca0a0083c4045fc7466c000000005b5e83c408c3",
+      "sha256": "9ac81e927c39d0885999cac166c8ed7ae9811cbecf9347277337102b17260432",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b2975b",
+      "end_exclusive": "00b29789",
+      "length": 46,
+      "role": "bounded_renderer_registry_save_loop_fragment",
+      "bytes_hex": "39beb01a00007626eb0b8da424000000008d6424008b8eac1a00008b0cb9e88205020083c7013bbeb01a000072e7",
+      "sha256": "168610b6ad28c8f578ed42f46f6d95c481caabeef44535720ce0a4b942ad46f0",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b299db",
+      "end_exclusive": "00b29a09",
+      "length": 46,
+      "role": "bounded_renderer_registry_restore_loop_fragment",
+      "bytes_hex": "39beb01a00007626eb0b8da424000000008d6424008b86ac1a00008b0cb8e8c203020083c7013bbeb01a000072e7",
+      "sha256": "851e493686273be6a4e4dc8439fa537cc7a934891ec6ba4fad41496a9ea10baf",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b33537",
+      "end_exclusive": "00b33591",
+      "length": 90,
+      "role": "bounded_unlisted_raw_registry_cleanup_fragment_no_whole_body_claim",
+      "bytes_hex": "8b86b01a00003bc37d208d0c8500000000eb068d9b000000008b86ac1a000003c17402891883c10478ef399eb01a00007e168da424000000008386b01a0000ff399eb01a00007ff18b86ac1a000050899eb01a0000e8f8330c00",
+      "sha256": "b5abd42c9ab3cc6718834f37b85233ef2b8cd61ca2ef4768a6e7fc9c3d414cb4",
+      "live_ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00b3375c",
+      "end_exclusive": "00b337b0",
+      "length": 84,
+      "role": "bounded_unlisted_conditional_registry_cleanup_fragment_no_whole_body_claim",
+      "bytes_hex": "8b86b41900003bc37d1b8d0c85000000008d49008b86b019000003c17402891883c10478ef399eb41900007e158da4240000000001aeb4190000399eb41900007ff28b86b019000050899eb4190000e8d9310c00",
+      "sha256": "29dec3864c5b4ffc1906dc7f53d88b520e29f9ed51b9c681b6b654929cc712db",
+      "live_ghidra_equals_installed_PE": true
+    }
+  ],
+  "total_spans": 39,
+  "total_bytes": 5096,
+  "current_provider_pins": [
+    {
+      "path": "src/native_renderer_binding_getters.cpp",
+      "bytes": 1759,
+      "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "include/bsp/native_renderer_binding_getters.hpp",
+      "bytes": 2180,
+      "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "src/native_render_buffer_unregistration.cpp",
+      "bytes": 5514,
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "include/bsp/native_render_buffer_unregistration.hpp",
+      "bytes": 2244,
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "src/native_logical_vertex_pool_return.cpp",
+      "bytes": 2509,
+      "sha256": "acf5b39e00f791c7fe37155e2412cfab0c93556f490aa6c684ad2f070a16f50b",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_pool_return.hpp",
+      "bytes": 1111,
+      "sha256": "ecd38c30ea9df37e3720f4484abbe1973bfd50d8fade17fe360164678a671c5d",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "bytes": 9604,
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "bytes": 3213,
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "src/native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45",
+      "unchanged_from_prior_discovery": true
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "bytes": 9758,
+      "sha256": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "bytes": 6760,
+      "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "src/native_mesh_section.cpp",
+      "bytes": 19114,
+      "sha256": "b8d7d6d365fa65bcfb725c7a0c0b272a05055b9d3402a2313735bd906c9857cb",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "include/bsp/native_mesh_section.hpp",
+      "bytes": 8185,
+      "sha256": "5c2809f16ca9292d43d8e601781b71e3c2501af3dc5209fd0ce6faa63e1ea149",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "src/native_physical_buffer_lock.cpp",
+      "bytes": 3972,
+      "sha256": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_lock.hpp",
+      "bytes": 1504,
+      "sha256": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "src/native_physical_buffer_access.cpp",
+      "bytes": 3020,
+      "sha256": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_access.hpp",
+      "bytes": 1430,
+      "sha256": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "src/native_logical_buffer_device_save.cpp",
+      "bytes": 5983,
+      "sha256": "393f59b03ed29bf0e935fe2d285d75bd092c2dad02cbe8334bbf13fe03d71d39",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_device_save.hpp",
+      "bytes": 1770,
+      "sha256": "ecc2d7f9b7092cf13b70f9652275e6eb60dbec89d5f91908f7d934e423439ad3",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "src/native_logical_buffer_device_restore.cpp",
+      "bytes": 10316,
+      "sha256": "aa1db11b86a016620d3445f957c002765a65b2aa026494cdfa00cf01f7d8f2c7",
+      "role": "current_dependency_contract_only"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+      "bytes": 2649,
+      "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
+      "role": "current_dependency_contract_only"
+    }
+  ],
+  "registry_offset_scan": {
+    "begin": "00b10000",
+    "requested_end_exclusive": "00b40000",
+    "decoded_end_exclusive": "00b40000",
+    "instruction_count": 71596,
+    "input_sha256": "3635e4486e839c2305c4c9976afc94a980ef6f85ac1fb81e53d9a9d90deb6a4a",
+    "method": "Capstone x86-32 linear disassembly of bounded renderer band; memory-displacement filter",
+    "exclusions": "Heuristic candidate enumeration only; no coverage outside band or proof against register-adjusted aliases, indirect dispatch or data decoded as instructions.",
+    "hits": [
+      {
+        "address": "00b2880b",
+        "instruction": "mov eax, dword ptr [edi + 0x1ab4]"
+      },
+      {
+        "address": "00b28811",
+        "instruction": "cmp dword ptr [edi + 0x1ab0], eax"
+      },
+      {
+        "address": "00b28817",
+        "instruction": "lea esi, [edi + 0x1aac]"
+      },
+      {
+        "address": "00b2885a",
+        "instruction": "mov eax, dword ptr [edi + 0x19b8]"
+      },
+      {
+        "address": "00b28860",
+        "instruction": "cmp dword ptr [edi + 0x19b4], eax"
+      },
+      {
+        "address": "00b28866",
+        "instruction": "lea esi, [edi + 0x19b0]"
+      },
+      {
+        "address": "00b28a41",
+        "instruction": "lea esi, [ecx + 0x1aac]"
+      },
+      {
+        "address": "00b2975b",
+        "instruction": "cmp dword ptr [esi + 0x1ab0], edi"
+      },
+      {
+        "address": "00b29770",
+        "instruction": "mov ecx, dword ptr [esi + 0x1aac]"
+      },
+      {
+        "address": "00b29781",
+        "instruction": "cmp edi, dword ptr [esi + 0x1ab0]"
+      },
+      {
+        "address": "00b299db",
+        "instruction": "cmp dword ptr [esi + 0x1ab0], edi"
+      },
+      {
+        "address": "00b299f0",
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]"
+      },
+      {
+        "address": "00b29a01",
+        "instruction": "cmp edi, dword ptr [esi + 0x1ab0]"
+      },
+      {
+        "address": "00b324ae",
+        "instruction": "mov dword ptr [esi + 0x19b0], ebx"
+      },
+      {
+        "address": "00b324b4",
+        "instruction": "mov dword ptr [esi + 0x19b4], ebx"
+      },
+      {
+        "address": "00b324ba",
+        "instruction": "mov dword ptr [esi + 0x19b8], ebx"
+      },
+      {
+        "address": "00b325b2",
+        "instruction": "mov dword ptr [esi + 0x1aac], ebx"
+      },
+      {
+        "address": "00b325b8",
+        "instruction": "mov dword ptr [esi + 0x1ab0], ebx"
+      },
+      {
+        "address": "00b325be",
+        "instruction": "mov dword ptr [esi + 0x1ab4], ebx"
+      },
+      {
+        "address": "00b334d1",
+        "instruction": "mov eax, dword ptr [esi + 0x1ab4]"
+      },
+      {
+        "address": "00b334f5",
+        "instruction": "cmp dword ptr [esi + 0x1ab0], ebx"
+      },
+      {
+        "address": "00b33504",
+        "instruction": "mov edx, dword ptr [esi + 0x1aac]"
+      },
+      {
+        "address": "00b33514",
+        "instruction": "cmp eax, dword ptr [esi + 0x1ab0]"
+      },
+      {
+        "address": "00b3351c",
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]"
+      },
+      {
+        "address": "00b3352b",
+        "instruction": "mov dword ptr [esi + 0x1aac], edi"
+      },
+      {
+        "address": "00b33531",
+        "instruction": "mov dword ptr [esi + 0x1ab4], ebp"
+      },
+      {
+        "address": "00b33537",
+        "instruction": "mov eax, dword ptr [esi + 0x1ab0]"
+      },
+      {
+        "address": "00b33550",
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]"
+      },
+      {
+        "address": "00b33561",
+        "instruction": "cmp dword ptr [esi + 0x1ab0], ebx"
+      },
+      {
+        "address": "00b33570",
+        "instruction": "add dword ptr [esi + 0x1ab0], -1"
+      },
+      {
+        "address": "00b33577",
+        "instruction": "cmp dword ptr [esi + 0x1ab0], ebx"
+      },
+      {
+        "address": "00b3357f",
+        "instruction": "mov eax, dword ptr [esi + 0x1aac]"
+      },
+      {
+        "address": "00b33586",
+        "instruction": "mov dword ptr [esi + 0x1ab0], ebx"
+      },
+      {
+        "address": "00b336f0",
+        "instruction": "mov eax, dword ptr [esi + 0x19b8]"
+      },
+      {
+        "address": "00b33715",
+        "instruction": "cmp dword ptr [esi + 0x19b4], ebx"
+      },
+      {
+        "address": "00b33724",
+        "instruction": "mov edx, dword ptr [esi + 0x19b0]"
+      },
+      {
+        "address": "00b33735",
+        "instruction": "cmp eax, dword ptr [esi + 0x19b4]"
+      },
+      {
+        "address": "00b3373d",
+        "instruction": "mov eax, dword ptr [esi + 0x19b0]"
+      },
+      {
+        "address": "00b3374c",
+        "instruction": "mov dword ptr [esi + 0x19b0], edi"
+      },
+      {
+        "address": "00b33752",
+        "instruction": "mov dword ptr [esi + 0x19b8], 1"
+      },
+      {
+        "address": "00b3375c",
+        "instruction": "mov eax, dword ptr [esi + 0x19b4]"
+      },
+      {
+        "address": "00b33770",
+        "instruction": "mov eax, dword ptr [esi + 0x19b0]"
+      },
+      {
+        "address": "00b33781",
+        "instruction": "cmp dword ptr [esi + 0x19b4], ebx"
+      },
+      {
+        "address": "00b33790",
+        "instruction": "add dword ptr [esi + 0x19b4], ebp"
+      },
+      {
+        "address": "00b33796",
+        "instruction": "cmp dword ptr [esi + 0x19b4], ebx"
+      },
+      {
+        "address": "00b3379e",
+        "instruction": "mov eax, dword ptr [esi + 0x19b0]"
+      },
+      {
+        "address": "00b337a5",
+        "instruction": "mov dword ptr [esi + 0x19b4], ebx"
+      }
+    ]
+  },
+  "source_ready": false,
+  "reconstructed": false,
+  "build_tested": false,
+  "original_body_fixture": false,
+  "ABI_compatible": false,
+  "game_validated": false,
+  "Ghidra_mutations": false,
+  "no_tests_reason": "Read-only discovery; no source or executable modifications.",
+  "reserved_other_worker_addresses": [
+    "00ae5550",
+    "00b0b6a0",
+    "00b2f630",
+    "00b2f800"
+  ],
+  "findings": [
+    {
+      "entry": "00b28a40",
+      "ABI": "ECX renderer; stack logical pointer; RET4",
+      "escape": "raw pointer stored in renderer+1AAC array",
+      "critical_instructions": [
+        "00b28a41 LEA ESI,[ECX+1AAC]",
+        "00b28a7f MOV [EAX],ECX",
+        "00b28a81 ADD [ESI+4],1"
+      ],
+      "dependencies": [
+        "00b25300",
+        "00b22d10"
+      ],
+      "exclusion": "Only array cell/header stores; reserve/removal manipulate pointer DWORDs without pointee retention or writes."
+    },
+    {
+      "entry": "00b93800",
+      "ABI": "stack geometry,node; RET8; no meaningful this input",
+      "escape": "fresh count*20h raw payload allocation forwarded to input stream and attached to current last logical stream+50",
+      "critical_instructions": [
+        "00b9383c CALL allocation",
+        "00b9384f CALL raw read",
+        "00b93857 CALL current geometry stream count",
+        "00b93862 CALL current geometry getter",
+        "00b93869 CALL B61D90",
+        "00b61d94 MOV [ECX+50],EAX"
+      ],
+      "exclusion": "No direct logical+4C store; callback may change which current last stream gets the +50 allocation."
+    },
+    {
+      "entry": "00b93e60",
+      "ABI": "stack geometry,node; RET8; no meaningful this input",
+      "escape": "canonical renderer factory returns logical stream; raw read receives its lock mapping; geometry retains stream",
+      "critical_instructions": [
+        "00b93ebc PUSH declaration",
+        "00b93ebd PUSH1",
+        "00b93ebf PUSH count",
+        "00b93ec0 CALL renderer virtual5C",
+        "00b93eef CALL logical virtual10",
+        "00b93ef5 CALL raw read",
+        "00b93f27 CALL logical virtual14",
+        "00b93f38 CALL B73BB0",
+        "00b93f41 InterlockedDecrement temporary stream"
+      ],
+      "profile_path": [
+        "D5F0A8+38=B317E0",
+        "D5F0A8+5C=B287C0",
+        "D61D6C+10=B49980",
+        "D61D6C+14=B49A80",
+        "D61E34+8=B4BA00",
+        "D61E34+C=B4B9D0"
+      ],
+      "decompiler_correction": "EDI is declaration through B93EDC stride read; stack+14 string separately reloaded at B93EFA.",
+      "exclusion": "Flags1 path passes physical mapping to raw I/O; logical cache at+8, dynamic output at+5C; no direct +4C store."
+    },
+    {
+      "entry": "00b85b80",
+      "ABI": "ECX section; stack nonnull stream; RET4",
+      "escape": "retain stream+4 then append pointer in section+3C array",
+      "critical_instructions": [
+        "00b85b8c InterlockedIncrement",
+        "00b85b95 MOV [ESI+ECX*4+3C],EDI",
+        "00b85b99 ADD [ESI+4C],1"
+      ],
+      "exclusion": "ESI is section, EDI is stream: +4C target is section count."
+    },
+    {
+      "entry": "00b73bb0",
+      "ABI": "ECX geometry; stack index,stream; RET8",
+      "escape": "publish pointer in geometry+64 slot, retain incoming+4 then release captured old+4",
+      "critical_instructions": [
+        "00b73be1 MOV [ECX+EAX*4+64],EDX",
+        "00b73beb InterlockedIncrement incoming",
+        "00b73bf9 InterlockedDecrement old",
+        "00b73c09 CALL current old virtual0"
+      ],
+      "exclusion": "Writes target geometry cells/count; equal pointer skips retention/release."
+    }
+  ],
+  "forward_alias_checks": [
+    {
+      "entries": [
+        "00b86550",
+        "00b865a0",
+        "00b73e60"
+      ],
+      "result": "Section and geometry keep intrusive stream references; clear/destruction follows current stream virtual0. Layout rebuild queries current stream virtual24 declaration and stores layout in SECTION+50."
+    },
+    {
+      "fragments": [
+        "00b2975b..00b29788",
+        "00b299db..00b29a08"
+      ],
+      "entries": [
+        "00b49d00",
+        "00b49dc0"
+      ],
+      "result": "Raw renderer registry save/restore readers call complete logical save/restore; direct logical writes use +6C shadow storage, not +4C."
+    },
+    {
+      "fragments": [
+        "00b33537..00b33590",
+        "00b3375c..00b337af"
+      ],
+      "result": "Raw registry-cell/count and backing-free fragments; enclosing B32920 body is incomplete, no whole teardown claim."
+    }
+  ],
+  "lifetime_boundary": {
+    "logical_profile": "13 DWORDs at00D61D6C; complete exact bytes pinned",
+    "concrete_retained_stream_terminal": [
+      "current virtual0 canonical BD30E0",
+      "fresh current slot4 canonical B4BF10(flags1)",
+      "B4B5D0",
+      "B62010",
+      "B49570 CPU pool return iff scalar flags bit0 after normal destruction"
+    ],
+    "independent_field4c": "B62010 captures logical+4C; decrement pointee+4; current pointee virtual0 at zero; clear logical+4C only after normal return.",
+    "false_no_return": "B62068 free CALL has unlisted actual returning tail B6206D ADD ESP4 / B62070 clear+50; fresh full135bytes include it.",
+    "base_constructor": "B61E92 clears+4C; no proof against later escaped writes.",
+    "nonnull_field4c_writer": null,
+    "actual_field4c_profile": null,
+    "field4c_terminal_allocator_EH": null
+  },
+  "assumptions_and_exclusions": [
+    "Concrete constructor-derived D61D6C stream and D61E34 physical profile used when resolving virtual dispatch; mutable profiles remain current at each native load.",
+    "Valid distinct native object and allocation origins, in-range section count/index and geometry count/index; no malformed overlap or arbitrary ABI substitution claim.",
+    "Current profile callbacks, input-stream callbacks, allocator callbacks and external reentrancy can have effects outside direct-store exclusions.",
+    "Bounded registry displacement scan is not an exhaustive alias search; no proof against register-adjusted accesses, indirect calls, other bands or executable data.",
+    "B32920 has unlisted regions: the two pinned fragments neither close it nor establish complete renderer lifetime.",
+    "Do not infer null-only +4C closure or identify its target from the stream own profile, declaration+68, compressed allocation+50, physical+58 or shadow+6C.",
+    "No fresh source implementation, original caller ABI replacement, build, fixture, full reset or game validation.",
+    "Other worker owns AE5550/B0B6A0 and B2F630/B2F800; no inspection of those bodies in this packet."
+  ],
+  "remaining_named_but_incomplete_prerequisites": [
+    "Actual nonnull logical+4C adoption/store and incoming concrete type/profile.",
+    "Complete reached final-zero terminal, allocator and EH dependencies for that actual +4C retained type.",
+    "Logical owner B4B5D0/B4BF10 and base B62010 cannot close until preceding owner dependency is established.",
+    "Existing constructor/factory/lock host projections are not substitutes for complete actual owner/registry dependency contracts."
+  ],
+  "owned_files": [
+    "docs/NATIVE_VERTEX_STREAM_ALIAS_ESCAPE_DISCOVERY.md",
+    "reports/native_vertex_stream_alias_escape_discovery.json"
+  ]
+}

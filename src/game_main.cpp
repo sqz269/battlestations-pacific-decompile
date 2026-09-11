@@ -1,5 +1,6 @@
-// bsp_game.exe, milestones 1 and 2a: the reconstructed startup spine running as a Win32
-// process, with the phase-2 virtual file system and the phase-5 settings load doing real work.
+// bsp_game.exe, milestones 1, 2a and 2b: the reconstructed startup spine running as a Win32
+// process, with the phase-2 virtual file system, the phase-5 settings load, the phase-6
+// locale tables and the phase-7 fonts and GUI startup all doing real work.
 //
 // Entry sequence 008f81f0 (docs/WINMAIN_STARTUP.md) drives the whole run. Everything this
 // file adds on top of run_win_main is process plumbing: the option parsing for --frames,
@@ -58,6 +59,14 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         summary.locale_keys, summary.locale_files);
     log.notef("summary fonts_loaded=%zu font_resource_opens=%zu fingerprint_defined_bytes=%zu",
         summary.fonts_loaded, summary.font_resource_opens, summary.fingerprint_defined_bytes);
+    log.notef("summary gui_resources=%zu pages=%zu/%zu widgets=%zu widgets_with_texture=%zu",
+        summary.gui_resources_acquired, summary.gui_pages_loaded, summary.gui_pages_requested,
+        summary.gui_widgets, summary.gui_widgets_with_texture);
+    log.notef("summary bridge_open=%d atlas=%s atlas_items=%zu textures=%zu quads=%zu "
+        "frames=%llu", summary.gui_bridge_open ? 1 : 0,
+        summary.gui_bridge_atlas.empty() ? "(none)" : summary.gui_bridge_atlas.c_str(),
+        summary.gui_bridge_atlas_items, summary.gui_bridge_textures, summary.gui_bridge_quads,
+        summary.gui_bridge_frames);
     log.notef("host methods %zu concrete, %zu unimplemented",
         log.implemented_count(), log.unimplemented_count());
     for (const auto& record : log.records()) {
@@ -87,7 +96,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2a, frames=%ld log=%s", options.frame_limit,
+    log.notef("bsp_game milestone 2b, frames=%ld log=%s", options.frame_limit,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an
