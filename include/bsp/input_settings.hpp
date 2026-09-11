@@ -184,6 +184,9 @@ public:
 class InputDeviceTable {
 public:
     InputDevice* slot(int device_class, int index) const;
+    // Actual slot storage for recovered ownership operations. Valid class/index
+    // required; bounds failure throws. Deleting callbacks run before clearing.
+    InputDevice*& slot_reference(int device_class, int index);
     // 00a904e0. `requested_slot` of -1 means "first free column in the device's
     // own class row"; the native scan stops at 8 and then writes column 8,
     // which is out of the row. This reproduces the scan and reports the

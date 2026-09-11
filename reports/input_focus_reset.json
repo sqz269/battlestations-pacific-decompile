@@ -1,0 +1,42 @@
+{
+  "packet": "orch3_input_focus_e",
+  "status": "reconstructed_build_existing_tests_and_focused_fixture_passed",
+  "source": "src/input_focus_reset.cpp",
+  "header": "include/bsp/input_focus_reset.hpp",
+  "documentation": "docs/INPUT_FOCUS_RESET.md",
+  "addresses": ["00beca40", "00a9a140", "00a90ee0", "00a91620", "00a92840", "00bebf30", "00bec230", "00a983c0", "00a918a0", "00a97390", "00a90490", "00a93eb0", "00a9a390"],
+  "correction": "Vector backend+94/+98 is active mouse class1, not keyboard class0",
+  "canonical_state": ["InputDeviceTable", "InputBindingDeviceGroups", "InputTickState", "KeyboardInputDevice", "MouseInputDevice", "Win32PlatformState.settings_changed_2c"],
+  "callback_abi": "optional backend+D8; class ECX, index EDX; removal -1, append previous count",
+  "fmod_or_other_unrelated_changes": false,
+  "ghidra_worker_writes": false,
+  "ghidra_repairs_reported": [
+    {"address": "00a983c0", "end_inclusive": "00a983df", "size": 32, "final_instruction": "00a983df", "final_instruction_length": 1, "reason": "missing function definition"},
+    {"address": "00a918a0", "end_inclusive": "00a91923", "size": 132, "final_instruction": "00a91921", "final_instruction_length": 3, "reason": "missing function definition"},
+    {"address": "00a97390", "end_inclusive": "00a97390", "size": 1, "final_instruction": "00a97390", "final_instruction_length": 1, "reason": "missing function definition; bare RET"},
+    {"address": "00a93eb0", "end_inclusive": "00a93eb2", "size": 3, "final_instruction": "00a93eb2", "final_instruction_length": 1, "reason": "missing function definition; identifier returns zero"},
+    {"address": "00a9a3ab", "end_inclusive": "00a9a3ad", "size": 3, "bytes": "83c404", "reason": "ADD ESP,4 gap after falsely no-return operator-delete call at A9A3A6"}
+  ],
+  "remaining_boundaries": [
+    "Existing DirectInputHost must implement actual enumeration/attachment callbacks over the same backend slots",
+    "Genuine lazy action-manager getter and singleton lifetime remain supplied by host",
+    "Joystick polling, activity, identity and non-mouse deletion require their actual polymorphic device implementation",
+    "Mouse COM ownership remains external, matching its native deleting destructor with no COM Release",
+    "Typed guarded container/device domain and allocation are not native object or exception ABIs"
+  ],
+  "validation": {
+    "win32_release_build": "passed",
+    "existing_ctest": "2/2 passed: reconstructed_math, native_math_differential",
+    "verify_seeds": "passed; all checked byte ranges match installed image",
+    "focused_fixture": "passed; reentrant focus reset with singleton replacement, callback mutation of deleted slot, all filter-ID queries, and pre-getter capture of replacement mouse",
+    "fixture_backend_reads": 5,
+    "fixture_identity_queries": 2,
+    "fixture_change_callbacks": 2,
+    "fixture_source": "local/input_focus_probe.cpp",
+    "fixture_command": "local/run_input_focus_probe.cmd",
+    "fixture_log": "local/input-focus-probe.log",
+    "build_log": "local/input-focus-build.log",
+    "live_hardware": false,
+    "game_validated": false
+  }
+}
