@@ -2,6 +2,7 @@
 #include "bsp/native_mesh_owner.hpp"
 #include "bsp/native_mesh_section.hpp"
 #include "bsp/native_model_owner.hpp"
+#include "bsp/native_material_factory.hpp"
 #include <memory>
 
 namespace bsp {
@@ -33,6 +34,15 @@ public:
     // return ONE creator reference. Release through the canonical owners.
     NativeMeshStorage* create_mesh();
     NativeMeshSectionStorage* create_section();
+
+    // Existing00535320 actual factory plus canonical material companion.
+    // Return one creator reference; SAME registration/retained-owner domain.
+    // Access and current profile view outlive this material's final release.
+    // Renderer+48 must return an actual registered effect; no shader fallback.
+    NativeMaterialStorage* create_material_for_effect_00535320(NativeString&,
+        void* const volatile& current_renderer_00f8d394,
+        NativeMaterialDestructionAccess&,
+        const volatile std::uint32_t* current_vtable_00d5e520);
 
     // Common +74 fragment AB2563..AB25C3 / ACF913..ACF973. Caller has
     // already tested widget+74==0 and selected its SAME widget+4C model.

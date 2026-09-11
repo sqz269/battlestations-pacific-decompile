@@ -28,6 +28,10 @@ public:
     virtual void before_properties(GuiWidgetOwner&, const GuiTable&) {}
     // Derived destruction precedes the base00AA9730 node/tree release.
     virtual void before_scene_release(GuiWidgetOwner&) {}
+    //00AA8372/00AA837B derived type-query branch, after child+20 and before
+    // primary unlink. Text supplies the live descriptor predicate and AB73B0.
+    // Existing supported profiles own no secondary scene nodes.
+    virtual void release_secondary_scene_nodes(GuiWidgetOwner&) {}
 };
 using GuiWidgetImplementationFactory = std::function<
     std::unique_ptr<GuiWidgetTypeImplementation>(GuiWidgetOwner&)>;
@@ -114,6 +118,12 @@ public:
     //00AA6640 standalone sequence; loader calls construct_child then74 only
     // AFTER attaching widget and node, matching its distinct inline sequence.
     GuiWidgetOwner& create_with_scene_00aa6640(GuiLayoutWidget&);
+    //00AB8530 auxiliary drawable fragment: reuse this runtime's SAME model
+    // pool/owner/reference map; publish to the caller's live +188 association
+    // before releasing the temporary name. Returns one creator reference,
+    // retired through the existing node lifetime binding, not a second owner.
+    void create_auxiliary_model_00ab8530_fragment(NativeNodeBinding*& publication,
+        const std::string& name);
     GuiWidgetOwner& owner(GuiLayoutWidget&) const;
     GuiWidgetOwner& owner(GuiWidgetTransform&) const;
     NativeNodeBinding& node(std::uint32_t actual_identity) const;
@@ -137,7 +147,8 @@ private:
     std::unordered_map<GuiLayoutWidget*, std::unique_ptr<GuiWidgetOwner>> widgets_;
     std::unordered_map<void*, std::unique_ptr<ModelRecord>> models_;
     GuiWidgetOwner& construct_base(GuiLayoutWidget&);
-    NativeNodeBinding* create_model(const std::string&);
+    NativeNodeBinding* create_model(const std::string&,
+        NativeNodeBinding** publication_before_name_release = nullptr);
     void stamp_visibility(NativeNodeBinding&, float, bool);
     void propagate_visibility(GuiWidgetOwner&, const GuiWidgetVisibilityArgs&);
     void erase_tree(GuiLayoutWidget&);
