@@ -327,6 +327,20 @@
       "before_log": "local/ghidra-annotations-20260911T155359Z.json",
       "readback": "local/config_singleton_i_comments.json",
       "exports": "local/config_singleton_i_final_exports.log"
+    },
+    "final_integration": {
+      "tested_revision": "c850a2bc807921e3679fe6e2046193e664462834",
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "2/2 passed",
+      "log": "local/config_singleton_i_integrate_final.log",
+      "library_sha256": "21f137fed49c4500d21f6177257c316dceedd30b682c746374cf0120e82fca85",
+      "main_fast_forwarded_to_tested_revision": true,
+      "saved_annotations": 14,
+      "annotation_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T155851Z.json",
+      "prior_attempt": "local/config_singleton_i_integrate.log: build passed, then main registry edit/advance produced a merge conflict. Independent packet insertions resolved and final attempt rebuilt successfully.",
+      "fixture_provenance": "Two focused fixtures passed on source82891f1 before final main integration; recorded separately from this final combined build. No claim of rerunning them on the final library.",
+      "native_abi": false,
+      "game_validated": false
     }
   }
 }

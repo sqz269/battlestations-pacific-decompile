@@ -80,3 +80,9 @@ motion-related fields.004DC940/004DCDF0 consume the FOV array atF4. These were
 bounded decompiler inspections, not complete reconstructions. Connect other
 00432650 callers to the same canonical owner/domain as their contracts become
 known; do not infer a population routine from a getter call alone.
+
+Final integration rebuilt after resolving concurrent packet-ledger insertions,
+tested `c850a2bc807921e3679fe6e2046193e664462834`, and fast-forwarded main to that
+revision. The Win32 build and both existing tests passed; Ghidra saved all14
+annotations. Two fixtures passed on the earlier source82891f1 library, whose
+separate hash is retained. This does not establish native ABI or gameplay.

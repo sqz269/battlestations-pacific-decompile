@@ -316,5 +316,19 @@
   "followups": [
     "Identify the actual configuration writer;00432750/004329D0 are consumers, not population routines. Bounded current decompiler inspection:00432750 constructor reads78/7C;004329D0 updates motion-related fields;004DC940/004DCDF0 consume FOV arrayF4. No full reconstruction claimed for those unowned callers.",
     "Connect effect virtual dispatch and acquisition; preserve the shared lifetime domain for all singleton families."
-  ]
+  ],
+  "final_integration": {
+    "tested_revision": "c850a2bc807921e3679fe6e2046193e664462834",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "2/2 passed",
+    "log": "local/config_singleton_i_integrate_final.log",
+    "library_sha256": "21f137fed49c4500d21f6177257c316dceedd30b682c746374cf0120e82fca85",
+    "main_fast_forwarded_to_tested_revision": true,
+    "saved_annotations": 14,
+    "annotation_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T155851Z.json",
+    "prior_attempt": "local/config_singleton_i_integrate.log: build passed, then main registry edit/advance produced a merge conflict. Independent packet insertions resolved and final attempt rebuilt successfully.",
+    "fixture_provenance": "Two focused fixtures passed on source82891f1 before final main integration; recorded separately from this final combined build. No claim of rerunning them on the final library.",
+    "native_abi": false,
+    "game_validated": false
+  }
 }
