@@ -1,4 +1,18 @@
-# bsp_game.exe, milestone 1
+# bsp_game.exe, milestones 1 and 2a
+
+Milestone 2a is the current state of the executable; milestone 1 below is the spine it was
+built on and is still accurate except where this section corrects it.
+
+Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
+(provider manager), 004fc150 / 00736a90 / 00736b60 (the three provider factory singletons),
+00be0660 (factory registration), 00be1890 (mount), 0073cb10 with the two call sites 0073d881
+and 0073d888 (package scan), 00738360 (resource search paths), 0073d94f-0073d98d (the factory
+tail), 0073db41-0073db69 (phase 6 parsers), 008d8190 (settings load) and 008d5150 (options
+path). Packet `game_executable_milestone_2a`, owner `agent/cc-game-vfs`. Sources:
+`src/game_hosts_vfs.cpp`, `include/bsp/game_hosts_vfs.hpp`, plus the milestone-1 files.
+Report: `reports/game_executable_milestone_2a.json`.
+
+## Milestone 1
 
 Addresses: 008f81f0 (WinMain), 0073d410 (cSkeletonAppMidway::Init), 00becda0 (Win32 platform
 object), 00becee0 (window configuration), 00beb2c0 (save storage), 00b32410 (renderer
@@ -57,7 +71,9 @@ No stub pretends to be game behaviour, and `config/reconstruction/meta.json` sti
    storage 00beb2c0 under `Documents\Battlestations-Pacific\save`, window configuration
    00becee0, and device creation 00b2aeb0. The hardware probe 0073c3b0, the VFS phase, the
    settings load 008d8190, renderer resources, input, sound, locale, GUI, world effects and
-   game entry are recorded as unimplemented phases.
+   game entry are recorded as unimplemented phases. **Milestone 2a moves the VFS phase and the
+   settings load into the concrete list, and corrects the position of the command-line parse
+   and the hardware probe; see the milestone 2a section.**
 9. `bsp::platform_run_loop_00bec1a0` with frames enabled. Each iteration without a pending
    message calls `bsp::run_application_frame`, then clears and presents.
 10. Shutdown. 00737f30 tears down 23 singletons, the GUI manager, the game object and four
@@ -79,7 +95,8 @@ into this milestone.
 
 The resolution is not read from the registry. The settings block at 00f88980 is filled by
 008d8190 in phase 5, which is unimplemented, so the run uses the 640x480 fallback pair stored
-at 008d841f when a parsed resolution is not in the supported table.
+at 008d841f when a parsed resolution is not in the supported table. **Superseded by milestone
+2a**: phase 5 now runs, and the window opens at the resolution the options file selects.
 
 Two details are milestone additions rather than recovered behaviour, and are marked as such in
 the source:
@@ -92,10 +109,119 @@ the source:
   are not reconstructed, and the native handler's window-extra storage is replaced by one
   process-wide platform pointer because that layout is not recovered.
 
+## Milestone 2a: the virtual file system and the settings
+
+Milestone 1 recorded phase 2 and phase 5 as two unimplemented phases, which is why the title
+page and the main menu could not be started: no asset could be read and the window size was a
+constant. Milestone 2a makes both phases real, over the VFS types the archive and mount
+packets already reconstructed. It still adds no reconstruction of its own; the two integration
+bindings live in `src/game_hosts_vfs.cpp`.
+
+### Phase 2, 0073d604-0073d899
+
+`GameVfsHost` implements `bsp::VfsStartupHost`, so the recovered sequence in
+`src/vfs_startup.cpp` drives the run rather than the process re-deriving the order. What is
+concrete: the provider manager (`bsp::VfsProviderManager` over `bsp::VfsProviderFactories`,
+which is the physical, FileStore and MPKG factories in registration order), the system-path
+buffer from `GetCurrentDirectoryA` at 0073d697, the three 00be1890 mounts with the priorities
+and ownership bytes of `kVfsStartupMounts`, the two 0073cb10 package scans, and the search-path
+registration 00738360. The manager lives for the whole run, so later milestones read through
+the same mounts startup created.
+
+| Mount | Virtual path | Priority | Ownership | Native site |
+| --- | --- | --- | --- | --- |
+| current directory | `.` | 0 | 1 | 0073d6f9 |
+| current directory | `persistent_data` | 99 | 1 | 0073d792 |
+| `filestore` | `.` | 300 | 0 | 0073d829 |
+
+Three corrections to milestone 1's ordering, all taken from the native listing. The hardware
+probe 0073c3b0 is called at 0073d610, inside the phase-2 first-time gate, not before it. The
+command line is parsed at 0073d94a, after the whole phase-2 block, which is why `cachedload`
+cannot influence any phase-2 mount. The factory tail 0073d94f-0073d98d and the phase-6 parser
+registrations therefore follow the parse, in that order.
+
+What is still unimplemented in phase 2: the hardware probe 0073c3b0, the `.mpak` factory
+00736b60 and its registration, the PAK registry 00736c30 with the manager store 00bd9230 and
+the lock 00bb40b0, and the whole of phase 6 (the resource manager 004c1400 and the two parsers
+00736dd0 / 00736ea0 through 00b80a50). `cachedload` is carried and reported by
+`set_manager_cached_load_00bd9f90`, but the reconstructed manager has no cached-load slot, so
+the flag reaches no provider yet. The two manager handlers stored at 0073d642 and 0073d652 are
+recorded with their addresses: both targets are a single `C3`, so storing them cannot change
+behaviour.
+
+The mount system path is whatever `GetCurrentDirectoryA` returns, exactly as the original
+reads it. `--game-root <dir>` calls `SetCurrentDirectoryA` before Init, so pointing a run at an
+installed game moves the process rather than injecting a path into the recovered call.
+
+The installed copy this milestone was validated against ships no `.mpkg` archives: its data is
+loose in the install tree. Both package scans enumerate successfully and find zero entries, and
+the loose files resolve through the priority-0 physical mount. A run against an installation
+that does ship archives will mount them through the same callbacks, with
+`package_mount_priority_0073cb10_fragment` supplying the 1000-or-`patch`+suffix priority.
+
+### Phase 5, 008d8190 at 0073daa5
+
+`GameSettingsBinding` implements `bsp::GameSettingsHost`. The options file is read from
+`SHGetSpecialFolderPathA(CSIDL_PERSONAL)` joined with the per-title directory and
+`options.txt`, through `bsp::PhysicalFile`; the registry language value, the desktop size and
+the path-B fallback are the native reads. The load runs before window creation at 0073dc0f,
+which is the ordering constraint the phase exists for: arguments 7, 8, 3, 4 and 9 of 00becee0
+are read straight out of the settings block, and argument 4 is VSync while argument 9 is the
+antialias sample count (the two corrections at the end of `docs/APP_INIT_PLATFORM.md`).
+
+Two capability tables have no reconstructed source, because both come from the renderer vector
+that phase 4 would fill:
+
+- The supported-resolution table `DAT_00f8895c`, assigned at 008d81bf from renderer+1Ch. An
+  empty table makes 008d8190 reject every parsed resolution and fall back to 640x480, so the
+  milestone supplies the adapter's own `EnumAdapterModes` list. **This is a milestone
+  addition, not recovered behaviour**, marked as such in the source. The same interface
+  supplies the shader-model ceiling `TRIV_body_00b200b0` returns.
+- The antialias level table `DAT_00f88968`. It is left empty, which is exactly the no-snapping
+  branch of the loader tail, so the file's `Antialias` value survives unchanged. An invented
+  list would silently move the sample count.
+
+A defect in the shared reconstruction, found here and not fixed here because
+`src/app_bootstrap.cpp` belongs to another packet: the native token comparison at 008d8190 runs
+through `FUN_00467cc0`, which calls `BSP_CString_CompareInsensitive`, so token names are
+matched case-insensitively. `apply_options_token` compares them with `==`. The game's own
+writer 008d6170 emits `Vsync ` while the reader literal at 00d15ef4 is `VSync`, so a file the
+game wrote does not round-trip through the reconstruction. `GameSettingsBinding` canonicalizes
+recognized token spellings before handing the text to the loader and logs every token it had
+to recase; the validation run recased exactly one, `Vsync -> VSync`. The fix belongs in
+`apply_options_token`.
+
+VSync and the antialias count reach the renderer init request that 00becee0 builds, and the
+run log records them there, but `d3d9_create_device_prefix_00b2aeb0` models neither
+`PresentationInterval` nor `MultiSampleType`, so they stop at that boundary and the device is
+created with the recovered constants.
+
+### What changed on screen
+
+The captioned window is no longer a constant 640x480. It opens at the resolution the options
+file selects, windowed or fullscreen as the file says, and the back buffer follows: the
+validation machine's `options.txt` asks for 2560x1440 windowed, and both the window and the
+device report that size. Nothing new is drawn inside it. The frame is still the milestone's own
+`Clear` / `BeginScene` / `EndScene` / `Present`, because the renderer resource phase 00b14a10,
+the GUI startup 00aa06d0 and the game entry 00740840 are all still unimplemented. What changed
+behind the window is that assets can now be read: the run resolves and reads real files out of
+the installed game through the mounted providers.
+
+### What the executable now does
+
+`--game-root <dir>` enters an installed game before Init. `--vfs-probe <virtual path>` is
+repeatable and resolves one path through 00bdf4c0 then opens it through 00bdf310, printing its
+byte count; a probe that reads nothing makes the process exit 3, so a scripted check needs only
+the exit code. Every run also logs each mount with its priority and ownership, the two package
+scans with their entry counts and dispositions, the settings values applied, and three fixed
+probes: a GUI script, the locale table the settings language selects, and one texture.
+
 ## Host methods
 
-Generated from the run log of `bsp_game.exe --frames 60 --log local/game_run.log`:
-43 concrete, 25 unimplemented, 68 distinct methods and phases reached.
+Generated from the run log of
+`bsp_game.exe --frames 60 --log local/game_run.log --game-root "<install>"`:
+54 concrete, 31 unimplemented, 85 distinct methods and phases reached. Milestone 1 was
+43 concrete and 25 unimplemented over 68.
 
 The call counts are what the 60 frame run observed. `game_state` is reached twice per frame
 because 00737a50 reads it before the input edge test and again after the game update; the
@@ -119,15 +245,32 @@ second read is dead in the native body but is preserved by the reconstruction.
 | `Phase 0 construct_allocation_stats` | `00be2900` | concrete | 1 |
 | `Phase 0 construct_frame_clock_singleton` | `00bedfb0` | concrete | 1 |
 | `Phase 0 install_object_handle_resolvers` | `006ad0d0` | concrete | 1 |
+| `Phase 2 probe_hardware` | `0073c3b0` | **unimplemented** | 1 |
+| `Phase 2 construct_provider_manager` | `00beda60` | concrete | 1 |
+| `Phase 2 install_manager_handlers` | `0073d642` | concrete | 1 |
+| `Phase 2 file_store_factory` | `004fc150` | concrete | 1 |
+| `Phase 2 register_provider_factory` | `00be0660` | concrete | 2 |
+| `Phase 2 mpkg_factory` | `00736a90` | concrete | 1 |
+| `Phase 2 current_directory` | `0073d697` | concrete | 1 |
+| `Phase 2 mount_system_path` | `00be1890` | concrete | 3 |
+| `Phase 2 mount_packages` | `0073cb10` | concrete | 2 |
+| `Phase 2 register_resource_search_paths` | `00738360` | concrete | 1 |
 | `Phase 1 parse_command_line` | `0073ce20` | concrete | 1 |
-| `Phase 1 probe_hardware` | `0073c3b0` | **unimplemented** | 1 |
-| `Phase 2 vfs_provider_manager` | `00beda60` | **unimplemented** | 1 |
-| `Phase 2 mount_packages` | `0073cb10` | **unimplemented** | 1 |
+| `Factory tail mpak_factory` | `00736b60` | **unimplemented** | 1 |
+| `Factory tail register_provider_factory` | `00be0660` | **unimplemented** | 1 |
+| `Factory tail pak_archive_registry` | `00736c30` | **unimplemented** | 1 |
+| `Factory tail set_manager_pak_registry` | `00bd9230` | **unimplemented** | 1 |
+| `Factory tail set_manager_cached_load` | `00bd9f90` | concrete | 1 |
+| `Factory tail create_pak_registry_lock` | `00bb40b0` | **unimplemented** | 1 |
+| `Phase 6 resource_manager` | `004c1400` | **unimplemented** | 2 |
+| `Phase 6 animation_channels_parser` | `00736dd0` | **unimplemented** | 1 |
+| `Phase 6 register_type_parser` | `00b80a50` | **unimplemented** | 2 |
+| `Phase 6 bone_parser` | `00736ea0` | **unimplemented** | 1 |
 | `Phase 3 construct_win32_platform` | `00becda0` | concrete | 1 |
 | `SaveStorageHost::special_folder_path` | `00beb2f3` | concrete | 1 |
 | `SaveStorageHost::create_directory` | `00beb35e` | concrete | 2 |
 | `Phase 3 initialize_save_storage` | `00beb2c0` | concrete | 1 |
-| `Phase 5 load_game_settings` | `008d8190` | **unimplemented** | 1 |
+| `Phase 5 load_game_settings` | `008d8190` | concrete | 1 |
 | `PlatformWindowHost::load_arrow_cursor` | `00becf0f` | concrete | 1 |
 | `PlatformWindowHost::register_class` | `00becf80` | concrete | 1 |
 | `PlatformWindowHost::adjust_window_rect` | `00becfd6` | concrete | 1 |
@@ -148,7 +291,7 @@ second read is dead in the native body but is preserved by the reconstruction.
 | `Phase 8 world_effects_startup` | `00af0b10` | **unimplemented** | 1 |
 | `Phase 9 game_entry` | `00740840` | **unimplemented** | 1 |
 | `StartupHost::platform_run_loop_dispatch` | `00bec1a0` | concrete | 1 |
-| `PlatformLoopCallbacks::pretranslate` | `00bec20a` | **unimplemented** | 2 |
+| `PlatformLoopCallbacks::pretranslate` | `00bec20a` | **unimplemented** | 8 |
 | `ApplicationFrameHost::profiler_set_frame_slot_color` | `004c1dd0` | **unimplemented** | 60 |
 | `ApplicationFrameHost::profiler_begin_frame_slot` | `00be3640` | **unimplemented** | 60 |
 | `ApplicationFrameHost::game_state` | `00e188a8+5d4` | **unimplemented** | 120 |
@@ -187,7 +330,33 @@ file cannot be opened, as 008f7db0 does.
 `scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
 case `reconstructed_math` passes, 1 of 1. No test cases were added.
 
-`bsp_game.exe --frames 60 --log local/game_run.log` exits 0 with:
+Milestone 2a run, `bsp_game.exe --frames 60 --log local/game_run.log --game-root "<install>"`,
+exit 0:
+
+```
+mount <install>\ -> "." priority=0 ownership=1 device=-1 created
+mount <install>\ -> "persistent_data" priority=99 ownership=1 device=-1 created
+mount filestore -> "." priority=300 ownership=0 device=-1 created
+package scan 1 enumerated=1 entries=0 complete=1
+package scan 2 enumerated=1 entries=0 complete=1
+options token recased Vsync -> VSync
+Options: unknown token HardwareReported
+settings resolution=2560x1440 index=0 fullscreen=0 vsync=1 antialias=0 shader_model=2
+         language=englishauthentic
+vfs probe interface/_common.lua       resolved=1 opened=1 bytes=8499
+vfs probe lockit/englishauthentic.lng resolved=1 opened=1 bytes=80
+vfs probe effects/a_fiji_terr_atl.dds resolved=1 opened=1 bytes=2796336
+window created 2560x1440 at 0,0 color_depth=32
+summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=2560x1440
+        frames_presented=60 loop_finished=1 exit_code=0
+summary vfs_ready=1 mounts=3/3 package_entries=0 package_mounts=0 cachedload=0 probes=3/3
+host methods 54 concrete, 31 unimplemented
+```
+
+`--vfs-probe` was checked both ways: `--vfs-probe fonts/fonts.lua` reads 1115 bytes and exits
+0, `--vfs-probe does/not/exist.lua` exits 3.
+
+Milestone 1's run, for comparison:
 
 ```
 summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=640x480
@@ -207,19 +376,30 @@ The run presented 25450 frames, then recorded `CloseRequestPolicy::front_end_bra
 and `request_loop_exit [0109cf04+181]` once each, finished the loop and exited 0. That is the
 one host method reached by the close run and not by the frame-limited run.
 
-This is a runtime-validated process, not a game-validated one. It proves the spine executes
-and presents; it proves nothing about asset loading, gameplay, or binary compatibility with the
-original executable.
+This is a runtime-validated process, not a game-validated one. It proves the spine executes,
+reads real assets out of an installed game and presents; it proves nothing about gameplay or
+binary compatibility with the original executable. In particular the mounted providers were
+exercised against a loose installation only: no `.mpkg` archive was mounted by either package
+scan, so the MPKG path through the same callbacks is still unexercised here.
 
 ## Next milestones
 
-1. **Title page.** Phase 5 settings 008d8190 from the registry so the window uses the
-   configured resolution, phase 6 locale tables 00aa09d0, phase 7 GUI startup 00aa06d0 with
-   the font registry and the GUI layer draw, and the logo sequence that game state 1 selects.
-   The frame then draws a layer instead of a cleared buffer.
+1. **Title page.** Phase 6 locale tables 00aa09d0 over the locale file phase 2 can now read
+   (`lockit/<language>.lng`, selected by the settings language), the font registry, phase 7 GUI
+   startup 00aa06d0, and the GUI layer draw for the logo sequence that game state 1 selects.
+   The frame then draws a layer instead of a cleared buffer. Phase 2 and phase 5 no longer
+   block this.
 2. **Main menu.** Phase 9 game entry 00740840 into game state 2, the front-end screen sets, and
    the input edge test at 004c43c0 through the input polling the input packet connected, so the
    menu responds to a keypress.
-3. **Supporting work both depend on.** Phase 2, the VFS provider manager 00beda60 and the
-   package mounts 0073cb10: until those run, no asset the GUI needs can be read, and phase 4
-   renderer resources 00b14a10 has nothing to load.
+3. **Renderer resources, phase 4 00b14a10.** It now has mounted providers to load from. It is
+   also what would remove the milestone's own `EnumAdapterModes` substitute: the supported
+   resolution table 00f8895c and the antialias level table 00f88968 both come from the renderer
+   vector this phase fills.
+4. **Loose ends inside phase 2.** The `.mpak` factory 00736b60 and the PAK registry 00736c30 /
+   00bd9230 / 00bb40b0; phase 6's resource manager 004c1400 and the two parsers 00736dd0 and
+   00736ea0 through 00b80a50; and a cached-load slot on the provider manager so the
+   `cachedload` flag 00bd9f90 carries reaches a provider.
+5. **Not this packet's to fix.** `apply_options_token` in `src/app_bootstrap.cpp` compares
+   option token names case-sensitively where the original compares them case-insensitively;
+   see the phase-5 section above.

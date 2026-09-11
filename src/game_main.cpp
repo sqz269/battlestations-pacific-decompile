@@ -1,9 +1,11 @@
-// bsp_game.exe, milestone 1: the reconstructed startup spine running as a Win32 process.
+// bsp_game.exe, milestones 1 and 2a: the reconstructed startup spine running as a Win32
+// process, with the phase-2 virtual file system and the phase-5 settings load doing real work.
 //
 // Entry sequence 008f81f0 (docs/WINMAIN_STARTUP.md) drives the whole run. Everything this
-// file adds on top of run_win_main is process plumbing: the option parsing for --frames
-// and --log, the console attachment that lets a windowed process report to the terminal
-// that started it, and the exit code. Evidence: docs/GAME_EXECUTABLE.md.
+// file adds on top of run_win_main is process plumbing: the option parsing for --frames,
+// --log, --game-root and --vfs-probe, the console attachment that lets a windowed process
+// report to the terminal that started it, and the exit code. Evidence:
+// docs/GAME_EXECUTABLE.md.
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -16,6 +18,7 @@
 #include <string>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_vfs.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -36,6 +39,17 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         static_cast<unsigned long>(summary.device_result), summary.back_buffer_width,
         summary.back_buffer_height, summary.frames_presented,
         summary.loop_finished ? 1 : 0, summary.exit_code);
+    log.notef("summary vfs_ready=%d mounts=%zu/%zu package_entries=%zu package_mounts=%zu "
+        "cachedload=%d probes=%zu/%zu", summary.vfs_ready ? 1 : 0, summary.mounts_created,
+        summary.mounts_requested, summary.package_entries, summary.package_mounts,
+        summary.cached_load ? 1 : 0, summary.probes_resolved, summary.probes_requested);
+    log.notef("summary options_file=%d path=%s language=%s resolution=%dx%d fullscreen=%d "
+        "vsync=%d antialias=%d", summary.options_file_present ? 1 : 0,
+        summary.options_path.empty() ? "(none)" : summary.options_path.c_str(),
+        summary.language.empty() ? "(none)" : summary.language.c_str(),
+        summary.settings_width, summary.settings_height,
+        summary.settings_fullscreen ? 1 : 0, summary.settings_vsync ? 1 : 0,
+        summary.settings_antialias);
     log.notef("host methods %zu concrete, %zu unimplemented",
         log.implemented_count(), log.unimplemented_count());
     for (const auto& record : log.records()) {
@@ -55,7 +69,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     std::string error;
     if (!options.parse(__argc, __argv, error)) {
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
-        std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]\n");
+        std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
+            " [--game-root <dir>] [--vfs-probe <virtual path>]\n");
         return 2;
     }
 
@@ -64,8 +79,20 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 1, frames=%ld log=%s", options.frame_limit,
+    log.notef("bsp_game milestone 2a, frames=%ld log=%s", options.frame_limit,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
+
+    // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an
+    // installed game means setting the process current directory, not injecting a path. The
+    // log is already open, so a relative --log path stays relative to the invoking shell.
+    if (!options.game_root.empty()) {
+        if (!SetCurrentDirectoryA(options.game_root.c_str())) {
+            log.notef("cannot enter game root %s", options.game_root.c_str());
+            log.close();
+            return 2;
+        }
+        log.notef("game root %s", options.game_root.c_str());
+    }
 
     bsp::game::GameStartupHost host(log, instance, options);
 
@@ -84,6 +111,15 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     if (options.frame_limit > 0
         && summary.frames_presented < static_cast<unsigned long long>(options.frame_limit)) {
         summary.exit_code = 1;
+    }
+    // A --vfs-probe that did not read bytes fails the run, so a scripted check needs only the
+    // exit code. The three probes the milestone always performs do not affect it.
+    if (summary.exit_code == 0 && host.vfs() != nullptr) {
+        for (const std::string& requested : options.vfs_probes) {
+            for (const auto& probe : host.vfs()->probes()) {
+                if (probe.requested == requested && !probe.opened) summary.exit_code = 3;
+            }
+        }
     }
     report_summary(log, summary);
     log.close();
