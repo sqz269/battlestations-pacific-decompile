@@ -1,0 +1,78 @@
+[
+  {
+    "address": "00aa31f0",
+    "before_tag": {
+      "address": "00aa31f0",
+      "name": "",
+      "category": "stl_probable",
+      "confidence": "medium",
+      "action": "bookmark",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0029"
+    },
+    "correction": "Game manager removes selected page then invokes logical release/deleting destructor; embedded vector arithmetic is not a standalone STL function. docs/GUI_NATIVE_SCENE.md.",
+    "bookmark_result": {
+      "success": true,
+      "deleted": 1,
+      "address": "00aa31f0"
+    }
+  },
+  {
+    "address": "00aa8320",
+    "before_tag": {
+      "address": "00aa8320",
+      "name": "",
+      "category": "stl_probable",
+      "confidence": "medium",
+      "action": "bookmark",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0029"
+    },
+    "correction": "Game widget current20 recursively releases scene nodes; embedded child-list iteration is not a standalone STL function. docs/GUI_NATIVE_SCENE.md.",
+    "bookmark_result": {
+      "success": true,
+      "deleted": 1,
+      "address": "00aa8320"
+    }
+  },
+  {
+    "address": "00b85ee0",
+    "before_tag": {
+      "address": "00b85ee0",
+      "name": "CG_static_dtor_stub_00b85ee0",
+      "category": "cg_static_dtor_stub",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0033"
+    },
+    "correction": "Actual canonical mesh section pool allocation entry, not static destruction. docs/NATIVE_MESH_SECTION.md.",
+    "bookmark_result": {
+      "success": true,
+      "deleted": 1,
+      "address": "00b85ee0"
+    }
+  },
+  {
+    "address": "00b8f450",
+    "before_tag": {
+      "address": "00b8f450",
+      "name": "CG_static_dtor_stub_00b8f450",
+      "category": "cg_static_dtor_stub",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0033"
+    },
+    "correction": "Actual canonical group pool allocation entry, not static destruction. docs/NATIVE_GROUP_POOL.md.",
+    "bookmark_result": {
+      "success": true,
+      "deleted": 1,
+      "address": "00b8f450"
+    }
+  }
+]

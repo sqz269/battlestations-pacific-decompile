@@ -1,0 +1,521 @@
+{
+  "packet": "orch2_native_gui_owners_l",
+  "status": "integrated_reviewed_strict_win32_and_bounded_native_host_fixtures_passed",
+  "tested_source_commit": "0af6d9d81dda601671edd6ba8a66c0e0371587ff",
+  "built_at_record_utc": "2026-09-11T07:56:10.392620+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "workers": [
+    {
+      "worktree": "orch2-native-group-pool-20260910l",
+      "commit": "708de51759ac8bc98aeac82e58fb6383c8ecc90a",
+      "untracked_before_retirement": []
+    },
+    {
+      "worktree": "orch2-native-group-owner-20260910l",
+      "commit": "150b6fd7d8f2b307476848a6625b0afddcd2cdae",
+      "untracked_before_retirement": [
+        "include/bsp/native_group_pool.hpp",
+        "src/native_group_pool.cpp"
+      ]
+    },
+    {
+      "worktree": "orch2-native-mesh-pool-20260911m",
+      "commit": "e5eb921c8891725b323dfb2207bd900cb04af569",
+      "untracked_before_retirement": []
+    },
+    {
+      "worktree": "orch2-native-mesh-owner-20260910l",
+      "commit": "0c8680e32cb6f5bae482b148721cf463c5796142",
+      "untracked_before_retirement": [
+        "include/bsp/native_mesh_pool.hpp"
+      ]
+    },
+    {
+      "worktree": "orch2-gui-type-dispatch-20260911m",
+      "commit": "17678c947b77b24e0f78c0ca22214f2ea886d0b2",
+      "untracked_before_retirement": []
+    },
+    {
+      "worktree": "orch2-gui-camera-store-20260911n",
+      "commit": "24b93840bf74629038cc35c9f16e924efe9e7e7b",
+      "untracked_before_retirement": []
+    },
+    {
+      "worktree": "orch2-native-mesh-section-20260911n",
+      "commit": "e7910594f84fa140abc3dbbb9ab825e28c2e6c06",
+      "untracked_before_retirement": []
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob_sha256": "e73875d239939211bbb0e6442ff35e43cc5dc7cc7f95ac5a26ffc3ab7070469d",
+      "workspace_sha256": "e73875d239939211bbb0e6442ff35e43cc5dc7cc7f95ac5a26ffc3ab7070469d"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "git_blob_sha256": "7d9b51ee8492ef1ec36c8246ff81f66a65744c079d000b8cedd901c61e49a3eb",
+      "workspace_sha256": "7d9b51ee8492ef1ec36c8246ff81f66a65744c079d000b8cedd901c61e49a3eb"
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "git_blob_sha256": "bf3acfdabefa685c8df3288e7da9899142781cc086a5db04f474c0568835a6ac",
+      "workspace_sha256": "bf3acfdabefa685c8df3288e7da9899142781cc086a5db04f474c0568835a6ac"
+    },
+    {
+      "path": "include/bsp/gui_camera_store_owner.hpp",
+      "git_blob_sha256": "511aad5a7d445c758f2497a8f6afe86bd8ba27de3748d81e1f150dd2b7925b4a",
+      "workspace_sha256": "511aad5a7d445c758f2497a8f6afe86bd8ba27de3748d81e1f150dd2b7925b4a"
+    },
+    {
+      "path": "include/bsp/gui_layout_loader.hpp",
+      "git_blob_sha256": "2023e5b1211f0e0d857acb89c3260f0806ad4be98b94cdaec05a9339ae435c6d",
+      "workspace_sha256": "2023e5b1211f0e0d857acb89c3260f0806ad4be98b94cdaec05a9339ae435c6d"
+    },
+    {
+      "path": "include/bsp/gui_native_scene.hpp",
+      "git_blob_sha256": "7b1d5f5ec834bc1ada8244ee9f26c2c8e1f91111292d3e1d12069ac25fef01ff",
+      "workspace_sha256": "7b1d5f5ec834bc1ada8244ee9f26c2c8e1f91111292d3e1d12069ac25fef01ff"
+    },
+    {
+      "path": "include/bsp/gui_render_order.hpp",
+      "git_blob_sha256": "50803f55da67e9e0aa983edeeeadc8c5d1d2bc052d8cba556efc3abf1e6f3eed",
+      "workspace_sha256": "50803f55da67e9e0aa983edeeeadc8c5d1d2bc052d8cba556efc3abf1e6f3eed"
+    },
+    {
+      "path": "include/bsp/gui_type_dispatch.hpp",
+      "git_blob_sha256": "ee759517763edbaca26f16495c7bdd388481aa6ee4e21fee4dede09e03ec09c4",
+      "workspace_sha256": "ee759517763edbaca26f16495c7bdd388481aa6ee4e21fee4dede09e03ec09c4"
+    },
+    {
+      "path": "include/bsp/gui_widget_owner.hpp",
+      "git_blob_sha256": "dd527136719d527557aa6bac51053c8d1ea4f3e0aa478a045f18ad35cdc42795",
+      "workspace_sha256": "dd527136719d527557aa6bac51053c8d1ea4f3e0aa478a045f18ad35cdc42795"
+    },
+    {
+      "path": "include/bsp/native_group_owner.hpp",
+      "git_blob_sha256": "3e74a84989dbc5f25e23aa3229c1799b6620fb194d19a29a5e64dbe810ed508e",
+      "workspace_sha256": "3e74a84989dbc5f25e23aa3229c1799b6620fb194d19a29a5e64dbe810ed508e"
+    },
+    {
+      "path": "include/bsp/native_group_pool.hpp",
+      "git_blob_sha256": "ad6835d963a433887a9b8700bec5911e4817cd15f9b06dee53c622ea1fe0a1c2",
+      "workspace_sha256": "ad6835d963a433887a9b8700bec5911e4817cd15f9b06dee53c622ea1fe0a1c2"
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "git_blob_sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+      "workspace_sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+    },
+    {
+      "path": "include/bsp/native_mesh_pool.hpp",
+      "git_blob_sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "workspace_sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+    },
+    {
+      "path": "include/bsp/native_mesh_section.hpp",
+      "git_blob_sha256": "5c2809f16ca9292d43d8e601781b71e3c2501af3dc5209fd0ce6faa63e1ea149",
+      "workspace_sha256": "5c2809f16ca9292d43d8e601781b71e3c2501af3dc5209fd0ce6faa63e1ea149"
+    },
+    {
+      "path": "include/bsp/native_node_parenting.hpp",
+      "git_blob_sha256": "4f11f3d14f3fec7f8d4144eca293cf3bef42138cd4edfae55e1152fa5935e731",
+      "workspace_sha256": "4f11f3d14f3fec7f8d4144eca293cf3bef42138cd4edfae55e1152fa5935e731"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "git_blob_sha256": "f48d94bfc2bbd3f5ba6651cab04f07c5dc371ef0bc6b9c80df2e60538a419647",
+      "workspace_sha256": "f48d94bfc2bbd3f5ba6651cab04f07c5dc371ef0bc6b9c80df2e60538a419647"
+    },
+    {
+      "path": "src/game_hosts_fonts.cpp",
+      "git_blob_sha256": "d7f906b552a5a654c9f956b490b4cc7a2a5e8afa972ab96c2f7bb0d70cfbceb8",
+      "workspace_sha256": "d7f906b552a5a654c9f956b490b4cc7a2a5e8afa972ab96c2f7bb0d70cfbceb8"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "git_blob_sha256": "7c4698b8d8d31ae8a974bc1ac5ff91a91a31431d732f49afcd4cc89b4702b2d0",
+      "workspace_sha256": "7c4698b8d8d31ae8a974bc1ac5ff91a91a31431d732f49afcd4cc89b4702b2d0"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "git_blob_sha256": "86b6cb851356fade149db118d470b83f385469a3ebd12c72fccea79c6929f4a9",
+      "workspace_sha256": "86b6cb851356fade149db118d470b83f385469a3ebd12c72fccea79c6929f4a9"
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "git_blob_sha256": "2368ca0514397401880b9bc6b1e3b2161fb4c2349090f58698514d968fb35d23",
+      "workspace_sha256": "2368ca0514397401880b9bc6b1e3b2161fb4c2349090f58698514d968fb35d23"
+    },
+    {
+      "path": "src/gui_camera_store_owner.cpp",
+      "git_blob_sha256": "939c3f4ba9ec304e3a9976522bcb6f84e57fc5405e663e7e08c22eaae89cc427",
+      "workspace_sha256": "939c3f4ba9ec304e3a9976522bcb6f84e57fc5405e663e7e08c22eaae89cc427"
+    },
+    {
+      "path": "src/gui_layout_loader.cpp",
+      "git_blob_sha256": "07fc8b884f7906bcb5f6afb8c84ebff9a527cf84c88d3dee062c3933c0e62c0a",
+      "workspace_sha256": "07fc8b884f7906bcb5f6afb8c84ebff9a527cf84c88d3dee062c3933c0e62c0a"
+    },
+    {
+      "path": "src/gui_native_scene.cpp",
+      "git_blob_sha256": "9c9e382e60af0e39d1212d47e0b391e8baa726ac77b4dab4f274767d1f72b78c",
+      "workspace_sha256": "9c9e382e60af0e39d1212d47e0b391e8baa726ac77b4dab4f274767d1f72b78c"
+    },
+    {
+      "path": "src/gui_render_order.cpp",
+      "git_blob_sha256": "117325d160a29ccb21b298b3d02785aaef0359ff967bd3d2ed53143bfc5ad9f2",
+      "workspace_sha256": "117325d160a29ccb21b298b3d02785aaef0359ff967bd3d2ed53143bfc5ad9f2"
+    },
+    {
+      "path": "src/gui_type_dispatch.cpp",
+      "git_blob_sha256": "9fe7c293d82925e3e9e81147b0c1070196c8ba105426cebb1571b9fa49b7486c",
+      "workspace_sha256": "9fe7c293d82925e3e9e81147b0c1070196c8ba105426cebb1571b9fa49b7486c"
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "git_blob_sha256": "5985e5feac69ef2fdba38ad7e486c196d6d33f71b6f570e720f1a804425c7902",
+      "workspace_sha256": "5985e5feac69ef2fdba38ad7e486c196d6d33f71b6f570e720f1a804425c7902"
+    },
+    {
+      "path": "src/native_group_owner.cpp",
+      "git_blob_sha256": "3586d653b3f4b5d6715ec2fd3da39410e624777fb77fa98f791371793d0c9050",
+      "workspace_sha256": "3586d653b3f4b5d6715ec2fd3da39410e624777fb77fa98f791371793d0c9050"
+    },
+    {
+      "path": "src/native_group_pool.cpp",
+      "git_blob_sha256": "7fd8a15f0942dd6c5b18d1887f6422c04c166aabf7abd2736738819072e2edd1",
+      "workspace_sha256": "7fd8a15f0942dd6c5b18d1887f6422c04c166aabf7abd2736738819072e2edd1"
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "git_blob_sha256": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+      "workspace_sha256": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3"
+    },
+    {
+      "path": "src/native_mesh_pool.cpp",
+      "git_blob_sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+      "workspace_sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+    },
+    {
+      "path": "src/native_mesh_section.cpp",
+      "git_blob_sha256": "b8d7d6d365fa65bcfb725c7a0c0b272a05055b9d3402a2313735bd906c9857cb",
+      "workspace_sha256": "b8d7d6d365fa65bcfb725c7a0c0b272a05055b9d3402a2313735bd906c9857cb"
+    },
+    {
+      "path": "src/native_node_parenting.cpp",
+      "git_blob_sha256": "37cbc2ab608da23d786c36f47012a6d8361160fab1e499add18244bf4b12a017",
+      "workspace_sha256": "37cbc2ab608da23d786c36f47012a6d8361160fab1e499add18244bf4b12a017"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "f2f38ec99519f8f4f7e0140bec7d446180d6cb152d41cbc16b7752d7a260943f"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "667711504ac369ef47799aab53eda0f9891a625eeb088e9ad9ea4cf09cb42678"
+    },
+    {
+      "path": "local/gui-owner-seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/gui-owner-final-build.log",
+      "sha256": "437545def7e1427326c5d7fc9fd1c3cef2da7e530ee8c9216d78d5f816dbd70c"
+    },
+    {
+      "path": "local/gui-owner-probes.log",
+      "sha256": "7e78ae170f12b1d4599c3042cc518ac518c416fb93c7bcd8da69e2485f48659f"
+    },
+    {
+      "path": "local/gui-owner-worker-artifacts.json",
+      "sha256": "4acbbb2144ec160f77d8f9309c03b02688ac60287a01ce26e6268cf1b5c46caf"
+    },
+    {
+      "path": "local/gui_native_scene_probe.cpp",
+      "sha256": "a88813968087e2ce94f8c225c0de0a6d445b0fe9d1d55fbfc6467496b8eaf5c8"
+    },
+    {
+      "path": "local/gui-owner-adapted-gui_camera_store_probe.cpp",
+      "sha256": "e2dafe6cc50db67c24b4f1ebfd5294202efec4994978d6560cd97077d5bbf769"
+    },
+    {
+      "path": "local/gui-owner-adapted-gui_type_probe.cpp",
+      "sha256": "7028d8cd6c800485b4d162a1c59464f6c55fa4ff7e9edd4b4901c9bba9e2f425"
+    },
+    {
+      "path": "local/gui-owner-adapted-native_group_owner_probe.cpp",
+      "sha256": "689a2e43de3f00fdcab18269472c1cb3bc9455155c910bae3e78184ad06d6eaa"
+    },
+    {
+      "path": "local/gui-owner-adapted-native_mesh_probe.cpp",
+      "sha256": "d893c5ad9fab0e09f0144454896b79814691ede32a540cd41078b05c9b12ac95"
+    },
+    {
+      "path": "local/gui-owner-camera-store.exe",
+      "sha256": "3b19737ec558a76c12b0fc9880025736ea31e97811eb995fd9c34e1400a4b4fa"
+    },
+    {
+      "path": "local/gui-owner-camera-store-result.log",
+      "sha256": "2e7976c3117d53b305695483152650287755292acd5f9c866cae50f840e63be3"
+    },
+    {
+      "path": "local/gui-owner-mesh-section.exe",
+      "sha256": "b14abc05e5189c4756ccfdde34fd310201a7b278de611b87c4a6e39710b46886"
+    },
+    {
+      "path": "local/gui-owner-mesh-section-result.log",
+      "sha256": "92f9fe957eb0ebd7655cc48a3bcffb91669923a819f7c69908a0e14bf0c6d11c"
+    },
+    {
+      "path": "local/gui-owner-group-pool.exe",
+      "sha256": "dd43ff7ba390f54e812425400dacf15e54ebf3cdf3e616332245f85dbed08e20"
+    },
+    {
+      "path": "local/gui-owner-group-pool-result.log",
+      "sha256": "15e0989be892d171f856c8e04b1f598e5dc21e8ba44b440ea03fdc40af3273e9"
+    },
+    {
+      "path": "local/gui-owner-group-owner.exe",
+      "sha256": "b25cad19f46e9814fa5941b5257a01e04337fdd774e30702d974e30fdd24b0f9"
+    },
+    {
+      "path": "local/gui-owner-group-owner-result.log",
+      "sha256": "7349fa497064c5e902deb5f6315a4fc8a388e46ba1bed4741eb30c94dfdd3f29"
+    },
+    {
+      "path": "local/gui-owner-mesh-pool.exe",
+      "sha256": "eb863a6503007f122e23ceee18b303cd23fc0d61e2dbe3bd11d0d8c944c26c65"
+    },
+    {
+      "path": "local/gui-owner-mesh-pool-result.log",
+      "sha256": "79844c63509100487d48ce2e7626b4bbb4f7589c5ed9fd2a777e940be27143f5"
+    },
+    {
+      "path": "local/gui-owner-mesh-owner.exe",
+      "sha256": "2ee71800f9a1d8303f75ab24ecf1063015416392aa0d6e78ff68d8ece3f1301d"
+    },
+    {
+      "path": "local/gui-owner-mesh-owner-result.log",
+      "sha256": "0607c734d9795aecbcdcbcad1ea0e8c27a094377177669a920f448d35b4471ec"
+    },
+    {
+      "path": "local/gui-owner-type-dispatch.exe",
+      "sha256": "2dfa1bf7e2490652190090cc7a9f4d7055f4713457f74a36a445273daebb50bd"
+    },
+    {
+      "path": "local/gui-owner-type-dispatch-result.log",
+      "sha256": "826eb6c298a2d8cbd6236334eab8907bcdbedc5fc6ef2626e7d7dda2aa296020"
+    },
+    {
+      "path": "local/gui-owner-native-scene.exe",
+      "sha256": "e2ddd2a43b0e52ada2aa0e8c49d5a6792ce762aa9438dd71c49d782ff423cc51"
+    },
+    {
+      "path": "local/gui-owner-native-scene-result.log",
+      "sha256": "b17e81f504d7e9fbf4719dbc6ec004f2d252c2ca4ad89343718d87d3e98e3755"
+    },
+    {
+      "path": "local/gui-owner-names-before.txt",
+      "sha256": "c014ff9927f5b18fdcff89859066a52defaf834367a09cf0da2192c54d2dd2cb"
+    },
+    {
+      "path": "local/gui-owner-names-after.txt",
+      "sha256": "18fa193edb87216e6ac5ee88ec58cf4e27d5d6dd8bfbdfdfd6dd433692271211"
+    },
+    {
+      "path": "local/gui-owner-comments-before.json",
+      "sha256": "f60ed97d416aa8aca2b1ffc0f53200bfe5b21c3265ced630012a7bc3908658d2"
+    },
+    {
+      "path": "local/gui-owner-comments-after.json",
+      "sha256": "39b569d53a50a7784956e91d6374472b47c108fa9ead72beb44d5c1a2e05cc01"
+    },
+    {
+      "path": "local/gui-owner-annotation-verification.json",
+      "sha256": "4bb5ba0b856643bc08670ebd220c9804dc5d3edd70793a7b4f28916b5c5b20ef"
+    },
+    {
+      "path": "local/gui-owner-cleanup-names-before.txt",
+      "sha256": "9aee1ab75053c33042c04cef84ebc246ff7106174ba911d5e7ed57fca6d963b5"
+    },
+    {
+      "path": "local/gui-owner-cleanup-names-after.txt",
+      "sha256": "52f0a8ebf3e81b4d6b283057023189aceaa4c85a30b4386bfe443cb93a7cae52"
+    },
+    {
+      "path": "local/gui-owner-cleanup-comments-before.json",
+      "sha256": "17bed86f5e9b28a1f491b20b7d04dadc29b9f0ef19fb857091d0be6f0c5e8aff"
+    },
+    {
+      "path": "local/gui-owner-cleanup-comments-after.json",
+      "sha256": "4392cb98b319d95b0c5fa79ef60d3dc0a4b117aec9a7fc7e1f0f2e2c0fc3d500"
+    },
+    {
+      "path": "local/gui-owner-cleanup-annotation-verification.json",
+      "sha256": "45d75cd5be6ec538d85209fe35ea3104620387530b9137a893bf1bd631fb2974"
+    },
+    {
+      "path": "local/gui-owner-section-names-before.txt",
+      "sha256": "ba8e8374c2ef7c6e7bdf660fc08dbc1ed54bd1deb12cc99a1ec7c9a96b617b31"
+    },
+    {
+      "path": "local/gui-owner-section-names-after.txt",
+      "sha256": "8fae946ab43fc1f496fba6094829feb830ddedaae135dc8a2c93069fa638ab7a"
+    },
+    {
+      "path": "local/gui-owner-section-comments-before.json",
+      "sha256": "79df7c5354dcc6764ac91e6e5b360851c55a2cf06e0255653600ec5b985d57ec"
+    },
+    {
+      "path": "local/gui-owner-section-comments-after.json",
+      "sha256": "01cdcddcf3386b424dbdae508e026c0353fcf4aa09910afdd2cf5e52f7f4626c"
+    },
+    {
+      "path": "local/gui-owner-section-annotation-verification.json",
+      "sha256": "813a4cdb307dd122688b5909fc9ac282be41845ce277412682c7460d13d3fa70"
+    },
+    {
+      "path": "local/gui-owner-snapshot.log",
+      "sha256": "bfafad1c645b84e71aa6e9a28840b466d91899c51476f58784a17d9a58dbc6b8"
+    }
+  ],
+  "preserved_worker_artifacts": {
+    "count": 90,
+    "manifest": "local/gui-owner-worker-artifacts.json",
+    "sha256": "4acbbb2144ec160f77d8f9309c03b02688ac60287a01ce26e6268cf1b5c46caf"
+  },
+  "annotations": {
+    "names_verified": 85,
+    "prior_comment_fields_preserved": 30,
+    "forced_exports": 85,
+    "addresses": [
+      "00427110",
+      "00427880",
+      "00533fa0",
+      "0059e5e0",
+      "0059fce0",
+      "00aa12f0",
+      "00aa31f0",
+      "00aa3280",
+      "00aa4b30",
+      "00aa5070",
+      "00aa5840",
+      "00aa8320",
+      "00aa9730",
+      "00ab6120",
+      "00ac6600",
+      "00ac6f50",
+      "00ac6fd0",
+      "00b417e0",
+      "00b6dbc0",
+      "00b6e680",
+      "00b72250",
+      "00b72430",
+      "00b724e0",
+      "00b72580",
+      "00b727f0",
+      "00b728d0",
+      "00b72ce0",
+      "00b72da0",
+      "00b72e10",
+      "00b72f70",
+      "00b73840",
+      "00b73890",
+      "00b73970",
+      "00b73a10",
+      "00b73b60",
+      "00b73b70",
+      "00b73bb0",
+      "00b73c10",
+      "00b73c60",
+      "00b73cb0",
+      "00b73d70",
+      "00b73e60",
+      "00b74280",
+      "00b85600",
+      "00b85650",
+      "00b85720",
+      "00b857f0",
+      "00b858f0",
+      "00b859b0",
+      "00b85b20",
+      "00b85b80",
+      "00b85bb0",
+      "00b85c90",
+      "00b85d30",
+      "00b85ee0",
+      "00b86390",
+      "00b86420",
+      "00b864c0",
+      "00b86500",
+      "00b86550",
+      "00b865a0",
+      "00b86650",
+      "00b86690",
+      "00b8e620",
+      "00b8e6b0",
+      "00b8e7d0",
+      "00b8e8b0",
+      "00b8ec80",
+      "00b8ed40",
+      "00b8eeb0",
+      "00b8eec0",
+      "00b8f190",
+      "00b8f270",
+      "00b8f310",
+      "00b8f450",
+      "00b8f460",
+      "00b8f4c0",
+      "00b8f590",
+      "00b8f650",
+      "00b8f680",
+      "00b8f8c0",
+      "00cd7e40",
+      "00cd8460",
+      "00ce0e40",
+      "00ce0f00"
+    ],
+    "new_function_entries": 13,
+    "definitions": "reports/native_gui_owner_definitions.json",
+    "flow_repairs": "reports/native_gui_owner_flow_repair.json",
+    "tags": "reports/native_gui_owner_tag_corrections.json",
+    "known_stored_body_tail_limits": [
+      "00b8f680",
+      "00b73cb0",
+      "00427880"
+    ],
+    "returning_free_events_recorded": 28
+  },
+  "validation": {
+    "win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_seed_ranges_verified": 8,
+    "focused_probes_passed": 8,
+    "new_permanent_tests": 0,
+    "gameplay_validated": false,
+    "gui_render_validated": false,
+    "binary_replacement_abi": false
+  },
+  "key_results": [
+    "canonical group18Ch, meshC0h and section64h pool storage and ownership",
+    "same actual reference counters and lifetime/attachment associations",
+    "Screen exact per-page flag and pre-base property ordering",
+    "AA31F0 current20 before deleting04 fixes actual outer-scene/root disposal",
+    "section+50 retained layout and +54 nonowned word; mesh+60 owns index"
+  ],
+  "limits": [
+    "Controlled camera/weak-base services in GUI disposal fixture; no full Screen acquisition or GUI rendering proof",
+    "Group pool original/native differential; mesh and section pools host fixtures only",
+    "Native mesh/section constructors differentially checked; no complete native EH or renderer proof",
+    "Typed GUI geometry publication still needs actual mesh/section/material/renderer integration",
+    "Screen acquisition, weak-base and directional reference workers remain separate next batch"
+  ],
+  "publication": {
+    "status": "validated_source_pinned; repository publication tracked by git",
+    "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-20260910"
+  }
+}
