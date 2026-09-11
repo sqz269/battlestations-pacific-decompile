@@ -1,0 +1,94 @@
+{
+  "packet": "orch2_font_runtime_j",
+  "status": "reconstructed_pending_integrated_build",
+  "addresses": [
+    "0053bc00",
+    "00be9620",
+    "00be9630",
+    "00be9760"
+  ],
+  "root_records": [
+    {
+      "address": "00be9630",
+      "name": "fingerprint_payload_defined_decoder",
+      "cpp_symbol": "bsp::decode_fallback_payload_00be9630",
+      "source": "src/fingerprint_payload.cpp",
+      "status": "reconstructed_pending_integrated_build",
+      "documentation": "docs/FONT_RUNTIME_STARTUP.md",
+      "validation_report": "reports/font_runtime_startup.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Exact font root/descriptor/language paths; actual VFS/Lua/font resources and shared D3D9 device; fingerprint defined prefix from assembly/native differential. GUI scene binding, singleton ABI and native texture-cache identity remain excluded."
+    },
+    {
+      "address": "00be9760",
+      "name": "fingerprint_payload_stream_load",
+      "cpp_symbol": "bsp::FingerprintPayload::load_00be9760",
+      "source": "src/fingerprint_payload.cpp",
+      "status": "reconstructed_pending_integrated_build",
+      "documentation": "docs/FONT_RUNTIME_STARTUP.md",
+      "validation_report": "reports/font_runtime_startup.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Exact font root/descriptor/language paths; actual VFS/Lua/font resources and shared D3D9 device; fingerprint defined prefix from assembly/native differential. GUI scene binding, singleton ABI and native texture-cache identity remain excluded."
+    },
+    {
+      "address": "0073bae0",
+      "name": "application_font_and_fingerprint_binding",
+      "cpp_symbol": "bsp::game::GameFontHost::initialize",
+      "source": "src/game_hosts_fonts.cpp",
+      "status": "reconstructed_pending_integrated_build",
+      "documentation": "docs/FONT_RUNTIME_STARTUP.md",
+      "validation_report": "reports/font_runtime_startup.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Exact font root/descriptor/language paths; actual VFS/Lua/font resources and shared D3D9 device; fingerprint defined prefix from assembly/native differential. GUI scene binding, singleton ABI and native texture-cache identity remain excluded."
+    }
+  ],
+  "functions": [
+    {
+      "address": "0053bc00",
+      "name": "BSP_FingerprintPayload_GetSingleton",
+      "evidence": "cdecl no arguments, EAX owner, plain RET; lazy204h object at0109db78. Old FallbackGlyphTable name corrected by consumer0053c740 supplying data to Fingerprint_Text at0053d1b9..0053d1d9. Application binding uses RAII, not original lifetime publication."
+    },
+    {
+      "address": "00be9620",
+      "name": "BSP_FingerprintPayload_GetData",
+      "evidence": "ECX owner, EAX=this+4, plain RET00be9623, no stack arguments. Consumer0053d1c2 uses this data as text for Fingerprint_Text; old glyph-table name was unsupported."
+    },
+    {
+      "address": "00be9630",
+      "name": "BSP_FingerprintPayload_DecodeDefinedPrefix",
+      "evidence": "Two stack pointers source/key, ECX unused, RET8 at00be96f1. XOR16-bit words16..255 then compact odd bits to240 bytes. Final512-byte stack copy includes272 uninitialized bytes; C++ exposes only defined prefix. Original196-byte routine differential matched34 inputs x240 bytes."
+    },
+    {
+      "address": "00be9760",
+      "name": "BSP_FingerprintPayload_Construct",
+      "evidence": "ECX=this,EAX=this,plainRET00be988b,204h owner. Open fonts/arial19.dat mode2; exact512-byte extent, single read, release, decode with key00e15120; wrong extent defines only byte0=0. Short/null source rejected by host; native uninitialized tail not fabricated. Consumer0053c740 proves Fingerprint_Text use, not glyph widths."
+    }
+  ],
+  "validation": {
+    "native_decoder_cases": 34,
+    "defined_bytes_per_case": 240,
+    "unknown_tail_bytes": 272,
+    "saved_ghidra_bytes_equal_installed_pe": true,
+    "build_tested": false,
+    "game_validated": false
+  },
+  "artifacts": {
+    "local/fingerprint-probe.log": "6dc63c0296b26a36da6e3e941e6b7ef52583a716a5f50eb8a1637ac6d107c00d",
+    "local/fallback-native.bin": "250084f12e29c18ab257fca7c090be69431f2f58fd48609c40c4a5a339fdfb7e",
+    "local/fallback-key.bin": "980b8314de94e468a4e3db6b078f3a3856727f0fa9bae8386965f181b7bff6c9",
+    "local/fallback-installed.bin": "1e3c0e0743c03223440b4eaa85d34e403c2bdf35d2de11a51f318412e48ec511",
+    "local/fallback-expected.bin": "1965cdc5532a24a2eba310d8e1f81a998b6300314d0cf1a7415f94d7f4173ac0",
+    "local/font-runtime-seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/font-runtime-names-before.txt": "a4490d56d00a0bdcbc652ab937f46a4f8e7b9cb2a41d9c100fc22f01a761ffd7",
+    "local/font-runtime-comments-before.json": "b2ffef8115078aabf7b74073d0f3b7ccc353d13875d887727d583a45dfc60760",
+    "local/font-runtime-ledger-before.json": "3e940c730935cfdd7652fe79eb9138f16e497c0d6e793ab485dca61ccd3064f5"
+  },
+  "limitations": [
+    "GUI scene and widget binding absent; actual GUI sequence not enabled in executable.",
+    "No original singleton allocator/refcount ABI or renderer texture-cache identity.",
+    "No font draw, shader parity or gameplay validation; payload meaning beyond Fingerprint_Text use unknown."
+  ]
+}

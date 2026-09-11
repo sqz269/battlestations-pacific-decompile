@@ -56,6 +56,8 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         summary.input_scripts_ready ? 1 : 0, summary.input_devices, summary.input_names,
         summary.controller_names, summary.renderer_api_shared ? 1 : 0,
         summary.locale_keys, summary.locale_files);
+    log.notef("summary fonts_loaded=%zu font_resource_opens=%zu fingerprint_defined_bytes=%zu",
+        summary.fonts_loaded, summary.font_resource_opens, summary.fingerprint_defined_bytes);
     log.notef("host methods %zu concrete, %zu unimplemented",
         log.implemented_count(), log.unimplemented_count());
     for (const auto& record : log.records()) {

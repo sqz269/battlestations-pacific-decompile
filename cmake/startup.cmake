@@ -19,7 +19,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/sound_resource_cle
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/sound_resource_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/vfs_file_date.cpp src/resource_load_events.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/xlive_notifications.cpp src/xlive_library.cpp)
-cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL add_executable bsp_game WIN32 src/game_main.cpp src/game_hosts.cpp src/game_hosts_vfs.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL add_executable bsp_game WIN32 src/game_main.cpp src/game_hosts.cpp src/game_hosts_vfs.cpp src/game_hosts_fonts.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_compile_options bsp_game PRIVATE /W4 /WX /fp:strict)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_libraries bsp_core PUBLIC shell32)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_libraries bsp_game PRIVATE bsp_core d3d9 user32 gdi32 ole32 advapi32 shell32)
@@ -153,3 +153,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/xlive_signin.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/xlive_system_pump.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/platform_services.cpp src/xlive_manager_runtime.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/fingerprint_payload.cpp)
