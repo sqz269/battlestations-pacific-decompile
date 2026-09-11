@@ -1953,5 +1953,41 @@
       "bytes": 15476,
       "sha256": "54618cc4f408c4b4a70337b453f4c4c57cac2c8011f510a63f1c9cbafc52a705"
     }
-  ]
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery\\local\\pow_fallback_support\\sealed.json",
+      "bytes": 8277,
+      "sha256": "b223c8d78868604b9a94937c5c574edaa12b33ea82282cb9218b6cf92bb78112"
+    },
+    "worker_sealed_pins_verified": 40,
+    "additional_report_pins_verified": 58,
+    "fresh_guarded_spans": 23,
+    "fresh_guarded_bytes": 1650,
+    "current_main_source_header_pins": 10,
+    "current_main_dependency_drift": [
+      {
+        "path": "src/native_crt_double_classification.cpp",
+        "worker": "8efd8cc1340f94e50e6a5bb5a127bc48cc27ab0692cf2db0bfebe61f04402cdb",
+        "current": "b21d367921a8ce037c8ea769bd715d5e9704a27808965049db2e30ffb87ba945",
+        "review": "Exact decoded source text equality; CRLF/LF-only byte hash difference."
+      }
+    ],
+    "complete_source_proposals_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "remaining_boundary": "Two control-word helpers are assigned separately; shared error entries, special-operand bodies, result-status tail and full fallback remain subsequent source packets. The genuine SSE2 route still blocks full pow and renderer gamma. No host pow or forced dispatch policy is accepted.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_fallback_support_discovery_primary\\sealed.json",
+      "bytes": 6567,
+      "sha256": "de99c4cd7c8ad243ff3fe17672c1482dc35a833cf81229465d839c4f36342254"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POW_FALLBACK_SUPPORT_DISCOVERY.md",
+    "bytes": 16169,
+    "sha256": "23cc13c35738e75787e282b2e658f95e4edcee97e49cd52a397373c37a8969d3"
+  }
 }
