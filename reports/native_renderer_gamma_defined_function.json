@@ -1,0 +1,399 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "address": "00b21960",
+  "end_exclusive": "00b21b3a",
+  "length": 474,
+  "sha256": "395daf39c6ea3f1871fd11d6aea7b1d6e5d9d2005f6d876b39fd3ffc26ef894a",
+  "source_reconstructed": false,
+  "original_runtime_executed": false,
+  "game_validated": false,
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b21960",
+        "end_address": "00b21b3a"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b21960",
+        "end_address": "00b21b39",
+        "bytes_disassembled": 474,
+        "message": "Successfully disassembled 474 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b21960",
+        "name": "BSP_D3D9Renderer_SetGammaRamp",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b21960",
+        "function_name": "BSP_D3D9Renderer_SetGammaRamp",
+        "entry_point": "00b21960",
+        "body_size": 474,
+        "message": "Function created successfully at 00b21960",
+        "warnings": [
+          "Function name 'BSP_D3D9Renderer_SetGammaRamp' \u2014 main part 'D3D9Renderer_SetGammaRamp' is not PascalCase. Expected: D3d9rendererSetgammaramp",
+          "Function name 'BSP_D3D9Renderer_SetGammaRamp' \u2014 main part 'D3D9Renderer_SetGammaRamp' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_D3D9Renderer_SetGammaRamp' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    }
+  ],
+  "neighbor_documentation_before": {
+    "00b218c0": {
+      "hash": "46ffb1d49824f5e41044ef08bf129e876fc58ca4a8a92ff0cc56c00a2624828e",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b218c0",
+      "function_name": "BSP_D3D9Renderer_SetPixelShaderConstantsF",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00b218c0]\nThiscall RETCh start/data/float4count. Zero count skips guard/API. Optional guard; D3D float constant upload then attempted-call counter and count*16 modulo32-bit byte counter; HRESULT ignored natively. Typed port real-device register readback checked; new API exposes HRESULT and zero-count S_FALSE.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "local_c",
+          "type": "void *",
+          "storage": "(stack, 0xfffffffffffffff4, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        },
+        {
+          "name": "puStack_8",
+          "type": "undefined1 *",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_14",
+          "type": "undefined1",
+          "storage": "(stack, 0xffffffffffffffec, 1)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 58,
+          "name": "LAB_00b218fa"
+        },
+        {
+          "relative_offset": 141,
+          "name": "LAB_00b2194d"
+        }
+      ],
+      "completeness_score": 100.0
+    },
+    "00b21b40": {
+      "hash": "26831dfc89fbcdf41ef9fd9e8bc352ff8da1e8819930aa3520eefba9039f9b93",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b21b40",
+      "function_name": "BSP_D3D9Renderer_DrawPrimitive",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00b21b40]\nRecovered vtable+140h, RETCh. Skips inhibit+1d90h, device-lost+1d8ah or zero primitive count; optional guard then device slot144h DrawPrimitive. Helper00b1f740 called on object+1904h only computes unused ECX+10h (LEA/RET), no observable side effects. New interface returns HRESULT/S_FALSE.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "local_14",
+          "type": "undefined1",
+          "storage": "(stack, 0xffffffffffffffec, 1)"
+        },
+        {
+          "name": "puStack_8",
+          "type": "undefined1 *",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        },
+        {
+          "name": "local_c",
+          "type": "void *",
+          "storage": "(stack, 0xfffffffffffffff4, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 89,
+          "name": "LAB_00b21b99"
+        },
+        {
+          "relative_offset": 156,
+          "name": "LAB_00b21bdc"
+        },
+        {
+          "relative_offset": 157,
+          "name": "LAB_00b21bdd"
+        }
+      ],
+      "completeness_score": 100.0
+    }
+  },
+  "function_before": "No function found for 00b21960",
+  "function_after": "Function: BSP_D3D9Renderer_SetGammaRamp at 00b21960\nSignature: undefined BSP_D3D9Renderer_SetGammaRamp(void)\nEntry: 00b21960\nBody: 00b21960 - 00b21b39",
+  "neighbor_documentation_after": {
+    "00b218c0": {
+      "hash": "46ffb1d49824f5e41044ef08bf129e876fc58ca4a8a92ff0cc56c00a2624828e",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b218c0",
+      "function_name": "BSP_D3D9Renderer_SetPixelShaderConstantsF",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00b218c0]\nThiscall RETCh start/data/float4count. Zero count skips guard/API. Optional guard; D3D float constant upload then attempted-call counter and count*16 modulo32-bit byte counter; HRESULT ignored natively. Typed port real-device register readback checked; new API exposes HRESULT and zero-count S_FALSE.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "local_c",
+          "type": "void *",
+          "storage": "(stack, 0xfffffffffffffff4, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        },
+        {
+          "name": "puStack_8",
+          "type": "undefined1 *",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_14",
+          "type": "undefined1",
+          "storage": "(stack, 0xffffffffffffffec, 1)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 58,
+          "name": "LAB_00b218fa"
+        },
+        {
+          "relative_offset": 141,
+          "name": "LAB_00b2194d"
+        }
+      ],
+      "completeness_score": 100.0
+    },
+    "00b21b40": {
+      "hash": "26831dfc89fbcdf41ef9fd9e8bc352ff8da1e8819930aa3520eefba9039f9b93",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b21b40",
+      "function_name": "BSP_D3D9Renderer_DrawPrimitive",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00b21b40]\nRecovered vtable+140h, RETCh. Skips inhibit+1d90h, device-lost+1d8ah or zero primitive count; optional guard then device slot144h DrawPrimitive. Helper00b1f740 called on object+1904h only computes unused ECX+10h (LEA/RET), no observable side effects. New interface returns HRESULT/S_FALSE.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "local_14",
+          "type": "undefined1",
+          "storage": "(stack, 0xffffffffffffffec, 1)"
+        },
+        {
+          "name": "puStack_8",
+          "type": "undefined1 *",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        },
+        {
+          "name": "local_c",
+          "type": "void *",
+          "storage": "(stack, 0xfffffffffffffff4, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 89,
+          "name": "LAB_00b21b99"
+        },
+        {
+          "relative_offset": 156,
+          "name": "LAB_00b21bdc"
+        },
+        {
+          "relative_offset": 157,
+          "name": "LAB_00b21bdd"
+        }
+      ],
+      "completeness_score": 100.0
+    }
+  },
+  "name_ledger_result": {
+    "returncode": 0,
+    "stdout": "00b21960 -> BSP_D3D9Renderer_SetGammaRamp\n",
+    "stderr": ""
+  },
+  "documentation_after": {
+    "hash": "9a8cbbabce3661b91ecd3e7a3b8fe3eb0fdfdc1dcae2d42beaeaae5ed18298de",
+    "source_program": "battlestationspacific.exe",
+    "source_address": "00b21960",
+    "function_name": "BSP_D3D9Renderer_SetGammaRamp",
+    "return_type": "undefined",
+    "calling_convention": "unknown",
+    "plate_comment": "[BSP reconstruction 00b21960]\nComplete474-byte renderer gamma setter discovered at B21960..B21B3A; original ECX renderer, actual callee float slot, RET4. Optional full synchronization guard, enabled1B53 gate before EH arm, ordered x87 cached equality skip, retained first requested x87 load FADD10 while later MOVSS rereads raw callee slot for cache196C publication, normalization FADD10/FDIV20/clamp then float exponent.256 entries use BFEB10(ST1 coordinate,ST0 exponent), float result spill, multiply65535, temporary truncation control word, low WORD blue/green then CW restore then red. Current calibration1B54/device1A10/table selector54 load order preserved; actual SetGammaRamp swapchain0. One guard EH state CBCDDB/DF5374, no cache rollback. Read-only primary discovery verified38 spans4862bytes and complete body; full raw source still blocked by genuine BFEB10/BFEB6D/C19260/C19279/error providers. Host pow is not an equivalent closure. No gamma source, runtime/display, original ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_renderer_gamma_discovery.json; reports/native_renderer_gamma_defined_function.json",
+    "parameters": [],
+    "local_variables": [
+      {
+        "name": "puStack_8",
+        "type": "undefined1 *",
+        "storage": "(stack, 0xfffffffffffffff8, 4)"
+      },
+      {
+        "name": "local_c",
+        "type": "void *",
+        "storage": "(stack, 0xfffffffffffffff4, 4)"
+      },
+      {
+        "name": "local_4",
+        "type": "undefined4",
+        "storage": "(stack, 0xfffffffffffffffc, 4)"
+      },
+      {
+        "name": "fVar4",
+        "type": "float10",
+        "storage": "(register, 0x1100, 10)"
+      },
+      {
+        "name": "iVar3",
+        "type": "int",
+        "storage": "(register, 0x18, 4)"
+      },
+      {
+        "name": "iVar2",
+        "type": "int",
+        "storage": "(register, 0x18, 4)"
+      },
+      {
+        "name": "piVar1",
+        "type": "int *",
+        "storage": "(unique, 0x17200, 4)"
+      },
+      {
+        "name": "local_618",
+        "type": "undefined1",
+        "storage": "(stack, 0xfffffffffffff9e8, 1)"
+      },
+      {
+        "name": "local_61c",
+        "type": "undefined2",
+        "storage": "(stack, 0xfffffffffffff9e4, 2)"
+      },
+      {
+        "name": "local_40c",
+        "type": "undefined2[256]"
+      },
+      {
+        "name": "local_20c",
+        "type": "undefined2[256]"
+      },
+      {
+        "name": "local_60c",
+        "type": "undefined2[256]"
+      }
+    ],
+    "comments": [],
+    "labels": [
+      {
+        "relative_offset": 57,
+        "name": "LAB_00b21999"
+      },
+      {
+        "relative_offset": 61,
+        "name": "LAB_00b2199d"
+      },
+      {
+        "relative_offset": 115,
+        "name": "LAB_00b219d3"
+      },
+      {
+        "relative_offset": 198,
+        "name": "LAB_00b21a26"
+      },
+      {
+        "relative_offset": 204,
+        "name": "LAB_00b21a2c"
+      },
+      {
+        "relative_offset": 225,
+        "name": "LAB_00b21a41"
+      },
+      {
+        "relative_offset": 372,
+        "name": "LAB_00b21ad4"
+      },
+      {
+        "relative_offset": 406,
+        "name": "LAB_00b21af6"
+      },
+      {
+        "relative_offset": 415,
+        "name": "LAB_00b21aff"
+      },
+      {
+        "relative_offset": 417,
+        "name": "LAB_00b21b01"
+      },
+      {
+        "relative_offset": 442,
+        "name": "LAB_00b21b1a"
+      },
+      {
+        "relative_offset": 449,
+        "name": "LAB_00b21b21"
+      }
+    ],
+    "completeness_score": 100.0
+  },
+  "status": "Complete previously missing474-byte gamma function defined and discovery-boundary comment saved; two adjacent functions unchanged. Source remains blocked on original power providers.",
+  "saved_annotation_journal": [
+    {
+      "address": "00b21960",
+      "before": {
+        "address": "00b21960",
+        "function_name": "BSP_D3D9Renderer_SetGammaRamp"
+      },
+      "after": {
+        "address": "00b21960",
+        "name": "BSP_D3D9Renderer_SetGammaRamp",
+        "evidence": "Complete474-byte renderer gamma setter discovered at B21960..B21B3A; original ECX renderer, actual callee float slot, RET4. Optional full synchronization guard, enabled1B53 gate before EH arm, ordered x87 cached equality skip, retained first requested x87 load FADD10 while later MOVSS rereads raw callee slot for cache196C publication, normalization FADD10/FDIV20/clamp then float exponent.256 entries use BFEB10(ST1 coordinate,ST0 exponent), float result spill, multiply65535, temporary truncation control word, low WORD blue/green then CW restore then red. Current calibration1B54/device1A10/table selector54 load order preserved; actual SetGammaRamp swapchain0. One guard EH state CBCDDB/DF5374, no cache rollback. Read-only primary discovery verified38 spans4862bytes and complete body; full raw source still blocked by genuine BFEB10/BFEB6D/C19260/C19279/error providers. Host pow is not an equivalent closure. No gamma source, runtime/display, original ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_renderer_gamma_discovery.json; reports/native_renderer_gamma_defined_function.json"
+      },
+      "status": "applied"
+    }
+  ],
+  "refreshed_export": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b21960\\decompiled.c",
+    "bytes": 2796,
+    "sha256": "8ee78588ae0fa9174f4a48bf224ead78fc4e7067eb173af294ed1ddaaec51623"
+  },
+  "snapshot_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_renderer_gamma_definition_snapshot.txt",
+    "bytes": 293,
+    "sha256": "57284590d616940bc10a78e44765f5248322832aaaefce3c12a098bb29e79b52"
+  }
+}
