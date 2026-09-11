@@ -134,9 +134,14 @@ public:
     // Milestone 2e: `menu_select` is --menu-select, the mission id the
     // mission-tree screen's loader asks the shell for at 00586150. An empty id
     // leaves the run exactly where milestone 2d left it.
+    //
+    // Milestone 2f: `mission_frames` is --mission-frames, the number of
+    // in-mission frames of 004e4a40 to run once the load has finished, and
+    // `profiler` is the counter pair the frame brackets itself with.
     GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
         long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts,
-        LocaleTables& locale, std::string menu_select);
+        LocaleTables& locale, std::string menu_select, long mission_frames = 0,
+        GameFrameProfiler* profiler = nullptr, std::string language = {});
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;

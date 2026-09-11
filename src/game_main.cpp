@@ -107,6 +107,20 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
             summary.mission_load_host_steps,
             summary.mission_load_stopped_at.empty() ? "(nothing)"
                                                     : summary.mission_load_stopped_at.c_str());
+        log.notef("summary mission load finished=%d concrete=%zu records=%zu state=0x%02X "
+            "entered=%d script=%s", summary.mission_load_finished ? 1 : 0,
+            summary.mission_load_concrete, summary.mission_load_records,
+            summary.mission_game_state, summary.mission_entered ? 1 : 0,
+            summary.mission_script_path.empty() ? "(none)"
+                                                : summary.mission_script_path.c_str());
+        log.notef("summary mission lua bindings=%zu natives=%zu calls=%llu",
+            summary.mission_lua_bindings, summary.mission_lua_natives,
+            summary.mission_lua_native_calls);
+        log.notef("summary mission frames requested=%ld ran=%llu simulated=%llu exit=%s",
+            summary.mission_frames_requested, summary.mission_frames_run,
+            summary.mission_frames_simulated,
+            summary.mission_exit_note.empty() ? "(not reached)"
+                                              : summary.mission_exit_note.c_str());
     }
     if (!summary.screenshot_path.empty()) {
         log.notef("summary screenshot=%d frame=%ld path=%s",
@@ -134,8 +148,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
-            " [--press-start-frame N] [--menu-select <mission id>] [--screenshot <path>]"
-            " [--screenshot-frame N] [--hardware-probe-commit]\n");
+            " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
+            " [--screenshot <path>] [--screenshot-frame N] [--hardware-probe-commit]\n");
         return 2;
     }
 
@@ -144,10 +158,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2e, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
-        "menu_select=%s log=%s", options.frame_limit, options.press_start_frame,
-        options.screenshot_frame,
+    log.notef("bsp_game milestone 2f, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
+        "menu_select=%s mission_frames=%ld log=%s", options.frame_limit,
+        options.press_start_frame, options.screenshot_frame,
         options.menu_select.empty() ? "(none)" : options.menu_select.c_str(),
+        options.mission_frames,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an

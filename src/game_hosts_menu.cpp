@@ -1503,11 +1503,12 @@ void GameMenuHost::Impl::advance_path(float raw_delta) {
 
 GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
     long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
-    std::string menu_select)
+    std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
+    std::string language)
     : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
     if (!menu_select.empty()) {
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
-            locale, std::move(menu_select));
+            locale, std::move(menu_select), mission_frames, profiler, std::move(language));
     }
 }
 

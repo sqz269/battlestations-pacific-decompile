@@ -1,0 +1,1123 @@
+{
+  "packet": "cc_exe_2f",
+  "owner": "agent/cc-exe-2f",
+  "milestone": "2f",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only for this packet",
+  "title": "bsp_game.exe milestone 2f: a headless mission frame",
+  "sources": [
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+  "command": "bsp_game.exe --frames 300 --press-start-frame 30 --menu-select USN02 --mission-frames 60 --log local/game_run.log --screenshot local/run.png --game-root \"<install>\"",
+  "run": {
+    "exit_code": 0,
+    "frames_presented": 300,
+    "host_methods_concrete": 241,
+    "host_methods_unimplemented": 241,
+    "mission_load_finished": true,
+    "mission_load_walk_steps": 47,
+    "mission_load_concrete": 10,
+    "mission_load_records": 32,
+    "mission_load_arms_not_taken": 5,
+    "game_state_after_load": "0x0C",
+    "game_state_after_entry": "0x0D",
+    "mission_entered": true,
+    "mission_script": "Scripts/missions/usn/usn_2_java.lua",
+    "global_folder_scripts": 21,
+    "lua_bindings_registered": 560,
+    "lua_entry_points_dispatched": [
+      "luaPrecacheUnits",
+      "luaStageInitMulti",
+      "luaStageInit"
+    ],
+    "lua_natives_called": [
+      "CreateScript",
+      "Scoring_RealPlayTimeRunning",
+      "LoadMessageMap"
+    ],
+    "lua_native_calls": 3,
+    "dofile_calls": 12,
+    "mission_frames_requested": 60,
+    "mission_frames_run": 60,
+    "mission_frames_simulated": 60,
+    "mission_frames_paused": 0,
+    "units_ticked": 0,
+    "mission_events_applied": 0,
+    "mission_exit_reachable": false
+  },
+  "machine_steps": [
+    {
+      "method": "MissionLuaHost::initialize",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "004dd627",
+      "native": "00884be0",
+      "note": "BSP_Game_OnInitOnce builds the machine once per process; this process reaches its first mission at the load, so the machine is built there and kept"
+    },
+    {
+      "method": "MissionLua::create_state",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "006b8740",
+      "note": "luaL_newstate over the repository Lua 5.1.1"
+    },
+    {
+      "method": "MissionLua::set_panic_function",
+      "status": "unimplemented",
+      "owner": "lua",
+      "native": "006b8720",
+      "note": "the native panic body was never read; the executable installs its own"
+    },
+    {
+      "method": "MissionLua::set_gc_pause",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "00a68280",
+      "note": "lua_gc(LUA_GCSETPAUSE, 100)"
+    },
+    {
+      "method": "MissionLua::open_standard_library",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "006b8790",
+      "note": "seven rows of 00cf8350, package absent"
+    },
+    {
+      "method": "MissionLua::register_global_function",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "006b8610",
+      "note": "560 rows of 00e0b7b8 as plain globals"
+    },
+    {
+      "method": "MissionLua::install_state_owner_global",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "00b6a303",
+      "note": "the DoFile global the binding table does not carry"
+    },
+    {
+      "method": "MissionLua::dofile_callback",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "00b69e00"
+    },
+    {
+      "method": "MissionLua::fundamentals_chunk",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "00884c94",
+      "note": "the bytes come from the 00884770 singleton in the native; this process reads Scripts/fundamentals.lua through the mounted providers and keeps the chunk label"
+    },
+    {
+      "method": "MissionLua::global_script_folders",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "004dc72f",
+      "native": "00886900",
+      "note": "Scripts/global/ then Scripts/datatables/autoload/, 21 scripts"
+    },
+    {
+      "method": "MissionLua::sync_lobby_settings",
+      "status": "unimplemented",
+      "owner": "session",
+      "address": "004e02d0",
+      "native": "005e2f00",
+      "note": "the table is created with its thirteen fields so a script can index it; the values themselves come from session state this process does not own"
+    },
+    {
+      "method": "MissionLua::open_script",
+      "status": "concrete",
+      "owner": "vfs",
+      "native": "00885110"
+    },
+    {
+      "method": "MissionLua::script_variant_names",
+      "status": "concrete",
+      "owner": "vfs",
+      "native": "00bdef90",
+      "note": "the content-suffix list is empty, so every query answers with the base file"
+    },
+    {
+      "method": "MissionLua::global_is_defined",
+      "status": "concrete",
+      "owner": "lua",
+      "native": "00b66200"
+    },
+    {
+      "method": "MissionLua::on_frame_job_thread",
+      "status": "unimplemented",
+      "owner": "session",
+      "native": "004c1130",
+      "note": "no frame job pool, so no named call is ever queued for the main thread"
+    }
+  ],
+  "load_steps": [
+    {
+      "method": "MissionLoad::apply_audio_time_scale",
+      "status": "unimplemented",
+      "owner": "audio",
+      "address": "004dfbcc",
+      "native": "00a7a440"
+    },
+    {
+      "method": "MissionLoad::set_cinematic_mode",
+      "status": "concrete",
+      "owner": "pure",
+      "address": "004dfbd8",
+      "native": "004cd0f0"
+    },
+    {
+      "method": "MissionLoad::session_reset",
+      "status": "unimplemented",
+      "owner": "session",
+      "address": "004dfc0e",
+      "native": "0076da60"
+    },
+    {
+      "method": "MissionLoad::reset_single_player_slots",
+      "status": "concrete",
+      "owner": "pure",
+      "address": "004dfd18",
+      "native": "004bb160",
+      "note": "the eight 118h records at game+1008h and the local slot 004bb440 claims"
+    },
+    {
+      "method": "MissionLoad::publish_loading_screen_config",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004dfe65",
+      "native": "0057d0c0"
+    },
+    {
+      "method": "MissionLoad::begin_loading_screen",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004dfe6f",
+      "native": "0057cb60"
+    },
+    {
+      "method": "MissionLoad::global_subsystems",
+      "status": "unimplemented",
+      "owner": "world",
+      "address": "004dfebb",
+      "native": "004dc6a0",
+      "note": "needs a bsp::GlobalSubsystemContext nothing in the repository builds; one step inside it does run, 004dc72f calling 00886900"
+    },
+    {
+      "method": "MissionLoad::reset_render_scene",
+      "status": "unimplemented",
+      "owner": "renderer",
+      "address": "004e0194",
+      "native": "00874640",
+      "note": "milestone 2e stopped in front of this step"
+    },
+    {
+      "method": "MissionLoad::reset_effect_atlas",
+      "status": "unimplemented",
+      "owner": "renderer",
+      "address": "004e019f",
+      "native": "006ad600"
+    },
+    {
+      "method": "MissionLoad::load_scene_file",
+      "status": "unimplemented",
+      "owner": "scene_graph",
+      "address": "004e01d7",
+      "native": "0046df00",
+      "note": "the header pass against the live database; the record-filling pass already ran in milestone 2e against the same bytes"
+    },
+    {
+      "method": "MissionLoad::construct_world",
+      "status": "unimplemented",
+      "owner": "world",
+      "address": "004e01de",
+      "native": "004de610"
+    },
+    {
+      "method": "MissionLoad::reset_shader_globals",
+      "status": "unimplemented",
+      "owner": "renderer",
+      "address": "004e01e8",
+      "native": "00951560"
+    },
+    {
+      "method": "MissionLoad::resolve_named_scene_objects",
+      "status": "unimplemented",
+      "owner": "scene_graph",
+      "address": "004e0356",
+      "native": "004f2800"
+    },
+    {
+      "method": "MissionLoad::load_scene_contents",
+      "status": "unimplemented",
+      "owner": "scene_graph",
+      "address": "004e03e5",
+      "native": "004d4df0",
+      "note": "the Registration and Instantiate passes, where the entities appear"
+    },
+    {
+      "method": "MissionLoad::create_hud_manager",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004e046c",
+      "native": "0068a990"
+    },
+    {
+      "method": "MissionLoad::reset_hud_layout",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004e04df",
+      "native": "004c9680"
+    },
+    {
+      "method": "MissionLoad::select_front_end_layout",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004e04e7",
+      "native": "004c1ac0"
+    },
+    {
+      "method": "MissionLoad::register_locale_table",
+      "status": "unimplemented",
+      "owner": "pure",
+      "address": "004e06bc",
+      "native": "00aa0d30",
+      "note": "the names split off record+980h; this scene record carries none"
+    },
+    {
+      "method": "MissionLoad::reload_locale_tables",
+      "status": "unimplemented",
+      "owner": "vfs",
+      "address": "004e0700",
+      "native": "00aa06d0"
+    },
+    {
+      "method": "MissionLoad::commit_scene_ready",
+      "status": "unimplemented",
+      "owner": "session",
+      "address": "004e085f",
+      "native": "0077f5e0"
+    },
+    {
+      "method": "MissionLoad::rebuild_scripted_name_list",
+      "status": "unimplemented",
+      "owner": "lua",
+      "address": "004e08e4",
+      "native": "004d30f0",
+      "note": "the container it rebuilds was never identified"
+    },
+    {
+      "method": "MissionLoad::run_mission_script",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "004e0a3f",
+      "native": "008860b0",
+      "note": "Scripts/missions/usn/usn_2_java.lua, one chunk, no content variant"
+    },
+    {
+      "method": "MissionLoad::lua_call_entry_point_a",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "004e0a96",
+      "native": "0045f520",
+      "note": "luaPrecacheUnits"
+    },
+    {
+      "method": "MissionLoad::precache_units",
+      "status": "unimplemented",
+      "owner": "scene_graph",
+      "address": "004e0a9b",
+      "native": "0095ca70",
+      "note": "the first of the eleven calls between 004e0a9b and 004e0acd"
+    },
+    {
+      "method": "MissionLoad::lua_collect_garbage",
+      "status": "unimplemented",
+      "owner": "lua",
+      "address": "004e0ae8",
+      "native": "006b8ad0",
+      "note": "not reached: the walk runs the entry points without the collection between them"
+    },
+    {
+      "method": "MissionLoad::lua_call_entry_point_a",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "004e0c2e",
+      "native": "0045f520",
+      "note": "luaStageInitMulti"
+    },
+    {
+      "method": "MissionLoad::lua_call_entry_point_b",
+      "status": "concrete",
+      "owner": "lua",
+      "address": "004e0c3c",
+      "native": "0045f440",
+      "note": "luaStageInit"
+    },
+    {
+      "method": "MissionLoad::lua_call_entry_point_b",
+      "status": "unimplemented",
+      "owner": "lua",
+      "address": "004e0df3",
+      "native": "0045f440",
+      "note": "luaEngineMovieInit; raw script slot 9 only, which this mission is not"
+    },
+    {
+      "method": "MissionLoad::load_warning_bank",
+      "status": "unimplemented",
+      "owner": "audio",
+      "address": "004e124e",
+      "native": "007065e0"
+    },
+    {
+      "method": "MissionLoad::end_loading_screen",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004e185c",
+      "native": "0057c250"
+    },
+    {
+      "method": "MissionLoad::apply_in_game_interface",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004e1873",
+      "native": "004c9ca0"
+    },
+    {
+      "method": "MissionLoad::renderer_scene_ready",
+      "status": "unimplemented",
+      "owner": "renderer",
+      "native": "00f8d394",
+      "note": "vtable +E4h of the renderer at 00f8d394, an indirect call"
+    },
+    {
+      "method": "MissionLoad::publish_mission_id",
+      "status": "concrete",
+      "owner": "session",
+      "native": "00f8a2fc",
+      "note": "[00f8a2fc]+48h from record+1098h; the executable owns the field"
+    },
+    {
+      "method": "MissionLoad::release_main_menu_manager",
+      "status": "concrete",
+      "owner": "gui",
+      "native": "00e198ac",
+      "note": "the global is nulled; the frame reads the same flag for MissionFrame::interface_manager_present"
+    },
+    {
+      "method": "MissionLoad::release_mission_result",
+      "status": "concrete",
+      "owner": "pure",
+      "native": "004dfe83",
+      "note": "game+7188h; nothing in this process builds a new one, which is why the debrief request 0Fh is unreachable"
+    },
+    {
+      "method": "MissionLoad::input_update",
+      "status": "concrete",
+      "owner": "input",
+      "address": "004db9b4",
+      "native": "00a92c40",
+      "note": "the same routine the state 0Ch handler calls; run over the reconstructed action records with no backend"
+    }
+  ],
+  "entry_steps": [
+    {
+      "method": "DeviceWait::any_button_down",
+      "status": "unimplemented",
+      "owner": "input",
+      "address": "004db95d",
+      "native": "00a91020",
+      "note": "no input backend, so the executable injects one device-down sample and the recovered latch at table+DDh turns it into one rising edge. The injection is the executable's own, not recovered behaviour"
+    },
+    {
+      "method": "DeviceWait::update_input_manager",
+      "status": "concrete",
+      "owner": "input",
+      "address": "004db9b4",
+      "native": "00a92c40"
+    },
+    {
+      "method": "DeviceWait::dispatch_session_event",
+      "status": "unimplemented",
+      "owner": "session",
+      "native": "0075b430",
+      "note": "not reached: the player-count arm belongs to session mode 1"
+    },
+    {
+      "method": "MissionState::device_wait",
+      "status": "concrete",
+      "owner": "pure",
+      "native": "004db920"
+    },
+    {
+      "method": "MissionEntry::release_deferred_dynamics",
+      "status": "concrete",
+      "owner": "world",
+      "address": "004da6df",
+      "native": "00447060",
+      "note": "the list is empty in this process, so no handle reaches 00c34f70"
+    },
+    {
+      "method": "MissionEntry::mark_local_slot_ready",
+      "status": "concrete",
+      "owner": "pure",
+      "address": "004da71e"
+    },
+    {
+      "method": "MissionEntry::set_audio_environment_level",
+      "status": "unimplemented",
+      "owner": "audio",
+      "address": "004da734",
+      "native": "00a7a440"
+    },
+    {
+      "method": "MissionEntry::apply_in_game_interface",
+      "status": "unimplemented",
+      "owner": "gui",
+      "address": "004da746",
+      "native": "004c9ca0",
+      "note": "with 0: the arm that tears the loading element down, releases interface/textures/allbutingame.ats, selects layout set 3 and writes game+1EE0h"
+    },
+    {
+      "method": "MissionEntry::check_player_count",
+      "status": "unimplemented",
+      "owner": "session",
+      "address": "004da755",
+      "native": "004d87b0",
+      "note": "not reached: the call is behind the networked-session test"
+    },
+    {
+      "method": "MissionEntry::set_cinematic_mode",
+      "status": "concrete",
+      "owner": "pure",
+      "address": "004da769",
+      "native": "004cd0f0",
+      "note": "clearing the hide flag clears both cinematic bytes and opens the simulation gate"
+    },
+    {
+      "method": "MissionState::enter_mission_state",
+      "status": "concrete",
+      "owner": "pure",
+      "native": "004da6c0"
+    }
+  ],
+  "frame_steps": [
+    {
+      "method": "MissionFrame::session_counts_mission_start_004b6260",
+      "address": "004e4e0f",
+      "owner": "session",
+      "status": "concrete",
+      "reconstruction": "bsp::session_counts_mission_004b6260",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004b6260"
+    },
+    {
+      "method": "MissionFrame::adjust_mission_start_counters_004bcaa0",
+      "address": "004e4e25",
+      "owner": "session",
+      "status": "concrete",
+      "reconstruction": "bsp::adjust_mission_counters_004bcaa0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004bcaa0"
+    },
+    {
+      "method": "MissionFrame::update_warning_manager_00987590",
+      "address": "004e4e67",
+      "owner": "script",
+      "status": "concrete",
+      "reconstruction": "bsp::update_mission_events_00987590",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00987590"
+    },
+    {
+      "method": "MissionFrame::run_input_effect_sets_004e4e6c",
+      "address": "004e4e6c",
+      "owner": "input",
+      "status": "concrete",
+      "reconstruction": "bsp::run_input_effect_lists_004e4e6c",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native_note": "inlined in 004e4a40; no callee"
+    },
+    {
+      "method": "MissionFrame::record_action_deadlines_004d8cd0",
+      "address": "004e4feb",
+      "owner": "unit",
+      "status": "concrete",
+      "reconstruction": "bsp::record_action_deadlines_004d8cd0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004d8cd0"
+    },
+    {
+      "method": "MissionFrame::multiplayer_tick_00778560",
+      "address": "004e5036",
+      "owner": "session",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_multiplayer_tick_00778560",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00778560"
+    },
+    {
+      "method": "MissionFrame::begin_game_profile_block",
+      "address": "004e50ab",
+      "owner": "profiler",
+      "status": "concrete",
+      "reconstruction": "bsp::profiler_begin_frame_slot_00be3640",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00be3640"
+    },
+    {
+      "method": "MissionFrame::register_game_block_label",
+      "address": "004e50e3",
+      "owner": "profiler",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "0041e870"
+    },
+    {
+      "method": "MissionFrame::update_in_mission_subsystems_004c40a0",
+      "address": "004e5133",
+      "owner": "unit",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004c40a0"
+    },
+    {
+      "method": "MissionFrame::begin_engine_movie_004cce50",
+      "address": "004e5147",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004cce50"
+    },
+    {
+      "method": "MissionFrame::pause_gate_branch_004e5153",
+      "address": "004e5153",
+      "owner": "pure",
+      "status": "concrete",
+      "reconstruction": "bsp::decide_simulation_gate_branch",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native_note": "inlined in 004e4a40; no callee"
+    },
+    {
+      "method": "MissionFrame::tutorial_hint_step_available",
+      "address": "004e5227",
+      "owner": "hud",
+      "status": "concrete",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native_note": "inlined in 004e4a40; no callee"
+    },
+    {
+      "method": "MissionFrame::advance_tutorial_hint_0054e440",
+      "address": "004e522d",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "0054e440"
+    },
+    {
+      "method": "MissionFrame::toggle_pause_menu_004db030",
+      "address": "004e5234",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004db030"
+    },
+    {
+      "method": "MissionFrame::toggle_pause_menu_004db030",
+      "address": "004e523b",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004db030"
+    },
+    {
+      "method": "MissionFrame::in_game_interface_active",
+      "address": "004e524c",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native_note": "inlined in 004e4a40; no callee"
+    },
+    {
+      "method": "MissionFrame::update_in_game_interface_0068c1f0",
+      "address": "004e5252",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "bsp::audio_environment_0068c1f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "0068c1f0"
+    },
+    {
+      "method": "MissionFrame::update_interface_only_004c40f0",
+      "address": "004e5259",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_interface_only_update_004c40f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004c40f0"
+    },
+    {
+      "method": "MissionFrame::hint_tick_cooldowns_0068ec10",
+      "address": "004e526d",
+      "owner": "script",
+      "status": "concrete",
+      "reconstruction": "bsp::tick_hint_cooldowns_0068ec10",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "0068ec10"
+    },
+    {
+      "method": "MissionFrame::hint_drain_queued_00692b00",
+      "address": "004e5279",
+      "owner": "script",
+      "status": "concrete",
+      "reconstruction": "bsp::should_drain_queued_hint_00692b00",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00692b00"
+    },
+    {
+      "method": "MissionFrame::hint_unit_class_00692b60",
+      "address": "004e5285",
+      "owner": "script",
+      "status": "unimplemented",
+      "reconstruction": "bsp::unit_class_hint_00692b60",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00692b60"
+    },
+    {
+      "method": "MissionFrame::hint_weapon_006926f0",
+      "address": "004e5291",
+      "owner": "script",
+      "status": "unimplemented",
+      "reconstruction": "bsp::surface_weapon_hint_006926f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "006926f0"
+    },
+    {
+      "method": "MissionFrame::hint_environment_00692580",
+      "address": "004e529d",
+      "owner": "script",
+      "status": "unimplemented",
+      "reconstruction": "bsp::environment_hint_00692580",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00692580"
+    },
+    {
+      "method": "MissionFrame::hint_zone_first_get_00692fd0",
+      "address": "004e52a9",
+      "owner": "script",
+      "status": "unimplemented",
+      "reconstruction": "bsp::scan_capture_zones_00692fd0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00692fd0"
+    },
+    {
+      "method": "MissionFrame::hint_strategic_map_00692960",
+      "address": "004e52b5",
+      "owner": "script",
+      "status": "unimplemented",
+      "reconstruction": "bsp::should_show_strategic_map_hint_00692960",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00692960"
+    },
+    {
+      "method": "MissionFrame::update_bot_scheduler_00914ef0",
+      "address": "004e52ca",
+      "owner": "unit",
+      "status": "concrete",
+      "reconstruction": "bsp::update_bot_scheduler_00914ef0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00914ef0"
+    },
+    {
+      "method": "MissionFrame::update_markers_006dc1a0",
+      "address": "004e52df",
+      "owner": "hud",
+      "status": "concrete",
+      "reconstruction": "bsp::update_markers_006dc1a0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "006dc1a0"
+    },
+    {
+      "method": "MissionFrame::update_entity_manager_00481640",
+      "address": "004e52f4",
+      "owner": "unit",
+      "status": "concrete",
+      "reconstruction": "bsp::update_entity_manager_00481640",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00481640"
+    },
+    {
+      "method": "MissionFrame::update_rain_descriptor_00865ab0",
+      "address": "004e5309",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00865ab0"
+    },
+    {
+      "method": "MissionFrame::update_ocean_00bbddd0",
+      "address": "004e5325",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_ocean_and_effects_tick",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00bbddd0"
+    },
+    {
+      "method": "MissionFrame::update_decals_00740e10",
+      "address": "004e533a",
+      "owner": "renderer",
+      "status": "concrete",
+      "reconstruction": "bsp::update_decal_manager_00740e10",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00740e10"
+    },
+    {
+      "method": "MissionFrame::update_00f89b3c_0094c8f0",
+      "address": "004e534f",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "0094c8f0"
+    },
+    {
+      "method": "MissionFrame::update_power_ups_008eb110",
+      "address": "004e535a",
+      "owner": "unit",
+      "status": "concrete",
+      "reconstruction": "bsp::update_power_ups_008eb110",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "008eb110"
+    },
+    {
+      "method": "MissionFrame::update_effect_manager_00867ee0",
+      "address": "004e5377",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_ocean_and_effects_tick",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00867ee0"
+    },
+    {
+      "method": "MissionFrame::flush_entity_activations_00903670",
+      "address": "004e5382",
+      "owner": "unit",
+      "status": "concrete",
+      "reconstruction": "bsp::flush_entity_activations_00903670",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00903670"
+    },
+    {
+      "method": "MissionFrame::check_mission_completion_004d7ea0",
+      "address": "004e5389",
+      "owner": "script",
+      "status": "concrete",
+      "reconstruction": "bsp::check_mission_completion_004d7ea0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004d7ea0"
+    },
+    {
+      "method": "MissionFrame::set_particle_clock_time_00b19a10",
+      "address": "004e53ad",
+      "owner": "renderer",
+      "status": "concrete",
+      "reconstruction": "bsp::set_particle_clock_time_00b19a10",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00b19a10"
+    },
+    {
+      "method": "MissionFrame::update_interface_only_004c40f0",
+      "address": "004e53b6",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_interface_only_update_004c40f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004c40f0"
+    },
+    {
+      "method": "MissionFrame::set_foliage_shader_time_00af0450",
+      "address": "004e53d9",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00af0450"
+    },
+    {
+      "method": "MissionFrame::build_foliage_visible_set_00af0c50",
+      "address": "004e540f",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "bsp::build_foliage_visible_set_00af0c50",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00af0c50"
+    },
+    {
+      "method": "MissionFrame::apply_gui_visibility_004c6c70",
+      "address": "004e5416",
+      "owner": "hud",
+      "status": "concrete",
+      "reconstruction": "bsp::decide_gui_visibility_004c6c70",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004c6c70"
+    },
+    {
+      "method": "MissionFrame::interface_manager_present",
+      "address": "004e541b",
+      "owner": "hud",
+      "status": "concrete",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native_note": "inlined in 004e4a40; no callee"
+    },
+    {
+      "method": "MissionFrame::update_interface_music_00685c80",
+      "address": "004e542d",
+      "owner": "sound",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00685c80"
+    },
+    {
+      "method": "MissionFrame::update_multiplayer_interface_004d80d0",
+      "address": "004e5434",
+      "owner": "session",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004d80d0"
+    },
+    {
+      "method": "MissionFrame::service_pending_menu_requests_006840f0",
+      "address": "004e5442",
+      "owner": "hud",
+      "status": "concrete",
+      "reconstruction": "bsp::service_pending_menu_requests_006840f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "006840f0"
+    },
+    {
+      "method": "MissionFrame::pump_peer_queues_00776230",
+      "address": "004e5462",
+      "owner": "session",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_menu_interface_drain_004e5434",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00776230"
+    },
+    {
+      "method": "MissionFrame::update_interface_only_004c40f0",
+      "address": "004e5469",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "bsp::run_interface_only_update_004c40f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004c40f0"
+    },
+    {
+      "method": "MissionFrame::service_pending_menu_requests_006840f0",
+      "address": "004e5477",
+      "owner": "hud",
+      "status": "concrete",
+      "reconstruction": "bsp::service_pending_menu_requests_006840f0",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "006840f0"
+    },
+    {
+      "method": "MissionFrame::apply_sound_requests_00941140",
+      "address": "004e5496",
+      "owner": "sound",
+      "status": "concrete",
+      "reconstruction": "bsp::apply_sound_request_00941140",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00941140"
+    },
+    {
+      "method": "MissionFrame::update_front_end_screens_004d8620",
+      "address": "004e549d",
+      "owner": "hud",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004d8620"
+    },
+    {
+      "method": "MissionFrame::end_game_profile_block",
+      "address": "004e54b0",
+      "owner": "profiler",
+      "status": "concrete",
+      "reconstruction": "bsp::profiler_end_frame_slot_00be3660",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00be3660"
+    },
+    {
+      "method": "MissionFrame::begin_render_profile_block",
+      "address": "004e54ca",
+      "owner": "profiler",
+      "status": "concrete",
+      "reconstruction": "bsp::profiler_begin_frame_slot_00be3640",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00be3640"
+    },
+    {
+      "method": "MissionFrame::render_004ca440",
+      "address": "004e54d1",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004ca440"
+    },
+    {
+      "method": "MissionFrame::end_render_profile_block",
+      "address": "004e54e4",
+      "owner": "profiler",
+      "status": "concrete",
+      "reconstruction": "bsp::profiler_end_frame_slot_00be3660",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00be3660"
+    },
+    {
+      "method": "MissionFrame::finish_render_frame_004ca1f0",
+      "address": "004e54eb",
+      "owner": "renderer",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "004ca1f0"
+    },
+    {
+      "method": "MissionFrame::frame_metrics_enabled",
+      "address": "004e550c",
+      "owner": "profiler",
+      "status": "concrete",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native_note": "inlined in 004e4a40; no callee"
+    },
+    {
+      "method": "MissionFrame::submit_frame_metrics_00757ce0",
+      "address": "004e551e",
+      "owner": "profiler",
+      "status": "unimplemented",
+      "reconstruction": "",
+      "containing_function": "004e4a40",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "native": "00757ce0"
+    }
+  ],
+  "corrections": [
+    {
+      "target": "include/bsp/mission_lua_host.hpp, kMissionLuaEntryPoints",
+      "was": "{\"luaPrecacheUnits\", false}, // 0045f520 at 004e0aa5",
+      "is": "the CALL 0045f520 for luaPrecacheUnits is at 004e0a96; 004e0a9b is CALL 0095ca70, the first of the eleven precache calls the same comment block attributes to 004e0a9b..004e0acd",
+      "evidence": "python tools/bsp.py ghidra xrefs 0045f520 -> 004e0a96 and 004e0c2e in BSP_Game_LoadMissionScene; python tools/bsp.py disasm-raw 004e0a90 --length 24 -> 004e0a96 call 0x45f520 / 004e0a9b call 0x95ca70"
+    },
+    {
+      "target": "include/bsp/mission_scene_load.hpp, MissionSceneLoadHost::lua_reset_state",
+      "was": "virtual void lua_reset_state() = 0; // 005e2f00",
+      "is": "005e2f00 is BSP_Game_SyncLobbySettingsFromLua: it opens the LobbySettings global and walks the thirteen slots of 00e08908. It resets no Lua state. The method name is a call-site guess of the kind rule 1 of docs/WORKER_VERIFICATION_CHECKLIST.md forbids.",
+      "evidence": "docs/MISSION_LUA_MACHINE.md, the 005e2f00 section; python tools/bsp.py ghidra xrefs 005e2f00 -> 004e02d0 in BSP_Game_LoadMissionScene"
+    },
+    {
+      "target": "docs/GAME_EXECUTABLE.md milestone 2e, \"the load stops at reset_render_scene [00874640]\"",
+      "was": "the run stops at the first step whose owner is the renderer or the scene graph",
+      "is": "the load walks every remaining step of the inventory. 00874640 is still the first renderer-owner step and is still a record; it is no longer where the run stops.",
+      "evidence": "local/game_run.log: \"mission load finished: 47 steps, 10 concrete, 32 records, 5 arms not taken; game state = 0x0C\""
+    },
+    {
+      "target": "milestone 2e, the mission script path in the report",
+      "was": "Scripts/missions/usn_2_java.lua, derived from the scene stem alone",
+      "is": "Scripts/missions/usn/usn_2_java.lua. Scripts/missions/ holds no loose .lua, so the name must carry a subdirectory; the executable derives it from the scene file's parent directory and confirms it against the mounted tree.",
+      "evidence": "docs/MISSION_LUA_MACHINE.md gap 2; local/game_run.log \"mission script name derived from the scene path\""
+    }
+  ],
+  "no_ghidra_function": [],
+  "known_defects": [
+    {
+      "address": "004e4a40",
+      "doc": "docs/GHIDRA_LISTING_DEFECTS.md",
+      "effect": "the stored Ghidra body of BSP_Game_OnMove is eight bytes (004e4a40-004e4a47), so tools/verify_report_calls.py reports every one of the 57 frame_steps call sites as \"in no Ghidra function\". The addresses come from bsp::mission_frame_step(), which read them from the disk bytes 004e4a40-004e5535."
+    }
+  ]
+}
