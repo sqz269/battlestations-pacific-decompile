@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/dialog_config.hpp"
+#include "bsp/global_config.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/marker_classes.hpp"
 #include "bsp/panel_owner.hpp"
@@ -40,9 +41,6 @@ struct GlobalSubsystemHost {
     virtual void run_string_006b8ad0(void* lua_instance, const char*,
         int capture_results, int capture_error, int result_mode) = 0;
 
-    // Actual singleton layout: NativeString* begin+10/end+14, float+2D8.
-    // Every invocation must resolve 00432650 again, including lazy creation.
-    virtual void* current_config_00432650() = 0;
     // out aliases the actual local pointer. The returned native EAX is &out.
     virtual void acquire_effect_00871ba0(void*& out, const NativeString*, int flag) = 0;
     // Preserve native refcounted pointer-vector copy/checked-growth semantics.
@@ -76,6 +74,7 @@ struct GlobalSubsystemContext {
     PowerupConfigContext& powerup;
     const WarningOwnerAllocationWords& warning_allocation;
     WarningOwnerContext& warnings;
+    GlobalConfigContext& global_config;
 };
 
 // Complete normal-flow004DC6A0, ECX=game, RET at004DC93F. Allocation and

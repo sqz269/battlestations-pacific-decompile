@@ -5756,8 +5756,8 @@
       "id": "native_frame_target_owner6",
       "packet": "native_frame_target_owner6",
       "worker": "frame_target_owner_discovery",
-      "done": false,
-      "state": "primary_native_lifetime_contract_reviewed_worker_source_in_progress_vector_prerequisite_pending",
+      "done": true,
+      "state": "complete_actual_owner_primary_library_original_body_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b1fbb0",
         "00b1fc00",
@@ -5777,7 +5777,8 @@
         "native_frame_target_vector3"
       ],
       "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
-      "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst."
+      "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst.",
+      "evidence": "reports/native_frame_target_owner_audit.json"
     },
     {
       "id": "orch4_traffic_config_h",
@@ -5909,8 +5910,8 @@
       "id": "native_renderer_frame_targets1",
       "packet": "native_renderer_frame_targets1",
       "worker": "main",
-      "done": false,
-      "state": "complete_source_pending_vector_and_owner_main_integration_build_and_original_fixture",
+      "done": true,
+      "state": "complete_actual_renderer_primary_library_original_parent_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b24e70"
       ],
@@ -5926,7 +5927,8 @@
         "native_frame_target_owner6"
       ],
       "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
-      "scope": "Complete318byteactualretainedgroupbinding usingcurrentD5E600owner, fullsurface/cachedstate/getter/guardproviders andactualF8D398byte; originalEHcleanup."
+      "scope": "Complete318byteactualretainedgroupbinding usingcurrentD5E600owner, fullsurface/cachedstate/getter/guardproviders andactualF8D398byte; originalEHcleanup.",
+      "evidence": "reports/native_renderer_frame_targets_audit.json"
     },
     {
       "id": "native_vertex_stream_owner_discovery",
@@ -5942,6 +5944,63 @@
       "source_ready": false,
       "evidence": "reports/native_vertex_stream_owner_discovery.json",
       "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
+    },
+    {
+      "id": "orch4_config_singleton_i",
+      "packet": "orch4_config_singleton_i",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00432650",
+        "004324e0",
+        "004325b0",
+        "00432710",
+        "008dbcd0",
+        "008dbdb0",
+        "004312b0",
+        "00431210",
+        "00432050",
+        "004c3810",
+        "00524180",
+        "004ba0d0",
+        "0054d440",
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_config.hpp",
+        "src/global_config.cpp",
+        "docs/GLOBAL_CONFIG.md",
+        "reports/global_config.json",
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp"
+      ],
+      "integration_report": "reports/global_config.json",
+      "discovery_evidence": "docs/GLOBAL_CONFIG.md"
+    },
+    {
+      "id": "native_renderer_clip_planes3",
+      "packet": "native_renderer_clip_planes3",
+      "worker": "main",
+      "done": false,
+      "state": "complete_actual_storage_source_main_Win32_build_CTests_passed_native_fixture_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00b23e50",
+        "00b25040",
+        "00b25080"
+      ],
+      "code_ownership": [
+        "src/native_renderer_clip_planes.cpp",
+        "include/bsp/native_renderer_clip_planes.hpp",
+        "docs/NATIVE_RENDERER_CLIP_PLANES.md",
+        "reports/native_renderer_clip_planes_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_renderer_cached_states3"
+      ],
+      "scope": "Complete raw clip-plane set/append/pending restore; exact x87 sequential copies/EH arm after second store, actual guards/current real device/full cached state.",
+      "evidence": "reports/native_renderer_clip_planes_audit.json"
     }
   ],
   "snapshot_after_analysis": {

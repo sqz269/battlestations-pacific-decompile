@@ -98,6 +98,17 @@ must construct the actual `174h` node prefix, and its retained terminal and
 scene companion must bind to that physical owner. `NativeNodeBinding` and
 `SceneNodeAttachment` cannot substitute for the allocated storage.
 
+## Correction from docs/NATIVE_NODE_POOL_OWNER.md
+
+Packet `orch3_node_pool_owner_p` reverified and reconstructed B6E980/B6E3D0,
+B6EA60 compaction, B6DDF0 table cleanup, and the CD7D10/CE0E20 static lifetime
+chain. Its original-byte fixture uses the reconstructed owner with these raw
+allocation/return routines, including returns after moved slab IDs are rewritten.
+The owner-lifetime dependency above is now implemented. The shared checkout
+already supplies B6F5A0 in `native_node_construction.cpp`; composition with
+this pool, the actual native string-pool bridge and retained terminal binding
+still remains work.
+
 No game entry was executed, installed file changed, or native vtable/exception
 ABI compatibility established. The full point-effect constructor, deferred
 release dispatch and application integration remain unfinished.

@@ -86,8 +86,9 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
     void* const lua = read<void*>(game.mission_lua_1a08, 4);
     if (lua) host.run_string_006b8ad0(lua, "collectgarbage(\"collect\")", 0, 0, 2);
 
-    for (std::uint32_t index = 0; index < name_count(host.current_config_00432650()); ++index) {
-        void* const selected_config = host.current_config_00432650();
+    for (std::uint32_t index = 0;
+            index < name_count(get_global_config_00432650(context.global_config)); ++index) {
+        void* const selected_config = get_global_config_00432650(context.global_config);
         if (index >= name_count(selected_config))
             context.validation.invalid_parameter(context.validation.context);
         // The validation callback may return after repairing this same owner.
@@ -97,7 +98,7 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
         EffectCleanup cleanup{effect, host};
         host.append_effect_004d9c00(game.effects_vector_718c, &effect);
     }
-    void* const config = host.current_config_00432650();
+    void* const config = get_global_config_00432650(context.global_config);
     const float zero = 0.0f;
     std::memcpy(static_cast<unsigned char*>(config) + 0x2d8, &zero, sizeof zero);
 

@@ -1,0 +1,116 @@
+{
+  "packet": "cc_init_tail",
+  "owner": "agent/cc-init-tail",
+  "program": "/battlestationspacific.exe",
+  "project": "bsp",
+  "image_base": "0x00400000",
+  "source_doc": "docs/APP_INIT_TAIL.md",
+  "secondary_doc": "docs/LUA_OBJECT_API.md",
+  "ghidra_mutations": "none; read-only queries, ledger names only",
+  "addresses": [
+    "0073c3b0", "00735450", "0098c7f0", "0098c800", "0098c870", "0098c890",
+    "0098d3d0", "0098d400", "0098d470", "0098d4e0", "0098d570", "0098d590",
+    "0098d5c0", "0098d5f0", "0098f430", "00736b60", "00736c30", "00bb4fb0",
+    "00be0660", "00736dd0", "00736ea0", "00b80a50", "00af0b10", "00af06a0",
+    "0073fa70", "0073e9a0", "00740410", "00740840", "00b65f50", "00b660a0",
+    "00b66290", "00b66420", "00b669a0", "00b66bd0", "00b67080", "00b67190",
+    "00b67700", "00b67800", "00b67980"
+  ],
+  "init_call_sites": [
+    { "call_site": "0073d610", "address": "0073c3b0", "phase": 2, "note": "inside the DAT_0109ceec==0 first-time branch" },
+    { "call_site": "0073d955", "address": "00736b60", "phase": "factory tail" },
+    { "call_site": "0073d95d", "address": "00be0660", "phase": "factory tail" },
+    { "call_site": "0073d968", "address": "00736c30", "phase": "factory tail" },
+    { "call_site": "0073d970", "address": "00bd9230", "phase": "factory tail", "note": "fragment exists in src/platform_window.cpp" },
+    { "call_site": "0073d988", "address": "00bb40b0", "phase": "factory tail", "note": "fragment exists in src/platform_window.cpp" },
+    { "call_site": "0073db41", "address": "004c1400", "phase": 6, "note": "documented only; unleased, no src coverage" },
+    { "call_site": "0073db48", "address": "00736dd0", "phase": 6 },
+    { "call_site": "0073db50", "address": "00b80a50", "phase": 6 },
+    { "call_site": "0073db55", "address": "004c1400", "phase": 6 },
+    { "call_site": "0073db5c", "address": "00736ea0", "phase": 6 },
+    { "call_site": "0073db64", "address": "00b80a50", "phase": 6 },
+    { "call_site": "0073de8c", "address": "00740840", "phase": 9 },
+    { "call_site": "0073e02b", "address": "00af0b10", "phase": 10, "note": "already reconstructed in src/world_effects_startup.cpp" }
+  ],
+  "names_added": [
+    { "address": "00735450", "name": "BSP_LocalizedMessage_Format" },
+    { "address": "0098d4e0", "name": "BSP_HardwareRegistry_ReadValue" },
+    { "address": "0098d470", "name": "BSP_HardwareRegistry_WriteValue" },
+    { "address": "0098d5c0", "name": "BSP_HardwareRegistry_ReadQword" },
+    { "address": "0098d5f0", "name": "BSP_HardwareRegistry_ReadString" },
+    { "address": "0098d570", "name": "BSP_HardwareRegistry_WriteDword" },
+    { "address": "0098d590", "name": "BSP_HardwareRegistry_WriteString" },
+    { "address": "0098c870", "name": "BSP_HardwareInfo_GpuDeviceId" },
+    { "address": "0098c890", "name": "BSP_HardwareInfo_GpuDeviceName" },
+    { "address": "0098c7f0", "name": "BSP_HardwareInfo_CpuSpeed" },
+    { "address": "0098c800", "name": "BSP_HardwareInfo_MemorySize" },
+    { "address": "0098d3d0", "name": "BSP_HardwareInfo_SoundDeviceName" },
+    { "address": "0098f430", "name": "BSP_HardwareInfo_WriteDefaultOptionsFile" },
+    { "address": "0098d400", "name": "BSP_Localization_LanguageRowForLcid" },
+    { "address": "0073fa70", "name": "BSP_DecalSystem_BaseCtor" },
+    { "address": "0073e9a0", "name": "BSP_DecalRecordVector_Reserve" },
+    { "address": "00af06a0", "name": "BSP_FoliageGroupManager_BaseCtor" },
+    { "address": "00bb4fb0", "name": "BSP_PakArchiveRegistry_Ctor" }
+  ],
+  "structures": {
+    "hardware_detection_object": {
+      "0x28": "GPU adapter index into the 12-byte table at 00e0cff4",
+      "0x2c": "memory size",
+      "0x30": "CPU speed",
+      "note": "the sound device name is the fixed global 00f8a0e8, not a field"
+    },
+    "gpu_device_table_00e0cff4": { "stride": 12, "+0": "device id", "+4": "name pointer, null terminates the scan" },
+    "pak_archive_registry_00bb4fb0": { "size": "0x1c", "+0": "vtable 00d64190", "+4": 1, "+8": "vtable 00d6418c", "+0xc": 100, "+0x10,+0x14,+0x18": 0 },
+    "decal_system_00740840": { "size": "0x1c", "+0": "vtable 00cff2a0 over base 00cff218", "+0x10": "record base", "+0x14": "count", "+0x18": "capacity" },
+    "decal_record_00740410": { "size": "0x28", "+0/+4": "name", "+8": "Maxnum", "+0xc": "Size", "+0x10": "Radius", "+0x14": "decal.mvfm vertex format", "+0x18": "Texture", "+0x1c": "Shader", "+0x20": "LifeTime", "+0x24": "FadeOutTime" },
+    "lua_object_00b65f50": { "size": "0x14", "+0": "lua_State*", "+4": "kind 0 unbound / 1 stack index / 2 reference", "+8": "registry ref, -1", "+0xc": "not written by the constructor", "+0x10": "byte flag" },
+    "lua_state_owner_00b66bd0": { "size": "0x4c8", "+0": "owns byte", "+4": "lua_State*", "+0x28": "fifty 0x18-byte slots" }
+  },
+  "no_ghidra_function": [
+    { "start": "00735d00", "end_inclusive": "00735d07", "body": "sub ecx,4; jmp 00737090", "role": "mpkg factory secondary vtable 00cfea10 adjustor" },
+    { "start": "00735d30", "end_inclusive": "00735d37", "body": "sub ecx,4; jmp 007370d0", "role": "mpak factory secondary vtable 00cfea1c adjustor" },
+    { "start": "00735d90", "end_inclusive": "00735d97", "body": "sub ecx,4; jmp 00737150", "role": "AnimationChannels parser lifetime vtable 00cfea34 adjustor" },
+    { "start": "00735dc0", "end_inclusive": "00735dc7", "body": "sub ecx,4; jmp 00737190", "role": "Bone parser lifetime vtable 00cfea44 adjustor" }
+  ],
+  "flow_gaps": [
+    { "function": "00740840", "gap": "00740a0d..00740a0f", "note": "cosmetic; the strlen loop at 00740a10 still decompiles" }
+  ],
+  "reconstruction": {
+    "headers": ["include/bsp/app_init_tail.hpp", "include/bsp/lua_object.hpp"],
+    "sources": ["src/app_init_tail.cpp", "src/lua_object.cpp", "src/decal_table_probe.cpp"],
+    "status": "build-tested and fixture-tested; not ABI compatible and not game validated"
+  },
+  "fixture": {
+    "probe": "bsp_decal_table_probe",
+    "input": "<install>/scripts/datatables/decals.lua",
+    "lua": "stock 5.1.1 through bsp::GuiLua51Host",
+    "definitions_parsed": 3,
+    "records": [
+      { "name": "machine_gun_decal", "size": 0.33, "radius": 2, "maxnum": 130, "texture": "white.tga", "shader": "decal.mshd", "life_time": 15, "fade_out_time": 2 },
+      { "name": "explosion_hole", "size": 4, "radius": 2, "maxnum": 10, "texture": "white.tga", "shader": "decal.mshd", "life_time": 30, "fade_out_time": 2 },
+      { "name": "landscape_hole", "size": 5, "radius": 2, "maxnum": 100, "texture": "white.tga", "shader": "decal.mshd", "life_time": 30, "fade_out_time": 2 }
+    ],
+    "exit_code": 0
+  },
+  "corrections": [
+    { "target": "docs/GAME_EXECUTABLE.md", "claim": "Phase 9 game_entry 00740840", "correction": "00740840 is the decal definition loader, not a game entry; src/game_hosts.cpp:910 carries the same label" },
+    { "target": "docs/APP_INIT_WORLD_EFFECTS.md", "claim": "records are made for each element whose value is a table (00b660a0)", "correction": "00b660a0 at 007409b9 tests the key for LUA_TSTRING; the value is never type-tested" },
+    { "target": "docs/APP_INIT_BOOTSTRAP.md", "claim": "0098d3d0 as an accessor on the detection object", "correction": "0098d3d0 is MOV EAX,0x00f8a0e8 / RET and ignores ECX" },
+    { "target": "src/app_bootstrap.cpp probe_hardware_0073c3b0", "claim": "message is the failure lines joined then a newline; no registry write-back", "correction": "native format is L\"%s%s%s%s\\n%s\" with a fifth localized line, and 0073c843 writes the four values back on both the Yes and the No answer" },
+    { "target": "ledger evidence on 00b66420", "claim": "00b67190 leaves the key unbound at the end", "correction": "00740840 tests the value for unbound at 007409a8 and 00740d6d" }
+  ],
+  "refused_or_deferred": [
+    "004c1400 documented only, as the packet directed",
+    "00bb83a0 mpak Create left to a follow-up packet: it pulls in 00bb8240, 00bb82f0 and the provider cache",
+    "00bd9230, 00bb40b0, 00b80a50, 00af0b10, 00b66270, 00b662b0 reused from existing reconstructions, not redone"
+  ],
+  "follow_up_packets": [
+    "mpak_provider_create: 00bb83a0, 00bb8240, 00bb82f0",
+    "resource_manager_singleton: 004c1400, 00b81040",
+    "resource_item_parsers: 00b8a910, 00b8a990",
+    "hardware_detection_object: 009927d0, 00992830, the writer of 00f8a0e8",
+    "lua_object_iterators: 00b67080, 00b67190",
+    "lua_state_owner_callbacks: the fifty 0x18-byte slots at owner+0x28",
+    "decal_system_runtime: vtable 00cff2a0 and the consumers of the record vector"
+  ]
+}

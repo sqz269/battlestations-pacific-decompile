@@ -1,0 +1,122 @@
+{
+  "packet": "cc_frontend_states",
+  "owner": "agent/cc-frontend-states",
+  "ghidra_modified": false,
+  "docs": [
+    "docs/FRONTEND_STATE_MACHINE.md",
+    "docs/APP_FRAME_GAME_STATE.md"
+  ],
+  "sources": [
+    "include/bsp/frontend_state_machine.hpp",
+    "src/frontend_state_machine.cpp",
+    "include/bsp/app_frame_game_state.hpp",
+    "src/app_frame_game_state.cpp"
+  ],
+  "base_screen_vtable": {
+    "address": "00ceae54",
+    "slots_read": 10,
+    "slots": {
+      "+00h": "00bf698e __purecall, screen id",
+      "+04h": "004f7570 xor al,al/ret, self-managed visibility",
+      "+08h": "004f7580 xor al,al/ret, unnamed predicate",
+      "+0ch": "004f75e0 scalar deleting destructor",
+      "+10h": "004f71d0 register",
+      "+14h": "004f7590 ret, unnamed empty",
+      "+18h": "004f75a0 ret, enter",
+      "+1ch": "004f75b0 ret, exit",
+      "+20h": "004f75c0 ret 4, update(float)",
+      "+24h": "004f75d0 ret 4, collect children"
+    },
+    "slots_past_24h": "00ceae7c -> 004f8b50 and 00ceae80 -> 0042b110, membership not established"
+  },
+  "registry": {
+    "first_slot": "00e18b60",
+    "end_exclusive": "00e18cdc",
+    "last_slot": "00e18cd8",
+    "slot_count": 95,
+    "sentinel_byte": "00e18cdc",
+    "register": "004f71d0, unchecked store at 004f71d9",
+    "unregister": "004f71a0, scans all slots, leaves the flag bytes alone",
+    "construct": "004f7180"
+  },
+  "screen_phases": {
+    "hidden": "+4h 0, +5h 0",
+    "entering": "+4h 1, +5h 0, pump pass 004f88d0",
+    "shown": "+4h 1, +5h 1, pump pass 004f8906",
+    "exiting": "+4h 0, +5h 1, pump pass 004f8890",
+    "exit_commits_after_virtual": true,
+    "enter_commits_before_virtual": true
+  },
+  "title_handover": {
+    "address": "0068d8d0",
+    "vtable": "00cf7a98 slot +4h",
+    "press_start_alloc_bytes": 24,
+    "press_start_constructor": "0067c840",
+    "press_start_slot": 92,
+    "skip_path_enqueues_state": 4,
+    "bypasses_pump_enter_pass": true,
+    "null_allocation_is_native_crash_at": "0068d957"
+  },
+  "app_frame_game_state": {
+    "game_state_is_a_field_read": true,
+    "game_singleton_pointer": "00e188a8",
+    "field_offset": "0x5d4",
+    "read_sites": ["00737acc", "00737b33"],
+    "bytes_at_00e18e7c": "00 00 00 00",
+    "writers": {
+      "004e3ac2": 3,
+      "004c9a70": 2,
+      "004e449e": "the dequeued request",
+      "004e4279": 5
+    }
+  },
+  "profiler": {
+    "record_stride": 40,
+    "display_stride": 28,
+    "history_frames": 20,
+    "spare_slots": 50,
+    "capacity_formula": "*(00e15118) + 0x32",
+    "display_scale_seconds": 0.1,
+    "reference_frame_seconds_00d68680": 0.0222222218,
+    "normalized_bias_00d7a270": 0.05,
+    "default_slot_color": "0xffffff0f",
+    "slot_zero_skipped": true,
+    "end_frame_return": "(ring_index + 1) / 20",
+    "tick_scale_cell": "0109db48",
+    "tick_scale_in_image": 0,
+    "interlocked_imports_inferred": {
+      "00ce22c4": "InterlockedExchangeAdd, previous value decides outermost entry",
+      "00ce2220": "InterlockedDecrement, new value decides outermost exit"
+    },
+    "query_performance_counter_slot": "00ce2270"
+  },
+  "pretranslate_correction": {
+    "doc": "docs/GAME_EXECUTABLE.md",
+    "cited_site": "00bec20a",
+    "cited_site_actual_instruction": "MOV byte ptr [ESI+0x43],1, the loop finished store",
+    "corrected_site": "00bec1d8",
+    "thunk": "00c2f1d2",
+    "import_slot": "00ce25dc",
+    "api": "XLivePreTranslateMessage",
+    "ordinal": 5030,
+    "observed_calls_in_60_frame_run": 8
+  },
+  "no_ghidra_function": [
+    {"start": "004f7570", "end_inclusive": "004f7572", "body": "xor al,al; ret"},
+    {"start": "004f7580", "end_inclusive": "004f7582", "body": "xor al,al; ret"},
+    {"start": "004f7590", "end_inclusive": "004f7590", "body": "ret"},
+    {"start": "004f75a0", "end_inclusive": "004f75a0", "body": "ret"},
+    {"start": "004f75b0", "end_inclusive": "004f75b0", "body": "ret"},
+    {"start": "004f75c0", "end_inclusive": "004f75c2", "body": "ret 4"},
+    {"start": "004f75d0", "end_inclusive": "004f75d2", "body": "ret 4"}
+  ],
+  "corrections": [
+    "docs/GAME_FRONTEND_STATES.md calls 004f71a0 the destructor; the destructor is base slot +0ch, 004f75e0, and 004f71a0 is the unregister half it inlines.",
+    "docs/APP_RUN_FRAME.md reads 00be34d0's return as the pre-wrap index divided by 0x14; the listing adds one first (00be3627). The conclusion, 1 on the wrapping frame, is unchanged.",
+    "docs/GAME_EXECUTABLE.md cites PlatformLoopCallbacks::pretranslate against 00bec20a; the call is at 00bec1d8."
+  ],
+  "validation": "Win32 Release build clean at /W4 /WX, reconstructed_math CTest passed",
+  "new_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false
+}
