@@ -194,7 +194,15 @@
     "bsp_core_sha256": "8fe77be4da2940eec59b94ab33e99d632f97493331229b51333dfd44812f21e2",
     "permanent_tests_added": 0,
     "gui_render_validated": false,
-    "application_startup_fully_bound": false
+    "application_startup_fully_bound": false,
+    "latest_main_integration": {
+      "tested_commit": "8f1e401051241a22f1d238e56e01226192141f59",
+      "build_and_existing_tests": "passed: local/locale-startup-latest-main-build.log",
+      "combined_installed_fixture": "passed: local/locale-startup-latest-main-fixture.log",
+      "bsp_core_sha256": "5f6aa91044145fc25bff489e07ed54eaa5d88bd26b1e22cfe3d062756e720ec0",
+      "scope": "All sixteen packet source/header hashes unchanged; rebuilt and reran installed-data integration after concurrent main added VFS provider date callbacks",
+      "registry_sha256": "9f09c4569755e49e34031d2453cfbbe0034757eb148829911f0fc85313aece74"
+    }
   },
   "annotations": {
     "names_verified": 24,
@@ -243,7 +251,9 @@
     "local/locale-startup-worker-artifacts.json": "e2872507ef19ac89f23033249511074ac0b700f4618c9e4242c5b4d75acb64d3",
     "local/locale-startup-annotation-changes.json": "8d2c6de43cf99d0548e75cf466e4ecbf77861afbcf4d2febb09813ecd86a51b1",
     "local/locale-startup-annotation-verification.json": "a57cef66a4b100c8ef5a95c900b4d1fec18e7e5606e2773740b3b1ba696004d6",
-    "local/locale-startup-export-refresh.log": "6d3d32a07d7375a2f1030d67448e849a6e37dff2f50d4783b43104d6b7e579db"
+    "local/locale-startup-export-refresh.log": "6d3d32a07d7375a2f1030d67448e849a6e37dff2f50d4783b43104d6b7e579db",
+    "local/locale-startup-latest-main-build.log": "9576f5f02ec3b5f5df5e312f4d611fd2f8489662bc47b0210cd7e0e1043b659e",
+    "local/locale-startup-latest-main-fixture.log": "62437fb26f77b969608ed3a38234496c0df9571c7cc9b6db9b115c2478f8e30f"
   },
   "follow_up": {
     "settings_owner_binding": "Replace mislabeled apply_detected_defaults no-op at native008d878a with existing008d6170 writer over actual retained GameSettingsBlock and selected catalog, before renderer tail",
