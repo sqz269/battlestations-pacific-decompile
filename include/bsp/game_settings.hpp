@@ -79,7 +79,7 @@ struct GameplaySettings {
     bool water_drops_7c{true};  // +7Ch, "waterDrops"
     float marker_alpha_80{0.0f};// +80h, "markerAlpha"
     bool cockpit_mode_b2{true}; // +B2h, "CockpitMode"
-    bool show_safe_area_b1{true};   // +B1h, "ShowSafeArea"
+    bool show_safe_area_b1{false};  // +B1h, constructor 008d77a7 clears "ShowSafeArea"
     std::string clan_text_b4;   // NativeString +B4h header / +B8h text, "ClanText"
 };
 
@@ -107,7 +107,7 @@ struct PresentationSettings {
     float gamma_64{0.0f};       // +64h, "gamma", pushed to renderer virtual +F0h
     float unknown_34{0.0f};     // +34h, set to the constant at 00ce7d20 by 008d4520
     int unknown_70{0};          // +70h, latched in 00f88a40; not persisted
-    int shader_flag_8c{1};      // +8Ch, paired with +8Dh in 00b107f0; not persisted
+    std::uint8_t shader_flag_8c{1}; // +8Ch byte, paired with +8Dh in 00b107f0; not persisted
     bool motion_blur_8d{true};  // +8Dh, "MotionBlur", mirrored into 00f8d39c+219h
     int old_film_effect_90{1};  // +90h, "oldFilmEffect", pushed to 00f8d39c+220h
     bool hardware_reported_95{false}; // +95h, "HardwareReported", default 0
@@ -141,7 +141,7 @@ void reset_audio_defaults_008d41f0(GameSettingsBlock& settings) noexcept;
 // 008d4520 video reset, __thiscall(bool reset_resolution, bool keep_fullscreen),
 // RET 8. The second flag is inverted in the body: fullscreen is forced on only
 // when the argument is zero. The call sites pass (0, 1).
-inline constexpr float kVideoResetUnknown34 = 0.698161f; // 00ce7d20, 0x3f32b8c3
+inline constexpr float kVideoResetUnknown34 = 0.6981317400932312f; // 00ce7d20, 0x3f32b8c3
 void reset_video_defaults_008d4520(
     GameSettingsBlock& settings, bool reset_resolution, bool keep_fullscreen) noexcept;
 
@@ -170,10 +170,10 @@ const char* unit_label_key_008d4260(const GameSettingsBlock& settings) noexcept;
 std::string language_lockit_id_008d48c0(
     const GameSettingsBlock& settings, const std::vector<LanguageEntry>& table);
 
-// 008d56c0, __thiscall(native_string name), RET 4. Scans the language table for
-// an entry whose lanfile matches and stores its index into +04h. No match
-// leaves the index untouched; the return reports whether one was found. The
-// installed options.txt value is a single token such as "englishauthentic".
+// 008d56c0, __thiscall(const char* name), RET 4, native void return. Constructs
+// a temporary NativeString from the C string, then chooses the FIRST table
+// entry with equal stored length and __stricmp equality. No match, including
+// an empty table, stores index zero. The bool return is projection-only.
 bool select_language_by_name_008d56c0(
     GameSettingsBlock& settings, const std::vector<LanguageEntry>& table, const std::string& name);
 

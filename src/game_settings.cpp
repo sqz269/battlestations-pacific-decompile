@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstring>
 
 namespace bsp {
 namespace {
@@ -243,12 +244,17 @@ std::string language_lockit_id_008d48c0(
 bool select_language_by_name_008d56c0(
     GameSettingsBlock& settings, const std::vector<LanguageEntry>& table, const std::string& name)
 {
+    // 0041e870 constructs the native temporary from a C string, so an embedded
+    // NUL ends the input even though this projection accepts std::string.
+    const auto name_length = std::strlen(name.c_str());
     for (std::size_t i = 0; i < table.size(); ++i) { // 008d56f8 loop over 00f88978 entries
-        if (table[i].lanfile == name) {
+        if (table[i].lanfile.size() == name_length &&
+            (name_length == 0 || _stricmp(table[i].lanfile.c_str(), name.c_str()) == 0)) {
             settings.gameplay.language_index_04 = static_cast<int>(i);
             return true;
         }
     }
+    settings.gameplay.language_index_04 = 0; // 008d5753
     return false;
 }
 
