@@ -79,5 +79,15 @@
     "0044ec00 signed-key palette map insertion",
     "006952a0/00695870 actual attached observer lifetime",
     "game Lua Handle resolver00BD64E0 callback0109CED8"
-  ]
+  ],
+  "integration": {
+    "helper_log": "local/voice_update_integrate.log",
+    "build_and_existing_tests": "passed2/2",
+    "tested_commit": "4ad531926ec558269d6129e14d8f07c8f322ec2d",
+    "merged_to_main": "d219a422e80f8ffa7c960cc109dbc3233e123f3a",
+    "post_build_merge": "main advanced during build; merged afterward without claiming a second build at that revision",
+    "annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T062227Z.json",
+    "snapshot_internal_functions": 62600,
+    "push": "performed after this report commit"
+  }
 }

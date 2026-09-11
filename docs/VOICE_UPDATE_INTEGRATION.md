@@ -111,3 +111,15 @@ floating-point status, native binary layouts/SEH and corrupt-container failure
 equivalence are excluded. No full game, audio output or rendered UI claim follows
 from compilation or service fixtures. Final validation and annotation records
 are in `reports/voice_update_integration.json`.
+
+The combined Win32 build and both existing CTests passed at `6f8c726`.
+Five ignored fixtures passed against that library: scheduled admission,
+manager cleanup with both destructor routes, line lifetime, the quiet-NaN
+sequence terminal branch, and real-Lua reader identity/String conversion.
+The integration helper then merged current main and passed build plus both
+CTests again at `4ad5319`. Main advanced during that build and was merged to
+`d219a42` afterward; the later merge is not a claim of another completed build.
+Fifteen scoped names/evidence comments were saved and read back, preserving
+prior comments, and affected exports were refreshed. Five false `_free`
+callsite continuations were repaired. Two disproven `stl_probable` bookmarks
+were removed with their original ledger/bookmark records retained in the report.
