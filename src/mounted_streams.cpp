@@ -1,11 +1,12 @@
 #include "bsp/mounted_streams.hpp"
+#include "bsp/vfs_file_date.hpp"
 #include <utility>
 
 namespace bsp {
 VfsMount bind_physical_directory_fragment(std::string prefix,
     const std::shared_ptr<PhysicalDirectory>& directory) {
     if (!directory || !directory->supported()) return {std::move(prefix), {}, {}, {}};
-    return {std::move(prefix),
+    VfsMount mount{std::move(prefix),
         [directory](const std::string& name) { return directory->exists_00bf3f70_fragment(name); },
         [directory](const std::string& name, std::string& output) { return directory->resolve_00bf0fb0(name, output); },
         [directory](const std::string& name, std::uint32_t flags) {
@@ -41,10 +42,14 @@ VfsMount bind_physical_directory_fragment(std::string prefix,
             std::vector<std::string>& output, std::string& error) {
             return directory->enumerate_00bf47e0_fragment(name, extension, flags, output, error);
         }};
+    mount.file_date = [directory](const std::string& name, bool disabled) {
+        return query_physical_file_date_00bf3a80(*directory, name, disabled);
+    };
+    return mount;
 }
 VfsMount bind_file_store_fragment(std::string prefix, const std::shared_ptr<FileStore>& store) {
     if (!store) return {std::move(prefix), {}, {}, {}};
-    return {std::move(prefix),
+    VfsMount mount{std::move(prefix),
         [store](const std::string& name) { return store->exists_00be5c00(name); },
         [store](const std::string& name, std::string& output) { return store->resolve_00bf0fb0(name, output); },
         [store](const std::string& name, std::uint32_t flags) {
@@ -57,6 +62,10 @@ VfsMount bind_file_store_fragment(std::string prefix, const std::shared_ptr<File
             std::vector<std::string>& output, std::string& error) {
             return store->enumerate_00be6480(name, extension, flags, output, error);
         }};
+    mount.file_date = [store](const std::string& name, bool) {
+        return query_file_store_date_00be5c80(*store, name);
+    };
+    return mount;
 }
 bool cache_resource_00be7ab0_fragment(FileStore& store, VfsMountContext& mounts,
     const std::string& name, std::uint32_t flags, std::string& error) {

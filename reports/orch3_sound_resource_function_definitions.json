@@ -1,0 +1,171 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bd9e80",
+    "end_address": "00bd9ec2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bd9e80",
+    "end_address": "00bd9ec1",
+    "bytes_disassembled": 66,
+    "message": "Successfully disassembled 66 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bd9e80",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00bd9e80",
+    "function_name": "FUN_00bd9e80",
+    "entry_point": "00bd9e80",
+    "body_size": 66,
+    "message": "Function created successfully at 00bd9e80"
+   }
+  },
+  {
+   "defined": "00bd9e80",
+   "end": "00bd9ec2",
+   "name": null,
+   "after": "Function: FUN_00bd9e80 at 00bd9e80\nSignature: undefined FUN_00bd9e80(void)\nEntry: 00bd9e80\nBody: 00bd9e80 - 00bd9ec1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bd9f00",
+    "end_address": "00bd9f27"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bd9f00",
+    "end_address": "00bd9f26",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bd9f00",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00bd9f00",
+    "function_name": "FUN_00bd9f00",
+    "entry_point": "00bd9f00",
+    "body_size": 39,
+    "message": "Function created successfully at 00bd9f00"
+   }
+  },
+  {
+   "defined": "00bd9f00",
+   "end": "00bd9f27",
+   "name": null,
+   "after": "Function: FUN_00bd9f00 at 00bd9f00\nSignature: undefined FUN_00bd9f00(void)\nEntry: 00bd9f00\nBody: 00bd9f00 - 00bd9f26"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a818b0",
+    "end_address": "00a818b4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a818b0",
+    "end_address": "00a818b3",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a818b0",
+    "disassemble_first": false,
+    "name": "BSP_SoundResource_GetAccountedSize"
+   },
+   "result": {
+    "success": true,
+    "address": "00a818b0",
+    "function_name": "BSP_SoundResource_GetAccountedSize",
+    "entry_point": "00a818b0",
+    "body_size": 4,
+    "message": "Function created successfully at 00a818b0",
+    "warnings": [
+     "Function name 'BSP_SoundResource_GetAccountedSize' \u2014 main part 'SoundResource_GetAccountedSize' is not PascalCase. Expected: SoundresourceGetaccountedsize",
+     "Function name 'BSP_SoundResource_GetAccountedSize' \u2014 main part 'SoundResource_GetAccountedSize' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SoundResource_GetAccountedSize' does not start with a recognized verb. First word 'Sound' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a818b0",
+   "end": "00a818b4",
+   "name": "BSP_SoundResource_GetAccountedSize",
+   "after": "Function: BSP_SoundResource_GetAccountedSize at 00a818b0\nSignature: undefined BSP_SoundResource_GetAccountedSize(void)\nEntry: 00a818b0\nBody: 00a818b0 - 00a818b3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bd91f0",
+    "end_address": "00bd91fe"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bd91f0",
+    "end_address": "00bd91fd",
+    "bytes_disassembled": 14,
+    "message": "Successfully disassembled 14 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bd91f0",
+    "disassemble_first": false,
+    "name": "BSP_VFS_ReleaseWholeFileMemory_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00bd91f0",
+    "function_name": "BSP_VFS_ReleaseWholeFileMemory_Provisional",
+    "entry_point": "00bd91f0",
+    "body_size": 14,
+    "message": "Function created successfully at 00bd91f0",
+    "warnings": [
+     "Function name 'BSP_VFS_ReleaseWholeFileMemory_Provisional' \u2014 main part 'VFS_ReleaseWholeFileMemory_Provisional' is not PascalCase. Expected: VfsReleasewholefilememoryProvisional",
+     "Function name 'BSP_VFS_ReleaseWholeFileMemory_Provisional' \u2014 main part 'VFS_ReleaseWholeFileMemory_Provisional' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00bd91f0",
+   "end": "00bd91fe",
+   "name": "BSP_VFS_ReleaseWholeFileMemory_Provisional",
+   "after": "Function: BSP_VFS_ReleaseWholeFileMemory_Provisional at 00bd91f0\nSignature: undefined BSP_VFS_ReleaseWholeFileMemory_Provisional(void)\nEntry: 00bd91f0\nBody: 00bd91f0 - 00bd91fd"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

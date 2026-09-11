@@ -111,6 +111,53 @@ FmodResult FmodConfigurationLibrary::create_stream(void* system, const char* pat
 FmodResult FmodConfigurationLibrary::release_sound(void* sound) {
     return impl_->call("FMOD_Sound_Release", sound);
 }
+FmodResult FmodConfigurationLibrary::release_event_project(void* project) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventProject_Release@4", project);
+}
+FmodResult FmodConfigurationLibrary::create_sound(void* system, const char* data,
+    std::uint32_t mode, void* extra, void** sound) {
+    return impl_->call("FMOD_System_CreateSound", system, data, mode, extra, sound);
+}
+FmodResult FmodConfigurationLibrary::sound_get_length(void* sound,
+    std::uint32_t* length, std::uint32_t unit) {
+    return impl_->call("FMOD_Sound_GetLength", sound, length, unit);
+}
+FmodResult FmodConfigurationLibrary::sound_get_num_subsounds(void* sound,
+    std::int32_t* count) {
+    return impl_->call("FMOD_Sound_GetNumSubSounds", sound, count);
+}
+FmodResult FmodConfigurationLibrary::sound_get_subsound(void* sound,
+    std::int32_t index, void** subsound) {
+    return impl_->call("FMOD_Sound_GetSubSound", sound, index, subsound);
+}
+FmodResult FmodConfigurationLibrary::sound_get_mode(void* sound, std::uint32_t* mode) {
+    return impl_->call("FMOD_Sound_GetMode", sound, mode);
+}
+FmodResult FmodConfigurationLibrary::sound_get_defaults(void* sound,
+    float* frequency, float* volume, float* pan, std::int32_t* priority) {
+    return impl_->call("FMOD_Sound_GetDefaults", sound, frequency, volume, pan, priority);
+}
+FmodResult FmodConfigurationLibrary::sound_set_3d_min_max_distance(void* sound,
+    float minimum, float maximum) {
+    return impl_->call("FMOD_Sound_Set3DMinMaxDistance", sound, minimum, maximum);
+}
+FmodResult FmodConfigurationLibrary::sound_set_variations(void* sound,
+    float frequency, float volume, float pan) {
+    return impl_->call("FMOD_Sound_SetVariations", sound, frequency, volume, pan);
+}
+FmodResult FmodConfigurationLibrary::sound_set_loop_points(void* sound,
+    std::uint32_t start, std::uint32_t start_unit, std::uint32_t end,
+    std::uint32_t end_unit) {
+    return impl_->call("FMOD_Sound_SetLoopPoints", sound, start, start_unit, end, end_unit);
+}
+FmodResult FmodConfigurationLibrary::sound_set_mode(void* sound, std::uint32_t mode) {
+    return impl_->call("FMOD_Sound_SetMode", sound, mode);
+}
+FmodResult FmodConfigurationLibrary::event_system_load(void* system, const char* path,
+    void* load_info, void** project) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Load@16", system,
+        path, load_info, project);
+}
 FmodResult FmodConfigurationLibrary::system_get_num_drivers(void* system,
     std::int32_t* count) {
     return impl_->call("FMOD_System_GetNumDrivers", system, count);

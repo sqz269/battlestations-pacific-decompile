@@ -179,3 +179,14 @@ owns the source registry. Register `src/sound_system_owner.cpp` during integrati
 These are typed behavior interfaces, not ABI-compatible replacements. Native
 physical layout, allocator preimages, general SEH equivalence, audio playback,
 resource loading and in-game behavior were not validated by this packet.
+
+## Follow-up: concrete sound resource runtime
+
+The subsequent SOUND_RESOURCE_RUNTIME.md packet supplies the recovered cache,
+asset creation and teardown through actual VFS/FMOD services. Its installed
+fixture now executes the full normal sound constructor, actual cached error FSB
+and standalone FEV lifecycles, and installed Lua initialization: 133 successful
+FMOD calls. Platform pretranslation/focus remain explicit fixture observers;
+no audible playback, native ABI or gameplay claim follows. The current singleton
+and +54 cache stay published until resource cleanup finishes. Earlier unresolved
+loader/cleanup statements above describe this document's original snapshot.

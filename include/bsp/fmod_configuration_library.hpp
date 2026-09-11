@@ -2,6 +2,8 @@
 
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_file_callbacks.hpp"
+#include "bsp/sound_resource_asset.hpp"
+#include "bsp/sound_resource_cleanup.hpp"
 
 #include <memory>
 #include <string>
@@ -20,7 +22,8 @@ struct FmodConfigurationCall {
 // The caller must serialize access. Release every system before destroying the library;
 // opaque FMOD objects must come from this same loaded library instance.
 class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
-    public FmodStartupHost {
+    public FmodStartupHost, public SoundResourceAssetFmodHost,
+    public SoundResourceCleanupFmodHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
@@ -42,7 +45,20 @@ public:
     FmodResult update_event_system(void* event_system);
     FmodResult create_stream(void* system, const char* path, std::uint32_t mode,
         void* extra_info, void** sound);
-    FmodResult release_sound(void* sound);
+    FmodResult release_sound(void* sound) override;
+    FmodResult release_event_project(void*) override;
+    FmodResult create_sound(void*, const char*, std::uint32_t, void*, void**) override;
+    FmodResult sound_get_length(void*, std::uint32_t*, std::uint32_t) override;
+    FmodResult sound_get_num_subsounds(void*, std::int32_t*) override;
+    FmodResult sound_get_subsound(void*, std::int32_t, void**) override;
+    FmodResult sound_get_mode(void*, std::uint32_t*) override;
+    FmodResult sound_get_defaults(void*, float*, float*, float*, std::int32_t*) override;
+    FmodResult sound_set_3d_min_max_distance(void*, float, float) override;
+    FmodResult sound_set_variations(void*, float, float, float) override;
+    FmodResult sound_set_loop_points(void*, std::uint32_t, std::uint32_t,
+        std::uint32_t, std::uint32_t) override;
+    FmodResult sound_set_mode(void*, std::uint32_t) override;
+    FmodResult event_system_load(void*, const char*, void*, void**) override;
 
     FmodResult event_system_create(void**) override;
     FmodResult event_system_get_system_object(void*, void**) override;

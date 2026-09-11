@@ -4,6 +4,7 @@
 
 namespace bsp {
 using VfsFileDate = std::array<std::uint32_t, 5>;
+class FileStore;
 
 // Native metadata visitor +8 at 00BD9F00; any nonzero word stops traversal.
 bool has_vfs_file_date_00bd9f00(const VfsFileDate&) noexcept;
@@ -17,4 +18,8 @@ VfsFileDate query_vfs_file_date_00bdd340(VfsMountContext&, const std::string&);
 // FileTime conversion is rejected; native would consume unspecified words.
 VfsFileDate query_physical_file_date_00bf3a80(PhysicalDirectory&,
     const std::string&, bool dates_disabled);
+// FileStore returns all FFFFFFFF for a matching name, otherwise all zero.
+VfsFileDate query_file_store_date_00be5c80(const FileStore&, const std::string&);
+// MPKG +20 always returns zero; it does not probe an archive entry.
+VfsFileDate empty_package_file_date_00bb9d50() noexcept;
 }

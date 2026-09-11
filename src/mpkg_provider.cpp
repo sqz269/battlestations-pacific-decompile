@@ -1,4 +1,5 @@
 #include "bsp/mpkg_provider.hpp"
+#include "bsp/vfs_file_date.hpp"
 #include <cstring>
 #include <limits>
 #include <utility>
@@ -76,6 +77,9 @@ VfsMount bind_mpkg_archive_fragment(std::string prefix,
     VfsMount mount;
     mount.prefix = std::move(prefix);
     if (!archive) return mount;
+    mount.file_date = [](const std::string&, bool) {
+        return empty_package_file_date_00bb9d50();
+    };
     mount.exists = [archive](const std::string& name) {
         return archive->contains_00bb8e00(name);
     };

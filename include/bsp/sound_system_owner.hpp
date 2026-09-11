@@ -18,7 +18,7 @@ namespace bsp {
 
 // Constructor behavior projections, not native layouts, vtables or ABIs.
 // Native offsets and uncertainty: docs/SOUND_SYSTEM_OWNER.md.
-struct SoundOwnedResource; // Actual asset/refcount owner; loader/teardown is external.
+struct SoundOwnedResource; // Concrete projection: sound_resource_asset.hpp.
 
 struct SoundResourceCacheRecord {
     std::string name_00;
@@ -64,11 +64,12 @@ public:
     virtual ~SoundResourceLoadHost() = default;
     // Native ECX=18h (24-byte) owner; stack NativeString*, options*, clone byte,
     // load-if-missing byte; RET10. Both bytes are 1 at 00A859F6.
-    // This is a required meaningful game dependency, NOT a reconstructed loader.
+    // SoundResourceRuntime supplies the recovered loader using actual VFS/FMOD.
     // It normalizes/looks up aliases and reaches vslots +4/+8/+C to resolve,
     // create and clone resources; it can populate the same records_04 and +10.
     // Returned +14 retains its own native resource reference. The implementation
-    // must provide the actual eventual 00A85A50/00A85500 teardown; C++ container
+    // must provide the actual eventual 00A85A50/00A85500 teardown; the runtime
+    // adapter exposes it explicitly. C++ container
     // destruction does not release opaque game assets or FMOD resources.
     virtual SoundOwnedResource* load_00a84740(SoundResourceOwner& owner,
         const NativeString& path, SoundResourceLoadOptions& options,

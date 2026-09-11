@@ -55,13 +55,15 @@ struct VfsMount {
     std::function<bool(DWORD&)> stop_pending_submissions;
     // Provider +20h: year, month, day, seconds since midnight, milliseconds.
     // An all-zero value lets traversal continue to the next matching mount.
-    std::function<std::array<std::uint32_t, 5>(const std::string&)> file_date;
+    // The additional bool supplies current manager+78 to physical providers.
+    std::function<std::array<std::uint32_t, 5>(const std::string&, bool)> file_date;
 };
 struct VfsMountContext {
     // Supplied native iteration order; vfs_mount_registration builds this view.
     std::vector<VfsMount> mounts;
     std::vector<VfsAlias> aliases; // Native manager +94/+98, first match only.
     std::int32_t error_code = -1; // Native manager +18h, reset before traversal.
+    bool file_dates_disabled{}; // Native manager +78; caller-owned current state.
 };
 // Typed fragments of ECX-manager routines, RET4 / RET8 respectively.
 // Normalize a copy, traverse 00bdd0a0, stop at first successful provider.

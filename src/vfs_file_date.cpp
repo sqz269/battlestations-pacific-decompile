@@ -1,5 +1,6 @@
 #include "bsp/vfs_file_date.hpp"
 #include "bsp/resource_path.hpp"
+#include "bsp/file_store.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -33,7 +34,7 @@ VfsFileDate query_vfs_file_date_00bdd340(VfsMountContext& context,
         if (!mount.file_date)
             throw std::logic_error("VFS provider has no recovered file-date operation");
         // 00BD9E80 copies all five returned words, including an all-zero miss.
-        result = mount.file_date(suffix);
+        result = mount.file_date(suffix, context.file_dates_disabled);
         if (has_vfs_file_date_00bd9f00(result)) break;
     }
     return result;
@@ -64,4 +65,10 @@ VfsFileDate query_physical_file_date_00bf3a80(PhysicalDirectory& provider,
         time.wSecond + (time.wMinute + time.wHour * 60U) * 60U,
         time.wMilliseconds};
 }
+VfsFileDate query_file_store_date_00be5c80(const FileStore& store,
+    const std::string& name) {
+    const auto word = store.exists_00be5c00(name) ? 0xffffffffU : 0U;
+    return {word, word, word, word, word};
+}
+VfsFileDate empty_package_file_date_00bb9d50() noexcept { return {}; }
 }
