@@ -1,0 +1,11 @@
+{
+  "packet": "orch3_xlive_startup_composition_g",
+  "source": "src/xlive_startup_services.cpp",
+  "classification": "composition of previously reconstructed bodies; no new native function count",
+  "evidence": ["docs/XLIVE_MANAGER_OWNER.md", "docs/XLIVE_IPC.md", "docs/XLIVE_APPLICATION_CALLBACKS.md", "docs/XLIVE_STARTUP_ADAPTER.md"],
+  "canonical_storage": ["single volatile F8ABE8 owner slot", "owner.context.online", "owner.signin", "owner.storage.ipc_3ac", "actual renderer device and mutable present parameters", "current game profile resolved per access"],
+  "remaining": ["real executable host wiring", "protocol and frame bridge", "allocation/lifetime owner supplied by application", "startup and gameplay validation"],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": "MSVC Win32 C++17 strict /W4 /WX build and both existing CTests passed; no SDK startup or thread launch; local/startup-services-g-build.log"
+}
