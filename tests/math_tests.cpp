@@ -48,6 +48,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/mission_named_call_args.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
@@ -1845,6 +1846,28 @@ int main() {
                          bsp::ScenePropertyType::IntArray, 8) == 32,
             "an installed `IA` property line decodes its leading token as the element "
             "count and yields eight values");
+    }
+
+    {
+        // 00887750's nargs accounting, which is easy to "correct" the wrong way.
+        // EBX is cleared at 00887780 and only the self-key block sets it to one,
+        // 0088793C adds the record count verbatim even for a tag-4 record that
+        // pushes nothing, and stack_first == 0 is the sentinel at 008877F2 that
+        // also stops stack_last from being normalised.
+        const bsp::MissionLuaStackRange none = bsp::resolve_named_call_stack_range(0, -1, 12);
+        const bsp::MissionLuaStackRange relative = bsp::resolve_named_call_stack_range(-3, -1, 12);
+        std::vector<bsp::MissionLuaArgument> arguments(2);
+        arguments[0].type = bsp::MissionLuaArgumentType::Number;
+        arguments[1].type = bsp::MissionLuaArgumentType::Skipped;
+        const bsp::NamedCallArgumentCounts without_self
+            = bsp::named_call_argument_count(false, arguments, none);
+        const bsp::NamedCallArgumentCounts with_self
+            = bsp::named_call_argument_count(true, arguments, relative);
+        check(!none.active && none.count == 0 && relative.active && relative.first == 10
+                  && relative.last == 12 && relative.count == 3 && without_self.declared == 2
+                  && without_self.pushed == 1 && with_self.declared == 6 && with_self.pushed == 5,
+            "the named call counts a skipped record in nargs but not on the stack, starts at zero "
+            "without a self key, and treats stack_first zero as the no-forwarding sentinel");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
