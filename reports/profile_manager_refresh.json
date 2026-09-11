@@ -1,0 +1,66 @@
+{
+  "packet": "orch2_profile_manager_refresh",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base_commit": "2f90f26",
+  "source": "src/profile_manager.cpp",
+  "header": "include/bsp/profile_manager.hpp",
+  "documentation": "docs/PROFILE_MANAGER_REFRESH.md",
+  "status": "reconstructed_normal_domain_build_and_focused_fixture_passed",
+  "primary_addresses": ["004374f0", "00425c20", "004c1e90"],
+  "additional_addresses": ["00435cc0", "00426250", "00436c50", "00436690", "00437490", "007fc2c0", "007fbed0", "007f8ca0", "00436710", "00bd53c0"],
+  "findings": {
+    "table": "BSP_Chk_Save",
+    "storage_kind": 2,
+    "game_table_replaced_before_gates": true,
+    "destination_reference_retained_before_storage_driver": true,
+    "profile_name_gate": "nonempty NativeString header at profile+34h",
+    "record_words": ["__difficulty", "__unlockFrom", "__unlockTo"],
+    "record_word_defaults": [0, -1, -1],
+    "record_text": "__unlockName",
+    "record_text_default": "",
+    "record_upsert": "case-insensitive C-string comparison; preserve first key spelling",
+    "refresh_clears_profile_94": false,
+    "archive_reader_clears_profile_94_before_refresh": true,
+    "callback_00bd53c0": "one-byte RET, C3; subsequent byte CC",
+    "import_after_driver": "immediate, even if an interactive continuation remains; no later import callback",
+    "numeric_semantics": "actual Lua NUMBER only for integer defaults; spill float32 then truncate; recursive numeric values use float32 integer/fractional branch",
+    "hints_field_08": "actual shared mutable owner field; constructor initializes zero; meaning/update routes unresolved"
+  },
+  "flow_repairs_by_primary": [
+    {"address": "00437653", "length": 6, "behavior": "ADD ESP,4; MOV [ESI+30h],EDI", "function_end": "004379be"},
+    {"address": "00bd53c0", "length": 1, "behavior": "defined exact RET body"}
+  ],
+  "required_services": [
+    "Actual game Lua state at game+1A0Ch",
+    "Actual storage query/read/buffer ownership and Lua owner state (PcStorageBackend methods match)",
+    "Actual storage Lua environment bootstrap, including engine scripts and bindings",
+    "Shared StorageOperationState and real progress/prompt/render StorageOperationHost",
+    "Singleton lifetime manager and publication slots; registered-host-object destruction dispatch"
+  ],
+  "validation": {
+    "build": {"command": "./scripts/build.ps1", "configuration": "MSVC Win32 Release", "flags": ["/W4", "/WX", "/fp:strict"], "passed": true, "log": "local/profile_manager_build_verified.log"},
+    "ctest": {"passed": 2, "total": 2, "tests": ["reconstructed_math", "native_math_differential"]},
+    "seed_verification": {"command": "python tools/ghidra_export.py verify-seeds", "matched": 8, "total": 8},
+    "focused_fixture": {
+      "permanent_test_added": false,
+      "source": "local/profile_manager_fixture.cpp",
+      "generator": "local/make_profile_manager_fixture.py",
+      "build_command": "cmd /d /c local\\build_profile_manager_fixture.cmd",
+      "log": "local/profile_manager_fixture.log",
+      "passed": true,
+      "coverage": ["real Lua 5.1.1 tables", "actual recovered 006adb50 synchronous driver", "query/free/close/read/update order", "mode2 requests", "record repopulation", "native numeric/string default type checks", "float32 precision", "nested numeric-key tables", "retained destination reference under callback replacement", "false query leaves profile records intact", "Lua stack restoration"]
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "C++ host projections, not native object layout, addresses or ABI",
+    "Singleton owner constructors only project required fields; native deleting destructors and other methods remain external",
+    "Finite signed32 integer conversions and acyclic plain Lua archive tables; exceptional values and cycles raise explicit host errors",
+    "Malformed outer values/keys and null Lua owners raise explicit host errors instead of synthesizing records or success",
+    "Native Lua allocation/panic/SEH behavior, hostile metatable side effects and x87 exception-state parity are unclaimed",
+    "Vector storage does not claim native ordered-tree layout or traversal order"
+  ],
+  "ghidra_annotations": "Worker added scoped name ledgers; primary performs locked application, preserves previous names/comments and refreshes exports after integration."
+}
