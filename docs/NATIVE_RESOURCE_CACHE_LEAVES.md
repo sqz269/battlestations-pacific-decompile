@@ -105,3 +105,10 @@ service boundaries, not new full original library reconstructions.
 Primary metadata handoff: B19E40 currently has no saved function. Define its
 exact `[00B19E40,00B19E90)` extent (last RET0C at B19E8D), preserving adjacent
 B19DF0/B19E90 bodies and old comments. The worker made no metadata edits.
+
+
+## Primary integration
+
+Main now registers all eight unchanged owned bodies. The combined strict Win32 build, two existing CTests and eight seeds passed. Primary verified77 sealed worker files and56 report pins,13 source/header files plus6 required declaration headers, and25 fresh spans1213 bytes. The unchanged fixture linked only the same frozen main library; all232 trace words match the worker exactly. Six exact archive objects now contain166 complete code sections10193 bytes326 relocations because the shared BE0A30 adapter changed separately. Those changed methods are not linked into this fixture; no runtime code-postimage or original-helper proof is added. Lower-bound still executes inlined in source find. Creator EH remains static-only. Primary defined the complete80-byte B19E40 and restored both11-byte returning-free EH bodies, preserving neighbors, old names and comments.
+
+Immutable current proof: `local/resource_cache_leaves_primary/`. Primary saved reviewed names/comments, retained prior values, registered the raw source entries and refreshed affected exports.
