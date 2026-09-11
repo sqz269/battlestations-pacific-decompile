@@ -1,0 +1,121 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b4b810",
+      "end_exclusive": "00b4b813",
+      "length": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "missing_before": true,
+      "function_before": "No function found for 00b4b810",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_PrivateIndexBuffer_RecreateNoOp at 00b4b810\nSignature: undefined BSP_PrivateIndexBuffer_RecreateNoOp(void)\nEntry: 00b4b810\nBody: 00b4b810 - 00b4b812"
+    },
+    {
+      "address": "00b4b9c0",
+      "end_exclusive": "00b4b9c3",
+      "length": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "missing_before": true,
+      "function_before": "No function found for 00b4b9c0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_PrivateVertexBuffer_RecreateNoOp at 00b4b9c0\nSignature: undefined BSP_PrivateVertexBuffer_RecreateNoOp(void)\nEntry: 00b4b9c0\nBody: 00b4b9c0 - 00b4b9c2"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b4b810",
+        "end_address": "00b4b813"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b4b810",
+        "end_address": "00b4b812",
+        "bytes_disassembled": 3,
+        "message": "Successfully disassembled 3 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b4b810",
+        "name": "BSP_PrivateIndexBuffer_RecreateNoOp",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b4b810",
+        "function_name": "BSP_PrivateIndexBuffer_RecreateNoOp",
+        "entry_point": "00b4b810",
+        "body_size": 3,
+        "message": "Function created successfully at 00b4b810",
+        "warnings": [
+          "Function name 'BSP_PrivateIndexBuffer_RecreateNoOp' \u2014 main part 'PrivateIndexBuffer_RecreateNoOp' is not PascalCase. Expected: PrivateindexbufferRecreatenoop",
+          "Function name 'BSP_PrivateIndexBuffer_RecreateNoOp' \u2014 main part 'PrivateIndexBuffer_RecreateNoOp' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_PrivateIndexBuffer_RecreateNoOp' does not start with a recognized verb. First word 'Private' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b4b9c0",
+        "end_address": "00b4b9c3"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b4b9c0",
+        "end_address": "00b4b9c2",
+        "bytes_disassembled": 3,
+        "message": "Successfully disassembled 3 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b4b9c0",
+        "name": "BSP_PrivateVertexBuffer_RecreateNoOp",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b4b9c0",
+        "function_name": "BSP_PrivateVertexBuffer_RecreateNoOp",
+        "entry_point": "00b4b9c0",
+        "body_size": 3,
+        "message": "Function created successfully at 00b4b9c0",
+        "warnings": [
+          "Function name 'BSP_PrivateVertexBuffer_RecreateNoOp' \u2014 main part 'PrivateVertexBuffer_RecreateNoOp' is not PascalCase. Expected: PrivatevertexbufferRecreatenoop",
+          "Function name 'BSP_PrivateVertexBuffer_RecreateNoOp' \u2014 main part 'PrivateVertexBuffer_RecreateNoOp' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_PrivateVertexBuffer_RecreateNoOp' does not start with a recognized verb. First word 'Private' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Both complete private reset RET4 entries defined and saved without changing other code/comments"
+}

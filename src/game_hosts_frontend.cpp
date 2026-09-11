@@ -7,12 +7,14 @@
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_fonts.hpp"
+#include "bsp/game_hosts_text.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/gui_icon_runtime.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_page_script.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
+#include "bsp/locale_tables.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/texture_atlas.hpp"
 #include "bsp/vfs_candidates.hpp"
@@ -131,6 +133,18 @@ struct BridgeQuad {
     BridgeVertex vertices[6]{};
 };
 
+// Milestone 2d: one quad of a Text widget's glyph run carries the widget's authored
+// colour, so the diffuse lane is no longer a constant white for every quad.
+D3DCOLOR bridge_color(const float (&color)[4]) noexcept {
+    const auto lane = [](float value) -> int {
+        const float scaled = value * 255.0f;
+        if (!(scaled > 0.0f)) return 0;
+        if (scaled >= 255.0f) return 255;
+        return static_cast<int>(scaled + 0.5f);
+    };
+    return D3DCOLOR_ARGB(lane(color[3]), lane(color[0]), lane(color[1]), lane(color[2]));
+}
+
 }  // namespace
 
 struct GameFrontendHost::Impl {
@@ -178,6 +192,11 @@ struct GameFrontendHost::Impl {
     UINT atlas_width{};
     UINT atlas_height{};
     std::vector<BridgeQuad> quads;
+    // Milestone 2d, the text half of the bridge. The runs are built once per widget,
+    // because a visibility change or a newly loaded page does not change a layout;
+    // build_quads then turns the cached glyph quads into bridge quads every rebuild.
+    std::unique_ptr<GameTextHost> text_host;
+    std::map<const GuiLayoutWidget*, GameTextRun> text_runs;
     unsigned back_buffer_width{};
     unsigned back_buffer_height{};
     bool quads_built{false};
@@ -309,6 +328,9 @@ struct GameFrontendHost::Impl {
     GuiLayoutPage* load_page(GuiLayoutHost& host, const std::string& name, bool log_tree);
     void load_atlases();
     void build_quads();
+    // Milestone 2d: the glyph quads of one visible Text widget, appended to `quads`.
+    void append_text_quads(GameWidgetRecord& record, const GuiLayoutWidget& node,
+        float screen_w, float screen_h);
 };
 
 namespace {
@@ -335,17 +357,28 @@ public:
         return false;
     }
 
+    // Milestone 2d correction. 00AA6720 is BSP_GuiWidget_SetSceneNode, four instructions
+    // that store a node at widget+4Ch and clear the low two bits of node+138h; it creates
+    // nothing. What creates a plain page root is 00AA5840's own branch, which builds the
+    // 18Ch cGroup of 00B8F5E0 and registers it. The host method therefore stands for the
+    // creation and the bind together, and cites the bind, which is the call the loader
+    // makes with the result.
     std::uint32_t create_page_root_node(const std::string& name, bool model_backed,
         std::uint8_t screen_flag) override {
         (void)name;
         (void)model_backed;
         (void)screen_flag;
-        owner_.log.unimplemented("GuiLayoutHost::create_page_root_node", "00aa6720");
+        owner_.log.unimplemented("GuiLayoutHost::bind_page_root_scene_node", "00aa6720");
         return next_node();
     }
 
+    // 00AA6640 BSP_GuiWidget_CreateWithSceneNode is the pair the loader runs per child:
+    // 00B74EB0 takes a canonical 188h slot out of the model pool at 01090054 and 00B75030
+    // constructs the 184h generated model in it. Both are recorded, because both are real
+    // allocations this process does not perform.
     std::uint32_t create_widget_node(const std::string& key) override {
         (void)key;
+        owner_.log.unimplemented("GuiLayoutHost::allocate_model_slot", "00b74eb0");
         owner_.log.unimplemented("GuiLayoutHost::create_widget_node", "00b75030");
         return next_node();
     }
@@ -369,18 +402,43 @@ public:
         (void)widget;
         owner_.log.unimplemented("GuiLayoutHost::widget_vtable_78", "00aaae5b");
     }
+    // 00AAA710 is the base half; its caller is the leaf class's own reader, and three of
+    // the four types the title and menu pages use have one. Milestone 2b recorded a single
+    // `derived_property_reader [00aaa710]` for all 29 widgets, which said less than it
+    // could: the record now names the routine that stands behind each type.
     void on_widget_properties_bound(GuiLayoutWidget& widget, const GuiTable& table) override {
-        (void)widget;
-        (void)table;
+        if (widget.type == GuiWidgetType::Icon) {
+            // 00AB3310, the Icon's authored States and ShaderName reader. The sprite
+            // bridge already consumed its result; this puts the call at its own site.
+            static_cast<void>(read_gui_icon_authored_page_00ab3310(table, widget.transform,
+                owner_.sse2_conversion));
+            owner_.log.implemented("GuiIcon::read_properties", "00ab3310");
+            return;
+        }
+        if (widget.type == GuiWidgetType::Text) {
+            // 00ABB630 needs the font registry and the locale tables, which the text
+            // bridge owns; it runs and is recorded there, on the first draw.
+            return;
+        }
+        if (widget.type == GuiWidgetType::FrameBox) {
+            // 00AD08E0 is reconstructed (bsp/gui_framebox.hpp) but takes
+            // GuiFrameBoxTextureServices, the native renderer's texture acquire and
+            // release pair. This process owns no such reference, so the reader is not run.
+            owner_.log.unimplemented("GuiFrameBox::read_properties", "00ad08e0");
+            return;
+        }
         owner_.log.unimplemented("GuiLayoutHost::derived_property_reader", "00aaa710");
     }
 
 protected:
-    // 00AC6825 clears the node's root-list binding through 00B6D890. There is no scene
-    // node here, so there is nothing to clear; the call site is recorded.
+    // Milestone 2d correction. 00B6D890 is BSP_Node_PropagateRootRegistration, the
+    // complete recursive root propagation that registers or unregisters a subtree against
+    // a requested scene root; it is not a list clear. 00AC6825 calls it with the page's
+    // own root. There is no scene node here, so nothing is propagated and the site is
+    // recorded under its own name.
     void clear_page_root_list_00b6d890(GuiLayoutPage& page) override {
         (void)page;
-        owner_.log.unimplemented("GuiLayoutHost::clear_page_root_list", "00b6d890");
+        owner_.log.unimplemented("GuiLayoutHost::propagate_root_registration", "00b6d890");
     }
 
 private:
@@ -615,6 +673,17 @@ void GameFrontendHost::open_sprite_bridge(unsigned back_buffer_width,
     host.summary.bridge_open = true;
 }
 
+void GameFrontendHost::open_text_bridge(LocaleTables& locale) {
+    Impl& host = *impl_;
+    if (host.text_host) return;
+    host.text_host = std::make_unique<GameTextHost>(host.log, host.fonts, locale);
+    host.summary.text_bridge_open = true;
+    host.quads_built = false;
+    host.log.notef("text bridge open: %zu fonts, %zu locale keys, vertical_scale=%.4f "
+        "(00e12fd4)", host.fonts.registry().fonts().size(), locale.size(),
+        static_cast<double>(host.text_host->summary().vertical_scale));
+}
+
 void GameFrontendHost::Impl::load_atlases() {
     // 00aeeaf0 over the installed atlas descriptors. GGame::OnInitTitle loads exactly one,
     // `interface/textures/allbutingame.ats`, but the page textures of the title layouts are
@@ -667,9 +736,65 @@ void GameFrontendHost::Impl::load_atlases() {
     log.notef("sprite bridge atlases=%zu items=%zu", descriptors, atlas.items.size());
 }
 
+// Milestone 2d. The reconstructed text path runs once per widget and its result is
+// cached: the layout depends on the authored table, the font and the widget size, none
+// of which a visibility push or a page load changes. What this adds on top of the
+// reconstruction is only the placement of the text context's normalised space at the
+// widget's own resolved corner, and the fixed-function draw, both of which are the
+// bridge's and are labelled as such.
+void GameFrontendHost::Impl::append_text_quads(GameWidgetRecord& record,
+    const GuiLayoutWidget& node, float screen_w, float screen_h) {
+    if (!text_host) return;
+    auto cached = text_runs.find(&node);
+    if (cached == text_runs.end()) {
+        // The widget's own pivot is a fraction of its own size, exactly as for a sprite:
+        // this is the corner the text context's origin sits on.
+        const float origin_x = record.x - record.pivot_x * record.width;
+        const float origin_y = record.y - record.pivot_y * record.height;
+        GameTextRun run;
+        text_host->build_run(record.page, node, origin_x, origin_y, run);
+        cached = text_runs.emplace(&node, std::move(run)).first;
+        summary.text_widgets = text_host->summary().text_widgets;
+        summary.text_runs = text_host->summary().runs_built;
+        summary.text_glyphs = text_host->summary().glyph_quads;
+    }
+    const GameTextRun& run = cached->second;
+    record.text = run.resolved_ascii;
+    record.text_glyphs = run.quads.size();
+    if (run.sheet == nullptr || run.quads.empty()) return;
+    // The colour is read live rather than out of the cached run: 00ab6b50 re-applies the
+    // widget's +50h on every set, and the press-start screen's update pulses exactly that
+    // field on its prompt through the element vtable +50h, 62 times in a 120 frame run.
+    const D3DCOLOR color = bridge_color(node.color);
+    for (const GameTextQuad& glyph : run.quads) {
+        BridgeQuad quad;
+        quad.texture = run.sheet;
+        quad.z = record.z;
+        const float left = glyph.left * screen_w;
+        const float top = glyph.top * screen_h;
+        const float right = glyph.right * screen_w;
+        const float bottom = glyph.bottom * screen_h;
+        const BridgeVertex top_left{left, top, 0.0f, 1.0f, color, glyph.u1, glyph.v1};
+        const BridgeVertex top_right{right, top, 0.0f, 1.0f, color, glyph.u2, glyph.v1};
+        const BridgeVertex bottom_left{left, bottom, 0.0f, 1.0f, color, glyph.u1, glyph.v2};
+        const BridgeVertex bottom_right{right, bottom, 0.0f, 1.0f, color, glyph.u2,
+            glyph.v2};
+        quad.vertices[0] = top_left;
+        quad.vertices[1] = top_right;
+        quad.vertices[2] = bottom_left;
+        quad.vertices[3] = top_right;
+        quad.vertices[4] = bottom_right;
+        quad.vertices[5] = bottom_left;
+        quads.push_back(quad);
+        ++summary.text_quads;
+    }
+    record.drawn = true;
+}
+
 void GameFrontendHost::Impl::build_quads() {
     quads_built = true;
     ++summary.bridge_rebuilds;
+    summary.text_quads = 0;
     quads.clear();
     for (GameWidgetRecord& record : widget_records) record.drawn = false;
     if (back_buffer_width == 0 || back_buffer_height == 0) return;
@@ -689,8 +814,14 @@ void GameFrontendHost::Impl::build_quads() {
         // 00aa5e20's visibility calls run after the pages load, so the record's own flag is
         // refreshed from the widget before the bridge reads it.
         if (node != nullptr) record.visible = node->visible;
-        if (record.texture.empty()) continue;
         if (!bridge_visible(node)) continue;
+        // Milestone 2d: a Text widget carries a font, not a texture, so it takes the
+        // reconstructed text path instead of the atlas lookup below.
+        if (node != nullptr && node->type == GuiWidgetType::Text) {
+            append_text_quads(record, *node, screen_w, screen_h);
+            continue;
+        }
+        if (record.texture.empty()) continue;
         IDirect3DTexture9* texture = nullptr;
         float u1 = 0.0f, v1 = 0.0f, u2 = 1.0f, v2 = 1.0f;
         const std::string key = atlas_key(record.texture);
@@ -762,9 +893,10 @@ void GameFrontendHost::Impl::build_quads() {
     // loads, so only a changed result is worth a line.
     if (last_logged_quads != quads.size()) {
         last_logged_quads = quads.size();
-        log.notef("sprite bridge quads=%zu textures=%zu/%zu atlas_items=%zu rebuild=%zu",
-            quads.size(), summary.bridge_textures, loose_textures.size(),
-            atlas.items.size(), summary.bridge_rebuilds);
+        log.notef("sprite bridge quads=%zu (text_glyph_quads=%zu) textures=%zu/%zu "
+            "atlas_items=%zu rebuild=%zu", quads.size(), summary.text_quads,
+            summary.bridge_textures, loose_textures.size(), atlas.items.size(),
+            summary.bridge_rebuilds);
     }
 }
 
@@ -853,10 +985,16 @@ void GameFrontendHost::set_widget_visible(GuiLayoutWidget& widget, bool visible)
 
 void GameFrontendHost::set_widget_color(GuiLayoutWidget& widget, float r, float g, float b,
     float a) {
+    // Milestone 2d: a changed colour now changes what is drawn, because a Text widget's
+    // glyph quads carry it in their diffuse lane, so the bridge has to rebuild. Before
+    // the text half every quad was a constant white and this store reached nothing.
+    const bool changed = widget.color[0] != r || widget.color[1] != g
+        || widget.color[2] != b || widget.color[3] != a;
     widget.color[0] = r;
     widget.color[1] = g;
     widget.color[2] = b;
     widget.color[3] = a;
+    if (changed) impl_->quads_built = false;
 }
 
 void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }

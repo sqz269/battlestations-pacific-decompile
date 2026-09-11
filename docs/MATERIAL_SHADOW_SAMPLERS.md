@@ -132,3 +132,7 @@ A stale `CALL_RETURN` at `00b45522` hides the returning free-thunk cleanup
 destructor bytes were verified and the old flow state was preserved for
 primary repair. The fallback-release fragment itself is directly present in
 the current assembly. No Ghidra mutations were made by this worker.
+
+## Correction from docs/NATIVE_MATERIAL_PASS_OWNER.md
+
+The full actual 88h constructor B44B10 and destructor B454E0 now accompany these fallback fragments. Four binding pointers and padding81..83 remain unwritten at construction; destruction reloads the live binding count, releases fallback and shader owners, destroys the actual base, and scalar wrapper B46910 returns the slot to actual0108FBF8. See docs/NATIVE_MATERIAL_PASS_OWNER.md for the original ABI, member-unwind evidence, canonical ownership and native-fixture limits.

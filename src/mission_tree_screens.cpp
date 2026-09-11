@@ -169,7 +169,9 @@ bool start_selected_mission_005c5600(const MissionRecord& record,
     const MissionSideBlock& block = record.sides[side];
 
     host.set_current_mission_key(record.name);
-    host.set_pending_scene(mission_scene_name(record), 0);
+    // 005C5682 pushes null for the override name, so the reader picks the
+    // mission's own weather descriptor.
+    host.set_pending_scene(mission_scene_name(record), std::string_view{});
 
     const auto second_side_enabled =
         static_cast<std::uint8_t>(record.sides[1].enabled & 0xFFu) != 0;

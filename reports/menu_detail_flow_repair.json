@@ -1,0 +1,136 @@
+{
+ "repairs": [
+  {
+   "function": "0054b530",
+   "owner": "main",
+   "when": "2026-09-11T19:45:15Z",
+   "decompile_lines_before": 445,
+   "gaps": [
+    {
+     "site": "0054b8a7",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0054b8ac",
+     "gap_end_exclusive": "0054b8b3",
+     "bytes": 7,
+     "after_call": true,
+     "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+    },
+    {
+     "site": "0054b8e9",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0054b8ee",
+     "gap_end_exclusive": "0054b8f5",
+     "bytes": 7,
+     "after_call": true,
+     "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+    },
+    {
+     "site": "0054bfae",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0054bfb3",
+     "gap_end_exclusive": "0054bfba",
+     "bytes": 7,
+     "after_call": true,
+     "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+    },
+    {
+     "site": "0054c008",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0054c00d",
+     "gap_end_exclusive": "0054c014",
+     "bytes": 7,
+     "after_call": true,
+     "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+    },
+    {
+     "site": "0054c025",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0054c02a",
+     "gap_end_exclusive": "0054c02d",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "0054b8a7",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0054b8ac",
+      "gap_end_exclusive": "0054b8b3",
+      "bytes": 7,
+      "after_call": true,
+      "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+     },
+     "clear": "Success: Cleared flow override at 0054b8a7 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 7 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "0054b8e9",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0054b8ee",
+      "gap_end_exclusive": "0054b8f5",
+      "bytes": 7,
+      "after_call": true,
+      "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+     },
+     "clear": "Success: Cleared flow override at 0054b8e9 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 7 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "0054bfae",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0054bfb3",
+      "gap_end_exclusive": "0054bfba",
+      "bytes": 7,
+      "after_call": true,
+      "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+     },
+     "clear": "Success: Cleared flow override at 0054bfae (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 7 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "0054c008",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0054c00d",
+      "gap_end_exclusive": "0054c014",
+      "bytes": 7,
+      "after_call": true,
+      "sha256": "d86779ae5539e902de3dad472048d1909412e8e173b3902bf433be445443e184"
+     },
+     "clear": "Success: Cleared flow override at 0054c008 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 7 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "0054c025",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0054c02a",
+      "gap_end_exclusive": "0054c02d",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 0054c025 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 437,
+   "gaps_remaining": 0
+  }
+ ]
+}

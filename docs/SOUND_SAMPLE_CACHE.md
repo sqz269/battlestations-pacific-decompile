@@ -91,3 +91,12 @@ weak clear leaving a sample alive, and a key-release callback that sees the
 old native count before resetting it to0. Constructor resources are controlled
 fixture bindings, not metadata/VFS/FMOD/playback validation. Build/fixture
 hashes and combined integration are recorded separately in the reports.
+
+## Correction from docs/SOUND_SAMPLE.md
+
+00A84D70 now has a concrete sample constructor, event-group/parameter loading,
+and destructor path. `SoundSampleRuntime` supplies that constructor to the
+existing cache factory and concrete final release. Installed FSB and FEV
+acquisition/release passed through VFS and FMOD. The earlier fixture's controlled
+constructor remains its original validation provenance; audible playback and
+whole-game validation are still open. Auxiliary-owner teardown remains open.

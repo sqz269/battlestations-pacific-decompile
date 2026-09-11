@@ -1,0 +1,799 @@
+{
+  "schema": "bsp.native_renderer_surface_save_worker_audit.v1",
+  "packet": "native_renderer_surface_save_worker3",
+  "utc": "2026-09-11T19:36:17.578173+00:00",
+  "base_commit": "c2552bb2315c03009984f401f08e6cceab2d5a3e",
+  "status": "three_complete_raw_worker_entries_main_Win32_nonempty_real_D3DX_save_and_full_COFF_verified",
+  "owned_files": [
+    "include/bsp/native_renderer_surface_save_worker.hpp",
+    "src/native_renderer_surface_save_worker.cpp",
+    "docs/NATIVE_RENDERER_SURFACE_SAVE_WORKER.md",
+    "reports/native_renderer_surface_save_worker_audit.json"
+  ],
+  "owned_original_bytes": 642,
+  "owned_functions": [
+    {
+      "address": "00b5e380",
+      "length": 270,
+      "end_inclusive": "00b5e48d",
+      "name": "acquire_native_renderer_surface_save_surface_00b5e380",
+      "original_abi": "ECX raw owner, stack D3D9 device, EAX current producer surface, RET4",
+      "new_abi": "__fastcall raw owner, ignored reserved EDX, stack D3D9 device; original stack schedule retained"
+    },
+    {
+      "address": "00b5e0c0",
+      "length": 360,
+      "end_inclusive": "00b5e227",
+      "name": "run_native_renderer_surface_save_worker_00b5e0c0",
+      "original_abi": "ECX raw owner, EAX0, RET",
+      "new_abi": "Same raw input/return; application-level import/fallback binding"
+    },
+    {
+      "address": "00b5e230",
+      "length": 12,
+      "end_inclusive": "00b5e23b",
+      "name": "native_renderer_surface_save_thread_entry_00b5e230",
+      "original_abi": "Win32 stdcall LPVOID raw owner, EAX0, RET4",
+      "new_abi": "Same raw-owner thread parameter; no envelope"
+    }
+  ],
+  "original_capture": {
+    "utc": "2026-09-11T19:27:32.839874+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every bsp.py live query checks the existing project/program/language/base. Fresh original bytes match original installed PE; no program mutation.",
+    "spans": [
+      {
+        "address": "00b5e380",
+        "length": 270,
+        "role": "candidate_acquire_and_launch",
+        "bytes_hex": "83ec28568bf1837e50005775206a006a00566830e2b5006a006a00ff153822ce006a0050894650ff15a022ce008b7e48538b1d1822ce005557ffd3834718018b46408b2d1022ce00894424108b4648834018ff50ffd58b7e4857ffd3834718018b46488b7e3c834018ff50ffd58b44241083c00199b905000000f7f93bd78954241475256a0aff153022ce008b7e4857ffd3834718018b46488b7e3c834018ff50ffd5397c241474db8b542410833c96008d34965d5b754c8b7c24348b078b50488d4c2408516a006a006a0057c744241c00000000ffd28b4424088b088d54241052508b4130ffd08b54242c8b4424288b0f8b89900000006a00566a026a15525057ffd18b065f5e83c428c20400",
+        "sha256": "be368df0cce14f573e5851b45cc02b2e09ac8a3c3fb52f96b6ea63b88ae6e66e",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 102
+      },
+      {
+        "address": "00b5e0c0",
+        "length": 360,
+        "role": "candidate_worker_body",
+        "bytes_hex": "515355568bf18b5e4c578b3d1822ce0053ffd7834318018b464c8a5e448b2d1022ce00834018ff50ffd584db0f85160100008b5e4853ffd7834318018b46488b5e3c834018ff50ffd58b46485089442414ffd78b442410834018018b4640894424108b4648834018ff50ffd58b4424102bc383c00599b905000000f7f985d20f8e9c000000eb0deb078da424000000008b5c24108b44de1885c07505b898fe08018b149e6a006a00526a0050e887fe0c008b5e4853ffd7834318018b463c83c00199b905000000f7f98b46485089563c834018ffffd58b5e4853ffd7834318018b46488b563c834018ff5089542414ffd58b5e4853ffd7834318018b46488b5e40834018ff50ffd58bc32b442410b90500000083c00599f7f985d20f8f6fffffff6a0aff153022ce008b5e4c53ffd7834318018b464c8a5e44834018ff50ffd584db0f84eafeffff8b5e4c53ffd783431801c64645018b764c834618ff56ffd55f5e5d33c05b59c3",
+        "sha256": "b876c08a59a34c5b66c5bf74bdb5ba3a07d73c37941cb3f6f31a070da4a69621",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 133
+      },
+      {
+        "address": "00b5e230",
+        "length": 12,
+        "role": "direct_CreateThread_entry_shim",
+        "bytes_hex": "8b4c2404e887feffffc20400",
+        "sha256": "3c418a51debe86d43fcd3b3b04b63c4559bd0103ed986f1104d9c78865e5151c",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 3
+      },
+      {
+        "address": "00c2dff8",
+        "length": 6,
+        "role": "direct_D3DX_import_forwarder",
+        "bytes_hex": "ff25f423ce00",
+        "sha256": "0f17448c9682a5ff35ff77b8091d71ea0fe49f1185a42c61e24daa03c736053b",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 1
+      },
+      {
+        "address": "00b23c64",
+        "length": 21,
+        "role": "caller_actual_renderer_owner_and_current_device",
+        "bytes_hex": "8b86101a0000578dbe2c1d0000508bcfe807a70300",
+        "sha256": "d72e0bd21574e034019cb3f88d9d5e07cfc63dc4a9702ccd5e8b6f10209af54e",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 6
+      },
+      {
+        "address": "00b32756",
+        "length": 19,
+        "role": "constructor_caller_same_raw_owner",
+        "bytes_hex": "8d8e2c1d0000c684246804000017e807bb0200",
+        "sha256": "372e13ba47adc6cdd29b006074d427bc133ef7c8ed6ba6703dbd35cef87ba0ad",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 3
+      },
+      {
+        "address": "00b5e4a3",
+        "length": 27,
+        "role": "outside_candidate_filename_header_selection_and_actual_resize_call",
+        "bytes_hex": "8b46408b5c24108d7cc6143bfb74248b0b6a01518bcfe882f88bff",
+        "sha256": "a4847ad6729ed6c4a82e95993a755021fce431355a47c079628a4ff15e5cdfd6",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 10
+      },
+      {
+        "address": "00b5e4d6",
+        "length": 31,
+        "role": "outside_candidate_current_producer_publication",
+        "bytes_hex": "8b464083c00199b905000000f7f98956408b7648834618ff56ff151022ce00",
+        "sha256": "9445dc99bc447b3c42e1efc5207006b64e6b1c10df6bdeaa6459bdb2164102cc",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 10
+      },
+      {
+        "address": "0108fe98",
+        "length": 4,
+        "role": "mutable_fallback_address",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "fresh_live_PE_match": true,
+        "section": ".data",
+        "section_characteristics": "c0000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce23f4",
+        "length": 4,
+        "role": "original_import_slot",
+        "bytes_hex": "e072a000",
+        "sha256": "de31d24894b9b5a7aef8b938a4099f015c49882f1a12ebbd97f08e19334c2466",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce2238",
+        "length": 4,
+        "role": "original_import_slot",
+        "bytes_hex": "5c57a000",
+        "sha256": "dd33bd041cacd4b23afe83f1ff60f9a15d83b4c1cbf6de91daf735a9177d6677",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce22a0",
+        "length": 4,
+        "role": "original_import_slot",
+        "bytes_hex": "4c59a000",
+        "sha256": "b071ae99369dd23132d4f82cfea5523e6a09b81b338114b3f9db3a637bdf4235",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce2210",
+        "length": 4,
+        "role": "original_import_slot",
+        "bytes_hex": "8856a000",
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce2218",
+        "length": 4,
+        "role": "original_import_slot",
+        "bytes_hex": "b856a000",
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce2230",
+        "length": 4,
+        "role": "original_import_slot",
+        "bytes_hex": "4657a000",
+        "sha256": "ddcd45aae82a9735f434f46bae5d5af844cf584644f41563f33589113ec6b46d",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      }
+    ],
+    "imports": [
+      {
+        "iat": "00ce23f4",
+        "dll": "d3dx9_40.dll",
+        "name": "D3DXSaveSurfaceToFileA",
+        "ordinal": null,
+        "thunk_rva": 10506260
+      },
+      {
+        "iat": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection",
+        "ordinal": null,
+        "thunk_rva": 10505776
+      },
+      {
+        "iat": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection",
+        "ordinal": null,
+        "thunk_rva": 10505784
+      },
+      {
+        "iat": "00ce2230",
+        "dll": "KERNEL32.dll",
+        "name": "Sleep",
+        "ordinal": null,
+        "thunk_rva": 10505808
+      },
+      {
+        "iat": "00ce2238",
+        "dll": "KERNEL32.dll",
+        "name": "CreateThread",
+        "ordinal": null,
+        "thunk_rva": 10505816
+      },
+      {
+        "iat": "00ce22a0",
+        "dll": "KERNEL32.dll",
+        "name": "SetThreadPriority",
+        "ordinal": null,
+        "thunk_rva": 10505920
+      }
+    ],
+    "installed_D3DX_provider": {
+      "path": "C:\\Windows\\SysWOW64\\D3DX9_40.dll",
+      "bytes": 4379984,
+      "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+      "machine": "014c",
+      "timestamp": 1223433584,
+      "image_size": 4497408,
+      "export": {
+        "name": "D3DXSaveSurfaceToFileA",
+        "ordinal": 284,
+        "rva": "00289c3c",
+        "forwarder": null
+      },
+      "boundary": "Read-only installed DLL export evidence only; module not loaded and save worker not launched."
+    }
+  },
+  "binding": {
+    "import_object": "NativeD3dx9SurfaceSaveImport borrows caller-owned actual d3dx9_40 HMODULE; GetProcAddress exact D3DXSaveSurfaceToFileA only; no DLL load/free/version fallback or arbitrary callable setter.",
+    "application": "NativeRendererSurfaceSaveBinding contains fixed const pointers to concrete import and char* actual_fallback_bytes_0108fe98. Install once before launch; unchanged/alive until all launched threads actually return; no concurrent bind/unbind. Null/unbound is outside raw domain.",
+    "mutable_fallback": "B5E15C B898FE0801 MOV EAX,0108FE98 is an immediate byte address, not char**/pointer load. Captured4 zero bytes in writable.data do not establish extent. Borrow same readable NUL-terminated ANSI storage; bytes may change but address/lifetime stay fixed. No private empty literal.",
+    "host_checks": "Null HMODULE/missing exact export throw during host import object construction. Module identity/readable string/storage/lifetime remain caller preconditions. No such validation is inserted into native routines.",
+    "original_import_boundary": "C2DFF8 FF25F423CE00 -> originalCE23F4 d3dx9_40!D3DXSaveSurfaceToFileA. Rebuilt stdcall wrapper -> concrete import save method -> exact resolved export; fixed binding excludes native import-slot hot replacement."
+  },
+  "schedule": {
+    "launch": "current50==0 -> CreateThread(NULL,0,actual rebuilt B5E230,raw owner,0,NULL) -> publish returned50 -> SetThreadPriority(returned,0). No failure guard/reset44/reset45/allocation/ownership/argument envelope.",
+    "acquire": "Capture producer40 once under48; read3C under separate48; DWORD add/CDQ/IDIV5 next; Sleep10 while full, reload onlyconsumer. Return current captured slot if nonnull. No producer publication.",
+    "COM": "Read current table each actual call: GetBackBuffer0,0,0,&zeroedlocal at+48; GetDesc&uninitializeddesc atsurface+30; retaineddevice/currenttable+90 CreateOffscreenPlainSurface(descWidth,descHeight,21,2,&actualslot,NULL). IgnoreHRESULT; no null guard/tempRelease/rollback.",
+    "worker": "Read44 under4C; drain signed DWORDwrapped(tail-head+5)%5>0 with currentraw headerdata/surface and format0 actualD3DX call; ignoreHRESULT. Increment CURRENT3C after save, then separately reread3C/40. Sleep10 and recheckstop only outside drain. Publish45 under4C, currentlockleave, EAX0; noEH/finally.",
+    "locks": "Capture nativeEnter/Leave imports; incrementcapturedlockdepth afterenter, rereadcurrentownerlock before decrement/leave. No extra queue lock or new ownership/error policy."
+  },
+  "dependencies": [
+    {
+      "provider": "OS",
+      "entries": [
+        "CreateThread",
+        "SetThreadPriority",
+        "EnterCriticalSection",
+        "LeaveCriticalSection",
+        "Sleep"
+      ],
+      "boundary": "Actual Win32 imports, preserved raw schedule"
+    },
+    {
+      "provider": "D3D9",
+      "entries": [
+        "IDirect3DDevice9::GetBackBuffer +48",
+        "IDirect3DSurface9::GetDesc +30",
+        "IDirect3DDevice9::CreateOffscreenPlainSurface +90"
+      ],
+      "boundary": "Actual current raw COM tables, no synthetic callbacks"
+    },
+    {
+      "provider": "D3DX",
+      "entry": "d3dx9_40!D3DXSaveSurfaceToFileA",
+      "boundary": "Concrete caller-owned module/import object, full external API"
+    },
+    {
+      "provider": "raw lifetime",
+      "commit": "d5a96045780d46958f417a91b8ae2d55d6f754ae",
+      "entries": [
+        "B5E270",
+        "B5E050",
+        "B5E2F0",
+        "BD1860",
+        "415270"
+      ],
+      "boundary": "Existing full source linked unchanged through actual frozen worker library"
+    },
+    {
+      "provider": "separate publisher",
+      "entry": "B5E490",
+      "boundary": "No direct call by three owned entries; remains unimplemented here. No substitute/full enqueue claim."
+    }
+  ],
+  "build": {
+    "final_existing_script": "scripts/build.ps1",
+    "configuration": "MSVC Win32 Release; existing strict flags; ignored CMake hook only",
+    "ctests": "2/2 pass",
+    "original_seeds": "8/8 fresh matches",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\final_build.txt",
+      "bytes": 3793,
+      "sha256": "e6f167593660e100a8d95243c7173373b86901013cdd3be8bc10f48c4a648780"
+    },
+    "seeds": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\seeds.txt",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  },
+  "frozen_actual_library": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\frozen\\bsp_core.lib",
+    "bytes": 36911696,
+    "sha256": "2996be1360b22628c739dd5b0829374ae859613109a6b750ed828f24e0d73c89"
+  },
+  "archive_membership": [
+    {
+      "object": "native_renderer_surface_save_worker.obj",
+      "archive_member": "bsp_core.dir\\Release\\native_renderer_surface_save_worker.obj",
+      "sha256": "9f1ae2908fe93ec6e4e9bc0e25851b47df850f2207829663b1a9eecd9c5272a8",
+      "exact_member_match": true
+    },
+    {
+      "object": "native_renderer_worker_lifetime.obj",
+      "archive_member": "bsp_core.dir\\Release\\native_renderer_worker_lifetime.obj",
+      "sha256": "5b42bc1038966fb3ab280be0ca93fab4bcc7930e0eccddb3fb701aff5ad90876",
+      "exact_member_match": true
+    },
+    {
+      "object": "native_string.obj",
+      "archive_member": "bsp_core.dir\\Release\\native_string.obj",
+      "sha256": "b910c541a73e58c0cf9857b4ea59c1bfef7e5fdf8a6f2d161e946b701bdca3a7",
+      "exact_member_match": true
+    },
+    {
+      "object": "native_string_pool_owner.obj",
+      "archive_member": "bsp_core.dir\\Release\\native_string_pool_owner.obj",
+      "sha256": "b9f026394a01dd516517d1b2f9b52d39ff082640e682c520017fc12a429ab6ce",
+      "exact_member_match": true
+    },
+    {
+      "object": "native_string_pool_storage.obj",
+      "archive_member": "bsp_core.dir\\Release\\native_string_pool_storage.obj",
+      "sha256": "b2fae390a4229b43582730b1eea318973cf890a4c754134f5ed1d25b672c7d6c",
+      "exact_member_match": true
+    },
+    {
+      "object": "singleton_lifetime.obj",
+      "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+      "sha256": "f4b08ca9a03995c3f5f8e0ee11f60b039efe49185656efdc26cf3519527de711",
+      "exact_member_match": true
+    }
+  ],
+  "recursive_source_header_count": 21,
+  "provenance": {
+    "all_mapped_COFF_sections": 233,
+    "library_sections": 158,
+    "new_source_object_sections": 22,
+    "all_relocations": 649,
+    "rule": "Every byte and relocation of every mapped COFF section checked; map parser strips all f/i prefixes. Whole import constructor/save/forwarder, binding, complete workers and actual provider chain included.",
+    "owned_full_byte_comparisons": [
+      {
+        "original": "00b5e380",
+        "original_bytes": 270,
+        "compiled_bytes": 270,
+        "all_bytes_match_after_only_documented_changes": true,
+        "changes": "Concrete COFF relocations only",
+        "relocations": [
+          {
+            "offset": 19,
+            "symbol": "?native_renderer_surface_save_thread_entry_00b5e230@bsp@@YGKPAX@Z",
+            "type": 6,
+            "addend": 0,
+            "target": 805320496,
+            "resolved": 805320496
+          },
+          {
+            "offset": 29,
+            "symbol": "__imp__CreateThread@24",
+            "type": 6,
+            "addend": 0,
+            "target": 805326948,
+            "resolved": 805326948
+          },
+          {
+            "offset": 41,
+            "symbol": "__imp__SetThreadPriority@8",
+            "type": 6,
+            "addend": 0,
+            "target": 805326952,
+            "resolved": 805326952
+          },
+          {
+            "offset": 51,
+            "symbol": "__imp__EnterCriticalSection@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326888,
+            "resolved": 805326888
+          },
+          {
+            "offset": 68,
+            "symbol": "__imp__LeaveCriticalSection@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326892,
+            "resolved": 805326892
+          },
+          {
+            "offset": 136,
+            "symbol": "__imp__Sleep@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326900,
+            "resolved": 805326900
+          }
+        ]
+      },
+      {
+        "original": "00b5e0c0",
+        "original_bytes": 360,
+        "compiled_bytes": 363,
+        "all_bytes_match_after_only_documented_changes": true,
+        "changes": "Replace immediate fallback byte address by binding-pointer/fallback load; adjust exactly affected internal branches; concrete COFF relocations",
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol": "__imp__EnterCriticalSection@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326888,
+            "resolved": 805326888
+          },
+          {
+            "offset": 31,
+            "symbol": "__imp__LeaveCriticalSection@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326892,
+            "resolved": 805326892
+          },
+          {
+            "offset": 157,
+            "symbol": "?application_binding@?A0x7d2c8294@bsp@@3PBUNativeRendererSurfaceSaveBinding@2@B",
+            "type": 6,
+            "addend": 0,
+            "target": 805335756,
+            "resolved": 805335756
+          },
+          {
+            "offset": 176,
+            "symbol": "?save_surface_import@?A0x7d2c8294@bsp@@YGJPBDKPAUIDirect3DSurface9@@PBUtagPALETTEENTRY@@PBUtagRECT@@@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805320880,
+            "resolved": 188
+          },
+          {
+            "offset": 296,
+            "symbol": "__imp__Sleep@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326900,
+            "resolved": 805326900
+          }
+        ]
+      },
+      {
+        "original": "00b5e230",
+        "original_bytes": 12,
+        "compiled_bytes": 12,
+        "all_bytes_match_after_only_documented_changes": true,
+        "changes": "Concrete COFF relocations only",
+        "relocations": [
+          {
+            "offset": 5,
+            "symbol": "?run_native_renderer_surface_save_worker_00b5e0c0@bsp@@YIKPAX@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805320512,
+            "resolved": 7
+          }
+        ]
+      }
+    ],
+    "whole_runtime_code_postimages": [
+      {
+        "section": 0,
+        "address": 805310464,
+        "bytes": 14499,
+        "sha256": "d98c99c2be77defdd3e75c0739ae9626e156c25b7eb898d6d27c787ad4c07b91",
+        "whole_linked_code_postimage_matches": true
+      }
+    ],
+    "observed_DLL_imports": 79,
+    "observed_COM_D3DX_providers": [
+      {
+        "label": "actual_D3DXSaveSurfaceToFileA",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3dx9_40.dll",
+        "module_sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+        "target": 1612422204,
+        "loaded_base": 1609760768,
+        "rva": 2661436,
+        "first16": "8bff558bec8b45106a00ff7518ff7514",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "device_GetBackBuffer",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615195376,
+        "loaded_base": 1614282752,
+        "rva": 912624,
+        "first16": "8bff558bec515153568b750833db8bce",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "device_CreateOffscreenPlainSurface",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615189616,
+        "loaded_base": 1614282752,
+        "rva": 906864,
+        "first16": "8bff558bec83e4f85151568b75088bce",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "surface_GetDesc",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615238656,
+        "loaded_base": 1614282752,
+        "rva": 955904,
+        "first16": "8bff558bec515156578b7d086a008b4f",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "actual_D3DXSaveSurfaceToFileA_after",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3dx9_40.dll",
+        "module_sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+        "target": 1612422204,
+        "loaded_base": 1609760768,
+        "rva": 2661436,
+        "first16": "8bff558bec8b45106a00ff7518ff7514",
+        "loader_relocations_only": true
+      }
+    ]
+  },
+  "fixture": {
+    "scope": "One nonempty actual-library source worker save; original bodies not executed.",
+    "device": "Fixture-owned hidden window/real HAL D3D9 device; actual GetBackBuffer/GetDesc/CreateOffscreenPlainSurface, no table replacements or mocked save.",
+    "queue": "Actual raw constructor, full acquisition launching actual raw-owner CreateThread,8x8systemmemsurface filledRGB51/102/153, same fallback bytes mutated after binding, one producer publication as explicit fixture input. Full worker saves to its own run/saved_surface.bmp and increments currentconsumer.",
+    "output": {
+      "bytes": 312,
+      "sha256": "cc3b3a680e03c279e6458ab01e29a1ccaac95ec9780eac30622083638fa39e5c",
+      "width": 8,
+      "height": 8,
+      "bits": 32,
+      "all_64_pixels_RGB": [
+        51,
+        102,
+        153
+      ],
+      "D3DX_HRESULT": "Ignored by original/source worker; not separately observed"
+    },
+    "thread": "Separate duplicated handle used to verify actual return0 after full raw lifetime destruction. Only then unbind/unload. Expected rawindices/stopdone/stalepointer postimages retained; no normalization.",
+    "limits": "No original runtime replay/parity. D3DX HRESULT ignored/not observed. Native temporary backbuffer reference behavior left intact until process teardown. No full producer/release-owner/gameplay claim.",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\run\\run.txt",
+      "bytes": 429,
+      "sha256": "923668f606a1c452c0a6d208739454bf9625d51ddadd883d25e32a4bfe9412b9"
+    }
+  },
+  "uncertainty": [
+    "Native source graph and instruction schedule reconstructed; no installed binary/callerABI or gameplay validation",
+    "Original bodies not executed; real-source save does not establish native runtime parity",
+    "Binding lifetime is caller-managed; byte45/CloseHandle alone is not OSthreadreturn",
+    "No failed COM/CreateThread/D3DX, malformedqueue, callmutation, unbound/concurrentbinding, or nativeSEH scenario tested",
+    "No completeB5E490publisher/B23C50capture/fullrenderer/surface-releaseowner implementation"
+  ],
+  "private_evidence": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker",
+    "capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\capture.json",
+      "bytes": 9320,
+      "sha256": "eb6ae85277a099b0e9433e5ae1b2a5f1d9d5e071edbdb4eb5ab0ce899d28232b"
+    },
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\verified.json",
+      "bytes": 280423,
+      "sha256": "4bb8605ebfc7747d7878b9c3901b72f14d6d33eed16660d28a1f98a41b6bc6fe"
+    },
+    "frozen_archive_source_pins": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\frozen.json",
+      "bytes": 10349,
+      "sha256": "f19ae59d9f1147fe13ee5b3cb6f3fb7ea436ef4b04f5b1342ba3da6d0ab39573"
+    },
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-worker\\local\\renderer_surface_save_worker\\sealed.json"
+  },
+  "mutations": {
+    "original_game": false,
+    "Ghidra": false,
+    "shared_metadata": false,
+    "shared_CMake": false,
+    "permanent_tests": false
+  },
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\surface_save_worker_primary\\sealed.json",
+      "bytes": 18392,
+      "sha256": "4ab76c4901b6f4e74504de69a3c915bb5f9737e1f9e99d831095186c93a1d0f7"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\surface_save_worker_primary\\preparation.json",
+      "bytes": 111309,
+      "sha256": "91b03816e0fbb4fcdd302be6865c2c6f866469666660458d8539af0695ad16e4"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\surface_save_worker_primary\\verified.json",
+      "bytes": 280423,
+      "sha256": "996ceac62e9466c065fe9531f2062063252f9b744cc8f114fa808685b377be52"
+    },
+    "actual_main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\surface_save_worker_primary\\frozen\\bsp_core.lib",
+      "bytes": 37161090,
+      "sha256": "61e7a69d235f9ee29a8a1da87d5cff9e718416a2806a689592c19a70fd30f7f7"
+    },
+    "worker_pins_verified": 118,
+    "current_source_headers": 21,
+    "fresh_guarded_spans": 15,
+    "fresh_guarded_bytes": 774,
+    "owned_original_bytes": 642,
+    "strict_main_Win32": true,
+    "existing_CTests": 2,
+    "fresh_native_seeds": 8,
+    "source_unchanged": true,
+    "fixture_source_unchanged": true,
+    "fixture_compiles_no_source_providers": true,
+    "complete_COFF_sections": 233,
+    "all_relocations": 649,
+    "exact_archive_objects": 6,
+    "actual_import_providers": 79,
+    "actual_COM_D3DX_provider_observations": 5,
+    "runtime_code_bytes": 14499,
+    "owned_instruction_comparisons": 3,
+    "source_nonempty_thread_save": true,
+    "original_machine_bodies_executed": false,
+    "saved_BMP": {
+      "bytes": 312,
+      "sha256": "cc3b3a680e03c279e6458ab01e29a1ccaac95ec9780eac30622083638fa39e5c",
+      "width": 8,
+      "height": 8,
+      "bits": 32,
+      "all_64_pixels_RGB": [
+        51,
+        102,
+        153
+      ],
+      "D3DX_HRESULT": "Ignored by original/source worker; not separately observed"
+    },
+    "source_binding": "Fixed application import object and mutable fallback byte address; caller owns actual d3dx9_40 module and all storage through every thread return.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_surface_save_worker_annotations.json",
+    "bytes": 5615,
+    "sha256": "2718811429dff99485411fd83433c953c7b3d94a17022a90b3af5dd041673b94"
+  },
+  "saved_function_definition": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_surface_save_worker_defined_function.json",
+    "bytes": 2881,
+    "sha256": "c2b2ce7b9bb35554c936039af9e6c5fafaaa25ac4ad099e5088f41d3c6a6af27"
+  },
+  "annotations_applied": true,
+  "refreshed_exports": [
+    {
+      "address": "00b5e380",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e380\\decompiled.c",
+      "bytes": 3999,
+      "sha256": "942be0397eb840afe939974264e30701466b9705ebab0744506371283e875c2c"
+    },
+    {
+      "address": "00b5e0c0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e0c0\\decompiled.c",
+      "bytes": 6035,
+      "sha256": "bb7956fdae614e754579aa66cbe0c33fd2824d3e6797705c0446a7002e903700"
+    },
+    {
+      "address": "00b5e230",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e230\\decompiled.c",
+      "bytes": 1370,
+      "sha256": "2a0e70222bc3f26c130fcc4569fdda2874fea5e8b711040d430f577c46c18b96"
+    }
+  ],
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b5e380",
+      "name": "acquire_native_renderer_surface_save_surface_00b5e380",
+      "cpp_symbol": "acquire_native_renderer_surface_save_surface_00b5e380",
+      "source": "src/native_renderer_surface_save_worker.cpp",
+      "native_end_exclusive": "00b5e48e",
+      "original_abi": "ECX raw owner, stack D3D9 device, EAX current producer surface, RET4",
+      "source_abi": "__fastcall raw owner, ignored reserved EDX, stack D3D9 device; original stack schedule retained",
+      "status": "three_complete_raw_worker_entries_main_Win32_nonempty_real_D3DX_save_and_full_COFF_verified",
+      "evidence": "reports/native_renderer_surface_save_worker_audit.json",
+      "primary_seal_sha256": "4ab76c4901b6f4e74504de69a3c915bb5f9737e1f9e99d831095186c93a1d0f7",
+      "original_machine_bodies_executed": false,
+      "actual_library_nonempty_save_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5e0c0",
+      "name": "run_native_renderer_surface_save_worker_00b5e0c0",
+      "cpp_symbol": "run_native_renderer_surface_save_worker_00b5e0c0",
+      "source": "src/native_renderer_surface_save_worker.cpp",
+      "native_end_exclusive": "00b5e228",
+      "original_abi": "ECX raw owner, EAX0, RET",
+      "source_abi": "Same raw input/return; application-level import/fallback binding",
+      "status": "three_complete_raw_worker_entries_main_Win32_nonempty_real_D3DX_save_and_full_COFF_verified",
+      "evidence": "reports/native_renderer_surface_save_worker_audit.json",
+      "primary_seal_sha256": "4ab76c4901b6f4e74504de69a3c915bb5f9737e1f9e99d831095186c93a1d0f7",
+      "original_machine_bodies_executed": false,
+      "actual_library_nonempty_save_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5e230",
+      "name": "native_renderer_surface_save_thread_entry_00b5e230",
+      "cpp_symbol": "native_renderer_surface_save_thread_entry_00b5e230",
+      "source": "src/native_renderer_surface_save_worker.cpp",
+      "native_end_exclusive": "00b5e23c",
+      "original_abi": "Win32 stdcall LPVOID raw owner, EAX0, RET4",
+      "source_abi": "Same raw-owner thread parameter; no envelope",
+      "status": "three_complete_raw_worker_entries_main_Win32_nonempty_real_D3DX_save_and_full_COFF_verified",
+      "evidence": "reports/native_renderer_surface_save_worker_audit.json",
+      "primary_seal_sha256": "4ab76c4901b6f4e74504de69a3c915bb5f9737e1f9e99d831095186c93a1d0f7",
+      "original_machine_bodies_executed": false,
+      "actual_library_nonempty_save_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_SURFACE_SAVE_WORKER.md",
+    "bytes": 10201,
+    "sha256": "2590c780e1ddceeca6ecb2fc7c29b3318819a1f791d34bea4a5d2b5c664a3779"
+  }
+}
