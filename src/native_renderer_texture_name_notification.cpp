@@ -87,7 +87,8 @@ void notify_native_renderer_texture_name_removal_00b32250(
         if (current_source_length != 0) {
             const auto count = read_word(name);
             const auto* source = data_at(address(original_name, 4));
-            if (count != 0) std::memcpy(captured_data, source, count);
+            // BF7680 explicitly selects a backward copy for overlapping ranges.
+            if (count != 0) std::memmove(captured_data, source, count);
         }
     }
     // State 1 begins after copying, not when storage first becomes owned.

@@ -8,7 +8,7 @@ has been allocated, copied and lowercased. No resource retain/release operation
 is added by this wrapper.
 
 The strict MSVC Win32 repository build and both existing tests passed. One
-private original-caller comparison matched 3,995 normalized words across eight
+private original-caller comparison matched 4,700 normalized words across nine
 states. Two terminal scenarios, each compared in separate original/host processes,
 matched another 658 words while terminating with exit 86. These results establish
 the tested storage/callback/EH behavior, not native ABI compatibility or game
@@ -63,8 +63,13 @@ if a later callback replaces its current header. The return size comes from the
 current length. Exception cleanup instead calls the complete existing
 `destroy_native_string_header_0041dd20`, which reads the current header's data
 and length. This distinction was tested with separate actual pool allocations.
-The source preserves native DWORD arithmetic and the existing zero-length memcpy
-boundary, while evaluating the original current-field reads.
+The source preserves native DWORD arithmetic and the existing zero-length copy
+boundary, while evaluating the original current-field reads. The direct call at
+`B322CB` targets `BF7680`. Its complete 869-byte body, including embedded jump
+tables, is pinned: `BF7694..BF769A` selects backward copying when the destination
+lies inside the source range, and `BF7844` begins that path. The library's
+`_memcpy` label therefore does not impose the C++ non-overlap precondition.
+The source and the declared CRT fixture bridge use `std::memmove`.
 
 ## Native exception states
 
@@ -111,7 +116,9 @@ specific to this private fixture and is not a game ABI claim.
 
 Declared ABI bridges invoke the unchanged existing actual C++ string resize,
 normalized-path copy, record assignment/destruction, same real sized pool and
-CRT comparison/copy functions. They do not replace container behavior with a
+CRT comparison and overlap-preserving copy functions. The `BF7680` bridge uses
+host `std::memmove`; its pinned original body is evidence, not executed by this
+fixture. They do not replace container behavior with a
 vector erase or a synthetic result. Native IAT and corresponding host calls use
 observation wrappers around real Win32 Enter/LeaveCriticalSection. Fixture-only
 faults and field changes occur at those explicit boundaries. Ordinary storage
@@ -124,7 +131,13 @@ mutation of the original key after the outer temporary is lowercased; normal
 captured-data/current-size return; resize failure before string state; failure
 after string state with a replaced current header; entry failure before guard
 state; normal leave failure after disarm; and a current-mode change that retains
-the lock. The first terminal comparison throws from guard leave during cleanup:
+the lock. One added overlap state changes the original input pointer to the
+first actual temporary allocation plus one byte at allocation time. Its 31-byte
+source and destination ranges overlap in the forward direction (destination is
+below source); all resulting bytes are checked before
+nested allocation, and the actual base allocation is returned normally at size
+32. This mutation tests the admitted storage contract, not observed game usage.
+The first terminal comparison throws from guard leave during cleanup:
 the current temporary was already returned, the lock is released, and a nested
 cleanup probe must remain untouched. The second invokes notification during an
 outer unwind and throws in its body: termination precedes notification's local

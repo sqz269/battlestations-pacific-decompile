@@ -2,8 +2,8 @@
   "schema_version": 1,
   "packet": "native_renderer_texture_name_notification",
   "status": "complete_actual_storage_original_key_guard_and_search_phase_EH_compared_strict_win32_checked",
-  "captured_utc": "2026-09-11T02:53:48.911291+00:00",
-  "base_commit": "dd9a8662b0cbeb84e1c250c5ed2809336e0c405d",
+  "captured_utc": "2026-09-11T03:04:12.833381+00:00",
+  "base_commit": "237cf46c58c6f7d86b118f7527ff1c0e72eb6007",
   "owned_files": [
     "include/bsp/native_renderer_texture_name_notification.hpp",
     "src/native_renderer_texture_name_notification.cpp",
@@ -83,7 +83,7 @@
     },
     "guard": "Each fresh live bytes/proto/comments read uses bsp.py ghidra project/program/language/image-base guard.",
     "fresh_spans": 37,
-    "fresh_span_bytes": 1882,
+    "fresh_span_bytes": 2746,
     "all_matches": true
   },
   "functions": [
@@ -135,7 +135,7 @@
       "Read CURRENT mode; disarm all cleanup before normal leave. If enabled, isolatedDWORD MOV reads saved guard word including padding; captured saved renderer and ignored word reach fullB33B00."
     ],
     "normal_vs_unwind_string": "Normal: captured post-resize pointer/current length. Unwind: full current-header41DD20 pointer/length. No field clearing is added.",
-    "arithmetic": "MSVCWin32 DWORD address/size wrap; isolated MOV accesses preserve native current storage reads. Existing zero-count memcpy boundary is omitted after argument/current-field evaluation.",
+    "arithmetic": "MSVCWin32 DWORD address/size wrap; isolated MOV accesses preserve native current storage reads. Existing zero-count copy boundary is omitted after argument/current-field evaluation.",
     "ownership": "Wrapper owns only its real temporary native string and conditional local guard; nested container routine performs its existing actual record/alias storage operations and no resource intrusive retain/release."
   },
   "exception_handling": {
@@ -241,10 +241,16 @@
         "risk": "Current mode changes to0 after successful entry.",
         "checks": "Normal name work completes; no leave; nesting/depth/native recursion1 retained until fixture-only post-observation cleanup.",
         "matched_events": 14
+      },
+      {
+        "scenario": 10,
+        "risk": "Allocation-time input-header mutation aliases the first real temporary allocation at data+1.",
+        "checks": "All31 overlapping copy bytes checked before nested allocation; actual base returned at size32; all15 state events match.",
+        "matched_events": 15
       }
     ],
-    "normal_matched_words": 3995,
-    "normal_matched_events": 85,
+    "normal_matched_words": 4700,
+    "normal_matched_events": 100,
     "event_width_words": 47,
     "terminal_cases": [
       {
@@ -346,7 +352,7 @@
       },
       {
         "native": "00bf7680/00bf7fbf/00bf6713",
-        "implementation": "Actual CRT memcpy/_stricmp and existing actual invalid-parameter callback domain."
+        "implementation": "Host std::memmove explicitly preserves the pinned BF7680 overlap contract; actual CRT _stricmp and existing actual invalid-parameter callback domain."
       },
       {
         "native": "00bf6b43",
@@ -853,12 +859,12 @@
     },
     {
       "address": "00bf7680",
-      "end_exclusive": "00bf7685",
-      "length": 5,
-      "role": "memcpy_entry_prefix",
+      "end_exclusive": "00bf79e5",
+      "length": 869,
+      "role": "complete_crt_overlap_copy_at_abi_bridge",
       "raw_offset": 8353408,
-      "bytes_hex": "558bec5756",
-      "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "bytes_hex": "558bec57568b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00901877bf004477bf006877bf0023d18a0688078a46018847018a4602c1e90288470283c60383c70383f90872ccf3a5ff2495f477bf008d490023d18a0688078a4601c1e90288470183c60283c70283f90872a6f3a5ff2495f477bf009023d18a06880783c601c1e90283c70183f9087288f3a5ff2495f477bf008d4900eb77bf00d877bf00d077bf00c877bf00c077bf00b877bf00b077bf00a877bf008b448ee489448fe48b448ee889448fe88b448eec89448fec8b448ef089448ff08b448ef489448ff48b448ef889448ff88b448efc89448ffc8d048d0000000003f003f8ff2495f477bf008bff0478bf000c78bf001878bf002c78bf008b45085e5fc9c3908a0688078b45085e5fc9c3908a0688078a46018847018b45085e5fc9c38d49008a0688078a46018847018a46028847028b45085e5fc9c3908d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bfff7d9ff248d4079bf008d49008bc7ba0300000083f904720c83e0032bc8ff24859478bf00ff248d9079bf0090a478bf00c878bf00f078bf008a460323d188470383ee01c1e90283ef0183f90872b2fdf3a5fcff24959079bf008d49008a460323d18847038a4602c1e90288470283ee0283ef0283f9087288fdf3a5fcff24959079bf00908a460323d18847038a46028847028a4601c1e90288470183ee0383ef0383f9080f8256fffffffdf3a5fcff24959079bf008d49004479bf004c79bf005479bf005c79bf006479bf006c79bf007479bf008779bf008b448e1c89448f1c8b448e1889448f188b448e1489448f148b448e1089448f108b448e0c89448f0c8b448e0889448f088b448e0489448f048d048d0000000003f003f8ff24959079bf008bffa079bf00a879bf00b879bf00cc79bf008b45085e5fc9c3908a46038847038b45085e5fc9c38d49008a46038847038a46028847028b45085e5fc9c3908a46038847038a46028847028a46018847018b45085e5fc9c3",
+      "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
       "live_matches_disk": true
     },
     {
@@ -1124,8 +1130,8 @@
     },
     {
       "path": "src/native_renderer_texture_name_notification.cpp",
-      "bytes": 5029,
-      "sha256": "22ddd8f30e7f1bb54543d68dc3617adecf2ae5d45541492691d85b1fce557fe2"
+      "bytes": 5111,
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
     },
     {
       "path": "src/native_string.cpp",
@@ -1152,17 +1158,17 @@
     {
       "path": "build/texture-name-notification-check/actual_lifetime.obj",
       "bytes": 31704,
-      "sha256": "3825a0902602c98fda1ba0d8a6e64958e27c8a10d880c917ecb795c828115b31"
+      "sha256": "9f3fb0388dcca54340afee6fe10ea6b9bf3a21a2f219a057eedf430595953ad6"
     },
     {
       "path": "build/texture-name-notification-check/actual_string.obj",
       "bytes": 14575,
-      "sha256": "8a6e2df2f53c68229c9311a1d0e6ce535db9ba53485cd8d98c87a0d39b796de0"
+      "sha256": "6d645b5cc14a0d4317debfeff3b32f98b011ef7b6f2e7766e905adced07dd2c1"
     },
     {
       "path": "build/texture-name-notification-check/actual_synchronization.obj",
       "bytes": 2492,
-      "sha256": "7be9426607c989fde777d72350893d4340ae167c83d0c5872192ac44f889cd30"
+      "sha256": "93edd9d37a0d76175806fa885dc80e802771607bd2c0f1855561d7e8117935f1"
     },
     {
       "path": "build/texture-name-notification-check/build_notification.cmd",
@@ -1171,18 +1177,18 @@
     },
     {
       "path": "build/texture-name-notification-check/native_renderer_texture_name_notification_check.exe",
-      "bytes": 59904,
-      "sha256": "c20c2ffa2965fd9a993e8a514ac49c4c9928ed90c046be55ae47b53d23f39ee0"
+      "bytes": 61952,
+      "sha256": "4224ad3ebeef6424ee522b88294de1af4658e7c1c2f8ef136f9f494dc2bed40b"
     },
     {
       "path": "build/texture-name-notification-check/notification_final.asm",
-      "bytes": 25720,
-      "sha256": "d2d0c96b93734d8e709d0e40e12f311dbe6dc9f6b2e5dd93b44d2b10ea93e3e9"
+      "bytes": 25814,
+      "sha256": "9009d56bc86728b6d0a56789d5d8c289a0a45c0446cc7e0fcbec27733331bba6"
     },
     {
       "path": "build/texture-name-notification-check/notification_final.obj",
       "bytes": 5905,
-      "sha256": "f507d12d90e5c5813209841a16f0a7645f1588c8d03b42816d92f10d5057c3b8"
+      "sha256": "0d25f11ae1b77731449efd6949322ea7a3327b8aeeb92c90894c184b89ef3364"
     },
     {
       "path": "build/texture-name-notification-check/notification_outer_terminate_host.bin",
@@ -1206,13 +1212,13 @@
     },
     {
       "path": "build/texture-name-notification-check/notification_trace.json",
-      "bytes": 15710,
-      "sha256": "ac6787ee08bcac8796e10a3c56152294666d47bd21bae9749372d4a7faa94c38"
+      "bytes": 18768,
+      "sha256": "143e85da907351bba99cfe133fbfcc5456e66b0e4bb5828121c4e5753bff90b1"
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
       "bytes": 19690866,
-      "sha256": "8a30afbe462dba9e895f99dade13313e131a4e27d7af651087e424dae7526cf2"
+      "sha256": "5ade0e3c2fcbfcbcfc08be3f305fb41e7f080f962bde0c8564cb0247f639f683"
     },
     {
       "path": "config/target.json",
@@ -1221,8 +1227,8 @@
     },
     {
       "path": "docs/NATIVE_RENDERER_TEXTURE_NAME_NOTIFICATION.md",
-      "bytes": 8972,
-      "sha256": "295fbb8531a58ee1f92bd2cba9b38422930ccc9f9276597c079865be06357244"
+      "bytes": 9942,
+      "sha256": "8c9e680dc0dcfaef43064faf2e1c22011341da3b6acac09358bf2638f733eaf9"
     },
     {
       "path": "include/bsp/native_alias_count_growth.hpp",
@@ -1301,18 +1307,18 @@
     },
     {
       "path": "local/native_renderer_texture_name_notification_check.cpp",
-      "bytes": 23052,
-      "sha256": "a5b1a411080c5959c01b5d56be7dcf75ce5b0efb4b27aa3affdfa0262b7bedc2"
+      "bytes": 24064,
+      "sha256": "315101c9d34721f763e9ea24c78ed7a091941022cce2f0b3b71785e126e67b4a"
     },
     {
       "path": "local/native_renderer_texture_name_notification_preparation.json",
-      "bytes": 22970,
-      "sha256": "1d22aba5022c5c4c1f67ae02d250d1ac8de42c1fb83110ad7dc6f4ec0cccffaa"
+      "bytes": 24720,
+      "sha256": "be152beb710903692c6eadfafd9b0d4a7ee1ad1dd9df5d89238b38ceb43e1b69"
     },
     {
       "path": "local/native_renderer_texture_name_notification_spans.hpp",
-      "bytes": 14333,
-      "sha256": "e6196b78c76c38c8ce811fb5faa5786b07bdd39995342781f104ef01f01652fd"
+      "bytes": 18655,
+      "sha256": "00705f70b3a594dce638d95dbd63c6c780833f498ece801d467afbc47d7a41ee"
     },
     {
       "path": "local/notification_0041dd20.asm",
@@ -1431,13 +1437,18 @@
     },
     {
       "path": "local/notification_build_final.log",
-      "bytes": 2075,
-      "sha256": "c0552dfbc7134fa1f7be2366d837a2654410f8198ff381011e6ba47cb937420a"
+      "bytes": 2349,
+      "sha256": "c7738c92076c0f8459856e3929d82eec2f076f16ad56259ee23e80f6a62d5d5e"
+    },
+    {
+      "path": "local/notification_crt_copy_full.asm",
+      "bytes": 7924,
+      "sha256": "1468ffcddcbc8ca84ce9dabac0c0f07bdd5d89e2c1d6325b7768d73c7920a288"
     },
     {
       "path": "local/notification_fixture.log",
-      "bytes": 984,
-      "sha256": "b5d2f8632a3788ba3c28d2b8065ba666ac770984987488143786cc293bdd44ce"
+      "bytes": 1166,
+      "sha256": "267c1edf544e1ac65b88a846c867058fea33331dc65a83eae5d5dfa7df11e95a"
     },
     {
       "path": "local/notification_live_00419cc0.txt",
@@ -1531,8 +1542,8 @@
     },
     {
       "path": "local/notification_live_00bf7680.txt",
-      "bytes": 33,
-      "sha256": "871ebcbc3369e3a2cd4ad4e0290065cc71783c2a00162582c8e9c742e492599b"
+      "bytes": 4191,
+      "sha256": "f78a245604693f5b012f74517e59b1cb46432444fa018e9d6c5224918324988a"
     },
     {
       "path": "local/notification_live_00bf7fbf.txt",
@@ -1661,13 +1672,13 @@
     },
     {
       "path": "local/prepare_native_renderer_texture_name_notification.py",
-      "bytes": 6559,
-      "sha256": "4283a1485b3a2bf8b10e9fd30d64e8e7c07c4db0e2d7a2d201b56d976d6fd8ae"
+      "bytes": 6581,
+      "sha256": "a17ea823d10e1b8c220fc8c095d532fe5a10924a59490af07db13af7b979e43f"
     },
     {
       "path": "local/write_native_renderer_texture_name_notification_audit.py",
-      "bytes": 19980,
-      "sha256": "fccc46b2f6096c97fa7b833e81d51e331e2e2bdc7d19c6b3b4850f16743c29e7"
+      "bytes": 21537,
+      "sha256": "4eab02e09fba5ab9cfeb43de6d371ce91062687e2e483eabcf083e97d4f64a24"
     },
     {
       "path": "src/native_alias_count_growth.cpp",
@@ -1716,8 +1727,8 @@
     },
     {
       "path": "src/native_renderer_texture_name_notification.cpp",
-      "bytes": 5029,
-      "sha256": "22ddd8f30e7f1bb54543d68dc3617adecf2ae5d45541492691d85b1fce557fe2"
+      "bytes": 5111,
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
     },
     {
       "path": "src/native_string.cpp",
@@ -1738,8 +1749,25 @@
   "uncertainty": [
     "C++ interface and compiler EH layout are new; this is not a drop-in native function or binary EH compatibility proof.",
     "Only currently supported actual storage/profile domains are implemented; arbitrary resources and skipped-entry/enabled-cleanup are outside preconditions.",
-    "Four entry-prefix spans do not claim complete allocator/CRT runtime reconstruction.",
+    "Three entry-prefix spans do not claim complete allocator/CRT runtime reconstruction.",
     "The fixture executes complete owned/nested native instructions plus explicitly declared actual C++ dependency ABI bridges, not an entirely native dependency closure.",
     "Renderer/table/game runtime visual behavior was not exercised."
-  ]
+  ],
+  "overlap_copy_correction": {
+    "call_site": "00b322cb",
+    "callee": "00bf7680",
+    "original_library_label": "_memcpy",
+    "complete_body_start": "00bf7680",
+    "complete_body_end_exclusive": "00bf79e5",
+    "complete_body_bytes": 869,
+    "complete_body_sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+    "source_and_declared_adapter": "std::memmove",
+    "backward_selection": "BF7694 compares destination/source; BF7698 compares destination/source+count; BF769A branches to BF7844 for backward overlap.",
+    "assembly_evidence": "local/notification_crt_copy_full.asm",
+    "native_body_execution": false,
+    "fixture_scenario": 10,
+    "matched_overlap_events": 15,
+    "overlap": "Source points to destination+1 inside the same real32-byte allocation; count31. This exercises forward-direction overlap (destination below source); backward-overlap support is separately established by original assembly. Full resulting31bytes checked before nested allocation and actual base returned at size32.",
+    "scope": "Only this direct copy and its private bridge changed; existing shared resize/path code remains unchanged; no backward-overlap runtime claim for the fixture."
+  }
 }
