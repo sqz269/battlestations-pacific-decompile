@@ -97,4 +97,8 @@ std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage&,
 // ECX object, stack output/fallback, EAX output, RET8; no prior-output cleanup.
 NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage&,
     void* fresh,const char* fallback,NativeStringStorage&);
+bool native_lua_is_string_00b660a0(const NativeLuaObjectStorage&);
+// Kind2/exact NUMBER yields a float32-rounded result; every other value
+// returns the supplied float. Original ECX object, stack float, ST0, RET4.
+float native_lua_number_or_00b66330(const NativeLuaObjectStorage&,float fallback);
 } // namespace bsp

@@ -121,3 +121,8 @@ checks actual platform functions, selected/absent libraries, case-insensitive
 region normalization, registry retirement before close, repeat close/reopen,
 and protected bootstrap failure cleanup. `DoFile` execution, real VFS cache
 creation, native differential ABI, and game execution remain unvalidated.
+
+
+## Correction from docs/NATIVE_SHADER_DESCRIPTOR_DEPENDENCIES.md
+
+The actual 4C8h owner bootstrap is now in `native_lua_bootstrap.cpp`. It retains tracking fields and overwrites an earlier state without closing it; fundamentals loads through two required cache reads and an unprotected call. The prior projected owner remains a different interface. B669C0 discards the returned string pointer, not the stack value: numeric top values become strings and remain on the stack. Cache ownership and VFS routing remain external. See that document and `reports/native_shader_descriptor_dependencies.json` for evidence and limits.
