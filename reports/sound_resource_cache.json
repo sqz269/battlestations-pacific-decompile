@@ -1,0 +1,58 @@
+{
+  "packet": "orch3_sound_cache_loader",
+  "status": "reconstructed_build_and_host_fixture_tested",
+  "source": "src/sound_resource_cache.cpp",
+  "header": "include/bsp/sound_resource_cache.hpp",
+  "evidence": "docs/SOUND_RESOURCE_CACHE.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "program": "battlestationspacific.exe",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "read_only_worker": true
+  },
+  "functions": [
+    {"address": "00a84740", "previous_name": "BSP_SoundResourceCache_LoadOrClone_Provisional", "name": "load_sound_resource_00a84740", "native_abi": "ECX=owner; stack path/options/clone/load-if-missing; EAX=resource; RET10", "last_instruction": "00a84c87", "last_instruction_length": 3, "inclusive_end": "00a84c89"},
+    {"address": "00a84530", "previous_name": "FUN_00a84530", "name": "append_sound_resource_cache_record_00a84530", "native_abi": "ECX=array header owner+4; stack source record; RET4", "last_instruction": "00a8459c", "last_instruction_length": 3, "inclusive_end": "00a8459e"},
+    {"address": "00a842e0", "previous_name": "FUN_00a842e0", "name": "clear_sound_resource_cache_record_storage_00a842e0", "native_abi": "ECX=record; no stack arguments; RET", "last_instruction": "00a84357", "last_instruction_length": 1, "inclusive_end": "00a84357"},
+    {"address": "00a84680", "previous_name": "FUN_00a84680", "name": "copy_sound_resource_cache_record_00a84680", "native_abi": "ECX=destination record; stack source; EAX=destination; RET4", "last_instruction": "00a8471f", "last_instruction_length": 3, "inclusive_end": "00a84721"},
+    {"address": "00a85560", "previous_name": "FUN_00a85560", "name": "remove_sound_resource_cache_entry_00a85560", "native_abi": "ECX=owner; stack name; RET4", "last_instruction": "00a85763", "last_instruction_length": 5, "inclusive_end": "00a85767", "shared_return_instruction": "00a856d7", "shared_return_instruction_length": 3}
+  ],
+  "metadata_repairs_for_parent": [
+    {"function": "00a842e0", "kind": "false_no_return_truncated_body", "call_site": "00a84314", "callee": "00bf65ac", "current_body_end": "00a84318", "decode_start": "00a84319", "inclusive_end": "00a84357", "terminal_instruction": "00a84357", "terminal_instruction_length": 1, "bytes_hex": "c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8805999ff8bc8e8c9d114008b4c240c5f5e64890d0000000083c410c3", "note": "Saved listing omits name release and epilogue after sentinel free; verify exact bytes live before mutation."},
+    {"function": "00a84450", "kind": "false_flow_listing_gap_supporting_helper", "call_site": "00a8450b", "callee": "00bf6989", "decode_start": "00a84510", "inclusive_gap_end": "00a84519", "bytes_hex": "83c4045f892e895e085d", "function_inclusive_end": "00a8452c", "terminal_instruction": "00a8452a", "terminal_instruction_length": 3, "note": "Gap installs new array pointer/capacity after free; helper inspected only, no worker ownership or standalone reconstruction claim."}
+  ],
+  "eh_evidence": {
+    "handler": "00cb5e68",
+    "func_info": "00debee0",
+    "unwind_map": "00debf04",
+    "unwind_map_hex": "ffffffff405ecb0000000000485ecb0001000000505ecb0001000000585ecb0001000000605ecb00",
+    "actions": ["00cb5e40 path", "00cb5e48 canonical", "00cb5e50 resolver temporary", "00cb5e58 partial record name", "00cb5e60 record storage 00a842e0"],
+    "resource_rollback_present": false
+  },
+  "required_services": [
+    "00beccd0 platform message pump before input copy",
+    "00a82ea0 owned NativeString resolver with supplied storage",
+    "00a835b0 real resource creation, null accepted",
+    "00a854c0 retain/clone on cached hits and flagged fresh loads",
+    "resource virtual +C size (D5B118 -> 00a818b0)",
+    "00bdd340 five-word VFS metadata query"
+  ],
+  "validation": {
+    "verify_seeds": {"passed": true, "matched": 8, "total": 8},
+    "win32_msvc_release_build": {"passed": true, "command": "./scripts/build.ps1", "log": "local/sound-cache-build.log"},
+    "ctest": {"passed": 2, "total": 2, "tests": ["reconstructed_math", "native_math_differential"]},
+    "focused_fixture": {"passed": true, "source": "local/sound_cache_fixture.cpp", "command": "./local/run_sound_cache_fixture.cmd", "log": "local/sound-cache-fixture.log", "production_resources": false, "checks": ["callback ordering", "cached retain ignores clone=false", "counted aliases and canonical-first scan", "null aliases continue initial search", "canonical null match records requested alias with loading disabled", "null creation/reload duplicate records", "metadata throw before cache adoption", "size throw after cache commit", "size callback mutates accounting before unsigned addition", "discarded normalization in removal", "last-record assignment preserves allocator word", "unsigned accounting subtraction", "all temporary NativeString allocations released"]},
+    "abi_compatible": false,
+    "native_allocation_or_seh_equivalent": false,
+    "audio_runtime_validated": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "Descriptive names are hypotheses, not recovered symbols.",
+    "Standard containers project record strings/list/vector storage; native allocator word and dangling dead headers are not reproduced.",
+    "Invalid empty-alias records, null removal resources and overflowing capacities raise host errors instead of reproducing native invalid memory accesses.",
+    "Removal size callbacks must preserve the matched record pointer captured in native EBP; current count and last record are reloaded afterward.",
+    "Host services remain required meaningful external operations for the integrator to compose; no fallback resource, VFS or message pump was supplied in this packet."
+  ]
+}
