@@ -411,3 +411,7 @@ where a plausible per-token reading of the switch table gives the wrong answer.
 ### Correction from docs/OPTIONS_SETTINGS_COMMIT.md
 
 The Eidos registry key on the installed game holds `ApplicationDir`, `Patch` and `languages` and no value named `language`, so the loader's registry fallback for the language would not fire on this install; settings persist through the serializer `008d64a0` to the options file, never to the registry.
+
+### Correction from docs/GAME_EXECUTABLE.md (milestone 2a)
+
+The options-file token comparison in `008d8190` goes through `00467cc0`, which calls `BSP_CString_CompareInsensitive`; the game's own writer emits `Vsync` while the reader literal at `00d15ef4` is `VSync`, so a file the game wrote round-trips only because the comparison folds case. The reconstruction compared with `==` until the executable milestone exposed it; `src/app_bootstrap.cpp` now folds case. The supported-resolution table and shader-model ceiling come from the renderer vector that phase 4 fills.

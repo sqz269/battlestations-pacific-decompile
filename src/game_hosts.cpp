@@ -11,6 +11,7 @@
 
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/d3d9_startup.hpp"
+#include "bsp/game_hosts_vfs.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -183,6 +184,18 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             log_path = argv[++index];
+        } else if (std::strcmp(argument, "--game-root") == 0) {
+            if (index + 1 >= argc) {
+                error = "--game-root needs a directory";
+                return false;
+            }
+            game_root = argv[++index];
+        } else if (std::strcmp(argument, "--vfs-probe") == 0) {
+            if (index + 1 >= argc) {
+                error = "--vfs-probe needs a virtual path";
+                return false;
+            }
+            vfs_probes.emplace_back(argv[++index]);
         } else {
             error = std::string("unknown option ") + argument;
             return false;
@@ -457,6 +470,7 @@ GameStartupHost::~GameStartupHost() {
     delete frame_host_;
     delete device_;
     delete window_host_;
+    delete vfs_;
     delete random_threads_;
 }
 
@@ -643,16 +657,38 @@ void GameStartupHost::run_initialize_phases() {
     install_object_handle_resolvers_006ad0d0(resolvers, nullptr, nullptr, nullptr);
     log_.implemented("Phase 0 install_object_handle_resolvers", "006ad0d0");
 
-    // Phase 1, command line switches (0073d4ce-0073d610).
+    // Phase 2, VFS, mounts and packages (0073d604-0073d899). The hardware probe at 0073d610
+    // is inside this gate, not before it; milestone 1 recorded it one phase early.
+    vfs_ = new GameVfsHost(log_, false);
+    VfsStartupState vfs_state;
+    run_vfs_startup_phase2(vfs_state, *vfs_);
+
+    // The command line is parsed at 0073d94a, after the whole phase-2 block, which is why
+    // cachedload cannot have influenced any phase-2 mount. Milestone 1 parsed it before
+    // phase 2; the native position is used here.
     const CommandLineOptions command_line =
         parse_command_line_0073ce20(GetCommandLineA() != nullptr ? GetCommandLineA() : "");
     log_.implemented("Phase 1 parse_command_line", "0073ce20");
-    log_.notef("command line cached_load=%d", command_line.cached_load ? 1 : 0);
-    log_.unimplemented("Phase 1 probe_hardware", "0073c3b0");
+    log_.notef("command line cached_load=%d fixed_frame_rate=%d file_access_log=%d",
+        command_line.cached_load ? 1 : 0, command_line.fixed_frame_rate ? 1 : 0,
+        command_line.file_access_log ? 1 : 0);
 
-    // Phase 2, VFS, mounts and packages (0073d637-0073d894).
-    log_.unimplemented("Phase 2 vfs_provider_manager", "00beda60");
-    log_.unimplemented("Phase 2 mount_packages", "0073cb10");
+    // Factory tail 0073d94f-0073d98d, then phase 6 parsers 0073db41-0073db69.
+    run_vfs_startup_factory_tail(vfs_state, *vfs_, command_line.cached_load);
+    run_vfs_startup_phase6(vfs_state, *vfs_);
+
+    summary_.vfs_ready = vfs_->ready();
+    summary_.mounts_requested = vfs_->mounts().size();
+    summary_.mounts_created = 0;
+    for (const GameMountRecord& mount : vfs_->mounts()) {
+        if (std::strcmp(mount.status, "created") == 0) ++summary_.mounts_created;
+    }
+    summary_.package_entries = vfs_->package_entries_enumerated();
+    summary_.package_mounts = vfs_->package_entries_mounted();
+    summary_.cached_load = vfs_->cached_load();
+    log_.notef("vfs mounts requested=%zu created=%zu package entries=%zu mounted=%zu",
+        summary_.mounts_requested, summary_.mounts_created, summary_.package_entries,
+        summary_.package_mounts);
 
     // Phase 3, platform, window and save storage (0073d8c0-0073d988).
     construct_win32_platform_00becda0(platform_, nullptr);
@@ -667,23 +703,77 @@ void GameStartupHost::run_initialize_phases() {
         log_.note("save storage initialization failed");
     }
 
-    // The settings block at 00f88980 is filled by 008d8190 in phase 5, which needs the
-    // registry reader; the milestone uses the documented fallback resolution instead.
+    // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before
+    // window creation at 0073dc0f, which is the ordering constraint the whole phase exists
+    // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.
+    GameSettingsBinding settings_host(log_);
+    settings_ = load_game_settings_008d8190(settings_host);
+    log_.implemented("Phase 5 load_game_settings", "008d8190");
+    summary_.options_file_present = settings_host.options_file_present();
+    summary_.options_path = settings_host.options_path();
+    log_.notef("options file %s %s", settings_host.options_path().c_str(),
+        summary_.options_file_present ? "loaded" : "absent, using detected defaults");
+    for (const std::string& recased : settings_host.recased_tokens()) {
+        log_.notef("options token recased %s", recased.c_str());
+    }
+    for (const std::string& unknown : settings_.unknown_tokens) {
+        log_.notef("Options: unknown token %s", unknown.c_str());
+    }
+    summary_.language = settings_.language;
+    summary_.settings_width = settings_.width_14;
+    summary_.settings_height = settings_.height_18;
+    summary_.settings_fullscreen = settings_.fullscreen_1e;
+    summary_.settings_vsync = settings_.vsync_60;
+    summary_.settings_antialias = settings_.antialias_58;
+    log_.notef("settings resolution=%dx%d index=%d fullscreen=%d vsync=%d antialias=%d "
+        "shader_model=%d language=%s", settings_.width_14, settings_.height_18,
+        settings_.resolution_index_78, settings_.fullscreen_1e ? 1 : 0,
+        settings_.vsync_60 ? 1 : 0, settings_.antialias_58, settings_.shader_model_88,
+        settings_.language.empty() ? "(none)" : settings_.language.c_str());
+
+    // The three VFS reads the later milestones depend on: a GUI script, the locale table the
+    // settings language selects, and one texture.
+    if (vfs_ != nullptr && vfs_->ready()) {
+        std::vector<std::string> probes{"interface/_common.lua"};
+        probes.push_back("lockit/"
+            + (settings_.language.empty() ? std::string("english") : settings_.language)
+            + ".lng");
+        probes.push_back("effects/a_fiji_terr_atl.dds");
+        for (const std::string& extra : options_.vfs_probes) probes.push_back(extra);
+        for (const std::string& path : probes) {
+            if (vfs_->probe(path).opened) ++summary_.probes_resolved;
+            ++summary_.probes_requested;
+        }
+    }
+
+    // Arguments 3, 4, 7, 8 and 9 of 00becee0, read from the settings block. Argument 4 is the
+    // VSync setting and argument 9 the antialias sample count; see the two corrections at the
+    // end of docs/APP_INIT_PLATFORM.md. Arguments 5 and 6 have no writer in the image, so the
+    // window is always created at 0,0.
     PlatformWindowRequest request{};
     window_class_name_ = kWindowName;
     request.name = window_class_name_.c_str();
-    request.fullscreen = false;
-    request.color_depth_selector = false;
+    request.fullscreen = settings_.fullscreen_1e;
+    request.color_depth_selector = settings_.vsync_60;
     request.x = 0;
     request.y = 0;
-    request.width = kFallbackResolution.width;
-    request.height = kFallbackResolution.height;
-    request.renderer_option = 0;
+    request.width = settings_.width_14;
+    request.height = settings_.height_18;
+    request.renderer_option = static_cast<std::uint32_t>(settings_.antialias_58);
     request.application = this;
     request.instance = instance_;
     request.procedure = &game_window_procedure;
-    log_.unimplemented("Phase 5 load_game_settings", "008d8190");
-    log_.notef("using fallback resolution %dx%d windowed", request.width, request.height);
+    if (request.width <= 0 || request.height <= 0) {
+        // 008d841f's literal pair, the fallback the loader itself uses when a parsed
+        // resolution is not in the supported table.
+        request.width = kFallbackResolution.width;
+        request.height = kFallbackResolution.height;
+        log_.notef("settings gave no usable resolution; using the 008d841f fallback %dx%d",
+            request.width, request.height);
+    }
+    log_.notef("window request %dx%d fullscreen=%d vsync=%d antialias=%u", request.width,
+        request.height, request.fullscreen ? 1 : 0, request.color_depth_selector ? 1 : 0,
+        request.renderer_option);
 
     window_host_ = new GameWindowHost(log_, instance_);
     summary_.window_created = configure_platform_window_00becee0(*window_host_, request,
@@ -693,6 +783,15 @@ void GameStartupHost::run_initialize_phases() {
         log_.notef("window created %dx%d at %d,%d color_depth=%d",
             platform_.present_width, platform_.present_height, platform_.x, platform_.y,
             platform_.color_depth);
+        // 00bed1b8 builds the renderer init request from the same settings. Both VSync and
+        // the antialias sample count reach it, but d3d9_create_device_prefix_00b2aeb0 models
+        // neither PresentationInterval nor MultiSampleType, so the device below is created
+        // with the recovered constants and these two values stop here.
+        log_.notef("renderer init request %dx%d fullscreen=%d vsync=%d antialias=%u "
+            "(vsync and antialias are not consumed by the device prefix)",
+            renderer_request_.width, renderer_request_.height,
+            renderer_request_.fullscreen ? 1 : 0,
+            renderer_request_.color_depth_selector ? 1 : 0, renderer_request_.option);
     } else {
         log_.note("window creation failed");
     }

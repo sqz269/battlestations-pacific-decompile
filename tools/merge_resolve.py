@@ -6,6 +6,7 @@ spot relative to the merge base (independent test cases added before the same cl
 Usage as CLI: python tools/merge_resolve.py <worktree>  -> resolves and stages what it can, reports the rest.
 """
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -53,6 +54,25 @@ def resolve(worktree, path):
         for l in ours.splitlines() + theirs.splitlines():
             if l.startswith('cmake_language(') and l not in regs:
                 regs.append(l)
+        # a target defined on both sides (add_executable/add_library with the same name) keeps the
+        # incoming definition only: two definitions make CMake refuse the configure
+        target_re = re.compile(r'CALL add_(?:executable|library) (\S+)')
+        base_def = {}
+        for l in base.splitlines():
+            m = target_re.search(l)
+            if m:
+                base_def[m.group(1)] = l
+        candidates = {}
+        for l in regs:
+            m = target_re.search(l)
+            if m:
+                candidates.setdefault(m.group(1), []).append(l)
+        keep = {}
+        for target, lines_for in candidates.items():
+            # the side that changed the definition wins; if both changed, the incoming side does
+            changed = [l for l in lines_for if l != base_def.get(target)]
+            keep[target] = (changed or lines_for)[-1]
+        regs = [l for l in regs if not target_re.search(l) or keep[target_re.search(l).group(1)] == l]
         (worktree / path).write_text('\n'.join(header + sorted(regs)) + '\n', encoding='utf-8', newline='\n')
         return 'registry union'
     if path.startswith('config/names/') and path.endswith('.jsonl'):

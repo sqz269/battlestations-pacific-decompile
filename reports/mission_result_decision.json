@@ -1,0 +1,218 @@
+{
+  "packet": "mission_result_decision",
+  "doc": "docs/MISSION_RESULT_DECISION.md",
+  "owner": "agent/cc-mission-result",
+  "summary": "Nothing in the image decides a mission win or loss. The native side offers the mission script four write paths (objective state, the per-slot scoring record, the end-of-mission movie object at game+7188h, and the state request queue) and one poll, 004d7ea0, that turns the last of those into state request 0Fh. The five addresses docs/MISSION_EVENTS_UPDATE.md proposed as mission_failure_decision are unit-subsystem damage simulation (0093bed0, 0093c300, 0095abe0) and unit-death reporting (007f3b10, 00959450); none of them reads or writes an objective, the scoring record, game+7188h or the request queue.",
+  "leaving_state_0d": {
+    "request": "0Fh",
+    "producer": "004d7ea0 BSP_Game_CheckMissionCompletion, the only site that enqueues it",
+    "chain": ["004d7ea0 enqueues 0Fh and sets game+5ECh", "004e4430 dispatches 0Fh to 004d7970(0)", "004d7970 commits the record and enqueues 10h when game+5D4h is 0Dh or 0Fh", "the teardown arm 004e458a leaves 0Dh for state 11h and enqueues 04h", "04h runs 004e4000 BSP_Game_EnterFrontEndShell"]
+  },
+  "objective_model": {
+    "record_size": "0x2C",
+    "constructor": "008dd5c0",
+    "constructor_convention": "__thiscall(Objective*, const NativeString* id, const NativeString* text, int kind, char flag), RET 10h at 008dd69d",
+    "layout": [
+      {"offset": "+00h", "field": "vtable 00D16038", "evidence": "MOV dword ptr [ESI],0xd16038 at 008dd5e1"},
+      {"offset": "+04h", "field": "id length", "evidence": "0041dd40 at 008dd62a"},
+      {"offset": "+08h", "field": "id pointer", "evidence": "_memcpy destination [EDI+4] at 008dd63a"},
+      {"offset": "+0Ch", "field": "text length", "evidence": "0041dd40 at 008dd657"},
+      {"offset": "+10h", "field": "text pointer", "evidence": "_memcpy destination [EBX+4] at 008dd666"},
+      {"offset": "+14h", "field": "byte flag, fifth ctor argument", "evidence": "MOV byte ptr [ESI+0x14],AL at 008dd680"},
+      {"offset": "+18h", "field": "int kind: 0 primary, 1 secondary, 2 hidden", "evidence": "MOV [ESI+0x18],EDX at 008dd684; 008dfe63 skips 2; 008e1d30 announces 0 and 1; mission_progress.hpp objectives_204 persists six trees"},
+      {"offset": "+1Ch", "field": "int state: 0 active, 1 completed, 2 failed", "evidence": "initialised 0 at 008dd687; 1 stored at 008e2181; 2 stored by 008e2200"},
+      {"offset": "+20h..+28h", "field": "unit list, head at +24h built by 008db4f0, size at +28h", "evidence": "008dd5fc..008dd60e; walked by 008dfe50"}
+    ],
+    "objective_set": {
+      "slot_field": "+14h, the local player slot 0..7",
+      "list_field": "+28h, MSVC std::list<Objective*> (node +0h next, +8h value)",
+      "array": "eight sets at game+21A4h + 4*slot, loop bound iVar11 < 0x21c4 in 008cd440",
+      "slot_mask": "008cd440 compares each Lua integer against [game+18CCh + 4*i] + 28h, the party id of local player slot i"
+    },
+    "key_comparison": "lengths first (008e2118), then both-empty / one-empty (008e212e..008e2137), then __stricmp (008e2141)",
+    "announcement": {
+      "routine": "008e1d30",
+      "call_site": "008e2160..008e216f: PUSH Y / PUSH 1 / PUSH X / PUSH objective / MOV ECX,set / CALL",
+      "gate": "0 <= game+18ECh < 8, set+14h == game+18ECh, objective+18h in {0,1}, the silent byte clear",
+      "sound": "2 - (completed != 0): 1 for completed, 2 for failed, passed to 00432650 and 008dd460"
+    },
+    "replication": "game+1FE4h == 1 and [game+18CCh + 4*set+14h]+50h non-null; 008dda20 (completed) / 008ddb00 (failed) then BSP_Session_SendMessageToNonlocalPeer",
+    "briefing_source": "0058f5b0 builds _pri_objective_Group / _sec_objective_Group from the 154h side block of the 434h mission-tree record (0051cc90(index*0x154 + 0xBC + base)), not from the runtime set; GUI_pause_objectives (HUD slot 3Ch, 00602280) is the in-mission reader"
+  },
+  "win_path": {
+    "lua_binding": {
+      "address": "008b8ad0",
+      "lua_name": "Scoring_SetMissionCompleted",
+      "registration": "00e0c380 = {00d0f52c name, 008b8ad0 function}; the body also carries the literal 'luaMW_Scoring_SetMissionCompleted failed:'",
+      "argument_resolution": "008b8bad..008b8c42: default slot game+18ECh; in mode != 0 the first Lua argument is read as the slot and the boolean shifts to position 1; completed defaults to true"
+    },
+    "completion_write": {
+      "address": "00906460",
+      "convention": "__thiscall(ScoringManager*, int slot, byte completed), RET 8 at 009064c0",
+      "record": "this + 4 + slot*0x284 (IMUL at 00906464, LEA at 0090646f)",
+      "writes": ["record+0h = zero-extended completed byte (MOVZX at 0090648a)", "record+10h = 00f876a4 only on the 0 -> set edge (MOVSS at 00906485)"],
+      "tail": "walks [[game+19CCh]+28h] (next +4h, value +8h) and calls 00927f60 on every value whose +180h dword is <= 7 (CMP ..,0x7 / JA at 009064aa)"
+    },
+    "scoring_manager": {
+      "base": "[game+21A0h]",
+      "records": "eight, at +4h, stride 0x284",
+      "commit_slot_field": "+1424h = 4 + 8*0x284, read by 004d7970 at 004d79d3",
+      "resolves": "docs/GAME_WORLD_ENTITIES.md's open question: its '0x284-stride records at this+0x1E4' are the same eight records read at field +1E0h, not a second array overflowing the 0x14B8 allocation",
+      "field_map": [
+        {"offset": "+00h", "writer": "00906460", "cpp": "MissionScoreRecord::mission_completed_00"},
+        {"offset": "+04h", "writer": "00905350 Scoring_SetRanking, [EAX+ECX+8], RET 8", "cpp": "ranking_04"},
+        {"offset": "+10h", "writer": "00906460", "cpp": "completion_time_10"},
+        {"offset": "+18h", "writer": "00910480 Scoring_AddMissionScore, LEA ECX,[EDX+ECX+0x1c], RET 0Ch", "cpp": "score_maps[Mission]"},
+        {"offset": "+54h", "writer": "0090f0e0 Scoring_SetMissionMedal, LEA ECX,[EDX+ECX+0x58], RET 0Ch", "cpp": "score_maps[MissionMedals]"},
+        {"offset": "+1E0h", "reader": "009205e0", "cpp": "totals_1c8[6], the total score"}
+      ]
+    },
+    "end_movie": {
+      "address": "004cd390",
+      "convention": "__thiscall(GGame*, const NativeString* name, char goToDebrief), RET 8 at 004cd43e",
+      "object": "operator new(0x24) at game+7188h; +14h/+18h the name string, +8h the float at 00ce77e4, +21h goToDebrief",
+      "callers": ["0089a390 prefixes 'movies/'", "0089a480, registered at 00e0ba60 as {00d10b84 'PlayBinkMovie', 0089a480}"],
+      "note": "PlayBinkMovie(name, false) plays a movie and the mission continues; PlayBinkMovie(name, true) ends it. The native side never distinguishes victory from defeat here."
+    },
+    "poll": {
+      "address": "004d7ea0",
+      "name": "BSP_Game_CheckMissionCompletion (already recorded by game_frame_control)",
+      "guards": "game+5E8h == 0 and game+7188h non-null",
+      "body": "three zero-delta ticks of [game+19CCh] vtable +Ch around two BSP_EntityWorld_FlushActivations, 004c3cb0, BSP_MoviePlayer_Play(result+14h, 0, result+8h, 0), then request 0Fh with game+5ECh = 1 when result+21h is set, then release game+7188h"
+    },
+    "end_scene": {
+      "address": "004d7970",
+      "name": "GGame::EndScene, from the profiler literal at 004d7986",
+      "convention": "__thiscall(GGame*, char aborted), RET 4 at 004d7b03",
+      "normal_end": "004d79cc..004d79eb: ECX = [game+6B4h] (MissionProgress), PUSH record ([game+21A0h]+4+[+1424h]*0x284), PUSH game+2198h (the mission key), CALL 009205e0; then 004bcaa0(0) when game+1FE4h != 0 and game+218Ch == 0 and game+624h == 0",
+      "abort": "007fa1b0(0, BSP_StorageOperation_EmptyContinuation) on game+650h and, in single player, 00916980 on game+21A0h (BSP_MissionPlayerRecords_Reset) - the records are discarded, not committed",
+      "tail": "when game+5D4h is 0Dh or 0Fh: broadcast in mode 1 (returns), session message 13h to the first secondary peer in mode 2, then BSP_Game_EnqueueStateRequest(10h)"
+    },
+    "commit": {
+      "address": "009205e0",
+      "convention": "__thiscall(MissionProgress*, const NativeString* missionKey, const MissionScoreRecord*), RET 8 at 00920685",
+      "body": "mission_record_00594a70(this, key) then 0091a080 copies the record in, +284h play counter incremented; single player keeps max(single_best_scores_0c[key], record+1E0h), multiplayer adds it into multi_scores_18[key] when 00f8a2fc vtable+198h and [00f8a2fc]+4Dh both hold",
+      "reuse": "MissionProgress, MissionScoreRecord and mission_record_00594a70 already exist in include/bsp/mission_progress.hpp and are not re-declared"
+    }
+  },
+  "loss_path": {
+    "verdict": "No native mission-failure or defeat decision exists. The five proposed addresses report unit events into the warning event director; a mission script subscribes and decides.",
+    "addresses": [
+      {"address": "0093bed0", "convention": "__thiscall(this, param, float delta), RET 8 at 0093c118", "role": "per-frame component failure hazard roll: p = (component+28h * delta) / component+2Ch, or the globals at [00424c40()+3DCh]/[+3E0h] when either float is negative; draw 00bd2f10(0, 1.0f) fires on draw <= p; gated on game+1FE4h in {0,1} and param+34h != -1; fires BSP_WarningManager_FireFailure 00982c50"},
+      {"address": "0093c300", "convention": "__fastcall(this), RET at 0093c51e", "role": "uniformly random enabled row of the 14h-stride failure descriptor vector at [00424c40()+3E8h..+3ECh], same failure channel"},
+      {"address": "0095abe0", "convention": "__thiscall(Unit*, Message*), RET 4 at 0095ae1f", "role": "unit message handler, switch on message+10h (cases 4Bh, 4Ch, 79h, 7Dh); the InferiorFailure literal belongs to one arm"},
+      {"address": "007f3b10", "convention": "__fastcall(Aircraft*), RET at 007f3b98", "role": "aircraft destruction: reports the kill through 009813a0 when unit+70h == 1, [game+19CCh]+4ACh is set and the controller at unit+35Ch answers false to virtual +18h(17h) or unit+36Ah is clear"},
+      {"address": "00959450", "convention": "__fastcall(Unit*), RET at 00959608", "role": "unit destruction: the kill report plus the player's limbo screen"}
+    ],
+    "unit_death_00959450": {
+      "grace": "00959460 MOVSS clock 00f876a4; 00959468 COMISS against 1.0f at 00d7a24c; 0095946f JBE skips, so the clock must be strictly greater than 1.0f",
+      "report_gate": "unit+70h == 1 and [game+19CCh]+4ACh set",
+      "report": "009813a0 (the kill / globals.warn_uslost channel), or 0091bda0 when the owner at unit+538h answers virtual +18h(17h) or +18h(6) and the byte at unit+C41h or unit+100Ah is set",
+      "player_arm": "only when the unit is 004b4b00(); with the world gate set and [00e198c4]+20h not in {29h, 2Bh, 2Ch, 2Dh}: 00565fb0(unit+70h), then BSP_FrontEndManager_PushInterfaceRequest(0x34, 0) when 0068a120() is false and the front end is idle ([+4h]==[+20h] && [+1Ch]==[+38h]); otherwise the front end's virtual +10h, or the byte [00e198c4]+FDh when 0068a120() is true",
+      "interface_34": "raises HUD slot 32h, GUI_limbo (docs/HUD_SCREEN_PAGES.md) - the respawn screen, not a defeat screen",
+      "tail": "when virtual +5Ch(0Fh) is false or [unit+9D4h]+3CCh < 2, BSP_Game_SetControlledUnit()"
+    }
+  },
+  "conventions": [
+    {"address": "008b8ad0", "convention": "__fastcall(LuaState*) -> int", "ret": "RET", "ret_site": "008b8c9f"},
+    {"address": "00906460", "convention": "__thiscall(ScoringManager*, int, byte)", "ret": "RET 8", "ret_site": "009064c0"},
+    {"address": "00927f60", "convention": "__fastcall(Entity*)", "ret": "RET", "ret_site": "0092802a"},
+    {"address": "004cd390", "convention": "__thiscall(GGame*, const NativeString*, char)", "ret": "RET 8", "ret_site": "004cd43e"},
+    {"address": "0089a390", "convention": "__fastcall(GGame*, ...)", "ret": "RET", "ret_site": "0089a47c"},
+    {"address": "0089a480", "convention": "__fastcall(LuaState*) -> int", "ret": "RET", "ret_site": "0089a658"},
+    {"address": "004d7ea0", "convention": "__thiscall(GGame*)", "ret": "RET", "ret_site": "existing record"},
+    {"address": "004d7970", "convention": "__thiscall(GGame*, char)", "ret": "RET 4", "ret_site": "004d7b03"},
+    {"address": "009205e0", "convention": "__thiscall(MissionProgress*, const NativeString*, const record*)", "ret": "RET 8", "ret_site": "00920685"},
+    {"address": "008cd440", "convention": "__fastcall(LuaState*) -> int", "ret": "RET", "ret_site": "008cdd59"},
+    {"address": "008bd340", "convention": "__fastcall(LuaState*) -> int", "ret": "RET", "ret_site": "008bd8fe"},
+    {"address": "008bd900", "convention": "__fastcall(LuaState*) -> int", "ret": "RET", "ret_site": "008bdebe"},
+    {"address": "008e1f80", "convention": "__thiscall(ObjectiveSet*, 4 stack args)", "ret": "RET 10h", "ret_site": "008e20c4"},
+    {"address": "008dd5c0", "convention": "__thiscall(Objective*, id, text, int, char)", "ret": "RET 10h", "ret_site": "008dd69d"},
+    {"address": "008e20d0", "convention": "__thiscall(ObjectiveSet*, const NativeString*, X, Y)", "ret": "RET 0Ch", "ret_site": "008e21fa"},
+    {"address": "008e2200", "convention": "__thiscall(ObjectiveSet*, const NativeString*, X, Y)", "ret": "RET 0Ch", "ret_site": "008e232a"},
+    {"address": "008e1d30", "convention": "__thiscall(ObjectiveSet*, Objective*, X, int completed, char silent)", "ret": "RET 10h", "ret_site": "008e1e53"},
+    {"address": "008dfe50", "convention": "__stdcall(Objective*)", "ret": "RET 4", "ret_site": "008e005c"},
+    {"address": "00905350", "convention": "__thiscall(ScoringManager*, int slot, int)", "ret": "RET 8", "ret_site": "00905362"},
+    {"address": "0090f0e0", "convention": "__thiscall(ScoringManager*, int slot, key, byte)", "ret": "RET 0Ch", "ret_site": "0090f0ff"},
+    {"address": "00910480", "convention": "__thiscall(ScoringManager*, int slot, key, int)", "ret": "RET 0Ch", "ret_site": "009104ff"},
+    {"address": "00959450", "convention": "__fastcall(Unit*)", "ret": "RET", "ret_site": "00959608"},
+    {"address": "007f3b10", "convention": "__fastcall(Aircraft*)", "ret": "RET", "ret_site": "007f3b98"},
+    {"address": "0093bed0", "convention": "__thiscall(this, param, float)", "ret": "RET 8", "ret_site": "0093c118"},
+    {"address": "0093c300", "convention": "__fastcall(this)", "ret": "RET", "ret_site": "0093c51e"},
+    {"address": "0095abe0", "convention": "__thiscall(Unit*, Message*) -> int", "ret": "RET 4", "ret_site": "0095ae1f"}
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps_reported_not_repaired": [
+    {"function": "004cd390", "after": "CALL 0x00bf65ac at 004cd3d2", "gap": "004cd3d7..004cd3e4", "bytes": 13, "effect": "00bf65ac is annotated no-return, so the decompiler ends the free branch with a return and shows 004cd390 as free-or-create. The listing has no RET there: the branch falls through into PUSH 0x24 / operator new at 004cd3e4, so the behaviour is free-then-create."},
+    {"function": "008cd440", "after": "CALL 0x00bf65ac at 008cdcb8", "gap": "008cdcbd..008cdcc0", "bytes": 3, "effect": "same no-return annotation; a second 3-byte gap after a JMP at 008cd67b is not after a CALL and was left alone"}
+  ],
+  "callers": {
+    "004d7ea0": ["004e4a40 BSP_Game_OnMove"],
+    "004d7970": ["004e4430 (request 0Fh)", "004d87b0", "004db190", "006890b0", "00772990", "0088b1b0", "0089a390", "008b01b0", "008b0470"],
+    "004cd390": ["0089a390"],
+    "0089a390": ["0089a480"],
+    "00906460": ["008b8ad0"],
+    "009205e0": ["004d7970"],
+    "00959450": ["0074db70", "00824b60"],
+    "0095abe0": ["00744be0", "007ccfa0", "00821e80"],
+    "0093bed0": [],
+    "0093c300": [],
+    "007f3b10": []
+  },
+  "uncertainties": [
+    "00927f60's role. It stamps the clock into entity+1D0h and propagates it to at most five formation members through [entity+9D4h]+3D0h; 'AI re-target kick' reads the shape, it is not established behaviour.",
+    "The two trailing arguments of 008e20d0 / 008e2200 pass through 008e1d30 and the replication message builders unread by anything decoded here.",
+    "008cd440's Lua argument order. It reads an integer, an optional integer, three strings and an optional boolean, but passes two strings, an int and a byte to the constructor; the third string goes to 008dbf40. The header models the record, not the call.",
+    "[game+19CCh]+4ACh, the gate both kill reporters share, has no identified writer (docs/UNIT_INSTANCE_UPDATE.md also leaves it open).",
+    "004cd390's +8h float from 00ce77e4 is called a score by game_frame_control.hpp; the constant was not read and the name is inherited, not established.",
+    "0093bed0's component floats at +28h/+2Ch are called a rate and a period on the strength of the division; the descriptor was not decoded."
+  ],
+  "remaining": [
+    "The mission scripts themselves: the win and loss rules live in the installed Scripts/missions/*.lua, which this packet does not read. Every native hook they use is identified.",
+    "00920a20, the debrief bring-up 004d7970 runs before the commit, and the GUI_scoring page (HUD slot 5Eh, 0060D740).",
+    "0091a080, the 284h record copy, and whether it is a memcpy or a member-wise copy.",
+    "008e1b90 and 008dd460, the objective announcement and its sound.",
+    "The remaining Scoring_* bindings that write the rest of the record."
+  ],
+  "follow_up_packets": [
+    {"packet": "mission_debrief_bringup", "addresses": ["00920a20", "0060d740", "0060f210", "0091a080"], "files": ["docs/MISSION_DEBRIEF_BRINGUP.md", "include/bsp/mission_debrief.hpp"], "contract": "The debrief 004d7970 raises before the commit, the GUI_scoring page that renders the 284h record, and the record copy"},
+    {"packet": "scoring_binding_table", "addresses": ["008b8640", "008b9190", "008b95c0", "008b9a30", "008ba0f0", "008ba7b0", "009103f0", "00910480"], "files": ["docs/SCORING_BINDING_TABLE.md", "include/bsp/scoring_bindings.hpp"], "contract": "The 30 Scoring_* bindings and the record offset each writes, completing MissionScoreRecord's runtime side"},
+    {"packet": "objective_unit_list", "addresses": ["008cdd60", "008ce510", "008dfe50", "006de4c0", "00647c20"], "files": ["docs/OBJECTIVE_UNIT_LIST.md", "include/bsp/objective_units.hpp"], "contract": "The objective+20h unit list, Objectives_AddUnit/RemoveUnit, and the SzurkeNyil HUD marker refresh"},
+    {"packet": "unit_failure_simulation", "addresses": ["0093bed0", "0093c300", "00424c40", "008782a0", "00913d80"], "files": ["docs/UNIT_FAILURE_SIMULATION.md", "include/bsp/unit_failures.hpp"], "contract": "The 14h-stride failure descriptor table, the per-frame hazard roll and the failure warning it fires"}
+  ],
+  "state_per_address": [
+    {"address": "008b8ad0", "name": "BSP_LuaScoring_SetMissionCompleted", "state": ["exported", "analyzed"]},
+    {"address": "00906460", "name": "BSP_MissionScoring_SetSlotCompleted", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "00927f60", "name": "BSP_MissionScoring_NotifyEntity", "state": ["exported", "analyzed"]},
+    {"address": "004cd390", "name": "BSP_Game_SetEndOfMissionMovie", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "0089a390", "name": "BSP_Game_PlayNamedMovie", "state": ["exported", "analyzed"]},
+    {"address": "0089a480", "name": "BSP_LuaGame_PlayBinkMovie", "state": ["exported", "analyzed"]},
+    {"address": "004d7ea0", "name": "BSP_Game_CheckMissionCompletion", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "004d7970", "name": "BSP_Game_EndScene", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "009205e0", "name": "BSP_MissionProgress_CommitMissionRecord", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "008cd440", "name": "BSP_LuaObjectives_Add", "state": ["exported", "analyzed"]},
+    {"address": "008bd340", "name": "BSP_LuaObjectives_Completed", "state": ["exported", "analyzed"]},
+    {"address": "008bd900", "name": "BSP_LuaObjectives_Failed", "state": ["exported", "analyzed"]},
+    {"address": "008e1f80", "name": "BSP_ObjectiveSet_Add", "state": ["exported", "analyzed"]},
+    {"address": "008dd5c0", "name": "BSP_Objective_Construct", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "008e20d0", "name": "BSP_ObjectiveSet_SetCompleted", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "008e2200", "name": "BSP_ObjectiveSet_SetFailed", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "008e1d30", "name": "BSP_ObjectiveSet_AnnounceStateChange", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "008dfe50", "name": "BSP_Objective_RefreshUnitMarkers", "state": ["exported", "analyzed"]},
+    {"address": "00905350", "name": "BSP_MissionScoring_SetSlotRanking", "state": ["exported", "analyzed"]},
+    {"address": "0090f0e0", "name": "BSP_MissionScoring_SetSlotMissionMedal", "state": ["exported", "analyzed"]},
+    {"address": "00910480", "name": "BSP_MissionScoring_AddSlotMissionScore", "state": ["exported", "analyzed"]},
+    {"address": "00959450", "name": "BSP_Unit_OnDestroyed", "state": ["exported", "analyzed", "reconstructed", "build-tested"]},
+    {"address": "007f3b10", "name": "BSP_Aircraft_OnDestroyed", "state": ["exported", "analyzed"]},
+    {"address": "0093bed0", "name": "BSP_ShipSystems_RollComponentFailure", "state": ["exported", "analyzed"]},
+    {"address": "0093c300", "name": "BSP_ShipSystems_PickRandomFailure", "state": ["exported", "analyzed"]},
+    {"address": "0095abe0", "name": "BSP_Unit_HandleMessage", "state": ["exported", "analyzed"]}
+  ],
+  "files": {
+    "doc": "docs/MISSION_RESULT_DECISION.md",
+    "header": "include/bsp/mission_result.hpp",
+    "source": "src/mission_result.cpp",
+    "cmake": "cmake/startup.cmake",
+    "test": "tests/math_tests.cpp (one case: the 1.0f unit-death grace boundary and the completion-timestamp edge)"
+  }
+}

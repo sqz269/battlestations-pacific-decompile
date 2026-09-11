@@ -1,0 +1,60 @@
+[
+  {
+    "address": "00b47640",
+    "before": {
+      "address": "00b47640",
+      "function_name": "BSP_HardwareLayoutRecord_Initialize"
+    },
+    "after": {
+      "address": "00b47640",
+      "old_name": "BSP_HardwareLayoutRecord_Initialize",
+      "name": "BSP_HardwareLayoutRecord_Initialize",
+      "evidence": "Actual native 44h owner / 0Ch records. Ordered base/record initialization, preserve COM/token; append count publication before target read, pointer publication before retain/current-profile release, temporary unwind cleanup without catch maps; current signed stride count and DWORD wrap.  Original ABI: ECX actual 0Ch record; EAX same address; RET. Complete src/native_hardware_layout_fields.cpp; reports/native_hardware_layout_fields_audit.json. 23 live/PE spans 1147 bytes (383 owned), 31 declared patches/postimages, four actual primary-library providers; seven comparisons 6540 DWORDs, native FH3 search1/unwind1, both second-failure children exit91 with identical terminal state. Fixed record constructor cannot throw on valid storage: constructor failure maps audited only. Existing shared_ptr interface preserved separately. Strict Win32 and two existing CTests passed; no native ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48c00",
+    "before": {
+      "address": "00b48c00",
+      "function_name": "CG_array_ctor_helper_00b48c00"
+    },
+    "after": {
+      "address": "00b48c00",
+      "old_name": "CG_array_ctor_helper_00b48c00",
+      "name": "BSP_HardwareLayout_InitializeBase",
+      "evidence": "Actual native 44h owner / 0Ch records. Ordered base/record initialization, preserve COM/token; append count publication before target read, pointer publication before retain/current-profile release, temporary unwind cleanup without catch maps; current signed stride count and DWORD wrap.  Original ABI: ECX actual 44h owner; EAX same address; RET. Complete src/native_hardware_layout_fields.cpp; reports/native_hardware_layout_fields_audit.json. 23 live/PE spans 1147 bytes (383 owned), 31 declared patches/postimages, four actual primary-library providers; seven comparisons 6540 DWORDs, native FH3 search1/unwind1, both second-failure children exit91 with identical terminal state. Fixed record constructor cannot throw on valid storage: constructor failure maps audited only. Existing shared_ptr interface preserved separately. Strict Win32 and two existing CTests passed; no native ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48a00",
+    "before": {
+      "address": "00b48a00",
+      "function_name": "BSP_VertexLayout_AppendStream",
+      "comment": "[BSP reconstruction 00b48a00]\nAdds retained declaration to next12-byte stream record at+8h, increments count+38h, writes record frequency1 and extra0. New interface uses shared ownership and bounds to four streams."
+    },
+    "after": {
+      "address": "00b48a00",
+      "old_name": "BSP_VertexLayout_AppendStream",
+      "name": "BSP_VertexLayout_AppendStream",
+      "evidence": "Actual native 44h owner / 0Ch records. Ordered base/record initialization, preserve COM/token; append count publication before target read, pointer publication before retain/current-profile release, temporary unwind cleanup without catch maps; current signed stride count and DWORD wrap.  Original ABI: ECX actual owner; stack actual declaration; RET4; EAX unspecified. Complete src/native_hardware_layout_fields.cpp; reports/native_hardware_layout_fields_audit.json. 23 live/PE spans 1147 bytes (383 owned), 31 declared patches/postimages, four actual primary-library providers; seven comparisons 6540 DWORDs, native FH3 search1/unwind1, both second-failure children exit91 with identical terminal state. Fixed record constructor cannot throw on valid storage: constructor failure maps audited only. Existing shared_ptr interface preserved separately. Strict Win32 and two existing CTests passed; no native ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b47d60",
+    "before": {
+      "address": "00b47d60",
+      "function_name": "BSP_VertexLayout_RecomputeStride",
+      "comment": "[BSP reconstruction 00b47d60]\nClears layout+3ch and sums declaration+cch for stream records at+8h spaced12 bytes, count+38h."
+    },
+    "after": {
+      "address": "00b47d60",
+      "old_name": "BSP_VertexLayout_RecomputeStride",
+      "name": "BSP_VertexLayout_RecomputeStride",
+      "evidence": "Actual native 44h owner / 0Ch records. Ordered base/record initialization, preserve COM/token; append count publication before target read, pointer publication before retain/current-profile release, temporary unwind cleanup without catch maps; current signed stride count and DWORD wrap.  Original ABI: ECX actual owner; RET; EAX unspecified. Complete src/native_hardware_layout_fields.cpp; reports/native_hardware_layout_fields_audit.json. 23 live/PE spans 1147 bytes (383 owned), 31 declared patches/postimages, four actual primary-library providers; seven comparisons 6540 DWORDs, native FH3 search1/unwind1, both second-failure children exit91 with identical terminal state. Fixed record constructor cannot throw on valid storage: constructor failure maps audited only. Existing shared_ptr interface preserved separately. Strict Win32 and two existing CTests passed; no native ABI/game proof."
+    },
+    "status": "applied"
+  }
+]

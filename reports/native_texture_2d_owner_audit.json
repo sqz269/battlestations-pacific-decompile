@@ -1,0 +1,3051 @@
+{
+  "schema_version": 1,
+  "packet": "native_texture_2d_owner",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "captured_utc": "2026-09-11T03:48:52.159931+00:00",
+  "base_commit": "7a77262928ca1daf63cdef63ae04be3b80aaa9e4",
+  "owned_addresses": [
+    "00b3f930",
+    "00b3f2e0",
+    "00b3f590"
+  ],
+  "owned_files": [
+    "include/bsp/native_texture_2d_owner.hpp",
+    "src/native_texture_2d_owner.cpp",
+    "docs/NATIVE_TEXTURE_2D_OWNER.md",
+    "reports/native_texture_2d_owner_audit.json"
+  ],
+  "scope": "Complete B3F930/B3F2E0/B3F590 through the established current application APIs; no replacement owner/provider/COM lifetime or canonical pool.",
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Each fresh live query uses bsp.py ghidra project/program/language/image-base verification.",
+    "captured_utc": "2026-09-11T03:30:51.069303+00:00",
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "all_46_live_spans_match_disk": true,
+    "Ghidra_writes": false,
+    "game_file_writes": false
+  },
+  "functions": [
+    {
+      "address": "00b3f930",
+      "old_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "cpp": "construct_native_texture_2d_00b3f930",
+      "end_exclusive": "00b3fa81",
+      "bytes": 337,
+      "abi": "ECX owner; stack actual-name/input-COM/saved-width/saved-height/flags; EAX owner; RET14h",
+      "cleanup_states": 3,
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117"
+    },
+    {
+      "address": "00b3f2e0",
+      "old_name": "BSP_D3D9Texture_Destroy",
+      "cpp": "destroy_native_texture_2d_00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "bytes": 302,
+      "abi": "ECX actual owner; plain RET; no semantic EAX",
+      "cleanup_states": 2,
+      "saved_ghidra_body_end_inclusive": "00b3f3e8",
+      "full_native_return": "00b3f40d",
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1"
+    },
+    {
+      "address": "00b3f590",
+      "old_name": "FUN_00b3f590",
+      "proposed_name": "BSP_D3D9Texture2D_Delete",
+      "cpp": "delete_native_texture_2d_00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "bytes": 32,
+      "abi": "ECX owner; stack flags; EAX original address; RET4",
+      "cleanup_states": 0,
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465"
+    }
+  ],
+  "context": {
+    "borrowed_actual_domains": [
+      "NativeRendererTextureNameNotificationContext",
+      "NativeRetainedMemoryOwnerContext",
+      "NativeSurfaceOwnerContext",
+      "D3D9Texture2DPool 0108DB38",
+      "shared serial 0108D6E8",
+      "tracking DWORD 0108DAF8",
+      "renderer profile D5F0A8",
+      "surface profile D619A0"
+    ],
+    "same_domain_constraints": [
+      "Notification and surface contexts view same actual renderer publication F8D394.",
+      "Notification NativeStringStorage uses its actual SizedStoragePool and surface context uses that same pool.",
+      "Surface context supplies actual support publication 108FEDC and actual lifetime 1090AA0."
+    ],
+    "current_profile_slots": {
+      "00d5f0a8": {
+        "+6c": "00b32250"
+      },
+      "00d619a0": {
+        "+0": "00bd30e0",
+        "+4": "00b3f5b0"
+      },
+      "00d15ad8": {
+        "+0": "00bd30e0",
+        "+4": "008d4470"
+      },
+      "00d642c0": {
+        "+0": "00bd30e0",
+        "+4": "00bb8f90"
+      }
+    },
+    "owner_bytes": 80,
+    "canonical_slot_bytes": 84,
+    "preserved_pool_id_offset": 80,
+    "new_host_owned_objects": false
+  },
+  "behavior": {
+    "constructor": "Actual named base, original COM/current descriptor read ordering, diagnostic captured/current distinction, actual support getter, input flags accounting; failure does not release COM or owner slot.",
+    "destructor": "Current retained zero-count terminal, captured notification receiver and table-slot/current entry, fresh global unregister, captured COM pair then current final release, current cache traversal and captured slot clear, current flag accounting, full cache/base post-free tail.",
+    "scalar_delete": "Complete destructor first; flags bit0 returns same actual canonical raw slot; preserves original address result.",
+    "descriptor_HRESULT": "Ignored; no descriptor zero initialization or safe-null/failed-call fallback.",
+    "BF7680": "Full overlap-preserving memmove at direct diagnostic copy; 869 original bytes freshly pinned."
+  },
+  "exception_handling": {
+    "native_ctor": {
+      "FuncInfo": "00df783c",
+      "map": "00df7824",
+      "nTryBlocks": 0,
+      "EHFlags": 1,
+      "unwind_states": [
+        [
+          "2",
+          "00cbef63 diagnostic"
+        ],
+        [
+          "1",
+          "00cbef58 cache"
+        ],
+        [
+          "0",
+          "00cbef50 base"
+        ]
+      ]
+    },
+    "native_dtor": {
+      "FuncInfo": "00df7710",
+      "map": "00df7700",
+      "nTryBlocks": 0,
+      "EHFlags": 1,
+      "unwind_states": [
+        [
+          "1",
+          "00cbee98 cache"
+        ],
+        [
+          "0",
+          "00cbee90 base"
+        ]
+      ]
+    },
+    "host": "Cleanup-only RAII state plus SEH search filter: C++ exception 0xE06D7363 during cleanup terminates during search; no C++ catch/rethrow maps.",
+    "compiled_owner_FuncInfo": [
+      {
+        "function": "construct_native_texture_2d_00b3f930",
+        "nTryBlocks": 0,
+        "unwind_actions": 1,
+        "EHFlags": 1,
+        "listing_excerpt": "__ehfuncinfo$?construct_native_texture_2d_00b3f930@bsp@@YAPAXPAXPBXPAUIDirect3DTexture9@@IIIAAUNativeTexture2DOwnerContext@1@@Z DD 019930522H\n\tDD\t01H\n\tDD\tFLAT:__unwindtable$?construct_native_texture_2d_00b3f930@bsp@@YAPAXPAXPBXPAUIDirect3DTexture9@@IIIAAUNativeTexture2DOwnerContext@1@@Z\n\tDD\t2 DUP(00H)\n\tDD\t2 DUP(00H)\n\tDD\t00H\n\tDD\t01H\n"
+      },
+      {
+        "function": "destroy_native_texture_2d_00b3f2e0",
+        "nTryBlocks": 0,
+        "unwind_actions": 1,
+        "EHFlags": 1,
+        "listing_excerpt": "__ehfuncinfo$?destroy_native_texture_2d_00b3f2e0@bsp@@YAXPAXAAUNativeTexture2DOwnerContext@1@@Z DD 019930522H\n\tDD\t01H\n\tDD\tFLAT:__unwindtable$?destroy_native_texture_2d_00b3f2e0@bsp@@YAXPAXAAUNativeTexture2DOwnerContext@1@@Z\n\tDD\t2 DUP(00H)\n\tDD\t2 DUP(00H)\n\tDD\t00H\n\tDD\t01H\n"
+      }
+    ],
+    "cleanup_retry_added": false
+  },
+  "fixture": {
+    "path": "local/native_texture_2d_owner_check.cpp",
+    "build": "local/build_native_texture_2d_owner_check.ps1",
+    "new_tracked_test_cases": 0,
+    "original_executed_ranges": [
+      "00b3f930",
+      "00b3f2e0",
+      "00b3f590",
+      "00b3d9b0",
+      "00b3da20",
+      "00b3ec40",
+      "00b34010",
+      "00b27d40",
+      "00b25580",
+      "00b33e40",
+      "00bd30e0",
+      "00b3f4c0",
+      "00cbee90",
+      "00cbef50"
+    ],
+    "original_EH_maps": [
+      "00df7700",
+      "00df7824"
+    ],
+    "explicit_ABI_bridges": {
+      "00b34230": "unchanged actual named-profile constructor, shared string storage and serial",
+      "00b33f50": "unchanged actual named-base destruction; original B34010 JMP reaches this bridge",
+      "0041dd40": "observation wrapper forwards unchanged actual raw string resize, same actual storage",
+      "00419cc0": "returns the one actual fixture/application SizedStoragePool",
+      "00bd1510": "actual NativeStringStorage release into that same pool; records current size",
+      "00b3e730": "unchanged actual support getter with actual publication and lifetime domain",
+      "00b32250": "unchanged full current renderer notification with shared actual publication/string domain",
+      "00bb8f90": "unchanged actual stream deleting destructor and retained-memory context",
+      "008d4470": "unchanged actual backing deleting destructor and retained-memory context",
+      "00b3f5b0": "unchanged actual surface deleting destructor and actual surface context/pool",
+      "00b3d8d0": "unchanged canonical texture-pool raw-slot return; checks ECX actual pool identity",
+      "00bf55be": "same shared CRT allocation API used by current native cache storage",
+      "00bf6989": "same shared CRT free API used by current native cache storage",
+      "00bf7680": "real host CRT memmove; full original 869-byte overlap body independently pinned, not executed",
+      "00bf6b43": "real host __CxxFrameHandler3 runtime"
+    },
+    "IAT_binding": {
+      "00ce2220": "real Win32 InterlockedDecrement wrapper"
+    },
+    "registration_operand_bindings": [
+      {
+        "site": "00b3f933",
+        "verified_original": "00cbef6b",
+        "replacement": "host EXE jump-only ctor_handler; enters complete original CBEF6B handler"
+      },
+      {
+        "site": "00b3f2e3",
+        "verified_original": "00cbeea3",
+        "replacement": "host EXE jump-only dtor_handler; enters complete original CBEEA3 handler"
+      }
+    ],
+    "native_image": "Fixture parent creates only its own child suspended/hidden and reserves [00400000,010A0000) before loader heap initialization; child verifies reservation, commits pinned pages, checks all installed PE preimages, trap-fills gaps and protects code/EH/tables RX. No relocation of original profiles or virtual slots. Game read-only.",
+    "actual_allocation_domains": "Canonical texture/surface pool storage and shared counters/publications use actual raw fixture/global bytes. Pool companions, allocator list, singleton lifetime, support, string SizedStoragePool, retained backing/stream and current surface deleters are unchanged current modules.",
+    "string_geometry": "Actual SizedStoragePool {1,8,1,16,1}: every observed nonempty name uses real CRT large-block allocation/free. Mutating diagnostic length exercises original release-size timing without mixing incompatible small free-ring classes.",
+    "observations": "Complete 67-DWORD frames at real allocation/free/string-release/COM/Win32 Enter/Leave and caller boundaries. Actual 84-byte owner/pool-slot postimage; actual counters/refcounts/cache pointers/publications; no shadow semantic refcounts. Pointer fields normalize allocation identity plus offset only; stale diagnostic identities retain original allocation identity after address reuse. Ended surface lifetimes are read only as allocated raw slab bytes.",
+    "COM_boundary": "Deterministic stdcall COM fixture fills full 32-byte descriptor, returns E_FAIL, mutates actual owner COM/flags and live descriptor at declared calls. No real D3D device or GPU.",
+    "states": [
+      {
+        "scenario": 0,
+        "description": "Odd successful deletion: input/current COM and descriptor mutation; normal captured diagnostic free with current length; stream/backing zero chain; fresh renderer after notification; current cache array with captured old-slot clearing.",
+        "events": 41,
+        "words": 2747,
+        "event_counts": {
+          "1": 1,
+          "20": 7,
+          "12": 1,
+          "10": 3,
+          "11": 5,
+          "14": 1,
+          "71": 1,
+          "22": 1,
+          "31": 3,
+          "21": 7,
+          "40": 1,
+          "2": 1,
+          "23": 4,
+          "80": 1,
+          "81": 1,
+          "41": 1,
+          "60": 1,
+          "99": 1
+        },
+        "final": {
+          "profile": "00ceb130",
+          "serial": 0,
+          "texture_tracking": 101,
+          "surface_tracking": 199,
+          "memory_objects": 0,
+          "memory_bytes": 0,
+          "renderer_role": 5,
+          "nesting": 0,
+          "tracked_depth": 0,
+          "OS_recursion": 0,
+          "enters": 1,
+          "leaves": 1,
+          "base_name_length": 5,
+          "COM_role": 0,
+          "cache_count": 0,
+          "retained_source_role": 0,
+          "canonical_slab_free_count_word_with_preserved_high_half": "a5a5001f"
+        }
+      },
+      {
+        "scenario": 1,
+        "description": "Even successful deletion: direct backing zero terminal; both original cache surfaces destroyed; current flags decrement; full destructor runs but canonical owner slot remains held.",
+        "events": 40,
+        "words": 2680,
+        "event_counts": {
+          "1": 1,
+          "20": 7,
+          "12": 1,
+          "10": 3,
+          "11": 5,
+          "14": 1,
+          "71": 1,
+          "22": 1,
+          "31": 3,
+          "21": 7,
+          "40": 1,
+          "2": 1,
+          "23": 3,
+          "80": 1,
+          "81": 1,
+          "41": 1,
+          "60": 1,
+          "99": 1
+        },
+        "final": {
+          "profile": "00ceb130",
+          "serial": 0,
+          "texture_tracking": 100,
+          "surface_tracking": 198,
+          "memory_objects": 0,
+          "memory_bytes": 0,
+          "renderer_role": 5,
+          "nesting": 0,
+          "tracked_depth": 0,
+          "OS_recursion": 0,
+          "enters": 1,
+          "leaves": 1,
+          "base_name_length": 5,
+          "COM_role": 0,
+          "cache_count": 0,
+          "retained_source_role": 0,
+          "canonical_slab_free_count_word_with_preserved_high_half": "a5a5001e"
+        }
+      },
+      {
+        "scenario": 2,
+        "description": "Constructor GetLevelCount throws at state1: cache/base cleanup, adopted COM preserved, no tracking increment or slot return.",
+        "events": 10,
+        "words": 670,
+        "event_counts": {
+          "1": 1,
+          "20": 1,
+          "12": 1,
+          "13": 1,
+          "23": 1,
+          "31": 1,
+          "21": 1,
+          "50": 1,
+          "60": 1,
+          "99": 1
+        },
+        "final": {
+          "profile": "00ceb130",
+          "serial": 0,
+          "texture_tracking": 100,
+          "surface_tracking": 200,
+          "memory_objects": 0,
+          "memory_bytes": 0,
+          "renderer_role": 4,
+          "nesting": 0,
+          "tracked_depth": 0,
+          "OS_recursion": 0,
+          "enters": 0,
+          "leaves": 0,
+          "base_name_length": 5,
+          "COM_role": 1,
+          "cache_count": 0,
+          "retained_source_role": 0,
+          "canonical_slab_free_count_word_with_preserved_high_half": "a5a5001e"
+        }
+      },
+      {
+        "scenario": 3,
+        "description": "Cold support object allocation throws at state2 after current diagnostic header replacement: current replacement freed, original captured buffer stays allocated, cache/base unwind.",
+        "events": 18,
+        "words": 1206,
+        "event_counts": {
+          "1": 1,
+          "20": 2,
+          "12": 1,
+          "10": 2,
+          "11": 2,
+          "14": 1,
+          "71": 1,
+          "31": 2,
+          "21": 2,
+          "23": 1,
+          "50": 1,
+          "60": 1,
+          "99": 1
+        },
+        "final": {
+          "profile": "00ceb130",
+          "serial": 0,
+          "texture_tracking": 100,
+          "surface_tracking": 200,
+          "memory_objects": 0,
+          "memory_bytes": 0,
+          "renderer_role": 4,
+          "nesting": 0,
+          "tracked_depth": 0,
+          "OS_recursion": 0,
+          "enters": 0,
+          "leaves": 0,
+          "base_name_length": 5,
+          "COM_role": 2,
+          "cache_count": 0,
+          "retained_source_role": 0,
+          "canonical_slab_free_count_word_with_preserved_high_half": "a5a5001e"
+        }
+      },
+      {
+        "scenario": 4,
+        "description": "Notification throws after real EnterCriticalSection: retained source already released and +4C cleared; cache/base unwind without COM/surface retry or owner-slot return; real recursion1/depth0/nesting1 retained.",
+        "events": 25,
+        "words": 1675,
+        "event_counts": {
+          "1": 1,
+          "20": 2,
+          "12": 1,
+          "10": 2,
+          "11": 2,
+          "14": 1,
+          "71": 1,
+          "22": 1,
+          "31": 2,
+          "21": 2,
+          "40": 1,
+          "2": 1,
+          "23": 4,
+          "80": 1,
+          "50": 1,
+          "60": 1,
+          "99": 1
+        },
+        "final": {
+          "profile": "00ceb130",
+          "serial": 0,
+          "texture_tracking": 101,
+          "surface_tracking": 200,
+          "memory_objects": 0,
+          "memory_bytes": 0,
+          "renderer_role": 5,
+          "nesting": 1,
+          "tracked_depth": 0,
+          "OS_recursion": 1,
+          "enters": 1,
+          "leaves": 0,
+          "base_name_length": 5,
+          "COM_role": 2,
+          "cache_count": 0,
+          "retained_source_role": 0,
+          "canonical_slab_free_count_word_with_preserved_high_half": "a5a5001e"
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "pair": "normal",
+        "native": "build/texture2d-owner-check/texture2d_normal_native.bin",
+        "host": "build/texture2d-owner-check/texture2d_normal_host.bin",
+        "byte_identical": true,
+        "words": 8978,
+        "events": 134,
+        "sha256": "149acf0884f78e95592821ce7407b5865173cd39e8b315595364477f155762ef",
+        "expected_exit_native": 0,
+        "expected_exit_host": 0
+      },
+      {
+        "pair": "cleanup",
+        "native": "build/texture2d-owner-check/texture2d_cleanup_native.bin",
+        "host": "build/texture2d-owner-check/texture2d_cleanup_host.bin",
+        "byte_identical": true,
+        "words": 402,
+        "events": 6,
+        "sha256": "2c01f7054a4e4cd2acee2b50cf2b11c4c212b0e5e53568a17dd731409dd5bc6e",
+        "expected_exit_native": 86,
+        "expected_exit_host": 86
+      },
+      {
+        "pair": "outer",
+        "native": "build/texture2d-owner-check/texture2d_outer_native.bin",
+        "host": "build/texture2d-owner-check/texture2d_outer_host.bin",
+        "byte_identical": true,
+        "words": 335,
+        "events": 5,
+        "sha256": "525f853b82ba59b2d81ee85813843764ea0cc56f6e4f060dd4a61a5dbe20ee54",
+        "expected_exit_native": 86,
+        "expected_exit_host": 86
+      }
+    ],
+    "terminal_proofs": [
+      {
+        "scenario": 5,
+        "words": 402,
+        "events": 6,
+        "behavior": "Second allocator exception during cache cleanup after first COM exception and current capacity=-1. Terminates during search before nested probe or named-base cleanup.",
+        "native_exit": 86,
+        "host_exit": 86,
+        "uncaught_count": 1,
+        "nested_cleanup_count": 0
+      },
+      {
+        "scenario": 6,
+        "words": 335,
+        "events": 5,
+        "behavior": "Body COM exception while fixture outer destructor is already unwinding. Search termination precedes owner local cache/base cleanup.",
+        "native_exit": 86,
+        "host_exit": 86,
+        "uncaught_count": 1,
+        "nested_cleanup_count": 0
+      }
+    ]
+  },
+  "validation": {
+    "strict_msvc_win32": true,
+    "flags": "/std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; final owner /FAs",
+    "native_seeds_verified": 8,
+    "repository_build": "./local/build_native_texture_2d_owner.ps1 configures an ignored deferred owner/cache source include, then runs ./scripts/build.ps1; both existing tests pass.",
+    "original_caller_comparison": "8978 words / 134 events / 5 normal and throwing states; full original owner3 and current dependency APIs.",
+    "secondary_and_outer_unwind_termination": "737 additional byte-identical DWORDs / 11 events; independent native and host exit86 pairs.",
+    "terminal_exit_codes_verified_by_script": true,
+    "compiled_owner_no_catch_map": true,
+    "raw_comparison_files_byte_identical": true,
+    "game_validated": false,
+    "GPU_validated": false,
+    "abi_compatible": false
+  },
+  "native_ranges": [
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "kind": "function",
+      "role": "texture_named_constructor",
+      "raw_offset": 7600432,
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3fa7e",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "kind": "function",
+      "role": "texture_destructor",
+      "raw_offset": 7598816,
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3f40d",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "length": 32,
+      "kind": "function",
+      "role": "texture_scalar_delete",
+      "raw_offset": 7599504,
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3f5ad",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3d8d0",
+      "end_exclusive": "00b3d935",
+      "length": 101,
+      "kind": "function",
+      "role": "texture_pool_return",
+      "raw_offset": 7592144,
+      "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3d932",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3d9b0",
+      "end_exclusive": "00b3da18",
+      "length": 104,
+      "kind": "function",
+      "role": "surface_cache_reserve",
+      "raw_offset": 7592368,
+      "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3da15",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3da20",
+      "end_exclusive": "00b3da70",
+      "length": 80,
+      "kind": "function",
+      "role": "surface_cache_resize",
+      "raw_offset": 7592480,
+      "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3da6d",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3ec40",
+      "end_exclusive": "00b3ec57",
+      "length": 23,
+      "kind": "function",
+      "role": "surface_cache_destroy",
+      "raw_offset": 7597120,
+      "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3ec56",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b34120",
+      "end_exclusive": "00b341d0",
+      "length": 176,
+      "kind": "function",
+      "role": "logical_texture_named_base",
+      "raw_offset": 7553312,
+      "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b341cd",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "00b34230",
+      "end_exclusive": "00b34255",
+      "length": 37,
+      "kind": "function",
+      "role": "logical_texture_named_profile",
+      "raw_offset": 7553584,
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b34252",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "00b33f50",
+      "end_exclusive": "00b33fb7",
+      "length": 103,
+      "kind": "function",
+      "role": "logical_texture_base_destroy",
+      "raw_offset": 7552848,
+      "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b33fb6",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b34010",
+      "end_exclusive": "00b34015",
+      "length": 5,
+      "kind": "function",
+      "role": "logical_texture_base_unwind_thunk",
+      "raw_offset": 7553040,
+      "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00b27d40",
+      "end_exclusive": "00b27d53",
+      "length": 19,
+      "kind": "function",
+      "role": "renderer_unregister_texture",
+      "raw_offset": 7503168,
+      "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b27d50",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b25580",
+      "end_exclusive": "00b255e7",
+      "length": 103,
+      "kind": "function",
+      "role": "renderer_texture_array_remove",
+      "raw_offset": 7492992,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b255b7",
+          "operand": "4"
+        },
+        {
+          "address": "00b255e4",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "kind": "function",
+      "role": "renderer_name_notification",
+      "raw_offset": 7545424,
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3233d",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b33e40",
+      "end_exclusive": "00b33e44",
+      "length": 4,
+      "kind": "function",
+      "role": "logical_texture_name_address",
+      "raw_offset": 7552576,
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b33e43",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bef9c0",
+      "end_exclusive": "00befa36",
+      "length": 118,
+      "kind": "function",
+      "role": "memory_stream_destructor",
+      "raw_offset": 8321472,
+      "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00befa35",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bb8f90",
+      "end_exclusive": "00bb8fae",
+      "length": 30,
+      "kind": "function",
+      "role": "memory_stream_scalar_delete",
+      "raw_offset": 8097680,
+      "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00bb8fab",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00cbee90",
+      "end_exclusive": "00cbeead",
+      "length": 29,
+      "kind": "eh_code",
+      "role": "texture_dtor_eh",
+      "raw_offset": 9170576,
+      "sha256": "d533879bf906081369aba6642c341cb976c59fe8cd8ebbe9f3f3f1fa664ca42a",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df7700",
+      "end_exclusive": "00df7734",
+      "length": 52,
+      "kind": "data",
+      "role": "texture_dtor_map_funcinfo",
+      "raw_offset": 10450688,
+      "sha256": "971eb51c77805422107654e4724a48da48bbdd975c91303561e367b0dfb3fc1f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbef50",
+      "end_exclusive": "00cbef75",
+      "length": 37,
+      "kind": "eh_code",
+      "role": "texture_named_ctor_eh",
+      "raw_offset": 9170768,
+      "sha256": "30499fe6e681d177ce74c941d568895fef21a28413b2a26ea0400baf34ccf590",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df7824",
+      "end_exclusive": "00df7860",
+      "length": 60,
+      "kind": "data",
+      "role": "texture_named_ctor_map_funcinfo",
+      "raw_offset": 10450980,
+      "sha256": "f4a8a1f2d88cdfd300b6d2317bf8550baea310d670f71d1169d3e2b606e9fbc0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d61948",
+      "end_exclusive": "00d619a0",
+      "length": 88,
+      "kind": "data",
+      "role": "texture_profile_22_entries",
+      "raw_offset": 9836872,
+      "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d642c0",
+      "end_exclusive": "00d642f4",
+      "length": 52,
+      "kind": "data",
+      "role": "memory_stream_profile_13_entries",
+      "raw_offset": 9847488,
+      "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d15ad8",
+      "end_exclusive": "00d15ae0",
+      "length": 8,
+      "kind": "data",
+      "role": "memory_backing_profile",
+      "raw_offset": 9525976,
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "kind": "function",
+      "role": "current_virtual_zero_to_deleting_dispatch",
+      "raw_offset": 8204512,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00bd30ed",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "kind": "function",
+      "role": "refcounted_base",
+      "raw_offset": 8204528,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00bd30f6",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3f4c0",
+      "end_exclusive": "00b3f4de",
+      "length": 30,
+      "kind": "function",
+      "role": "borrowed_com_diagnostic_string_destroy",
+      "raw_offset": 7599296,
+      "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3f4dd",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00d619a0",
+      "end_exclusive": "00d619e4",
+      "length": 68,
+      "kind": "data",
+      "role": "actual_surface_profile_prefix",
+      "raw_offset": 9836960,
+      "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "kind": "function",
+      "role": "existing_actual_surface_destructor",
+      "raw_offset": 7599328,
+      "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3f587",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "kind": "function",
+      "role": "existing_actual_surface_deleting_wrapper",
+      "raw_offset": 7599536,
+      "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3f5cd",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00d5f0a8",
+      "end_exclusive": "00d5f118",
+      "length": 112,
+      "kind": "data",
+      "role": "actual_renderer_profile_prefix_to_notification",
+      "raw_offset": 9826472,
+      "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf7680",
+      "end_exclusive": "00bf79e5",
+      "length": 869,
+      "kind": "crt_body_with_tables",
+      "role": "full_overlap_copy_at_declared_bridge",
+      "raw_offset": 8353408,
+      "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0041dd40",
+      "end_exclusive": "0041dd45",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_string_resize",
+      "raw_offset": 122176,
+      "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00419cc0",
+      "end_exclusive": "00419cc5",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_string_pool_getter",
+      "raw_offset": 105664,
+      "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bd1510",
+      "end_exclusive": "00bd1515",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_string_pool_release",
+      "raw_offset": 8197392,
+      "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6b43",
+      "end_exclusive": "00bf6b48",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "real_host_FH3",
+      "raw_offset": 8350531,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b3e730",
+      "end_exclusive": "00b3e735",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_support_singleton",
+      "raw_offset": 7595824,
+      "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+      "live_matches_disk": true
+    },
+    {
+      "address": "008d4470",
+      "end_exclusive": "008d4475",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_memory_backing_deleter",
+      "raw_offset": 5063792,
+      "sha256": "07c12b9d69520518eca87f5215f83fcffc895ddd38b6bc3366600ab9211abfe6",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_shared_free",
+      "raw_offset": 8350089,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_shared_array_allocate",
+      "raw_offset": 8345022,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce2220",
+      "end_exclusive": "00ce2224",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_fixture_global_or_IAT",
+      "raw_offset": 9314848,
+      "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_fixture_global_or_IAT",
+      "raw_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108d6dc",
+      "end_exclusive": "0108d6ec",
+      "length": 16,
+      "kind": "data",
+      "role": "actual_fixture_global_or_IAT",
+      "raw_offset": null,
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108daf8",
+      "end_exclusive": "0108db00",
+      "length": 8,
+      "kind": "data",
+      "role": "actual_fixture_global_or_IAT",
+      "raw_offset": null,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108fedc",
+      "end_exclusive": "0108fee0",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_fixture_global_or_IAT",
+      "raw_offset": null,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0109db98",
+      "end_exclusive": "0109dba0",
+      "length": 8,
+      "kind": "data",
+      "role": "actual_fixture_global_or_IAT",
+      "raw_offset": null,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_matches_disk": true
+    }
+  ],
+  "integration": {
+    "primary_owned": [
+      "CMake source registration",
+      "Ghidra names and evidence comments preserving old values",
+      "B3F2E0 body extension through B3F40D and saved free no-return review",
+      "sharded name/function ledgers",
+      "affected exports and project save"
+    ],
+    "worker_shared_metadata_changes": false,
+    "refresh_after_primary_annotation": true
+  },
+  "source_pins": [
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "bytes": 11544,
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_logical_texture_named_base.cpp",
+      "bytes": 4363,
+      "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+    },
+    {
+      "path": "include/bsp/native_logical_texture_named_base.hpp",
+      "bytes": 2598,
+      "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "bytes": 5111,
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+    },
+    {
+      "path": "src/native_texture_surface_cache_storage.cpp",
+      "bytes": 3499,
+      "sha256": "6606f2524de218ba6cd7c28f7cf969fcb50ea532aaccb09c5ce4b408d7392e0b"
+    },
+    {
+      "path": "include/bsp/native_texture_surface_cache_storage.hpp",
+      "bytes": 2361,
+      "sha256": "990878139211164b8259ca4ab2b2f6a36d0261051b3be232134f0e43f538363b"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/native_surface_owner.cpp",
+      "bytes": 8402,
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd"
+    },
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "bytes": 4221,
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "bytes": 3238,
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "bytes": 1488,
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 6001,
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "src/native_render_buffer_unregistration.cpp",
+      "bytes": 5514,
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+    },
+    {
+      "path": "include/bsp/native_render_buffer_unregistration.hpp",
+      "bytes": 2244,
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+    },
+    {
+      "path": "src/native_render_resource_container_removal.cpp",
+      "bytes": 7488,
+      "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+    },
+    {
+      "path": "include/bsp/native_render_resource_container_removal.hpp",
+      "bytes": 2076,
+      "sha256": "14ca26673033211047f0796e3a387b2f8773cc99b13c886a63889839e3bf6e6c"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "bytes": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "bytes": 3197,
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "src/native_pooled_resource_path.cpp",
+      "bytes": 4724,
+      "sha256": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0"
+    },
+    {
+      "path": "include/bsp/native_pooled_resource_path.hpp",
+      "bytes": 1432,
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+    },
+    {
+      "path": "src/native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "src/d3d9_texture2d_pool.cpp",
+      "bytes": 11268,
+      "sha256": "0eaa4ccc136a1fab35203170966e5ae8e2292c63e7cf12872e39e5fca16431cb"
+    },
+    {
+      "path": "include/bsp/d3d9_texture2d_pool.hpp",
+      "bytes": 3214,
+      "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+    },
+    {
+      "path": "src/d3d9_surface_pool.cpp",
+      "bytes": 11194,
+      "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3"
+    },
+    {
+      "path": "include/bsp/d3d9_surface_pool.hpp",
+      "bytes": 3168,
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "bytes": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 9908,
+      "sha256": "1f7f830c46ac1ca774290bdc11b7e89d40fe17e642b2f9fda7fe8d1a19cb7330"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/NATIVE_TEXTURE_2D_OWNER.md",
+      "bytes": 9839,
+      "sha256": "dc9f5c2c6704bee76d168b0e83abdcf4b78d4770a973165a7899dbaee25ce032"
+    },
+    {
+      "path": "local/texture2d_live_00419cc0.txt",
+      "bytes": 33,
+      "sha256": "fd2c76435acd07d36046e6fe33ecb166fe0ca45dfc1f118fc3baf073d4470ca9"
+    },
+    {
+      "path": "local/texture2d_live_0041dd40.txt",
+      "bytes": 33,
+      "sha256": "7470b00114dc0a0d932eadaa617c3f4b1bdfb3289ba338befbfcfbb7db78b02d"
+    },
+    {
+      "path": "local/texture2d_live_008d4470.txt",
+      "bytes": 33,
+      "sha256": "ef726a9349d6e603f6306fc4658fe684f9516676761dbf6761aff1f21b55cb38"
+    },
+    {
+      "path": "local/texture2d_live_00b25580.txt",
+      "bytes": 503,
+      "sha256": "d52f55688df4f209d2e5c5e011209455190f17f9daede6d0212f6371b296374d"
+    },
+    {
+      "path": "local/texture2d_live_00b27d40.txt",
+      "bytes": 102,
+      "sha256": "42aa399aa9af456ff8b4854984bf5edfa1d9b825b1bd9f6d67bd2b59dc9376f0"
+    },
+    {
+      "path": "local/texture2d_live_00b32250.txt",
+      "bytes": 1155,
+      "sha256": "a86d387d999a58ddf27f2ecf1976e7c9c98872b03621eac74197cd562cf014e3"
+    },
+    {
+      "path": "local/texture2d_live_00b33e40.txt",
+      "bytes": 29,
+      "sha256": "ae97951fab00a63b6ffa0c43898d1cce28bbd04b9438674b8b7e1f49fbefb310"
+    },
+    {
+      "path": "local/texture2d_live_00b33f50.txt",
+      "bytes": 503,
+      "sha256": "e51a76027058d7412616a42a2a8a312d2c147f9ccc6c8fa7188e53cdb97e6df3"
+    },
+    {
+      "path": "local/texture2d_live_00b34010.txt",
+      "bytes": 33,
+      "sha256": "a0c57daff5c808b13e03f0a8d43772e7f7d9b3ffca0f2c97eaaa12d2ce27997c"
+    },
+    {
+      "path": "local/texture2d_live_00b34120.txt",
+      "bytes": 847,
+      "sha256": "a3c58ba8d263c7b04d3397d204617b9a8c4fdb265c0663d96eb23c41140a6e9d"
+    },
+    {
+      "path": "local/texture2d_live_00b34230.txt",
+      "bytes": 187,
+      "sha256": "1145af413ecc728096d2dde7a9e756d86ffc89f40262fdb129a00de14e9608a0"
+    },
+    {
+      "path": "local/texture2d_live_00b3d8d0.txt",
+      "bytes": 495,
+      "sha256": "d8f15e70939133bf7cc92272f46c854082d4af4099f21b538b16968d99ba0f52"
+    },
+    {
+      "path": "local/texture2d_live_00b3d9b0.txt",
+      "bytes": 507,
+      "sha256": "a0717306ad76d197bb67862b59f7bd0f6c91903d3fa44e7dfa7f83b00211b646"
+    },
+    {
+      "path": "local/texture2d_live_00b3da20.txt",
+      "bytes": 385,
+      "sha256": "c98323a31df51aa23b0fe570ff2a3ad927a58ef28d9b3abf77cffad80c22a704"
+    },
+    {
+      "path": "local/texture2d_live_00b3e730.txt",
+      "bytes": 33,
+      "sha256": "1132ebe72fde592c8d5c8c1adeaf6395458eeb320362ef58e6622d098e3c8af8"
+    },
+    {
+      "path": "local/texture2d_live_00b3ec40.txt",
+      "bytes": 118,
+      "sha256": "656ad8f486adb11e62f8da02f8ff59847d34f201ae414565964ece6ff106d51f"
+    },
+    {
+      "path": "local/texture2d_live_00b3f2e0.txt",
+      "bytes": 1455,
+      "sha256": "3ab33e644d0483ec9cddd5c3898a69f6d77c8beffd3d32b8f809bd64f94395a1"
+    },
+    {
+      "path": "local/texture2d_live_00b3f4c0.txt",
+      "bytes": 146,
+      "sha256": "ce83ae1ff22600baf6f0640382aa6c642db23b60e1cd276cc2427f8dcf687ee8"
+    },
+    {
+      "path": "local/texture2d_live_00b3f4e0.txt",
+      "bytes": 815,
+      "sha256": "4ed6fd69d32fd03b9397e3f8f8f4c0e4c1c9e15aa09925ebe940b3e23e8728df"
+    },
+    {
+      "path": "local/texture2d_live_00b3f590.txt",
+      "bytes": 154,
+      "sha256": "d3779d3a900cb9615f92478d568e49e3ef6d116a19bdb739b55322e9ee80403e"
+    },
+    {
+      "path": "local/texture2d_live_00b3f5b0.txt",
+      "bytes": 154,
+      "sha256": "d56a97df4455391919ad9326a36c8d9434ae4a6acd26e7252e6fa0a55c60c15b"
+    },
+    {
+      "path": "local/texture2d_live_00b3f930.txt",
+      "bytes": 1634,
+      "sha256": "3bf8fa012445025f1118be6bdd4be4c5632ea4d044438f90010939ac7a0179b9"
+    },
+    {
+      "path": "local/texture2d_live_00bb8f90.txt",
+      "bytes": 146,
+      "sha256": "efb28ac260cafb35527c4c2428b74b678fbb426bf289a977efc6117a06603880"
+    },
+    {
+      "path": "local/texture2d_live_00bd1510.txt",
+      "bytes": 33,
+      "sha256": "5312bed027b75e43b736c47d8bf2b0b817d02d4af6f2afe068c7265add48f4bb"
+    },
+    {
+      "path": "local/texture2d_live_00bd30e0.txt",
+      "bytes": 69,
+      "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+    },
+    {
+      "path": "local/texture2d_live_00bd30f0.txt",
+      "bytes": 41,
+      "sha256": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889"
+    },
+    {
+      "path": "local/texture2d_live_00bef9c0.txt",
+      "bytes": 576,
+      "sha256": "af45a5d4a883475b10f67580400c219d047f697e36c228fedb1aea4e0fa86ad8"
+    },
+    {
+      "path": "local/texture2d_live_00bf55be.txt",
+      "bytes": 33,
+      "sha256": "12e4584cbf26902371286877778079ed8854f2533126f9311a49939026c63245"
+    },
+    {
+      "path": "local/texture2d_live_00bf6989.txt",
+      "bytes": 33,
+      "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0"
+    },
+    {
+      "path": "local/texture2d_live_00bf6b43.txt",
+      "bytes": 33,
+      "sha256": "097d3d6d6e023a7f934487b934bffdc04d57b0b5811a1e9966770453ba241ca2"
+    },
+    {
+      "path": "local/texture2d_live_00bf7680.txt",
+      "bytes": 4191,
+      "sha256": "f78a245604693f5b012f74517e59b1cb46432444fa018e9d6c5224918324988a"
+    },
+    {
+      "path": "local/texture2d_live_00cbee90.txt",
+      "bytes": 142,
+      "sha256": "c0131d01ce8984e667c8d5931a3db7351c26f9b990e7aa4cb1ec9346d7e15140"
+    },
+    {
+      "path": "local/texture2d_live_00cbef50.txt",
+      "bytes": 187,
+      "sha256": "cf56cb89eb8be1a5386e1805ac9b0a2c791532732100393fb243201951b66858"
+    },
+    {
+      "path": "local/texture2d_live_00ce2220.txt",
+      "bytes": 29,
+      "sha256": "92b60183b163390b122ba1a0115076616b5feb4a185a638445b547a6321c56d0"
+    },
+    {
+      "path": "local/texture2d_live_00d15ad8.txt",
+      "bytes": 45,
+      "sha256": "1865440048b5a66da33c48daaa1266a965a51d1715cb8470f204890857835be9"
+    },
+    {
+      "path": "local/texture2d_live_00d5f0a8.txt",
+      "bytes": 539,
+      "sha256": "de81b5c1efb36111be6a77fd45a45c79a59de7c354a41afea97405a41f77ab0d"
+    },
+    {
+      "path": "local/texture2d_live_00d61948.txt",
+      "bytes": 430,
+      "sha256": "5d4b835b931e0cc68206f8272e645b3563be5a2a4849a8ba3b9b22ae477ca307"
+    },
+    {
+      "path": "local/texture2d_live_00d619a0.txt",
+      "bytes": 337,
+      "sha256": "0899a6e402c90a71d3fbb37f44406ffaaaaf610a3c3a43cfd22445cfc8f1b8f6"
+    },
+    {
+      "path": "local/texture2d_live_00d642c0.txt",
+      "bytes": 260,
+      "sha256": "3ca84efb8b07fdba9e48cb90cb09d012756831461328ab0b7bb348153bedc04c"
+    },
+    {
+      "path": "local/texture2d_live_00df7700.txt",
+      "bytes": 260,
+      "sha256": "358b2d8b425c106c0bc7f497c3f75dcfb31370baab28e88b5e251b7fa9067eba"
+    },
+    {
+      "path": "local/texture2d_live_00df7824.txt",
+      "bytes": 292,
+      "sha256": "9a64abb7483900f5328fefc4d8cd302997b38c9fcd100110d61cbd86fe0665eb"
+    },
+    {
+      "path": "local/texture2d_live_00f8d394.txt",
+      "bytes": 29,
+      "sha256": "185167e9b01f37c26cf222b2e65cb11322afde473342afcef500aeb7f230aafe"
+    },
+    {
+      "path": "local/texture2d_live_0108d6dc.txt",
+      "bytes": 77,
+      "sha256": "bc6a28cbbe3559b8b959915dbe605e8f74b35939b85854141f6de25686188459"
+    },
+    {
+      "path": "local/texture2d_live_0108daf8.txt",
+      "bytes": 45,
+      "sha256": "181c571ffc74546bbe8bddeaa93efa64a86ad496df10af32b91ce330755501fc"
+    },
+    {
+      "path": "local/texture2d_live_0108fedc.txt",
+      "bytes": 29,
+      "sha256": "bcee57418106cb496de68735db7822ddc1fb5892a6527648373b5182f33b5452"
+    },
+    {
+      "path": "local/texture2d_live_0109db98.txt",
+      "bytes": 45,
+      "sha256": "e5aa2ee468dc663e74295ccf1284ae25e5287240c38ddafaa26937d1f0374a2c"
+    },
+    {
+      "path": "local/texture2d_00b25580.asm",
+      "bytes": 1169,
+      "sha256": "f4e9e331d64d96e903b1ead279df9fe905e4b5b0a11f7550ba946afe414afdf9"
+    },
+    {
+      "path": "local/texture2d_00b27d40.asm",
+      "bytes": 119,
+      "sha256": "e41f4f5e8f412717391cfd16ceeb246edd2b26953eaf69a0b26530e697d8ca7d"
+    },
+    {
+      "path": "local/texture2d_00b32250.asm",
+      "bytes": 2033,
+      "sha256": "c5cd02f7590c5dada9c7ce746a9d611b207cd84f72767de48dd603c9b7a19abc"
+    },
+    {
+      "path": "local/texture2d_00b33e40.asm",
+      "bytes": 46,
+      "sha256": "ec755db46e83ebe6027d05c13bba24ecf2a6eec57029140931c1dded13fbc00c"
+    },
+    {
+      "path": "local/texture2d_00b33f50.asm",
+      "bytes": 844,
+      "sha256": "8882bef44d7c7071f26f023cb16f147e636d38727e76dc2b342458a3cb53e075"
+    },
+    {
+      "path": "local/texture2d_00b34010.asm",
+      "bytes": 24,
+      "sha256": "638cf2a951ef790cfb20865b6c2c8c2d4fc07a49c816cd6cb94733ef70a9f0cf"
+    },
+    {
+      "path": "local/texture2d_00b34120.asm",
+      "bytes": 1584,
+      "sha256": "c4f675b2b4b358102c0820ec2cefe8f34d88520d3798e9d24999e24df942c8c6"
+    },
+    {
+      "path": "local/texture2d_00b34230.asm",
+      "bytes": 380,
+      "sha256": "f3ba2c76c3b667b5dee57cfac45b3af852fd386e94e6cc0b105a34c5ec6599f3"
+    },
+    {
+      "path": "local/texture2d_00b3d8d0.asm",
+      "bytes": 1000,
+      "sha256": "7a59a8314c9b90df5fa3b89f2848846e05999d50e04789b344bed1efa1397321"
+    },
+    {
+      "path": "local/texture2d_00b3d9b0.asm",
+      "bytes": 1140,
+      "sha256": "b2648e5e7903a10ae8cc5362f01b3843d270ea5dafe5bdfb0ef1b7f205a87d81"
+    },
+    {
+      "path": "local/texture2d_00b3da20.asm",
+      "bytes": 924,
+      "sha256": "7e04d7bbb9d3e6a52d8392b055205740beab9754db8bcd934fe7558979d9f1be"
+    },
+    {
+      "path": "local/texture2d_00b3ec40.asm",
+      "bytes": 225,
+      "sha256": "7016a8fca37e34a5526252ab417ed6a4a5a64b6c37d935a1530e83b169ffb932"
+    },
+    {
+      "path": "local/texture2d_00b3f2e0.asm",
+      "bytes": 3043,
+      "sha256": "35e04117ede90371cffa2458e17591f87cad05f72dd66378e83bc5e6c181f830"
+    },
+    {
+      "path": "local/texture2d_00b3f4c0.asm",
+      "bytes": 298,
+      "sha256": "d4ac02bedfe4aded4533f7a381d3de3ffda594c5315ba6e1148b7d21e81a6cd6"
+    },
+    {
+      "path": "local/texture2d_00b3f4e0.asm",
+      "bytes": 1429,
+      "sha256": "80738cb0f7ddc86e1d48da12c9da6ec58c5404faff451f3226270cd6b414e44c"
+    },
+    {
+      "path": "local/texture2d_00b3f590.asm",
+      "bytes": 265,
+      "sha256": "7188c8d62bba2b09e514302b75316e0e5025a1022e55680a9542a250fa5a464b"
+    },
+    {
+      "path": "local/texture2d_00b3f5b0.asm",
+      "bytes": 265,
+      "sha256": "d032c081e8d1d4928334b494b2e1b4195e2a029b9b646b26300a47802ffd87df"
+    },
+    {
+      "path": "local/texture2d_00b3f930.asm",
+      "bytes": 3728,
+      "sha256": "0b5946f2275e223027985e078d124b12299aeaa836bc7c46bfed7de07a88a2cd"
+    },
+    {
+      "path": "local/texture2d_00bb8f90.asm",
+      "bytes": 257,
+      "sha256": "042693e8f326ca336fd96291cbe4504535114a3fec516b3319af42f3ccd327a9"
+    },
+    {
+      "path": "local/texture2d_00bd30e0.asm",
+      "bytes": 178,
+      "sha256": "e8504eef6c70dd71a2fec00cfdef0fb09e8feb58e53c6783d39bef54966cb685"
+    },
+    {
+      "path": "local/texture2d_00bd30f0.asm",
+      "bytes": 57,
+      "sha256": "d3270b08bcbe6b797b85847eec41a47757903644ba88ad43948ac1765be48f63"
+    },
+    {
+      "path": "local/texture2d_00bef9c0.asm",
+      "bytes": 1020,
+      "sha256": "c4e3d1ef6891beb11fd38f5d98b189c75e53d637d2152c1ae29beb0566e577bc"
+    },
+    {
+      "path": "local/texture2d_00cbee90.asm",
+      "bytes": 212,
+      "sha256": "68fbdc91f451ef47add3a86392fc4256397d81859606b3dbb0719f0624cf04ed"
+    },
+    {
+      "path": "local/texture2d_00cbef50.asm",
+      "bytes": 269,
+      "sha256": "797439812dac0d39b7f3cc3cfbfc7e032a01735fe2d082b2a3a44c49b4e40a99"
+    },
+    {
+      "path": "local/texture2d_old_00b3f2e0_comments.txt",
+      "bytes": 466,
+      "sha256": "712fb34c7dd65a3ca6252c6ea95a87f86d347f6bc6128ef3be9eaf08b2fabdfd"
+    },
+    {
+      "path": "local/texture2d_old_00b3f2e0_proto.txt",
+      "bytes": 2075,
+      "sha256": "0922108dc069556c6a2640ece22febf2491f78fdb8d948e9c066aabcfea5f787"
+    },
+    {
+      "path": "local/texture2d_old_00b3f590_comments.txt",
+      "bytes": 127,
+      "sha256": "21f8b44899524d6f0a330d9f4a5137c1c2cbec0e60a8bfa8d08401bb5c1a7dd6"
+    },
+    {
+      "path": "local/texture2d_old_00b3f590_proto.txt",
+      "bytes": 859,
+      "sha256": "0e3785426c0ce216ac7b34e3ef61a8b5cf1220201bfe3423d839b0088062b8bd"
+    },
+    {
+      "path": "local/texture2d_old_00b3f930_comments.txt",
+      "bytes": 1553,
+      "sha256": "db0dd2b8e3e7700249603c89b300c4cc8855071ce8b029af6f36b34394b70378"
+    },
+    {
+      "path": "local/texture2d_old_00b3f930_proto.txt",
+      "bytes": 1619,
+      "sha256": "73385f2f72097d3be4472ada3e91e484b0d9a05b50a8fc31c980f6f7dd31e1ac"
+    },
+    {
+      "path": "local/prepare_native_texture_2d_owner.py",
+      "bytes": 5774,
+      "sha256": "6fd6ba327258ff3dd59456a1b7f074597ebd791e3111c833de1d724146d1226c"
+    },
+    {
+      "path": "local/native_texture_2d_owner_preparation.json",
+      "bytes": 67339,
+      "sha256": "5b279e12f17793f7323ff12b88089dbf8915dda8ad8c820852afae2a6bfe1094"
+    },
+    {
+      "path": "local/native_texture_2d_owner_spans.hpp",
+      "bytes": 22230,
+      "sha256": "373467b452aeed699f9766e3431ae608c8dc4b9e40db0c608c32cb545cc68199"
+    },
+    {
+      "path": "local/native_texture_2d_owner_check.cpp",
+      "bytes": 32245,
+      "sha256": "3efbfd8cb4bbed8d859b6f3fc1d05c5af9b0c243202869dc85882014e96eb271"
+    },
+    {
+      "path": "local/build_native_texture_2d_owner_check.ps1",
+      "bytes": 3785,
+      "sha256": "fc2f8540c2f84be57961c8ce3d40f2ba80f7a44be826258fe64f4b6f8cc6c5bf"
+    },
+    {
+      "path": "local/texture2d_api_observation.hpp",
+      "bytes": 254,
+      "sha256": "858c7db461979a6f500e820a9bd565dc0f07d0b7d371717e1a64df019ddbc056"
+    },
+    {
+      "path": "local/build_native_texture_2d_owner.ps1",
+      "bytes": 1037,
+      "sha256": "97a64f4dd0f5acc5f586fe9ba5a64170465aee05cae73598fcbdb40f256088d2"
+    },
+    {
+      "path": "local/texture2d_sources.cmake",
+      "bytes": 300,
+      "sha256": "9de98254dc1bfe5f4ef5f6a46ec7164a46fd45e38ad50a30df88e9617bb24dd4"
+    },
+    {
+      "path": "local/texture2d_preparation.log",
+      "bytes": 116,
+      "sha256": "a9494697612cb14ec37f60ef7680542bc6d0d65bba4545cb476434cbcc067247"
+    },
+    {
+      "path": "local/texture2d_fixture.log",
+      "bytes": 985,
+      "sha256": "a29f26c4741855cc5b2b56f9eb88c398090f32de58ac7b70de2d4810bc38a4d6"
+    },
+    {
+      "path": "local/texture2d_build_final.log",
+      "bytes": 2146,
+      "sha256": "70c608bdc42d5273dcfff7540173438d490e84505b7b238eff947edaac45b6bc"
+    },
+    {
+      "path": "local/texture2d_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/write_native_texture_2d_owner_audit.py",
+      "bytes": 17646,
+      "sha256": "0960bb3470dd65840c6bdd3f207c5bb603ffe1f859b5bd2113db91ac3257dc43"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_final.asm",
+      "bytes": 73757,
+      "sha256": "9f80b8a8b14df5126b49dd28065457fce9fc747a801c061446c3afa85e2638c1"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_final.obj",
+      "bytes": 11408,
+      "sha256": "ec84a0eb09446ec8bb7dc88270cfa32718a529e325d824a986446d903fdf1ce3"
+    },
+    {
+      "path": "build/texture2d-owner-check/actual_lifetime.obj",
+      "bytes": 31670,
+      "sha256": "59acabcd71f00f5d68266881a70f93b436cd4d6f052d9eb4f8d46dc3276a21b3"
+    },
+    {
+      "path": "build/texture2d-owner-check/actual_string.obj",
+      "bytes": 14544,
+      "sha256": "48e20d7d66069f5d9533d9a7b81dabac3c0264f3436bd626d693a67dc0735aed"
+    },
+    {
+      "path": "build/texture2d-owner-check/actual_synchronization.obj",
+      "bytes": 2458,
+      "sha256": "5f959fc946d6bc7ec94036779ba33a8a8570e2bdd9d6cee41508fe339d94e222"
+    },
+    {
+      "path": "build/texture2d-owner-check/native_texture_surface_cache_storage.obj",
+      "bytes": 3809,
+      "sha256": "b0b21b94c06f5c39ce12f1fbf33844f4ab6f75b86cdfac59ddf1b82bcd8a127a"
+    },
+    {
+      "path": "build/texture2d-owner-check/native_texture_2d_owner_check.obj",
+      "bytes": 283218,
+      "sha256": "71e4ac6f77daaba07c426bd7e042e59e5bace6772639e7329c27e6d272c9f768"
+    },
+    {
+      "path": "build/texture2d-owner-check/native_texture_2d_owner_check.exe",
+      "bytes": 86016,
+      "sha256": "72cb09c6cf2060c77330148cb734ca2426be8812c64f2e88b603ee8c163ea04b"
+    },
+    {
+      "path": "build/texture2d-owner-check/build_texture2d.cmd",
+      "bytes": 3925,
+      "sha256": "6d622e6c47919177982dece21809e2e96e31571cfa73abda5cb7ce994df9b812"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_trace.json",
+      "bytes": 66,
+      "sha256": "9fca7f8f409dfea2f32293861df43086c1a82ef88e5b7fc5a2a0107ce306fa51"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 22191194,
+      "sha256": "8d43420ef2839ed9ed19d9fbfc10e46cceaa4363a2e525eb4c20038346258f95"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 252416,
+      "sha256": "ed9fdb9d80fae1013540b172c7e01e0f883fdadc511eb2d145d91c5ce154c364"
+    },
+    {
+      "path": "build/win32/Release/bsp_native_math_tests.exe",
+      "bytes": 18432,
+      "sha256": "179c4598ee82a7c255cf809e183c5b29dc43b5c6335a8623b92109d2c803e5c7"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_normal_native.bin",
+      "bytes": 35912,
+      "sha256": "149acf0884f78e95592821ce7407b5865173cd39e8b315595364477f155762ef"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_normal_host.bin",
+      "bytes": 35912,
+      "sha256": "149acf0884f78e95592821ce7407b5865173cd39e8b315595364477f155762ef"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_cleanup_native.bin",
+      "bytes": 1608,
+      "sha256": "2c01f7054a4e4cd2acee2b50cf2b11c4c212b0e5e53568a17dd731409dd5bc6e"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_cleanup_host.bin",
+      "bytes": 1608,
+      "sha256": "2c01f7054a4e4cd2acee2b50cf2b11c4c212b0e5e53568a17dd731409dd5bc6e"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_outer_native.bin",
+      "bytes": 1340,
+      "sha256": "525f853b82ba59b2d81ee85813843764ea0cc56f6e4f060dd4a61a5dbe20ee54"
+    },
+    {
+      "path": "build/texture2d-owner-check/texture2d_outer_host.bin",
+      "bytes": 1340,
+      "sha256": "525f853b82ba59b2d81ee85813843764ea0cc56f6e4f060dd4a61a5dbe20ee54"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive names are hypotheses, not recovered symbols.",
+    "Known current native profile/table and readable/writable storage preconditions remain.",
+    "Actual application APIs are explicit nested-call boundaries; original bytes for every transitive dependency are not executed.",
+    "No complete fault-site, null-return allocation, arbitrary COM, concurrent mutation, GPU, visual or game validation is claimed.",
+    "Production small-string pool geometry and binary replacement ABI are separate boundaries.",
+    "Hash/file/build parity does not prove whole game behavior."
+  ],
+  "primary_integration": {
+    "verification": {
+      "worker_preverification": {
+        "worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-2d-owner-20260910",
+        "worker_commit": "5f7b39e",
+        "worker_pins_verified": 149,
+        "same_current_source_files": [
+          "src\\native_texture_2d_owner.cpp",
+          "include\\bsp\\native_texture_2d_owner.hpp",
+          "src\\native_logical_texture_named_base.cpp",
+          "include\\bsp\\native_logical_texture_named_base.hpp",
+          "src\\native_renderer_texture_name_notification.cpp",
+          "include\\bsp\\native_renderer_texture_name_notification.hpp",
+          "src\\native_texture_surface_cache_storage.cpp",
+          "include\\bsp\\native_texture_surface_cache_storage.hpp",
+          "src\\native_retained_memory_owners.cpp",
+          "include\\bsp\\native_retained_memory_owners.hpp",
+          "src\\native_surface_owner.cpp",
+          "include\\bsp\\native_surface_owner.hpp",
+          "src\\native_resource_support.cpp",
+          "include\\bsp\\native_resource_support.hpp",
+          "src\\native_string.cpp",
+          "include\\bsp\\native_string.hpp",
+          "src\\native_renderer_synchronization_actual.cpp",
+          "include\\bsp\\native_renderer_synchronization_actual.hpp",
+          "src\\native_render_buffer_unregistration.cpp",
+          "include\\bsp\\native_render_buffer_unregistration.hpp",
+          "src\\native_render_resource_container_removal.cpp",
+          "include\\bsp\\native_render_resource_container_removal.hpp",
+          "src\\native_render_resource_record.cpp",
+          "include\\bsp\\native_render_resource_record.hpp",
+          "src\\native_pooled_resource_path.cpp",
+          "include\\bsp\\native_pooled_resource_path.hpp",
+          "src\\native_physical_buffer_owner.cpp",
+          "include\\bsp\\native_physical_buffer_owner.hpp",
+          "src\\d3d9_texture2d_pool.cpp",
+          "include\\bsp\\d3d9_texture2d_pool.hpp",
+          "src\\d3d9_surface_pool.cpp",
+          "include\\bsp\\d3d9_surface_pool.hpp",
+          "src\\allocator_list.cpp",
+          "include\\bsp\\allocator_list.hpp",
+          "src\\storage_pool.cpp",
+          "include\\bsp\\storage_pool.hpp"
+        ],
+        "changed_shared_files": [
+          "src\\singleton_lifetime.cpp",
+          "include\\bsp\\singleton_lifetime.hpp"
+        ],
+        "used_allocate_free_bodies_unchanged": true,
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "live_PE_spans": [
+          {
+            "address": "00b3f930",
+            "length": 337,
+            "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117"
+          },
+          {
+            "address": "00b3f2e0",
+            "length": 302,
+            "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1"
+          },
+          {
+            "address": "00b3f590",
+            "length": 32,
+            "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465"
+          },
+          {
+            "address": "00b3d8d0",
+            "length": 101,
+            "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899"
+          },
+          {
+            "address": "00b3d9b0",
+            "length": 104,
+            "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31"
+          },
+          {
+            "address": "00b3da20",
+            "length": 80,
+            "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237"
+          },
+          {
+            "address": "00b3ec40",
+            "length": 23,
+            "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e"
+          },
+          {
+            "address": "00b34120",
+            "length": 176,
+            "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb"
+          },
+          {
+            "address": "00b34230",
+            "length": 37,
+            "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568"
+          },
+          {
+            "address": "00b33f50",
+            "length": 103,
+            "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb"
+          },
+          {
+            "address": "00b34010",
+            "length": 5,
+            "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+          },
+          {
+            "address": "00b27d40",
+            "length": 19,
+            "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3"
+          },
+          {
+            "address": "00b25580",
+            "length": 103,
+            "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+          },
+          {
+            "address": "00b32250",
+            "length": 240,
+            "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1"
+          },
+          {
+            "address": "00b33e40",
+            "length": 4,
+            "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7"
+          },
+          {
+            "address": "00bef9c0",
+            "length": 118,
+            "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec"
+          },
+          {
+            "address": "00bb8f90",
+            "length": 30,
+            "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438"
+          },
+          {
+            "address": "00cbee90",
+            "length": 29,
+            "sha256": "d533879bf906081369aba6642c341cb976c59fe8cd8ebbe9f3f3f1fa664ca42a"
+          },
+          {
+            "address": "00df7700",
+            "length": 52,
+            "sha256": "971eb51c77805422107654e4724a48da48bbdd975c91303561e367b0dfb3fc1f"
+          },
+          {
+            "address": "00cbef50",
+            "length": 37,
+            "sha256": "30499fe6e681d177ce74c941d568895fef21a28413b2a26ea0400baf34ccf590"
+          },
+          {
+            "address": "00df7824",
+            "length": 60,
+            "sha256": "f4a8a1f2d88cdfd300b6d2317bf8550baea310d670f71d1169d3e2b606e9fbc0"
+          },
+          {
+            "address": "00d61948",
+            "length": 88,
+            "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad"
+          },
+          {
+            "address": "00d642c0",
+            "length": 52,
+            "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566"
+          },
+          {
+            "address": "00d15ad8",
+            "length": 8,
+            "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319"
+          },
+          {
+            "address": "00bd30e0",
+            "length": 14,
+            "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+          },
+          {
+            "address": "00bd30f0",
+            "length": 7,
+            "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+          },
+          {
+            "address": "00b3f4c0",
+            "length": 30,
+            "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a"
+          },
+          {
+            "address": "00d619a0",
+            "length": 68,
+            "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1"
+          },
+          {
+            "address": "00b3f4e0",
+            "length": 168,
+            "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28"
+          },
+          {
+            "address": "00b3f5b0",
+            "length": 32,
+            "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782"
+          },
+          {
+            "address": "00d5f0a8",
+            "length": 112,
+            "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9"
+          },
+          {
+            "address": "00bf7680",
+            "length": 869,
+            "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3"
+          },
+          {
+            "address": "0041dd40",
+            "length": 5,
+            "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35"
+          },
+          {
+            "address": "00419cc0",
+            "length": 5,
+            "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+          },
+          {
+            "address": "00bd1510",
+            "length": 5,
+            "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247"
+          },
+          {
+            "address": "00bf6b43",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+          },
+          {
+            "address": "00b3e730",
+            "length": 5,
+            "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+          },
+          {
+            "address": "008d4470",
+            "length": 5,
+            "sha256": "07c12b9d69520518eca87f5215f83fcffc895ddd38b6bc3366600ab9211abfe6"
+          },
+          {
+            "address": "00bf6989",
+            "length": 5,
+            "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+          },
+          {
+            "address": "00bf55be",
+            "length": 5,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+          },
+          {
+            "address": "00ce2220",
+            "length": 4,
+            "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14"
+          },
+          {
+            "address": "00f8d394",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          {
+            "address": "0108d6dc",
+            "length": 16,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          {
+            "address": "0108daf8",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          {
+            "address": "0108fedc",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          {
+            "address": "0109db98",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          }
+        ],
+        "span_bytes": 3524
+      },
+      "loaded_spans_verified": [
+        {
+          "address": "00b3f930",
+          "length": 337,
+          "sha256": "b1babbbc46fccda1de23dbd1e74af771f7a5fdd10feab3fc1f994c61939c4674"
+        },
+        {
+          "address": "00b3f2e0",
+          "length": 302,
+          "sha256": "a387b88712d2c3e4a8262dacc1c922f1018a0e3903e37b2421007ae1596fbc52"
+        },
+        {
+          "address": "00b3f590",
+          "length": 32,
+          "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465"
+        },
+        {
+          "address": "00b3d8d0",
+          "length": 101,
+          "sha256": "a1b535765560d59219d7a60b40d7e129e6f572f01b6f8c8734a36e47cdfd1320"
+        },
+        {
+          "address": "00b3d9b0",
+          "length": 104,
+          "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31"
+        },
+        {
+          "address": "00b3da20",
+          "length": 80,
+          "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237"
+        },
+        {
+          "address": "00b3ec40",
+          "length": 23,
+          "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e"
+        },
+        {
+          "address": "00b34120",
+          "length": 176,
+          "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb"
+        },
+        {
+          "address": "00b34230",
+          "length": 37,
+          "sha256": "5451d390876c54788b2efd58501a779c81154cd4a248a67cf8b8513cc34f0ec5"
+        },
+        {
+          "address": "00b33f50",
+          "length": 103,
+          "sha256": "7dedcf09a7edbe620bf33f95284eaa844a6961aee475f40bc3b6094f774e8024"
+        },
+        {
+          "address": "00b34010",
+          "length": 5,
+          "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+        },
+        {
+          "address": "00b27d40",
+          "length": 19,
+          "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3"
+        },
+        {
+          "address": "00b25580",
+          "length": 103,
+          "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+        },
+        {
+          "address": "00b32250",
+          "length": 240,
+          "sha256": "dff801cef521d2e2c0e63cb6a592f0bf4d12125c43af26998b7106b842dcab66"
+        },
+        {
+          "address": "00b33e40",
+          "length": 4,
+          "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7"
+        },
+        {
+          "address": "00bef9c0",
+          "length": 118,
+          "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec"
+        },
+        {
+          "address": "00bb8f90",
+          "length": 30,
+          "sha256": "c5d53f3b7439ead2eda9bfe0de9916b6ea9a9ca7facc4a4268fb35af024f8c61"
+        },
+        {
+          "address": "00cbee90",
+          "length": 29,
+          "sha256": "d533879bf906081369aba6642c341cb976c59fe8cd8ebbe9f3f3f1fa664ca42a"
+        },
+        {
+          "address": "00df7700",
+          "length": 52,
+          "sha256": "971eb51c77805422107654e4724a48da48bbdd975c91303561e367b0dfb3fc1f"
+        },
+        {
+          "address": "00cbef50",
+          "length": 37,
+          "sha256": "30499fe6e681d177ce74c941d568895fef21a28413b2a26ea0400baf34ccf590"
+        },
+        {
+          "address": "00df7824",
+          "length": 60,
+          "sha256": "f4a8a1f2d88cdfd300b6d2317bf8550baea310d670f71d1169d3e2b606e9fbc0"
+        },
+        {
+          "address": "00d61948",
+          "length": 88,
+          "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad"
+        },
+        {
+          "address": "00d642c0",
+          "length": 52,
+          "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566"
+        },
+        {
+          "address": "00d15ad8",
+          "length": 8,
+          "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319"
+        },
+        {
+          "address": "00bd30e0",
+          "length": 14,
+          "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+        },
+        {
+          "address": "00bd30f0",
+          "length": 7,
+          "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+        },
+        {
+          "address": "00b3f4c0",
+          "length": 30,
+          "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a"
+        },
+        {
+          "address": "00d619a0",
+          "length": 68,
+          "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1"
+        },
+        {
+          "address": "00b3f4e0",
+          "length": 168,
+          "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28"
+        },
+        {
+          "address": "00b3f5b0",
+          "length": 32,
+          "sha256": "31c5080003f7d38d43ac241eb614a44a9e4962c24a73fa522362e6d18deca8a0"
+        },
+        {
+          "address": "00d5f0a8",
+          "length": 112,
+          "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9"
+        },
+        {
+          "address": "00bf7680",
+          "length": 869,
+          "sha256": "25ace3d68d298bbdf72152ecd027e41d5fc44f56889649ea2a450367c7c0d1f6"
+        },
+        {
+          "address": "0041dd40",
+          "length": 5,
+          "sha256": "bf7635074467deb87209bdf9ac24d541e7bb0c9283e3d7d0488d2e4e21d404a1"
+        },
+        {
+          "address": "00419cc0",
+          "length": 5,
+          "sha256": "8dfcd1215abdafb0ea8956d892341f344101539ea76667ca7f0942579a1a2882"
+        },
+        {
+          "address": "00bd1510",
+          "length": 5,
+          "sha256": "00127e3d8b7c7b7fd4d3756be9cc06039d948edc376d37309b749a49aa18d52e"
+        },
+        {
+          "address": "00bf6b43",
+          "length": 5,
+          "sha256": "6ce81a2309b932d338c6f5d6894f22ef084f5753849c16d4ee61e0ff81850506"
+        },
+        {
+          "address": "00b3e730",
+          "length": 5,
+          "sha256": "f0a817419754170b279aae1d441071e52b9927a51b736322706a311beae57e03"
+        },
+        {
+          "address": "008d4470",
+          "length": 5,
+          "sha256": "7518678453347dad7b71dcef2f4f654d2332147a70ab9b834164934404061711"
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "sha256": "9d80309317538075c72b67ca1da8edaec5e1850d333ef0bf9ad587800708ae15"
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "sha256": "4761bbfbd70ef6df6f74ed4c410458f0acffb0cfd1e33fe4d09fa3eba30a1245"
+        },
+        {
+          "address": "00ce2220",
+          "length": 4,
+          "sha256": "85b857ea98210b6c25278e1de6ea2853a4db9009d98677b46f285fb617afb97b"
+        },
+        {
+          "address": "00f8d394",
+          "length": 4,
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        },
+        {
+          "address": "0108d6dc",
+          "length": 16,
+          "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+        },
+        {
+          "address": "0108daf8",
+          "length": 8,
+          "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+        },
+        {
+          "address": "0108fedc",
+          "length": 4,
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        },
+        {
+          "address": "0109db98",
+          "length": 8,
+          "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+        }
+      ],
+      "owned_providers": [
+        {
+          "symbol": "construct_native_texture_2d_00b3f930",
+          "map_line": "0001:0000af90       ?construct_native_texture_2d_00b3f930@bsp@@YAPAXPAXPBXPAUIDirect3DTexture9@@IIIAAUNativeTexture2DOwnerContext@1@@Z 3000bf90 f   bsp_core.linked:native_texture_2d_owner.obj"
+        },
+        {
+          "symbol": "destroy_native_texture_2d_00b3f2e0",
+          "map_line": "0001:0000b310       ?destroy_native_texture_2d_00b3f2e0@bsp@@YAXPAXAAUNativeTexture2DOwnerContext@1@@Z 3000c310 f   bsp_core.linked:native_texture_2d_owner.obj"
+        },
+        {
+          "symbol": "delete_native_texture_2d_00b3f590",
+          "map_line": "0001:0000b2e0       ?delete_native_texture_2d_00b3f590@bsp@@YAPAXPAXIAAUNativeTexture2DOwnerContext@1@@Z 3000c2e0 f   bsp_core.linked:native_texture_2d_owner.obj"
+        }
+      ],
+      "shared_library_providers": [
+        {
+          "symbol": "construct_native_logical_texture_named_profile_00b34230",
+          "map_line": "0001:0000b6f0       ?construct_native_logical_texture_named_profile_00b34230@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z 3000c6f0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "symbol": "destroy_native_logical_texture_named_base_00b33f50",
+          "map_line": "0001:0000b7c0       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 3000c7c0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "symbol": "notify_native_renderer_texture_name_removal_00b32250",
+          "map_line": "0001:000096a0       ?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z 3000a6a0 f   bsp_core.linked:native_renderer_texture_name_notification.obj"
+        },
+        {
+          "symbol": "resource_support_singleton_00b3e730",
+          "map_line": "0001:0000a4b0       ?resource_support_singleton_00b3e730@bsp@@YAPAUNativeResourceSupportStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z 3000b4b0 f   bsp_core.linked:native_resource_support.obj"
+        },
+        {
+          "symbol": "delete_native_memory_stream_00bb8f90",
+          "map_line": "0001:00009c50       ?delete_native_memory_stream_00bb8f90@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 3000ac50 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "symbol": "delete_native_memory_backing_008d4470",
+          "map_line": "0001:00009bc0       ?delete_native_memory_backing_008d4470@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 3000abc0 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "symbol": "delete_native_surface_00b3f5b0",
+          "map_line": "0001:0000ae10       ?delete_native_surface_00b3f5b0@bsp@@YAPAUNativeSurfaceOwnerStorage@1@AAU21@IAAUNativeSurfaceOwnerContext@1@@Z 3000be10 f   bsp_core.linked:native_surface_owner.obj"
+        }
+      ],
+      "exact_production_source_observers": [
+        {
+          "symbol": "texture2d_actual_lifetime_allocate",
+          "map_line": "0001:000086b0       ?texture2d_actual_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 300096b0 f   actual_lifetime.obj"
+        },
+        {
+          "symbol": "texture2d_actual_lifetime_free",
+          "map_line": "0001:00008710       ?texture2d_actual_lifetime_free@bsp@@YAXPAX@Z 30009710 f   actual_lifetime.obj"
+        },
+        {
+          "symbol": "texture2d_actual_resize",
+          "map_line": "0001:000087c0       ?texture2d_actual_resize@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z 300097c0 f   actual_string.obj"
+        }
+      ],
+      "checks": {
+        "comparisons": [
+          {
+            "case": "normal",
+            "equal_dwords": 8978
+          },
+          {
+            "case": "cleanup",
+            "equal_dwords": 402
+          },
+          {
+            "case": "outer",
+            "equal_dwords": 335
+          }
+        ],
+        "equal_words": 9715,
+        "normal_events": 134,
+        "registered_original_FH3_adapters": 2,
+        "Interlocked_IAT_binding": 1,
+        "external_entry_bridges": 15,
+        "allocator_string_synchronization_observers": "Exact current production source compiled with only symbol alias or Win32 import observation; owned and remaining dependency providers come from frozen current bsp_core library. Host malloc/service boundaries are explicitly controlled fixture sites."
+      },
+      "artifact_pins": [
+        {
+          "path": "build/texture2d-owner-primary-check/native_texture_2d_owner_check.exe",
+          "bytes": 87552,
+          "sha256": "c39edd225651118db6ea23b811b000162d94b031f8b099cb74369451d0231f55"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/native_texture_2d_owner_check.map",
+          "bytes": 175550,
+          "sha256": "483f98c88f554353658134cb6a392fa19d56967bbe797ea963c7d19b015e026c"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/bsp_core.linked.lib",
+          "bytes": 23443124,
+          "sha256": "8cd77891dc873c76bd399277086a543784cd466e997e09152457d62fc1e1d155"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/native_texture_2d_owner_primary_check.obj",
+          "bytes": 288334,
+          "sha256": "ca545478736f5a62f1f1f4ba54ac902e4acd42fbae03f417dc2a83874df42b84"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/actual_lifetime.obj",
+          "bytes": 32957,
+          "sha256": "e69fa9183f8a224fdd1e8cd31cdd6615e3cd93d9d0f14c4e1eb0afea9fd23d22"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/actual_string.obj",
+          "bytes": 14520,
+          "sha256": "4b68fb108c7ccc2b45c0b3243daa4ae4a1ea0792e49ba55fdb93c6e5ec09d1fb"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/actual_synchronization.obj",
+          "bytes": 2430,
+          "sha256": "1cf9283b175cfbddb7066a4a5e99c7f0b87dc4a5b03d650d69a016c480f47acf"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_postimages.txt",
+          "bytes": 8093,
+          "sha256": "16c32231864ca9b796d917ebf4c22efdfe1b341f491e8b1eba27e67040a98463"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_normal_native.bin",
+          "bytes": 35912,
+          "sha256": "149acf0884f78e95592821ce7407b5865173cd39e8b315595364477f155762ef"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_normal_host.bin",
+          "bytes": 35912,
+          "sha256": "149acf0884f78e95592821ce7407b5865173cd39e8b315595364477f155762ef"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_cleanup_native.bin",
+          "bytes": 1608,
+          "sha256": "2c01f7054a4e4cd2acee2b50cf2b11c4c212b0e5e53568a17dd731409dd5bc6e"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_cleanup_host.bin",
+          "bytes": 1608,
+          "sha256": "2c01f7054a4e4cd2acee2b50cf2b11c4c212b0e5e53568a17dd731409dd5bc6e"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_outer_native.bin",
+          "bytes": 1340,
+          "sha256": "525f853b82ba59b2d81ee85813843764ea0cc56f6e4f060dd4a61a5dbe20ee54"
+        },
+        {
+          "path": "build/texture2d-owner-primary-check/texture2d_outer_host.bin",
+          "bytes": 1340,
+          "sha256": "525f853b82ba59b2d81ee85813843764ea0cc56f6e4f060dd4a61a5dbe20ee54"
+        },
+        {
+          "path": "local/native_texture_2d_owner_primary_check.cpp",
+          "bytes": 33728,
+          "sha256": "c2de1d13185640bab583cd47d71ae66f8914d84807050b94583f1fa1d28311ac"
+        },
+        {
+          "path": "local/build_native_texture_2d_owner_primary_check.ps1",
+          "bytes": 3964,
+          "sha256": "ab57e9468710534dd98633ea5b3180018b0c192f8c9ad2f4e616fd802bf149b5"
+        },
+        {
+          "path": "local/native_texture_2d_owner_primary_fixture.txt",
+          "bytes": 902,
+          "sha256": "dfa197e4a344d174cd6f9331225a0132a0e1e5600a651bcd5eb857e65daee472"
+        },
+        {
+          "path": "src/native_texture_2d_owner.cpp",
+          "bytes": 11544,
+          "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+        },
+        {
+          "path": "include/bsp/native_texture_2d_owner.hpp",
+          "bytes": 3247,
+          "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+        },
+        {
+          "path": "src/native_renderer_synchronization_actual.cpp",
+          "bytes": 3242,
+          "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+        },
+        {
+          "path": "src/native_string.cpp",
+          "bytes": 6003,
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "local/native_texture_construct_primary_build.txt",
+          "bytes": 1825,
+          "sha256": "dd79800e6f04e5aaa7b94770cd49fe3b68bd97c31dec57313df1aad275a25fe4"
+        },
+        {
+          "path": "local/prepare_texture_construct_primary.py",
+          "bytes": 3816,
+          "sha256": "848d192504cf95e31bb59e5afde46a1c9670827ba60699ef0461eacc25787d99"
+        },
+        {
+          "path": "local/make_texture_construct_primary_drivers.py",
+          "bytes": 3992,
+          "sha256": "bc4daa5320fb3f5c0eba9c14b13620b9058baebdc9130fe1760f65032cbcd3d6"
+        },
+        {
+          "path": "local/verify_texture_construct_primary.py",
+          "bytes": 9639,
+          "sha256": "9cf9cb09328a23486e61cbe36fc7f4a3f2e50b7adf9def7b82b877a9f7ad99fb"
+        }
+      ],
+      "existing_CTests_passed": 2,
+      "new_tracked_tests": 0,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "body_repair": {
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "functions": [
+        {
+          "address": "00b3f2e0",
+          "end_exclusive": "00b3f40e",
+          "length": 302,
+          "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+          "function_before": "Function: BSP_D3D9Texture_Destroy at 00b3f2e0\nSignature: undefined BSP_D3D9Texture_Destroy(void)\nEntry: 00b3f2e0\nBody: 00b3f2e0 - 00b3f3e8",
+          "documentation_before": {
+            "hash": "a5c61d893ec427d93b2e838bee7486f7110a5408d476808e70fc4bb843965117",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b3f2e0",
+            "function_name": "BSP_D3D9Texture_Destroy",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "plate_comment": "[BSP reconstruction 00b3f2e0]\nECX2Dtexture,RET. Release retainedstream+4C before renderer notifications, COMtexture+10 cleanup,cachedsurfaces andbase. Rawfullbody302bytes beyond truncatedfreeexport. Typedowner implements source-before-COM cleanup only; registry/cachedsurfaces/base/allocator remain unported.",
+            "parameters": [],
+            "local_variables": [
+              {
+                "name": "pvStack_c",
+                "type": "void *",
+                "storage": "(stack, 0xfffffffffffffff4, 4)"
+              },
+              {
+                "name": "puStack_8",
+                "type": "undefined1 *",
+                "storage": "(stack, 0xfffffffffffffff8, 4)"
+              },
+              {
+                "name": "piVar3",
+                "type": "int *",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "LVar4",
+                "type": "LONG",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "puVar1",
+                "type": "undefined4 *",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "iVar2",
+                "type": "int",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "uVar5",
+                "type": "undefined4",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar6",
+                "type": "int",
+                "storage": "(register, 0x14, 4)"
+              },
+              {
+                "name": "local_4",
+                "type": "undefined4",
+                "storage": "(stack, 0xfffffffffffffffc, 4)"
+              }
+            ],
+            "comments": [],
+            "labels": [
+              {
+                "relative_offset": 77,
+                "name": "LAB_00b3f32d"
+              },
+              {
+                "relative_offset": 80,
+                "name": "LAB_00b3f330"
+              },
+              {
+                "relative_offset": 140,
+                "name": "LAB_00b3f36c"
+              },
+              {
+                "relative_offset": 163,
+                "name": "LAB_00b3f383"
+              },
+              {
+                "relative_offset": 176,
+                "name": "LAB_00b3f390"
+              },
+              {
+                "relative_offset": 213,
+                "name": "LAB_00b3f3b5"
+              },
+              {
+                "relative_offset": 219,
+                "name": "LAB_00b3f3bb"
+              },
+              {
+                "relative_offset": 227,
+                "name": "LAB_00b3f3c3"
+              },
+              {
+                "relative_offset": 240,
+                "name": "LAB_00b3f3d0"
+              }
+            ],
+            "completeness_score": 100.0
+          },
+          "returning_free_call_sites": [
+            "00b3f3e4"
+          ],
+          "function_after": "Function: BSP_D3D9Texture_Destroy at 00b3f2e0\nSignature: undefined BSP_D3D9Texture_Destroy(void)\nEntry: 00b3f2e0\nBody: 00b3f2e0 - 00b3f40d",
+          "documentation_after": {
+            "hash": "7bde5fb83ab1a11deb797acbf2fb48a9389b4f80b46dd010c0e3671b28825cdf",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b3f2e0",
+            "function_name": "BSP_D3D9Texture_Destroy",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "plate_comment": "[BSP reconstruction 00b3f2e0]\nECX2Dtexture,RET. Release retainedstream+4C before renderer notifications, COMtexture+10 cleanup,cachedsurfaces andbase. Rawfullbody302bytes beyond truncatedfreeexport. Typedowner implements source-before-COM cleanup only; registry/cachedsurfaces/base/allocator remain unported.",
+            "parameters": [],
+            "local_variables": [
+              {
+                "name": "iVar6",
+                "type": "int",
+                "storage": "(register, 0x14, 4)"
+              },
+              {
+                "name": "uVar5",
+                "type": "undefined4",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "uStack_4",
+                "type": "undefined4",
+                "storage": "(stack, 0xfffffffffffffffc, 4)"
+              },
+              {
+                "name": "puStack_8",
+                "type": "undefined1 *",
+                "storage": "(stack, 0xfffffffffffffff8, 4)"
+              },
+              {
+                "name": "pvStack_c",
+                "type": "void *",
+                "storage": "(stack, 0xfffffffffffffff4, 4)"
+              },
+              {
+                "name": "LVar4",
+                "type": "LONG",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "piVar3",
+                "type": "int *",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "iVar2",
+                "type": "int",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "puVar1",
+                "type": "undefined4 *",
+                "storage": "(unique, 0x17200, 4)"
+              }
+            ],
+            "comments": [],
+            "labels": [
+              {
+                "relative_offset": 77,
+                "name": "LAB_00b3f32d"
+              },
+              {
+                "relative_offset": 80,
+                "name": "LAB_00b3f330"
+              },
+              {
+                "relative_offset": 140,
+                "name": "LAB_00b3f36c"
+              },
+              {
+                "relative_offset": 163,
+                "name": "LAB_00b3f383"
+              },
+              {
+                "relative_offset": 176,
+                "name": "LAB_00b3f390"
+              },
+              {
+                "relative_offset": 213,
+                "name": "LAB_00b3f3b5"
+              },
+              {
+                "relative_offset": 219,
+                "name": "LAB_00b3f3bb"
+              },
+              {
+                "relative_offset": 227,
+                "name": "LAB_00b3f3c3"
+              },
+              {
+                "relative_offset": 240,
+                "name": "LAB_00b3f3d0"
+              }
+            ],
+            "completeness_score": 100.0
+          }
+        }
+      ],
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b3f3e9",
+            "end_address": "00b3f40e"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b3f3e9",
+            "end_address": "00b3f40d",
+            "bytes_disassembled": 37,
+            "message": "Successfully disassembled 37 byte(s)"
+          }
+        },
+        {
+          "endpoint": "clear_instruction_flow_override",
+          "body": {
+            "address": "00b3f3e4"
+          },
+          "result": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b3f3e4 (was: CALL_RETURN, now: NONE)"
+          }
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b3f2e0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b3f2e0",
+            "deleted_function": "BSP_D3D9Texture_Destroy",
+            "body_size": 259,
+            "message": "Function 'BSP_D3D9Texture_Destroy' deleted at 00b3f2e0"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b3f2e0",
+            "name": "BSP_D3D9Texture_Destroy",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b3f2e0",
+            "function_name": "BSP_D3D9Texture_Destroy",
+            "entry_point": "00b3f2e0",
+            "body_size": 296,
+            "message": "Function created successfully at 00b3f2e0",
+            "warnings": [
+              "Function name 'BSP_D3D9Texture_Destroy' \u2014 main part 'D3D9Texture_Destroy' is not PascalCase. Expected: D3d9textureDestroy",
+              "Function name 'BSP_D3D9Texture_Destroy' \u2014 main part 'D3D9Texture_Destroy' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'BSP_D3D9Texture_Destroy' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ],
+      "status": "Native texture2D destructor full body restored and saved; existing code and comments preserved"
+    }
+  },
+  "source_pin_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-2d-owner-20260910",
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_texture_2d_owner_annotations.json",
+    "bytes": 5166,
+    "sha256": "8655799cdabcd10ab0f454d68a04e06e8f95a146a840385891ad1eefb0e21f7b",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b3f930",
+      "path": "exports/bsp/functions/00b3f930/decompiled.c",
+      "bytes": 4203,
+      "sha256": "de23c968b70416358ab6abb326c4571c477e5d009be2c82b0343833e9d70405f"
+    },
+    {
+      "address": "00b3f2e0",
+      "path": "exports/bsp/functions/00b3f2e0/decompiled.c",
+      "bytes": 3209,
+      "sha256": "c7037e7830791532c20ed1ae274df5ad4bd08dbc0ff3797e7db68412197c722b"
+    },
+    {
+      "address": "00b3f590",
+      "path": "exports/bsp/functions/00b3f590/decompiled.c",
+      "bytes": 913,
+      "sha256": "4ac776f326726a36969840fa34a874a70b53fc460262706a5cacb50c4d3cde04"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:13:22.244807+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b3f930",
+      "name": "construct_native_texture_2d_00b3f930",
+      "cpp_symbol": "construct_native_texture_2d_00b3f930",
+      "source": "src/native_texture_2d_owner.cpp",
+      "native_end_exclusive": "00b3fa81",
+      "original_abi": "ECX owner; stack actual-name/input-COM/saved-width/saved-height/flags; EAX owner; RET14h",
+      "evidence": "reports/native_texture_2d_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3f2e0",
+      "name": "destroy_native_texture_2d_00b3f2e0",
+      "cpp_symbol": "destroy_native_texture_2d_00b3f2e0",
+      "source": "src/native_texture_2d_owner.cpp",
+      "native_end_exclusive": "00b3f40e",
+      "original_abi": "ECX actual owner; plain RET; no semantic EAX",
+      "evidence": "reports/native_texture_2d_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3f590",
+      "name": "delete_native_texture_2d_00b3f590",
+      "cpp_symbol": "delete_native_texture_2d_00b3f590",
+      "source": "src/native_texture_2d_owner.cpp",
+      "native_end_exclusive": "00b3f5b0",
+      "original_abi": "ECX owner; stack flags; EAX original address; RET4",
+      "evidence": "reports/native_texture_2d_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_TEXTURE_2D_OWNER.md",
+    "bytes": 10576,
+    "sha256": "5ef1809214317eb7e4f3696f89f10536cd4a626922d0645e454abee40e5364fd"
+  }
+}

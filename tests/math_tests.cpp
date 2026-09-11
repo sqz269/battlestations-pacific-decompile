@@ -42,6 +42,7 @@
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_events.hpp"
+#include "bsp/mission_result.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
@@ -1706,6 +1707,28 @@ int main() {
                   && !bsp::warning_is_expired(10.0f, 4.0f, 6.5f),
             "the warning period fires above 4.0f and resets to zero instead of "
             "subtracting, and an exactly elapsed lifetime already retires");
+    }
+
+    {
+        // 00959468 is COMISS against the 1.0f at 00d7a24c followed by JBE, so a
+        // unit destroyed at exactly one second is still inside the mission-start
+        // grace period and is not reported; and 0090646a reads the completion
+        // flag before the store, so only the 0 -> set edge stamps the clock.
+        // docs/MISSION_RESULT_DECISION.md.
+        bsp::UnitDeathInputs at_grace{};
+        at_grace.mission_clock = 1.0f;
+        at_grace.unit_party_70 = 1;
+        at_grace.world_gate_4ac = true;
+        bsp::UnitDeathInputs past_grace = at_grace;
+        past_grace.mission_clock = 1.0000001f;
+        bsp::MissionScoreRecord record{};
+        const bool first = bsp::set_slot_mission_completed_00906460(record, true, 42.0f);
+        const bool again = bsp::set_slot_mission_completed_00906460(record, true, 99.0f);
+        check(!bsp::unit_death_00959450(at_grace).reports_kill
+                  && bsp::unit_death_00959450(past_grace).reports_kill && first && !again
+                  && record.completion_time_10 == 42.0f,
+            "a unit death at exactly the 1.0f grace boundary is not reported, and the "
+            "completion timestamp is stamped only on the first completion");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

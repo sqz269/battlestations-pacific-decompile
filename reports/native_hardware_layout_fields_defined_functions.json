@@ -1,0 +1,74 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b47640",
+      "end_exclusive": "00b47657",
+      "length": 23,
+      "sha256": "e2f5e92ee09c46a5c284f5452ec3569ccd92dc2db6793a1acc555c442f3dea49",
+      "missing_before": true,
+      "function_before": "No function found for 00b47640",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_HardwareLayoutRecord_Initialize at 00b47640\nSignature: undefined BSP_HardwareLayoutRecord_Initialize(void)\nEntry: 00b47640\nBody: 00b47640 - 00b47656"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b47640",
+        "end_address": "00b47657"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b47640",
+        "end_address": "00b47656",
+        "bytes_disassembled": 23,
+        "message": "Successfully disassembled 23 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b47640",
+        "name": "BSP_HardwareLayoutRecord_Initialize",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b47640",
+        "function_name": "BSP_HardwareLayoutRecord_Initialize",
+        "entry_point": "00b47640",
+        "body_size": 23,
+        "message": "Function created successfully at 00b47640",
+        "warnings": [
+          "Function name 'BSP_HardwareLayoutRecord_Initialize' \u2014 main part 'HardwareLayoutRecord_Initialize' is not PascalCase. Expected: HardwarelayoutrecordInitialize",
+          "Function name 'BSP_HardwareLayoutRecord_Initialize' \u2014 main part 'HardwareLayoutRecord_Initialize' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_HardwareLayoutRecord_Initialize' does not start with a recognized verb. First word 'Hardware' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Native hardware record definition saved; existing code and comments preserved"
+}

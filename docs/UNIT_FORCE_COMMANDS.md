@@ -358,3 +358,7 @@ the heading difference to the game's float-rounded quarter-pi bounds.
 rudder accessor. Its controller update and unit virtual call remain explicit
 external boundaries. See the follow-up for original ABIs, the exact constants,
 reconstruction and focused numerical verification limits.
+
+## Corrections from docs/UNIT_COMMAND_PRODUCERS.md
+
+Two of the four missing writers use ordinary displacements after all: `unit+102Ch`/`+1034h` are a maximum latch (`009d4fb0`, `009d4fe0`, inlined six times in `009f3f80`), and `unit+9A0h`/`+9A4h` are stored by four Lua bindings (`0089d9d0`, `0089db70`, `0089dd10`, `0089deb0`) with no clamp. The player order path is `00816a40` (called from three HUD screens) building a 20h-byte record that `0080dad0` writes into the slot at `unit+838h+[unit+97Ch]*20h`, mirrors to +994h..+99Ch and sends session message 8Eh. No instruction in the image stores to `[reg+980h]`/`[reg+984h]` in any encoding, so those two are written by a block copy or by a member of an object embedded below +980h; the apply side of unit state message 8Ch (`00813ca0`) is the best lead.

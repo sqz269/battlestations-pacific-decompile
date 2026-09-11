@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/app_bootstrap.hpp"
 #include "bsp/app_frame.hpp"
 #include "bsp/frame_clock.hpp"
 #include "bsp/platform_loop.hpp"
@@ -42,6 +43,10 @@ struct NativeRendererParametersOwner;
 }
 
 namespace bsp::game {
+
+// Milestone 2a, defined in bsp/game_hosts_vfs.hpp. Held by pointer so the milestone-1 header
+// stays independent of the VFS types.
+class GameVfsHost;
 
 // One host method, or one initialize phase, observed during a run.
 struct GameHostMethodRecord {
@@ -92,6 +97,12 @@ private:
 struct GameExecutableOptions {
     long frame_limit{-1};   // --frames N; negative runs until the window is closed
     std::string log_path;   // --log <path>
+    // --game-root <path>: SetCurrentDirectoryA before Init runs, so the phase-2 mount system
+    // path stays the GetCurrentDirectoryA call at 0073d697 rather than an injected path.
+    std::string game_root;
+    // --vfs-probe <virtual path>, repeatable: resolve and read one path after phase 2 and
+    // print its byte count.
+    std::vector<std::string> vfs_probes;
     bool parse(int argc, char** argv, std::string& error);
 };
 
@@ -235,6 +246,23 @@ struct GameRunSummary {
     unsigned long long frames_presented{};
     bool loop_finished{};
     int exit_code{};
+    // Milestone 2a. Phase 2 (00beda60, 00be1890, 0073cb10) and phase 5 (008d8190).
+    bool vfs_ready{};
+    std::size_t mounts_created{};
+    std::size_t mounts_requested{};
+    std::size_t package_entries{};
+    std::size_t package_mounts{};
+    bool cached_load{};
+    bool options_file_present{};
+    std::string options_path;
+    std::string language;
+    int settings_width{};
+    int settings_height{};
+    bool settings_fullscreen{};
+    bool settings_vsync{};
+    int settings_antialias{};
+    std::size_t probes_resolved{};
+    std::size_t probes_requested{};
 };
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
@@ -273,6 +301,10 @@ public:
     void destroy_singleton_lifetime_manager() override;
 
     const GameRunSummary& summary() const noexcept { return summary_; }
+    // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings
+    // phase 5 loaded. Null and default respectively when initialize did not reach them.
+    GameVfsHost* vfs() const noexcept { return vfs_; }
+    const GameSettings& settings() const noexcept { return settings_; }
 
 private:
     void run_initialize_phases();
@@ -293,6 +325,8 @@ private:
     GameDeviceHost* device_{};
     GameFrameHost* frame_host_{};
     GameLoopCallbacks* loop_callbacks_{};
+    GameVfsHost* vfs_{};
+    GameSettings settings_;
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};

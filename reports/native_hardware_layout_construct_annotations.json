@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b60790",
+    "before": {
+      "address": "00b60790",
+      "function_name": "BSP_D3D9VertexLayout_CreateFromStreams",
+      "comment": "[BSP reconstruction 00b60790]\nAppends input declarations via00b48a00; converts20-byte records to8-byte D3DVERTEXELEMENT9, stream index from input order, offset low16 bits, type/method/usage low8, usage index from14 per-usage counters shared across streams. Appends END, creates COM declaration+40h and recomputes stride. Includes unported diagnostic singleton calls."
+    },
+    "after": {
+      "address": "00b60790",
+      "old_name": "BSP_D3D9VertexLayout_CreateFromStreams",
+      "name": "BSP_D3D9VertexLayout_CreateFromStreams",
+      "evidence": "Complete conversion from actual stream/declaration headers. Append first, then reread raw data/count and stream count at native points. Offset is WORD; type/method/packed usage are BYTE; usage-counter indexing reads the full usage DWORD. The fixed scratch holds fourteen counters and sixteen packed elements followed by the live count. Supported storage requires reached stream indices 0..3, usage 0..13, and at most fifteen elements plus END; no runtime bounds checks are added. Normal diagnostic releases use captured pointer/length, whereas FH3 cleanup rereads current headers. Read the current renderer/device/table+158; pass actual owner+40 as output; ignore HRESULT and recompute current stride only after a returned call. Current primary library and exact production support observer passed 22 live/PE spans, all 26 declared patches/postimages, and six comparisons totaling 30,494 words. Original creation and constructor FH3 each executed three search and three unwind passes. Two existing CTests passed. No original binary ABI or game validation. Original ABI: ECX actual owner; stack stream list; RET4; EAX unspecified. Complete src/native_hardware_layout_construct.cpp; reports/native_hardware_layout_construct_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b60cb0",
+    "before": {
+      "address": "00b60cb0",
+      "function_name": "BSP_D3D9VertexLayout_ConstructFromStreams",
+      "comment": "[BSP reconstruction 00b60cb0]\nConstructor calls base00b48c00, clears native declaration+40h, installs vtable00d62af4 and calls creation00b60790. Vtable+8 is direct getter00b5ff00. Descriptive name; full native constructor/registry lifetime not ported."
+    },
+    "after": {
+      "address": "00b60cb0",
+      "old_name": "BSP_D3D9VertexLayout_ConstructFromStreams",
+      "name": "BSP_D3D9VertexLayout_ConstructFromStreams",
+      "evidence": "Complete hardware layout constructor: finish B48C00 base initialization, arm actual B48960 base cleanup, clear owner+40, install D62AF4, and run complete B60790. On failure, run base cleanup only. A COM output written before a throw remains in owner+40; there is no derived COM release or pool return. Current primary library and exact production support observer passed 22 live/PE spans, all 26 declared patches/postimages, and six comparisons totaling 30,494 words. Original creation and constructor FH3 each executed three search and three unwind passes. Two existing CTests passed. No original binary ABI or game validation. Original ABI: ECX actual owner; stack stream list; EAX same owner; RET4. Complete src/native_hardware_layout_construct.cpp; reports/native_hardware_layout_construct_audit.json."
+    },
+    "status": "applied"
+  }
+]
