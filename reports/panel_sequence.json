@@ -1,0 +1,322 @@
+{
+  "packet": "orch4_panel_state_d",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra": "http://127.0.0.1:8089"
+  },
+  "functions": [
+    {
+      "address": "004527f0",
+      "name": "BSP_PanelSequence_Advance",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=panel owner; AL=bool; RET",
+      "evidence": "Full state0/1/2 sequence; entry erasure precedes old-name copy; early byte38 erase; reset/current-name transitions; state writes and temporary cleanup after callbacks. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "004529f6",
+      "last_instruction_length": 1,
+      "end_inclusive": "004529f6",
+      "evidence_files": [
+        "exports/bsp/functions/004527f0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00452740",
+      "name": "BSP_PanelSequence_Step",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=panel owner; RET",
+      "evidence": "Retains entry across00452360; repeated kind calls; kind0 request, kind3 x87 float subtraction; cursor increments after callbacks. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "004527eb",
+      "last_instruction_length": 1,
+      "end_inclusive": "004527eb",
+      "evidence_files": [
+        "exports/bsp/functions/00452740/assembly.txt"
+      ]
+    },
+    {
+      "address": "00452360",
+      "name": "BSP_PanelSequence_ConsumeCommands",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=panel owner; RET or tailcall00451c90",
+      "evidence": "Kinds1/2/4 activate-copy-reset, deactivate, Lua dispatch with E17BFA guard; current cursor reread/increment; repeated virtual calls; required00451C90 terminal publisher. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "0045262e",
+      "last_instruction_length": 1,
+      "end_inclusive": "0045262e",
+      "evidence_files": [
+        "exports/bsp/functions/00452360/assembly.txt"
+      ]
+    },
+    {
+      "address": "0044c390",
+      "name": "BSP_PanelSequence_SelectCurrent",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=panel owner; RET",
+      "evidence": "Map-order largest priority/smallest tie selection, -1e10 sentinel D01502F9 at00CE4ADC, explicit incoming uninitialized secondary scratch bits, post-copy field reloads. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "0044c599",
+      "last_instruction_length": 1,
+      "end_inclusive": "0044c599",
+      "evidence_files": [
+        "exports/bsp/functions/0044c390/assembly.txt"
+      ]
+    },
+    {
+      "address": "0044ba00",
+      "name": "BSP_PanelSequenceMap_Find",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=map; hidden iterator output/key pointer stack; EAX=output; RET8",
+      "evidence": "Case-insensitive lower_bound then key-less check, returned owner/node iterator; standard map library projection. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "0044ba63",
+      "last_instruction_length": 3,
+      "end_inclusive": "0044ba65",
+      "evidence_files": [
+        "exports/bsp/functions/0044ba00/assembly.txt"
+      ]
+    },
+    {
+      "address": "00451020",
+      "name": "BSP_PanelSequenceMap_EraseIterator",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=map; hidden iterator output/by-value owner+node stack; EAX=output; RET0C",
+      "evidence": "Full assembly through raw tail004512D2: successor before unlink, pair destruction/free, current count reread then conditional decrement, successor result; replaces wrong STL_xlen_throw classification. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "004512d0",
+      "last_instruction_length": 3,
+      "end_inclusive": "004512d2",
+      "evidence_files": [
+        "exports/bsp/functions/00451020/assembly.txt"
+      ]
+    },
+    {
+      "address": "00451920",
+      "name": "BSP_PanelSequenceMap_LookupOrInsert",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=map; key pointer stack; EAX=entry at native node+14; RET4",
+      "evidence": "Lower-bound/insert of native40h default entry: CE4B40 vtable, floats4/8/C zero, flags10/38 zero, vectors empty, cursor24/selected3C zero; deep copied pair/node keys. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "00451a42",
+      "last_instruction_length": 3,
+      "end_inclusive": "00451a44",
+      "evidence_files": [
+        "exports/bsp/functions/00451920/assembly.txt"
+      ]
+    },
+    {
+      "address": "005b9490",
+      "name": "BSP_VoicePanel_ResetRows",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=voice manager; RET",
+      "evidence": "Unsigned row index loop rereads current vector94 size each iteration; concrete005B8A00 called for each index. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "005b94cc",
+      "last_instruction_length": 1,
+      "end_inclusive": "005b94cc",
+      "evidence_files": [
+        "exports/bsp/functions/005b9490/assembly.txt"
+      ]
+    },
+    {
+      "address": "00449af0",
+      "name": "BSP_NativeString_NotEqualCaseInsensitive",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=left NativeString; right pointer stack; AL=bool; RET4",
+      "evidence": "Complete stored-length-zero gates followed by host CRT _stricmp !=0. Existing descriptive name retained; no comparator stub or CRT port. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "00449b3a",
+      "last_instruction_length": 3,
+      "end_inclusive": "00449b3c",
+      "evidence_files": [
+        "exports/bsp/functions/00449af0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00443d00",
+      "name": "BSP_NativeString_LessCaseInsensitive",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "Left/right NativeString pointers stack; AL=bool; RET8",
+      "evidence": "Complete stored-length-zero gates followed by host CRT _stricmp <0. Existing descriptive name retained; no comparator stub or CRT port. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "00443d4e",
+      "last_instruction_length": 3,
+      "end_inclusive": "00443d50",
+      "evidence_files": [
+        "exports/bsp/functions/00443d00/assembly.txt"
+      ]
+    },
+    {
+      "address": "004483f0",
+      "name": "BSP_PanelSequence_RequestVoice",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=panel owner unused; entry*/row index/NativeString* stack; RET0C",
+      "evidence": "Captures entry+C float, writes+3C row, resolves borrowed timed record through required00705E00(name,0), current voice manager reload, concrete005B94D0(index,record,captured float). Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "0044842f",
+      "last_instruction_length": 3,
+      "end_inclusive": "00448431",
+      "evidence_files": [
+        "exports/bsp/functions/004483f0/assembly.txt"
+      ]
+    },
+    {
+      "address": "005b8a00",
+      "name": "BSP_VoicePanel_ResetRow",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=voice manager; row index stack; RET4",
+      "evidence": "Bounds-check row, local zero/zero NativeString resize0 cannot allocate, hence display arm unreachable; hide group/background/decoration and clear two text widgets, rereading pointers after calls. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "005b8c24",
+      "last_instruction_length": 3,
+      "end_inclusive": "005b8c26",
+      "evidence_files": [
+        "exports/bsp/functions/005b8a00/assembly.txt"
+      ]
+    },
+    {
+      "address": "0044fff0",
+      "name": "BSP_PanelSequenceEntry_Destroy",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=entry40h; RET",
+      "evidence": "Install CE4B40 vtable; nonnull commands vslot0(1), clear captured cells after callbacks; destroy slots, free slot vector then command vector. Two free-call flow gaps repaired. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "004500c6",
+      "last_instruction_length": 1,
+      "end_inclusive": "004500c6",
+      "evidence_files": [
+        "exports/bsp/functions/0044fff0/assembly.txt"
+      ]
+    },
+    {
+      "address": "00450110",
+      "name": "BSP_PanelSequencePair_Destroy",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=pair {NativeString key, entry40h}; RET",
+      "evidence": "Destroy entry first then key header without zeroing, actual pooled string destruction reused. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "00450170",
+      "last_instruction_length": 1,
+      "end_inclusive": "00450170",
+      "evidence_files": [
+        "exports/bsp/functions/00450110/assembly.txt"
+      ]
+    },
+    {
+      "address": "0044b530",
+      "name": "BSP_PanelSequenceSlot_Destroy",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=slot14h; RET",
+      "evidence": "Destroy palette NativeString+C before text NativeString+4; actual pooled header destruction, no header zeroing. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "0044b5a6",
+      "last_instruction_length": 1,
+      "end_inclusive": "0044b5a6",
+      "evidence_files": [
+        "exports/bsp/functions/0044b530/assembly.txt"
+      ]
+    },
+    {
+      "address": "005b94d0",
+      "name": "BSP_VoicePanel_BeginRecord",
+      "source": "src/panel_sequence.cpp",
+      "header": "include/bsp/panel_sequence.hpp",
+      "document": "docs/PANEL_SEQUENCE.md",
+      "status": "reconstructed",
+      "original_abi": "ECX=voice manager; row index/borrowed record*/float delay stack; RET0C",
+      "evidence": "Selected row fade/color then actual005B93D0 admission; delay store; last timed-key end or shared text sequence plus005B9420 poll and signed UTF16 count x87 hold formula. Complete capped assembly inspected; see reports/panel_sequence.json.",
+      "uncertainty": "Typed C++ projection, not native object/container/ABI/SEH equivalence. Host CRT locale must correspond; signaling NaNs/FP traps/status and container allocator/copy reentry are not reproduced. Callbacks may mutate fields but must not invalidate captured entries/vector cells/records.",
+      "last_instruction": "005b9754",
+      "last_instruction_length": 3,
+      "end_inclusive": "005b9756",
+      "evidence_files": [
+        "exports/bsp/functions/005b94d0/assembly.txt"
+      ]
+    }
+  ],
+  "required_unreconstructed_services": {
+    "00705e00": "Resolve/construct same borrowed timed VoiceClipRecord in current game+21DC; NativeString*/zero; RET8.",
+    "00451c90": "Publish entry slot active/text/palette rows through0044F220 and005B6910; ECX=panel owner, RET."
+  },
+  "explicit_unknown_input": {
+    "0044c390": "Incoming native stackfloat+18 bits; no initialization before first winner. Required const uint32_t reference in context, used only on sentinel tie."
+  },
+  "ghidra_changes": {
+    "authorization": "Parent explicitly authorized locked owned-address free-call flow repairs; all other analysis read-only.",
+    "record": "reports/panel_sequence_flow_repair.json",
+    "repaired_sites": [
+      "00451298",
+      "0045008a",
+      "004500a4"
+    ],
+    "pending_stored_body": {
+      "function": "00451020",
+      "tail_start": "0045129d",
+      "last_instruction": "004512d0",
+      "last_instruction_length": 3,
+      "end_inclusive": "004512d2"
+    },
+    "misleading_tags": {
+      "00452740": "stl_probable game command step",
+      "00451020": "stl_throw_site and STL_xlen_throw name omit real map erasure"
+    },
+    "worker_renames_prototypes_definitions_tags": false
+  },
+  "integration": "Parent owns canonical VoicePanelState embedding and replacement of VoiceSequenceHost whole advance callback with context getter/direct call; not changed in worker checkout.",
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release passed; local/panel-build-verified.log",
+    "existing_tests": "1/1 reconstructed_math passed; native differential test is not configured in this new worktree.",
+    "focused_fixture": "PASS local/panel-erase-probe.cpp: unlink, deleting callback, palette/text/key release, callback-mutated count decrement.",
+    "fixture_recipe": "./local/run-panel-erase-probe.ps1 -SourceRoot <checkout> [-CoreLibrary <library>]",
+    "library_sha256": "C2A10FAEB8A12138690F4A50FC230EA7BB98B9841BA193A1536FB53CB7BEFC62",
+    "fixture_log": "local/panel-erase-probe.log",
+    "native_abi_tested": false,
+    "game_validated": false,
+    "review": "Parent independently reviewed complete004527F0 state/cleanup/callback order; no must-fix finding."
+  }
+}
