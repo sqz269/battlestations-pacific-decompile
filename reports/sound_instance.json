@@ -709,5 +709,21 @@
     "merged_revision": "c11d84692a647bbb0bfc086f63683b4e82acac43",
     "helper_main_moved_after_build": true,
     "final_source_rebuilt_after_merge": "local/sound_instance_r_final_source_build.log"
+  },
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_channel_fixture_tested",
+    "validated_revision": "1546fe38f317a3b3029f5dbc5f80f7fd76e26aef",
+    "main_base": "c41114ee",
+    "integration_log": "local/sound_instance_r_corrected_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "library_sha256": "cde4e386bc517e279006edd9d38983c0f62e6d214b5083f8a722331d0a6a438d",
+    "fixture_provenance": "Installed-channel fixture ran on validation.code_revision with validation.library_sha256. The combined integration build/CTest result is separate.",
+    "correction_annotation_saved": true,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T202031Z.json",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
   }
 }
