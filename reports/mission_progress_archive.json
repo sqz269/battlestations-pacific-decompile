@@ -1,0 +1,473 @@
+{
+  "packet": "orch2_mission_progress",
+  "branch": "agent/orch2-mission-progress-20260910c",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "ghidra_mutations": false
+  },
+  "functions": [
+    {
+      "address": "00920000",
+      "name": "read_mission_progress_00920000",
+      "source": "src/mission_progress.cpp",
+      "first_instruction": "00920000: PUSH -0x1 ",
+      "last_instruction": "009205d3: RET 0x4 ",
+      "representation": "normal-flow C++ owned persistence model; not native ABI",
+      "ghidra_name_before": "FUN_00920000"
+    },
+    {
+      "address": "0090cb40",
+      "name": "write_mission_progress_0090cb40",
+      "source": "src/mission_progress.cpp",
+      "first_instruction": "0090cb40: SUB ESP,0x14 ",
+      "last_instruction": "0090cdcb: RET 0x4 ",
+      "representation": "normal-flow C++ owned persistence model; not native ABI",
+      "ghidra_name_before": "FUN_0090cb40"
+    },
+    {
+      "address": "00916a00",
+      "name": "read_mission_score_record_00916a00",
+      "source": "src/mission_progress.cpp",
+      "first_instruction": "00916a00: PUSH EBP ",
+      "last_instruction": "0091a074: RET 0x4 ",
+      "representation": "normal-flow C++ owned persistence model; not native ABI",
+      "ghidra_name_before": "FUN_00916a00"
+    },
+    {
+      "address": "00908a30",
+      "name": "write_mission_score_record_00908a30",
+      "source": "src/mission_progress.cpp",
+      "first_instruction": "00908a30: PUSH EBP ",
+      "last_instruction": "0090ab9f: RET 0x4 ",
+      "representation": "normal-flow C++ owned persistence model; not native ABI",
+      "ghidra_name_before": "FUN_00908a30"
+    },
+    {
+      "address": "0090bf50",
+      "name": "sum_mission_progress_0090bf50",
+      "source": "src/mission_progress.cpp",
+      "first_instruction": "0090bf50: SUB ESP,0xc ",
+      "last_instruction": "0090bfbd: RET ",
+      "representation": "normal-flow C++ owned persistence model; not native ABI",
+      "ghidra_name_before": "FUN_0090bf50"
+    },
+    {
+      "address": "00594a70",
+      "name": "mission_record_00594a70",
+      "source": "src/mission_progress.cpp",
+      "first_instruction": "00594a70: MOV EAX,FS:[0x0] ",
+      "last_instruction": "00594b50: RET 0x4 ",
+      "representation": "normal-flow C++ owned persistence model; not native ABI",
+      "ghidra_name_before": "FUN_00594a70"
+    }
+  ],
+  "model_constructors": [
+    {
+      "address": "00920e10",
+      "native_size": "0x24",
+      "implemented_as": "MissionProgress owned map defaults",
+      "trees": [
+        "0x00 record map",
+        "0x0c single best int map",
+        "0x18 multiplayer int map"
+      ]
+    },
+    {
+      "address": "0091ce90",
+      "native_size": "0x284",
+      "implemented_as": "MissionScoreRecord defaults for every persisted field; runtime-only native fields excluded"
+    },
+    {
+      "address": "0091d620",
+      "count_offset": "0x284",
+      "initial_count": 0
+    }
+  ],
+  "scalar_fields": [
+    {
+      "key": "play_time",
+      "offset": "0x0c",
+      "type": "float",
+      "read": "required",
+      "write": "always"
+    },
+    {
+      "key": "mission_completed",
+      "offset": "0x00",
+      "type": "int",
+      "read": "default 0",
+      "write": "nonzero"
+    },
+    {
+      "key": "ranking",
+      "offset": "0x04",
+      "type": "int",
+      "read": "default 0",
+      "write": "nonzero and mission_completed nonzero"
+    },
+    {
+      "key": "completion_time",
+      "offset": "0x10",
+      "type": "float",
+      "read": "default 0",
+      "write": "nonzero and mission_completed nonzero"
+    },
+    {
+      "key": "difficulty",
+      "offset": "0x08",
+      "type": "int",
+      "read": "default 0",
+      "write": "nonzero"
+    },
+    {
+      "key": "map_usage",
+      "offset": "0x14",
+      "type": "float",
+      "read": "if present",
+      "write": "always"
+    },
+    {
+      "key": "TotalScores/winnerMode",
+      "offset": "0x194",
+      "type": "int",
+      "read": "if present",
+      "write": "always"
+    },
+    {
+      "key": "objective/allied_party",
+      "offset": "0x1e4",
+      "type": "int",
+      "read": "if present, default 0",
+      "write": "nonzero"
+    },
+    {
+      "key": "objective/japanese_party",
+      "offset": "0x1e8",
+      "type": "int",
+      "read": "if present, default 0",
+      "write": "nonzero"
+    },
+    {
+      "key": "usedSlot",
+      "offset": "0x250",
+      "type": "int",
+      "read": "if present",
+      "write": "always"
+    },
+    {
+      "key": "count",
+      "offset": "0x284",
+      "type": "int",
+      "read": "required outside sum",
+      "write": "always outside sum"
+    }
+  ],
+  "table_fields": {
+    "score_maps": [
+      {
+        "key": "mission",
+        "native_offset": "0x18",
+        "type": "name -> int"
+      },
+      {
+        "key": "action",
+        "native_offset": "0x24",
+        "type": "name -> int"
+      },
+      {
+        "key": "ship",
+        "native_offset": "0x30",
+        "type": "name -> int"
+      },
+      {
+        "key": "plane",
+        "native_offset": "0x3c",
+        "type": "name -> int"
+      },
+      {
+        "key": "command",
+        "native_offset": "0x48",
+        "type": "name -> int"
+      },
+      {
+        "key": "missionMedals",
+        "native_offset": "0x54",
+        "type": "name -> int"
+      },
+      {
+        "key": "actionMedals",
+        "native_offset": "0x60",
+        "type": "name -> int"
+      }
+    ],
+    "totals": [
+      {
+        "key": "mission",
+        "native_offset": "0x1c8",
+        "type": "int"
+      },
+      {
+        "key": "action",
+        "native_offset": "0x1cc",
+        "type": "int"
+      },
+      {
+        "key": "ship",
+        "native_offset": "0x1d0",
+        "type": "int"
+      },
+      {
+        "key": "plane",
+        "native_offset": "0x1d4",
+        "type": "int"
+      },
+      {
+        "key": "command",
+        "native_offset": "0x1d8",
+        "type": "int"
+      },
+      {
+        "key": "badge",
+        "native_offset": "0x1dc",
+        "type": "int"
+      },
+      {
+        "key": "total",
+        "native_offset": "0x1e0",
+        "type": "int"
+      }
+    ],
+    "losses": [
+      {
+        "key": "allied_losses",
+        "native_offset": "0x1ec",
+        "type": "name -> int"
+      },
+      {
+        "key": "japanese_losses",
+        "native_offset": "0x1f8",
+        "type": "name -> int"
+      }
+    ],
+    "objectives": [
+      {
+        "key": "allied_primary_objectives",
+        "native_offset": "0x204",
+        "type": "name -> (name,int)"
+      },
+      {
+        "key": "allied_secondary_objectives",
+        "native_offset": "0x210",
+        "type": "name -> (name,int)"
+      },
+      {
+        "key": "allied_hidden_objectives",
+        "native_offset": "0x21c",
+        "type": "name -> (name,int)"
+      },
+      {
+        "key": "japanese_primary_objectives",
+        "native_offset": "0x228",
+        "type": "name -> (name,int)"
+      },
+      {
+        "key": "japanese_secondary_objectives",
+        "native_offset": "0x234",
+        "type": "name -> (name,int)"
+      },
+      {
+        "key": "japanese_hidden_objectives",
+        "native_offset": "0x240",
+        "type": "name -> (name,int)"
+      }
+    ],
+    "checkpoints": [
+      {
+        "key": "repairuses",
+        "native_offset": "0x168",
+        "type": "int"
+      },
+      {
+        "key": "formationuses",
+        "native_offset": "0x16c",
+        "type": "int"
+      },
+      {
+        "key": "shipvsShip",
+        "native_offset": "0x170",
+        "type": "int"
+      },
+      {
+        "key": "islandCapture",
+        "native_offset": "0x174",
+        "type": "int"
+      }
+    ]
+  },
+  "trace_trees": [
+    {
+      "key": "player_damages",
+      "offset": "0x9c",
+      "shape": "unit -> party -> unit",
+      "leaf_type": "int"
+    },
+    {
+      "key": "party_damages",
+      "offset": "0xa8",
+      "shape": "unit -> party -> unit",
+      "leaf_type": "int"
+    },
+    {
+      "key": "player_kills",
+      "offset": "0xb4",
+      "shape": "party -> unit -> unit",
+      "leaf_type": "int"
+    },
+    {
+      "key": "party_kills",
+      "offset": "0xc0",
+      "shape": "party -> unit -> unit",
+      "leaf_type": "int"
+    },
+    {
+      "key": "unit_remaining",
+      "offset": "0xcc",
+      "shape": "party -> unit",
+      "leaf_type": "int"
+    },
+    {
+      "key": "unit_suicide",
+      "offset": "0xd8",
+      "shape": "unit",
+      "leaf_type": "int"
+    },
+    {
+      "key": "unit_usage",
+      "offset": "0x114",
+      "shape": "unit",
+      "leaf_type": "float"
+    }
+  ],
+  "numeric_children": {
+    "path": "TotalScores",
+    "keys": [
+      0,
+      1,
+      2
+    ],
+    "completed_offsets": [
+      "0x26c",
+      "0x270",
+      "0x274"
+    ],
+    "score_offsets": [
+      "0x278",
+      "0x27c",
+      "0x280"
+    ],
+    "reader": "optional section, children and fields; missing values preserved",
+    "writer": "always all children and both fields"
+  },
+  "objective_value_shape": "case-insensitive outer name -> one (inner name, int) pair; last enumerated inner key overwrites pair; empty inner section creates nothing",
+  "enum_dictionaries": {
+    "party": {
+      "table": "00e0b080",
+      "reader": "00805990",
+      "names": [
+        "OWN",
+        "ENEMY",
+        "NEUTRAL",
+        "UNKNOWN"
+      ],
+      "unknown_index": 4
+    },
+    "unit": {
+      "table": "00e0b590",
+      "reader": "0085bce0",
+      "names": [
+        "mothership",
+        "destroyer",
+        "torpedoboat",
+        "battleship",
+        "cruiser",
+        "cargo",
+        "landingship",
+        "levelbomber",
+        "divebomber",
+        "torpedobomber",
+        "fighter",
+        "reconplane",
+        "kamikaze",
+        "submarine",
+        "landvehicle",
+        "landfort",
+        "airfield",
+        "shipyard",
+        "path",
+        "other"
+      ],
+      "unknown_index": 19,
+      "compared_indices": "0..18"
+    }
+  },
+  "checkpoint_quirk": {
+    "writer_literal": "ChackPointData",
+    "writer_literal_address": "00d1850c",
+    "writer_guard": "record+0x24c != 0",
+    "writer_clear_instruction": "0090ab92",
+    "reader_literal": "CheckPointData",
+    "reader_literal_address": "00d18920",
+    "reader_range": "00919ef1..0091a060",
+    "reader_navigation": "presence check only; does not enter the checkpoint section; reads counters in current sum section",
+    "reader_changes_flag": false
+  },
+  "important_policies": [
+    "Record read skipped when signed global game+0x738 version <2; explicit version parameter in C++",
+    "Top reader wrapper selected solely by missionScores key presence; absent means direct legacy mission map",
+    "All reads merge; no implicit clear",
+    "Top-level int maps retain zero values in writer",
+    "Named score/loss maps omit zero fields but retain nonempty all-zero section",
+    "Trace int leaves retain zeros; unit_usage float leaves omit numeric zero",
+    "Native string keys compare ignoring ASCII case; numeric enum maps use signed int order",
+    "Sum only MultiScores using unsigned 32-bit accumulation and bit-preserving return",
+    "mission_completion projection is record+0x00; all other persisted fields retained separately"
+  ],
+  "dependency_evidence": {
+    "00594a70": "case-insensitive string record operator[] returns node+0x14; constructs 0091d620",
+    "00625f50": "string -> (string,int) operator[] returns native pair at node+0x14; default pair empty/zero",
+    "0090e740": "numeric key map operator[] initializes one zero word; caller reads tag2 float",
+    "0062c170": "signed numeric nested map operator[] for party-keyed kills",
+    "00915610": "signed numeric nested map operator[] for unit-keyed damages"
+  },
+  "validation": {
+    "verify_seeds": "PASS: all 8 installed PE seed byte comparisons matched",
+    "win32_msvc_build": "PASS: scripts/build.ps1; mission_progress.cpp compiled; no warnings",
+    "ctest": "PASS: 2/2 reconstructed_math and native_math_differential",
+    "worker_build_log": "local/mission-progress-build.log",
+    "mission_fixture": "Primary owns ignored real-Lua combined fixture local/profile_persistence_probe.cpp; expected fields reviewed against native evidence",
+    "mission_binary_differential": false,
+    "game_validated": false,
+    "build_dependency": "Primary indexed ProfileArchiveWriter::begin_section overload from integration commit a9da34c copied temporarily for build; shared header excluded from worker commit and restored afterward"
+  },
+  "limitations": [
+    "New C++ layout/ownership and valid-input persistence semantics only; no binary ABI/SEH or allocator equivalence",
+    "Native runtime-only score record members omitted; every visited archive field represented",
+    "Existing Lua reader 250-key cap retained",
+    "Numeric/null native map-key payloads rejected instead of unsafe pointer dereference",
+    "Unknown party retained as index4 on read; invalid enum indices rejected on write instead of unchecked native table access"
+  ],
+  "metadata_repairs_required": [],
+  "known_external_metadata_issue": "007fd780 destructor tail issue owned by primary; see docs/GAME_PROFILE_RESET.md",
+  "evidence": [
+    "docs/MISSION_PROGRESS_ARCHIVE.md",
+    "exports/bsp/functions/00920000",
+    "exports/bsp/functions/0090cb40",
+    "exports/bsp/functions/00908a30",
+    "exports/bsp/functions/00916a00",
+    "exports/bsp/functions/00594a70",
+    "exports/bsp/functions/0091ce90",
+    "exports/bsp/functions/0091d620"
+  ]
+}
