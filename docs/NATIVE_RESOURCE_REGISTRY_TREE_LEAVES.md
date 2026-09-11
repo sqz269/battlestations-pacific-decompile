@@ -140,3 +140,8 @@ static object evidence from executed source/provider paths. Native exception
 runtime, invalid-memory faults, pool recreation failure, general erase
 `B19F90`, range `B1A2F0`, registry destruction, factory lifetime and game
 behavior remain outside this packet.
+
+
+## Primary integration
+
+Primary registered the full source entries, passed the strict Win32 build, both existing CTests and eight fresh original seeds, and used the same frozen main library `aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae` for all three packets. All 81 sealed worker files, 57 report pins, 16 unchanged current source/header inputs and 11 fresh spans covering 917 bytes passed. The unchanged fixture linked only the main archive and matched all 391 trace words across the six original/source entries. Four exact archive objects retain 114 COFF code sections, 8,008 bytes and 260 relocations; 52 linked sections covering 4,971 bytes pass nonrelocation-byte checks. Original pool/CRT helpers remain explicit complete-source bridges. The B1A260 returning-free backedge is now decoded and saved while preserving previous comments, neighbors and global `_free` metadata. The actual pool release noexcept and native recreation-failure limits remain. Reviewed names and evidence comments are saved with prior values retained; correct CRT library names remain. All affected exports were forcibly refreshed. Immutable primary evidence: `local/tree_leaves_primary/`. New source interfaces are not original caller ABI or gameplay validation.
