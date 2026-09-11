@@ -1,0 +1,1442 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_tree_next",
+  "status": "discovery_complete_ready_tree_closure_packet_hardware_implementation_conditional",
+  "captured_utc": "2026-09-11T01:45:16.390213+00:00",
+  "base_commit": "6e2fd5ff021c8aee4b6b3a4dc3e9c50559de9932",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "project_verification": "Every capture invokes tools/bsp.py ghidra bytes, whose client() verifies the bsp project, program path, x86 language and image base before reading.",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_addresses": [
+    "00b20dc0",
+    "00b2ef00",
+    "00b2f4c0"
+  ],
+  "owned_function_byte_count": 904,
+  "captured_range_count": 32,
+  "captured_byte_count": 1915,
+  "all_live_ghidra_spans_match_installed_pe": true,
+  "native_byte_evidence": [
+    {
+      "address": "00b2f4c0",
+      "end_exclusive": "00b2f53e",
+      "byte_count": 126,
+      "kind": "owned_function",
+      "disk_offset": 7533760,
+      "original_hex": "83ec08a134d5080153558b6c2414568bd88b0057be30d508018bf889742410897c241485f6740881fe30d508017405e81f720c003bfb743c85f67505e812720c003b7e047505e808720c003b6f2074138d4c2410e8a718ffff8b7c24148b742410ebc057568d44241850b930d50801e8ccf9ffff5f5e5d5b83c408c20400",
+      "sha256": "56ed03e5e9f71e813f4df848443dafd905e13fe7c5be6b9813dae7c1542a0e80",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b2f53b",
+          "text": "ret 4"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b2f4ef",
+          "text": "call 0xbf6713"
+        },
+        {
+          "address": "00b2f4fc",
+          "text": "call 0xbf6713"
+        },
+        {
+          "address": "00b2f506",
+          "text": "call 0xbf6713"
+        },
+        {
+          "address": "00b2f514",
+          "text": "call 0xb20dc0"
+        },
+        {
+          "address": "00b2f521",
+          "text": "jmp 0xb2f4e3"
+        },
+        {
+          "address": "00b2f52f",
+          "text": "call 0xb2ef00"
+        }
+      ],
+      "complete_raw_disassembly": [
+        "00b2f4c0: sub esp, 8",
+        "00b2f4c3: mov eax, dword ptr [0x108d534]",
+        "00b2f4c8: push ebx",
+        "00b2f4c9: push ebp",
+        "00b2f4ca: mov ebp, dword ptr [esp + 0x14]",
+        "00b2f4ce: push esi",
+        "00b2f4cf: mov ebx, eax",
+        "00b2f4d1: mov eax, dword ptr [eax]",
+        "00b2f4d3: push edi",
+        "00b2f4d4: mov esi, 0x108d530",
+        "00b2f4d9: mov edi, eax",
+        "00b2f4db: mov dword ptr [esp + 0x10], esi",
+        "00b2f4df: mov dword ptr [esp + 0x14], edi",
+        "00b2f4e3: test esi, esi",
+        "00b2f4e5: je 0xb2f4ef",
+        "00b2f4e7: cmp esi, 0x108d530",
+        "00b2f4ed: je 0xb2f4f4",
+        "00b2f4ef: call 0xbf6713",
+        "00b2f4f4: cmp edi, ebx",
+        "00b2f4f6: je 0xb2f534",
+        "00b2f4f8: test esi, esi",
+        "00b2f4fa: jne 0xb2f501",
+        "00b2f4fc: call 0xbf6713",
+        "00b2f501: cmp edi, dword ptr [esi + 4]",
+        "00b2f504: jne 0xb2f50b",
+        "00b2f506: call 0xbf6713",
+        "00b2f50b: cmp ebp, dword ptr [edi + 0x20]",
+        "00b2f50e: je 0xb2f523",
+        "00b2f510: lea ecx, [esp + 0x10]",
+        "00b2f514: call 0xb20dc0",
+        "00b2f519: mov edi, dword ptr [esp + 0x14]",
+        "00b2f51d: mov esi, dword ptr [esp + 0x10]",
+        "00b2f521: jmp 0xb2f4e3",
+        "00b2f523: push edi",
+        "00b2f524: push esi",
+        "00b2f525: lea eax, [esp + 0x18]",
+        "00b2f529: push eax",
+        "00b2f52a: mov ecx, 0x108d530",
+        "00b2f52f: call 0xb2ef00",
+        "00b2f534: pop edi",
+        "00b2f535: pop esi",
+        "00b2f536: pop ebp",
+        "00b2f537: pop ebx",
+        "00b2f538: add esp, 8",
+        "00b2f53b: ret 4"
+      ]
+    },
+    {
+      "address": "00b2ef00",
+      "end_exclusive": "00b2f1a7",
+      "byte_count": 679,
+      "kind": "owned_function",
+      "disk_offset": 7532288,
+      "original_hex": "64a1000000006aff68a8d7cb0050648925000000008b44241883ec488078250055568be9744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e8d7978dff8d44240c508d4c242c8974245ce8a5278eff68a863d8008d4c242c51c74424306c92d600e813790c00538bd8578d4c246c895c2410e83d1effff8b038078250074058b7b08eb188b5308807a250074048bf8eb0b8b4c24703bcb8b79087567807f25008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f250074048bc6eb078bcfe89818ffff89038b5d048b4c2410394b087570807f250074078bc6894308eb638bcfe85618ffff894308eb578948048b1389113b4b0875048bf1eb1a807f25008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53248a41248851248843248b442410b3013858240f85f20000008b4d043b79040f84e3000000385f240f85da0000008b063bf875638b4608807824007512885824568bcdc6462400e8283bffff8b46088078250075728b10385a2475088b4808385924745f8b48083859247512885a24508bcdc6402400e83918ffff8b46088a4e24884824885e248b5008568bcd885a24e8df3affffeb71807824007511885824568bcdc6462400e80818ffff8b068078250075138b5008385a24751e8b083859247517c64024008b55048bfe3b7a048b76040f854dffffffeb2e8b083859247511885a24508bcdc6402400e8843affff8b068a4e24884824885e248b10568bcd885a24e8ac17ffff885f248b44241050e83b740c008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+      "sha256": "9fe114e6cdaee7ef2d25d62c7c2362d7fa21256a788208a8b51de4f0ecd0d6ef",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b2f1a4",
+          "text": "ret 0xc"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b2ef44",
+          "text": "call 0x408720"
+        },
+        {
+          "address": "00b2ef56",
+          "text": "call 0x411700"
+        },
+        {
+          "address": "00b2ef6d",
+          "text": "call 0xbf6885"
+        },
+        {
+          "address": "00b2ef7e",
+          "text": "call 0xb20dc0"
+        },
+        {
+          "address": "00b2ef8e",
+          "text": "jmp 0xb2efa8"
+        },
+        {
+          "address": "00b2ef9b",
+          "text": "jmp 0xb2efa8"
+        },
+        {
+          "address": "00b2efbf",
+          "text": "jmp 0xb2efcc"
+        },
+        {
+          "address": "00b2efc7",
+          "text": "jmp 0xb2efcc"
+        },
+        {
+          "address": "00b2efdf",
+          "text": "jmp 0xb2efe8"
+        },
+        {
+          "address": "00b2efe3",
+          "text": "call 0xb20880"
+        },
+        {
+          "address": "00b2f001",
+          "text": "jmp 0xb2f066"
+        },
+        {
+          "address": "00b2f005",
+          "text": "call 0xb20860"
+        },
+        {
+          "address": "00b2f00d",
+          "text": "jmp 0xb2f066"
+        },
+        {
+          "address": "00b2f01d",
+          "text": "jmp 0xb2f039"
+        },
+        {
+          "address": "00b2f044",
+          "text": "jmp 0xb2f054"
+        },
+        {
+          "address": "00b2f04f",
+          "text": "jmp 0xb2f054"
+        },
+        {
+          "address": "00b2f0a3",
+          "text": "call 0xb22bd0"
+        },
+        {
+          "address": "00b2f0d2",
+          "text": "call 0xb20910"
+        },
+        {
+          "address": "00b2f0ec",
+          "text": "call 0xb22bd0"
+        },
+        {
+          "address": "00b2f0f1",
+          "text": "jmp 0xb2f164"
+        },
+        {
+          "address": "00b2f103",
+          "text": "call 0xb20910"
+        },
+        {
+          "address": "00b2f134",
+          "text": "jmp 0xb2f164"
+        },
+        {
+          "address": "00b2f147",
+          "text": "call 0xb22bd0"
+        },
+        {
+          "address": "00b2f15f",
+          "text": "call 0xb20910"
+        },
+        {
+          "address": "00b2f16c",
+          "text": "call 0xbf65ac"
+        }
+      ],
+      "complete_raw_disassembly": [
+        "00b2ef00: mov eax, dword ptr fs:[0]",
+        "00b2ef06: push -1",
+        "00b2ef08: push 0xcbd7a8",
+        "00b2ef0d: push eax",
+        "00b2ef0e: mov dword ptr fs:[0], esp",
+        "00b2ef15: mov eax, dword ptr [esp + 0x18]",
+        "00b2ef19: sub esp, 0x48",
+        "00b2ef1c: cmp byte ptr [eax + 0x25], 0",
+        "00b2ef20: push ebp",
+        "00b2ef21: push esi",
+        "00b2ef22: mov ebp, ecx",
+        "00b2ef24: je 0xb2ef72",
+        "00b2ef26: push 0x1b",
+        "00b2ef28: xor esi, esi",
+        "00b2ef2a: push 0xce44e0",
+        "00b2ef2f: lea ecx, [esp + 0x14]",
+        "00b2ef33: mov dword ptr [esp + 0x2c], 0xf",
+        "00b2ef3b: mov dword ptr [esp + 0x28], esi",
+        "00b2ef3f: mov byte ptr [esp + 0x18], 0",
+        "00b2ef44: call 0x408720",
+        "00b2ef49: lea eax, [esp + 0xc]",
+        "00b2ef4d: push eax",
+        "00b2ef4e: lea ecx, [esp + 0x2c]",
+        "00b2ef52: mov dword ptr [esp + 0x5c], esi",
+        "00b2ef56: call 0x411700",
+        "00b2ef5b: push 0xd863a8",
+        "00b2ef60: lea ecx, [esp + 0x2c]",
+        "00b2ef64: push ecx",
+        "00b2ef65: mov dword ptr [esp + 0x30], 0xd6926c",
+        "00b2ef6d: call 0xbf6885",
+        "00b2ef72: push ebx",
+        "00b2ef73: mov ebx, eax",
+        "00b2ef75: push edi",
+        "00b2ef76: lea ecx, [esp + 0x6c]",
+        "00b2ef7a: mov dword ptr [esp + 0x10], ebx",
+        "00b2ef7e: call 0xb20dc0",
+        "00b2ef83: mov eax, dword ptr [ebx]",
+        "00b2ef85: cmp byte ptr [eax + 0x25], 0",
+        "00b2ef89: je 0xb2ef90",
+        "00b2ef8b: mov edi, dword ptr [ebx + 8]",
+        "00b2ef8e: jmp 0xb2efa8",
+        "00b2ef90: mov edx, dword ptr [ebx + 8]",
+        "00b2ef93: cmp byte ptr [edx + 0x25], 0",
+        "00b2ef97: je 0xb2ef9d",
+        "00b2ef99: mov edi, eax",
+        "00b2ef9b: jmp 0xb2efa8",
+        "00b2ef9d: mov ecx, dword ptr [esp + 0x70]",
+        "00b2efa1: cmp ecx, ebx",
+        "00b2efa3: mov edi, dword ptr [ecx + 8]",
+        "00b2efa6: jne 0xb2f00f",
+        "00b2efa8: cmp byte ptr [edi + 0x25], 0",
+        "00b2efac: mov esi, dword ptr [ebx + 4]",
+        "00b2efaf: jne 0xb2efb4",
+        "00b2efb1: mov dword ptr [edi + 4], esi",
+        "00b2efb4: mov eax, dword ptr [ebp + 4]",
+        "00b2efb7: cmp dword ptr [eax + 4], ebx",
+        "00b2efba: jne 0xb2efc1",
+        "00b2efbc: mov dword ptr [eax + 4], edi",
+        "00b2efbf: jmp 0xb2efcc",
+        "00b2efc1: cmp dword ptr [esi], ebx",
+        "00b2efc3: jne 0xb2efc9",
+        "00b2efc5: mov dword ptr [esi], edi",
+        "00b2efc7: jmp 0xb2efcc",
+        "00b2efc9: mov dword ptr [esi + 8], edi",
+        "00b2efcc: mov ebx, dword ptr [ebp + 4]",
+        "00b2efcf: mov eax, dword ptr [ebx]",
+        "00b2efd1: cmp eax, dword ptr [esp + 0x10]",
+        "00b2efd5: jne 0xb2efea",
+        "00b2efd7: cmp byte ptr [edi + 0x25], 0",
+        "00b2efdb: je 0xb2efe1",
+        "00b2efdd: mov eax, esi",
+        "00b2efdf: jmp 0xb2efe8",
+        "00b2efe1: mov ecx, edi",
+        "00b2efe3: call 0xb20880",
+        "00b2efe8: mov dword ptr [ebx], eax",
+        "00b2efea: mov ebx, dword ptr [ebp + 4]",
+        "00b2efed: mov ecx, dword ptr [esp + 0x10]",
+        "00b2eff1: cmp dword ptr [ebx + 8], ecx",
+        "00b2eff4: jne 0xb2f066",
+        "00b2eff6: cmp byte ptr [edi + 0x25], 0",
+        "00b2effa: je 0xb2f003",
+        "00b2effc: mov eax, esi",
+        "00b2effe: mov dword ptr [ebx + 8], eax",
+        "00b2f001: jmp 0xb2f066",
+        "00b2f003: mov ecx, edi",
+        "00b2f005: call 0xb20860",
+        "00b2f00a: mov dword ptr [ebx + 8], eax",
+        "00b2f00d: jmp 0xb2f066",
+        "00b2f00f: mov dword ptr [eax + 4], ecx",
+        "00b2f012: mov edx, dword ptr [ebx]",
+        "00b2f014: mov dword ptr [ecx], edx",
+        "00b2f016: cmp ecx, dword ptr [ebx + 8]",
+        "00b2f019: jne 0xb2f01f",
+        "00b2f01b: mov esi, ecx",
+        "00b2f01d: jmp 0xb2f039",
+        "00b2f01f: cmp byte ptr [edi + 0x25], 0",
+        "00b2f023: mov esi, dword ptr [ecx + 4]",
+        "00b2f026: jne 0xb2f02b",
+        "00b2f028: mov dword ptr [edi + 4], esi",
+        "00b2f02b: mov dword ptr [esi], edi",
+        "00b2f02d: mov eax, dword ptr [ebx + 8]",
+        "00b2f030: mov dword ptr [ecx + 8], eax",
+        "00b2f033: mov edx, dword ptr [ebx + 8]",
+        "00b2f036: mov dword ptr [edx + 4], ecx",
+        "00b2f039: mov eax, dword ptr [ebp + 4]",
+        "00b2f03c: cmp dword ptr [eax + 4], ebx",
+        "00b2f03f: jne 0xb2f046",
+        "00b2f041: mov dword ptr [eax + 4], ecx",
+        "00b2f044: jmp 0xb2f054",
+        "00b2f046: mov eax, dword ptr [ebx + 4]",
+        "00b2f049: cmp dword ptr [eax], ebx",
+        "00b2f04b: jne 0xb2f051",
+        "00b2f04d: mov dword ptr [eax], ecx",
+        "00b2f04f: jmp 0xb2f054",
+        "00b2f051: mov dword ptr [eax + 8], ecx",
+        "00b2f054: mov eax, dword ptr [ebx + 4]",
+        "00b2f057: mov dword ptr [ecx + 4], eax",
+        "00b2f05a: mov dl, byte ptr [ebx + 0x24]",
+        "00b2f05d: mov al, byte ptr [ecx + 0x24]",
+        "00b2f060: mov byte ptr [ecx + 0x24], dl",
+        "00b2f063: mov byte ptr [ebx + 0x24], al",
+        "00b2f066: mov eax, dword ptr [esp + 0x10]",
+        "00b2f06a: mov bl, 1",
+        "00b2f06c: cmp byte ptr [eax + 0x24], bl",
+        "00b2f06f: jne 0xb2f167",
+        "00b2f075: mov ecx, dword ptr [ebp + 4]",
+        "00b2f078: cmp edi, dword ptr [ecx + 4]",
+        "00b2f07b: je 0xb2f164",
+        "00b2f081: cmp byte ptr [edi + 0x24], bl",
+        "00b2f084: jne 0xb2f164",
+        "00b2f08a: mov eax, dword ptr [esi]",
+        "00b2f08c: cmp edi, eax",
+        "00b2f08e: jne 0xb2f0f3",
+        "00b2f090: mov eax, dword ptr [esi + 8]",
+        "00b2f093: cmp byte ptr [eax + 0x24], 0",
+        "00b2f097: jne 0xb2f0ab",
+        "00b2f099: mov byte ptr [eax + 0x24], bl",
+        "00b2f09c: push esi",
+        "00b2f09d: mov ecx, ebp",
+        "00b2f09f: mov byte ptr [esi + 0x24], 0",
+        "00b2f0a3: call 0xb22bd0",
+        "00b2f0a8: mov eax, dword ptr [esi + 8]",
+        "00b2f0ab: cmp byte ptr [eax + 0x25], 0",
+        "00b2f0af: jne 0xb2f123",
+        "00b2f0b1: mov edx, dword ptr [eax]",
+        "00b2f0b3: cmp byte ptr [edx + 0x24], bl",
+        "00b2f0b6: jne 0xb2f0c0",
+        "00b2f0b8: mov ecx, dword ptr [eax + 8]",
+        "00b2f0bb: cmp byte ptr [ecx + 0x24], bl",
+        "00b2f0be: je 0xb2f11f",
+        "00b2f0c0: mov ecx, dword ptr [eax + 8]",
+        "00b2f0c3: cmp byte ptr [ecx + 0x24], bl",
+        "00b2f0c6: jne 0xb2f0da",
+        "00b2f0c8: mov byte ptr [edx + 0x24], bl",
+        "00b2f0cb: push eax",
+        "00b2f0cc: mov ecx, ebp",
+        "00b2f0ce: mov byte ptr [eax + 0x24], 0",
+        "00b2f0d2: call 0xb20910",
+        "00b2f0d7: mov eax, dword ptr [esi + 8]",
+        "00b2f0da: mov cl, byte ptr [esi + 0x24]",
+        "00b2f0dd: mov byte ptr [eax + 0x24], cl",
+        "00b2f0e0: mov byte ptr [esi + 0x24], bl",
+        "00b2f0e3: mov edx, dword ptr [eax + 8]",
+        "00b2f0e6: push esi",
+        "00b2f0e7: mov ecx, ebp",
+        "00b2f0e9: mov byte ptr [edx + 0x24], bl",
+        "00b2f0ec: call 0xb22bd0",
+        "00b2f0f1: jmp 0xb2f164",
+        "00b2f0f3: cmp byte ptr [eax + 0x24], 0",
+        "00b2f0f7: jne 0xb2f10a",
+        "00b2f0f9: mov byte ptr [eax + 0x24], bl",
+        "00b2f0fc: push esi",
+        "00b2f0fd: mov ecx, ebp",
+        "00b2f0ff: mov byte ptr [esi + 0x24], 0",
+        "00b2f103: call 0xb20910",
+        "00b2f108: mov eax, dword ptr [esi]",
+        "00b2f10a: cmp byte ptr [eax + 0x25], 0",
+        "00b2f10e: jne 0xb2f123",
+        "00b2f110: mov edx, dword ptr [eax + 8]",
+        "00b2f113: cmp byte ptr [edx + 0x24], bl",
+        "00b2f116: jne 0xb2f136",
+        "00b2f118: mov ecx, dword ptr [eax]",
+        "00b2f11a: cmp byte ptr [ecx + 0x24], bl",
+        "00b2f11d: jne 0xb2f136",
+        "00b2f11f: mov byte ptr [eax + 0x24], 0",
+        "00b2f123: mov edx, dword ptr [ebp + 4]",
+        "00b2f126: mov edi, esi",
+        "00b2f128: cmp edi, dword ptr [edx + 4]",
+        "00b2f12b: mov esi, dword ptr [esi + 4]",
+        "00b2f12e: jne 0xb2f081",
+        "00b2f134: jmp 0xb2f164",
+        "00b2f136: mov ecx, dword ptr [eax]",
+        "00b2f138: cmp byte ptr [ecx + 0x24], bl",
+        "00b2f13b: jne 0xb2f14e",
+        "00b2f13d: mov byte ptr [edx + 0x24], bl",
+        "00b2f140: push eax",
+        "00b2f141: mov ecx, ebp",
+        "00b2f143: mov byte ptr [eax + 0x24], 0",
+        "00b2f147: call 0xb22bd0",
+        "00b2f14c: mov eax, dword ptr [esi]",
+        "00b2f14e: mov cl, byte ptr [esi + 0x24]",
+        "00b2f151: mov byte ptr [eax + 0x24], cl",
+        "00b2f154: mov byte ptr [esi + 0x24], bl",
+        "00b2f157: mov edx, dword ptr [eax]",
+        "00b2f159: push esi",
+        "00b2f15a: mov ecx, ebp",
+        "00b2f15c: mov byte ptr [edx + 0x24], bl",
+        "00b2f15f: call 0xb20910",
+        "00b2f164: mov byte ptr [edi + 0x24], bl",
+        "00b2f167: mov eax, dword ptr [esp + 0x10]",
+        "00b2f16b: push eax",
+        "00b2f16c: call 0xbf65ac",
+        "00b2f171: mov eax, dword ptr [ebp + 8]",
+        "00b2f174: add esp, 4",
+        "00b2f177: test eax, eax",
+        "00b2f179: pop edi",
+        "00b2f17a: pop ebx",
+        "00b2f17b: jbe 0xb2f183",
+        "00b2f17d: add eax, -1",
+        "00b2f180: mov dword ptr [ebp + 8], eax",
+        "00b2f183: mov ecx, dword ptr [esp + 0x64]",
+        "00b2f187: mov eax, dword ptr [esp + 0x60]",
+        "00b2f18b: mov edx, dword ptr [esp + 0x68]",
+        "00b2f18f: mov dword ptr [eax], ecx",
+        "00b2f191: mov ecx, dword ptr [esp + 0x50]",
+        "00b2f195: pop esi",
+        "00b2f196: mov dword ptr [eax + 4], edx",
+        "00b2f199: pop ebp",
+        "00b2f19a: mov dword ptr fs:[0], ecx",
+        "00b2f1a1: add esp, 0x54",
+        "00b2f1a4: ret 0xc"
+      ]
+    },
+    {
+      "address": "00b20dc0",
+      "end_exclusive": "00b20e23",
+      "byte_count": 99,
+      "kind": "owned_function",
+      "disk_offset": 7474624,
+      "original_hex": "568bf1833e007505e846590d008b46048078250074065ee937590d008b480880792500751a8b0180782500750d8d49008bc88b018078250074f6894e045ec38b40048078250075168b4e043b4808750e8946048bd08b42048078250074ea8946045ec3",
+      "sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b20dfe",
+          "text": "ret"
+        },
+        {
+          "address": "00b20e22",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b20dc8",
+          "text": "call 0xbf6713"
+        },
+        {
+          "address": "00b20dd7",
+          "text": "jmp 0xbf6713"
+        }
+      ],
+      "complete_raw_disassembly": [
+        "00b20dc0: push esi",
+        "00b20dc1: mov esi, ecx",
+        "00b20dc3: cmp dword ptr [esi], 0",
+        "00b20dc6: jne 0xb20dcd",
+        "00b20dc8: call 0xbf6713",
+        "00b20dcd: mov eax, dword ptr [esi + 4]",
+        "00b20dd0: cmp byte ptr [eax + 0x25], 0",
+        "00b20dd4: je 0xb20ddc",
+        "00b20dd6: pop esi",
+        "00b20dd7: jmp 0xbf6713",
+        "00b20ddc: mov ecx, dword ptr [eax + 8]",
+        "00b20ddf: cmp byte ptr [ecx + 0x25], 0",
+        "00b20de3: jne 0xb20dff",
+        "00b20de5: mov eax, dword ptr [ecx]",
+        "00b20de7: cmp byte ptr [eax + 0x25], 0",
+        "00b20deb: jne 0xb20dfa",
+        "00b20ded: lea ecx, [ecx]",
+        "00b20df0: mov ecx, eax",
+        "00b20df2: mov eax, dword ptr [ecx]",
+        "00b20df4: cmp byte ptr [eax + 0x25], 0",
+        "00b20df8: je 0xb20df0",
+        "00b20dfa: mov dword ptr [esi + 4], ecx",
+        "00b20dfd: pop esi",
+        "00b20dfe: ret",
+        "00b20dff: mov eax, dword ptr [eax + 4]",
+        "00b20e02: cmp byte ptr [eax + 0x25], 0",
+        "00b20e06: jne 0xb20e1e",
+        "00b20e08: mov ecx, dword ptr [esi + 4]",
+        "00b20e0b: cmp ecx, dword ptr [eax + 8]",
+        "00b20e0e: jne 0xb20e1e",
+        "00b20e10: mov dword ptr [esi + 4], eax",
+        "00b20e13: mov edx, eax",
+        "00b20e15: mov eax, dword ptr [edx + 4]",
+        "00b20e18: cmp byte ptr [eax + 0x25], 0",
+        "00b20e1c: je 0xb20e08",
+        "00b20e1e: mov dword ptr [esi + 4], eax",
+        "00b20e21: pop esi",
+        "00b20e22: ret"
+      ]
+    },
+    {
+      "address": "00b20860",
+      "end_exclusive": "00b2087c",
+      "byte_count": 28,
+      "kind": "tree_dependency",
+      "disk_offset": 7473248,
+      "original_hex": "8bc18b5008807a25007510eb038d49008bc28b5008807a250074f5c3",
+      "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b2087b",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b2086b",
+          "text": "jmp 0xb20870"
+        }
+      ]
+    },
+    {
+      "address": "00b20880",
+      "end_exclusive": "00b2089b",
+      "byte_count": 27,
+      "kind": "tree_dependency",
+      "disk_offset": 7473280,
+      "original_hex": "8bc18b10807a250075108d9b000000008bc28b10807a250074f6c3",
+      "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b2089a",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": []
+    },
+    {
+      "address": "00b20910",
+      "end_exclusive": "00b20962",
+      "byte_count": 82,
+      "kind": "tree_dependency",
+      "disk_offset": 7473424,
+      "original_hex": "8b5424048b02568b700889328b7008807e250075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b20940",
+          "text": "ret 4"
+        },
+        {
+          "address": "00b20954",
+          "text": "ret 4"
+        },
+        {
+          "address": "00b2095f",
+          "text": "ret 4"
+        }
+      ],
+      "calls_and_jumps": []
+    },
+    {
+      "address": "00b22bd0",
+      "end_exclusive": "00b22c1e",
+      "byte_count": 78,
+      "kind": "tree_dependency",
+      "disk_offset": 7482320,
+      "original_hex": "8b5424048b4208568b308972088b30807e250075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b22bff",
+          "text": "ret 4"
+        },
+        {
+          "address": "00b22c10",
+          "text": "ret 4"
+        },
+        {
+          "address": "00b22c1b",
+          "text": "ret 4"
+        }
+      ],
+      "calls_and_jumps": []
+    },
+    {
+      "address": "004412b0",
+      "end_exclusive": "004412e2",
+      "byte_count": 50,
+      "kind": "exception_dependency",
+      "disk_offset": 266928,
+      "original_hex": "568bf1c7064892d600837e2410720c8b461050e8e4527b0083c40433c0c746240f0000008946208846108bce5ee972517b00",
+      "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "004412c3",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "004412dd",
+          "text": "jmp 0xbf6454"
+        }
+      ],
+      "complete_raw_disassembly": [
+        "004412b0: push esi",
+        "004412b1: mov esi, ecx",
+        "004412b3: mov dword ptr [esi], 0xd69248",
+        "004412b9: cmp dword ptr [esi + 0x24], 0x10",
+        "004412bd: jb 0x4412cb",
+        "004412bf: mov eax, dword ptr [esi + 0x10]",
+        "004412c2: push eax",
+        "004412c3: call 0xbf65ac",
+        "004412c8: add esp, 4",
+        "004412cb: xor eax, eax",
+        "004412cd: mov dword ptr [esi + 0x24], 0xf",
+        "004412d4: mov dword ptr [esi + 0x20], eax",
+        "004412d7: mov byte ptr [esi + 0x10], al",
+        "004412da: mov ecx, esi",
+        "004412dc: pop esi",
+        "004412dd: jmp 0xbf6454"
+      ]
+    },
+    {
+      "address": "00441760",
+      "end_exclusive": "00441779",
+      "byte_count": 25,
+      "kind": "exception_dependency_missing_function_definition",
+      "disk_offset": 268128,
+      "original_hex": "8b44240456508bf1e86301fdffc7066c92d6008bc65ec20400",
+      "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00441776",
+          "text": "ret 4"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00441768",
+          "text": "call 0x4118d0"
+        }
+      ],
+      "complete_raw_disassembly": [
+        "00441760: mov eax, dword ptr [esp + 4]",
+        "00441764: push esi",
+        "00441765: push eax",
+        "00441766: mov esi, ecx",
+        "00441768: call 0x4118d0",
+        "0044176d: mov dword ptr [esi], 0xd6926c",
+        "00441773: mov eax, esi",
+        "00441775: pop esi",
+        "00441776: ret 4"
+      ]
+    },
+    {
+      "address": "00b60700",
+      "end_exclusive": "00b60765",
+      "byte_count": 101,
+      "kind": "conditional_hardware_dependency",
+      "disk_offset": 7735040,
+      "original_hex": "6aff68f812cc0064a100000000506489250000000051568bf189742404c706f42ad6008b464085c0c744241000000000740f8b088b510850ffd2c7464000000000e8eadffdff8bcec7442410ffffffffe80b82feff8b4c24085e64890d0000000083c410c3",
+      "sha256": "05051ac9f6426beca60c8e772d34ea209d09895e4e57bab2bcd8ae70f8a45ce8",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b60764",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b60738",
+          "text": "call edx"
+        },
+        {
+          "address": "00b60741",
+          "text": "call 0xb3e730"
+        },
+        {
+          "address": "00b60750",
+          "text": "call 0xb48960"
+        }
+      ]
+    },
+    {
+      "address": "00b60770",
+      "end_exclusive": "00b60790",
+      "byte_count": 32,
+      "kind": "conditional_hardware_dependency",
+      "disk_offset": 7735152,
+      "original_hex": "568bf1e888fffffff644240801740b56b99cfe0801e886f9ffff8bc65ec20400",
+      "sha256": "a14ef74c87406d88e40140cb3651236708a1e417eb9607d00b7346c686ab5ac3",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b6078d",
+          "text": "ret 4"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b60773",
+          "text": "call 0xb60700"
+        },
+        {
+          "address": "00b60785",
+          "text": "call 0xb60110"
+        }
+      ]
+    },
+    {
+      "address": "00b48960",
+      "end_exclusive": "00b489cf",
+      "byte_count": 111,
+      "kind": "conditional_hardware_dependency",
+      "disk_offset": 7637344,
+      "original_hex": "6aff68e3f6cb0064a100000000506489250000000051568bf189742404c706101dd6008b0d94d3f8008b018b504456c744241401000000ffd268f083b4006a048d46086a0c50c644242000e8bef20a008bcec7442410ffffffffe831a708008b4c24085e64890d0000000083c410c3",
+      "sha256": "22ab23afc06b440755488df3897d937d5061b0444bdcbab0cf6bce3cbc6c810e",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b489ce",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b48997",
+          "text": "call edx"
+        },
+        {
+          "address": "00b489ab",
+          "text": "call 0xbf7c6e"
+        },
+        {
+          "address": "00b489ba",
+          "text": "call 0xbd30f0"
+        }
+      ]
+    },
+    {
+      "address": "00b60110",
+      "end_exclusive": "00b60175",
+      "byte_count": 101,
+      "kind": "conditional_hardware_dependency",
+      "disk_offset": 7733520,
+      "original_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58448b4e288b0c992bc18bd0b8398ee338f7eac1fa048bc2c1e81f03c20fb79140090000668984510009000066838140090000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "sha256": "85a15cb16f32836623bb5dcd33e6a0390351b75da87df1a3a7748652361d3b62",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b60172",
+          "text": "ret 4"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b60119",
+          "text": "call dword ptr [0xce2218]"
+        },
+        {
+          "address": "00b60169",
+          "text": "call dword ptr [0xce2210]"
+        }
+      ]
+    },
+    {
+      "address": "00b483f0",
+      "end_exclusive": "00b48419",
+      "byte_count": 41,
+      "kind": "conditional_hardware_dependency",
+      "disk_offset": 7635952,
+      "original_hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b48418",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b483fe",
+          "text": "call dword ptr [0xce2220]"
+        },
+        {
+          "address": "00b4840e",
+          "text": "call eax"
+        }
+      ]
+    },
+    {
+      "address": "00b48950",
+      "end_exclusive": "00b48960",
+      "byte_count": 16,
+      "kind": "conditional_hardware_dependency",
+      "disk_offset": 7637328,
+      "original_hex": "68f083b4006a046a0c51e80ff30a00c3",
+      "sha256": "08f7b22dd2ba2cf3cea0b20248c423e9d0e640b365e0cc2add957cd01bb9dad9",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [
+        {
+          "address": "00b4895f",
+          "text": "ret"
+        }
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00b4895a",
+          "text": "call 0xbf7c6e"
+        }
+      ]
+    },
+    {
+      "address": "00cbd7a0",
+      "end_exclusive": "00cbd7a8",
+      "byte_count": 8,
+      "kind": "code_eh_cleanup",
+      "disk_offset": 9164704,
+      "original_hex": "8d4db0e9289b74ff",
+      "sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cbd7a3",
+          "text": "jmp 0x4072d0"
+        }
+      ]
+    },
+    {
+      "address": "00cbd7a8",
+      "end_exclusive": "00cbd7b2",
+      "byte_count": 10,
+      "kind": "code_eh_handler",
+      "disk_offset": 9164712,
+      "original_hex": "b82460df00e99193f3ff",
+      "sha256": "1550efbddb4b68fa29dd9e6e7e6b8e41cb5c00fb30c361e511f137ebd520e7a6",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cbd7ad",
+          "text": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "address": "00cbf6d0",
+      "end_exclusive": "00cbf6d8",
+      "byte_count": 8,
+      "kind": "code_eh_cleanup",
+      "disk_offset": 9172688,
+      "original_hex": "8b4df0e9183af1ff",
+      "sha256": "b51802d534dca161f476f6739219f4bf7019440103517a0e7077931c6a407dab",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cbf6d3",
+          "text": "jmp 0xbd30f0"
+        }
+      ]
+    },
+    {
+      "address": "00cbf6d8",
+      "end_exclusive": "00cbf6e3",
+      "byte_count": 11,
+      "kind": "code_eh_cleanup",
+      "disk_offset": 9172696,
+      "original_hex": "8b4df083c108e96d92e8ff",
+      "sha256": "e25119b6d723dadce7ab96b9f04030b4bc658e396c0fd2005d40c694f1189717",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cbf6de",
+          "text": "jmp 0xb48950"
+        }
+      ]
+    },
+    {
+      "address": "00cbf6e3",
+      "end_exclusive": "00cbf6ed",
+      "byte_count": 10,
+      "kind": "code_eh_handler",
+      "disk_offset": 9172707,
+      "original_hex": "b8cc80df00e95674f3ff",
+      "sha256": "7f2ca5d208bb751514221738dd6aeea45401fc758da83eedcceb5050b51e6f4d",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cbf6e8",
+          "text": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "address": "00cc12f0",
+      "end_exclusive": "00cc12f8",
+      "byte_count": 8,
+      "kind": "code_eh_cleanup",
+      "disk_offset": 9179888,
+      "original_hex": "8b4df0e96876e8ff",
+      "sha256": "34ec1c368ae7412383832e900ebfb796c69b868774ef178c70d7057f4a195b25",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cc12f3",
+          "text": "jmp 0xb48960"
+        }
+      ]
+    },
+    {
+      "address": "00cc12f8",
+      "end_exclusive": "00cc1302",
+      "byte_count": 10,
+      "kind": "code_eh_handler",
+      "disk_offset": 9179896,
+      "original_hex": "b884a0df00e94158f3ff",
+      "sha256": "755a917e08ce2173c4eb9d8de26f77b17ea67888ff26dd6bf3f45c5465a5c4d5",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cc12fd",
+          "text": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "byte_count": 5,
+      "kind": "code_shared_free_thunk",
+      "disk_offset": 8349100,
+      "original_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00bf65ac",
+          "text": "jmp 0xbf9dc8"
+        }
+      ]
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "byte_count": 5,
+      "kind": "code_shared_free_thunk",
+      "disk_offset": 8350089,
+      "original_hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_ghidra_matches_installed_pe": true,
+      "ret_instructions": [],
+      "calls_and_jumps": [
+        {
+          "address": "00bf6989",
+          "text": "jmp 0xbf65ac"
+        }
+      ]
+    },
+    {
+      "address": "00df601c",
+      "end_exclusive": "00df6048",
+      "byte_count": 44,
+      "kind": "data_erase_eh",
+      "disk_offset": 10444828,
+      "original_hex": "ffffffffa0d7cb0022059319010000001c60df00000000000000000000000000000000000000000001000000",
+      "sha256": "05b72cd9bba082f459a2d40c1bad5e06c7a5495afd28b28577ab4ba9a64e234c",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d863a8",
+      "end_exclusive": "00d863b8",
+      "byte_count": 16,
+      "kind": "data_throw_info",
+      "disk_offset": 9986984,
+      "original_hex": "00000000b012440000000000e463d800",
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d863e4",
+      "end_exclusive": "00d86410",
+      "byte_count": 44,
+      "kind": "data_catchable_type_and_copy",
+      "disk_offset": 9987044,
+      "original_hex": "03000000f463d8000040d8007c3ce000000000007c81e00000000000ffffffff000000002800000060174400",
+      "sha256": "803c823bf8f2098853c79d808ee520bb609ce65a63e51b0961d182e1fc08d361",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00ce44e0",
+      "end_exclusive": "00ce44fc",
+      "byte_count": 28,
+      "kind": "data_exception_text",
+      "disk_offset": 9323744,
+      "original_hex": "696e76616c6964206d61702f7365743c543e206974657261746f7200",
+      "sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00df80bc",
+      "end_exclusive": "00df80f0",
+      "byte_count": 52,
+      "kind": "data_layout_base_eh",
+      "disk_offset": 10453180,
+      "original_hex": "ffffffffd0f6cb0000000000d8f6cb002205931902000000bc80df00000000000000000000000000000000000000000001000000",
+      "sha256": "eb64c0356c325bb8de5f2e06b49db54e2ac9b8570c9df9ed05d2e3e7be942864",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00dfa07c",
+      "end_exclusive": "00dfa0a8",
+      "byte_count": 44,
+      "kind": "data_hardware_layout_eh",
+      "disk_offset": 10461308,
+      "original_hex": "fffffffff012cc0022059319010000007ca0df00000000000000000000000000000000000000000001000000",
+      "sha256": "dab8311e6c1af0f57c259e2320c823963c67753eda1f3e476860997bebeae854",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d62af4",
+      "end_exclusive": "00d62b00",
+      "byte_count": 12,
+      "kind": "data_hardware_layout_profile",
+      "disk_offset": 9841396,
+      "original_hex": "e030bd007007b60000ffb500",
+      "sha256": "9de1be15d202d1eaf11f78ef55501c98426ca679b0acb46d3cee8a63b310c4a9",
+      "live_ghidra_matches_installed_pe": true
+    },
+    {
+      "address": "00d5f0ec",
+      "end_exclusive": "00d5f0f0",
+      "byte_count": 4,
+      "kind": "data_renderer_profile_slot_44",
+      "disk_offset": 9826540,
+      "original_hex": "c0f4b200",
+      "sha256": "4480cf4cb9d0318ac19ef26cffeedb0a79711b73775e0251b3ea9921a5e5741f",
+      "live_ghidra_matches_installed_pe": true
+    }
+  ],
+  "pinned_cpp_sources": [
+    {
+      "path": "include/bsp/native_render_alias_checked_ops.hpp",
+      "byte_count": 2413,
+      "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c"
+    },
+    {
+      "path": "src/native_render_alias_checked_ops.cpp",
+      "byte_count": 5090,
+      "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "byte_count": 3197,
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "byte_count": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "byte_count": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "byte_count": 4990,
+      "sha256": "1738ea975779ec203f1ff639ea7407754462b174b783141ffb523174d6e34452"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "byte_count": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "byte_count": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    },
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "byte_count": 1379,
+      "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "byte_count": 1729,
+      "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "byte_count": 3213,
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "byte_count": 9318,
+      "sha256": "4baca0d3de09ccf6c5225eda8bdcefea3bb71248ddf73348e898b23b0c83d2fe"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "byte_count": 1488,
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "byte_count": 3238,
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "byte_count": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "byte_count": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    }
+  ],
+  "previous_annotations": {
+    "policy": "Discovery performed no Ghidra or ledger mutation. Re-read and preserve comments and names under the write lock immediately before implementation annotations.",
+    "proto_capture": "local/native_hardware_layout_tree_prior_proto.txt",
+    "comments_capture": "local/native_hardware_layout_tree_prior_comments.json",
+    "observed_names": {
+      "00b2f4c0": "FUN_00b2f4c0",
+      "00b20dc0": "FUN_00b20dc0",
+      "00b2ef00": "STL_xlen_throw_00b2ef00"
+    },
+    "captured_annotations": [
+      {
+        "address": "00b20dc0",
+        "annotation": {
+          "address": "00b20dc0",
+          "function_name": "FUN_00b20dc0"
+        }
+      },
+      {
+        "address": "00b2ef00",
+        "annotation": {
+          "address": "00b2ef00",
+          "function_name": "STL_xlen_throw_00b2ef00"
+        }
+      },
+      {
+        "address": "00b2f4c0",
+        "annotation": {
+          "address": "00b2f4c0",
+          "function_name": "FUN_00b2f4c0"
+        }
+      }
+    ],
+    "missing_definition": "At the initial live capture 00441760 had no function entry and export failed. The primary integrator subsequently reported defining it, repairing the004412B0 free continuation, saving two names and refreshing exports in39d0586. This discovery performed no mutation."
+  },
+  "verification": {
+    "exported": true,
+    "reconstructed": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "source_changes": "Only the two owned discovery artifacts; no C++, tests, CMake, ledgers, shared metadata or Ghidra mutations."
+  },
+  "actual_storage": {
+    "tree_identity": "0108d530",
+    "header": {
+      "00": "uninterpreted DWORD",
+      "04": "actual sentinel/head pointer",
+      "08": "unsigned node count"
+    },
+    "checked_iterator": {
+      "00": "actual input owner identity",
+      "04": "actual node pointer"
+    },
+    "node": {
+      "00": "left; sentinel minimum",
+      "04": "parent; sentinel root",
+      "08": "right; sentinel maximum",
+      "0c..1f": "opaque key/payload, not accessed or copied by erase",
+      "20": "value pointer",
+      "24": "color: black 1, red 0",
+      "25": "nonzero sentinel flag"
+    },
+    "minimum_accessed_node_extent": 38,
+    "allocation_size": "not established; do not infer a key type or allocation size from erase alone",
+    "ownership": "Free original node once; no payload copy or COM reference operation in tree erase.",
+    "forbidden_substitutions": [
+      "semantic map/list",
+      "companion node registry",
+      "native_render_alias_checked_ops reuse",
+      "fake callback adapter",
+      "assumed no-return invalid parameter handler"
+    ]
+  },
+  "owned_contracts": {
+    "00b2f4c0": {
+      "hypothesis_name": "BSP_NativeHardwareLayoutTree_RemoveFirstValue",
+      "abi": "ECX renderer unused; stack target value pointer; RET4; no semantic return",
+      "behavior": "Capture initial global head and minimum, scan in successor order, compare node+20, erase first match and return.",
+      "capture_timing": "Initial head remains captured; owner/node registers survive returning handlers without immediate reload. Reload stack iterator after B20DC0 only.",
+      "invalid_parameter_sites": [
+        "00b2f4ef",
+        "00b2f4fc",
+        "00b2f506"
+      ],
+      "dependencies": [
+        "00b20dc0",
+        "00b2ef00",
+        "00bf6713"
+      ]
+    },
+    "00b20dc0": {
+      "hypothesis_name": "BSP_NativeHardwareLayoutTreeIterator_Next",
+      "abi": "ECX iterator; RET normally; tail JMP BF6713 for sentinel; incidental EAX not promised",
+      "behavior": "Null owner invokes returning invalid-parameter handler before current node reload. Sentinel tail path does not advance. Otherwise successor via right-minimum or published parent climb.",
+      "dependencies": [
+        "00bf6713"
+      ]
+    },
+    "00b2ef00": {
+      "hypothesis_name": "BSP_NativeHardwareLayoutTree_EraseChecked",
+      "abi": "ECX destination tree; stack output pointer, input owner, input node; RET0Ch/EAX output pointer",
+      "input_owner_equality_checked": false,
+      "sentinel_behavior": "Throw owning out-of-range exception before traversal/mutation.",
+      "two_child_path": "B2F00F..B2F065 transplants successor into original node position and swaps colors; original node is ultimately freed.",
+      "tail_order": [
+        "free original node at B2F16C",
+        "reload destination count at B2F171",
+        "decrement only if unsigned nonzero",
+        "load by-value input owner and advanced node after free",
+        "store output owner at B2F18F",
+        "store output node at B2F196",
+        "restore FS and RET0Ch at B2F1A4"
+      ],
+      "ghidra_body_at_capture": "00b2ef00..00b2f170 inclusive; missing live continuation through 00b2f1a6",
+      "dependencies": [
+        "00b20dc0",
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0",
+        "00408720",
+        "00411700",
+        "004072d0",
+        "00441760",
+        "004412b0",
+        "00bf65ac",
+        "00bf6885"
+      ]
+    }
+  },
+  "exception_contract": {
+    "temporary_bytes": 28,
+    "exception_bytes": 40,
+    "literal_address": "00ce44e0",
+    "literal": "invalid map/set<T> iterator",
+    "counted_bytes": 27,
+    "native_profile": "00d6926c",
+    "throw_info": "00d863a8",
+    "constructor": "existing 00411700 followed by native profile D6926C write",
+    "copy": "00441760 -> existing004118D0 -> D6926C write; RET4/EAX destination",
+    "destructor": "004412B0 -> D69248, member free/reset, base BF6454; no owner free",
+    "eh": {
+      "func_info": "00df6024",
+      "unwind_map": "00df601c",
+      "cleanup": "00cbd7a0",
+      "handler": "00cbd7a8",
+      "armed": "After counted assignment returns; before exception constructor and throw",
+      "action": "destroy completed 1Ch SBO at EBP-50h using004072D0"
+    },
+    "transport": "Seven-address tree implementation owns host exception transport and completed-temporary RAII, following native_alias_count_growth. Native profile words are data, not host vtables.",
+    "primary_integrator_api": [
+      "copy_native_tree_out_of_range_00441760",
+      "destroy_native_tree_out_of_range_004412b0"
+    ]
+  },
+  "shared_free_domain": {
+    "00bf6989": "JMP00bf65ac",
+    "00bf65ac": "JMP00bf9dc8",
+    "cpp": "singleton_lifetime_free"
+  },
+  "proposed_frozen_notification_api": {
+    "header": "bsp/native_hardware_layout_tree.hpp",
+    "signature": "void remove_native_hardware_layout_value_00b2f4c0(void* actual_tree_0108d530, void* target_value, const SingletonLifetimeCallbacks& invalid_parameters);",
+    "responsibility": "Borrow actual12-byte tree; preserve its canonical identity; directly scan and erase. Hardware owner retains current renderer and current table+44 dispatch selection; original rendererECX is unused in B2F4C0."
+  },
+  "conditional_hardware_chain": {
+    "native_slot_evidence": {
+      "current_renderer_global": "00f8d394",
+      "slot": "44",
+      "verified_installed_slot_word": "00d5f0ec -> 00b2f4c0",
+      "runtime_current_profile_proven": false
+    },
+    "00b60700": "D62AF4; COM+40 captured Release through current COM table+8; clear only after return; resource support B3E730; disarm hardware EH; B48960. Hardware state0 cleans base via CC12F0.",
+    "00b48960": "D61D10; notify current renderer+44; reverse four0Ch records at+8 through BF7C6E/B483F0; BD30F0. State1 array cleanup B48950, then state0 base cleanup.",
+    "00b483f0": "InterlockedDecrement referenced owner+4; zero calls current primary table+0; clear actual record only after terminal returns.",
+    "00b48950": "Required 16-byte EH wrapper for four0Ch records using B483F0 and BF7C6E.",
+    "00b60770": "Destroy; flags&1 returns slot to108FE9C throughB60110; RET4/EAX original address.",
+    "00b60110": "Real lock pool+0C; activityDWORD+24; slab index slot+44; slab table pool+28; signed /48h slot index; WORD free-index array slab+900 and count+940; unsigned min pool+34; real unlock.",
+    "remaining_acceptance_dependencies": [
+      "completed tree erase/notification",
+      "actual current renderer dispatch",
+      "actual CPU declaration profile dispatch for four retained records",
+      "existing resource_support_singleton_00b3e730 with real published global/lifetime domain"
+    ]
+  },
+  "proposed_packets": [
+    {
+      "id": "native_hardware_layout_tree_primitives",
+      "addresses": [
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0",
+        "00b20dc0"
+      ],
+      "status": "ready",
+      "owner": "next tree worker",
+      "depends_on": [
+        "existing invalid-parameter service binding"
+      ]
+    },
+    {
+      "id": "native_hardware_layout_tree_erase_notification",
+      "addresses": [
+        "00b2ef00",
+        "00b2f4c0"
+      ],
+      "status": "ready_in_same_seven_address_worker_packet_from_main_with39d0586",
+      "owner": "next tree worker",
+      "depends_on": [
+        "native_hardware_layout_tree_primitives",
+        "primary integrator two-terminal out-of-range packet39d0586"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_tree.hpp",
+        "src/native_hardware_layout_tree.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE.md",
+        "reports/native_hardware_layout_tree_audit.json"
+      ]
+    },
+    {
+      "id": "native_tree_out_of_range_exception",
+      "addresses": [
+        "00441760",
+        "004412b0"
+      ],
+      "status": "primary_integrator_committed39d0586_source_verified_build_pass_reported",
+      "owner": "primary integrator",
+      "depends_on": [
+        "existing native_legacy_exception_owner",
+        "existing native_legacy_sbo_string"
+      ],
+      "worker_must_not_edit": true
+    },
+    {
+      "id": "native_hardware_layout_owner",
+      "addresses": [
+        "00b60700",
+        "00b60770",
+        "00b48960",
+        "00b60110",
+        "00b483f0",
+        "00b48950"
+      ],
+      "status": "conditional",
+      "owner": "future separately leased packet",
+      "depends_on": [
+        "native_hardware_layout_tree_erase_notification",
+        "actual declaration terminal dispatch",
+        "actual renderer dispatch",
+        "actual resource support"
+      ]
+    }
+  ],
+  "primary_integrator_dependency_source_observation": {
+    "checkout": "J:\\PROG\\battlestations-pacific-decompile",
+    "status": "Read directly after integrator reported frozen API; both source files match committed39d0586 and are outside this packet base.",
+    "commit": "39d05868cfb38b3c39e320b1e03fb9209756fc5e",
+    "paths": [
+      {
+        "path": "include/bsp/native_tree_out_of_range_exception.hpp",
+        "sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf",
+        "bytes": 966
+      },
+      {
+        "path": "src/native_tree_out_of_range_exception.cpp",
+        "sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844",
+        "bytes": 709
+      }
+    ],
+    "build": "Primary integrator reported Win32 build plus2CTest passed; this discovery did not independently run that build."
+  }
+}
