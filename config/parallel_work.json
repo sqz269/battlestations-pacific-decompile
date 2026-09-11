@@ -7046,6 +7046,66 @@
       ],
       "integration_report": "reports/sound_system_update.json",
       "discovery_evidence": "docs/SOUND_SYSTEM_UPDATE.md"
+    },
+    {
+      "id": "native_renderer_default_surfaces1",
+      "packet": "native_renderer_default_surfaces1",
+      "state": "complete_actual_storage_primary_main_library_original_parent_COM_mutation_EH_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b238d0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_DEFAULT_SURFACES.md",
+        "reports/native_renderer_default_surfaces_audit.json",
+        "src/native_renderer_default_surfaces.cpp"
+      ],
+      "evidence": "reports/native_renderer_default_surfaces_audit.json"
+    },
+    {
+      "id": "native_resource_cache_leaves",
+      "packet": "native_resource_cache_leaves",
+      "state": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bbc6f0",
+        "00bbc810",
+        "00c30470",
+        "00b19980",
+        "00b19e40",
+        "004ddb20",
+        "00b19b90",
+        "00b19d60"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RESOURCE_CACHE_LEAVES.md",
+        "reports/native_resource_cache_leaves_audit.json",
+        "src/native_resource_cache_leaves.cpp"
+      ],
+      "evidence": "reports/native_resource_cache_leaves_audit.json"
+    },
+    {
+      "id": "native_renderer_surface_save_publish3",
+      "packet": "native_renderer_surface_save_publish3",
+      "state": "complete_three_raw_entries_main_library_real_capture_publish_save_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b5e490",
+        "00b23c50",
+        "00b24dc0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_SURFACE_SAVE_PUBLISH.md",
+        "reports/native_renderer_surface_save_publish_audit.json",
+        "src/native_renderer_surface_save_publish.cpp"
+      ],
+      "evidence": "reports/native_renderer_surface_save_publish_audit.json"
     }
   ],
   "snapshot_after_analysis": {

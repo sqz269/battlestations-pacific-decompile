@@ -2,7 +2,7 @@
   "orchestrator": "orch5-20260911",
   "branch": "agent/orch5-20260911",
   "worktree": "J:/PROG/battlestations-pacific-decompile-orch5-20260911",
-  "status": "standard_registration_build_passed_ready_for_main_integration",
+  "status": "integrated_main_standard_build_and_existing_tests_passed",
   "workers": [
     {
       "branch": "agent/orch5-command-bar",
@@ -97,10 +97,12 @@
   "integration": {
     "worker_branches_merged_into_orchestrator": true,
     "shared_registry_modified": true,
-    "main_merged": false,
-    "main_pushed": false,
+    "main_merged": true,
+    "main_integration_commit": "b4a86ffb",
+    "main_integration_log": "local/orch5_menu_main_integration_retry.log",
+    "publication_evidence": "Inspect origin/main ancestry for the integration commit; publication is tracked by Git refs",
     "blocker": null,
-    "next_steps": "Coordinate current main merge through integrate_workers.py, then record actual outcome and push the batch."
+    "next_steps": "Review and integrate independently leased command-owner, layout, map-runtime and Text dependencies."
   },
   "limitations": [
     "GUI owners and host binding remain external",

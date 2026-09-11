@@ -138,8 +138,11 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_renderer_reset_readiness.cpp
   src/native_renderer_worker_lifetime.cpp
   src/native_renderer_surface_save_worker.cpp
+  src/native_renderer_surface_save_publish.cpp
+  src/native_renderer_default_surfaces.cpp
   src/native_resource_record_copy.cpp
   src/native_resource_record_vector.cpp
+  src/native_resource_cache_leaves.cpp
   src/native_vfs_lookup_routes.cpp
   src/native_renderer_texture_stage_state.cpp
   src/native_occlusion_query_device_reset.cpp
