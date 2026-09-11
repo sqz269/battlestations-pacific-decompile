@@ -28,12 +28,20 @@ struct GuiNativeGeometryOwners::Impl {
         std::unique_ptr<NativeMeshSectionReference> reference;
         bool registered{};
     };
+    struct MaterialEntry {
+        explicit MaterialEntry(Impl& owner) noexcept : domain(owner) {}
+        Impl& domain;
+        NativeMaterialStorage* raw{};
+        std::unique_ptr<NativeMaterialReference> reference;
+        bool registered{};
+    };
     NativeMeshEnvironment& meshes;
     NativeMeshConstants constants;
     NativeMeshSectionEnvironment& sections;
     GuiNativeGeometryRegistration registration;
     std::list<MeshEntry> mesh_entries;
     std::list<SectionEntry> section_entries;
+    std::list<MaterialEntry> material_entries;
 
     Impl(NativeMeshEnvironment& mesh_environment, NativeMeshConstants supplied,
         NativeMeshSectionEnvironment& section_environment, GuiNativeGeometryRegistration registry)
@@ -46,7 +54,8 @@ struct GuiNativeGeometryOwners::Impl {
             "GUI native mesh and section must use the same actual owner domain");
     }
     ~Impl() {
-        if (!mesh_entries.empty() || !section_entries.empty()) std::terminate();
+        if (!mesh_entries.empty() || !section_entries.empty() || !material_entries.empty())
+            std::terminate();
     }
     static void retire_mesh(void* context, NativeMeshReference& reference) noexcept {
         auto& entry = *static_cast<MeshEntry*>(context);
@@ -65,6 +74,16 @@ struct GuiNativeGeometryOwners::Impl {
             self.registration.unbind(self.registration.context, entry.raw, reference);
         for (auto it = self.section_entries.begin(); it != self.section_entries.end(); ++it) {
             if (&*it == &entry) { self.section_entries.erase(it); return; }
+        }
+        std::terminate();
+    }
+    static void retire_material(void* context, NativeMaterialReference& reference) noexcept {
+        auto& entry = *static_cast<MaterialEntry*>(context);
+        auto& self = entry.domain;
+        if (entry.registered)
+            self.registration.unbind(self.registration.context, entry.raw, reference);
+        for (auto it = self.material_entries.begin(); it != self.material_entries.end(); ++it) {
+            if (&*it == &entry) { self.material_entries.erase(it); return; }
         }
         std::terminate();
     }
@@ -112,6 +131,31 @@ struct GuiNativeGeometryOwners::Impl {
             throw;
         }
     }
+    NativeMaterialStorage* create_material(NativeString& name,
+        void* const volatile& renderer, NativeMaterialDestructionAccess& access,
+        const volatile std::uint32_t* profile) {
+        require(&access.retained_owners == &registration.owners,
+            "GUI native material must use the same actual owner domain");
+        auto it = material_entries.emplace(material_entries.end(), *this);
+        try {
+            it->raw = bsp::create_native_material_for_effect_00535320(
+                name, renderer, access.material_slots, access.retained_owners);
+            if (!it->raw) throw std::bad_alloc();
+            it->reference = std::make_unique<NativeMaterialReference>(*it->raw,
+                access, profile, NativeMaterialCompanionDisposal{&*it, retire_material});
+            registration.bind(registration.context, it->raw, *it->reference);
+            it->registered = true;
+            return it->raw;
+        } catch (...) {
+            if (it->reference) {
+                release_render_command_reference(*it->reference); // erases entry
+            } else {
+                if (it->raw) delete_native_material_00b194b0(it->raw, access, 1);
+                material_entries.erase(it);
+            }
+            throw;
+        }
+    }
 };
 
 GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
@@ -121,6 +165,11 @@ GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
 GuiNativeGeometryOwners::~GuiNativeGeometryOwners() = default;
 NativeMeshStorage* GuiNativeGeometryOwners::create_mesh() { return impl_->create_mesh(); }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section() { return impl_->create_section(); }
+NativeMaterialStorage* GuiNativeGeometryOwners::create_material_for_effect_00535320(
+    NativeString& name, void* const volatile& renderer,
+    NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
+    return impl_->create_material(name, renderer, access, profile);
+}
 NativeRenderActualOwners& GuiNativeGeometryOwners::actual_owners() noexcept {
     return impl_->registration.owners;
 }
