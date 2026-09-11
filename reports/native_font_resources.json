@@ -44,5 +44,31 @@
   "lifetime_contract":{"owned":"unique FontData allocation without relocation plus two actual texture refs stored ONLY in space_lf_glyph slots","borrowed":"stable FontDescriptor identity and existing actual resource domain; ordinary/missing/CR glyph texture pointers","publication":"validation and allocation before transfer; duplicate descriptor and missing/retired associations fail explicitly","teardown":"typed payloads, captured GFX release/clear, reload alpha release/clear; material-held references may outlive font so actual texture domain must outlive both"},
   "validation":{"strict_compile":"PASS MSVC Win32 W4 WX O2 fp:strict new native_font_resources.cpp and existing font_data.cpp/font_resources.cpp","report_call_verifier":"PASS:9 numeric rows checked,0 failures;3 resolved renderer64 indirect calls and4 symbolic reference-release indirect calls explicitly reported not verifiable by tool","new_tests":0,"new_test_targets":0,"native_resource_execution":false,"native_differential":false,"abi_compatible":false,"game_validated":false,"standard_combined_build":"parent integration"},
   "remaining_prerequisites":["actual renderer64 B319B0/B30B40 cache/file loader and native texture creation/registration","caller invokes existing scalar DAT decoder then transfers its sole allocation and actual owned image results","stable FontDescriptor lifetime and actual association collection outlive Text consumers","late Text consumers reload current font pointer after callbacks; native null handling remains caller branch","native reloadAD51D0, pool/tree/string ABI and SEH outside projection"],
-  "tool_issues":["Ghidra AD53A0 saved body ends5568 after false noreturn_free; raw tail explicitly distinguished","Guessed mid-instruction ghidra disasm starts rejected; switched to full-function filtered listings for exact caller setup"]
+  "tool_issues":["Ghidra AD53A0 saved body ends5568 after false noreturn_free; raw tail explicitly distinguished","Guessed mid-instruction ghidra disasm starts rejected; switched to full-function filtered listings for exact caller setup"],
+  "parent_validation": {
+    "normal_win32_build": "passed;3newTUs plus existing font users",
+    "existing_tests": "2/2 passed",
+    "numeric_rows": 9,
+    "direct_rows": 6,
+    "resolved_indirect_rows": 3,
+    "symbolic_indirect_rows": 4,
+    "failed_rows": 0,
+    "font_destructor_body": "00ad53a0..00ad5586;487bytes;0gaps",
+    "preserved": [
+      "name",
+      "signature",
+      "calling convention",
+      "parameters",
+      "plate and instruction comments",
+      "17existing labels",
+      "11local name/type/storage triples"
+    ],
+    "records": [
+      "reports/orch5_font_flow_repair.json",
+      "reports/orch5_font_function_recreated.json",
+      "reports/orch5_font_documentation_before.json"
+    ],
+    "native_resource_execution": false,
+    "game_validated": false
+  }
 }

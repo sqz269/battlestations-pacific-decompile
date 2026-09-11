@@ -1,5 +1,14 @@
 # Native font resource identities and lifetime
 
+Parent integration follow-up: this source and the existing scalar/semantic font
+users pass the normal Win32 build and both existing tests. The native destructor
+has now been restored through `00AD5586`, with zero listing gaps. Its full prior
+documentation was archived and all existing labels, local variable metadata,
+signature and comments were verified preserved before the new evidence comment.
+See `docs/ORCH5_GLYPH_FONT_BATCH.md`. The raw-tail limitation noted below records
+the worker's earlier inspection state. Native font/resource execution remains
+unvalidated; the C++ destructor's stated partial ABI boundary is unchanged.
+
 Addresses: `00AD4C30`, `00AD53A0`.
 
 `NativeFontResources` owns the existing decoded `FontData` allocation and the
