@@ -1,0 +1,703 @@
+{
+  "packet": "orch2_renderer_capabilities",
+  "source": "src/renderer_capabilities.cpp",
+  "header": "include/bsp/renderer_capabilities.hpp",
+  "documentation": "docs/RENDERER_CAPABILITIES.md",
+  "provenance": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "bsp.py verified target CLI; read-only exports, bytes, flow",
+    "ghidra_mutated_by_worker": false,
+    "retained_names": [
+      "BSP_D3D9Renderer_GatherCapabilities",
+      "BSP_D3D9Renderer_Construct"
+    ],
+    "descriptive_names_are_hypotheses": true
+  },
+  "reconstructed": [
+    {
+      "address": "00b2c8e0",
+      "end_exclusive": "00b2d8de",
+      "original_abi": "ECX renderer; plain RET; capability gather query and decision sequence",
+      "scope": "Complete query/decision behavior; C++ container/string/transaction ownership adaptation"
+    },
+    {
+      "address": "00b32410",
+      "fragment_start": "00b32861",
+      "fragment_end_exclusive": "00b32898",
+      "original_abi": "Parent thiscall renderer; RET returning this; fragment is not separate callable native function",
+      "scope": "GetAdapterIdentifier(0,0) and case-sensitive NVIDIA description flag at renderer+1D88h"
+    }
+  ],
+  "startup_order": [
+    "00b3285c enumerate resolutions 00b27d80",
+    "00b32874 constructor adapter identifier",
+    "00b32883 strstr Description NVIDIA",
+    "00b32892 store 1D88h",
+    "00b32898 reset renderer+14h (outside capability API)",
+    "00b3289b gather 00b2c8e0"
+  ],
+  "query_sequence": [
+    "GetDeviceCaps(0,HAL)",
+    "CheckDeviceFormat(0,HAL,X8R8G8B8,0,SURFACE,ATOC)",
+    "GetAdapterIdentifier(0,0)",
+    "If LOWORD(PixelShaderVersion)<0300h: CheckDeviceFormat(0,HAL,X8R8G8B8,0,SURFACE,INST)",
+    "For the 57 format records in order: base usage0/TEXTURE3; supported entries probe selected usage1,2,200h then unconditional80001h"
+  ],
+  "mapped_fields": {
+    "1B18": "MaxTextureWidth",
+    "1B1C": "MaxTextureHeight",
+    "1B20": "MaxVolumeExtent",
+    "1B24": "MaxAnisotropy",
+    "1B28": "MaxSimultaneousTextures",
+    "1B2C": "PS<=0104h:4; PS==0200h or0300h:8; otherwise retain",
+    "1B30": "PS<=0104h:false; PS==0200h or0300h:true; otherwise retain",
+    "1B40": "LOWORD(PixelShaderVersion)",
+    "1B44": "LOWORD(VertexShaderVersion); software VP forces0101h",
+    "1B48": "packedPS<0200h?1:2",
+    "1B4C": "MaxVertexShaderConst",
+    "1B50": "unconditionally false at00b2ceae, even after INST success",
+    "1B51": "MaxUserClipPlanes!=0",
+    "1B52": "DevCaps2 bit0",
+    "1B53": "Caps2 bit17",
+    "1B54": "Caps2 bit20",
+    "1B55": "ATOC success sets; failure retains",
+    "1B74": "DevCaps bit16 absent or LOWORD(VertexShaderVersion)<0101h",
+    "1D88": "constructor Description contains NVIDIA",
+    "1D89": "gather Description contains8800,8600,8200,ATI (case-sensitive)"
+  },
+  "declaration_vector": {
+    "offset": "1B5C",
+    "always_append": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "decltypes_bits_0_to_8_append": [
+      5,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "cleared": false,
+    "caps_offset": "EC"
+  },
+  "format_table": {
+    "count": 57,
+    "native_stride": 8,
+    "resource_type": 3,
+    "flag_order": [
+      "probe_usage1",
+      "probe_usage2",
+      "probe_usage200h",
+      "unused_in_this_routine"
+    ],
+    "entries": [
+      {
+        "format": "32495441",
+        "flags": [
+          1,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "format": "00000014",
+        "flags": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "format": "00000015",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000016",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000017",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000018",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000019",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000001a",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000001b",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000001c",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000001d",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000001e",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000001f",
+        "flags": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000020",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000021",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000022",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000023",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000024",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000028",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000029",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000032",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000033",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000034",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000003c",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000003d",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000003e",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000003f",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000040",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000043",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "59565955",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "47424752",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "32595559",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "42475247",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "31545844",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "32545844",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "33545844",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "34545844",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "35545844",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000046",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000047",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000049",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000004b",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000004d",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000004f",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000050",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000052",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000053",
+        "flags": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000051",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000006e",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "3154454d",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "0000006f",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000070",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000071",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000072",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000073",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000074",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "format": "00000075",
+        "flags": [
+          1,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "result_vector_offset": "1B68; resource-type index3",
+    "result_native_stride": 12,
+    "cleared": false,
+    "only_hresult_zero_is_support": true,
+    "record_plus8": "low byte Boolean usage80001h success; upper three native stack bytes indeterminate and not exposed"
+  },
+  "native_quirks": [
+    "Sticky ATOC flag",
+    "INST result always cleared",
+    "Unknown PS versions retain1B2C/1B30",
+    "Append vectors without clearing",
+    "No cube or volume-format loop",
+    "Native ignores caps/identifier HRESULTs"
+  ],
+  "adaptations": [
+    "Return negative caps/identifier HRESULT; preserve both output states rather than native uninitialized reads",
+    "Return E_INVALIDARG for successful identifier with unterminated Description",
+    "Temporary copy delays native incremental publications; C++ allocation throw preserves output states",
+    "C++ vectors and bounded Description reads replace native allocators/string copy/SEH; allocation ordering differs",
+    "Expose only defined semantic format result bytes; native indeterminate padding omitted"
+  ],
+  "dependencies_not_reconstructed_here": [
+    "Native sized-string allocator/free0041dd40,00419cc0,00bd1510",
+    "Native vector growth00b236b0,00b2ae20,00b22b30",
+    "Full renderer constructor/vtable/object and field consumers",
+    "Root startup shared IDirect3D9 owner and state lifetime integration"
+  ],
+  "analysis_gaps": [
+    {
+      "start": "00b2d71d",
+      "end_exclusive": "00b2d720",
+      "meaning": "jump-over LEA padding; no repair required"
+    },
+    {
+      "start": "00b2d726",
+      "end_exclusive": "00b2d730",
+      "meaning": "jump-over LEA padding; no repair required"
+    }
+  ],
+  "validation": {
+    "exported": true,
+    "reconstructed_query_behavior": true,
+    "build_tested": "MSVC Win32 Release /W4 /WX",
+    "seed_byte_comparisons_passed": 8,
+    "ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ignored_fixture_passed": true,
+    "fixture_scope": [
+      "Full assembly-derived format trace",
+      "strict HRESULT-zero probes",
+      "caps field mapping",
+      "append/sticky behavior",
+      "shader thresholds/unusual values",
+      "software VP",
+      "failure retention"
+    ],
+    "live_query": {
+      "adapter": "NVIDIA GeForce RTX 5090",
+      "packed_pixel_shader_version": "0300",
+      "settings_ceiling": 2,
+      "resolutions": 26,
+      "supported_texture_formats": 34,
+      "declaration_types": 10,
+      "ATOC": true,
+      "NVIDIA_description": true,
+      "legacy_description": false
+    },
+    "complete_native_routine_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "original_installation_modified": false
+  },
+  "ignored_evidence": [
+    "local/renderer_capabilities_fixture.cpp",
+    "local/renderer_capabilities_fixture/CMakeLists.txt",
+    "local/build_renderer_fixture.ps1",
+    "local/extract_renderer_formats.py",
+    "local/renderer_formats.json",
+    "local/renderer_formats_expected.inc",
+    "local/renderer_capabilities_fixture.log",
+    "local/renderer_capabilities_build.log",
+    "local/renderer_capabilities_ledger.log"
+  ]
+}
