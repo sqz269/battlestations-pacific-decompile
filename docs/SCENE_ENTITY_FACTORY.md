@@ -336,3 +336,14 @@ fall-through gap after a `_free` call was seen in any of them.
 ## Corrections from docs/SCENE_UNIT_CREATORS.md
 
 The `via unit` classes do not have a `Type`-dependent instance size: there are two objects. `00964790` returns a vehicle-class descriptor (0x138 to 0x870 bytes, one per row of the installed `VehicleClass` Lua table, cached by class index), and the descriptor's vtable slot +28h allocates the unit instance (0x1188 bytes for `MDestroyer`, the one genuine symbol, ASCII at `00d1ad28`). All ten unit creators take the class id in ECX and never read it, and `RET 10h` pops a fourth stack argument none of them reads; six of the eight siblings are instruction-for-instruction the DestroyerGen exemplar, `LandFort` splits on `Stationary`, and `PlaneSquadronGen` allocates its own 0x414 object and calls `00964790` only for the cache side effect. The parent node in the placement call is `*(*(00e188a8)+19CCh)`, not the creator's parent argument, and world registration is `006fe620` pushing the instance onto five intrusive lists of that node.
+
+## Correction from docs/SCENE_ENTITY_CREATE.md (packet cc2_scene_entity_create)
+
+The creator ABI stated above at the `0046D59D` site ("`EDX` = a pointer to the frame block, then
+four stack arguments of which the first is the property bag") is wrong in its register. Read at
+both creator sites, `0046D5A4` (scene-file Instantiate pass) and `0046DB4B` (entity creation by
+name, `BSP_SceneDatabase_CreateEntityByName` 0046D930): `ECX` = the class id, **`EDX` = the entity
+name** (`instanceName`), and the stack carries `parent`, `&record->localFrame` (the frame block),
+`record->properties` and `0`, in that order. The frame block is therefore the second stack
+argument, not a register. Provisional until the creator bodies themselves are read; the two call
+sites agree.

@@ -1,0 +1,40 @@
+# Native CRT pow special handling
+
+This packet promotes complete `__d_inttype` at C19DC0[100] and the special-input body at C19E24[318]. The first is a retained CRT library name; the second source name is descriptive. The full original instruction streams are retained with only four direct CALL relocations and six explicitly declared literal-address operand changes. It completes these two source providers, **not pow, its SSE2 route, or renderer gamma**.
+
+The implementation is [native_crt_pow_special.cpp](../src/native_crt_pow_special.cpp), with the assembly-only contract in [native_crt_pow_special.hpp](../include/bsp/native_crt_pow_special.hpp). [The audit](../reports/native_crt_pow_special_audit.json) pins the original and actual built objects. No saved Ghidra symbol, shared metadata or final CMake registration is changed by this worker.
+
+## Explicit source interface
+
+Both declarations require an assembly caller. C19DC0 takes the original two raw argument DWORDs and returns EAX, with plain RET and caller cleanup of eight bytes. C19E24 takes the original four x/y DWORDs followed by the actual output pointer, with plain RET and caller cleanup of 20 bytes. No conversion to C++ double, argument copy, synthesized result or extra wrapper occurs. C19E24 rereads its actual argument slots and current output pointer at the original instructions; aliases retain that ordering.
+
+The caller must additionally load EBX with the actual D7A280 eight-byte half cell and EDI with the actual E165A0 literal region. `NativeCrtPowSpecialContext` is an eight-byte **binding description**, not an aggregate read by either body. Ordinary C++ calls do not establish these register inputs and are unsafe. This is a new source binding, not the original entry address or a general original-caller ABI claim.
+
+The second borrowed region must retain its original relative layout: eight-byte positive infinity at +0, negative quiet NaN at +8 and negative zero at +20h. The gap +10h..+1Fh is not read. These are actual borrowed immutable cells, not a copied or synthesized table. The fresh little-endian bytes are respectively `000000000000F07F`, `000000000000F8FF` and `0000000000000080`; the half cell is `000000000000E03F`. Only reached cells need readable storage, and their pointers remain live through every reached read. There is no entry-time dereference, validation or snapshot.
+
+Each `_emit` block is one independently decoded six-byte x87 memory instruction. C19DF5 changes FMUL absolute D7A280 to FMUL `[EBX+disp32(0)]`. The FLDs at C19E62, C19EB5 and C19F2B use `[EDI+disp32(0)]`; C19EC0 uses `[EDI+disp32(8)]`; C19F48 uses `[EDI+disp32(20h)]`. No instruction is added and every original branch offset stays unchanged. Full original and compiled instructions of both bodies and all three children prove that no part of EBX or EDI is written. EBP survives both entries; C19E24 explicitly saves/restores ESI. Volatile registers and integer flags retain the actual instruction and full child effects.
+
+## Floating-point and child contracts
+
+C19DC0 classifies the input, compares its rounded value against the current input slot, then compares the rounded half-product against its stored double half-product. EAX=0 when classification or the first equality test rejects, EAX=1 when the second rejects, and EAX=2 when it accepts. Integer parity is a valid interpretation only where current rounding and precision leave that half-product classification exact; reduced precision can round a large odd integer's half to an integer. One free x87 slot is required, and normal return leaves no new x87 value.
+
+The direct providers are complete `native_crt_fpclass_00bfa52f`, `native_crt_frnd_st0_00c28548` and the former's complete `native_crt_sptype_00c12f3e`. Every internal call still uses the original eight-byte argument storage. In particular, no third DWORD is pushed merely because the public classification declaration exposes a readable tail word. The classification body's unaligned EBP+0Eh DWORD read extends two bytes beyond that double into already allocated caller-local storage; those extra bits are masked out. The provider's own internal eight-byte call and readable saved-frame tail remain unchanged. FRND returns its actual ST0 value for the original FCOMP; C++ never receives a double result.
+
+C19E24 uses integer and x87 instructions throughout, with no SSE path. It requires three free x87 slots and balances its own normal-path temporaries. Its EAX status comes from ESI (0 or 1). Some paths return 0 without writing output. The negative-infinite exponent with unit absolute base path writes the actual negative quiet NaN and returns 1; the enclosing fallback interprets that status. No host-pow special cases replace these instructions. All conditional stores, sign changes, current output loads, unordered tests and pop order remain literal.
+
+Current x87 rounding, precision, status, stack tags and exception masks apply. The entries do not save/reset the FP environment or install an EH handler. Normal-return stack statements do not promise cleanup after faults or nonlocal exits. The enclosing original fallback's FSAVE/FRSTOR policy belongs to that still-separate caller. There is no new general FP-state, original SEH ABI or caller-policy claim.
+
+## Build and complete object proof
+
+This isolated worktree starts at main `0cee262a`. Eight fresh guarded live/PE spans cover 706 bytes: the owned 418 bytes, the complete three providers' 256 bytes and 32 literal bytes. Every Ghidra batch checks project `bsp`, program `/battlestationspacific.exe`, language and image base before reading; original bytes match the pinned installed PE.
+
+The strict Release Win32 build includes this file through an ignored deferred CMake hook. `/W4 /WX /fp:strict`, both existing CTests and all eight fresh seed checks pass. No permanent test was added. Existing CTests are repository regression checks, not execution of these assembly entries.
+
+The proof freezes the sole actual `bsp_core.lib` and its exact `native_crt_pow_special.obj` and `native_crt_double_classification.obj` members. It records all sections, symbols and relocations in both objects. All 674 instruction bytes are checked, allowing only the six operand-address adaptations and five direct CALL relocations (four owned, one inside the classification provider). All direct targets must resolve to the corresponding complete symbol in that same actual archive, with zero COFF call addends. Independent decoding checks each changed instruction's size, memory width, base, displacement and mnemonic; all other instructions and branch bytes are equal.
+
+Original captures, full decoded listings, source contracts, exact build inputs, compiler command records, archive members and the finite proof are pinned under `local/pow_special/`; `sealed.json` is the immutable manifest. This proves complete object code with declared bindings. No linked/runtime fixture, game execution, display call, full pow or gamma completion is claimed. Previously sealed bundles and installed game files remain unchanged.
+
+
+## Primary integration
+
+Primary registered both complete source entries and passed the strict Win32 build, both existing CTests and eight fresh seeds. All four packets were checked against the same frozen main library `5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8`. All418 owned and256 complete provider bytes proved, with six independently decoded same-length literal memory adaptations and five zero-addend CALL relocations. Eleven complete COFF sections/two actual archive objects retained. Every direct target is in the complete checked set; EBX/EDI no-write and original eight-byte nested arguments proved. Current FP environment and assembly-only caller obligations remain. No linked/runtime/SEH/caller ABI, fullpow/SSE2/gamma or game claim. Reviewed names and evidence are saved with prior comments retained; correct CRT library names remain. All affected exports were forcibly refreshed. Immutable primary evidence: `local/pow_special_primary/`.

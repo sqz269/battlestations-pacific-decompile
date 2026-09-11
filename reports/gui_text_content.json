@@ -1,5 +1,5 @@
 {
-  "packet": "orch5_gui_text_content",
+  "packet": "orch5_gui_text_content_nonempty",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -13,7 +13,7 @@
       "last_instruction_length": 3,
       "native_abi": "__thiscall ECX=Text, one UTF16 wrapper pointer, RET4 at00ABAEC4",
       "coverage": "partial_projection",
-      "scope": "Reconstructed prefix00ABA8D0..00ABA9BE and common cleanup00ABAE8A..00ABAEC6; nonempty00ABA9BF..00ABAE89 unimplemented, returns explicit pending continuation. Full body read; tail callee closure not claimed."
+      "scope": "Partial projection: prefix and empty path; actual nonempty preparation00ABA9BF..00ABAB69/77; explicit gap at selected builder00ABAB6A or00ABAB78; post-builder00ABAB7D..00ABAE89 and cleanup. Full body read; no unread ranges. Selected real builder must return before post-stage; no forwarding success callback."
     },
     {
       "address": "00ab80c0",
@@ -38,6 +38,24 @@
       "native_abi": "__thiscall ECX=Text pool, stack object, RET4 at00AB7609",
       "coverage": "complete",
       "scope": "Analysis only; critical-section protected pool return. Full listing/caller setup read; no native pool invented."
+    },
+    {
+      "address": "00b73260",
+      "end_inclusive": "00b7326a",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX actual mesh; index stack; RET4 at00B73268",
+      "scope": "Complete valid array indices0..5; unconditionally returns actual+64[index] without current-count test.",
+      "coverage": "complete_supported_domain",
+      "unread_ranges": []
+    },
+    {
+      "address": "00b6dab0",
+      "end_inclusive": "00b6dade",
+      "last_instruction_length": 2,
+      "native_abi": "__thiscall ECX node; XYZ pointer stack replaced with local+B0; tail JMP EAX00B6DADD",
+      "scope": "Full body read; Model current D62DE8 profile only, virtual38=B6DB10. x87 coordinates and current target read before final z store, same local matrix invalidation/notification. Other derived overrides not implemented.",
+      "coverage": "partial_projection",
+      "unread_ranges": []
     }
   ],
   "host_steps": [
@@ -130,6 +148,360 @@
       "native": "00bd1510",
       "function": "00aba8d0",
       "contract": "Native temporary block return; not binary allocation ABI."
+    },
+    {
+      "address": "00aba9c3",
+      "native": "00ab8400",
+      "function": "00aba8d0",
+      "contract": "Actual glyph buffer construction over captured main mesh/current renderer, before section resets/material capture."
+    },
+    {
+      "address": "00aba9e4",
+      "native": "00ab8ce0",
+      "function": "00aba8d0",
+      "contract": "Actual same-lifetime shader cache selection; save attempted AL even for null result."
+    },
+    {
+      "address": "00aba9fe",
+      "native": "00b19210",
+      "function": "00aba8d0",
+      "contract": "Actual current shader publication/retain/release/dirty plus name destruction and real parameter pool return."
+    },
+    {
+      "address": "00abaa2a",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abaa3c",
+      "native": "00b18b00",
+      "function": "00aba8d0",
+      "contract": "Actual float2 wrapper borrows SAME lifetime+1DC pair; no value snapshot."
+    },
+    {
+      "address": "00abaa59",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abaa60",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abaa6e",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abaa86",
+      "native": "00b18aa0",
+      "function": "00aba8d0",
+      "contract": "Actual float4 wrapper borrows SAME low/high layout fields."
+    },
+    {
+      "address": "00abaaa3",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abaaaa",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abaab8",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abaad0",
+      "native": "00b18aa0",
+      "function": "00aba8d0",
+      "contract": "Actual float4 wrapper borrows SAME low/high layout fields."
+    },
+    {
+      "address": "00abaaed",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abaaf4",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abab02",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abab1a",
+      "native": "00b18b20",
+      "function": "00aba8d0",
+      "contract": "Actual float1 wrapper; preserve BOTH shadow cBlendFactor registrations (global then live widget)."
+    },
+    {
+      "address": "00abab37",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abab3e",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abab46",
+      "native": "00aa9f10",
+      "function": "00aba8d0",
+      "contract": "Actual-storage clipping registration on SAME material and live canonical ClipBox/widget fields."
+    },
+    {
+      "address": "00abab54",
+      "native": "00b865a0",
+      "function": "00aba8d0",
+      "contract": "Actual mesh-section layout rebuild with live stream/renderer binding and release callbacks."
+    },
+    {
+      "address": "00abab6a",
+      "native": "00aba270",
+      "function": "00aba8d0",
+      "contract": "UNIMPLEMENTED HERE: selected wrapped builder boundary; post-stage only after actual return."
+    },
+    {
+      "address": "00abab78",
+      "native": "00ab9fd0",
+      "function": "00aba8d0",
+      "contract": "UNIMPLEMENTED HERE: selected single builder boundary; post-stage only after actual return; source stack slot natively unused."
+    },
+    {
+      "address": "00abab91",
+      "native": "00b74640",
+      "function": "00aba8d0",
+      "contract": "Current actual shadow Model geometry0; SAME owner storage/domain."
+    },
+    {
+      "address": "00abab9b",
+      "native": "00b732c0",
+      "function": "00aba8d0",
+      "contract": "Actual current shadow raw mesh section0."
+    },
+    {
+      "address": "00ababa8",
+      "native": "00b73260",
+      "function": "00aba8d0",
+      "contract": "New complete actual mesh+64 index0 getter; no count test."
+    },
+    {
+      "address": "00ababb2",
+      "native": "00b73bb0",
+      "function": "00aba8d0",
+      "contract": "Share main stream0 into captured shadow mesh using actual retain/release order."
+    },
+    {
+      "address": "00ababc1",
+      "native": "00b73b70",
+      "function": "00aba8d0",
+      "contract": "Reload main+60 AFTER vertex setter callback; share actual index stream."
+    },
+    {
+      "address": "00ababe7",
+      "native": "00b865a0",
+      "function": "00aba8d0",
+      "contract": "Actual mesh-section layout rebuild with live stream/renderer binding and release callbacks."
+    },
+    {
+      "address": "00abac06",
+      "native": "00b189f0",
+      "function": "00aba8d0",
+      "contract": "Actual shadow slot0 setter after layout callbacks; signed-positive main texture count selects pointer else null."
+    },
+    {
+      "address": "00abac1c",
+      "native": "00b19210",
+      "function": "00aba8d0",
+      "contract": "Actual current shader publication/retain/release/dirty plus name destruction and real parameter pool return."
+    },
+    {
+      "address": "00abac24",
+      "native": "00aa9f10",
+      "function": "00aba8d0",
+      "contract": "Actual-storage clipping registration on SAME material and live canonical ClipBox/widget fields."
+    },
+    {
+      "address": "00abac32",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abac48",
+      "native": "00b18b20",
+      "function": "00aba8d0",
+      "contract": "Actual float1 wrapper; preserve BOTH shadow cBlendFactor registrations (global then live widget)."
+    },
+    {
+      "address": "00abac65",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abac6c",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abac7a",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abac92",
+      "native": "00b18b00",
+      "function": "00aba8d0",
+      "contract": "Actual float2 wrapper borrows SAME lifetime+1DC pair; no value snapshot."
+    },
+    {
+      "address": "00abacaf",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abacb6",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abacc4",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abacdc",
+      "native": "00b18aa0",
+      "function": "00aba8d0",
+      "contract": "Actual float4 wrapper borrows SAME low/high layout fields."
+    },
+    {
+      "address": "00abacf9",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abad00",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abad0e",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abad26",
+      "native": "00b18aa0",
+      "function": "00aba8d0",
+      "contract": "Actual float4 wrapper borrows SAME low/high layout fields."
+    },
+    {
+      "address": "00abad43",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abad4a",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abad58",
+      "native": "0041e870",
+      "function": "00aba8d0",
+      "contract": "Actual NativeString allocate/copy spelling for this parameter; separate temporary per registration."
+    },
+    {
+      "address": "00abad70",
+      "native": "00b18b20",
+      "function": "00aba8d0",
+      "contract": "Actual float1 wrapper; preserve BOTH shadow cBlendFactor registrations (global then live widget)."
+    },
+    {
+      "address": "00abad8d",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Actual native sized string storage selection during temporary cleanup."
+    },
+    {
+      "address": "00abad94",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Actual native string release before next registration/callback phase."
+    },
+    {
+      "address": "00abada3",
+      "native": "00b74640",
+      "function": "00aba8d0",
+      "contract": "Current actual shadow Model geometry0; SAME owner storage/domain."
+    },
+    {
+      "address": "00abadaa",
+      "native": "00b732c0",
+      "function": "00aba8d0",
+      "contract": "Actual current shadow raw mesh section0."
+    },
+    {
+      "address": "00abadb6",
+      "native": "00b179f0",
+      "function": "00aba8d0",
+      "contract": "Actual current shadow diffuse alias; overwrite raw RGBA including alpha after color50."
+    },
+    {
+      "address": "00abae6d",
+      "native": "00b6e680",
+      "function": "00aba8d0",
+      "contract": "Actual current shadow parenting after current raw shadow-enable/main-node read."
+    },
+    {
+      "address": "00abae83",
+      "native": "00b6d890",
+      "function": "00aba8d0",
+      "contract": "Actual root clear only after re-read disabled byte/current shadow after parenting callbacks."
+    },
+    {
+      "address": "00abab88",
+      "native": "Text+vtable50",
+      "function": "00aba8d0",
+      "contract": "Resolved00AB6B50; direct actual style operation consumes LIVE widget.layout.color alias."
+    },
+    {
+      "address": "00abae54",
+      "native": "Model+vtable2C",
+      "function": "00aba8d0",
+      "contract": "Current supported D62DE8+2C=B6DAB0; x87 position computed from late live signed font height; actual same transform."
     }
   ],
   "ownership_contract_steps": [
@@ -310,7 +682,7 @@
   ],
   "register_provenance": {
     "method": "Read complete listings and every ESI/EDI/EBP/EBX occurrence, retaining callee-save and covered-range boundaries.",
-    "content": "ESI=ECX at00ABA8EA; EBP=0 at00ABA905 throughout covered prefix; EBX=main mesh at00ABA972; EDI=main section at00ABA98B. Later tail reassignments are outside prefix.",
+    "content": "ESI=ECX at00ABA8EA; EBP=0 at00ABA905 throughout covered prefix; EBX=main mesh at00ABA972; EDI=main section at00ABA98B. Later tail reassignments are outside prefix. Nonempty: EBX=mainmaterialABA9C8; EBP=pairABAA0F thenzeroABAB4B; afterbuilder EBX=shadowmeshABAB96,EBP=shadowsectionABABA6,EDI=capturedmainmaterialABABEC,EBP=shadowmaterialABABF5,EDI=currentmainshaderABAC16. SavedAL atstack+3C ABA9EB then reused for height/displacement late.",
     "clear": "ESI=ECX at00AB80C4; EBP=0 at00AB80C6, increments00AB8159; EBX=index*4 at00AB810E; EDI reloaded base00AB813B then captured slot00AB8144."
   },
   "ownership_transport": {
@@ -319,17 +691,397 @@
     "contract": "Retain same detached instance before reload; do not change native-visible state or invoke before_destroy/page-retirement fallback. Actual virtual04 must consume correct ownership and clear before_destroy after actual teardown. No second widget tree."
   },
   "remaining": [
-    "00ABA9BF..00ABAE89 nonempty geometry/material/shadow continuation is not implemented; pending result must not be accepted as successful text update.",
-    "Actual Text scalar-deleting destructor/lifetime owner and detached ownership sink are required; parallel lifetime packet now owns00AB8EE0.",
-    "Current native CRT locale comparator is required when live CRT changed flag is nonzero.",
-    "Actual original pool/SEH allocation ABI and corrupt-collection termination are outside the C++ valid domain.",
-    "Not wired into bsp_game.exe; existing GameTextHost bridge/layout logs do not execute these new functions."
+    "Selected full native geometry builder00AB9FD0/00ABA270 remains external. A partial needs-glyph-child result must retain this pending state; post stage cannot run until actual builder return.",
+    "Actual Text scalar-delete/pool and detached ownership sink remain required; shared GuiTextLifetime supplies same canonical state and derived teardown.",
+    "Current native CRT locale comparator required when live flag is nonzero; native callable renderer48/stream layout factories and matching actual domains required.",
+    "Native Text string/vector ABI, SEH allocation failures and corrupt-collection termination remain outside C++ domain.",
+    "Other B6DAB0 derived virtual38 profiles are not reconstructed by Model fragment.",
+    "Not wired into bsp_game.exe; no runtime, game, rendering or ABI-equivalence claim."
   ],
   "verification": {
-    "strict_win32_compile": "passed /std:c++17 /W4 /WX /EHsc /permissive- with parent detach and peer buffer header",
-    "report_calls": "passed integrator exact-instruction verifier:39 direct call rows,0 failed;1 Text virtual04 manually resolved from actual vtable and producer",
+    "strict_win32_compile": "passed both final TUs /std:c++17 /W4 /WX /EHsc /permissive-; local changed-header overlay then integration headers then peer headers; static_assert confirms canonical uint8 shadowed",
+    "report_calls": "passed integrator exact-instruction verifier:154 direct rows,0 failed;3 indirect rows manually supported;11 mesh getter raw xrefs and1 Model-position raw caller remain outside Ghidra function verification",
     "tests_added": 0,
     "combined_build": "integrator",
-    "runtime": "not run; new functions not wired into executable; no frame-path, rendering or ABI-equivalence claim"
-  }
+    "runtime": "not run; new functions not wired into executable; no frame-path, rendering or ABI-equivalence claim",
+    "worker_report_calls": "passed same numeric rows,0failed"
+  },
+  "mesh_stream_callers": [
+    {
+      "address": "006f12b5",
+      "native": "00b73260",
+      "function": "006f0e20"
+    },
+    {
+      "address": "00802f29",
+      "native": "00b73260",
+      "function": "008023b0"
+    },
+    {
+      "address": "00aacf2f",
+      "native": "00b73260",
+      "function": "00aacf10"
+    },
+    {
+      "address": "00ab3d99",
+      "native": "00b73260",
+      "function": "00ab3cb0"
+    },
+    {
+      "address": "00ab93a4",
+      "native": "00b73260",
+      "function": "00ab9240"
+    },
+    {
+      "address": "00ab9ff3",
+      "native": "00b73260",
+      "function": "00ab9fd0"
+    },
+    {
+      "address": "00aba2e1",
+      "native": "00b73260",
+      "function": "00aba270"
+    },
+    {
+      "address": "00ababa8",
+      "native": "00b73260",
+      "function": "00aba8d0"
+    },
+    {
+      "address": "00abd181",
+      "native": "00b73260",
+      "function": "00abced0"
+    },
+    {
+      "address": "00ac275a",
+      "native": "00b73260",
+      "function": "00ac2690"
+    },
+    {
+      "address": "00ac2a1e",
+      "native": "00b73260",
+      "function": "00ac29d0"
+    },
+    {
+      "address": "00ad0e68",
+      "native": "00b73260",
+      "function": "00ad0d80"
+    },
+    {
+      "address": "00ae50a7",
+      "native": "00b73260",
+      "function": "00ae5070"
+    },
+    {
+      "address": "00af055b",
+      "native": "00b73260",
+      "function": "00af0540"
+    },
+    {
+      "address": "00af36c8",
+      "native": "00b73260",
+      "function": "00af3440"
+    },
+    {
+      "address": "00af642a",
+      "native": "00b73260",
+      "function": "00af63a0"
+    },
+    {
+      "address": "00af6487",
+      "native": "00b73260",
+      "function": "00af63a0"
+    },
+    {
+      "address": "00af64e4",
+      "native": "00b73260",
+      "function": "00af63a0"
+    },
+    {
+      "address": "00af663d",
+      "native": "00b73260",
+      "function": "00af63a0"
+    },
+    {
+      "address": "00af66c0",
+      "native": "00b73260",
+      "function": "00af63a0"
+    },
+    {
+      "address": "00b1ea21",
+      "native": "00b73260",
+      "function": "00b1e990"
+    },
+    {
+      "address": "00b1ea9a",
+      "native": "00b73260",
+      "function": "00b1e990"
+    },
+    {
+      "address": "00b2b71e",
+      "native": "00b73260",
+      "function": "00b2b580"
+    },
+    {
+      "address": "00b2b8e0",
+      "native": "00b73260",
+      "function": "00b2b580"
+    },
+    {
+      "address": "00b2bf16",
+      "native": "00b73260",
+      "function": "00b2bb90"
+    },
+    {
+      "address": "00b2c14e",
+      "native": "00b73260",
+      "function": "00b2bb90"
+    },
+    {
+      "address": "00b4ca3e",
+      "native": "00b73260",
+      "function": "00b4c8d0"
+    },
+    {
+      "address": "00b4ca4f",
+      "native": "00b73260",
+      "function": "00b4c8d0"
+    },
+    {
+      "address": "00b4dd61",
+      "native": "00b73260",
+      "function": "00b4dcc0"
+    },
+    {
+      "address": "00b865e3",
+      "native": "00b73260",
+      "function": "00b865a0"
+    },
+    {
+      "address": "00b88043",
+      "native": "00b73260",
+      "function": "00b87e80"
+    },
+    {
+      "address": "00b8b9b7",
+      "native": "00b73260",
+      "function": "00b8b980"
+    },
+    {
+      "address": "00b8bb8e",
+      "native": "00b73260",
+      "function": "00b8bb50"
+    },
+    {
+      "address": "00b8be7d",
+      "native": "00b73260",
+      "function": "00b8bdd0"
+    },
+    {
+      "address": "00b8d414",
+      "native": "00b73260",
+      "function": "00b8d150"
+    },
+    {
+      "address": "00b8e2d3",
+      "native": "00b73260",
+      "function": "00b8dd60"
+    },
+    {
+      "address": "00b8e388",
+      "native": "00b73260",
+      "function": "00b8dd60"
+    },
+    {
+      "address": "00b8e43f",
+      "native": "00b73260",
+      "function": "00b8dd60"
+    },
+    {
+      "address": "00b93814",
+      "native": "00b73260",
+      "function": "00b93800"
+    },
+    {
+      "address": "00b93862",
+      "native": "00b73260",
+      "function": "00b93800"
+    },
+    {
+      "address": "00b94406",
+      "native": "00b73260",
+      "function": "00b941d0"
+    },
+    {
+      "address": "00b94445",
+      "native": "00b73260",
+      "function": "00b941d0"
+    },
+    {
+      "address": "00b9ccb8",
+      "native": "00b73260",
+      "function": "00b9cb80"
+    },
+    {
+      "address": "00b9ceeb",
+      "native": "00b73260",
+      "function": "00b9cb80"
+    },
+    {
+      "address": "00b9ebbd",
+      "native": "00b73260",
+      "function": "00b9ea50"
+    },
+    {
+      "address": "00ba1d63",
+      "native": "00b73260",
+      "function": "00ba1400"
+    },
+    {
+      "address": "00ba2072",
+      "native": "00b73260",
+      "function": "00ba1400"
+    },
+    {
+      "address": "00ba23e1",
+      "native": "00b73260",
+      "function": "00ba1400"
+    },
+    {
+      "address": "00bab961",
+      "native": "00b73260",
+      "function": "00bab930"
+    },
+    {
+      "address": "00bab981",
+      "native": "00b73260",
+      "function": "00bab930"
+    },
+    {
+      "address": "00baba14",
+      "native": "00b73260",
+      "function": "00bab930"
+    },
+    {
+      "address": "00baba2f",
+      "native": "00b73260",
+      "function": "00bab930"
+    },
+    {
+      "address": "00bac79a",
+      "native": "00b73260",
+      "function": "00bac730"
+    },
+    {
+      "address": "00bac7ba",
+      "native": "00b73260",
+      "function": "00bac730"
+    },
+    {
+      "address": "00bac813",
+      "native": "00b73260",
+      "function": "00bac730"
+    },
+    {
+      "address": "00bac82e",
+      "native": "00b73260",
+      "function": "00bac730"
+    },
+    {
+      "address": "00badb49",
+      "native": "00b73260",
+      "function": "00bad6f0"
+    },
+    {
+      "address": "00bae9ba",
+      "native": "00b73260",
+      "function": "00bae900"
+    }
+  ],
+  "position_dispatch": {
+    "model_table": "00d62de8",
+    "slot_2c_word": "00d62e14",
+    "slot_2c_target": "00b6dab0",
+    "slot_38_word": "00d62e20",
+    "slot_38_target": "00b6db10",
+    "data_xrefs": 28,
+    "raw_caller": {
+      "no_ghidra_function": true,
+      "raw_start": "00b713d0",
+      "end_inclusive": "00b713f1",
+      "last_instruction": "00b713ef",
+      "last_instruction_length": 3,
+      "site": "00b713e2",
+      "target": "00b6dab0",
+      "contract": "Forwards incoming XYZ, then camera-direction call; derived camera profile outside Model fragment. Not attributed to preceding candidate."
+    }
+  },
+  "mesh_stream_raw_xrefs": [
+    {
+      "site": "0070818c",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00ab10c4",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00abe664",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00abf8d1",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00aceb24",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00af2719",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00b2b404",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00b2b44e",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00babcfb",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00babd51",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    },
+    {
+      "site": "00bc2357",
+      "target": "00b73260",
+      "no_ghidra_function": true,
+      "contract": "Raw contiguous disk decode inspected: stack index0, receiver from current mesh field or B74640. No containing routine attributed; enclosing raw body boundaries not claimed."
+    }
+  ]
 }

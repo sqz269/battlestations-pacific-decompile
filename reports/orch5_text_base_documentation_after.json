@@ -1,0 +1,197 @@
+[
+  {
+    "address": "00aa9730",
+    "documentation": {
+      "hash": "9f7dd36ec9b8047fa4437d8ded6ad3f6dbc70d8fbb2073f72e3cede84f9008ab",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00aa9730",
+      "function_name": "BSP_GuiWidget_DestroyBase",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00aa9730]\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "piVar6",
+          "type": "int *",
+          "storage": "(register, 0xc, 4)"
+        },
+        {
+          "name": "_Memory",
+          "type": "int *",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "puVar5",
+          "type": "undefined4 *",
+          "storage": "(register, 0x4, 4)"
+        },
+        {
+          "name": "puVar3",
+          "type": "undefined4 *",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "iVar4",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "local_14",
+          "type": "undefined4 *",
+          "storage": "(stack, 0xffffffffffffffec, 4)"
+        },
+        {
+          "name": "bVar1",
+          "type": "bool",
+          "storage": "(unique, 0x18700, 1)"
+        },
+        {
+          "name": "iVar2",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "local_10",
+          "type": "undefined4 *",
+          "storage": "(stack, 0xfffffffffffffff0, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        },
+        {
+          "name": "pvStack_c",
+          "type": "void *",
+          "storage": "(stack, 0xfffffffffffffff4, 4)"
+        },
+        {
+          "name": "puStack_8",
+          "type": "undefined1 *",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 70,
+          "name": "LAB_00aa9776"
+        },
+        {
+          "relative_offset": 79,
+          "name": "LAB_00aa977f"
+        },
+        {
+          "relative_offset": 89,
+          "name": "LAB_00aa9789"
+        },
+        {
+          "relative_offset": 105,
+          "name": "LAB_00aa9799"
+        },
+        {
+          "relative_offset": 117,
+          "name": "LAB_00aa97a5"
+        },
+        {
+          "relative_offset": 167,
+          "name": "LAB_00aa97d7"
+        },
+        {
+          "relative_offset": 183,
+          "name": "LAB_00aa97e7"
+        },
+        {
+          "relative_offset": 198,
+          "name": "LAB_00aa97f6"
+        },
+        {
+          "relative_offset": 227,
+          "name": "LAB_00aa9813"
+        },
+        {
+          "relative_offset": 250,
+          "name": "LAB_00aa982a"
+        },
+        {
+          "relative_offset": 257,
+          "name": "LAB_00aa9831"
+        },
+        {
+          "relative_offset": 268,
+          "name": "LAB_00aa983c"
+        },
+        {
+          "relative_offset": 275,
+          "name": "LAB_00aa9843"
+        },
+        {
+          "relative_offset": 288,
+          "name": "LAB_00aa9850"
+        },
+        {
+          "relative_offset": 297,
+          "name": "LAB_00aa9859"
+        },
+        {
+          "relative_offset": 300,
+          "name": "LAB_00aa985c"
+        },
+        {
+          "relative_offset": 326,
+          "name": "LAB_00aa9876"
+        },
+        {
+          "relative_offset": 349,
+          "name": "LAB_00aa988d"
+        },
+        {
+          "relative_offset": 400,
+          "name": "LAB_00aa98c0"
+        },
+        {
+          "relative_offset": 415,
+          "name": "LAB_00aa98cf"
+        },
+        {
+          "relative_offset": 429,
+          "name": "LAB_00aa98dd"
+        },
+        {
+          "relative_offset": 460,
+          "name": "LAB_00aa98fc"
+        },
+        {
+          "relative_offset": 480,
+          "name": "LAB_00aa9910"
+        },
+        {
+          "relative_offset": 492,
+          "name": "LAB_00aa991c"
+        },
+        {
+          "relative_offset": 497,
+          "name": "LAB_00aa9921"
+        },
+        {
+          "relative_offset": 512,
+          "name": "LAB_00aa9930"
+        },
+        {
+          "relative_offset": 527,
+          "name": "LAB_00aa993f"
+        },
+        {
+          "relative_offset": 576,
+          "name": "LAB_00aa9970"
+        },
+        {
+          "relative_offset": 594,
+          "name": "LAB_00aa9982"
+        }
+      ],
+      "completeness_score": 100.0
+    }
+  }
+]
