@@ -493,5 +493,437 @@
       "bytes": 1845,
       "sha256": "2273bd22d5bc4a861956f652d8881d3c619b9b9b508d8ee31497f530dafe0a37"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "integrated_complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+    "worker_commit": "89c9afa",
+    "new_complete_functions": 1,
+    "upgraded_complete_functions": 4,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b33aa0",
+        "name": "set_native_renderer_synchronization_00b33aa0",
+        "cpp_symbol": "set_native_renderer_synchronization_00b33aa0",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b33ab1",
+        "original_abi": "stack low byte; RET4; ECX unused",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b33aa0",
+            "name": "set_renderer_synchronization",
+            "source": "src/d3d9_states.cpp",
+            "status": "semantic_existing_device_probe_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b33ad0",
+        "name": "enter_native_renderer_optional_guard_00b33ad0",
+        "cpp_symbol": "enter_native_renderer_optional_guard_00b33ad0",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b33afe",
+        "original_abi": "ECX actual renderer; RET; AL 0 or 1 only",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b33ad0",
+            "name": "BSP_Renderer_EnterOptionalGuard",
+            "source": "src/d3d9_states.cpp",
+            "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b33b00",
+        "name": "leave_native_renderer_optional_guard_00b33b00",
+        "cpp_symbol": "leave_native_renderer_optional_guard_00b33b00",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b33b43",
+        "original_abi": "ECX actual renderer; ignored saved-result stack DWORD; RET4",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b33b00",
+            "name": "BSP_Renderer_LeaveOptionalGuard",
+            "source": "src/d3d9_states.cpp",
+            "status": "real_device_defaults_and_cache_probe_checked_single_thread",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b21110",
+        "name": "destroy_native_renderer_optional_guard_00b21110",
+        "cpp_symbol": "destroy_native_renderer_optional_guard_00b21110",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b21126",
+        "original_abi": "ECX actual 8-byte guard record; RET",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b20220",
+        "name": "native_renderer_device_lifecycle_busy_00b20220",
+        "cpp_symbol": "native_renderer_device_lifecycle_busy_00b20220",
+        "source": "src/native_renderer_synchronization_actual.cpp",
+        "native_end_exclusive": "00b20231",
+        "original_abi": "ECX actual renderer; RET; AL=(signed depth>0)",
+        "evidence": "reports/native_renderer_synchronization_actual_audit.json",
+        "status": "complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00b20220",
+            "name": "renderer_device_lifecycle_busy",
+            "source": "src/d3d9_states.cpp",
+            "status": "semantic_tracked_lock_probe_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "spans": [
+        {
+          "address": "00b33aa0",
+          "end_exclusive": "00b33ab1",
+          "length": 17,
+          "kind": "code",
+          "disk_offset": 7551648,
+          "original_hex": "8a442404a2dcd60801a2ddd60801c20400",
+          "sha256": "2c324d785cfc8b5528228be3c3646b4bb1f85dcdd0d89846c502c0dddf03f4e1",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33aae",
+              "operand": "4"
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": []
+        },
+        {
+          "address": "00b33ad0",
+          "end_exclusive": "00b33afe",
+          "length": 46,
+          "kind": "code",
+          "disk_offset": 7551696,
+          "original_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+          "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33ae2",
+              "operand": ""
+            },
+            {
+              "address": "00b33af9",
+              "operand": ""
+            },
+            {
+              "address": "00b33afd",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [
+            "00b33aec: call dword ptr [0xce2218]"
+          ]
+        },
+        {
+          "address": "00b33b00",
+          "end_exclusive": "00b33b43",
+          "length": 67,
+          "kind": "code",
+          "disk_offset": 7551744,
+          "original_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+          "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b33b40",
+              "operand": "4"
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": [
+            "00b33b1d: call dword ptr [0xce2210]"
+          ]
+        },
+        {
+          "address": "00b21110",
+          "end_exclusive": "00b21126",
+          "length": 22,
+          "kind": "code",
+          "disk_offset": 7475472,
+          "original_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+          "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b21125",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": []
+        },
+        {
+          "address": "00b20220",
+          "end_exclusive": "00b20231",
+          "length": 17,
+          "kind": "code",
+          "disk_offset": 7471648,
+          "original_hex": "8b819c19000033c93948180f9fc18ac1c3",
+          "sha256": "b7eff1078d433b851b415e6b098240fb45d978ce3a36a7ea2920dc65c88fafa7",
+          "live_ghidra_matches_installed_pe": true,
+          "ret_instructions": [
+            {
+              "address": "00b20230",
+              "operand": ""
+            }
+          ],
+          "fs_instructions": [],
+          "indirect_calls": []
+        }
+      ],
+      "archived_artifacts": [
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+          "bytes": 2877,
+          "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "src/native_renderer_synchronization_actual.cpp",
+          "bytes": 3242,
+          "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md",
+          "bytes": 8661,
+          "sha256": "49f17b5b624c93d7d425172945326332fedcbe278dd2f664564b33eb240d0e49"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/audit_native_renderer_sync.py",
+          "bytes": 3407,
+          "sha256": "14476ceb157f71465fc73cb678944406033dc99708b63fb4516e59500e1581f7"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_verified.json",
+          "bytes": 3595,
+          "sha256": "45a2f831dbd4a3db8f6afcb6de23bcfb3a646f2666933ab8cad7017d105108f7"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_prototypes.txt",
+          "bytes": 577,
+          "sha256": "a1a73538f622ce3b30811ecb945e49f72018732bf8a2370852daac968be5d471"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_annotations.json",
+          "bytes": 2296,
+          "sha256": "0731d6db450f263389bfe2a073e13ca7265269280f3c1e1058cf10c644b85365"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_seed_guard.json",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/make_native_renderer_sync_fixture_data.py",
+          "bytes": 1872,
+          "sha256": "b25ecac4f6665419dc46ac2c864518eedb80a5879943a07092ee4d68c62041fe"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_fixture_data.hpp",
+          "bytes": 1099,
+          "sha256": "abc8d77619509ad1b68cd02750b4c3bbf84f9c9f7a11eb9deca2b57b35108dc7"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_relocations.json",
+          "bytes": 1726,
+          "sha256": "210e640caf431782593963049522facd79c2f81e0dce3758c042fdfae34dbfe2"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_check.cpp",
+          "bytes": 15641,
+          "sha256": "1555df8b7f0dc181cf5007f6b61d2320903e47589cbd644daa26c9ae3dcb5758"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/build_native_renderer_sync_check.ps1",
+          "bytes": 1329,
+          "sha256": "a1aa087a4576607c2bb1e391b2f4cd99331f5a0e7741e6aeaa2eb52051743918"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_fixture_run.txt",
+          "bytes": 347,
+          "sha256": "10caed3f7aee39a18c2b2ca7e2252201d15053188815ca1982e1af745e80c3a9"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/renderer_sync_sources.cmake",
+          "bytes": 138,
+          "sha256": "6245a6a6378bb0bae4ac13ea1103e90de8d0081decc3bfb39898ef336daa0559"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "local/native_renderer_sync_build.txt",
+          "bytes": 10425,
+          "sha256": "84fd07783fd0cd31a4d28ee3f7a39978a0692282b040d54d65d44d428094a1b4"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/renderer-sync-check/native_renderer_sync_check.exe",
+          "bytes": 31744,
+          "sha256": "c1a7ac81d39aee38160795028476aae086ac44e06350962d247b2d275490913f"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/renderer-sync-check/native_renderer_synchronization_actual.obj",
+          "bytes": 2449,
+          "sha256": "c1eade0c926d58695d4b1f74be0e2b0f47839f8f5c7af35b61a2fb4e5601944e"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 17627388,
+          "sha256": "cebf33896c558b1ed8175251976c10f0825a045947d8f455dbed44bf9580164a"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/win32/bsp_core.dir/Release/native_renderer_synchronization_actual.obj",
+          "bytes": 2457,
+          "sha256": "f30ddd9b20d5630b97fb0f8f539c9374f91743002acaa9c6af3336db92a90121"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-synchronization-actual-20260910",
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 1845,
+          "sha256": "2273bd22d5bc4a861956f652d8881d3c619b9b9b508d8ee31497f530dafe0a37"
+        }
+      ],
+      "pinned_current_dependencies": [
+        {
+          "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+          "path": "include/bsp/random_threads.hpp",
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        }
+      ],
+      "worker_source_unchanged": true
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "src/native_renderer_synchronization_actual.cpp",
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "local/native_sync_primary_fixture.txt",
+        "sha256": "82de478f7161331f9869eb3e91d9f4f8fdec9b8653214a9aafe6e0f3df6e1606"
+      },
+      {
+        "path": "local/build_native_renderer_sync_check.ps1",
+        "sha256": "34d945c92cfe328a892ba977ff77c22781ea2d8856697a5ad7d1ddf05b333928"
+      },
+      {
+        "path": "build/renderer-sync-check/native_renderer_sync_check.exe",
+        "sha256": "faa08685e24929013c6984866ee4a9b98e60af7891715d7da6f34f2ef4637b0b"
+      }
+    ],
+    "primary_library_implementation": true,
+    "build": {
+      "path": "reports/native_labels_sync_primary_build.txt",
+      "sha256": "7bcde6d84af2b665a071884e93e530559abb4d1c788123e784d0b965bcc93673",
+      "tests": 2,
+      "passed": true
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_renderer_synchronization_actual_annotations.json",
+      "sha256": "f2d58d922154434449b9c0e6154a6adb52a014d4efdbf723af7cdc46fb19a4f4",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b33aa0",
+        "path": "exports/bsp/functions/00b33aa0/decompiled.c",
+        "sha256": "97bc6020a9bfb2c541849df85cf77854b253dc75106d4de685fa9953dc483bb2"
+      },
+      {
+        "address": "00b33ad0",
+        "path": "exports/bsp/functions/00b33ad0/decompiled.c",
+        "sha256": "d04f6ffc93c517df6fe47d8e32ea61341bea81ebce8dca57ee8434189d162673"
+      },
+      {
+        "address": "00b33b00",
+        "path": "exports/bsp/functions/00b33b00/decompiled.c",
+        "sha256": "9d7dc605c2e5268b90996af52b7c083333c328f50d488b9b4a8d7c8255c57653"
+      },
+      {
+        "address": "00b21110",
+        "path": "exports/bsp/functions/00b21110/decompiled.c",
+        "sha256": "e76a0f28a8507cd45df13b7d134d53cbcbed5491211f672bee96c088329a110c"
+      },
+      {
+        "address": "00b20220",
+        "path": "exports/bsp/functions/00b20220/decompiled.c",
+        "sha256": "dde8ba88eea6a63bdd8f9a17bb07f2f7f1b205051d2191e13eba1accd4dfe4f3"
+      }
+    ],
+    "closure_utc": "2026-09-11T00:29:59.495230+00:00"
+  }
 }

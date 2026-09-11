@@ -1,0 +1,76 @@
+[
+  {
+    "address": "00b33aa0",
+    "before": {
+      "address": "00b33aa0",
+      "function_name": "BSP_Renderer_SetOptionalSynchronization",
+      "comment": "[BSP reconstruction 00b33aa0]\nStack byte argument RET4 sets globals0108d6dc and0108d6dd to same value. Does not touch nesting0108d6e0 or locks. Ported for boolean semantic synchronization state; callers must coordinate worker lifecycle."
+    },
+    "after": {
+      "address": "00b33aa0",
+      "old_name": "BSP_Renderer_SetOptionalSynchronization",
+      "name": "BSP_Renderer_SetOptionalSynchronization",
+      "evidence": "raw mode byte to global 0108D6DC then 0108D6DD; no normalization or other writes Complete actual8-byte global/guard storage and borrowed renderer/actual1Ch tracked locks, preserving raw byte/DWORD fields and actual Windows operations. Original ABI: stack low byte; RET4; ECX unused. Evidence docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md; reports/native_renderer_synchronization_actual_audit.json. Primary original-caller fixture345exact event words through real Enter/Leave passes; strictWin32build+2existingCTests. No full outer EH/pipeline/worker or concurrent transitions/game validation claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b33ad0",
+    "before": {
+      "address": "00b33ad0",
+      "function_name": "BSP_Renderer_EnterOptionalGuard",
+      "comment": "[BSP reconstruction 00b33ad0]\nIncrements non-atomic global nesting 0108d6e0; if mode 0108d6dc enabled and this+4 lock nonnull, enters tracked critical section and increments depth+18h, returns true; otherwise false."
+    },
+    "after": {
+      "address": "00b33ad0",
+      "old_name": "BSP_Renderer_EnterOptionalGuard",
+      "name": "BSP_Renderer_EnterOptionalGuard",
+      "evidence": "wrapping non-atomic nesting increment first; current mode; capture actual renderer+04; actual EnterCriticalSection; increment captured lock raw DWORD+18; no pointer reload after API Complete actual8-byte global/guard storage and borrowed renderer/actual1Ch tracked locks, preserving raw byte/DWORD fields and actual Windows operations. Original ABI: ECX actual renderer; RET; AL 0 or 1 only. Evidence docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md; reports/native_renderer_synchronization_actual_audit.json. Primary original-caller fixture345exact event words through real Enter/Leave passes; strictWin32build+2existingCTests. No full outer EH/pipeline/worker or concurrent transitions/game validation claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b33b00",
+    "before": {
+      "address": "00b33b00",
+      "function_name": "BSP_Renderer_LeaveOptionalGuard",
+      "comment": "[BSP reconstruction 00b33b00]\nthiscall RET 4h; ignores saved enter-result stack argument. Decrements nesting 0108d6e0, conditionally decrements depth/leaves this+4 lock using CURRENT mode 0108d6dc, and when nesting zero copies mode to observed byte 0108d6dd. Concurrent mode transitions not validated."
+    },
+    "after": {
+      "address": "00b33b00",
+      "old_name": "BSP_Renderer_LeaveOptionalGuard",
+      "name": "BSP_Renderer_LeaveOptionalGuard",
+      "evidence": "capture mode before wrapping nesting decrement; current renderer+04 lock and current mode govern leave; raw depth decrement before actual LeaveCriticalSection; mode reload only after actual API; update observed byte when nesting zero and unequal Complete actual8-byte global/guard storage and borrowed renderer/actual1Ch tracked locks, preserving raw byte/DWORD fields and actual Windows operations. Original ABI: ECX actual renderer; ignored saved-result stack DWORD; RET4. Evidence docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md; reports/native_renderer_synchronization_actual_audit.json. Primary original-caller fixture345exact event words through real Enter/Leave passes; strictWin32build+2existingCTests. No full outer EH/pipeline/worker or concurrent transitions/game validation claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b21110",
+    "before": {
+      "address": "00b21110",
+      "function_name": "FUN_00b21110"
+    },
+    "after": {
+      "address": "00b21110",
+      "old_name": "FUN_00b21110",
+      "name": "BSP_Renderer_DestroyOptionalGuard",
+      "evidence": "check current mode before any guard read; enabled loads byte+00 then renderer+04 and calls 00B33B00; no writes, initialization or skipped-entry repair Complete actual8-byte global/guard storage and borrowed renderer/actual1Ch tracked locks, preserving raw byte/DWORD fields and actual Windows operations. Original ABI: ECX actual 8-byte guard record; RET. Evidence docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md; reports/native_renderer_synchronization_actual_audit.json. Primary original-caller fixture345exact event words through real Enter/Leave passes; strictWin32build+2existingCTests. No full outer EH/pipeline/worker or concurrent transitions/game validation claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b20220",
+    "before": {
+      "address": "00b20220",
+      "function_name": "BSP_D3D9Renderer_IsDeviceLifecycleBusy",
+      "comment": "[BSP reconstruction 00b20220]\nECX renderer. Loadpointer+199Ch then signed compare object+18h >0; returnboolean inAL. Worker polls withSleep10 whiletrue and rechecks before Begin/End. Not queue retention mode+20h; pointee identity still unconfirmed.\n\n[BSP reconstruction 00b20220] update\nCorrected earlier HasPendingCount hypothesis: constructor00b328d3 calls tracked critical section factory00bd1860 and stores pointer at renderer+199Ch. Getter returns AL=(signed depth at lock+18h)>0. Device recreation00b29670 and presentation-mode change00b29e60 hold this lock. Plain observation, not acquisition or queue count. Typed port checked idle/held/idle on real tracked critical section; concurrent polling unverified."
+    },
+    "after": {
+      "address": "00b20220",
+      "old_name": "BSP_D3D9Renderer_IsDeviceLifecycleBusy",
+      "name": "BSP_D3D9Renderer_IsDeviceLifecycleBusy",
+      "evidence": "actual renderer+199C points to a separate real 1Ch lock; read signed raw DWORD+18; no null guard, acquisition or modification Complete actual8-byte global/guard storage and borrowed renderer/actual1Ch tracked locks, preserving raw byte/DWORD fields and actual Windows operations. Original ABI: ECX actual renderer; RET; AL=(signed depth>0). Evidence docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md; reports/native_renderer_synchronization_actual_audit.json. Primary original-caller fixture345exact event words through real Enter/Leave passes; strictWin32build+2existingCTests. No full outer EH/pipeline/worker or concurrent transitions/game validation claim."
+    },
+    "status": "applied"
+  }
+]

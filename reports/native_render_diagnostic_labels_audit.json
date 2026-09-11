@@ -464,5 +464,278 @@
       "BSP_RenderDiagnostics_SetCommandLabel",
       "BSP_RenderDiagnostics_ResetCommandLabel"
     ]
+  },
+  "primary_integration": {
+    "status": "integrated_complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+    "worker_commit": "7cd6d3bc7105e926b832ebb398bc334241fe29a3",
+    "new_complete_functions": 2,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b13030",
+        "name": "set_native_render_diagnostic_label_00b13030",
+        "cpp_symbol": "set_native_render_diagnostic_label_00b13030",
+        "source": "src/native_render_diagnostic_labels.cpp",
+        "native_end_exclusive": "00b13069",
+        "original_abi": "ECX actual service, stack actual8h source header, RET4; no error-return contract",
+        "evidence": "reports/native_render_diagnostic_labels_audit.json",
+        "status": "complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b13510",
+        "name": "reset_native_render_diagnostic_label_00b13510",
+        "cpp_symbol": "reset_native_render_diagnostic_label_00b13510",
+        "source": "src/native_render_diagnostic_labels.cpp",
+        "native_end_exclusive": "00b135b5",
+        "original_abi": "No inputs, ECX unused, RET; no error-return contract",
+        "evidence": "reports/native_render_diagnostic_labels_audit.json",
+        "status": "complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "spans": [
+        {
+          "address": "00b13030",
+          "end_exclusive": "00b13069",
+          "bytes": 57,
+          "offset": 7417904,
+          "hex": "56578b7c240c8db1840600003bf774248b076a01508bcee8f4ac90ff833f0074138b0e8b57048b4604515250e81f460e0083c40c5f5ec20400",
+          "sha256": "2f49afcb4c57b6cdde832faabafa48619d1a802f87a466b7bc0e6d0b092e9090",
+          "installed_disk_equal": true,
+          "purpose": "full setter"
+        },
+        {
+          "address": "00b13510",
+          "end_exclusive": "00b135b5",
+          "bytes": 165,
+          "offset": 7419152,
+          "hex": "64a1000000006aff6878c2cb00506489250000000083ec08833d9cd3f80000747553565768389ace008d4c2410e82eb390ff8b359cd3f8008b5c24108b7c240c81c6840600008d44240c3bf0c744241c00000000741e6a01578bcee8d0a790ff85ff74108b068b4e04505351e8ff400e0083c40c85dbc744241cffffffff74136a0183c7015753e8246790ff8bc8e86ddf0b005f5e5b8b4c240864890d0000000083c414c3",
+          "sha256": "a05fe8017c36100e82cf5c93e42058337cfe2465f180a4df4263c8db1a0288ba",
+          "installed_disk_equal": true,
+          "purpose": "full reset"
+        },
+        {
+          "address": "0041e870",
+          "end_exclusive": "0041e8c3",
+          "bytes": 83,
+          "offset": 125040,
+          "hex": "56578b7c240c8bf18bc7c70600000000c74604000000008d50018d9b000000008a0883c00184c975f72bc26a01508bcee89bf4ffff8b460485c074108b0e83c101515750e8c78d7d0083c40c5f8bc65ec20400",
+          "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+          "installed_disk_equal": true,
+          "purpose": "full C-string constructor"
+        },
+        {
+          "address": "0041dd40",
+          "end_exclusive": "0041dde4",
+          "bytes": 164,
+          "offset": 122176,
+          "hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+          "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+          "installed_disk_equal": true,
+          "purpose": "full actual resize"
+        },
+        {
+          "address": "0041dd20",
+          "end_exclusive": "0041dd3d",
+          "bytes": 29,
+          "offset": 122144,
+          "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+          "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+          "installed_disk_equal": true,
+          "purpose": "full actual destructor"
+        },
+        {
+          "address": "00cbc270",
+          "end_exclusive": "00cbc282",
+          "bytes": 18,
+          "offset": 9159280,
+          "hex": "8d4dece9a81a76ffb86043df00e9c1a8f3ff",
+          "sha256": "7a94fc19c949b9d8cc6c9b55f3278e9ed60c4050cec06973c68a6e54cf047368",
+          "installed_disk_equal": true,
+          "purpose": "reset unwind action and handler"
+        },
+        {
+          "address": "00df4358",
+          "end_exclusive": "00df4384",
+          "bytes": 44,
+          "offset": 10437464,
+          "hex": "ffffffff70c2cb0022059319010000005843df00000000000000000000000000000000000000000001000000",
+          "sha256": "00728bc109a9585cec7f4214e05ebbf2708260646a3bab1f68b959c5232fd2f4",
+          "installed_disk_equal": true,
+          "purpose": "reset unwind map and EH info"
+        },
+        {
+          "address": "00ce9a38",
+          "end_exclusive": "00ce9a3a",
+          "bytes": 2,
+          "offset": 9345592,
+          "hex": "5800",
+          "sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+          "installed_disk_equal": true,
+          "purpose": "literal X"
+        },
+        {
+          "address": "00419cc0",
+          "end_exclusive": "00419cc5",
+          "bytes": 5,
+          "offset": 105664,
+          "hex": "64a1000000",
+          "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+          "installed_disk_equal": true,
+          "purpose": "storage getter hook preimage"
+        },
+        {
+          "address": "00bd1120",
+          "end_exclusive": "00bd1125",
+          "bytes": 5,
+          "offset": 8196384,
+          "hex": "538b5c2408",
+          "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+          "installed_disk_equal": true,
+          "purpose": "sized allocation hook preimage"
+        },
+        {
+          "address": "00bd1510",
+          "end_exclusive": "00bd1515",
+          "bytes": 5,
+          "offset": 8197392,
+          "hex": "538b5c240c",
+          "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+          "installed_disk_equal": true,
+          "purpose": "sized release hook preimage"
+        },
+        {
+          "address": "00bf7680",
+          "end_exclusive": "00bf7685",
+          "bytes": 5,
+          "offset": 8353408,
+          "hex": "558bec5756",
+          "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+          "installed_disk_equal": true,
+          "purpose": "memcpy hook preimage"
+        }
+      ],
+      "archived_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\prepare_native_render_diagnostic_labels.py",
+          "sha256": "c4cd0edad91dda2bffca5c5e7b91ab994675897f0534e30bb4372b8517362841"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_spans.hpp",
+          "sha256": "12f173924dc2b43d37aa544b78ad8eb0e5c61463c9d38f8e1f0a7b0aac8ae15d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_check.cpp",
+          "sha256": "f3e44ca6e2b33a72a76b210d63064640293b07459596ba4139997cb1010e62ee"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\build_native_render_diagnostic_labels_check.ps1",
+          "sha256": "d96cb5aa6c3baa6f9bb2e08ed7064a0c2350e455648329b5d474bfc3863c68c0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_preparation.json",
+          "sha256": "35b633a36a8f995038de6c5fd8c9a088e0a61c778e84ca558cdb1e430521629e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_fixture.txt",
+          "sha256": "03430456e44e0e722a69d6e59eac3b0a41cc557d94fd5fe4f4ad744d0baf2830"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_existing_build.txt",
+          "sha256": "5f472aeffb646022cc24ba97e13359541a9bb987f8aa4ded240c6d2dc8f4c2d8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_seed_check.txt",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\build\\native-render-diagnostic-labels-check\\native_render_diagnostic_labels_check.exe",
+          "sha256": "9129d1b9e18f51699cda6c3d513b8228f776fb66caa99ecfaabd9fe89630e669"
+        }
+      ],
+      "pinned_sources": [
+        {
+          "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+          "path": "include/bsp/native_string.hpp",
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+        },
+        {
+          "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+          "path": "src/native_string.cpp",
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+        },
+        {
+          "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+          "path": "include/bsp/storage_pool.hpp",
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        }
+      ],
+      "worker_sources_unchanged": true,
+      "primary_library_labels_and_strings": true
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_render_diagnostic_labels.hpp",
+        "sha256": "f11cef01bbf2b654c4537c493e6d1b967d6a3de52b4d923e77177e1ed6b5d32c"
+      },
+      {
+        "path": "src/native_render_diagnostic_labels.cpp",
+        "sha256": "c7e83660c1111bed827bade3a2ce3ebf2a9f8e3f1a9f0b96dec01758677b414c"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+      },
+      {
+        "path": "local/native_labels_primary_fixture.txt",
+        "sha256": "d5d2ae473c31618b4d15dfdecc64c4d79899e50f06540b93931a634db3d73909"
+      },
+      {
+        "path": "local/build_native_render_diagnostic_labels_check.ps1",
+        "sha256": "dc462a7cc84f5c92d204337bf65e7d8bd5d1c3fde0dad73fa36f530dafb27a88"
+      },
+      {
+        "path": "build/native-render-diagnostic-labels-check/native_render_diagnostic_labels_check.exe",
+        "sha256": "257b354221cc0bb96bcc5bf6a4b16ed6099020cb6de6837ec81d0dac4170af95"
+      }
+    ],
+    "primary_library_labels_and_strings": true,
+    "build": {
+      "path": "reports/native_diagnostic_labels_primary_build.txt",
+      "sha256": "ba8c726c150708e67404fae71f4c1e960050865a479a874599c9cb1c688b0503",
+      "tests": 2,
+      "passed": true
+    },
+    "temporary_header_mutation_not_injected": true,
+    "new_tracked_tests": 0,
+    "annotations_applied": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_diagnostic_labels_annotations.json",
+      "sha256": "4bbf801aa29c6aa0ab795d8170c7989c577ac51cf8c3c2aba80fa51856f8db2a",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b13030",
+        "path": "exports/bsp/functions/00b13030/decompiled.c",
+        "sha256": "631f41edf1e26778cf0e30d9e53b1841558547c8f2f26373793850c48689ec01"
+      },
+      {
+        "address": "00b13510",
+        "path": "exports/bsp/functions/00b13510/decompiled.c",
+        "sha256": "5ae267e75ca081802dd5f89eedbda72223ef4ccb79f3e6cd4a3886ca8410fe3c"
+      }
+    ],
+    "closure_utc": "2026-09-11T00:29:59.495230+00:00"
   }
 }
