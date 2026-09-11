@@ -4296,9 +4296,9 @@
     {
       "id": "native_renderer_recreate_device_next",
       "packet": "native_renderer_recreate_device_next",
-      "worker": null,
-      "done": false,
-      "state": "ready_bounded_discovery_when_worker_available",
+      "worker": "main",
+      "done": true,
+      "state": "bounded_read_only_native_dependency_discovery_complete",
       "function_addresses": [
         "00b29670"
       ],
@@ -4320,7 +4320,83 @@
         ],
         "scope": "Identify full native bounds, indirect calls and dependency partitions before implementation; current24 direct callees include22 internal. Discovery is separate from this factory packet."
       },
-      "source_ready": false
+      "source_ready": false,
+      "evidence": "reports/native_renderer_recreate_device_next.json"
+    },
+    {
+      "id": "native_shader_device_reset5",
+      "packet": "native_shader_device_reset5",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress",
+      "worker": "particle_clock_lifetime",
+      "function_addresses": [
+        "00b1fef0",
+        "00b5e750",
+        "00b5e810",
+        "00b5e890",
+        "00b5e8e0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_shader_device_reset.hpp",
+        "src/native_shader_device_reset.cpp",
+        "docs/NATIVE_SHADER_DEVICE_RESET.md",
+        "reports/native_shader_device_reset_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Complete borrowed renderer device getter plus pixel/vertex shader save/release/restore. Preserve both current fields and captured shader pointers, owner-address-initialized size DWORD, actual allocation/free and full returning-free clear tails. No own EH or invented HRESULT checks.",
+      "dependencies": [
+        "Existing actual singleton allocation/free services",
+        "Borrowed real current renderer-global slot, actual renderer and COM ABI storage"
+      ],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+    },
+    {
+      "id": "native_hardware_layout_device_release1",
+      "packet": "native_hardware_layout_device_release1",
+      "done": false,
+      "state": "ready_bounded_implementation",
+      "worker": null,
+      "function_addresses": [
+        "00b600b0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_device_release.hpp",
+        "src/native_hardware_layout_device_release.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_DEVICE_RELEASE.md",
+        "reports/native_hardware_layout_device_release_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Capture initial declaration+40 for AddRef/Release with current vtable reload between calls; reread current owner+40 for final conditional Release, then clear field only after that call. No tree erase, owner destruction, metadata reset or own EH.",
+      "dependencies": [
+        "Actual writable hardware layout owner with COM pointer+40 and real COM ABI"
+      ],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+    },
+    {
+      "id": "native_renderer_recreate_device_actual1",
+      "packet": "native_renderer_recreate_device_actual1",
+      "done": false,
+      "state": "blocked_on_named_and_semantic_actual_storage_dependencies",
+      "worker": null,
+      "function_addresses": [
+        "00b29670"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_recreate_device.hpp",
+        "src/native_renderer_recreate_device.cpp",
+        "docs/NATIVE_RENDERER_RECREATE_DEVICE.md",
+        "reports/native_renderer_recreate_device_audit.json"
+      ],
+      "source_ready": false,
+      "scope": "Whole native device recreation requires native ownership, list/iterator checks, actual tracked section and guard cleanup, all current loads and HRESULT/COM ordering. Existing typed renderer state/cache projections are evidence but are not substitute actual-storage implementations.",
+      "dependencies": [
+        "Full actual-storage renderer unbinding and resource release/restore dependencies",
+        "Full current hardware-layout CreateIfMissing B60A10",
+        "Complete virtual frame-target and gamma path including exact gamma arithmetic",
+        "Actual current registry owners and their virtual reset callbacks",
+        "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
+      ],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
     }
   ],
   "snapshot_after_analysis": {

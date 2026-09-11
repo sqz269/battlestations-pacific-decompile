@@ -67,6 +67,12 @@
   `python tools/bsp.py worktree remove <name>` (git's own remove/clean traverse reparse points).
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
+- Ad hoc probe executables (anything compiled with `cl` outside the CMake build) must link with
+  `/link /MANIFEST:EMBED` and must not have `install`, `setup`, `update` or `patch` in the file
+  name. Windows UAC installer detection treats an unmanifested 32-bit exe with such a name as an
+  installer and demands elevation, which blocks unattended runs and any `subprocess` capture.
+  A `installed_sound_configuration_probe.exe` has already hit this; `probe` names on their own
+  are fine.
 - Write as few new test cases as possible. Default to adding no tests for routine changes;
   use existing checks, compilation, and focused evidence inspection first. Add only the smallest
   test needed for a concrete behavioral risk or regression, or when the user explicitly asks.
