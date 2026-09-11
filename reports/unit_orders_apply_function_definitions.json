@@ -1,0 +1,274 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004499c0",
+    "end_address": "004499c3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004499c0",
+    "end_address": "004499c2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004499c0",
+    "disassemble_first": false,
+    "name": "BSP_SessionMessage_AlwaysTrue"
+   },
+   "result": {
+    "success": true,
+    "address": "004499c0",
+    "function_name": "BSP_SessionMessage_AlwaysTrue",
+    "entry_point": "004499c0",
+    "body_size": 3,
+    "message": "Function created successfully at 004499c0",
+    "warnings": [
+     "Function name 'BSP_SessionMessage_AlwaysTrue' \u2014 main part 'SessionMessage_AlwaysTrue' is not PascalCase. Expected: SessionmessageAlwaystrue",
+     "Function name 'BSP_SessionMessage_AlwaysTrue' \u2014 main part 'SessionMessage_AlwaysTrue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SessionMessage_AlwaysTrue' does not start with a recognized verb. First word 'Session' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004499c0",
+   "end": "004499c3",
+   "name": "BSP_SessionMessage_AlwaysTrue",
+   "after": "Function: BSP_SessionMessage_AlwaysTrue at 004499c0\nSignature: undefined BSP_SessionMessage_AlwaysTrue(void)\nEntry: 004499c0\nBody: 004499c0 - 004499c2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0075a660",
+    "end_address": "0075a682"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0075a660",
+    "end_address": "0075a681",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0075a660",
+    "disassemble_first": false,
+    "name": "BSP_UnitStateMessage_IsCategory"
+   },
+   "result": {
+    "success": true,
+    "address": "0075a660",
+    "function_name": "BSP_UnitStateMessage_IsCategory",
+    "entry_point": "0075a660",
+    "body_size": 34,
+    "message": "Function created successfully at 0075a660",
+    "warnings": [
+     "Function name 'BSP_UnitStateMessage_IsCategory' \u2014 main part 'UnitStateMessage_IsCategory' is not PascalCase. Expected: UnitstatemessageIscategory",
+     "Function name 'BSP_UnitStateMessage_IsCategory' \u2014 main part 'UnitStateMessage_IsCategory' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_UnitStateMessage_IsCategory' does not start with a recognized verb. First word 'Unit' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0075a660",
+   "end": "0075a682",
+   "name": "BSP_UnitStateMessage_IsCategory",
+   "after": "Function: BSP_UnitStateMessage_IsCategory at 0075a660\nSignature: undefined BSP_UnitStateMessage_IsCategory(void)\nEntry: 0075a660\nBody: 0075a660 - 0075a681"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00762500",
+    "end_address": "0076251f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00762500",
+    "end_address": "0076251e",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00762500",
+    "disassemble_first": false,
+    "name": "CG_scalar_deleting_dtor_00762500"
+   },
+   "result": {
+    "success": true,
+    "address": "00762500",
+    "function_name": "CG_scalar_deleting_dtor_00762500",
+    "entry_point": "00762500",
+    "body_size": 28,
+    "message": "Function created successfully at 00762500",
+    "warnings": [
+     "Function name 'CG_scalar_deleting_dtor_00762500' \u2014 main part 'CG_scalar_deleting_dtor_00762500' is not PascalCase. Expected: CgScalarDeletingDtor00762500",
+     "Function name 'CG_scalar_deleting_dtor_00762500' \u2014 main part 'CG_scalar_deleting_dtor_00762500' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00762500",
+   "end": "0076251f",
+   "name": "CG_scalar_deleting_dtor_00762500",
+   "after": "Function: CG_scalar_deleting_dtor_00762500 at 00762500\nSignature: undefined CG_scalar_deleting_dtor_00762500(void)\nEntry: 00762500\nBody: 00762500 - 0076251e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00813ef0",
+    "end_address": "00813fff"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00813ef0",
+    "end_address": "00813ffe",
+    "bytes_disassembled": 271,
+    "message": "Successfully disassembled 271 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00813ef0",
+    "disassemble_first": false,
+    "name": "BSP_UnitStateMessage_Deserialize"
+   },
+   "result": {
+    "success": true,
+    "address": "00813ef0",
+    "function_name": "BSP_UnitStateMessage_Deserialize",
+    "entry_point": "00813ef0",
+    "body_size": 271,
+    "message": "Function created successfully at 00813ef0",
+    "warnings": [
+     "Function name 'BSP_UnitStateMessage_Deserialize' \u2014 main part 'UnitStateMessage_Deserialize' is not PascalCase. Expected: UnitstatemessageDeserialize",
+     "Function name 'BSP_UnitStateMessage_Deserialize' \u2014 main part 'UnitStateMessage_Deserialize' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_UnitStateMessage_Deserialize' does not start with a recognized verb. First word 'Unit' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00813ef0",
+   "end": "00813fff",
+   "name": "BSP_UnitStateMessage_Deserialize",
+   "after": "Function: BSP_UnitStateMessage_Deserialize at 00813ef0\nSignature: undefined BSP_UnitStateMessage_Deserialize(void)\nEntry: 00813ef0\nBody: 00813ef0 - 00813ffe"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00813dc0",
+    "end_address": "00813ee7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00813dc0",
+    "end_address": "00813ee6",
+    "bytes_disassembled": 295,
+    "message": "Successfully disassembled 295 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00813dc0",
+    "disassemble_first": false,
+    "name": "BSP_UnitStateMessage_Serialize"
+   },
+   "result": {
+    "success": true,
+    "address": "00813dc0",
+    "function_name": "BSP_UnitStateMessage_Serialize",
+    "entry_point": "00813dc0",
+    "body_size": 295,
+    "message": "Function created successfully at 00813dc0",
+    "warnings": [
+     "Function name 'BSP_UnitStateMessage_Serialize' \u2014 main part 'UnitStateMessage_Serialize' is not PascalCase. Expected: UnitstatemessageSerialize",
+     "Function name 'BSP_UnitStateMessage_Serialize' \u2014 main part 'UnitStateMessage_Serialize' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_UnitStateMessage_Serialize' does not start with a recognized verb. First word 'Unit' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00813dc0",
+   "end": "00813ee7",
+   "name": "BSP_UnitStateMessage_Serialize",
+   "after": "Function: BSP_UnitStateMessage_Serialize at 00813dc0\nSignature: undefined BSP_UnitStateMessage_Serialize(void)\nEntry: 00813dc0\nBody: 00813dc0 - 00813ee6"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
