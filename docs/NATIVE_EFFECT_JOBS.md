@@ -1,5 +1,7 @@
 # Native effect phase-two jobs
 
+Addresses: `008663B0`, `008663D0`, `00866400`, `008667F0`, `00866C60`.
+
 The complete `00866C60` phase-two method now queues the manager's raw event
 references through the existing frame singleton and its real worker pool. The
 job callback `008663B0` calls each event's current virtual `+28` with the shared
@@ -128,3 +130,9 @@ The standalone worker fixture did not execute the original 31-byte event
 callback or nonempty phase-two loop. None of these checks establishes gameplay,
 physical device output, native exception-dispatch execution, or complete event
 class coverage.
+
+## Primary integration validation
+
+The combined strict Win32 build and both existing CTests passed. The separate `local/effect-job-callback-probe-ah.log` executes all31 original callback bytes, checking execution-time shared arguments, current virtual28, RET4/ESP, masked signaling-NaN quieting/invalid status, signed zero, unchanged actual20h event/count/request state, and complete lifetime teardown. Its temporary native event-table ABI bridge restores the real table identity before the canonical no-op method. The manager fixture additionally runs nonempty C++ phase-two dispatch through the actual Win32 pool and effect-job singleton, nine job updates and complete secondary teardown. Borrowed event-list population is explicit fixture input. Original106-byte phase-two execution remains limited to the earlier empty-span fixture; the original231-byte manager uses actual C++ callee bridges. See [LIVE_EFFECT_UPDATE.md](LIVE_EFFECT_UPDATE.md).
+
+Recovered signatures, names and evidence comments were saved in Ghidra, checked by readback with prior comments preserved, and re-exported. Native exception ABI, physical device output and gameplay remain unvalidated.

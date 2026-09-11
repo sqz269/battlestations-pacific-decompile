@@ -1,0 +1,351 @@
+{
+  "packet": "orch3_effect_manager_frame_ah",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_cpp_strict_win32_build_original_body_and_actual_manager_chain_fixture_passed",
+  "functions": [
+    {
+      "name": "manager",
+      "address": "00867ee0",
+      "end_exclusive": "00867fc7",
+      "length": 231,
+      "sha256": "6d975889a31b2141997192aea4feea1f2b767d6ae04813409c1f94071776ca30",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00867f18",
+          "target": "0x867d00",
+          "relative": true
+        },
+        {
+          "address": "00867f31",
+          "target": "0x866c60",
+          "relative": true
+        },
+        {
+          "address": "00867f53",
+          "target": "0x867790",
+          "relative": true
+        },
+        {
+          "address": "00867f9c",
+          "target": "0x81b010",
+          "relative": true
+        },
+        {
+          "address": "00867fba",
+          "target": "0x8671a0",
+          "relative": true
+        }
+      ],
+      "returns": [
+        {
+          "address": "00867fc4",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "cpp_symbol": "update_live_effect_manager_00867ee0",
+      "ghidra_name": "BSP_EffectManager_Update",
+      "original_abi": "ECX actual28h manager; stack float delta and borrowed reference; RET8 at867FC4; no established return value",
+      "source": "src/live_effect_update.cpp",
+      "coverage": "complete",
+      "evidence": "AH complete231-byte manager: captured first owning span with null skip and x87 delta copy per actual867D00; actual866C60 phase-two jobs; reload live owning span for actual867790 then reload current slot, signed auxiliary count<=0 and09/0A/primary-empty retirement, actual81B010 without advancing cursor, reload end each iteration; final actual8671A0 pending deletion flush. Same actual point/node/event/frame/singleton/deletion domains. No added lock or retain. Complete live/disk span SHA256 6d975889a31b2141997192aea4feea1f2b767d6ae04813409c1f94071776ca30. docs/LIVE_EFFECT_UPDATE.md; reports/live_effect_update.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual28h manager; stack float delta and borrowed reference; RET8 at867FC4; no established return value."
+    },
+    {
+      "name": "erase",
+      "address": "0081b010",
+      "end_exclusive": "0081b093",
+      "length": 131,
+      "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0081b043",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "0081b051",
+          "target": "ebp",
+          "relative": false
+        },
+        {
+          "address": "0081b05d",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "0081b074",
+          "target": "ebp",
+          "relative": false
+        },
+        {
+          "address": "0081b080",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "0081b090",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "erase_live_effect_reference_unordered_0081b010",
+      "ghidra_name": "BSP_LiveEffectReferenceArray_EraseUnordered",
+      "original_abi": "ECX actual0Ch owning raw-pointer array; stack address of iterator slot; RET4 at81B090; iterator unchanged; no established return value",
+      "source": "src/live_effect_update.cpp",
+      "coverage": "complete",
+      "evidence": "AH complete131-byte owning raw-array erase: capture iterator and initial tail; publish and actual04 retain incoming before captured-old release when values differ; reload header after callbacks, release current captured tail and clear it after terminal action; decrement live count last modulo2^32. Iterator unchanged. Uses canonical actual raw point owners, not host companion overlay. Complete live/disk span SHA256 2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5. docs/LIVE_EFFECT_UPDATE.md; reports/live_effect_update.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual0Ch owning raw-pointer array; stack address of iterator slot; RET4 at81B090; iterator unchanged; no established return value."
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "00867f18",
+      "native": "00867d00",
+      "function": "00867ee0"
+    },
+    {
+      "address": "00867f31",
+      "native": "00866c60",
+      "function": "00867ee0"
+    },
+    {
+      "address": "00867f53",
+      "native": "00867790",
+      "function": "00867ee0"
+    },
+    {
+      "address": "00867f9c",
+      "native": "0081b010",
+      "function": "00867ee0"
+    },
+    {
+      "address": "00867fba",
+      "native": "008671a0",
+      "function": "00867ee0"
+    }
+  ],
+  "composition": [
+    "actual complete867D00 advancement using actual parent and node pools",
+    "actual complete866C60 dispatch through same frame and singleton domains",
+    "actual complete867790 child/event updates",
+    "actual complete81B010 same raw-owner atomic04/current terminal",
+    "actual complete8671A0 deferred deletion flush"
+  ],
+  "validation": {
+    "build": "local/effect-frame-ah-final-build.log: strict MSVC Win32 and both existing CTests passed",
+    "application_chain": "local/live-effect-frame-probe-ah.log: complete original231-byte manager/RET8 versus C++, normalized114h point state and lifetime counts match; actual parent/full4x4/sample, restart/factories, nonempty real frame jobs, children/retirement, deferred terminal and complete domain teardown. Borrowed phase2 span population and device sink are explicit fixture inputs.",
+    "independent_review": {
+      "record": "local/manager-review-ah.json",
+      "findings": "local/manager-review-ah.md",
+      "result": "No semantic discrepancy within valid-span, nonconcurrent domain. Static review only; exact asynchronous access-trace parity excluded.",
+      "project": "bsp.gpr",
+      "program": "battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "read_source_from": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+      "reviewed_source_sha256": {
+        "include/bsp/live_effect_update.hpp": "6c7525027a3f01b3bd7dc3fcddaa86e1629da47100155dc154e7eeceab9b6223",
+        "src/live_effect_update.cpp": "60df42a541400e9b6365d3f0fe6875ff634ef6fec8a297c43b5e19109291fdd3"
+      },
+      "byte_evidence": [
+        {
+          "address": "00867ee0",
+          "length": 231,
+          "sha256": "6d975889a31b2141997192aea4feea1f2b767d6ae04813409c1f94071776ca30",
+          "live_disk_equal": true
+        },
+        {
+          "address": "0081b010",
+          "length": 131,
+          "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00867210",
+          "length": 131,
+          "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+          "live_disk_equal": true
+        }
+      ],
+      "erase_identical_0081b010_00867210": true,
+      "manager_direct_calls": [
+        {
+          "address": "00867f18",
+          "native": "00867d00",
+          "function": "00867ee0"
+        },
+        {
+          "address": "00867f31",
+          "native": "00866c60",
+          "function": "00867ee0"
+        },
+        {
+          "address": "00867f53",
+          "native": "00867790",
+          "function": "00867ee0"
+        },
+        {
+          "address": "00867f9c",
+          "native": "0081b010",
+          "function": "00867ee0"
+        },
+        {
+          "address": "00867fba",
+          "native": "008671a0",
+          "function": "00867ee0"
+        }
+      ]
+    },
+    "game_validated": false,
+    "native_exception_dispatch_executed": false,
+    "new_permanent_tests": false,
+    "combined_build": "local/effect-frame-ah-final-build.log: scripts/build.ps1 strict MSVC Win32 and both existing CTests passed",
+    "call_verification": "local/effect-frame-ah-call-verification-final.log: all report direct-call rows verified, zero failures",
+    "actual_manager_chain": "local/live-effect-frame-probe-ah.log: complete original231-byte manager/RET8 versus C++, normalized114h point state and lifetime counts match; actual parent/full4x4/sample, restart/factories, nonempty real frame jobs, children/retirement, deferred terminal and complete domain teardown. Borrowed phase2 span population and device sink are explicit fixture inputs.",
+    "manager_chain_evidence": {
+      "record": "local/live-effect-frame-chain-evidence-ah.json",
+      "status": "passed",
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch3-ah-manager-chain",
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+      "source_head": "4a0103edcbd291fb92cc53095424b3bc9c291a93",
+      "source_hashes": {
+        "include/bsp/live_effect_update.hpp": "6c7525027a3f01b3bd7dc3fcddaa86e1629da47100155dc154e7eeceab9b6223",
+        "src/live_effect_update.cpp": "60df42a541400e9b6365d3f0fe6875ff634ef6fec8a297c43b5e19109291fdd3",
+        "src/point_effect_advance.cpp": "b7787657ee608e89eb373d6a7eda1d3e539ecdae6137c61e5562e6d9a720a6a8",
+        "src/point_effect_controls.cpp": "c2f51f0a0a314fc5f8153b66805f90d1c2582369be49f0882879517ac892dff8",
+        "src/point_effect_children.cpp": "772119bf7308271917a20eea7ce3c1675104d909e2f120d1ab7bc7b3d9d3d942",
+        "src/native_effect_jobs.cpp": "56b1b4f681131db5f42b3524c5176b8e52b954d5cf8b8ca13181ac54449f1600",
+        "src/native_frame_job_execution.cpp": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "src/native_gamepad_force_event.cpp": "52f13730950b709c5ffc1d27badde7b1f59f6d93358793abc0c9c8a096e71050"
+      },
+      "core_library_sha256": "c5d2cf89fda6dc2dc3739df11ed498335c43e217b46b93d890bb9894a31f92fc",
+      "probe_sha256": "5523a5026db7117dab90d8b77e9da690baa5acce21fb3e2870fcf65e790ca838",
+      "probe_source_sha256": "b380323879e4ab26efb7b4efb7b3bf936a52de8d4e84138755d55d42d478ccfa",
+      "original_manager": {
+        "address": "00867ee0",
+        "end_exclusive": "00867fc7",
+        "length": 231,
+        "sha256": "6d975889a31b2141997192aea4feea1f2b767d6ae04813409c1f94071776ca30",
+        "live_disk_probe_header_equal": true,
+        "return_bytes": "c20800",
+        "esp_balance_checked": true
+      },
+      "native_direct_callee_adapters": [
+        "00867F18 -> complete C++00867D00 with same actual PointEffectAdvanceRuntime",
+        "00867F31 -> complete C++00866C60 with same job/frame/global/lifetime owners",
+        "00867F53 -> complete C++00867790 with same actual row/event domains",
+        "00867F9C -> complete C++0081B010 with same owning raw pointer array and canonical terminal mapping",
+        "00867FBA -> complete C++008671A0 with same pending queue and point terminal dispatch"
+      ],
+      "validation": [
+        "Existing AE and AG application regressions run first and pass.",
+        "Original complete231-byte manager and C++ manager compare identical normalized114h point images and owner/frame/request counters. Pointer fields0C/18/84/8C/110 normalized; untouched0B/74 prefilledA5 and included.",
+        "Frame1: real captured parent refresh/full4x4 and native world setter;3 original events execute via actual shared singleton, nonempty frame jobs and actual rumble virtual28;3 serial updates/completions; prequeued extra actual point reaches zero during dispatch and survives until final real deferred flush.",
+        "Frame2: actual0A restart through advancement creates4 current rows/3 new events; fixture refreshes borrowed job span to exact newly created events; parent refresh moves point x22->42. Three old event owners die without cancelling their independent requests.",
+        "Frame3: parent caller ref consumed before frame; actual released44 causes point parent terminal/stop;3 current events cancel, execute phase2, retire through actual auxiliary erase in child phase; manager owning erase destroys last point ref and definition/components; all native node pool slots returned.",
+        "Empty frame still executes actual frame dispatch and pending flush.",
+        "Totals:9 phase2 updates,9 serial child updates,9 completions,3 cancellations; all singleton secondaries/frame workers and actual pools shut down.",
+        "Compile: MSVC Win32 /EHsc /O2 /W4 /WX /fp:strict /MD /link /MANIFEST:EMBED; NUMBER_OF_PROCESSORS=2 yields actual one-worker pool."
+      ],
+      "limits": [
+        "Only complete manager231-byte body is native in this differential. Five known callees execute their existing recovered C++ implementations on same actual owners; independent packets test their original bytes.",
+        "Borrowed manager references1C population is explicit fixture behavior, including factory observer refresh and clearing count before next empty frame; native producer is not recovered here.",
+        "Prequeued extra release is an explicit controlled fixture callback through the existing remaining job executor; known effect jobs use actual NativeEffectJobDispatch.",
+        "Physical gamepad output uses existing controlled device sink.",
+        "Worker exists and real wake/drain/wait/shutdown executes; which thread claims each tiny rumble no-op is scheduler-dependent.",
+        "Native exception dispatcher and gameplay are not executed."
+      ],
+      "logs": [
+        "local/live-effect-frame-probe-ah.log",
+        "local/live-effect-frame-evidence-ah.log"
+      ],
+      "worker_pool": {
+        "NUMBER_OF_PROCESSORS": "2",
+        "actual_worker_count_14": 1,
+        "actual_worker_handle_checked": "GetExitCodeThread returns STILL_ACTIVE before first dispatch; real wake/drain/wait/shutdown execute",
+        "per_job_claiming_thread": "scheduler-dependent; worker-only execution is not claimed"
+      },
+      "erase_0081b010": {
+        "execution_in_this_probe": "complete C++ only, called by original manager direct-callee adapter and C++ manager",
+        "original_131_bytes_executed_here": false,
+        "separate_prior_evidence": "Original131-byte00867210 has identical body SHA2562050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5 and was executed in the prior AG array fixture; it is not a separate execution of0081B010 here."
+      }
+    }
+  },
+  "byte_evidence": "local/live-effect-frame-byte-evidence-ah.json",
+  "uncertainty": "New typed C++ interfaces over existing actual owner domains, not drop-in native object/vtable ABI. Valid spans, owners, pure projections and nonthrowing canonical terminal contracts required. Native exception dispatch, FPU status, physical device output and gameplay unvalidated.",
+  "remaining": [
+    "Recover the producer and lifetime contract of manager.references_1c; the integration fixture explicitly supplies and refreshes this borrowed event span.",
+    "Native object/vtable ABI replacement and executable gameplay integration.",
+    "Other event families need their actual implementations; no fallback was added."
+  ],
+  "ghidra_signature_audit": {
+    "record": "local/effect-frame-signatures-ah.json",
+    "project_saved": true,
+    "before": {
+      "00867ee0": "00867ee0 BSP_EffectManager_Update  undefined BSP_EffectManager_Update(void)  body 00867ee0 - 00867fc6\n",
+      "0081b010": "0081b010 FUN_0081b010  undefined FUN_0081b010(void)  body 0081b010 - 0081b092\n"
+    },
+    "changes": [
+      {
+        "address": "00867ee0",
+        "prototype": "void __thiscall BSP_EffectManager_Update(float delta, void * reference_node)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00867ee0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "0081b010",
+        "prototype": "void __thiscall BSP_LiveEffectReferenceArray_EraseUnordered(void ** iterator_slot)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 0081b010 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "after": "00867ee0 BSP_EffectManager_Update  void __thiscall BSP_EffectManager_Update(void * this, float delta, void * reference_node)  body 00867ee0 - 00867fc6\n0081b010 BSP_LiveEffectReferenceArray_EraseUnordered  void __thiscall BSP_LiveEffectReferenceArray_EraseUnordered(void * this, void * * iterator_slot)  body 0081b010 - 0081b092",
+    "parameter_note": "Ghidra supplies ECX this automatically; prototype text contains only native stack arguments. Scalar adjustor receiver is secondary+04 and primary scalar returns original primary; unknown native structures remain void pointers."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T234951Z.json",
+    "readback": "local/effect-frame-ah-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "0081b010",
+        "before": {
+          "address": "0081b010",
+          "function_name": "BSP_LiveEffectReferenceArray_EraseUnordered"
+        },
+        "after": {
+          "address": "0081b010",
+          "name": "BSP_LiveEffectReferenceArray_EraseUnordered",
+          "evidence": "AH complete131-byte owning raw-array erase: capture iterator and initial tail; publish and actual04 retain incoming before captured-old release when values differ; reload header after callbacks, release current captured tail and clear it after terminal action; decrement live count last modulo2^32. Iterator unchanged. Uses canonical actual raw point owners, not host companion overlay. Complete live/disk span SHA256 2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5. docs/LIVE_EFFECT_UPDATE.md; reports/live_effect_update.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual0Ch owning raw-pointer array; stack address of iterator slot; RET4 at81B090; iterator unchanged; no established return value."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00867ee0",
+        "before": {
+          "address": "00867ee0",
+          "function_name": "BSP_EffectManager_Update",
+          "comment": "[BSP reconstruction 00867ee0]\nHypothesis, not a recovered symbol. __thiscall on the 004D1100 singleton with (float delta, void* referenceNode), RET 8. Four phases: 00867D00 per non-null entry of the array at +10h/+14h, 00866C60 on the manager, 00867790 per entry followed by a retire test that erases through 0081B010, then 008671A0. Null guards use the NEG/SBB/TEST reg,0xE186EC idiom, which reduces to a null check. Sole in-frame caller 004e5377. docs/GAME_WORLD_OCEAN.md."
+        },
+        "after": {
+          "address": "00867ee0",
+          "name": "BSP_EffectManager_Update",
+          "evidence": "Hypothesis, not a recovered symbol. __thiscall on the 004D1100 singleton with (float delta, void* referenceNode), RET 8. Four phases: 00867D00 per non-null entry of the array at +10h/+14h, 00866C60 on the manager, 00867790 per entry followed by a retire test that erases through 0081B010, then 008671A0. Null guards use the NEG/SBB/TEST reg,0xE186EC idiom, which reduces to a null check. Sole in-frame caller 004e5377. docs/GAME_WORLD_OCEAN.md. | AH complete231-byte manager: captured first owning span with null skip and x87 delta copy per actual867D00; actual866C60 phase-two jobs; reload live owning span for actual867790 then reload current slot, signed auxiliary count<=0 and09/0A/primary-empty retirement, actual81B010 without advancing cursor, reload end each iteration; final actual8671A0 pending deletion flush. Same actual point/node/event/frame/singleton/deletion domains. No added lock or retain. Complete live/disk span SHA256 6d975889a31b2141997192aea4feea1f2b767d6ae04813409c1f94071776ca30. docs/LIVE_EFFECT_UPDATE.md; reports/live_effect_update.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual28h manager; stack float delta and borrowed reference; RET8 at867FC4; no established return value."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

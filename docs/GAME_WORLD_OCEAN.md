@@ -263,6 +263,14 @@ then `0081B010(ECX = this+0x10, &iterator)` erases the entry. The iterator is no
 an erase (0081B010 shifts the array down), and the loop reloads `data` and `size` from `+0x10` and
 `+0x14` on every pass, which is what makes the erase safe.
 
+Correction from [LIVE_EFFECT_UPDATE.md](LIVE_EFFECT_UPDATE.md): the earlier
+"shifts the array down" description is superseded. `0081B010` performs owning
+unordered tail replacement, then releases and clears the current tail and
+decrements the live count. The unchanged iterator visits the moved tail next.
+The loop reloads the end but does not rebase its iterator, so captured backing
+must remain valid. The `+1C` comparison is signed, and `+0A` requests restart;
+"not pinned" above was an unconfirmed field interpretation.
+
 00867D00, per effect instance (complete reconstruction and precise ordering now
 in [POINT_EFFECT_ADVANCE.md](POINT_EFFECT_ADVANCE.md)):
 
@@ -287,6 +295,13 @@ in [POINT_EFFECT_ADVANCE.md](POINT_EFFECT_ADVANCE.md)):
 `004C1130()`'s `+0x04` object, virtual `+0x04`, followed by one virtual `+0x08` with argument 1.
 This reads as the per-frame draw or queue submission for the effect set; it was not analysed
 further because 004C1130's object belongs to the render side.
+
+Correction from [NATIVE_EFFECT_JOBS.md](NATIVE_EFFECT_JOBS.md): this is now a
+complete reconstruction using the actual frame worker pool. `008667F0` supplies
+the eight-byte callback singleton; `008663B0` reads shared arguments when each
+job executes and calls the raw event's current `+28`. The raw span is non-owning.
+The earlier draw-submission interpretation was provisional. The complete manager
+composition is documented in [LIVE_EFFECT_UPDATE.md](LIVE_EFFECT_UPDATE.md).
 
 00867790 walks the entry's own array at `+0x0C`/`+0x10`, calls virtual `+0x28` with
 `(delta, node)` on every non-null child whose `child+0x18` is neither 1 nor 4, then releases

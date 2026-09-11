@@ -3,7 +3,7 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "status": "complete_reconstruction_direct_msvc_compile_and_original_byte_actual_owner_fixture_passed",
+  "status": "complete_cpp_strict_win32_build_original_body_and_actual_manager_chain_fixture_passed",
   "functions": [
     {
       "name": "advance",
@@ -65,7 +65,8 @@
       "ghidra_name": "BSP_Effect_AdvanceTransform",
       "source": "src/point_effect_advance.cpp",
       "original_abi": "ECX actual114h point; stack float delta, unused reference DWORD; RET8 at867ECD/867ED8; no established return value",
-      "evidence": "AH complete475-byte body: gated restart before x87 age80 spill; actual parent44 released check, conditional B6DB70, full413920 relativeD0*captured parent world, captured node virtual34/current receiver; consumed parent release then stop then09. Full DWORD sample flags, unspilled x87 elapsed gate, sequential x87 previous copy, captured live node MOVSS XYZ, signed count88>1 and COMISS-positive delta, separately spilled numerator/current timer span/quotients, independent displacement differences, successful sample timer+0. Shared x87 stages correct old world_ocean sampling-only helper. Original475-byte/ESP/full normalized114h comparison with actual point/definition/component/rumble/node lifetimes passed x87-64/24 precision, finite threshold, SNaN, signed count, real callback replacement, released-parent stop and restart. docs/POINT_EFFECT_ADVANCE.md; reports/point_effect_advance.json. ABI callee/pointer adapters explicit; FPU status, native EH and gameplay unvalidated. Name is a hypothesis."
+      "evidence": "AH complete475-byte body: gated restart before x87 age80 spill; actual parent44 released check, conditional B6DB70, full413920 relativeD0*captured parent world, captured node virtual34/current receiver; consumed parent release then stop then09. Full DWORD sample flags, unspilled x87 elapsed gate, sequential x87 previous copy, captured live node MOVSS XYZ, signed count88>1 and COMISS-positive delta, separately spilled numerator/current timer span/quotients, independent displacement differences, successful sample timer+0. Shared x87 stages correct old world_ocean sampling-only helper. Original475-byte/ESP/full normalized114h comparison with actual point/definition/component/rumble/node lifetimes passed x87-64/24 precision, finite threshold, SNaN, signed count, real callback replacement, released-parent stop and restart. docs/POINT_EFFECT_ADVANCE.md; reports/point_effect_advance.json. ABI callee/pointer adapters explicit; FPU status, native EH and gameplay unvalidated. Name is a hypothesis. Complete live/disk span SHA256 be0a788463577630bf0662686b3634ced8be81b4dfe2f76b4b278d2aecb1ed6c. docs/POINT_EFFECT_ADVANCE.md; reports/point_effect_advance.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual114h point; stack float delta, unused reference DWORD; RET8 at867ECD/867ED8; no established return value.",
+      "coverage": "complete"
     }
   ],
   "native_call_sites": [
@@ -112,13 +113,56 @@
     "actual_chain": "complete point construction/definition/component/rumble/native node pools/same singleton domains and real teardown",
     "callee_adapters": "six direct callee bridges invoke canonical actual source; raw8C/110 node words temporarily translate to existing companions; current virtual34 bridge invokes controlled observer then real B6E870",
     "callback_scope": "world-matrix override changes actual timer/current node using live owners; refresh bridge itself has no mutation",
-    "shared_build": "primary integration pending",
+    "shared_build": "local/effect-frame-ah-final-build.log: scripts/build.ps1 strict MSVC Win32 and both existing CTests passed",
     "game_validated": false,
     "native_exception_dispatch": false,
-    "fpu_status_word_compared": false
+    "fpu_status_word_compared": false,
+    "combined_build": "local/effect-frame-ah-final-build.log: scripts/build.ps1 strict MSVC Win32 and both existing CTests passed",
+    "call_verification": "local/effect-frame-ah-call-verification-final.log: all report direct-call rows verified, zero failures",
+    "actual_manager_chain": "local/live-effect-frame-probe-ah.log: complete original231-byte manager/RET8 versus C++, normalized114h point state and lifetime counts match; actual parent/full4x4/sample, restart/factories, nonempty real frame jobs, children/retirement, deferred terminal and complete domain teardown. Borrowed phase2 span population and device sink are explicit fixture inputs."
   },
   "remaining": [
-    "Full manager composition and primary build validation are recorded by primary integrator.",
     "Native object/vtable ABI replacement, unmasked exception delivery, physical rumble and gameplay remain unvalidated."
-  ]
+  ],
+  "ghidra_signature_audit": {
+    "record": "local/effect-frame-signatures-ah.json",
+    "project_saved": true,
+    "before": {
+      "00867d00": "00867d00 BSP_Effect_AdvanceTransform  undefined BSP_Effect_AdvanceTransform(void)  body 00867d00 - 00867eda\n"
+    },
+    "changes": [
+      {
+        "address": "00867d00",
+        "prototype": "void __thiscall BSP_Effect_AdvanceTransform(float delta, void * unused_reference)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00867d00 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "after": "00867d00 BSP_Effect_AdvanceTransform  void __thiscall BSP_Effect_AdvanceTransform(void * this, float delta, void * unused_reference)  body 00867d00 - 00867eda",
+    "parameter_note": "Ghidra supplies ECX this automatically; prototype text contains only native stack arguments. Scalar adjustor receiver is secondary+04 and primary scalar returns original primary; unknown native structures remain void pointers."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T234951Z.json",
+    "readback": "local/effect-frame-ah-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00867d00",
+        "before": {
+          "address": "00867d00",
+          "function_name": "BSP_Effect_AdvanceTransform",
+          "comment": "[BSP reconstruction 00867d00]\nHypothesis, not a recovered symbol. __thiscall on one effect instance with (float delta, void* referenceNode), RET 8; phase 1 of 00867EE0. instance+80h += delta unconditionally. An attachment at +8Ch whose +44h is clear pushes Matrix_Multiply4x4(local, attachment+F0h) through virtual +34h of instance+110h; a set +44h means the attachment died, so 0042D9A0(0), 00867B10 and instance+09h = 1. When +28h or +2Ch is set, a sample timer at +48h against the interval at +4Ch shifts +3Ch..+44h into +30h..+38h, latches the node world position, and when +88h > 1 and delta > 0 writes velocity (current-previous)/elapsed into +5Ch..+64h and displacement into +68h..+70h before resetting +48h. docs/GAME_WORLD_OCEAN.md."
+        },
+        "after": {
+          "address": "00867d00",
+          "name": "BSP_Effect_AdvanceTransform",
+          "evidence": "Hypothesis, not a recovered symbol. __thiscall on one effect instance with (float delta, void* referenceNode), RET 8; phase 1 of 00867EE0. instance+80h += delta unconditionally. An attachment at +8Ch whose +44h is clear pushes Matrix_Multiply4x4(local, attachment+F0h) through virtual +34h of instance+110h; a set +44h means the attachment died, so 0042D9A0(0), 00867B10 and instance+09h = 1. When +28h or +2Ch is set, a sample timer at +48h against the interval at +4Ch shifts +3Ch..+44h into +30h..+38h, latches the node world position, and when +88h > 1 and delta > 0 writes velocity (current-previous)/elapsed into +5Ch..+64h and displacement into +68h..+70h before resetting +48h. docs/GAME_WORLD_OCEAN.md. | AH complete475-byte body: gated restart before x87 age80 spill; actual parent44 released check, conditional B6DB70, full413920 relativeD0*captured parent world, captured node virtual34/current receiver; consumed parent release then stop then09. Full DWORD sample flags, unspilled x87 elapsed gate, sequential x87 previous copy, captured live node MOVSS XYZ, signed count88>1 and COMISS-positive delta, separately spilled numerator/current timer span/quotients, independent displacement differences, successful sample timer+0. Shared x87 stages correct old world_ocean sampling-only helper. Original475-byte/ESP/full normalized114h comparison with actual point/definition/component/rumble/node lifetimes passed x87-64/24 precision, finite threshold, SNaN, signed count, real callback replacement, released-parent stop and restart. docs/POINT_EFFECT_ADVANCE.md; reports/point_effect_advance.json. ABI callee/pointer adapters explicit; FPU status, native EH and gameplay unvalidated. Name is a hypothesis. Complete live/disk span SHA256 be0a788463577630bf0662686b3634ced8be81b4dfe2f76b4b278d2aecb1ed6c. docs/POINT_EFFECT_ADVANCE.md; reports/point_effect_advance.json. Strict MSVC Win32 build and both existing CTests passed. Descriptive names are hypotheses. Parameters: ECX actual114h point; stack float delta, unused reference DWORD; RET8 at867ECD/867ED8; no established return value."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }

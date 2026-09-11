@@ -1,5 +1,7 @@
 # Point-effect restart, stop, and consumed parent replacement
 
+Addresses: `0042D9A0`, `00866F50`, `00867B10`.
+
 `point_effect_controls.cpp` reconstructs three complete control functions over
 the existing actual `114h` point storage, row/event companions, and singleton
 lifetime domain. These are new typed Win32 interfaces, not native vtable
@@ -109,3 +111,9 @@ Ignored evidence: `local/extract_point_controls_ah.py`,
 `local/point-controls-byte-evidence-ah.json`, `local/point-controls-extraction-ah.log`,
 `local/point_controls_native_ah.cpp`, `local/run_point_controls_native_ah.cmd`,
 and `local/point-controls-native-ah.log`.
+
+## Primary integration validation
+
+The combined strict Win32 build and both existing CTests passed. The actual manager fixture now invokes restart and released-parent stop through complete advancement, then child completion and owning retirement, with real event/node/definition/component/string destruction. See [LIVE_EFFECT_UPDATE.md](LIVE_EFFECT_UPDATE.md) and `local/live-effect-frame-probe-ah.log`. The earlier standalone-probe limits remain scoped to that probe; primary application-chain validation is complete for these cases.
+
+Recovered signatures, names and evidence comments were saved in Ghidra, checked by readback with prior comments preserved, and re-exported. Native exception ABI, physical device output and gameplay remain unvalidated.

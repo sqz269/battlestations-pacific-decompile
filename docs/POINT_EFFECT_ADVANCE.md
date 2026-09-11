@@ -1,5 +1,7 @@
 # Point-effect transform and sample advancement
 
+Addresses: `00867D00`.
+
 `advance_point_effect_00867d00` reconstructs the complete 475-byte body at
 `00867D00..00867EDA`. The original ABI is `ECX = actual 114h point`, followed by
 stack float delta and an unused reference DWORD; both exits use `RET 8` at
@@ -128,3 +130,9 @@ mutation is outside this C++ binding contract. Native exception dispatch and
 throwing native virtual0 are not executed; the canonical intrusive terminal
 interface is nonthrowing. No physical-device rumble or rendered game result is
 claimed.
+
+## Primary integration validation
+
+The combined strict Win32 build and both existing CTests passed. Complete original manager231-byte/RET8 versus C++ now composes this advancement with actual nonempty frame jobs, child updates, restart, released-parent stop, retirement and pending deletion. Normalized114h states and lifetime counts match. See [LIVE_EFFECT_UPDATE.md](LIVE_EFFECT_UPDATE.md) and `local/live-effect-frame-probe-ah.log`.
+
+Recovered signatures, names and evidence comments were saved in Ghidra, checked by readback with prior comments preserved, and re-exported. Native exception ABI, physical device output and gameplay remain unvalidated.
