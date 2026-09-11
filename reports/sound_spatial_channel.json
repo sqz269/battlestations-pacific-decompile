@@ -801,5 +801,23 @@
       "packet": "sound_application_voice_composition",
       "scope": "Production manager/CRT/time services, complete voice runtime and Phase5 application setup."
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_spatial_manager_fixture_tested",
+    "validated_revision": "627e1ab2d8f0950914bc7a5934a4fd08aa970100",
+    "main_base": "79dbe01b",
+    "integration_log": "local/sound_spatial_t_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_spatial_t_integrate.log",
+    "library_sha256": "bda8b0f99147815de686879d807744d7c0211639254bce16d76cf3d6fbdfcea8",
+    "fixture_provenance": "Focused routing and installed spatial manager fixture ran on validation.code_revision with validation.library_sha256. Combined build/CTest is recorded separately.",
+    "saved_annotations": 11,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T211656Z.json",
+    "refreshed_exports": "local/sound_spatial_t_integration_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }
