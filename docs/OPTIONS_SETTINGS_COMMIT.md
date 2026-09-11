@@ -252,8 +252,9 @@ detections and passed as the last argument of the presentation-mode change. In o
 21. `00B107F0((00F8D39C), +8Ch, +8Dh, +58h)`, a 0x2838-byte body that was not opened (008D60E6).
 22. `BSP_GuiManager_GetOrCreate` then `00AA4EF0` when 00E198C4 is null (008D60EB).
 23. `00B0D080((00F8D39C), +90h)`: `+220h`, the old-film mode (008D610D).
-24. `00439100()` returns the module directory; its length is measured inline and copied into the
-    global native string at 0108FF24/0108FF28 (008D6112).
+24. `00439100()` returns the Windows user-geography region (`EU`, `USA` or `JAP`); its length
+    is measured inline and copied into the Lua region string at 0108FF24/0108FF28 (008D6112).
+    The earlier module-directory interpretation was incorrect; see `LUA_RUNTIME_GLOBALS.md`.
 
 Calling conventions used above were taken from the listing. Ghidra's pseudocode for this body drops
 the four control-byte arguments, mistakes the presentation-mode change flag for a local, and shows

@@ -306,8 +306,9 @@ public:
     virtual void gui_manager_reload() = 0;
     // 00b0d080 on 00f8d39c: +220h = old film effect.
     virtual void renderer_set_old_film_effect(int mode) = 0;
-    // 00439100 copied into the global native string at 0108ff24/0108ff28.
-    virtual void publish_module_directory(const std::string& path) = 0;
+    // 00439100 queries Windows user geography; its region string is copied to
+    // 0108ff24/0108ff28 for subsequent Lua owners (not a module directory).
+    virtual void publish_lua_region(const std::string& region) = 0;
 };
 
 // State the commit reads from outside the settings object. Grouping them keeps
@@ -324,7 +325,7 @@ struct SettingsApplyEnvironment {
     bool cloud_system_present{false};         // (00e188a8)+19E8h
     bool rumble_blocked_by_game{false};       // (00e188a8)+634h
     bool xlive_suppressed{false};             // 00e198c4 != 0
-    std::string module_directory{};           // 00439100
+    std::string user_region{};                // 00439100, Windows geography
 };
 
 // The three detail scales indexed by object detail at 008d5c24, from 00ce3800,
