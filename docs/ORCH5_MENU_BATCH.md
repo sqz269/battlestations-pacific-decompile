@@ -66,13 +66,16 @@ The temporary `CMAKE_PROJECT_INCLUDE_BEFORE` cache option was removed.
 the project file contains all three compiled sources. The initial local-hook
 build remains earlier evidence, superseded by this standard build.
 
-The batch is ready for coordinated main integration through
-`tools/integrate_workers.py` with `BSP_AGENT=agent/orch5-20260911`,
-`BSP_INTEGRATE=orch5-20260911` and the worker branches
-`agent/orch5-command-bar`, `agent/orch5-map-points`, `agent/orch5-mission-flag`.
-The integration helper reconciles current main and rebuilds before forwarding it.
-Worker worktrees are retired only after main integration succeeds. The next
-owner/layout/runtime packets use separate worktrees and leases.
+The batch was integrated into main at `b4a86ffb` through
+`tools/integrate_workers.py`, which reconciled current main and passed the
+standard build and both existing tests before forwarding main. The first
+integration build exposed a newly added `MissionPlayBinding` still overriding
+the old help-line method; its override and diagnostic now use
+`clear_command_bar`. The separate mission-detail help setter remains unchanged.
+The concrete binding still reports its missing GUI service; this rename does
+not implement that service. The successful integration log is
+`local/orch5_menu_main_integration_retry.log`. The next owner/layout/runtime
+packets use separate worktrees and leases.
 
 ## Verification follow-up from the current main checklist
 

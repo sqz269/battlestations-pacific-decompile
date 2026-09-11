@@ -1,0 +1,177 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00549570",
+    "end_address": "00549571"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00549570",
+    "end_address": "00549570",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00549570",
+    "disassemble_first": false,
+    "name": "BSP_MainMenuCommandOwner_ExitNoOp"
+   },
+   "result": {
+    "success": true,
+    "address": "00549570",
+    "function_name": "BSP_MainMenuCommandOwner_ExitNoOp",
+    "entry_point": "00549570",
+    "body_size": 1,
+    "message": "Function created successfully at 00549570",
+    "warnings": [
+     "Function name 'BSP_MainMenuCommandOwner_ExitNoOp' \u2014 main part 'MainMenuCommandOwner_ExitNoOp' is not PascalCase. Expected: MainmenucommandownerExitnoop",
+     "Function name 'BSP_MainMenuCommandOwner_ExitNoOp' \u2014 main part 'MainMenuCommandOwner_ExitNoOp' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MainMenuCommandOwner_ExitNoOp' does not start with a recognized verb. First word 'Main' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00549570",
+   "end": "00549571",
+   "name": "BSP_MainMenuCommandOwner_ExitNoOp",
+   "after": "Function: BSP_MainMenuCommandOwner_ExitNoOp at 00549570\nSignature: undefined BSP_MainMenuCommandOwner_ExitNoOp(void)\nEntry: 00549570\nBody: 00549570 - 00549570"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00549580",
+    "end_address": "00549583"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00549580",
+    "end_address": "00549582",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00549580",
+    "disassemble_first": false,
+    "name": "BSP_MainMenuCommandOwner_UpdateNoOp"
+   },
+   "result": {
+    "success": true,
+    "address": "00549580",
+    "function_name": "BSP_MainMenuCommandOwner_UpdateNoOp",
+    "entry_point": "00549580",
+    "body_size": 3,
+    "message": "Function created successfully at 00549580",
+    "warnings": [
+     "Function name 'BSP_MainMenuCommandOwner_UpdateNoOp' \u2014 main part 'MainMenuCommandOwner_UpdateNoOp' is not PascalCase. Expected: MainmenucommandownerUpdatenoop",
+     "Function name 'BSP_MainMenuCommandOwner_UpdateNoOp' \u2014 main part 'MainMenuCommandOwner_UpdateNoOp' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MainMenuCommandOwner_UpdateNoOp' does not start with a recognized verb. First word 'Main' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00549580",
+   "end": "00549583",
+   "name": "BSP_MainMenuCommandOwner_UpdateNoOp",
+   "after": "Function: BSP_MainMenuCommandOwner_UpdateNoOp at 00549580\nSignature: undefined BSP_MainMenuCommandOwner_UpdateNoOp(void)\nEntry: 00549580\nBody: 00549580 - 00549582"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0054a960",
+    "end_address": "0054a966"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0054a960",
+    "end_address": "0054a965",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0054a960",
+    "disassemble_first": false,
+    "name": "BSP_MainMenuCommandOwner_GetScreenId"
+   },
+   "result": {
+    "success": true,
+    "address": "0054a960",
+    "function_name": "BSP_MainMenuCommandOwner_GetScreenId",
+    "entry_point": "0054a960",
+    "body_size": 6,
+    "message": "Function created successfully at 0054a960",
+    "warnings": [
+     "Function name 'BSP_MainMenuCommandOwner_GetScreenId' \u2014 main part 'MainMenuCommandOwner_GetScreenId' is not PascalCase. Expected: MainmenucommandownerGetscreenid",
+     "Function name 'BSP_MainMenuCommandOwner_GetScreenId' \u2014 main part 'MainMenuCommandOwner_GetScreenId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MainMenuCommandOwner_GetScreenId' does not start with a recognized verb. First word 'Main' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0054a960",
+   "end": "0054a966",
+   "name": "BSP_MainMenuCommandOwner_GetScreenId",
+   "after": "Function: BSP_MainMenuCommandOwner_GetScreenId at 0054a960\nSignature: undefined BSP_MainMenuCommandOwner_GetScreenId(void)\nEntry: 0054a960\nBody: 0054a960 - 0054a965"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0054a970",
+    "end_address": "0054a973"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0054a970",
+    "end_address": "0054a972",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0054a970",
+    "disassemble_first": false,
+    "name": "BSP_MainMenuCommandOwner_Virtual04False"
+   },
+   "result": {
+    "success": true,
+    "address": "0054a970",
+    "function_name": "BSP_MainMenuCommandOwner_Virtual04False",
+    "entry_point": "0054a970",
+    "body_size": 3,
+    "message": "Function created successfully at 0054a970",
+    "warnings": [
+     "Function name 'BSP_MainMenuCommandOwner_Virtual04False' \u2014 main part 'MainMenuCommandOwner_Virtual04False' is not PascalCase. Expected: MainmenucommandownerVirtual04false",
+     "Function name 'BSP_MainMenuCommandOwner_Virtual04False' \u2014 main part 'MainMenuCommandOwner_Virtual04False' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MainMenuCommandOwner_Virtual04False' does not start with a recognized verb. First word 'Main' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0054a970",
+   "end": "0054a973",
+   "name": "BSP_MainMenuCommandOwner_Virtual04False",
+   "after": "Function: BSP_MainMenuCommandOwner_Virtual04False at 0054a970\nSignature: undefined BSP_MainMenuCommandOwner_Virtual04False(void)\nEntry: 0054a970\nBody: 0054a970 - 0054a972"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -1,197 +1,145 @@
 # Battlestations Pacific reconstruction
 
-An initialized reverse-engineering workspace targeting the existing `bsp.gpr` analysis of
-`battlestationspacific.exe`. The output is a **32-bit C++ core library and subsystem probe**, not a playable
-rebuild of the game. The current export/reconstruction counts and remaining validation boundaries
-are recorded in [current status](reports/current_status.txt). Raw exports, reconstructed routines,
-partial adapters and isolated probe results are tracked separately; no gameplay equivalence is established.
+A source-level reconstruction of `battlestationspacific.exe`, driven from an existing Ghidra
+analysis. Recovered routines are rewritten as compilable MSVC Win32 C++ with their address,
+evidence, original ABI and remaining uncertainty recorded next to them, and a runnable
+executable target is assembled from those routines milestone by milestone.
 
-## Build and test
+The repository tracks no original executable, game assets, Ghidra database or built binaries.
+Nothing here is a playable rebuild unless a ledger record or milestone document says so in
+those words.
 
-Requires Windows, Visual Studio 2022/2026 with the MSVC x86/x64 C++ tools, Windows SDK,
-and Visual Studio's CMake component. First configuration downloads checksum-pinned Lua,
-zlib and D3DX SDK dependencies; see [dependency details](third_party/README.md). Shader reflection uses
-the installed x86 D3DX9_40 runtime. Python 3.10+ is used for the export tools; optional native
-reference verification also uses pefile and Capstone.
+This file describes what is stable: where things live, what the words mean, and where the
+current numbers are kept. It carries no counts or milestone claims of its own.
 
-```powershell
-./scripts/build.ps1
-```
+## Where the current state lives
 
-Produces `build/win32/Release/bsp_core.lib`, `bsp_startup_probe.exe`, and test executables. The script selects Win32,
-builds with warnings as errors, and runs CTest. It does not launch or modify the installed game.
+| Question | Where to look |
+| --- | --- |
+| What is going on right now (owner, leases, index freshness, packets) | `python tools/bsp.py state` |
+| Coverage counts with the caveats attached | `python tools/status.py` |
+| Milestone plan and the next bounded work | [docs/ROADMAP.md](docs/ROADMAP.md) |
+| The runnable executable: what it does on screen, its host coverage, how to run it | [docs/GAME_EXECUTABLE.md](docs/GAME_EXECUTABLE.md) |
+| Packet ownership, states and dependencies | `config/parallel_work.json`, `python tools/bsp.py packets ready` |
+| What a given address is, who documented it, who calls it | `python tools/bsp.py lookup <address>`, `docs-for`, `callers` |
+| What shipped and when | `git log`; worker branches are `agent/<name>` |
+| Library, template and compiler-generated code inventory | [reports/library_inventory/SUMMARY.md](reports/library_inventory/SUMMARY.md), [REVIEW.md](reports/library_inventory/REVIEW.md) |
+| The first verified findings and the validation limits they set | [docs/BASELINE.md](docs/BASELINE.md) |
 
-Run `./build/win32/Release/bsp_startup_probe.exe` for the reconstructed random-subsystem
-initialization, registration, draws, unregister, and cleanup path. It does not start the engine.
+The raw internal function count in Ghidra is not the reconstruction denominator: it includes
+compiler exception funclets, CRT and STL instantiations, stock Lua and zlib. The inventory
+summary explains the corrected range.
 
-`./build/win32/Release/bsp_platform_probe.exe` exercises the reconstructed platform loop against
-the real Windows thread-message queue. Its probe callbacks are explicitly separate from the
-pending XLive and application-frame implementations; it does not create the game window.
+## Vocabulary
 
-`./build/win32/Release/bsp_d3d9_probe.exe` creates a real D3D9 device using the recovered
-prefix of renderer initialization, then queries its swap chain and releases it. This partial
-routine is tracked separately; resource setup and game rendering remain pending.
-It also checks cached defaults, balanced renderer locking, surface binding and dynamic buffer
-descriptions; see [resource ownership](docs/D3D9_RESOURCES.md),
-[D3D9 startup evidence](docs/D3D9_STARTUP.md) and [renderer states](docs/D3D9_STATES.md).
-The recovered non-indexed and indexed draw paths pass diagnostic triangle pixel readbacks;
-see [draw evidence and remaining stream work](docs/D3D9_DRAW.md).
+Every reconstruction record states which of these it has reached, and the levels are not
+interchangeable:
 
-Pass the installed atlas DDS path to include shader-script and atlas validation:
+- **exported**: pseudocode and assembly pulled from Ghidra into ignored `exports/`.
+- **reconstructed**: rewritten as C++ in `src/` with address, evidence and ABI notes.
+- **build-tested**: compiles in the strict Win32 build.
+- **fixture-tested**: passes a focused fixture, a real-device probe or an installed-asset check.
+- **ABI-compatible**: proven to match the original calling convention and layout, not just behaviour.
+- **game-validated**: compared against the original game running.
 
-```powershell
-./build/win32/Release/bsp_d3d9_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds'
-```
-
-The shader fixture derives the game root from that path and evaluates the installed
-fundamentals, debug descriptor, include and dummy combiner using stock Lua5.1.1.
-Without the path it explicitly skips asset-dependent shader checks. First build
-downloads the checksum-pinned Lua source; see [dependency/license](third_party/README.md)
-and [adapter scope](docs/SHADER_LUA_ADAPTER.md). Full material loading remains incomplete.
-The installed-font check uses mounted streams and explicitly primes the priority-300
-FileStore, then verifies that all three font resources open from that cache. See
-[mounted stream evidence](docs/MOUNTED_RESOURCE_STREAMS.md) for native preload,
-archive and ownership boundaries.
-It also follows the recovered five-script startup preload order with flags
-`0x32`, compares all cached bytes with installed files, and draws wrapped text
-across three lines. A single synthetic MPKG fixture covers directory parsing,
-stored/compressed entries and original-source reopening. See
-[current integration evidence](reports/parallel_entry_validation.json);
-native provider/context ownership and game startup remain incomplete.
-
-The latest batch connects the startup provider manager and two package scans,
-FileStore async request/completion and named material parameters. The existing
-probe checks nested package discovery, an installed queued read with cached
-completion, and both font draws through actual compiled parameter metadata.
-See [validation and remaining limits](reports/startup_manager_validation.json).
-Native outer-loop/effect-cache lifetime and a runnable game remain incomplete.
-
-## Export the existing analysis
-
-Open `C:/Users/sqz269/bsp.gpr` in Ghidra with the Ghidra MCP plugin enabled and open its
-`/battlestationspacific.exe`. Defaults are in `config/target.json`. The exporter uses the same
-loopback HTTP backend as the configured MCP bridge, checks the project/path/architecture/base,
-and performs read-only requests.
-
-```powershell
-python tools/ghidra_export.py snapshot
-python tools/ghidra_export.py seed
-python tools/ghidra_export.py verify-seeds
-./scripts/build.ps1
-python tools/status.py
-python -m unittest discover -s tests -p test_exporter.py
-```
-
-- `snapshot`: internal-function inventory, external symbols, segments, entry points,
-  program metadata, and current disk PE identity under `exports/bsp/`.
-- `seed`: pseudocode, assembly, and provenance for 16 starting functions, including CRT startup
-  and the likely WinMain. Existing completed exports are skipped; use `--force` after Ghidra edits.
-- `verify-seeds`: compares eight math/PRNG functions' complete byte ranges with the disk PE.
-  On a match, creates ignored `local/seed_reference.hpp` for the optional native differential test.
-- `status`: reports exports and reconstruction coverage without connecting to Ghidra, including
-  names, compiler EH funclets and inventory categories separately. Names do not establish
-  replaceable library behavior or reduce the reconstruction denominator.
-
-Library and generated-code tagging: `python tools/build_tag_ledger.py` derives `config/ghidra_tags.json`
-from the inventories under `reports/library_inventory/` (stock Lua 5.1.1 and zlib 1.2.1 names,
-RTTI vtable slots, CRT leftovers, telemetry/physics blocks, STL instantiations and compiler-generated
-helpers). `python tools/ghidra_tag.py` previews it; `--apply` renames only Ghidra-default `FUN_`
-functions, creates the table-referenced entry points Ghidra missed, sets `Inventory:` bookmarks, and
-logs prior state to `local/ghidra-tags-<stamp>.json` (`--revert <log>` restores it). Tag names such as
-`STL_inst_*`, `CG_*`, `TRIV_body_*`, `DYN_physics_*` and `TELEMETRY_*` are inventory hypotheses;
-library names with a `__prov` suffix are medium-confidence source matches. Take a fresh `snapshot` and
-re-export with `--force` after applying tags.
-
-Candidate partition for parallel work: `python tools/callgraph_sweep.py` disassembles the disk
-executable over the snapshot's function ranges with Capstone and writes `exports/bsp/callgraph.json`
-and `datarefs.json` (direct calls, tail jumps and .rdata/.data immediates only). `python
-tools/partition_candidates.py` then cuts the remaining `FUN_` candidates into disjoint link-order
-address segments with string-derived labels, script-binding and vtable counts, strong dependencies
-and leaf-first waves; see `reports/library_inventory/candidate_partition.md`. Segment labels are
-ownership hints, not recovered module names, and re-run both after every fresh `snapshot`.
-
-Ledgers and lookups: reviewed names, reconstruction records and inventory tags are sharded JSON Lines
-under `config/names/`, `config/reconstruction/` and `config/tags/` (one 64 KB address band per file).
-`python tools/bsp.py index` builds an ignored SQLite index; `python tools/bsp.py state` is the one-screen
-orientation card; `lookup <address>` and `show <address> [--asm]` (plus `range`, `callers`, `callees`,
-`docs-for`, `segment`, `find`) answer with capped output so no ledger, export or docs directory is ever
-read whole; `ghidra count|proto|xrefs|callers|callees|bytes|decompile|disasm|export` are capped live
-queries; `snapshot` refreshes only when Ghidra's function count changed. `python tools/bsp.py ledger
-add-name|add-function|add-fragment` appends records; `ledger migrate` folds any legacy monolithic
-`config/*.json` ledger into shards. See [ledger and index](docs/LEDGER_INDEX.md).
-
-Several harness agents can work at once: one git worktree per agent (`python tools/bsp.py worktree add
-<name>`), address/file leases in a registry outside the worktrees (`bsp.py lease claim|release|list|check`),
-a dependency-aware packet queue (`bsp.py packets ready|done|depend`), and a machine-global Ghidra write
-lock taken by the annotate and tag tools. See [coordination](docs/COORDINATION.md).
-
-The completed import has been [reviewed](reports/library_inventory/REVIEW.md).
-The [roadmap](docs/ROADMAP.md) now separates stock-source reuse, compiler machinery
-and game-specific contracts. Provisional tags and in-house Dyn code remain in
-scope when needed. [zlib 1.2.1](docs/ZLIB_DEPENDENCY.md) now compiles; its game
-stream wrappers and archive integration remain pending.
-
-[Parallel work assignments](docs/PARALLEL_WORK.md) use explicit function families
-and file ownership. The corrected [candidate partitions](reports/library_inventory/candidate_partition.md)
-help locate code; their waves do not establish independent implementation tasks.
-
-The native test executes five math routines and the PRNG seed/refill/integer routines in its
-own process: 455 math comparisons plus one stream case covering 1,500 random values and final state.
-The PRNG's one relative call is relocated to the copied refill routine. It does not execute game startup.
-The reference bytes are locally generated, not required for the ordinary semantic test.
-Run `verify-seeds` again whenever the input executable or saved analysis changes.
-
-Export selected functions:
-
-```powershell
-python tools/ghidra_export.py decompile --addresses 008f81f0 00737970
-```
-
-An explicit `all` command exports all non-thunk internal functions and resumes completed exports:
-
-```powershell
-python tools/ghidra_export.py all
-```
-
-That is a large, long-running job; the initial setup exports only the seed set. Individual failures
-are recorded in `last_export_failures.json`, and the process exits unsuccessfully if any fail.
-Keep the same project and binary open throughout an export. Cached files belong to the snapshot;
-after replacing the analyzed binary, use a new `--output` directory and a fresh snapshot.
+Descriptive names are hypotheses, never recovered symbols. Inventory tags describe code shape
+and do not approve skipping a function. A *fragment* is a partial routine and is counted
+separately from a function. Rules for all of this are in [AGENTS.md](AGENTS.md), which
+`CLAUDE.md` imports.
 
 ## Repository layout
 
 | Path | Purpose |
 | --- | --- |
 | `src/`, `include/bsp/` | Reconstructed, compilable C++ |
-| `tests/` | Semantic tests and optional original-code differential tests |
-| `tools/ghidra_export.py` | Read-only inventory/export and seed byte checks |
-| `config/reconstruction.json` | Address-based reconstruction ledger |
-| `config/ghidra_names.json` | Descriptive function names and supporting evidence |
-| `config/ghidra_tags.json` | Generated library / compiler-generated / template tag ledger (see `reports/library_inventory/SUMMARY.md`) |
-| `docs/BASELINE.md` | Verified initial findings and validation limits |
-| `docs/STARTUP_RANDOM.md` | Startup path, PRNG/thread layout and current limits |
-| `docs/FRAME_CLOCK.md` | QPC/fixed frame clock, native timestamp comparison and ownership limits |
-| `docs/TEXT_INPUT_QUEUE.md` | Platform event storage and remaining text-input policy |
-| `docs/PHYSICAL_FILE.md` | Physical asset reader and VFS/pooling boundaries |
-| `docs/FONT_GEOMETRY.md` | Glyph quad prefix, native comparison and text rendering boundaries |
-| `docs/FONT_MATERIAL_DRAW.md` | Installed bilinear glyph draw with supplied mount/camera inputs |
-| `docs/VFS_MOUNT_LOOKUP.md` | Ordered lookup, native search lists and installed font resolution |
-| `docs/PROVIDER_FACTORY_STARTUP.md` | Physical factory/mount reconstruction and FileStore integration boundary |
-| `docs/ARCHIVE_PROVIDER_ENTRY.md` | Memory-backed FileStore and the separate MPKG reader dependencies |
-| `docs/MOUNTED_RESOURCE_STREAMS.md` | Mounted read-only streams, aliasing and cache-backed font loading |
-| `docs/ZLIB_DEPENDENCY.md` | Pinned stock zlib and game raw-DEFLATE wrapper evidence |
-| `docs/FONT_RESOURCE_OWNERSHIP.md` | Font image ownership, loading order and reload boundaries |
-| `docs/FONT_MATERIAL_BINDINGS.md` | Font texture slots, shader selection and native ownership boundaries |
-| `docs/TEXTURE_IMAGE_LOADING.md` | Shared image-info/loading route and actual recreation metadata |
-| `docs/OCCLUSION_QUERY_CALLERS.md` | Frame-end polling and flare cached-sample consumers |
-| `docs/WINDOW_CREATION.md` | Recovered Win32 setup and remaining native lifecycle |
-| `docs/DEFAULT_SURFACES.md` | Default color/depth capture and native reset boundaries |
-| `docs/SURFACE_RESET_LIST.md` | Borrowed surface registration, removal and reset traversal |
-| `docs/PLATFORM_LOOP.md` | Concrete Windows vtable, message loop, and exit behavior |
-| `docs/ROADMAP.md` | Next milestones toward a game rebuild |
-| `reports/` | Small, retained baseline evidence |
-| `exports/`, `local/`, `build/` | Ignored generated analysis, local fixtures, and builds |
+| `tests/` | Semantic tests, the optional original-code differential test, and Python tool tests |
+| `cmake/`, `CMakeLists.txt`, `scripts/build.ps1` | Win32 build, dependency fetch, probe and executable targets |
+| `tools/` | Export, lookup, ledger, annotation, coordination and verification scripts |
+| `config/names/`, `config/reconstruction/`, `config/tags/` | Ledgers as JSON Lines shards, one 64 KB address band per file |
+| `config/parallel_work.json` | Packet ledger: addresses, files, contract, state, validation |
+| `config/target.json` | Ghidra project, program and install-path defaults; override with `--config` and a file under `local/` |
+| `docs/` | One evidence document per subsystem or packet |
+| `reports/` | Small retained evidence: per-packet JSON, validation runs, the library inventory |
+| `third_party/` | Licenses and fetch notes for the pinned Lua, zlib and D3DX dependencies |
+| `exports/`, `local/`, `build/` | Ignored: raw exports and index, local overrides and fixtures, build output |
 
-No original executable, game assets, Ghidra database, or generated binaries are tracked.
-There is no game executable target yet. Reconstructing startup, object layouts, subsystem
-interfaces, data loaders, rendering, and gameplay remains substantial work.
+Ledger shards, the lookup index and the reasons for the layout are described in
+[docs/LEDGER_INDEX.md](docs/LEDGER_INDEX.md).
+
+## Build and run
+
+Windows, Visual Studio with the MSVC x86 C++ tools, the Windows SDK and CMake. Python 3.10+
+for the tools; `pefile` and Capstone for the optional native reference checks. The first
+configure downloads checksum-pinned Lua, zlib and D3DX sources; see
+[third_party/README.md](third_party/README.md).
+
+```powershell
+./scripts/build.ps1
+```
+
+The script configures Win32, builds with warnings as errors and runs CTest. It produces the
+core library, the game executable target, the subsystem probes and the test executables under
+`build/win32/Release/`. It never launches or modifies the installed game.
+
+The game executable takes the install root and a frame limit on the command line and logs
+which host methods ran concretely and which are still unimplemented records. Its switches, the
+expected log and what each milestone draws are in
+[docs/GAME_EXECUTABLE.md](docs/GAME_EXECUTABLE.md). Probes take their asset inputs on the
+command line and skip the asset-dependent checks without them.
+
+Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`
+confirms the analysed binary matches the disk executable.
+
+## Working with the Ghidra analysis
+
+Ghidra is opened on the project and program named in `config/target.json`, with the Ghidra
+MCP plugin's loopback HTTP backend running. The export and query tools check project, program,
+architecture and image base before touching Ghidra.
+
+- Read through capped commands, never whole files: `python tools/bsp.py show <address> [--asm]`,
+  `lookup`, `range`, `callers`, `callees`, `docs-for`, `find`, `strings`, `scan-bytes`, and the
+  live `python tools/bsp.py ghidra ...` family. `python tools/bsp.py --help` lists them all.
+- `python tools/bsp.py snapshot` refreshes the function inventory only when Ghidra's count
+  changed; `python tools/bsp.py index --if-stale` rebuilds the lookup index after snapshots
+  or ledger edits. `tools/ghidra_export.py` does the underlying read-only export.
+- Record findings with `python tools/bsp.py ledger add-name|add-function|add-fragment`. If a
+  legacy monolithic `config/*.json` ledger reappears, run `ledger migrate` before committing.
+- Ghidra writes go through the machine-global write lock: `tools/ghidra_annotate.py` applies
+  reviewed names and evidence comments, `tools/ghidra_tag.py` applies the inventory tags built
+  by `tools/build_tag_ledger.py`, `tools/ghidra_define_function.py` defines listing-only
+  routines, and `tools/ghidra_flow_repair.py` repairs fall-through gaps. Old values are
+  recorded before every edit; the tag tool also logs prior state under `local/` and can revert
+  it. Defects the bridge cannot repair, and the Ghidra script that can, are in
+  [docs/GHIDRA_LISTING_DEFECTS.md](docs/GHIDRA_LISTING_DEFECTS.md).
+- `tools/callgraph_sweep.py` and `tools/partition_candidates.py` build the disk call graph and
+  the candidate partition used to find nearby code. Segment labels are ownership hints, not
+  module names.
+
+## Working in parallel
+
+Several harness agents work on the tree at once. Each one has its own git worktree on an
+`agent/<name>` branch, claims address and file leases from a registry outside the worktrees,
+and picks work from the packet queue; the integrator stays on `main` and merges.
+
+- Procedure, lease and lock rules: [docs/COORDINATION.md](docs/COORDINATION.md).
+- How packets are cut and why partition waves are not independence proofs:
+  [docs/PARALLEL_WORK.md](docs/PARALLEL_WORK.md).
+- What a worker checks before committing and an integrator checks again:
+  [docs/WORKER_VERIFICATION_CHECKLIST.md](docs/WORKER_VERIFICATION_CHECKLIST.md),
+  mechanised by `tools/verify_report_calls.py`.
+- Integration of a worker branch: `tools/integrate_workers.py`; ledger merge conflicts:
+  `tools/merge_resolve.py`; worktree lifecycle: `python tools/bsp.py worktree add|remove`.
+
+Stage only owned files in a shared checkout, commit in batches with a message file, and never
+use `git add -A`.
+
+## Documents and reports
+
+Each document in `docs/` covers one subsystem or packet, opens with the addresses it accounts
+for, records what was verified and how, and usually ends with a follow-up packets section that
+names the next bounded work. Find the documents for an address with
+`python tools/bsp.py docs-for <address>` rather than by listing the directory.
+
+`reports/` holds the machine-readable side of the same evidence: the JSON a packet produced,
+validation runs, function definitions applied to Ghidra, and the library inventory. Reports are
+retained when they are small and cited by a document or a packet record.

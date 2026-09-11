@@ -1,0 +1,531 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-11T21:01:09.362126+00:00",
+  "status": "two complete source bodies reconstructed; strict build and full actual COFF proof passed with one explicit FMUL addressing adaptation",
+  "base_commit": "f7c8503f6eac43e4f38083226711f105878124d4",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_power_leaves",
+  "ownership": {
+    "packet": "native_crt_x87_power_leaves2",
+    "addresses": [
+      "00c08390",
+      "00bfed32"
+    ],
+    "files": [
+      "src/native_crt_x87_power_leaves.cpp",
+      "include/bsp/native_crt_x87_power_leaves.hpp",
+      "docs/NATIVE_CRT_X87_POWER_LEAVES.md",
+      "reports/native_crt_x87_power_leaves_audit.json"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original": [
+    {
+      "address": "00c08390",
+      "length": 21,
+      "end_exclusive": "00c083a5",
+      "role": "full_exp2_instruction_sequence",
+      "bytes_hex": "d9c0d9fcdce1d9c9d9e0d9f0d9e8dec1d9fdddd9c3",
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 11,
+      "assembly": [
+        "00c08390: fld st(0)",
+        "00c08392: frndint ",
+        "00c08394: fsubr st(1), st(0)",
+        "00c08396: fxch st(1)",
+        "00c08398: fchs ",
+        "00c0839a: f2xm1 ",
+        "00c0839c: fld1 ",
+        "00c0839e: faddp st(1)",
+        "00c083a0: fscale ",
+        "00c083a2: fstp st(1)",
+        "00c083a4: ret "
+      ]
+    },
+    {
+      "address": "00bfed32",
+      "length": 40,
+      "end_exclusive": "00bfed5a",
+      "role": "full_integer_parity_sequence",
+      "bytes_hex": "d9c0d9fcd8d9b1009bdfe09e7517dc0d5058e100fec1d9c0d9fcded99bdfe09e7502fec1c3ddd8c3",
+      "sha256": "4992e4a823cb56e02edb6481710eef718febe9d00b78c20e6070af69bcfc55fd",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 21,
+      "assembly": [
+        "00bfed32: fld st(0)",
+        "00bfed34: frndint ",
+        "00bfed36: fcomp st(1)",
+        "00bfed38: mov cl, 0",
+        "00bfed3a: wait ",
+        "00bfed3b: fnstsw ax",
+        "00bfed3d: sahf ",
+        "00bfed3e: jne 0xbfed57",
+        "00bfed40: fmul qword ptr [0xe15850]",
+        "00bfed46: inc cl",
+        "00bfed48: fld st(0)",
+        "00bfed4a: frndint ",
+        "00bfed4c: fcompp ",
+        "00bfed4e: wait ",
+        "00bfed4f: fnstsw ax",
+        "00bfed51: sahf ",
+        "00bfed52: jne 0xbfed56",
+        "00bfed54: inc cl",
+        "00bfed56: ret ",
+        "00bfed57: fstp st(0)",
+        "00bfed59: ret "
+      ]
+    },
+    {
+      "address": "00e15850",
+      "length": 8,
+      "end_exclusive": "00e15858",
+      "role": "actual_half_constant_storage",
+      "bytes_hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "fresh_guarded_live_equals_installed_PE": true
+    }
+  ],
+  "original_names": [
+    "LIBCRT_unmatched_00c08390",
+    "LIBCRT_unmatched_00bfed32"
+  ],
+  "naming": "New source names are descriptive hypotheses; saved symbols and Ghidra were not mutated.",
+  "prototype_uncertainty": "Saved undefined (void) prototypes omit x87 and partial-register/flags contracts. Complete original assembly controls this reconstruction.",
+  "interfaces": [
+    {
+      "address": "00c08390",
+      "declaration": "void __cdecl exp2_native_crt_x87_00c08390()",
+      "input": "ST0 and two free x87 stack slots",
+      "normal_output": "ST0 replaced by original FRNDINT/F2XM1/FSCALE result",
+      "preserved": "General registers and integer EFLAGS; older x87 stack entries",
+      "stack_arguments": 0,
+      "return_opcode": "RET",
+      "assembly_callers_only": true,
+      "ordinary_cpp_call_safe": false
+    },
+    {
+      "address": "00bfed32",
+      "declaration": "void __fastcall classify_native_crt_power_exponent_00bfed32(void* unused_ecx, const void* actual_half_00e15850)",
+      "input": "ST0, one free x87 stack slot, EDX borrowed live half cell expected immutable original E15850 0.5 under binding contract",
+      "normal_output": "Original ST0 consumed; older x87 entries survive; CL classification and AX status plus native EFLAGS",
+      "CL": {
+        "0": "first equality test rejects",
+        "1": "first accepts and second rejects",
+        "2": "both equality tests accept"
+      },
+      "classification_limit": "Integer parity only where current rounding/precision leave half-product classification exact; reduced precision can round a large odd integer half to an integer. Unordered/exceptional paths retain instructions.",
+      "partial_registers": {
+        "EAX": "upper16 preserved; AX last waiting FSTSW",
+        "ECX": "upper24 preserved; CL only written"
+      },
+      "preserved_registers": [
+        "EDX",
+        "EBX",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
+      "flags": "Final executed SAHF or INC CL, including retained bits",
+      "half_read": "Only at original FMUL position after first equality accepts; no upfront access or value snapshot",
+      "waiting_status_stores": [
+        {
+          "offset": 8,
+          "bytes_hex": "9bdfe0"
+        },
+        {
+          "offset": 28,
+          "bytes_hex": "9bdfe0"
+        }
+      ],
+      "stack_arguments": 0,
+      "return_opcode": "RET on both paths",
+      "assembly_callers_only": true,
+      "ordinary_cpp_call_safe": false
+    }
+  ],
+  "floating_environment": {
+    "saved_or_reset": false,
+    "host_arithmetic": false,
+    "exception_translation": false,
+    "current_rounding_precision_status_stack": true,
+    "pending_exceptions": "Both original FWAIT instructions can deliver pending unmasked x87 exceptions before status read."
+  },
+  "adaptation": {
+    "offset": 14,
+    "bytes": 6,
+    "original": "dc0d5058e100",
+    "compiled": "dc8a00000000",
+    "original_instruction": "FMUL qword ptr [00E15850]",
+    "compiled_instruction": "FMUL qword ptr [EDX+disp32(0)]",
+    "reason": "Borrowed live half cell; no added instruction or change in byte length/branch offsets",
+    "constant_span": {
+      "address": "00e15850",
+      "length": 8,
+      "end_exclusive": "00e15858",
+      "role": "actual_half_constant_storage",
+      "bytes_hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "fresh_guarded_live_equals_installed_PE": true
+    }
+  },
+  "dependencies": {
+    "direct_calls": [],
+    "undefined_providers": [],
+    "owned_function_relocations": [],
+    "borrowed_data": [
+      "actual half cell corresponding to original 00E15850"
+    ],
+    "arbitrary_callbacks": false,
+    "allocator_or_lifetime_context": false
+  },
+  "source_review": "Primary independently reviewed complete source/header and approved; instruction-level CL wording correction applied before proof/freeze.",
+  "validation": {
+    "fresh_guarded_spans": 3,
+    "fresh_guarded_bytes": 69,
+    "complete_owned_original_bytes": 61,
+    "complete_actual_object_equals_archive_member": true,
+    "independent_full_instruction_decode": true,
+    "all_other_bytes_exact": true,
+    "same_instruction_boundaries_and_branches": true,
+    "FMUL_addressing_adaptations": 1,
+    "complete_body_relocations": 0,
+    "whole_COFF_sections": 5,
+    "strict_release_win32_build": true,
+    "compiler_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "existing_ctests_passed": 2,
+    "fresh_seed_spans_passed": 8,
+    "new_permanent_tests": 0,
+    "focused_runtime_fixture": false,
+    "linked_runtime_postimage_verification": false,
+    "game_or_display_execution": false
+  },
+  "actual_artifacts": {
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 38550770,
+      "sha256": "9f6a40034144008ea413bda92a44ecc32a763a8f734c67af7705f3ef9dbb2757"
+    },
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_x87_power_leaves.obj",
+      "bytes": 943,
+      "sha256": "7b3d95940552c700d2d7e7a0dcceb3c2beab46bb60007e3de9190de3d57eac16"
+    },
+    "archive_member": {
+      "name": "bsp_core.dir\\Release\\native_crt_x87_power_leaves.obj",
+      "offset": 29214602,
+      "bytes": 943,
+      "sha256": "7b3d95940552c700d2d7e7a0dcceb3c2beab46bb60007e3de9190de3d57eac16"
+    },
+    "functions": [
+      {
+        "name": "?exp2_native_crt_x87_00c08390@bsp@@YAXXZ",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "address": "00c08390",
+        "bytes": 21,
+        "instructions": 11,
+        "bytes_hex": "d9c0d9fcdce1d9c9d9e0d9f0d9e8dec1d9fdddd9c3",
+        "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b",
+        "original_sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b",
+        "exact_original_equal": true,
+        "original_equal_after_only_declared_instruction_operand": true,
+        "normalized_bytes_hex": "d9c0d9fcdce1d9c9d9e0d9f0d9e8dec1d9fdddd9c3",
+        "operand_adaptations": [],
+        "relocations": [],
+        "all_body_relocations_accounted_for": true,
+        "direct_calls": [],
+        "compiled_assembly": [
+          "00c08390: fld st(0)",
+          "00c08392: frndint ",
+          "00c08394: fsubr st(1), st(0)",
+          "00c08396: fxch st(1)",
+          "00c08398: fchs ",
+          "00c0839a: f2xm1 ",
+          "00c0839c: fld1 ",
+          "00c0839e: faddp st(1)",
+          "00c083a0: fscale ",
+          "00c083a2: fstp st(1)",
+          "00c083a4: ret "
+        ]
+      },
+      {
+        "name": "?classify_native_crt_power_exponent_00bfed32@bsp@@YIXPAXPBX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "address": "00bfed32",
+        "bytes": 40,
+        "instructions": 21,
+        "bytes_hex": "d9c0d9fcd8d9b1009bdfe09e7517dc8a00000000fec1d9c0d9fcded99bdfe09e7502fec1c3ddd8c3",
+        "sha256": "0b85f5aeccf5896b61d6aeda697809bf07ba5a1a316c9bb00ace7aa8a2b8e910",
+        "original_sha256": "4992e4a823cb56e02edb6481710eef718febe9d00b78c20e6070af69bcfc55fd",
+        "exact_original_equal": false,
+        "original_equal_after_only_declared_instruction_operand": true,
+        "normalized_bytes_hex": "d9c0d9fcd8d9b1009bdfe09e7517dc0d5058e100fec1d9c0d9fcded99bdfe09e7502fec1c3ddd8c3",
+        "operand_adaptations": [
+          {
+            "offset": 14,
+            "bytes": 6,
+            "original": "dc0d5058e100",
+            "compiled": "dc8a00000000",
+            "original_instruction": "FMUL qword ptr [00E15850]",
+            "compiled_instruction": "FMUL qword ptr [EDX+disp32(0)]",
+            "reason": "Borrowed live half cell; no added instruction or change in byte length/branch offsets",
+            "constant_span": {
+              "address": "00e15850",
+              "length": 8,
+              "end_exclusive": "00e15858",
+              "role": "actual_half_constant_storage",
+              "bytes_hex": "000000000000e03f",
+              "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+              "fresh_guarded_live_equals_installed_PE": true
+            }
+          }
+        ],
+        "relocations": [],
+        "all_body_relocations_accounted_for": true,
+        "direct_calls": [],
+        "compiled_assembly": [
+          "00bfed32: fld st(0)",
+          "00bfed34: frndint ",
+          "00bfed36: fcomp st(1)",
+          "00bfed38: mov cl, 0",
+          "00bfed3a: wait ",
+          "00bfed3b: fnstsw ax",
+          "00bfed3d: sahf ",
+          "00bfed3e: jne 0xbfed57",
+          "00bfed40: fmul qword ptr [edx]",
+          "00bfed46: inc cl",
+          "00bfed48: fld st(0)",
+          "00bfed4a: frndint ",
+          "00bfed4c: fcompp ",
+          "00bfed4e: wait ",
+          "00bfed4f: fnstsw ax",
+          "00bfed51: sahf ",
+          "00bfed52: jne 0xbfed56",
+          "00bfed54: inc cl",
+          "00bfed56: ret ",
+          "00bfed57: fstp st(0)",
+          "00bfed59: ret "
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "No original ABI/drop-in claim: classification additionally binds a half-cell pointer in EDX.",
+    "No linked/runtime/game or direct new-function execution claim; existing tests are repository regression checks.",
+    "Whole instruction/object proof is limited to the exact declared operand-address change and binding contract.",
+    "No host pow, complete original power dispatch or gamma completion claim.",
+    "Shared CMake, consumers, metadata and Ghidra integration are outside this worker packet."
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/x87_power_leaves/00bfed32_assembly.txt",
+      "bytes": 409,
+      "sha256": "dde703bf30af5ddb67e41ee06fa438dc278ba4afe15f93df9aa208f1c20faa62"
+    },
+    {
+      "path": "local/x87_power_leaves/00bfed32_original.bin",
+      "bytes": 40,
+      "sha256": "4992e4a823cb56e02edb6481710eef718febe9d00b78c20e6070af69bcfc55fd"
+    },
+    {
+      "path": "local/x87_power_leaves/00c08390_assembly.txt",
+      "bytes": 214,
+      "sha256": "eaadef5f6c06af629cccd6f0649fe9d09dbd79f4f8eb160a059ba4213a259a84"
+    },
+    {
+      "path": "local/x87_power_leaves/00c08390_original.bin",
+      "bytes": 21,
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b"
+    },
+    {
+      "path": "local/x87_power_leaves/build.log",
+      "bytes": 2419,
+      "sha256": "4505ed45588e271fdb30a830c0160f8bb39b18f8bb02dfcbf2bf2308bcfec72c"
+    },
+    {
+      "path": "local/x87_power_leaves/build_initial.log",
+      "bytes": 22096,
+      "sha256": "0e633d3ea3050cfa9b91ac5d9725ead0075b94f30be6c964560e2b957a41851f"
+    },
+    {
+      "path": "local/x87_power_leaves/build_library.ps1",
+      "bytes": 832,
+      "sha256": "4f357e445b7246b42870907ffb4073c3ffd343fabcb928493a62fd984d0821b0"
+    },
+    {
+      "path": "local/x87_power_leaves/capture.py",
+      "bytes": 2604,
+      "sha256": "c7024a2a0dbeee333a84aa6c7bfd742353848a39d0a062c420f3fa29dda714a3"
+    },
+    {
+      "path": "local/x87_power_leaves/configure.log",
+      "bytes": 251,
+      "sha256": "3873c20399be647a2eb005326d1a0138ed4c842f3fd20974710b8d2905f8e6c4"
+    },
+    {
+      "path": "local/x87_power_leaves/configure_initial.log",
+      "bytes": 966,
+      "sha256": "46d6ec6c6c7ebcabb6caf2c04a8da058ce3cacce02213dd675f2c9f0d3eb1f90"
+    },
+    {
+      "path": "local/x87_power_leaves/extra.cmake",
+      "bytes": 127,
+      "sha256": "1d6deb63c92c0e210c2f17d8dc80b9c8351f12aa97e54b9239af073fdbe26209"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/00bfed32_compiled_function.bin",
+      "bytes": 40,
+      "sha256": "0b85f5aeccf5896b61d6aeda697809bf07ba5a1a316c9bb00ace7aa8a2b8e910"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/00c08390_compiled_function.bin",
+      "bytes": 21,
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/archive_member.obj",
+      "bytes": 943,
+      "sha256": "7b3d95940552c700d2d7e7a0dcceb3c2beab46bb60007e3de9190de3d57eac16"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/bsp_core.lib",
+      "bytes": 38550770,
+      "sha256": "9f6a40034144008ea413bda92a44ecc32a763a8f734c67af7705f3ef9dbb2757"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 1067034,
+      "sha256": "598385946af88c3e571dc1bbd88d98c490c1bb78b1a83b333d1bfe3908d8de8f"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/build/win32/bsp_core.vcxproj",
+      "bytes": 125026,
+      "sha256": "f2edb5908270073cb412b07da5279e367e963a6d58af8ef413111b6bfe1b3dac"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/build/win32/CMakeCache.txt",
+      "bytes": 19145,
+      "sha256": "3dca99376242c1d1cb6ecaa666137e561438082434717ddb22d321b7478b7a4e"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1765,
+      "sha256": "25386ab190157e3575c8c098093143b8f020364105aa9a3ed923e4b71382f2d7"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/cmake/startup.cmake",
+      "bytes": 37757,
+      "sha256": "0e9f98728a9260b4d6ee355f53a266ff632b0a775c7cbd01875c60cb5ddff6a1"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/CMakeLists.txt",
+      "bytes": 13098,
+      "sha256": "9994069b642a04e03e88aec578200c96ea99f4addeeea1f70ef596bb81ec4ab4"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/include/bsp/native_crt_x87_power_leaves.hpp",
+      "bytes": 2640,
+      "sha256": "0ce10e42e6280c08f71b0e581249dbebdfb22cebe2b3c62c5b98996aaced4fb5"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/native_crt_x87_power_leaves.obj",
+      "bytes": 943,
+      "sha256": "7b3d95940552c700d2d7e7a0dcceb3c2beab46bb60007e3de9190de3d57eac16"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/src/native_crt_x87_power_leaves.cpp",
+      "bytes": 1998,
+      "sha256": "4a8e6757a76c63b23b5d5609222a5018eb608dc080d2e1dea6b4b25948499990"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/tools/bsp.py",
+      "bytes": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975"
+    },
+    {
+      "path": "local/x87_power_leaves/frozen/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/x87_power_leaves/guarded_capture.json",
+      "bytes": 2544,
+      "sha256": "d22a371509f320217a008779baa557ba8de3a925ee2c66137903ef1f1ec3a208"
+    },
+    {
+      "path": "local/x87_power_leaves/object_proof.json",
+      "bytes": 10229,
+      "sha256": "c0dd1d028f5c42337d280eb499762bfce81d9c8ffceb79bdc9c37a79ee391fea"
+    },
+    {
+      "path": "local/x87_power_leaves/pins.json",
+      "bytes": 2856,
+      "sha256": "9fb402ad547665dbcea518ec4ed2fcf3b5934cad2cc43a0791d5b18a827c5a6e"
+    },
+    {
+      "path": "local/x87_power_leaves/prove.py",
+      "bytes": 8495,
+      "sha256": "14561bf7bbc2cc3f2d8f40f81b1d21c8e447071e55118089358af20f3bed3cbf"
+    },
+    {
+      "path": "local/x87_power_leaves/seal.py",
+      "bytes": 6815,
+      "sha256": "ebe7a4a5c9aa05a12e2e1ecb6cad9e3fc935d59978d3b9917f6997885d249180"
+    },
+    {
+      "path": "local/x87_power_leaves/seeds.json",
+      "bytes": 2976,
+      "sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    {
+      "path": "src/native_crt_x87_power_leaves.cpp",
+      "bytes": 1998,
+      "sha256": "4a8e6757a76c63b23b5d5609222a5018eb608dc080d2e1dea6b4b25948499990"
+    },
+    {
+      "path": "include/bsp/native_crt_x87_power_leaves.hpp",
+      "bytes": 2640,
+      "sha256": "0ce10e42e6280c08f71b0e581249dbebdfb22cebe2b3c62c5b98996aaced4fb5"
+    },
+    {
+      "path": "docs/NATIVE_CRT_X87_POWER_LEAVES.md",
+      "bytes": 6958,
+      "sha256": "daa93ee9c2273902940ccdcc5c8ae60f5127d4cc38cfe7103b5d7dca65227c17"
+    }
+  ]
+}

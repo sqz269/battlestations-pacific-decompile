@@ -6,6 +6,7 @@
 #include "bsp/sound_resource_cleanup.hpp"
 #include "bsp/sound_sample.hpp"
 #include "bsp/sound_instance.hpp"
+#include "bsp/sound_system_update.hpp"
 
 #include <memory>
 #include <string>
@@ -26,7 +27,7 @@ struct FmodConfigurationCall {
 class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
     public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
-    public SoundChannelFmodHost {
+    public SoundChannelFmodHost, public SoundSystemUpdateFmodHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
@@ -45,7 +46,11 @@ public:
     FmodResult update_system(void* system);
     FmodResult release_system(void* system);
     FmodResult release_event_system(void* event_system);
-    FmodResult update_event_system(void* event_system);
+    FmodResult update_event_system(void* event_system) override;
+    FmodResult system_get_channels_playing(void*, std::int32_t*) override;
+    FmodResult event_system_set_3d_listener_attributes(void*, std::int32_t,
+        const std::array<float, 3>&, const std::array<float, 3>&,
+        const std::array<float, 3>&, const std::array<float, 3>&) override;
     FmodResult create_stream(void* system, const char* path, std::uint32_t mode,
         void* extra_info, void** sound);
     FmodResult release_sound(void* sound) override;

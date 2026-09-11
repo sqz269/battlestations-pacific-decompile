@@ -7,13 +7,13 @@ namespace bsp {
 namespace {
 class OwnedReference {
 public:
-    OwnedReference(void* value, VoiceLineHost& host) : value_(value), host_(host) {}
+    OwnedReference(void* value, VoiceReferenceHost& host) : value_(value), host_(host) {}
     ~OwnedReference() { if (value_) host_.release_reference(value_); }
     OwnedReference(const OwnedReference&) = delete;
     OwnedReference& operator=(const OwnedReference&) = delete;
 private:
     void* value_;
-    VoiceLineHost& host_;
+    VoiceReferenceHost& host_;
 };
 class ScopedText {
 public:
@@ -75,7 +75,7 @@ void assign_voice_reference_0054d4c0(void*& destination, void* source, VoiceLine
 }
 
 void reserve_voice_sound_entries_00a7c080(SoundSystemOwner& owner,
-    std::int32_t requested, VoiceLineHost& host)
+    std::int32_t requested, VoiceReferenceHost& host)
 {
     requested = std::max(requested, 1);
     if (requested <= owner.entry_capacity_94) return;
@@ -95,7 +95,7 @@ void reserve_voice_sound_entries_00a7c080(SoundSystemOwner& owner,
 }
 
 void append_voice_sound_entry_00a7d5c0(SoundSystemOwner& owner,
-    SoundLevelEntry* entry, VoiceLineHost& host)
+    SoundLevelEntry* entry, VoiceReferenceHost& host)
 {
     auto& entries = owner.levels.entries_8c;
     if (entries.size() == static_cast<std::size_t>(owner.entry_capacity_94))
@@ -108,7 +108,7 @@ void append_voice_sound_entry_00a7d5c0(SoundSystemOwner& owner,
 
 SoundLevelEntry* create_voice_sound_00a7e490(SoundSystemOwner& owner, void* resource,
     std::int32_t class_index, std::int32_t type_index, bool flag,
-    VoiceLineHost& lifetime, VoiceSlotStartHost& host)
+    VoiceReferenceHost& lifetime, SoundFactoryHost& host)
 {
     SoundLevelEntry* sound;
     if (host.resource_kind_08(resource) == 0)

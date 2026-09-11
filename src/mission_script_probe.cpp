@@ -12,13 +12,20 @@
 // reconstruction of a native body; the native rules it follows all live in
 // bsp/mission_lua_host.hpp and are cited per step.
 //
+// Packet cc_mission_natives added the self table and the entity return convention
+// (docs/MISSION_LUA_SELF_TABLE.md, docs/LUA_BINDING_ENTITY.md), which is what the six
+// previously failing scripts needed, plus --sweep over every installed mission script.
+//
 // Usage: bsp_mission_script_probe [game-root] [mission-name]
 //            [--stub-dofile] [--skip-global-folders] [--skip-lobby-settings]
+//            [--no-self-table] [--recon-tables] [--sweep] [--quiet]
 // Defaults to the installed copy and "usn/usn_2_java".
 
+#include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/recon_values.hpp"
 
 extern "C" {
 #include "lauxlib.h"
@@ -27,13 +34,16 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -57,21 +67,108 @@ struct NativeCall {
     int argc;
 };
 
+// One CreateScript registration. 00898750 passes the current Lua stack range [first, -1] to
+// 009290a0, which forwards it to 00887e50 together with the new entity's self key; 00887ee1 and
+// 00887f05 normalise both ends the way lua_absindex does, and a first index of zero means "no
+// extra arguments". CreateScript sets first to 2 exactly when it saw more than one argument
+// (00898945 CMP EAX,1 / 0089894a MOV EDI,2), so the forwarded range is everything after the
+// name. The probe keeps registry references because the C stack is gone by the time the engine
+// would make the call.
+struct CreatedScript {
+    std::string name;
+    std::string self_key;
+    std::vector<int> argument_refs; // luaL_ref values, LUA_REGISTRYINDEX
+};
+
 struct ProbeState {
     std::string game_root;
     std::string phase;
     bool follow_dofile{true};
     bool run_global_folders{true};
     bool create_lobby_settings{true};
+    bool model_self_table{true};
+    bool install_recon_tables{false};
+    bool verbose{true};
     std::vector<NativeCall> calls;
     std::map<std::string, int> call_counts;
     std::vector<std::string> dofile_paths;
     std::vector<std::string> dofile_missing;
     std::string first_error;
     std::string first_error_phase;
+
+    // The self table, modelled after 00928a00. The probe has no entities, so it mints one on
+    // demand per (binding, call) and keeps the id counter the native keeps in the entity's
+    // 16-bit field at +174h. kSelfKeyBufferBytes bounds the key either way.
+    std::uint16_t next_entity_id{1};
+    // Which script, in a sweep, called a binding at all; used for the per-binding survey.
+    std::map<std::string, std::map<std::string, int>> calls_by_script;
+    std::string current_script;
+    // Names registered by CreateScript, in registration order, with the self key each was
+    // created against and registry references to the extra arguments; the sweep calls them the
+    // way 00887750 would.
+    std::vector<CreatedScript> created_scripts;
 };
 
 ProbeState g_probe;
+
+// 00928a00, reduced to what a probe with no entities can do: mint an id, build the table under
+// the key, and seed the three fields the native seeds. `Ptr` is light userdata in the native
+// (00b67530 -> lua_pushlightuserdata at 00a67be0); the probe pushes a distinct non-null pointer
+// derived from the id so that object_from_lua_table_00888aa0's rule stays meaningful, and never
+// dereferences it. `Class` is the one field 00440e10 adds afterwards; the probe points it at a
+// row of the global DeviceClass table when the datatable scripts built one, because that is
+// where the shipped scripts' `FindEntity(...).Class.Height` reads from.
+//
+// The value is left on the stack. Returns the key so the caller can log it.
+std::string push_new_entity_table(lua_State* L)
+{
+    const std::uint16_t id = g_probe.next_entity_id++;
+    const std::string key = bsp::mission_entity_self_key(id);
+
+    lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionSelfTableGlobal);
+    if (lua_isnil(L, -1)) { // no self table: behave like the not-found path, 00b66430
+        return std::string();
+    }
+    lua_createtable(L, 0, 4);
+
+    lua_pushstring(L, key.c_str());
+    lua_setfield(L, -2, bsp::kEntitySelfFieldId);       // 00928ba5, a string, not a number
+    lua_pushboolean(L, 0);
+    lua_setfield(L, -2, bsp::kEntitySelfFieldDead);     // 00928bc7
+    lua_pushlightuserdata(L, reinterpret_cast<void*>(static_cast<std::uintptr_t>(id) + 1u));
+    lua_setfield(L, -2, bsp::kEntitySelfFieldPtr);      // 00928c2f
+
+    // self.Class = <ClassGlobal>[index]: 009292b0 for VehicleClass, 00440e10 for DeviceClass.
+    // The probe has no entity kind to select with, so it takes the first row of VehicleClass and
+    // falls back to DeviceClass. That is enough for a field read on the class to resolve, which
+    // is what the scripts do; it is not the row the native would have chosen.
+    const char* class_globals[] = {bsp::kVehicleClassGlobal, bsp::kDeviceClassGlobal};
+    bool class_set = false;
+    for (std::size_t i = 0; i < 2 && !class_set; ++i) {
+        lua_getfield(L, LUA_GLOBALSINDEX, class_globals[i]);
+        if (lua_istable(L, -1)) {
+            lua_pushnil(L);
+            if (lua_next(L, -2) != 0) {
+                lua_remove(L, -2);      // drop the key, keep the first class row
+                lua_setfield(L, -3, bsp::kEntitySelfFieldClass);
+                class_set = true;
+            }
+        }
+        lua_pop(L, 1);                  // the class global
+    }
+    if (!class_set) {
+        lua_createtable(L, 0, 0);
+        lua_setfield(L, -2, bsp::kEntitySelfFieldClass);
+    }
+
+    // thisTable[key] = table, then leave the table itself as the result, which is what the
+    // native's 00b678e0 + 00b663d0 pair produces: a second reference to the stored value.
+    lua_pushstring(L, key.c_str());
+    lua_pushvalue(L, -2);
+    lua_settable(L, -4);
+    lua_remove(L, -2);                  // drop thisTable, keep the entity table
+    return key;
+}
 
 // Every binding is installed as this one C function plus an index upvalue.
 // 006b8610 uses nup = 0 because each native row is a distinct function; the
@@ -85,7 +182,37 @@ int binding_stub(lua_State* L)
     const bsp::MissionLuaBinding& row = bsp::mission_lua_bindings()[static_cast<std::size_t>(index)];
     g_probe.calls.push_back(NativeCall{g_probe.phase, row.name, argc});
     g_probe.call_counts[row.name] += 1;
-    return 0;
+    if (!g_probe.current_script.empty()) {
+        g_probe.calls_by_script[row.name][g_probe.current_script] += 1;
+    }
+    if (!g_probe.model_self_table || !bsp::mission_binding_returns_entity(row.name)) {
+        return 0;
+    }
+    // The entity tail, docs/LUA_BINDING_ENTITY.md: one value, or nil when the lookup found
+    // nothing (0089903c). 00b66400 makes the count `lua_gettop - base`, which for this tail is
+    // always exactly one because the handler pushes exactly one value above its arguments.
+    const std::string key = push_new_entity_table(L);
+    if (key.empty()) {
+        lua_pushnil(L);
+        return 1;
+    }
+    // CreateScript registers a named Lua function against the entity it just created; the
+    // engine calls it later through 00887750 with that entity's table as `this`, followed by
+    // the stack range 00898945/0089894a selects, which is slots 2..top when more than one
+    // argument was given and nothing at all when only the name was.
+    if (std::strcmp(row.name, "CreateScript") == 0 && argc >= 1 && lua_isstring(L, 1)) {
+        CreatedScript created;
+        created.name = lua_tostring(L, 1);
+        created.self_key = key;
+        if (argc > 1) {
+            for (int slot = 2; slot <= argc; ++slot) {
+                lua_pushvalue(L, slot);
+                created.argument_refs.push_back(luaL_ref(L, LUA_REGISTRYINDEX));
+            }
+        }
+        g_probe.created_scripts.push_back(created);
+    }
+    return 1;
 }
 
 // 006b8720 is the machine's panic function; its body was not read by this
@@ -273,6 +400,108 @@ bool call_entry_point(lua_State* L, const std::string& name, std::string& error_
     return status == 0;
 }
 
+// 00887750 with a non-empty self key: block 008878c7..0089790f pushes thisTable[key] as the
+// call's first argument. The four steps are NamedCallSelfStep in the header, emitted in order.
+// Everything else is call_entry_point's path, so only the self push and the argument count
+// differ. This is how a script registered by CreateScript receives its `this`, which is how the
+// shipped scripts get the global `Mission` (`Mission = this` on the first line of luaInit).
+bool call_named_with_self(lua_State* L, const std::string& name, const std::string& self_key,
+    const std::vector<int>& argument_refs, std::string& error_out, bool use_error_handler = true)
+{
+    const int saved_top = lua_gettop(L);
+    int error_handler = bsp::kLuaNoErrorHandler;
+    if (use_error_handler) {
+        lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionLuaErrorHandler);
+        error_handler = lua_gettop(L);
+    }
+
+    const std::vector<std::string> segments = bsp::split_lua_entry_point_name(name);
+    if (segments.empty()) {
+        lua_settop(L, saved_top);
+        return false;
+    }
+    lua_getfield(L, LUA_GLOBALSINDEX, segments[0].c_str());
+    for (std::size_t i = 1; i < segments.size(); ++i) {
+        lua_pushstring(L, segments[i].c_str());
+        lua_gettable(L, -2);
+        lua_remove(L, -2);
+    }
+    if (lua_isnil(L, -1)) {
+        lua_settop(L, saved_top);
+        return false;
+    }
+
+    const bsp::MissionNamedCallSelf self = bsp::mission_named_call_self(&self_key);
+    int argc = 0;
+    if (self.pushes_self) {
+        lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionSelfTableGlobal); // 006b8460
+        lua_pushstring(L, self.self_key.c_str());                        // 006b8120
+        lua_gettable(L, -2);                                             // 006b8470
+        lua_remove(L, -2);                                               // 006b7ea0
+        argc = 1;
+    }
+    // The forwarded stack range, 00887ee1..00887f19. The native reads it out of the live Lua
+    // stack of the C function that registered the script; the probe replays it from the
+    // registry references it took at registration time.
+    for (std::size_t i = 0; i < argument_refs.size(); ++i) {
+        lua_rawgeti(L, LUA_REGISTRYINDEX, argument_refs[i]);
+        ++argc;
+    }
+
+    const int status = lua_pcall(L, argc, LUA_MULTRET, error_handler);
+    if (status != 0) {
+        const char* message = lua_tolstring(L, -1, nullptr);
+        error_out = message != nullptr ? message : "(no message)";
+    }
+    lua_settop(L, saved_top);
+    return status == 0;
+}
+
+// 004e01f7..004e02ac in BSP_Game_LoadMissionScene: create the global `thisTable` when it is
+// currently nil (00b65fb0 is-nil, then 00b67580 assigns a fresh table), and clear the global
+// `recon` (004e0305, 00b67350 set-nil). Both run over the mission LuaStateOwner at game+1A0Ch.
+void create_mission_self_table(lua_State* L)
+{
+    lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionSelfTableGlobal);
+    const bool is_nil = lua_isnil(L, -1) != 0;
+    lua_pop(L, 1);
+    if (bsp::mission_self_table_needs_creation(is_nil)) {
+        lua_createtable(L, 0, 0);
+        lua_setfield(L, LUA_GLOBALSINDEX, bsp::kMissionSelfTableGlobal);
+    }
+    lua_pushnil(L);
+    lua_setfield(L, LUA_GLOBALSINDEX, bsp::kMissionReconGlobal);
+}
+
+// 00803A40 BSP_ReconTables_Install, already reconstructed in src/recon_values.cpp over the
+// game+1A08 mission host instance: the global `recon`, integer children 0..2, the relations
+// enemy/neutral/unknown/own in that order, then 008039E0's nineteen category tables under each.
+// The probe rebuilds the same shape on its own state; the reconstruction cannot be called here
+// because it drives a ReconValuesHost this probe does not have.
+//
+// Its sole caller is 004DC6A0 BSP_Game_ConstructGlobalSubsystems, a bring-up step, while
+// 004E0305 nils `recon` on every mission load. Those two facts do not compose: something must
+// rebuild the table per mission and this packet did not find it. --recon-tables is the switch
+// that shows which of the two remaining sweep failures the missing rebuild accounts for.
+void install_recon_tables(lua_State* L)
+{
+    lua_createtable(L, 3, 0);
+    for (int party = 0; party <= 2; ++party) {          // 00803750, integer children 0..2
+        lua_createtable(L, 0, 4);
+        const char* relations[] = {"enemy", "neutral", "unknown", "own"}; // 008037d0, in order
+        for (std::size_t r = 0; r < 4; ++r) {
+            lua_createtable(L, 0, static_cast<int>(bsp::recon_category_names_00e0b590.size()));
+            for (std::size_t c = 0; c < bsp::recon_category_names_00e0b590.size(); ++c) {
+                lua_createtable(L, 0, 0);               // 008039e0, one table per category
+                lua_setfield(L, -2, bsp::recon_category_names_00e0b590[c]);
+            }
+            lua_setfield(L, -2, relations[r]);
+        }
+        lua_rawseti(L, -2, party);
+    }
+    lua_setfield(L, LUA_GLOBALSINDEX, bsp::kMissionReconGlobal);
+}
+
 bool file_exists(const std::string& path)
 {
     std::ifstream input(path.c_str(), std::ios::binary);
@@ -328,12 +557,208 @@ std::size_t run_script_folder(lua_State* L, const std::string& directory)
     return ran;
 }
 
+// ---------------------------------------------------------------------------
+// --sweep: every installed mission script through the same state
+// ---------------------------------------------------------------------------
+
+struct MissionOutcome {
+    std::string name;
+    bool chunk_ran{false};
+    bool all_entry_points_ok{true};
+    std::string failing_step;   // the entry point or "chunk"
+    std::string error;
+    // Errors from functions CreateScript registered. These run from the frame loop, not from
+    // the load path, so they are reported apart from the load result.
+    std::vector<std::pair<std::string, std::string>> script_errors;
+};
+
+// The four entry-point globals, cleared before each mission so that a script which omits one
+// does not inherit the previous script's. The native gets a fresh state per mission load; the
+// sweep reuses one state because the global folders cost about 200k lines to rebuild. That is
+// the sweep's one divergence and it is confined to the global namespace: clearing the four
+// names restores the 0045f440/0045f520 defined-check to the same answer a fresh state gives.
+void clear_entry_points(lua_State* L)
+{
+    for (std::size_t i = 0; i < bsp::kMissionLuaEntryPointCount; ++i) {
+        const std::vector<std::string> segments
+            = bsp::split_lua_entry_point_name(bsp::kMissionLuaEntryPoints[i].name);
+        if (segments.size() != 1) {
+            continue; // a dotted name lives in a table the mission did not create
+        }
+        lua_pushnil(L);
+        lua_setfield(L, LUA_GLOBALSINDEX, segments[0].c_str());
+    }
+}
+
+// One mission: 008860b0's chunk, then the entry points through the 0045f440/0045f520 guard,
+// then every function CreateScript registered, called the way 00887750 calls it.
+MissionOutcome run_one_mission(lua_State* L, const std::string& mission_name)
+{
+    MissionOutcome outcome;
+    outcome.name = mission_name;
+    clear_entry_points(L);
+    create_mission_self_table(L);
+    if (g_probe.install_recon_tables) {
+        install_recon_tables(L);
+    }
+    g_probe.created_scripts.clear();
+    g_probe.current_script = mission_name;
+
+    g_probe.phase = "mission chunk";
+    if (!run_script_file(L, bsp::mission_script_path(mission_name))) {
+        outcome.failing_step = "chunk";
+        outcome.error = "could not open or load the chunk";
+        g_probe.current_script.clear();
+        return outcome;
+    }
+    outcome.chunk_ran = true;
+
+    for (std::size_t i = 0; i < bsp::kMissionLuaEntryPointCount; ++i) {
+        const bsp::MissionLuaEntryPoint& entry = bsp::kMissionLuaEntryPoints[i];
+        g_probe.phase = entry.name;
+        lua_getfield(L, LUA_GLOBALSINDEX, entry.name);
+        const bool defined = !lua_isnil(L, -1);
+        lua_pop(L, 1);
+        if (!defined) {
+            continue;
+        }
+        std::string error;
+        if (!call_entry_point(L, entry.name, error, true)) {
+            std::string bare;
+            call_entry_point(L, entry.name, bare, false);
+            outcome.all_entry_points_ok = false;
+            outcome.failing_step = entry.name;
+            outcome.error = bare.empty() ? error : bare;
+            g_probe.current_script.clear();
+            return outcome;
+        }
+    }
+
+    // The scripts CreateScript registered. The native reaches these from the frame loop rather
+    // than from the load path, so a failure here is a load-time contract claim only in the weak
+    // sense: it shows the self argument resolves. `Mission = this` happens on this call.
+    const std::vector<CreatedScript> scripts = g_probe.created_scripts;
+    for (const CreatedScript& script : scripts) {
+        g_probe.phase = "CreateScript:" + script.name;
+        std::string error;
+        if (!call_named_with_self(L, script.name, script.self_key, script.argument_refs, error)
+            && !error.empty()) {
+            std::string bare;
+            call_named_with_self(L, script.name, script.self_key, script.argument_refs, bare,
+                false);
+            // Not a load failure: CreateScript bodies run from the frame loop, not from
+            // 008860b0 or the entry points. Recorded separately so the sweep's load result
+            // stays about what the load path actually reaches.
+            outcome.script_errors.emplace_back(script.name, bare.empty() ? error : bare);
+        }
+    }
+    g_probe.current_script.clear();
+    return outcome;
+}
+
+std::vector<std::string> installed_mission_names()
+{
+    namespace fs = std::filesystem;
+    std::vector<std::string> names;
+    const fs::path root = fs::path(g_probe.game_root) / "Scripts" / "missions";
+    std::error_code ec;
+    if (!fs::is_directory(root, ec)) {
+        return names;
+    }
+    for (const fs::directory_entry& entry : fs::recursive_directory_iterator(root, ec)) {
+        if (!entry.is_regular_file(ec) || entry.path().extension() != ".lua") {
+            continue;
+        }
+        const fs::path relative = fs::relative(entry.path(), root, ec);
+        std::string name = relative.generic_string();
+        name.erase(name.size() - 4); // ".lua"
+        names.push_back(name);
+    }
+    std::sort(names.begin(), names.end());
+    return names;
+}
+
+int run_sweep(lua_State* L)
+{
+    const std::vector<std::string> names = installed_mission_names();
+    std::cout << "sweep          : " << names.size() << " installed mission scripts\n";
+
+    // 00885fb0 runs every content variant after the base file. The rule is
+    // append_lua_script_overrides_00bdef90; on the installed copy Scripts/missions holds 299
+    // files and every one of them ends in ".lua", so the variant pass adds nothing here and
+    // the sweep's per-mission count is the base file alone.
+    std::cout << "variant rule   : no variant-suffixed mission script ships; the pass is empty\n";
+
+    std::vector<MissionOutcome> failures;
+    std::vector<MissionOutcome> script_failures;
+    std::size_t ok = 0;
+    for (const std::string& name : names) {
+        const MissionOutcome outcome = run_one_mission(L, name);
+        if (outcome.chunk_ran && outcome.all_entry_points_ok) {
+            ++ok;
+        } else {
+            failures.push_back(outcome);
+        }
+        if (!outcome.script_errors.empty()) {
+            script_failures.push_back(outcome);
+        }
+    }
+
+    std::cout << "\nloaded and ran cleanly: " << ok << " / " << names.size() << "\n";
+    if (!failures.empty()) {
+        std::cout << "load failures (" << failures.size() << "):\n";
+        for (const MissionOutcome& failure : failures) {
+            std::cout << "  " << failure.name << "  at " << failure.failing_step << ": "
+                      << failure.error << "\n";
+        }
+    }
+    if (!script_failures.empty()) {
+        std::size_t error_count = 0;
+        for (const MissionOutcome& outcome : script_failures) {
+            error_count += outcome.script_errors.size();
+        }
+        std::cout << "CreateScript bodies that raised when called with `this` (" << error_count
+                  << " in " << script_failures.size()
+                  << " scripts; these run from the frame loop, not from the load path):\n";
+        for (const MissionOutcome& outcome : script_failures) {
+            for (const std::pair<std::string, std::string>& entry : outcome.script_errors) {
+                std::cout << "  " << outcome.name << "  " << entry.first << ": " << entry.second
+                          << "\n";
+            }
+        }
+    }
+
+    // The per-binding survey: how many distinct scripts reached each binding, over the whole
+    // sweep. A binding no script reaches at load time is not dead; it is reached from the frame
+    // loop or from a script the install does not ship.
+    std::vector<std::pair<std::size_t, std::string>> ranked;
+    for (const std::pair<const std::string, std::map<std::string, int>>& row
+            : g_probe.calls_by_script) {
+        ranked.emplace_back(row.second.size(), row.first);
+    }
+    std::sort(ranked.begin(), ranked.end(),
+        [](const std::pair<std::size_t, std::string>& a,
+           const std::pair<std::size_t, std::string>& b) {
+            return a.first != b.first ? a.first > b.first : a.second < b.second;
+        });
+    std::cout << "\nbindings reached at load time: " << ranked.size() << " of "
+              << bsp::mission_lua_binding_count() << "\n";
+    std::cout << "scripts binding\n";
+    for (const std::pair<std::size_t, std::string>& row : ranked) {
+        std::cout << "  " << row.first << "  " << row.second
+                  << (bsp::mission_binding_returns_entity(row.second.c_str()) ? "  [entity]" : "")
+                  << "\n";
+    }
+    return failures.empty() ? 0 : 2;
+}
+
 } // namespace
 
 int main(int argc, char** argv)
 {
     std::string mission_name = kDefaultMissionName;
     g_probe.game_root = kDefaultGameRoot;
+    bool sweep = false;
     int positional = 0;
     for (int i = 1; i < argc; ++i) {
         const std::string argument = argv[i];
@@ -343,6 +768,14 @@ int main(int argc, char** argv)
             g_probe.run_global_folders = false;
         } else if (argument == "--skip-lobby-settings") {
             g_probe.create_lobby_settings = false;
+        } else if (argument == "--no-self-table") {
+            g_probe.model_self_table = false;
+        } else if (argument == "--recon-tables") {
+            g_probe.install_recon_tables = true;
+        } else if (argument == "--sweep") {
+            sweep = true;
+        } else if (argument == "--quiet") {
+            g_probe.verbose = false;
         } else if (positional == 0) {
             g_probe.game_root = argument;
             positional = 1;
@@ -439,6 +872,26 @@ int main(int argc, char** argv)
         std::cout << "global folders : SKIPPED (--skip-global-folders)\n";
     }
 
+    // -- 004e01f7, the self table -------------------------------------------
+    // BSP_Game_LoadMissionScene creates the global `thisTable` when it is nil and clears the
+    // global `recon`. Every entity-returning binding reads this table and the named-call self
+    // argument is fetched out of it, so it has to exist before the mission chunk runs.
+    if (g_probe.model_self_table) {
+        create_mission_self_table(L);
+        std::cout << "self table     : global \"" << bsp::kMissionSelfTableGlobal
+                  << "\" created, \"" << bsp::kMissionReconGlobal << "\" cleared (004e01f7)\n";
+        std::cout << "entity tail    : " << bsp::kEntityReturningBindingCount
+                  << " bindings return thisTable[tostring(id)] (docs/LUA_BINDING_ENTITY.md)\n";
+    } else {
+        std::cout << "self table     : SKIPPED (--no-self-table)\n";
+    }
+
+    if (sweep) {
+        const int status = run_sweep(L);
+        lua_close(L);
+        return status;
+    }
+
     // -- the mission script path, 008860b0 ----------------------------------
     const std::string script_path = bsp::mission_script_path(mission_name);
     const bool script_present = file_exists(g_probe.game_root + "/" + script_path);
@@ -507,6 +960,41 @@ int main(int argc, char** argv)
             std::cout << "      with errfunc 0   : \"" << bare_error << "\"\n";
             note_error(bare_error.empty() ? error : bare_error);
         }
+    }
+
+    // -- the scripts CreateScript registered, 00887750 with a self key -------
+    if (!g_probe.created_scripts.empty()) {
+        std::cout << "\nCreateScript registrations (" << g_probe.created_scripts.size()
+                  << "), called with thisTable[key] as `this`:\n";
+        const std::vector<CreatedScript> scripts = g_probe.created_scripts;
+        for (const CreatedScript& script : scripts) {
+            g_probe.phase = "CreateScript:" + script.name;
+            std::string error;
+            const bool ok
+                = call_named_with_self(L, script.name, script.self_key, script.argument_refs, error);
+            if (!ok && !error.empty()) {
+                std::string bare;
+                call_named_with_self(L, script.name, script.self_key, script.argument_refs, bare,
+                    false);
+                if (!bare.empty()) {
+                    error = bare;
+                }
+            }
+            std::cout << "  " << script.name << "(this=thisTable[\"" << script.self_key << "\"]"
+                      << (script.argument_refs.empty()
+                              ? ""
+                              : ", +" + std::to_string(script.argument_refs.size()) + " forwarded")
+                      << "): "
+                      << (ok ? "ok" : (error.empty() ? "not defined, skipped" : "FAILED")) << "\n";
+            if (!ok && !error.empty()) {
+                std::cout << "      " << error << "\n";
+                note_error(error);
+            }
+        }
+        lua_getfield(L, LUA_GLOBALSINDEX, "Mission");
+        std::cout << "  global Mission: " << (lua_istable(L, -1) ? "a table" : lua_typename(L, lua_type(L, -1)))
+                  << "  (the scripts assign it from `this` inside luaInit)\n";
+        lua_pop(L, 1);
     }
 
     // -- summary ------------------------------------------------------------

@@ -30,8 +30,9 @@ private:
 // native ownership. Context uses the actual shared singleton/strings/component
 // destruction bindings. The supplied table borrows CURRENT D0DA58 words0/1.
 // All terminal releases of a bound definition must use this domain. Its raw
-// scalar870D00/871440 dependency currently covers the normal valid-cache path;
+// scalar870D00/871440 dependency includes the recovered three-state C++ cleanup;
 // intrusive terminal callbacks, including component terminals, must not throw.
+// Native exception-dispatch ABI and invalidated storage remain unvalidated.
 class GameplayDefinitionReferences final {
 public:
     GameplayDefinitionReferences(GameplayEffectDefinitionContext&,
