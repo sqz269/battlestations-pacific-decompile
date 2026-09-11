@@ -4765,8 +4765,8 @@
       "id": "native_logical_buffer_device_save2",
       "packet": "native_logical_buffer_device_save2",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_actual_profile_contract_approved_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b49d00",
         "00b49f80"
@@ -4783,14 +4783,15 @@
         "native_physical_buffer_lock2"
       ],
       "discovery_evidence": "reports/native_buffer_device_reset_next.json",
-      "scope": "380 native bytes; existing complete actual B4B840/B4B9F0 COM getters. Bind concrete callable engine table routes, actual CRT-backed shadow allocation/copy, never semantic D3D9BufferBinding or arbitrary callbacks."
+      "scope": "380 native bytes; existing complete actual B4B840/B4B9F0 COM getters. Bind concrete callable engine table routes, actual CRT-backed shadow allocation/copy, never semantic D3D9BufferBinding or arbitrary callbacks.",
+      "evidence": "reports/native_logical_buffer_device_save_audit.json"
     },
     {
       "id": "native_logical_buffer_device_restore2",
       "packet": "native_logical_buffer_device_restore2",
       "worker": null,
       "done": false,
-      "state": "blocked_on_named_actual_storage_dependencies",
+      "state": "worker_required_native_pool_stack_bits_API_approved_source_and_original_fixture_in_progress",
       "function_addresses": [
         "00b49dc0",
         "00b4a040"
@@ -4801,7 +4802,7 @@
         "docs/NATIVE_LOGICAL_BUFFER_DEVICE_RESTORE.md",
         "reports/native_logical_buffer_device_restore_audit.json"
       ],
-      "source_ready": false,
+      "source_ready": true,
       "prerequisite_packets": [
         "native_physical_buffer_access6",
         "native_physical_buffer_lock2",
@@ -5059,11 +5060,104 @@
       "evidence": "reports/native_renderer_index_binding_audit.json"
     },
     {
+      "id": "orch4_dialog_config_e",
+      "packet": "orch4_dialog_config_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "0044fa30",
+        "00b66270",
+        "00b66290",
+        "00b66fa0",
+        "0044da70",
+        "0044ada0"
+      ],
+      "code_ownership": [
+        "include/bsp/dialog_config.hpp",
+        "src/dialog_config.cpp",
+        "docs/DIALOG_CONFIG.md",
+        "reports/dialog_config.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_panel_publish_e",
+      "packet": "orch4_panel_publish_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00451c90",
+        "0044f220",
+        "005b6910"
+      ],
+      "code_ownership": [
+        "include/bsp/panel_publication.hpp",
+        "src/panel_publication.cpp",
+        "docs/PANEL_PUBLICATION.md",
+        "reports/panel_publication.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_message_resolver_e",
+      "packet": "orch4_message_resolver_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00705e00",
+        "00705c50",
+        "00702910",
+        "00702300",
+        "00703ff0",
+        "007042b0",
+        "00704060",
+        "00703170",
+        "007029b0",
+        "00704190",
+        "00703b90",
+        "004261a0",
+        "005b7dc0"
+      ],
+      "code_ownership": [
+        "include/bsp/message_record_resolver.hpp",
+        "src/message_record_resolver.cpp",
+        "docs/MESSAGE_RECORD_RESOLVER.md",
+        "reports/message_record_resolver.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_observer_edges_e",
+      "packet": "orch4_observer_edges_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00694850",
+        "00694a60",
+        "00693ca0"
+      ],
+      "code_ownership": [
+        "include/bsp/observer_edges.hpp",
+        "src/observer_edges.cpp",
+        "docs/OBSERVER_EDGES.md",
+        "reports/observer_edges.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
       "id": "native_renderer_resource_restore1",
       "packet": "native_renderer_resource_restore1",
       "worker": "main",
       "done": false,
-      "state": "source_strict_Win32_checked_original_body_fixture_pending",
+      "state": "source_strict_Win32_checked_worker_original_parent_orchestration_fixture_in_progress",
       "function_addresses": [
         "00b23b10"
       ],
@@ -5085,8 +5179,8 @@
       "id": "native_volume_texture_owner3",
       "packet": "native_volume_texture_owner3",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_actual_volume_pool_binding_approved_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3eb70",
         "00b3f430",
@@ -5099,14 +5193,15 @@
         "reports/native_volume_texture_owner_audit.json"
       ],
       "source_ready": true,
-      "scope": "Full180-byte volume destructor/32-byte scalar/5-byte base cleanup tail; actual108DBA8 pool reuses B3EC60/B3ED40/B3D860/B3E2B0 with0x38byte slots/32slots/slab; native name notification precedes retained source+30 release."
+      "scope": "Full180-byte volume destructor/32-byte scalar/5-byte base cleanup tail; actual108DBA8 pool reuses B3EC60/B3ED40/B3D860/B3E2B0 with0x38byte slots/32slots/slab; native name notification precedes retained source+30 release.",
+      "evidence": "reports/native_volume_texture_owner_audit.json"
     },
     {
       "id": "native_logical_vertex_terminal_next",
       "packet": "native_logical_vertex_terminal_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_bounded_nonnull_4c_terminal_discovery_in_progress",
+      "done": true,
+      "state": "discovery_complete_full_owner_conditional_nonnull_4c_terminal_unresolved",
       "function_addresses": [
         "00b62010",
         "00b4b5d0",
@@ -5118,7 +5213,155 @@
         "reports/native_logical_vertex_terminal_next.json"
       ],
       "source_ready": false,
-      "scope": "Advance prior logical-vertex discovery by proving concrete nonnull base+4C writers/profiles/zero terminal; no constructor-null assumption; ready exact source packets."
+      "scope": "Advance prior logical-vertex discovery by proving concrete nonnull base+4C writers/profiles/zero terminal; no constructor-null assumption; ready exact source packets.",
+      "evidence": "reports/native_logical_vertex_terminal_next.json"
+    },
+    {
+      "id": "orch2_native_gui_owners_l",
+      "packet": "orch2_native_gui_owners_l",
+      "worker": "agent/orch2-20260910",
+      "done": true,
+      "state": "integrated_reviewed_strict_win32_and_bounded_native_host_fixtures_passed",
+      "function_addresses": [
+        "00427110",
+        "00427880",
+        "00533fa0",
+        "0059e5e0",
+        "0059fce0",
+        "00aa12f0",
+        "00aa31f0",
+        "00aa3280",
+        "00aa4b30",
+        "00aa5070",
+        "00aa5840",
+        "00aa8320",
+        "00aa9730",
+        "00ab6120",
+        "00ac6600",
+        "00ac6f50",
+        "00ac6fd0",
+        "00b417e0",
+        "00b6dbc0",
+        "00b6e680",
+        "00b72250",
+        "00b72430",
+        "00b724e0",
+        "00b72580",
+        "00b727f0",
+        "00b728d0",
+        "00b72ce0",
+        "00b72da0",
+        "00b72e10",
+        "00b72f70",
+        "00b73840",
+        "00b73890",
+        "00b73970",
+        "00b73a10",
+        "00b73b60",
+        "00b73b70",
+        "00b73bb0",
+        "00b73c10",
+        "00b73c60",
+        "00b73cb0",
+        "00b73d70",
+        "00b73e60",
+        "00b74280",
+        "00b85600",
+        "00b85650",
+        "00b85720",
+        "00b857f0",
+        "00b858f0",
+        "00b859b0",
+        "00b85b20",
+        "00b85b80",
+        "00b85bb0",
+        "00b85c90",
+        "00b85d30",
+        "00b85ee0",
+        "00b86390",
+        "00b86420",
+        "00b864c0",
+        "00b86500",
+        "00b86550",
+        "00b865a0",
+        "00b86650",
+        "00b86690",
+        "00b8e620",
+        "00b8e6b0",
+        "00b8e7d0",
+        "00b8e8b0",
+        "00b8ec80",
+        "00b8ed40",
+        "00b8eeb0",
+        "00b8eec0",
+        "00b8f190",
+        "00b8f270",
+        "00b8f310",
+        "00b8f450",
+        "00b8f460",
+        "00b8f4c0",
+        "00b8f590",
+        "00b8f650",
+        "00b8f680",
+        "00b8f8c0",
+        "00cd7e40",
+        "00cd8460",
+        "00ce0e40",
+        "00ce0f00"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_native_scene.hpp",
+        "src/gui_native_scene.cpp",
+        "docs/NATIVE_GUI_OWNER_INTEGRATION.md",
+        "reports/native_gui_owner_integration.json"
+      ],
+      "source_ready": true,
+      "tested_source_commit": "0af6d9d81dda601671edd6ba8a66c0e0371587ff",
+      "validation_report": "reports/native_gui_owner_integration.json",
+      "scope": "Actual group/mesh/section pools and owners, shared GUI type dispatch and scene/store ownership, with AA31F0 logical release before page deletion. Screen acquisition/weak-base/directional reference integration and renderer/material publication remain next packets; no GUI render or game claim."
+    },
+    {
+      "id": "native_renderer_texture_binding3",
+      "packet": "native_renderer_texture_binding3",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "actual_profile_owner_guard_API_approved_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b24710",
+        "00b3cf90",
+        "00b3d0c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_texture_binding.hpp",
+        "src/native_renderer_texture_binding.cpp",
+        "docs/NATIVE_RENDERER_TEXTURE_BINDING.md",
+        "reports/native_renderer_texture_binding_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_volume_texture_owner3",
+        "native_cube_texture_owner3"
+      ],
+      "scope": "Full297-byte renderer texture binding andtwo missing4-byte cube/volumeCOM getters; actual lifetime/currentprofile/guard/storage paths; no semantic cache."
+    },
+    {
+      "id": "native_logical_vertex_pool_return1",
+      "packet": "native_logical_vertex_pool_return1",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_original_fixture_real_OS_and_strict_Win32_checked",
+      "function_addresses": [
+        "00b49570"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_vertex_pool_return.hpp",
+        "src/native_logical_vertex_pool_return.cpp",
+        "docs/NATIVE_LOGICAL_VERTEX_POOL_RETURN.md",
+        "reports/native_logical_vertex_pool_return_audit.json"
+      ],
+      "source_ready": true,
+      "evidence": "reports/native_logical_vertex_pool_return_audit.json",
+      "scope": "Full105-byte raw pool slot return; actualpool/OSstorage; signed quotient andWORDalias count verified; independent of unresolvednon-null4C terminal."
     }
   ],
   "snapshot_after_analysis": {

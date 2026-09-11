@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b49570",
+    "before": {
+      "address": "00b49570",
+      "function_name": "FUN_00b49570"
+    },
+    "after": {
+      "address": "00b49570",
+      "old_name": "FUN_00b49570",
+      "name": "BSP_LogicalVertexPool_ReturnSlot",
+      "evidence": "Complete105-byte raw logical vertex pool ReturnSlot in src/native_logical_vertex_pool_return.cpp. Original ECX actualpool/stackrawslot/RET4; canonical108FE18, newfreefastcall puts slot inEDX. SaveactualCS pool+0C before Enter; currenttrackeddepth+24 increment afterreturn; slot+74 selects currentpool+28 slabtable withwrappedDWORD index*4. SignedwrappedDWORD(slot-slab)/120 truncateszero; write lowWORD to slab+F00+2*currentWORDslabF40; reread/incrementWORDcount AFTER store includingalias; compare slabindex against CURRENTpool34 unsigned; decrementcurrentdepth then Leave savedCS. Original magic88888889 IMUL/highhalf/add/SAR6/signcorrection matches compiledC++ division. No allocator/destructor/globallookup/guards/rollback/EH. Freshfull105bytes equal savedGhidra/installedPE. Strict mainWin32/twoexistingCTests/eightseeds passed; actualfrozenmainarchive-member and fullCOFF/linked entry verified. Threeoriginal/library pairs53521literalDWORDs/13frames perimplementation,12actualNTDLL Enter/Leave calls with loadedx86disk16byte and source/originalcallsite proof;7wholeoriginalcode and7wholefixture.text postimages match. Onlytwoabsoluteimportoperand relocations(8bytes); other97ownedbytes unchanged. Includesordinaryreturn, negativequotient/WORDcountalias-wrap/unsignedcursor andtable-depthDWORDwrap, andafterrealEnter actualfieldmutations. Stresscase uses noncanonicalvalues with validreachedstorage. reports/native_logical_vertex_pool_return_audit.json. FullB62010 nonnull4C terminal remains unresolved; no originalcaller ABI/reset/game validation. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  }
+]

@@ -3,6 +3,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/scheduled_voice_types.hpp"
 #include "bsp/panel_sequence_types.hpp"
+#include "bsp/panel_publication_types.hpp"
 
 #include <array>
 #include <cstdint>
@@ -23,9 +24,11 @@ struct VoiceAttachedNode;
 struct VoiceClipRecord {
     NativeString text_00;
     std::int32_t sound_id_08{};
+    NativeString auxiliary_0c; // initialized/copied/destroyed by00703FF0/42B0/4060
     std::uint8_t alternate_14{};
     NativeString alternate_name_18;
     std::vector<void*> resources_20; // resource wrappers, not SoundOwnedResource
+    VoiceTimedKeys timed_keys_34; // canonical record+30 vector, native begin+34
 };
 struct VoiceClip {
     std::uint32_t native_vtable_00{0x00cf0dd0};
@@ -107,9 +110,12 @@ struct VoicePlaybackManager {
     NativeString fade_callback_e0;
 };
 struct VoicePanelState {
+    PanelCharacterMap characters_04;
+    void* palette_10{}; // actual initialized Win32 palette tree; owner-managed
     PanelSequenceQueue queued_1c;
     std::uint32_t field_24{};
     NativeString current_28;
+    float default_pause_30{};
     std::uint32_t field_34{};
 };
 struct VoiceSlotStartContext;

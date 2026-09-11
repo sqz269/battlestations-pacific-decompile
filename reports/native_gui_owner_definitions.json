@@ -1,0 +1,599 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd8460",
+    "end_address": "00cd8476"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd8460",
+    "end_address": "00cd8475",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd8460",
+    "disassemble_first": false,
+    "name": "BSP_GroupPool_InitializeStatic"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd8460",
+    "function_name": "BSP_GroupPool_InitializeStatic",
+    "entry_point": "00cd8460",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd8460",
+    "warnings": [
+     "Function name 'BSP_GroupPool_InitializeStatic' \u2014 main part 'GroupPool_InitializeStatic' is not PascalCase. Expected: GrouppoolInitializestatic",
+     "Function name 'BSP_GroupPool_InitializeStatic' \u2014 main part 'GroupPool_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GroupPool_InitializeStatic' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cd8460",
+   "end": "00cd8476",
+   "name": "BSP_GroupPool_InitializeStatic",
+   "after": "Function: BSP_GroupPool_InitializeStatic at 00cd8460\nSignature: undefined BSP_GroupPool_InitializeStatic(void)\nEntry: 00cd8460\nBody: 00cd8460 - 00cd8475"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8eec0",
+    "end_address": "00b8ef05"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8eec0",
+    "end_address": "00b8ef04",
+    "bytes_disassembled": 69,
+    "message": "Successfully disassembled 69 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8eec0",
+    "disassemble_first": false,
+    "name": "BSP_Group_ReleaseAttachedNodesAndSelf"
+   },
+   "result": {
+    "success": true,
+    "address": "00b8eec0",
+    "function_name": "BSP_Group_ReleaseAttachedNodesAndSelf",
+    "entry_point": "00b8eec0",
+    "body_size": 69,
+    "message": "Function created successfully at 00b8eec0",
+    "warnings": [
+     "Function name 'BSP_Group_ReleaseAttachedNodesAndSelf' \u2014 main part 'Group_ReleaseAttachedNodesAndSelf' is not PascalCase. Expected: GroupReleaseattachednodesandself",
+     "Function name 'BSP_Group_ReleaseAttachedNodesAndSelf' \u2014 main part 'Group_ReleaseAttachedNodesAndSelf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Group_ReleaseAttachedNodesAndSelf' does not start with a recognized verb. First word 'Group_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b8eec0",
+   "end": "00b8ef05",
+   "name": "BSP_Group_ReleaseAttachedNodesAndSelf",
+   "after": "Function: BSP_Group_ReleaseAttachedNodesAndSelf at 00b8eec0\nSignature: undefined BSP_Group_ReleaseAttachedNodesAndSelf(void)\nEntry: 00b8eec0\nBody: 00b8eec0 - 00b8ef04"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8f650",
+    "end_address": "00b8f678"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8f650",
+    "end_address": "00b8f677",
+    "bytes_disassembled": 40,
+    "message": "Successfully disassembled 40 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8f650",
+    "disassemble_first": false,
+    "name": "BSP_Group_IsType"
+   },
+   "result": {
+    "success": true,
+    "address": "00b8f650",
+    "function_name": "BSP_Group_IsType",
+    "entry_point": "00b8f650",
+    "body_size": 40,
+    "message": "Function created successfully at 00b8f650",
+    "warnings": [
+     "Function name 'BSP_Group_IsType' \u2014 main part 'Group_IsType' is not PascalCase. Expected: GroupIstype",
+     "Function name 'BSP_Group_IsType' \u2014 main part 'Group_IsType' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Group_IsType' does not start with a recognized verb. First word 'Group_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b8f650",
+   "end": "00b8f678",
+   "name": "BSP_Group_IsType",
+   "after": "Function: BSP_Group_IsType at 00b8f650\nSignature: undefined BSP_Group_IsType(void)\nEntry: 00b8f650\nBody: 00b8f650 - 00b8f677"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8e620",
+    "end_address": "00b8e626"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8e620",
+    "end_address": "00b8e625",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8e620",
+    "disassemble_first": false,
+    "name": "BSP_Group_GetTypeId"
+   },
+   "result": {
+    "success": true,
+    "address": "00b8e620",
+    "function_name": "BSP_Group_GetTypeId",
+    "entry_point": "00b8e620",
+    "body_size": 6,
+    "message": "Function created successfully at 00b8e620",
+    "warnings": [
+     "Function name 'BSP_Group_GetTypeId' \u2014 main part 'Group_GetTypeId' is not PascalCase. Expected: GroupGettypeid",
+     "Function name 'BSP_Group_GetTypeId' \u2014 main part 'Group_GetTypeId' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Group_GetTypeId' does not start with a recognized verb. First word 'Group_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b8e620",
+   "end": "00b8e626",
+   "name": "BSP_Group_GetTypeId",
+   "after": "Function: BSP_Group_GetTypeId at 00b8e620\nSignature: undefined BSP_Group_GetTypeId(void)\nEntry: 00b8e620\nBody: 00b8e620 - 00b8e625"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8f590",
+    "end_address": "00b8f5d7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8f590",
+    "end_address": "00b8f5d6",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8f590",
+    "disassemble_first": false,
+    "name": "BSP_Group_InitializeTypeDescriptor"
+   },
+   "result": {
+    "success": true,
+    "address": "00b8f590",
+    "function_name": "BSP_Group_InitializeTypeDescriptor",
+    "entry_point": "00b8f590",
+    "body_size": 71,
+    "message": "Function created successfully at 00b8f590",
+    "warnings": [
+     "Function name 'BSP_Group_InitializeTypeDescriptor' \u2014 main part 'Group_InitializeTypeDescriptor' is not PascalCase. Expected: GroupInitializetypedescriptor",
+     "Function name 'BSP_Group_InitializeTypeDescriptor' \u2014 main part 'Group_InitializeTypeDescriptor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Group_InitializeTypeDescriptor' does not start with a recognized verb. First word 'Group_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b8f590",
+   "end": "00b8f5d7",
+   "name": "BSP_Group_InitializeTypeDescriptor",
+   "after": "Function: BSP_Group_InitializeTypeDescriptor at 00b8f590\nSignature: undefined BSP_Group_InitializeTypeDescriptor(void)\nEntry: 00b8f590\nBody: 00b8f590 - 00b8f5d6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8e6b0",
+    "end_address": "00b8e6b8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8e6b0",
+    "end_address": "00b8e6b7",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8e6b0",
+    "disassemble_first": false,
+    "name": "BSP_Group_InvalidateWorldBounds"
+   },
+   "result": {
+    "success": true,
+    "address": "00b8e6b0",
+    "function_name": "BSP_Group_InvalidateWorldBounds",
+    "entry_point": "00b8e6b0",
+    "body_size": 8,
+    "message": "Function created successfully at 00b8e6b0",
+    "warnings": [
+     "Function name 'BSP_Group_InvalidateWorldBounds' \u2014 main part 'Group_InvalidateWorldBounds' is not PascalCase. Expected: GroupInvalidateworldbounds",
+     "Function name 'BSP_Group_InvalidateWorldBounds' \u2014 main part 'Group_InvalidateWorldBounds' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Group_InvalidateWorldBounds' does not start with a recognized verb. First word 'Group_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b8e6b0",
+   "end": "00b8e6b8",
+   "name": "BSP_Group_InvalidateWorldBounds",
+   "after": "Function: BSP_Group_InvalidateWorldBounds at 00b8e6b0\nSignature: undefined BSP_Group_InvalidateWorldBounds(void)\nEntry: 00b8e6b0\nBody: 00b8e6b0 - 00b8e6b7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b6dbc0",
+    "end_address": "00b6dbd9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b6dbc0",
+    "end_address": "00b6dbd8",
+    "bytes_disassembled": 25,
+    "message": "Successfully disassembled 25 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b6dbc0",
+    "disassemble_first": false,
+    "name": "BSP_Transform_InvalidateBoundsAndNotifyGroup"
+   },
+   "result": {
+    "success": true,
+    "address": "00b6dbc0",
+    "function_name": "BSP_Transform_InvalidateBoundsAndNotifyGroup",
+    "entry_point": "00b6dbc0",
+    "body_size": 25,
+    "message": "Function created successfully at 00b6dbc0",
+    "warnings": [
+     "Function name 'BSP_Transform_InvalidateBoundsAndNotifyGroup' \u2014 main part 'Transform_InvalidateBoundsAndNotifyGroup' is not PascalCase. Expected: TransformInvalidateboundsandnotifygroup",
+     "Function name 'BSP_Transform_InvalidateBoundsAndNotifyGroup' \u2014 main part 'Transform_InvalidateBoundsAndNotifyGroup' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Transform_InvalidateBoundsAndNotifyGroup' does not start with a recognized verb. First word 'Transform_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b6dbc0",
+   "end": "00b6dbd9",
+   "name": "BSP_Transform_InvalidateBoundsAndNotifyGroup",
+   "after": "Function: BSP_Transform_InvalidateBoundsAndNotifyGroup at 00b6dbc0\nSignature: undefined BSP_Transform_InvalidateBoundsAndNotifyGroup(void)\nEntry: 00b6dbc0\nBody: 00b6dbc0 - 00b6dbd8"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd7e40",
+    "end_address": "00cd7e56"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd7e40",
+    "end_address": "00cd7e55",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd7e40",
+    "disassemble_first": false,
+    "name": "BSP_MeshObjectPool_InitializeStatic"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd7e40",
+    "function_name": "BSP_MeshObjectPool_InitializeStatic",
+    "entry_point": "00cd7e40",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd7e40",
+    "warnings": [
+     "Function name 'BSP_MeshObjectPool_InitializeStatic' \u2014 main part 'MeshObjectPool_InitializeStatic' is not PascalCase. Expected: MeshobjectpoolInitializestatic",
+     "Function name 'BSP_MeshObjectPool_InitializeStatic' \u2014 main part 'MeshObjectPool_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MeshObjectPool_InitializeStatic' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cd7e40",
+   "end": "00cd7e56",
+   "name": "BSP_MeshObjectPool_InitializeStatic",
+   "after": "Function: BSP_MeshObjectPool_InitializeStatic at 00cd7e40\nSignature: undefined BSP_MeshObjectPool_InitializeStatic(void)\nEntry: 00cd7e40\nBody: 00cd7e40 - 00cd7e55"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab6120",
+    "end_address": "00ab63a0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab6120",
+    "end_address": "00ab639f",
+    "bytes_disassembled": 640,
+    "message": "Successfully disassembled 640 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab6120",
+    "disassemble_first": false,
+    "name": "BSP_GuiIcon_VisibilityChanged"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab6120",
+    "function_name": "BSP_GuiIcon_VisibilityChanged",
+    "entry_point": "00ab6120",
+    "body_size": 640,
+    "message": "Function created successfully at 00ab6120",
+    "warnings": [
+     "Function name 'BSP_GuiIcon_VisibilityChanged' \u2014 main part 'GuiIcon_VisibilityChanged' is not PascalCase. Expected: GuiiconVisibilitychanged",
+     "Function name 'BSP_GuiIcon_VisibilityChanged' \u2014 main part 'GuiIcon_VisibilityChanged' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiIcon_VisibilityChanged' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab6120",
+   "end": "00ab63a0",
+   "name": "BSP_GuiIcon_VisibilityChanged",
+   "after": "Function: BSP_GuiIcon_VisibilityChanged at 00ab6120\nSignature: undefined BSP_GuiIcon_VisibilityChanged(void)\nEntry: 00ab6120\nBody: 00ab6120 - 00ab639f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac6fd0",
+    "end_address": "00ac6fd5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac6fd0",
+    "end_address": "00ac6fd4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac6fd0",
+    "disassemble_first": false,
+    "name": "BSP_GuiGroup_ReadProperties"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac6fd0",
+    "function_name": "BSP_GuiGroup_ReadProperties",
+    "entry_point": "00ac6fd0",
+    "body_size": 5,
+    "message": "Function created successfully at 00ac6fd0",
+    "warnings": [
+     "Function name 'BSP_GuiGroup_ReadProperties' \u2014 main part 'GuiGroup_ReadProperties' is not PascalCase. Expected: GuigroupReadproperties",
+     "Function name 'BSP_GuiGroup_ReadProperties' \u2014 main part 'GuiGroup_ReadProperties' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiGroup_ReadProperties' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac6fd0",
+   "end": "00ac6fd5",
+   "name": "BSP_GuiGroup_ReadProperties",
+   "after": "Function: BSP_GuiGroup_ReadProperties at 00ac6fd0\nSignature: undefined BSP_GuiGroup_ReadProperties(void)\nEntry: 00ac6fd0\nBody: 00ac6fd0 - 00ac6fd4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b85980",
+    "end_address": "00b8599d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b85980",
+    "end_address": "00b8599c",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b85980",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b85980",
+    "function_name": "FUN_00b85980",
+    "entry_point": "00b85980",
+    "body_size": 29,
+    "message": "Function created successfully at 00b85980"
+   }
+  },
+  {
+   "defined": "00b85980",
+   "end": "00b8599d",
+   "name": null,
+   "after": "Function: FUN_00b85980 at 00b85980\nSignature: undefined FUN_00b85980(void)\nEntry: 00b85980\nBody: 00b85980 - 00b8599c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b859a0",
+    "end_address": "00b859ae"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b859a0",
+    "end_address": "00b859ad",
+    "bytes_disassembled": 14,
+    "message": "Successfully disassembled 14 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b859a0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b859a0",
+    "function_name": "FUN_00b859a0",
+    "entry_point": "00b859a0",
+    "body_size": 14,
+    "message": "Function created successfully at 00b859a0"
+   }
+  },
+  {
+   "defined": "00b859a0",
+   "end": "00b859ae",
+   "name": null,
+   "after": "Function: FUN_00b859a0 at 00b859a0\nSignature: undefined FUN_00b859a0(void)\nEntry: 00b859a0\nBody: 00b859a0 - 00b859ad"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b866b0",
+    "end_address": "00b866b5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b866b0",
+    "end_address": "00b866b4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b866b0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b866b0",
+    "function_name": "FUN_00b866b0",
+    "entry_point": "00b866b0",
+    "body_size": 5,
+    "message": "Function created successfully at 00b866b0"
+   }
+  },
+  {
+   "defined": "00b866b0",
+   "end": "00b866b5",
+   "name": null,
+   "after": "Function: FUN_00b866b0 at 00b866b0\nSignature: undefined FUN_00b866b0(void)\nEntry: 00b866b0\nBody: 00b866b0 - 00b866b4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -16,11 +16,20 @@ struct GeneratedModelPointLightLinks {
     BuildingInstancePointLight values;
     std::vector<CameraTransform*> models;
 };
+// Optional dispatch to an actual +178/+17C/+180 descriptor. Both callbacks and
+// context are required together. A null view selects the existing diagnostic
+// vector; an actual view never mirrors its backing into that vector.
+struct NativeAttachmentArrayView {
+    void* context{};
+    void (*append)(void*, CameraTransform&){};
+    bool (*erase)(void*, CameraTransform*) noexcept{};
+};
 // Native attached object+178 is another borrowed node array. identity is the
 // same actual +A0 value projected by CameraTransform.notification_context.
 struct GeneratedModelAttachmentLinks {
     void* identity;
     std::vector<CameraTransform*> models;
+    NativeAttachmentArrayView native_array{};
 };
 
 class GeneratedModelNodeLifetime : public RenderCommandModelLifetime {
@@ -39,6 +48,10 @@ public:
     void bind(GeneratedModelNodeLifetime&);
     void unbind(GeneratedModelNodeLifetime&) noexcept;
     GeneratedModelNodeLifetime& resolve(CameraTransform&) const noexcept;
+    // Association lookup only, using the same scene binding's actual Win32 key.
+    // Returns null when absent; does not interpret a native-array context as a
+    // particular C++ owner or create another node/identity registry.
+    GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;
     void bind_attachment(GeneratedModelAttachmentLinks&);
     void unbind_attachment(GeneratedModelAttachmentLinks&) noexcept;
     GeneratedModelAttachmentLinks& attachment(void* identity) const noexcept;
@@ -141,6 +154,9 @@ public:
 // count. Does not release/delete nodes, preserve order, or reduce capacity.
 bool erase_generated_model_pointer_00b7bed0(std::vector<CameraTransform*>&,
     CameraTransform*) noexcept;
+// Capacity policy belongs to the selected backing implementation. Native
+// groups use their actual descriptor; legacy diagnostic bindings use models.
+void append_generated_model_attachment(GeneratedModelAttachmentLinks&, CameraTransform&);
 // Native ECX point-light, stack model, RET4: applies erase to point-light+1E0.
 void remove_point_light_model_link_00b7c1a0(GeneratedModelPointLightLinks&,
     CameraTransform&) noexcept;

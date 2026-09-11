@@ -1,0 +1,511 @@
+{
+  "packet": "orch2_native_mesh_owner_l",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Each live read uses bsp.py ghidra bytes, which verifies configured project/program.",
+  "ghidra_mutations": false,
+  "spans": [
+    {
+      "address": "00b73d70",
+      "length": 179,
+      "end_exclusive": "00b73e23",
+      "name": "constructor",
+      "matches_installed_pe": true,
+      "sha256": "dce74ec9776f6191260146be11d3cdca34fd71bb9c7c6fbf75b1be705efde977",
+      "last_instruction": {
+        "address": "00b73e22",
+        "length": 1,
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b73e60",
+      "length": 238,
+      "end_exclusive": "00b73f4e",
+      "name": "destructor",
+      "matches_installed_pe": true,
+      "sha256": "eee55fd1be680cc58cc366fcdf902f9f9dad88e700abd102acd0778f962bb22f",
+      "last_instruction": {
+        "address": "00b73f4d",
+        "length": 1,
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b74280",
+      "length": 32,
+      "end_exclusive": "00b742a0",
+      "name": "scalar_deleting_destructor",
+      "matches_installed_pe": true,
+      "sha256": "8c381b06e94bfcf7a73a88daf3df04db73072569b2ca7c2845a212cdeb372c3e",
+      "last_instruction": {
+        "address": "00b7429d",
+        "length": 3,
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b73c10",
+      "length": 66,
+      "end_exclusive": "00b73c52",
+      "name": "release_sections",
+      "matches_installed_pe": true,
+      "sha256": "262c9f59775e38944d006854a9fa4c4035a6955085ad08a8a2b1e6aa8bd696a6",
+      "last_instruction": {
+        "address": "00b73c51",
+        "length": 1,
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b73b70",
+      "length": 59,
+      "end_exclusive": "00b73bab",
+      "name": "set_index_stream",
+      "matches_installed_pe": true,
+      "sha256": "7a314c5a37c607c60601bf6ee25a0cd365b405581ec7357bf568f82e8fdde293",
+      "last_instruction": {
+        "address": "00b73ba8",
+        "length": 3,
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b73bb0",
+      "length": 95,
+      "end_exclusive": "00b73c0f",
+      "name": "set_vertex_stream",
+      "matches_installed_pe": true,
+      "sha256": "6a187200728c3f4e5d5acfb2e3a206ec6d6c71c622c9867475ab3d634c95a108",
+      "last_instruction": {
+        "address": "00b73c0c",
+        "length": 3,
+        "text": "ret 8"
+      }
+    },
+    {
+      "address": "00b73c60",
+      "length": 68,
+      "end_exclusive": "00b73ca4",
+      "name": "append_section",
+      "matches_installed_pe": true,
+      "sha256": "61b35cc16743e16dee5dbb08985aeb68d0a35e8aa5756b344085ad0ae84e45a9",
+      "last_instruction": {
+        "address": "00b73c9e",
+        "length": 6,
+        "text": "jmp dword ptr [0xce221c]"
+      }
+    },
+    {
+      "address": "00b72e10",
+      "length": 95,
+      "end_exclusive": "00b72e6f",
+      "name": "reserve_sections",
+      "matches_installed_pe": true,
+      "sha256": "3caf8bfb8d2151c692b30476b3fcc5f678cf2aac232975bbdf883ef3a629826a",
+      "last_instruction": {
+        "address": "00b72e6c",
+        "length": 3,
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b73840",
+      "length": 80,
+      "end_exclusive": "00b73890",
+      "name": "resize_sections",
+      "matches_installed_pe": true,
+      "sha256": "b01a7e9b858c3a1396751c76c59f4adc6b43acbe82263213779691881a749547",
+      "last_instruction": {
+        "address": "00b7388d",
+        "length": 3,
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b73cb0",
+      "length": 23,
+      "end_exclusive": "00b73cc7",
+      "name": "destroy_section_storage",
+      "matches_installed_pe": true,
+      "sha256": "08c9d6dca101d3aaf31ae2607eab6376cd039af43426f23115abbb40c8422756",
+      "last_instruction": {
+        "address": "00b73cc6",
+        "length": 1,
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00427880",
+      "length": 23,
+      "end_exclusive": "00427897",
+      "name": "destroy_name_storage",
+      "matches_installed_pe": true,
+      "sha256": "6c3d094105365f744d6ac6d34af0ceaaa79b58b89f96e1533b1485c7b9a32e55",
+      "last_instruction": {
+        "address": "00427896",
+        "length": 1,
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00427110",
+      "length": 120,
+      "end_exclusive": "00427188",
+      "name": "resize_names",
+      "matches_installed_pe": true,
+      "sha256": "caa2d4fd2e8bccfb7723387c81dfde646d0f4e37d6e3d3698eb392b91bb732b8",
+      "last_instruction": {
+        "address": "00427185",
+        "length": 3,
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00aa6e10",
+      "length": 11,
+      "end_exclusive": "00aa6e1b",
+      "name": "base_destructor_thunk",
+      "matches_installed_pe": true,
+      "sha256": "62b271d2007c7623d67b3b74b9c82e30af5c04bf35c3f0b839931b225fe6ab6b",
+      "last_instruction": {
+        "address": "00aa6e16",
+        "length": 5,
+        "text": "jmp 0xbd30f0"
+      }
+    },
+    {
+      "address": "00bd30f0",
+      "length": 7,
+      "end_exclusive": "00bd30f7",
+      "name": "reference_base_destructor",
+      "matches_installed_pe": true,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "last_instruction": {
+        "address": "00bd30f6",
+        "length": 1,
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00cc1bd0",
+      "length": 8,
+      "end_exclusive": "00cc1bd8",
+      "name": "unwind_state0",
+      "matches_installed_pe": true,
+      "sha256": "4d1ccead6206a761e8dc2d980ab363624cc47c2eae80683295b867d7f348a795",
+      "last_instruction": {
+        "address": "00cc1bd3",
+        "length": 5,
+        "text": "jmp 0xaa6e10"
+      }
+    },
+    {
+      "address": "00cc1bd8",
+      "length": 11,
+      "end_exclusive": "00cc1be3",
+      "name": "unwind_state1",
+      "matches_installed_pe": true,
+      "sha256": "a4dbc2b3191901295688576f521019382bac3018dd33d5cffd07e96f685f8084",
+      "last_instruction": {
+        "address": "00cc1bde",
+        "length": 5,
+        "text": "jmp 0xb73cb0"
+      }
+    },
+    {
+      "address": "00cc1be3",
+      "length": 14,
+      "end_exclusive": "00cc1bf1",
+      "name": "unwind_state2",
+      "matches_installed_pe": true,
+      "sha256": "a92282083e7170c0dccdf323fd4d090de31a0d3f97445f1e2b0a47962b5d3ea5",
+      "last_instruction": {
+        "address": "00cc1bec",
+        "length": 5,
+        "text": "jmp 0x427880"
+      }
+    },
+    {
+      "address": "00cc1bf1",
+      "length": 10,
+      "end_exclusive": "00cc1bfb",
+      "name": "eh_handler",
+      "matches_installed_pe": true,
+      "sha256": "c8415c0b11268de4cc8d28e79c6dbeb0e64dee75cbc687709624243bb1c437e2",
+      "last_instruction": {
+        "address": "00cc1bf6",
+        "length": 5,
+        "text": "jmp 0xbf6b43"
+      }
+    },
+    {
+      "address": "00dfab94",
+      "length": 24,
+      "end_exclusive": "00dfabac",
+      "name": "data_unwind_map",
+      "matches_installed_pe": true,
+      "sha256": "c18268847f257b30257ac6ec6f9b23dff93d801ab8a700f55f6f2819e13c577b"
+    },
+    {
+      "address": "00dfabac",
+      "length": 36,
+      "end_exclusive": "00dfabd0",
+      "name": "data_eh_info",
+      "matches_installed_pe": true,
+      "sha256": "a21ae3b939970dcb2f72887ece3efe4a85dafd53fc3f99151ab7c93ce9816a58"
+    },
+    {
+      "address": "00d62d60",
+      "length": 8,
+      "end_exclusive": "00d62d68",
+      "name": "data_vtable",
+      "matches_installed_pe": true,
+      "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745"
+    },
+    {
+      "address": "00ce4adc",
+      "length": 4,
+      "end_exclusive": "00ce4ae0",
+      "name": "data_minimum",
+      "matches_installed_pe": true,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+    },
+    {
+      "address": "00ce4970",
+      "length": 4,
+      "end_exclusive": "00ce4974",
+      "name": "data_maximum",
+      "matches_installed_pe": true,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "end_exclusive": "00d7a250",
+      "name": "data_lod",
+      "matches_installed_pe": true,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    }
+  ],
+  "false_free_flow": [
+    {
+      "call": "00b72e5c",
+      "undefined_start": "00b72e61",
+      "undefined_end_exclusive": "00b72e6a",
+      "continuation": "add esp,4; mov [esi],ebx; mov [esi+8],edi; pop ebx",
+      "function_end_exclusive": "00b72e6f"
+    },
+    {
+      "call": "00b73cbd",
+      "excluded_listing_start": "00b73cc2",
+      "excluded_listing_end_exclusive": "00b73cc7",
+      "continuation": "add esp,4; pop esi; ret",
+      "last_instruction": "00b73cc6",
+      "last_instruction_length": 1
+    },
+    {
+      "call": "0042788d",
+      "excluded_listing_start": "00427892",
+      "excluded_listing_end_exclusive": "00427897",
+      "continuation": "add esp,4; pop esi; ret",
+      "last_instruction": "00427896",
+      "last_instruction_length": 1
+    }
+  ],
+  "status": "actual_storage_reconstructed_build_and_native_differential_checked",
+  "original_abi_and_hypotheses": [
+    {
+      "address": "00b73d70",
+      "name": "construct_native_mesh_00b73d70",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual BC-byte payload; EAX same address; RET.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73e60",
+      "name": "destroy_native_mesh_00b73e60",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual mesh; RET at B73F4D, length1, end-exclusive B73F4E.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b74280",
+      "name": "delete_native_mesh_00b74280",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX mesh; flags on stack; EAX original address; RET4.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73c10",
+      "name": "clear_native_mesh_draw_sections_00b73c10",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX mesh; RET; live signed section count.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73b70",
+      "name": "set_native_mesh_index_stream_00b73b70",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX mesh; actual index on stack; RET4.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73bb0",
+      "name": "set_native_mesh_vertex_stream_00b73bb0",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX mesh; signed index and actual stream on stack; RET8.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73c60",
+      "name": "append_native_mesh_draw_section_00b73c60",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX mesh; nonnull actual section on stack; RET4 via InterlockedIncrement tail jump.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b72e10",
+      "name": "reserve_native_mesh_section_pointers_00b72e10",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual pointer-vector header; signed capacity on stack; RET4.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73840",
+      "name": "resize_native_mesh_section_pointers_00b73840",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual pointer-vector header; signed count on stack; RET4.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00b73cb0",
+      "name": "destroy_native_mesh_section_pointers_00b73cb0",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual pointer-vector header; RET at B73CC6, length1, end-exclusive B73CC7.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00427880",
+      "name": "destroy_native_mesh_weight_names_00427880",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_storage_reconstructed_build_and_focused_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual string-vector header; RET at 427896, length1, end-exclusive 427897.",
+      "hypothesis": "Descriptive C++ name; actual BC-byte owner/storage in concrete C0h pool; new C++ interface, not binary replacement or game validation."
+    },
+    {
+      "address": "00427110",
+      "name": "clear_native_mesh_weight_names_00427110_fragment",
+      "source": "src/native_mesh_owner.cpp",
+      "status": "actual_no_grow_cleanup_fragment_build_and_fixture_checked",
+      "evidence": [
+        "docs/NATIVE_MESH_OWNER.md",
+        "reports/native_mesh_owner.json"
+      ],
+      "original_abi": "ECX actual string-vector header; signed desired count on stack; RET4. This fragment implements desired0 in nonnegative-capacity domain.",
+      "hypothesis": "Reverse count-decrement then captured string storage/length+1 return; arbitrary vector growth remains outside packet."
+    }
+  ],
+  "boundaries": [
+    "Concrete NativeMeshPool from independent orch2_native_mesh_pool_m packet is required.",
+    "No GUI, model+180 integration, draw-section/material owner, renderer, or arbitrary weight-name vector growth implemented.",
+    "New C++ interfaces; no binary replacement ABI or game/render validation.",
+    "No Ghidra mutations; recorded free continuations await integrator repair."
+  ],
+  "validation": {
+    "win32_build": "passed scripts/build.ps1 after concrete pool header overlay",
+    "ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "seed_verification": "8/8 matched installed PE",
+    "ignored_probe": "local/native_mesh_probe.cpp",
+    "ignored_probe_sha256": "24d4c9e108b83a3e5d20cbb5fd6d8b18672031d7994c162e6ee6ca0b9ce05419",
+    "probe_command": "./local/build_native_mesh_probe.ps1; MSVC Win32 /MANIFEST:EMBED",
+    "probe_result": "PASS: 256 native constructor preimages; native attachment/growth/destructor and callback differential; host exception cleanup; canonical reference terminal route.",
+    "native_differential_import_boundaries": [
+      "InterlockedIncrement",
+      "InterlockedDecrement",
+      "ordinary allocation/free"
+    ],
+    "native_exception_runtime_tested": false,
+    "concrete_pool_overlay_worktree": "J:/PROG/battlestations-pacific-decompile-orch2-native-mesh-pool-20260911m",
+    "concrete_pool_source_sha256": "9413a39470c9ce1dd2668f04975b0e81412ad326db0f3e7eca9a9cead540595b"
+  },
+  "ghidra_annotation_handoff": [
+    {
+      "address": "00b72e10",
+      "old_name": "FUN_00b72e10",
+      "proposed_name": "BSP_MeshSectionPointers_Reserve",
+      "comment": "Minimum4 grow-only reserve; copy current count, ordinary free old data then publish replacement and capacity. B72E5C free returns; restore B72E61..B72E6A gap. Final RET4 B72E6C length3, end-exclusive B72E6F. New actual-storage C++ interface; docs/NATIVE_MESH_OWNER.md."
+    },
+    {
+      "address": "00b73cb0",
+      "old_name": "FUN_00b73cb0",
+      "proposed_name": "BSP_MeshSectionPointers_Destroy",
+      "comment": "Resize0 without pointed-object releases, then ordinary free current data. Native tail B73CC2..B73CC7 follows free at B73CBD; final RET B73CC6 length1. Preserve resulting pointer/capacity. docs/NATIVE_MESH_OWNER.md."
+    },
+    {
+      "address": "00427880",
+      "old_name": "FUN_00427880",
+      "proposed_name": "BSP_NativeStringVector_Destroy",
+      "comment": "Resize0, reverse string storage cleanup, then ordinary free current backing. Native tail 427892..427897 follows free at42788D; final RET427896 length1. docs/NATIVE_MESH_OWNER.md."
+    }
+  ]
+}

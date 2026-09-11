@@ -1,0 +1,85 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reason": "Complete00703FF0 is a message record constructor using an EH array helper;00704060 is a plain destructor with no flags or self-free.",
+  "evidence": [
+    "docs/MESSAGE_RECORD_RESOLVER.md"
+  ],
+  "entries": [
+    {
+      "address": "00703ff0",
+      "prior_ledger": {
+        "address": "00703ff0",
+        "name": "CG_array_ctor_helper_00703ff0",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00703ff0",
+            "category": "Inventory: cg_array_ctor_helper",
+            "comment": "CG_array_ctor_helper_00703ff0 [high] calls vector/eh_vector_constructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00703ff0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "00704060",
+      "prior_ledger": {
+        "address": "00704060",
+        "name": "CG_vector_deleting_dtor_00704060",
+        "category": "cg_vector_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0011"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00704060",
+            "category": "Inventory: cg_vector_deleting_dtor",
+            "comment": "CG_vector_deleting_dtor_00704060 [high] calls eh_vector_destructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00704060"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
