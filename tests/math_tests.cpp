@@ -55,6 +55,7 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/plane_class_fields.hpp"
 #include "bsp/vehicle_class_fields.hpp"
+#include "bsp/scene_property_bag.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -1821,6 +1822,29 @@ int main() {
                   && bsp::world_bucket_head_offset(0x00) == 0x64,
             "the name lookup skips the released candidate and the negative buckets, and "
             "matches case-insensitively on the first live entity of a searched kind");
+    }
+
+    {
+        // One installed property line, `Vehicles = IA 8 17 19 20 21 23 68 73 109 ;`
+        // from the shipped .scn files. The leading 8 is the element count that
+        // 008F636C/008F650C reads before the loop, not a value: a reader that
+        // scanned to the `;` would report nine elements.
+        bsp::ScenePropertyType type{};
+        bsp::SceneReferenceKind kind{};
+        const bool letter_is_int_array
+            = bsp::scene_property_type_for_letter("IA", type, kind)
+            && type == bsp::ScenePropertyType::IntArray;
+        const std::vector<std::string> tokens{
+            "8", "17", "19", "20", "21", "23", "68", "73", "109"};
+        bsp::ScenePropertyValue value{};
+        const bool decoded = bsp::scene_decode_property_value(
+            bsp::ScenePropertyType::IntArray, kind, tokens, value);
+        check(letter_is_int_array && decoded && value.int_array.size() == 8
+                  && value.int_array.front() == 17 && value.int_array.back() == 109
+                  && bsp::scene_property_array_bytes(
+                         bsp::ScenePropertyType::IntArray, 8) == 32,
+            "an installed `IA` property line decodes its leading token as the element "
+            "count and yields eight values");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
