@@ -1,0 +1,29 @@
+{
+  "annotation_events": [
+    {
+      "address": "00873560",
+      "before": {
+        "address": "00873560",
+        "function_name": "BSP_FadingForceEvent_Construct",
+        "comment": "[BSP reconstruction 00873560]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1. Final instruction 008736fb length 3; inclusive end 008736fd. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "after": {
+        "address": "00873560",
+        "name": "BSP_FadingForceEvent_Construct",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1. Final instruction 008736fb length 3; inclusive end 008736fd. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_force_spatial_i closes spatial refresh composition: ForceEventSpatialRuntime borrows actual current-target/subject-transform lookups and existing PoseRefreshResolver; validates SAME byteC8 and worldCC field addresses before actual414DB0 refresh; no copied parent hierarchy or cached game/target. Target flag is byte-exact uint8_t&. Native8735FA current-game reload and873633 captured-target refresh verified read-only. Strict Win32/2CTests and existing event fixture with actual recursive pose refresh passed. docs/FORCE_EVENT_SPATIAL.md; reports/force_event_spatial.json. Composition only, no additional reconstructed body count."
+      },
+      "status": "applied"
+    }
+  ],
+  "saved_name_evidence_and_prior_comment_readback_verified": true,
+  "export_refreshed": true,
+  "new_native_body_count": 0,
+  "combined_build": "local/pipe-current-process-i-build.log",
+  "combined_build_passed": true,
+  "existing_ctests_passed": 2,
+  "spatial_fixture": "local/force-spatial-composed-i-fixture.log",
+  "spatial_fixture_passed": true,
+  "pose_native_control_fixture": "local/pose-composed-i-fixture.log",
+  "pose_native_control_fixture_passed": true,
+  "game_validated": false
+}

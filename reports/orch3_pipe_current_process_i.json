@@ -1,0 +1,36 @@
+{
+  "packet": "orch3_composed_validation_i",
+  "scope": "Composition of real original data, CRT globals, current-process preimages, CryptoAPI protocol and recovered framing",
+  "sources": [
+    "src/xlive_pipe_bootstrap.cpp",
+    "src/xlive_pipe_globals.cpp",
+    "src/xlive_pipe_preimage.cpp",
+    "src/xlive_pipe_protocol.cpp",
+    "src/xlive_pipe_framing.cpp",
+    "src/xlive_pipe_services.cpp"
+  ],
+  "fixture": "local/pipe_current_process_i_fixture.cpp",
+  "command": "cmd /c local\\run_pipe_current_process_i_fixture.cmd",
+  "fixture_log": "local/pipe-current-process-i-fixture.log",
+  "exit_code": 0,
+  "build": "MSVC Win32 Release /W4 /WX",
+  "build_log": "local/pipe-current-process-i-build.log",
+  "build_passed": true,
+  "existing_ctests_passed": 2,
+  "actual_operations": [
+    "read-only installed PE spans and both exact SHA-256 checks",
+    "real CRT registration and canonical global initialization",
+    "observed actual default-initialized context and temporary storage",
+    "actual CryptAcquireContext and CryptGenRandom",
+    "first encode, decode, then next encode through complete service with callback payload checks",
+    "real CryptoAPI release, lock destruction and process-exit CRT cleanup"
+  ],
+  "limits": [
+    "Local carrier has no pipe handles; no endpoint or IPC worker starts",
+    "Controlled callback payload and local decode are component exercise, not original peer interoperability",
+    "Captured current-process storage is not an original-game trace or original allocator/stack ABI",
+    "No complete native bootstrap, gameplay, network, account or SDK sign-in validation"
+  ],
+  "game_validated": false,
+  "new_native_body_count": 0
+}
