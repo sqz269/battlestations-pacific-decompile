@@ -1,0 +1,640 @@
+{
+  "packet": "orch3_xlive_pipe_protocol_f",
+  "source": "src/xlive_pipe_protocol.cpp",
+  "header": "include/bsp/xlive_pipe_protocol.hpp",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live_count": 63063,
+    "mode": "read-only",
+    "mutated": false,
+    "evidence": "capped decompile, full relevant assembly, proto/flow/export, raw terminal bytes and missing-entry disk disassembly"
+  },
+  "functions": [
+    {
+      "address": "00a5f416",
+      "name": "initialize_xlive_pipe_protocol_00a5f416",
+      "reviewed_name": "BSP_XLivePipeProtocol_Initialize",
+      "previous_function_name": "PIPEIPC_00a5f416",
+      "native_abi": "ECX=pointer to owner protocol slot; RET; no meaningful return",
+      "native_last_instruction": "00a5f4e0",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f4e0",
+      "native_exclusive_end": "00a5f4e1",
+      "notes": "AllocateA8, construct three locks, acquire CryptoAPI provider and random4; seed then key transforms; publish only at end. Failures release/destroy/free and publish null; raw hidden XOR ESI,ESI verified."
+    },
+    {
+      "address": "00a5f336",
+      "name": "construct_xlive_pipe_protocol_00a5f336",
+      "reviewed_name": "BSP_XLivePipeProtocol_Construct",
+      "previous_function_name": "PIPEIPC_00a5f336",
+      "native_abi": "ECX=A8h context; RET; EAX=context",
+      "native_last_instruction": "00a5f354",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f354",
+      "native_exclusive_end": "00a5f355",
+      "notes": "Allocate/store only locks+4/+30/+7C in that order; all payload/provider bytes retain allocation preimage."
+    },
+    {
+      "address": "00a5f371",
+      "name": "destroy_xlive_pipe_protocol_00a5f371",
+      "reviewed_name": "BSP_XLivePipeProtocol_Destroy",
+      "previous_function_name": "PIPEIPC_00a5f371",
+      "native_abi": "ECX=pointer to owner protocol slot; RET",
+      "native_last_instruction": "00a5f396",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f396",
+      "native_exclusive_end": "00a5f397",
+      "notes": "Load context once, release nonzero provider, reverse member destruction, free context. Owner slot and fields not cleared."
+    },
+    {
+      "address": "00a5f1d8",
+      "name": "destroy_xlive_pipe_protocol_members_00a5f1d8",
+      "reviewed_name": "BSP_XLivePipeProtocol_DestroyMembers",
+      "previous_function_name": "PIPEIPC_00a5f1d8",
+      "native_abi": "ECX=context; RET",
+      "native_last_instruction": "00a5f203",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f203",
+      "native_exclusive_end": "00a5f204",
+      "notes": "Reload/conditionally destroy lock pointers +7C,+30,+4 via vslot0 flag1; do not clear pointers/payloads."
+    },
+    {
+      "address": "00a5ed9f",
+      "name": "initialize_xlive_pipe_seed_00a5ed9f",
+      "reviewed_name": "BSP_XLivePipeProtocol_InitializeSeed",
+      "previous_function_name": "PIPEIPC_00a5ed9f",
+      "native_abi": "__stdcall(source*, DWORD seed, destination*); RET12",
+      "native_last_instruction": "00a5ee0a",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20c00",
+      "native_inclusive_end": "00a5ee0c",
+      "native_exclusive_end": "00a5ee0d",
+      "notes": "Global section enter; source/destination lock enter; global leave; copy40, two exact transforms; source/destination lock leave, with reloads. Destination preimage consumed."
+    },
+    {
+      "address": "00a5eecb",
+      "name": "initialize_xlive_pipe_key_00a5eecb",
+      "reviewed_name": "BSP_XLivePipeProtocol_InitializeKey",
+      "previous_function_name": "PIPEIPC_00a5eecb",
+      "native_abi": "__stdcall(source*, destination*); RET8",
+      "native_last_instruction": "00a5ef33",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20800",
+      "native_inclusive_end": "00a5ef35",
+      "native_exclusive_end": "00a5ef36",
+      "notes": "Same lock ordering, fixed40-byte key constant and table transforms; destination preimage consumed."
+    },
+    {
+      "address": "00a5f94f",
+      "name": "enter_xlive_pipe_global_00a5f94f",
+      "reviewed_name": "BSP_XLivePipeProtocol_EnterGlobalLock",
+      "previous_function_name": "PIPEIPC_00a5f94f",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00a5f95a",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f95a",
+      "native_exclusive_end": "00a5f95b",
+      "notes": "EnterCriticalSection at F8B778; projection borrows the actual shared section."
+    },
+    {
+      "address": "00a5f95b",
+      "name": "leave_xlive_pipe_global_00a5f95b",
+      "reviewed_name": "BSP_XLivePipeProtocol_LeaveGlobalLock",
+      "previous_function_name": "PIPEIPC_00a5f95b",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00a5f966",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f966",
+      "native_exclusive_end": "00a5f967",
+      "notes": "LeaveCriticalSection at F8B778; no duplicate global."
+    },
+    {
+      "address": "00a5fa5a",
+      "name": "create_xlive_pipe_value_lock_00a5fa5a",
+      "reviewed_name": "BSP_XLivePipeProtocol_CreateValueLock",
+      "previous_function_name": "PIPEIPC_00a5fa5a",
+      "native_abi": "__cdecl(); RET; EAX=1Ch lock object",
+      "native_last_instruction": "00a5fa6f",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5fa6f",
+      "native_exclusive_end": "00a5fa70",
+      "notes": "Allocate1Ch; null result returnsnull; nonnull tail-jumps concrete lock constructor. Native allocation exceptions have no invented rollback."
+    },
+    {
+      "address": "00a5fa27",
+      "name": "Win32XLivePipeValueLock::Win32XLivePipeValueLock",
+      "reviewed_name": "BSP_XLivePipeProtocol_ConstructValueLock",
+      "previous_function_name": "PIPEIPC_00a5fa27",
+      "native_abi": "ECX=lock; RET; EAX=lock",
+      "native_last_instruction": "00a5fa3d",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5fa3d",
+      "native_exclusive_end": "00a5fa3e",
+      "notes": "Set native vtable D539FC and InitializeCriticalSection at+4; C++ virtual projection with actual Win32 section."
+    },
+    {
+      "address": "00a5fa3e",
+      "name": "Win32XLivePipeValueLock::destroy",
+      "reviewed_name": "BSP_XLivePipeProtocol_DeleteValueLock",
+      "previous_function_name": "PIPEIPC_00a5fa3e",
+      "native_abi": "ECX=lock; stackflags; RET4; EAX=old lock address",
+      "native_last_instruction": "00a5fa57",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a5fa59",
+      "native_exclusive_end": "00a5fa5a",
+      "notes": "Destroy section/object; flags&1 frees storage; return old pointer. Raw post-free POP ECX verified."
+    },
+    {
+      "address": "00a5f91e",
+      "name": "Win32XLivePipeValueLock::~Win32XLivePipeValueLock",
+      "reviewed_name": "BSP_XLivePipeProtocol_DestructValueLock",
+      "previous_function_name": "PIPEIPC_00a5f91e",
+      "native_abi": "ECX=lock; RET",
+      "native_last_instruction": "00a5f938",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f938",
+      "native_exclusive_end": "00a5f939",
+      "notes": "Native vtableD539FC, DeleteCriticalSection(+4), basevtableD539F0. New interface uses C++ destructor/vtable transitions; no original vtable writes."
+    },
+    {
+      "address": "00a5f939",
+      "name": "Win32XLivePipeValueLock::enter",
+      "reviewed_name": "BSP_XLivePipeProtocol_EnterValueLock",
+      "previous_function_name": null,
+      "native_abi": "ECX=lock; RET",
+      "native_last_instruction": "00a5f943",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f943",
+      "native_exclusive_end": "00a5f944",
+      "notes": "ADD ECX,4; actual EnterCriticalSection import. Direct D539FC+4 vtable entry missing in Ghidra."
+    },
+    {
+      "address": "00a5f944",
+      "name": "Win32XLivePipeValueLock::leave",
+      "reviewed_name": "BSP_XLivePipeProtocol_LeaveValueLock",
+      "previous_function_name": null,
+      "native_abi": "ECX=lock; RET",
+      "native_last_instruction": "00a5f94e",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5f94e",
+      "native_exclusive_end": "00a5f94f",
+      "notes": "ADD ECX,4; actual LeaveCriticalSection import. Direct D539FC+8 vtable entry missing in Ghidra."
+    },
+    {
+      "address": "00a5ebc3",
+      "name": "copy_xlive_pipe_seed_constant_00a5ebc3",
+      "reviewed_name": "BSP_XLivePipeProtocol_CopySeedConstant",
+      "previous_function_name": "PIPEIPC_00a5ebc3",
+      "native_abi": "ECX=output40; RET",
+      "native_last_instruction": "00a5ebd8",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5ebd8",
+      "native_exclusive_end": "00a5ebd9",
+      "notes": "Copy40 immutable bytes from D25D9C; native forward byte loop."
+    },
+    {
+      "address": "00a5ed17",
+      "name": "copy_xlive_pipe_key_constant_00a5ed17",
+      "reviewed_name": "BSP_XLivePipeProtocol_CopyKeyConstant",
+      "previous_function_name": "PIPEIPC_00a5ed17",
+      "native_abi": "ECX=output40; RET",
+      "native_last_instruction": "00a5ed2c",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a5ed2c",
+      "native_exclusive_end": "00a5ed2d",
+      "notes": "Copy40 immutable bytes from D26010; native forward byte loop."
+    },
+    {
+      "address": "00a60123",
+      "name": "mix_xlive_pipe_seed_00a60123",
+      "reviewed_name": "BSP_XLivePipeProtocol_MixSeed",
+      "previous_function_name": "PIPEIPC_00a60123",
+      "native_abi": "__stdcall(encodedsource*, DWORDseed, output40*); RET12",
+      "native_last_instruction": "00a6014b",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20c00",
+      "native_inclusive_end": "00a6014d",
+      "native_exclusive_end": "00a6014e",
+      "notes": "FBC3 source+4, address of little-endian seed, rowD55288/D552D8, displacement0 widths40."
+    },
+    {
+      "address": "00a6014e",
+      "name": "combine_xlive_pipe_seed_00a6014e",
+      "reviewed_name": "BSP_XLivePipeProtocol_CombineSeed",
+      "previous_function_name": "PIPEIPC_00a6014e",
+      "native_abi": "__stdcall(left40*, encodedright*, encodedoutput*); RET12",
+      "native_last_instruction": "00a60179",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20c00",
+      "native_inclusive_end": "00a6017b",
+      "native_exclusive_end": "00a6017c",
+      "notes": "FE80 left,right+4,out+4, rowD55328/D55378, displacement0 widths40."
+    },
+    {
+      "address": "00a60259",
+      "name": "mix_xlive_pipe_key_00a60259",
+      "reviewed_name": "BSP_XLivePipeProtocol_MixKey",
+      "previous_function_name": "PIPEIPC_00a60259",
+      "native_abi": "__stdcall(encodedsource*, output40*); RET8",
+      "native_last_instruction": "00a60281",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20800",
+      "native_inclusive_end": "00a60283",
+      "native_exclusive_end": "00a60284",
+      "notes": "FE80 source+4, fixedD559F8, output, rowD55A20/D55A70, displacement0 widths40."
+    },
+    {
+      "address": "00a60284",
+      "name": "combine_xlive_pipe_key_00a60284",
+      "reviewed_name": "BSP_XLivePipeProtocol_CombineKey",
+      "previous_function_name": "PIPEIPC_00a60284",
+      "native_abi": "__stdcall(left40*, encodedright*, encodedoutput*); RET12",
+      "native_last_instruction": "00a602af",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20c00",
+      "native_inclusive_end": "00a602b1",
+      "native_exclusive_end": "00a602b2",
+      "notes": "FE80 left,right+4,out+4, rowD55AC0/D55B10, displacement0 widths40."
+    },
+    {
+      "address": "00a5fbc3",
+      "name": "transform_xlive_pipe_seed_00a5fbc3",
+      "reviewed_name": "BSP_XLivePipeProtocol_TransformSeed",
+      "previous_function_name": "PIPEIPC_00a5fbc3",
+      "native_abi": "__stdcall(left,seed,out,rows1,rows2,displacement,width1,width2,width3); RET36",
+      "native_last_instruction": "00a5fd12",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c22400",
+      "native_inclusive_end": "00a5fd14",
+      "native_exclusive_end": "00a5fd15",
+      "notes": "Full signed-min-width recurrence; zero seed bits first8 then little-endian bits, signed16 rows, unsigned masks/XOR state, two-bit output, displacement special case and in-place order. Original machine-code differential passed."
+    },
+    {
+      "address": "00a5fe80",
+      "name": "transform_xlive_pipe_pair_00a5fe80",
+      "reviewed_name": "BSP_XLivePipeProtocol_TransformPair",
+      "previous_function_name": "PIPEIPC_00a5fe80",
+      "native_abi": "__stdcall(left,right,out,rows1,rows2,displacement,width1,width2,width3); RET36",
+      "native_last_instruction": "00a5ffa9",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c22400",
+      "native_inclusive_end": "00a5ffab",
+      "native_exclusive_end": "00a5ffac",
+      "notes": "Full two-input table recurrence with low2-bit values, signed16 rows, signed-min-width and first output/displacement recurrence reset. Original machine-code differential passed."
+    }
+  ],
+  "missing_function_starts": [
+    {
+      "address": "00a5f939",
+      "native_last_instruction": "00a5f943",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a5f943",
+      "native_exclusive_end": "00a5f944"
+    },
+    {
+      "address": "00a5f944",
+      "native_last_instruction": "00a5f94e",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a5f94e",
+      "native_exclusive_end": "00a5f94f"
+    }
+  ],
+  "false_no_return_gaps": [
+    {
+      "function": "00a5f416",
+      "call": "00a5f4cf",
+      "callee": "00bf65ac",
+      "start": "00a5f4d4",
+      "length": 3,
+      "inclusive_end": "00a5f4d6",
+      "exclusive_end": "00a5f4d7",
+      "bytes": "59 33 f6",
+      "instructions": "POP ECX; XOR ESI,ESI (null protocol after failed initialization)"
+    },
+    {
+      "function": "00a5f371",
+      "call": "00a5f38f",
+      "callee": "00bf65ac",
+      "start": "00a5f394",
+      "length": 1,
+      "inclusive_end": "00a5f394",
+      "exclusive_end": "00a5f395",
+      "bytes": "59",
+      "instructions": "POP ECX"
+    },
+    {
+      "function": "00a5fa3e",
+      "call": "00a5fa4e",
+      "callee": "00bf65ac",
+      "start": "00a5fa53",
+      "length": 1,
+      "inclusive_end": "00a5fa53",
+      "exclusive_end": "00a5fa54",
+      "bytes": "59",
+      "instructions": "POP ECX"
+    }
+  ],
+  "parent_repair_commands": [
+    "python tools/ghidra_define_function.py 00a5f939 00a5f944 00a5f944 00a5f94f --record reports/orch3_xlive_pipe_protocol_definitions.json",
+    "python tools/bsp.py ghidra flow 00a5f416 00a5f371 00a5fa3e --apply"
+  ],
+  "repair_caveats": [
+    "Parent only after lease release, using tool write locks; refresh affected exports afterward.",
+    "F939/F944 are distinct vtable entries D539FC+4/+8 with own RET, not interior blocks of F91E.",
+    "The allocation failure tail in F416 must clear ESI before publishing owner slot; false-free metadata hid this behavior."
+  ],
+  "canonical_state": {
+    "size_hex": "a8",
+    "fields": {
+      "00": "HCRYPTPROV",
+      "04": "lock pointer +40 encoded bytes",
+      "30": "lock pointer +72 encoded bytes",
+      "7c": "lock pointer +40 encoded bytes"
+    },
+    "native_constructor_writes": [
+      "04 lock",
+      "30 lock",
+      "7c lock"
+    ],
+    "preimages": "All payload/provider bytes untouched by constructor; full explicit defined A8 allocation image required. Seed/key transforms read destination preimages; pending72 survives initialization.",
+    "binding": "Win32XLivePipeProtocolSystemHost performs real allocation and applies required XLivePipeProtocolPreimageHost bytes before native constructor; this is projection setup, not an invented native callback.",
+    "globals": "Borrow initialized acquisition sectionF8B778 and encoded source globalsF8B8CC/F8BADC; no independent substitutes."
+  },
+  "tables": {
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_size": 12223752,
+    "image_base": "00400000",
+    "table_start": "00d25d9c",
+    "table_rva": "00925d9c",
+    "table_exclusive_end": "00d56eb0",
+    "table_size": 200980,
+    "table_file_offset": 9592220,
+    "table_sha256": "f3456122844489dc39ceee393fc4ecfaddf789449bddf89b434b2cd55fe5c77c",
+    "section": ".rdata",
+    "subranges": [
+      {
+        "va": "00d25d9c",
+        "rva": "00925d9c",
+        "size": 40,
+        "exclusive_end": "00d25dc4"
+      },
+      {
+        "va": "00d26010",
+        "rva": "00926010",
+        "size": 40,
+        "exclusive_end": "00d26038"
+      },
+      {
+        "va": "00d2edd0",
+        "rva": "0092edd0",
+        "size": 4096,
+        "exclusive_end": "00d2fdd0"
+      },
+      {
+        "va": "00d2fdd0",
+        "rva": "0092fdd0",
+        "size": 128,
+        "exclusive_end": "00d2fe50"
+      },
+      {
+        "va": "00d2fe50",
+        "rva": "0092fe50",
+        "size": 256,
+        "exclusive_end": "00d2ff50"
+      },
+      {
+        "va": "00d2ff50",
+        "rva": "0092ff50",
+        "size": 256,
+        "exclusive_end": "00d30050"
+      },
+      {
+        "va": "00d30050",
+        "rva": "00930050",
+        "size": 32768,
+        "exclusive_end": "00d38050"
+      },
+      {
+        "va": "00d38050",
+        "rva": "00938050",
+        "size": 128,
+        "exclusive_end": "00d380d0"
+      },
+      {
+        "va": "00d380d0",
+        "rva": "009380d0",
+        "size": 256,
+        "exclusive_end": "00d381d0"
+      },
+      {
+        "va": "00d381d0",
+        "rva": "009381d0",
+        "size": 256,
+        "exclusive_end": "00d382d0"
+      },
+      {
+        "va": "00d42d70",
+        "rva": "00942d70",
+        "size": 32768,
+        "exclusive_end": "00d4ad70"
+      },
+      {
+        "va": "00d4ad70",
+        "rva": "0094ad70",
+        "size": 512,
+        "exclusive_end": "00d4af70"
+      },
+      {
+        "va": "00d4af70",
+        "rva": "0094af70",
+        "size": 1024,
+        "exclusive_end": "00d4b370"
+      },
+      {
+        "va": "00d4b370",
+        "rva": "0094b370",
+        "size": 1024,
+        "exclusive_end": "00d4b770"
+      },
+      {
+        "va": "00d4b770",
+        "rva": "0094b770",
+        "size": 32768,
+        "exclusive_end": "00d53770"
+      },
+      {
+        "va": "00d53770",
+        "rva": "00953770",
+        "size": 128,
+        "exclusive_end": "00d537f0"
+      },
+      {
+        "va": "00d537f0",
+        "rva": "009537f0",
+        "size": 256,
+        "exclusive_end": "00d538f0"
+      },
+      {
+        "va": "00d538f0",
+        "rva": "009538f0",
+        "size": 256,
+        "exclusive_end": "00d539f0"
+      },
+      {
+        "va": "00d54208",
+        "rva": "00954208",
+        "size": 2048,
+        "exclusive_end": "00d54a08"
+      },
+      {
+        "va": "00d54a08",
+        "rva": "00954a08",
+        "size": 2048,
+        "exclusive_end": "00d55208"
+      },
+      {
+        "va": "00d55288",
+        "rva": "00955288",
+        "size": 80,
+        "exclusive_end": "00d552d8"
+      },
+      {
+        "va": "00d552d8",
+        "rva": "009552d8",
+        "size": 80,
+        "exclusive_end": "00d55328"
+      },
+      {
+        "va": "00d55328",
+        "rva": "00955328",
+        "size": 80,
+        "exclusive_end": "00d55378"
+      },
+      {
+        "va": "00d55378",
+        "rva": "00955378",
+        "size": 80,
+        "exclusive_end": "00d553c8"
+      },
+      {
+        "va": "00d559f8",
+        "rva": "009559f8",
+        "size": 40,
+        "exclusive_end": "00d55a20"
+      },
+      {
+        "va": "00d55a20",
+        "rva": "00955a20",
+        "size": 80,
+        "exclusive_end": "00d55a70"
+      },
+      {
+        "va": "00d55a70",
+        "rva": "00955a70",
+        "size": 80,
+        "exclusive_end": "00d55ac0"
+      },
+      {
+        "va": "00d55ac0",
+        "rva": "00955ac0",
+        "size": 80,
+        "exclusive_end": "00d55b10"
+      },
+      {
+        "va": "00d55b10",
+        "rva": "00955b10",
+        "size": 80,
+        "exclusive_end": "00d55b60"
+      },
+      {
+        "va": "00d56e20",
+        "rva": "00956e20",
+        "size": 144,
+        "exclusive_end": "00d56eb0"
+      }
+    ],
+    "extent_note": "Core table spans use indexed masks/adjacent table boundaries; wrapper rows use exact40 signed16 entries. Last144-byte range is framing rowA60624; whole immutable coverage includes intervening original .rdata.",
+    "binding_contract": "Validate original PE32 identity/size/hash; map or extract exact RVA925D9C..956EB0; retain immutable200980 bytes. View validates block SHA256 before first operation and bounds-checks every lookup. No generated replacement constants."
+  },
+  "provenance": {
+    "previous_names": "PIPEIPC_* analyst block_pipe_ipc tags, not recovered vendor symbols",
+    "standard_boundaries": [
+      "Win32 CryptoAPI acquire/random/release",
+      "Win32 critical-section initialize/delete/enter/leave",
+      "ordinary allocation/free and byte copying"
+    ],
+    "algorithm": "Custom executable table-state transforms; no established standard-library or named-cipher identity. Reconstructed directly, not exempted by naming.",
+    "numeric_interpretation": "40/72-byte encoded values, no big-integer equivalence asserted."
+  },
+  "crypto_semantics": {
+    "acquire_provider_type": 1,
+    "acquire_flags_hex": "f0000040",
+    "container": null,
+    "provider_name": null,
+    "random_seed_bytes": 4,
+    "acquire_failure": "Read GetLastError; native normalizes zero to507 internally but no return/error field; force provider0, cleanup and publish null.",
+    "random_failure": "Read GetLastError and cleanup even when zero; failure bytes never read.",
+    "success": "All four random output bytes required defined; seed transform then key transform before slot publication.",
+    "destructor": "Release nonzero provider, reverse member destruction, free allocation, no owner slot clear."
+  },
+  "unreconstructed_startup_initialization": [
+    {
+      "address": "00cd6e16",
+      "native_last_instruction": "00cd6e2b",
+      "native_last_instruction_length": 1,
+      "native_exclusive_end": "00cd6e2c",
+      "operation": "ECX=F8B774; A5FA27 constructs global lock/sectionF8B778; atexit CE099A via BF6FF5"
+    },
+    {
+      "address": "00cd6e62",
+      "native_last_instruction": "00cd6e7c",
+      "native_last_instruction_length": 1,
+      "native_exclusive_end": "00cd6e7d",
+      "operation": "pushE12B58, ECX=F8B8CC, callA60015, atexitCE09C6 viaBF6FF5"
+    },
+    {
+      "address": "00cd6e98",
+      "native_last_instruction": "00cd6eb2",
+      "native_last_instruction_length": 1,
+      "native_exclusive_end": "00cd6eb3",
+      "operation": "pushE12BA8, ECX=F8BADC, callA5FFCF, atexitCE09E8 viaBF6FF5"
+    }
+  ],
+  "validation": {
+    "build": "Strict MSVC Win32 Release scripts/build.ps1 passed; local/xlive-pipe-protocol-build.log",
+    "ctests": "2/2 passed reconstructed_math and native_math_differential",
+    "verify_seeds": "8/8 matched disk/Ghidra; local/xlive-pipe-protocol-seeds.json",
+    "fixture": "One ignored synchronous local/xlive_pipe_protocol_fixture.cpp passed; local/xlive-pipe-protocol-fixture.log",
+    "native_differential": "Executed original FBC3/FE80 bodies from identified disk image after relocating only nine verified absolute table operands in each. Compared aliases, displacement0/1, signed minimum width, and composed lifecycle outputs.",
+    "fixture_other": "Pending72/preimage preservation, source/output lock acquisition/release order, reverse member destruction, actual recursive Win32 lock lifetime, acquire/random failures including zero last-error, null allocation and table hash rejection.",
+    "protocol_crypto": "Scripted acquire/random/release; no live protocol provider lifecycle claimed. SHA-256 table validation uses actual CryptoAPI.",
+    "named_pipes_opened": false,
+    "threads_started": false,
+    "network_endpoints_started": false,
+    "live_dll_tested": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "domain_limits": [
+    "Original global/static initialization remains distinct required work; raw .bss bytes are insufficient.",
+    "Allocator preimages must be observed or otherwise defined by the real binding; no zero/default preimage supplied.",
+    "Valid native buffers/row tables and nonnull locks are prerequisites for transforms; read-only table view rejects addresses outside verified extent.",
+    "No exception cleanup or unlock guards are invented for native functions with no rollback scope.",
+    "Canonical view includes framing rows throughD56EB0 by coordinated framing-worker requirement; framing functions remain owned by that worker."
+  ]
+}
