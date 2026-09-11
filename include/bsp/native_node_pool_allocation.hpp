@@ -36,9 +36,9 @@ void return_native_node_pool_slot_00b6e490(
 void return_native_node_00b6e670(
     void* actual_raw_slot, void* actual_pool_0108ff58);
 
-// New MSVC Win32 interfaces, not binary entry replacements. B6E980/CD7D10 pool
-// startup and B6E3D0/CE0E20 shutdown remain separate dependencies. Never replace
-// the required actual pool with zeroed storage. B6F5A0 constructs the174h node
+// New MSVC Win32 interfaces, not binary entry replacements. The owner startup,
+// trim and shutdown bodies are in native_node_pool_owner.hpp. Never replace
+// the required actual constructed pool with zeroed storage. B6F5A0 constructs the174h node
 // prefix in this raw allocation; NativeNodeBinding/SceneNodeAttachment are
 // companions referencing that owner and cannot substitute for physical storage.
 } // namespace bsp

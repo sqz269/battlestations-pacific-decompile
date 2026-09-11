@@ -112,5 +112,6 @@
     "Native CRT/SEH policy and malformed-memory fault behavior",
     "Full point-effect constructor and gameplay"
   ],
-  "ghidra_annotation_verification": "All5 names saved/read back with prior comments preserved; reports/effect_o_integration.json includes complete mutation audit; all5 exports refreshed."
+  "ghidra_annotation_verification": "All5 names saved/read back with prior comments preserved; reports/effect_o_integration.json includes complete mutation audit; all5 exports refreshed.",
+  "follow_up_owner_resolution": "The original remaining list is historical. reports/native_node_pool_owner.json reconstructs the actual owner constructor/destructor, empty-slab compaction, table cleanup and static CRT lifetime. Physical node construction remains required."
 }
