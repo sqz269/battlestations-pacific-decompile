@@ -1,0 +1,32 @@
+{
+  "address": "006944c0",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "evidence": "Complete006944C0 listing: ECX=mutable left three-word array, EDX=mutable right; RET00694660. No stack arguments or meaningful return.",
+  "prototype": "void __fastcall BSP_ObserverEdgeArray_ExchangeContents(unsigned int *left_array, unsigned int *right_array)",
+  "before": "Function: FUN_006944c0 at 006944c0\nSignature: undefined FUN_006944c0(void)\nEntry: 006944c0\nBody: 006944c0 - 00694660",
+  "before_comment": {
+    "address": "006944c0",
+    "function_name": "FUN_006944c0"
+  },
+  "caller_before": {
+    "lines": 72,
+    "sha256": "79c525516ab656b2fc7bad0e0dd4e05cdcebc5a4c7f72bfe33c38421ad11e504"
+  },
+  "after": "Function: BSP_ObserverEdgeArray_ExchangeContents at 006944c0\nSignature: void __fastcall BSP_ObserverEdgeArray_ExchangeContents(uint * left_array, uint * right_array)\nEntry: 006944c0\nBody: 006944c0 - 00694660",
+  "after_comment": {
+    "address": "006944c0",
+    "function_name": "BSP_ObserverEdgeArray_ExchangeContents"
+  },
+  "caller_after": {
+    "lines": 85,
+    "sha256": "98f93473106e6b97a1de293ee776ea7c89109b24d8f9531798edd671a602d2dd",
+    "recovered_loop_visible": true
+  },
+  "result": "Prototype applied; endpoint returned non-JSON text and initial response decoder failed. Live signature and caller-loop readback confirmed success without reapplying.",
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

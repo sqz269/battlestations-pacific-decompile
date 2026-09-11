@@ -197,10 +197,11 @@ bool update_voice_manager_005bc640(VoicePlaybackManager& manager, float delta,
                 --attached.count_6c; // recovered005BC870: AFTER free callback
             }
             if (entry != nullptr) {
-                entry->lifetime_vtable_18 = 0x00ce74fc;
+                entry->callback_owner_18.native_vtable_00 = 0x00ce74fc;
                 if (void* entity = entry->attached_entity_2c)
-                    calls.unregister_attached_006952a0(entity, *entry);
-                calls.destroy_attachment_00695870(*entry);
+                    context.observers.unregister_pair_006952a0(
+                        calls.attached_entity_observer(entity), entry->callback_owner_18);
+                context.observers.destroy_callback_owner_00695870(entry->callback_owner_18);
                 destroy_voice_slot_005b7fc0(entry->slot_00, lines, context.strings);
                 calls.free_attached_entry_005bc8c0(entry);
             }
