@@ -7,6 +7,11 @@
   "documentation": "docs/SOUND_SYSTEM_OWNER.md",
   "names_are_hypotheses": true,
   "worker_ghidra_mutations": false,
+  "review_corrections": [
+    "words_144 has exactly five dwords (+144,+148,+14C,+150,+154), matching stores A81643..A8165B. +158 is separately owned by SoundSystemState.min_frequency and receives 100 at A81679. An initial six-word declaration was corrected after independent review.",
+    "The resource owner allocation is 18h (24 decimal) bytes; its loader-interface comment now states that size unambiguously.",
+    "Constructor failure cleanup now recovered through a required external game teardown hook: CB5F98 loads DEC080/DEC068, unwinding CB5F90 path0041DD20, CB5F88 options0093FDB0, then CB5F80 base-cacheA85500. Factory destroys temporary scopes then calls SoundResourceLoadHost::destroy_failed_owner_00a85500 while acquired cache state exists, before propagating exception. This is required meaningful resource teardown, not a no-op. docs/SOUND_SYSTEM_OWNER.md."
+  ],
   "functions": [
     {
       "address": "00a81480",
@@ -66,7 +71,7 @@
       "last_instruction": "00a85a49",
       "last_instruction_length": 1,
       "native_abi": "ECX=allocated 18h owner, no stack arguments, EAX=this, RET",
-      "evidence": "Zero cache pointer/count/capacity and +10 accounting, vtable D5B210, exact 48h options defaults, pooled path sound/gui/error.fsb length19. Call required unresolved game loader A84740(path,options,1,1), store result+14, release path20bytes, clear/free options vector, return this. CALL_RETURN at A85A2D fixed by parent; raw A85A32..49 proves tail while stored function body still ends A85A31. docs/SOUND_SYSTEM_OWNER.md."
+      "evidence": "Zero cache pointer/count/capacity and +10 accounting, vtable D5B210, exact 48h options defaults, pooled path sound/gui/error.fsb length19. Call required unresolved game loader A84740(path,options,1,1), store result+14, release path20bytes, clear/free options vector, return this. CALL_RETURN at A85A2D fixed by parent; raw A85A32..49 proves tail while stored function body still ends A85A31. docs/SOUND_SYSTEM_OWNER.md. Constructor failure cleanup now recovered through a required external game teardown hook: CB5F98 loads DEC080/DEC068, unwinding CB5F90 path0041DD20, CB5F88 options0093FDB0, then CB5F80 base-cacheA85500. Factory destroys temporary scopes then calls SoundResourceLoadHost::destroy_failed_owner_00a85500 while acquired cache state exists, before propagating exception. This is required meaningful resource teardown, not a no-op. docs/SOUND_SYSTEM_OWNER.md."
     },
     {
       "address": "00a7b230",
@@ -126,7 +131,10 @@
     "build_passed": true,
     "native_seed_comparisons": 8,
     "native_seed_matches": 8,
-    "existing_ctests_passed": ["reconstructed_math", "native_math_differential"],
+    "existing_ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
     "focused_host_probe": "local/sound_owner_probe.cpp -> build/win32/Release/bsp_sound_owner_probe.exe",
     "focused_host_probe_passed": true,
     "forced_tree_allocation_failure_tested": false,
@@ -135,7 +143,14 @@
     "native_sound_differential_tested": false,
     "asset_loading_tested": false,
     "abi_compatible": false,
-    "game_validated": false
+    "game_validated": false,
+    "throwing_loader_cleanup_host_probe_passed": true,
+    "throwing_loader_cleanup_observations": [
+      "Temporary path released before failure callback.",
+      "Acquired cache record/resource identity and accounting intact at failure callback.",
+      "Original loader exception propagated after callback.",
+      "Options storage scope unwind established by code and native EH evidence; not separately instrumented."
+    ]
   },
   "remaining_boundaries": [
     "Actual game resource loading A84740 and resolver/creator/clone targets A82EA0/A835B0/A854C0.",

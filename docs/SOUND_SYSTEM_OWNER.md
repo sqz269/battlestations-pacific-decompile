@@ -68,13 +68,15 @@ configuration header; this module does not duplicate their table.
 | +118/+11C/+120/+124 | Four raw dwords `{0,0,1,0}`, not float identity data |
 | +128..+13C | Empty channel-group and system-DSP vectors |
 | +140 | Null master-channel-group handle |
-| +144..+154, +160..+16C | Six and four zero dwords; semantics remain open |
+| +144..+154, +160..+16C | Five and four zero dwords; semantics remain open |
 | +158/+15C | Raw dwords 100 and 00432380 |
 
 The final three stores repeat nulling +74/+78/+7C. +158/+15C later become the
 existing min/max-frequency outputs in 00A88770, but their base defaults are **not**
 1 and 440000. 00432380 is an image function address used as a raw initial word;
 this constructor does not call it.
+The five-word +144 array ends at +154; it excludes the separately represented
++158 frequency word.
 
 No base stores initialize +44, +48, +54, +110, +114, +170 or +174, nor the padding
 around byte fields. The constructor API preserves already represented caller
@@ -149,6 +151,15 @@ Those teardown bodies are analyzed dependencies, not implemented here. Opaque
 game-resource pointers therefore require the actual host teardown before the
 projection is discarded. Standard container destruction only frees host storage.
 
+Constructor failure has a separate required cleanup call. Handler CB5F98 loads
+FuncInfo DEC080, whose three entries at DEC068 unwind through CB5F90 (path
+0041DD20), CB5F88 (options 0093FDB0), and CB5F80 (base owner 00A85500). If path
+construction or the loader throws, the factory destroys the temporary scopes,
+then calls `SoundResourceLoadHost::destroy_failed_owner_00a85500` while the cache
+and accounting still exist, then propagates the exception. The host must release
+the acquired game resources; this required boundary has no default no-op.
+It is base-cache teardown, not derived 00A85A50 release of a successful +14 result.
+
 ## Validation boundary
 
 MSVC Win32 Release build and both existing CTests passed after all eight native
@@ -156,7 +167,11 @@ seed byte checks matched the installed image. An ignored focused host probe
 checked canonical state binding, defaults, untouched caller fields, identity
 transform, real registration order and lock recursion, empty tree, exact loader
 arguments/options, string allocation/release, retained loader mutations and
-unregister holes. No permanent tests were added. The allocation-unwind fix is
+unregister holes. One additional ignored throwing-loader case verifies path
+release before the cleanup callback, intact acquired cache state at that callback,
+and propagation of the original exception. Options destruction is established
+by its C++ scope and native unwind evidence, not separately instrumented.
+No permanent tests were added. The auxiliary allocation-unwind fix is
 assembly/EH-evidence reviewed, not a forced-allocation-failure runtime test.
 
 Validation uses ignored `local/sound-owner-extra.cmake` because the integrator

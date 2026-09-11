@@ -128,7 +128,7 @@ create_sound_auxiliary_tree_owner_00a88650(SoundOwnerLifetimeBindings& lifetime)
     try {
         owner->tree_04 = std::make_unique<SoundAuxiliaryTreeOwner::Tree>();
     } catch (...) {
-        // FuncInfo DE C408 -> unwind map DEC400 -> CB6260 calls A88180
+        // FuncInfo DEC408 -> unwind map DEC400 -> CB6260 calls A88180
         // when construction of the tree head throws after base publication.
         unregister_sound_auxiliary_tree_owner_00a88180(*owner, lifetime);
         throw;
@@ -140,13 +140,21 @@ std::unique_ptr<SoundResourceOwner> create_sound_resource_owner_00a858f0(
     SoundResourceLoadHost& loader, NativeStringStorage& strings) {
     auto owner = std::make_unique<SoundResourceOwner>();
     owner->native_vtable_00 = 0x00d5b210u;
-    SoundResourceLoadOptions options;
-    {
-        TemporarySoundPath path(strings);
-        owner->error_resource_14 = loader.load_00a84740(
-            *owner, path.value, options, true, true);
-    } // Native releases the path before resizing/freeing options.records_3c.
-    options.records_3c.clear(); // 0093F950(0): reverse count shrink, trivial records
+    try {
+        SoundResourceLoadOptions options;
+        {
+            TemporarySoundPath path(strings);
+            owner->error_resource_14 = loader.load_00a84740(
+                *owner, path.value, options, true, true);
+        } // Native releases the path before resizing/freeing options.records_3c.
+        options.records_3c.clear(); // 0093F950(0): reverse count shrink, trivial records
+    } catch (...) {
+        // CB5F98 -> DEC080/DEC068: CB5F90 destroys the path, CB5F88 destroys
+        // options, then CB5F80 calls base-cache teardown A85500. The nested
+        // scopes above have already unwound; opaque resources are still alive.
+        loader.destroy_failed_owner_00a85500(*owner);
+        throw;
+    }
     return owner; // vector allocation released by C++ storage destruction
 }
 

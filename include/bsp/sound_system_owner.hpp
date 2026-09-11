@@ -62,7 +62,7 @@ struct SoundResourceLoadOptions {
 class SoundResourceLoadHost {
 public:
     virtual ~SoundResourceLoadHost() = default;
-    // Native ECX=24h owner; stack NativeString*, options*, clone byte,
+    // Native ECX=18h (24-byte) owner; stack NativeString*, options*, clone byte,
     // load-if-missing byte; RET10. Both bytes are 1 at 00A859F6.
     // This is a required meaningful game dependency, NOT a reconstructed loader.
     // It normalizes/looks up aliases and reaches vslots +4/+8/+C to resolve,
@@ -73,6 +73,13 @@ public:
     virtual SoundOwnedResource* load_00a84740(SoundResourceOwner& owner,
         const NativeString& path, SoundResourceLoadOptions& options,
         bool clone, bool load_if_missing) = 0;
+    // Required meaningful game cleanup on constructor failure. Called only
+    // after temporary path/options destruction, while the acquired cache and
+    // owner accounting still exist. This is native base-cache teardown A85500,
+    // not derived A85A50: +14 has not received a successful loader result.
+    // The host must release acquired resources; clearing C++ pointers is not
+    // an implementation of native resource release. Must not throw in unwind.
+    virtual void destroy_failed_owner_00a85500(SoundResourceOwner&) noexcept = 0;
 };
 
 inline constexpr char kSoundErrorResourcePath[] = "sound/gui/error.fsb";
@@ -124,7 +131,7 @@ struct SoundSystemOwner {
     // +114 is not written; no invented semantic field. +118 is four words,
     // not four floats: its constructor default is {0,0,1,0}.
     std::array<std::uint32_t, 4> time_118{};
-    std::array<std::uint32_t, 6> words_144{};
+    std::array<std::uint32_t, 5> words_144{}; // +144..+154; +158 is system.min_frequency
     std::array<std::uint32_t, 4> words_160{};
 };
 
