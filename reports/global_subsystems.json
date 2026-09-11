@@ -7,9 +7,9 @@
       "address": "004dc6a0",
       "name": "construct_global_subsystems_004dc6a0",
       "source": "src/global_subsystems.cpp",
-      "status": "reconstructed_configuration_integration_build_and_real_lua_fixture_tested",
+      "status": "reconstructed_with_concrete_global_config_singleton_build_and_fixture_tested",
       "abi": "ECX=game; no stack arguments; RET004DC93F",
-      "evidence": "Hypothesis, not a recovered symbol. Complete normal-flow004DC6A0 through RET004DC93F, ECX=game. Configuration integration replaces00886900,00800160,00901610,00803A40,006DBEB0 callbacks with recovered direct bodies and canonical live contexts. Global folders retain captured mission services; marker borrows current embedded game+1A0C; recon uses current mission host/instance mutable state slot. Race/robot/marker registries preserve publication and native pointer ownership; panel/dialog and weather remain direct. Existing FileBlock, effect/config singleton, traffic/powerup/warning operations remain required services. src/global_subsystems.cpp; docs/GLOBAL_SUBSYSTEMS.md and linked configuration reports. New C++ interfaces, native SEH/STL/ABI/gameplay not established.",
+      "evidence": "Hypothesis, not a recovered symbol.004DC6A0 now calls concrete00432650 for every count/selection/final reset access. It shares the canonical2E8h owner and01090AA0 lifetime domain; no whole-config getter callback remains. Native allocation/constructor/destructor and live publication handling are recovered in src/global_config.cpp. See docs/GLOBAL_CONFIG.md and docs/GLOBAL_SUBSYSTEMS.md. Existing startup plus focused singleton fixtures and Win32 build passed; native ABI/SEH and gameplay unvalidated.",
       "document": "docs/GLOBAL_SUBSYSTEMS.md",
       "last_instruction": "004dc93f",
       "last_instruction_length": 1,
@@ -47,22 +47,22 @@
     "00800160",
     "00901610",
     "00803a40",
-    "006dbeb0"
-  ],
-  "required_services": [
-    "00be0a30",
-    "00bdcb30",
-    "006b8ad0",
-    "00432650",
-    "00871ba0",
-    "004d9c00",
-    "effect virtual+0",
+    "006dbeb0",
     "004a43c0",
     "0049d690",
     "008edc60",
     "008ecec0",
     "0098a020",
-    "009870a0"
+    "009870a0",
+    "00432650"
+  ],
+  "required_services": [
+    "00be0a30",
+    "00bdcb30",
+    "006b8ad0",
+    "00871ba0",
+    "004d9c00",
+    "effect virtual+0"
   ],
   "ghidra": {
     "verified_project": "C:/Users/sqz269/bsp.gpr",
@@ -217,6 +217,129 @@
       ],
       "ghidra_reapplied_saved_annotations": 74,
       "ghidra_before_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T090315Z.json",
+      "game_validated": false
+    }
+  },
+  "owner_integration_h": {
+    "status": "integrated_reviewed_build_and_focused_fixture_tested",
+    "direct_dependencies": [
+      "004a43c0",
+      "0049d690",
+      "008edc60",
+      "008ecec0",
+      "0098a020",
+      "009870a0"
+    ],
+    "reports": [
+      "reports/traffic_config.json",
+      "reports/powerup_config.json",
+      "reports/warning_owner.json"
+    ],
+    "validation": {
+      "build": "MSVC Win32 Release",
+      "existing_tests": "2/2 passed",
+      "build_log": "local/owner_h_build.log",
+      "fixture_count": 4,
+      "fixture_logs": [
+        "local/owner_h_global_fixture.log",
+        "local/owner_h_traffic_fixture.log",
+        "local/owner_h_powerup_fixture.log",
+        "local/owner_h_warning_fixture.log"
+      ],
+      "library_sha256": "454f602f28d8fffc2b2a7dc9836eeab19ebb749f6f0ef8fd240b814dc1037fa6",
+      "code_revision": "60af126b0099c8d7219af78ee802c90a05cad8d5",
+      "native_abi": false,
+      "game_validated": false
+    },
+    "ghidra_repairs": {
+      "missing_functions_defined": 3,
+      "call_gaps_fixed": 1,
+      "incorrect_inventory_tags_retired": 7
+    },
+    "provenance": {
+      "traffic_worker_commit": "90a0972ae19d48c0a9b8ba6e5d27a11b266df2dc",
+      "powerup_and_warning": "Saved sources adopted in primary worktree after terminal worker usage-limit errors; expired leases re-claimed, evidence completed and combined-library fixtures run by primary."
+    },
+    "remaining_boundaries": [
+      "00432650 config singleton and its full lifetime",
+      "FileBlock and mission Lua service bindings",
+      "00871BA0 effects,004D9C00 pointer vector and actual zero-reference dispatch",
+      "Powerup current GUI/player services",
+      "Warning source iterator adapters and hook targets",
+      "Full runtime owner destruction",
+      "Native ABI/SEH and gameplay"
+    ],
+    "annotations": {
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "count": 58,
+      "before_log": "local/ghidra-annotations-20260911T153357Z.json",
+      "readback": "local/owner_h_comments.json",
+      "exports": "local/owner_h_annotated_exports.log"
+    },
+    "final_integration": {
+      "tested_revision": "063506cb5adfb59a5bf1c2d0d993ae8070b2b3c8",
+      "main_base": "15482729",
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "2/2 passed",
+      "log": "local/owner_h_integrate.log",
+      "library_sha256": "ee3efbb847e10224695db3da6f6d329aa7300c0d88fbb4b5e562c848fe2326e0",
+      "saved_annotations": 58,
+      "annotation_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T153741Z.json",
+      "main_fast_forwarded_to_tested_revision": true,
+      "fixture_provenance": "Four focused fixtures passed on the earlier same-batch source60af126 library, recorded separately. Final combined build includes concurrent main changes; those focused fixtures were not rerun on this final library.",
+      "native_abi": false,
+      "game_validated": false
+    }
+  },
+  "config_singleton_integration_i": {
+    "status": "integrated_build_and_focused_fixture_tested",
+    "report": "reports/global_config.json",
+    "validation": {
+      "build": "MSVC Win32 Release passed",
+      "tests": "Existing2/2 passed",
+      "build_log": "local/config_singleton_i_build.log",
+      "fixture_logs": [
+        "local/config_singleton_i_fixture.log",
+        "local/config_singleton_i_global_fixture_pass.log"
+      ],
+      "library_sha256": "14cc7f5fb025b77fd108548462d05ce195f0945916d100ca08e2fbc21d1a9983",
+      "code_revision": "82891f17612449a1d90616060047de5a44489afe",
+      "fixture_scope": "Concrete singleton lazy registration and lock balance, scalar flags, explicit untouched allocation bytes, effect stop/slot reload/repopulation/reverse passes, string release order, unconditional global clear; existing full startup fixture uses concrete getter.",
+      "fixture_setup_correction": "Existing startup fixture first supplied null destroy_registered; concrete domain rejects missing owner dispatcher. Fixture now supplies actual global-config deleting dispatch; production unchanged.",
+      "native_abi": false,
+      "game_validated": false
+    },
+    "required_runtime_bindings": [
+      "Shared01090AA0 SingletonLifetimeDomain with actual registered-owner destructor dispatcher",
+      "Actual NativeStringStorage",
+      "Current effect virtual8 with argument0",
+      "Current effect virtual0 after atomic reference zero"
+    ],
+    "native_abi": false,
+    "game_validated": false,
+    "annotations": {
+      "count": 14,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T155359Z.json",
+      "readback": "local/config_singleton_i_comments.json",
+      "exports": "local/config_singleton_i_final_exports.log"
+    },
+    "final_integration": {
+      "tested_revision": "c850a2bc807921e3679fe6e2046193e664462834",
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "2/2 passed",
+      "log": "local/config_singleton_i_integrate_final.log",
+      "library_sha256": "21f137fed49c4500d21f6177257c316dceedd30b682c746374cf0120e82fca85",
+      "main_fast_forwarded_to_tested_revision": true,
+      "saved_annotations": 14,
+      "annotation_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T155851Z.json",
+      "prior_attempt": "local/config_singleton_i_integrate.log: build passed, then main registry edit/advance produced a merge conflict. Independent packet insertions resolved and final attempt rebuilt successfully.",
+      "fixture_provenance": "Two focused fixtures passed on source82891f1 before final main integration; recorded separately from this final combined build. No claim of rerunning them on the final library.",
+      "native_abi": false,
       "game_validated": false
     }
   }

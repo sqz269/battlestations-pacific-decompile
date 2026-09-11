@@ -43,13 +43,21 @@ struct EffectCleanup {
         value = nullptr; // after the virtual call, even if it changed the local
     }
 };
-template<class Constructor>
-void* construct_opaque(std::size_t bytes, Constructor constructor) {
+template<class T, class AllocationWords, class Constructor>
+T* construct_owner(std::size_t native_bytes, const AllocationWords& allocation,
+    Constructor constructor) {
     void* const storage = singleton_lifetime_allocate(
-        {SingletonAllocationKind::object, bytes, bytes});
+        {SingletonAllocationKind::object, native_bytes, sizeof(T)});
     if (!storage) return nullptr;
-    try { return constructor(storage); }
-    catch (...) { singleton_lifetime_free(storage); throw; }
+    T* owner = nullptr;
+    try {
+        owner = ::new (storage) T(allocation);
+        return &constructor(*owner);
+    } catch (...) {
+        if (owner) owner->~T();
+        singleton_lifetime_free(storage);
+        throw;
+    }
 }
 } // namespace
 
@@ -78,8 +86,9 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
     void* const lua = read<void*>(game.mission_lua_1a08, 4);
     if (lua) host.run_string_006b8ad0(lua, "collectgarbage(\"collect\")", 0, 0, 2);
 
-    for (std::uint32_t index = 0; index < name_count(host.current_config_00432650()); ++index) {
-        void* const selected_config = host.current_config_00432650();
+    for (std::uint32_t index = 0;
+            index < name_count(get_global_config_00432650(context.global_config)); ++index) {
+        void* const selected_config = get_global_config_00432650(context.global_config);
         if (index >= name_count(selected_config))
             context.validation.invalid_parameter(context.validation.context);
         // The validation callback may return after repairing this same owner.
@@ -89,14 +98,15 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
         EffectCleanup cleanup{effect, host};
         host.append_effect_004d9c00(game.effects_vector_718c, &effect);
     }
-    void* const config = host.current_config_00432650();
+    void* const config = get_global_config_00432650(context.global_config);
     const float zero = 0.0f;
     std::memcpy(static_cast<unsigned char*>(config) + 0x2d8, &zero, sizeof zero);
 
-    void* const traffic = construct_opaque(0x58,
-        [&](void* storage) { return host.construct_traffic_004a43c0(storage); });
+    auto* const traffic = construct_owner<TrafficConfig>(0x58,
+        context.traffic_allocation, construct_traffic_config_004a43c0);
     game.traffic_21d0 = traffic;
-    host.load_traffic_0049d690(traffic);
+    load_traffic_config_0049d690(*traffic, context.lua_environment,
+        context.scripts, context.traffic);
 
     void* const panel_storage = singleton_lifetime_allocate(
         {SingletonAllocationKind::object, 0x38, sizeof(VoicePanelState)});
@@ -116,15 +126,20 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
     load_dialog_config_0044fa30(voice_panel_dialog_config(*panel),
         context.lua_environment, context.scripts, context.dialog);
 
-    void* const powerup = construct_opaque(0x1c4,
-        [&](void* storage) { return host.construct_powerup_008edc60(storage); });
+    auto* const powerup = construct_owner<PowerupConfigOwner>(0x1c4,
+        context.powerup_allocation, [&](PowerupConfigOwner& owner) -> PowerupConfigOwner& {
+            return construct_powerup_config_008edc60(owner, game.powerup_00f88c30);
+        });
+    //008EDC60 already published this singleton internally;004DC6A0 repeats it.
     game.powerup_00f88c30 = powerup;
-    host.initialize_powerup_008ecec0(powerup);
+    load_powerup_config_008ecec0(*powerup, context.lua_environment,
+        context.scripts, context.powerup);
 
-    void* const warnings = construct_opaque(0x1b0,
-        [&](void* storage) { return host.construct_warnings_0098a020(storage); });
+    auto* const warnings = construct_owner<WarningOwner>(0x1b0,
+        context.warning_allocation, construct_warning_owner_0098a020);
     game.warnings_21e0 = warnings;
-    host.initialize_warnings_009870a0(warnings);
+    initialize_warning_owner_009870a0(*warnings, context.lua_environment,
+        context.scripts, context.warnings);
 
     void* const weather_storage = singleton_lifetime_allocate(
         {SingletonAllocationKind::object, 0x7c, sizeof(WeatherConfig)});

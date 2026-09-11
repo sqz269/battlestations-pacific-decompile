@@ -5736,8 +5736,8 @@
       "id": "native_shader_owner_texture_release2",
       "packet": "native_shader_owner_texture_release2",
       "worker": "shader_owner_reset_discovery",
-      "done": false,
-      "state": "primary_native_contract_reviewed_independent_worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b188a0",
         "00b24e20"
@@ -5749,14 +5749,15 @@
         "reports/native_shader_owner_texture_release.json"
       ],
       "source_ready": true,
-      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
+      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations.",
+      "evidence": "reports/native_shader_owner_texture_release.json"
     },
     {
       "id": "native_frame_target_owner6",
       "packet": "native_frame_target_owner6",
       "worker": "frame_target_owner_discovery",
-      "done": false,
-      "state": "primary_native_lifetime_contract_reviewed_worker_source_in_progress_vector_prerequisite_pending",
+      "done": true,
+      "state": "complete_actual_owner_primary_library_original_body_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b1fbb0",
         "00b1fc00",
@@ -5776,14 +5777,141 @@
         "native_frame_target_vector3"
       ],
       "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
-      "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst."
+      "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst.",
+      "evidence": "reports/native_frame_target_owner_audit.json"
+    },
+    {
+      "id": "orch4_traffic_config_h",
+      "packet": "orch4_traffic_config_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "004a43c0",
+        "0049d690",
+        "0049c9c0",
+        "00486070",
+        "00486100",
+        "00486180",
+        "00486210",
+        "00485270",
+        "00485f50",
+        "00485790",
+        "0048e1f0",
+        "0048e500",
+        "00489d50",
+        "00490990",
+        "00499480"
+      ],
+      "code_ownership": [
+        "include/bsp/traffic_config.hpp",
+        "src/traffic_config.cpp",
+        "docs/TRAFFIC_CONFIG.md",
+        "reports/traffic_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/TRAFFIC_CONFIG.md"
+    },
+    {
+      "id": "orch4_powerup_config_h",
+      "packet": "orch4_powerup_config_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "008e5960",
+        "008e5980",
+        "008e5b10",
+        "008e5bb0",
+        "008e5c50",
+        "008e5ca0",
+        "008e5cf0",
+        "008e6130",
+        "008e6170",
+        "008e65a0",
+        "008e65c0",
+        "008e6720",
+        "008e67b0",
+        "008e6850",
+        "008e70b0",
+        "008e7120",
+        "008e7350",
+        "008e79d0",
+        "008e7c80",
+        "008ea750",
+        "008eb4a0",
+        "008ec460",
+        "008ecec0",
+        "008edc60"
+      ],
+      "code_ownership": [
+        "include/bsp/powerup_config.hpp",
+        "src/powerup_config.cpp",
+        "docs/POWERUP_CONFIG.md",
+        "reports/powerup_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/POWERUP_CONFIG.md"
+    },
+    {
+      "id": "orch4_warning_owner_h",
+      "packet": "orch4_warning_owner_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00443e20",
+        "005826b0",
+        "005a0220",
+        "0096b260",
+        "0096b2d0",
+        "0096b4c0",
+        "0096b960",
+        "0096b9b0",
+        "0096baf0",
+        "0096bb80",
+        "0096bbd0",
+        "0096f8c0",
+        "00973f20",
+        "0097bbc0",
+        "00987080",
+        "00987090",
+        "009870a0",
+        "0098a020"
+      ],
+      "code_ownership": [
+        "include/bsp/warning_owner.hpp",
+        "src/warning_owner.cpp",
+        "docs/WARNING_OWNER.md",
+        "reports/warning_owner.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/WARNING_OWNER.md"
+    },
+    {
+      "id": "orch4_owner_integration_h",
+      "packet": "orch4_owner_integration_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp",
+        "docs/GLOBAL_SUBSYSTEMS.md",
+        "reports/global_subsystems.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
     },
     {
       "id": "native_renderer_frame_targets1",
       "packet": "native_renderer_frame_targets1",
       "worker": "main",
       "done": false,
-      "state": "complete_source_pending_vector_and_owner_main_integration_build_and_original_fixture",
+      "state": "complete_source_main_Win32_build_and_CTests_passed_original_parent_fixture_in_progress",
       "function_addresses": [
         "00b24e70"
       ],
@@ -5815,6 +5943,63 @@
       "source_ready": false,
       "evidence": "reports/native_vertex_stream_owner_discovery.json",
       "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
+    },
+    {
+      "id": "orch4_config_singleton_i",
+      "packet": "orch4_config_singleton_i",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00432650",
+        "004324e0",
+        "004325b0",
+        "00432710",
+        "008dbcd0",
+        "008dbdb0",
+        "004312b0",
+        "00431210",
+        "00432050",
+        "004c3810",
+        "00524180",
+        "004ba0d0",
+        "0054d440",
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_config.hpp",
+        "src/global_config.cpp",
+        "docs/GLOBAL_CONFIG.md",
+        "reports/global_config.json",
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp"
+      ],
+      "integration_report": "reports/global_config.json",
+      "discovery_evidence": "docs/GLOBAL_CONFIG.md"
+    },
+    {
+      "id": "native_renderer_clip_planes3",
+      "packet": "native_renderer_clip_planes3",
+      "worker": "main",
+      "done": false,
+      "state": "complete_actual_storage_source_main_Win32_build_CTests_passed_native_fixture_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00b23e50",
+        "00b25040",
+        "00b25080"
+      ],
+      "code_ownership": [
+        "src/native_renderer_clip_planes.cpp",
+        "include/bsp/native_renderer_clip_planes.hpp",
+        "docs/NATIVE_RENDERER_CLIP_PLANES.md",
+        "reports/native_renderer_clip_planes_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_renderer_cached_states3"
+      ],
+      "scope": "Complete raw clip-plane set/append/pending restore; exact x87 sequential copies/EH arm after second store, actual guards/current real device/full cached state.",
+      "evidence": "reports/native_renderer_clip_planes_audit.json"
     }
   ],
   "snapshot_after_analysis": {

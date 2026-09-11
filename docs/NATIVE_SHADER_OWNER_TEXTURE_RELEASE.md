@@ -134,30 +134,28 @@ build registration was changed by this packet. Build and fixture evidence
 does not establish a drop-in ABI replacement, device-reset scheduler,
 whole-image identity, shader reload or game validation.
 
-## Primary integration and reproducibility
+## Primary integration
 
-The companion `reports/native_shader_owner_texture_release.json` pins the
-immutable artifact manifest, full local verifier output, current source files,
-frozen archive and fixture outputs. Artifacts remain under the worker's
-`local/shader_owner_release` and `build/shader-owner-release-check` directories.
-The manifest excludes the final report and itself to avoid circular hashes.
+The primary verified all 211 immutable worker hashes and reviewed all 79
+current source/header files: 77 were identical, one header had comment-only
+changes, and one added an unrelated declaration without changing existing
+layout or declarations. Twenty-six fresh live-Ghidra/PE spans (819 bytes),
+the strict main build, both existing CTests and eight fresh seeds passed.
 
-The primary integrator should cherry-pick the four-file commit, register
-`src/native_shader_owner_texture_release.cpp` in `bsp_core`, add the two
-complete function/name records through the sharded-ledger tooling, review the
-evidence comments in Ghidra under the write lock, and refresh/save through the
-normal coordinated path. Suggested descriptive names are
-`BSP_ShaderOwner_UnloadTexturesPreserveCount` for `00B188A0` and
-`BSP_Renderer_UnloadShaderOwnerTextures` for `00B24E20`.
+The unchanged fixture linked only the actual main library
+`0a69eb17fe45665164dc246dfde4fa71a675a6d8f951b9bb7722c7a6b766d4a8`.
+All 32 linked archive objects were frozen and matched the actual main objects;
+all 79 source/header files were snapshotted. Eight paired cases match 19,176
+normalized DWORDs and 204 frames, including 34 actual COM calls, 54 observed
+writes and six explicit mutations. All 96 genuine COM objects were drained.
+Both native owned bodies remain pristine, and all 442 original-image
+postimages and the whole 70,331-byte fixture text are verified. The two
+complete owned COFF sections match linked code with exact symbol relocations.
 
-For an independent primary replay, verify the manifest and current source
-closure first. Copy the ignored fixture directory and its build/freeze/verify
-scripts to matching `local/` paths in the primary checkout. Freshly capture
-the 26 spans through the existing guarded commands, verify the eight seeds,
-run the normal primary build after tracked source registration, and freeze
-that primary archive into a fresh `build/shader-owner-release-check` directory.
-Then run `local/build_shader_owner_release_fixture.ps1` and
-`local/verify_shader_owner_release.py` against that archive. The relink uses
-`/MANIFEST:EMBED`, fixed base `30000000h`, `/OPT:NOICF`, `/SAFESEH:NO` and its
-generated MAP file. Do not reuse the worker library as proof of a primary
-build or replace the declared full-provider bridges with behavior callbacks.
+The child and parent received reviewed descriptive names and appended
+evidence in Ghidra, preserving old names/comments in the saved journal.
+Full reconstruction records and forced exports are registered. The fixture
+shares the complete current source destruction providers through the declared
+external bridges; it does not repeat original texture-destructor validation.
+Reload/Lua/resource-loading dependencies, complete reset scheduling, original
+caller ABI and gameplay remain outside these two verified routines.

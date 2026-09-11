@@ -115,3 +115,55 @@ library at `958ea08cc49292289937716edb194e79e569776b`; their exact logs and
 separate library hashes are retained in the report. All74 annotations were saved
 again by integration. Nine missing functions and25 race/marker/robot call gaps
 were repaired; the documented00886370 stored-body limitation remains.
+
+## Concrete traffic, powerup and warning owner integration
+
+The six remaining constructor/loader callbacks for traffic004A43C0/0049D690,
+powerup008EDC60/008ECEC0 and warnings0098A020/009870A0 now execute recovered
+direct bodies. Typed canonical publication slots and explicit allocation-word
+inputs preserve constructor writes and untouched fields. Allocation retains each
+native requested size separately from the host projection size. Each owner is
+published before its loader runs; powerup additionally publishes00F88C30 inside
+its constructor before the parent repeats that store.
+
+See `TRAFFIC_CONFIG.md`, `POWERUP_CONFIG.md` and `WARNING_OWNER.md` for complete
+normal-flow evidence, original ABI, ownership and standard-library boundaries.
+The warning initializer retains Lua references through effects/hooks and uses
+the existing canonical warning tables. Configuration reload persistence and
+native effect/texture reference ordering remain explicit. Host cleanup helpers
+do not substitute for the unresolved full runtime destructors.
+
+The combined Win32 Release build and both existing tests passed. Four focused
+fixtures passed against that same library: startup publication and direct Lua
+loading, traffic reload/sentinel behavior, powerup descriptors/resources, and
+warning native source iterators/Lua lifetime/effect reentry. Three missing
+functions were defined, one reachable cleanup gap repaired, and seven incorrect
+inventory tags retired with prior state recorded. `owner_integration_h` in the
+report separates this evidence from earlier batches and final main integration.
+
+The00432650 configuration singleton and00871BA0 acquisition chain remain the
+next concrete startup dependencies. Full runtime destruction, native ABI/SEH
+compatibility and gameplay validation remain outstanding.
+
+Final owner integration merged concurrent main15482729 before building, tested
+`063506cb5adfb59a5bf1c2d0d993ae8070b2b3c8`, and fast-forwarded main to that exact revision.
+The Win32 build and both existing tests passed; Ghidra saved all58 annotations.
+Four focused fixtures passed on the earlier source60af126 library, with its
+separate hash retained in the report. This remains build/fixture evidence,
+not native ABI or gameplay validation.
+
+## Concrete global configuration singleton
+
+The00432650 callback is now a direct getter over the canonical2E8h owner and the
+shared01090AA0 lifetime domain. Every effect-name count, selected access and final
+2D8 reset executes that getter, preserving its lazy construction, captured lock,
+publication and registration sequence. `GlobalSubsystemContext::global_config`
+supplies the live singleton slot, shared domain, string storage and actual effect
+virtual dispatch bindings. Full normal owner destruction is recovered, including
+callback-dependent slot reloads/reverse cleanup and unconditional global clear.
+
+See `GLOBAL_CONFIG.md` and `config_singleton_integration_i` in the report. The
+Win32 build, both existing checks, a focused singleton lifetime fixture and the
+existing startup fixture passed. Six false cleanup gaps and two stale inventory
+tags were corrected with prior state retained. Actual configuration population,
+effect virtual dispatch, native ABI/SEH and gameplay remain outstanding.

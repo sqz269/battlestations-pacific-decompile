@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00b188a0",
+    "before": {
+      "address": "00b188a0",
+      "function_name": "FUN_00b188a0"
+    },
+    "after": {
+      "address": "00b188a0",
+      "old_name": "FUN_00b188a0",
+      "name": "BSP_ShaderOwner_UnloadTextureSlots",
+      "evidence": "Complete actual shader texture unload child B188A0 (84 bytes) and renderer parent B24E20 (65 bytes), src/native_shader_owner_texture_release.cpp. Child initially skips only zero WORD+38; current bounds are signed-short extended then compared unsigned. Growth stores low short(index+1). Capture slot+0C+4*index, atomic decrement nonnull pointer+4, full current profile slot0 BD30E0 then fresh slot4 B3F590/B3F410/B3F430 via complete actual 2D/cube/volume providers. Zero shader slot only after returned destruction, also after nonzero decrement; already-null slots get no zero write. Reload count after each iteration. No count, names, fallback or secondary-owner reset. Parent reads count+1AA0 then base+1A9C, traverses 2C records/+28 owner; after child reload count then base, advance old cursor and compare equality with current wrapped end. No local guard or EH cleanup; exceptions preserve uncleared shader slot. Primary verified 211 worker artifact hashes, 79 current files (77 identical; two reviewed header comment/additional-declaration changes), 26 fresh live/PE spans819 bytes. Strict main build, two existing CTests, eight fresh seeds. Sole frozen main library and32 exact archive members; two complete owned COFF sections/entries with exact symbol relocations. Eight original/library pairs19176 normalized DWORDs/204 frames,34 actual COM calls,54 observed writes,six explicit mutations,96 genuine COM objects drained. Both owned native bodies pristine/no operand relocations; three declared native external deleting-entry bridges share full main providers. All442 original code/profile/global postimages and entire70331-byte fixture text verified. Full renamed allocation observation source forwards actual CRT; actual COM/CRT/Win32 prefixes and calls/writes pinned. New C++ context interface differs from native ECX receiver/plain RET; no full reset, reload, original caller ABI or gameplay claim. Descriptive names are reconstruction hypotheses. reports/native_shader_owner_texture_release.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b24e20",
+    "before": {
+      "address": "00b24e20",
+      "function_name": "FUN_00b24e20"
+    },
+    "after": {
+      "address": "00b24e20",
+      "old_name": "FUN_00b24e20",
+      "name": "BSP_D3D9Renderer_UnloadShaderOwnerTextures",
+      "evidence": "Complete actual shader texture unload child B188A0 (84 bytes) and renderer parent B24E20 (65 bytes), src/native_shader_owner_texture_release.cpp. Child initially skips only zero WORD+38; current bounds are signed-short extended then compared unsigned. Growth stores low short(index+1). Capture slot+0C+4*index, atomic decrement nonnull pointer+4, full current profile slot0 BD30E0 then fresh slot4 B3F590/B3F410/B3F430 via complete actual 2D/cube/volume providers. Zero shader slot only after returned destruction, also after nonzero decrement; already-null slots get no zero write. Reload count after each iteration. No count, names, fallback or secondary-owner reset. Parent reads count+1AA0 then base+1A9C, traverses 2C records/+28 owner; after child reload count then base, advance old cursor and compare equality with current wrapped end. No local guard or EH cleanup; exceptions preserve uncleared shader slot. Primary verified 211 worker artifact hashes, 79 current files (77 identical; two reviewed header comment/additional-declaration changes), 26 fresh live/PE spans819 bytes. Strict main build, two existing CTests, eight fresh seeds. Sole frozen main library and32 exact archive members; two complete owned COFF sections/entries with exact symbol relocations. Eight original/library pairs19176 normalized DWORDs/204 frames,34 actual COM calls,54 observed writes,six explicit mutations,96 genuine COM objects drained. Both owned native bodies pristine/no operand relocations; three declared native external deleting-entry bridges share full main providers. All442 original code/profile/global postimages and entire70331-byte fixture text verified. Full renamed allocation observation source forwards actual CRT; actual COM/CRT/Win32 prefixes and calls/writes pinned. New C++ context interface differs from native ECX receiver/plain RET; no full reset, reload, original caller ABI or gameplay claim. Descriptive names are reconstruction hypotheses. reports/native_shader_owner_texture_release.json."
+    },
+    "status": "applied"
+  }
+]
