@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b8f4f0",
+    "end_address": "00b8f539"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b8f4f0",
+    "end_address": "00b8f538",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b8f4f0",
+    "disassemble_first": false,
+    "name": "BSP_Group_SetAttachedGroup"
+   },
+   "result": {
+    "success": true,
+    "address": "00b8f4f0",
+    "function_name": "BSP_Group_SetAttachedGroup",
+    "entry_point": "00b8f4f0",
+    "body_size": 73,
+    "message": "Function created successfully at 00b8f4f0",
+    "warnings": [
+     "Function name 'BSP_Group_SetAttachedGroup' \u2014 main part 'Group_SetAttachedGroup' is not PascalCase. Expected: GroupSetattachedgroup",
+     "Function name 'BSP_Group_SetAttachedGroup' \u2014 main part 'Group_SetAttachedGroup' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Group_SetAttachedGroup' does not start with a recognized verb. First word 'Group_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b8f4f0",
+   "end": "00b8f539",
+   "name": "BSP_Group_SetAttachedGroup",
+   "after": "Function: BSP_Group_SetAttachedGroup at 00b8f4f0\nSignature: undefined BSP_Group_SetAttachedGroup(void)\nEntry: 00b8f4f0\nBody: 00b8f4f0 - 00b8f538"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

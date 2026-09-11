@@ -1,0 +1,46 @@
+{
+  "packet": "orch2_gui_page_root_k",
+  "status": "reconstructed_build_and_focused_fixture_tested",
+  "functions": [
+    {
+      "address": "00b8f5e0",
+      "name": "BSP_Group_Construct",
+      "cpp_symbol": "bsp::construct_native_group_00b8f5e0",
+      "source": "src/gui_page_root.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/GUI_PAGE_ROOT.md",
+      "validation_report": "reports/gui_page_root.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. Complete188h cGroup constructor in actual18Ch slot; same node prefix, exact derived stores, untouched bytes and pool index preserved. Native ECX receiver, stack pointer, RET4; [00b8f5e0,00b8f64a). Same native backing/new C++ ABI. Win32 build and focused native/host fixtures; not game validated. docs/GUI_PAGE_ROOT.md; reports/gui_page_root.json."
+    }
+  ],
+  "addresses": [
+    "00b8f5e0"
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "build_log": "local/gui-native-primary-build.log",
+    "probe_log": "local/gui-native-probe.log",
+    "probe_source": "local/gui_native_probe.cpp",
+    "input_manifest": "local/gui-native-probe-inputs.json",
+    "existing_ctests": 2,
+    "new_permanent_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "actual group pool/lifetime/type bootstrap and current virtual bindings",
+    "full GUI renderer/application composition"
+  ],
+  "analyzed_only": [
+    {
+      "address": "00b8f450",
+      "canonical_pool": "010902f4",
+      "allocate_body": "00b8f310",
+      "slot_bytes": "18c",
+      "slab_bytes": "31c4",
+      "warning": "false free fallthrough in allocation pseudocode; pool not reconstructed"
+    }
+  ]
+}
