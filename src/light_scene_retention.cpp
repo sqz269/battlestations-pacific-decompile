@@ -46,7 +46,7 @@ void attach_light_scene_00b7c020(SceneAttachmentRuntime& runtime,
         requested->references.fetch_add(1, std::memory_order_seq_cst);
     }
     if (recurse) {
-        auto* child = light.node.transform.first_child;
+        auto* child = light.node.transform.first_child.get();
         while (child) {
             auto& binding = runtime.resolve(*child);
             const auto callback = binding.attach_scene;
@@ -67,7 +67,7 @@ void remove_light_scene_00b7bd60(SceneAttachmentRuntime& runtime,
             requested->destroy_on_zero(*requested);
     }
     if (recurse) {
-        auto* child = light.node.transform.first_child;
+        auto* child = light.node.transform.first_child.get();
         while (child) {
             auto& binding = runtime.resolve(*child);
             const auto callback = binding.remove_scene;

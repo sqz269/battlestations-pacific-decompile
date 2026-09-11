@@ -1,0 +1,147 @@
+{
+  "packet": "native_node_raw_hierarchy",
+  "status": "canonical_four_raw_hierarchy_words_migrated_host_adapter_build_and_focused_fixture_passed",
+  "new_native_bodies": 0,
+  "classification": "Host representation and lifetime integration; no additional recovered-body or native caller ABI claim",
+  "base_commit": "9deb2e49800c9328953df02920e9eecbfb615046",
+  "canonical_fields": [
+    {
+      "offset": "30",
+      "type": "uint32 actual native node address",
+      "companion_access": "CameraTransformLink current raw-word lookup through existing SceneAttachmentRuntime bindings_"
+    },
+    {
+      "offset": "34",
+      "type": "uint32 actual native node address",
+      "companion_access": "CameraTransformLink current raw-word lookup through existing SceneAttachmentRuntime bindings_"
+    },
+    {
+      "offset": "3c",
+      "type": "uint32 actual native node address",
+      "companion_access": "CameraTransformLink current raw-word lookup through existing SceneAttachmentRuntime bindings_"
+    },
+    {
+      "offset": "40",
+      "type": "uint32 actual native node address",
+      "companion_access": "CameraTransformLink current raw-word lookup through existing SceneAttachmentRuntime bindings_"
+    }
+  ],
+  "diagnostic_mode": "Standalone CameraTransform keeps companion-pointer fields and value-copy semantics; unused diagnostic backing is never a second bound graph.",
+  "binding_identity": "NativeNodeBinding supplies immutable actual backing address; SceneAttachmentRuntime bind checks its existing attachment pointer_key, uniqueness and one-runtime ownership. Only the existing bindings_ vector resolves live keys.",
+  "lifetime": "Preconstruction registration does not inspect or mutate raw fields. forget_destroyed_binding retires only the exact live registered companion identity and touches no backing fields. Companion must remain alive; runtime must outlive bound companions. get() still requires live readable backing.",
+  "copy_assignment": "Host CameraTransform/CameraState copy and move APIs are no longer noexcept. All four source links and target link domains are preflighted before whole-object assignment stores. Individual proxy assignment checks before its one raw store and never rebinds storage/resolver ownership.",
+  "native_algorithm_boundary": "Existing semantic native algorithms preserve ordering over valid live same-runtime hierarchy inputs. Their existing noexcept unlink/release contracts are not widened; no new original native validation, fallback or transaction rollback is claimed.",
+  "consumer_audit": [
+    {
+      "file": "include/bsp/native_node_construction.hpp",
+      "action": "Canonical raw DWORD field types; unchanged native prefix extent"
+    },
+    {
+      "file": "src/native_node_construction.cpp",
+      "action": "Bind actual raw words/key; preserve original zero stores"
+    },
+    {
+      "file": "include/bsp/camera_transform.hpp",
+      "action": "Fixed-storage link proxy and explicit host copy contracts"
+    },
+    {
+      "file": "src/camera_transform.cpp",
+      "action": "Concrete resolver links; preflight copy; fresh child access"
+    },
+    {
+      "file": "include/bsp/scene_attachment.hpp",
+      "action": "General key resolver and retirement contract"
+    },
+    {
+      "file": "src/scene_attachment.cpp",
+      "action": "Same-vector live key resolution and identity retirement; fresh child walk"
+    },
+    {
+      "file": "src/native_node_parenting.cpp",
+      "action": "Current raw-word proxy operations; auto child initializer uses get"
+    },
+    {
+      "file": "src/native_node_destruction.cpp",
+      "action": "Raw unlink/root/current-child paths via proxies; six auto initializers use get"
+    },
+    {
+      "file": "src/light_scene_retention.cpp",
+      "action": "Two compile-required auto child initializers use get; post-callback sibling reload unchanged"
+    },
+    {
+      "file": "src/gui_widget_owner.cpp",
+      "action": "One compile-required auto child initializer uses get"
+    },
+    {
+      "file": "src/generated_model_lifetime.cpp",
+      "action": "Explicit typed pointers and proxy operations compile unchanged; post-callback reload retained"
+    },
+    {
+      "file": "src/render_command_queue.cpp",
+      "action": "Explicit typed pointers and proxy operations compile unchanged"
+    },
+    {
+      "file": "src/d3d9_shader_probe.cpp",
+      "action": "Standalone diagnostic hierarchy assignments compile unchanged"
+    },
+    {
+      "file": "tests/math_tests.cpp",
+      "action": "Existing diagnostic hierarchy and matrix checks pass"
+    },
+    {
+      "file": "src/native_camera_owner.cpp",
+      "action": "Unchanged NativeNodeBinding path gives owner prefix canonical hierarchy words; full owner replay not added"
+    }
+  ],
+  "native_order_evidence": [
+    {
+      "address": "00b6e01d",
+      "meaning": "actual parent address published before root/scene callbacks"
+    },
+    {
+      "address": "00b6e049",
+      "meaning": "reload current parent first-child after callbacks before sibling stores"
+    },
+    {
+      "address": "00b6d94f",
+      "meaning": "clear child parent before current sibling relinking"
+    }
+  ],
+  "validation": {
+    "strict_MSVC_Win32": "passed",
+    "existing_CTests": 2,
+    "native_seed_matches": 8,
+    "focused_host_sequence": "passed: 50 assertions",
+    "whole_object_late_link_rejection_preserves_full_destination": true,
+    "raw_getters": "full frustum and inverse VP directly execute over canonical camera-shaped prefix/non-null raw parent",
+    "protected_backing_retirement_and_reused_key": true,
+    "literal_raw_snapshots": 6,
+    "raw_snapshot_bytes": 6696,
+    "all_mapped_COFF_sections": 403,
+    "library_COFF_sections": 280,
+    "exact_linked_archive_members": 24,
+    "whole_runtime_code_bytes": 41731,
+    "code_postimages": 2,
+    "source_header_closure_files": 92,
+    "worker_library_sha256": "0b19e739485c49e4fc6596fb7c24bf072e52d702b6c7f460f864d8b987607a6c",
+    "sealed_artifacts": 143,
+    "seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-node-raw-hierarchy\\local\\native_node_raw_hierarchy_final\\sealed.json",
+    "seal_sha256": "f1ba7971e7103d4bbb157e4e5adfca9ff4f9aaf991bb128dd9301aa2510cbbe5"
+  },
+  "limitations": [
+    "Host adapter integration, not reconstruction of any additional native body or original-caller ABI.",
+    "The fixture uses actual full NativeNodeStorage construction and bound scene/parenting/destruction providers. Camera tail values are explicitly initialized fixture inputs, not a claimed native camera constructor replay; NativeCameraOwner uses the same unchanged NativeNodeBinding path.",
+    "Complete raw frustum/inverse-VP providers execute directly over the canonical camera-shaped prefix and actual nonnull parent storage; no pointer swizzling or duplicate hierarchy.",
+    "Reentry callbacks are fixture-controlled host dispatch observers that invoke the complete existing providers; no original-body callback implementation is claimed.",
+    "Caller domain requires all traversed raw nodes to have stable live bindings in one runtime. Invalid diagnostic/cross-runtime link assignments fail before their raw-word store; no new native validation or transaction rollback is claimed.",
+    "Runtime retirement requires a live external companion while backing may already be dead/protected; identity lookup cannot retire a different/replacement binding. Runtime must outlive its bound companions.",
+    "Existing standalone diagnostic link values remain companion pointers; root-list head and other unrelated companion-backed owner fields are not promoted to native ABI.",
+    "No gameplay, concurrent/asynchronous mutation, unmasked floating exception, or full native camera constructor/destructor replay is claimed."
+  ],
+  "remaining_boundaries": [
+    "Root-list heads and unrelated companion-backed owner fields are not promoted to original object ABI.",
+    "Full NativeCameraOwner construction/destruction replay remains separate; the unchanged binding path is compiled and the initialized raw prefix/getter composition is fixture-tested.",
+    "No gameplay, concurrent/asynchronous mutation, unmasked FP or retired-link dereference safety claim."
+  ],
+  "integration": "Only leased source/header files and this doc/report changed; no shared CMake, ledgers, Ghidra or original game mutation. Main integration rebuild remains primary work."
+}
