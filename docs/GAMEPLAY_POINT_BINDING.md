@@ -52,8 +52,10 @@ their terminal releases must use this companion domain. Metadata allocation
 failure during first binding leaves the caller's raw reference unchanged. The
 domain must outlive all bound owners. Its terminal path follows the existing
 nonthrowing intrusive-reference contract and valid-cache/component preconditions;
-this packet does not extend the definition destructor's normal-path coverage
-to its unresolved native exception behavior.
+packet AB did not extend the definition destructor's normal-path coverage.
+The subsequent AC packet adds its recovered three-state C++ cleanup; original
+native exception dispatch and exception-object ABI remain unvalidated. See
+`GAMEPLAY_DEFINITION_UNWIND.md`.
 
 ## Borrowed name and current component fields
 
@@ -125,4 +127,4 @@ source name allocation after assertions; neither cleanup was added to production
 
 Remaining work includes application binding of the real game fields/associations,
 remaining current component predicates and factories, actual component-result
-terminal ownership, native definition EH, concurrency, and gameplay validation.
+terminal ownership, native exception-dispatch ABI, concurrency, and gameplay validation.
