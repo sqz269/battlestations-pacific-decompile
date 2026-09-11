@@ -1,0 +1,213 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00735510",
+    "end_address": "0073551e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00735510",
+    "end_address": "0073551d",
+    "bytes_disassembled": 14,
+    "message": "Successfully disassembled 14 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00735510",
+    "disassemble_first": false,
+    "name": "BSP_XLiveApplication_SetContextSix"
+   },
+   "result": {
+    "success": true,
+    "address": "00735510",
+    "function_name": "BSP_XLiveApplication_SetContextSix",
+    "entry_point": "00735510",
+    "body_size": 14,
+    "message": "Function created successfully at 00735510",
+    "warnings": [
+     "Function name 'BSP_XLiveApplication_SetContextSix' \u2014 main part 'XLiveApplication_SetContextSix' is not PascalCase. Expected: XliveapplicationSetcontextsix",
+     "Function name 'BSP_XLiveApplication_SetContextSix' \u2014 main part 'XLiveApplication_SetContextSix' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00735510",
+   "end": "0073551e",
+   "name": "BSP_XLiveApplication_SetContextSix",
+   "after": "Function: BSP_XLiveApplication_SetContextSix at 00735510\nSignature: undefined BSP_XLiveApplication_SetContextSix(void)\nEntry: 00735510\nBody: 00735510 - 0073551d"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00735520",
+    "end_address": "0073552e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00735520",
+    "end_address": "0073552d",
+    "bytes_disassembled": 14,
+    "message": "Successfully disassembled 14 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00735520",
+    "disassemble_first": false,
+    "name": "BSP_XLiveApplication_SetContextFour"
+   },
+   "result": {
+    "success": true,
+    "address": "00735520",
+    "function_name": "BSP_XLiveApplication_SetContextFour",
+    "entry_point": "00735520",
+    "body_size": 14,
+    "message": "Function created successfully at 00735520",
+    "warnings": [
+     "Function name 'BSP_XLiveApplication_SetContextFour' \u2014 main part 'XLiveApplication_SetContextFour' is not PascalCase. Expected: XliveapplicationSetcontextfour",
+     "Function name 'BSP_XLiveApplication_SetContextFour' \u2014 main part 'XLiveApplication_SetContextFour' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00735520",
+   "end": "0073552e",
+   "name": "BSP_XLiveApplication_SetContextFour",
+   "after": "Function: BSP_XLiveApplication_SetContextFour at 00735520\nSignature: undefined BSP_XLiveApplication_SetContextFour(void)\nEntry: 00735520\nBody: 00735520 - 0073552d"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4bd40",
+    "end_address": "00a4bd78"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4bd40",
+    "end_address": "00a4bd77",
+    "bytes_disassembled": 56,
+    "message": "Successfully disassembled 56 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4bd40",
+    "disassemble_first": false,
+    "name": "BSP_XLiveIpc_EncodeProbe"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4bd40",
+    "function_name": "BSP_XLiveIpc_EncodeProbe",
+    "entry_point": "00a4bd40",
+    "body_size": 56,
+    "message": "Function created successfully at 00a4bd40",
+    "warnings": [
+     "Function name 'BSP_XLiveIpc_EncodeProbe' \u2014 main part 'XLiveIpc_EncodeProbe' is not PascalCase. Expected: XliveipcEncodeprobe",
+     "Function name 'BSP_XLiveIpc_EncodeProbe' \u2014 main part 'XLiveIpc_EncodeProbe' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a4bd40",
+   "end": "00a4bd78",
+   "name": "BSP_XLiveIpc_EncodeProbe",
+   "after": "Function: BSP_XLiveIpc_EncodeProbe at 00a4bd40\nSignature: undefined BSP_XLiveIpc_EncodeProbe(void)\nEntry: 00a4bd40\nBody: 00a4bd40 - 00a4bd77"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4bd80",
+    "end_address": "00a4bdb2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4bd80",
+    "end_address": "00a4bdb1",
+    "bytes_disassembled": 50,
+    "message": "Successfully disassembled 50 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4bd80",
+    "disassemble_first": false,
+    "name": "BSP_XLiveIpc_DecodeProbe"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4bd80",
+    "function_name": "BSP_XLiveIpc_DecodeProbe",
+    "entry_point": "00a4bd80",
+    "body_size": 50,
+    "message": "Function created successfully at 00a4bd80",
+    "warnings": [
+     "Function name 'BSP_XLiveIpc_DecodeProbe' \u2014 main part 'XLiveIpc_DecodeProbe' is not PascalCase. Expected: XliveipcDecodeprobe",
+     "Function name 'BSP_XLiveIpc_DecodeProbe' \u2014 main part 'XLiveIpc_DecodeProbe' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a4bd80",
+   "end": "00a4bdb2",
+   "name": "BSP_XLiveIpc_DecodeProbe",
+   "after": "Function: BSP_XLiveIpc_DecodeProbe at 00a4bd80\nSignature: undefined BSP_XLiveIpc_DecodeProbe(void)\nEntry: 00a4bd80\nBody: 00a4bd80 - 00a4bdb1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c000",
+    "end_address": "00a4c02c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c000",
+    "end_address": "00a4c02b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c000",
+    "disassemble_first": false,
+    "name": "BSP_XLiveIpc_ThreadEntry"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c000",
+    "function_name": "BSP_XLiveIpc_ThreadEntry",
+    "entry_point": "00a4c000",
+    "body_size": 44,
+    "message": "Function created successfully at 00a4c000",
+    "warnings": [
+     "Function name 'BSP_XLiveIpc_ThreadEntry' \u2014 main part 'XLiveIpc_ThreadEntry' is not PascalCase. Expected: XliveipcThreadentry",
+     "Function name 'BSP_XLiveIpc_ThreadEntry' \u2014 main part 'XLiveIpc_ThreadEntry' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a4c000",
+   "end": "00a4c02c",
+   "name": "BSP_XLiveIpc_ThreadEntry",
+   "after": "Function: BSP_XLiveIpc_ThreadEntry at 00a4c000\nSignature: undefined BSP_XLiveIpc_ThreadEntry(void)\nEntry: 00a4c000\nBody: 00a4c000 - 00a4c02b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

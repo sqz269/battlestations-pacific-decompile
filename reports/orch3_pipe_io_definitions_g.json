@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a5de84",
+    "end_address": "00a5deaa"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a5de84",
+    "end_address": "00a5dea9",
+    "bytes_disassembled": 38,
+    "message": "Successfully disassembled 38 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a5de84",
+    "disassemble_first": false,
+    "name": "BSP_PipeIPC_WaitConnection"
+   },
+   "result": {
+    "success": true,
+    "address": "00a5de84",
+    "function_name": "BSP_PipeIPC_WaitConnection",
+    "entry_point": "00a5de84",
+    "body_size": 38,
+    "message": "Function created successfully at 00a5de84",
+    "warnings": [
+     "Function name 'BSP_PipeIPC_WaitConnection' \u2014 main part 'PipeIPC_WaitConnection' is not PascalCase. Expected: PipeipcWaitconnection",
+     "Function name 'BSP_PipeIPC_WaitConnection' \u2014 main part 'PipeIPC_WaitConnection' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PipeIPC_WaitConnection' does not start with a recognized verb. First word 'Pipe' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a5de84",
+   "end": "00a5deaa",
+   "name": "BSP_PipeIPC_WaitConnection",
+   "after": "Function: BSP_PipeIPC_WaitConnection at 00a5de84\nSignature: undefined BSP_PipeIPC_WaitConnection(void)\nEntry: 00a5de84\nBody: 00a5de84 - 00a5dea9"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

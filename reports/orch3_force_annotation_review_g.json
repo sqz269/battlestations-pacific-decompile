@@ -1,0 +1,605 @@
+{
+  "annotation_events": [
+    {
+      "address": "008722d0",
+      "before": {
+        "address": "008722d0",
+        "function_name": "BSP_GamepadForce_ConstantRequestConstruct"
+      },
+      "after": {
+        "address": "008722d0",
+        "name": "BSP_GamepadForce_ConstantRequestConstruct",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=14h request; stack channel,amplitude,remaining; EAX=this; RET0C 8722FC/3 D0DB78 kind0, channel+8, amplitude+C, remaining+10."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872310",
+      "before": {
+        "address": "00872310",
+        "function_name": "BSP_GamepadForce_ConstantRequestChannel"
+      },
+      "after": {
+        "address": "00872310",
+        "name": "BSP_GamepadForce_ConstantRequestChannel",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; EAX=channel+8; RET 872313/1 Actual constant request channel getter."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872320",
+      "before": {
+        "address": "00872320",
+        "function_name": "BSP_GamepadForce_ConstantRequestValue"
+      },
+      "after": {
+        "address": "00872320",
+        "name": "BSP_GamepadForce_ConstantRequestValue",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; ST0=float+C; RET 872323/1 Unclamped amplitude value."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872330",
+      "before": {
+        "address": "00872330",
+        "function_name": "BSP_GamepadForce_ConstantRequestExpired"
+      },
+      "after": {
+        "address": "00872330",
+        "name": "BSP_GamepadForce_ConstantRequestExpired",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; EAX=ordered remaining<=0; RET 872341/1 COMISS0,remaining, JB excludes unordered and positive values."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872350",
+      "before": {
+        "address": "00872350",
+        "function_name": "BSP_GamepadForce_FadingRequestConstruct"
+      },
+      "after": {
+        "address": "00872350",
+        "name": "BSP_GamepadForce_FadingRequestConstruct",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=18h request; stack channel,amplitude,duration; EAX=this; RET0C 872384/3 D0DB8C kind1, elapsed+14 initialized0."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008723a0",
+      "before": {
+        "address": "008723a0",
+        "function_name": "BSP_GamepadForce_FadingRequestChannel"
+      },
+      "after": {
+        "address": "008723a0",
+        "name": "BSP_GamepadForce_FadingRequestChannel",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; EAX=channel+8; RET 8723A3/1 Actual fading request channel getter."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008723b0",
+      "before": {
+        "address": "008723b0",
+        "function_name": "BSP_GamepadForce_FadingRequestValue"
+      },
+      "after": {
+        "address": "008723b0",
+        "name": "BSP_GamepadForce_FadingRequestValue",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; ST0=float; RET 8723CB/1 x87 amplitude*(duration-elapsed)/duration, then float store; no clamp or zero-duration guard."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008723d0",
+      "before": {
+        "address": "008723d0",
+        "function_name": "BSP_GamepadForce_FadingRequestExpired"
+      },
+      "after": {
+        "address": "008723d0",
+        "name": "BSP_GamepadForce_FadingRequestExpired",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; EAX=ordered elapsed>=duration; RET 8723E4/1 Exact inclusive expiration; NaN false."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008723f0",
+      "before": {
+        "address": "008723f0",
+        "function_name": "BSP_GamepadForce_AlternatingRequestConstruct"
+      },
+      "after": {
+        "address": "008723f0",
+        "name": "BSP_GamepadForce_AlternatingRequestConstruct",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=28h request; stack channel,bool,firstValue,secondValue,firstPeriod,secondPeriod,duration; EAX=this; RET1C 87244C/3 D0DBA0 kind2, selector byte+C, values+10/+14, periods+18/+1C, duration+20, phase+24 zero."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872460",
+      "before": {
+        "address": "00872460",
+        "function_name": "BSP_GamepadForce_AlternatingRequestChannel"
+      },
+      "after": {
+        "address": "00872460",
+        "name": "BSP_GamepadForce_AlternatingRequestChannel",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; EAX=channel+8; RET 872463/1 Actual alternating request channel getter."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872470",
+      "before": {
+        "address": "00872470",
+        "function_name": "BSP_GamepadForce_AlternatingRequestValue"
+      },
+      "after": {
+        "address": "00872470",
+        "name": "BSP_GamepadForce_AlternatingRequestValue",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; ST0=float; RET 872492/1 Selector byte determines first value/period; strict period>phase selects first portion."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008724a0",
+      "before": {
+        "address": "008724a0",
+        "function_name": "BSP_GamepadForce_AlternatingRequestExpired"
+      },
+      "after": {
+        "address": "008724a0",
+        "name": "BSP_GamepadForce_AlternatingRequestExpired",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; EAX=ordered phase>=duration; RET 8724B4/1 Expiration uses wrapped phase, not a separate elapsed lifetime."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008724e0",
+      "before": {
+        "address": "008724e0",
+        "function_name": "BSP_GamepadForce_ConstantRequestDeletingDestructor"
+      },
+      "after": {
+        "address": "008724e0",
+        "name": "BSP_GamepadForce_ConstantRequestDeletingDestructor",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; stack flags; EAX=this; RET4 8724FC/3 Generated scalar deleting wrapper; base-vtable store then free iff bit0. Typed ownership paths compose flags1 through ordinary virtual delete."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872500",
+      "before": {
+        "address": "00872500",
+        "function_name": "BSP_GamepadForce_FadingRequestDeletingDestructor"
+      },
+      "after": {
+        "address": "00872500",
+        "name": "BSP_GamepadForce_FadingRequestDeletingDestructor",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; stack flags; EAX=this; RET4 87251C/3 Generated scalar deleting wrapper; no separately owned payload. Ordinary typed virtual deletion composition."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872520",
+      "before": {
+        "address": "00872520",
+        "function_name": "BSP_GamepadForce_AlternatingRequestDeletingDestructor"
+      },
+      "after": {
+        "address": "00872520",
+        "name": "BSP_GamepadForce_AlternatingRequestDeletingDestructor",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; stack flags; EAX=this; RET4 87253C/3 Generated scalar deleting wrapper; no separately owned payload. Ordinary typed virtual deletion composition."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a93f90",
+      "before": {
+        "address": "00a93f90",
+        "function_name": "BSP_GamepadForce_ConstantRequestUpdate"
+      },
+      "after": {
+        "address": "00a93f90",
+        "name": "BSP_GamepadForce_ConstantRequestUpdate",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; stack float seconds; RET4 A93FBC/3 Do not subtract when remaining exactly FLT_MAX (D7A278 double); otherwise x87 subtract with float store."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a93fc0",
+      "before": {
+        "address": "00a93fc0",
+        "function_name": "BSP_GamepadForce_FadingRequestUpdate"
+      },
+      "after": {
+        "address": "00a93fc0",
+        "name": "BSP_GamepadForce_FadingRequestUpdate",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; stack float seconds; RET4 A93FCA/3 x87 seconds+elapsed, float store."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a94510",
+      "before": {
+        "address": "00a94510",
+        "function_name": "BSP_GamepadForce_AlternatingRequestUpdate"
+      },
+      "after": {
+        "address": "00a94510",
+        "name": "BSP_GamepadForce_AlternatingRequestUpdate",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=request; stack float seconds; RET4 A94541/3 Round phase+seconds and sum(periods) to floats; actual CRT fmod via BF857A/E15500; float store."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a949a0",
+      "before": {
+        "address": "00a949a0",
+        "function_name": "FUN_00a949a0"
+      },
+      "after": {
+        "address": "00a949a0",
+        "name": "BSP_GamepadForce_RefreshChannel",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, stack channel, RET4 Value before channel; positive maximum, no tick/expiration; store before output; enabled check at entry."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a94b50",
+      "before": {
+        "address": "00a94b50",
+        "function_name": "FUN_00a94b50"
+      },
+      "after": {
+        "address": "00a94b50",
+        "name": "BSP_GamepadForce_FindRequest",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, stack unsigned ID, EAX=request/null, RET4 Native unsigned-key map lookup composed through std::map."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a94bc0",
+      "before": {
+        "address": "00a94bc0",
+        "function_name": "FUN_00a94bc0"
+      },
+      "after": {
+        "address": "00a94bc0",
+        "name": "BSP_GamepadForce_SetRequestPayload",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, stack ID,float, EAX=found, RET8 Write complete DWORD+C, then channel getter and immediate refresh; also preserves alternating-selector low-byte mutation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a94c50",
+      "before": {
+        "address": "00a94c50",
+        "function_name": "FUN_00a94c50"
+      },
+      "after": {
+        "address": "00a94c50",
+        "name": "BSP_GamepadForce_SetEnabled",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. fastcall CL=enable flag, RET Write global before backend read; per-channel reread; disabling outputs zero BEFORE saved-amplitude zero; reload groups after device."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a94d40",
+      "before": {
+        "address": "00a94d40",
+        "function_name": "FUN_00a94d40"
+      },
+      "after": {
+        "address": "00a94d40",
+        "name": "BSP_GamepadForce_FindCurrentRequest",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. fastcall ECX=ID, EAX=request/null, RET Initial class2 count, first match, current backend reload after failed nonnull-device search."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95410",
+      "before": {
+        "address": "00a95410",
+        "function_name": "FUN_00a95410"
+      },
+      "after": {
+        "address": "00a95410",
+        "name": "BSP_GamepadForce_RemoveRequest",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, stack ID, AL=removed, RET4 Capture channel, delete while node contains pointer, erase, then refresh."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a954c0",
+      "before": {
+        "address": "00a954c0",
+        "function_name": "FUN_00a954c0"
+      },
+      "after": {
+        "address": "00a954c0",
+        "name": "BSP_GamepadForce_PumpRequests",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, stack float seconds, RET4 Snapshot/zero amplitudes; iterator advance before update; expire/delete/erase; channel then value; max aggregation; changed output0/1."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95780",
+      "before": {
+        "address": "00a95780",
+        "function_name": "FUN_00a95780"
+      },
+      "after": {
+        "address": "00a95780",
+        "name": "BSP_GamepadForce_InsertRequest",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, stack unsigned ID,request*, RET8; native return unspecified Unique-key insert result ignored natively; duplicate incoming request remains unowned but channel still queried; typed bool exposes ownership result."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a957d0",
+      "before": {
+        "address": "00a957d0",
+        "function_name": "FUN_00a957d0"
+      },
+      "after": {
+        "address": "00a957d0",
+        "name": "BSP_GamepadForce_ValidateHandle",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. fastcall ECX=ID pointer, RET Nonzero ID cleared only when current-gamepad search returns null."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a957f0",
+      "before": {
+        "address": "00a957f0",
+        "function_name": "FUN_00a957f0"
+      },
+      "after": {
+        "address": "00a957f0",
+        "name": "BSP_GamepadForce_RemoveCurrentRequest",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. fastcall ECX=ID, RET; no reliable semantic native return Capture class2 count, remove first match; reload actual backend after every nonnull attempt including success."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95890",
+      "before": {
+        "address": "00a95890",
+        "function_name": "FUN_00a95890"
+      },
+      "after": {
+        "address": "00a95890",
+        "name": "BSP_GamepadForce_ClearRequests",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, RET atA9595C Delete all request pointers in unsigned-key order, clear nodes, pump0 while derived output remains active."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95960",
+      "before": {
+        "address": "00a95960",
+        "function_name": "FUN_00a95960"
+      },
+      "after": {
+        "address": "00a95960",
+        "name": "BSP_GamepadForce_PumpCurrentRequests",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. stdcall stack float seconds, RET4 A959F9/3 Capture initial class2 count, pump each nonnull current device and reload actual backend after each pump."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95a80",
+      "before": {
+        "address": "00a95a80",
+        "function_name": "FUN_00a95a80"
+      },
+      "after": {
+        "address": "00a95a80",
+        "name": "BSP_GamepadForce_DestroyState",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=base object; RET A95BC4/1, endA95BC4; Ghidra currently endsA95B93 Only constructor-empty force-request registry lifetime composition; general owned request deletion and tree mechanics excluded. No COM Release. | Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=device, RET A95BC4/1; saved body currently endsA95B93 Writes base D5B670 before request destruction, then empty pump; enabled changed amplitudes invoke BF698E purecall. Typed guard preserves cleanup and zeroing without invented derived dispatch."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95bf0",
+      "before": {
+        "address": "00a95bf0",
+        "function_name": "FUN_00a95bf0"
+      },
+      "after": {
+        "address": "00a95bf0",
+        "name": "BSP_GamepadForce_SubmitRequest",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. fastcall ECX=unsigned active class2 index, EDX=request*, EAX=ID/0, RET Missing device deletes request; old global ID returned; next wraps and skips0; no collision search; insert then refresh."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98cc0",
+      "before": {
+        "address": "00a98cc0",
+        "function_name": "FUN_00a98cc0"
+      },
+      "after": {
+        "address": "00a98cc0",
+        "name": "BSP_GamepadForce_SetJoystickOutput",
+        "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=joystick, stack channel,float, RET8 A98E1C/3 Absent effect skips clock; current timestamp vs deadline; 56-byte DIEFFECT; exact magnitude scaling/mode; reload effect, actual SetParameters flags20000100, ignored HRESULT."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    }
+  ],
+  "readback_verified_count": 33,
+  "flow_limits": [
+    "A95A80 stored body still ends A95B93 after tail instruction repair",
+    "A991F0 stored body still ends A99227 after tail instruction repair; original last RET is A992DE",
+    "No callee no-return flags changed; no function deletion/recreation"
+  ],
+  "tag_corrections": "reports/orch3_joystick_tag_corrections_g.json"
+}

@@ -1,0 +1,81 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "004bbca0",
+      "end_exclusive": "004bbcc9",
+      "length": 41,
+      "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+      "missing_before": true,
+      "function_before": "No function found for 004bbca0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_DiagnosticSink_ScalarDeletingDestructor at 004bbca0\nSignature: undefined BSP_DiagnosticSink_ScalarDeletingDestructor(void)\nEntry: 004bbca0\nBody: 004bbca0 - 004bbcc8"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004bbca0",
+        "end_address": "004bbcc9"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004bbca0",
+        "end_address": "004bbcc8",
+        "bytes_disassembled": 41,
+        "message": "Successfully disassembled 41 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004bbca0",
+        "name": "BSP_DiagnosticSink_ScalarDeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004bbca0",
+        "function_name": "BSP_DiagnosticSink_ScalarDeletingDestructor",
+        "entry_point": "004bbca0",
+        "body_size": 38,
+        "message": "Function created successfully at 004bbca0",
+        "warnings": [
+          "Function name 'BSP_DiagnosticSink_ScalarDeletingDestructor' \u2014 main part 'DiagnosticSink_ScalarDeletingDestructor' is not PascalCase. Expected: DiagnosticsinkScalardeletingdestructor",
+          "Function name 'BSP_DiagnosticSink_ScalarDeletingDestructor' \u2014 main part 'DiagnosticSink_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_DiagnosticSink_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Diagnostic' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Complete diagnostic sink scalar destructor defined and saved; existing code and comments preserved"
+}

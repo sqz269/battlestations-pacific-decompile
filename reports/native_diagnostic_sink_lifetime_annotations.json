@@ -1,0 +1,45 @@
+[
+  {
+    "address": "004c14c0",
+    "before": {
+      "address": "004c14c0",
+      "function_name": "BSP_DiagnosticSink_GetOrCreate",
+      "comment": "[BSP reconstruction 004c14c0]\nHypothesis, not a recovered symbol. __cdecl f(void) returning DAT_0109cf14, RET, body 004c14c0-004c1569. Double-checked lazy singleton whose construction is inlined to one store: 00bf681b(4) then *p = &PTR_LAB_00ce752c, so the object has no state beyond its vtable pointer. The vtable at 00ce752c is one slot, the scalar deleting destructor 004bbca0, which nulls the global and restores base vtable 00ce3818; no RTTI. All 20 call sites discard the result and each follows a formatted message (vsprintf_s in 004c7070, the profiler line '%s %.2f ms count:%d' in 00be3bf0) or a failed precondition (BSP_D3D9IndexBuffer_Lock, BSP_D3D9VertexBuffer_Lock), with five consecutive no-op calls in 0093ff10. Read as a diagnostic sink whose reporting method the shipped build compiled away; the output path is not recoverable from this image. Called at 0073e14b, one instruction after the 'After InitGui' checkpoint. Evidence: docs/APP_INIT_FONTS_GUI.md; reports/app_init_fonts_gui.json."
+    },
+    "after": {
+      "address": "004c14c0",
+      "old_name": "BSP_DiagnosticSink_GetOrCreate",
+      "name": "BSP_DiagnosticSink_GetOrCreate",
+      "evidence": "Complete 170-byte actual diagnostic/lifetime entry. Fast nonnull path returns captured publication. Empty path gets actual lifetime manager, captures its actual native OS section, writes raw guard profileCE37FC/section before Enter, increments current physical counter+18 after Enter then arms state0. Recheck current publication, actual allocate4/profileCE752C/publish, SECOND actual manager getter then CURRENT publication registration. Registration failure leaves publication and only cleans captured guard. Normal decrement/Leave remains in state0; final global reload occurs after Leave. No invented owned-allocation/constructor state. Full original C64F68/FI D8D5B8/map D8D5B0/cleanup C64F60 ->411EE0 retained in comparison. Original ABI: No native arguments; EAX current publication; RET. Actual source src/native_diagnostic_sink_lifetime.cpp; reports/native_diagnostic_sink_lifetime_audit.json. Primary verified77 worker artifacts/five current owned/provider files/15 fresh live-PE spans335 bytes and then replayed the frozen completed main library. All15 boundary states agree:38274DWORDs/128snapshots/57 genuine-provider calls/17 publication/rawguard writes perprocess; seven real shared lifetime-domain shutdowns. Original335-byte code/FH3/maps/provider-boundary postimages and13 relocation preimages verified, with genuine manager-layout carrier and transparent adapters forwarding real source/CRT/Win32 operations. All114 callPCs/34writePCs, eight full compiled-provider trampolines, own IAT targets and14 actual x86 loaded-module entry16-byte postimages checked. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis; new C++ interface, not native binary ABI/gameplay/visual or concurrent-publication/access-fault/SEH proof. Allocation-null runtime and arbitrary second unwind exception excluded from fixture claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004bbca0",
+    "before": {
+      "address": "004bbca0",
+      "function_name": "BSP_DiagnosticSink_ScalarDeletingDestructor"
+    },
+    "after": {
+      "address": "004bbca0",
+      "old_name": "BSP_DiagnosticSink_ScalarDeletingDestructor",
+      "name": "BSP_DiagnosticSink_ScalarDeletingDestructor",
+      "evidence": "Complete 41-byte actual diagnostic/lifetime entry. Test flags byte bit0 before owner/global writes; capture original owner, clear actual109CF14 publication unconditionally, write owner profileCE3818, actual CRT free iff bit0, return original identity. No manager unregister or own EH. Missing complete41-byte native function was defined and saved preserving existing code/comments. Original ABI: ECX actual four-byte owner; stack flags; EAX original owner; RET4. Actual source src/native_diagnostic_sink_lifetime.cpp; reports/native_diagnostic_sink_lifetime_audit.json. Primary verified77 worker artifacts/five current owned/provider files/15 fresh live-PE spans335 bytes and then replayed the frozen completed main library. All15 boundary states agree:38274DWORDs/128snapshots/57 genuine-provider calls/17 publication/rawguard writes perprocess; seven real shared lifetime-domain shutdowns. Original335-byte code/FH3/maps/provider-boundary postimages and13 relocation preimages verified, with genuine manager-layout carrier and transparent adapters forwarding real source/CRT/Win32 operations. All114 callPCs/34writePCs, eight full compiled-provider trampolines, own IAT targets and14 actual x86 loaded-module entry16-byte postimages checked. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis; new C++ interface, not native binary ABI/gameplay/visual or concurrent-publication/access-fault/SEH proof. Allocation-null runtime and arbitrary second unwind exception excluded from fixture claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00411ee0",
+    "before": {
+      "address": "00411ee0",
+      "function_name": "FUN_00411ee0"
+    },
+    "after": {
+      "address": "00411ee0",
+      "old_name": "FUN_00411ee0",
+      "name": "BSP_SystemSingletonGuard_Destroy",
+      "evidence": "Complete 25-byte actual diagnostic/lifetime entry. Capture actual raw guard+4 native CRITICAL_SECTION pointer BEFORE guard profileCE37FC store. Nonnull captured section decrements CURRENT physical DWORD+18 then actual Leave. Raw guard+4 is preserved; no projection-pointer substitution or section reload after profile store. No own EH. Original ABI: ECX actual eight-byte guard; RET. Actual source src/native_diagnostic_sink_lifetime.cpp; reports/native_diagnostic_sink_lifetime_audit.json. Primary verified77 worker artifacts/five current owned/provider files/15 fresh live-PE spans335 bytes and then replayed the frozen completed main library. All15 boundary states agree:38274DWORDs/128snapshots/57 genuine-provider calls/17 publication/rawguard writes perprocess; seven real shared lifetime-domain shutdowns. Original335-byte code/FH3/maps/provider-boundary postimages and13 relocation preimages verified, with genuine manager-layout carrier and transparent adapters forwarding real source/CRT/Win32 operations. All114 callPCs/34writePCs, eight full compiled-provider trampolines, own IAT targets and14 actual x86 loaded-module entry16-byte postimages checked. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis; new C++ interface, not native binary ABI/gameplay/visual or concurrent-publication/access-fault/SEH proof. Allocation-null runtime and arbitrary second unwind exception excluded from fixture claim."
+    },
+    "status": "applied"
+  }
+]

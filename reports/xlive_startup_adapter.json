@@ -1,0 +1,290 @@
+{
+  "packet": "orch3_xlive_startup_sdk_f",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "source": "src/xlive_startup_adapter.cpp",
+  "native_body_ledger_claims": false,
+  "ghidra_writes": false,
+  "game_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "name": "XLiveInitializeEx",
+      "ordinal": 5297,
+      "thunk": "00a4d5de",
+      "iat": "00ce2710",
+      "original_thunk_bytes": "ff251027ce00",
+      "stack_bytes": 8,
+      "native_abi": "Win32 stdcall; int32 HRESULT; const 1Ch-info pointer and uint32 version"
+    },
+    {
+      "name": "XOnlineStartup",
+      "ordinal": 5310,
+      "thunk": "00a4d5d8",
+      "iat": "00ce270c",
+      "original_thunk_bytes": "ff250c27ce00",
+      "stack_bytes": 0,
+      "native_abi": "Win32 stdcall; return discarded; no arguments"
+    },
+    {
+      "name": "XWSAStartup",
+      "ordinal": 1,
+      "thunk": "00a4d5d2",
+      "iat": "00ce2708",
+      "original_thunk_bytes": "ff250827ce00",
+      "stack_bytes": 8,
+      "native_abi": "Win32 stdcall; int32 result; uint16 requested version in DWORD slot and full WSADATA pointer"
+    },
+    {
+      "name": "XWSACleanup",
+      "ordinal": 2,
+      "thunk": "00a4d5cc",
+      "iat": "00ce2704",
+      "original_thunk_bytes": "ff250427ce00",
+      "stack_bytes": 0,
+      "native_abi": "Win32 stdcall; return discarded; no arguments"
+    },
+    {
+      "name": "XSocketNTOHS",
+      "ordinal": 38,
+      "thunk": "00a4d494",
+      "iat": "00ce262c",
+      "original_thunk_bytes": "ff252c26ce00",
+      "stack_bytes": 4,
+      "native_abi": "Win32 stdcall; uint16 result; uint16 value in DWORD slot"
+    },
+    {
+      "name": "XNetSetSystemLinkPort",
+      "ordinal": 84,
+      "thunk": "00a4d5c6",
+      "iat": "00ce2700",
+      "original_thunk_bytes": "ff250027ce00",
+      "stack_bytes": 4,
+      "native_abi": "Win32 stdcall; return discarded; uint16 port in DWORD slot"
+    },
+    {
+      "name": "XNotifyCreateListener",
+      "ordinal": 5270,
+      "thunk": "00a4d5b4",
+      "iat": "00ce26f4",
+      "original_thunk_bytes": "ff25f426ce00",
+      "stack_bytes": 8,
+      "native_abi": "Win32 stdcall; HANDLE result; uint64 area mask"
+    }
+  ],
+  "libraries": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/xlive.dll",
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "bytes": 3833856,
+      "exports": [
+        {
+          "ordinal": 5297,
+          "name": "XLiveInitializeEx",
+          "expected_name": "XLiveInitializeEx",
+          "rva": "0014f3e7"
+        },
+        {
+          "ordinal": 5310,
+          "name": "XOnlineStartup",
+          "expected_name": "XOnlineStartup",
+          "rva": "0015431f"
+        },
+        {
+          "ordinal": 1,
+          "name": "XWSAStartup",
+          "expected_name": "XWSAStartup",
+          "rva": "001596c1"
+        },
+        {
+          "ordinal": 2,
+          "name": "XWSACleanup",
+          "expected_name": "XWSACleanup",
+          "rva": "0015825d"
+        },
+        {
+          "ordinal": 38,
+          "name": "XSocketNTOHS",
+          "expected_name": "XSocketNTOHS",
+          "rva": "00157e84"
+        },
+        {
+          "ordinal": 84,
+          "name": "XNetSetSystemLinkPort",
+          "expected_name": "XNetSetSystemLinkPort",
+          "rva": "00151e58"
+        },
+        {
+          "ordinal": 5270,
+          "name": "XNotifyCreateListener",
+          "expected_name": "XNotifyCreateListener",
+          "rva": "00151967"
+        }
+      ],
+      "wsa_trampoline": "101596c1: jmp 0x1026dbb0",
+      "wsa_entry_disassembly": [
+        "1026dbb0: push ebp",
+        "1026dbb1: mov ebp, esp",
+        "1026dbb3: sub esp, 0xcc",
+        "1026dbb9: push ebx",
+        "1026dbba: push esi",
+        "1026dbbb: push edi",
+        "1026dbbc: lea edi, [ebp - 0xcc]",
+        "1026dbc2: mov ecx, 0x33",
+        "1026dbc7: mov eax, 0xcccccccc",
+        "1026dbcc: rep stosd dword ptr es:[edi], eax",
+        "1026dbce: mov ecx, 0x104df49e",
+        "1026dbd3: call 0x10153965",
+        "1026dbd8: push 0x104262ec",
+        "1026dbdd: call 0x10155ac6",
+        "1026dbe2: add esp, 4",
+        "1026dbe5: mov eax, dword ptr [ebp + 0xc]",
+        "1026dbe8: push eax",
+        "1026dbe9: movzx ecx, word ptr [ebp + 8]",
+        "1026dbed: push ecx",
+        "1026dbee: call 0x101528bc",
+        "1026dbf3: mov dword ptr [ebp - 8], eax",
+        "1026dbf6: mov eax, dword ptr [ebp - 8]",
+        "1026dbf9: pop edi",
+        "1026dbfa: pop esi",
+        "1026dbfb: pop ebx",
+        "1026dbfc: add esp, 0xcc",
+        "1026dc02: cmp ebp, esp",
+        "1026dc04: call 0x10153c9e",
+        "1026dc09: mov esp, ebp",
+        "1026dc0b: pop ebp",
+        "1026dc0c: ret 8"
+      ]
+    },
+    {
+      "path": "C:/Windows/SysWOW64/xlive.dll",
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "bytes": 14303392,
+      "exports": [
+        {
+          "ordinal": 5297,
+          "name": null,
+          "expected_name": "XLiveInitializeEx",
+          "rva": "000b38ff"
+        },
+        {
+          "ordinal": 5310,
+          "name": null,
+          "expected_name": "XOnlineStartup",
+          "rva": "00090b4a"
+        },
+        {
+          "ordinal": 1,
+          "name": null,
+          "expected_name": "XWSAStartup",
+          "rva": "0008d16f"
+        },
+        {
+          "ordinal": 2,
+          "name": null,
+          "expected_name": "XWSACleanup",
+          "rva": "0008d185"
+        },
+        {
+          "ordinal": 38,
+          "name": null,
+          "expected_name": "XSocketNTOHS",
+          "rva": "0008d496"
+        },
+        {
+          "ordinal": 84,
+          "name": null,
+          "expected_name": "XNetSetSystemLinkPort",
+          "rva": "0008cf7f"
+        },
+        {
+          "ordinal": 5270,
+          "name": null,
+          "expected_name": "XNotifyCreateListener",
+          "rva": "0008d658"
+        }
+      ],
+      "wsa_trampoline": null,
+      "wsa_entry_disassembly": [
+        "0048d16f: mov edi, edi",
+        "0048d171: push ebp",
+        "0048d172: mov ebp, esp",
+        "0048d174: push dword ptr [ebp + 0xc]",
+        "0048d177: push dword ptr [ebp + 8]",
+        "0048d17a: push 1",
+        "0048d17c: call 0x88a77e",
+        "0048d181: pop ebp",
+        "0048d182: ret 8"
+      ]
+    }
+  ],
+  "live_byte_comparisons": [
+    {
+      "address": "00a40f12",
+      "bytes": 199,
+      "sha256": "7c01abb496a36bfd80ed02ade1e62c8762fc3193a73207b4d8c4105516d91a25",
+      "matches_disk": true
+    },
+    {
+      "address": "004254b0",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "matches_disk": true
+    }
+  ],
+  "native_evidence": {
+    "00a40f12..00a40f46": "Initialize info1Ch; device+8,present+C,LANGID+10; pushes version20029900 then info pointer.",
+    "00a40f63": "XOnlineStartup no stack arguments; result unexamined.",
+    "00a40f68..00a40f84": "XWSAStartup(0202,&stack28); output is28..1B7 (190h bytes); result unexamined; MOV AX,[ESP+28], then AL==2 and AH==AL; otherwise cleanup.",
+    "00a40f89..00a40f94": "ntohs(0C02), then push EAX to set-system-link-port.",
+    "00a40fc5..00a40fd4": "push highDWORD0, lowDWORD2F for uint64 notification mask.",
+    "00ce22a8": "Actual GetUserDefaultLangID import called atA40F31; WORD result stored into initialize info.",
+    "004254b0": "Exactly C3 RET; diagnostics empty by proven native behavior."
+  },
+  "wsadata": {
+    "source": "Actual Win32 winsock2.h WSADATA; compile-time offset assertions",
+    "bytes": 400,
+    "offsets": {
+      "wVersion": 0,
+      "wHighVersion": 2,
+      "szDescription": 4,
+      "szSystemStatus": 261,
+      "iMaxSockets": 390,
+      "iMaxUdpDg": 392,
+      "lpVendorInfo": 396
+    },
+    "success": "Result0 projects actual wVersion to caller; no zero initialization of SDK output.",
+    "error_guard": "Nonzero result throws XLiveWsaStartupOutputError carrying sdk_result and leaves caller version untouched. Unlike native, this adapter refuses the subsequent read of unestablished output, even if a particular failing DLL may have written bytes."
+  },
+  "ownership": "Borrowed XLiveLibrary::module_handle; no load/unload/init in constructor, no ownership of listener or SDK lifetime.",
+  "required_contracts": [
+    "d3d9_device: genuine borrowed renderer device",
+    "d3d9_present_parameters: genuine renderer present-parameter object",
+    "init_subsystem_3ac: actual recovered IPC initialization",
+    "invoke_state_callback: actual stored callback with proven caller ABI"
+  ],
+  "checks": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX /fp:strict passed",
+    "ctest": "reconstructed_math and native_math_differential passed2/2",
+    "compile_link_proof": "local/bsp_startup_adapter_link.exe passed; exported factory forces constructor/vtable linkage; factory never called.",
+    "sdk_calls": "none during worker validation",
+    "network_account_initialization": "none",
+    "static_exports": "All seven original IAT ordinals and both installed DLL export tables match.",
+    "compile_link_proof_imports": [
+      "MSVCP140.dll",
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll"
+    ]
+  },
+  "limitations": [
+    "Typed C++ startup host, not native manager constructor ABI.",
+    "WSA failure-output guard is an explicit conservative divergence from native unconditional output read.",
+    "Actual DLL initialization, online startup, sockets and account behavior remain unvalidated.",
+    "Parent separately reports Microsoft DLL/pretranslate working after signed legacy dependency preload; loader was not retested here.",
+    "No permanent tests, SDK initialization or installed-file changes."
+  ]
+}
