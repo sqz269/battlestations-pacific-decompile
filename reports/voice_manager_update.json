@@ -1,0 +1,273 @@
+{
+  "packet": "orch4_voice_manager_update_c",
+  "supporting_packet": "orch4_voice_attached_helpers_c",
+  "worker": "agent/orch4-voice-update-20260910c",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "ghidra_mutations": [],
+  "reconstructions": [
+    {
+      "address": "005bc640",
+      "name": "update_voice_manager_005bc640",
+      "source": "src/voice_manager_update.cpp",
+      "header": "include/bsp/voice_manager_update.hpp",
+      "doc": "docs/VOICE_MANAGER_UPDATE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_voice_manager_update_c",
+      "native_abi": "ECX=manager; float delta stack; activity DWORD EAX; RET4",
+      "body_start": "005bc640",
+      "body_end": "005bc918",
+      "last_instruction": "005bc916",
+      "last_instruction_length": 3,
+      "scope": "Complete normal-path target validation, hold/linger timers, line unlink/scalar deletion, dirty relayout, attached sentinel iteration/cleanup and short-circuit activity. Three false _free no-return continuations recovered from executable bytes. Main next captured before deletion; attached count decremented after free; callback reloads preserved.",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=manager; float delta stack; activity DWORD EAX; RET4. Body 005bc640..005bc918; Complete normal-path target validation, hold/linger timers, line unlink/scalar deletion, dirty relayout, attached sentinel iteration/cleanup and short-circuit activity. Three false _free no-return continuations recovered from executable bytes. Main next captured before deletion; attached count decremented after free; callback reloads preserved. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed. Relevant deletion/stop/volume path in one ignored callback fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "005b7290",
+      "name": "update_attached_voice_005b7290",
+      "source": "src/voice_manager_update.cpp",
+      "header": "include/bsp/voice_manager_update.hpp",
+      "doc": "docs/VOICE_MANAGER_UPDATE.md",
+      "status": "reconstructed_build_tested",
+      "packet": "orch4_voice_manager_update_c",
+      "native_abi": "ECX=attached entry; bool AL; RET",
+      "body_start": "005b7290",
+      "body_end": "005b7385",
+      "last_instruction": "005b7385",
+      "last_instruction_length": 1,
+      "scope": "Complete poll then current camera/attached entity position, float coordinate differences and float((2000-distance)/2000). Reload entity after camera callback. Admit attenuation>=0.25 and >0, else concrete stop. Ordinary finite distance1500 inclusive; NaN rejected. Existing poll/math/entity contracts reused.",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=attached entry; bool AL; RET. Body 005b7290..005b7385; Complete poll then current camera/attached entity position, float coordinate differences and float((2000-distance)/2000). Reload entity after camera callback. Admit attenuation>=0.25 and >0, else concrete stop. Ordinary finite distance1500 inclusive; NaN rejected. Existing poll/math/entity contracts reused. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed. Inactive result exercised through manager fixture; active spatial branches checked against complete assembly, not separately fixture tested.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00702130",
+      "name": "set_voice_slot_volume_00702130",
+      "source": "src/voice_manager_update.cpp",
+      "header": "include/bsp/voice_manager_update.hpp",
+      "doc": "docs/VOICE_MANAGER_UPDATE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_voice_attached_helpers_c",
+      "native_abi": "ECX=slot; float volume stack; RET4",
+      "body_start": "00702130",
+      "body_end": "007021be",
+      "last_instruction": "007021bc",
+      "last_instruction_length": 3,
+      "scope": "Complete auxiliary then state1 main sound volume24/dirty14 stores with strict [0,1] clamp preserving NaN/signed zero; every other state sends original unclamped input and borrowed slot NativeString to00701870. Sound fields are required aliases, not new disconnected owners.",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=slot; float volume stack; RET4. Body 00702130..007021be; Complete auxiliary then state1 main sound volume24/dirty14 stores with strict [0,1] clamp preserving NaN/signed zero; every other state sends original unclamped input and borrowed slot NativeString to00701870. Sound fields are required aliases, not new disconnected owners. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed. Relevant deletion/stop/volume path in one ignored callback fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "007026f0",
+      "name": "stop_voice_slot_007026f0",
+      "source": "src/voice_manager_update.cpp",
+      "header": "include/bsp/voice_manager_update.hpp",
+      "doc": "docs/VOICE_MANAGER_UPDATE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_voice_attached_helpers_c",
+      "native_abi": "ECX=slot; RET",
+      "body_start": "007026f0",
+      "body_end": "007027a2",
+      "last_instruction": "007027a2",
+      "last_instruction_length": 1,
+      "scope": "Complete flag clear, auxiliary virtual8(0), reload/release current aux, then reload state. State1 virtual8(0), reload/release current main, clear/state0. State2 query alternate then reload singleton for stop00a78620, state0. Other states unchanged. Required native primitives and canonical slot reused.",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=slot; RET. Body 007026f0..007027a2; Complete flag clear, auxiliary virtual8(0), reload/release current aux, then reload state. State1 virtual8(0), reload/release current main, clear/state0. State2 query alternate then reload singleton for stop00a78620, state0. Other states unchanged. Required native primitives and canonical slot reused. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed. Relevant deletion/stop/volume path in one ignored callback fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00701870",
+      "name": "set_named_voice_volume_00701870",
+      "source": "src/voice_manager_update.cpp",
+      "header": "include/bsp/voice_manager_update.hpp",
+      "doc": "docs/VOICE_MANAGER_UPDATE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_voice_attached_helpers_c",
+      "native_abi": "ECX=alternate engine; NativeString pointer and float stack; RET8",
+      "body_start": "00701870",
+      "body_end": "0070189d",
+      "last_instruction": "0070189b",
+      "last_instruction_length": 3,
+      "scope": "Complete exactly-two-channel wrapper: capture engine+8 channel-array owner; load channel+8 for00a78330, then load channel+C after first callback for second00a78330. Same borrowed NativeString and original volume; no string copy or audio-library port.",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=alternate engine; NativeString pointer and float stack; RET8. Body 00701870..0070189d; Complete exactly-two-channel wrapper: capture engine+8 channel-array owner; load channel+8 for00a78330, then load channel+C after first callback for second00a78330. Same borrowed NativeString and original volume; no string copy or audio-library port. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed. Relevant deletion/stop/volume path in one ignored callback fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "names": [
+    {
+      "address": "005bc640",
+      "old_name": "FUN_005bc640",
+      "name": "BSP_VoiceManager_Update",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=manager; float delta stack; activity DWORD EAX; RET4. Body 005bc640..005bc918; Complete normal-path target validation, hold/linger timers, line unlink/scalar deletion, dirty relayout, attached sentinel iteration/cleanup and short-circuit activity. Three false _free no-return continuations recovered from executable bytes. Main next captured before deletion; attached count decremented after free; callback reloads preserved. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    },
+    {
+      "address": "005b7290",
+      "old_name": "FUN_005b7290",
+      "name": "BSP_AttachedVoice_Update",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=attached entry; bool AL; RET. Body 005b7290..005b7385; Complete poll then current camera/attached entity position, float coordinate differences and float((2000-distance)/2000). Reload entity after camera callback. Admit attenuation>=0.25 and >0, else concrete stop. Ordinary finite distance1500 inclusive; NaN rejected. Existing poll/math/entity contracts reused. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    },
+    {
+      "address": "00702130",
+      "old_name": "FUN_00702130",
+      "name": "BSP_VoiceSlot_SetVolume",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=slot; float volume stack; RET4. Body 00702130..007021be; Complete auxiliary then state1 main sound volume24/dirty14 stores with strict [0,1] clamp preserving NaN/signed zero; every other state sends original unclamped input and borrowed slot NativeString to00701870. Sound fields are required aliases, not new disconnected owners. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    },
+    {
+      "address": "007026f0",
+      "old_name": "FUN_007026f0",
+      "name": "BSP_VoiceSlot_Stop",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=slot; RET. Body 007026f0..007027a2; Complete flag clear, auxiliary virtual8(0), reload/release current aux, then reload state. State1 virtual8(0), reload/release current main, clear/state0. State2 query alternate then reload singleton for stop00a78620, state0. Other states unchanged. Required native primitives and canonical slot reused. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    },
+    {
+      "address": "00701870",
+      "old_name": "FUN_00701870",
+      "name": "BSP_AlternateVoice_SetNamedVolume",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Native ECX=alternate engine; NativeString pointer and float stack; RET8. Body 00701870..0070189d; Complete exactly-two-channel wrapper: capture engine+8 channel-array owner; load channel+8 for00a78330, then load channel+C after first callback for second00a78330. Same borrowed NativeString and original volume; no string copy or audio-library port. src/voice_manager_update.cpp; docs/VOICE_MANAGER_UPDATE.md. Worker Ghidra read-only; native SEH/x87 status and signaling-NaN equivalence excluded.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    }
+  ],
+  "flow_audits": [
+    {
+      "address": "005bc640",
+      "listed_instructions": 223,
+      "gaps": 4
+    },
+    {
+      "address": "005b7290",
+      "listed_instructions": 65,
+      "gaps": 0
+    },
+    {
+      "address": "00702130",
+      "listed_instructions": 46,
+      "gaps": 0
+    },
+    {
+      "address": "007026f0",
+      "listed_instructions": 78,
+      "gaps": 0
+    },
+    {
+      "address": "00701870",
+      "listed_instructions": 20,
+      "gaps": 0
+    }
+  ],
+  "flow_repairs_pending": [
+    {
+      "function": "005bc640",
+      "after_call": "005bc711",
+      "start": "005bc716",
+      "inclusive_end": "005bc720",
+      "length": 11,
+      "body": "add esp,4; mov esi,edi; mov byte [ebx+60],1; jmp005bc72e"
+    },
+    {
+      "function": "005bc640",
+      "after_call": "005bc868",
+      "start": "005bc86d",
+      "inclusive_end": "005bc873",
+      "length": 7,
+      "body": "add esp,4; add dword [ebp+8],-1; ebp=manager+64"
+    },
+    {
+      "function": "005bc640",
+      "after_call": "005bc8c0",
+      "start": "005bc8c5",
+      "inclusive_end": "005bc8cc",
+      "length": 8,
+      "body": "add esp,4; jmp005bc7fc"
+    }
+  ],
+  "skipped_padding": {
+    "start": "005bc75a",
+    "inclusive_end": "005bc75f",
+    "length": 6,
+    "bytes": "8d9b00000000",
+    "description": "LEA EBX,[EBX+0], skipped by JMP005bc758; do not repair as flow"
+  },
+  "missing_functions": [],
+  "recovered_layout": {
+    "main_queue": "manager54 count,58 first,5C last; node previous0,next4,line8",
+    "attached_queue": "manager64 stateless allocator,68 sentinel,6C count; node next0,previous4,entry8",
+    "attached_entry": "canonical slot at0; callback-owner base18; destructor vtable00CE74FC; attached entity2C",
+    "sound_volume": "sound24 float, sound14 dirty byte must alias canonical SoundLevelEntry",
+    "alternate_channels": "captured engine+8 owner; two current pointer fields+8,+C"
+  },
+  "required_contracts": [
+    "Existing VoiceLineHost/VoiceSlotHost contracts for current singletons, camera/entity dirty refresh, vector length, sound virtual calls and intrusive release.",
+    "Sound volume and alternate channel views are side-effect-free aliases into actual owners.",
+    "00A78330 actual named-channel audio operation;00A78620 actual stop resolving current00F8BBCC after query.",
+    "00432650 singleton/getter then returned owner+80 float relayout step.",
+    "005BC70E actual virtual scalar deletion(flag1); parent binds005B9B80 only for canonical00CF0ED4 and retains actual virtual dispatch for other runtime vtables.",
+    "Native node/entry frees;006952A0 entity observer detach with EDX actual entry+18;00695870 actual callback-owner teardown.",
+    "00BF6713 native CRT invalid-iterator policy if callback makes current iterator sentinel.",
+    "Current00F8A0C4 owner+E8 final activity read."
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_target": "MSVC Win32 Release",
+    "build_exit_code": 0,
+    "existing_tests": "reconstructed_math1/1 passed",
+    "build_log": "local/voice_manager_build.log",
+    "fixture_command": "./local/run_voice_manager_reentry_check.ps1",
+    "fixture_source": "local/voice_manager_reentry_check.cpp",
+    "fixture_log": "local/voice_manager_reentry_check.log",
+    "fixture_result": "PASS: one manager deletion and audio callback-reload fixture",
+    "fixture_scope": [
+      "Two real heap main nodes deleted; count before scalar deletion, captured successor after free, dirty after free.",
+      "Two attached nodes deleted; count after free; vtable/entity observer teardown before actual embedded-slot aux/main release.",
+      "Final external activity queried only with empty counts; true and false results.",
+      "Aux stop replaces reference; release changes state to alternate; correct post-callback branch.",
+      "Main stop replaces reference; release current replacement before clearing.",
+      "Aux volume clamp versus original named volume; first named callback replaces channel2, next call observes replacement."
+    ],
+    "fixture_unused_services": "fail on unexpected calls",
+    "native_differential": false,
+    "game_validated": false,
+    "actual_audio": false,
+    "gui_rendering": false,
+    "new_shared_tests": 0,
+    "new_test_targets": 0
+  },
+  "numeric_boundaries": [
+    "Hold duration positive or NaN skips advancement; linger NaN survives only with nonnull widget.",
+    "Relayout unordered baseline/Y comparison keeps Y and sets dirty; no delta/step normalization.",
+    "Spatial admission includes finite distance1500; float attenuation NaN stops.",
+    "Volume clamp preserves signed zero and quiet-NaN input bits absent platform NaN transformations; alternate route has native x87 spill and no clamp.",
+    "Signaling-NaN quieting, x87 extended precision/status/control and unmasked traps are outside verified domain."
+  ],
+  "limits": [
+    "Complete normal-path semantic C++ control flow, not binary ABI/layout or native SEH exceptional cleanup.",
+    "Valid live containers and loaded objects/captured successors surviving until next native use; malformed-list assertions without intervening callbacks are omitted.",
+    "Actual observer internals, audio engine and external ownership operations remain explicit required primitives, no fake objects or successful no-op handlers.",
+    "Existing helper evidence domains retained; one focused fixture is host proof only."
+  ],
+  "integration_handoff": [
+    "Parent adds canonical attached_sentinel_68 and renames blocked_6c to attached_count_6c using same storage; bind VoiceAttachedQueueView.",
+    "Parent adds VoiceLineLifetimeHost& context and direct sibling scalar_delete_voice_line_005b9b80 for00CF0ED4; retain scalar_delete_line_005bc70e for actual other-vtable dispatch.",
+    "Parent005BBF10 can call concrete stop_voice_slot_007026f0 with VoiceSlotHost and VoiceManagerUpdateHost.",
+    "Integrator applies pending descriptive annotations preserving comments, repairs three false no-return flows under write lock, saves and refreshes exports.",
+    "Ignored fixture and PowerShell recipe remain in worker local/ for parent adaptation after lifetime integration."
+  ]
+}
