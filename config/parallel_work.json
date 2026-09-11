@@ -5579,6 +5579,33 @@
       ],
       "source_ready": true,
       "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
+    },
+    {
+      "id": "native_frame_target_owner6",
+      "packet": "native_frame_target_owner6",
+      "worker": "frame_target_owner_discovery",
+      "done": false,
+      "state": "primary_native_lifetime_contract_reviewed_worker_source_in_progress_vector_prerequisite_pending",
+      "function_addresses": [
+        "00b1fbb0",
+        "00b1fc00",
+        "00b1fcf0",
+        "00b1fab0",
+        "00b1fb00",
+        "00b1f700"
+      ],
+      "code_ownership": [
+        "include/bsp/native_frame_target_owner.hpp",
+        "src/native_frame_target_owner.cpp",
+        "docs/NATIVE_FRAME_TARGET_OWNER.md",
+        "reports/native_frame_target_owner_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_frame_target_vector3"
+      ],
+      "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
+      "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst."
     }
   ],
   "snapshot_after_analysis": {
