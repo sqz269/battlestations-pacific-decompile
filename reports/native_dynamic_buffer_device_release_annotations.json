@@ -1,0 +1,17 @@
+[
+  {
+    "address": "00b237d0",
+    "before": {
+      "address": "00b237d0",
+      "function_name": "BSP_D3D9Renderer_ReleaseDynamicBuffersForReset",
+      "comment": "[BSP reconstruction 00b237d0]\nOptional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive.\n\n[BSP reconstruction 00b237d0] update\nOptional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive. Guardedtyped implementation now composes bodyfragment; guard precedes readinessskip, ready cleared before vertex/index COMoperations. Preserve wrappermetadata/registration/cursor, no lostgate. Realdevice release/reset/restore and balancedguard checked."
+    },
+    "after": {
+      "address": "00b237d0",
+      "old_name": "BSP_D3D9Renderer_ReleaseDynamicBuffersForReset",
+      "name": "BSP_D3D9Renderer_ReleaseDynamicBuffersForReset",
+      "evidence": "Complete 243-byte actual dynamic-buffer reset release; ECX actual renderer, no stack arguments, RET, no semantic result. Optional guard saves actual receiver before B33AD0; readiness byte is read before FH3 state0. When ready, capture renderer+1974 BEFORE readiness clear; captured wrapper current COM+28 gets captured-object AddRef/current-table Release, then independently current COM final Release and returning-only clear. Reload current renderer+1978 AFTER vertex block, then hold that wrapper through index operations. Normal exit captures current mode before state-1 then full saved guard word/current B33B00; exceptional state0 invokes genuine B21110 using original FH3 handler CBCED8/FI DF54D4/map DF54CC/cleanup CBCED0. No added readiness/COM/lock defaults. New C++ interface uses actual raw renderer/globals and existing concrete native guard providers. See src/native_dynamic_buffer_device_release.cpp and reports/native_dynamic_buffer_device_release_audit.json. Primary independently verified47 worker artifacts/four current source-provider files/12 fresh live-PE spans461 bytes, then replayed actual frozen main bsp_core library against complete original:268850 DWORDs/136 state snapshots/24 real COM calls/50 field writes per process, seven states including propagated C++ exception after real COM Release and mode-off held-lock exit. Every call/write PC and184 actual Windows module-entry16-byte postimages checked. Original-code changes limited to18 enumerated absolute relocation operands, actual IAT bindings, host FH3 prefix and explicit four-byte registration operand; no fake buffer/provider. Strict Win32 build/two existing CTests/eight PE seeds passed. Existing semantic d3d9_states projection retained separately. Descriptive name hypothesis. No original ABI/gameplay/render/concurrency/asynchronous-SEH claim; entry-disabled/exit-enabled uninitialized-guard domain excluded."
+    },
+    "status": "applied"
+  }
+]
