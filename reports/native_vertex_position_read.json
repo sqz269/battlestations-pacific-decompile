@@ -1,0 +1,342 @@
+{
+  "packet": "orch5_native_vertex_position_read",
+  "status": "partial_projection_all_initialized_native_cases_strict_compiled",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "004768d0",
+      "name": "read_native_vertex_position_004768d0",
+      "original_abi": "ECX stream; output float3 and index stack; EAX output; RET8",
+      "coverage": "complete for null50 and initialized types2,3,5,7,8,10,12,13,16; partial projection rejects native uninitialized-scratch type paths",
+      "last_instruction": "00476b3e",
+      "last_instruction_length": 3,
+      "end_inclusive": "00476b40",
+      "source": "src/native_vertex_position_read.cpp"
+    },
+    {
+      "address": "00475f80",
+      "name": "unpack_native_position_9bit_00475f80",
+      "original_abi": "ECX unused; packed DWORD and output float3 stack; RET8",
+      "coverage": "complete valid-memory numeric and output-store behavior",
+      "last_instruction": "00475fe1",
+      "last_instruction_length": 3,
+      "end_inclusive": "00475fe3",
+      "source": "src/native_vertex_position_read.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "004768d0",
+      "address": "004769aa",
+      "native": "00475f80",
+      "binding": "actual packed word from base+4*(stride*index+positionoffset); output local; RET8"
+    },
+    {
+      "function": "004768d0",
+      "address": "00476ac1",
+      "native": "00a4c2ae",
+      "binding": "actual borrowed d3dx9_40!D3DXFloat16To32Array; count3/input/local output; WINAPI callee cleanup0C; no alternate conversion"
+    }
+  ],
+  "all_callers": [
+    {
+      "function": "00477710",
+      "address": "00478382",
+      "native": "004768d0",
+      "arguments": "ESIstream, stacklocalindex pushed834B, outlocal pushed8361; RET8"
+    },
+    {
+      "function": "00711510",
+      "address": "0071171c",
+      "native": "004768d0",
+      "arguments": "EBXstream, EDIindex, outlocal; RET8"
+    },
+    {
+      "function": "0073f6e0",
+      "address": "0073f800",
+      "native": "004768d0",
+      "arguments": "current ESI+60 stream, first triangle low16index, outlocal; RET8"
+    },
+    {
+      "function": "0073f6e0",
+      "address": "0073f80e",
+      "native": "004768d0",
+      "arguments": "current ESI+60 stream, EBP triangle index, outlocal; RET8"
+    },
+    {
+      "function": "0073f6e0",
+      "address": "0073f81c",
+      "native": "004768d0",
+      "arguments": "current ESI+60 stream, EBX triangle index, outlocal; RET8"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba868",
+      "native": "004768d0",
+      "arguments": "captured ESIstream, EDI sequentialindex, outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0a03",
+      "native": "004768d0",
+      "arguments": "ESIstream,index1,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0a21",
+      "native": "004768d0",
+      "arguments": "ESIstream,index1,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0a58",
+      "native": "004768d0",
+      "arguments": "ESIstream,index3 pushed0A35,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0aad",
+      "native": "004768d0",
+      "arguments": "ESIstream,index2,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0ad0",
+      "native": "004768d0",
+      "arguments": "ESIstream,index2,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0b14",
+      "native": "004768d0",
+      "arguments": "ESIstream,index3 pushed0AF9,outlocal; RET8"
+    },
+    {
+      "function": "00ae41c0",
+      "address": "00ae42bf",
+      "native": "004768d0",
+      "arguments": "EBPstream, EBX plus currentEDI+C index, outlocal; RET8"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b880d7",
+      "native": "004768d0",
+      "arguments": "EDIstream,EBXindex,outlocal; RET8"
+    },
+    {
+      "function": "00ba0c00",
+      "address": "00ba0f28",
+      "native": "004768d0",
+      "arguments": "ESIstream,EDIindex,outlocal; RET8"
+    },
+    {
+      "function": "00baf8a0",
+      "address": "00baf8f2",
+      "native": "004768d0",
+      "arguments": "EDIstream,first low16 triangle index,outlocal; RET8"
+    },
+    {
+      "function": "00baf8a0",
+      "address": "00baf909",
+      "native": "004768d0",
+      "arguments": "EDIstream,second low16 triangle index,outlocal; RET8"
+    },
+    {
+      "function": "00baf8a0",
+      "address": "00baf920",
+      "native": "004768d0",
+      "arguments": "EDIstream,third low16 triangle index,outlocal; RET8"
+    },
+    {
+      "function": "004768d0",
+      "address": "004769aa",
+      "native": "00475f80",
+      "arguments": "ECX saved stream unused by callee; packed word and out local; RET8"
+    },
+    {
+      "function": "0070fdb0",
+      "address": "0070fec0",
+      "native": "00475f80",
+      "arguments": "same base+4*(stride*index+attributeoffset1C), packed word and out local; RET8"
+    }
+  ],
+  "producer_calls": [
+    {
+      "function": "00b93800",
+      "address": "00b9384f",
+      "native": "00be9a20",
+      "binding": "read existing declaration count times20h raw bytes into actual allocation"
+    },
+    {
+      "function": "00b93800",
+      "address": "00b93869",
+      "native": "00b61d90",
+      "binding": "publish SAME allocation to selected actual stream50, no copy or old-reference release; RET4"
+    },
+    {
+      "function": "00b61e20",
+      "address": "00b61ec6",
+      "native": "00b47ce0",
+      "binding": "usage0 occurrence0 flat declaration index subsequently stored+18; RET8"
+    },
+    {
+      "function": "00b61e20",
+      "address": "00b61ed2",
+      "native": "00b47c20",
+      "binding": "usage0 occurrence0 declaration type subsequently stored+14; RET8"
+    }
+  ],
+  "type_cases": [
+    {
+      "types": [
+        2,
+        3
+      ],
+      "target": "004768fd",
+      "operation": "three raw float words"
+    },
+    {
+      "types": [
+        5
+      ],
+      "target": "00476930",
+      "operation": "three unsigned bytes via CVTSI2SS"
+    },
+    {
+      "types": [
+        7
+      ],
+      "target": "004769b4",
+      "operation": "three signed16 from two DWORDs via CVTSI2SS"
+    },
+    {
+      "types": [
+        8
+      ],
+      "target": "0047695b",
+      "operation": "unsigned bytes via x87 division by double255"
+    },
+    {
+      "types": [
+        10
+      ],
+      "target": "004769f6",
+      "operation": "signed16 x87 float spills then division by double32767; no clamp"
+    },
+    {
+      "types": [
+        12
+      ],
+      "target": "00476a5f",
+      "operation": "unsigned16 x87 float spills then division by double65535"
+    },
+    {
+      "types": [
+        13
+      ],
+      "target": "00476991",
+      "operation": "base+4*relative;9-bit masks at shifts0/10/20"
+    },
+    {
+      "types": [
+        16
+      ],
+      "target": "00476aab",
+      "operation": "actual D3DX import count3"
+    },
+    {
+      "types": "all others",
+      "target": "00476ac6",
+      "operation": "native uninitialized scratch; explicit false without output mutation"
+    }
+  ],
+  "producer_fields": [
+    {
+      "address": "00b61e6b",
+      "field": "stream50",
+      "evidence": "constructor EBX0 establishedB61E55"
+    },
+    {
+      "address": "00b61ea3",
+      "field": "stream0C",
+      "evidence": "stride from actual declarationCC"
+    },
+    {
+      "address": "00b61ec3",
+      "field": "stream10",
+      "evidence": "position usage0 byte offset"
+    },
+    {
+      "address": "00b61ecf",
+      "field": "stream18",
+      "evidence": "flat declaration element index"
+    },
+    {
+      "address": "00b61ed7",
+      "field": "stream14",
+      "evidence": "declaration type from actual type getter"
+    },
+    {
+      "address": "00b61d94",
+      "field": "stream50",
+      "evidence": "raw pointer publication only, actual producer allocation remains owned by existing stream lifetime"
+    }
+  ],
+  "external_library": {
+    "dll": "d3dx9_40.dll",
+    "export": "D3DXFloat16To32Array",
+    "game_thunk": "00a4c2ae..00a4c2b3",
+    "game_iat": "00ce23e4",
+    "pe_import_verified": true,
+    "installed_x86_path": "C:/Windows/SysWOW64/d3dx9_40.dll",
+    "installed_export_rva": "001fde04",
+    "signature": "float* WINAPI(float*, const D3DXFLOAT16*, UINT)",
+    "cleanup": "RET0C in inspected scalar body; export uses library runtime dispatch",
+    "lifetime": "borrowed actual module remains loaded; resolve exact export only; no default DLL or converter"
+  },
+  "corrections": [
+    {
+      "was": "Wrapped float3 getter stopped on every nonzero stream50",
+      "is": "Actual getter supports every initialized native type case and applies current scale/bias",
+      "evidence": "4768EF/F6 jump tables plus complete case listings"
+    },
+    {
+      "was": "Packed triple could be treated as ordinary ten-bit byte-addressed data",
+      "is": "Exact9-bit masks and base+4*(stride*index+offset) retained",
+      "evidence": "4769A4 and475F86/FA9/FC7; normal-reader caller70FEBA matches"
+    },
+    {
+      "was": "Half conversion could be supplied by a generic numerical fallback",
+      "is": "Actual d3dx9_40 named import with module lifetime contract",
+      "evidence": "original PE importCE23E4, game thunkA4C2AE, SDK signature and installed DLL export"
+    },
+    {
+      "was": "Unknown type could default to float3 or zeros",
+      "is": "Explicit false because native branch consumes uninitialized scratch",
+      "evidence": "byte table value8 and out-of-range branch both target476AC6"
+    }
+  ],
+  "ownership": "Borrow SAME actual stream+08 mapping/+50 metadata; no physical/logical owner copies, allocations or retains. Only native three-float local staged before ordered output. Existing semantic decode record/vector is not substituted.",
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 W4 WX O2 MD fp:strict",
+    "report_call_verifier": "PASS:26 direct numeric call rows checked,0 failures",
+    "new_tests": 0,
+    "new_test_targets": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "combined_build": "parent integration",
+    "runtime_reachability": "New getter is not wired into committed wrapped files in this packet"
+  },
+  "remaining": [
+    "Parent wires complete getter and borrowed actual half import into wrapped continuation",
+    "Actual producer retains valid mapped vertex and compressed metadata extents",
+    "Native uninitialized format outputs and invalid-memory faults are not emulated"
+  ],
+  "tool_issues": [
+    "DirectX SDK header resolved from existing CMake fetched package after obsolete system SDK path was absent",
+    "Ghidra read-only; both reconstructed routines have saved exact body ranges; no raw-function definition required"
+  ]
+}

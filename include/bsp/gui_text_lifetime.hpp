@@ -3,6 +3,13 @@
 #include "bsp/gui_text_style.hpp"
 
 namespace bsp {
+// C++ diagnostic continuation marker, not an additional native Text field.
+// A non-complete scalar deletion is retained and is NOT automatically resumable:
+// a nested AB80C0 suspension also needs its parent's native clear-loop frame.
+enum class GuiTextScalarDeletionPhase {
+    not_started, derived, base_scene_nodes, base_children, base_detach,
+    base_main_node, base_entries, base_containers, complete
+};
 // Required live native inputs, read during00AB9650. No copied/default global
 // table: the caller binds these to its reconstructed constant/global storage.
 struct GuiTextConstructorConstants {
@@ -68,6 +75,8 @@ public:
     void*& cached_shader_slot_1ec() noexcept { return cached_shader_1ec_; }
     GuiTextContentBinding content_binding() noexcept;
     GuiTextStyleBinding style_binding(const GuiMaterialBindingServices&);
+    GuiTextScalarDeletionPhase scalar_deletion_phase() const noexcept { return scalar_phase_; }
+    std::uint32_t scalar_deletion_flags() const noexcept { return scalar_flags_; }
 
     // Complete00AB73B0: capture current shadow; actual unlink/release; clear
     // slot AFTER callback, even if callback rebinds it. Null is a no-op.
@@ -85,11 +94,13 @@ public:
     // strings and glyph-vector allocation in native order. Must run from
     // derived before_scene_release BEFORE owner/base teardown. Destructor
     // also performs it if still live; reentry while destroying is invalid.
-    // Remaining tail00AB83AF..83CF invokes base00AA9730/SEH; caller owns it.
+    // Tail00AB83AF..83CF invokes base00AA9730/SEH; GuiTextChildDeletion composes
+    // the ordinary zero-entry-header Text-tree base path in its new C++ ABI.
     // Native pooled string headers and AB8EE0/AB75A0 Text slot return are not
     // represented by C++ allocations. This is NOT a scalar deleting stub.
     void destroy_derived_00ab8250_fragment();
 private:
+    friend class GuiTextChildDeletion;
     void require_owner() const;
     GuiWidgetOwner& widget_;
     GuiTextBufferServices& buffers_;
@@ -101,5 +112,7 @@ private:
     void* cached_shader_1ec_{};
     enum class Phase { constructing, live, destroying, destroyed };
     Phase phase_{Phase::constructing};
+    GuiTextScalarDeletionPhase scalar_phase_{GuiTextScalarDeletionPhase::not_started};
+    std::uint32_t scalar_flags_{};
 };
 } // namespace bsp
