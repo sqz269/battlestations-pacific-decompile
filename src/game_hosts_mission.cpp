@@ -313,9 +313,6 @@ struct GameMissionHost::Impl {
     // Milestone 2g, --mission-complete-frame N: the in-mission frame on which
     // the executable makes the call a script's end-movie binding makes.
     long mission_complete_frame{-1};
-    // game+6ACh, written by the briefing start 0058bf58 and read by the Lua
-    // binding GetDifficulty.
-    std::int32_t effective_difficulty{0};
     GameFrameProfiler* profiler{nullptr};
     std::string language;
     std::unique_ptr<GameMissionLuaHost> lua;
@@ -901,11 +898,8 @@ public:
     bool main_menu_flag_5c() override { return false; }        // screen+5Ch
     std::int32_t chosen_difficulty() override { return 0; }    // game+6B0h
     void set_effective_difficulty(std::int32_t value) override {
-        // 0058bf58 writes game+6ACh, the field GetDifficulty 008ae030 reads.
-        // Milestone 2g keeps it, so the binding answers the mission's own
-        // difficulty instead of a zero.
-        owner_.effective_difficulty = value;
-        owner_.log.implemented("MissionStart::set_effective_difficulty", "0058bf58");
+        static_cast<void>(value);
+        owner_.log.unimplemented("MissionStart::set_effective_difficulty", "0058bf58");
     }
     bool checkpoint_differs(const MissionRecordData& record) override {
         static_cast<void>(record);
@@ -1582,11 +1576,6 @@ void GameMissionHost::Impl::finish_scene_load() {
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.
     lua->start_machine_00884be0();
-    // Milestone 2g: the two game fields three of the ten core bindings read.
-    // game+1FE4h is 0 because this run is a single-player campaign mission, the
-    // same value the load's session mode and the exit path use; game+6ACh is
-    // what the briefing start wrote at 0058bf58.
-    lua->set_game_fields(0, effective_difficulty);
     // Milestone 2g: game+2198h, the key the record commit writes under, and the
     // frame the executable makes the script's end-movie call on.
     frame_host->set_mission_key(summary.selected_id);

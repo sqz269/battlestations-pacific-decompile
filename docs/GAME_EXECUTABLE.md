@@ -2551,16 +2551,19 @@ vehicle class as required for its party; the run produces **32 party-class marks
 
 ### 3. The in-mission HUD
 
-The manager's construction is a record, as the packet brief requires: 004E0452 allocates 108h
-bytes, 004E046C runs 0068A990 and 0068CC70 is its Init, and none of the three is reconstructed
-(they belong to packet `cc_hud_updates`). What the executable runs is the part of Init that goes
-through recovered code. For each of the 42 rows of `bsp::kInGameHudScreens` it builds its own
-registry record, registers it with 004F71D0 into the **same 95-slot registry at 00E18B60 the
-front-end screens use**, and loads the pages and binds the widget names
-`bsp::kHudScreenLayouts` gives it: **42 of 42 screens, 52 page loads over 47 distinct pages,
-204 of 373 named widgets bound**. The 169 that miss are nested deeper than one level, which
-00AA7E00 cannot reach on its own; that is the same limit `docs/MAIN_MENU_MISSION_DETAIL.md`'s
-correction 4 records for 005861B0.
+Packet `cc_hud_updates` merged during this packet's turn, so the manager is not a record. The
+executable runs `bsp::construct_in_game_interface_0068a990` and then
+`bsp::init_in_game_interface_0068cc70` over an `InMissionInterfaceInitHost`, which means the
+order the 42 screens are built and registered in is 0068CC70's own rather than one this file
+invents. The 42 leaf classes are still not reconstructed: the allocation at 00BF681B and the 37
+leaf constructors are records, and each screen's registry record is the executable's own, the
+substitution milestone 2c makes for the seven main-menu screen classes. What the +10h override
+then does is recovered: 004F71D0 into the **same 95-slot registry at 00E18B60 the front-end
+screens use**, the page each screen loads through 00AA5840 and the widget names it binds through
+00AA7E00. That is **42 of 42 screens, 52 page loads over 47 distinct pages, 204 of 373 named
+widgets bound**. The 169 that miss are nested deeper than one level, which 00AA7E00 cannot reach
+on its own; that is the same limit `docs/MAIN_MENU_MISSION_DETAIL.md`'s correction 4 records for
+005861B0.
 
 Init's last act is `004CC460(20h, 0)` at 0068D73A, which pushes **INTF_SCENE3D with a null
 payload**. The executable applies exactly that id rather than choosing one: 006840F0 services
@@ -2580,6 +2583,22 @@ into, so the pump 004F8830 enters those four screens and 004F83B0 commits their 
 visibility. The pump itself now runs in the mission: milestone 2f recorded
 `update_interface_only [004c40f0]` because the registry had nothing in it, and it is concrete
 here.
+
+**Step 17 of the in-mission frame runs too.** 004E5252 calls the manager's per-frame update
+0068C1F0 behind the gate `00E198C4 != 0 && [00E198C4]+3Ch != 0`, and milestone 2f recorded both
+the gate and the call. `bsp::update_in_game_interface_0068c1f0` is `cc_hud_updates`' as well, so
+the recovered body runs 90 times over the 120 frame run. Almost everything it reads belongs to
+one of the 42 screen classes, to the camera at game+19FCh or to the controlled unit at 00E188D8,
+and this process owns none of those, so every one of them is a record with its own address: the
+spectate walk finds no units because its list hangs off the world object 004DE610 would build,
+no input action fires, and the audio tail reaches 00A7B710 with `Underwater`, which is the
+recovered rule's answer for a camera height and a water height that are both zero rather than a
+claim about the mission. The one thing the executable supplies is the manager's own active byte
+at +3Ch: 00684700 sets it through the manager's vtable slot +08h, Ghidra reports only three
+direct callers of 00684700 and none of them is this manager, and nothing in the reconstructed
+load reaches that dispatch, so the executable raises the byte itself and records 00684700. The
+other half of 00684700, deactivating every other registered manager, has already happened,
+because the load destroyed the main-menu manager.
 
 **The front-end pages come down through recovered code.** Milestone 2f said "a mission is
 running behind an unchanged picture" because the load released the main-menu manager as a
@@ -2628,11 +2647,11 @@ executable and a ticking simulation.
 
 `bsp_game.exe --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 120
 --mission-complete-frame 90 --screenshot local/run_2h.png --screenshot-mission-frame 60 --log
-local/game_run_2h.log --game-root "<install>"`, exit 0: **286 concrete, 307 unimplemented**.
-Milestone 2g's run on its own tree reported 252 and 252; on this tree, before this packet, the
-same command reported 275 and 288. A `--mission-frames 60` run with no
-`--mission-complete-frame` reports 279 and 289, and a run closed with `CloseMainWindow` reports
-280 and 289.
+local/game_run_2h.log --game-root "<install>"`, exit 0: **290 concrete, 318 unimplemented**.
+Milestone 2g's run on its own tree reported 252 and 252; on the tree this packet branched from,
+before this packet, the same command reported 275 and 288. A `--mission-frames 60` run with no
+`--mission-complete-frame` reports 283 and 300, and a run closed with `CloseMainWindow` reports
+284 and 300.
 
 The methods this packet introduced, grouped. Everything not marked concrete is the
 unimplemented policy with its native call site on the record; the full per-step table with the
@@ -2662,9 +2681,13 @@ call site and callee of every row is `reports/game_executable_milestone_2h.json`
 | `SceneUnit::place_instance` | `00928860` | **unimplemented** | 32 |
 | `SceneUnit::set_instance_name` | `0041dd40` | concrete | 32 |
 | `SceneUnit::queue_entity_command` | `00469610` | **unimplemented** | 32 |
-| `InGameInterface::construct_manager` | `0068a990` | **unimplemented** | 1 |
-| `InGameInterface::manager_init` | `0068cc70` | **unimplemented** | 1 |
-| `InGameInterface::create_screen` | `00bf681b` | **unimplemented** | 42 |
+| `InGameInterface::construct_manager` | `0068a990` | concrete | 1 |
+| `InGameInterface::manager_init` | `0068cc70` | concrete | 1 |
+| `InGameInterface::publish_manager_global` | `0068ccfe` | concrete | 1 |
+| `InGameInterface::base_init` | `00683a90` | concrete | 1 |
+| `InGameInterface::allocate_screen` | `00bf681b` | **unimplemented** | 42 |
+| `InGameInterface::screen_constructor` | `0068cc70` | **unimplemented** | 42 |
+| `InGameInterface::activate_manager` | `00684700` | **unimplemented** | 1 |
 | `InGameInterface::screen_register` | `004f71d0` | concrete | 42 |
 | `InGameInterface::screen_find_child` | `00aa7e00` | concrete | 204 |
 | `InGameInterface::push_interface_request` | `004cc460` | **unimplemented** | 1 |
@@ -2680,6 +2703,9 @@ call site and callee of every row is `reports/game_executable_milestone_2h.json`
 | `MainMenuScreen::deleting_destructor` | `00686e14` | **unimplemented** | 7 |
 | `FrontEndManager::deactivate` | `00683aa0` | concrete | 1 |
 | `MissionFrame::update_interface_only` | `004c40f0` | concrete | 90 |
+| `MissionFrame::in_game_interface_active` | `004e524c` | concrete | 90 |
+| `MissionFrame::update_in_game_interface` | `0068c1f0` | concrete | 90 |
+| `InGameInterface::update` | `0068c1f0` | concrete | 90 |
 
 `SceneUnit::hierarchy_deferral` (004F03C0) exists and was not reached: 004C1130's answer is the
 record's false, so all 32 units take the placement branch.
@@ -2715,7 +2741,13 @@ player never reaches a mode with a play-area test.
    mode.** They are game+614h and game+61Ch, the two fields 004BCA50 reads; the mission script
    slot and the scene generation mode are the same pair, which is why a single-player load
    resolves both to 8.
-7. **`bsp::SceneFileReaderHost::instantiate_entity` cannot express a nested entity's gate
+7. **Packet `cc_hud_updates` merged during this packet's turn**, so the manager's
+   construction 0068A990, its Init 0068CC70 and its per-frame update 0068C1F0 are no longer
+   records: this milestone's first pass applied the level-1 set by hand over its own screen
+   walk, and the final version runs the reconstruction. Milestone 2f's
+   `MissionFrame::in_game_interface_active [004e524c]` and
+   `update_in_game_interface [0068c1f0]` records are both gone.
+8. **`bsp::SceneFileReaderHost::instantiate_entity` cannot express a nested entity's gate
    inputs.** 0046CF40 passes the entity's own `localframe` as argument 4 and the parent's world
    frame inline as arguments 7..22, and 0046C550 uses them differently; the host receives only
    the product. Every entity of this mission is top level, so the run is unaffected, and the
@@ -2730,7 +2762,12 @@ player never reaches a mode with a play-area test.
   descriptor's vtable +28h is recorded at 006FE590 and nothing claims its layout. This is the
   substitution milestone 2c makes for the seven main-menu screen classes.
 - **The 42 HUD screens** are the executable's own registry records built from the recovered slot
-  and page tables, for the same reason.
+  and page tables, for the same reason; the allocation and the 37 leaf constructors are records
+  inside `bsp::init_in_game_interface_0068cc70`.
+- **The manager's active byte at +3Ch.** 00684700 sets it through the manager's vtable slot
+  +08h, and nothing in the reconstructed load reaches that dispatch, so the executable raises it
+  and records 00684700. Without it the request Init pushes is never serviced and the frame's
+  step 17 never runs.
 - **The vehicle-class registry's forward index map** is filled with the identity, which is the
   state 00592640 and 00506550 leave (both reset all 800h pairs and rewrite one, and 00592640 is
   the footer command this run already takes). Without it 0095BA60 finds no class index.
@@ -2771,8 +2808,9 @@ scene contents pass 3 Instantiate: 34 entities visited, 0 groups, uniqueID=1
         registration_bodies=32 concrete 004f0520
   scene class NavPoint      id=41 seen=2  generated=2  rejected=0 created=0
         registration_bodies=0  record 004e99b0
-in-mission HUD manager: 42 of 42 screens registered, 52 of 52 pages loaded, 204 of 373 named
-        widgets bound; INTF_SCENE3D (20h) pushed by Init at 0068d73a
+in-mission HUD manager: 42 of 42 screens registered through
+        bsp::init_in_game_interface_0068cc70 (37 leaf constructors are records), 52 of 52 pages
+        loaded, 204 of 373 named widgets bound; INTF_SCENE3D (20h) pushed by Init at 0068d73a
 the main-menu manager was destroyed: 00687300 -> 00686c90 -> 00683aa0, whose tail publishes the
         empty level-4 screen set (004f8710) and the empty level-4 input contexts (004d8c00), so
         the front-end pages come down
@@ -2786,7 +2824,9 @@ summary mission unit passes: 32 unit record(s) exist and every unit pass of the 
         the fixed step ticked 0 of them, because construct_world 004de610 is a load record
 summary mission exit reachable=1: the mission ended through 004d7970: request 10h, the
         teardown arm 004e458a, state 11h and request 04h
-host methods 286 concrete, 307 unimplemented
+summary mission hud screens=42/42 pages=52/52 widgets=204/373 interface=20h level1_screens=4
+        level1_contexts=5 pump_frames=90 update_frames=90 audio_environment=Underwater
+host methods 290 concrete, 318 unimplemented
 ```
 
 Every earlier switch was rechecked on the same binary. A 120 frame run with
@@ -2794,11 +2834,11 @@ Every earlier switch was rechecked on the same binary. A 120 frame run with
 unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
 exits 0 and `--vfs-probe does/not/exist.lua` exits 3: all four match milestone 2d exactly. A
 `--mission-frames 60` run with no `--mission-complete-frame` still ends on the frame count with
-`summary mission exit reachable=0`. The 2000 frame run exits 0 and runs 19 fixed steps with the
+`summary mission exit reachable=0`. The 2000 frame run exits 0 and runs 23 fixed steps with the
 same fan-out disposition milestone 2g recorded; the step count is driven by wall-clock time, so
 it moves with the work per frame and 2g's own long run reported 18. The close path was
 validated by sending WM_CLOSE to a running process with `--press-start-frame 30 --menu-select
-USN02 --mission-frames 60`: it presented 28391 frames, ran all 60 mission frames, recorded
+USN02 --mission-frames 60`: it presented 52219 frames, ran all 60 mission frames, recorded
 `CloseRequestPolicy::front_end_branch [004ca2f0]` once and exited 0.
 
 This is a runtime-validated process, not a game-validated one. It proves that the recovered
@@ -2825,9 +2865,14 @@ world object every one of those passes needs does not exist.
 5. **The HUD root update 00649860**, which clones the `GUI_powerups` and `GUI_unit` templates
    per unit. Until it runs the templates are drawn where the page authored them.
 6. **The three central screens' update virtuals**, 00649860, 006435D0 and 005C0F20, which are
-   analysed and not reconstructed; nothing on the HUD moves without them.
+   analysed and not reconstructed; nothing on the HUD moves without them. The manager's own
+   update 0068C1F0 already runs here, so these three are what is left between a drawn HUD and a
+   live one.
 7. **The three header fixes in corrections 1, 4 and 6**, all one-line changes in files this
    packet does not own.
+8. **What raises the in-mission interface manager.** Its vtable slot +08h is 00684700, the base
+   Activate, but no direct caller of 00684700 is this manager and nothing in the reconstructed
+   load reaches the dispatch. Until it is found, the manager's +3Ch byte is the executable's.
 
 ## Next milestones
 

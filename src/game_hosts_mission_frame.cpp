@@ -744,13 +744,22 @@ public:
         owner_.record("MissionFrame::toggle_pause_menu", 0x004db030u);
     }
     bool in_game_interface_active() override {
-        // 00e198c4 and its +3Ch. The in-mission HUD manager 0068a990 builds is
-        // a record in the load, so the process has no such object.
-        owner_.record("MissionFrame::in_game_interface_active", 0x004e524cu);
-        return false;
+        // 00e198c4 and its +3Ch. Milestone 2h builds the manager, so the gate
+        // answers from the object rather than from its absence.
+        owner_.done("MissionFrame::in_game_interface_active", 0x004e524cu);
+        return owner_.hud != nullptr && owner_.hud->manager_active();
     }
     void update_in_game_interface_0068c1f0() override {
-        owner_.record("MissionFrame::update_in_game_interface", 0x0068c1f0u);
+        if (owner_.hud == nullptr) {
+            owner_.record("MissionFrame::update_in_game_interface", 0x0068c1f0u);
+            return;
+        }
+        // bsp::update_in_game_interface_0068c1f0, packet cc_hud_updates. Almost
+        // everything it reads belongs to a screen class, to the camera at
+        // game+19FCh or to the controlled unit at 00e188d8, none of which this
+        // process owns, so the recovered control flow runs over records.
+        owner_.hud->update_in_game_interface_0068c1f0();
+        owner_.done("MissionFrame::update_in_game_interface", 0x0068c1f0u);
     }
     void update_interface_only_004c40f0() override {
         // Milestone 2h: the registry is no longer empty. The load's HUD step
@@ -1412,7 +1421,7 @@ void GameMissionFrameHost::report(long requested_frames) {
     }
     host.fixed_step->report();
     host.result->report();
-    host.lua.report_core_bindings();
+    if (host.hud != nullptr) host.hud->report();
     if (host.scene_contents) {
         // Milestone 2h. The scene contents pass created unit records, and the
         // frame's unit passes ticked none of them. That is not an empty scene:

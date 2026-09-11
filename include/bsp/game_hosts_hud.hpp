@@ -51,6 +51,8 @@ struct GameHudScreenRecord {
 
 struct GameHudSummary {
     bool manager_built{false};       // the executable's registry records exist
+    bool manager_global_published{false};  // 0068ccfe, the second write of 00e198c4
+    std::size_t screen_constructors{0};    // the 42 leaf constructors, all records
     std::size_t screens_built{0};    // of kInGameHudScreenCount
     std::size_t pages_requested{0};
     std::size_t pages_loaded{0};
@@ -65,6 +67,9 @@ struct GameHudSummary {
     std::vector<int> level1_context_ids;
     std::vector<std::string> level1_pages;  // the pages those screens hold
     unsigned long long pump_frames{0};
+    // Step 17 of the in-mission frame, 0068c1f0 at 004e5252.
+    unsigned long long update_frames{0};
+    std::string audio_environment;   // what the update's tail chose, 00a7b710
     std::vector<GameHudScreenRecord> screens;
 };
 
@@ -101,6 +106,15 @@ public:
     // One in-mission frame of BSP_Game_UpdateInterfaceOnly 004c40f0, which is
     // where the screen pump runs while the game state is not 1, 2 or 4.
     void update_interface_only_004c40f0(float raw_delta);
+
+    // Step 17 of the in-mission branch of 004e4a40, 0068c1f0 at 004e5252. The
+    // frame's own gate is `00e198c4 != 0 && [00e198c4]+3Ch != 0`, which is what
+    // manager_active() answers.
+    bool manager_active() const noexcept;
+    void update_in_game_interface_0068c1f0();
+
+    // One summary line for the run log.
+    void report();
 
     const GameHudSummary& summary() const noexcept;
 

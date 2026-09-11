@@ -25,8 +25,8 @@
   "command": "bsp_game.exe --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 120 --mission-complete-frame 90 --screenshot local/run_2h.png --screenshot-mission-frame 60 --log local/game_run_2h.log --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
   "run": {
     "exit_code": 0,
-    "host_methods_concrete": 286,
-    "host_methods_unimplemented": 307,
+    "host_methods_concrete": 290,
+    "host_methods_unimplemented": 318,
     "scene_entities_visited_per_pass": 34,
     "scene_entities_generated": 34,
     "scene_entities_rejected": 0,
@@ -63,7 +63,9 @@
     ],
     "sprite_bridge_quads_on_the_mission_frame": 70,
     "sprite_bridge_glyph_quads_on_the_mission_frame": 29,
-    "unit_pass_entities_ticked": 0
+    "unit_pass_entities_ticked": 0,
+    "hud_update_frames": 90,
+    "hud_audio_environment": "Underwater"
   },
   "scene_contents_steps": [
     {
@@ -404,8 +406,8 @@
       "native": "0068a990",
       "function": "004dfb70",
       "owner": "gui",
-      "status": "unimplemented",
-      "note": "the 108h manager at 00e198c4 and its Init 0068cc70 are packet cc_hud_updates' and are not reconstructed"
+      "status": "concrete",
+      "note": "packet cc_hud_updates merged during this packet's turn, so the constructor and the Init are bsp::construct_in_game_interface_0068a990 and bsp::init_in_game_interface_0068cc70 rather than records; the 42 leaf screen classes are still not reconstructed"
     },
     {
       "method": "InGameInterface::push_interface_request",
@@ -492,6 +494,53 @@
       "native": "004c40f0",
       "status": "concrete",
       "note": "milestone 2f recorded it because the registry had nothing in it; the HUD screens are in it now, so the call services the pending request and pumps"
+    },
+    {
+      "method": "InGameInterface::publish_manager_global",
+      "address": "0068ccfe",
+      "native": "0068ccfe",
+      "function": "0068cc70",
+      "status": "concrete",
+      "note": "the second write of 00e198c4; the object is this process's own bsp::InGameInterfaceManager"
+    },
+    {
+      "method": "InGameInterface::base_init",
+      "address": "0068cd04",
+      "native": "00683a90",
+      "function": "0068cc70",
+      "status": "concrete",
+      "note": "a bare RET in this build"
+    },
+    {
+      "method": "InGameInterface::allocate_screen",
+      "native": "00bf681b",
+      "status": "unimplemented",
+      "note": "42 sites inside 0068cc70, one per screen; the registry-slot 29h screen at +CCh goes through 00bf55be instead"
+    },
+    {
+      "method": "InGameInterface::screen_constructor",
+      "native": "0068cc70",
+      "status": "unimplemented",
+      "note": "the 37 leaf constructors kInGameHudScreens carries, all of them call sites inside 0068cc70; one record stands for the set"
+    },
+    {
+      "method": "InGameInterface::activate_manager",
+      "native": "00684700",
+      "status": "unimplemented",
+      "note": "manager+3Ch, the byte 006840fe and the frame's step 17 test. The manager's vtable slot +08h is 00684700 itself and nothing in the reconstructed load reaches that dispatch, so the executable raises the byte and records the routine"
+    },
+    {
+      "method": "MissionFrame::in_game_interface_active",
+      "address": "004e524c",
+      "native": "004e524c",
+      "status": "concrete",
+      "note": "the gate 00e198c4 != 0 && [00e198c4]+3Ch != 0, which now answers from the object"
+    },
+    {
+      "method": "InGameInterface::update",
+      "native": "0068c1f0",
+      "status": "concrete",
+      "note": "bsp::update_in_game_interface_0068c1f0, step 17 of the in-mission frame at 004e5252, 90 calls. Every screen, camera and controlled-unit read inside it is a record with its own address; the spectate walk finds no units because its list hangs off the world 004de610 would build, and the audio tail reaches 00a7b710 with Underwater, the recovered rule's answer for a zero camera height and a zero water height"
     }
   ],
   "corrections": [
@@ -542,6 +591,12 @@
       "was": "hands the host the composed world frame only",
       "is": "0046cf40 passes the entity's own localframe as argument 4 and the parent's world frame inline as arguments 7..22, and 0046c550 uses them differently: argument 4 supplies the x and z the area test starts from and the parent frame is what the null-parent branch 0046c6e5 composes with. A host that receives only the product cannot reproduce that for a nested entity. Every entity of this mission is top level, so the run is unaffected and the executable reports the nested count",
       "evidence": "0046c57a reads [local+30h] and [local+38h]; 0046c6e5 composes local with the by-value parent snapshot; bsp::visit_entity in src/scene_file.cpp multiplies the two before calling the host"
+    },
+    {
+      "target": "this milestone's own first pass, and milestone 2f's records for the in-mission interface manager",
+      "was": "0068a990, 0068cc70 and 0068c1f0 were unimplemented records, and the level-1 set was applied over a screen walk this file wrote",
+      "is": "packet cc_hud_updates merged during this packet's turn with include/bsp/in_mission_interface_runtime.hpp, so the constructor, the Init and the per-frame update all run as reconstructions. Milestone 2f's MissionFrame::in_game_interface_active [004e524c] and update_in_game_interface [0068c1f0] records are gone",
+      "evidence": "the run log: InGameInterface::construct_manager and manager_init are concrete, InGameInterface::update runs 90 times over the 120 frame run, and the level-1 set is unchanged at {29h, 49h, 44h, 35h}"
     }
   ],
   "executable_decisions": [
@@ -550,7 +605,8 @@
     "The 42 in-mission HUD screens are the executable's own registry records built from bsp::kInGameHudScreens and bsp::kHudScreenLayouts. The manager 0068a990 and its Init 0068cc70 stay records; what runs is the registration, the page load and the widget lookup, all through recovered routines.",
     "The vehicle-class registry's forward index map is filled with the identity. 00592640 and 00506550 reset all 800h pairs to the identity and rewrite one, and 00592640 is the footer command this run already takes, so the fill is the state the native leaves rather than an invention. Without it 0095ba60 finds no class index and marks no party.",
     "The three mission-detail page roots are hidden when the manager is destroyed. The native releases them with the main-menu screen's own layout references; the executable holds them directly and hides them at the same point.",
-    "--screenshot-mission-frame N names an in-mission frame of 004e4a40 rather than an application frame, so a capture can be aimed at the HUD without counting frames from the injected press."
+    "--screenshot-mission-frame N names an in-mission frame of 004e4a40 rather than an application frame, so a capture can be aimed at the HUD without counting frames from the injected press.",
+    "The manager's active byte at +3Ch. 00684700 sets it through the manager's vtable slot +08h; Ghidra reports three direct callers of 00684700 and none is this manager, and nothing in the reconstructed load reaches that dispatch. The executable raises the byte so the request Init pushes can be serviced and the frame's step 17 can run, and records 00684700. The other half of 00684700, deactivating every other registered manager, has already happened because the load destroyed the main-menu manager through 00686c90."
   ],
   "unit_pass_evidence": {
     "created_unit_records": 32,
@@ -588,20 +644,20 @@
     {
       "command": "--frames 300 --press-start-frame 30 --menu-select USN02 --mission-frames 60",
       "exit_code": 0,
-      "host_methods": "279 concrete, 289 unimplemented",
+      "host_methods": "283 concrete, 300 unimplemented",
       "note": "summary mission exit reachable=0, as milestone 2f and 2g report without --mission-complete-frame"
     },
     {
       "command": "--frames 3000 --mission-frames 2000 --mission-complete-frame 1990",
       "exit_code": 0,
-      "host_methods": "286 concrete, 307 unimplemented",
-      "note": "19 fixed steps; the count is wall-clock driven and 2g's own long run reported 18"
+      "host_methods": "290 concrete, 318 unimplemented",
+      "note": "23 fixed steps; the count is wall-clock driven and 2g's own long run reported 18"
     },
     {
       "command": "--press-start-frame 30 --menu-select USN02 --mission-frames 60, closed with CloseMainWindow",
       "exit_code": 0,
-      "frames_presented": 28391,
-      "host_methods": "280 concrete, 289 unimplemented",
+      "frames_presented": 52219,
+      "host_methods": "284 concrete, 300 unimplemented",
       "note": "CloseRequestPolicy::front_end_branch 004ca2f0 recorded once"
     }
   ],
@@ -652,15 +708,14 @@
       "contract": "the twelve fixed-size creators; 004e99b0 NavPoint is the one this mission needs"
     },
     {
-      "packet": "cc_hud_updates",
+      "packet": "hud_screen_updates",
       "addresses": [
-        "0068a990",
-        "0068cc70",
         "00649860",
         "006435d0",
-        "005c0f20"
+        "005c0f20",
+        "00648290"
       ],
-      "contract": "the manager's own construction and the three central screens' update virtuals, which is what would move a HUD widget"
+      "contract": "the three central screens' update virtuals, which are analysed and not reconstructed. cc_hud_updates has since merged and this packet runs its constructor, Init and per-frame update; what is left is the per-screen work those three virtuals do"
     },
     {
       "packet": "hud_widget_clone",
