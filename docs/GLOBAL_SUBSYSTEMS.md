@@ -73,3 +73,9 @@ The newly landed type-dispatch factory now also requires the same live CRT mode
 alias and passes it to Screen and FrameBox readers. That reference must outlive
 the factory and its types. The combined build and both checks passed after this
 caller migration; see the report for the exact code revision and log.
+
+Final integration tested revision `e1a5d542e18689f0586a275d56d8446a788d7bb2`
+and fast-forwarded main to that same revision. Both existing tests passed; the
+helper saved all28 reviewed names. Four focused fixtures had passed against
+the earlier same-wave library recorded separately, before concurrent main
+changes and the GUI caller migration. This evidence is not gameplay proof.

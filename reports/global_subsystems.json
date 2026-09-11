@@ -115,5 +115,24 @@
     "log": "local/global_main_build_final.log",
     "code_revision": "cd8f3b9a2fd5d3fc1d46a32db75e2aae8d07a4b0",
     "library_sha256": "60ed8e6397c4c6a4a67f9873ea1c1eaa10826def81b77aac8c4a95b8ec0e888a"
+  },
+  "final_integration": {
+    "tested_revision": "e1a5d542e18689f0586a275d56d8446a788d7bb2",
+    "main_after_integration": "e1a5d542e18689f0586a275d56d8446a788d7bb2",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "log": "local/global_integrate_success.log",
+    "library_sha256": "60ed8e6397c4c6a4a67f9873ea1c1eaa10826def81b77aac8c4a95b8ec0e888a",
+    "fixture_scope": "Four fixtures used the earlier same-wave combined library at validation.code_revision; later main integration includes other orchestrators changes and required GUI mode caller migration.",
+    "ghidra_reapplied_saved_names": 28,
+    "ghidra_before_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T081720Z.json",
+    "index": {
+      "functions": 62659,
+      "calls": 131975,
+      "datarefs": 32747,
+      "docs": 623,
+      "doc_addresses": 10911
+    },
+    "game_validated": false
   }
 }
