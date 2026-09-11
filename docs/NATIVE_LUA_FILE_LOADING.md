@@ -124,3 +124,8 @@ Next: reconstruct/bind the actual BDEF90 producer and VFS manager+04/stream owne
 contracts, then connect the native Lua bootstrap/file services to B43B00 descriptor loading.
 Arbitrary invalid extents/indices, short-read uninitialized tails, original exception ABI,
 general callback-driven storage mutation, game rendering and gameplay remain unvalidated.
+
+
+## Correction from docs/NATIVE_LUA_SCRIPT_OVERRIDES.md
+
+The actual BDEF90 override producer and BDEF80 registration thunk are now reconstructed, including native vector append and path helpers. Captured suffix order, duplicates, mutable candidate/current vtable behavior and nested original/rebuilt DoFile execution are verified. Actual callable VFS existence and stream ownership remain separate integration contracts. See that document and `reports/native_lua_script_overrides.json`.

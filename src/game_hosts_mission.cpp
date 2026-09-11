@@ -317,6 +317,7 @@ struct GameMissionHost::Impl {
     std::string language;
     std::unique_ptr<GameMissionLuaHost> lua;
     std::unique_ptr<GameMissionFrameHost> frame_host;
+    GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
         GameFrontendHost& frontend_in, LocaleTables& locale_in, std::string requested,
@@ -1272,12 +1273,15 @@ void GameMissionHost::Impl::consume_load_request() {
 GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
     GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
     long mission_frames, GameFrameProfiler* profiler, std::string language,
-    long mission_complete_frame)
+    long mission_complete_frame, GameHudHost* hud)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
           std::move(language))) {
     // Milestone 2g, --mission-complete-frame N.
     impl_->mission_complete_frame = mission_complete_frame;
+    // Milestone 2h: the in-mission HUD, owned by the front-end host because the
+    // registry its screens land in is that object's.
+    impl_->hud = hud;
 }
 
 GameMissionHost::~GameMissionHost() = default;
@@ -1566,7 +1570,8 @@ void GameMissionHost::Impl::finish_scene_load() {
         summary.lua_script_path.c_str());
 
     lua = std::make_unique<GameMissionLuaHost>(log, vfs);
-    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, profiler, language);
+    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, profiler, language,
+        hud);
     // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.
@@ -1575,6 +1580,22 @@ void GameMissionHost::Impl::finish_scene_load() {
     // frame the executable makes the script's end-movie call on.
     frame_host->set_mission_key(summary.selected_id);
     frame_host->set_mission_complete_frame(mission_complete_frame);
+    // Milestone 2h. The load's release of the main-menu manager runs
+    // BSP_MainMenu_Destroy 00686c90, which exits each of its seven screens,
+    // clears both flag bytes and commits through 004f83b0 at 00686db9, then
+    // destroys each screen through its vtable +0Ch at 00686e14. Destroying the
+    // main-menu screen releases the three layouts it holds at +2F0h, +244h and
+    // +248h, which is what takes the mission-detail page off the screen. The
+    // executable owns those three roots directly rather than through the
+    // screen's +24h collector, so it hides them here and says so.
+    for (GuiLayoutPage* released : {worldmap_page, briefing_grid_page, briefing_page}) {
+        if (released != nullptr && released->root) {
+            frontend.set_widget_visible(*released->root, false);
+        }
+    }
+    frontend.invalidate_bridge();
+    log.note("the mission-detail page roots were hidden: 00686c90 destroys the main-menu "
+        "screen, which releases the three layouts it holds at +2F0h, +244h and +248h");
     frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
         record.locale_table_list, record.mission_id);
 

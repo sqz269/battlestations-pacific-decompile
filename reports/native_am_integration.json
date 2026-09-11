@@ -1,0 +1,649 @@
+{
+  "packet": "orch2_am_integration",
+  "utc": "2026-09-11T23:35:33.537794+00:00",
+  "tested_combined_commit": "e913b66c19c3e81126c8334123007d49af2f5796",
+  "root_packet": {
+    "report": "reports/native_lua_script_overrides.json",
+    "tested_source": "df02807de21f893cea50a155bb7978a2ff83a84d",
+    "functions": 5,
+    "frozen_artifacts_verified": 99,
+    "relevant_sources_unchanged": true,
+    "build_registry_changes": "additions and order-only union"
+  },
+  "workers": [
+    {
+      "module": "vfs_open_route",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am",
+      "commit": "131a2a8f048f4638fc5adc3e0265acf7bc5ba305",
+      "owned_git_blobs_match": true,
+      "checkout_line_ending_changes_only": [
+        "src/native_vfs_open_route.cpp",
+        "reports/native_vfs_open_route.json"
+      ],
+      "preserved_artifacts": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am\\local\\build_vfs_open_probe.cmd",
+          "preserved": "local/native-am-worker-evidence/vfs_open_route/build_vfs_open_probe.cmd",
+          "sha256": "943949a5e3d5bdcc6d9d74cce64d95362f94f44b14c7a8c034820654ed14959a"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am\\local\\native-vfs-open-build.log",
+          "preserved": "local/native-am-worker-evidence/vfs_open_route/native-vfs-open-build.log",
+          "sha256": "7c436303713abfa564247d16a6cf3005fbf9f09f578a8b06ff02a59be6914e1c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am\\local\\vfs_open_original_bytes.hpp",
+          "preserved": "local/native-am-worker-evidence/vfs_open_route/vfs_open_original_bytes.hpp",
+          "sha256": "5a07d1f17863a0147624cd3997968e7f6118027fa42521ef40de75abd7130047"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am\\local\\vfs_open_probe.cpp",
+          "preserved": "local/native-am-worker-evidence/vfs_open_route/vfs_open_probe.cpp",
+          "sha256": "606b08ef8eae1f0fe0b6c115746810a91b6530fadbaf84c7c3177ac40f0482ae"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am\\local\\vfs_open_probe.exe",
+          "preserved": "local/native-am-worker-evidence/vfs_open_route/vfs_open_probe.exe",
+          "sha256": "9046a09b2f7b796800afacd15ad01380624b1713a85544d441b885e64b06c348"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-vfs-open-am\\local\\vfs_open_probe.obj",
+          "preserved": "local/native-am-worker-evidence/vfs_open_route/vfs_open_probe.obj",
+          "sha256": "ac478638b4735aa7b2b94956649ec68d3861531d15bd9b08f467940b12602c9f"
+        }
+      ]
+    },
+    {
+      "module": "memory_stream",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am",
+      "commit": "91eee7d3deb08ed2224321d0524c94674d6c323b",
+      "owned_git_blobs_match": true,
+      "checkout_line_ending_changes_only": [
+        "reports/native_memory_stream.json"
+      ],
+      "preserved_artifacts": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_build.log",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_build.log",
+          "sha256": "a4f7595878ae81e6ecca2877204c7f6910ea682f91a71d82a98fe317917262db"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_commit.txt",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_commit.txt",
+          "sha256": "5f16cb35e391c92d9ee842e0ff5b74f3adea50624acc2a779118380838b71419"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_probe.cpp",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_probe.cpp",
+          "sha256": "53bd1685832e7be73aeac32d9642be3d7598f6eefa83fa42589c749b60c28255"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_probe.exe",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_probe.exe",
+          "sha256": "032311216845bcb18a28d3b80ea51b86d9bd99bc6d776589518811d1045650b0"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_probe.log",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_probe.log",
+          "sha256": "01f4750d9004f08c5bc53a16a82ed6ddcd94436eb825a0d1a528a23ae90ae30f"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_probe.map",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_probe.map",
+          "sha256": "3b3b8e6f8c5210ddbd35aac3ec9c3ed3bb50c8ccf2508b1400496f1db2e95dc5"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_probe.obj",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_probe.obj",
+          "sha256": "fec5119ce7dfa5fdca37d3bdd9033e74d1915335b8f3615ae0b05e10758280b2"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\native_memory_stream_probe_result.log",
+          "preserved": "local/native-am-worker-evidence/memory_stream/native_memory_stream_probe_result.log",
+          "sha256": "8012dbabe96bf536b22ed942ee81e16c74feef6eb13476cbaf13c78154ab50e9"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-memory-stream-am\\local\\run_native_memory_stream_probe.ps1",
+          "preserved": "local/native-am-worker-evidence/memory_stream/run_native_memory_stream_probe.ps1",
+          "sha256": "f1d93b124c97473a134de9a09d09031e0107eae18d44ab48daeaeb6e2390ac32"
+        }
+      ]
+    },
+    {
+      "module": "lua_fundamentals",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am",
+      "commit": "3c180d50e5c4118d27cd7c8aff3ea47579c57105",
+      "owned_git_blobs_match": true,
+      "checkout_line_ending_changes_only": [
+        "reports/native_lua_fundamentals.json"
+      ],
+      "preserved_artifacts": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-base-disk.asm",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-base-disk.asm",
+          "sha256": "e66202ae59595da6036e13c02b26ed0a7308512b8760132b556e3dd4a45cef8c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-base.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-base.bin",
+          "sha256": "3675bae8456a7279e9f6630ea8734129abbb70f6298b350a620fd5e60a9fd17b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-build.log",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-build.log",
+          "sha256": "c530e6981d52018b759a8c253111b20ce235a261093ba87d2ae7ffd4a55023c5"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-cleanup-domain-commit.txt",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-cleanup-domain-commit.txt",
+          "sha256": "95bbbc26d0a07bb73cbf68207be1775f590699e9a4f8d80ac7027e11f638e632"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-commit-message.txt",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-commit-message.txt",
+          "sha256": "6bc8d71d3a248e47c0cec53885d68efb163f5f442a8ebe52d9099519fa2438db"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-construct-disk.asm",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-construct-disk.asm",
+          "sha256": "b08312d07b220ab24ccd4fdef5adda32387f1836ee35cc2f8f5705344d9cfc12"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-construct.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-construct.bin",
+          "sha256": "7a9579485fa41a033d4a6c009b7e7dce11d1df96f36344e1d553fb3abc194180"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-ctor_eh.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-ctor_eh.bin",
+          "sha256": "c81f90b1470a7aa11da9767424582b28e27f7a4e8c810992c605f0dc0929bd71"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-ctor_map.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-ctor_map.bin",
+          "sha256": "3751adc7f43febe0ab69e7e3529266d9ae099d254f88970a5677bcbeaf4fe169"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-delete-disk.asm",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-delete-disk.asm",
+          "sha256": "13cea609dbeaeb88dc6f8014262676aea3df8b1e1938b7151c5abb0ae6ad7260"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-delete.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-delete.bin",
+          "sha256": "df123e73bf8d2dfc1f61577dc2baefe1237502dc0bbc3039608e7f944d769444"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-get-disk.asm",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-get-disk.asm",
+          "sha256": "283de5fc1646281755702bc14740384ae15fda89e6ec2eb26177812c4a5dd636"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-get.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-get.bin",
+          "sha256": "87c0b25c289f74e8f3b6b4700268b923ea528c9467e9ea468d11e46886ebc913"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-get_eh.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-get_eh.bin",
+          "sha256": "21b8fb485eaaf5b5ed67515e473954b75478d93f0304d7fbcc11609ae654d454"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-get_map.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-get_map.bin",
+          "sha256": "02cb2346c15d2a7e6e41c523574e6ff6b630b38ff2ded45a50d653dbdd140bd0"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-ledger.log",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-ledger.log",
+          "sha256": "9c535ce3c70f1581c5eb4d89d87964d41213812c0c08a3a897b18ebeb1f40e47"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-native.hpp",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-native.hpp",
+          "sha256": "d18c119bb46459ef38db4e6aa025813f28859b1baef3e988954f857b7997eb48"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-path.bin",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-path.bin",
+          "sha256": "40c8e02427f02faad6f739c2092b98ab9473d2368b50d951fd927021d7c0149b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-probe-compile.log",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-probe-compile.log",
+          "sha256": "fb62b8007def5627677c2334e8d1f35f5f800de5ae82ba05845f973a54088b2d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-probe-result.log",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-probe-result.log",
+          "sha256": "e0c896d3051c8da3fc9b88fbc2e2958a860321e6d755affb42abebdb4ec96051"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-probe.cpp",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-probe.cpp",
+          "sha256": "78b855f0385d7ac1689b028590925ffb9e50e76547005fa8214d50a4b5156cb1"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-probe.exe",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-probe.exe",
+          "sha256": "911a8731f155d30f3ffd69e2917184096768220cce886380708f96b8f02ce009"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-probe.obj",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-probe.obj",
+          "sha256": "bd7b9315567512447538ebbb2ace6f9b62532d7f9d82ca47a6bc9005a8d23842"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-seeds.log",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-seeds.log",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\fundamentals-spans.json",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/fundamentals-spans.json",
+          "sha256": "fbf0dabf91bc7c8eb8697f1e7999780ecd6397bbb172633a90a76df751005285"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-fundamentals-am\\local\\run_fundamentals_probe.ps1",
+          "preserved": "local/native-am-worker-evidence/lua_fundamentals/run_fundamentals_probe.ps1",
+          "sha256": "f74df7d9ee302acd77847db81a84c607b9e1e38277ed3fd1b9803dc7651911a5"
+        }
+      ]
+    }
+  ],
+  "worker_sources_sha256": {
+    "include/bsp/native_vfs_open_route.hpp": "ae5f6c0f48a3b98f49a6945f6d628ebfff874a705bb694924d434e3031de5713",
+    "src/native_vfs_open_route.cpp": "d5111f6807b80c949a6efb30169ca0eaf05897e16ee630c46e8f793f29a2af7e",
+    "docs/NATIVE_VFS_OPEN_ROUTE.md": "a4e0f0a108df0716a915be77961016fda89cdf8721b50de41d6a2eb8712fe328",
+    "reports/native_vfs_open_route.json": "21fd50516ce3208e293cb27ee6d9b223933e0f4d65716b9dec61059c07509c94",
+    "include/bsp/native_memory_stream.hpp": "0c673ab73fe7cc5c900dd7f0d746f5b048334706c16242f32eb94a8e95eeaa42",
+    "src/native_memory_stream.cpp": "5b40e8f8d11255a9389805c81386458db8b06c0b3c34f12a314653dda7d370d5",
+    "docs/NATIVE_MEMORY_STREAM.md": "bb9154c6ef876e36720c3db71ebf1b9ac5a52cd88bb5e9f93ee1498cd3d71199",
+    "reports/native_memory_stream.json": "525a4fd6c734ba0099ad5d830779c00f83cededbac5e53738464769a58a2ec71",
+    "include/bsp/native_lua_fundamentals.hpp": "5332b4330d67a8858c9102462159c099c1b02403083c71dff3aa539e8238d56b",
+    "src/native_lua_fundamentals.cpp": "96e51e8efb3d2686f04551c2c3096038be47ab78a1cb31d83e70118b0e1d201f",
+    "docs/NATIVE_LUA_FUNDAMENTALS.md": "8936266f141f7e6dae18dc67336217ace7a2d663326f39e9744b7f95b5dbc795",
+    "reports/native_lua_fundamentals.json": "1d06b23e12a91196dbfea3b965c3fcf6bc350d427e861f2d7d3f23fd2f8fd43a"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-am-tested/bsp_core.lib",
+      "sha256": "a088b86045367113c496dc9b8a6fe5c258a7706f931721c7da0f52a28957b37a"
+    },
+    {
+      "original": "build/win32/Release/bsp_lua511.lib",
+      "preserved": "local/native-am-tested/bsp_lua511.lib",
+      "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-am-tested/bsp_game.exe",
+      "sha256": "5a371484cb4680a64594585c97c3e92aa245e1a37a7708bc082fc59111c8e8dd"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-am-tested/LastTest.log",
+      "sha256": "3bff74f2329b9353d2179b61c9e169954b4d73f1c30e13234314f0203fa3ba36"
+    }
+  ],
+  "artifacts_sha256": {
+    "local/native-am-fundamentals-destructor-flow.json": "de7a3b5c1bd9b6b0fb03c4df3e23549044934d617e41d63b54c7d36dfcf2680d",
+    "local/native-am-fundamentals-unwind-flow.json": "2b73442c76b1cc068005a6c561d1cfaf656c96821b7e776f00eb2b6b8dc5d409",
+    "local/native-am-integration-prepare.log": "2baf3aa7b2f5a2dc7f7f2e411cb6c904ceec6b07ec6e3fd1b6e19fd1b4027d73",
+    "local/native-am-memory-open-function-definition.json": "4076c2e0d24af851a89df7461ddc09e134415f5920ce75a1da15addd5ea3b58d",
+    "local/native-am-memory-unwind-flow.json": "4f009f4466674c703c8e963cfe985532e64de9320eaf78efdb3e16768405a866",
+    "local/native-am-repair-exports.log": "90a15ba6169f77e0a9d198810d6e1fd6ede4728fa8cb2818638cbf1ef82ed4bc",
+    "local/native-am-vfs-stop-function-definition.json": "38bd867fbe7133d4acababf2730eb3dcdb504211de1431e552d5650b48127b64",
+    "local/native-am-worker-annotations.log": "cf2cdee40defa9c201180a8c10762048296532ff2ca86e77081f5102feab146f",
+    "local/native-am-worker-comments-after.json": "6f5ecb10d17de7768dbf33fcc9a503144246cb3998b9de35de51fe106c21cd72",
+    "local/native-am-worker-comments-after.log": "382fad910e54558fb26f814d3b98a4aaab59fe4ecfff95751f31d864ac44d004",
+    "local/native-am-worker-comments-before.json": "283bf8c8dfc01987fafbd9b02f56d2815037ebc7ec761bc4ae69cdcf3db00fdd",
+    "local/native-am-worker-comments-before.log": "5b7471e6f92c02f845d22ff71878c3bef495b686d2706d839bdcbbfb791c7d95",
+    "local/native-am-worker-export-refresh.log": "e12bc4e30113fdde477566350e4dc389acd7445c9c042b9fcb21a73d1e35f364",
+    "local/native-am-worker-names-after.txt": "20c0d12f1a4ca99d2a201a6f436070adb1d4a16465527caac3d553cfd1d119a4",
+    "local/native-am-worker-names-before.txt": "39068c29ed3bfda788ba67dad3ef804874413e48095c2decf907fe04c07e7133",
+    "local/native-am-worker-names-expected.json": "afc70febc245bcb9fa7976914fe569d11fc19027e555f78ee45a11c75fd43874",
+    "local/ghidra-annotations-20260911T233303Z.json": "5e0e3ef7b32080949eebca4a7cbaa711c009451fcaa80b219ac2bb47cc3dc1e3",
+    "local/record_native_am_integration.py": "e5c5349a6ce56113a9c5f57e6e6b02a81c5af0fad800d6edd204b1b718f63434",
+    "local/complete_native_am_integration_docs.py": "60072e9faa9eca5fc6c4d920e432b0e9ace887a5829ce25d94ce0e4c9cba81b6"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_names_verified": 13,
+    "prior_comment_fields_preserved": 9,
+    "worker_exports_refreshed": 13,
+    "saved": true,
+    "definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00bef4c0",
+              "end_address": "00bef4c3"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00bef4c0",
+              "end_address": "00bef4c2",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00bef4c0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00bef4c0",
+              "function_name": "FUN_00bef4c0",
+              "entry_point": "00bef4c0",
+              "body_size": 3,
+              "message": "Function created successfully at 00bef4c0"
+            }
+          },
+          {
+            "defined": "00bef4c0",
+            "end": "00bef4c3",
+            "name": null,
+            "after": "Function: FUN_00bef4c0 at 00bef4c0\nSignature: undefined FUN_00bef4c0(void)\nEntry: 00bef4c0\nBody: 00bef4c0 - 00bef4c2"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00bd9040",
+              "end_address": "00bd9049"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00bd9040",
+              "end_address": "00bd9048",
+              "bytes_disassembled": 9,
+              "message": "Successfully disassembled 9 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00bd9040",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00bd9040",
+              "function_name": "FUN_00bd9040",
+              "entry_point": "00bd9040",
+              "body_size": 9,
+              "message": "Function created successfully at 00bd9040"
+            }
+          },
+          {
+            "defined": "00bd9040",
+            "end": "00bd9049",
+            "name": null,
+            "after": "Function: FUN_00bd9040 at 00bd9040\nSignature: undefined FUN_00bd9040(void)\nEntry: 00bd9040\nBody: 00bd9040 - 00bd9048"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "flow_repairs": [
+      {
+        "repairs": [
+          {
+            "function": "00b66b80",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-11T23:28:08Z",
+            "decompile_lines_before": 21,
+            "gaps": [
+              {
+                "site": "00b66b91",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b66b96",
+                "gap_end_exclusive": "00b66ba0",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344"
+              },
+              {
+                "site": "00b66bb8",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b66bbd",
+                "gap_end_exclusive": "00b66bc0",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b66b91",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b66b96",
+                  "gap_end_exclusive": "00b66ba0",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344"
+                },
+                "clear": "Success: Cleared flow override at 00b66b91 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b66bb8",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00b66bbd",
+                  "gap_end_exclusive": "00b66bc0",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b66bb8 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 17,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      {
+        "repairs": [
+          {
+            "function": "00c970b8",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-11T23:28:27Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00c970bc",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c970c1",
+                "gap_end_exclusive": "00c970c3",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00c970bc",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00c970c1",
+                  "gap_end_exclusive": "00c970c3",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00c970bc (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00c970bc",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00c970bc (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00c970c3",
+            "explicit_body_sha256": "3d7f064a83b29682a5b34606b7f3e310590ac38b8bcf4622874556742463d825",
+            "body_before": "Function: Unwind@00c970b8 at 00c970b8\nSignature: undefined Unwind@00c970b8(void)\nEntry: 00c970b8\nBody: 00c970b8 - 00c970c0",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00c970b8 at 00c970b8\nSignature: undefined Unwind@00c970b8(void)\nEntry: 00c970b8\nBody: 00c970b8 - 00c970c0",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      },
+      {
+        "repairs": [
+          {
+            "function": "00cc76d0",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-11T23:28:33Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00cc76d4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00cc76d9",
+                "gap_end_exclusive": "00cc76db",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00cc76d4",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00cc76d9",
+                  "gap_end_exclusive": "00cc76db",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00cc76d4 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00cc76d4",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00cc76d4 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00cc76db",
+            "explicit_body_sha256": "3f84a56d9c5b0969dc9ffa12b5d3e1acd4777b4b5b23d13b5dcc044bfab2a10c",
+            "body_before": "Function: Unwind@00cc76d0 at 00cc76d0\nSignature: undefined Unwind@00cc76d0(void)\nEntry: 00cc76d0\nBody: 00cc76d0 - 00cc76d8",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00cc76d0 at 00cc76d0\nSignature: undefined Unwind@00cc76d0(void)\nEntry: 00cc76d0\nBody: 00cc76d0 - 00cc76d8",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    ],
+    "correction": "B66B80 internal gaps repaired; C970B8 and CC76D0 tails decoded but still outside stored bodies. Worker reports retain their original pre-integration evidence."
+  },
+  "reviews": [
+    {
+      "reviewer": "fundamentals_am",
+      "packet": "native_lua_script_overrides",
+      "result": "No behavior mismatch; corrected documentation to distinguish relocated from executed dependencies."
+    },
+    {
+      "reviewer": "memory_stream_am",
+      "packet": "native_lua_fundamentals",
+      "result": "No behavior mismatch; clarified returning-pool-getter cleanup domain in header/docs/report."
+    },
+    {
+      "reviewer": "memory_stream_am",
+      "packet": "native_vfs_open_route",
+      "result": "No mismatch in documented D6838C domain; unresolved owners and instrumented services remain explicit."
+    },
+    {
+      "reviewer": "root",
+      "packet": "all worker packets",
+      "result": "Read owned implementation/report and evidence boundaries; verified merged source hashes, live call rows and saved annotations."
+    }
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "root_call_rows": 34,
+    "worker_call_rows": [
+      37,
+      8,
+      17
+    ],
+    "new_permanent_tests": 0,
+    "worker_fixture_evidence_preserved": true,
+    "game_validated": false
+  },
+  "remaining": [
+    "VFS actual provider/stream owners and logger must be composed before native Lua startup wiring.",
+    "Original exception identity/ABI and two stored EH tails remain incomplete.",
+    "No game rendering or gameplay validation."
+  ],
+  "integration_documentation_sha256": {
+    "docs/NATIVE_MEMORY_STREAM.md": "0cb1856db92952010e689a16c0bbaf44b05082c5e0a3690faaccb1163bb70570",
+    "docs/NATIVE_VFS_OPEN_ROUTE.md": "7251430dc7156092b188b7af857a49b91c0cf22aa2e4fb4ed34837197b74e90f",
+    "docs/NATIVE_LUA_FUNDAMENTALS.md": "fd3b179ce7921e45e1853aebe9d0c1e57eb4fd40f127d70d64fd5d5514614f5a"
+  }
+}

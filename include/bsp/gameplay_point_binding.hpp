@@ -5,6 +5,7 @@
 #include "bsp/point_effect_constructor.hpp"
 #include "bsp/point_effect_owner.hpp"
 #include "bsp/native_gamepad_force_event.hpp"
+#include "bsp/point_effect_children.hpp"
 
 #include <functional>
 #include <memory>
@@ -71,6 +72,7 @@ public:
         EffectPointView, CameraTransform&) = 0;
     virtual RenderCommandReference* create_current(std::uint32_t native_function,
         void* actual_row, PointEffectInstanceStorage&) = 0;
+    virtual std::uint8_t restart_current(std::uint32_t native_function, void* actual_row) = 0;
 };
 // Compose the three established rumble factories with other actual component
 // implementations. Unknown functions still require the remaining dispatch.
@@ -80,6 +82,7 @@ public:
     std::uint8_t admit_current(std::uint32_t, void*, EffectPointView,
         CameraTransform&) override;
     RenderCommandReference* create_current(std::uint32_t, void*, PointEffectInstanceStorage&) override;
+    std::uint8_t restart_current(std::uint32_t, void*) override;
 private:
     NativeGamepadForceEvents& events_;
     GameplayPointRemainingComponents& remaining_;
@@ -91,7 +94,8 @@ using GameplayPointReferenceLookup = std::function<CameraTransform&()>;
 // real implementations above. The immutable table bindings, current table
 // words, lookup lvalue and spatial associations must remain alive. The lookup
 // reloads actual [E188A8]+19FC; it must not throw or snapshot a transform.
-class GameplayPointRows final : public PointEffectRowRuntime, public EffectAdmissionDispatch {
+class GameplayPointRows final : public PointEffectRowRuntime, public EffectAdmissionDispatch,
+    public PointEffectChildRows {
 public:
     GameplayPointRows(GameplayDefinitionReferences&, const GameplayPointComponentTable*,
         std::size_t table_count, GameplayPointReferenceLookup&,
@@ -102,6 +106,8 @@ public:
     CameraTransform& reference_e188a8_19fc() noexcept override;
     std::uint8_t virtual_1c(void*, EffectPointView, CameraTransform&) override;
     RenderCommandReference* create_virtual_18(void*, PointEffectInstanceStorage&) override;
+    PointEffectRestartRowView restart_fields(void*) noexcept override;
+    std::uint8_t restart_virtual_08(void*) override;
 private:
     friend class GameplayPointConstruction;
     std::uint32_t current_virtual(void*, std::size_t word_index) const;
@@ -111,6 +117,21 @@ private:
     GameplayPointReferenceLookup& reference_;
     ForceEventSpatialHost& spatial_;
     GameplayPointRemainingComponents& remaining_;
+};
+
+// Routes existing native rumble companions to their actual fields/current
+// virtuals. All other event owners require the supplied remaining runtime.
+// Domain lookup allocates nothing and never creates another reference count.
+class GameplayPointChildEvents final : public PointEffectChildEvents {
+public:
+    GameplayPointChildEvents(NativeGamepadForceEvents&, PointEffectChildEvents&) noexcept;
+    PointEffectChildView child_fields(RenderCommandReference&) noexcept override;
+    void update_virtual_28(RenderCommandReference&, float, void*) override;
+    std::uint8_t complete_virtual_08(RenderCommandReference&) override;
+    void deactivate_virtual_30(RenderCommandReference&) override;
+private:
+    NativeGamepadForceEvents& events_;
+    PointEffectChildEvents& remaining_;
 };
 
 // Concrete8689C0 construction dependency: actual866440 lock, actual86A650

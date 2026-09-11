@@ -415,3 +415,13 @@ class id.
 | `unit_instance_base_subobjects` | 00809270 0093bcc0 00815600 0074e7b0 00812d40 | The eight sub-objects `0081ED40` constructs and their interior layouts |
 | `unit_entity_id_registry` | 009517c0 00f89a08 00f89a5c | The u16 id allocator behind `+174h` and the two registries |
 | `unit_role_slot` | 0077f360 0077f2d0 | `vtable[148h](1FFh, 9)` and the meaning of `+180h` |
+
+## Corrections from docs/UNIT_INSTANCE_SUBOBJECTS.md (packet cc2_unit_subobjects)
+
+Three rows above are corrected by the sub-object packet, which read the constructors this
+packet only transcribed as calls: the `+72Ch` sub-object's vptr is `00D09004`, not `00CFC384`
+(the wrong value was read from a neighbouring vtable slot); `0081ED40` has four CRT
+iterator call sites, not three; and `+A98h`/`+AECh` are one two-element array of `54h`-byte
+records, not two separate sub-objects. Its element constructors `0043F620` and `0080FAE0`,
+read from the raw bytes there, are now Ghidra functions
+(`reports/unit_instance_subobjects_function_definitions.json`).

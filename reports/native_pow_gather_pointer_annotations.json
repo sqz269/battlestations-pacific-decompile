@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00bfeb6d",
+    "before": {
+      "address": "00bfeb6d",
+      "function_name": "LIBCRT_unmatched_00bfeb6d",
+      "comment": "[BSP inventory 00bfeb6d] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)"
+    },
+    "after": {
+      "address": "00bfeb6d",
+      "name": "BSP_CRT_X87_PowFallback",
+      "evidence": "Descriptive name hypothesis unless existing matched CRT name. Full453 original bytes become457 compiled bytes plus11-byte parity thunk. All123-to125 instruction mappings, six parent/current-address changes,13 raw-provider literal changes and all direct/internal/conditional bindings checked; twelve complete raw providers1084 bytes, total1537 raw original bytes. Both context XCHGs and normal CW-stack/EBX-ESI restoration at eight exits verified, oldEDX dead at both parity continuations. Preserve waiting FSAVE108-byte/FRSTOR, uninitialized current output, unaligned DWORD sign read and packed-CW scratch. Nine exact archive objects and all COFF sections; full existing actual owning-CRT error provider with inherited FP/precision/SEH boundaries. Static synthetic relocation proof only; no linked or runtime original/fallback/publicpow/SSE2/gamma/game claim. Same frozen main library e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf; strict Win32/two existing CTests/eight original seeds passed. reports/native_crt_pow_fallback_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2c8e0",
+    "before": {
+      "address": "00b2c8e0",
+      "function_name": "BSP_D3D9Renderer_GatherCapabilities",
+      "comment": "[BSP reconstruction 00b2c8e0]\nHypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation.\n\n[BSP reconstruction 00b2c8e0] update\nHypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Packet orch2_renderer_capabilities extends prior settings-only projection. Full query/decision body [00b2c8e0,00b2d8de): caps field mapping, ATOC, second identifier with8800/8600/8200/ATI classification, declaration-type append, conditional INST then unconditional1B50h clear, exact57format TEXTURE-only table with strict HRESULT-zero acceptance. Constructor identifier fragment00b32861..00b32898 performs GetAdapterIdentifier(0,0), Description+200h NVIDIA match into1D88h. Native ABI ECX renderer/RET; constructor returns this; new C++ state borrows shared IDirect3D9. C++ temporary state delays native publications and preserves outputs on failed caps/identifier or allocation throws; native allocator/EH and undefined format-record padding are not reproduced. MSVC Win32 build,2existingCTests,8seed comparisons and ignored trace/liveD3D9 fixture pass. Not native full-routine differential, binary ABI or gameplay validation. Evidence docs/RENDERER_CAPABILITIES.md; reports/renderer_capabilities.json."
+    },
+    "after": {
+      "address": "00b2c8e0",
+      "name": "BSP_D3D9Renderer_GatherCapabilities",
+      "evidence": "Descriptive name hypothesis unless existing matched CRT name. Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation. Same frozen main library e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf; strict Win32/two existing CTests/eight original seeds passed. reports/native_renderer_gather_capabilities_audit.json"
+    },
+    "status": "applied"
+  }
+]

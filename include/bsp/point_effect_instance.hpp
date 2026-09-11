@@ -35,7 +35,7 @@ struct PointEffectInstanceStorage {
     std::array<std::byte, 12> untouched_74;
     float field_80;
     RenderCommandReference* template_84;
-    RenderCommandReference* owner_88;
+    std::uint32_t sample_count_88; // Incremented modulo2^32 by00867790 for delta>0.
     CameraTransform* parent_8c;
     CameraMatrix cached_world_90;
     CameraMatrix relative_d0;

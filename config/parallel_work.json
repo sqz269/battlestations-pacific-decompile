@@ -7571,6 +7571,99 @@
       ],
       "integration_report": "reports/sound_shutdown.json",
       "discovery_evidence": "docs/SOUND_SHUTDOWN.md"
+    },
+    {
+      "id": "native_crt_pow_fallback1",
+      "packet": "native_crt_pow_fallback1",
+      "state": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bfeb6d"
+      ],
+      "code_ownership": [
+        "src/native_crt_pow_fallback.cpp",
+        "include/bsp/native_crt_pow_fallback.hpp",
+        "docs/NATIVE_CRT_POW_FALLBACK.md",
+        "reports/native_crt_pow_fallback_audit.json"
+      ],
+      "evidence": "reports/native_crt_pow_fallback_audit.json"
+    },
+    {
+      "id": "native_renderer_gather_capabilities1",
+      "packet": "native_renderer_gather_capabilities1",
+      "state": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b2c8e0"
+      ],
+      "code_ownership": [
+        "src/native_renderer_gather_capabilities.cpp",
+        "include/bsp/native_renderer_gather_capabilities.hpp",
+        "docs/NATIVE_RENDERER_GATHER_CAPABILITIES.md",
+        "reports/native_renderer_gather_capabilities_audit.json"
+      ],
+      "evidence": "reports/native_renderer_gather_capabilities_audit.json"
+    },
+    {
+      "id": "native_resource_registry_base2",
+      "packet": "native_resource_registry_base2",
+      "state": "two_complete_raw_base_entries_main_archive_checked_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b197e0",
+        "00b197f0"
+      ],
+      "code_ownership": [
+        "src/native_resource_registry_base.cpp",
+        "include/bsp/native_resource_registry_base.hpp",
+        "docs/NATIVE_RESOURCE_REGISTRY_BASE.md",
+        "reports/native_resource_registry_base_audit.json"
+      ],
+      "evidence": "reports/native_resource_registry_base_audit.json"
+    },
+    {
+      "id": "native_resource_registry_construction_discovery",
+      "packet": "native_resource_registry_construction_discovery",
+      "state": "primary_reviewed_read_only_complete_native_contract_and_next_source_readiness",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00b1b730",
+        "00b1aa70",
+        "00b1b6e0",
+        "00b19c30"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RESOURCE_REGISTRY_CONSTRUCTION_DISCOVERY.md",
+        "reports/native_resource_registry_construction_discovery.json"
+      ],
+      "evidence": "reports/native_resource_registry_construction_discovery.json"
+    },
+    {
+      "id": "native_crt_libm_error_callback_discovery",
+      "packet": "native_crt_libm_error_callback_discovery",
+      "state": "primary_reviewed_read_only_complete_native_contract_and_next_source_readiness",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00c0f0e4",
+        "00c28545",
+        "00c0f0bb",
+        "00c04f67"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_LIBM_ERROR_CALLBACK_DISCOVERY.md",
+        "reports/native_crt_libm_error_callback_discovery.json"
+      ],
+      "evidence": "reports/native_crt_libm_error_callback_discovery.json"
     }
   ],
   "snapshot_after_analysis": {
