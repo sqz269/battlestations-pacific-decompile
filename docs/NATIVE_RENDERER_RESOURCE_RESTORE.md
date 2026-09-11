@@ -42,3 +42,21 @@ Fresh Ghidra and installed-PE checks cover 14 code/data spans, 1,120 bytes,
 including the full body, complete reached code providers, profile words and
 the texture pool jump table. See `reports/native_renderer_resource_restore_audit.json`.
 The full reset cycle, device recreation, drawing and gameplay remain unverified.
+
+## Primary integration
+
+The strict Win32 main build, both existing CTests and eight fresh native seeds
+passed. The primary independently verified 64 worker artifact pins and 14 fresh
+live-Ghidra/installed-PE spans (1,120 bytes), then replayed the unchanged fixture
+against the actual main library and four exact archive-member objects. The full
+319-byte original parent and six complete native providers execute without
+service bridges. All five scenarios match: 43 genuine COM callbacks, 108 snapshots
+and 28 mutation writes per implementation; a 127,668-byte normalized literal trace
+and all five complete three-renderer postimages are equal. Two real HAL D3D9
+devices exercise current owner/device changes and post-provider exceptions.
+Whole linked .text postimages, token profiles, seven source/helper code ranges,
+86 native/source COM call sites and 12 declared native relocations were verified.
+The existing descriptive Ghidra name and appended evidence are saved; exports
+were forcibly refreshed and the full function ledger record registered. No new
+permanent tests were added. Provider branch exhaustiveness, original-caller ABI,
+complete reset behavior and gameplay/render validation remain unclaimed.

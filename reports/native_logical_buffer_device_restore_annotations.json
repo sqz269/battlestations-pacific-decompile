@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00b49dc0",
+    "before": {
+      "address": "00b49dc0",
+      "function_name": "FUN_00b49dc0"
+    },
+    "after": {
+      "address": "00b49dc0",
+      "old_name": "FUN_00b49dc0",
+      "name": "BSP_LogicalVertexBuffer_RestoreAfterDeviceReset",
+      "evidence": "Complete432-byte logical vertex buffer device Restore in src/native_logical_buffer_device_restore.cpp, including verified returning-free tail removed by erroneous Ghidra CALL_RETURN override. Original labels/comments retained, full definitions repaired and project saved. Dynamic/null physical/existing current COM guards; required native_pool_stack_bits explicit only unsupported pool nibble>3 (vertex entryESP-4,index entryESP-12), no invented fallback. Current F8D394 renderer/getdevice, zero temporary output, inline vertex/fullB20A80 index flags mapping; separate current size at Create/Attach/Lock/copy; vertex profile before flags versus index flags before profile. Actual full physical Attach then reload temporary and unconditional Release even failed Create. Current physical before zero Lock-base; captured current table/capacity then fresh physical for Lock; fresh copy capacity/current shadow, current Unlock, current shadow free then clear only after return. Original ECX owner/plain RET/no stackargs/no own cleanup; new EDX actual context not original caller ABI. Four immutable36byte native profiles bind actual complete providers. Primary112 worker pins/22 current files/29 fresh live-PE spans3444bytes; strict main/two CTests/eight fresh seeds. Actual main library eleven exact archive members,84 complete linked COFF functions,24paired cases/172352literalDWORDs/730events/4900 whole code-profile postimages. Real D3D9 HAL/CRT providers with normal and callback size32Create/24Attach/16Lock/8copy, owner/profile/temp/shadow/current free mutations, unsupported pool actual MANAGED/SYSTEMMEM, invalid Create8876086C then original null Release faultsB49F04/B4A116, post-provider exceptions. All754ownednativebytes unchanged; four external actual-provider bridges, dedicated fixture .text data storage at original B49F70 for declared four-DWORD branch-table binding. No full reset/gameplay proof. reports/native_logical_buffer_device_restore_audit.json. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4a040",
+    "before": {
+      "address": "00b4a040",
+      "function_name": "FUN_00b4a040"
+    },
+    "after": {
+      "address": "00b4a040",
+      "old_name": "FUN_00b4a040",
+      "name": "BSP_LogicalIndexBuffer_RestoreAfterDeviceReset",
+      "evidence": "Complete322-byte logical index buffer device Restore in src/native_logical_buffer_device_restore.cpp, including verified returning-free tail removed by erroneous Ghidra CALL_RETURN override. Original labels/comments retained, full definitions repaired and project saved. Dynamic/null physical/existing current COM guards; required native_pool_stack_bits explicit only unsupported pool nibble>3 (vertex entryESP-4,index entryESP-12), no invented fallback. Current F8D394 renderer/getdevice, zero temporary output, inline vertex/fullB20A80 index flags mapping; separate current size at Create/Attach/Lock/copy; vertex profile before flags versus index flags before profile. Actual full physical Attach then reload temporary and unconditional Release even failed Create. Current physical before zero Lock-base; captured current table/capacity then fresh physical for Lock; fresh copy capacity/current shadow, current Unlock, current shadow free then clear only after return. Original ECX owner/plain RET/no stackargs/no own cleanup; new EDX actual context not original caller ABI. Four immutable36byte native profiles bind actual complete providers. Primary112 worker pins/22 current files/29 fresh live-PE spans3444bytes; strict main/two CTests/eight fresh seeds. Actual main library eleven exact archive members,84 complete linked COFF functions,24paired cases/172352literalDWORDs/730events/4900 whole code-profile postimages. Real D3D9 HAL/CRT providers with normal and callback size32Create/24Attach/16Lock/8copy, owner/profile/temp/shadow/current free mutations, unsupported pool actual MANAGED/SYSTEMMEM, invalid Create8876086C then original null Release faultsB49F04/B4A116, post-provider exceptions. All754ownednativebytes unchanged; four external actual-provider bridges, dedicated fixture .text data storage at original B49F70 for declared four-DWORD branch-table binding. No full reset/gameplay proof. reports/native_logical_buffer_device_restore_audit.json. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  }
+]
