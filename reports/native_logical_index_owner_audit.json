@@ -1,0 +1,624 @@
+{
+  "packet": "native_logical_index_owner",
+  "audited_utc": "2026-09-11T02:05:14.892155+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910",
+  "base_commit": "032f6ff342e060c5e2b37fb5d99ad3f6ab33c249",
+  "owned_files": [
+    "include/bsp/native_logical_index_owner.hpp",
+    "src/native_logical_index_owner.cpp",
+    "docs/NATIVE_LOGICAL_INDEX_OWNER.md",
+    "reports/native_logical_index_owner_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00b4b6f0",
+      "length": 205,
+      "old_name": "BSP_LogicalIndexStream_Destruct",
+      "proposed_name": "BSP_LogicalIndexStream_Destruct",
+      "cpp": "destroy_native_logical_index_stream_00b4b6f0",
+      "native_abi": "ECX actual logical owner; RET; no stable result",
+      "summary": "Captured physical unregistration, current renderer removal, reloaded atomic physical release, exact observed deleting profile, optional guard and base cleanup."
+    },
+    {
+      "address": "00b4c1f0",
+      "length": 32,
+      "old_name": "FUN_00b4c1f0",
+      "proposed_name": "BSP_LogicalIndexStream_DeletePooled",
+      "cpp": "delete_native_pooled_logical_index_stream_00b4c1f0",
+      "native_abi": "ECX actual logical owner; stack DWORD flags; EAX original owner; RET4",
+      "summary": "Destroy first; flag bit0 returns raw28h slot to actual 0108FE50 pool."
+    },
+    {
+      "address": "00b495e0",
+      "length": 101,
+      "old_name": "FUN_00b495e0",
+      "proposed_name": "BSP_LogicalIndexStreamPool_ReturnSlot",
+      "cpp": "return_native_logical_index_slot_00b495e0",
+      "native_abi": "ECX actual pool; stack raw28h slot; RET4; no stable result",
+      "summary": "Real pool lock, tracked wrapping depth, slot+24 slab identity, signed delta/28h WORD free index, WORD count and unsigned lowest slab; no added unwind cleanup."
+    }
+  ],
+  "evidence": {
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_read": true,
+    "spans": [
+      {
+        "address": "00b4b6f0",
+        "length": 205,
+        "kind": "owned",
+        "disk_offset": 7649008,
+        "sha256": "f369cf9147abbc3d44f0ce5d1e7d73af2257137cde16e0104093a9275ebfe57f",
+        "hex": "6aff6850f9cb0064a100000000506489250000000083ec0c568bf189742404c706e01dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce89b83feff884424088b46108b4e082500f000003d00100000c644241801750856e83afcffffeb038b51048b0d94d3f8005756e898b1fdff8b7e088d470450ff152022ce0085c075088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e86283feff8bcec7442418ffffffffe8437908008b4c24105e64890d0000000083c418c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4c1f0",
+        "length": 32,
+        "kind": "owned",
+        "disk_offset": 7651824,
+        "sha256": "758580e6c8b84654a35802845050c5514009fb972a3b44967fdc4025aac433c7",
+        "hex": "568bf1e8f8f4fffff644240801740b56b950fe0801e8d6d3ffff8bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b495e0",
+        "length": 101,
+        "kind": "owned",
+        "disk_offset": 7640544,
+        "sha256": "0ed57f7afd9698aba94926f2bebfb07bf366572847f476644b9b9bf41145f670",
+        "hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58248b4e288b0c992bc18bd0b867666666f7eac1fa048bc2c1e81f03c20fb79140050000668984510005000066838140050000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b390",
+        "length": 81,
+        "kind": "dependency",
+        "disk_offset": 7648144,
+        "sha256": "7dcb637469678206c46174b7eba398be611ff0ab50daab136cd93213b0acfcf8",
+        "hex": "83ec08803ddcd608010056578bf174138b3d94d3f8008bcfe82387feff88442408eb048b7c240c8d442414508d4e08e81cffffff803ddcd6080100740c8b4c2408518bcfe82787feff5f5e83c408c20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b2e0",
+        "length": 103,
+        "kind": "dependency",
+        "disk_offset": 7647968,
+        "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b26900",
+        "length": 19,
+        "kind": "dependency",
+        "disk_offset": 7497984,
+        "sha256": "fc7b04a768d1861d7645396ce4b4abd14f5f4045cb7f58bcaec6281a7a42df57",
+        "hex": "8d4424045081c1b81a0000e860eaffffc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b25370",
+        "length": 103,
+        "kind": "dependency",
+        "disk_offset": 7492464,
+        "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b33ad0",
+        "length": 46,
+        "kind": "dependency",
+        "disk_offset": 7551696,
+        "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+        "hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b33b00",
+        "length": 67,
+        "kind": "dependency",
+        "disk_offset": 7551744,
+        "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+        "hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b21110",
+        "length": 22,
+        "kind": "dependency",
+        "disk_offset": 7475472,
+        "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+        "hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "kind": "dependency",
+        "disk_offset": 8204512,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "hex": "85c974098b018b50046a01ffd2c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "kind": "dependency",
+        "disk_offset": 8204528,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "hex": "c70130b1ce00c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b49420",
+        "length": 5,
+        "kind": "dependency",
+        "disk_offset": 7640096,
+        "sha256": "12a89809f321dadfb43a4394ccb27caa98420f88885a896d08af94c191bcffc1",
+        "hex": "e9cb9c0800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf940",
+        "length": 26,
+        "kind": "eh_code",
+        "disk_offset": 9173312,
+        "sha256": "1a2cbd1fa782f53ab8e5226161bfbf0de439023202e467b70de70035a809c172",
+        "hex": "8b4de8e9d89ae8ff8d4dece9c017e6ffb81084df00e9e971f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df8400",
+        "length": 52,
+        "kind": "eh_data",
+        "disk_offset": 10454016,
+        "sha256": "78a2e37a76d70e23d014ab167636789b7ad241788b878bf71a7a106fd24166ce",
+        "hex": "ffffffff40f9cb000000000048f9cb0022059319020000000084df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61e10",
+        "length": 8,
+        "kind": "profile",
+        "disk_offset": 9838096,
+        "sha256": "9347de177bd16c7986cdc9a1768cdad0accd752130cbdecce21eba1fcb627b97",
+        "hex": "e030bd0020bbb400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61e58",
+        "length": 8,
+        "kind": "profile",
+        "disk_offset": 9838168,
+        "sha256": "b2401aed9d15fb5385bf05f04fe25b92b2eec277f392f1ea41cdf6c6776c1200",
+        "hex": "e030bd0010c2b400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bb20",
+        "length": 5,
+        "kind": "boundary",
+        "disk_offset": 7650080,
+        "sha256": "a4176c8b2fcd2ec0e8553db26ba14261d772419d2ea0d6f1a46714de80081e29",
+        "hex": "568bf1e8d8",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4c210",
+        "length": 5,
+        "kind": "boundary",
+        "disk_offset": 7651856,
+        "sha256": "b345925a2f7b2697b2ceb279fe301a73194b24b488b569a12c085e6d9d1e7350",
+        "hex": "568bf1e8e8",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf6b43",
+        "length": 5,
+        "kind": "boundary",
+        "disk_offset": 8350531,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "hex": "558bec83ec",
+        "live_PE_match": true
+      },
+      {
+        "address": "00ce2210",
+        "length": 4,
+        "kind": "iat",
+        "disk_offset": 9314832,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "hex": "8856a000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00ce2218",
+        "length": 4,
+        "kind": "iat",
+        "disk_offset": 9314840,
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "hex": "b856a000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00ce2220",
+        "length": 4,
+        "kind": "iat",
+        "disk_offset": 9314848,
+        "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+        "hex": "e856a000",
+        "live_PE_match": true
+      }
+    ],
+    "relocations": [
+      {
+        "address": "00b4b6f3",
+        "expected": "00cbf950",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4b717",
+        "expected": "0108d6dc",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4b728",
+        "expected": "00f8d394",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4b75d",
+        "expected": "00f8d394",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4b771",
+        "expected": "00ce2220",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4b783",
+        "expected": "0108d6dc",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4c201",
+        "expected": "0108fe50",
+        "kind": "owned"
+      },
+      {
+        "address": "00b495eb",
+        "expected": "00ce2218",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4963b",
+        "expected": "00ce2210",
+        "kind": "owned"
+      },
+      {
+        "address": "00b4b395",
+        "expected": "0108d6dc",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b4b3a2",
+        "expected": "00f8d394",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b4b3c6",
+        "expected": "0108d6dc",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33ad2",
+        "expected": "0108d6e0",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33ad9",
+        "expected": "0108d6dc",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33aee",
+        "expected": "00ce2218",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b02",
+        "expected": "0108d6dc",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b08",
+        "expected": "0108d6e0",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b1f",
+        "expected": "00ce2210",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b25",
+        "expected": "0108d6dc",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b2b",
+        "expected": "0108d6e0",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b34",
+        "expected": "0108d6dd",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b33b3c",
+        "expected": "0108d6dd",
+        "kind": "dependency"
+      },
+      {
+        "address": "00b21112",
+        "expected": "0108d6dc",
+        "kind": "dependency"
+      },
+      {
+        "address": "00cbf951",
+        "expected": "00df8410",
+        "kind": "eh_code"
+      },
+      {
+        "address": "00df8404",
+        "expected": "00cbf940",
+        "kind": "eh_data"
+      },
+      {
+        "address": "00df840c",
+        "expected": "00cbf948",
+        "kind": "eh_data"
+      },
+      {
+        "address": "00df8418",
+        "expected": "00df8400",
+        "kind": "eh_data"
+      },
+      {
+        "address": "00d61e10",
+        "expected": "00bd30e0",
+        "kind": "profile"
+      },
+      {
+        "address": "00d61e14",
+        "expected": "00b4bb20",
+        "kind": "profile"
+      },
+      {
+        "address": "00d61e58",
+        "expected": "00bd30e0",
+        "kind": "profile"
+      },
+      {
+        "address": "00d61e5c",
+        "expected": "00b4c210",
+        "kind": "profile"
+      }
+    ]
+  },
+  "private_fixture_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\local\\native_logical_index_fixture_proof.json",
+    "bytes": 29262,
+    "sha256": "ed5fa4f4d1f7a334d1a0e047eb46766c4a4ce770861161204d2db6361ea6d619"
+  },
+  "source_providers": [
+    {
+      "symbol": "destroy_native_logical_index_stream_00b4b6f0",
+      "line": "0001:00006b60       ?destroy_native_logical_index_stream_00b4b6f0@bsp@@YAXPAXAAUNativeLogicalIndexOwnerContext@1@@Z 30007b60 f   bsp_core:native_logical_index_owner.obj",
+      "provider": "bsp_core.lib:native_logical_index_owner.obj"
+    },
+    {
+      "symbol": "delete_native_pooled_logical_index_stream_00b4c1f0",
+      "line": "0001:00006ab0       ?delete_native_pooled_logical_index_stream_00b4c1f0@bsp@@YAPAXPAXIAAUNativeLogicalIndexOwnerContext@1@@Z 30007ab0 f   bsp_core:native_logical_index_owner.obj",
+      "provider": "bsp_core.lib:native_logical_index_owner.obj"
+    },
+    {
+      "symbol": "return_native_logical_index_slot_00b495e0",
+      "line": "0001:00006cd0       ?return_native_logical_index_slot_00b495e0@bsp@@YAXPAX0@Z 30007cd0 f   bsp_core:native_logical_index_owner.obj",
+      "provider": "bsp_core.lib:native_logical_index_owner.obj"
+    },
+    {
+      "symbol": "delete_native_private_index_buffer_00b4bb20",
+      "line": "0001:000067e0       ?delete_native_private_index_buffer_00b4bb20@bsp@@YAPAXPAXIAAUNativePhysicalBufferOwnerContext@1@@Z 300077e0 f   bsp_core:native_physical_buffer_owner.obj",
+      "provider": "bsp_core.lib:native_physical_buffer_owner.obj"
+    },
+    {
+      "symbol": "delete_native_pooled_index_buffer_00b4c210",
+      "line": "0001:000067a0       ?delete_native_pooled_index_buffer_00b4c210@bsp@@YAPAXPAXIAAUNativePhysicalBufferOwnerContext@1@@Z 300077a0 f   bsp_core:native_physical_buffer_owner.obj",
+      "provider": "bsp_core.lib:native_physical_buffer_owner.obj"
+    },
+    {
+      "symbol": "unregister_native_physical_index_stream_00b4b390",
+      "line": "0001:00007070       ?unregister_native_physical_index_stream_00b4b390@bsp@@YAXPAXIACRBXAAUNativeRendererSynchronizationGlobals@1@@Z 30008070 f   bsp_core:native_render_buffer_unregistration.obj",
+      "provider": "bsp_core.lib:native_render_buffer_unregistration.obj"
+    },
+    {
+      "symbol": "unregister_native_renderer_index_stream_00b26900",
+      "line": "0001:00007080       ?unregister_native_renderer_index_stream_00b26900@bsp@@YAIPAXI@Z 30008080 f   bsp_core:native_render_buffer_unregistration.obj",
+      "provider": "bsp_core.lib:native_render_buffer_unregistration.obj"
+    },
+    {
+      "symbol": "enter_native_renderer_optional_guard_00b33ad0",
+      "line": "0001:00006f20       ?enter_native_renderer_optional_guard_00b33ad0@bsp@@YAEPBXAAUNativeRendererSynchronizationGlobals@1@@Z 30007f20 f   bsp_core:native_renderer_synchronization_actual.obj",
+      "provider": "bsp_core.lib:native_renderer_synchronization_actual.obj"
+    },
+    {
+      "symbol": "leave_native_renderer_optional_guard_00b33b00",
+      "line": "0001:00006f60       ?leave_native_renderer_optional_guard_00b33b00@bsp@@YAXPBXIAAUNativeRendererSynchronizationGlobals@1@@Z 30007f60 f   bsp_core:native_renderer_synchronization_actual.obj",
+      "provider": "bsp_core.lib:native_renderer_synchronization_actual.obj"
+    },
+    {
+      "symbol": "destroy_native_renderer_optional_guard_00b21110",
+      "line": "0001:00006ed0       ?destroy_native_renderer_optional_guard_00b21110@bsp@@YAXABUNativeRendererOptionalGuardStorage@1@AAUNativeRendererSynchronizationGlobals@1@@Z 30007ed0 f   bsp_core:native_renderer_synchronization_actual.obj",
+      "provider": "bsp_core.lib:native_renderer_synchronization_actual.obj"
+    }
+  ],
+  "dependency_sha256_parity": [
+    {
+      "fixture_dependency": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\local\\native_physical_buffer_owner.cpp",
+        "bytes": 10263,
+        "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+      },
+      "integrator_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_physical_buffer_owner.cpp",
+        "bytes": 10263,
+        "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+      },
+      "sha256_match": true
+    },
+    {
+      "fixture_dependency": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\local\\include\\bsp\\native_physical_buffer_owner.hpp",
+        "bytes": 4090,
+        "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+      },
+      "integrator_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_physical_buffer_owner.hpp",
+        "bytes": 4090,
+        "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+      },
+      "sha256_match": true
+    },
+    {
+      "fixture_dependency": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\local\\native_render_buffer_unregistration.cpp",
+        "bytes": 5514,
+        "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+      },
+      "integrator_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_render_buffer_unregistration.cpp",
+        "bytes": 5514,
+        "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+      },
+      "sha256_match": true
+    },
+    {
+      "fixture_dependency": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\local\\include\\bsp\\native_render_buffer_unregistration.hpp",
+        "bytes": 2244,
+        "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+      },
+      "integrator_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_render_buffer_unregistration.hpp",
+        "bytes": 2244,
+        "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+      },
+      "sha256_match": true
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "Passed scripts/build.ps1 via private target_sources overlay.",
+    "existing_ctest": "reconstructed_math passed; 1/1.",
+    "native_seed_precondition": "tools/ghidra_export.py verify-seeds passed all eight installed/Ghidra comparisons before execution.",
+    "original_source_comparisons": 17,
+    "matching_trace_dwords": 10744,
+    "guard_double_fault_native_exit": 91,
+    "guard_double_fault_source_exit": 91,
+    "source_and_header_sha256": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\include\\bsp\\native_logical_index_owner.hpp",
+        "bytes": 2661,
+        "sha256": "0daa4671a276d7f523c1122478ce9b88923cec31486ef736bde14980eb484f17"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-index-owner-20260910\\src\\native_logical_index_owner.cpp",
+        "bytes": 6852,
+        "sha256": "d3f312bbf82fdbe500f5e180857ea61f112ca4b19fb06ccce4c0a725534d8a72"
+      }
+    ]
+  },
+  "execution_boundaries": {
+    "native_entry_adapters": [
+      {
+        "address": "00b4bb20",
+        "original_5_bytes": "568bf1e8d8",
+        "replacement": "E9 rel32 to private_terminal",
+        "contract": "Exact native private deleting-slot entry; verifies relocated D61E10 and flag1, restores D61E10 token, then forwards unchanged production B4BB20 body."
+      },
+      {
+        "address": "00b4c210",
+        "original_5_bytes": "568bf1e8e8",
+        "replacement": "E9 rel32 to pooled_terminal",
+        "contract": "Exact native pooled deleting-slot entry; verifies relocated D61E58 and flag1, restores D61E58 token, then forwards unchanged production B4C210 body."
+      },
+      {
+        "address": "00bf6b43",
+        "original_5_bytes": "558bec83ec",
+        "replacement": "E9 rel32 to __CxxFrameHandler3",
+        "contract": "Actual host CRT frame handler."
+      }
+    ],
+    "registration_adapter": {
+      "address": "00b4b6f3",
+      "original_dword": "00cbf950",
+      "replacement": "host logical_handler; MOV EAX relocated 00DF8410; JMP actual __CxxFrameHandler3",
+      "metadata": "Relocated original 52-byte DF8400 map/FuncInfo, including action0 CBF940 and action1 CBF948."
+    },
+    "real_operation_adapters": [
+      {
+        "iat": "00ce2218",
+        "operation": "EnterCriticalSection",
+        "boundary": "before/after observation forwards to actual GetProcAddress result; selected fixture exceptions before call"
+      },
+      {
+        "iat": "00ce2210",
+        "operation": "LeaveCriticalSection",
+        "boundary": "before/after observation forwards to actual GetProcAddress result; selected fixture exceptions after call"
+      },
+      {
+        "iat": "00ce2220",
+        "operation": "InterlockedDecrement",
+        "boundary": "WINAPI adapter calls the actual MSVC/Win32 atomic intrinsic; no modeled count operation"
+      }
+    ],
+    "relocation_boundary": "Native image and native vtable code pointers relocate together. Source separately borrows a read-only copy of each freshly verified original-token profile. Native physical profile pointers normalize to D61E10/D61E58 in observations and exact terminal adapters. No production callback fallback or shadow owner.",
+    "physical_composition_boundary": "This fixture executes native logical owner/invoker and native unregistration/synchronization bodies. Its physical terminal stage runs the unchanged production physical deleting owner. Full native physical-body and physical double-fault evidence belongs to the separately pinned physical-buffer proof.",
+    "original_unwind_actions_exercised": [
+      "00cbf940",
+      "00cbf948"
+    ],
+    "separate_physical_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-physical-buffer-fixture-20260910\\local\\native_physical_buffer_fixture_proof.json",
+      "bytes": 37568,
+      "sha256": "c2d7a566b8c5ffcd4389994c9f0e882d5315d55d5c8b90a33f696da123faaf1a"
+    }
+  },
+  "documented_contracts": [
+    "Dynamic F000/1000 mask captures physical before unregistering.",
+    "Current renderer reloaded after physical unregister; logical+08 reloaded after renderer unregister before atomic decrement.",
+    "Zero reference result reads invoker table then reloaded deleting table; exact private versus pooled production terminal.",
+    "Guard retains entry renderer; current mode and its current lock govern leave.",
+    "State0 base cleanup before entry; state1 guard cleanup for body; guard disarmed before normal leave.",
+    "Unwind double fault terminates instead of replacing the first exception.",
+    "Logical pool slot stride28h and metadata+24; slab free WORDs+500/count+540; unsigned lowest slab."
+  ],
+  "limits": [
+    "New C++ service interfaces, not original game ABI replacements.",
+    "Only observed immutable private/pooled index profiles are in-domain.",
+    "Entry-disabled/exit-enabled reads an uninitialized native guard and remains outside valid input.",
+    "Actual borrowed owner, pool, renderer, synchronization and physical services; no constructor, creation/retry or owner replacement.",
+    "Fixture IUnknown Release is not a D3D driver or game-runtime test.",
+    "No shared CMake, ledger or Ghidra writes by worker."
+  ],
+  "integration_actions": [
+    "Register src/native_logical_index_owner.cpp after physical owner and unregistration dependencies.",
+    "Integrator claims addresses, records old Ghidra names/comments, annotates evidence and saves/refreshes exports.",
+    "Integrator adds complete function ledger rows and runs normal full build."
+  ]
+}
