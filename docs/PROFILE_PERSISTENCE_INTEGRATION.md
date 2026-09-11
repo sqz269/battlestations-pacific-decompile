@@ -63,3 +63,8 @@ numeric section keys, nested maps, string escaping, signed version gates, legacy
 records and both checkpoint quirks. Eight native seed ranges matched the image.
 The fixture observes manager calls through a controlled service; it does not
 validate the real manager, compressed save container or gameplay.
+
+After the other orchestrator advanced main, merged code `0fff66d` passed the
+build, both CTests and the same Lua fixture again. All29 reviewed Ghidra names
+and evidence comments were saved, read back and exported; prior comments were
+retained. The mutation record is preserved under `local/`.
