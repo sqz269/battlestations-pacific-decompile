@@ -100,6 +100,11 @@ class GuiCameraStoreMap {
     // Returns nullptr when there is none, as the native returns 0.
     GuiCameraStore* find_00aa3280(const GuiCameraStoreKey& wanted) const noexcept;
 
+    // For records allocated by the concrete AA5070 owner API only. AA4B30
+    // frees the first matching record, nulls its value, then erases the entry.
+    // Camera/scene are borrowed and their reference counts do not change.
+    bool remove_owned_00aa4b30(GuiCameraStore*) noexcept;
+
     const std::vector<Entry>& entries() const noexcept { return entries_; }
     std::size_t size() const noexcept { return entries_.size(); }
 
