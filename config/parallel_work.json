@@ -3865,6 +3865,51 @@
       ],
       "scope": "One canonical actual 108FE9C-equivalent storage and shared list domain; real host atexit with actual destructor callback.",
       "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
+    },
+    {
+      "id": "native_hardware_layout_tree_lifetime3",
+      "packet": "native_hardware_layout_tree_lifetime3",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "assigned_after_pool_trim",
+      "function_addresses": [
+        "00b25dc0",
+        "00b230b0",
+        "00b2f3a0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_tree_lifetime.hpp",
+        "src/native_hardware_layout_tree_lifetime.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_LIFETIME.md",
+        "reports/native_hardware_layout_tree_lifetime_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_hardware_layout_tree"
+      ],
+      "discovery_evidence": "reports/native_hardware_layout_tree_global_next.json",
+      "scope": "Actual canonical tree storage lifetime; preserve native read/store/validation order and actual allocator/iterator/CRT boundaries."
+    },
+    {
+      "id": "native_hardware_layout_tree_static2",
+      "packet": "native_hardware_layout_tree_static2",
+      "worker": "main",
+      "done": false,
+      "state": "waiting_for_actual_tree_lifetime_dependency",
+      "function_addresses": [
+        "00cd7960",
+        "00ce0c50"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_tree_static.hpp",
+        "src/native_hardware_layout_tree_static.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_STATIC.md",
+        "reports/native_hardware_layout_tree_static_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_hardware_layout_tree_lifetime3"
+      ],
+      "discovery_evidence": "reports/native_hardware_layout_tree_global_next.json",
+      "scope": "Actual canonical tree storage lifetime; preserve native read/store/validation order and actual allocator/iterator/CRT boundaries."
     }
   ],
   "snapshot_after_analysis": {

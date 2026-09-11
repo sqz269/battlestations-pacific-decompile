@@ -1,0 +1,217 @@
+{
+  "packet": "native_hardware_layout_tree_global_next",
+  "status": "read_only_discovery_complete_five_ready_bodies",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_query_route": "tools/bsp.py ghidra bytes verifies project and program before every read",
+  "candidates": [
+    {
+      "address": "00b25dc0",
+      "end_exclusive": "00b25df7",
+      "cpp": "allocate_native_hardware_layout_tree_sentinel_00b25dc0",
+      "native_abi": "Incoming ECX unused; no stack arguments; EAX actual 28h allocation; RET.",
+      "packet": "native_hardware_layout_tree_lifetime3"
+    },
+    {
+      "address": "00b230b0",
+      "end_exclusive": "00b230e5",
+      "cpp": "destroy_native_hardware_layout_subtree_00b230b0",
+      "native_abi": "ECX actual tree carried through recursion; stack actual node; RET4; EAX unspecified.",
+      "packet": "native_hardware_layout_tree_lifetime3"
+    },
+    {
+      "address": "00b2f3a0",
+      "end_exclusive": "00b2f469",
+      "cpp": "erase_native_hardware_layout_range_00b2f3a0",
+      "native_abi": "ECX actual tree; stack output, first owner/node, last owner/node; EAX output; RET14h.",
+      "packet": "native_hardware_layout_tree_lifetime3"
+    },
+    {
+      "address": "00cd7960",
+      "end_exclusive": "00cd79a0",
+      "cpp": "initialize_native_hardware_layout_tree_global_00cd7960",
+      "native_abi": "No arguments; EAX actual atexit result; RET.",
+      "packet": "native_hardware_layout_tree_static2"
+    },
+    {
+      "address": "00ce0c50",
+      "end_exclusive": "00ce0c90",
+      "cpp": "shutdown_native_hardware_layout_tree_global_00ce0c50",
+      "native_abi": "No arguments; EAX zero after successful shutdown; RET.",
+      "packet": "native_hardware_layout_tree_static2"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00b25dc0",
+      "length": 55,
+      "kind": "candidate",
+      "raw_offset": 7495104,
+      "sha256": "51379a0350144891c34143e39eb335be8d91c69152d35602809e3148585c8ddf",
+      "hex": "6a28e8540a0d0083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6402401c6402500c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b230b0",
+      "length": 53,
+      "kind": "candidate",
+      "raw_offset": 7483568,
+      "sha256": "8965d17d1d061b5ed29535fc13e2aa074fbbe16a7e042f22bbb900faf99a1938",
+      "hex": "5356578b7c2410807f25008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e8d8340d0083c404807e25008bfe74e25f5e5bc20400",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b2f3a0",
+      "length": 201,
+      "kind": "candidate",
+      "raw_offset": 7533472,
+      "sha256": "1640a9cdf8b79dc1489413d15cc0a391e0cfe1304fef45f0c9c67c048c351e64",
+      "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e854730c008b5c24243bdd75598b44242885c08b6e0474043bc67405e838730c00396c242c753f8b4e048b5104528bcee8c13cffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8e4720c003b5c242c74218d4c2420e88219ffff53578d542418528bcee8b4faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_PE_match": true
+    },
+    {
+      "address": "00cd7960",
+      "length": 64,
+      "kind": "candidate",
+      "raw_offset": 9271648,
+      "sha256": "eda93fa2d562e79f5c4de7b3e91103c071326a7a4e111db932f8f4e856724917",
+      "hex": "b930d50801e856e4e4ffa334d50801c6402501a134d50801894004a134d508018900a134d5080189400868500cce00c70538d5080100000000e857f6f1ff59c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce0c50",
+      "length": 64,
+      "kind": "candidate",
+      "raw_offset": 9309264,
+      "sha256": "223d780ed6c4d4796a075de3a4e764eaa41ce05373809c9de6e50762a4282548",
+      "hex": "a134d508018b1083ec085650b930d5080151528bf1568d44241450e830e7e4ff8b0d34d5080151e83059f1ff83c40433c0a334d50801a338d508015e83c408c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "0108d530",
+      "length": 12,
+      "kind": "actual_global_zero_fill",
+      "raw_offset": null,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "hex": "000000000000000000000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce3504",
+      "length": 4,
+      "kind": "CRT_initializer_pointer",
+      "raw_offset": 9319684,
+      "sha256": "bcdb21a53fa7756780e9fc29e58672efb447c84c74388bbd0a066b2fb6974284",
+      "hex": "6079cd00",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf681b",
+      "length": 5,
+      "kind": "existing_shared_allocator_boundary",
+      "raw_offset": 8349723,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "hex": "558bec83ec",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "kind": "existing_shared_free_boundary",
+      "raw_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "hex": "e917380000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6713",
+      "length": 5,
+      "kind": "existing_invalid_parameter_boundary",
+      "raw_offset": 8349459,
+      "sha256": "bf7abaf0a5a5d2cf97a914496699a6fb6fa69363f847ce5ff7fb24cd350a9164",
+      "hex": "33c0505050",
+      "live_PE_match": true
+    }
+  ],
+  "candidate_bytes": 437,
+  "total_spans": 10,
+  "total_bytes": 468,
+  "existing_dependencies": [
+    "Actual shared singleton_lifetime_allocate/free implement the established host CRT boundary.",
+    "B20DC0 iterator increment and B2EF00 iterator erase are complete actual-storage implementations with native evidence.",
+    "BF6713 is the existing explicit invalid-parameter handler boundary.",
+    "CRT atexit and initializer-table execution evidence is separately pinned in reports/native_hardware_layout_global_startup_next.json."
+  ],
+  "analysis_repairs": [
+    {
+      "address": "00b230b0",
+      "site": "00b230cf",
+      "hidden_start": "00b230d4",
+      "hidden_end_exclusive": "00b230df",
+      "action": "Disassemble returning-free continuation, clear incorrect call flow override, preserve exact body and comments."
+    },
+    {
+      "address": "00ce0c50",
+      "site": "00ce0c77",
+      "old_end_inclusive": "00ce0c7b",
+      "end_exclusive": "00ce0c90",
+      "action": "Restore full returning-free tail through head/count clearing and RET; preserve comments and correct static-init name to shutdown."
+    },
+    {
+      "address": "00cd7960",
+      "end_exclusive": "00cd79a0",
+      "action": "Create exact missing function after byte verification, preserving existing listing comments."
+    }
+  ],
+  "packets": [
+    {
+      "id": "native_hardware_layout_tree_lifetime3",
+      "addresses": [
+        "00b25dc0",
+        "00b230b0",
+        "00b2f3a0"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_tree_lifetime.hpp",
+        "src/native_hardware_layout_tree_lifetime.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_LIFETIME.md",
+        "reports/native_hardware_layout_tree_lifetime_audit.json"
+      ],
+      "prerequisites": [
+        "native_hardware_layout_tree"
+      ]
+    },
+    {
+      "id": "native_hardware_layout_tree_static2",
+      "addresses": [
+        "00cd7960",
+        "00ce0c50"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_tree_static.hpp",
+        "src/native_hardware_layout_tree_static.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_STATIC.md",
+        "reports/native_hardware_layout_tree_static_audit.json"
+      ],
+      "prerequisites": [
+        "native_hardware_layout_tree_lifetime3"
+      ]
+    }
+  ],
+  "global_storage": "Borrow actual 12-byte 108D530-equivalent header; word0 is preserved. No foreign pool or private tree substitution.",
+  "static_registration": "CE3504 contains CD7960 within proven CRT C++ initializer interval [CE2734,CE36E4). Setup must bind a canonical actual header and persistent invalid-parameter domain before using real host atexit. Do not replace real registration by an inert collector.",
+  "proof_limits": [
+    "Discovery only; no new C++ implementation or fixture.",
+    "No Ghidra mutation, original ABI compatibility, game execution or GPU validation."
+  ]
+}
