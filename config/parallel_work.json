@@ -5943,6 +5943,30 @@
       "source_ready": false,
       "evidence": "reports/native_vertex_stream_owner_discovery.json",
       "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
+    },
+    {
+      "id": "native_renderer_clip_planes3",
+      "packet": "native_renderer_clip_planes3",
+      "worker": "main",
+      "done": false,
+      "state": "complete_actual_storage_source_main_Win32_build_CTests_passed_native_fixture_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00b23e50",
+        "00b25040",
+        "00b25080"
+      ],
+      "code_ownership": [
+        "src/native_renderer_clip_planes.cpp",
+        "include/bsp/native_renderer_clip_planes.hpp",
+        "docs/NATIVE_RENDERER_CLIP_PLANES.md",
+        "reports/native_renderer_clip_planes_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_renderer_cached_states3"
+      ],
+      "scope": "Complete raw clip-plane set/append/pending restore; exact x87 sequential copies/EH arm after second store, actual guards/current real device/full cached state.",
+      "evidence": "reports/native_renderer_clip_planes_audit.json"
     }
   ],
   "snapshot_after_analysis": {
