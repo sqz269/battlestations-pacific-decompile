@@ -1,6 +1,6 @@
 {
   "packet": "native_renderer_vertex_layout_binding1",
-  "generated_at": "2026-09-11T06:57:35.254854+00:00",
+  "generated_at": "2026-09-11T06:58:54.356280+00:00",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910",
   "branch": "agent/native-renderer-vertex-layout-binding-20260910",
   "base_commit": "d7ea1d0790c5ef276293a6a0055d02c384e28a7d",
@@ -448,8 +448,8 @@
       },
       {
         "path": "src/native_renderer_vertex_layout_binding.cpp",
-        "bytes": 4891,
-        "sha256": "7a7df5acf3997a28a5c79583f3c736045b915d9cd9650785e3dd251a05c6d394"
+        "bytes": 4890,
+        "sha256": "c016e2d22c0d1ff84f2ff1aebcd79a2b50c865619f8683fe1bceb6dcad69c78e"
       },
       {
         "path": "include/bsp/native_renderer_vertex_layout_binding.hpp",
@@ -501,7 +501,7 @@
       "path": "local/vertex_binding_fixture/bsp_core.lib",
       "build_path": "build/win32/Release/bsp_core.lib",
       "bytes": 27953844,
-      "sha256": "3dbcef3b936de1d07e910288d3f648b8510bb4b4814244b5547b707e43e677fe",
+      "sha256": "8aa1979c3d5028851a9936f4ceacabe846cfecd65d4195f4c73944534c93ee8e",
       "matches_strict_build_library": true
     },
     "strict_build_and_two_existing_CTests_passed": true,
@@ -1685,12 +1685,12 @@
     "complete_postimages": [
       {
         "mode": "native",
-        "image_base": "02480000",
+        "image_base": "024b0000",
         "spans": [
           {
             "address": "00b23f20",
             "bytes": 226,
-            "sha256": "e1d62a0bf7cf1758de586f724f6a65f28eb6df6e4b7526d71e8813bbbf3773ab",
+            "sha256": "055d8f96879a32869aa2a772f54ad44b2a61c382b26432c8210761a5d9c5e229",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1703,25 +1703,25 @@
                 "address": "00b23f4e",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "0310d6dc"
+                "value": "0313d6dc"
               },
               {
                 "address": "00b23f85",
                 "kind": "declared_relocation",
                 "old": "00ce221c",
-                "value": "02d6221c"
+                "value": "02d9221c"
               },
               {
                 "address": "00b23f93",
                 "kind": "declared_relocation",
                 "old": "00ce2220",
-                "value": "02d62220"
+                "value": "02d92220"
               },
               {
                 "address": "00b23fd1",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "0310d6dc"
+                "value": "0313d6dc"
               }
             ]
           },
@@ -1749,68 +1749,68 @@
           {
             "address": "00cbcf58",
             "bytes": 10,
-            "sha256": "1b66fbd6f969e4a023fc99a107b60e1ac75285c6af5e4bb601ed3d94f7c99450",
+            "sha256": "fe8eb56eb3c0dbdadf0ef66e95be2699b3e3b0e7c758abdc3c2deee73e1ed0d8",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00cbcf59",
                 "kind": "declared_relocation",
                 "old": "00df558c",
-                "value": "02e7558c"
+                "value": "02ea558c"
               }
             ]
           },
           {
             "address": "00df5584",
             "bytes": 8,
-            "sha256": "88476885c069d274c0afe45dc58e5dd4166a7543218aec48d221c375d21123f4",
+            "sha256": "e41f70707d52e5113f3e06058dee166b984d7ca6b626ed4cce7996f2fa3378fe",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5588",
                 "kind": "declared_relocation",
                 "old": "00cbcf50",
-                "value": "02d3cf50"
+                "value": "02d6cf50"
               }
             ]
           },
           {
             "address": "00df558c",
             "bytes": 36,
-            "sha256": "9e73c8d852389835b8cf906b026ca87bff0acbd14d2b8c5b227bb2689b44ae29",
+            "sha256": "753ca3a56b64f70abdb980d65e64b6dae0be1ab2faf11ad8ad7a774a5e1706f3",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5594",
                 "kind": "declared_relocation",
                 "old": "00df5584",
-                "value": "02e75584"
+                "value": "02ea5584"
               }
             ]
           },
           {
             "address": "00d62af4",
             "bytes": 12,
-            "sha256": "0953b073c9b488a14e6825ce515f0c5b5c0ce83abac4ce0484cd72fe7aea1e13",
+            "sha256": "bc2448ef0a736fc70cd7efcc14250f9362cd559483efadfd4cea4ea33c799bcd",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00d62af4",
                 "kind": "declared_relocation",
                 "old": "00bd30e0",
-                "value": "02c530e0"
+                "value": "02c830e0"
               },
               {
                 "address": "00d62af8",
                 "kind": "declared_relocation",
                 "old": "00b60770",
-                "value": "02be0770"
+                "value": "02c10770"
               },
               {
                 "address": "00d62afc",
                 "kind": "declared_relocation",
                 "old": "00b5ff00",
-                "value": "02bdff00"
+                "value": "02c0ff00"
               }
             ]
           },
@@ -1838,7 +1838,7 @@
           {
             "address": "00b60770",
             "bytes": 5,
-            "sha256": "818ea944d7a3ffd02e295ba7f22e532313fa79ff2f99de021968a6f40d478626",
+            "sha256": "5d66d6aa6ca9a427a9b2bdd6e7d27d413b6587250beba5837dd1285820fb9451",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1851,7 +1851,7 @@
           {
             "address": "00b33ad0",
             "bytes": 5,
-            "sha256": "53125d516c46de2d672d5fc70ec7d926c28924e1f277c5a8528eb8159b9b4e0e",
+            "sha256": "1b86a9fc5d1791b40b1cb083107b411e4c390f529f3638f158112ee2b2fd4e48",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1864,7 +1864,7 @@
           {
             "address": "00b33b00",
             "bytes": 5,
-            "sha256": "3b7b747948c0c0fbb74e0673f029552a165d58704bc778294e21aaae3f21e972",
+            "sha256": "4b310102329a926358312eef55f3bfaf08657b5061d01aa0b27484ebba7a193f",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1877,7 +1877,7 @@
           {
             "address": "00b21110",
             "bytes": 5,
-            "sha256": "6d42238d0ef681167e0e846e70bc9d20c8e97e032d4f234e350d5b68d6424079",
+            "sha256": "ba7f38ea84f747b00914c0782b12ac6e6406f61eba645d10a30c53e0d9a564da",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1890,7 +1890,7 @@
           {
             "address": "00bf6b43",
             "bytes": 5,
-            "sha256": "b199062fa09f063a474febc79e9eb7a86b1ccfe0fc659ac4d740bd1b922b70a1",
+            "sha256": "5fe7a04681ea63e5f35cbedfcf14e879e50f04ca58d80e381c418752a4a1a5e0",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1937,12 +1937,12 @@
       },
       {
         "mode": "host",
-        "image_base": "024d0000",
+        "image_base": "02490000",
         "spans": [
           {
             "address": "00b23f20",
             "bytes": 226,
-            "sha256": "6b82ea18ea1db6739056571c1f9cb08e0016ec3596b3366ae221959775c7eb69",
+            "sha256": "fe295d491b7f7e704656b65cdc949021cbca8997171b03c31f688d1d9ba11a9b",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -1955,25 +1955,25 @@
                 "address": "00b23f4e",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "0315d6dc"
+                "value": "0311d6dc"
               },
               {
                 "address": "00b23f85",
                 "kind": "declared_relocation",
                 "old": "00ce221c",
-                "value": "02db221c"
+                "value": "02d7221c"
               },
               {
                 "address": "00b23f93",
                 "kind": "declared_relocation",
                 "old": "00ce2220",
-                "value": "02db2220"
+                "value": "02d72220"
               },
               {
                 "address": "00b23fd1",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "0315d6dc"
+                "value": "0311d6dc"
               }
             ]
           },
@@ -2001,68 +2001,68 @@
           {
             "address": "00cbcf58",
             "bytes": 10,
-            "sha256": "ba35871c1bbbefeff86481d0590890e6060786887f1ac8535e4fc8ad53f91a12",
+            "sha256": "732e41c57d98883173d352903a681943dc12a49b5e51eb9d49f737123e45350c",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00cbcf59",
                 "kind": "declared_relocation",
                 "old": "00df558c",
-                "value": "02ec558c"
+                "value": "02e8558c"
               }
             ]
           },
           {
             "address": "00df5584",
             "bytes": 8,
-            "sha256": "b092b166b51c1973cf6fbae721a793db711fc163ca5e0637acfc8f0f8f385bad",
+            "sha256": "2e7062c7ae433851adca5989ffd5de232b328290a2b557897ad3f34b9cb5a6c1",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5588",
                 "kind": "declared_relocation",
                 "old": "00cbcf50",
-                "value": "02d8cf50"
+                "value": "02d4cf50"
               }
             ]
           },
           {
             "address": "00df558c",
             "bytes": 36,
-            "sha256": "3f166b3f1cd388e17cebaa59e768e193e592b73f39940c33ac0305dfabeced4a",
+            "sha256": "e9616b19cea37b12574ff4cc6fe4ed2abe6336702cbde769db0be29b4d05f5f7",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5594",
                 "kind": "declared_relocation",
                 "old": "00df5584",
-                "value": "02ec5584"
+                "value": "02e85584"
               }
             ]
           },
           {
             "address": "00d62af4",
             "bytes": 12,
-            "sha256": "f49337f9d175cb15db84d80abb3fd081db4531bdacdc7e8264fe14d62f71ffdd",
+            "sha256": "7301482ad3f264f6856ce0b4e6bd8a51fabbfc41fe185eb4f1ddccbf48190a40",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00d62af4",
                 "kind": "declared_relocation",
                 "old": "00bd30e0",
-                "value": "02ca30e0"
+                "value": "02c630e0"
               },
               {
                 "address": "00d62af8",
                 "kind": "declared_relocation",
                 "old": "00b60770",
-                "value": "02c30770"
+                "value": "02bf0770"
               },
               {
                 "address": "00d62afc",
                 "kind": "declared_relocation",
                 "old": "00b5ff00",
-                "value": "02c2ff00"
+                "value": "02beff00"
               }
             ]
           },
@@ -2090,7 +2090,7 @@
           {
             "address": "00b60770",
             "bytes": 5,
-            "sha256": "f47c56057efde7a5e7ee81aee0dedd1c548843b3bd58e67f21b1ef1900e06690",
+            "sha256": "42ba2a132600d88e6bc4d1dba86a3cb6f5e8ed2750c8210cd399a9e5cd3561b3",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2103,7 +2103,7 @@
           {
             "address": "00b33ad0",
             "bytes": 5,
-            "sha256": "f18609cbae61adecbb236f59ce1a54e2ed6c53df0d0b53b9486f54463e7ae7af",
+            "sha256": "e1d4ba3196530532ec4a3622f85ba714c3deacc56f7acaefd4a57999f124770b",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2116,7 +2116,7 @@
           {
             "address": "00b33b00",
             "bytes": 5,
-            "sha256": "6cf6463cabd3f93be9af11314508d388949c06e4e8b34af4df57a7ec00cf2d81",
+            "sha256": "80e86667af39b25d3f2db598fea49608c84d00e0214fbbc9adb112d9a4274666",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2129,7 +2129,7 @@
           {
             "address": "00b21110",
             "bytes": 5,
-            "sha256": "94add01a3db0bbce7a27d5abd93b63ad1a4c843a6f8b23239eae2d41a6311e02",
+            "sha256": "8423c1d1d462a655a6d6df178c96f399b31c5d10e084a746f47aad4d04f17dd7",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2142,7 +2142,7 @@
           {
             "address": "00bf6b43",
             "bytes": 5,
-            "sha256": "32161af2514ab31bd93ade6963d52f364dcc375db1b1ba37fc762dbcccb6548f",
+            "sha256": "7174e661bbc2f6e0d5b27692972860b3ef4664a36f05412e310404c183268081",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2189,12 +2189,12 @@
       },
       {
         "mode": "double_native",
-        "image_base": "023f0000",
+        "image_base": "02330000",
         "spans": [
           {
             "address": "00b23f20",
             "bytes": 226,
-            "sha256": "8abde9df2281d6aad7dbaf229d6bcf5163d68f04f3dd8a05a680ad0176b50c8c",
+            "sha256": "3d2ce5439409d4bfd40c0f9166ec51e9d403c919496983ce8aad9e6abe1945c8",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2207,25 +2207,25 @@
                 "address": "00b23f4e",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "0307d6dc"
+                "value": "02fbd6dc"
               },
               {
                 "address": "00b23f85",
                 "kind": "declared_relocation",
                 "old": "00ce221c",
-                "value": "02cd221c"
+                "value": "02c1221c"
               },
               {
                 "address": "00b23f93",
                 "kind": "declared_relocation",
                 "old": "00ce2220",
-                "value": "02cd2220"
+                "value": "02c12220"
               },
               {
                 "address": "00b23fd1",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "0307d6dc"
+                "value": "02fbd6dc"
               }
             ]
           },
@@ -2253,68 +2253,68 @@
           {
             "address": "00cbcf58",
             "bytes": 10,
-            "sha256": "754f41f53c9597bd7eda544cb8de35e9102e51a868cbbde2cd1a41d0805b886f",
+            "sha256": "cd4bd071f9401d57abaaa8198bd03d20d849090db8dbaa7365e150568618172b",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00cbcf59",
                 "kind": "declared_relocation",
                 "old": "00df558c",
-                "value": "02de558c"
+                "value": "02d2558c"
               }
             ]
           },
           {
             "address": "00df5584",
             "bytes": 8,
-            "sha256": "733fd81e3373f3f1aac779aaedfe475686254746b963da163b885baf75c3bf19",
+            "sha256": "3838c52d8a8b4179909dc9ee0e337a9661e49c304dea359f60b5fd22dcea6afd",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5588",
                 "kind": "declared_relocation",
                 "old": "00cbcf50",
-                "value": "02cacf50"
+                "value": "02becf50"
               }
             ]
           },
           {
             "address": "00df558c",
             "bytes": 36,
-            "sha256": "ddede2891c9807df99b0c43d1b672302a7ed458a41d72b4020e9a5bd981c3ce2",
+            "sha256": "97c31469bd570b353bf3f00de747a6398bb67715ed06371769997d280b2d73d1",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5594",
                 "kind": "declared_relocation",
                 "old": "00df5584",
-                "value": "02de5584"
+                "value": "02d25584"
               }
             ]
           },
           {
             "address": "00d62af4",
             "bytes": 12,
-            "sha256": "364d887b4d40e491928ccf96fe709570c8dbb4400f828ced3c60f6a56ad27c9a",
+            "sha256": "09b8fa96bbc1cbc972f6b99829d1b89374907cf803ffbdc05e5ed17f13715adc",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00d62af4",
                 "kind": "declared_relocation",
                 "old": "00bd30e0",
-                "value": "02bc30e0"
+                "value": "02b030e0"
               },
               {
                 "address": "00d62af8",
                 "kind": "declared_relocation",
                 "old": "00b60770",
-                "value": "02b50770"
+                "value": "02a90770"
               },
               {
                 "address": "00d62afc",
                 "kind": "declared_relocation",
                 "old": "00b5ff00",
-                "value": "02b4ff00"
+                "value": "02a8ff00"
               }
             ]
           },
@@ -2342,7 +2342,7 @@
           {
             "address": "00b60770",
             "bytes": 5,
-            "sha256": "1cfb8e0ef0c4ca2edc0c2b3b411a42a4178dc66a0f89d39f06589a2e2cebde30",
+            "sha256": "a6ea9c4062c367af888eca7e947235c0767b7696faa04dc25583b90367b30db1",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2355,7 +2355,7 @@
           {
             "address": "00b33ad0",
             "bytes": 5,
-            "sha256": "594dbe73202f52e459fdb0012bb403b06846bcfaca0a2c98c34b5f70d7d2dd5a",
+            "sha256": "f3f0ae4aaf97fcc59ca94bf2b6644d95472b34be85e8e0b1d3d2ad790a2394fb",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2368,7 +2368,7 @@
           {
             "address": "00b33b00",
             "bytes": 5,
-            "sha256": "46c788acab728318bbe68fd82aca08381538d64b9eeb051260449b9d711cf530",
+            "sha256": "d459543b120724f7d819feb640280e9c8153a8b6bc8bf6a39c898bc7f3147fe8",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2381,7 +2381,7 @@
           {
             "address": "00b21110",
             "bytes": 5,
-            "sha256": "fdc3a636e9db1dc7bb7e0e1305953c29c36c5bc4b7588ca7b478aa520a8b9499",
+            "sha256": "7fd8cb3c06ffa36796ebd1762accd9f238129102292680533f403b9906a88d63",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2394,7 +2394,7 @@
           {
             "address": "00bf6b43",
             "bytes": 5,
-            "sha256": "3ae934ba36d35391717cebd63bda18d5425902bcfa4d6dd82ba1bca789c29ab3",
+            "sha256": "7b96bd09d9aa4422f19b0ee9cfec35b1c6b49f63e965945af51c6dceec5c897f",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2441,12 +2441,12 @@
       },
       {
         "mode": "double_host",
-        "image_base": "02450000",
+        "image_base": "024b0000",
         "spans": [
           {
             "address": "00b23f20",
             "bytes": 226,
-            "sha256": "932c62464291236edd409e2552a60259af2bbaa4b30443cdec8780b20e3b47ae",
+            "sha256": "055d8f96879a32869aa2a772f54ad44b2a61c382b26432c8210761a5d9c5e229",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2459,25 +2459,25 @@
                 "address": "00b23f4e",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "030dd6dc"
+                "value": "0313d6dc"
               },
               {
                 "address": "00b23f85",
                 "kind": "declared_relocation",
                 "old": "00ce221c",
-                "value": "02d3221c"
+                "value": "02d9221c"
               },
               {
                 "address": "00b23f93",
                 "kind": "declared_relocation",
                 "old": "00ce2220",
-                "value": "02d32220"
+                "value": "02d92220"
               },
               {
                 "address": "00b23fd1",
                 "kind": "declared_relocation",
                 "old": "0108d6dc",
-                "value": "030dd6dc"
+                "value": "0313d6dc"
               }
             ]
           },
@@ -2505,68 +2505,68 @@
           {
             "address": "00cbcf58",
             "bytes": 10,
-            "sha256": "3b78604385f61d3012289b386c2e1d48d9adf3b35b132e29a70763bab45094f4",
+            "sha256": "fe8eb56eb3c0dbdadf0ef66e95be2699b3e3b0e7c758abdc3c2deee73e1ed0d8",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00cbcf59",
                 "kind": "declared_relocation",
                 "old": "00df558c",
-                "value": "02e4558c"
+                "value": "02ea558c"
               }
             ]
           },
           {
             "address": "00df5584",
             "bytes": 8,
-            "sha256": "7da3418852f7d0c7bce57b1873c1fe1e5be9302b5932c9ef99163fdcf041d40a",
+            "sha256": "e41f70707d52e5113f3e06058dee166b984d7ca6b626ed4cce7996f2fa3378fe",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5588",
                 "kind": "declared_relocation",
                 "old": "00cbcf50",
-                "value": "02d0cf50"
+                "value": "02d6cf50"
               }
             ]
           },
           {
             "address": "00df558c",
             "bytes": 36,
-            "sha256": "ffc2e980abf32d30be01041ccf21fa211888e441e570d1b5a331020f35bbac8d",
+            "sha256": "753ca3a56b64f70abdb980d65e64b6dae0be1ab2faf11ad8ad7a774a5e1706f3",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00df5594",
                 "kind": "declared_relocation",
                 "old": "00df5584",
-                "value": "02e45584"
+                "value": "02ea5584"
               }
             ]
           },
           {
             "address": "00d62af4",
             "bytes": 12,
-            "sha256": "3041ab126664dab447b7ef47fda9843ce394fda92793c3ca666bbd45e0c7f0ba",
+            "sha256": "bc2448ef0a736fc70cd7efcc14250f9362cd559483efadfd4cea4ea33c799bcd",
             "all_bytes_verified": true,
             "patches": [
               {
                 "address": "00d62af4",
                 "kind": "declared_relocation",
                 "old": "00bd30e0",
-                "value": "02c230e0"
+                "value": "02c830e0"
               },
               {
                 "address": "00d62af8",
                 "kind": "declared_relocation",
                 "old": "00b60770",
-                "value": "02bb0770"
+                "value": "02c10770"
               },
               {
                 "address": "00d62afc",
                 "kind": "declared_relocation",
                 "old": "00b5ff00",
-                "value": "02baff00"
+                "value": "02c0ff00"
               }
             ]
           },
@@ -2594,7 +2594,7 @@
           {
             "address": "00b60770",
             "bytes": 5,
-            "sha256": "5937a94564b0d21909da06fb227743dfe35f5dd440397294e2ffe48fbf398020",
+            "sha256": "5d66d6aa6ca9a427a9b2bdd6e7d27d413b6587250beba5837dd1285820fb9451",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2607,7 +2607,7 @@
           {
             "address": "00b33ad0",
             "bytes": 5,
-            "sha256": "e306bdd9c0f3a10fa451acb1004a600a37e487cde01eac19ca0e5c244ee94448",
+            "sha256": "1b86a9fc5d1791b40b1cb083107b411e4c390f529f3638f158112ee2b2fd4e48",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2620,7 +2620,7 @@
           {
             "address": "00b33b00",
             "bytes": 5,
-            "sha256": "8b8f0f97740c40a8e3279c307972cb35696fbe4584eeac50cf9e0c55eb5089eb",
+            "sha256": "4b310102329a926358312eef55f3bfaf08657b5061d01aa0b27484ebba7a193f",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2633,7 +2633,7 @@
           {
             "address": "00b21110",
             "bytes": 5,
-            "sha256": "019f543778a4e273d04867d8caf3516f22f5bf31e8406d6052f7b52de524ce7c",
+            "sha256": "ba7f38ea84f747b00914c0782b12ac6e6406f61eba645d10a30c53e0d9a564da",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2646,7 +2646,7 @@
           {
             "address": "00bf6b43",
             "bytes": 5,
-            "sha256": "37736fc5347e08e3ba0277b0432874db1b47ed0b0fe71e0f9699844b109eb0c6",
+            "sha256": "5fe7a04681ea63e5f35cbedfcf14e879e50f04ca58d80e381c418752a4a1a5e0",
             "all_bytes_verified": true,
             "patches": [
               {
@@ -2698,14 +2698,14 @@
         "label": "fixture_image",
         "reported_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
         "resolved_32bit_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
-        "module_sha256": "c0566d9145636e951603c0eb62d89679f0a89cd1f922ba5c86f358a66f950b15",
+        "module_sha256": "eab76605924c257c60cd98dd970adee4689383e2b9198145692b81d8ec15a9e0",
         "module_bytes": 69120,
         "method_RVA": "00004da0",
         "live_entry16_hex": "558bec6aff68e4c7003064a100000000",
         "live_entry16_matches_disk_with_only_loader_relocations": true,
         "loader_relocations": [],
         "actual_machine": "014c",
-        "actual_PE_timestamp": 1789109500,
+        "actual_PE_timestamp": 1789109893,
         "actual_image_size": 77824,
         "actual_checksum": 0
       },
@@ -2882,14 +2882,14 @@
         "label": "fixture_image",
         "reported_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
         "resolved_32bit_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
-        "module_sha256": "c0566d9145636e951603c0eb62d89679f0a89cd1f922ba5c86f358a66f950b15",
+        "module_sha256": "eab76605924c257c60cd98dd970adee4689383e2b9198145692b81d8ec15a9e0",
         "module_bytes": 69120,
         "method_RVA": "00004da0",
         "live_entry16_hex": "558bec6aff68e4c7003064a100000000",
         "live_entry16_matches_disk_with_only_loader_relocations": true,
         "loader_relocations": [],
         "actual_machine": "014c",
-        "actual_PE_timestamp": 1789109500,
+        "actual_PE_timestamp": 1789109893,
         "actual_image_size": 77824,
         "actual_checksum": 0
       },
@@ -3066,14 +3066,14 @@
         "label": "fixture_image",
         "reported_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
         "resolved_32bit_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
-        "module_sha256": "c0566d9145636e951603c0eb62d89679f0a89cd1f922ba5c86f358a66f950b15",
+        "module_sha256": "eab76605924c257c60cd98dd970adee4689383e2b9198145692b81d8ec15a9e0",
         "module_bytes": 69120,
         "method_RVA": "00004da0",
         "live_entry16_hex": "558bec6aff68e4c7003064a100000000",
         "live_entry16_matches_disk_with_only_loader_relocations": true,
         "loader_relocations": [],
         "actual_machine": "014c",
-        "actual_PE_timestamp": 1789109500,
+        "actual_PE_timestamp": 1789109893,
         "actual_image_size": 77824,
         "actual_checksum": 0
       },
@@ -3250,14 +3250,14 @@
         "label": "fixture_image",
         "reported_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
         "resolved_32bit_module": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-vertex-layout-binding-20260910\\build\\vertex-binding-fixture\\vertex_binding_fixture.exe",
-        "module_sha256": "c0566d9145636e951603c0eb62d89679f0a89cd1f922ba5c86f358a66f950b15",
+        "module_sha256": "eab76605924c257c60cd98dd970adee4689383e2b9198145692b81d8ec15a9e0",
         "module_bytes": 69120,
         "method_RVA": "00004da0",
         "live_entry16_hex": "558bec6aff68e4c7003064a100000000",
         "live_entry16_matches_disk_with_only_loader_relocations": true,
         "loader_relocations": [],
         "actual_machine": "014c",
-        "actual_PE_timestamp": 1789109500,
+        "actual_PE_timestamp": 1789109893,
         "actual_image_size": 77824,
         "actual_checksum": 0
       },
@@ -4940,8 +4940,8 @@
     },
     {
       "path": "src/native_renderer_vertex_layout_binding.cpp",
-      "bytes": 4891,
-      "sha256": "7a7df5acf3997a28a5c79583f3c736045b915d9cd9650785e3dd251a05c6d394"
+      "bytes": 4890,
+      "sha256": "c016e2d22c0d1ff84f2ff1aebcd79a2b50c865619f8683fe1bceb6dcad69c78e"
     },
     {
       "path": "docs/NATIVE_RENDERER_VERTEX_LAYOUT_BINDING.md",
@@ -4982,18 +4982,18 @@
     },
     {
       "path": "local/vertex_binding_build.log",
-      "bytes": 3889,
-      "sha256": "b4e90a8f6402a8244d6e4b4003bc1e773be9a1765e4e8f630ee8198f7f4fae36"
+      "bytes": 2470,
+      "sha256": "dfb2544ec0996b88a31ea2a714f05387838cc3cf232e742c7f01228e49030bd7"
     },
     {
       "path": "build/vertex-binding-fixture/vertex_binding_fixture.exe",
       "bytes": 69120,
-      "sha256": "c0566d9145636e951603c0eb62d89679f0a89cd1f922ba5c86f358a66f950b15"
+      "sha256": "eab76605924c257c60cd98dd970adee4689383e2b9198145692b81d8ec15a9e0"
     },
     {
       "path": "build/vertex-binding-fixture/vertex_binding_fixture.map",
       "bytes": 118939,
-      "sha256": "7221bfd540ee7dbbf6cb15643052949545c012c3815ed3be84d1e1a76fb5aa96"
+      "sha256": "264e95149cdca0c079d30dd68f3deb4a936605029f8df6d5c099ab0282ee389f"
     },
     {
       "path": "build/vertex-binding-fixture/build.cmd",
@@ -5028,7 +5028,7 @@
     {
       "path": "local/vertex_binding_fixture/bsp_core.lib",
       "bytes": 27953844,
-      "sha256": "3dbcef3b936de1d07e910288d3f648b8510bb4b4814244b5547b707e43e677fe"
+      "sha256": "8aa1979c3d5028851a9936f4ceacabe846cfecd65d4195f4c73944534c93ee8e"
     },
     {
       "path": "local/vertex_binding_fixture/build.log",
@@ -5158,12 +5158,12 @@
     {
       "path": "local/vertex_binding_fixture/runs/double_host/modules.txt",
       "bytes": 1514,
-      "sha256": "531793b0187aafd26b7df75c97c530535f87f02fb4ff40f68bbd656614eaba02"
+      "sha256": "1215c347a6d6220aa34fc37bf6448bc73d0ba9220c2698f7828c9e20fcba2072"
     },
     {
       "path": "local/vertex_binding_fixture/runs/double_host/postimages.json",
       "bytes": 1792,
-      "sha256": "a664b17e48ffd9fbaa9718ecf78b272c4017a6a93d6dabcdd927e78d5def86ce"
+      "sha256": "159737a88f4e550c1dc549c0d0f091c0f8f4a99834ed3964ad7b8eff71ca5b66"
     },
     {
       "path": "local/vertex_binding_fixture/runs/double_host/run.log",
@@ -5178,12 +5178,12 @@
     {
       "path": "local/vertex_binding_fixture/runs/double_native/modules.txt",
       "bytes": 1514,
-      "sha256": "531793b0187aafd26b7df75c97c530535f87f02fb4ff40f68bbd656614eaba02"
+      "sha256": "1215c347a6d6220aa34fc37bf6448bc73d0ba9220c2698f7828c9e20fcba2072"
     },
     {
       "path": "local/vertex_binding_fixture/runs/double_native/postimages.json",
       "bytes": 1792,
-      "sha256": "dadb4d43c2cb45d70abf55153d26d604a28a79416f738b86a57671d07a171215"
+      "sha256": "2f513ae7501da171c4cc07ab029eda002a2e4af36932570cc762a1b59372f22b"
     },
     {
       "path": "local/vertex_binding_fixture/runs/double_native/run.log",
@@ -5203,12 +5203,12 @@
     {
       "path": "local/vertex_binding_fixture/runs/host/modules.txt",
       "bytes": 5219,
-      "sha256": "fb764e009acdff172d21bf73f0854fe93889f827a7c23c30417d1422adbbc564"
+      "sha256": "362a45f6cd216679a3c878b66ed29915ad303c8c8b4f987deadbe314a32e366e"
     },
     {
       "path": "local/vertex_binding_fixture/runs/host/postimages.json",
       "bytes": 1792,
-      "sha256": "f0ac3012e45bde03dacbea4e1d3fdb3479ad74aec48f408431106df77b474a16"
+      "sha256": "931a97d1b14690706110e7192b2bebb74bb3cf5eb4237a929ab6478401053027"
     },
     {
       "path": "local/vertex_binding_fixture/runs/host/result.json",
@@ -5243,12 +5243,12 @@
     {
       "path": "local/vertex_binding_fixture/runs/native/modules.txt",
       "bytes": 5219,
-      "sha256": "fb764e009acdff172d21bf73f0854fe93889f827a7c23c30417d1422adbbc564"
+      "sha256": "362a45f6cd216679a3c878b66ed29915ad303c8c8b4f987deadbe314a32e366e"
     },
     {
       "path": "local/vertex_binding_fixture/runs/native/postimages.json",
       "bytes": 1792,
-      "sha256": "8e1410b1ee0cffcd54731e31cae8b50418ad126cdc920f28742633c3da5335dd"
+      "sha256": "159737a88f4e550c1dc549c0d0f091c0f8f4a99834ed3964ad7b8eff71ca5b66"
     },
     {
       "path": "local/vertex_binding_fixture/runs/native/result.json",
@@ -5278,7 +5278,7 @@
     {
       "path": "local/vertex_binding_fixture/verified.json",
       "bytes": 155411,
-      "sha256": "9f8ef79ac7413cc7c05e8313c0f8cf40de4a6052d1a84605df61694bd3275c58"
+      "sha256": "dd2eae6c184953cb3e7ad9db628f849a86a60a5aeefb67d4ae24c5805c50efaf"
     },
     {
       "path": "local/vertex_binding_fixture/verify_seeds.json",
