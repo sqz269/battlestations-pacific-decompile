@@ -1,0 +1,2842 @@
+{
+  "packet": "native_logical_vertex_owner_next",
+  "captured_utc": "2026-09-11T01:51:23.370990+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910",
+  "base_commit": "9341b8a",
+  "primary_dependency_commit_observed": "d8326d21501846d2a0cb9a0814cecf6dd771c3c8",
+  "owned_addresses": [
+    "00b4b5d0",
+    "00b4bf10",
+    "00b49570",
+    "00b62010"
+  ],
+  "owned_files": [
+    "docs/NATIVE_LOGICAL_VERTEX_OWNER_NEXT.md",
+    "reports/native_logical_vertex_owner_next.json"
+  ],
+  "conclusion": {
+    "full_logical_vertex_destruction_ready": false,
+    "reason": "No nonnull writer or actual terminal/allocation profile has been established for base +4C. Native full B62010 permits nonnull and invokes current vtable slot0 after count-zero. Constructor-null and bounded negative scans are not a lifetime-wide invariant.",
+    "nonnull_4c_profiles_admitted": [],
+    "generic_callback_added": false,
+    "null_only_implementation_proposed": false
+  },
+  "native_evidence": {
+    "captured_utc": "2026-09-11T01:43:57.323903+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "base_commit": "9341b8a",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "guard": "Every live bytes/proto/comments query goes through bsp.py ghidra project/program/language/image-base guard.",
+    "spans": [
+      {
+        "address": "00b4b5d0",
+        "end_exclusive": "00b4b6e8",
+        "length": 280,
+        "role": "full_owned_logical_vertex_destructor",
+        "raw_offset": 7648720,
+        "bytes_hex": "6aff6830f9cb0064a100000000506489250000000083ec0c568bf189742404c7066c1dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce8bb84feff88442408578b46602500f000003d00100000c644241c01753a8b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e8a2fdffffa194d3f80083800c1a0000ff05f419000050ff151022ce00eb068b4e588b51048b0d94d3f8005556e865b2fdff8b7e688b2d2022ce008d470450ffd585c075088b178b028bcfffd08b7e588d4f0451ffd585c05d75088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e83784feff8bcec7442418ffffffffe8386901008b4c24105e64890d0000000083c418c3",
+        "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4b6e7",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b4bf10",
+        "end_exclusive": "00b4bf30",
+        "length": 32,
+        "role": "full_owned_deleting_wrapper",
+        "raw_offset": 7651088,
+        "bytes_hex": "568bf1e8b8f6fffff644240801740b56b918fe0801e846d6ffff8bc65ec20400",
+        "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4bf2d",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b49570",
+        "end_exclusive": "00b495d9",
+        "length": 105,
+        "role": "full_owned_slot_return",
+        "raw_offset": 7640432,
+        "bytes_hex": "535556578bf18d7e0c57ff151822ce00834718018b4424148b58748b4e288b0c992bc18be8b889888888f7ed03d5c1fa068bc2c1e81f03c20fb791400f000066898451000f0000668381400f0000013b5e347303895e34834718ff57ff151022ce005f5e5d5bc20400",
+        "sha256": "48e97972f0520d998f4cafde5d7cefd3db27e3cf743de6956885698ccac732de",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b495d6",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b62010",
+        "end_exclusive": "00b62097",
+        "length": 135,
+        "role": "full_owned_vertex_base_destructor",
+        "raw_offset": 7741456,
+        "bytes_hex": "6aff68a814cc0064a100000000506489250000000051568bf15789742408c706682bd6008b7e4c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7464c000000008b465085c0741050e83f45090083c404c74650000000008bcec7442414ffffffffe86a1007008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b62096",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00cbf920",
+        "end_exclusive": "00cbf928",
+        "length": 8,
+        "role": "full_logical_base_unwind",
+        "raw_offset": 9173280,
+        "bytes_hex": "8b4de8e9e826eaff",
+        "sha256": "0d2f3f73a5b43f6e0b1e0de27a93a8bfc94a29f2b3005690056003a533aa920f",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00cbf928",
+        "end_exclusive": "00cbf930",
+        "length": 8,
+        "role": "full_logical_guard_unwind",
+        "raw_offset": 9173288,
+        "bytes_hex": "8d4dece9e017e6ff",
+        "sha256": "c3342cb979e3324be40ba5fb01e8217af305496cd4f434bfe5b252e96f36b9d3",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00cbf930",
+        "end_exclusive": "00cbf93a",
+        "length": 10,
+        "role": "full_logical_eh_handler",
+        "raw_offset": 9173296,
+        "bytes_hex": "b8dc83df00e90972f3ff",
+        "sha256": "3b898590694becc63bc652ae02b3fa3e40b8047c883a427809034fda8721fb1d",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00df83cc",
+        "end_exclusive": "00df83dc",
+        "length": 16,
+        "role": "logical_unwind_map",
+        "raw_offset": 10453964,
+        "bytes_hex": "ffffffff20f9cb000000000028f9cb00",
+        "sha256": "9edbebb318ce7656dde5d829aa516976ad5f1dc68c90b72323a488b86c4d6a10",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00df83dc",
+        "end_exclusive": "00df8400",
+        "length": 36,
+        "role": "logical_funcinfo",
+        "raw_offset": 10453980,
+        "bytes_hex": "2205931902000000cc83df00000000000000000000000000000000000000000001000000",
+        "sha256": "bb456250e5f901a4d8493f64e26ec2d8cc3cfa2a9d9797027a2cacf722958797",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cc14a0",
+        "end_exclusive": "00cc14a8",
+        "length": 8,
+        "role": "full_base_unwind",
+        "raw_offset": 9180320,
+        "bytes_hex": "8b4df0e9c878e8ff",
+        "sha256": "6ea8ad6da7fd7771ff43ada45e76bf9da75a6ba2a76faaa17a4186b4708f9e2d",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00cc14a8",
+        "end_exclusive": "00cc14b2",
+        "length": 10,
+        "role": "full_base_eh_handler",
+        "raw_offset": 9180328,
+        "bytes_hex": "b8eca2df00e99156f3ff",
+        "sha256": "4c0ae9f7ff7322c63f6e5d326fa135e761a7eefef42d28ef3ca3a2b3b8f3f3f4",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00dfa2e4",
+        "end_exclusive": "00dfa2ec",
+        "length": 8,
+        "role": "base_unwind_map",
+        "raw_offset": 10461924,
+        "bytes_hex": "ffffffffa014cc00",
+        "sha256": "e91d4d716fcc89476f395945cb4aa417f0da90274c5ab87d0afdb69c7316586b",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00dfa2ec",
+        "end_exclusive": "00dfa310",
+        "length": 36,
+        "role": "base_funcinfo",
+        "raw_offset": 10461932,
+        "bytes_hex": "2205931901000000e4a2df00000000000000000000000000000000000000000001000000",
+        "sha256": "9c3fcb625b44a0bb09fba35d8c261f3c7a25a99b7f380a3ded7924e6291386ee",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b48d70",
+        "end_exclusive": "00b48d75",
+        "length": 5,
+        "role": "full_base_destructor_thunk",
+        "raw_offset": 7638384,
+        "bytes_hex": "e97ba30800",
+        "sha256": "ca2a7163930e8fc4129321ac2f55005085130fa2b722e83fb55f7ce6b013f273",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00bd30e0",
+        "end_exclusive": "00bd30ee",
+        "length": 14,
+        "role": "full_current_zero_terminal_dispatch",
+        "raw_offset": 8204512,
+        "bytes_hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00bd30ed",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "length": 7,
+        "role": "full_refcounted_base_destructor",
+        "raw_offset": 8204528,
+        "bytes_hex": "c70130b1ce00c3",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00bd30f6",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00d61d6c",
+        "end_exclusive": "00d61da0",
+        "length": 52,
+        "role": "logical_profile_prefix",
+        "raw_offset": 9837932,
+        "bytes_hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d62b68",
+        "end_exclusive": "00d62b9c",
+        "length": 52,
+        "role": "base_profile_prefix",
+        "raw_offset": 9841512,
+        "bytes_hex": "e030bd00a020b6007094b400a0aab4008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf00b0aab400",
+        "sha256": "954f4db150fba6b80028197b9cc667ac621ed6e2c8421f32f72fdddcf88ea182",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61d1c",
+        "end_exclusive": "00d61d24",
+        "length": 8,
+        "role": "cpu_declaration_terminal_profile",
+        "raw_offset": 9837852,
+        "bytes_hex": "e030bd00a08cb400",
+        "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61e34",
+        "end_exclusive": "00d61e3c",
+        "length": 8,
+        "role": "private_vertex_terminal_profile",
+        "raw_offset": 9838132,
+        "bytes_hex": "e030bd0040bbb400",
+        "sha256": "4c3aca5ca6d4601898bf06dfd1503833a5e27b4df9ffd642b6f3ac7dde43f865",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61e7c",
+        "end_exclusive": "00d61e84",
+        "length": 8,
+        "role": "pooled_vertex_terminal_profile",
+        "raw_offset": 9838204,
+        "bytes_hex": "e030bd0030c2b400",
+        "sha256": "aed4f4e458012ea7e9987eef53501e32a5bf375522837b3dbb6f10297864ad09",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b61e20",
+        "end_exclusive": "00b61f84",
+        "length": 356,
+        "role": "full_base_constructor",
+        "raw_offset": 7740960,
+        "bytes_hex": "6aff688814cc0064a10000000050648925000000005153568bf1c70630b1ce00578974240cc7460401000000a1e0fe08018b7c242033db89464883c001a3e0fe080183c8ffc706682bd600895e5089461089461c894628895e18895e24895e3089463489463889463c894640894644895e08895e4c8b87cc00000053538bcf895c242089460cc7465400000040e8de5dfeff84c0742453538bcfe8815dfeff53538bcf894610e8155efeff53538bcf894618e8495dfeff894614536a038bcfe8ac5dfeff84c07427536a038bcfe84e5dfeff536a038bcf89461ce8e15dfeff536a038bcf894624e8145dfeff894620536a058bcfe8775dfeff84c07427536a058bcfe8195dfeff536a058bcf894628e8ac5dfeff536a058bcf894630e8df5cfeff89462c536a0a8bcfe8425dfeff84c0741c536a0a8bcfe8045dfeff83f804750d536a0a8bcfe8d55cfeff8946348b4c24105f8bc65e5b64890d0000000083c410c20400",
+        "sha256": "65814249bf85c9940a1681dbf7028b3ebbcf7109de5ce21cc2f15003569b9185",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b61f81",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b4a9b0",
+        "end_exclusive": "00b4aa94",
+        "length": 228,
+        "role": "full_borrowed_physical_constructor",
+        "raw_offset": 7645616,
+        "bytes_hex": "6aff6818f8cb0064a100000000506489250000000051535556578b7c24288bf15789742414e8467401008b44242433ed8bdd3bdf896c241cc7066c1dd600896e58896e5c896e68896e6c896e70894664c7466001000000742b3bfd897e68740a83c70457ff151c22ce003bdd74168d4b0451ff152022ce0085c075088b138b028bcbffd08b7e588b44242c3bf8742b3bc5894658740a83c00450ff151c22ce003bfd74168d4f0451ff152022ce0085c075088b178b028bcfffd08b4c2430894e5c8b0d94d3f80056e8c3dffdff8b4c24145f8bc65e5d5b64890d0000000083c410c21000",
+        "sha256": "263395697f964d336e8a77f0537016227b5ac6193e069c41f2f420454cd77e8c",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4aa91",
+            "operand": "0x10"
+          }
+        ]
+      },
+      {
+        "address": "00b4bc00",
+        "end_exclusive": "00b4bef6",
+        "length": 758,
+        "role": "full_d3d9_logical_constructor",
+        "raw_offset": 7650304,
+        "bytes_hex": "6aff68b0f9cb0064a100000000506489250000000083ec108b44242456578bf15089742410e8f661010033ffc7066c1dd600897e58897e68897e6c897e70803ddcd6080100897c242074138b0d94d3f800894c2414e8767efeff88442410538b5c24348bc383e00f83f803c6442424018bcb772fff2485f8beb400897c240c81c900000100eb1cc744240c01000000eb12c744240c02000000eb08c744240c03000000f6c1107405bf010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81cf00400000eb2683cf02eb2183cf40eb1c3d00040000740f3d00050000750e81cf80000000eb0681cf000100008bd181e200f0000081fa00100000750681cf0002000081e100000f0081f900000100750383cf088b0d94d3f8008bc32500f000003d00100000558b6c24307555e87241fdff89465883c00450ff151c22ce008b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e875f4ffffa194d3f80005f419000083cfff01781850ff151022ce00897e5c8b7c2434e9fd000000c744243000000000e85541fdff8b4c24348b89cc0000008b100fafcd6a008d5c2434538b5c24185333db535751508b4268ffd0395c2430754d3bc374493d7c01768874423d0e000780743b8b0d94d3f800e88cd8fdff8b0d94d3f800e80141fdff8b4c24348b89cc0000008b100fafcd538d5c2434538b5c24185333db535751508b4268ffd06a2ce800aa0a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700341ed60089581489581889581c895820895828895824eb0233c08b7c24348b5c24388946588b97cc0000000fafd5528b5424348bc88b008b40145352ffd08b4424308b088b510850ffd2c7465c00000000896e64895e608b5e683bdf5d742b85ff897e68740a83c70457ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd0803ddcd6080100c6442424005b740e8b4c2410518b4c2418e81f7cfeff8b4c24185f8bc65e64890d0000000083c41cc20c00",
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4bef3",
+            "operand": "0xc"
+          }
+        ]
+      },
+      {
+        "address": "00b49980",
+        "end_exclusive": "00b49a7c",
+        "length": 252,
+        "role": "full_profile_lock",
+        "raw_offset": 7641472,
+        "bytes_hex": "64a1000000006aff6898f7cb00506489250000000083ec08803ddcd608010056578bf174178b3d94d3f8008bcf897c240ce81aa1feff88442408eb048b7c240c53558b46602500f000003d00100000c74424200000000075298b4e5885c974228b5424288b46688d6e5c8956648b80cc0000006a00558be80faf6c24340fafc2eb358b4e5885c9743c8b46688b90cc0000008bc20faf44242885c075068b46640fafc28b6c2430558d6c242c558b6e70036c24340fafea8b198b53086a015550ffd2894608803ddcd60801008b76085dc744241cffffffff5b740c8b442408508bcfe899a0feff8b4c24105f8bc65e64890d0000000083c414c20c00",
+        "sha256": "e0e9868dcdc34f988d7d34bd33637d8d819c9ea453cd27e0138f91428abb44f6",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b49a79",
+            "operand": "0xc"
+          }
+        ]
+      },
+      {
+        "address": "00b49a80",
+        "end_exclusive": "00b49b0b",
+        "length": 139,
+        "role": "full_profile_unlock",
+        "raw_offset": 7641728,
+        "bytes_hex": "64a1000000006aff68b8f7cb00506489250000000083ec08803ddcd608010056578bf174178b3d94d3f8008bcf897c240ce81aa0feff88442408eb048b7c240c8b4e5885c9c74424180000000074078b018b500cffd2c7460800000000803ddcd6080100c7442418ffffffff740c8b442408508bcfe806a0feff8b4c24105f5e64890d0000000083c414c3",
+        "sha256": "16573b9f263996213c20821e791cd1e9a65c16de48cd9d388288308a3061eb6c",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b49b0a",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b48cc0",
+        "end_exclusive": "00b48cc4",
+        "length": 4,
+        "role": "full_profile_flags_getter",
+        "raw_offset": 7638208,
+        "bytes_hex": "8b4160c3",
+        "sha256": "e6001fd7c43d35f244e418688ebe47d7777d15c557f62267ef4f2fb6c3bf7a74",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b48cc3",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b48cd0",
+        "end_exclusive": "00b48cd4",
+        "length": 4,
+        "role": "full_profile_count_getter",
+        "raw_offset": 7638224,
+        "bytes_hex": "8b4164c3",
+        "sha256": "6ffefd5a9a063cdcc897e922db1b401a2a6c8a8fd3c47617ed3ec2fe7dd373d8",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b48cd3",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b48ce0",
+        "end_exclusive": "00b48ce4",
+        "length": 4,
+        "role": "full_profile_declaration_getter",
+        "raw_offset": 7638240,
+        "bytes_hex": "8b4168c3",
+        "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b48ce3",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b48cf0",
+        "end_exclusive": "00b48cfa",
+        "length": 10,
+        "role": "full_profile_buffer_getter",
+        "raw_offset": 7638256,
+        "bytes_hex": "8b49588b018b501cffe2",
+        "sha256": "8eb76e331df34562f4dee65474396e5cdb7ad4afeff7bbfacf8b5d0a419afc6b",
+        "live_matches_disk": true,
+        "returns": []
+      },
+      {
+        "address": "00b48d10",
+        "end_exclusive": "00b48d14",
+        "length": 4,
+        "role": "full_profile_offset_getter",
+        "raw_offset": 7638288,
+        "bytes_hex": "8b415cc3",
+        "sha256": "e8a390f77a2c35edee25e41f4902293a876d5b3af20791cc05da79c2f55d4983",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b48d13",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b48d30",
+        "end_exclusive": "00b48d33",
+        "length": 3,
+        "role": "full_profile_ret8",
+        "raw_offset": 7638320,
+        "bytes_hex": "c20800",
+        "sha256": "1d10894625976bca9d8906f3ecf1e766b94e9219ec3bf1c30e02feea5e18e45a",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b48d30",
+            "operand": "8"
+          }
+        ]
+      },
+      {
+        "address": "00b48d40",
+        "end_exclusive": "00b48d48",
+        "length": 8,
+        "role": "full_profile_invalidate",
+        "raw_offset": 7638336,
+        "bytes_hex": "c7415cffffffffc3",
+        "sha256": "43c39d6b1d54208013457a1207a70b9131b42a8b01b23455a0c05c722a6543ae",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b48d47",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b4aaa0",
+        "end_exclusive": "00b4aaa1",
+        "length": 1,
+        "role": "full_profile_ret_first",
+        "raw_offset": 7645856,
+        "bytes_hex": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4aaa0",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b4aab0",
+        "end_exclusive": "00b4aab1",
+        "length": 1,
+        "role": "full_profile_ret_second",
+        "raw_offset": 7645872,
+        "bytes_hex": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4aab0",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b61d90",
+        "end_exclusive": "00b61d9a",
+        "length": 10,
+        "role": "full_decode_pointer_setter",
+        "raw_offset": 7740816,
+        "bytes_hex": "8b442404894150c20400",
+        "sha256": "2916e2994197d4418c7a26f60f4933c75db70f143977f040b32a03a89face977",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b61d97",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b61f90",
+        "end_exclusive": "00b62003",
+        "length": 115,
+        "role": "full_decode_record_writer",
+        "raw_offset": 7741328,
+        "bytes_hex": "568bf1837e5000752a8b068b5024ffd28bc8e85959feff33c9ba20000000f7e20f90c1f7d90bc851e80136090083c4048946508b4c240cd9018b442408c1e0050346505ed918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cc20800",
+        "sha256": "c533e58893f2bc1d61fc93006b429dde76ae0086c97e48d504a513881d8970d0",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b62000",
+            "operand": "8"
+          }
+        ]
+      },
+      {
+        "address": "00b4aac0",
+        "end_exclusive": "00b4aafb",
+        "length": 59,
+        "role": "full_physical_field_setter",
+        "raw_offset": 7645888,
+        "bytes_hex": "8b442404568b71583bf0742b85c0894158740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+        "sha256": "d3185d1aecdc4a500f2116dcf0f1f81dcb95ef6cfcc1b70a8c9af9c5d6d55fc6",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4aaf8",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b268e0",
+        "end_exclusive": "00b268f3",
+        "length": 19,
+        "role": "full_existing_renderer_unregister",
+        "raw_offset": 7497952,
+        "bytes_hex": "8d4424045081c1ac1a0000e810eaffffc20400",
+        "sha256": "09e0eb72440b883fbdf3027507548e74e4726c0c358a9c4c674a49e8ca1cea72",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b268f0",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b25300",
+        "end_exclusive": "00b25367",
+        "length": 103,
+        "role": "full_existing_renderer_remove",
+        "raw_offset": 7492352,
+        "bytes_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+        "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b25337",
+            "operand": "4"
+          },
+          {
+            "site": "00b25364",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b4b3f0",
+        "end_exclusive": "00b4b441",
+        "length": 81,
+        "role": "full_existing_physical_unregister",
+        "raw_offset": 7648240,
+        "bytes_hex": "83ec08803ddcd608010056578bf174138b3d94d3f8008bcfe8c386feff88442408eb048b7c240c8d442414508d4e08e8bcfeffff803ddcd6080100740c8b4c2408518bcfe8c786feff5f5e83c408c20400",
+        "sha256": "32033daabd1dd9c420b5475303ff48b5c6e4f77766d82923c1f86251e9ac6908",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4b43e",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b4b2e0",
+        "end_exclusive": "00b4b347",
+        "length": 103,
+        "role": "full_existing_physical_remove",
+        "raw_offset": 7647968,
+        "bytes_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+        "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4b317",
+            "operand": "4"
+          },
+          {
+            "site": "00b4b344",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b33ad0",
+        "end_exclusive": "00b33afe",
+        "length": 46,
+        "role": "full_existing_optional_enter",
+        "raw_offset": 7551696,
+        "bytes_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+        "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b33ae2",
+            "operand": ""
+          },
+          {
+            "site": "00b33af9",
+            "operand": ""
+          },
+          {
+            "site": "00b33afd",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00b33b00",
+        "end_exclusive": "00b33b43",
+        "length": 67,
+        "role": "full_existing_optional_leave",
+        "raw_offset": 7551744,
+        "bytes_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+        "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b33b40",
+            "operand": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b21110",
+        "end_exclusive": "00b21126",
+        "length": 22,
+        "role": "full_existing_guard_unwind",
+        "raw_offset": 7475472,
+        "bytes_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+        "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b21125",
+            "operand": ""
+          }
+        ]
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "role": "scalar_free_hook_prefix",
+        "raw_offset": 8349100,
+        "bytes_hex": "e917380000",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf6b43",
+        "end_exclusive": "00bf6b48",
+        "length": 5,
+        "role": "fh3_hook_prefix",
+        "raw_offset": 8350531,
+        "bytes_hex": "558bec83ec",
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "live_matches_disk": true
+      }
+    ],
+    "field_accesses": [
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b645",
+        "instruction": "mov ecx, dword ptr [esi + 0x58]",
+        "role": "full_owned_logical_vertex_destructor"
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b668",
+        "instruction": "mov ecx, dword ptr [esi + 0x58]",
+        "role": "full_owned_logical_vertex_destructor"
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b67b",
+        "instruction": "mov edi, dword ptr [esi + 0x68]",
+        "role": "full_owned_logical_vertex_destructor"
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b696",
+        "instruction": "mov edi, dword ptr [esi + 0x58]",
+        "role": "full_owned_logical_vertex_destructor"
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62034",
+        "instruction": "mov edi, dword ptr [esi + 0x4c]",
+        "role": "full_owned_vertex_base_destructor"
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62059",
+        "instruction": "mov dword ptr [esi + 0x4c], 0",
+        "role": "full_owned_vertex_base_destructor"
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62060",
+        "instruction": "mov eax, dword ptr [esi + 0x50]",
+        "role": "full_owned_vertex_base_destructor"
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62070",
+        "instruction": "mov dword ptr [esi + 0x50], 0",
+        "role": "full_owned_vertex_base_destructor"
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61e6b",
+        "instruction": "mov dword ptr [esi + 0x50], ebx",
+        "role": "full_base_constructor"
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61e92",
+        "instruction": "mov dword ptr [esi + 0x4c], ebx",
+        "role": "full_base_constructor"
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4a9ee",
+        "instruction": "mov dword ptr [esi + 0x58], ebp",
+        "role": "full_borrowed_physical_constructor"
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4a9f4",
+        "instruction": "mov dword ptr [esi + 0x68], ebp",
+        "role": "full_borrowed_physical_constructor"
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa0b",
+        "instruction": "mov dword ptr [esi + 0x68], edi",
+        "role": "full_borrowed_physical_constructor"
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa34",
+        "instruction": "mov edi, dword ptr [esi + 0x58]",
+        "role": "full_borrowed_physical_constructor"
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa41",
+        "instruction": "mov dword ptr [esi + 0x58], eax",
+        "role": "full_borrowed_physical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc32",
+        "instruction": "mov dword ptr [esi + 0x58], edi",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc35",
+        "instruction": "mov dword ptr [esi + 0x68], edi",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd3e",
+        "instruction": "mov dword ptr [esi + 0x58], eax",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd62",
+        "instruction": "mov ecx, dword ptr [esi + 0x58]",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bdbc",
+        "instruction": "mov eax, dword ptr [edx + 0x68]",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be0f",
+        "instruction": "mov eax, dword ptr [edx + 0x68]",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be5c",
+        "instruction": "mov dword ptr [esi + 0x58], eax",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be91",
+        "instruction": "mov ebx, dword ptr [esi + 0x68]",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be9b",
+        "instruction": "mov dword ptr [esi + 0x68], edi",
+        "role": "full_d3d9_logical_constructor"
+      },
+      {
+        "function": "00b49980",
+        "site": "00b499d9",
+        "instruction": "mov ecx, dword ptr [esi + 0x58]",
+        "role": "full_profile_lock"
+      },
+      {
+        "function": "00b49980",
+        "site": "00b499e4",
+        "instruction": "mov eax, dword ptr [esi + 0x68]",
+        "role": "full_profile_lock"
+      },
+      {
+        "function": "00b49980",
+        "site": "00b49a02",
+        "instruction": "mov ecx, dword ptr [esi + 0x58]",
+        "role": "full_profile_lock"
+      },
+      {
+        "function": "00b49980",
+        "site": "00b49a09",
+        "instruction": "mov eax, dword ptr [esi + 0x68]",
+        "role": "full_profile_lock"
+      },
+      {
+        "function": "00b49a80",
+        "site": "00b49ac0",
+        "instruction": "mov ecx, dword ptr [esi + 0x58]",
+        "role": "full_profile_unlock"
+      },
+      {
+        "function": "00b48ce0",
+        "site": "00b48ce0",
+        "instruction": "mov eax, dword ptr [ecx + 0x68]",
+        "role": "full_profile_declaration_getter"
+      },
+      {
+        "function": "00b48cf0",
+        "site": "00b48cf0",
+        "instruction": "mov ecx, dword ptr [ecx + 0x58]",
+        "role": "full_profile_buffer_getter"
+      },
+      {
+        "function": "00b61d90",
+        "site": "00b61d94",
+        "instruction": "mov dword ptr [ecx + 0x50], eax",
+        "role": "full_decode_pointer_setter"
+      },
+      {
+        "function": "00b61f90",
+        "site": "00b61f93",
+        "instruction": "cmp dword ptr [esi + 0x50], 0",
+        "role": "full_decode_record_writer"
+      },
+      {
+        "function": "00b61f90",
+        "site": "00b61fc0",
+        "instruction": "mov dword ptr [esi + 0x50], eax",
+        "role": "full_decode_record_writer"
+      },
+      {
+        "function": "00b61f90",
+        "site": "00b61fd0",
+        "instruction": "add eax, dword ptr [esi + 0x50]",
+        "role": "full_decode_record_writer"
+      },
+      {
+        "function": "00b4aac0",
+        "site": "00b4aac5",
+        "instruction": "mov esi, dword ptr [ecx + 0x58]",
+        "role": "full_physical_field_setter"
+      },
+      {
+        "function": "00b4aac0",
+        "site": "00b4aace",
+        "instruction": "mov dword ptr [ecx + 0x58], eax",
+        "role": "full_physical_field_setter"
+      }
+    ],
+    "direct_and_indirect_transfers": [
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b610",
+        "instruction": "call 0xb33ad0",
+        "direct": true
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b63b",
+        "instruction": "call dword ptr [0xce2218]",
+        "direct": false
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b649",
+        "instruction": "call 0xb4b3f0",
+        "direct": true
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b660",
+        "instruction": "call dword ptr [0xce2210]",
+        "direct": false
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b666",
+        "instruction": "jmp 0xb4b66e",
+        "direct": true
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b676",
+        "instruction": "call 0xb268e0",
+        "direct": true
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b688",
+        "instruction": "call ebp",
+        "direct": false
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b694",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b69d",
+        "instruction": "call ebp",
+        "direct": false
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b6aa",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b6c4",
+        "instruction": "call 0xb33b00",
+        "direct": true
+      },
+      {
+        "function": "00b4b5d0",
+        "site": "00b4b6d3",
+        "instruction": "call 0xb62010",
+        "direct": true
+      },
+      {
+        "function": "00b4bf10",
+        "site": "00b4bf13",
+        "instruction": "call 0xb4b5d0",
+        "direct": true
+      },
+      {
+        "function": "00b4bf10",
+        "site": "00b4bf25",
+        "instruction": "call 0xb49570",
+        "direct": true
+      },
+      {
+        "function": "00b49570",
+        "site": "00b4957a",
+        "instruction": "call dword ptr [0xce2218]",
+        "direct": false
+      },
+      {
+        "function": "00b49570",
+        "site": "00b495cc",
+        "instruction": "call dword ptr [0xce2210]",
+        "direct": false
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62047",
+        "instruction": "call dword ptr [0xce2220]",
+        "direct": false
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62057",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62068",
+        "instruction": "call 0xbf65ac",
+        "direct": true
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62081",
+        "instruction": "call 0xbd30f0",
+        "direct": true
+      },
+      {
+        "function": "00cbf920",
+        "site": "00cbf923",
+        "instruction": "jmp 0xb62010",
+        "direct": true
+      },
+      {
+        "function": "00cbf928",
+        "site": "00cbf92b",
+        "instruction": "jmp 0xb21110",
+        "direct": true
+      },
+      {
+        "function": "00cbf930",
+        "site": "00cbf935",
+        "instruction": "jmp 0xbf6b43",
+        "direct": true
+      },
+      {
+        "function": "00cc14a0",
+        "site": "00cc14a3",
+        "instruction": "jmp 0xb48d70",
+        "direct": true
+      },
+      {
+        "function": "00cc14a8",
+        "site": "00cc14ad",
+        "instruction": "jmp 0xbf6b43",
+        "direct": true
+      },
+      {
+        "function": "00b48d70",
+        "site": "00b48d70",
+        "instruction": "jmp 0xbd30f0",
+        "direct": true
+      },
+      {
+        "function": "00bd30e0",
+        "site": "00bd30eb",
+        "instruction": "call edx",
+        "direct": false
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61ead",
+        "instruction": "call 0xb47c90",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61eba",
+        "instruction": "call 0xb47c40",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61ec6",
+        "instruction": "call 0xb47ce0",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61ed2",
+        "instruction": "call 0xb47c20",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61edf",
+        "instruction": "call 0xb47c90",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61eed",
+        "instruction": "call 0xb47c40",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61efa",
+        "instruction": "call 0xb47ce0",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f07",
+        "instruction": "call 0xb47c20",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f14",
+        "instruction": "call 0xb47c90",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f22",
+        "instruction": "call 0xb47c40",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f2f",
+        "instruction": "call 0xb47ce0",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f3c",
+        "instruction": "call 0xb47c20",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f49",
+        "instruction": "call 0xb47c90",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f57",
+        "instruction": "call 0xb47c60",
+        "direct": true
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61f66",
+        "instruction": "call 0xb47c40",
+        "direct": true
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4a9d5",
+        "instruction": "call 0xb61e20",
+        "direct": true
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa14",
+        "instruction": "call dword ptr [0xce221c]",
+        "direct": false
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa22",
+        "instruction": "call dword ptr [0xce2220]",
+        "direct": false
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa32",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa4a",
+        "instruction": "call dword ptr [0xce221c]",
+        "direct": false
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa58",
+        "instruction": "call dword ptr [0xce2220]",
+        "direct": false
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa68",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4a9b0",
+        "site": "00b4aa78",
+        "instruction": "call 0xb28a40",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc25",
+        "instruction": "call 0xb61e20",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc55",
+        "instruction": "call 0xb33ad0",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc74",
+        "instruction": "jmp dword ptr [eax*4 + 0xb4bef8]",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc85",
+        "instruction": "jmp 0xb4bca3",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc8f",
+        "instruction": "jmp 0xb4bca3",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bc99",
+        "instruction": "jmp 0xb4bca3",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bcd1",
+        "instruction": "jmp 0xb4bcf9",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bcd6",
+        "instruction": "jmp 0xb4bcf9",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bcdb",
+        "instruction": "jmp 0xb4bcf9",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bcf1",
+        "instruction": "jmp 0xb4bcf9",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd39",
+        "instruction": "call 0xb1feb0",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd45",
+        "instruction": "call dword ptr [0xce221c]",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd58",
+        "instruction": "call dword ptr [0xce2218]",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd66",
+        "instruction": "call 0xb4b1e0",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd7c",
+        "instruction": "call dword ptr [0xce2210]",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd89",
+        "instruction": "jmp 0xb4be8b",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bd96",
+        "instruction": "call 0xb1fef0",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bdbf",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bddf",
+        "instruction": "call 0xb29670",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bdea",
+        "instruction": "call 0xb1fef0",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be12",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be16",
+        "instruction": "call 0xbf681b",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be50",
+        "instruction": "jmp 0xb4be54",
+        "direct": true
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be76",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4be82",
+        "instruction": "call edx",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bea4",
+        "instruction": "call dword ptr [0xce221c]",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4beb2",
+        "instruction": "call dword ptr [0xce2220]",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bec2",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b4bc00",
+        "site": "00b4bedc",
+        "instruction": "call 0xb33b00",
+        "direct": true
+      },
+      {
+        "function": "00b49980",
+        "site": "00b499b1",
+        "instruction": "call 0xb33ad0",
+        "direct": true
+      },
+      {
+        "function": "00b49980",
+        "site": "00b499ba",
+        "instruction": "jmp 0xb499c0",
+        "direct": true
+      },
+      {
+        "function": "00b49980",
+        "site": "00b49a00",
+        "instruction": "jmp 0xb49a37",
+        "direct": true
+      },
+      {
+        "function": "00b49980",
+        "site": "00b49a40",
+        "instruction": "call edx",
+        "direct": false
+      },
+      {
+        "function": "00b49980",
+        "site": "00b49a62",
+        "instruction": "call 0xb33b00",
+        "direct": true
+      },
+      {
+        "function": "00b49a80",
+        "site": "00b49ab1",
+        "instruction": "call 0xb33ad0",
+        "direct": true
+      },
+      {
+        "function": "00b49a80",
+        "site": "00b49aba",
+        "instruction": "jmp 0xb49ac0",
+        "direct": true
+      },
+      {
+        "function": "00b49a80",
+        "site": "00b49ad4",
+        "instruction": "call edx",
+        "direct": false
+      },
+      {
+        "function": "00b49a80",
+        "site": "00b49af5",
+        "instruction": "call 0xb33b00",
+        "direct": true
+      },
+      {
+        "function": "00b48cf0",
+        "site": "00b48cf8",
+        "instruction": "jmp edx",
+        "direct": false
+      },
+      {
+        "function": "00b61f90",
+        "site": "00b61f9e",
+        "instruction": "call edx",
+        "direct": false
+      },
+      {
+        "function": "00b61f90",
+        "site": "00b61fa2",
+        "instruction": "call 0xb47900",
+        "direct": true
+      },
+      {
+        "function": "00b61f90",
+        "site": "00b61fb8",
+        "instruction": "call 0xbf55be",
+        "direct": true
+      },
+      {
+        "function": "00b4aac0",
+        "site": "00b4aad7",
+        "instruction": "call dword ptr [0xce221c]",
+        "direct": false
+      },
+      {
+        "function": "00b4aac0",
+        "site": "00b4aae5",
+        "instruction": "call dword ptr [0xce2220]",
+        "direct": false
+      },
+      {
+        "function": "00b4aac0",
+        "site": "00b4aaf5",
+        "instruction": "call eax",
+        "direct": false
+      },
+      {
+        "function": "00b268e0",
+        "site": "00b268eb",
+        "instruction": "call 0xb25300",
+        "direct": true
+      },
+      {
+        "function": "00b4b3f0",
+        "site": "00b4b408",
+        "instruction": "call 0xb33ad0",
+        "direct": true
+      },
+      {
+        "function": "00b4b3f0",
+        "site": "00b4b411",
+        "instruction": "jmp 0xb4b417",
+        "direct": true
+      },
+      {
+        "function": "00b4b3f0",
+        "site": "00b4b41f",
+        "instruction": "call 0xb4b2e0",
+        "direct": true
+      },
+      {
+        "function": "00b4b3f0",
+        "site": "00b4b434",
+        "instruction": "call 0xb33b00",
+        "direct": true
+      },
+      {
+        "function": "00b33ad0",
+        "site": "00b33aec",
+        "instruction": "call dword ptr [0xce2218]",
+        "direct": false
+      },
+      {
+        "function": "00b33b00",
+        "site": "00b33b1d",
+        "instruction": "call dword ptr [0xce2210]",
+        "direct": false
+      },
+      {
+        "function": "00b21110",
+        "site": "00b21120",
+        "instruction": "call 0xb33b00",
+        "direct": true
+      }
+    ],
+    "scoped_byte_scans": [
+      {
+        "pattern": "89 ?? 4c",
+        "window": "00b40000-00b63000",
+        "raw_candidate_count": 9,
+        "candidates": [
+          "00b407d4  .text    89 86 4c  in 00b407a0 BSP_MaterialEffect_Construct",
+          "00b43309  .text    89 59 4c  in 00b42350 BSP_MaterialPass_BuildShaderConstants",
+          "00b4ec78  .text    89 81 4c  in 00b4ec50 TRIV_body_00b4ec50",
+          "00b55966  .text    89 7e 4c  in 00b55780 BSP_BuildingInstanceGenerator_WriteRecord",
+          "00b559b0  .text    89 4e 4c  in 00b55780 BSP_BuildingInstanceGenerator_WriteRecord",
+          "00b56bdb  .text    89 48 4c  in 00b56b90 FUN_00b56b90",
+          "00b5e2d8  .text    89 46 4c  in 00b5e270 CG_array_ctor_helper_00b5e270",
+          "00b5f771  .text    89 5e 4c  in 00b5f720 FUN_00b5f720",
+          "00b61e92  .text    89 5e 4c  in 00b61e20 BSP_LogicalVertexStreamBase_Construct"
+        ],
+        "caution": "Byte-pattern candidates include false instruction boundaries and longer displacements; not complete alias or object-type analysis."
+      },
+      {
+        "pattern": "c7 ?? 4c",
+        "window": "00b40000-00b63000",
+        "raw_candidate_count": 4,
+        "candidates": [
+          "00b5ecb0  .text    c7 89 4c  in 00b5ec40 FUN_00b5ec40",
+          "00b61b38  .text    c7 07 4c  in 00b61b10 FUN_00b61b10",
+          "00b61bd0  .text    c7 07 4c  in 00b61bb0 FUN_00b61bb0",
+          "00b62059  .text    c7 46 4c  in 00b62010 FUN_00b62010"
+        ],
+        "caution": "Byte-pattern candidates include false instruction boundaries and longer displacements; not complete alias or object-type analysis."
+      },
+      {
+        "pattern": "8d ?? 4c",
+        "window": "00b40000-00b63000",
+        "raw_candidate_count": 3,
+        "candidates": [
+          "00b436cf  .text    8d 50 4c  in 00b436a0 CG_scalar_deleting_dtor_00b436a0",
+          "00b44ed4  .text    8d 48 4c  in 00b44d60 BSP_MaterialEffect_BindParameterRegisters",
+          "00b4fc65  .text    8d 96 4c  in 00b4f560 FUN_00b4f560"
+        ],
+        "caution": "Byte-pattern candidates include false instruction boundaries and longer displacements; not complete alias or object-type analysis."
+      },
+      {
+        "pattern": "8b ?? 4c",
+        "window": "00b40000-00b63000",
+        "raw_candidate_count": 20,
+        "candidates": [
+          "00b52646  .text    8b 42 4c  in 00b52550 FUN_00b52550",
+          "00b526e2  .text    8b 42 4c  in 00b52550 FUN_00b52550",
+          "00b52809  .text    8b 42 4c  in 00b52550 FUN_00b52550",
+          "00b5b725  .text    8b 46 4c  in 00b5b650 FUN_00b5b650",
+          "00b5dff5  .text    8b 7e 4c  in 00b5dff0 FUN_00b5dff0",
+          "00b5e006  .text    8b 76 4c  in 00b5dff0 FUN_00b5dff0",
+          "00b5e025  .text    8b 7e 4c  in 00b5e020 FUN_00b5e020",
+          "00b5e036  .text    8b 76 4c  in 00b5e020 FUN_00b5e020",
+          "00b5e062  .text    8b 7e 4c  in 00b5e050 FUN_00b5e050",
+          "00b5e06c  .text    8b 46 4c  in 00b5e050 FUN_00b5e050",
+          "00b5e088  .text    8b 7e 4c  in 00b5e050 FUN_00b5e050",
+          "00b5e092  .text    8b 46 4c  in 00b5e050 FUN_00b5e050",
+          "00b5e0c6  .text    8b 5e 4c  in 00b5e0c0 FUN_00b5e0c0",
+          "00b5e0d7  .text    8b 46 4c  in 00b5e0c0 FUN_00b5e0c0",
+          "00b5e1e9  .text    8b 5e 4c  in 00b5e0c0 FUN_00b5e0c0",
+          "00b5e1f3  .text    8b 46 4c  in 00b5e0c0 FUN_00b5e0c0",
+          "00b5e208  .text    8b 5e 4c  in 00b5e0c0 FUN_00b5e0c0",
+          "00b5e216  .text    8b 76 4c  in 00b5e0c0 FUN_00b5e0c0",
+          "00b5e32d  .text    8b 73 4c  in 00b5e2f0 CG_vector_deleting_dtor_00b5e2f0",
+          "00b62034  .text    8b 7e 4c  in 00b62010 FUN_00b62010"
+        ],
+        "caution": "Byte-pattern candidates include false instruction boundaries and longer displacements; not complete alias or object-type analysis."
+      }
+    ]
+  },
+  "roots": [
+    {
+      "address": "00b4b5d0",
+      "end_exclusive": "00b4b6e8",
+      "length": 280,
+      "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+      "original_abi": "ECX actual logical stream; RET; EAX not stable",
+      "status": "full order/EH established; blocked by general base +4C terminal",
+      "old_prototype": "Function: BSP_LogicalVertexStream_Destruct at 00b4b5d0\nSignature: undefined BSP_LogicalVertexStream_Destruct(void)\nEntry: 00b4b5d0\nBody: 00b4b5d0 - 00b4b6e7\n{\n \"function_name\": \"BSP_LogicalVertexStream_Destruct\",\n \"address\": \"00b4b5d0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 81,\n \"basic_block_count\": 12,\n \"edge_count\": 16,\n \"call_count\": 7,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 6,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"InterlockedDecrement\",\n  \"BSP_Renderer_UnregisterLogicalVertexStream\",\n  \"FUN_00b62010\",\n  \"BSP_PhysicalVertexBuffer_UnregisterLogicalStream\",\n  \"BSP_Renderer_LeaveOptionalGuard\",\n  \"BSP_Renderer_EnterOptionalGuard\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  61440,\n  4096,\n  1,\n  6644,\n  24,\n  12\n ],\n \"basic_block_hashes\": [\n  \"ffdcf215ab7e97c2538a6fd7ece110493a1a53069e8a49911991b55a688f17d8\",\n  \"914d3a9370d50c6dfe7fd6267f8cf763edd376f9edfc746db1344ccc144c3da3\",\n  \"61be9219636bc77272a6b2771cc65ddb78ec1b37879f6239c92a624f60934c56\",\n  \"1b04601d32f3150e8b420c12805cf7358602ae617c83c5c9d4c25d70ec004156\",\n  \"3be5fb4d780c8d07b6692cb8bb14f9239125c27bb95d6ea65cf0250d7f247987\",\n  \"4da335e933b3a64ce5b7da31dd12637ec76142453cd23e7fb5ac97a00c9b431c\",\n  \"eceb747bdbee0f7b84b4b753d35d79c2714b0f1f3b4e49ce5659d7a620722d19\",\n  \"ecd0bb3d393fcf6a65634a6327c057bb9a8394e7952a0cc2698897dfa5a3457b\",\n  \"eceb747bdbee0f7b84b4b753d35d79c2714b0f1f3b4e49ce5659d7a620722d19\",\n  \"36ca4694ecaf66d3b253c6880eeb76023b2459a65d8200b0d94db21c31785b58\",\n  \"0bcc9ae7f5f45746ebfc7482ce22ffc131767135c279ef03671171aaaa432b23\",\n  \"0b24a2270506d39b8136913c340ebcef9886679a7b34b1782576970997f47aea\"\n ]\n}\n",
+      "old_comments": "[\n {\n  \"address\": \"00b4b5d0\",\n  \"annotation\": {\n   \"address\": \"00b4b5d0\",\n   \"function_name\": \"BSP_LogicalVertexStream_Destruct\",\n   \"comment\": \"[BSP reconstruction 00b4b5d0]\\nInstalls vtable00d61d6c; dynamic flags unregister raw logical pointer before releasing physical reference. Renderer callback00b268e0, intrusive declaration+68h and physical+58h release, then base00b62010. Full renderer callback/base behavior not reconstructed.\"\n  }\n }\n]\n"
+    },
+    {
+      "address": "00b4bf10",
+      "end_exclusive": "00b4bf30",
+      "length": 32,
+      "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+      "original_abi": "ECX actual owner; stack flags low-byte bit0; RET4; EAX original owner",
+      "status": "full deleting wrapper established; depends on B4B5D0 and B49570",
+      "old_prototype": "Function: FUN_00b4bf10 at 00b4bf10\nSignature: undefined FUN_00b4bf10(void)\nEntry: 00b4bf10\nBody: 00b4bf10 - 00b4bf2f\n{\n \"function_name\": \"FUN_00b4bf10\",\n \"address\": \"00b4bf10\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 11,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"FUN_00b49570\",\n  \"BSP_LogicalVertexStream_Destruct\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"7eea42ad3244c33ed2b66a387d0b2a4812130b2fa81bc87bc1d7148a91d474cc\",\n  \"d89514aa57756214bb88fb848c716522128e8d332927961c626f9f140fd2daeb\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+      "old_comments": "[\n {\n  \"address\": \"00b4bf10\",\n  \"annotation\": {\n   \"address\": \"00b4bf10\",\n   \"function_name\": \"FUN_00b4bf10\"\n  }\n }\n]\n"
+    },
+    {
+      "address": "00b49570",
+      "end_exclusive": "00b495d9",
+      "length": 105,
+      "sha256": "48e97972f0520d998f4cafde5d7cefd3db27e3cf743de6956885698ccac732de",
+      "original_abi": "ECX actual pool; stack actual slot; RET4; EAX not stable",
+      "status": "independently ready full slot-return leaf",
+      "old_prototype": "Function: FUN_00b49570 at 00b49570\nSignature: undefined FUN_00b49570(void)\nEntry: 00b49570\nBody: 00b49570 - 00b495d8\n{\n \"function_name\": \"FUN_00b49570\",\n \"address\": \"00b49570\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 36,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  1,\n  4,\n  6,\n  31\n ],\n \"basic_block_hashes\": [\n  \"90ab07815e5bc4fdb991239f02b846fab3162bd0c77555eea954531f5c4ef802\",\n  \"8b508a952b3f27567d8f4feec2e35de2069feed431bc074eb136178be470a957\",\n  \"7f97fb946a6c6f86c708b63e5689ba3eab3785dc7939a74ef28b29c654d4b533\"\n ]\n}\n",
+      "old_comments": "[\n {\n  \"address\": \"00b49570\",\n  \"annotation\": {\n   \"address\": \"00b49570\",\n   \"function_name\": \"FUN_00b49570\"\n  }\n }\n]\n"
+    },
+    {
+      "address": "00b62010",
+      "end_exclusive": "00b62097",
+      "length": 135,
+      "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+      "original_abi": "ECX actual base storage; RET; EAX not stable",
+      "status": "full normal/EH body established; no nonnull +4C profile admitted",
+      "old_prototype": "Function: FUN_00b62010 at 00b62010\nSignature: undefined FUN_00b62010(void)\nEntry: 00b62010\nBody: 00b62010 - 00b62096\n{\n \"function_name\": \"FUN_00b62010\",\n \"address\": \"00b62010\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 39,\n \"basic_block_count\": 7,\n \"edge_count\": 8,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 3,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_RefCounted_DestroyBase\",\n  \"_free\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  16\n ],\n \"basic_block_hashes\": [\n  \"3f67b0496d60a5260c65d868e3c140b48bdbf636f54c6f9032ebeb7ab252f895\",\n  \"09961de96a6c9e62497a104e4a76eedd04ed3ee6c9ea053f656fdc25edc4733d\",\n  \"eceb747bdbee0f7b84b4b753d35d79c2714b0f1f3b4e49ce5659d7a620722d19\",\n  \"0e2d509b1e028207808ceaddd9ae6e49584ae179971fcfc11464008128cb791e\",\n  \"bb12e4eca57981c522995961e572ca1ad24629b21ad70a9d7fd0f9e6895da81e\",\n  \"17211f476fa2dc06b526e47dba6ab96aa947b06ae00a11cf6fbbebf2f5cff47b\",\n  \"aa789318e6871d930d01125fe8ec413bc4dd8b53e4a6b4b29bd28314ad24f15b\"\n ]\n}\n",
+      "old_comments": "[\n {\n  \"address\": \"00b62010\",\n  \"annotation\": {\n   \"address\": \"00b62010\",\n   \"function_name\": \"FUN_00b62010\"\n  }\n }\n]\n"
+    }
+  ],
+  "field_4c": {
+    "actual_offset": "4c",
+    "reviewed_direct_accesses": [
+      {
+        "function": "00b62010",
+        "site": "00b62034",
+        "instruction": "mov edi, dword ptr [esi + 0x4c]",
+        "role": "full_owned_vertex_base_destructor"
+      },
+      {
+        "function": "00b62010",
+        "site": "00b62059",
+        "instruction": "mov dword ptr [esi + 0x4c], 0",
+        "role": "full_owned_vertex_base_destructor"
+      },
+      {
+        "function": "00b61e20",
+        "site": "00b61e92",
+        "instruction": "mov dword ptr [esi + 0x4c], ebx",
+        "role": "full_base_constructor"
+      }
+    ],
+    "constructor_proof": {
+      "zero_register_site": "00b61e55",
+      "zero_store_site": "00b61e92",
+      "base": "00b61e20",
+      "derived_profile_writes": [
+        {
+          "site": "00b4bc2c",
+          "constructor": "00b4bc00"
+        },
+        {
+          "site": "00b4a9e8",
+          "constructor": "00b4a9b0"
+        }
+      ]
+    },
+    "reviewed_profile_prefix": {
+      "address": "00d61d6c",
+      "bytes": 52,
+      "slots": [
+        {
+          "offset": "00",
+          "target": "00bd30e0"
+        },
+        {
+          "offset": "04",
+          "target": "00b4bf10"
+        },
+        {
+          "offset": "08",
+          "target": "00b48d40"
+        },
+        {
+          "offset": "0c",
+          "target": "00b4aaa0"
+        },
+        {
+          "offset": "10",
+          "target": "00b49980"
+        },
+        {
+          "offset": "14",
+          "target": "00b49a80"
+        },
+        {
+          "offset": "18",
+          "target": "00b48d30"
+        },
+        {
+          "offset": "1c",
+          "target": "00b48cc0"
+        },
+        {
+          "offset": "20",
+          "target": "00b48cd0"
+        },
+        {
+          "offset": "24",
+          "target": "00b48ce0"
+        },
+        {
+          "offset": "28",
+          "target": "00b48d10"
+        },
+        {
+          "offset": "2c",
+          "target": "00b48cf0"
+        },
+        {
+          "offset": "30",
+          "target": "00b4aab0"
+        }
+      ],
+      "scope": "Known logical-profile prefix only, not a fabricated whole-table size."
+    },
+    "distinct_fields": [
+      {
+        "field": "58",
+        "writer": "00b4aac0",
+        "meaning": "current physical-owner pointer; not additional +4C"
+      },
+      {
+        "field": "50",
+        "writer": "00b61d90",
+        "meaning": "raw owned decode allocation"
+      },
+      {
+        "field": "50",
+        "writer": "00b61f90",
+        "meaning": "lazy decode allocation and 20h record copy"
+      }
+    ],
+    "scoped_search": "Complete live-pinned family methods/constructors and four byte patterns over B40000..B63000. Broader raw MOV candidates only prioritized follow-up; no complete alias or whole-lifetime proof.",
+    "unknowns": [
+      "No nonnull assignment chain established.",
+      "No producing allocation or admitted native table for +4C.",
+      "Do not assume its zero slot is BD30E0 or any already reconstructed owner.",
+      "Bulk-copy, aliased pointer adjustment, external writes and unreviewed caller dataflow remain outside this bounded negative search."
+    ],
+    "next_required_evidence": "Concrete nonnull assignment through an actual producing allocation to current profile/slot0/slot4 and allocation-return domain, or complete admitted-caller lifetime proof. No null-only fallback."
+  },
+  "logical_destruction_order": [
+    {
+      "site": "00b4b5ef",
+      "action": "Install D61D6C; saved actual owner and EH state0 before optional entry."
+    },
+    {
+      "site": "00b4b606",
+      "action": "If current mode, capture global F8D394, full B33AD0, save AL."
+    },
+    {
+      "site": "00b4b627",
+      "action": "Arm state1 before dynamic branch and separate lock."
+    },
+    {
+      "site": "00b4b62e",
+      "action": "Dynamic1000: capture current renderer+19F4, real Enter, increment captured section+18; current physical+58 -> B4B3F0(actual logical)."
+    },
+    {
+      "site": "00b4b64e",
+      "action": "Reload current global renderer; decrement its+1A0C then real Leave on its+19F4; no extra unwind state."
+    },
+    {
+      "site": "00b4b66b",
+      "action": "Non-dynamic path still reads current physical+4 even though EDX result is unused."
+    },
+    {
+      "site": "00b4b676",
+      "action": "Current global renderer -> full B268E0 raw logical-pointer removal."
+    },
+    {
+      "site": "00b4b67b",
+      "action": "Capture current declaration+68; InterlockedDecrement+4; if zero load its current table slot0 and call."
+    },
+    {
+      "site": "00b4b696",
+      "action": "After declaration terminal, capture current physical+58; decrement+4; current table slot0 on zero; neither owner field nulled."
+    },
+    {
+      "site": "00b4b6b3",
+      "action": "State0 before conditional current-mode normal guard leave with saved captured renderer."
+    },
+    {
+      "site": "00b4b6cb",
+      "action": "State-1 before full normal B62010 call; no double base cleanup on its exception."
+    }
+  ],
+  "base_destruction_order": [
+    {
+      "site": "00b6202e",
+      "action": "Install D62B68, capture current+4C and arm state0."
+    },
+    {
+      "site": "00b62047",
+      "action": "For captured nonnull pointee, real InterlockedDecrement at+4. Zero then current pointee table[0] call at B62057."
+    },
+    {
+      "site": "00b62059",
+      "action": "Clear owner+4C only after captured nonnull reference release/terminal returns."
+    },
+    {
+      "site": "00b62060",
+      "action": "Capture current+50; nonnull -> scalar free BF65AC."
+    },
+    {
+      "site": "00b62070",
+      "action": "Hidden returning-free continuation clears owner+50 only after free returns; missing in prior listing."
+    },
+    {
+      "site": "00b62079",
+      "action": "Disarm state before normal BD30F0 writes CEB130 only."
+    }
+  ],
+  "eh": {
+    "logical": {
+      "funcinfo": "00df83dc",
+      "length": 36,
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00df83cc",
+      "handler": "00cbf930",
+      "transitions": [
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cbf928",
+          "saved": "guard at frame-14",
+          "target": "00b21110"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cbf920",
+          "saved": "actual owner at frame-18",
+          "target": "00b62010"
+        }
+      ],
+      "separate_19f4_unwind_action": false
+    },
+    "base": {
+      "funcinfo": "00dfa2ec",
+      "length": 36,
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00dfa2e4",
+      "handler": "00cc14a8",
+      "transitions": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc14a0",
+          "saved": "actual owner at frame-10",
+          "target": "00b48d70 ->00bd30f0"
+        }
+      ]
+    },
+    "common": {
+      "catch_count": 0,
+      "ESTypeList": null,
+      "EHFlags": 1,
+      "second_exception_runtime_execution": "not executed in discovery; preserve FH3 behavior in eventual implementation comparison"
+    }
+  },
+  "slot_return": {
+    "address": "00b49570",
+    "canonical_pool": "0108fe18",
+    "slot_bytes": 120,
+    "slab_index_offset": 116,
+    "slab_table_offset": 40,
+    "first_free_slab_offset": 52,
+    "critical_section_offset": 12,
+    "depth_offset": 36,
+    "slab_free_indices_offset": 3840,
+    "slab_free_count_offset": 3904,
+    "quotient": "signed wrapped DWORD(slot-slab)/120 truncates toward zero; low WORD stored",
+    "ordering": "Capture actual pool+0C before Enter; after Enter load current slot+74 and current pool+28; write free-index element using current WORD count; reload/increment current WORD count after element store; unsigned min against current pool+34; decrement/leave captured section.",
+    "bounds_checks_added": false,
+    "exceptions": "No original EH cleanup; no native comparison executed in this discovery."
+  },
+  "dependencies": [
+    {
+      "id": "cpu_declaration",
+      "field": "68",
+      "profile": "00d61d1c",
+      "zero_slot": "00bd30e0",
+      "deleting_slot": "00b48ca0",
+      "destructor": "00b48b70",
+      "return_leaf": "00b47950",
+      "actual_pool": "0108fd38",
+      "actual_type_sizes": "00d61cc0",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\native_vertex_declaration_owner.cpp",
+      "header": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\native_vertex_declaration_owner.hpp",
+      "status": "current base contains full actual-storage implementation and source audit; no rerun in discovery",
+      "admission": "Proved concrete CPU declaration profile; do not assume unknown current tables have this terminal."
+    },
+    {
+      "id": "private_physical_vertex",
+      "field": "58",
+      "profile": "00d61e34",
+      "zero_slot": "00bd30e0",
+      "deleting_slot": "00b4bb40",
+      "destructor": "00b4bab0",
+      "return_leaf": "00bf65ac",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_physical_buffer_owner.cpp",
+      "header": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_physical_buffer_owner.hpp",
+      "status": "primary integrated actual-storage implementation; inspected primary at d8326d2",
+      "context": "NativePhysicalBufferOwnerContext borrows actual string storage, support singleton108FEDC, lifetime domain1090AA0, and actual physical pools"
+    },
+    {
+      "id": "pooled_physical_vertex",
+      "field": "58",
+      "profile": "00d61e7c",
+      "zero_slot": "00bd30e0",
+      "deleting_slot": "00b4c230",
+      "destructor": "00b4bab0",
+      "return_leaf": "00b49500",
+      "actual_pool": "0108fde0",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_physical_buffer_owner.cpp",
+      "header": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_physical_buffer_owner.hpp",
+      "status": "same current concrete implementation; use pooled return rather than scalar free"
+    },
+    {
+      "id": "unregistration",
+      "addresses": [
+        "00b268e0",
+        "00b25300",
+        "00b4b3f0",
+        "00b4b2e0"
+      ],
+      "source": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\native_render_buffer_unregistration.cpp",
+      "header": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\native_render_buffer_unregistration.hpp",
+      "status": "integrated full actual arrays/current global behavior; no owner lifetime"
+    },
+    {
+      "id": "optional_synchronization",
+      "addresses": [
+        "00b33ad0",
+        "00b33b00",
+        "00b21110"
+      ],
+      "source": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\native_renderer_synchronization_actual.cpp",
+      "header": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+      "status": "integrated full actual renderer/global/guard records; current-mode leave"
+    },
+    {
+      "id": "separate_dynamic_section",
+      "address_sites": [
+        "00b4b62e",
+        "00b4b63b",
+        "00b4b641",
+        "00b4b64e",
+        "00b4b653",
+        "00b4b660"
+      ],
+      "actual_section_offset": "19f4",
+      "actual_depth_offset": "1a0c",
+      "status": "inline real Win32 lock behavior; captured entry/current global exit; no EH action"
+    },
+    {
+      "id": "base_scalar_free",
+      "address": "00bf65ac",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\singleton_lifetime.cpp",
+      "header": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "status": "existing allocation domain; caller must retain B62070 post-return +50 clear"
+    },
+    {
+      "id": "additional_owner",
+      "field": "4c",
+      "profile": null,
+      "producer": null,
+      "zero_slot": null,
+      "deleting_slot": null,
+      "allocation_domain": null,
+      "status": "unresolved; blocks complete general actual-owner destruction; no callback or constructor-null restriction accepted"
+    }
+  ],
+  "ready_packets": [
+    {
+      "id": "native_logical_vertex_slot_return",
+      "addresses": [
+        "00b49570"
+      ],
+      "files": [
+        "include/bsp/native_logical_vertex_slot_return.hpp",
+        "src/native_logical_vertex_slot_return.cpp",
+        "docs/NATIVE_LOGICAL_VERTEX_SLOT_RETURN.md",
+        "reports/native_logical_vertex_slot_return_audit.json"
+      ],
+      "status": "independently ready after lease transfer",
+      "integration": "Remove this address from the future full-owner work list after separate integration."
+    }
+  ],
+  "conditional_packets": [
+    {
+      "id": "native_logical_vertex_owner",
+      "addresses": [
+        "00b4b5d0",
+        "00b4bf10",
+        "00b49570",
+        "00b62010"
+      ],
+      "files": [
+        "include/bsp/native_logical_vertex_owner.hpp",
+        "src/native_logical_vertex_owner.cpp",
+        "docs/NATIVE_LOGICAL_VERTEX_OWNER.md",
+        "reports/native_logical_vertex_owner_audit.json"
+      ],
+      "support_addresses": [
+        "00cbf920",
+        "00cbf928",
+        "00cbf930",
+        "00cc14a0",
+        "00cc14a8",
+        "00b48d70"
+      ],
+      "blocking_field": "4c",
+      "status": "not ready for general terminal",
+      "ownership": "Do not edit physical-owner, CPU-declaration, unregistration or synchronization files. Hardware-layout tree and logical-index roots belong to other packets."
+    }
+  ],
+  "dependency_validation_observed": {
+    "not_rerun_in_this_packet": true,
+    "cpu_declaration": {
+      "strict_private_win32_compile_and_link": true,
+      "production_source_separate_translation_unit": true,
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/fp:strict",
+        "/O2",
+        "/Oy-",
+        "/MD",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "link_flags": [
+        "/OPT:REF",
+        "/OPT:NOICF",
+        "/INCREMENTAL:NO",
+        "/SAFESEH:NO"
+      ],
+      "safe_seh_flag_scope": "Private mapped-original-code fixture only.",
+      "focused_original_caller_fixture_count": 1,
+      "checkpoints": 6,
+      "normalized_words_compared": 43032,
+      "checkpoint_word_counts": [
+        8765,
+        797,
+        1839,
+        10925,
+        10353,
+        10353
+      ],
+      "original_owner_cpp_eh_searches": {
+        "state2": 1,
+        "state1": 1,
+        "state0": 1
+      },
+      "original_owner_cpp_eh_unwinds": {
+        "state2": 1,
+        "state1": 1,
+        "state0": 1
+      },
+      "original_iterator_seh4_searches": 1,
+      "original_iterator_seh4_unwinds": 1,
+      "original_native_vector_helpers_executed": [
+        "00bf7c10",
+        "00bf7c6e",
+        "00bf7cd1"
+      ],
+      "replacement_native_iterator_loops": false,
+      "host_crt_bridges": [
+        "__CxxFrameHandler3",
+        "_except_handler4_common",
+        "__security_cookie",
+        "__security_check_cookie"
+      ],
+      "real_win32_lock_balance_and_recursive_entry_checked": true,
+      "external_allocator_fixture_hooks_only": true,
+      "original_allocator_runtime_executed": false,
+      "registered_win32_build_passed": true,
+      "existing_ctests_passed": 2,
+      "existing_native_seed_byte_checks_passed": 8,
+      "new_source_registered_in_cmake": false,
+      "registration_owner": "primary integrator",
+      "tracked_tests_added": 0
+    },
+    "unregistration": {
+      "words": 1848,
+      "events": 44,
+      "status": "pass"
+    },
+    "physical": {
+      "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "primary_integration_status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "audit_path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_physical_buffer_owner_audit.json"
+    }
+  },
+  "validation": {
+    "live_pe_span_matches": 47,
+    "eh_records_decoded_and_asserted": true,
+    "current_dependency_source_pins": true,
+    "new_cpp_files": 0,
+    "new_tests": 0,
+    "new_builds": 0,
+    "ghidra_mutations": 0,
+    "shared_metadata_edits": 0,
+    "byte_pattern_scans_are_not_alias_proof": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "source_and_evidence_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\docs\\NATIVE_LOGICAL_VERTEX_OWNER_NEXT.md",
+      "bytes": 10706,
+      "sha256": "913aa44ba862a2a44b518dda8a145fd2439e859afb6cc5e9d28a9bbef8013c96"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\config\\target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\random_threads.cpp",
+      "bytes": 2902,
+      "sha256": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\reports\\native_vertex_declaration_owner_audit.json",
+      "bytes": 39187,
+      "sha256": "d6b0f37f877d4220547e7f368f165f49f0d49e20fbfe92de01840b1171bd3570"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\reports\\native_render_buffer_unregistration_audit.json",
+      "bytes": 66288,
+      "sha256": "52c4a01c59158c391d58675f01dda4b1a0f756c7b05c86f726d1d060b7e67195"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\reports\\native_renderer_synchronization_actual_audit.json",
+      "bytes": 38620,
+      "sha256": "4c6b826d0f4cc2e98d226cbac5fffd75794472388be1ff5471cf3ecf59537bbc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_physical_buffer_owner_audit.json",
+      "bytes": 81376,
+      "sha256": "9f4ca781edbb7dbaf170e8976cf34a676ace376f790698ff8f0cc9feb91daf93"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\native_vertex_declaration_owner.cpp",
+      "bytes": 9318,
+      "sha256": "4baca0d3de09ccf6c5225eda8bdcefea3bb71248ddf73348e898b23b0c83d2fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\native_vertex_declaration_owner.hpp",
+      "bytes": 3213,
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_physical_buffer_owner.hpp",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\native_render_buffer_unregistration.cpp",
+      "bytes": 5514,
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\native_render_buffer_unregistration.hpp",
+      "bytes": 2244,
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\src\\native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b21110.asm",
+      "bytes": 200,
+      "sha256": "df4ca2c2f0254b53967e82fc728de0d25a91f9db218abaedacab182bf70f37a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b25300.asm",
+      "bytes": 1169,
+      "sha256": "b574ef1cd4770556a7396e10115b11e9529ee71f3aeb5f8f4003413282f9bec9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b268e0.asm",
+      "bytes": 119,
+      "sha256": "65e2c3a6b801f70625f580032968748b38f741d0caa4440ac56efc4397dba77c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b33ad0.asm",
+      "bytes": 460,
+      "sha256": "f66907fcf2f2c4d4ed53eaec9c672ff5f4346b37921e974b4dd5cc4cfa5360d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b33b00.asm",
+      "bytes": 537,
+      "sha256": "7ac632e15a717b94219b36b848cace0574e9dac76586796652190641b5d26a03"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48cc0.asm",
+      "bytes": 59,
+      "sha256": "04a37aee53c811c297fe817aad3b728c5a37cff4b48073a6ea0665690133eafd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48cd0.asm",
+      "bytes": 59,
+      "sha256": "dcb6a6e619d28950d4316619663adff38ce1d293c77a9ac4359a015a0ff2a753"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48ce0.asm",
+      "bytes": 59,
+      "sha256": "d419dded172c21da31676f2c21a1a9a38c1719656fbfb672f74b03a69a724325"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48cf0.asm",
+      "bytes": 141,
+      "sha256": "a98f0bc6d49b273917caa1c5c738cd277b6c3162effe1467a63b01468a23c72d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48d10.asm",
+      "bytes": 59,
+      "sha256": "5d5047f40261f12b0ebb2b6a19051113c23388d504932a7108242b431e7dc4cc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48d30.asm",
+      "bytes": 17,
+      "sha256": "4954417dcb8e9fb312b7039606b71f00d0eae2c135e21bcd616d61b99a428f1f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48d40.asm",
+      "bytes": 66,
+      "sha256": "41f33f56a49f95e076d7ba2ed21928daa1bb59abb42f093e5783c52087b6a5c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b48d70.asm",
+      "bytes": 24,
+      "sha256": "0380ec1cc62cfd21b7a5f4fe1c9e2e530eee80b655891f6ecea3536aee4572f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b49570.asm",
+      "bytes": 1063,
+      "sha256": "debb3334e33333f349a4b33848edee278a59d5767a6439cae90b5284a4942825"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b49980.asm",
+      "bytes": 2443,
+      "sha256": "053804661ff843208577b3aa9ab027db178be6744786dac67cab392aec543c46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b49a80.asm",
+      "bytes": 1170,
+      "sha256": "93bb7fdaa121f98b795a00ea95aa469d13c113d05ffe49f4ea3555269dcd8ad1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4a9b0.asm",
+      "bytes": 2380,
+      "sha256": "01c65b2d7a881858366a635abb5832075b6690e0620af8c733fb4d385d95f981"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4aaa0.asm",
+      "bytes": 16,
+      "sha256": "abd54654ca7fd446762dcee0a27b4429f2f2bfbf8604983a66d3d6d117dbd129"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4aab0.asm",
+      "bytes": 16,
+      "sha256": "93dbda08d7e6815b6a73ab1f92673deffdb72f7c02665c5ee5f3bfe28972bb58"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4aac0.asm",
+      "bytes": 656,
+      "sha256": "e810ebdc20d02de38db52b2392a5da7d7b8e3441ff3a22d7715b026a84e3cf74"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4b2e0.asm",
+      "bytes": 1169,
+      "sha256": "17ee7d736511bb123e1cfd1a3adc276c7b360aaa9e161c24bdf07a9f76fa1291"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4b3f0.asm",
+      "bytes": 698,
+      "sha256": "257ded04241248a274045795268423a739d75e9a93b1469fe499bdd81285fa2b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4b5d0.asm",
+      "bytes": 2457,
+      "sha256": "58b7116a19ab1ed20d431a0d85199655fc4bace04ca8945bec9778f09407c709"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4bc00.asm",
+      "bytes": 6834,
+      "sha256": "5c8de8b9be0c7cdaa8cfc1bbdb77a2fb0d32f232ca88bcdfcbd66f7cf7f05fd1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b4bf10.asm",
+      "bytes": 265,
+      "sha256": "042313abda66ce8ee67c2c58ba5074bb5e6523d37f8b46b2231664e9b0965bbf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b61d90.asm",
+      "bytes": 100,
+      "sha256": "16dfcf7c1ad5304e0be732cc35587c78b8717b7cf3252cc2b1e442c0f4dca25e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b61e20.asm",
+      "bytes": 3609,
+      "sha256": "d5e27daffcb013fcca0e4a35d5d6969ba385a4b752f83f80c89d690219103350"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b61f90.asm",
+      "bytes": 1267,
+      "sha256": "195e4fe4932a18212a0fe6a731ddc8a7b973c0341379baeaee16169afdbb6fe0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00b62010.asm",
+      "bytes": 1184,
+      "sha256": "c7c600309c1c6195d389dcd9317818ab22a48e004a8c7250da86b59973964a30"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00bd30e0.asm",
+      "bytes": 178,
+      "sha256": "e8504eef6c70dd71a2fec00cfdef0fb09e8feb58e53c6783d39bef54966cb685"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00bd30f0.asm",
+      "bytes": 57,
+      "sha256": "d3270b08bcbe6b797b85847eec41a47757903644ba88ad43948ac1765be48f63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00cbf920.asm",
+      "bytes": 67,
+      "sha256": "2d7c7745c6b81fb9a17932020ef679bfed20eb75a4c931c98a5630b28cc4e0fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00cbf928.asm",
+      "bytes": 57,
+      "sha256": "fd6e3e1995bd52c0a558894902a7a62d33145b6d5c3a5c2dacc8c7679c2d2d5b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00cbf930.asm",
+      "bytes": 53,
+      "sha256": "eeee5072aefdfec7a0db255336f3379824ad1478486624eb6c2796d09a62e3da"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00cc14a0.asm",
+      "bytes": 67,
+      "sha256": "e924f163a72f816a2a77ea316e4a0a9f64fe4459ade23d206a94567fc2461ce7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_00cc14a8.asm",
+      "bytes": 53,
+      "sha256": "3269c16100a56051ad99929118bc7542b0305644a6779d70161a678fae0f52fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_4c_addresses.txt",
+      "bytes": 19593,
+      "sha256": "1e016254ccd530a3cced36fb9acd774bca965d928aa1e68cb45bd41e7064a044"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_base_constructor_callers.txt",
+      "bytes": 75,
+      "sha256": "9a8fc65eee0138aa700acf01d6b249de23da1767e99664c6c47a95b0fd4aec25"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_base_destructor_callers.txt",
+      "bytes": 174,
+      "sha256": "52640ba5132e762ebf10cde8da0e213b7afb57b9a384ff7236a41f33aaed5d4a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_base_profile_xrefs.txt",
+      "bytes": 101,
+      "sha256": "bd58fe2dd4b6853c789166bdcb24416ce00795b3a95c5cfdb9b38f74cae8b74e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_borrowed_constructor_callers.txt",
+      "bytes": 25,
+      "sha256": "5e0b1be37ef5fa40799414c3e06a967fec1852de6143b4b0da739b55401e3aff"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_d3d_constructor_callers.txt",
+      "bytes": 54,
+      "sha256": "d89ed38530275f4a6e4756402cdcaad186681fb1934fe14d1f1e95d66ec58456"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_decode_setter_callers.txt",
+      "bytes": 52,
+      "sha256": "53e6c0ea216ff08c75f01fc00d98a529324f8a3c26ee6a3fe65cf19b3f13c7dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_direct_4c_writes.txt",
+      "bytes": 23235,
+      "sha256": "78a993f54053215c0afed2a166dcbb410b0b83ae3a0b55d5e6269c193af17291"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b21110.txt",
+      "bytes": 114,
+      "sha256": "458e42c749f86a27976f1385ecd56b3a963b9e9d3ae92b0adf1ab5ad2c362296"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b25300.txt",
+      "bytes": 503,
+      "sha256": "db2d6cdaaca9b09fc8d653c91a6154072854fbe66309355d951c50f3498c0453"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b268e0.txt",
+      "bytes": 102,
+      "sha256": "82b55c6f1c0bc93718db890548acc5dd56a46a9c768c126f421913e25f440a87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b33ad0.txt",
+      "bytes": 223,
+      "sha256": "9af1bc8e1c27f7690f585dd19bc1c02ed006e39da8d1eaf3413fe62bb6573867"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b33b00.txt",
+      "bytes": 333,
+      "sha256": "dc4b3f3f5afed0330ebe8fec06b8b2257b8333c4ff01dd17f44d337b797b4394"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48cc0.txt",
+      "bytes": 29,
+      "sha256": "26e9d6f35db817cfc9600ec4af50521d0bfaa0d3d0b47187ef6d2a59fcba2751"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48cd0.txt",
+      "bytes": 29,
+      "sha256": "8082e1216be8c1dba4d2b9ba0520ebca11c995ef195f6c0db6c59a104f10badd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48ce0.txt",
+      "bytes": 29,
+      "sha256": "3067a99ccc7ec77a18852b9628cb511a6207c2f4bace981266b53fe764f96309"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48cf0.txt",
+      "bytes": 53,
+      "sha256": "0baf9546f47aea226555c05251b5600c0e46019f2337d948965d7eb34b97fca9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48d10.txt",
+      "bytes": 29,
+      "sha256": "618225d26f8a32ef3a1fc071086bdb6fc76487071f6450bc846575ea31e41f25"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48d30.txt",
+      "bytes": 25,
+      "sha256": "d709abdaa07807d8a0b1179c36f3c07eb67b345a286b9c5f06744ae027076b7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48d40.txt",
+      "bytes": 45,
+      "sha256": "a75c51d2f67112332314b51e9d5973ca85d370a09a42a7b7565e04aa258890ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b48d70.txt",
+      "bytes": 33,
+      "sha256": "d4deb6db5cb41df2f5c397426447646863db4c961ac10c604e3ba0c123bcca12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b49570.txt",
+      "bytes": 511,
+      "sha256": "7b6ae3bfd737f57fe57352cca104794aafdfadf9dc9a1c8af599d60c9eb3dd97"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b49980.txt",
+      "bytes": 1216,
+      "sha256": "18fc90b0065c4f0d25d188e7a57e6dde95c86e5db346ce9dc30cde05114cc7d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b49a80.txt",
+      "bytes": 673,
+      "sha256": "2f01a06d2c1fa16d8e9b251d38cf85e3399ae8191123b5137e70bc5ea8cc1558"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4a9b0.txt",
+      "bytes": 1107,
+      "sha256": "d0532df88e83deea0f9fe34b276364360c608b655192d053025bf7550a8e2988"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4aaa0.txt",
+      "bytes": 17,
+      "sha256": "460502a0ff5cda30489d307529d3d49655b3d79080971ced8f3273cb10a319c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4aab0.txt",
+      "bytes": 17,
+      "sha256": "63476c52db16d5e42117853b2ee567a5f169a43d05f5c150a1166bad42c8d68b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4aac0.txt",
+      "bytes": 288,
+      "sha256": "db275462bb01c4fb4d589f7ec3c3fd9cfcf65885e78122eb48f534767447ed84"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4b2e0.txt",
+      "bytes": 503,
+      "sha256": "0705bf5ae8160570bd05539fdd52d623d5c7dd7ae6d64126d6f30dbd743f00b0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4b3f0.txt",
+      "bytes": 402,
+      "sha256": "e2b4be9ff090b2f9f07b4c03ca5afc0aa96c8ed2dc7db654a23e22127619d984"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4b5d0.txt",
+      "bytes": 1354,
+      "sha256": "b48dce24c9a43351ac223c97d1b70886552733b7c2b11d41fbae81dae0d7f3c9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4bc00.txt",
+      "bytes": 3656,
+      "sha256": "410a786ed2b9cd3d5f900e88ce51553d00088efcadf41ac5640cd0a71e169386"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b4bf10.txt",
+      "bytes": 154,
+      "sha256": "008f318157d8dadb85887af04a96822ae541dc84c0a5b14a8345204f0ea4e291"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b61d90.txt",
+      "bytes": 53,
+      "sha256": "2b1908d83a90e1d769c0c6fdb24483a92414bc6718ecf710bb8723696b255464"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b61e20.txt",
+      "bytes": 1723,
+      "sha256": "d4e59a266f308fa5c1299cd07eff67161c49e3d5aa4d707d507dc3a110a1ccd8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b61f90.txt",
+      "bytes": 564,
+      "sha256": "37870edf22b40316b5ab1f0bfdae8297ad9ba8284f5a804224493cda006b0796"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00b62010.txt",
+      "bytes": 657,
+      "sha256": "a2382bc993e8761d25088ffe6c61583c4dbf0624e22f024331cd40345fa91b8e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00bd30e0.txt",
+      "bytes": 69,
+      "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00bd30f0.txt",
+      "bytes": 41,
+      "sha256": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00bf65ac.txt",
+      "bytes": 33,
+      "sha256": "3644837c583910bd51d56c2737cdd2ffffa8fbc16c782ca4280e7a7d67977017"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00bf6b43.txt",
+      "bytes": 33,
+      "sha256": "097d3d6d6e023a7f934487b934bffdc04d57b0b5811a1e9966770453ba241ca2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00cbf920.txt",
+      "bytes": 45,
+      "sha256": "03e18acc82a28697d1b238d5eca000c42432ae3d2ed2973cad1b7f5aacebfc21"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00cbf928.txt",
+      "bytes": 45,
+      "sha256": "69fcfa506e5cd2accf4803d835732149a1dbb05d3516afe05cafd3cd7768bd9d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00cbf930.txt",
+      "bytes": 53,
+      "sha256": "7c044df26ef280aa5c0bef3abea416f8e327c9bf6de6bb1bf5f2e6a205e1bbdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00cc14a0.txt",
+      "bytes": 45,
+      "sha256": "1e876b4189eee6b498d4e5bce9df081896497ec64cb0a07af6329d49683d3ed8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00cc14a8.txt",
+      "bytes": 53,
+      "sha256": "a17b28828d2ea965a79bc50bd1f48db100fb4e428ee15602745290e40bb32762"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00d61d1c.txt",
+      "bytes": 45,
+      "sha256": "2e44b38c192a0b0021788f969d9a9fc1e69a4dbd1bcce36d347c149077e4e232"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00d61d6c.txt",
+      "bytes": 260,
+      "sha256": "db952a3a324ced846b45482e8c62e672eada69cdfdc15bb16e08c039080374ce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00d61e34.txt",
+      "bytes": 45,
+      "sha256": "76ba3ff89f837b62d1bf8520fc747fdc160144472584e7ac204ca58c9acda12d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00d61e7c.txt",
+      "bytes": 45,
+      "sha256": "bd00eae7583df5018c36ed5cc91afadb0c5492439ac1c5b313c3b3ba1e4fb202"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00d62b68.txt",
+      "bytes": 260,
+      "sha256": "ae34f5da422a5dd370bdbdd80f9f3e26dfaf945083278f7c48d0c79fd5fb1feb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00df83cc.txt",
+      "bytes": 77,
+      "sha256": "a79e244e0f969497adac7f62b56907dab9f7eafefa70e24ff8b4cdfc326b781b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00df83dc.txt",
+      "bytes": 183,
+      "sha256": "a6d13ee10ffc8ea55469c1f88a59417b427751a819522b23b111c9a068401da7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00dfa2e4.txt",
+      "bytes": 45,
+      "sha256": "249745f9e1fa6c215c907362b9d4014a8e18ef0a2fd26948ecf48a96dd757cad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_live_00dfa2ec.txt",
+      "bytes": 183,
+      "sha256": "6ef5b8e245a592f4dcd31790b9720601ce46cd6cdc67d1e14f34116496987703"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b49570_comments.txt",
+      "bytes": 127,
+      "sha256": "2024aea16d25e9bafbec7f3801ab3748d859a4acabb370261d88dba51c47caf6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b49570_proto.txt",
+      "bytes": 805,
+      "sha256": "47010cb2502e726f12cfaf9ed8a4405257402fff78747737143feb781c2a56d6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b4b5d0_comments.txt",
+      "bytes": 457,
+      "sha256": "3f07b013c203e9e8a4c363811fa7ec41178a47b4e2c0efa3109d6d3918e73a72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b4b5d0_proto.txt",
+      "bytes": 1757,
+      "sha256": "83d0b1319f8093b2d2aa0062733c6cbdbf851911cd929a7dd697aa182db18017"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b4bf10_comments.txt",
+      "bytes": 127,
+      "sha256": "ad087d265bef9fccb5d98e4f47c3e5bf33fa2e86709a46765e52a0ef1dc2bdb5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b4bf10_proto.txt",
+      "bytes": 845,
+      "sha256": "b34975ff433184063f255c94ba153517085dd383f16760b523dcfbe5ff1d83ec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b62010_comments.txt",
+      "bytes": 127,
+      "sha256": "079cd4b3c377462d8ad441b0e6608f08782eb98893479c0a99b7eed345a51158"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_old_00b62010_proto.txt",
+      "bytes": 1118,
+      "sha256": "dc7496cb3d672821ddb6c7363bdfb876463bb4bd0c4e73dcba7cb0ec5cdd2c28"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_profile_xrefs.txt",
+      "bytes": 159,
+      "sha256": "f12ff0840729210bbdcff788c05035d63a6c588cef42b4251d58470cb7751e31"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_scoped_direct_mov_candidates.txt",
+      "bytes": 642,
+      "sha256": "e7ceb5299779ebccac4520d3c6f19313b707cc342bb6bffaad2a5744fca9f64a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_scoped_immediate_mov_candidates.txt",
+      "bytes": 220,
+      "sha256": "3a4767dc18d95dee11db2e0abdee1c2a41278b50d2916fad25324a4fa2af82fb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_scoped_lea_candidates.txt",
+      "bytes": 214,
+      "sha256": "945147f5757cec32de5e5fc490fa366bdf0aa49f57ad1c1fe2c971030ab7fc8e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\logical_vertex_scoped_load_candidates.txt",
+      "bytes": 1120,
+      "sha256": "7038ea11a67f76c596b5ae6acd408aadbcdba88f0471b9403008d211758ab7fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\native_logical_vertex_owner_next_preparation.json",
+      "bytes": 51707,
+      "sha256": "63788061b1d7dedf03e2bc6638a291d684076f59be2453f2c05f8d2f19fbe083"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\prepare_native_logical_vertex_owner_next.py",
+      "bytes": 5977,
+      "sha256": "a09f4e987006fedade24c91f5a0f7e8b62b00eda27efc228f3ba5509cc8688cc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-vertex-owner-next-20260910\\local\\write_native_logical_vertex_owner_next.py",
+      "bytes": 14324,
+      "sha256": "3ed34ffdf60db59d423e3561e7b87f32bde2009076e197c4cce27992f67792f2"
+    }
+  ]
+}
