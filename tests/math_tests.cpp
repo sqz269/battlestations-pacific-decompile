@@ -42,6 +42,7 @@
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
@@ -339,6 +340,37 @@ int main() {
         check(action_pressed_this_frame_004c43c0(record), "a started injection is an edge");
         continue_action_00a919f0(record, 0.25f);
         check(!action_pressed_this_frame_004c43c0(record), "a continued injection is not an edge");
+    }
+
+    {
+        // 00f889a0 aliases settings.masterVolume, not constant zero. A prior
+        // entry callback can change it before the native 004da724 read.
+        struct MissionAudioHost final : MissionStateEntryHost {
+            AudioSettings& settings;
+            float applied{-1.0f};
+            std::uint32_t mask{0};
+            explicit MissionAudioHost(AudioSettings& audio) : settings(audio) {}
+            void enter_scope(const char*) override {}
+            void release_deferred_dynamics() override {}
+            void mark_local_slot_ready(std::size_t, std::uint16_t) override {
+                settings.master_20 = 0.75f;
+            }
+            void set_audio_environment_level(float level, std::uint32_t bus_mask) override {
+                applied = level;
+                mask = bus_mask;
+            }
+            void apply_in_game_interface(bool) override {}
+            void check_multiplayer_player_count() override {}
+            std::uint32_t game_state() override { return 0x0D; }
+            void set_cinematic_mode(bool, bool, bool) override {}
+        };
+        AudioSettings settings{};
+        settings.master_20 = 0.125f;
+        MissionStateEntryState state{};
+        MissionAudioHost host(settings);
+        check(run_mission_state_entry(state, settings, host), "mission entry completes");
+        check(host.applied == 0.75f && host.mask == 0xFFFF,
+            "mission entry reads current master volume at the native audio call");
     }
 
     {

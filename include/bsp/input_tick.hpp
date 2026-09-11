@@ -16,7 +16,10 @@
 // Nothing here is a recovered symbol. Names are hypotheses; offsets carry the
 // address that proves them.
 #include <cstddef>
+#include <cstdint>
 #include <vector>
+
+#include "bsp/input_action_classifier.hpp"
 
 namespace bsp {
 
@@ -50,10 +53,10 @@ struct InputActionRecord {
 // names from strings are recovered, the rest keep their offset as their name.
 struct InputActionListener {
     bool pressed{false};        // +08h
-    bool press_confirmed{false};// +09h, = (+08h && +0Ah) at 00a91b99
+    bool press_confirmed{false};// +09h, = (+08h && !+0Ah) at 00a91b99
     bool press_aux{false};      // +0Ah
     bool fast_release{false};   // +0Bh, set by name "fastRelease" at 00a92717
-    bool release_confirmed{false}; // +0Ch, = (+0Bh && +0Dh) at 00a91bac
+    bool release_confirmed{false}; // +0Ch, = (+0Bh && !+0Dh) at 00a91bac
     bool release_aux{false};    // +0Dh
     bool hold_fired{false};     // +0Eh
     bool held{false};           // +0Fh
@@ -61,8 +64,8 @@ struct InputActionListener {
     bool state_a{false};        // +11h
     bool state_b{false};        // +12h
     bool state_c{false};        // +13h
-    float since_press{0.0f};    // +14h, cleared on the release branch at 00a91b86
-    float since_release{0.0f};  // +18h, cleared on the press branch at 00a91b09
+    float since_press{0.0f};    // legacy name; +14h time since RELEASE, reset 00a91b86
+    float since_release{0.0f};  // legacy name; +18h time since PRESS, reset 00a91b09
     float held_time{0.0f};      // +1Ch
     float held_time_biased{0.0f}; // +20h, 00a91b27 subtracts 00e12f28 on a repeat
 };
@@ -86,13 +89,13 @@ bool action_down_current(const InputActionRecord& record) noexcept;
 // ---------------------------------------------------------------------------
 // Effect-list entries
 // ---------------------------------------------------------------------------
-// Parameter block at node+18h, eight bytes. 00a92aa0 gates the dispatch on the
-// first dword being non-zero (00a92abf) and 00a926f0 reads the second as a C
+// Native string at node+18h, eight bytes. 00a92aa0 gates the dispatch on its
+// length being non-zero (00a92abf) and 00a926f0 reads the second dword as a C
 // string, compares it case-insensitively against "fastRelease" (00d5b624, via
 // _stricmp 00bf7fbf) and otherwise asks the block itself about "holdPress"
 // (00d5b618) through the method at 00425850.
 struct InputEffectParam {
-    const void* object{nullptr}; // +0h
+    std::uint32_t length{0};     // +0h, native string length, not an object pointer
     const char* name{nullptr};   // +4h
 };
 
@@ -118,8 +121,8 @@ void continue_action_00a919f0(InputActionRecord& record, float amount) noexcept;
 
 // 00a92aa0: start an injected action. The previous half is cleared and the
 // current half is set down, which is exactly the rising edge 004c43c0 reports.
-// The parameter block is dispatched onto the listener only when param.object is
-// non-null; passing a null listener with a non-null object is the native
+// The parameter block is dispatched onto the listener only when param.length is
+// nonzero; passing a null listener with a nonzero length is the native
 // null-dereference case and is not reproduced, the call is skipped instead.
 void start_action_00a92aa0(InputActionRecord& record, float amount,
     const InputEffectParam& param, InputActionListener* listener) noexcept;
@@ -151,6 +154,7 @@ struct InputTickState {
     std::vector<InputActionListener> listeners;  // targets of record+2Ch
     std::vector<int> suppressed_actions;         // game+5B0h, set<int>, value at node+0Ch
     std::vector<TimedInputEntry> timed_actions;  // game+5BCh, set<TimedInputEntry>
+    InputActionTimingThresholds listener_thresholds{}; // native globals 00e12f20..28
 };
 
 // One method per native call this packet cannot reconstruct, in frame order.
@@ -169,10 +173,6 @@ struct InputTickHost {
     // 00a92370 after its prologue: evaluate the record's binding array and write
     // current_hold/current_down. The prologue itself is reconstructed here.
     virtual void poll_action_bindings(InputActionRecord& record, std::size_t index) = 0;
-    // 00a91a50, ECX = record+2Ch, arguments (delta, previous, current), RET 0Ch.
-    // The classifier is analysed but not reconstructed; see docs/GAME_INPUT_TICK.md.
-    virtual void listener_classify(InputActionListener& listener, float seconds,
-        bool down_previous, bool down_current) = 0;
     // 00f8bbfc, an optional plain function pointer invoked with no arguments
     // after the whole walk (00a92d02..00a92d0d).
     virtual void post_update_hook() = 0;

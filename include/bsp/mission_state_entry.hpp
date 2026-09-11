@@ -20,6 +20,8 @@
 
 namespace bsp {
 
+struct AudioSettings;
+
 // ---------------------------------------------------------------------------
 // State 0Ch, the device wait screen (004db920)
 // ---------------------------------------------------------------------------
@@ -90,9 +92,10 @@ struct MissionOneShots {
     // 004e4717 to choose the front-end shell over the multiplayer menu, after
     // game+1FE4h itself has been torn down.
     bool session_was_networked{false};
-    // +1EE4h. Raised by the network session teardown paths 0076d0e0, 007727a0,
-    // 007728b0 and 00772990; the drain reads it at 004e4932 and pushes the
-    // multiplayer menu notice interface 4.
+    // +1EE4h. Session end notification, including normal EndScene. 0076d0e0
+    // and 007728b0 raise it only for a zero message payload; 007727a0 and
+    // 00772990 raise it unconditionally. Legacy name retained. The drain
+    // reads it at 004e4932 and pushes multiplayer notice interface 4.
     bool session_dropped{false};
     // +1EE5h. Raised by 004d87b0 with the ingame.multi_notenoughplayer
     // warning, cleared by the session restart paths 0076fad0 and 00772610,
@@ -119,11 +122,6 @@ struct MissionStateEntryState {
     MissionOneShots one_shots{}; // +1EE1h..+1EE5h
     bool hud_suppressed{false}; // +608h, the byte docs/GAME_SIMULATION_GATE.md reads with game+1FE4h
 };
-
-// The float 004da724 loads is the global at 00f889a0, which the whole image
-// references exactly once, from this instruction, and which ships as zero.
-// So the audio level applied on mission entry is a constant 0.0f.
-inline constexpr float kMissionEntryAudioLevel = 0.0f; // 00f889a0
 
 // The mask 00a7a440 substitutes for its stack argument before tail-jumping to
 // 00a7a3f0, which marks every bus whose class bit is in the mask dirty.
@@ -183,8 +181,11 @@ struct MissionStateEntryHost {
 // the only input, RET with no immediate. Returns true when the routine ran to
 // the end, false when the multiplayer check moved the state away from 0Dh and
 // the native code took the early return at 004da761 - in that case the
-// cinematic reset and the +608h store do not happen.
-bool run_mission_state_entry(MissionStateEntryState& state, MissionStateEntryHost& host);
+// cinematic reset and the +608h store do not happen. Audio settings project
+// the mutable static settings object at 00f88980; its master_20 is read at
+// the native 004da724 point, after the earlier host calls, not at entry.
+bool run_mission_state_entry(MissionStateEntryState& state,
+    const AudioSettings& audio_settings, MissionStateEntryHost& host);
 
 // One method per native call site of 004db920 that is not already a predicate
 // above.

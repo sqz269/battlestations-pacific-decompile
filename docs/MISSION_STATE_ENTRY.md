@@ -278,3 +278,35 @@ in the style of `bsp::run_application_frame`. `GameStateId`, `kLocalPlayerSlotCo
 
 Nothing here is ABI-compatible or game-validated. Every routine named in this packet already has a
 Ghidra function; there is no listing-only routine to define.
+
+## Correction from docs/SOUND_MANAGER_LEVELS.md
+
+The earlier constant-zero interpretation of `00f889a0` is incorrect. The
+application passes `ECX = 00f88980` into the settings commit at `0073e47c..85`;
+`00f889a0` is that same object's `+20h` master-volume field. Reset writes it
+indirectly at `008d41f8` (the default float at `00ce3800` is 0.5), and the
+settings key table identifies `+20h` as `masterVolume`. A single direct
+cross-reference to its absolute address does not exclude these indirect writes.
+
+`run_mission_state_entry` now takes the existing `AudioSettings` projection by
+reference and reads `master_20` at the native `004da724` point, after the prior
+host calls. It forwards that current value to the sound manager with mask
+`0xFFFF`, instead of substituting zero. `kMissionEntryAudioLevel` is removed.
+The sound packet reconstructs the level store and class-mask dirtying rules;
+the later meaning of manager `+6Ch` still needs its own consumer evidence.
+
+The entry latches and external call order are unchanged. Combined validation
+is recorded in `reports/orch3_input_audio_session_integration.json`; these
+host interfaces are not native ABI replacements or game-validated execution.
+
+## Correction from docs/SESSION_TEARDOWN_LATCHES.md
+
+`0076d0f0` supplies a concrete writer of `game+624h`: the nonzero byte payload
+of message type `13h` selects value 2, returns without showing the closed-game
+prompt, and preserves `+1EE4h`. The zero-payload branch calls the game-closed UI
+handler (which may suppress its prompt) and then raises that latch. Broadcast
+`007728b0` likewise only raises it for a zero
+payload. `007727a0` and `00772990` raise it after the end-scene routes, including
+normal end of scene; the legacy C++ name `session_dropped` does not imply every
+write denotes a transport failure. The raw meaning of `game+624h` beyond its
+observed writes and branch uses still needs evidence.

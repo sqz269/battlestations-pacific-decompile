@@ -1,0 +1,136 @@
+{
+  "packet": "orch3_sound_manager_levels",
+  "branch": "agent/orch3-sound-levels-20260910",
+  "status": "reconstructed_build_and_existing_tests_passed",
+  "evidence_doc": "docs/SOUND_MANAGER_LEVELS.md",
+  "ghidra": {
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "verification": "bsp.py client verifies project name, program path, language and image base before each live query",
+    "mutations": []
+  },
+  "reconstructed": [
+    {
+      "address": "00a7a3f0",
+      "old_name": "FUN_00a7a3f0",
+      "reviewed_name": "BSP_SoundManager_DirtyClassEntries",
+      "cpp": "dirty_sound_classes_00a7a3f0",
+      "native_abi": "__thiscall(manager, uint32 mask), RET 4",
+      "last_instruction": {"address": "00a7a431", "length": 3},
+      "inclusive_end": "00a7a433",
+      "evidence": ["00a7a3f0 array +8C/count +90", "00a7a412 descriptor +44", "00a7a415 descriptor class +8", "00a7a41d SHL uses low five class bits", "00a7a423 dirty +14=1"]
+    },
+    {
+      "address": "00a7a440",
+      "old_name": "BSP_SoundManager_ApplyGlobalLevel",
+      "reviewed_name": "BSP_SoundManager_ApplyGlobalLevel",
+      "cpp": "apply_sound_global_level_00a7a440",
+      "native_abi": "__thiscall(manager, float), tail JMP to 00a7a3f0 / RET 4",
+      "last_instruction": {"address": "00a7a453", "length": 5},
+      "inclusive_end": "00a7a457",
+      "evidence": ["00a7a446 raw store to +4C", "00a7a44b mask FFFF", "00a7a453 unconditional tail invalidation"]
+    },
+    {
+      "address": "00a7abf0",
+      "old_name": "FUN_00a7abf0",
+      "reviewed_name": "BSP_SoundManager_SetClassLevels",
+      "cpp": "set_sound_class_levels_00a7abf0",
+      "native_abi": "__thiscall(manager, uint32 mask, float), RET 8; EAX incidental",
+      "last_instruction": {"address": "00a7ac68", "length": 3},
+      "inclusive_end": "00a7ac6a",
+      "evidence": ["00a7abf9 count +9C/table +98", "00a7ac25 ordinal SHL", "00a7ac34 FUCOMIP", "00a7ac45 equality clears pending bit", "00a7ac5e dirty residual mask"]
+    },
+    {
+      "address": "00a7acf0",
+      "old_name": "FUN_00a7acf0",
+      "reviewed_name": "BSP_SoundManager_FindClassByName",
+      "cpp": "find_sound_class_00a7acf0",
+      "native_abi": "__thiscall(manager, native_string*), RET 4, index or -1 in EAX",
+      "last_instruction": {"address": "00a7ad66", "length": 3},
+      "inclusive_end": "00a7ad68",
+      "evidence": ["00a7ad1a exact length comparison", "00a7ad1e empty string path", "00a7ad3b CRT __stricmp", "00a7ad59 miss -1", "00a7ad62 first matching ordinal"]
+    },
+    {
+      "address": "00a7f8e0",
+      "old_name": "FUN_00a7f8e0",
+      "reviewed_name": "BSP_SoundManager_SetClassLevel",
+      "cpp": "set_sound_class_level_00a7f8e0",
+      "native_abi": "__thiscall(manager, signed index, float), RET 8",
+      "last_instruction": {"address": "00a7f94c", "length": 3},
+      "inclusive_end": "00a7f94e",
+      "evidence": ["00a7f8f5 signed JL", "00a7f8fd grow index+1 before read", "00a7f90e FUCOMIP", "00a7f923 repeated growth call", "00a7f93e volume store", "00a7f944 dirty one class bit"]
+    }
+  ],
+  "existing_reconstruction_corrected": [
+    {
+      "address": "008d5430",
+      "name": "BSP_Settings_ApplyAudio",
+      "source": "src/game_settings.cpp",
+      "native_abi": "__thiscall(settings), RET",
+      "last_instruction": {"address": "008d56bf", "length": 1},
+      "correction": "Use ordered <0 and >1 branches for UI master clamp; native COMISS/JA and COMISS/JBE preserve NaN and negative zero. Sound-manager master remains unclamped."
+    }
+  ],
+  "analyzed_only": [
+    {
+      "address": "00a7b230",
+      "old_name": "FUN_00a7b230",
+      "reviewed_name": "BSP_SoundManager_UnregisterSingletonDestructor",
+      "native_abi": "__thiscall(manager), RET",
+      "last_instruction": {"address": "00a7b2c8", "length": 1},
+      "evidence": "Vtable D5ABAC; obtain lifetime lock +10; enter/increment +18; unregister global F8BBD8; clear global; decrement/leave; base vtable CE3818. No volume or FMOD cleanup here."
+    },
+    {
+      "address": "008d41f0",
+      "name": "BSP_Settings_ResetAudioDefaults",
+      "native_abi": "__thiscall(settings), RET",
+      "last_instruction": {"address": "008d420c", "length": 1},
+      "evidence": "008d41f8 writes 0.5f to [ECX+20]; proves settings master is mutable despite direct-xref count for F889A0. Existing reset reconstruction reused."
+    }
+  ],
+  "corrections_for_parent": [
+    {
+      "target": "docs/MISSION_STATE_ENTRY.md and include/bsp/mission_state_entry.hpp and src/mission_state_entry.cpp",
+      "finding": "00F889A0 equals settings singleton 00F88980 +20, the masterVolume field. The mission entry direct load must use current settings master, not kMissionEntryAudioLevel=0.0f.",
+      "status": "parent owns separate correction"
+    },
+    {
+      "target": "docs/APP_INIT_AUDIO_ONLINE.md",
+      "finding": "00F889A4 equals settings +24 enable byte; +A8/+AC/+B0 are music/effects/speech volumes. Direct-xref absence does not rule out base-relative field writes."
+    },
+    {
+      "target": "prior all-bus descriptions",
+      "finding": "FFFF only selects class indices modulo32 in [0,15]. Table size and ordinal==descriptor+8 relation remain unproved."
+    }
+  ],
+  "external_contracts": [
+    {"address": "00bf7fbf", "name": "__stricmp", "boundary": "injected CRT name comparison"},
+    {"address": "00a7c2c0", "boundary": "injected table growth at two distinct call sites; no allocation or descriptor construction ported"},
+    {"address": "00415350", "boundary": "existing singleton lifetime manager"},
+    {"address": "00bcfca0", "boundary": "existing singleton unregister"},
+    {"address": "00a864f0", "boundary": "existing music player setter contract with owner/pointer guards"}
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed",
+    "build_log": "local/sound-levels-build.log (ignored)",
+    "seed_verification": "8 of 8 seed byte comparisons match installed image; local/seed_reference.hpp generated",
+    "existing_tests": {"reconstructed_math": "passed", "native_math_differential": "passed"},
+    "new_permanent_tests": 0,
+    "focused_local_probe": "passed: UI NaN, negative zero and finite clamp endpoints; unclamped global; FFFF excludes class16 and includes class32 alias; bulk equal signed zeros preserve old sign; NaN dirties",
+    "probe_log": "local/sound-levels-probe.log (ignored)",
+    "audio_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "open_questions": [
+    "Find consumer of live entry +14 and exact gain formula involving manager +4C and +6C.",
+    "Establish descriptor table initialization/count and ordinal-to-class_index mapping.",
+    "Establish 00a7c2c0 growth and descriptor initialization before providing a native host.",
+    "Verify settings named-class existence; native lookup miss -1 is not guarded."
+  ],
+  "tool_notes": "Fresh worktree initially lacked a local index and target exports; built index, used verified live views. Ghidra supplied all function bodies. No refused leases, no mutations, no missing-function or flow-repair requests."
+}

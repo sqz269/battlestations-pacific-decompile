@@ -8,20 +8,6 @@ namespace {
 // packet is a comparison against 0.0f.
 constexpr float kZero = 0.0f;
 
-// The CRT __stricmp at 00bf7fbf, restricted to the equality test 00a926f0 makes.
-// Written out rather than called so the reconstruction keeps the same ASCII-only
-// folding src/input_settings.cpp already uses for BSP_NativeString comparisons.
-bool equal_case_insensitive(const char* left, const char* right) noexcept {
-    while (*left != '\0' && *right != '\0') {
-        unsigned int a = static_cast<unsigned char>(*left++);
-        unsigned int b = static_cast<unsigned char>(*right++);
-        if (a >= 'A' && a <= 'Z') a += 'a' - 'A';
-        if (b >= 'A' && b <= 'Z') b += 'a' - 'A';
-        if (a != b) return false;
-    }
-    return *left == *right;
-}
-
 // The listener state 00a91e20 clears at 00a91e46..00a91e79.
 void clear_listener_state(InputActionListener& listener) noexcept {
     listener.pressed = false;
@@ -87,14 +73,14 @@ void continue_action_00a919f0(InputActionRecord& record, float amount) noexcept 
 void apply_effect_param_00a926f0(const InputEffectParam& param, InputActionListener& listener) noexcept {
     // 00a926f6: when the name pointer is non-null and matches "fastRelease"
     // case-insensitively the listener flag at +0Bh is raised and nothing else runs.
-    if (param.name != nullptr && equal_case_insensitive(param.name, "fastRelease")) {
+    if (param.name != nullptr && _stricmp(param.name, "fastRelease") == 0) {
         listener.fast_release = true;
         return;
     }
-    // 00a9271f: otherwise the block is asked about "holdPress" through the method
-    // at 00425850. That method is outside this packet, so the reconstruction can
-    // only decide it from the name the block carries.
-    if (param.name != nullptr && equal_case_insensitive(param.name, "holdPress")) {
+    // 00425850 reads native string data at +4 and delegates to CRT stricmp.
+    // Its null-data branch compares the other string's length with zero;
+    // the fixed nonempty "holdPress" literal therefore cannot match null data.
+    if (param.name != nullptr && _stricmp(param.name, "holdPress") == 0) {
         listener.hold_press = true;
     }
 }
@@ -105,7 +91,7 @@ void start_action_00a92aa0(InputActionRecord& record, float amount,
     record.previous_down = false;   // 00a92ab2
     record.current_down = true;     // 00a92ab6
     record.current_hold = amount;   // 00a92aba
-    if (param.object != nullptr && listener != nullptr) {  // 00a92abf/00a92ac4
+    if (param.length != 0 && listener != nullptr) {  // 00a92abf/00a92ac4
         apply_effect_param_00a926f0(param, *listener);
     }
 }
@@ -130,8 +116,9 @@ void update_input_manager_00a92c40(InputTickState& state, float seconds, InputTi
         host.poll_action_bindings(record, i);           // rest of 00a92370
         InputActionListener* listener = listener_of(state, record);
         if (listener == nullptr) continue;              // 00a92c95..00a92ca4
-        host.listener_classify(*listener, seconds,
-            action_down_previous(record), action_down_current(record));  // 00a92cea
+        update_input_action_listener_00a91a50(*listener, seconds,
+            action_down_previous(record), action_down_current(record),
+            state.listener_thresholds);  // 00a92cea
     }
     host.post_update_hook();                            // 00a92d02..00a92d0d
 }

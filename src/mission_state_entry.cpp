@@ -1,5 +1,7 @@
 #include "bsp/mission_state_entry.hpp"
 
+#include "bsp/game_settings.hpp"
+
 namespace bsp {
 
 bool mission_entry_uses_player_count_arm(
@@ -56,7 +58,8 @@ MissionOneShots arm_mission_one_shots(std::int32_t local_view_mode) noexcept
     return one_shots;
 }
 
-bool run_mission_state_entry(MissionStateEntryState& state, MissionStateEntryHost& host)
+bool run_mission_state_entry(MissionStateEntryState& state,
+    const AudioSettings& audio_settings, MissionStateEntryHost& host)
 {
     host.enter_scope(kMissionEntryScopeLabel); // 004da6c9
 
@@ -71,7 +74,9 @@ bool run_mission_state_entry(MissionStateEntryState& state, MissionStateEntryHos
         host.mark_local_slot_ready(state.local_slot_index, kLocalSlotReadyValue);
     }
 
-    host.set_audio_environment_level(kMissionEntryAudioLevel, kAudioEnvironmentBusMask); // 004da734
+    // 00f889a0 is settings base 00f88980 +20h, written indirectly by settings
+    // reset/load. Its zero-initialized image bytes do not make it a constant.
+    host.set_audio_environment_level(audio_settings.master_20, kAudioEnvironmentBusMask); // 004da734
 
     state.game_state = static_cast<std::uint32_t>(GameStateId::kInMission); // 004da73c
     host.apply_in_game_interface(false); // 004da746
