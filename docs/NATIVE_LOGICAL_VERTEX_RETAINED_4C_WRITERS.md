@@ -80,3 +80,10 @@ It includes original candidate inputs, prior-report pins, live listings,
 function/byte checks, contextual witnesses and this report. Only this document
 and its audit JSON are committed. There are no C++/shared metadata/Ghidra
 changes and no build, fixture, native ABI or gameplay claims.
+
+
+Primary review verified all 93 immutable worker pins and reread all 24 guarded
+spans, totaling 8,031 bytes. The twelve function ranges and twelve contextual
+witnesses agree with the discovery report. The read-only primary evidence is
+`local/retained_4c_writers_discovery_primary/`. No source function, nonnull
+logical-stream producer, null lifetime proof or source readiness is promoted.

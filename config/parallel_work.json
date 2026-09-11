@@ -6688,6 +6688,37 @@
       ],
       "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
       "evidence": "reports/native_renderer_binding_reset_audit.json"
+    },
+    {
+      "id": "native_logical_vertex_retained_4c_writers12",
+      "packet": "native_logical_vertex_retained_4c_writers12",
+      "state": "bounded_discovery_verified_twelve_exclusions_no_logical_retained_producer",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00a3b150",
+        "00a4a890",
+        "00ae1e10",
+        "00afa280",
+        "00b0cc10",
+        "00b0f6e0",
+        "00b354d0",
+        "00b56b90",
+        "00b5e270",
+        "00ba71c0",
+        "00bb0e30",
+        "00bc0510"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_LOGICAL_VERTEX_RETAINED_4C_WRITERS.md",
+        "reports/native_logical_vertex_retained_4c_writers_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_logical_vertex_owner"
+      ],
+      "scope": "Twelve bounded decoded writer exclusions; renderer embedded lock identified as a distinct domain. Logical retained writer/profile/terminal unresolved; no source bodies.",
+      "evidence": "reports/native_logical_vertex_retained_4c_writers_audit.json"
     }
   ],
   "snapshot_after_analysis": {
