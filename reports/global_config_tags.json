@@ -1,0 +1,84 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reason": "Owned complete aggregate constructor and non-deleting destructor; original labels incorrectly describe whole bodies as compiler array helpers or vector deleting wrappers.",
+  "entries": [
+    {
+      "address": "008dbcd0",
+      "prior_ledger": {
+        "address": "008dbcd0",
+        "name": "CG_array_ctor_helper_008dbcd0",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008dbcd0",
+            "category": "Inventory: cg_array_ctor_helper",
+            "comment": "CG_array_ctor_helper_008dbcd0 [high] calls vector/eh_vector_constructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_array_ctor_helper_008dbcd0 at 008dbcd0\nSignature: undefined CG_array_ctor_helper_008dbcd0(void)\nEntry: 008dbcd0\nBody: 008dbcd0 - 008dbda5",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008dbcd0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "008dbdb0",
+      "prior_ledger": {
+        "address": "008dbdb0",
+        "name": "CG_vector_deleting_dtor_008dbdb0",
+        "category": "cg_vector_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0011"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008dbdb0",
+            "category": "Inventory: cg_vector_deleting_dtor",
+            "comment": "CG_vector_deleting_dtor_008dbdb0 [high] calls eh_vector_destructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_vector_deleting_dtor_008dbdb0 at 008dbdb0\nSignature: undefined CG_vector_deleting_dtor_008dbdb0(void)\nEntry: 008dbdb0\nBody: 008dbdb0 - 008dbe89",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008dbdb0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

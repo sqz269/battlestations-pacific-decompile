@@ -151,3 +151,19 @@ The Win32 build and both existing tests passed; Ghidra saved all58 annotations.
 Four focused fixtures passed on the earlier source60af126 library, with its
 separate hash retained in the report. This remains build/fixture evidence,
 not native ABI or gameplay validation.
+
+## Concrete global configuration singleton
+
+The00432650 callback is now a direct getter over the canonical2E8h owner and the
+shared01090AA0 lifetime domain. Every effect-name count, selected access and final
+2D8 reset executes that getter, preserving its lazy construction, captured lock,
+publication and registration sequence. `GlobalSubsystemContext::global_config`
+supplies the live singleton slot, shared domain, string storage and actual effect
+virtual dispatch bindings. Full normal owner destruction is recovered, including
+callback-dependent slot reloads/reverse cleanup and unconditional global clear.
+
+See `GLOBAL_CONFIG.md` and `config_singleton_integration_i` in the report. The
+Win32 build, both existing checks, a focused singleton lifetime fixture and the
+existing startup fixture passed. Six false cleanup gaps and two stale inventory
+tags were corrected with prior state retained. Actual configuration population,
+effect virtual dispatch, native ABI/SEH and gameplay remain outstanding.
