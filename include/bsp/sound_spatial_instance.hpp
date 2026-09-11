@@ -38,9 +38,13 @@ SpatialSoundChannelInstance& construct_spatial_sound_channel_00a8a2e0(
     SpatialSoundChannelInstance&, void*, SoundClassLevel* const*, std::uint32_t,
     std::uint8_t, std::array<float, 3> position, std::array<float, 3> velocity,
     SoundInstanceContext&);
-// Only the A818C0=true branch of A7F710 is reconstructed. A false gate throws
-// at the still-unbound event branch, after native attempted-creation counting.
+// Compatibility entry exposing only the A818C0=true bank branch of A7F710.
+// A false gate throws after counting. The complete factory is declared in
+// sound_event_instance.hpp and accepts both bank and event resources.
 SpatialSoundChannelInstance* create_spatial_bank_sound_00a7f710_fragment(
+    SoundSystemOwner&, void*, std::int32_t, std::uint32_t, std::uint8_t, SoundInstanceContext&);
+// Internal true-branch allocation, after the full factory has counted/gated.
+SpatialSoundChannelInstance* allocate_spatial_bank_sound_fragment(
     SoundSystemOwner&, void*, std::int32_t, std::uint32_t, std::uint8_t, SoundInstanceContext&);
 void destroy_spatial_sound_channel_00a8a3d0(SpatialSoundChannelInstance&, SoundSpatialChannelContext&);
 SpatialSoundChannelInstance* scalar_delete_spatial_sound_channel_00a8a460(

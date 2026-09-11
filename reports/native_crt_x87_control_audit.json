@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T21:27:30.689923+00:00",
-  "status": "two complete raw source entries reconstructed; strict build and exact full original/actual archive-member COFF equality passed",
+  "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
   "base_commit": "6ccfc91e12762c69ace3ee4b2e52d6e6445bb1ce",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_control",
   "ownership": {
@@ -423,5 +423,88 @@
       "bytes": 4587,
       "sha256": "630313e7dc4f61f6d421f8f325f542e504d4481f89cac4f36b5677f015f8470b"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+    "main_library_sha256": "aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 37,
+    "report_pins": 36,
+    "fresh_spans": 2,
+    "fresh_bytes": 36,
+    "whole_COFF_sections": 5,
+    "whole_COFF_relocations": 0,
+    "owned_original_bytes": 36,
+    "owned_instructions": 11,
+    "original_owned_execution": false,
+    "boundary": "Primary checked37 sealed worker files,36 report pins,2 fresh spans36bytes and all five main-object sections. Every body byte is exact; no relocation, normalization, added instruction or undefined provider. Descriptive name is a hypothesis. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_control_primary\\sealed.json",
+      "bytes": 10946,
+      "sha256": "6ad3da0f978266306beb9b1032c368806b68d11d648600417b5b28532ddfa00a"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_classification_control_tree_annotations.json",
+    "bytes": 19546,
+    "sha256": "548546db7e9c835c625b43decc9530bfbcaf5f334b2a9fcc6cec21c4df6e2bfc"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c083a5",
+      "name": "BSP_CRT_X87_PrepareControlWord",
+      "cpp_symbol": "bsp::prepare_native_crt_x87_control_00c083a5",
+      "source": "src/native_crt_x87_control.cpp",
+      "native_end_exclusive": "00c083bc",
+      "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_control_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00c0842e",
+      "name": "BSP_CRT_X87_RestoreControlTail",
+      "cpp_symbol": "bsp::restore_native_crt_x87_control_tail_00c0842e",
+      "source": "src/native_crt_x87_control.cpp",
+      "native_end_exclusive": "00c0843b",
+      "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_control_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c083a5",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c083a5\\decompiled.c",
+      "bytes": 1942,
+      "sha256": "dd1ce8abe1f0fca8367fc1a03b09acad9eeddcf9f563921872d6e69f27dd9037"
+    },
+    {
+      "address": "00c0842e",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0842e\\decompiled.c",
+      "bytes": 1957,
+      "sha256": "2557d4345334b975801fbccddc3752bfab50774ece7d496d898e14c78679f9a8"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_X87_CONTROL.md",
+    "bytes": 5506,
+    "sha256": "974e714da183377030082995e45dc24fa62213e66d416dc6a1b9f73615a7497c"
+  },
+  "closure_utc": "2026-09-11T21:44:44.463232+00:00"
 }

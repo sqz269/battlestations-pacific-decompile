@@ -2006,7 +2006,7 @@ No name was added; run-time evidence was appended to 004dfb70, 004db920, 004da6c
 00886900, 005e2f00 and 008860b0.
 
 `python tools/verify_report_calls.py reports/game_executable_milestone_2f.json` checks 96 call
-rows and reports **51 failures, all of one kind**: every call site of the in-mission frame
+rows and reported **51 failures, all of one kind** until the listing repair of 2026-09-11 (see the repair record in `docs/GHIDRA_LISTING_DEFECTS.md`; it now reports 96 rows checked, 0 failed): every call site of the in-mission frame
 lies inside `BSP_Game_OnMove` 004e4a40, whose stored Ghidra body is the eight bytes
 004e4a40-004e4a47. That is the first row of `docs/GHIDRA_LISTING_DEFECTS.md`, which says the
 verifier reports call sites inside that routine as "in no Ghidra function" until

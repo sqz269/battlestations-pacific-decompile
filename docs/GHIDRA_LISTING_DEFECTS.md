@@ -21,3 +21,16 @@ tools/bsp.py index`, then `python tools/ghidra_flow_repair.py 004e4a40 006435d0`
 `_free` gaps the fresh disassembly exposes, and `python tools/ghidra_annotate.py --apply
 --addresses 004c9800` to apply the deferred name. Add new rows here and in the script's `RANGES`
 table when a bridge-side define fails for the same reasons.
+
+## Repair record
+
+Run once on 2026-09-11 in Ghidra 12.0.4 from the Script Manager (after the import fix in
+commit 67323d93: `FlowOverride` is `ghidra.program.model.listing.FlowOverride`). Console output:
+`004e4a40: BSP_Game_OnMove body 004e4a40 - 004e5537`, `00643c0c: re-bodied
+BSP_InGameHudMarkersScreen_Update to 006435d0 - 00643d96`, `004c9800:
+BSP_SceneRecordPlayerSlot_Construct body 004c9800 - 004c981d`; program saved, then
+`snapshot --force`, `index`, `ghidra_flow_repair.py 004e4a40 006435d0` (three gaps after
+unconditional `JMP`s in 004e4a40, padding, left alone; none in 006435d0) and
+`ghidra_annotate.py --apply --addresses 004c9800`. `verify_report_calls.py
+reports/game_executable_milestone_2f.json` went from 51 failures to 96 rows checked, 0 failed.
+The three rows above are repaired; the table stays as the record of what the bridge cannot do.

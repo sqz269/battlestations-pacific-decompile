@@ -1,0 +1,74 @@
+{
+  "packet":"orch5_native_font_resources",
+  "status":"canonical_font_data_actual_resource_association_partial_projection",
+  "ghidra_project":"C:/Users/sqz269/bsp.gpr",
+  "ghidra_program":"/battlestationspacific.exe",
+  "ghidra_mutations":false,
+  "functions":[
+    {"address":"00ad4c30","name":"native_font_resource_publication_00ad4c30","coverage":"partial initial-load final state: resource stores5004/5007,50CB/50D1, resource half of5109 fallback copy,5142/5148; all native renderer/VFS/string/tree/scalar/SEH control flow remains separate","status":"partial_projection","original_abi":"ECX font; five native-string pointers stack; RET14h","last_instruction":"00ad517e","last_instruction_length":3,"end_inclusive":"00ad5180","source":"src/native_font_resources.cpp"},
+    {"address":"00ad53a0","name":"native_font_resource_destroy_00ad53a0","coverage":"partial: typed payload destruction then actual gfx and current alpha releases through5476; native string/tree/sentinel tail5477..5586, allocator ABI and SEH excluded","status":"partial_projection","original_abi":"ECX font; no stack args; RET","last_instruction":"00ad5586","last_instruction_length":1,"end_inclusive":"00ad5586","ghidra_body_end":"00ad5568","source":"src/native_font_resources.cpp"}
+  ],
+  "host_steps":[
+    {"function":"00ad4c30","address":"00ad4cd0","native":"00b319b0","dispatch":"current renderer64, vtableD5F10C","binding":"external actual GFX load name/flags0; callee RET8"},
+    {"function":"00ad4c30","address":"00ad4e29","native":"00b319b0","dispatch":"current renderer64","binding":"external nonempty alpha load name/flags0; RET8"},
+    {"function":"00ad4c30","address":"00ad4e6e","native":"00b319b0","dispatch":"current renderer64","binding":"external empty-alpha white.tga load/flags0; RET8"},
+    {"function":"00ad4c30","address":"00ad50dc","native":"00ad4540","binding":"existing scalar decode guarantees required0091; adopt copies that same glyph resource pair"},
+    {"function":"00ad53a0","address":"00ad540f","native":"00bf65ac","binding":"typed map payload and node cleanup; native payload allocator/tree timing explicitly excluded"},
+    {"function":"00ad53a0","address":"00ad5442","native":"InterlockedDecrement through captured EBX IAT[00CE2220]","binding":"same actual GFX raw+04 via existing actual-owner release"},
+    {"function":"00ad53a0","address":"00ad544e","native":"current GFX virtual0","binding":"registered actual-owner terminal callback, no new/default owner"},
+    {"function":"00ad53a0","address":"00ad5462","native":"InterlockedDecrement through captured EBX IAT[00CE2220]","binding":"reload current alpha after GFX callback, same actual raw+04"},
+    {"function":"00ad53a0","address":"00ad546e","native":"current alpha virtual0","binding":"same actual-owner terminal callback"}
+  ],
+  "all_callers":[
+    {"function":"00ac3910","address":"00ac3d99","native":"00ad4c30","arguments":"five string pointers pushed3D7B/3D83/3D88/3D8D/3D8E, ECX allocated font; callee RET14h"},
+    {"function":"00ad51d0","address":"00ad5304","native":"00ad4c30","arguments":"five pointers pushed52F0/52F4/52FC/5300/5301, ECX existing font after old resources cleared; RET14h; reload not implemented by adoption"},
+    {"function":"00ac3010","address":"00ac3013","native":"00ad53a0","arguments":"ECX original font, no stack args, before optional physical object free"},
+    {"function":"00ac36f0","address":"00ac374a","native":"00ad53a0","arguments":"ECX current registry font, no stack args, then free original font at3750 with ADD ESP4"}
+  ],
+  "producer_fields":[
+    {"address":"00ad4f4a","field":"font+14","meaning":"only scaled lowword; sole live FontData.scaled_height is signextended on each accessor call"},
+    {"address":"00ad5004","field":"glyph+18","meaning":"borrowed GFX raw identity"},
+    {"address":"00ad5007","field":"glyph+1C","meaning":"borrowed alpha raw identity"},
+    {"address":"00ad50cb","field":"font+68","meaning":"owning embedded space alpha reference"},
+    {"address":"00ad50d1","field":"font+64","meaning":"owning embedded space GFX reference"},
+    {"address":"00ad5109","field":"font+6C..8B","meaning":"full32byte0091 glyph copy includes resource identities; existing scalar snapshot kept, missing resource slots copied from same map glyph"},
+    {"address":"00ad5142","field":"font+A4","meaning":"CR borrowed GFX identity"},
+    {"address":"00ad5148","field":"font+A8","meaning":"CR borrowed alpha identity"}
+  ],
+  "native_tail_not_in_ghidra":{"function":"00ad53a0","start":"00ad5569","last_instruction":"00ad5586","last_instruction_length":1,"end_inclusive":"00ad5586","length":30,"evidence":"raw continuation after false noreturn _free5564; finalRET5586 and INT3 padding5587; not a separate function"},
+  "corrections":[
+    {"was":"FontGlyphData deliberately omitted resource pointers","is":"same canonical payload has null-default raw+18/+1C fields; native adoption binds them in place","evidence":"AD5004/5007 and Win32 offsetof/sizeof assertions; scalar and semantic texture loaders remain distinguishable"},
+    {"was":"FontResources semantic image wrappers could be mistaken for actual native owners","is":"NativeFontResources transfers only registered actual raw identities with the SAME live raw+04 count; wrapper/COM pointers are not substitutes","evidence":"AD53A0 releases exactly embedded font64 then68; native actual-owner registry validation"},
+    {"was":"descriptor-based Text consumers lacked a live signed font-height association","is":"exact descriptor pointer resolves the sole transferred FontData allocation; signed_height reads current lowword each time","evidence":"AD4F3A..4F4A producer and existing Text late signed16 consumer contract"}
+  ],
+  "lifetime_contract":{"owned":"unique FontData allocation without relocation plus two actual texture refs stored ONLY in space_lf_glyph slots","borrowed":"stable FontDescriptor identity and existing actual resource domain; ordinary/missing/CR glyph texture pointers","publication":"validation and allocation before transfer; duplicate descriptor and missing/retired associations fail explicitly","teardown":"typed payloads, captured GFX release/clear, reload alpha release/clear; material-held references may outlive font so actual texture domain must outlive both"},
+  "validation":{"strict_compile":"PASS MSVC Win32 W4 WX O2 fp:strict new native_font_resources.cpp and existing font_data.cpp/font_resources.cpp","report_call_verifier":"PASS:9 numeric rows checked,0 failures;3 resolved renderer64 indirect calls and4 symbolic reference-release indirect calls explicitly reported not verifiable by tool","new_tests":0,"new_test_targets":0,"native_resource_execution":false,"native_differential":false,"abi_compatible":false,"game_validated":false,"standard_combined_build":"parent integration"},
+  "remaining_prerequisites":["actual renderer64 B319B0/B30B40 cache/file loader and native texture creation/registration","caller invokes existing scalar DAT decoder then transfers its sole allocation and actual owned image results","stable FontDescriptor lifetime and actual association collection outlive Text consumers","late Text consumers reload current font pointer after callbacks; native null handling remains caller branch","native reloadAD51D0, pool/tree/string ABI and SEH outside projection"],
+  "tool_issues":["Ghidra AD53A0 saved body ends5568 after false noreturn_free; raw tail explicitly distinguished","Guessed mid-instruction ghidra disasm starts rejected; switched to full-function filtered listings for exact caller setup"],
+  "parent_validation": {
+    "normal_win32_build": "passed;3newTUs plus existing font users",
+    "existing_tests": "2/2 passed",
+    "numeric_rows": 9,
+    "direct_rows": 6,
+    "resolved_indirect_rows": 3,
+    "symbolic_indirect_rows": 4,
+    "failed_rows": 0,
+    "font_destructor_body": "00ad53a0..00ad5586;487bytes;0gaps",
+    "preserved": [
+      "name",
+      "signature",
+      "calling convention",
+      "parameters",
+      "plate and instruction comments",
+      "17existing labels",
+      "11local name/type/storage triples"
+    ],
+    "records": [
+      "reports/orch5_font_flow_repair.json",
+      "reports/orch5_font_function_recreated.json",
+      "reports/orch5_font_documentation_before.json"
+    ],
+    "native_resource_execution": false,
+    "game_validated": false
+  }
+}

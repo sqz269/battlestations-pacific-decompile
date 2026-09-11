@@ -7210,6 +7210,106 @@
         "src/native_renderer_material_state_binding.cpp"
       ],
       "evidence": "reports/native_renderer_material_state_binding_audit.json"
+    },
+    {
+      "id": "orch4_sound_event_u",
+      "packet": "orch4_sound_event_u",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_event_manager_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a89dc0",
+        "00a89c80",
+        "00a89ee0",
+        "00a894e0",
+        "00a89560",
+        "00a89170",
+        "00a88ba0",
+        "00a89340",
+        "00a89c40",
+        "00a89c70",
+        "00a88ff0",
+        "00a893d0",
+        "00a899e0",
+        "00a89be0",
+        "00a896e0",
+        "00a89b80",
+        "00a89120",
+        "00a89e80",
+        "00a89770",
+        "00a7f710"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_event_instance.hpp",
+        "src/sound_event_instance.cpp",
+        "include/bsp/sound_spatial_instance.hpp",
+        "src/sound_spatial_instance.cpp",
+        "include/bsp/sound_channel_runtime.hpp",
+        "src/sound_channel_runtime.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_event_instance.json",
+      "discovery_evidence": "docs/SOUND_EVENT_INSTANCE.md"
+    },
+    {
+      "id": "native_crt_double_classification3",
+      "packet": "native_crt_double_classification3",
+      "state": "complete_three_original_classifiers_rounder_main_archive_COFF_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c12f3e",
+        "00bfa52f",
+        "00c28548"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_DOUBLE_CLASSIFICATION.md",
+        "reports/native_crt_double_classification_audit.json",
+        "src/native_crt_double_classification.cpp"
+      ],
+      "evidence": "reports/native_crt_double_classification_audit.json"
+    },
+    {
+      "id": "native_crt_x87_control2",
+      "packet": "native_crt_x87_control2",
+      "state": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c083a5",
+        "00c0842e"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_X87_CONTROL.md",
+        "reports/native_crt_x87_control_audit.json",
+        "src/native_crt_x87_control.cpp"
+      ],
+      "evidence": "reports/native_crt_x87_control_audit.json"
+    },
+    {
+      "id": "native_resource_registry_tree_leaves6",
+      "packet": "native_resource_registry_tree_leaves6",
+      "state": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b1a260",
+        "00b19890",
+        "00b19640",
+        "00b19830",
+        "00b196d0",
+        "00b196f0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RESOURCE_REGISTRY_TREE_LEAVES.md",
+        "reports/native_resource_registry_tree_leaves_audit.json",
+        "src/native_resource_registry_tree_leaves.cpp"
+      ],
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json"
     }
   ],
   "snapshot_after_analysis": {

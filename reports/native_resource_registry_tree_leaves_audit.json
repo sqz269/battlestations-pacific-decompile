@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_resource_registry_tree_leaves6",
-  "status": "six_complete_actual_storage_leaves_primary_reviewed_strict_win32_and_focused_original_provider_composition_checked",
+  "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
   "utc": "2026-09-11T21:34:21.892583+00:00",
   "base_commit": "79dbe01b196c8ffe7c7ce84235611785f8da6727",
   "branch": "agent/native-resource-registry-tree-leaves6",
@@ -1049,5 +1049,1013 @@
   "Ghidra_mutated": false,
   "shared_metadata_or_CMake_mutated": false,
   "original_installation_mutated": false,
-  "immutable_handoff": "local/tree_leaves_handoff/manifest.json, external self-independent manifest of report and all artifacts"
+  "immutable_handoff": "local/tree_leaves_handoff/manifest.json, external self-independent manifest of report and all artifacts",
+  "primary_integration": {
+    "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+    "main_library_sha256": "aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 81,
+    "report_pins": 57,
+    "current_source_header_inputs": 16,
+    "fresh_spans": 11,
+    "fresh_bytes": 917,
+    "exact_archive_objects": 4,
+    "whole_COFF_code_sections": 114,
+    "whole_COFF_code_bytes": 8008,
+    "whole_COFF_relocations": 260,
+    "linked_sections": 52,
+    "linked_code_bytes": 4971,
+    "trace_words": 391,
+    "original_owned_execution": true,
+    "original_pool_CRT_helper_execution": false,
+    "boundary": "Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\tree_leaves_primary\\sealed.json",
+      "bytes": 15310,
+      "sha256": "d7902417d8b5531ce33b4cc7223384ec71c6d5541abe23b72ac81ef7f3e97dcc"
+    }
+  },
+  "primary_saved_analysis_repair": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "address": "00b1a260",
+    "end_exclusive": "00b1a2b2",
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b1a2a1",
+          "end_address": "00b1a2ac"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00b1a2a1",
+          "end_address": "00b1a2ab",
+          "bytes_disassembled": 11,
+          "message": "Successfully disassembled 11 byte(s)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b1a29c"
+        },
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b1a29c (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b1a260"
+        },
+        "result": {
+          "success": true,
+          "address": "00b1a260",
+          "deleted_function": "FUN_00b1a260",
+          "body_size": 71,
+          "message": "Function 'FUN_00b1a260' deleted at 00b1a260"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b1a260",
+          "name": "FUN_00b1a260",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00b1a260",
+          "function_name": "FUN_00b1a260",
+          "entry_point": "00b1a260",
+          "body_size": 82,
+          "message": "Function created successfully at 00b1a260"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ],
+    "neighbor_documentation_before": {
+      "00b19f90": {
+        "hash": "3a20fb16a42a1c67190e0f05e137f0d520fdc453f56e8687097083211899a540",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b19f90",
+        "function_name": "BSP_ResourceRegistryTree_EraseIterator",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b19f90]\nComplete 716-byte actual resource-registry tree erase at B19F90..B1A25C. Original ECX tree; stack hidden output iterator and input iterator owner/node; RET0C. This is a full red-black-tree erase with invalid-iterator exception branch, not a throw-only helper. Preserve two-child successor transplant, actual links/color/nil, direct complete rotations and iterator advance. Invalid iterator constructs the native owning out_of_range payload through complete 411700/408720 and D6926C profile; ThrowInfo D863A8 uses full 441760 copy and 4412B0 destructor. Normal disposal captures key data/length and uses actual 419CC0/BD1510, then returning BF65AC. Restored 58-byte tail B1A222..B1A25C reads current unsigned count after free, decrements only when nonzero, captures advanced owner/output/node before potentially aliasing output stores. Full original spans and concrete dependencies reviewed; source erase and native exception carrier composition remain pending. Prior STL_xlen_throw identification superseded by complete control flow. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b1a006"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b1a021"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b1a02e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_00b1a039"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b1a045"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00b1a052"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_00b1a05a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00b1a05d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00b1a06e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b1a075"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00b1a077"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_00b1a090"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00b1a09c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_00b1a0ad"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00b1a0b9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_00b1a0c7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_00b1a0d4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_00b1a0df"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_00b1a0e2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00b1a0f4"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b1a112"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_00b1a13e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_00b1a153"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_00b1a171"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_00b1a188"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_00b1a1a1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b1a1b6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_00b1a1ba"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_00b1a1cd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00b1a1ea"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b1a1fe"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_00b1a201"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00b1a21c"
+          },
+          {
+            "relative_offset": 680,
+            "name": "LAB_00b1a238"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "00b1a2f0": {
+        "hash": "40e9c582720adaa54fe149a604f2468a789bd1a8be802a3d139adf0f91aa8383",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1a2f0",
+        "function_name": "FUN_00b1a2f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 26,
+            "name": "LAB_00b1a30a"
+          },
+          {
+            "relative_offset": 31,
+            "name": "LAB_00b1a30f"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00b1a326"
+          },
+          {
+            "relative_offset": 59,
+            "name": "LAB_00b1a32b"
+          },
+          {
+            "relative_offset": 128,
+            "name": "LAB_00b1a370"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00b1a37a"
+          },
+          {
+            "relative_offset": 143,
+            "name": "LAB_00b1a37f"
+          },
+          {
+            "relative_offset": 182,
+            "name": "LAB_00b1a3a6"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "00bf65ac": {
+        "hash": "b291eba04ee7171fc1126e41cb02d22f4536858bcdabd0ff59b2fbaeec1fb87f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf65ac",
+        "function_name": "_free",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "[BSP reconstruction 00bf65ac]\nRetain correct library name; actual matching host std::free service, not a no-op. Original ABI: cdecl pointer on stack; JMP CRT free body. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: host_crt_service_boundary; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "_Memory",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar2",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    },
+    "function_before": "Function: FUN_00b1a260 at 00b1a260\nSignature: undefined FUN_00b1a260(void)\nEntry: 00b1a260\nBody: 00b1a260 - 00b1a2b1",
+    "documentation_before": {
+      "hash": "7755a08a8cdc438db7359c409c26b422858562fde74a6c77facd4885fdf2c7ab",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b1a260",
+      "function_name": "FUN_00b1a260",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar2",
+          "type": "int",
+          "storage": "(stack, 0xffffffffffffffe8, 4)"
+        },
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "uVar3",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffff0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 59,
+          "name": "LAB_00b1a29b"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b1a2ac"
+        }
+      ],
+      "completeness_score": 50.0
+    },
+    "function_after": "Function: FUN_00b1a260 at 00b1a260\nSignature: undefined FUN_00b1a260(void)\nEntry: 00b1a260\nBody: 00b1a260 - 00b1a2b1",
+    "documentation_after": {
+      "hash": "fde438cc9e9ed952b2a8687b6b4154af96e3557bee2b721f897e173b1f11f9ff",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b1a260",
+      "function_name": "FUN_00b1a260",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar4",
+          "type": "int",
+          "storage": "(stack, 0xffffffffffffffe8, 4)"
+        },
+        {
+          "name": "uVar5",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffff0, 4)"
+        },
+        {
+          "name": "piVar2",
+          "type": "int *",
+          "storage": "(unique, 0x17200, 4)"
+        },
+        {
+          "name": "iVar3",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "cVar1",
+          "type": "char",
+          "storage": "(unique, 0x17000, 1)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 17,
+          "name": "LAB_00b1a271"
+        },
+        {
+          "relative_offset": 59,
+          "name": "LAB_00b1a29b"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b1a2ac"
+        }
+      ],
+      "completeness_score": 50.0
+    },
+    "neighbor_documentation_after": {
+      "00b19f90": {
+        "hash": "3a20fb16a42a1c67190e0f05e137f0d520fdc453f56e8687097083211899a540",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b19f90",
+        "function_name": "BSP_ResourceRegistryTree_EraseIterator",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b19f90]\nComplete 716-byte actual resource-registry tree erase at B19F90..B1A25C. Original ECX tree; stack hidden output iterator and input iterator owner/node; RET0C. This is a full red-black-tree erase with invalid-iterator exception branch, not a throw-only helper. Preserve two-child successor transplant, actual links/color/nil, direct complete rotations and iterator advance. Invalid iterator constructs the native owning out_of_range payload through complete 411700/408720 and D6926C profile; ThrowInfo D863A8 uses full 441760 copy and 4412B0 destructor. Normal disposal captures key data/length and uses actual 419CC0/BD1510, then returning BF65AC. Restored 58-byte tail B1A222..B1A25C reads current unsigned count after free, decrements only when nonzero, captures advanced owner/output/node before potentially aliasing output stores. Full original spans and concrete dependencies reviewed; source erase and native exception carrier composition remain pending. Prior STL_xlen_throw identification superseded by complete control flow. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b1a006"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b1a021"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b1a02e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_00b1a039"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b1a045"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00b1a052"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_00b1a05a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00b1a05d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00b1a06e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b1a075"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00b1a077"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_00b1a090"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00b1a09c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_00b1a0ad"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00b1a0b9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_00b1a0c7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_00b1a0d4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_00b1a0df"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_00b1a0e2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00b1a0f4"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b1a112"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_00b1a13e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_00b1a153"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_00b1a171"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_00b1a188"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_00b1a1a1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b1a1b6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_00b1a1ba"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_00b1a1cd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00b1a1ea"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b1a1fe"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_00b1a201"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00b1a21c"
+          },
+          {
+            "relative_offset": 680,
+            "name": "LAB_00b1a238"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "00b1a2f0": {
+        "hash": "40e9c582720adaa54fe149a604f2468a789bd1a8be802a3d139adf0f91aa8383",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1a2f0",
+        "function_name": "FUN_00b1a2f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 26,
+            "name": "LAB_00b1a30a"
+          },
+          {
+            "relative_offset": 31,
+            "name": "LAB_00b1a30f"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00b1a326"
+          },
+          {
+            "relative_offset": 59,
+            "name": "LAB_00b1a32b"
+          },
+          {
+            "relative_offset": 128,
+            "name": "LAB_00b1a370"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00b1a37a"
+          },
+          {
+            "relative_offset": 143,
+            "name": "LAB_00b1a37f"
+          },
+          {
+            "relative_offset": 182,
+            "name": "LAB_00b1a3a6"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "00bf65ac": {
+        "hash": "b291eba04ee7171fc1126e41cb02d22f4536858bcdabd0ff59b2fbaeec1fb87f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf65ac",
+        "function_name": "_free",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "[BSP reconstruction 00bf65ac]\nRetain correct library name; actual matching host std::free service, not a no-op. Original ABI: cdecl pointer on stack; JMP CRT free body. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: host_crt_service_boundary; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "_Memory",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar2",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    },
+    "status": "Complete82-byte subtree body saved with returning-free fallthrough and backedge restored. Existing comments/labels, neighboring parents and correct global _free metadata preserved."
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_classification_control_tree_annotations.json",
+    "bytes": 19546,
+    "sha256": "548546db7e9c835c625b43decc9530bfbcaf5f334b2a9fcc6cec21c4df6e2bfc"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b1a260",
+      "name": "BSP_ResourceRegistryTree_DestroySubtree",
+      "cpp_symbol": "bsp::destroy_native_resource_registry_subtree_00b1a260",
+      "source": "src/native_resource_registry_tree_leaves.cpp",
+      "native_end_exclusive": "00b1a2b2",
+      "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json",
+      "original_abi": "ECX actual tree; stack subtree node; RET4; no semantic result.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b19890",
+      "name": "BSP_ResourceRegistryTree_IncrementIterator",
+      "cpp_symbol": "bsp::increment_native_resource_registry_iterator_00b19890",
+      "source": "src/native_resource_registry_tree_leaves.cpp",
+      "native_end_exclusive": "00b198f3",
+      "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json",
+      "original_abi": "ECX actual owner/node iterator; RET or returning BF6713 tail. Native EAX path-dependent with no semantic result.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b19640",
+      "name": "BSP_ResourceRegistryTree_RotateRight",
+      "cpp_symbol": "bsp::rotate_native_resource_registry_right_00b19640",
+      "source": "src/native_resource_registry_tree_leaves.cpp",
+      "native_end_exclusive": "00b19692",
+      "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json",
+      "original_abi": "ECX tree; stack node; RET4; EAX captured left replacement, forwarded by new API.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b19830",
+      "name": "BSP_ResourceRegistryTree_RotateLeft",
+      "cpp_symbol": "bsp::rotate_native_resource_registry_left_00b19830",
+      "source": "src/native_resource_registry_tree_leaves.cpp",
+      "native_end_exclusive": "00b1987e",
+      "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json",
+      "original_abi": "ECX tree; stack node; RET4; EAX captured right replacement, forwarded by new API.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b196d0",
+      "name": "BSP_ResourceRegistryTree_Maximum",
+      "cpp_symbol": "bsp::maximum_native_resource_registry_node_00b196d0",
+      "source": "src/native_resource_registry_tree_leaves.cpp",
+      "native_end_exclusive": "00b196ec",
+      "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json",
+      "original_abi": "ECX current candidate; EAX selected node; RET.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b196f0",
+      "name": "BSP_ResourceRegistryTree_Minimum",
+      "cpp_symbol": "bsp::minimum_native_resource_registry_node_00b196f0",
+      "source": "src/native_resource_registry_tree_leaves.cpp",
+      "native_end_exclusive": "00b1970b",
+      "status": "complete_six_actual_registry_tree_leaves_main_archive_original_provider_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_tree_leaves_audit.json",
+      "original_abi": "ECX current candidate; EAX selected node; RET.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b1a260",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1a260\\decompiled.c",
+      "bytes": 2486,
+      "sha256": "ad4f687b3371f24e2739f96f1c0ff79989e0f272ce9a6659072df61492c8c105"
+    },
+    {
+      "address": "00b19890",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19890\\decompiled.c",
+      "bytes": 2635,
+      "sha256": "15f34ed730dff01bd91384540943721c28b63b07cadad44904d0e5daff536803"
+    },
+    {
+      "address": "00b19640",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19640\\decompiled.c",
+      "bytes": 2459,
+      "sha256": "c54e0ce85c85dbc954130386c7c3d7e36dafa1bc4f11900d38c6414d1ee0fdca"
+    },
+    {
+      "address": "00b19830",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19830\\decompiled.c",
+      "bytes": 2411,
+      "sha256": "0e9d757f2d0d06eacd99916a9eb611af928a731cc245019323262afaf38a0d0c"
+    },
+    {
+      "address": "00b196d0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b196d0\\decompiled.c",
+      "bytes": 1783,
+      "sha256": "c3cfc802a254b88637782af10c4a67b5fe7cb88a80be404799ec272937959ac3"
+    },
+    {
+      "address": "00b196f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b196f0\\decompiled.c",
+      "bytes": 1778,
+      "sha256": "bfe59bbb52729c083374843d4e14e680890c587a2b436f3eb46f612f8f11a708"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_TREE_LEAVES.md",
+    "bytes": 9917,
+    "sha256": "7bc713ed34115b1be3564e70030b21d51450f1c20942a236da521609582e5e06"
+  },
+  "closure_utc": "2026-09-11T21:44:44.502841+00:00"
 }

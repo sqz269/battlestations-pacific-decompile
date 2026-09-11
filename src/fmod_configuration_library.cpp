@@ -181,6 +181,44 @@ FmodResult FmodConfigurationLibrary::dsp_remove(void* dsp) {
 FmodResult FmodConfigurationLibrary::dsp_release(void* dsp) {
     return impl_->call("FMOD_DSP_Release", dsp);
 }
+FmodResult FmodConfigurationLibrary::event_start(void* event) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_Start@4", event);
+}
+FmodResult FmodConfigurationLibrary::event_stop(void* event, bool immediate) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_Stop@8", event, static_cast<std::int32_t>(immediate));
+}
+FmodResult FmodConfigurationLibrary::event_get_state(void* event, std::uint32_t* state) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetState@8", event, state);
+}
+FmodResult FmodConfigurationLibrary::event_get_parameter(void* event, const char* name, void** parameter) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetParameter@12", event, name, parameter);
+}
+FmodResult FmodConfigurationLibrary::event_parameter_key_off(void* parameter) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventParameter_KeyOff@4", parameter);
+}
+FmodResult FmodConfigurationLibrary::event_parameter_set_value(void* parameter, float value) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventParameter_SetValue@8", parameter, value);
+}
+FmodResult FmodConfigurationLibrary::event_get_channel_group(void* event, void** group) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetChannelGroup@8", event, group);
+}
+FmodResult FmodConfigurationLibrary::channel_group_add_group(void* parent, void* group) {
+    return impl_->call("FMOD_ChannelGroup_AddGroup", parent, group);
+}
+FmodResult FmodConfigurationLibrary::event_set_pitch(void* event, float pitch, std::uint32_t units) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_SetPitch@12", event, pitch, units);
+}
+FmodResult FmodConfigurationLibrary::event_set_volume(void* event, float volume) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_SetVolume@8", event, volume);
+}
+FmodResult FmodConfigurationLibrary::event_set_3d_attributes(void* event,
+    const std::array<float, 3>& position, const std::array<float, 3>& velocity, const std::array<float, 3>& orientation) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_Set3DAttributes@16",
+        event, position.data(), velocity.data(), orientation.data());
+}
+FmodResult FmodConfigurationLibrary::event_set_paused(void* event, std::uint8_t paused) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_SetPaused@8", event, static_cast<std::int32_t>(paused));
+}
 FmodResult FmodConfigurationLibrary::system_get_channels_playing(void* system, std::int32_t* count) {
     return impl_->call("FMOD_System_GetChannelsPlaying", system, count);
 }

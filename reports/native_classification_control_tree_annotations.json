@@ -1,0 +1,150 @@
+[
+  {
+    "address": "00c12f3e",
+    "before": {
+      "address": "00c12f3e",
+      "function_name": "__sptype",
+      "comment": "Library Function - Single Match\n __sptype\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00c12f3e",
+      "name": "__sptype",
+      "evidence": "Complete91-byte __sptype; retain correct CRT library name. Integer bit classifier with exact original unaligned DWORD read at EBP+0E. New cdecl low/high/readable-tail words make the actual ten-byte readable span explicit; masked tail bits do not affect results. No x87 instruction or literal/global dependency. Entire original body matches the main archived section with zero relocation. Primary checked37 sealed worker files,9 report pins,3 fresh full spans256bytes and the complete six-section main object. The sole direct-call REL32 resolves to full same-object sptype and reproduces the original148-byte fpclass body. Owned CPP differs only by CRLF/LF; decoded text is identical. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_crt_double_classification_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bfa52f",
+    "before": {
+      "address": "00bfa52f",
+      "function_name": "__fpclass",
+      "comment": "Library Function - Single Match\n __fpclass\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00bfa52f",
+      "name": "__fpclass",
+      "evidence": "Complete148-byte __fpclass; retain correct CRT library name. New cdecl low/high/readable-tail words preserve the full unaligned DWORD read at EBP+0E. Exceptional-exponent path retains FLD/FSTP argument spill, so exceptional input can change or fault before integer classification. Calls complete same-object __sptype with only the original eight-byte temporary; two additional readable bytes are in saved frame storage. Ordinary zero comparison remains FLDZ/FCOMP/FNSTSW/TEST AH44/JP. All148 bytes match after the sole REL32 binding to full __sptype; no host classifier. Primary checked37 sealed worker files,9 report pins,3 fresh full spans256bytes and the complete six-section main object. The sole direct-call REL32 resolves to full same-object sptype and reproduces the original148-byte fpclass body. Owned CPP differs only by CRLF/LF; decoded text is identical. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_crt_double_classification_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c28548",
+    "before": {
+      "address": "00c28548",
+      "function_name": "__frnd",
+      "comment": "Library Function - Single Match\n __frnd\n\nLibrary: Visual Studio 2005 Release"
+    },
+    "after": {
+      "address": "00c28548",
+      "name": "__frnd",
+      "evidence": "Complete17-byte __frnd; retain correct CRT library name. Assembly-only cdecl two raw DWORD slots, ST0 output, one free x87 slot required. Original FLD64/FRNDINT/FSTP64/FLD64 spill/reload and ECX scratch result are retained under current FP precision/rounding/status/masks. Entire main archived17-byte body matches with zero relocation; no C++ numeric result or invented FP guard. Primary checked37 sealed worker files,9 report pins,3 fresh full spans256bytes and the complete six-section main object. The sole direct-call REL32 resolves to full same-object sptype and reproduces the original148-byte fpclass body. Owned CPP differs only by CRLF/LF; decoded text is identical. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_crt_double_classification_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c083a5",
+    "before": {
+      "address": "00c083a5",
+      "function_name": "LIBCRT_unmatched_00c083a5",
+      "comment": "[BSP inventory 00c083a5] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)\n\n[BSP reconstruction 00c083a5]\n[BSP reconstruction 00c083a5] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00c083a5",
+      "name": "BSP_CRT_X87_PrepareControlWord",
+      "evidence": "Complete23-byte original control-word preparation CALL entry. Assembly callers only: packed readable/writable DWORD at entryESP+4; current DWORD is read into EDX, AND0300h/OR007Fh, DX written to current slot upper word at+6, then FLDCW rereads that word. Low saved word untouched. EDX/OR flags are outputs; other GPRs survive; RET leaves the packed slot with its caller. All23 archived bytes and6 instructions exact, no relocation/provider/context. Primary checked37 sealed worker files,36 report pins,2 fresh spans36bytes and all five main-object sections. Every body byte is exact; no relocation, normalization, added instruction or undefined provider. Descriptive name is a hypothesis. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_crt_x87_control_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c0842e",
+    "before": {
+      "address": "00c0842e",
+      "function_name": "LIBCRT_unmatched_00c0842e",
+      "comment": "[BSP inventory 00c0842e] crt_unmatched (high): inside MSVC 2005 CRT + C++ EH runtime + libcpmt (locale/ios_base/exception/new/_Xlen/_Xran) + undname (DName/UnDecorator) [00bf55be,00c2ddd0)\n\n[BSP reconstruction 00c0842e]\n[BSP reconstruction 00c0842e] Exact camera axis/x87/CRT routing audit: docs/SYSTEM_CAMERA_AXES.md; reports/system_camera_axes_audit.json. New typed interfaces; external actual __87except binding retained; no native ABI or gameplay validation. Descriptive camera names are provisional. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00c0842e",
+      "name": "BSP_CRT_X87_RestoreControlTail",
+      "evidence": "Complete13-byte original CW-top restoration JMP tail. Assembly callers only, never an ordinary CALL: entryESP points at packed saved CW, real return at+4. CMP current low word with027Fh; unequal path FLDCWs a fresh low-word read. POP EDX reads/consumes current whole DWORD, then RET consumes real return. Equal path skips FLDCW even if independent live FP state differs. CMP flags remain; all13 archived bytes/5 instructions exact, no relocation/provider/context. Primary checked37 sealed worker files,36 report pins,2 fresh spans36bytes and all five main-object sections. Every body byte is exact; no relocation, normalization, added instruction or undefined provider. Descriptive name is a hypothesis. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_crt_x87_control_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1a260",
+    "before": {
+      "address": "00b1a260",
+      "function_name": "FUN_00b1a260"
+    },
+    "after": {
+      "address": "00b1a260",
+      "name": "BSP_ResourceRegistryTree_DestroySubtree",
+      "evidence": "Complete82-byte actual registry subtree destruction. Original ECX tree, stack node, RET4; new explicit actual storage/pool C++ interface. Recurse current right; capture current key data then current left before any pool call; read length+1 with DWORD wrap only for nonzero data. Full actual419CC0/BD1510 release runs even for large keys. Free captured node, then read captured-left current nil and continue without an extra loop-header nil read. No factory ownership or head/count/header cleanup. Original B1A29C returning-free fallthrough/backedge restored in saved analysis; correct global _free and adjacent functions preserved. Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19890",
+    "before": {
+      "address": "00b19890",
+      "function_name": "FUN_00b19890"
+    },
+    "after": {
+      "address": "00b19890",
+      "name": "BSP_ResourceRegistryTree_IncrementIterator",
+      "evidence": "Complete99-byte actual registry iterator increment. Original ECX actual two-word iterator; RET or returning BF6713 tail. Null-owner handler runs before current node read. Nil-node handler returns immediately even if it repairs the node. Right subtree selects current minimum; ascent rereads iterator node and publishes each intermediate parent before following the next parent. Actual returning CRT service is explicit; no synthetic owner-equality validation. Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19640",
+    "before": {
+      "address": "00b19640",
+      "function_name": "FUN_00b19640"
+    },
+    "after": {
+      "address": "00b19640",
+      "name": "BSP_ResourceRegistryTree_RotateRight",
+      "evidence": "Complete82-byte actual registry right rotation. Original ECX tree, stack node, RET4, incidental EAX replacement forwarded by new C++ interface. Capture left replacement, write moved child then reread replacement right for nil/parent update. Copy current parent, read current head/root, or reread current original parent for side selection; finish replacement-right then original-parent stores. Raw node nil at19h; no hardware-tree layout, color/key/payload/count access. Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b19830",
+    "before": {
+      "address": "00b19830",
+      "function_name": "FUN_00b19830"
+    },
+    "after": {
+      "address": "00b19830",
+      "name": "BSP_ResourceRegistryTree_RotateLeft",
+      "evidence": "Complete78-byte actual registry left rotation. Original ECX tree, stack node, RET4, EAX replacement forwarded by new C++ interface. Capture right replacement, write moved child then reread replacement left for nil/parent update. Copy current parent and current head/root; nonroot path rereads current parent before side selection. Finish replacement-left then original-parent stores; no added color/key/payload/count access. Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b196d0",
+    "before": {
+      "address": "00b196d0",
+      "function_name": "FUN_00b196d0"
+    },
+    "after": {
+      "address": "00b196d0",
+      "name": "BSP_ResourceRegistryTree_Maximum",
+      "evidence": "Complete28-byte actual registry maximum-node helper. Original ECX current node, EAX selected node, RET. Read current right child then nil BYTE at19h, retaining the last candidate before nil. New C++ actual-node interface; no owner check, allocation, color or payload read. Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b196f0",
+    "before": {
+      "address": "00b196f0",
+      "function_name": "FUN_00b196f0"
+    },
+    "after": {
+      "address": "00b196f0",
+      "name": "BSP_ResourceRegistryTree_Minimum",
+      "evidence": "Complete27-byte actual registry minimum-node helper. Original ECX current node, EAX selected node, RET. Read current left child then nil BYTE at19h, retaining the last candidate before nil. New C++ actual-node interface; no owner check, allocation, color or payload read. Primary checked81 sealed worker files,57 report pins,16 unchanged current source/header inputs and11 fresh spans917bytes. The unchanged focused fixture links only the same frozen main library and matches391 trace words across all six original entries, including actual lazy pool creation/key-left mutation, small-key return/post-free nil mutation, extrema, six rotations and two returning CRT repairs. Four exact objects retain114 code sections8008bytes260relocations;52 linked sections4971bytes pass nonrelocation-byte checks. Complete current provider bridges replace original pool/CRT helpers on both sides; those original helper bodies are not executed. Static whole-object coverage exceeds executed paths. Inherited actual pool release noexcept/recreation-failure boundary remains. Descriptive name is a hypothesis. No original exception ABI, invalid-memory fault, general erase/range/destructor/factory lifetime or gameplay claim. Same frozen main library aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae; strict Win32, two existing CTests and eight fresh seeds passed. reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    "status": "applied"
+  }
+]

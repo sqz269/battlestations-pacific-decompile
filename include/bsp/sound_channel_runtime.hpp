@@ -1,9 +1,10 @@
 #pragma once
 #include "bsp/sound_system_update.hpp"
 #include "bsp/sound_spatial_instance.hpp"
+#include "bsp/sound_event_instance.hpp"
 
 namespace bsp {
-// Concrete active-entry/lifetime binding for D5ABF8 and optional D5B510 projections.
+// Active-entry/lifetime binding for D5ABF8 and optional D5B510/D5B4C8 projections.
 // All incoming void pointers must be the canonical SoundLevelEntry subobject,
 // never a native bank/sample pointer. The context and services outlive entries.
 // Does not own a parallel list. Factory returns one reference; tracked creation
@@ -13,9 +14,12 @@ public:
     explicit SoundChannelRuntime(SoundInstanceContext& context) noexcept : context_(context) {}
     explicit SoundChannelRuntime(SoundSpatialChannelContext& context) noexcept
         : context_(context.instance), spatial_(&context) {}
+    SoundChannelRuntime(SoundSpatialChannelContext&, SoundEventInstanceContext&);
     SoundLevelEntry* create_nonspatial(SoundSystemOwner&, void* sample,
         std::int32_t class_index, std::int32_t type_index, bool flag);
     SoundLevelEntry* create_spatial_bank(SoundSystemOwner&, void* sample,
+        std::int32_t class_index, std::int32_t type_index, bool flag);
+    SoundLevelEntry* create_spatial(SoundSystemOwner&, void* sample,
         std::int32_t class_index, std::int32_t type_index, bool flag);
     void retain_reference(void*) override;
     void release_reference(void*) noexcept override;
@@ -27,8 +31,11 @@ public:
     bool nonvirtual_slot14(SoundLevelEntry*) override;
     void stop_slot08(SoundLevelEntry*, std::uint8_t) override;
 private:
+    SoundInstance& checked(SoundLevelEntry*);
     SoundChannelInstance& channel(SoundLevelEntry*);
+    SpatialSoundEventInstance& event(SoundLevelEntry*);
     SoundInstanceContext& context_;
     SoundSpatialChannelContext* spatial_{};
+    SoundEventInstanceContext* events_{};
 };
 } // namespace bsp
