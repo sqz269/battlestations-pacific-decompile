@@ -1,0 +1,270 @@
+{
+  "packet": "orch2_native_material_parameters_v",
+  "utc": "2026-09-11T16:09:57.243990+00:00",
+  "tested_source_commit": "75cfe7586d0994741663c162a5be81b514160de0",
+  "source_sha256": {
+    "include/bsp/native_material_parameters.hpp": "f7f512b1d9be499f1d5d750460a2a51f15628ae5bb30dd9242b675a2dae9e2a3",
+    "src/native_material_parameters.cpp": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b",
+    "include/bsp/native_material_owner.hpp": "c437e235286c65977cbd479e7d5edd294eed8bfae4a205e95a1f403f8715d29a",
+    "src/native_material_owner.cpp": "02f3e9824a802424fbb1b3a6e34b0b0fc05df6b01b7500e3c58bc76b6240acdb",
+    "include/bsp/native_material_pools.hpp": "b9dddb2733adbc41b1ef16682348685a10bc1e92d12e3949560ee6bfe4378c07",
+    "src/native_material_pools.cpp": "a29f17400b108e43935179f73ef4661069aabc3a37b536b0a5a5ef7fecdb166c",
+    "include/bsp/native_string.hpp": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+    "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "cmake/startup.cmake": "ff7f9a4a87241d2b5dbdb94a0533e9e07d2cfd3525c12cba1600a2026cba71ec",
+    "CMakeLists.txt": "12d567abc6441bb86dd70c0883abd46d23f6ae494f376db9bb0faf5474ddb670"
+  },
+  "artifacts_sha256": {
+    "local/native-material-parameters-allocate-bytes.txt": "d2d0c6edf85a849525b9eb4882e0ea0d8aa35b495c33c398e80e15ca690de2cd",
+    "local/native-material-parameters-allocate.bin": "e6916ab585446f867c1d9e27cbfa72fedbe33c97cad77ddbee49d83cbeefd615",
+    "local/native-material-parameters-annotation-addresses.json": "453acfcd0addb49f87483fcaca76b2ccd52c1cf0c0a2a35ef3bf167c38e6d388",
+    "local/native-material-parameters-annotation-verification.json": "7d6ef62d5c2cbef31c59e033a4f161137eaba78db0e33ff97127d47cf5f7f546",
+    "local/native-material-parameters-annotations.log": "e60e131f0cfff53c85ca43e60705be05f9cafe310a1721f772e2c174d2472d44",
+    "local/native-material-parameters-binder-bytes.txt": "dcf647510ad8a505b7a72d2a37e7e0838dd5e28fcf14a4a8e3efe78241ee8bc5",
+    "local/native-material-parameters-binder.bin": "76f359bd844ec3ef2bdd4025d485540e9d89b0185e3e072c5e6cd808730e93aa",
+    "local/native-material-parameters-build.log": "69243910779907a828a8a99bb856fa754bf839eec0e55bba193a130b294515aa",
+    "local/native-material-parameters-comments-after.json": "fc657d0eb0b9601e284c9b5ce2c25f90651dde2334f7c44ed85dbfc2f582f109",
+    "local/native-material-parameters-comments-after.log": "ddb029686e15a12171b217eb14f544def55e56479a7b363282fd08ed3552e95c",
+    "local/native-material-parameters-comments-before.json": "1633f0efc4d274506109ad489138f4f4446f252a292911bd1ffc405646240845",
+    "local/native-material-parameters-comments-before.log": "36c5a088dae7ddb24a65e5d66d1e41498916b5ae92c27d1123127df3afdb8673",
+    "local/native-material-parameters-commit.txt": "1a09fc1b6777e89f0cc71c8c5e8e93f058c30722e818d4d90fa011f0f300404a",
+    "local/native-material-parameters-effect_table-bytes.txt": "2986f6f71ed69414534b23a1f6b872320d0c32454885e8cf9b81fbb8ca09c64f",
+    "local/native-material-parameters-effect_table.bin": "24027c6c325d3aaf6af9fd22eb78942db6be22251b3cbe43caef32d9b9378619",
+    "local/native-material-parameters-export-refresh.log": "fdedaa03a5346330acbd31c6a9c02787881caa8f9407f0a5ae031007de5fb792",
+    "local/native-material-parameters-ledger.log": "02cc36d57b236499e4e9ce13948ffeb6224fb227cc37d90641474fa24f52b9eb",
+    "local/native-material-parameters-name-bytes.txt": "a84c81ea68ac4784cd0a01d8ed2ce06da3058c27a886401f991d379a6a1b1583",
+    "local/native-material-parameters-name.bin": "dd9fb9b70598fa70d2f544d70e0faf8ff028fc6b8fcb88f35c9d2eaf38d86e7d",
+    "local/native-material-parameters-names-after.txt": "460fd536bb425bb4675357363aeb214c73b89d90184001b0fce58a9917d1799a",
+    "local/native-material-parameters-names-before.txt": "75b2b9783c2e9d1a36e678fd24465d469b5d7a62d2e933541b52f865337a9a0b",
+    "local/native-material-parameters-names-expected.json": "9cfd1729dca7f4a8dff4cafd01f17028ec1d235f91c316c3edf4d933a0a61f2f",
+    "local/native-material-parameters-native.hpp": "263e8f3870c188d4f4847feb63d363779e2945f0b3af21fc96a25ba60bdc55bb",
+    "local/native-material-parameters-probe-result.log": "1e85eb4a7a2748c67425bb900e1e6b22c3aff4aceb9052df30d42baf7ba6f2c3",
+    "local/native-material-parameters-probe.cpp": "9c91d716b225dc6df01af8676d178e0018a9ad9f9725e6f60f8b1d0ded4b34f9",
+    "local/native-material-parameters-probe.exe": "2c7f8f02d101070495f57396bed628c0ac84b7717793be264fbbe728f416614a",
+    "local/native-material-parameters-probe.obj": "447ac62e902a28dfb99579dda835aa601f767bf4137926a1a8081595e380acde",
+    "local/native-material-parameters-probe_compile.log": "6b7c94d279a2e59d6a0d5599fd71998e4b601b682b269b8eabe4f92b0cea22f7",
+    "local/native-material-parameters-register-bytes.txt": "5c71a0ebe86984d105f49fae65a38d58f446e1a6232aed87ba97942d21088496",
+    "local/native-material-parameters-register.bin": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+    "local/native-material-parameters-spans.json": "fbb976b8c23211c4fdf4c3b240d2f95c8cf14e3ea05e3fbf61253818800da9a9",
+    "local/native-material-parameters-wrapper-bytes.txt": "114f20c2c359f9a64a4a46a3f057cd9ad6a9e113eecddba76667b943a341f490",
+    "local/native-material-parameters-wrapper.bin": "4cdff0c4fa88cfca7447749a6e93a4adc021a9cd95950433f134605a89aa2b19",
+    "local/native_material_parameters_annotations.py": "30bb15f069995c44710c58fd35659e59e1a89c4762cb4cb3b361fbb5bdb1bcd2",
+    "local/prepare_native_material_parameters_probe.py": "76b70038339f1e8f7dd042c01905779f57660abe569e52bf8f33ca3d624334ee",
+    "local/run_native_material_parameters_probe.ps1": "d1993129dadc481dd1f042303c53362dca69e74c8e2a00fbcf7c327cff80fbe2",
+    "local/record_native_material_parameters.py": "aa4fd6919eeb622e913d58c709276a4c5ce9f5c3276c262bf6d64ca15b285ca8",
+    "local/gui-layout-finished-retirement.json": "57b7ba25c51daae2f6337fecaf8cf323f1aaca2e55b3bc1fb1596fad8d0ad9fa",
+    "local/native-material-parameters-tested/bsp_core.lib": "a8902684525c1b66713379dd1b4514510df6755ffa23028cd6ec628938c466e8",
+    "local/native-material-parameters-tested/bsp_game.exe": "d91c3f3c36e30ab1f86fc9fe30639dbd9cdc715fce0a8c4a86bf276f35978b95",
+    "local/native-material-parameters-tested/LastTest.log": "f5468c51d0107697c7915837abdbcbca2dd089da56a0f4cbba17204fe89bdc3a"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-material-parameters-tested/bsp_core.lib",
+      "sha256": "a8902684525c1b66713379dd1b4514510df6755ffa23028cd6ec628938c466e8"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-material-parameters-tested/bsp_game.exe",
+      "sha256": "d91c3f3c36e30ab1f86fc9fe30639dbd9cdc715fce0a8c4a86bf276f35978b95"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-material-parameters-tested/LastTest.log",
+      "sha256": "f5468c51d0107697c7915837abdbcbca2dd089da56a0f4cbba17204fe89bdc3a"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "wrapper",
+      "address": "00b17e10",
+      "end_exclusive": "00b17eef",
+      "bytes": 223,
+      "sha256": "4cdff0c4fa88cfca7447749a6e93a4adc021a9cd95950433f134605a89aa2b19",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 89,
+          "target": 12550079
+        }
+      ]
+    },
+    {
+      "label": "binder",
+      "address": "00b44d60",
+      "end_exclusive": "00b44f9e",
+      "bytes": 574,
+      "sha256": "76f359bd844ec3ef2bdd4025d485540e9d89b0185e3e072c5e6cd808730e93aa",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 114,
+          "target": 11909152
+        },
+        {
+          "offset": 156,
+          "target": 12550079
+        },
+        {
+          "offset": 192,
+          "target": 11909232
+        },
+        {
+          "offset": 230,
+          "target": 11909152
+        },
+        {
+          "offset": 272,
+          "target": 12550079
+        },
+        {
+          "offset": 308,
+          "target": 11909232
+        },
+        {
+          "offset": 356,
+          "target": 11634576
+        },
+        {
+          "offset": 452,
+          "target": 4316480
+        },
+        {
+          "offset": 474,
+          "target": 12547712
+        }
+      ]
+    },
+    {
+      "label": "allocate",
+      "address": "00b18790",
+      "end_exclusive": "00b1879a",
+      "bytes": 10,
+      "sha256": "e6916ab585446f867c1d9e27cbfa72fedbe33c97cad77ddbee49d83cbeefd615",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 5,
+          "target": 11634080
+        }
+      ]
+    },
+    {
+      "label": "name",
+      "address": "00b5b820",
+      "end_exclusive": "00b5b824",
+      "bytes": 4,
+      "sha256": "dd9fb9b70598fa70d2f544d70e0faf8ff028fc6b8fcb88f35c9d2eaf38d86e7d",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "register",
+      "address": "00b5b870",
+      "end_exclusive": "00b5b873",
+      "bytes": 3,
+      "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "effect_table",
+      "address": "00d61a00",
+      "end_exclusive": "00d61a14",
+      "bytes": 20,
+      "sha256": "24027c6c325d3aaf6af9fd22eb78942db6be22251b3cbe43caef32d9b9378619",
+      "matches_disk": true,
+      "external_branches": []
+    }
+  ],
+  "storage": {
+    "parameter_object_bytes": 132,
+    "pool_slot_bytes": 136,
+    "native_name_header_offset": 0,
+    "source_offset": 8,
+    "count_offset": 12,
+    "matrix_byte_offset": 16,
+    "vertex_registers_offset": 20,
+    "pixel_registers_offset": 76,
+    "selectors": 14,
+    "material_parameters_offset": 128,
+    "material_count_offset": 256,
+    "effect_passes_offset": 200,
+    "pass_vertex_owner_offset": 112,
+    "pass_pixel_owner_offset": 116,
+    "stage_constants_offset": 120,
+    "stage_constant_count_offset": 124,
+    "constant_stride": 32,
+    "constant_name_offset": 20
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "full_native_record_comparisons": 4,
+    "bytes_per_comparison": 136,
+    "comparison_cases": [
+      "new allocation/publication",
+      "existing update with preserved skipped selector",
+      "self-name update",
+      "all-no-match unchanged existing record"
+    ],
+    "null_effect_null_name_bypass": true,
+    "crt_name_call_counts_match": true,
+    "negative_first_name_match_preserved": true,
+    "live_source_pointer": true,
+    "original_allocation_thunk_receiver_verified": true,
+    "actual_native_string_pool": true,
+    "actual_material_parameter_pools": true,
+    "material_final_zero": true,
+    "empty_slabs_after_trim": true,
+    "string_pool_shutdown": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_dependencies": {
+    "original_code": [
+      "00b17e10",
+      "00b44d60",
+      "00b18790",
+      "00b5b820",
+      "00b5b870"
+    ],
+    "rebound_allocation": "B185A0 tail uses the same reconstructed actual parameter pool",
+    "rebound_resize": "Existing actual-header0041DD40 implementation and ActualNativeStringPoolStorage",
+    "crt": "Host _stricmp and memcpy; separate original CRT equivalence not claimed",
+    "effect": "Controlled borrowed effect/pass/stage fixtures; relocated original vtable pointer restored for host profile check",
+    "teardown": "Temporary fixture metadata pointer cleared to restore original null effect before true final-zero cleanup"
+  },
+  "ghidra": {
+    "addresses": [
+      "00b17e10",
+      "00b44d60",
+      "00b18790",
+      "00b5b820",
+      "00b5b870"
+    ],
+    "names_verified": 5,
+    "prior_comment_fields_preserved": 4,
+    "forced_exports": 5,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [],
+    "flow_repairs": [],
+    "remaining_call_gaps": 0,
+    "saved": true
+  },
+  "limitations": [
+    "Valid live metadata/extents and serialized calls required; corrupt pointers/extents are outside the C++ interface.",
+    "Borrowed source words are not validated or retained by registration.",
+    "The semantic GUI installer still needs canonical effect and widget/page/ancestor lifetime integration.",
+    "No effect owner, shader compilation, source packing/draw, binary replacement or gameplay validation."
+  ]
+}
