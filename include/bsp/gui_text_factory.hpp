@@ -70,9 +70,11 @@ void* allocate_gui_text_raw_slot_00ab79e0(NativeGuiTextPool& actual_f8bdf0);
 void return_gui_text_failed_slot_00ab76f0(void* slot,
     NativeGuiTextPool& actual_f8bdf0);
 
-// Partial factory prerequisite only: raw slots are not GuiWidgetOwner,
+// Pool interface only: raw slots are not GuiWidgetOwner,
 // GuiLayoutWidget or GuiTextLifetime addresses and cannot be cast to them.
-// No Text type registration, native pool startup registration, clone fallback,
-// or implicit virtual74/78 dispatch is supplied. See docs/GUI_TEXT_FACTORY.md.
+// gui_text_runtime_factory.hpp composes the canonical default Text runtime
+// using opaque allocation transport. Pool allocation itself does not register
+// types/startup, clone Text, or dispatch74/78. See docs/GUI_TEXT_FACTORY.md and
+// docs/GUI_TEXT_RUNTIME_FACTORY.md for the separate supported domains.
 // New MSVC Win32 interfaces, not binary entry-point replacements.
 } // namespace bsp
