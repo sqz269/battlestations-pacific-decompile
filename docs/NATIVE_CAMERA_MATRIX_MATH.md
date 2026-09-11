@@ -71,4 +71,29 @@ new entries, original-byte runtime comparison, linked/runtime byte proof, or
 game validation. Complete byte identity after the declared constant relocations
 grounds the native arithmetic and alias order; the existing tests do not provide
 separate coverage of every raw alias, exceptional value, DF, x87 or MXCSR state.
-Ghidra, shared metadata and permanent build configuration remain unchanged.
+Ghidra, shared metadata and permanent main build registration were completed
+by the primary integration below.
+
+
+## Primary main-object validation
+
+All three raw functions are registered in main. The primary checked 32 worker
+artifact pins and the actual compiler pin, then checked ten current files:
+seven matched literally and three existing typed source/header files differed
+only in CRLF/LF line endings. Five fresh guarded original spans matched
+1,752 bytes, and eight native seeds matched. The strict main Win32 build and
+both existing CTests passed.
+
+The actual main library
+`c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68`
+was frozen with its exact full object and extracted archive member. Independent
+primary verification again matched all 1,744 original bytes and 573 complete
+instructions after only the two declared constant-address relocations. The
+corresponding constant sections are read-only and contain the original bits.
+No new entry, original-body runtime or linked/runtime fixture is claimed.
+
+The read-only bundle at `local/matrix_math_primary/` has manifest SHA256
+`21a73f85215b3b8def82ab0a6ff558232553226e8651a64f423f570155900f8c`.
+Existing Ghidra names and prior comments were preserved, reviewed evidence
+was appended and saved, and all three exports and full function records
+were refreshed. Raw hierarchy integration and game validation remain separate.

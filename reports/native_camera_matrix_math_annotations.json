@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00b63b30",
+    "before": {
+      "address": "00b63b30",
+      "function_name": "BSP_Matrix_InvertOrthogonalScaledAffine",
+      "comment": "[BSP reconstruction 00b63b30]\nECX destination, EDX source, RET/EAX destination. Initial REP MOVSD16 preserves last column. Three float32-spilled squared components per norm; x87 scaled transpose; translation dot spills then SSE SUBSS from negativezero80000000. Source/destination must be disjoint; no shear/singular fallback. Typed C++ wrapper over reassembled private kernel in src/camera_inverse.cpp. One isolated native input fixture matches all16 words; multiplication exact aliases also match. Translated camera view*projection shader draw passes. Original/saved range hashes reports/camera_reference_audit.json. Full camera/world lifecycle, exceptional inputs and all FP environments unvalidated."
+    },
+    "after": {
+      "address": "00b63b30",
+      "evidence": "Complete531-byte B63B30 raw scaledorthogonal affineinverse. ECXdestination/EDXsource/RET/EAXdestination. InitialREP MOVSD16writesdestination, then laterreadssource; noinputsnapshot. Nativefloatspills,reciprocal/translation/SUBSS retained. Primary verified32 immutableworker artifacts pluscompilerpin and10 currentfiles (7literal,3onlyCRLF/LF source/headerdifferences), refreshed5guarded originalspans1752bytes and8seeds. StrictactualmainWin32/twoexistingCTests pass. Frozen actualmain c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68 library contains one exact fullobject/member. All3complete COFF bodies1744bytes/573instructions matchoriginal afterONLY2DIR32 constant operands atB63B30+126(D7A208negativezero) andB6D4D0+EF(D7A24Cpositiveone); constant definitionsread-only/equalbits, newaddresses. Fulloriginalalias/x87/SSE/DF operation order supportedbywholebyteproof; no null/singular/aliasrepair orownershipcallbacks. Existing semanticAPIsunchanged. No newrawentry/originalmachinecoderuntimefixture, linked/runtimebyteproof, rawhierarchy/cachegetters, originalcallerABI or gameplay claim. reports/native_camera_matrix_math_audit.json",
+      "old_name": "BSP_Matrix_InvertOrthogonalScaledAffine",
+      "name": "BSP_Matrix_InvertOrthogonalScaledAffine"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00413920",
+    "before": {
+      "address": "00413920",
+      "function_name": "BSP_Matrix_Multiply4x4",
+      "comment": "[BSP reconstruction 00413920]\nECX left, stack destination/right, RET8/EAX destination. Row-major left*right with native x87 register/float32 cache schedule. Exact destination=left, destination=right and all equal preserve native behavior; arbitrary partial overlap unsupported. Typed C++ wrapper over reassembled private kernel in src/camera_multiply.cpp. One isolated native input fixture matches all16 words; multiplication exact aliases also match. Translated camera view*projection shader draw passes. Original/saved range hashes reports/camera_reference_audit.json. Full camera/world lifecycle, exceptional inputs and all FP environments unvalidated."
+    },
+    "after": {
+      "address": "00413920",
+      "evidence": "Complete874-byte413920 rawmatrixmultiply. ECXleft,stackdestination/right,RET8,EAXdestination; explicitunusedEDXmaintainsstackorder. Completex87 schedule/caches/argument-slotwrites and16ordered outputstores;zero relocations. Primary verified32 immutableworker artifacts pluscompilerpin and10 currentfiles (7literal,3onlyCRLF/LF source/headerdifferences), refreshed5guarded originalspans1752bytes and8seeds. StrictactualmainWin32/twoexistingCTests pass. Frozen actualmain c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68 library contains one exact fullobject/member. All3complete COFF bodies1744bytes/573instructions matchoriginal afterONLY2DIR32 constant operands atB63B30+126(D7A208negativezero) andB6D4D0+EF(D7A24Cpositiveone); constant definitionsread-only/equalbits, newaddresses. Fulloriginalalias/x87/SSE/DF operation order supportedbywholebyteproof; no null/singular/aliasrepair orownershipcallbacks. Existing semanticAPIsunchanged. No newrawentry/originalmachinecoderuntimefixture, linked/runtimebyteproof, rawhierarchy/cachegetters, originalcallerABI or gameplay claim. reports/native_camera_matrix_math_audit.json",
+      "old_name": "BSP_Matrix_Multiply4x4",
+      "name": "BSP_Matrix_Multiply4x4"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6d4d0",
+    "before": {
+      "address": "00b6d4d0",
+      "function_name": "BSP_Matrix_ComposeAffine",
+      "comment": "[BSP reconstruction 00b6d4d0]\nTyped camera world/view cache slice in src/camera_affine.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported."
+    },
+    "after": {
+      "address": "00b6d4d0",
+      "evidence": "Complete339-byteB6D4D0 rawaffinecompose. ECXdestination/EDXleft/stackright,RET4,incidentalEAXright. Interleavedoperandrereads/stores retain unsafealiasbehavior;lastcolumn0001storesinoriginalorder. Primary verified32 immutableworker artifacts pluscompilerpin and10 currentfiles (7literal,3onlyCRLF/LF source/headerdifferences), refreshed5guarded originalspans1752bytes and8seeds. StrictactualmainWin32/twoexistingCTests pass. Frozen actualmain c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68 library contains one exact fullobject/member. All3complete COFF bodies1744bytes/573instructions matchoriginal afterONLY2DIR32 constant operands atB63B30+126(D7A208negativezero) andB6D4D0+EF(D7A24Cpositiveone); constant definitionsread-only/equalbits, newaddresses. Fulloriginalalias/x87/SSE/DF operation order supportedbywholebyteproof; no null/singular/aliasrepair orownershipcallbacks. Existing semanticAPIsunchanged. No newrawentry/originalmachinecoderuntimefixture, linked/runtimebyteproof, rawhierarchy/cachegetters, originalcallerABI or gameplay claim. reports/native_camera_matrix_math_audit.json",
+      "old_name": "BSP_Matrix_ComposeAffine",
+      "name": "BSP_Matrix_ComposeAffine"
+    },
+    "status": "applied"
+  }
+]
