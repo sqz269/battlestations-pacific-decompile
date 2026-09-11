@@ -1,5 +1,7 @@
 # Rudder curve and adjacent unit routines
 
+Addresses: 00419010, 00438AA0, 00438B10, 00811890, 00811940, 00811960, 00811AB0, 0082E890, 0082ECB0.
+
 Packet `orch2_unit_rudder_curve`, 2026-09-10. Reconstructed in
 `include/bsp/unit_rudder.hpp` and `src/unit_rudder.cpp`; semantic interfaces for
 MSVC Win32, not drop-in native replacements. Descriptive names are hypotheses.
