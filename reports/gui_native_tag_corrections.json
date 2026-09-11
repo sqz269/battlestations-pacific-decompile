@@ -1,0 +1,40 @@
+[
+  {
+    "address": "00ad0280",
+    "before_tag": {
+      "address": "00ad0280",
+      "name": "CG_static_dtor_stub_00ad0280",
+      "category": "cg_static_dtor_stub",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0033"
+    },
+    "correction": "Ten-byte allocation context thunk to00AD0050 with canonical pool00F8C188, not a static destructor. docs/GUI_FRAMEBOX_WIDGET.md.",
+    "bookmark_result": {
+      "success": true,
+      "deleted": 1,
+      "address": "00ad0280"
+    }
+  },
+  {
+    "address": "00ad2750",
+    "before_tag": {
+      "address": "00ad2750",
+      "name": "STL_inst_00ad2750",
+      "category": "stl_instantiation",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0028"
+    },
+    "correction": "Game FrameBox signed16 state accessor uses widget+F4/F8 and44-byte records; inlined checked-vector arithmetic does not make this a standalone STL function. docs/GUI_FRAMEBOX_WIDGET.md.",
+    "bookmark_result": {
+      "success": true,
+      "deleted": 1,
+      "address": "00ad2750"
+    }
+  }
+]

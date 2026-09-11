@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b4b850",
+    "before": {
+      "address": "00b4b850",
+      "function_name": "BSP_D3D9IndexBuffer_Lock",
+      "comment": "[BSP reconstruction 00b4b850]\nSame lock metadata/flags and five stack args as vertex00b4ba00, targeting index COM buffer. Dynamic read-only flag is ignored, output offset excludes extra offset. Null-buffer sentinel and singleton diagnostic branches remain unported."
+    },
+    "after": {
+      "address": "00b4b850",
+      "old_name": "BSP_D3D9IndexBuffer_Lock",
+      "name": "BSP_D3D9IndexBuffer_Lock",
+      "evidence": "Full172-byte physical index buffer Lock in src/native_physical_buffer_lock.cpp. Signed wrapped (current cursor+extra)>capacity invokes complete actual diagnostic sink; select read-only flags810/800, dynamic flags2000 at cursor0 else1000 before possible second diagnostic; current dynamic-count increment afterward. Capture current COM then its table before current offset; call current table+2C ignoring HRESULT. Null COM returns ADDRESS F8D4B8 and clears cursor. Store current cursor into raw possibly unaligned/overlapping output before fresh flags test and current cursor/depth DWORD RMW; preserve callback effects and exceptions. Original ECX owner/five stackargs/RET14h; new explicit EDX context binds actual diagnostic publication/lifetime/sentinel. Primary independently verified46 artifact pins/four current source-provider files/seven fresh live-PE spans588bytes, strict main build/two CTests/eight seeds. Frozen actual main library replay20paired cases/5396literalDWORDs/128events with16 real D3D9 Lock pairs and4null pairs; six complete compiled entry bodies verified against actual main COFF/linked PE and369whole code postimages. Owned344nativebytes executed unchanged at uniform delta1F4C0000; one external diagnostic bridge dispatches actual complete compiled provider; actual registration/OS locking execute. Actual HAL NVIDIA RTX5090; all driver HRESULTs observed S_OK, failed-driver behavior only assembly-proven. reports/native_physical_buffer_lock_audit.json. Descriptive name hypothesis; original caller ABI, complete device reset, rendering and game validation remain unclaimed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4ba00",
+    "before": {
+      "address": "00b4ba00",
+      "function_name": "BSP_D3D9VertexBuffer_Lock",
+      "comment": "[BSP reconstruction 00b4ba00]\nthiscall RET14h: bytes, extra offset, unused DWORD, output base offset pointer, read-only byte. Dynamic flag1000h selects DISCARD when cursor0 else NOOVERWRITE, advances cursor and counters even on API failure. Non-dynamic uses NOSYSLOCK plus optional READONLY. Null buffer returns sentinel00f8d4b8; diagnostic conditions call singleton004c14c0. Only nonnull non-diagnostic path ported."
+    },
+    "after": {
+      "address": "00b4ba00",
+      "old_name": "BSP_D3D9VertexBuffer_Lock",
+      "name": "BSP_D3D9VertexBuffer_Lock",
+      "evidence": "Full172-byte physical vertex buffer Lock in src/native_physical_buffer_lock.cpp. Signed wrapped (current cursor+extra)>capacity invokes complete actual diagnostic sink; select read-only flags810/800, dynamic flags2000 at cursor0 else1000 before possible second diagnostic; current dynamic-count increment afterward. Capture current COM then its table before current offset; call current table+2C ignoring HRESULT. Null COM returns ADDRESS F8D4B8 and clears cursor. Store current cursor into raw possibly unaligned/overlapping output before fresh flags test and current cursor/depth DWORD RMW; preserve callback effects and exceptions. Original ECX owner/five stackargs/RET14h; new explicit EDX context binds actual diagnostic publication/lifetime/sentinel. Primary independently verified46 artifact pins/four current source-provider files/seven fresh live-PE spans588bytes, strict main build/two CTests/eight seeds. Frozen actual main library replay20paired cases/5396literalDWORDs/128events with16 real D3D9 Lock pairs and4null pairs; six complete compiled entry bodies verified against actual main COFF/linked PE and369whole code postimages. Owned344nativebytes executed unchanged at uniform delta1F4C0000; one external diagnostic bridge dispatches actual complete compiled provider; actual registration/OS locking execute. Actual HAL NVIDIA RTX5090; all driver HRESULTs observed S_OK, failed-driver behavior only assembly-proven. reports/native_physical_buffer_lock_audit.json. Descriptive name hypothesis; original caller ABI, complete device reset, rendering and game validation remain unclaimed."
+    },
+    "status": "applied"
+  }
+]

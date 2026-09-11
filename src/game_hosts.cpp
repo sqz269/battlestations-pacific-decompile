@@ -678,8 +678,7 @@ void GameStartupHost::run_initialize_phases() {
     construct_frame_clock_singleton_00bedfb0(clock_);
     log_.implemented("Phase 0 construct_frame_clock_singleton", "00bedfb0");
 
-    ObjectHandleResolverSlots resolvers{};
-    install_object_handle_resolvers_006ad0d0(resolvers, nullptr, nullptr, nullptr);
+    install_object_handle_resolvers_006ad0d0(object_resolvers_);
     log_.implemented("Phase 0 install_object_handle_resolvers", "006ad0d0");
 
     // Phase 2, VFS, mounts and packages (0073d604-0073d899). The hardware probe at 0073d610

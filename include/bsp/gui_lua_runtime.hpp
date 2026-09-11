@@ -37,6 +37,7 @@ public:
     bool to_boolean(const GuiLuaRef&) override;
     double to_number(const GuiLuaRef&) override;
     const char* to_string(const GuiLuaRef&) override;
+    void* to_userdata(const GuiLuaRef&) override;
     void release(const GuiLuaRef&) override;
 private:
     struct Impl;

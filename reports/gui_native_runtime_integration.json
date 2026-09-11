@@ -1,0 +1,517 @@
+{
+  "packet": "orch2_gui_runtime_integration_k",
+  "status": "integrated_build_and_focused_fixture_tested",
+  "tested_source_commit": "6cb873a521972962d9dac61a0c8160ec988269b1",
+  "worker_commits": {
+    "widget_owner": "79bf078b440f1851a0814e2a227840333c9f0203",
+    "icon": "512540a",
+    "framebox": "1020fed580626fdddd1e50a4af8b4550a17e7c07"
+  },
+  "primary_commit": "e3cd51f",
+  "validation": {
+    "win32_release": true,
+    "ctests_passed": 2,
+    "seed_byte_matches": 8,
+    "actual_pooled_widget_lifetime": true,
+    "installed_mouse": {
+      "icons": 10,
+      "states": 14,
+      "u_flips": 4
+    },
+    "installed_highlight": {
+      "frameboxes": 4,
+      "vertices_each": 54,
+      "differing_words": 0,
+      "nonunit_atlas_fixture": true,
+      "texture_dimensions": [
+        128,
+        64
+      ]
+    },
+    "native_group_constructor": {
+      "cases": 4,
+      "bytes_each": 396,
+      "original_body_bytes": 106,
+      "base_call": "same reconstructed node constructor on both sides"
+    },
+    "native_child_prepend": {
+      "cases": 4,
+      "original_body_bytes": 134,
+      "substitutions": [
+        "root propagation",
+        "descendant invalidation"
+      ]
+    },
+    "full_parent_and_attachment": "host callback-order/equality/backlink guard fixture passed",
+    "startup_regression": {
+      "pid": 84460,
+      "exit_code": 0,
+      "executable_sha256": "598E017F9EE792B56B719FDE49BB10A9F8EB0474B7B524F6555FB59FE6CD90A5",
+      "original_files_unchanged": true,
+      "original_file_count": 2,
+      "isolated_settings_root": "local/gui-k-personal-j",
+      "log": "local/gui-k-runtime.log"
+    },
+    "annotations": {
+      "addresses": [
+        "00a9ac00",
+        "00aa1a40",
+        "00aa6560",
+        "00aa6640",
+        "00aa6720",
+        "00aa6a30",
+        "00aa7170",
+        "00aa9390",
+        "00ab10f0",
+        "00ab2540",
+        "00ab3310",
+        "00ab3cb0",
+        "00ab5c60",
+        "00ab66c0",
+        "00aceb50",
+        "00aceb70",
+        "00acf070",
+        "00acf260",
+        "00acf8f0",
+        "00acf9b0",
+        "00ad0280",
+        "00ad08e0",
+        "00ad0d80",
+        "00ad2600",
+        "00ad26d0",
+        "00ad2750",
+        "00ad27a0",
+        "00ad2b30",
+        "00b64780",
+        "00b6d7b0",
+        "00b6da70",
+        "00b6e010",
+        "00b6e680",
+        "00b732c0",
+        "00b74640",
+        "00b855b0",
+        "00b8f460",
+        "00b8f4f0",
+        "00b8f5e0"
+      ],
+      "names_verified": 39,
+      "prior_comment_fields_preserved": 13,
+      "forced_exports": 39,
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe"
+    }
+  },
+  "boundaries": [
+    "No GUI drawing, gameplay or native ABI validation.",
+    "GUI widget ownership covers Group/Icon/FrameBox with required current per-type dispatch; Screen/root owner remains external.",
+    "GUI properties publish base state before child traversal; derived property callbacks follow children, then loaded78. Base binder still batches native property callbacks.",
+    "Actual group pool, group lifetime/type binding and raw mesh owner are in separate continuing packets.",
+    "Geometry creation, compiled material/clip/owner binding and actual render publication remain required services; reader/math fixtures do not exercise them.",
+    "Icon frame update, nonzero AutoRotate, delayed texture load and cloning remain unsupported."
+  ],
+  "selected_source_files": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "0846d390872955f852159aaf4fea2b3765fa6150a3c025c082d78961bff0b416",
+      "bytes": 11066
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "ceeb40ae6bfa8ab43c9212e3e0ddf2239cdcc14b94b6c6865772298e79358494",
+      "bytes": 21449
+    },
+    {
+      "path": "include/bsp/gui_widget_owner.hpp",
+      "sha256": "1a4a7e5c05637ca8d0ec6f0f265dc2e898861fe88e4ef2e5763d4bd21fc47d3c",
+      "bytes": 6738
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "sha256": "0e093d9bd2fab5297ca5761ddbc789b297779e81e45088bb2d1ab4509ec49f0b",
+      "bytes": 16418
+    },
+    {
+      "path": "include/bsp/gui_widget.hpp",
+      "sha256": "2a362c2efcafd563da1c5b4fda7a14fd74caff2a8e0d393891d0f5886770c481",
+      "bytes": 12927
+    },
+    {
+      "path": "src/gui_widget.cpp",
+      "sha256": "a5540c2e977699f08bea4f6197ea8afb8ed9f3015b9aae27e2decabb3572545e",
+      "bytes": 7394
+    },
+    {
+      "path": "include/bsp/gui_widget_scene.hpp",
+      "sha256": "879e08cc3e27e66822bbcaf22e2ae1dbd712fe1ee208edc3e021259702fa2b8b",
+      "bytes": 15072
+    },
+    {
+      "path": "src/gui_widget_scene.cpp",
+      "sha256": "8a2e0fce495effab1e065eacda66981922e895e47940b3677f5c3c0ac74499e0",
+      "bytes": 9440
+    },
+    {
+      "path": "include/bsp/gui_layout_loader.hpp",
+      "sha256": "70ef6fd9d9aac32f5bda1cee647d5df4a8eccbd69838895df491cd18043ef4c0",
+      "bytes": 20352
+    },
+    {
+      "path": "src/gui_layout_loader.cpp",
+      "sha256": "60149818151843c20248c7877f2706707cf8a707c5aa529695956d66dd18079c",
+      "bytes": 28364
+    },
+    {
+      "path": "include/bsp/gui_icon_runtime.hpp",
+      "sha256": "15b8eaaad40265429dbc24be128493848c193ec299580d4d9e1cdde2f684da47",
+      "bytes": 5018
+    },
+    {
+      "path": "src/gui_icon_runtime.cpp",
+      "sha256": "273526470ba1f110c995bdd37320e18512616243080f003489b9dcf9bc8ced3a",
+      "bytes": 17950
+    },
+    {
+      "path": "include/bsp/gui_icon.hpp",
+      "sha256": "7b57ceea081282676c82add9c1370f5d1e305802c79c13c160f203613dd22917",
+      "bytes": 16543
+    },
+    {
+      "path": "src/gui_icon.cpp",
+      "sha256": "cef86334d35a1f4b972e3f9e4f9181f51a57089c41b2b17ef860bcaf5433e0af",
+      "bytes": 10301
+    },
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "sha256": "9fa44db08abedc725361bca8cd2543cc532cf1b29ba47db4b7c64edf07107b71",
+      "bytes": 4912
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "sha256": "ba2ae3392503bf74e84cfc9057e8c62f87b9eecc820b1dec15585ab0879fd193",
+      "bytes": 15103
+    },
+    {
+      "path": "include/bsp/gui_page_root.hpp",
+      "sha256": "6e6d900fa7b6d496b74fbeacf4bd79edddd3ae00c2428fb9fe02d7bde3a0a7fe",
+      "bytes": 1330
+    },
+    {
+      "path": "src/gui_page_root.cpp",
+      "sha256": "f1ca2381d6502df47a309c1651f1da96f142a627ccd07c6615c8a367499236cb",
+      "bytes": 1716
+    },
+    {
+      "path": "include/bsp/native_node_parenting.hpp",
+      "sha256": "99146c501464c875e89d3299711d23a4359ac7818e8e75313f02043f2eea8a5f",
+      "bytes": 2120
+    },
+    {
+      "path": "src/native_node_parenting.cpp",
+      "sha256": "4ec8b1974358b1524b5b5b1545b3dd5052e121d437d2302d06210be744aa42e8",
+      "bytes": 5329
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "c0969bee8243db45e0be9e69b1f44f70c97c93c0c59445cff708529fc2e41fa8",
+      "bytes": 3972
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "5cd03607b953df5436b299318879a3f7c44c25fcee4f5a057d9bd22e830571c2",
+      "bytes": 6654
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "sha256": "9bf84bfbfed71bf90d5ab6626c3fc008665ac2b0aa9eb596d8dc6878a15db63d",
+      "bytes": 4009
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "sha256": "8fb01ea54062b84b15dad6a15743e4512f29241563639e733a35d9579c79761a",
+      "bytes": 10577
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "sha256": "5c8a9a848628aac1f206caf77d5892206193bf79933d7b923c0052aab8d94518",
+      "bytes": 9235
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "sha256": "83f8da8545b63a699189af79ee39fcf6a9c7dd8e5aefebc957de0f7a40015be9",
+      "bytes": 10758
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "sha256": "91e3ffcad188574407078603c1958ae59f4d608d9b98184cd3005d921a313041",
+      "bytes": 5760
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "sha256": "0e5940c1a068bf808bef3c8881e41f4c13830ed42af49b0fa8ec8dd793c474f3",
+      "bytes": 13903
+    },
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "bytes": 3166
+    },
+    {
+      "path": "src/native_model_pool.cpp",
+      "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020",
+      "bytes": 11199
+    },
+    {
+      "path": "include/bsp/game_hosts_fonts.hpp",
+      "sha256": "e994350fc22c2f17f05df27abc69c8d9dfba5bb9606d6bf42c9b7dde178e7701",
+      "bytes": 1119
+    },
+    {
+      "path": "src/game_hosts_fonts.cpp",
+      "sha256": "d7f906b552a5a654c9f956b490b4cc7a2a5e8afa972ab96c2f7bb0d70cfbceb8",
+      "bytes": 5482
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "sha256": "227be58957b8dfb3cfa6aad37b370f62f8fb46f10fe8a9acd3e3ad450bb34f90",
+      "bytes": 16388
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "1507f9943cbcd67628010256bd866e5d18eb6a020373802f6f34195d4cf80d66",
+      "bytes": 41407
+    },
+    {
+      "path": "src/game_main.cpp",
+      "sha256": "86b6cb851356fade149db118d470b83f385469a3ebd12c72fccea79c6929f4a9",
+      "bytes": 6480
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "c923d5780555e331cc7ffad2681e106f9c5b90b634e070d4120407f77868bd3e",
+      "bytes": 30210170
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "598e017f9ee792b56b719fde49bb10a9f8eb0474b7b524f6555fb59fe6cd90a5",
+      "bytes": 487936
+    },
+    {
+      "path": "local/gui-k-integrated-build.log",
+      "sha256": "abb6944510d89e65859974f113f7c55e7a2a752c9a1a70bc4024560b1074fa71",
+      "bytes": 4037
+    },
+    {
+      "path": "local/gui-k-seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "local/gui-k-runtime.log",
+      "sha256": "57a9622902722f6c607bc8d8704946942f89a1f4d39ecee0e9162194f5f18834",
+      "bytes": 20620
+    },
+    {
+      "path": "local/gui-k-runtime-result.json",
+      "sha256": "43ffbdefe53b79070e02ee9c80073b4ad63515a89c358d10a73f80e890a0e825",
+      "bytes": 291
+    },
+    {
+      "path": "local/gui-k-original-files-before.json",
+      "sha256": "55ce2f91e55f2cf96a8063388d79258b34401fd39b6c3c9cd3948f4b3cb94cf1",
+      "bytes": 529
+    },
+    {
+      "path": "local/gui-k-annotation-verification.json",
+      "sha256": "40949e91c70d41db4e431497bfa2d62a33159cf65c37e7812ed404550467e432",
+      "bytes": 867
+    },
+    {
+      "path": "local/gui-k-worker-artifacts.json",
+      "sha256": "ed745f11dbf64cb895d4cbb95616b9f05e5c93cea64a3f0451c3e781527b6e2a",
+      "bytes": 5483
+    },
+    {
+      "path": "local/gui-native-probe-inputs.json",
+      "sha256": "88855313d978ad3acdb5ced201788b7d85e92daa22eae039056878de04e3e158",
+      "bytes": 323
+    },
+    {
+      "path": "local/gui_native_probe.cpp",
+      "sha256": "4f1f582302e0112b23d0ef3244b617978fc9fafe01e4b9f0c6515c4d0b356b08",
+      "bytes": 7822
+    },
+    {
+      "path": "local/run_gui_k_probes.ps1",
+      "sha256": "9ed86e1fd89f8d22894af0d88ed53d8c0450746bd2383efe34a9af382bd7649d",
+      "bytes": 1655
+    },
+    {
+      "path": "local/run_gui_k_game.ps1",
+      "sha256": "7f0d2392123d73cc18359353540c9a0cfb1c7f3095d0cbd1832014f25dc365aa",
+      "bytes": 2524
+    },
+    {
+      "path": "local/gui-native-00b6e010.bin",
+      "sha256": "d24906ca4c007736ae32a792ea4d62e229b5660fb255c1c9064826fc1fd7e4c9",
+      "bytes": 134
+    },
+    {
+      "path": "local/gui-native-00b8f5e0.bin",
+      "sha256": "cfb05cb7bd93745c4ebc723cf9b5efc84bb10db1f07bacf4710a3057e441d705",
+      "bytes": 106
+    },
+    {
+      "path": "local/gui-k-widget-owner-result.log",
+      "sha256": "f4e1c76f2e1580d8e902f7530ec6829ee525d5139c87a94f0507e194a69cc9a6",
+      "bytes": 147
+    },
+    {
+      "path": "local/gui-k-icon-reader-result.log",
+      "sha256": "37ce3839d4facccdeb55b3a6ae74f45ae92596567e629737a3305641d5574ea4",
+      "bytes": 461
+    },
+    {
+      "path": "local/gui-k-framebox-result.log",
+      "sha256": "61bfef9b9ce7c468654b6e0e9dbd7586f236e4401fa3cf93231b042ab1bd1eb5",
+      "bytes": 233
+    },
+    {
+      "path": "local/gui-k-framebox-atlas-result.log",
+      "sha256": "61bfef9b9ce7c468654b6e0e9dbd7586f236e4401fa3cf93231b042ab1bd1eb5",
+      "bytes": 233
+    },
+    {
+      "path": "local/gui-k-native-primary-result.log",
+      "sha256": "8046053e3ad08903743451506d857f483a79915f562a4406b215870165d3dce1",
+      "bytes": 228
+    },
+    {
+      "path": "local/gui-k-widget-owner.exe",
+      "sha256": "8c29751b6cf0c2190d4caa56365c7618d3975a12f3c42ab55ff65ac4882ac951",
+      "bytes": 70144
+    },
+    {
+      "path": "local/gui-k-icon-reader.exe",
+      "sha256": "6d39c352347cbad88dc5cc0548b072373698448062596e5794c65eda46158c58",
+      "bytes": 138240
+    },
+    {
+      "path": "local/gui-k-framebox.exe",
+      "sha256": "f20f9a92c8e7c7bc09deb604515b1aa75caa63cac878ad35b061150266d6a966",
+      "bytes": 150528
+    },
+    {
+      "path": "local/gui-k-native-primary.exe",
+      "sha256": "c2bbc13344e37f33dea26dd90594a220d7a11be2dccba938f115efdd8a6dd0a3",
+      "bytes": 45568
+    }
+  ],
+  "worker_artifacts": [
+    {
+      "worker": "orch2-gui-widget-scene-20260910k",
+      "commit": "79bf078b440f1851a0814e2a227840333c9f0203",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-scene-20260910k\\local\\gui_owner_probe.cpp",
+      "preserved": "local\\gui-k-workers\\widget_owner\\gui_owner_probe.cpp",
+      "sha256": "c08fdd303d5c8c7db25bc860982c74ce7e5300c518eef69380c2faca61bef69d",
+      "bytes": 6688
+    },
+    {
+      "worker": "orch2-gui-widget-scene-20260910k",
+      "commit": "79bf078b440f1851a0814e2a227840333c9f0203",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-scene-20260910k\\local\\gui_widget_owner_build.log",
+      "preserved": "local\\gui-k-workers\\widget_owner\\gui_widget_owner_build.log",
+      "sha256": "910d08614d5230d9f32a5de296a621595b8da6107114c198a6e33015781ac0f2",
+      "bytes": 4837
+    },
+    {
+      "worker": "orch2-gui-icon-runtime-20260910k",
+      "commit": "512540a2fc5839b7b3e8fd98409d0fb12f73c09e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-icon-runtime-20260910k\\local\\gui_icon_reader_probe.cpp",
+      "preserved": "local\\gui-k-workers\\icon\\gui_icon_reader_probe.cpp",
+      "sha256": "b8c4915aee6953a5d5567c3c44a5d744c357a3b30755e93b090e09a39a9e39f0",
+      "bytes": 3629
+    },
+    {
+      "worker": "orch2-gui-icon-runtime-20260910k",
+      "commit": "512540a2fc5839b7b3e8fd98409d0fb12f73c09e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-icon-runtime-20260910k\\local\\build_gui_icon_reader_probe.ps1",
+      "preserved": "local\\gui-k-workers\\icon\\build_gui_icon_reader_probe.ps1",
+      "sha256": "17a1e18c973e4e1a46a33bdfe7b09088ca8914aaf891b0af80041d4eacd49770",
+      "bytes": 898
+    },
+    {
+      "worker": "orch2-gui-icon-runtime-20260910k",
+      "commit": "512540a2fc5839b7b3e8fd98409d0fb12f73c09e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-icon-runtime-20260910k\\local\\gui_icon_reader_probe.log",
+      "preserved": "local\\gui-k-workers\\icon\\gui_icon_reader_probe.log",
+      "sha256": "9a1f69468fb806f4de9830dc8e4d3ff85d9b3df89b058330a21c70b0a46e1877",
+      "bytes": 488
+    },
+    {
+      "worker": "orch2-gui-icon-runtime-20260910k",
+      "commit": "512540a2fc5839b7b3e8fd98409d0fb12f73c09e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-icon-runtime-20260910k\\local\\gui_icon_runtime_build.log",
+      "preserved": "local\\gui-k-workers\\icon\\gui_icon_runtime_build.log",
+      "sha256": "aa465367d5fadac26fac5a006cef52f2cb5fe27faf850cce99807d00e9b6eda6",
+      "bytes": 15711
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\framebox_probe.cpp",
+      "preserved": "local\\gui-k-workers\\framebox\\framebox_probe.cpp",
+      "sha256": "3f9b765684e8622a71653e80d6f525061ec76e1a86dc27b30a12a10dfe984301",
+      "bytes": 6297
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\framebox_reference_bytes.hpp",
+      "preserved": "local\\gui-k-workers\\framebox\\framebox_reference_bytes.hpp",
+      "sha256": "c1a5e5415436e17a172402e5a146950d75a4192f04717892992abd4c06a27771",
+      "bytes": 6924
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\framebox_reference.py",
+      "preserved": "local\\gui-k-workers\\framebox\\framebox_reference.py",
+      "sha256": "4fec1257e595f1faa0e2e2b924d6007b657ba5f27a38c76721ade04899ead2e7",
+      "bytes": 1485
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\build_framebox_probe.cmd",
+      "preserved": "local\\gui-k-workers\\framebox\\build_framebox_probe.cmd",
+      "sha256": "2342b696abcd32693270917cb7412d05a995370cee7465ada78b7d043cd9468f",
+      "bytes": 782
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\framebox_probe.log",
+      "preserved": "local\\gui-k-workers\\framebox\\framebox_probe.log",
+      "sha256": "d21397c9c7fa74dcb19fdb3c04ad0600ba7cec8b40e2d7c2200668aa2eb35895",
+      "bytes": 313
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\framebox_atlas_probe.log",
+      "preserved": "local\\gui-k-workers\\framebox\\framebox_atlas_probe.log",
+      "sha256": "61bfef9b9ce7c468654b6e0e9dbd7586f236e4401fa3cf93231b042ab1bd1eb5",
+      "bytes": 233
+    },
+    {
+      "worker": "orch2-gui-framebox-20260910k",
+      "commit": "1020fed580626fdddd1e50a4af8b4550a17e7c07",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-framebox-20260910k\\local\\framebox_build.log",
+      "preserved": "local\\gui-k-workers\\framebox\\framebox_build.log",
+      "sha256": "ed5de499b34d6282642111920038be117f4f13c96bedd5a1f038f4463d7f5414",
+      "bytes": 3624
+    }
+  ]
+}

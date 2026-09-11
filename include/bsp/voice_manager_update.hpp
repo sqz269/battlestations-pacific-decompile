@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/voice_playback.hpp"
+#include "bsp/observer_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
@@ -9,12 +10,15 @@ class VoiceLineLifetimeHost;
 
 // Semantic projection of the two bases proved by 005B7290/005BC87C:
 // slot at native+0; callback-owner base at+18, attached entity at+2C.
-// Other callback-owner storage remains with its required native host adapter.
+// The embedded callback-owner storage is the actual16-byte native subobject.
 struct VoiceAttachedEntry {
     VoicePlaybackSlot slot_00;
-    std::uint32_t lifetime_vtable_18{};
+    NativeObserverOwnerStorage callback_owner_18{};
+    std::uint32_t unconsumed_28{};
     void* attached_entity_2c{};
 };
+static_assert(offsetof(VoiceAttachedEntry, callback_owner_18) == 0x18);
+static_assert(offsetof(VoiceAttachedEntry, attached_entity_2c) == 0x2c);
 struct VoiceAttachedNode {
     VoiceAttachedNode* next_00{};
     VoiceAttachedNode* previous_04{};
@@ -51,10 +55,8 @@ public:
     virtual void scalar_delete_line_005bc70e(VoiceLine*, std::uint8_t flag) = 0;
     virtual void free_line_node_005bc711(VoiceLineNode*) = 0;
     virtual void free_attached_node_005bc868(VoiceAttachedNode*) = 0;
-    // ECX=entity and EDX=entry's actual callback-owner base at native+18.
-    virtual void unregister_attached_006952a0(void* entity, VoiceAttachedEntry&) = 0;
-    // ECX=that same actual+18 base; includes its remaining unprojected storage.
-    virtual void destroy_attachment_00695870(VoiceAttachedEntry&) = 0;
+    // Pure alias to the actual, already-adjusted first observer endpoint.
+    virtual NativeObserverOwnerStorage& attached_entity_observer(void* entity) = 0;
     virtual void free_attached_entry_005bc8c0(VoiceAttachedEntry*) = 0;
     virtual void invalid_iterator_00bf6713() = 0; // native CRT policy, no fallback
     virtual std::uint32_t external_activity_00f8a0c4_e8() = 0;
@@ -66,6 +68,7 @@ struct VoiceManagerUpdateContext {
     NativeStringStorage& strings;
     VoiceAttachedQueueView attached;
     VoiceLineLifetimeHost& lifetime;
+    NativeObserverLifetime& observers;
 };
 
 inline VoiceAttachedQueueView voice_attached_queue(VoicePlaybackManager& manager) noexcept {

@@ -1,0 +1,246 @@
+{
+  "packet": "orch4_observer_lifetime_d",
+  "state": "reconstructed_actual_storage_and_canonical_lifetime_services",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "loopback8089"
+  },
+  "sources": [
+    "include/bsp/observer_lifetime.hpp",
+    "src/observer_lifetime.cpp"
+  ],
+  "documentation": "docs/OBSERVER_LIFETIME.md",
+  "functions": [
+    {
+      "address": "00693c50",
+      "proposed_name": "BSP_ObserverLockOwner_DestroyBase",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "unwind_lock_owner_00693c50",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=lock owner; RET",
+      "last_instruction": "00693c60",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00693c60",
+      "byte_length": 17,
+      "evidence": "Unconditionally clear00E198E0 and write base vtable00CE3818."
+    },
+    {
+      "address": "00694200",
+      "proposed_name": "BSP_ObserverLockOwner_Construct",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "initialize_lock_owner_00694200",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=raw8-byte storage; EAX=this; RET",
+      "last_instruction": "00694244",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00694244",
+      "byte_length": 69,
+      "evidence": "Write00CF7E70, create canonical tracked critical section, assign+4;00C7E910 unwind calls00693C50."
+    },
+    {
+      "address": "00694280",
+      "proposed_name": "BSP_ObserverLockOwner_Get",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "lock_owner_00694280",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "no native inputs; EAX=published owner; RET",
+      "last_instruction": "0069433c",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "0069433c",
+      "byte_length": 189,
+      "evidence": "Captured lifetime-manager lock; double-check; allocate8; construct; publish00E198E0; second manager lookup/register; unlock then final reload."
+    },
+    {
+      "address": "006944c0",
+      "proposed_name": "BSP_ObserverEdgeArray_ExchangeContents",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "exchange_observer_edge_arrays_006944c0",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=left array; EDX=right array; RET",
+      "last_instruction": "00694660",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00694660",
+      "byte_length": 417,
+      "evidence": "Copy original left, clear left count, reserve/copy right into left, clear right count, reserve/copy original left into right; free temporary. Counts reload after allocations. Not a pointer swap."
+    },
+    {
+      "address": "006949d0",
+      "proposed_name": "BSP_Observer_FindPair",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "find_pair_006949d0",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=first endpoint; EDX=callback owner; EAX=edge or0; RET",
+      "last_instruction": "00694a5e",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00694a5e",
+      "byte_length": 143,
+      "evidence": "Capture recursive lock; unsigned smaller count search, equality chooses callback owner; compare opposite endpoint actual address."
+    },
+    {
+      "address": "00694d30",
+      "proposed_name": "STL_remove_observer_edge_ptr_00694d30",
+      "name_status": "library_specialization_hypothesis",
+      "implementation": "host_std_remove_binding_00694d30",
+      "state": "analyzed_library_bound_to_host_std_remove",
+      "native_abi": "ECX=first; EDX=end; stack=&value; EAX=new end; RET4",
+      "last_instruction": "00694d74",
+      "last_instruction_length": 3,
+      "inclusive_last_byte": "00694d76",
+      "byte_length": 71,
+      "evidence": "Standard remove algorithm specialization; host std::remove bound in00694F60, no library implementation port. Specific template symbol is a descriptive hypothesis."
+    },
+    {
+      "address": "00694ea0",
+      "proposed_name": "CG_scalar_deleting_dtor_00694ea0",
+      "name_status": "existing_correct_compiler_identity_preserved",
+      "implementation": "delete_lock_owner_00694ea0",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=lock owner; flags stack; EAX=original pointer even after free; RET4",
+      "last_instruction": "00694ed4",
+      "last_instruction_length": 3,
+      "inclusive_last_byte": "00694ed6",
+      "byte_length": 55,
+      "evidence": "Existing correct compiler identity preserved. Destroy tracked section; clear00E198E0; base table00CE3818; free iff flags&1."
+    },
+    {
+      "address": "00694f60",
+      "proposed_name": "BSP_ObserverEdgeArray_Erase",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "erase_observer_edge_00694f60",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=three-word array; EDX=edge; RET",
+      "last_instruction": "00694ffc",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00694ffc",
+      "byte_length": 157,
+      "evidence": "Host std::remove binding then native SUB/SAR2 resize; retain grow/zero branch, capacity-before-allocation and reloads."
+    },
+    {
+      "address": "006952a0",
+      "proposed_name": "BSP_Observer_UnregisterPair",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "unregister_pair_006952a0",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=first endpoint; EDX=callback owner; RET",
+      "last_instruction": "006953bf",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "006953bf",
+      "byte_length": 288,
+      "evidence": "Nested locked pair lookup; clear all matching dispatch entries before modulo32 decrement; atzero capture both endpoints, remove both, reload vtable and virtual0(flags1). 005BC89D/89F passes entity and actual entry+18."
+    },
+    {
+      "address": "00695530",
+      "proposed_name": "BSP_CallbackOwner_DetachAll",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "detach_all_00695530",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=callback owner; RET",
+      "last_instruction": "00695695",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00695695",
+      "byte_length": 358,
+      "evidence": "Clear matching dispatch entries; exchange owner array into local empty array before callbacks; captured range removes both endpoints and deletes each edge regardless of refs; free temporary then unlock. Full assembly00695630..0069565B overrides broken void-prototype pseudocode."
+    },
+    {
+      "address": "00695870",
+      "proposed_name": "BSP_CallbackOwner_Destroy",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "destroy_callback_owner_00695870",
+      "state": "reconstructed_actual_storage_build_and_fixture_tested",
+      "native_abi": "ECX=callback owner; RET",
+      "last_instruction": "00695930",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "00695930",
+      "byte_length": 193,
+      "evidence": "Write00CE3CD4; outer lock; nested lock count read; detach-all if captured count nonzero; unlock; reload/free array retaining pointer/capacity bytes. Actual callback owner at voice entry+18, not metadata-only DWORD."
+    }
+  ],
+  "storage": {
+    "owner": {
+      "bytes": 16,
+      "vtable": 0,
+      "array": 4,
+      "count": 8,
+      "capacity": 12
+    },
+    "edge": {
+      "bytes": 16,
+      "vtable": 0,
+      "first_endpoint": 4,
+      "callback_owner": 8,
+      "references": 12
+    },
+    "voice_callback_owner_offset": 24,
+    "voice_entity_offset": 44,
+    "lock_owner": {
+      "bytes": 8,
+      "vtable": 0,
+      "tracked_critical_section": 4
+    },
+    "dispatch_owner": {
+      "bytes": 16,
+      "untouched_word": 0,
+      "begin": 4,
+      "end": 8,
+      "capacity_end": 12
+    }
+  },
+  "canonical_bindings": [
+    "TrackedCriticalSection",
+    "critical_section_create_00bd1860",
+    "critical_section_destroy_owned_0041cc80",
+    "SingletonLifetimeDomain",
+    "SingletonPointerSlots",
+    "singleton_lifetime_allocate",
+    "singleton_lifetime_free",
+    "std::remove"
+  ],
+  "required_services": [
+    "ObserverLifetimeServices::delete_edge_virtual_00",
+    "ObserverLifetimeServices::invalid_parameter_00bf6713",
+    "actual endpoint aliases",
+    "live00E198E4 dispatch publication",
+    "singleton registered-destroy dispatch for00CF7E70"
+  ],
+  "flow_repairs": {
+    "authorized": true,
+    "tool": "tools/ghidra_flow_repair.py",
+    "locked_and_saved": true,
+    "record": "reports/observer_lifetime_flow_repair.json",
+    "repaired_call_gaps": 7,
+    "functions": [
+      "00695870",
+      "00695530",
+      "006944c0",
+      "00694f60",
+      "00694ea0"
+    ],
+    "exports_refreshed": true,
+    "remaining_call_gaps": 0,
+    "jump_alignment_gaps_left_alone": true
+  },
+  "ghidra_name_or_prototype_mutations": false,
+  "missing_game_function_starts": [],
+  "pending_ghidra_changes": [
+    "Apply proposed names under normal lock; preserve CG_scalar_deleting_dtor_00694ea0 and library identity.",
+    "Correct inferred void(void) prototypes using function native_abi entries, especially006944C0 ECX/EDX;00695530 pseudocode still incorrectly removes captured-edge loop00695630..0069565B. Assembly is complete."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release passed",
+    "existing_checks": "CTest reconstructed_math1/1 passed; no observer-specific coverage",
+    "ignored_fixture": "local/observer_lifetime_fixture.cpp",
+    "fixture_recipe": "cmd /c local\\run_observer_lifetime_fixture.cmd",
+    "fixture_compile": "installed vcvars32; cl /std:c++17 /EHsc /MD /W4 /WX; existing bsp_core.lib",
+    "fixture_result": "passed: repeated unregister, duplicate remove, dispatch holes, detached count, reentrant virtual deletion, reference-ignoring owner destruction, returning validation capture, nonempty array exchange, exception lock cleanup, actual singleton shutdown",
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "game_runtime": false
+  },
+  "limits": [
+    "Win32 storage size/offset agreement does not imply drop-in binary calling conventions or native SEH compatibility.",
+    "Parent owns shared VoiceAttachedEntry storage/API integration and actual entity aliases; metadata-only field cannot represent this base.",
+    "Edge registration, edge invocation, dispatch-vector construction and actual game edge virtual implementations remain outside this direct closure.",
+    "Allocator failure/new-handler mutation, malformed spans and concurrent shutdown were not fixture-tested; preserve native32 operations and inherited canonical allocator/critical-section policy."
+  ]
+}

@@ -672,7 +672,7 @@ void build_widget_children_00aaa710(
         child->key = entry.first;
         child->type = type;
         child->transform.type_id = static_cast<std::int32_t>(type);
-        child->node_id = host.create_widget_node(entry.first);
+        child->node_id = host.create_widget_node(*child);
 
         child->parent = &widget;
         child->transform.parent = &widget.transform;
@@ -687,11 +687,13 @@ void build_widget_children_00aaa710(
             stored.source = &body;
             bind_widget_properties_00aaa710(
                 body, stored, false, host.widescreen_enabled());
-            host.on_widget_properties_bound(stored, body);
+            host.on_widget_base_properties_bound(stored, body);
             build_widget_children_00aaa710(body, stored, host);
+            host.on_widget_properties_bound(stored, body);
         } else {
             const GuiTable empty;
             bind_widget_properties_00aaa710(empty, stored, false, host.widescreen_enabled());
+            host.on_widget_base_properties_bound(stored, empty);
             host.on_widget_properties_bound(stored, empty);
         }
         host.on_widget_loaded(stored);
@@ -751,7 +753,7 @@ GuiLayoutPage* load_gui_page_00aa5840(
     root->key = name;
     root->type = GuiWidgetType::Screen;
     root->transform.type_id = static_cast<std::int32_t>(GuiWidgetType::Screen);
-    root->node_id = host.create_page_root_node(name, page->model_backed, page->screen_flag);
+    root->node_id = host.create_page_root_node(*root, page->model_backed, page->screen_flag);
 
     const std::shared_ptr<const GuiTable> table = host.evaluate_page_script(name);
     if (table) {
@@ -763,11 +765,13 @@ GuiLayoutPage* load_gui_page_00aa5840(
             gui_lua_store_value_00bd63b0(*priority,
                 gui_lua_field(GuiLuaFieldType::Int, &page->priority), nullptr);
         }
-        host.on_widget_properties_bound(*root, *table);
+        host.on_widget_base_properties_bound(*root, *table);
         build_widget_children_00aaa710(*table, *root, host);
+        host.on_widget_properties_bound(*root, *table);
     } else {
         const GuiTable empty;
         bind_widget_properties_00aaa710(empty, *root, true, host.widescreen_enabled());
+        host.on_widget_base_properties_bound(*root, empty);
         host.on_widget_properties_bound(*root, empty);
     }
     page->root = std::move(root);

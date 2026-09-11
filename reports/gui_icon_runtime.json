@@ -1,0 +1,102 @@
+{
+  "packet": "orch2_gui_icon_runtime_k",
+  "project_verified": "C:/Users/sqz269/bsp.gpr",
+  "program_verified": "/battlestationspacific.exe",
+  "ghidra_mutations": [],
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "00ab5c60",
+      "inclusive_final_instruction": "00ab5d29",
+      "original_abi": "ECX=this; no stack arguments; EAX=this; RET",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ab2540",
+      "inclusive_final_instruction": "00ab25f7",
+      "original_abi": "ECX=this; no stack arguments; RET",
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00ab3310",
+      "inclusive_final_instruction": "00ab3834",
+      "original_abi": "ECX=this; stack visitor pointer; RET4",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ab66c0",
+      "inclusive_final_instruction": "00ab6942",
+      "original_abi": "ECX=this; stack name,UV,pivot,size pointers; EAX index; RET10h",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ab10f0",
+      "inclusive_final_instruction": "00ab110f",
+      "original_abi": "ECX=this; no stack arguments; RET",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ab3cb0",
+      "inclusive_final_instruction": "00ab44a9",
+      "original_abi": "ECX=this; stack low16 state index; RET4",
+      "no_ghidra_function": false
+    }
+  ],
+  "implementation": [
+    "evaluated Lua snapshot Icon property reader via00BD63B0",
+    "consecutive States with nil termination and indexed UV reads",
+    "owned per-state texture refs via existing00AA2660 resolver",
+    "constructor/+74/+78/state selection over same base layout",
+    "retained actual LogicalVertexStream/MaterialCloneState/GeneratedInstanceGeometry publication",
+    "native cached filter material reuse and declaration-selected GPU writes"
+  ],
+  "geOrder": {
+    "ascii_disk_matches": 0,
+    "utf16_disk_matches": 0,
+    "referenced_string_matches": 0,
+    "role": "retained authoring metadata; no invented draw sorting"
+  },
+  "validation": {
+    "seed_byte_matches": 8,
+    "build": "MSVC Win32 Release passed",
+    "ctests_passed": 2,
+    "installed_fixture": {
+      "script": "interface/_Mouse.lua",
+      "engine": "actual Lua5.1.1 GuiLua51Host",
+      "icons": 10,
+      "states": 14,
+      "horizontal_flip_states": 4,
+      "size_pivot_inheritance": true,
+      "snapshot_survives_lua_close": true,
+      "geOrder_metadata_preserved": true
+    },
+    "sparse_fixture": "nil stop, zero truthiness, numeric strings, missing Size/UV lanes passed",
+    "actual_geometry_services_exercised": false
+  },
+  "explicit_unsupported": [
+    "AutoRotate != 0",
+    "DelayedTextureLoad=true",
+    "clone constructor",
+    "frame updater00AB6430",
+    "unsupported aggregate shapes",
+    "non-float3 positions/non-float2 UV/non-D3DCOLOR-or-float4 colors"
+  ],
+  "external_required": [
+    "same native model geometry association",
+    "actual named vertex declaration/stream factory",
+    "actual compiled material and effect queue metadata",
+    "base clip registration/material owner retention",
+    "base position/load/transform/color hooks",
+    "texture native ref release and stable logical/COM owner",
+    "actual platform filter policy"
+  ],
+  "evidence": [
+    "docs/GUI_ICON_RUNTIME.md",
+    "exports/bsp/functions/00ab3310",
+    "exports/bsp/functions/00ab66c0",
+    "exports/bsp/functions/00ab10f0",
+    "exports/bsp/functions/00ab3cb0",
+    "00ab2540 disk disasm/live bytes;00d7a260 live BF800000"
+  ]
+}

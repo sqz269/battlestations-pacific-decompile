@@ -1,0 +1,95 @@
+{
+  "packet": "orch2_gui_page_root_k",
+  "status": "reconstructed_build_and_focused_fixture_tested",
+  "functions": [
+    {
+      "address": "00b6e680",
+      "name": "BSP_Node_SetParent",
+      "cpp_symbol": "bsp::set_native_node_parent_00b6e680",
+      "source": "src/native_node_parenting.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/NATIVE_NODE_PARENTING.md",
+      "validation_report": "reports/native_node_parenting.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. Full parent-null and nonnull composition; equal return, capture attachment before prepend, preserve both world callbacks. Native ECX receiver, stack pointer, RET4; [00b6e680,00b6e74c). Same native backing/new C++ ABI. Win32 build and focused native/host fixtures; not game validated. docs/NATIVE_NODE_PARENTING.md; reports/native_node_parenting.json."
+    },
+    {
+      "address": "00b6e010",
+      "name": "BSP_Node_PrependChild",
+      "cpp_symbol": "bsp::prepend_native_node_child_00b6e010",
+      "source": "src/native_node_parenting.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/NATIVE_NODE_PARENTING.md",
+      "validation_report": "reports/native_node_parenting.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. Publish parent before root and scene callbacks; prepend after; invalidate and current virtual40. Native ECX receiver, stack pointer, RET4; [00b6e010,00b6e096). Same native backing/new C++ ABI. Win32 build and focused native/host fixtures; not game validated. docs/NATIVE_NODE_PARENTING.md; reports/native_node_parenting.json."
+    },
+    {
+      "address": "00b6d7b0",
+      "name": "BSP_Node_SetAttachedGroup",
+      "cpp_symbol": "bsp::set_native_node_attachment_00b6d7b0",
+      "source": "src/native_node_parenting.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/NATIVE_NODE_PARENTING.md",
+      "validation_report": "reports/native_node_parenting.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. Unregister old, assign owner before guarded registration, recursively dispatch current virtual1C with live next reload. Native ECX receiver, stack pointer, RET4; [00b6d7b0,00b6d7f7). Same native backing/new C++ ABI. Win32 build and focused native/host fixtures; not game validated. docs/NATIVE_NODE_PARENTING.md; reports/native_node_parenting.json."
+    },
+    {
+      "address": "00b8f460",
+      "name": "BSP_Group_RegisterNode",
+      "cpp_symbol": "bsp::register_native_node_attachment_00b8f460",
+      "source": "src/native_node_parenting.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/NATIVE_NODE_PARENTING.md",
+      "validation_report": "reports/native_node_parenting.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. Unequal-owner guard then grow/append existing typed backlink vector and publish owner; allocator/raw vector ABI excluded. Native ECX receiver, stack pointer, RET4; assembly checked. Same native backing/new C++ ABI. Win32 build and focused native/host fixtures; not game validated. docs/NATIVE_NODE_PARENTING.md; reports/native_node_parenting.json."
+    },
+    {
+      "address": "00b8f4f0",
+      "name": "BSP_Group_SetAttachedGroup",
+      "cpp_symbol": "bsp::set_native_group_attachment_00b8f4f0",
+      "source": "src/native_node_parenting.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/NATIVE_NODE_PARENTING.md",
+      "validation_report": "reports/native_node_parenting.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. Unregister old then assign owner before guarded registration, no child recursion. Raw RET4 at00B8F536. Native ECX receiver, stack pointer, RET4; [00b8f4f0,00b8f539). Same native backing/new C++ ABI. Win32 build and focused native/host fixtures; not game validated. docs/NATIVE_NODE_PARENTING.md; reports/native_node_parenting.json."
+    }
+  ],
+  "addresses": [
+    "00b6e680",
+    "00b6e010",
+    "00b6d7b0",
+    "00b8f460",
+    "00b8f4f0"
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00b8f4f0",
+      "last_instruction": "00b8f536",
+      "inclusive_end": "00b8f538",
+      "end_exclusive": "00b8f539"
+    }
+  ],
+  "validation": {
+    "build_log": "local/gui-native-primary-build.log",
+    "probe_log": "local/gui-native-probe.log",
+    "probe_source": "local/gui_native_probe.cpp",
+    "input_manifest": "local/gui-native-probe-inputs.json",
+    "existing_ctests": 2,
+    "new_permanent_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "actual group pool/lifetime/type bootstrap and current virtual bindings",
+    "full GUI renderer/application composition"
+  ]
+}

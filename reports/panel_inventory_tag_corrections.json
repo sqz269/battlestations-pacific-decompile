@@ -1,0 +1,121 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reason": "Full bodies supersede throw-only classification for returning tree operations, and generic STL heuristic for panel state command stepping.",
+  "evidence": [
+    "docs/PANEL_PALETTE.md",
+    "docs/PANEL_SEQUENCE.md"
+  ],
+  "entries": [
+    {
+      "address": "0044d2c0",
+      "prior_ledger": {
+        "address": "0044d2c0",
+        "name": "STL_xlen_throw_0044d2c0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "0044d2c0",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_0044d2c0 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "0044d2c0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "00451020",
+      "prior_ledger": {
+        "address": "00451020",
+        "name": "STL_xlen_throw_00451020",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00451020",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_00451020 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00451020"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "00452740",
+      "prior_ledger": {
+        "address": "00452740",
+        "name": "",
+        "category": "stl_probable",
+        "confidence": "medium",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0029"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "00452740",
+            "category": "Inventory: stl_probable",
+            "comment": "[medium] calls _invalid_parameter_noinfo 00bf6713 with body 97-256 bytes (precision ~0.6-0.8); bookmark only",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00452740"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

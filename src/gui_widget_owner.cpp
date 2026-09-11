@@ -1,0 +1,357 @@
+#include "bsp/gui_widget_owner.hpp"
+#include "bsp/camera_multiply.hpp"
+#include <algorithm>
+#include <cstring>
+#include <stdexcept>
+
+namespace bsp {
+namespace {
+std::uint32_t identity(NativeNodeBinding* node) noexcept {
+    static_assert(sizeof(void*) == 4, "GUI runtime requires MSVC Win32");
+    return node ? reinterpret_cast<std::uint32_t>(&node->storage) : 0;
+}
+CameraMatrix unit_matrix() {
+    CameraMatrix result{};
+    result[0] = result[5] = result[10] = result[15] = 1.0f;
+    return result;
+}
+}
+
+void build_gui_rotation_z_00b64780(CameraMatrix& destination, const float& angle) {
+    float sine, cosine;
+    const float* input = &angle;
+    // Separate input reloads and float32 spills match00B6478E..00B647A7.
+    __asm {
+        mov eax, input
+        fld dword ptr [eax]
+        fsin
+        fstp sine
+        fld dword ptr [eax]
+        fcos
+        fstp cosine
+    }
+    destination.fill(0.0f);
+    destination[0] = destination[5] = cosine;
+    destination[1] = sine;
+    destination[4] = -0.0f - sine;
+    destination[10] = destination[15] = 1.0f;
+}
+void* gui_model_geometry_00b74640(const NativeModelTailStorage& model, std::uint32_t) noexcept {
+    return model.geometry_180;
+}
+void* gui_geometry_element_00b732c0(const void* geometry, std::int32_t index) noexcept {
+    void** elements;
+    std::memcpy(&elements, static_cast<const std::byte*>(geometry) + 0x54, sizeof(elements));
+    return elements[index];
+}
+void set_gui_element_bounds_00b855b0(void* element, const GuiWidgetBounds& bounds) noexcept {
+    static_assert(sizeof(GuiWidgetBounds) == 16);
+    const auto* source = &bounds;
+    __asm {
+        mov eax, source
+        mov ecx, element
+        fld dword ptr [eax]
+        fstp dword ptr [ecx + 24h]
+        fld dword ptr [eax + 4]
+        fstp dword ptr [ecx + 28h]
+        fld dword ptr [eax + 8]
+        fstp dword ptr [ecx + 2ch]
+        fld dword ptr [eax + 0ch]
+        fstp dword ptr [ecx + 30h]
+    }
+}
+
+struct GuiWidgetOwnerRuntime::ModelRecord {
+    std::unique_ptr<NativeModelOwner> owner;
+    std::unique_ptr<NativeModelReference> reference;
+};
+
+GuiWidgetOwner::GuiWidgetOwner(GuiLayoutWidget& layout, GuiWidgetOwnerRuntime& runtime)
+    : layout_(layout), runtime_(runtime) {
+    if (layout.parent || !layout.children.empty() || !layout.transform.children.empty())
+        throw std::invalid_argument("widget construction requires an unattached fresh layout");
+    auto& transform = layout.transform;
+    //00AA9390 writes only the proven fields, preserving authored_x(+8).
+    transform.position = {};
+    transform.pivot_x = transform.pivot_y = 0.0f;
+    transform.size = {};
+    transform.scale_x = transform.scale_y = 1.0f;
+    transform.rotate = 0.0f;
+    transform.alpha = 1.0f;
+    transform.type_id = static_cast<std::int32_t>(layout.type);
+    transform.parent = nullptr;
+    transform.bounds_enabled = transform.mouse_hit = transform.mouse_block = false;
+    transform.widescreen_align = GuiWideScreenAlign::None;
+    std::fill(std::begin(layout.color), std::end(layout.color), 1.0f);
+    std::fill(std::begin(layout.low_color), std::end(layout.low_color), 0.0f);
+    layout.low_color[3] = 1.0f;
+    std::fill(std::begin(layout.high_color), std::end(layout.high_color), 1.0f);
+    layout.blend_factor = 0.0f;
+    layout.node_id = 0;
+    //+85 and+E4 are NOT constructor stores. Keep the existing diagnostic
+    // projection's preimage until a real setter/property visit initializes it.
+    scene_.authored_visible = layout.visible;
+}
+GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
+    if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
+    return *implementation_;
+}
+NativeModelReference* GuiWidgetOwner::model_reference() noexcept {
+    const auto found = runtime_.models_.find(scene_.scene_node);
+    return found == runtime_.models_.end() ? nullptr : found->second->reference.get();
+}
+void GuiWidgetOwner::bind_scene_00aa6720(NativeNodeBinding* node) {
+    //Native binding does not retain/release either pointer.
+    node_ = node;
+    scene_.scene_node = node ? &node->storage : nullptr;
+    layout_.node_id = identity(node);
+    if (node) node->storage.auxiliary_flags_138 &= ~kGuiSceneNodeBindingClearMask;
+}
+void GuiWidgetOwner::base_constructed74_00a9ac00() noexcept {}
+void GuiWidgetOwner::base_set_active60_00aa6a30(bool active) noexcept { scene_.active = active; }
+void GuiWidgetOwner::base_visibility_changed3c_00a9e100(bool) noexcept {}
+bool GuiWidgetOwner::base_is_visible38_00a9e0d0() const noexcept {
+    if (!node_) return false;
+    float factor;
+    std::memcpy(&factor, &node_->storage.scalar_ac, sizeof(factor));
+    return widget_is_visible(scene_, factor);
+}
+void GuiWidgetOwner::base_loaded78_00aa7170() {
+    implementation().set_active60(*this, false);
+    refresh_bounds_00aa70e0();
+}
+void GuiWidgetOwner::set_visible_00aa8530(bool visible) {
+    bool ancestors_visible = true;
+    for (auto* ancestor = layout_.transform.parent; ancestor && ancestors_visible;
+         ancestor = ancestor->parent) {
+        auto& retained = runtime_.owner(*ancestor);
+        ancestors_visible = retained.implementation().is_visible38(retained);
+    }
+    runtime_.propagate_visibility(*this, {ancestors_visible, ancestors_visible,
+        visible, scene_.visibility_recurses, true});
+    //Reload after callbacks, matching00AA8576.
+    if (node_) runtime_.stamp_visibility(*node_, visibility_factor_for(visible),
+        scene_.visibility_recurses);
+}
+void GuiWidgetOwner::recompose_00aa7220() {
+    //Native dereferences+4C before composition. Null is an explicit unsupported
+    //call boundary, never a successful no-op transform update.
+    if (!node_) throw std::logic_error("GUI transform requires its bound native node");
+    const auto parts = local_transform(layout_.transform);
+    auto translation = unit_matrix();
+    translation[12] = parts.translation.x;
+    translation[13] = parts.translation.y;
+    translation[14] = parts.translation.z;
+    auto scale = unit_matrix();
+    scale[0] = parts.scale_x;
+    scale[5] = parts.scale_y;
+    auto pivot = unit_matrix();
+    pivot[12] = parts.pivot_translation_x;
+    pivot[13] = parts.pivot_translation_y;
+    CameraMatrix rotation, first, second, final;
+    build_gui_rotation_z_00b64780(rotation, parts.rotation_z);
+    multiply_camera_matrices_00413920(first, pivot, scale);
+    multiply_camera_matrices_00413920(second, first, rotation);
+    multiply_camera_matrices_00413920(final, second, translation);
+    //Children are B75030 models, whose current virtual38 is B6DB10. Root
+    //binding's adapter must supply this same base transform contract.
+    set_transform_local_matrix_00b6db10(node_->transform, final);
+}
+void GuiWidgetOwner::refresh_bounds_00aa70e0() {
+    if (!layout_.transform.bounds_enabled) return;
+    if (!node_) throw std::logic_error("GUI bounds require their bound native node");
+    //Native code directly uses model+180 even for a dynamically derived node.
+    //The binding's actual allocation must cover that field (all supported GUI
+    //nodes do). Read its original storage, never a host geometry owner address.
+    void* geometry;
+    std::memcpy(&geometry, reinterpret_cast<const std::byte*>(&node_->storage) + 0x180,
+        sizeof(geometry));
+    if (!geometry) throw std::logic_error("GUI bounds require actual model geometry+180");
+    void* element = gui_geometry_element_00b732c0(geometry, 0);
+    if (!element) throw std::logic_error("GUI bounds require actual geometry element0");
+    set_gui_element_bounds_00b855b0(element, local_bounds(layout_.transform));
+}
+void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
+    layout_.transform.position = position;
+    recompose_00aa7220();
+    refresh_bounds_00aa70e0();
+}
+void GuiWidgetOwner::release_scene_nodes_00aa8320() {
+    for (const auto& child : layout_.children)
+        runtime_.owner(*child).release_scene_nodes_00aa8320();
+    //These supported profiles have no glyph-owner secondary node. A new
+    //glyph-owning type must provide its real+20 override before factory use.
+    if (node_) {
+        auto& lifetime = runtime_.environment_.models.nodes.attachments.resolve(node_->transform);
+        unlink_and_release_render_model_00b6dfa0(lifetime);
+        node_ = nullptr;
+        scene_.scene_node = nullptr;
+        layout_.node_id = 0;
+    }
+}
+
+GuiWidgetOwnerRuntime::GuiWidgetOwnerRuntime(GuiWidgetOwnerEnvironment environment)
+    : environment_(std::move(environment)) {
+    if (!environment_.make_type) throw std::invalid_argument("GUI runtime requires its actual type factory");
+}
+GuiWidgetOwnerRuntime::~GuiWidgetOwnerRuntime() {
+    //Layouts/queued retained references must be retired by their real owners.
+    if (!widgets_.empty() || !models_.empty()) std::terminate();
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
+    if (widgets_.count(&layout) || layout.before_destroy)
+        throw std::logic_error("GUI layout already has a retained owner");
+    auto companion = std::unique_ptr<GuiWidgetOwner>(new GuiWidgetOwner(layout, *this));
+    auto& result = *companion;
+    widgets_.emplace(&layout, std::move(companion));
+    try {
+        layout.before_destroy = [this](GuiLayoutWidget& dying) { retire_tree(dying); };
+        result.implementation_ = environment_.make_type(result);
+        if (!result.implementation_) throw std::invalid_argument("unsupported GUI widget type");
+    } catch (...) {
+        layout.before_destroy = {};
+        widgets_.erase(&layout);
+        throw;
+    }
+    return result;
+}
+NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name) {
+    auto& environment = environment_.models;
+    auto record = std::make_unique<ModelRecord>();
+    void* slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
+    if (!slot) return nullptr;
+    PooledStringStorage strings(environment.nodes.strings);
+    NativeString native_name;
+    try {
+        //Reserve the map node before constructing a native live object.
+        if (!models_.emplace(slot, nullptr).second)
+            throw std::logic_error("canonical model pool returned an occupied slot");
+        record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
+        native_name.assign_0041e870(strings, name.c_str());
+        construct_native_model_00b75030(*record->owner, native_name);
+        native_name.release_to(strings);
+        //Insert before reference creation: its terminal retirement callback
+        //must always resolve the one owning record.
+        models_.at(slot) = std::move(record);
+        auto& inserted = *models_.at(slot);
+        try {
+            inserted.reference = std::make_unique<NativeModelReference>(*inserted.owner,
+                NativeModelCompanionDisposal{this, retire_model});
+        } catch (...) {
+            destroy_native_model_00b750c0(*inserted.owner);
+            models_.erase(slot);
+            throw;
+        }
+        return &inserted.owner->node;
+    } catch (...) {
+        native_name.release_to(strings);
+        if (record && record->owner && record->owner->phase == NativeModelOwner::Phase::live)
+            destroy_native_model_00b750c0(*record->owner);
+        record.reset();
+        models_.erase(slot);
+        environment.pool_01090054.return_raw_slot_00b74750(slot);
+        throw;
+    }
+}
+void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& reference) noexcept {
+    auto& runtime = *static_cast<GuiWidgetOwnerRuntime*>(context);
+    void* slot = &reference.model_owner().storage.node;
+    runtime.models_.erase(slot);
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget& layout) {
+    if (layout.type != GuiWidgetType::Group && layout.type != GuiWidgetType::Icon &&
+        layout.type != GuiWidgetType::FrameBox)
+        throw std::invalid_argument("unsupported retained GUI type: only Group, Icon and FrameBox are composed");
+    auto& result = construct_base(layout);
+    try { result.bind_scene_00aa6720(create_model(layout.key)); }
+    catch (...) { retire_tree(layout); throw; }
+    return result;
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_root(GuiLayoutWidget& layout, NativeNodeBinding& node) {
+    if (layout.type != GuiWidgetType::Screen) throw std::invalid_argument("page root requires Screen type");
+    auto& result = construct_base(layout);
+    result.bind_scene_00aa6720(&node);
+    return result;
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::create_with_scene_00aa6640(GuiLayoutWidget& layout) {
+    auto& result = construct_child_00aa6560(layout);
+    result.implementation().constructed74(result);
+    return result;
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::owner(GuiLayoutWidget& layout) const {
+    const auto found = widgets_.find(&layout);
+    if (found == widgets_.end()) throw std::logic_error("GUI layout has no retained owner");
+    return *found->second;
+}
+GuiWidgetOwner& GuiWidgetOwnerRuntime::owner(GuiWidgetTransform& transform) const {
+    for (const auto& entry : widgets_)
+        if (&entry.first->transform == &transform) return *entry.second;
+    throw std::logic_error("GUI transform has no retained owner");
+}
+NativeNodeBinding& GuiWidgetOwnerRuntime::node(std::uint32_t address) const {
+    for (const auto& entry : widgets_)
+        if (entry.second->node_ && identity(entry.second->node_) == address)
+            return *entry.second->node_;
+    throw std::logic_error("GUI node identity has no actual binding");
+}
+void GuiWidgetOwnerRuntime::set_node_parent(std::uint32_t child, std::uint32_t parent) {
+    environment_.native.set_parent_00b6e680(node(child), parent ? &node(parent) : nullptr);
+}
+void GuiWidgetOwnerRuntime::constructed74(GuiLayoutWidget& layout) {
+    auto& retained = owner(layout);
+    retained.implementation().constructed74(retained);
+}
+void GuiWidgetOwnerRuntime::base_properties_bound(GuiLayoutWidget& layout) {
+    auto& retained = owner(layout);
+    retained.scene_.authored_visible = layout.visible;
+    retained.recompose_00aa7220();
+    if (layout.type != GuiWidgetType::Screen) retained.set_visible_00aa8530(layout.visible);
+}
+void GuiWidgetOwnerRuntime::properties_bound(GuiLayoutWidget& layout, const GuiTable& table) {
+    auto& retained = owner(layout);
+    retained.implementation().properties_bound(retained, table);
+}
+void GuiWidgetOwnerRuntime::loaded78(GuiLayoutWidget& layout) {
+    auto& retained = owner(layout);
+    retained.implementation().loaded78(retained);
+}
+void GuiWidgetOwnerRuntime::stamp_visibility(NativeNodeBinding& binding, float factor, bool recurse) {
+    std::memcpy(&binding.storage.scalar_ac, &factor, sizeof(factor));
+    if (recurse) {
+        for (auto* child = binding.transform.first_child; child; child = child->next_sibling) {
+            //Use the actual node binding even for descendants that aren't widgets.
+            float child_factor;
+            __asm {
+                fld factor
+                fstp child_factor
+            }
+            stamp_visibility(environment_.native.resolve_node(*child), child_factor, recurse);
+        }
+    }
+}
+void GuiWidgetOwnerRuntime::propagate_visibility(GuiWidgetOwner& retained,
+    const GuiWidgetVisibilityArgs& args) {
+    if (!retained.node_) return;
+    //Preserve native virtual dispatch count/short circuit ordering; a derived
+    //visibility reader may have side effects (the diagnostic helper caches it).
+    const bool before = args.old_ancestor_visible && retained.implementation().is_visible38(retained);
+    bool after = false;
+    if (args.new_ancestor_visible)
+        after = args.apply_requested ? args.requested : retained.implementation().is_visible38(retained);
+    if (before != after) retained.implementation().visibility_changed3c(retained, after);
+    const auto child_args = child_visibility_args(args, before, after);
+    for (const auto& child : retained.layout_.children)
+        propagate_visibility(owner(*child), child_args);
+}
+void GuiWidgetOwnerRuntime::erase_tree(GuiLayoutWidget& layout) {
+    for (const auto& child : layout.children) erase_tree(*child);
+    layout.before_destroy = {};
+    widgets_.erase(&layout);
+}
+void GuiWidgetOwnerRuntime::retire_tree(GuiLayoutWidget& layout) {
+    const auto found = widgets_.find(&layout);
+    if (found == widgets_.end()) return;
+    found->second->release_scene_nodes_00aa8320();
+    erase_tree(layout);
+}
+} // namespace bsp

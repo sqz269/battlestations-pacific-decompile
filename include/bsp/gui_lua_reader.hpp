@@ -274,6 +274,7 @@ struct GuiLuaHost {
     virtual bool to_boolean(const GuiLuaRef& object) = 0;   // 00A677E0
     virtual double to_number(const GuiLuaRef& object) = 0;  // 00A67770
     virtual const char* to_string(const GuiLuaRef& object) = 0;  // 00A67810
+    virtual void* to_userdata(const GuiLuaRef& object) = 0;  // 00B662D0 ->00A67910
 
     // 00B67700, the LuaObject destructor: it unrefs through 00B66DE0.
     virtual void release(const GuiLuaRef& object) = 0;
