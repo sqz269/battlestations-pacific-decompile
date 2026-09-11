@@ -1,0 +1,810 @@
+{
+  "packet": "orch5_text_ellipsis",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_ellipsis.cpp",
+  "documentation": "docs/GUI_TEXT_ELLIPSIS.md",
+  "reconstructed": [
+    {
+      "address": "00ab8f00",
+      "name": "ellipsize_gui_text_00ab8f00",
+      "end": "00ab923f",
+      "coverage": "complete",
+      "abi": "ECX Text; destination/source UTF16 wrappers, float width; EAX destination; RET0Ch at00AB9226 and00AB923D (length3)",
+      "evidence": "Complete supported scalar/string normal path; standard string storage, finite signed32 arithmetic, null-free strings; no pool/SEH or geometry ABI"
+    },
+    {
+      "address": "00abb000",
+      "name": "prepare_gui_text_ellipsis_00abb000_fragment",
+      "end": "00abb1c4",
+      "coverage": "partial_projection",
+      "abi": "ECX Text; narrow wrapper, float width, low-byte localize; RET0Ch at00ABB1C2 (length3)",
+      "reconstructed_ranges": [
+        "00abb000-00abb0c9",
+        "00abb116-00abb148"
+      ],
+      "excluded_ranges": [
+        "00abb0ca-00abb115",
+        "00abb149-00abb1c4"
+      ],
+      "evidence": "Preparation plus source-equal nullopt; actual00ABA8D0 and virtual50 remain required, including equal/empty resource behavior"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "FONT_CONTEXT_OWNERSHIP.md and prior00ABB000 name evidence said ordered zero width selects context+20.",
+      "evidence": "00D7A260 bytes00 00 80 BF; UCOMISS at00ABB065 followed by LAHF00ABB06C, TEST AH,44h00ABB06D, JP00ABB070; both command sites load this same constant.",
+      "is": "Ordered -1.0f selects context+20; zero remains zero; unordered NaN retains its width and is rejected by the new finite-domain guard."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00abb02a",
+      "native": "00435c40",
+      "function": "00abb000",
+      "operation": "cached narrow equality",
+      "binding": "existing source_text_changed_00abaed0 ASCII-key projection"
+    },
+    {
+      "address": "00abb0ac",
+      "native": "00a9fad0",
+      "function": "00abb000",
+      "operation": "localization key-list resolution",
+      "binding": "existing GuiTextHost.resolve_localised"
+    },
+    {
+      "address": "00abb127",
+      "native": "004c5e60",
+      "function": "00abb000",
+      "operation": "unsigned-byte widening",
+      "binding": "existing GuiTextHost.widen_source"
+    },
+    {
+      "address": "00abb0c5",
+      "native": "00ab8f00",
+      "function": "00abb000",
+      "operation": "localized ellipsis input",
+      "binding": "concrete ellipsize_gui_text_00ab8f00"
+    },
+    {
+      "address": "00abb144",
+      "native": "00ab8f00",
+      "function": "00abb000",
+      "operation": "literal ellipsis input",
+      "binding": "concrete ellipsize_gui_text_00ab8f00"
+    },
+    {
+      "address": "00ab8f8b",
+      "native": "00a9ec30",
+      "function": "00ab8f00",
+      "operation": "per-code-unit uppercase when font+48 nonzero",
+      "binding": "existing locale_uppercase_00a9eba0 loop; mapper takes actual locale tables/runtime"
+    },
+    {
+      "address": "00ab8fb7",
+      "native": "00ad4480",
+      "function": "00ab8f00",
+      "operation": "accumulated glyph",
+      "binding": "existing select_font_glyph_00ad4480"
+    },
+    {
+      "address": "00ab9022",
+      "native": "00ad4480",
+      "function": "00ab8f00",
+      "operation": "dot glyph",
+      "binding": "existing select_font_glyph_00ad4480 for002Eh"
+    },
+    {
+      "address": "00ab90a2",
+      "native": "00ad4480",
+      "function": "00ab8f00",
+      "operation": "removed suffix glyph",
+      "binding": "existing select_font_glyph_00ad4480"
+    },
+    {
+      "address": "00abb0d2",
+      "native": "00aba8d0",
+      "function": "00abb000",
+      "operation": "localized content update",
+      "binding": "excluded: future actual Text geometry owner must consume engaged result"
+    },
+    {
+      "address": "00abb151",
+      "native": "00aba8d0",
+      "function": "00abb000",
+      "operation": "literal content update",
+      "binding": "excluded: future actual Text geometry owner must consume engaged result"
+    },
+    {
+      "address": "00abb1af",
+      "native": "00ab6b50",
+      "function": "00abb000",
+      "operation": "current Text virtual50 after content update",
+      "binding": "excluded: actual Text color/material owner; indirectCALL EDX resolved from vtable00D5C6C8 slot50"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "005e3870",
+      "native": "00abb000",
+      "function": "005e3580",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005e3a07",
+      "native": "00abb000",
+      "function": "005e3580",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0054bcc3",
+      "native": "00abb000",
+      "function": "0054b530",
+      "arguments": {
+        "source": "compacted command label; widget owner+34h+slot*4",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0054beac",
+      "native": "00abb000",
+      "function": "0054b530",
+      "arguments": {
+        "source": "compacted command label; widget owner+84h+slot*4",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00561fc2",
+      "native": "00abb000",
+      "function": "00561eb0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": false,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005620a8",
+      "native": "00abb000",
+      "function": "00561eb0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0056218f",
+      "native": "00abb000",
+      "function": "00561eb0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005003bc",
+      "native": "00abb000",
+      "function": "005001a0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005005a1",
+      "native": "00abb000",
+      "function": "00500450",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005007b4",
+      "native": "00abb000",
+      "function": "00500640",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005009e3",
+      "native": "00abb000",
+      "function": "00500860",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00501008",
+      "native": "00abb000",
+      "function": "00500e90",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00501240",
+      "native": "00abb000",
+      "function": "005010c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00501460",
+      "native": "00abb000",
+      "function": "005012f0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00503483",
+      "native": "00abb000",
+      "function": "00503250",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00500bf8",
+      "native": "00abb000",
+      "function": "00500a90",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0055f3d2",
+      "native": "00abb000",
+      "function": "0055e3a0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00561cbb",
+      "native": "00abb000",
+      "function": "00561be0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005628c7",
+      "native": "00abb000",
+      "function": "00562750",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005628ff",
+      "native": "00abb000",
+      "function": "00562750",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00564ef1",
+      "native": "00abb000",
+      "function": "00564e70",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00565121",
+      "native": "00abb000",
+      "function": "005650c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005770c2",
+      "native": "00abb000",
+      "function": "00576d20",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0057933e",
+      "native": "00abb000",
+      "function": "005789c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00579cf7",
+      "native": "00abb000",
+      "function": "00579980",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0060154f",
+      "native": "00abb000",
+      "function": "00601200",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00601c90",
+      "native": "00abb000",
+      "function": "00601200",
+      "arguments": {
+        "source": "four native source branches at00601C13,00601C3A,00601C59,00601C81; all width=-1 flag1",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005dcc77",
+      "native": "00abb000",
+      "function": "005db050",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": "float00CF2318 = 0.13333334028720856 (89 88 08 3E)",
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005e5a8c",
+      "native": "00abb000",
+      "function": "005e51d0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": "float00CF2318 = 0.13333334028720856 (89 88 08 3E)",
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005e8d3e",
+      "native": "00abb000",
+      "function": "005e8b20",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": "caller captured float [ESP+14h]",
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005e8efb",
+      "native": "00abb000",
+      "function": "005e8b20",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": "caller captured float [ESP+14h]",
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005f3da6",
+      "native": "00abb000",
+      "function": "005f3b50",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0062f3c9",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00630938",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00630cf9",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0063131a",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006315fb",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00631c40",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00632005",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0063262f",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006329b4",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00633023",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006330dd",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00633197",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006335d4",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00633a3b",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00633d85",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00634235",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00634606",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006349cd",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": false,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00634c1e",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00634f26",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": false,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "0063517b",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006354b2",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "00646d75",
+      "native": "00abb000",
+      "function": "00646d30",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "006494a5",
+      "native": "00abb000",
+      "function": "00648c20",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": -1.0,
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005ec14c",
+      "native": "00abb000",
+      "function": "005ebdd0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": "screen float+0DCh",
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    },
+    {
+      "address": "005ec1a5",
+      "native": "00abb000",
+      "function": "005ebdd0",
+      "arguments": {
+        "source": "NativeString const* from the inspected caller setup",
+        "normalized_width": "screen float+0DCh",
+        "localize": true,
+        "cleanup": "callee00ABB1C2 RET0Ch: three stack dwords"
+      }
+    }
+  ],
+  "argument_audit": {
+    "sites": 58,
+    "containing_functions": 29,
+    "localize_false": [
+      "00561fc2",
+      "006349cd",
+      "00634f26"
+    ],
+    "localize_true_count": 55,
+    "fallback_width_count": 52,
+    "explicit_width_count": 6,
+    "register_provenance": [
+      "Whole00561EB0 listing: EBX zeroed00561EDA and never written before flag at00561FA7.",
+      "Whole005E51D0 listing: EBP=1 at005E57E3, no later write before flag at005E5A78.",
+      "Whole005EBDD0 listing: EBX=1 at005EBE1F and no later write before both flags.",
+      "Whole00AB8F00 listing: ESI=ECX context; EDI zero then low16 accumulations; EBX destination then suffix count; EBP text pointer then target then suffix pointer."
+    ],
+    "cached_local_evidence": "local/ellipsis_callers.txt; generated exclusively through verified bsp.py ghidra wrappers"
+  },
+  "producer_fields": [
+    "GuiTextWidget fields from00AB9650/00ABB630: font+108, font_scale+1D8 and size+20 already in gui_text.hpp.",
+    "FontDescriptor.uppercase_only from existing registry producer; no new layout declaration.",
+    "FontData glyph scaled_field_12 is unsigned advance from00AD4C30 decoder, not quad width+14."
+  ],
+  "remaining_dependencies": [
+    "Canonical Text3 GuiWidgetTypeImplementation and same-owner binding do not exist in this checkout.",
+    "Prepared result still requires actual00ABA8D0 content update, including shadow/node creation, child release, equal/empty branches and nonempty font resources.",
+    "After content update, invoke current Text virtual50 with current color; no builder-only replacement supplied.",
+    "Rendering/font/material/resource ownership and command visibility/background virtual58 adapter remain external."
+  ],
+  "verification": {
+    "translation_unit": "MSVC Win32 /std:c++17 /EHsc /W4 /O2 /fp:strict compile succeeded without warnings",
+    "combined_build": "Integrator pending; no redundant baseline build",
+    "report_calls": "70 call rows checked, zero failures; Text virtual50 indirect row explicitly not mechanically resolved",
+    "runtime": "New fragment not wired to reachable executable path; no game-frame/visual claim",
+    "tests_added": 0
+  },
+  "limits": [
+    "Semantic C++ interface, not original ABI.",
+    "Source-cache equality reuses existing ASCII-only key fold.",
+    "Malformed strings, nonfinite arithmetic, signed32 conversion failures and pool/SEH behavior excluded.",
+    "No claim that font/resource/render owners or complete command GUI adapter are implemented."
+  ]
+}
