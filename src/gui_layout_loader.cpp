@@ -1,4 +1,5 @@
 #include "bsp/gui_layout_loader.hpp"
+#include "bsp/gui_lua_reader.hpp"
 
 #include <cctype>
 #include <cstdlib>
@@ -76,34 +77,24 @@ const GuiPropertyDescriptor kBaseProperties[] = {
 // A Lua number reaching a float field. The script side is a double; the field
 // is a float, so the narrowing here is the one the native store performs.
 float to_float(const GuiValue& value, float fallback) noexcept {
-    if (value.kind() == GuiValue::Kind::Number) {
-        return static_cast<float>(value.number());
-    }
+    gui_lua_store_value_00bd63b0(value,
+        gui_lua_field(GuiLuaFieldType::Float, &fallback), nullptr);
     return fallback;
 }
 
-// Lua truth as the native bool field sees it: the byte is written from the
-// script's boolean, and any other kind leaves the default in place.
+// Lua truth is false only for nil and false; zero and empty strings are true.
 bool to_bool(const GuiValue& value, bool fallback) noexcept {
-    if (value.kind() == GuiValue::Kind::Boolean) {
-        return value.boolean();
-    }
+    gui_lua_store_value_00bd63b0(value,
+        gui_lua_field(GuiLuaFieldType::Bool, &fallback), nullptr);
     return fallback;
 }
 
 // The vector properties arrive as array-part tables: Pos is three entries,
-// Pivot/Size/Scale two, the colours four. A table that is too short leaves the
-// remaining lanes at their defaults, which is what the native reader does when
-// the visitor cannot fill a lane.
+// Pivot/Size/Scale two, the colours four. Missing entries become Lua number0.
 void read_lanes(const GuiValue& value, float* out, std::size_t count) noexcept {
-    if (!value.is_table()) {
-        return;
-    }
-    const GuiTable& table = *value.table();
-    const std::size_t n = table.array.size() < count ? table.array.size() : count;
-    for (std::size_t i = 0; i < n; ++i) {
-        out[i] = to_float(table.array[i], out[i]);
-    }
+    const auto type = count == 2 ? GuiLuaFieldType::Vec2 :
+        count == 3 ? GuiLuaFieldType::Vec3 : GuiLuaFieldType::Vec4;
+    gui_lua_store_value_00bd63b0(value, gui_lua_field(type, out), nullptr);
 }
 
 GuiWideScreenAlign align_from_string(const GuiValue* value) noexcept {
@@ -557,6 +548,20 @@ void bind_widget_properties_00aaa710(
     bool widescreen_enabled) noexcept {
     GuiWidgetTransform& xf = widget.transform;
 
+    // Every descriptor uses visitor+0Ch, so missing/nil properties restore
+    // fixed native defaults even if virtual+74 changed constructor fields.
+    xf.position = {};
+    xf.size = {};
+    xf.pivot_x = xf.pivot_y = 0.0f;
+    xf.scale_x = xf.scale_y = 1.0f;
+    xf.rotate = 0.0f;
+    widget.blend_factor = 0.0f;
+    for (std::size_t i = 0; i < 4; ++i) {
+        widget.color[i] = widget.high_color[i] = 1.0f;
+        widget.low_color[i] = i == 3 ? 1.0f : 0.0f;
+    }
+    if (!is_page_root) widget.visible = false;
+
     if (const GuiValue* value = table.find("Pos")) {
         float lanes[3] = {xf.position.x, xf.position.y, xf.position.z};
         read_lanes(*value, lanes, 3);
@@ -671,20 +676,23 @@ void build_widget_children_00aaa710(
 
         child->parent = &widget;
         child->transform.parent = &widget.transform;
-        if (child->node_id != 0 && widget.node_id != 0) {
-            host.set_node_parent(child->node_id, widget.node_id);
-        }
         GuiLayoutWidget& stored = *child;
         widget.transform.children.push_back(&stored.transform);
         widget.children.push_back(std::move(child));
 
+        host.set_node_parent(stored.node_id, widget.node_id);
         host.on_widget_constructed(stored);
         if (entry.second.is_table()) {
             const GuiTable& body = *entry.second.table();
             stored.source = &body;
             bind_widget_properties_00aaa710(
                 body, stored, false, host.widescreen_enabled());
+            host.on_widget_properties_bound(stored, body);
             build_widget_children_00aaa710(body, stored, host);
+        } else {
+            const GuiTable empty;
+            bind_widget_properties_00aaa710(empty, stored, false, host.widescreen_enabled());
+            host.on_widget_properties_bound(stored, empty);
         }
         host.on_widget_loaded(stored);
     }
@@ -715,8 +723,6 @@ GuiLayoutPage* GuiPageRegistry::register_00aa52a0(
 GuiLayoutPage* load_gui_page_00aa5840(
     GuiPageRegistry& registry, GuiLayoutHost& host, const std::string& name,
     std::int32_t screen_flag, bool add_reference) {
-    static_cast<void>(screen_flag);  // reaches screen +120h; meaning unrecovered
-
     if (GuiLayoutPage* existing = registry.find_00aa3140(name)) {
         if (add_reference) {
             ++existing->reference_count;  // 00AA5990, through 00CE221C
@@ -724,8 +730,14 @@ GuiLayoutPage* load_gui_page_00aa5840(
         return existing;
     }
 
+    struct LoadScope {
+        GuiLayoutHost& host;
+        bool complete{};
+        ~LoadScope() { if (!complete) host.on_page_load_failed(); }
+    } scope{host};
     auto page = std::make_unique<GuiLayoutPage>();
     page->name = name;
+    page->screen_flag = static_cast<std::uint8_t>(screen_flag);
 
     // 00AA58B8: the model branch is taken only when the VFS already has the
     // name. When it does not, 00AA58FA builds a plain 188h-byte object instead
@@ -739,7 +751,7 @@ GuiLayoutPage* load_gui_page_00aa5840(
     root->key = name;
     root->type = GuiWidgetType::Screen;
     root->transform.type_id = static_cast<std::int32_t>(GuiWidgetType::Screen);
-    root->node_id = host.create_widget_node(name);
+    root->node_id = host.create_page_root_node(name, page->model_backed, page->screen_flag);
 
     const std::shared_ptr<const GuiTable> table = host.evaluate_page_script(name);
     if (table) {
@@ -748,16 +760,23 @@ GuiLayoutPage* load_gui_page_00aa5840(
         bind_widget_properties_00aaa710(
             *table, *root, true, host.widescreen_enabled());
         if (const GuiValue* priority = table->find("Priority")) {
-            if (priority->kind() == GuiValue::Kind::Number) {
-                page->priority = static_cast<std::int32_t>(priority->number());
-            }
+            gui_lua_store_value_00bd63b0(*priority,
+                gui_lua_field(GuiLuaFieldType::Int, &page->priority), nullptr);
         }
+        host.on_widget_properties_bound(*root, *table);
         build_widget_children_00aaa710(*table, *root, host);
+    } else {
+        const GuiTable empty;
+        bind_widget_properties_00aaa710(empty, *root, true, host.widescreen_enabled());
+        host.on_widget_properties_bound(*root, empty);
     }
     page->root = std::move(root);
     // The page keeps the table alive: every widget's `source` points into it.
     page->script_table = table;
-    return registry.register_00aa52a0(std::move(page));
+    host.on_page_loaded(*page);
+    auto* registered = registry.register_00aa52a0(std::move(page));
+    scope.complete = true;
+    return registered;
 }
 
 }  // namespace bsp

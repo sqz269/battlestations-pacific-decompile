@@ -15,6 +15,9 @@
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/d3d9_startup.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_hosts_fonts.hpp"
+#include "bsp/font_registry_startup.hpp"
+#include "bsp/fingerprint_payload.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -482,6 +485,7 @@ GameStartupHost::~GameStartupHost() {
     delete loop_callbacks_;
     delete frame_host_;
     delete locale_;
+    delete fonts_;
     delete scripts_;
     delete settings_host_;
     delete device_;
@@ -871,7 +875,16 @@ void GameStartupHost::run_initialize_phases() {
 
     // Required later owners remain outside the currently runnable spine.
     log_.unimplemented("Phase 5 sound_system_initialize", "00a88770");
-    log_.unimplemented("Phase 7 fonts_and_gui_resources", "0073bae0");
+    if (!device_->device()) throw std::runtime_error("Font startup requires the renderer device");
+    //Constructor00b32769 initializes renderer+1D84 to zero. The later ApplyAll
+    //texture-detail setter is not bound by this startup path yet.
+    fonts_ = new GameFontHost(log_, *vfs_, *scripts_, *device_->device(), 0);
+    fonts_->initialize(language_font_path_008d4890(settings_host_->language_catalog(),
+        settings_.gameplay.language_index_04));
+    summary_.fonts_loaded = fonts_->registry().fonts().size();
+    summary_.font_resource_opens = fonts_->resource_opens();
+    summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
+    log_.unimplemented("Phase 7 GUI resources and scene bindings", "00aa5e20");
     log_.unimplemented("Phase 8 world_effects_startup", "00af0b10");
     log_.unimplemented("Phase 9 game_entry", "00740840");
 

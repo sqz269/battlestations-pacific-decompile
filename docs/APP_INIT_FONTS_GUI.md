@@ -335,3 +335,13 @@ SHA256 over the function body bytes as they sit in the installed
 ### Correction from docs/GUI_LAYOUT_LOADER.md
 
 GUI pages are Lua source: a page name resolves to `interface/<name>.lua` (composed by `00ac5600`), the screen constructor runs `interface/_common.lua` first, then the page, then builds the widget tree from the global table `GuiScreen`, with the widget class carried in the key suffix after the last underscore (seventeen types). `00aa7e00` creates nothing: it finds an existing child one level deep, so the names listed above as created by the two factories are keys in the installed `_mouse.lua` and `_highlight.lua`; its documented recursive flag is popped by `RET 8` and never read. `00aaa480` is the MSVC `std::sort` introsort loop.
+
+
+## Correction from docs/FONT_RUNTIME_STARTUP.md
+
+The former fallback-glyph names at0053bc00/00be9620/00be9760 were unsupported.
+Consumer0053c740 sends the payload to `Fingerprint_Text` (0053d1b9..0053d1d9).
+Decoder00be9630 defines240 bytes by XOR/odd-bit compaction and then copies272
+uninitialized stack bytes as part of its512-byte result. The new fingerprint
+projection exposes only defined bytes. The application now loads actual fonts
+and this payload; GUI resources remain gated on real scene/widget bindings.
