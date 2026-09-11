@@ -1,0 +1,291 @@
+{
+  "packet": "orch4_unit_order_record",
+  "date_utc": "2026-09-11",
+  "worker": "agent/orch4-orders-20260910",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "ghidra_mutations": [],
+  "files": [
+    "include/bsp/unit_order_record.hpp",
+    "src/unit_order_record.cpp",
+    "docs/UNIT_ORDER_RECORD.md",
+    "reports/unit_order_record.json",
+    "cmake/startup.cmake"
+  ],
+  "reconstruction": [
+    {
+      "kind": "function",
+      "address": "00815440",
+      "name": "build_unit_order_record_00815440",
+      "status": "reconstructed_build_tested",
+      "native_abi": "record* __thiscall(record*, float, float, byte); ECX=record; RET0c; EAX=record",
+      "scope": "Complete builder memory effects; semantic compact return replaces native pointer.",
+      "validation": "MSVC Win32 Release and existing reconstructed_math passed; parent reports 121 full32-byte native constructor comparisons passed.",
+      "body_start": "00815440",
+      "body_end": "00815510",
+      "last_instruction": "0081550e",
+      "last_instruction_length": 3,
+      "source": "src/unit_order_record.cpp",
+      "header": "include/bsp/unit_order_record.hpp",
+      "doc": "docs/UNIT_ORDER_RECORD.md",
+      "packet": "orch4_unit_order_record",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Verified Ghidra project/program and assembly; details in docs/UNIT_ORDER_RECORD.md and reports/unit_order_record.json."
+    },
+    {
+      "kind": "function",
+      "address": "00816a40",
+      "name": "issue_unit_order_record_00816a40",
+      "status": "reconstructed_build_tested",
+      "native_abi": "void __thiscall(unit*, float, float, byte); ECX=unit; RET0c",
+      "scope": "Complete bounded issue sequence: existing queue projection, full32-byte payload, separate base-construction and send host calls; excludes SEH/native ABI.",
+      "body_start": "00816a40",
+      "body_end": "00816af1",
+      "last_instruction": "00816aef",
+      "last_instruction_length": 3,
+      "source": "src/unit_order_record.cpp",
+      "header": "include/bsp/unit_order_record.hpp",
+      "doc": "docs/UNIT_ORDER_RECORD.md",
+      "packet": "orch4_unit_order_record",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Verified Ghidra project/program and assembly; details in docs/UNIT_ORDER_RECORD.md and reports/unit_order_record.json."
+    },
+    {
+      "kind": "fragment",
+      "address": "0064b870",
+      "name": "issue_hud_order_fragment_0064b870",
+      "status": "reconstructed_fragment_build_tested",
+      "native_abi": "enclosing void __thiscall(hud*, float delta); RET4",
+      "scope": "Post-gate quantization and issue only; earlier input integration, clamps and control transfer excluded.",
+      "block_start": "0064ba97",
+      "block_end": "0064bb16",
+      "body_start": "0064b870",
+      "body_end": "0064bb47",
+      "source": "src/unit_order_record.cpp",
+      "header": "include/bsp/unit_order_record.hpp",
+      "doc": "docs/UNIT_ORDER_RECORD.md",
+      "packet": "orch4_unit_order_record",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Verified Ghidra project/program and assembly; details in docs/UNIT_ORDER_RECORD.md and reports/unit_order_record.json."
+    },
+    {
+      "kind": "fragment",
+      "address": "00651800",
+      "name": "issue_hud_order_fragment_00651800",
+      "status": "reconstructed_fragment_build_tested",
+      "native_abi": "enclosing void __thiscall(hud*, float delta); RET4",
+      "scope": "Post-gate quantization and issue only. no_ghidra_function; disk-decoded fragment.",
+      "block_start": "00651a15",
+      "block_end": "00651aa7",
+      "body_start": "00651800",
+      "body_end": "00652816",
+      "last_instruction": "00652814",
+      "last_instruction_length": 3,
+      "no_ghidra_function": true,
+      "body_length": 4119,
+      "source": "src/unit_order_record.cpp",
+      "header": "include/bsp/unit_order_record.hpp",
+      "doc": "docs/UNIT_ORDER_RECORD.md",
+      "packet": "orch4_unit_order_record",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Verified Ghidra project/program and assembly; details in docs/UNIT_ORDER_RECORD.md and reports/unit_order_record.json."
+    },
+    {
+      "kind": "fragment",
+      "address": "0067c4f0",
+      "name": "issue_hud_order_fragment_0067c4f0",
+      "status": "reconstructed_fragment_build_tested",
+      "native_abi": "enclosing void __thiscall(hud*, float delta); RET4",
+      "scope": "Post-gate thrust quantization, negative-zero minus steering, kind byte and issue only; UI/input gates excluded.",
+      "block_start": "0067c772",
+      "block_end": "0067c7cf",
+      "body_start": "0067c4f0",
+      "body_end": "0067c80e",
+      "source": "src/unit_order_record.cpp",
+      "header": "include/bsp/unit_order_record.hpp",
+      "doc": "docs/UNIT_ORDER_RECORD.md",
+      "packet": "orch4_unit_order_record",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Verified Ghidra project/program and assembly; details in docs/UNIT_ORDER_RECORD.md and reports/unit_order_record.json."
+    }
+  ],
+  "analyzed_only": [
+    {
+      "address": "00651760",
+      "body_end": "006517ff",
+      "last_instruction": "006517fd",
+      "last_instruction_length": 3,
+      "conclusion": "Unit binding/reset routine; does not call00816a40. Prior candidate metadata associated undefined00651800 with this entry."
+    }
+  ],
+  "names": [
+    {
+      "address": "00815440",
+      "old_name": "FUN_00815440",
+      "name": "BSP_UnitOrderRecord_ConstructClamped",
+      "evidence": "Hypothesis, not recovered symbol. Complete listing 00815440-00815510: ECX=record; stack float A,float B,byte kind; RET0c. Initializes upper bounds +0c/+14 to +2 and lower +10/+18 to -2; clamps A/B with FCOMIP/JBE preserving unordered arguments; stores kind +1c, leaves +08..0b/+1d..1f untouched. Reconstructed in src/unit_order_record.cpp; see docs/UNIT_ORDER_RECORD.md. Ghidra read-only.",
+      "ghidra_annotation_pending": true
+    },
+    {
+      "address": "0064b870",
+      "old_name": "FUN_0064b870",
+      "name": "BSP_HudUnitOrder_UpdateIntegratedControls",
+      "evidence": "Hypothesis, not recovered symbol. Native void __thiscall(hud,float delta), RET4 0064bb45. Integrates/clamps thrust at +24 and turn at +28; quantizes them with CRT 00bf85b0 at 0064bab5/0064baee and issues kind0 via 00816a40 at 0064bb12. Only publication fragment 0064ba97-0064bb16 reconstructed, preceding input/control logic analyzed. Ghidra read-only; docs/UNIT_ORDER_RECORD.md.",
+      "ghidra_annotation_pending": true
+    },
+    {
+      "address": "00651760",
+      "old_name": "FUN_00651760",
+      "name": "BSP_HudUnitView_BindUnitAndReset",
+      "evidence": "Hypothesis, not recovered symbol. Native void __thiscall(hud,unit), RET4 at 006517fd, end byte 006517ff. Writes hud+24 unit, resets unit+122c unless 2 and refreshes view state. Analyzed only. Does NOT call 00816a40; candidate metadata incorrectly assigns third order call 00651aa3 to this entry. Actual caller starts 00651800. Ghidra read-only; docs/UNIT_ORDER_RECORD.md.",
+      "ghidra_annotation_pending": true
+    },
+    {
+      "address": "00651800",
+      "old_name": null,
+      "name": "BSP_HudUnitView_UpdateOrderAndView",
+      "evidence": "Provisional descriptive hypothesis, not recovered symbol. no_ghidra_function: SEH prologue at 00651800 after preceding RET4; last instruction 00652814 RET4 length3; inclusive body end00652816; total0x1017 bytes. Data xref00cf63bc. Native void __thiscall(hud,float delta). Only fragment00651a15-00651aa7 reconstructed: quantize thrust hud+54 and turn+58, kind0, call00816a40 at00651aa3. Remaining view/control code not reconstructed. Ghidra read-only; docs/UNIT_ORDER_RECORD.md.",
+      "ghidra_annotation_pending": true
+    },
+    {
+      "address": "0067c4f0",
+      "old_name": "FUN_0067c4f0",
+      "name": "BSP_HudUnitOrder_UpdateDirectTurnControls",
+      "evidence": "Hypothesis, not recovered symbol. Native void __thiscall(hud,float delta), RET4 at0067c80c. Updates/clamps thrust+1c; command byte+20 comes from input predicate. Fragment0067c772-0067c7cf quantizes thrust via CRT call0067c7a7 and issues negative-zero minus steering plus byte via00816a40 at0067c7cb. Surrounding UI/gates analyzed only. Ghidra read-only; docs/UNIT_ORDER_RECORD.md.",
+      "ghidra_annotation_pending": true
+    }
+  ],
+  "retained_name": {
+    "address": "00816a40",
+    "name": "BSP_UnitInstance_IssueOrder",
+    "evidence_update": "Appended explicit superseding ABI/callsite/full-payload correction; prior evidence retained."
+  },
+  "previous_issue_plate_comment": "[BSP reconstruction 00816a40]\nHypothesis, not a recovered symbol. Packet unit_command_producers, read-only analysis. void __cdecl(a, b, c), RET 0, body 00816A40-00816AF1. Builds a 20h-byte order record through 00815440, publishes it with 0080DAD0, and when the game object's session mode at game+1FE4h is 2 (00816A69, DAT_00E188A8) constructs session message 8Eh (0075B430 at 00816A76), copies the same eight dwords into it and sends it through 0077C2A0. Callers are the HUD command screens 0064B870, 00651760 and 0067C4F0, so this is the player order path. See docs/UNIT_COMMAND_PRODUCERS.md.",
+  "other_previous_plate_comments": "Queries for 00815440,0064b870,00651760,0067c4f0 returned names with no comment field. Saved ignored local/unit_order_record_comments_before.json; no annotation was changed.",
+  "record": {
+    "size": 32,
+    "float_parameters": [
+      0,
+      4
+    ],
+    "upper_bound_offsets": [
+      12,
+      20
+    ],
+    "lower_bound_offsets": [
+      16,
+      24
+    ],
+    "bounds": [
+      -2,
+      2
+    ],
+    "kind_byte": 28,
+    "untouched_ranges": [
+      [
+        8,
+        11
+      ],
+      [
+        29,
+        31
+      ]
+    ],
+    "nan_behavior": "Both unordered JBE paths retain original argument; signed zero retained.",
+    "native_return": "ECX record pointer in EAX"
+  },
+  "message": {
+    "size": 60,
+    "record_offset": 28,
+    "record_bytes": 32,
+    "message_id": 142,
+    "session_mode": 2,
+    "zero_fields": {
+      "word": 24,
+      "byte": 26,
+      "dword": 4
+    },
+    "vtable_identity": "00d02da8",
+    "calls": {
+      "record_constructor": "00816a76",
+      "publisher": "00816a82",
+      "mode_compare": "00816a8d",
+      "message_constructor": "00816aa1",
+      "copy": "00816aca",
+      "send": "00816ad9"
+    }
+  },
+  "missing_functions": [
+    {
+      "address": "00651800",
+      "status": "no_ghidra_function",
+      "inclusive_end": "00652816",
+      "inclusive_last_instruction": "00652814",
+      "last_instruction_length": 3,
+      "body_length": 4119,
+      "body_length_hex": "0x1017",
+      "epilogue": "RET4",
+      "entry_data_xrefs": [
+        "00cf63bc"
+      ],
+      "note": "New SEH prologue after preceding RET4. Local disk decode; live entry/epilogue byte checks. Requires integrator write lock before definition."
+    }
+  ],
+  "flow_audits": [
+    {
+      "address": "00815440",
+      "instructions": 62,
+      "gaps": 0
+    },
+    {
+      "address": "00651760",
+      "instructions": 45,
+      "gaps": 0
+    },
+    {
+      "address": "0064b870",
+      "instructions": 199,
+      "gaps": 0
+    },
+    {
+      "address": "0067c4f0",
+      "instructions": 206,
+      "gaps": 0
+    }
+  ],
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "tests": "existing reconstructed_math 1/1 passed after final negative-zero correction",
+    "log": "local/unit_order_record_build.log",
+    "parent_native_audit": {
+      "status": "reported_passed",
+      "cases": 121,
+      "scope": "Full32-byte constructor and compact return, paired ordinary/bound/signed-zero/infinity/qNaN inputs with A5-prefilled untouched bytes.",
+      "provenance": "Parent isolated Win32 native reference from original209-byte constructor and8 constant bytes (217 verified bytes), two constant addresses relocated, no game calls.",
+      "limitations": "Parent-owned audit; not HUD or network/game validation."
+    },
+    "native_hud_validation": false,
+    "game_validation": false,
+    "new_test_targets": 0
+  },
+  "uncertainties": [
+    "HUD class/keybinding names and command-byte action name remain provisional.",
+    "00bf85b0 CRT behavior remains external through one host method per native call site.",
+    "Arbitrary x87 precision/control and FP status/exception equivalence are not claimed.",
+    "Existing UnitOrderQueue has artificial capacity8 and bounds guard; these are inherited projection limits.",
+    "Record padding and base-message fields are explicit caller/host input, not invented zero initialization."
+  ],
+  "integration_actions": [
+    "Create00651800 under Ghidra write lock, annotate five pending names and corrected00816a40 evidence, preserve comments, save and refresh exports/callers metadata.",
+    "Retire obsolete compact-record UnitOrderIssueHost/issue_unit_order_00816a40 and correct prior producer docs in integrator-owned edits.",
+    "Keep full32-byte constructor and issue interfaces distinct from compact queue projection."
+  ]
+}
