@@ -23,7 +23,10 @@ The PC backend supplies filesystem operations, archive decoding, Lua buffer
 execution and operation-state progress. Its Lua-owner service must still create
 the actual game environment, including fundamentals and platform/region globals.
 An empty substitute interpreter does not establish that startup environment.
-Profile refresh copies real Lua values and upserts transient profile records;
+`PcProfileManagerRefreshHost` connects the refresh host directly to this PC
+backend and the application game-Lua publication slot. It preserves the integer
+file kind2 for game records. Profile refresh copies real Lua values and upserts
+transient profile records;
 the actual game Lua state and storage owner must be supplied by the application.
 
 Validation, worker commits, saved Ghidra annotations and outstanding boundaries
