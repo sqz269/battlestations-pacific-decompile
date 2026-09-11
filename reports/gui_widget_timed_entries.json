@@ -1,0 +1,400 @@
+{
+  "packet": "orch5_gui_widget_timed_entries",
+  "status": "analyzed_ready_contract_actual_allocation_and_type_owner_missing",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "documentation": "docs/GUI_WIDGET_TIMED_ENTRIES.md",
+  "cpp_files_added": 0,
+  "functions": [
+    {
+      "address": "00aa8b00",
+      "name": "BSP_GuiTimedEntry_GetOrCreate",
+      "original_abi": "ECX widget; signed index stack; EAX entry;RET4",
+      "coverage": "complete producer analysis only; actual allocation/type owner not implemented",
+      "last_instruction": "00aa8b7c",
+      "last_instruction_length": 3,
+      "end_inclusive": "00aa8b7e"
+    },
+    {
+      "address": "00aa77b0",
+      "name": "BSP_GuiTimedEntryArray_Resize",
+      "original_abi": "ECX header; signed size stack;RET4",
+      "coverage": "complete resize analysis only; no entry destruction on shrink",
+      "last_instruction": "00aa77fd",
+      "last_instruction_length": 3,
+      "end_inclusive": "00aa77ff"
+    },
+    {
+      "address": "00aa6f30",
+      "name": "BSP_GuiTimedEntryArray_Reserve",
+      "original_abi": "ECX header; signed capacity stack;RET4",
+      "coverage": "complete analysis including raw saved-listing holeAA6F81..89; actual matching allocator missing",
+      "last_instruction": "00aa6f8c",
+      "last_instruction_length": 3,
+      "end_inclusive": "00aa6f8e"
+    },
+    {
+      "address": "00ad3a80",
+      "name": "BSP_GuiTimedEntry_CreateByIndex",
+      "original_abi": "ECX index,EDX widget; no stack arguments;EAX entry;RET",
+      "coverage": "complete index/profile/default analysis only; actual type/allocation owner absent",
+      "last_instruction": "00ad3b40",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ad3b40"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b20",
+      "native": "00aa77b0",
+      "binding": "ensure index+1 before slot access;RET4"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b3f",
+      "native": "00aa77b0",
+      "binding": "recheck current size before capturing factory destination;RET4"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b4f",
+      "native": "00ad3a80",
+      "binding": "ECX index,EDX original widget; capture slot before allocation; no stack args;RET"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b62",
+      "native": "00aa77b0",
+      "binding": "recheck current count after factory result publication;RET4"
+    },
+    {
+      "function": "00aa77b0",
+      "address": "00aa77be",
+      "native": "00aa6f30",
+      "binding": "reserve requested signed count if above current capacity;RET4"
+    },
+    {
+      "function": "00aa6f30",
+      "address": "00aa6f50",
+      "native": "00bf55be",
+      "binding": "native array new,clamped capacity times4 DWORD bytes;ADD ESP4 AA6F59"
+    },
+    {
+      "function": "00aa6f30",
+      "address": "00aa6f7c",
+      "native": "00bf6989",
+      "binding": "reload old backing and free before publishing new pointer/capacity;ADD ESP4 AA6F81"
+    },
+    {
+      "function": "00ad3a80",
+      "address": "00ad3aae",
+      "native": "00bf681b",
+      "binding": "index2 scalar allocation14h;ADD ESP4 AD3AB3"
+    },
+    {
+      "function": "00ad3a80",
+      "address": "00ad3ae7",
+      "native": "00bf681b",
+      "binding": "index1 scalar allocation14h;ADD ESP4 AD3AEC"
+    },
+    {
+      "function": "00ad3a80",
+      "address": "00ad3aff",
+      "native": "00bf681b",
+      "binding": "index0 scalar allocation14h;ADD ESP4 AD3B04"
+    },
+    {
+      "function": "00ad3a80",
+      "address": "00ad3b1a",
+      "native": "00ac2ed0",
+      "binding": "both indices0/1 construct same D5CA74 profile with borrowed widget stack;RET4"
+    }
+  ],
+  "all_callers": [
+    {
+      "function": "00648060",
+      "address": "0064820f",
+      "native": "00aa8b00",
+      "arguments": "current EDI+5C widget,index0 from EBX zeroed648080;RET4"
+    },
+    {
+      "function": "00648060",
+      "address": "0064824c",
+      "native": "00aa8b00",
+      "arguments": "current EDI+60 widget,index0 EBX;RET4"
+    },
+    {
+      "function": "00648c20",
+      "address": "00649221",
+      "native": "00aa8b00",
+      "arguments": "current row+3C widget,index0;RET4"
+    },
+    {
+      "function": "0064dd30",
+      "address": "0064f878",
+      "native": "00aa8b00",
+      "arguments": "current ESI+F0 widget,index2;RET4"
+    },
+    {
+      "function": "0064dd30",
+      "address": "0064fa30",
+      "native": "00aa8b00",
+      "arguments": "current ESI+F0 widget,index2;RET4"
+    },
+    {
+      "function": "0064dd30",
+      "address": "0064faee",
+      "native": "00aa8b00",
+      "arguments": "current ESI+E8 widget,index2;RET4"
+    },
+    {
+      "function": "0064dd30",
+      "address": "0064fba2",
+      "native": "00aa8b00",
+      "arguments": "current ESI+EC widget,index2;RET4"
+    },
+    {
+      "function": "0064dd30",
+      "address": "0064fccf",
+      "native": "00aa8b00",
+      "arguments": "current ESI+F4 widget,index2;RET4"
+    },
+    {
+      "function": "00aa7f50",
+      "address": "00aa7f55",
+      "native": "00aa77b0",
+      "arguments": "header ECX,size0;RET4"
+    },
+    {
+      "function": "00aa8b80",
+      "address": "00aa8ba2",
+      "native": "00aa77b0",
+      "arguments": "same widget88 header,index+1 before deleting slot;RET4"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b20",
+      "native": "00aa77b0",
+      "arguments": "same widget88 header,index+1;RET4"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b3f",
+      "native": "00aa77b0",
+      "arguments": "same widget88 header,index+1;RET4"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b62",
+      "native": "00aa77b0",
+      "arguments": "same widget88 header,index+1;RET4"
+    },
+    {
+      "function": "00aa87b0",
+      "address": "00aa88d0",
+      "native": "00aa77b0",
+      "arguments": "current update index+1 before step;RET4"
+    },
+    {
+      "function": "00aa87b0",
+      "address": "00aa88f7",
+      "native": "00aa77b0",
+      "arguments": "recheck current size after step before deletion;RET4"
+    },
+    {
+      "function": "00aa77b0",
+      "address": "00aa77be",
+      "native": "00aa6f30",
+      "arguments": "requested count;RET4"
+    },
+    {
+      "function": "00aa87b0",
+      "address": "00aa8880",
+      "native": "00aa6f30",
+      "arguments": "current update index+1;RET4"
+    },
+    {
+      "function": "00aa9730",
+      "address": "00aa9825",
+      "native": "00aa6f30",
+      "arguments": "current destructor index+1;RET4; consumed root-owned contract"
+    },
+    {
+      "function": "00aa8b00",
+      "address": "00aa8b4f",
+      "native": "00ad3a80",
+      "arguments": "ECX index,EDX widget; no stack args;RET"
+    }
+  ],
+  "consumed_lifetime_calls": [
+    {
+      "function": "00ac2ed0",
+      "address": "00ac2ed8",
+      "native": "00ad3970",
+      "binding": "base type D5D204,time0,borrowed widget;RET4"
+    },
+    {
+      "function": "00ac2fe0",
+      "address": "00ac2fe3",
+      "native": "00ad3990",
+      "binding": "base profile store only;RET"
+    },
+    {
+      "function": "00ac2fe0",
+      "address": "00ac2ff0",
+      "native": "00bf65ac",
+      "binding": "free original entry iff flags&1;ADD ESP4 atAC2FF5 in saved gap"
+    },
+    {
+      "function": "00aa87b0",
+      "address": "00aa88e6",
+      "native": "00ad39a0",
+      "binding": "current entry,delta plus second stack argument;RET8"
+    },
+    {
+      "function": "00ad39a0",
+      "address": "00ad39d6",
+      "native": "current timed entry virtual8",
+      "binding": "actual profile operation on negative countdown; cannot replace with no-op"
+    },
+    {
+      "function": "00aa9730",
+      "address": "00aa986e",
+      "native": "current timed entry virtual0",
+      "binding": "flags1; captured slot cleared only after actual return; root-owned consumer"
+    },
+    {
+      "function": "00aa9730",
+      "address": "00aa994c",
+      "native": "00bf6989",
+      "binding": "final same backing free after count0;88/90 not cleared;ADD ESP4 atAA995E"
+    }
+  ],
+  "producer_fields": [
+    {
+      "address": "00aa9488",
+      "field": "widget88",
+      "meaning": "backing pointer initially zero"
+    },
+    {
+      "address": "00aa948e",
+      "field": "widget8C",
+      "meaning": "signed count initially zero"
+    },
+    {
+      "address": "00aa9494",
+      "field": "widget90",
+      "meaning": "signed capacity initially zero"
+    },
+    {
+      "address": "00aa6f84",
+      "field": "header0",
+      "meaning": "new backing publication AFTER old free"
+    },
+    {
+      "address": "00aa6f86",
+      "field": "header8",
+      "meaning": "new signed capacity publication"
+    },
+    {
+      "address": "00aa77f8",
+      "field": "header4",
+      "meaning": "new count after growth zero-init or shrink; no element deletion"
+    },
+    {
+      "address": "00aa8b54",
+      "field": "captured array slot",
+      "meaning": "factory result stored to address captured before allocation"
+    },
+    {
+      "address": "00ad3abd",
+      "field": "entry8",
+      "meaning": "borrowed original widget identity"
+    },
+    {
+      "address": "00ad3ac5",
+      "field": "entry0",
+      "meaning": "index2 profile D5D210;time,C,10 zero"
+    },
+    {
+      "address": "00ac2ee5",
+      "field": "entry0",
+      "meaning": "indices0/1 profile D5CA74;time0,C=1,10=1"
+    }
+  ],
+  "consumed_profiles": [
+    {
+      "profile": "00d5ca74",
+      "size": 20,
+      "delete0": "00ac2fe0",
+      "base_reset": "00ad3990",
+      "step8": "00ac2f40",
+      "ownership": "borrowed widget; actual allocation association absent"
+    },
+    {
+      "profile": "00d5d210",
+      "size": 20,
+      "delete0": "00ad3a40",
+      "step8": "00abe7b0",
+      "ownership": "borrowed widget; actual allocation association absent",
+      "raw_contract": "Consumed prior report/gui_text_child_lifetime.json contract AD3A40..AD3A5E,RET4 atAD3A5C length3; not reconstructed/named by this packet"
+    }
+  ],
+  "saved_listing_gap": {
+    "function": "00aa6f30",
+    "start": "00aa6f81",
+    "end_inclusive": "00aa6f89",
+    "length": 9,
+    "instructions": "ADD ESP4;MOV [ESI],EBX;MOV [ESI+8],EDI;POP EBX",
+    "evidence": "Ghidra readonly bytes matched original PE Capstone; containing function already endsAA6F8E, no new function attribution"
+  },
+  "missing_dependencies": [
+    "Actual CRT allocation-domain association for array backing and14h entries. Existing singleton_lifetime_allocate/free is HOST malloc/free only; foreign native heap0109E1BC/small-block pointers cannot be adopted.",
+    "Concrete live timed type owner/dispatch for profiles D5CA74 andD5D210, using SAME borrowed widget and actual update operations; no placeholder vtable or default callback.",
+    "One ownership binding to SAME canonical pointers_88_90 words, not a shadow std::vector. Retirement must avoid freeing final dangling88 twice while retaining native field stores."
+  ],
+  "corrections": [
+    {
+      "was": "pointers_88_90 could be read as three pointers",
+      "is": "same words are pointer,signed count,signed capacity",
+      "evidence": "AA9390 stores and AA8B00/AA77B0/AA6F30 producer chain"
+    },
+    {
+      "was": "Saved AA6F30 listing appears to return after free without installing the allocation",
+      "is": "Raw interiorAA6F81..89 publishes pointer and capacity after free returns",
+      "evidence": "byte/PE agreement and complete endAA6F8E"
+    },
+    {
+      "was": "Resize shrink could delete removed timed entries",
+      "is": "Shrinking changes count only; actual deleting virtuals belong consumers",
+      "evidence": "AA77E6..AA77F8 versusAA986E"
+    },
+    {
+      "was": "Host malloc/free service could establish provenance for existing nonzero native headers",
+      "is": "Existing service owns only its new host allocations; actual native heap/small-block association is missing",
+      "evidence": "singleton_lifetime.cpp malloc/free and nativeBF9DC8 heap0109E1BC path"
+    },
+    {
+      "was": "A generic allocator or vtable callback interface could count as completed timed ownership",
+      "is": "No C++ implementation added until concrete matching allocation and type owners exist",
+      "evidence": "root-requested evidence-only boundary plus current owner/source audit"
+    }
+  ],
+  "validation": {
+    "report_call_verifier": "PASS:35 numeric direct call rows,0 failures;2 symbolic current-profile calls explicitly unverified",
+    "strict_compile": "not applicable: evidence-only packet, no C++ source or header changes",
+    "new_tests": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "nonzero_array_deletion_complete": false,
+    "runtime_limit": "Existing deletion AA97F6 boundary remains; no new executable path"
+  },
+  "tool_issues": [
+    "First lease command used sibling cwd by mistake; immediately released and reclaimed under agent/orch5-map-runtime before any edits",
+    "Saved free noreturn produced AA6F30 interior listing hole; raw bytes/PE used without Ghidra mutation"
+  ],
+  "user_authorized_boundary": "Task explicitly requires exact evidence/ready contract when actual allocator/type owner is missing, instead of stubbing."
+}
