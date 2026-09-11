@@ -81,6 +81,11 @@ struct GameMissionFrameRunSummary {
     bool completion_requested{false}; // 004d7ea0 enqueued request 0Fh
     bool exit_reachable{false};       // the debrief path could be entered
     std::string exit_note;
+    // Milestone 2g. `exit_frames` are the frames run after the mission left
+    // game state 0Dh; `exit_completed` says the drain reached request 04h.
+    unsigned long long exit_frames{0};
+    bool exit_completed{false};
+    bool complete_injected{false};    // --mission-complete-frame fired
 };
 
 // Everything milestone 2f adds behind the mission load request. Owned for the
@@ -105,9 +110,24 @@ public:
     // 004db920 for game state 0Ch, which tails into 004da6c0.
     bool enter_mission_state_004da6c0();
 
-    // One in-mission frame of 004e4a40. Returns false once the frame asked to
-    // leave state 0Dh.
+    // One frame of 004e4a40: the request drain, the state 11h arm, and then
+    // either the in-mission branch or, once the mission has left game state
+    // 0Dh, one frame of the exit path. Returns false when the path is over.
     bool run_mission_frame_004e4a40(float raw_delta);
+
+    // Milestone 2g, --mission-complete-frame N: the in-mission frame on which
+    // the executable makes the call a mission script's end-movie binding makes,
+    // 0089a480 -> 0089a390 -> 004cd390 with the debrief byte set. Negative or
+    // zero injects nothing and the run ends on the frame count as 2f did.
+    void set_mission_complete_frame(long frame) noexcept;
+
+    // game+2198h, the mission key the record commit 009205e0 writes under.
+    void set_mission_key(std::string key);
+
+    // True while game+5D4h still holds 0Dh.
+    bool in_mission_phase() const noexcept;
+    // True once the exit path has run to the front-end request or its bound.
+    bool exit_path_finished() const noexcept;
 
     // Logs the per-frame totals and the exit disposition.
     void report(long requested_frames);

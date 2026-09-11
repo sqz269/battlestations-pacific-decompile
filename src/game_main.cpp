@@ -121,6 +121,9 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
             summary.mission_frames_simulated,
             summary.mission_exit_note.empty() ? "(not reached)"
                                               : summary.mission_exit_note.c_str());
+        log.notef("summary mission exit injected=%d frames=%llu completed=%d",
+            summary.mission_complete_injected ? 1 : 0, summary.mission_exit_frames,
+            summary.mission_exit_completed ? 1 : 0);
     }
     if (!summary.screenshot_path.empty()) {
         log.notef("summary screenshot=%d frame=%ld path=%s",
@@ -149,6 +152,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
+            " [--mission-complete-frame N]"
             " [--screenshot <path>] [--screenshot-frame N] [--hardware-probe-commit]\n");
         return 2;
     }
@@ -158,11 +162,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2f, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
-        "menu_select=%s mission_frames=%ld log=%s", options.frame_limit,
-        options.press_start_frame, options.screenshot_frame,
+    log.notef("bsp_game milestone 2g, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
+        "menu_select=%s mission_frames=%ld mission_complete_frame=%ld log=%s",
+        options.frame_limit, options.press_start_frame, options.screenshot_frame,
         options.menu_select.empty() ? "(none)" : options.menu_select.c_str(),
-        options.mission_frames,
+        options.mission_frames, options.mission_complete_frame,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an
@@ -196,7 +200,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     bsp::game::GameRunSummary summary = host.summary();
     summary.exit_code = result;
     // A run that asked for a frame count only succeeds when the device presented them.
-    if (options.frame_limit > 0
+    // Milestone 2g is the one exception: a mission that ended through the debrief path
+    // finishes the run where the game does, which is before the frame count is reached.
+    if (options.frame_limit > 0 && !summary.mission_exit_completed
         && summary.frames_presented < static_cast<unsigned long long>(options.frame_limit)) {
         summary.exit_code = 1;
     }

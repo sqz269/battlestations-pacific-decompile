@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2f
+# bsp_game.exe, milestones 1 through 2g
 
-Milestone 2f is the current state of the executable, and its section corrects the earlier
+Milestone 2g is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -2102,6 +2102,334 @@ mission, and every subsystem the frame ticked was empty.
    `docs/MISSION_LUA_MACHINE.md`'s six failing probe scripts are waiting for.
 7. **The two header fixes in corrections 2 and 3**, both one-line changes in files this packet
    does not own.
+
+
+## Milestone 2g: the fixed step's body and the way out of the mission
+
+Addresses: the sixteen per-step calls 00875e0c, 00875e24, 00875e33 / 00875e3a, 00875e3f,
+00875e44, 00875e55, 00875e64, 00875e91, 00875e96, 00875e9b, 00875ea2, 00875ebf, 00875ec4,
+00875ec9, 00875eda with the world gate 00875e69-00875e7f, the three job waves 00875cc0, the
+interpolation wave 00875f43 and the tail gate 00875fd1-00875ff7; 0089a5e6 / 0089a390 with
+0089a40e (004cd390) and 0089a469 (004d7970), the EndScene body 004d79b7 / 004d79eb /
+004d7a0f / 004d7a23 / 004d7a37 / 004d7a42 / 004d7a78 / 004d7acc / 004d7aec, the poll
+004e5389 (004d7ea0) with 004d7f32 / 004d7f42 / 004d7f72, the drain 004e4d0d (004e4430) with
+its tail 004e4a2e, the request 10h arm 004e458a with 004e4710 / 004e4715 / 004e4722 /
+004e474a / 004e4763 / 004e476c / 004e4773 / 004e4778 / 004e4782 / 004e47a7, the state 11h
+arm 004e504b-004e5097 and the request 04h dispatch 004e44fa (004e4000). Packet `cc_exe_2g`,
+owner `agent/cc-exe-2g`. Sources: `src/game_hosts_fixed_step.cpp`,
+`include/bsp/game_hosts_fixed_step.hpp`, `src/game_hosts_mission_result.cpp`,
+`include/bsp/game_hosts_mission_result.hpp`, plus edits to
+`src/game_hosts_mission_frame.cpp`, `src/game_hosts_mission.cpp`, `src/game_hosts_menu.cpp`,
+`src/game_hosts.cpp`, `src/game_main.cpp` and their headers. Report:
+`reports/game_executable_milestone_2g.json`. Ghidra was read-only for this packet.
+
+Milestone 2f ran the fixed-step driver with all four of its blocks as records and ended the
+run on a frame count, because nothing built the mission-result object the exit needs. This
+milestone runs the step's own body over the two reconstructions that have since landed, and
+makes the mission end the way the game ends it.
+
+### The new switch
+
+`--mission-complete-frame N` makes, on in-mission frame N, the call a mission script's
+`PlayBinkMovie(name, true)` makes: 0089a480 to 0089a390 to 004cd390. Negative or absent
+injects nothing and the run ends on `--mission-frames` exactly as 2f did. Every earlier
+switch is unchanged.
+
+### 1. The fixed step's own body
+
+`FixedStepHost`'s four methods are no longer records. `GameFixedStepHost` implements
+`bsp::FixedStepFanoutHost` and `bsp::FixedStepJobWaveHost`, so the order is
+`docs/FIXED_STEP_FANOUT.md`'s and `docs/FIXED_STEP_JOB_WAVES.md`'s rather than one the
+process invents.
+
+**The sixteen per-step calls.** One of them has a reconstruction on main and runs:
+`apply_dynamics_buoyancy_004462d0` at 00875e24, over the same `bsp::GameDynamicsState` the
+frame's fourth tick call walks. Ten are records with their owner area. The remaining five,
+rows 9 to 13, are **skipped every step**, because the world gate at 00875e69 reads
+`[[game+19CCh]+4ACh]` and this process builds no world object: `construct_world` 004de610 is
+a load record. That is the native behaviour for an inactive world, not a substitution, and it
+is why 00874c90 never splices a pending tick registration into a group.
+
+| Row | Site | Callee | Owner | In this run |
+| --- | --- | --- | --- | --- |
+| 1 | 00875e0c | 00c5c540 | physics | record |
+| 2 | 00875e24 | 004462d0 | unit | **concrete** |
+| 3+4 | 00875e33 / 00875e3a | 0042e630 then 0098bdb0 | registry | record |
+| 5 | 00875e3f | 00874de0 | engine | record |
+| 6 | 00875e44 | 00926700 | entity | record |
+| 7 | 00875e55 | 00888230 | script | record |
+| 8 | 00875e64 | 00929460 | script | record |
+| 9-13 | 00875e91-00875ebf | 00778450, 0077ec20, 00874c90, 00925f20, 0076ffc0 | session, engine, entity | skipped, world gate closed |
+| 14 | 00875ec4 | 00926700 | entity | record |
+| 15 | 00875ec9 | 009273a0 | entity | record |
+| 16 | 00875eda | 00903610 | world | record |
+
+**The four job waves.** All four run the recovered loop over the five 68h groups at
+00f876c0, and every group is empty: an element is built only by 00875890, whose nine
+construction sites are unit, aircraft and objective paths this process never reaches, and the
+one routine that would move a constructed element into a group is row 11 behind the closed
+world gate. So the waves admit nothing, queue nothing and dispatch nothing, and the four job
+bodies and the pool's two slots are host methods that were not reached. The waves still run:
+the three per-step waves make 15 group visits per fixed step and the interpolation wave 5 per
+frame, 9950 of them in the long run.
+
+**The tail hook.** 00875fd1's four tests are evaluated once per driver call and all 1990
+evaluations found the gate closed: 00f8ab04 has no writer in this process and the in-mission
+interface manager 00e198c4 is the front-end owner's. The hook 00a317f0 is a single `RET` in
+this build, so the closed gate costs nothing. `bsp::run_fixed_step_driver_00875bb0` stops
+after the interpolation wave and carries no host method for the tail, so the executable runs
+it at the driver's own tail position and only when the driver's gate let the body run.
+
+A 120 frame mission run accumulates less than one 0.05 s step and runs **no** fixed step at
+all, exactly as 2f reported; the 2000 frame run runs **18**, and it is the run that exercises
+the fan-out.
+
+### 2. The mission result and the exit
+
+`docs/MISSION_RESULT_DECISION.md`'s producer is the mission script, and this executable has
+no script that reaches it, so `--mission-complete-frame` makes the call instead. What follows
+the call is recovered:
+
+| Step | Site | What the run did |
+| --- | --- | --- |
+| `PlayBinkMovie` binding | 0089a5e6 | the binding body 0089a480 is a record; its two arguments are the executable's |
+| prefix and allocate | 0089a3fc, 0089a40e | `movies/usn_2`, the 24h object at game+7188h with +21h set and +8h = -200.0f |
+| **EndScene, synchronously** | 0089a469 | 0089a390 calls 004d7970 itself when the debrief byte is set |
+| the body, once per scene | 004d79b7-004d7a47 | debrief bring-up recorded, the record committed through 009205e0, metrics recorded, game+1EE2h latched |
+| enqueue 10h | 004d7aec | game+5D4h was 0Dh, so the teardown request is queued |
+| the poll | 004e5389 | **does not run**: its first test at 004d7ea4 wants an empty queue and 10h is in it |
+| drain 10h | 004e4d0d, 004e458a | 004da780 recorded, the result's movie handed to 004f8a20, 004f89d0 registered, the result released at 004e4773, state 11h, suspension raised |
+| the state 11h arm | 004e504b-004e5087 | game+7184h is clear, so 004e506b lowered the suspension and 004e5087 enqueued request 04h |
+| drain 04h | 004e44fa | the front-end shell, which after a mission is the debrief front end, recorded |
+
+The run then has nothing left to do in a headless process, so it requests the application
+loop exit through the same byte `--frames` uses and **exits 0 on the exit path rather than on
+the frame count**. Two frames separate the injection from the front-end request.
+
+Three things on that path are the executable's own and are marked in the source: the call
+itself, the movie that never plays (004f8a20 needs the GUI movie widget), and the decision to
+record the request 04h dispatch instead of re-entering the menu host's shell. The scoring
+record 009205e0 commits is the zeroed one the load produced, because
+`Scoring_SetMissionCompleted` 008b8ad0 is the script's and this mission's stage init never
+reaches it.
+
+### Host methods
+
+`bsp_game.exe --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 120
+--mission-complete-frame 90 --log local/game_run_2g.log --game-root "<install>"`, exit 0:
+**252 concrete, 252 unimplemented**. The same binary with `--frames 3000 --mission-frames
+2000 --mission-complete-frame 1990` reports **254 and 261**, because it runs 18 fixed steps
+and therefore reaches the fan-out's own records. A `--mission-frames 60` run with no
+`--mission-complete-frame` reports 247 and 243, against milestone 2f's 246 and 243 on its own
+tree: the interpolation wave moved from record to concrete and the frame's new request drain
+added one record, `Drain::post_drain`.
+
+The methods this packet introduced. Everything not marked concrete is the unimplemented
+policy with its native call site on the record; the call counts are the 2000 frame run's.
+
+| Host method | Native call site | Status | Calls |
+| --- | --- | --- | --- |
+| `FixedStep::run_job_waves` | `00875cc0` | concrete | 18 |
+| `FixedStep::interpolation_wave` | `00875670` | concrete | 1990 |
+| `FixedStepFanout::simulate_physics_world` | `00875e0c` | **unimplemented** | 18 |
+| `FixedStepFanout::apply_dynamics_buoyancy` | `00875e24` | concrete | 18 |
+| `FixedStepFanout::refresh_moved_spatial_nodes` | `00875e3a` | **unimplemented** | 18 |
+| `FixedStepFanout::run_step_callbacks` | `00875e3f` | **unimplemented** | 18 |
+| `FixedStepFanout::drain_deferred_entity_events` | `00875e44` | **unimplemented** | 36 |
+| `FixedStepFanout::drain_queued_lua_calls` | `00875e55` | **unimplemented** | 18 |
+| `FixedStepFanout::run_due_entity_think` | `00875e64` | **unimplemented** | 18 |
+| `FixedStepFanout::flush_pending_entity_queues` | `00875ec9` | **unimplemented** | 18 |
+| `FixedStepFanout::release_expired_world_objects` | `00875eda` | **unimplemented** | 18 |
+| `MissionEndMovie::lua_binding_play_bink_movie` | `0089a480` | **unimplemented** | 1 |
+| `MissionEndMovie::prefix_movie_name` | `0089a3fc` | concrete | 1 |
+| `MissionEndMovie::set_end_of_mission_movie` | `0089a40e` | concrete | 1 |
+| `MissionEndScene::end_scene` | `004d7970` | concrete | 1 |
+| `MissionEndScene::debrief_bringup` | `004d79b7` | **unimplemented** | 1 |
+| `MissionEndScene::multiplayer_score_query` | `00f8a2fc+vtable198` | **unimplemented** | 1 |
+| `MissionEndScene::record_metrics` | `004d7a42` | **unimplemented** | 1 |
+| `MissionResult::enqueue_state_request` | `004d3ed0` | concrete | 1 |
+| `MissionTeardown::tear_down_mission` | `004e4710` | **unimplemented** | 1 |
+| `MissionTeardown::play_end_movie` | `004e474a` | **unimplemented** | 1 |
+| `MissionTeardown::set_movie_completion` | `004e4763` | **unimplemented** | 1 |
+| `MissionTeardown::close_result_gui` | `004e476c` | **unimplemented** | 1 |
+| `MissionTeardown::release_result` | `004e4773` | concrete | 1 |
+| `Drain::request_04_front_end_shell` | `004e4000` | **unimplemented** | 1 |
+| `Drain::post_drain` | `00a95960` | **unimplemented** | 1992 |
+| `MissionCompletion::mission_result` | `004d7ea0` | concrete | 1989 |
+
+More host methods exist and were not reached, and the report lists each with the reason: the
+five gated fan-out rows, the four job bodies with the pool's queue and dispatch, the tail
+hook, the six `DynamicsBuoyancyHost` methods behind an empty list, the aborted and
+multiplayer arms of EndScene, the poll's own movie calls, the objective setters no script
+touched, and the whole movie-player boundary the completion 004f89d0 would cross. `MissionCompletion::mission_result` was read on 1989 of the
+1990 frames: the one frame it was not is the frame the synchronous EndScene had already
+queued request 10h, which is the run-time evidence for correction 1.
+
+### Corrections
+
+1. **The poll is not how a mission that plays an end movie leaves state 0Dh.**
+   `docs/MISSION_RESULT_DECISION.md`'s chain has the script raise the movie, 004d7ea0 enqueue
+   0Fh and the drain dispatch it. The decompiled body of 0089a390 shows it calls 004d7970
+   **itself** at 0089a469 whenever the script's `goToDebrief` byte is set, and EndScene then
+   enqueues 10h at 004d7aec because game+5D4h is 0Dh. The poll's own first test at 004d7ea4
+   wants an empty request queue, so with 10h already queued the poll never runs and its 0Fh
+   arm is unreachable from a `PlayBinkMovie(name, true)` issued in a running mission. The run
+   log shows exactly that: the poll ran on every in-mission frame and read game+7188h on all
+   but the one frame the injection fired on. The chain's 0Fh arm needs the result object to
+   survive into a frame with an empty queue, which is another call order, not this one.
+2. **The drain suspension's lifecycle is closed.** `docs/GAME_FRAME_CONTROL.md` left it open
+   ("game+5ECh is cleared by 004c7ed0 and written by 004ddb90; neither was analyzed"). Both
+   sites that latch the byte also register the routine that clears it: 004d7f42 in the poll
+   and 004e4763 in the teardown arm both call 004f8970 with 004f89d0, and 004f89d0 calls
+   004c7ed0, which clears game+7184h at 004c7ed7 and game+5ECh at 004c7efe. The state 11h arm
+   at 004e506b is the second clear, and it only fires while game+7184h is clear, so a movie in
+   flight holds the suspension until its completion runs. Without that pair a mission whose
+   poll enqueued 0Fh would latch the drain and never dispatch its own request.
+3. **`result+8h` is a GUI depth, not a score.** The same doc left the constant unread and
+   `bsp::MissionResult::score` in `include/bsp/game_frame_control.hpp` inherited the guess.
+   00ce77e4 holds `00 00 48 C3`, -200.0f, and 004d7f1d loads it as the third stack argument of
+   004f8a20, which `bsp/movie_player.hpp` recovers as the movie widget's local Z; the drain's
+   teardown arm loads 1000.0f from 00ce3804 for the same argument at 004e4732. The rename
+   belongs in that header, which this packet does not own.
+4. **The request 10h arm's two effects are alternatives, not a sequence.**
+   `docs/GAME_FRAME_CONTROL.md` reads it as "leaves state 11h at 004e4778, enqueues 04h at
+   004e47a7 when the queue is empty". 004e4722 tests game+7188h first: with a result object
+   the arm plays it, registers the completion, closes the result GUI, releases the result,
+   writes state 11h, raises the suspension and **jumps over** the enqueue at 004e4789; with no
+   result object it falls to 004e478b and enqueues 04h. It also tests game+1EE3h at 004e4715
+   and takes the 004e48d7 sub-path when the session is networked.
+5. **`post_drain_00a95960`'s call site.** `include/bsp/game_frame_control.hpp` cites 004e4a24,
+   which is the `FLD` of the scaled delta; the `CALL 00a95960` is at 004e4a2e.
+6. **Milestone 2f's `summary mission exit reachable=0` is superseded.** What was missing was
+   the producer, not the poll.
+7. **`docs/GHIDRA_LISTING_DEFECTS.md`'s 004e4a40 row no longer bites.** The stored Ghidra body
+   of `BSP_Game_OnMove` is now 004e4a40-004e5537, so `tools/verify_report_calls.py` checks
+   call sites inside it: this packet's report passes 42 of 42 rows with no known-defect
+   exemption, where milestone 2f needed one for 51 rows.
+8. **`PlayBinkMovie`'s debrief flag is its third argument and defaults to false.**
+   `docs/MISSION_RESULT_DECISION.md` reads the binding as `PlayBinkMovie(name,
+   goToDebrief)`. 0089a480 zeroes the byte at 0089a5a2 (`XOR BL,BL`), asks for the argument
+   count at 0089a5a4 and only reads a boolean when there are **three or more** (`CMP EAX,3`
+   at 0089a5a9), taking argument index **2** at 0089a5ae; `MOV DL,BL` at 0089a5e0 is what
+   0089a390 receives. The installed scripts match: `Scripts/global/commandhelpers.lua`, one
+   of the 21 global scripts this run loads, calls `PlayBinkMovie(Mission.MissionComplParams
+   .Movie, "", true)` in `luaMissionCompleted_ComplMovie` and the same three-argument form
+   with `MissionFailParams` in `luaMissionFailed_FailMovie`, while a mid-mission movie such
+   as `PlayBinkMovie("campaigns/BSM/m0102.bik")` passes one argument and therefore never
+   ends a mission. Win and loss reach the same native call, which is what that doc's summary
+   already says.
+9. **A mission with no completion movie ends through a different binding, and that binding
+   is gated on the scoring record.** The same helper's other arm is `luaDelay(EndScene, 12)`,
+   and `EndScene` is binding row 008b01b0. Its body reads the commit slot's record,
+   `[game+21A0h] + 4 + [[game+21A0h]+1424h]*284h`, and when that record's `+0h` is clear in a
+   single-player session it raises a menu prompt through `BSP_MenuPromptScreen_Raise` and
+   returns **without** calling 004d7970; only a completed record, or a multiplayer session,
+   reaches `BSP_Game_EndScene`. A script therefore has to call `Scoring_SetMissionCompleted`
+   before it ends a mission this way. The executable's own record is zeroed, so this packet
+   injects the movie arm rather than this one.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function and a reviewed ledger name;
+the eight job-wave vtable targets `docs/FIXED_STEP_JOB_WAVES.md` listed have since been
+defined by the integrator. No name was added.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2g.json` checks 42 call
+rows and reports 0 failures.
+
+```
+mission complete injected on frame 90: the executable calls the path a script's
+        PlayBinkMovie(name, true) takes
+mission end movie requested: name="movies/usn_2" go_to_debrief=1 result+8h=-200.0
+        (00ce77e4, the movie's local Z at 004f8a20)
+state request 0x10 enqueued, queue=1
+GGame::EndScene aborted=0 first_run=1 commit=1 teardown=1 broadcast=0 state=0x0D
+mission teardown: the end movie was handed to 004f8a20, the completion 004f89d0 was
+        registered, the result object was released and the game left state 0Dh for 11h with
+        the drain suspended at game+5ECh
+mission end wait: state 11h, game+7184h clear, so 004e506b cleared the drain suspension and
+        enqueued request 04h
+  mission exit frame 1: game state 0x11, requests queued=1
+  mission exit frame 2: game state 0x04, requests queued=0
+summary mission exit frames=2 injected=1 completed=1 state=0x04
+summary mission exit reachable=1: the mission ended through 004d7970: request 10h, the
+        teardown arm 004e458a, state 11h and request 04h
+host methods 252 concrete, 252 unimplemented
+```
+
+and, from the 2000 frame run:
+
+```
+fixed-step fan-out 00875e0c, the sixteen per-step calls at 0.050 s (00d0de84); the world gate
+        00875e69 is closed
+   1 00875e0c -> 00c5c540 simulate_physics_world_00c5c540            physics  record
+   2 00875e24 -> 004462d0 apply_dynamics_buoyancy_004462d0           unit     concrete
+   9 00875e91 -> 00778450 pump_session_00778450                      session  skipped (world gate)
+  fixed step 1: 11 of 16 fan-out sites ran, world gate closed, rows 9-13 skipped
+fixed-step job waves: the five 68h groups at 00f876c0 are empty. Every element comes from
+        00875890, whose nine construction sites are unit, aircraft and objective paths this
+        process does not run, and the splice 00874c90 is row 11 behind the closed world gate
+summary fixed step body steps=18 fanout_sites=198 concrete=18 records=162
+        gate_closed_steps=18 gated_sites_skipped=90
+summary fixed step waves groups=270 interpolation_groups=9950 elements=0 queued=0
+        dispatches=0 tail_open=0 tail_closed=1990
+host methods 254 concrete, 261 unimplemented
+```
+
+Every earlier switch was rechecked on the same binary: a 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
+unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
+exits 0 and `--vfs-probe does/not/exist.lua` exits 3, and a `--mission-frames 60` run without
+`--mission-complete-frame` still ends on the frame count with
+`summary mission exit reachable=0`. The first three match milestone 2d exactly. The close path
+was validated the same way as before, by sending WM_CLOSE to a running process with
+`--press-start-frame 30 --menu-select USN02 --mission-frames 60` and no frame limit: it
+presented 28722 frames, ran all 60 mission frames, recorded
+`CloseRequestPolicy::front_end_branch [004ca2f0]` once, reported 248 concrete and exited 0.
+
+This is a runtime-validated process, not a game-validated one. It proves that the recovered
+fixed-step body runs with its real gates, and that the recovered end-of-mission path carries a
+running mission out of game state 0Dh to the front-end request and ends the process there. It
+proves nothing about the simulation the fan-out would drive: every list it walks is empty,
+no job was ever queued, and no movie was played.
+
+### Follow-up packets
+
+1. **The five gated fan-out rows and the job-wave groups need a world.** Both are waiting on
+   the same thing as milestone 2f's follow-up 2, `load_scene_contents` 004d4df0 with
+   `construct_world` 004de610: a world object whose +4ACh byte is set opens the gate, and
+   entities are what construct the tick elements the waves walk.
+2. **The ten fan-out callees with no reconstruction**, in the order the doc's own follow-up
+   table gives them: `spatial_index_rebucket`, `deferred_entity_event_queue`,
+   `entity_pending_queues`, `entity_think_dispatch`, `sentity_init_all`,
+   `session_step_vs_frame`, `world_expired_objects`, plus 00c5c540 and 00874de0.
+3. **`bsp::run_fixed_step_driver_00875bb0` should carry the tail gate**, so a caller does not
+   have to run 00875fd1 beside it.
+4. **The debrief front end**, 00920a20 with the `GUI_scoring` page 0060d740 (packet
+   `mission_debrief_bringup`), and the front-end shell entry 004e4000 as the mission host can
+   reach it: today request 04h is recorded because the shell's screens belong to the menu
+   host.
+5. **`Scoring_SetMissionCompleted` 008b8ad0 and the thirty other `Scoring_*` bindings**
+   (packet `scoring_binding_table`), so the record 009205e0 commits carries a result instead
+   of zeros.
+6. **The movie player as the executable can own it**, which would let 004f8a20 play the
+   result's clip, hold game+7184h and make the completion 004f89d0 the thing that lowers the
+   drain suspension, as it is in the game.
+7. **The poll's own 0Fh arm** is still unexercised, and corrections 1 and 8 say why: a
+   three-argument `PlayBinkMovie` in state 0Dh reaches EndScene synchronously, and a
+   one-argument one leaves +21h clear. The arm needs a result object with +21h set that
+   survives into a frame with an empty queue, which means a call made outside states 0Dh and
+   0Fh; finding a script that makes one is the next step.
+8. **The `EndScene` binding 008b01b0** and its menu prompt arm (correction 9), which is the
+   other way a mission ends and the reason `Scoring_SetMissionCompleted` has to run first.
 
 
 ## Next milestones

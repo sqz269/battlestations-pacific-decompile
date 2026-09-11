@@ -22,8 +22,10 @@
 #include "bsp/game_hosts_mission_frame.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/game_dynamics_list.hpp"
@@ -61,6 +63,13 @@ constexpr float kMillisecondsPerSecond = 1000.0f;
 constexpr int kGameBlockSlot = 2;
 constexpr int kRenderBlockSlot = 3;
 
+// Milestone 2g. How many frames the exit path is given after the mission leaves
+// game state 0Dh before the run gives up on it. The recovered path needs two:
+// one to dispatch request 10h and lower the suspension the teardown arm raised,
+// and one to dispatch the request 04h the state 11h arm enqueued. The bound
+// exists so a path that stalls ends the run instead of spinning.
+constexpr unsigned long long kMaxExitFrames = 8;
+
 void format_address(std::uint32_t value, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(value));
 }
@@ -75,7 +84,12 @@ struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
         GameFrameProfiler* profiler_in, std::string language_in)
         : log(log_in), vfs(vfs_in), lua(lua_in), profiler(profiler_in),
-          language(std::move(language_in)) {}
+          language(std::move(language_in)) {
+        // Both take references to members declared below, which are already
+        // default constructed when this body runs.
+        fixed_step = std::make_unique<GameFixedStepHost>(log, dynamics);
+        result = std::make_unique<GameMissionResultHost>(log, control);
+    }
 
     GameHostLog& log;
     GameVfsHost& vfs;
@@ -117,6 +131,16 @@ struct GameMissionFrameHost::Impl {
     bsp::GameDynamicsState dynamics{};        // game+30h
     bool unit_lists_built{false};             // game+193Ch
     unsigned long long fixed_steps{0};
+    // Milestone 2g: the fixed step's own body (00875cc0, 00875e0c, 00875670,
+    // 00875fd1) and the mission result object at game+7188h with the path out
+    // of state 0Dh. Both are constructed in the body above.
+    std::unique_ptr<GameFixedStepHost> fixed_step;
+    std::unique_ptr<GameMissionResultHost> result;
+    long complete_frame{-1};                  // --mission-complete-frame N
+    bool complete_injected{false};
+    unsigned long long exit_frames{0};        // frames run after state 0Dh ended
+    bool exit_path_finished{false};
+    bool drain_skip_reported{false};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -268,14 +292,18 @@ public:
     void advance_step_countdown_008079b0(float) override {
         owner_.record("FixedStep::advance_countdown", 0x008079b0u);
     }
-    void run_step_job_waves(std::uint8_t) override {
-        owner_.record("FixedStep::run_job_waves", 0x00875cc0u);
+    void run_step_job_waves(std::uint8_t run_pass) override {
+        // Milestone 2g: the three waves over the five 68h groups at 00f876c0.
+        owner_.fixed_step->run_job_waves_00875cc0(run_pass);
     }
-    void run_step_subsystems(float, bool) override {
-        owner_.record("FixedStep::run_subsystems", 0x00875e0cu);
+    void run_step_subsystems(float step, bool world_active) override {
+        // Milestone 2g: the sixteen per-step calls and their world gate. The
+        // tail hook's own gate is tested once per step alongside them, because
+        // 00875fd1 is the last thing the driver does with the same clock.
+        owner_.fixed_step->run_subsystems_00875e0c(step, world_active);
     }
-    void run_interpolation_wave_00875670(float, std::uint8_t) override {
-        owner_.record("FixedStep::interpolation_wave", 0x00875670u);
+    void run_interpolation_wave_00875670(float leftover, std::uint8_t run_pass) override {
+        owner_.fixed_step->run_interpolation_wave_00875670(leftover, run_pass);
     }
 
 private:
@@ -349,9 +377,20 @@ public:
         gate.view_mode_1fe4 = owner_.scene_state.session_mode;
         gate.session_count_9c = 0;
         FixedStepBinding host(owner_);
+        // The world gate of the fan-out, 00875e69..00875e7f: [[game+19CCh]+4ACh].
+        // construct_world 004de610 is a load record here, so there is no world
+        // object and the byte is zero; rows 9..13 are skipped every step.
+        const bool world_active = false;
         const std::uint32_t steps = bsp::run_fixed_step_driver_00875bb0(
-            owner_.fixed_clock, gate, scaled_delta, false, 0, host);
+            owner_.fixed_clock, gate, scaled_delta, world_active, 0, host);
         owner_.fixed_steps += steps;
+        // 00875fd1..00875ff7, the tail hook's four-test gate. The driver
+        // reconstruction stops after the interpolation wave and carries no host
+        // method for it, so the executable runs it here, at the driver's own
+        // tail position, and only when the driver's gate let the body run.
+        if (bsp::fixed_step_gate_open(gate)) {
+            owner_.fixed_step->run_tail_00875fd1();
+        }
         owner_.done("InMissionTick::fixed_step_driver", 0x00875bb0u);
     }
 
@@ -423,7 +462,15 @@ public:
     bool input_action_pressed(int) override { return false; }
 
     void request_02_004d8000() override { owner_.record("Drain::request_02", 0x004d8000u); }
-    void request_04_004e4000() override { owner_.record("Drain::request_04", 0x004e4000u); }
+    void request_04_004e4000() override {
+        // The front-end shell entry, which after a mission is the debrief front
+        // end. 004e4000 itself is reconstructed and milestone 2c runs it from
+        // the main-menu path over the menu host's screen registry; this host
+        // owns none of that state, so the dispatch is recorded and the run ends
+        // here rather than re-entering another owner's shell.
+        owner_.record("Drain::request_04_front_end_shell", 0x004e4000u);
+        owner_.result->note_front_end_entered();
+    }
     void request_06_notify_00e198ac() override {
         owner_.record("Drain::request_06", 0x00e198acu);
     }
@@ -434,14 +481,12 @@ public:
     void request_0a_0b_004dfb70() override { owner_.record("Drain::request_0a", 0x004dfb70u); }
     void request_0e_004c6b00() override { owner_.record("Drain::request_0e", 0x004c6b00u); }
     void request_0f_004d7970() override {
-        // BSP_Game_EndScene, the debrief handler docs/MISSION_RESULT_DECISION.md
-        // reconstructs. It commits or discards the score record through the
-        // profile, which this process does not own.
-        owner_.record("Drain::request_0f_end_scene", 0x004d7970u);
+        // BSP_Game_EndScene. Milestone 2g owns the scoring records and the
+        // mission progress object, so the handler runs for real.
+        owner_.result->run_end_scene_004d7970(false);
     }
-    bool request_10_teardown_004e458a(bsp::GameFrameControlState&) override {
-        owner_.record("Drain::request_10_teardown", 0x004e458au);
-        return false;
+    bool request_10_teardown_004e458a(bsp::GameFrameControlState& state) override {
+        return owner_.result->run_teardown_arm_004e458a(state);
     }
     void request_12_resume_004cd0f0() override {
         owner_.record("Drain::request_12", 0x004cd0f0u);
@@ -471,23 +516,31 @@ public:
     }
     void set_front_end_pending_flag(bool) override {}
     bsp::MissionResult mission_result() override {
-        // game+7188h. 004dfe83 released the previous result during the load and
-        // nothing in this process builds a new one, so the poll stops here and
-        // the debrief request 0Fh is never enqueued.
+        // game+7188h. Milestone 2f had nothing here, because 004dfe83 released
+        // the previous result during the load; --mission-complete-frame builds
+        // one through 004cd390, and this is what the poll then reads.
         owner_.done("MissionCompletion::mission_result", 0x004d7ea0u);
-        return bsp::MissionResult{};
+        return owner_.result->result_projection();
     }
     void world_final_tick(float) override {
-        owner_.record("MissionCompletion::world_final_tick", 0x00903670u);
+        // [game+19CCh] vtable +Ch, which the image fills with 00904bf0.
+        owner_.record("MissionCompletion::world_final_tick", 0x00904bf0u);
     }
     void world_post_tick() override {
         owner_.record("MissionCompletion::world_post_tick", 0x00903670u);
     }
-    void show_mission_result_gui(float) override {
-        owner_.record("MissionCompletion::result_gui", 0x004d7f1du);
+    void show_mission_result_gui(float local_z) override {
+        // 004d7f1d..004d7f42: the result's +8h float, 004f8a20 with it as the
+        // movie widget's local Z, then 004f8970 registering 004f89d0.
+        owner_.record("MissionCompletion::play_end_movie", 0x004d7f32u);
+        owner_.record("MissionCompletion::set_movie_completion", 0x004d7f42u);
+        owner_.log.notef("mission completion poll: the end movie would play at local "
+            "Z %.1f (result+8h); the movie player is the front-end owner's",
+            static_cast<double>(local_z));
     }
     void close_mission_result() override {
-        owner_.record("MissionCompletion::close_result", 0x004cd610u);
+        owner_.record("MissionCompletion::close_result_gui", 0x004d7f72u);
+        owner_.result->release_result_004cc510();
     }
 
 private:
@@ -780,7 +833,17 @@ public:
         const bool enqueued
             = bsp::check_mission_completion_004d7ea0(owner_.control, control);
         owner_.done("MissionFrame::check_mission_completion", 0x004d7ea0u);
-        if (enqueued) owner_.frames.completion_requested = true;
+        if (enqueued) {
+            owner_.frames.completion_requested = true;
+            // 004d7f67 latches the drain suspension with the enqueue, and the
+            // only two writers that clear it are 004c7ed0, reached from the
+            // completion 004d7f42 just registered, and the state 11h arm at
+            // 004e506b, which this state cannot reach while 0Fh is still
+            // queued. No clip is in flight here, so the executable runs the
+            // registered completion itself; without it the drain would never
+            // dispatch the request the poll just made.
+            owner_.result->run_movie_completion_004f89d0();
+        }
         return enqueued;
     }
 
@@ -1117,6 +1180,10 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     host.entry_state.game_state = bsp::kGameStateSceneReady;
     host.entry_state.local_view_mode = host.scene_state.session_mode;
     host.entry_state.local_slot_index = 0;
+    // game+1FE4h and game+1EE3h, the two fields 004d7970 and the drain's 10h
+    // arm read on the way out of the mission.
+    host.result->set_session_mode(host.scene_state.session_mode);
+    host.result->set_session_networked(host.entry_state.one_shots.session_was_networked);
     MissionEntryBinding entry(host);
     const bool ran = bsp::run_mission_state_entry(host.entry_state, host.audio, entry);
     host.done("MissionState::enter_mission_state", 0x004da6c0u);
@@ -1146,6 +1213,25 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     return host.entry.entered;
 }
 
+void GameMissionFrameHost::set_mission_complete_frame(long frame) noexcept {
+    impl_->complete_frame = frame;
+}
+
+void GameMissionFrameHost::set_mission_key(std::string key) {
+    // game+2198h, the key 009205e0 commits the scoring record under. The
+    // mission start writes it (docs/MISSION_TREE_BRIEFING_SCREENS.md).
+    impl_->result->set_mission_key(std::move(key));
+}
+
+bool GameMissionFrameHost::in_mission_phase() const noexcept {
+    return impl_->control.state
+        == static_cast<std::uint32_t>(bsp::GameStateId::kInMission);
+}
+
+bool GameMissionFrameHost::exit_path_finished() const noexcept {
+    return impl_->exit_path_finished;
+}
+
 bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta) {
     Impl& host = *impl_;
     if (!host.entry.entered) return false;
@@ -1155,6 +1241,66 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta) {
     host.frame_state.scaled_delta = raw_delta;  // no time dilation in this process
     host.frame_state.global_time = host.world_clock;
     host.world.game.elapsed = host.world_clock;
+    host.result->set_mission_clock(host.world_clock);
+
+    // 004e4d02, the first thing OnMove does after the console pre-tick: the
+    // request drain, skipped while game+5ECh is set. Milestone 2f ran only the
+    // in-mission branch and never drained, because nothing could enqueue.
+    {
+        FrameControlBinding control(host);
+        if (host.control.drain_suspended) {
+            if (!host.drain_skip_reported) {
+                host.drain_skip_reported = true;
+                host.log.notef("the request drain is suspended at game+5ECh, so 004e4430 "
+                    "does not run this frame");
+            }
+        } else {
+            bsp::drain_state_requests_004e4430(host.control, control);
+        }
+        // 004e504b, the state 11h arm of the frame bookkeeping: it lowers the
+        // suspension the teardown arm raised and asks for the front end.
+        const std::size_t queued = host.control.requests.count;
+        const bool waiting = host.control.state
+            == static_cast<std::uint32_t>(bsp::GameStateId::kMissionEndWait);
+        bsp::update_mission_end_wait(host.control, control);
+        if (waiting) {
+            const bool enqueued = host.control.requests.count > queued;
+            host.result->note_mission_end_wait(enqueued);
+            host.log.notef("mission end wait: state 11h, game+7184h clear, so 004e506b "
+                "cleared the drain suspension and %s request 04h",
+                enqueued ? "enqueued" : "did not enqueue");
+        }
+    }
+
+    // The mission left state 0Dh: the in-mission branch of 004e4a40 no longer
+    // runs, and what is left is the exit path's own frames.
+    if (host.control.state
+        != static_cast<std::uint32_t>(bsp::GameStateId::kInMission)) {
+        ++host.exit_frames;
+        host.frames.exit_frames = host.exit_frames;
+        host.log.notef("  mission exit frame %llu: game state 0x%02X, requests queued=%zu",
+            host.exit_frames, host.control.state, host.control.requests.count);
+        const bool front_end = host.control.state
+            == static_cast<std::uint32_t>(bsp::GameStateId::kFrontEnd);
+        if (front_end || host.exit_frames >= kMaxExitFrames) {
+            host.exit_path_finished = true;
+            host.frames.exit_completed = front_end;
+            return false;
+        }
+        return true;
+    }
+
+    // --mission-complete-frame N: the script's own PlayBinkMovie(name, true),
+    // injected on the frame the switch names because no script on this
+    // installation reaches it in a headless run.
+    if (host.complete_frame > 0 && !host.complete_injected
+        && host.frames.frames + 1 >= static_cast<unsigned long long>(host.complete_frame)) {
+        host.complete_injected = true;
+        host.frames.complete_injected = true;
+        host.log.notef("mission complete injected on frame %llu: the executable calls the "
+            "path a script's PlayBinkMovie(name, true) takes", host.frames.frames + 1);
+        host.result->play_bink_movie_0089a480(host.load.short_name, true);
+    }
 
     MissionFrameBinding binding(host);
     const bsp::MissionFrameResult result
@@ -1172,21 +1318,33 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta) {
         result.paused ? 1 : 0, host.frames.units_ticked,
         host.frames.mission_events_applied, host.frames.script_calls,
         result.input_entries_erased);
-    return !result.mission_completion_requested;
+    // A frame that asked to leave state 0Dh is not the last frame any more: the
+    // request it enqueued is dispatched by the next frame's drain, which is
+    // where the exit path runs.
+    return true;
 }
 
 void GameMissionFrameHost::report(long requested_frames) {
     Impl& host = *impl_;
     host.frames.requested = requested_frames;
-    // docs/MISSION_RESULT_DECISION.md's exit is reached only through 004d7ea0,
-    // which needs a mission-result object at game+7188h. 004dfe83 released the
-    // previous one during the load and nothing in this process builds a new
-    // one, so no frame can enqueue request 0Fh.
-    host.frames.exit_reachable = host.frames.completion_requested;
-    host.frames.exit_note = host.frames.completion_requested
-        ? "004d7ea0 enqueued the debrief request 0Fh"
-        : "no mission-result object at game+7188h, so 004d7ea0 never enqueues 0Fh "
-          "and the debrief path of 004d7970 is unreachable in this process";
+    const GameMissionExitSummary& exit = host.result->summary();
+    // Milestone 2f reported this as unreachable because nothing built a result
+    // object. What makes the path reachable is the producer, not the poll:
+    // 0089a390 calls 004d7970 itself when the script asks for the debrief.
+    host.frames.exit_reachable = exit.end_scene_ran || host.frames.completion_requested;
+    if (host.frames.exit_completed) {
+        host.frames.exit_note = "the mission ended through 004d7970: request 10h, the "
+            "teardown arm 004e458a, state 11h and request 04h";
+    } else if (exit.end_scene_ran) {
+        host.frames.exit_note = "004d7970 ran but the drain did not reach request 04h";
+    } else if (host.frames.completion_requested) {
+        host.frames.exit_note = "004d7ea0 enqueued the debrief request 0Fh";
+    } else {
+        host.frames.exit_note = "no mission-result object at game+7188h, so nothing "
+            "asked to leave state 0Dh; --mission-complete-frame builds one";
+    }
+    host.fixed_step->report();
+    host.result->report();
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));
@@ -1195,6 +1353,9 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.frames.requested, host.frames.frames, host.frames.simulated,
         host.frames.paused, host.frames.units_ticked, host.frames.mission_events_applied,
         host.frames.script_calls, host.frames.interface_updates);
+    host.log.notef("summary mission exit frames=%llu injected=%d completed=%d state=0x%02X",
+        host.frames.exit_frames, host.frames.complete_injected ? 1 : 0,
+        host.frames.exit_completed ? 1 : 0, host.control.state);
     host.log.notef("summary mission exit reachable=%d: %s",
         host.frames.exit_reachable ? 1 : 0, host.frames.exit_note.c_str());
 }

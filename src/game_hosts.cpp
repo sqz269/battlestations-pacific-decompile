@@ -274,6 +274,14 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             mission_frames = std::strtol(argv[++index], nullptr, 10);
+        } else if (std::strcmp(argument, "--mission-complete-frame") == 0) {
+            // Milestone 2g: the in-mission frame on which the executable makes
+            // the script's end-movie call.
+            if (index + 1 >= argc) {
+                error = "--mission-complete-frame needs a frame number";
+                return false;
+            }
+            mission_complete_frame = std::strtol(argv[++index], nullptr, 10);
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
         } else {
@@ -512,6 +520,15 @@ void GameFrameHost::game_on_move(float seconds) {
     log_.unimplemented("GameFrameControl::simulation_spine", "004e4d32");
     if (menu_ != nullptr) menu_->frame(seconds, frame_index_);
     ++frame_index_;
+    // Milestone 2g: a mission that ended through the debrief path has nothing
+    // left to run in a headless process, so the run finishes there instead of
+    // on the frame count. Requesting the loop exit is the executable's own
+    // decision, through the same byte the close policy and --frames use.
+    if (menu_ != nullptr && !global_exit_ && menu_->mission_exit_finished()) {
+        log_.notef("the mission ended through the debrief path, so the run requests the "
+            "application loop exit");
+        global_exit_ = true;
+    }
     // One of 004e4a40's callees is reconstructed: the window close processor at 004ca2f0
     // (docs/WINDOW_CLOSE.md), whose front-end branch reads and clears platform+180h and
     // sets global exit 00e1ae75. The confirmation-dialog branch taken for other game
@@ -1092,7 +1109,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     profiler_ = new GameFrameProfiler(log_, 8);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
-        profiler_, summary_.language);
+        profiler_, summary_.language, options_.mission_complete_frame);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
@@ -1224,6 +1241,9 @@ void GameStartupHost::application_shutdown() {
             summary_.mission_lua_native_calls = path.lua_native_calls;
             summary_.mission_script_path = path.lua_script_path;
             summary_.mission_exit_note = path.mission_exit_note;
+            summary_.mission_exit_frames = path.mission_exit_frames;
+            summary_.mission_exit_completed = path.mission_exit_completed;
+            summary_.mission_complete_injected = path.mission_complete_injected;
         }
     }
     if (frontend_ != nullptr) {
