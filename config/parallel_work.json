@@ -6897,6 +6897,26 @@
       ],
       "evidence": "reports/native_renderer_private_reset_profiles_audit.json",
       "new_native_body_count": 2
+    },
+    {
+      "id": "native_renderer_surface_save_worker3",
+      "packet": "native_renderer_surface_save_worker3",
+      "state": "three_complete_raw_worker_entries_main_Win32_nonempty_real_D3DX_save_and_full_COFF_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b5e380",
+        "00b5e0c0",
+        "00b5e230"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_surface_save_worker.hpp",
+        "src/native_renderer_surface_save_worker.cpp",
+        "docs/NATIVE_RENDERER_SURFACE_SAVE_WORKER.md",
+        "reports/native_renderer_surface_save_worker_audit.json"
+      ],
+      "evidence": "reports/native_renderer_surface_save_worker_audit.json"
     }
   ],
   "snapshot_after_analysis": {

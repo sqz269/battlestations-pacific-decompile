@@ -141,3 +141,22 @@ full producer, binary replacement or gameplay claim is made.
 Artifacts are immutable under ignored `local/renderer_surface_save_worker/`.
 The tracked audit records complete original bytes and proof pins. No permanent
 tests, shared CMake, Ghidra, original game or shared metadata files changed.
+
+
+## Primary integration
+
+Main CMake now registers the unchanged source. The main strict Win32 build,
+both existing CTests and eight fresh seeds passed. Primary verified118 sealed
+worker pins,21 current files and15 fresh spans,774 bytes. Six exact actual main
+archive objects retain all reviewed code/data/relocation contents. The unchanged
+fixture linked only the frozen main library and performed one nonempty real
+worker save in its own hidden-window/output directory. All64 BMP pixels matched
+RGB(51,102,153), and the actual thread returned0. Full233 COFF sections,649
+relocations,79 imports,five COM/D3DX observations and14,499 runtime code bytes
+passed. Original machine bodies remain unexecuted.
+
+The immutable main bundle is `local/surface_save_worker_primary/`. Primary
+defined the complete12-byte Win32 adapter, saved three reviewed names/comments
+with prior values retained, registered three raw functions, and refreshed their
+exports. The binding, producer, native-exception and full-lifetime/gameplay
+boundaries above remain.
