@@ -97,7 +97,7 @@
   ],
   "numeric_rows": 564,
   "failed": 0,
-  "build": "scripts/build.ps1 Release MSVC Win32 passed with all eight sources and merged main d5e85f87",
+  "build": "scripts/build.ps1 Release MSVC Win32 passed at c38fd702 after the final concurrent main merge; both existing tests passed",
   "existing_tests": [
     "reconstructed_math passed",
     "native_math_differential passed"
@@ -136,5 +136,13 @@
     "Native pooled strings, Lua callbacks, SEH and binary entry-point ABI",
     "Execution of new Text rendering paths and gameplay validation"
   ],
-  "integration": "Worktree checks complete; final integration/main merge validation recorded separately."
+  "integration": {
+    "commit": "c38fd702c771ec7ee830700db035be391cea65a1",
+    "additional_main_parent": "df43adba196a8b9569b75dee95dd2b9ddc65689c",
+    "post_merge_build": "scripts/build.ps1 passed after the integration workflow merged additional Lua sources during its fast-forward retry",
+    "all_36_batch_annotations_saved": true,
+    "other_owner_annotations_deferred": 9,
+    "snapshot_and_indexes_refreshed": true,
+    "game_validated": false
+  }
 }

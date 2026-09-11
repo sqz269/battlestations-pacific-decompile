@@ -53,3 +53,10 @@ tail. It preserves both callback-separated retained130 assignments and late
 source reads. Full allocation, canonical Model adoption and mesh clone remain
 explicit prerequisites. The final eight-source build also includes main
 commit d5e85f87, merged through 4a00cc65, and passes both existing tests.
+
+Final integration reached c38fd702, including concurrent main df43adba. Because
+that merge added Lua sources after the integration tool's first build, the
+normal Win32 build and both existing tests were run again at c38fd702 and pass.
+All 36 annotations from this batch are saved; the integration tool deferred
+nine other annotations leased to the other orchestrator. Shared snapshot and
+indexes were refreshed. No Text/gameplay validation is claimed.
