@@ -1,0 +1,93 @@
+{
+  "packet": "orch3_cursor_policy_e",
+  "source": "src/platform_cursor.cpp",
+  "header": "include/bsp/platform_cursor.hpp",
+  "documentation": "docs/PLATFORM_CURSOR.md",
+  "status": "reconstructed_build_and_host_fixture_tested",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {
+      "address": "004ba6d0",
+      "previous_name": "STL_inst_004ba6d0",
+      "previous_tag": {"tag": "stl_instantiation", "confidence": "high", "action": "rename"},
+      "reviewed_name": "BSP_InputBackend_GetDeviceByClassAndIndex_Provisional",
+      "entrypoint": "get_input_class_device_004ba6d0",
+      "native_abi": "ECX=input backend; signed class and unsigned index stack arguments; EAX=device/null; RET8",
+      "last_instruction": "004ba718",
+      "last_instruction_length": 3,
+      "end_inclusive": "004ba71a",
+      "end_exclusive": "004ba71b",
+      "evidence": "LEA EAX,[class+class*8+1Bh]; LEA ESI,[backend+EAX*4]; begin/end at ESI+4/+8; unsigned index guard; reload begin after repeated checked access. Caller must provide valid class; groups are native active vectors, not fixed attachment slots."
+    },
+    {
+      "address": "00becb20",
+      "previous_name": "BSP_Win32Platform_UpdateCursorFocusState",
+      "previous_evidence": "Checks focus and input/UI state, transitions cursor visibility via ShowCursor loops and performs mouse-related reset calls. Exact dependent subsystem meanings remain unresolved.",
+      "reviewed_name": "BSP_Win32Platform_UpdateCursorFocusState",
+      "entrypoint": "update_platform_cursor_focus_00becb20",
+      "native_abi": "ECX=platform; loading byte stack argument; RET4",
+      "last_instruction": "00beccc5",
+      "last_instruction_length": 3,
+      "end_inclusive": "00beccc7",
+      "end_exclusive": "00beccc8",
+      "evidence": "Guard current online manager/input backend/first class1 device. Optional A409F0 pump before capture of platform+41 and manager+3E8. Preserve deferred focus reset, reload mouse after reset for cooperative flags6, optional current backend update0.1, exact ShowCursor signed count loops, captured UI write to DB90."
+    },
+    {
+      "address": "00bece70",
+      "previous_name": "BSP_Win32Platform_RunFrame",
+      "previous_evidence": "Calls application object at this+48h virtual +10h, then cursor/focus state updater 00becb20(false).",
+      "reviewed_name": "BSP_Win32Platform_RunFrame",
+      "entrypoint": "run_platform_application_service_00bece70",
+      "native_abi": "ECX=platform; no stack arguments; RET",
+      "last_instruction": "00bece87",
+      "last_instruction_length": 1,
+      "end_inclusive": "00bece87",
+      "end_exclusive": "00bece88",
+      "evidence": "Capture platform in ESI, load application+48 into ECX, call application virtual+10, then call BECB20 with false; application exceptions skip cursor work."
+    }
+  ],
+  "canonical_state": [
+    "Win32PlatformState.byte_041 and application",
+    "PlatformManagerFlags.system_ui_visible (+3E8)",
+    "InputBindingDeviceGroups active device vectors",
+    "Live uint8 references for 0109DB8E,0109DB8F,0109DB90"
+  ],
+  "image_bytes": {
+    "0109db8e_0109db90": "000000",
+    "00d7a2f0": "cdcccc3d",
+    "00d7a2f0_value": 0.10000000149011612
+  },
+  "required_services": [
+    "00a409f0 XLive manager pump on current PlatformManagerFlags identity",
+    "00beca40 focus/input reset",
+    "00a9a140 mouse cooperative-level flags6",
+    "Current actual F8BBF4 backend virtual+4 float tick",
+    "Win32 ShowCursor display count",
+    "Current platform.application virtual+10 frame (00737a50)"
+  ],
+  "ghidra_missing_starts": [],
+  "ghidra_flow_repairs": [],
+  "ghidra_annotation_requests": [
+    {"address": "004ba6d0", "action": "Replace stale standalone STL name/tag with reviewed backend class/index getter evidence; preserve old classification in history."},
+    {"address": "00becb20", "action": "Append complete transition and singleton reload evidence; preserve established descriptive name and earlier comment."},
+    {"address": "00bece70", "action": "Append complete reconstructed wrapper evidence; preserve earlier comment."}
+  ],
+  "validation": {
+    "verify_seeds": {"passed": true, "matches": 8, "total": 8, "artifact": "local/platform-cursor-seeds.json"},
+    "win32_release_build": {"passed": true, "command": "./scripts/build.ps1", "log": "local/platform-cursor-build.log"},
+    "ctest": {"passed": 2, "total": 2, "tests": ["reconstructed_math", "native_math_differential"]},
+    "focused_fixture": {"passed": true, "source": "local/platform_cursor_fixture.cpp", "command": "./local/run_platform_cursor_fixture.cmd", "log": "local/platform-cursor-fixture.log", "live_windows_cursor_modified": false, "checks": ["UI opening reset/mouse config/tick/show order", "ShowCursor signed loop termination", "current manager reread after loading pump", "current mouse reread after focus reset", "captured UI value survives callback mutation", "UI close without focus defers reset", "focus return consumes pending reset then hides", "application wrapper observes callback focus change and loading=false", "missing manager preserves all policy globals", "empty vectors and unsigned maximum index return null"]},
+    "abi_compatible": false,
+    "native_allocation_or_seh_equivalent": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "Descriptive names and flag roles are hypotheses, not recovered symbols.",
+    "Active vector classes are a native unchecked precondition; typed vectors require stable valid storage during getter calls.",
+    "Canonical manager UI state is bool; malformed native non-boolean bytes are outside this representation.",
+    "The cursor policy does not initialize, read or write platform+2C; its preimage is not inferred here.",
+    "Concrete input/XLive/application service composition and actual ShowCursor effects belong to parent integration; no default callbacks are supplied."
+  ]
+}
