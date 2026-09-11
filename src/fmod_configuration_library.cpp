@@ -181,6 +181,9 @@ FmodResult FmodConfigurationLibrary::dsp_remove(void* dsp) {
 FmodResult FmodConfigurationLibrary::dsp_release(void* dsp) {
     return impl_->call("FMOD_DSP_Release", dsp);
 }
+FmodResult FmodConfigurationLibrary::channel_group_release(void* group) {
+    return impl_->call("FMOD_ChannelGroup_Release", group);
+}
 FmodResult FmodConfigurationLibrary::channel_set_3d_minmax_distance(void* channel, float minimum, float maximum) {
     return impl_->call("FMOD_Channel_Set3DMinMaxDistance", channel, minimum, maximum);
 }

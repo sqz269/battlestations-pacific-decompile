@@ -153,7 +153,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
             " [--mission-complete-frame N]"
-            " [--screenshot <path>] [--screenshot-frame N] [--hardware-probe-commit]\n");
+            " [--screenshot <path>] [--screenshot-frame N]"
+            " [--screenshot-mission-frame N] [--hardware-probe-commit]\n");
         return 2;
     }
 
@@ -162,9 +163,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2g, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
-        "menu_select=%s mission_frames=%ld mission_complete_frame=%ld log=%s",
+    log.notef("bsp_game milestone 2h, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
+        "screenshot_mission_frame=%ld menu_select=%s mission_frames=%ld "
+        "mission_complete_frame=%ld log=%s",
         options.frame_limit, options.press_start_frame, options.screenshot_frame,
+        options.screenshot_mission_frame,
         options.menu_select.empty() ? "(none)" : options.menu_select.c_str(),
         options.mission_frames, options.mission_complete_frame,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());

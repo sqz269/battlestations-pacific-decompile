@@ -1,0 +1,222 @@
+{
+  "packet": "orch2_native_memory_stream_am",
+  "status": "complete_raw_storage_leaves_and_copy_producer_build_and_fixture_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00bef4c0",
+      "end_exclusive": "00bef4c3",
+      "length": 3,
+      "coverage": "complete",
+      "cpp_symbol": "native_memory_stream_open_00bef4c0",
+      "proposed_name": "BSP_MemoryStream_IsOpen",
+      "original_abi": "ECX ignored; AL=1; RET",
+      "ghidra_state": "no_ghidra_function",
+      "definition_required": true,
+      "bytes": "b001c3"
+    },
+    {
+      "address": "00bef590",
+      "end_exclusive": "00bef5e6",
+      "length": 86,
+      "coverage": "complete",
+      "cpp_symbol": "native_memory_stream_read_00bef590",
+      "original_abi": "ECX actual stream; stack destination, requestedDWORD, optionalActualDWORDPointer; EAX optionalActual pointer; RET0C",
+      "service_boundary": "00bf7680 overlap-safe copy bound to host memmove"
+    },
+    {
+      "address": "00bef600",
+      "end_exclusive": "00bef60b",
+      "length": 11,
+      "coverage": "complete",
+      "cpp_symbol": "native_memory_stream_length_00bef600",
+      "original_abi": "ECX actual stream; EDX:EAX signed32(end-backingData); RET"
+    },
+    {
+      "address": "00befa40",
+      "end_exclusive": "00befae5",
+      "length": 165,
+      "coverage": "complete",
+      "cpp_symbol": "create_native_memory_stream_from_copy_00befa40",
+      "original_abi": "ECX source; stack low and ignored high DWORD count; EAX new14h stream; RET8",
+      "implemented_interface": "new C++ interface with explicit existing ownership context",
+      "service_boundary": "shared CRT allocation/free/memmove and existing actual-storage owner functions; no original CRT exception identity"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bef5cc",
+      "native": "00bf7680",
+      "function": "00bef590",
+      "contract": "overlap-safe copy, cdecl 3 arguments; ADD ESP,0C at BEF5D1"
+    },
+    {
+      "address": "00befa78",
+      "native": "00bf681b",
+      "function": "00befa40",
+      "contract": "raw 10h allocation; ADD ESP,4 at BEFA7D"
+    },
+    {
+      "address": "00befa93",
+      "native": "008d43c0",
+      "function": "00befa40",
+      "contract": "backing constructor ECX raw, stack signed low DWORD, RET4"
+    },
+    {
+      "address": "00befaa8",
+      "native": "00bf7680",
+      "function": "00befa40",
+      "contract": "copy low DWORD count; ADD ESP,0C at BEFAAD"
+    },
+    {
+      "address": "00befab2",
+      "native": "00bef6d0",
+      "function": "00befa40",
+      "contract": "ECX backing -> new14h wrapper with retain, RET"
+    },
+    {
+      "address": "00befabd",
+      "native": "IAT[00ce2220]",
+      "function": "00befa40",
+      "contract": "InterlockedDecrement(backing+4), stdcall one argument"
+    },
+    {
+      "address": "00befacd",
+      "native": "00bd30e0",
+      "function": "00befa40",
+      "contract": "current slot0 only when decrement result zero; indirect profile resolution"
+    },
+    {
+      "address": "00cc76d4",
+      "native": "00bf65ac",
+      "function": "00cc76d0",
+      "contract": "state0 raw backing cleanup; raw POP ECX/RET at CC76D9/DA omitted from current saved function"
+    },
+    {
+      "address": "00bf4748",
+      "native": "00befa40",
+      "function": "00bf46b0",
+      "contract": "only direct caller found; ECX stored source+10, pushes high+1C then low+18; callee RET8"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "008d43c0",
+      "establishes": "10h backing profile D15AD8/count1/data+8/storedlength+C; positive allocation else allocation1/length0; actual count and original request byte counter"
+    },
+    {
+      "function": "00bef6d0",
+      "establishes": "14h stream profile D642C0/count1/backing+8 retained/cursor+10/end+C=data+currentlength"
+    }
+  ],
+  "table_evidence": {
+    "00d642c0": {
+      "+00": "00bd30e0",
+      "+04": "00bb8f90",
+      "+18": "00bef4c0",
+      "+24": "00bef590",
+      "+30": "00bef600"
+    },
+    "00d15ad8": {
+      "+00": "00bd30e0",
+      "+04": "008d4470"
+    },
+    "all_leaf_xrefs": {
+      "00bef4c0": [
+        "00d642d8",
+        "00d64340"
+      ],
+      "00bef590": [
+        "00d642e4",
+        "00d6434c"
+      ],
+      "00bef600": [
+        "00d642f0",
+        "00d64358"
+      ]
+    },
+    "second_table_limit": "D64328 shares these leaves; its producer and BB9000 deletion are outside this dispatcher domain"
+  },
+  "cleanup_evidence": {
+    "handler": "00cc76db",
+    "funcinfo": "00e022d8",
+    "max_state": 1,
+    "map": "00e022d0",
+    "state0_action": "00cc76d0",
+    "action_bytes": "8b45f050e8d3eef2ff59c3",
+    "scope": "raw owner freed only on backing constructor exception; state disarmed before copy and wrapper creation",
+    "saved_body_limit": "CC76D0..CC76D8 excludes raw POP ECX/RET at CC76D9..CC76DA; parent may repair under write lock"
+  },
+  "corrections": [
+    {
+      "was": "semantic stream exposes positive signed32 size and guarded reads only",
+      "is": "new actual-storage leaves retain DWORD wrap, CDQ sign extension, 2/4-byte stores, optional pointer EAX and native cursor/output ordering",
+      "evidence": "BEF590 complete assembly; BEF600 11 bytes"
+    },
+    {
+      "was": "BF7680 name alone could imply host memcpy",
+      "is": "BF7680 supports backward overlap, so external copy binding is memmove",
+      "evidence": "BF7694/BF769A checks and BF7844..BF7862 backward-copy path"
+    },
+    {
+      "was": "actual owner profile words are not callable host function tables",
+      "is": "explicit original-identity dispatcher reuses ownership without rewriting numeric profiles",
+      "evidence": "D642C0/D15AD8 current table bytes; existing NativeRetainedMemoryOwnerContext"
+    }
+  ],
+  "validation": {
+    "seed_disk_verification": "passed all 8 existing seed records",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed MSVC Win32 Release; existing reconstructed_math and native_math_differential 2/2 passed",
+      "log": "local/native_memory_stream_build.log"
+    },
+    "report_calls": "passed 8 address/native rows, 0 failed; 1 IAT row skipped, 1 indirect target resolved from current immutable table",
+    "focused_probe": {
+      "command": "./local/run_native_memory_stream_probe.ps1",
+      "source": "local/native_memory_stream_probe.cpp",
+      "result_log": "local/native_memory_stream_probe_result.log",
+      "result": "PASS original PE leaf comparisons=7; RET0C/EAX/ESI/EDI; overlap; signed length; actual copy/read/zero-reference teardown; empty/null; numeric identities preserved",
+      "exe_sha256": "032311216845bcb18a28d3b80ea51b86d9bd99bc6d776589518811d1045650b0",
+      "native_binding": "installed original PE spans BE0000, BF0000, D10000, D60000 and 01090000 at unchanged addresses; no imports, startup, relative-call replacement or game process",
+      "scope": "7 native leaf comparisons, original RET0C/EAX/ESI/EDI; normal actual-storage copy/read/release composition; empty/null sources",
+      "mapping_note": "Early isolated runs could not reserve original addresses because of process heap placement; successful run reserved spans before loading the file and completed all assertions. Reservation failures were reported as failures, not accepted as behavioral passes."
+    },
+    "game_validated": false,
+    "ghidra_mutations": "none by worker",
+    "compiled_leaf_bytes": [
+      {
+        "function": "00bef4c0",
+        "compiled_address": "30003ab0",
+        "length": 3,
+        "matches_original": true,
+        "mask": "none"
+      },
+      {
+        "function": "00bef590",
+        "compiled_address": "30003ac0",
+        "length": 86,
+        "matches_original": true,
+        "mask": "sole CALL rel32 at function+3D..40 bound to host copy service"
+      },
+      {
+        "function": "00bef600",
+        "compiled_address": "30003aa0",
+        "length": 11,
+        "matches_original": true,
+        "mask": "none"
+      }
+    ],
+    "git_diff_check": "passed"
+  },
+  "remaining": [
+    "Parent must define BEF4C0..BEF4C3, preserve prior comments and apply reviewed evidence under the Ghidra lock.",
+    "Dispatcher input domain is original D642C0/D15AD8 profiles only; arbitrary class dispatch is unresolved.",
+    "BEFA40 original register/stack entrypoint and CRT exception identity are not reproduced; composed C++ semantics are implemented.",
+    "No large or negative-count allocation/copy execution; original unsafe signed allocation versus unsigned copy mismatch remains.",
+    "No installed Lua file-load or game runtime claim."
+  ]
+}

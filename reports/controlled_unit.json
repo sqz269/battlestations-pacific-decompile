@@ -1,0 +1,498 @@
+{
+  "packet": "cc_controlled_unit",
+  "owner": "agent/cc-controlled-unit",
+  "date": "2026-09-11",
+  "docs": ["docs/CONTROLLED_UNIT.md", "docs/SHIP_MOTION.md"],
+  "sources": [
+    "include/bsp/controlled_unit.hpp",
+    "src/controlled_unit.cpp",
+    "include/bsp/ship_motion.hpp",
+    "src/ship_motion.cpp",
+    "src/ship_motion_probe.cpp"
+  ],
+  "ghidra": "read-only: no renames, no comments, no prototypes, no flow repair",
+
+  "routines": [
+    {
+      "native": "004c0890",
+      "name": "BSP_Game_SetControlledUnit",
+      "reconstruction": "set_controlled_unit_004c0890",
+      "abi": "__thiscall(unit = ECX), RET 0, body 004C0890..004C0924",
+      "coverage": "complete"
+    },
+    {
+      "native": "00645600",
+      "name": "BSP_InGameHudRoot_SetControlledUnit",
+      "reconstruction": "select_controlled_unit_00645600",
+      "abi": "__thiscall(hudRoot = ECX, Unit* candidate = [ESP+4]), RET 4, body 00645600..00645702",
+      "coverage": "complete"
+    },
+    {
+      "native": "00645060",
+      "name": "BSP_Unit_IsSelectableForControl",
+      "reconstruction": "unit_is_selectable_00645060",
+      "abi": "bool __fastcall(unit = ECX, teamIndex = EDX, bool allowSpectate = [ESP+4]), RET 4, body 00645060..00645159",
+      "coverage": "complete for the readable gates; vtable[5Ch], vtable[124h] and 00927C50 are host inputs"
+    },
+    {
+      "native": "00954990",
+      "name": "BSP_Unit_BroadcastControlledAudioFlag",
+      "abi": "void __thiscall(unit = ECX, bool released = [ESP+4]), RET 4, body 00954990..00954A0B",
+      "coverage": "complete as read; named and documented, not reconstructed"
+    },
+    {
+      "native": "00817380",
+      "name": "BSP_Unit_BroadcastControlledPartFlag",
+      "abi": "void __thiscall(unit = ECX, bool released = [ESP+4]), RET 4, body 00817380..008173D4",
+      "coverage": "complete as read; named and documented, not reconstructed"
+    },
+    {
+      "native": "0080e290",
+      "name": "FUN_0080e290",
+      "abi": "void __thiscall(unit = ECX), RET 0, body 0080E290..0080E2B6",
+      "coverage": "complete as read; 0085AD00 not read, not named"
+    },
+    {
+      "native": "00b0d7b0",
+      "name": "FUN_00b0d7b0",
+      "abi": "void __thiscall(obj = ECX, void* handle = [ESP+4]), RET 4, body 00B0D7B0..00B0D7C8",
+      "coverage": "complete as read; 00B4EC90 not read. Owned by the particle packet, not renamed here"
+    },
+    {
+      "native": "00825f20",
+      "name": "BSP_UnitInstance_UpdateShipMotion",
+      "reconstruction": "ship_motion_step_00825f20",
+      "abi": "void __thiscall(unit = ECX, float dt = [ESP+4]), RET 4, body 00825F20..00826D6B, EDI = unit+310h",
+      "coverage": "partial: 00825FB1..008260F6, 00826187..00826866 and 00826B84..00826D6B are not reconstructed; the motion path 00826121..00826B84 is complete"
+    },
+    {
+      "native": "0092e8c0",
+      "name": "BSP_UnitController_ApplySteering",
+      "reconstruction": "ship_apply_steering_0092e8c0",
+      "abi": "void __thiscall(controller = ECX, float toTurn = [ESP+4], float dt = [ESP+8]), RET 8, body 0092E8C0..0092EB9B",
+      "coverage": "complete"
+    },
+    {
+      "native": "0092d300",
+      "name": "BSP_UnitController_ApproachAxialSpeed",
+      "reconstruction": "unit_approach_axial_speed_0092d300 (reused from docs/UNIT_FORCE_COMMANDS.md)",
+      "abi": "void __thiscall(controller = ECX, float commandedSpeed = [ESP+4], float dt = [ESP+8]), RET 8, body 0092D300..0092D591",
+      "coverage": "complete; re-derived from the listing here and confirmed branch for branch"
+    },
+    {
+      "native": "00937440",
+      "name": "BSP_UnitController_ApplyShipForces",
+      "reconstruction": "unit_steering_torque_00937440 (reused from docs/UNIT_FORCE_COMMANDS.md)",
+      "abi": "void __thiscall(controller = ECX, float dt = [ESP+4]), RET 4, body 00937440..0093762D",
+      "coverage": "complete as reconstructed there; this packet adds only its call site and vtable entry"
+    },
+    {
+      "native": "00813020",
+      "name": "BSP_UnitOrderRing_Tick",
+      "reconstruction": "tick_unit_order_ring_00813020 (reused from docs/UNIT_STATE_MESSAGE.md)",
+      "abi": "void __thiscall(ring = ECX, float dt = [ESP+4])",
+      "coverage": "complete as reconstructed there"
+    },
+    {
+      "native": "0078cf20",
+      "name": "FUN_0078cf20",
+      "abi": "__thiscall(ocean = ECX, float x = [ESP+4], float z = [ESP+8]), RET 8, x87 result",
+      "coverage": "none; not read. A host method, and a flat-sea stand-in in the probe"
+    },
+    {
+      "native": "008e6430",
+      "name": "FUN_008e6430",
+      "abi": "__cdecl-shaped (int category, unit) pushed at 00826A1F and 00826A1E, x87 result",
+      "coverage": "none; not read. A host method, and 1.0f in the probe"
+    }
+  ],
+
+  "controlled_unit_host_steps": [
+    {
+      "step": 1,
+      "address": "00645622",
+      "native": "00817380",
+      "function": "00645600",
+      "host_method": "release_unit_parts",
+      "note": "00817380(outgoing, 0); the per-part broadcast with the released value"
+    },
+    {
+      "step": 2,
+      "address": "0064562d",
+      "native": "0080e290",
+      "function": "00645600",
+      "host_method": "release_unit_nodes",
+      "note": "0080E290(outgoing); walks [unit+48h] by +44h"
+    },
+    {
+      "step": 3,
+      "address": "0064564d",
+      "native": "00645060",
+      "function": "00645600",
+      "host_method": "candidate_is_selectable",
+      "note": "00645060(candidate, [game+18ECh], 1)"
+    },
+    {
+      "step": 4,
+      "address": "00645663",
+      "native": "006fe530+vtable5c",
+      "function": "00645600",
+      "host_method": "candidate_is_kind_1",
+      "note": "indirect, vtable +5Ch with argument 1"
+    },
+    {
+      "step": 5,
+      "address": "00645673",
+      "native": "unknown+vtable124",
+      "function": "00645600",
+      "host_method": "candidate_vtable_124",
+      "note": "indirect, vtable +124h; the slot's target was not read"
+    },
+    {
+      "step": 6,
+      "address": "00645687",
+      "native": "004c0890",
+      "function": "00645600",
+      "host_method": "set_controlled_unit",
+      "note": "the republish taken only when the controlled unit is not changing"
+    },
+    {
+      "step": 7,
+      "address": "00645699",
+      "native": "006952a0",
+      "function": "00645600",
+      "host_method": "unregister_observer",
+      "note": "006952A0(controlled, hudRoot+8h)"
+    },
+    {
+      "step": 8,
+      "address": "006456b9",
+      "native": "00954990",
+      "function": "00645600",
+      "host_method": "set_unit_controlled_audio",
+      "note": "00954990(controlled, 0), the released value"
+    },
+    {
+      "step": 9,
+      "address": "006456c0",
+      "native": "004c0890",
+      "function": "00645600",
+      "host_method": "set_controlled_unit",
+      "note": "the real change"
+    },
+    {
+      "step": 10,
+      "address": "006456d3",
+      "native": "00694a60",
+      "function": "00645600",
+      "host_method": "register_observer",
+      "note": "00694A60(controlled, hudRoot+8h)"
+    },
+    {
+      "step": 11,
+      "site": "006456fa",
+      "native_tail_jump": "00954990",
+      "function": "00645600",
+      "host_method": "set_unit_controlled_audio",
+      "note": "00954990(controlled, 1). The instruction at 006456FA is JMP 00954990, not CALL: the argument slot is patched at 006456EC (MOV dword ptr [ESP+4],1) after POP EDI, so the row carries `site` rather than `address` and tools/verify_report_calls.py, which looks for a CALL, correctly skips it"
+    },
+    {
+      "step": 12,
+      "address": "004c0905",
+      "native": "00b0d7b0",
+      "function": "004c0890",
+      "host_method": "publish_listener",
+      "note": "the publish arm; ECX is DAT_00F8D39C"
+    },
+    {
+      "step": 13,
+      "address": "004c091e",
+      "native": "00b0d7b0",
+      "function": "004c0890",
+      "host_method": "publish_listener",
+      "note": "the clear arm; the same two stores with a zero value"
+    }
+  ],
+
+  "ship_motion_host_steps": [
+    {
+      "step": 1,
+      "address": "00826121",
+      "native": "00813020",
+      "function": "00825f20",
+      "host_method": "tick_order_ring",
+      "note": "ECX is unit+838h (LEA EBX,[EDI+528h] at 00826116); receives the RAW delta"
+    },
+    {
+      "step": 2,
+      "address": "00826985",
+      "native": "0078cf20",
+      "function": "00825f20",
+      "host_method": "ocean_height",
+      "note": "ECX from [[00E188A8]+19F0h]; arguments are the keel point's x and z"
+    },
+    {
+      "step": 3,
+      "address": "00826a21",
+      "native": "008e6430",
+      "function": "00825f20",
+      "host_method": "gameplay_scale",
+      "note": "only when DAT_00E0C978 and [[00F88C30]+B8h] are both set; otherwise 00D7A24C"
+    },
+    {
+      "step": 4,
+      "address": "00826a6d",
+      "native": "00937440+vtable00",
+      "function": "00825f20",
+      "host_method": "run_force_model",
+      "note": "indirect, controller vtable slot 0; 00937440 is the surface-ship override, data reference 00D196F0"
+    },
+    {
+      "step": 5,
+      "address": "00826a78",
+      "native": "006fe530+vtable5c",
+      "function": "00825f20",
+      "host_method": "unit_trait_0e",
+      "note": "indirect, unit vtable +5Ch with argument 0Eh; gates the boost block"
+    },
+    {
+      "step": 6,
+      "address": "00826aab",
+      "native": "0080fc30",
+      "function": "00825f20",
+      "host_method": "reference_speed",
+      "note": "reached only past the trait probe, a non-zero order kind and a positive reserve"
+    },
+    {
+      "step": 7,
+      "address": "00826b29",
+      "native": "0092d300",
+      "function": "00825f20",
+      "host_method": "unit_approach_axial_speed_0092d300 (direct, not a host method)",
+      "note": "skipped when the wave gate cleared BL at 008269A5"
+    },
+    {
+      "step": 8,
+      "address": "00826b54",
+      "native": "0092e8c0",
+      "function": "00825f20",
+      "host_method": "ship_apply_steering_0092e8c0 (direct, not a host method)",
+      "note": "skipped when unit+9E4h is set (00826B2E)"
+    },
+    {
+      "step": 9,
+      "address": "00826b6a",
+      "native": "0092be80",
+      "function": "00825f20",
+      "host_method": "controller_step",
+      "note": "owned by packet cc_world_update; runs whatever the gate said"
+    },
+    {
+      "step": 10,
+      "address": "00826b84",
+      "native": "unknown+vtable1ec",
+      "function": "00825f20",
+      "host_method": "unit_post_motion",
+      "note": "indirect, unit vtable +1ECh; the slot's target was not read"
+    },
+    {
+      "step": 11,
+      "address": "0092d30e",
+      "native": "00c31f40",
+      "function": "0092d300",
+      "host_method": "body_linear_velocity",
+      "note": "the external physics import"
+    },
+    {
+      "step": 12,
+      "address": "0092d316",
+      "native": "00c32000",
+      "function": "0092d300",
+      "host_method": "body_basis",
+      "note": "the external physics import; row 2 at +18h..+20h is the forward axis"
+    },
+    {
+      "step": 13,
+      "address": "0092d444",
+      "native": "00825ec0",
+      "function": "0092d300",
+      "host_method": "forward_acceleration",
+      "note": "class+508h scaled by unit+1038h against settings+228h"
+    },
+    {
+      "step": 14,
+      "address": "0092d588",
+      "native": "00c37e50",
+      "function": "0092d300",
+      "host_method": "body_set_linear_velocity",
+      "note": "the external physics import"
+    },
+    {
+      "step": 15,
+      "address": "0092e8ef",
+      "native": "0042ac60",
+      "function": "0092e8c0",
+      "host_method": "unit_step_towards_0042ac60 (direct, not a host method)",
+      "note": "ECX is controller+80h; the step is float(dt*0.5)"
+    },
+    {
+      "step": 16,
+      "address": "0092e8f7",
+      "native": "00c32000",
+      "function": "0092e8c0",
+      "host_method": "body_basis",
+      "note": "a second call in the listing, after the rudder slew"
+    },
+    {
+      "step": 17,
+      "address": "0092e942",
+      "native": "00c31f20",
+      "function": "0092e8c0",
+      "host_method": "body_angular_velocity",
+      "note": "the external physics import"
+    },
+    {
+      "step": 18,
+      "address": "0092e950",
+      "native": "00811890",
+      "function": "0092e8c0",
+      "host_method": "yaw_rate_target",
+      "note": "reads controller+80h AFTER the slew; the result is negated by FCHS at 0092E955"
+    },
+    {
+      "step": 19,
+      "address": "0092e966",
+      "native": "00825de0",
+      "function": "0092e8c0",
+      "host_method": "yaw_rate_target",
+      "note": "the propeller turn assist, composed into the same host method"
+    },
+    {
+      "step": 20,
+      "address": "0092e9d7",
+      "native": "006fe530+vtable5c",
+      "function": "0092e8c0",
+      "host_method": "unit_trait_0e",
+      "note": "indirect, unit vtable +5Ch with argument 0Eh; gates the righting term"
+    },
+    {
+      "step": 21,
+      "address": "0092e9e9",
+      "native": "0042cf10",
+      "function": "0092e8c0",
+      "host_method": "camera_asin_clamped_0042cf10 (direct, already reconstructed)",
+      "note": "argument is basis row 2's y"
+    },
+    {
+      "step": 22,
+      "address": "0092eb8f",
+      "native": "00c37e20",
+      "function": "0092e8c0",
+      "host_method": "body_set_angular_velocity",
+      "note": "the external physics import"
+    }
+  ],
+
+  "corrections": [
+    {
+      "target": "docs/UNIT_FORCE_COMMANDS.md, constant table",
+      "was": "00D19628 | 2.0f",
+      "is": "00D19628 read as a double is 0.2617991, fifteen degrees in radians; the 2.0f float is its low half",
+      "evidence": "0092EA4D is FMUL double ptr [00D19628]; the eight bytes are 00 00 00 40 52 C1 D0 3F. The damper's threshold 00D05AA8 is a separate float holding the same angle, 0.2617844f."
+    },
+    {
+      "target": "docs/UNIT_FORCE_COMMANDS.md and include/bsp/unit_forces.hpp, the two acceleration fields",
+      "was": "class[504h] brakeAccel, class[508h] driveAccel (kShipClassOffBrakeAccel / kShipClassOffDriveAccel, UnitAxialSpeedInputs::brake_accel / drive_accel)",
+      "is": "class[504h] is MaxAccel and class[508h] Retardation",
+      "evidence": "ShipClassDescriptorOffsets::kMaxAccel = 0x504 and kRetardation = 0x508 in include/bsp/ship_class_fields.hpp, loader 00831882..00831998 (docs/SHIP_CLASS_FIELDS.md). 0092D300's selection agrees with the reader: a hull below its target and moving ahead uses class[504h], one above its target and moving ahead uses 00825EC0's class[508h]. The arithmetic in unit_forces.cpp is correct; only the names are inverted, so no code change was made and src/ship_motion.cpp maps by offset."
+    },
+    {
+      "target": "docs/UNIT_FORCE_COMMANDS.md, the 0092D300 listing extract",
+      "was": "0092D3F1 accel, 0092D43A rate limiter, 0092D466 recomposition",
+      "is": "0092D444 the 00825EC0 call, 0092D455..0092D4DF the selection, 0092D4E5..0092D534 the rate limiter, 0092D538..0092D588 the recomposition",
+      "evidence": "exports/bsp/functions/0092d300/assembly.txt, read in full"
+    },
+    {
+      "target": "docs/UNIT_FORCE_COMMANDS.md, 00937440's callers",
+      "was": "no caller recorded",
+      "is": "called at 00826A6D as controller->vtable[0](dt) inside 00825F20; sole data reference 00D196F0",
+      "evidence": "00826A40 MOV ECX,[EDI+D08h]; 00826A4A MOV EDX,[ECX]; 00826A4C MOV EAX,[EDX]; 00826A6D CALL EAX. Ghidra xrefs on 00937440 list only the 00D196F0 data reference."
+    },
+    {
+      "target": "docs/UNIT_FORCE_COMMANDS.md, 00825F20's command tail",
+      "was": "target = ((maxSpeed*gameplayScale)*throttle)*engineGate reaches 0092D300",
+      "is": "a boost block at 00826A6F..00826B04 can replace that target outright for units answering IsKindOf(0Eh)",
+      "evidence": "00826AB6 FSTP [ESP+14h] writes the same slot 00826A5F wrote, and 00826B22 reads it as 0092D300's first argument. The block also drains unit+1188h by dt and refills it at class[808h]/class[810h] clamped to class[808h]."
+    },
+    {
+      "target": "docs/GAME_ON_MOVE_MAP.md, 00B0D7B0",
+      "was": "BSP_ParticleSystem_SetDeviceHandle, a device handle pushed into a particle-segment object",
+      "is": "the receiver DAT_00F8D39C is the render-resources singleton from 00B0F076, and the value is the controlled unit's vtable[18h], so it changes whenever the player changes ship",
+      "evidence": "004C08F7 vtable[18h] on the resolved driven object; docs/APP_INIT_RENDERER.md for 00F8D39C. Not renamed: that address is owned elsewhere."
+    },
+    {
+      "target": "the packet brief, part A",
+      "was": "004C0890 sets input contexts via 004C4300 and binds the HUD via 00651760",
+      "is": "004C0890's only callee is 00B0D7B0; 00645600's callees are 004C0890, 00645060, 00694A60, 006952A0, 0080E290, 00817380 and 00954990",
+      "evidence": "Ghidra callee list and the full body of both routines. 004C4300 is called only from 004D6410 and 004D8C00; 00651760 only from 0068ACA0."
+    },
+    {
+      "target": "the packet brief, part B",
+      "was": "the motion gates are sinking, docked and paused",
+      "is": "the gates are the wave gate at 00826998, unit+5Dh at 008269F4, the engine jam unit+9E5h, the rudder jam unit+9E4h at 00826B2E and the time scale unit+340h at 00826126; there is no docked or pause gate inside 00825F20",
+      "evidence": "the full listing of 00825F20's motion path"
+    }
+  ],
+
+  "probe": {
+    "target": "bsp_ship_motion_probe",
+    "source": "src/ship_motion_probe.cpp",
+    "input": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua",
+    "run": "--steps 200, dt 0.05, throttle 1, rudder 1, VehicleClass[11] Allen M. Sumner class 1945",
+    "class_fields": {
+      "MaxSpeed": 17.4911,
+      "MaxAccel": 3.0,
+      "Retardation": 2.0,
+      "MaxRotAngle": 0.15708
+    },
+    "result": {
+      "peak_forward_speed": 17.4428,
+      "final_forward_speed": 17.3631,
+      "reference_speed": 17.4911,
+      "peak_speed_ratio": 0.9972,
+      "speed_approaches_class_maximum": true,
+      "peak_yaw_rate": 0.15708,
+      "yaw_rate_over_MaxRotAngle": 1.0,
+      "heading_turns_at_class_rudder_rate": true,
+      "note": "the final speed sits below the peak because a sustained turn bleeds speed: 0092D300 rewrites only the axial component and leaves the lateral one, so the hull carries a sideslip"
+    },
+    "second_run": {
+      "class": "VehicleClass[23] Fletcher class 1943",
+      "MaxSpeed": 18.7772,
+      "MaxRotAngle": 0.139626,
+      "peak_forward_speed": 18.7331,
+      "peak_speed_ratio": 0.9977,
+      "peak_yaw_rate": 0.13963,
+      "yaw_rate_over_MaxRotAngle": 1.0,
+      "final_forward_speed_after_15s_of_full_rudder": 17.6857
+    },
+    "stand_ins": [
+      "0078CF20, the ocean sampler: a flat sea at y = 0",
+      "008E6430, the gameplay scale: the literal 1.0f the listing uses when the two globals at 00826A06 are clear",
+      "the rudder curve settings at +438h..+44Ch: the three denominator knots forced to 1.0, which makes 0082E890 return 1.0 at every speed",
+      "the rigid-body integrator: an explicit Euler step with re-orthonormalisation, because the game integrates in the external physics library"
+    ],
+    "what_the_rudder_check_shows": "With the curve denominator forced to 1, 0082ECB0 reduces to MaxRotAngle * speedRatio * rudder * efficiency, so measuring MaxRotAngle at full speed and full rudder confirms the chain composes end to end. It does not confirm the game's turn rate, which is that value divided by the real curve."
+  },
+
+  "no_ghidra_function": "none. Every routine named or reconstructed has a Ghidra function. The two subclass wrappers starting 00855420 and 00749B20 were read from the raw listing for their call sites only and were not named, bounded or reconstructed; the 00644A38 call site lies in an undefined region whose nearest preceding function is 006446E0 and was not read.",
+
+  "leases_respected": [
+    "00937440, 0092D300, 00825DE0, 00825EC0 read only; owned by packet unit_force_commands, already merged",
+    "0092BE80 and the controller subobject left to packet cc_world_update",
+    "006FE460 and the unit instance layout left to the cc2 orchestrator",
+    "00B0D7B0 read only and not renamed; owned by the particle work"
+  ],
+
+  "build": "scripts/build.ps1, Win32 /W4 /WX, clean; ctest reconstructed_math 1/1 passed. No new test case was added: the probe is the validation."
+}

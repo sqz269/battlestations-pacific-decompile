@@ -173,3 +173,8 @@ fixture used the real repository Lua 5.1.1 with a recording FMOD host to check
 the repaired multi-type loop, duplicate listeners, numeric-string defaults,
 advanced-settings preservation, error continuation and final class ownership.
 Installed-script/real-FMOD execution is the integrator's separate validation.
+
+
+## Correction from docs/SOUND_LISTENER_OWNERSHIP.md and SOUND_SHUTDOWN.md
+
+Listeners now use actual16-byte records, NativeString allocation, atomic references and a raw retained pointer table. A7F9F0 still appends duplicates after ignored comparisons, but owns distinct record copies. SOUND_CONFIGURATION_SHUTDOWN.md supplies FMOD group/DSP release and group/type storage teardown; its three resize routines cover shrink/equal only. The installed no-sound bank/event shutdown fixture exercises these owners together; this does not establish application composition or audible/gameplay behavior.

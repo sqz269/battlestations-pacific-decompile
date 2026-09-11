@@ -48,6 +48,7 @@ class GameFrontendHost;
 class GameFrameProfiler;
 class GameMissionLuaHost;
 class GameMissionFrameHost;
+class GameHudHost;
 
 // One class token of the selected mission's `.scn`, as the reconstructed
 // reader counted it. `registered` is bsp::scene_entity_class_is_registered.
@@ -177,7 +178,8 @@ public:
     GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
         GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
         long mission_frames = 0, GameFrameProfiler* profiler = nullptr,
-        std::string language = {}, long mission_complete_frame = -1);
+        std::string language = {}, long mission_complete_frame = -1,
+        GameHudHost* hud = nullptr);
     ~GameMissionHost();
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;

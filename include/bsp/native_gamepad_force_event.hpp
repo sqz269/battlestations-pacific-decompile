@@ -88,6 +88,11 @@ public:
         const void* actual_definition, void* actual_subject);
     bool complete(NativeGamepadForceEventReference&);
     void cancel(NativeGamepadForceEventReference&);
+    // Pure lookup of an already existing companion; no retain/allocation.
+    NativeGamepadForceEventReference* find(RenderCommandReference&) const noexcept;
+    void update(NativeGamepadForceEventReference&, float, void* actual_reference_node);
+    // Resolve current+30 BEFORE clearing active+0C, then invoke that method.
+    void deactivate(NativeGamepadForceEventReference&);
     std::size_t binding_count() const noexcept;
 private:
     friend class NativeGamepadForceEventReference;

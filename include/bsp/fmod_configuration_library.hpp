@@ -10,6 +10,7 @@
 #include "bsp/sound_spatial_instance.hpp"
 #include "bsp/sound_event_instance.hpp"
 #include "bsp/sound_gameplay_methods.hpp"
+#include "bsp/sound_shutdown.hpp"
 
 #include <memory>
 #include <string>
@@ -31,7 +32,7 @@ class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
     public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
     public SoundChannelFmodHost, public SoundSystemUpdateFmodHost, public SoundSpatialChannelFmodHost,
-    public SoundEventFmodHost, public SoundGameplayFmodHost {
+    public SoundEventFmodHost, public SoundGameplayFmodHost, public SoundShutdownFmodHost {
 public:
     FmodResult channel_set_3d_minmax_distance(void*, float, float) override;
     FmodResult channel_get_mode(void*, std::optional<std::uint32_t>&) override;
@@ -57,7 +58,8 @@ public:
         std::uint32_t flags, void* driver_data);
     FmodResult update_system(void* system);
     FmodResult release_system(void* system);
-    FmodResult release_event_system(void* event_system);
+    FmodResult release_event_system(void* event_system) override;
+    FmodResult channel_group_release(void*) override;
     FmodResult update_event_system(void* event_system) override;
     FmodResult system_get_channels_playing(void*, std::int32_t*) override;
     FmodResult event_system_set_3d_listener_attributes(void*, std::int32_t,

@@ -1,0 +1,219 @@
+{
+  "packet": "orch3_point_array_ag",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_cpp_bodies_strict_win32_build_full_original_byte_and_actual_child_chain_fixture_passed",
+  "functions": [
+    {
+      "name": "erase",
+      "address": "00867210",
+      "end_exclusive": "00867293",
+      "length": 131,
+      "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00867243",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        },
+        {
+          "address": "00867251",
+          "target": "ebp",
+          "relative": false
+        },
+        {
+          "address": "0086725d",
+          "target": "eax",
+          "relative": false
+        },
+        {
+          "address": "00867274",
+          "target": "ebp",
+          "relative": false
+        },
+        {
+          "address": "00867280",
+          "target": "eax",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00867290",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "erase_point_effect_entry_array_unordered_00867210",
+      "ghidra_name": "BSP_PointEffectReferenceArray_EraseUnordered",
+      "original_abi": "ECX actual array header; one stack argument points to iterator slot; RET4; no established result",
+      "behavior": "Capture iterator, assign current tail with publish/retain/release; reload header after terminal reentry, release then clear newly current captured tail, decrement live count last.",
+      "source": "src/point_effect_entry_array.cpp"
+    },
+    {
+      "name": "append",
+      "address": "00867320",
+      "end_exclusive": "00867393",
+      "length": 115,
+      "sha256": "cb87acca77a37855791589bd65eedc628376a1d7dcf9601a3d84d8d4a041ff6e",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00867350",
+          "target": "0x8670a0",
+          "relative": true
+        },
+        {
+          "address": "00867377",
+          "target": "dword ptr [0xce221c]",
+          "relative": false
+        }
+      ],
+      "returns": [
+        {
+          "address": "00867390",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "append_point_effect_entry_array_00867320",
+      "ghidra_name": "BSP_PointEffectReferenceArray_Append",
+      "original_abi": "ECX actual array header; one stack argument points to borrowed source reference slot; RET4; no established result",
+      "behavior": "Grow only count==capacity with signed max(1, wrapped capacity*2); reload destination, write null before reading source, publish/retain, increment live count last.",
+      "source": "src/point_effect_entry_array.cpp"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "00867350",
+      "native": "008670a0",
+      "function": "00867320"
+    }
+  ],
+  "evidence_spans": [
+    {
+      "name": "append_eh_map",
+      "address": "00dc6c94",
+      "end_exclusive": "00dc6cc0",
+      "length": 44,
+      "sha256": "0c7e9e0811d038e55633d19dc8c8ca0fcc9a792174f293e3c87e7ee0ecc2d969",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "append_eh_code",
+      "address": "00c94e30",
+      "end_exclusive": "00c94e56",
+      "length": 38,
+      "sha256": "2a11dfc3dd938d192896f83dea3023ec03b979c57dcbf3c88e5677d535349bec",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00c94e43",
+          "target": "0x401130",
+          "relative": true
+        }
+      ],
+      "returns": [
+        {
+          "address": "00c94e4b",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "original_names": {
+    "00867210": "FUN_00867210",
+    "00867320": "FUN_00867320"
+  },
+  "indexed_callers": {
+    "00867210": [
+      "008673b0",
+      "00867790"
+    ],
+    "00867320": [
+      "00867790",
+      "008679d0",
+      "00867b10"
+    ]
+  },
+  "eh": {
+    "handler": "00c94e4c",
+    "func_info": "00dc6c9c",
+    "unwind_map": "00dc6c94",
+    "state0_action": "00c94e30",
+    "state0_next": -1,
+    "funclet_call_site": "00c94e43",
+    "funclet_target": "00401130",
+    "body_state": "entry -1; complete normal body never arms state0",
+    "native_exception_dispatch_executed": false
+  },
+  "validation": {
+    "byte_extraction": "local/point-array-extraction-ag.log: full131/115 bytes and EH spans equal live Ghidra/installed PE, exact complete instruction coverage and RET4",
+    "probe": "local/point-array-probe-ag.log: PASS; original complete wrappers vs C++ normalized slot/header/count/callback observations, explicit ESP balance",
+    "compile": "MSVC Win32 /O2 /W4 /WX /fp:strict /MD; changed source compiled directly, probe linked /MANIFEST:EMBED",
+    "combined_build": "local/point-children-ag-build.log: scripts/build.ps1 strict MSVC Win32 and both CTests passed",
+    "cases": [
+      "erase: replaced-target terminal changes backing/count; new-tail terminal changes count and captured slot; clear captured slot then decrement current count",
+      "erase: duplicate reference identity and direct tail",
+      "append: source aliases destination; null store precedes source read; no retain/release of overwritten value",
+      "append: actual empty->1 and full1->2 reserve growth with borrowed native+04 counts"
+    ],
+    "fixture_adapters": [
+      "Original Interlocked imports route to real Win32 operations.",
+      "Native diagnostic owners have raw virtual0 terminal observations/mutations; C++ companions borrow their same actual atomic+04 word.",
+      "Native append reserve call converts native slot identities to companions, invokes existing actual C++ reserve and its real allocation/free boundary, then converts back. Original reserve bytes are not executed here."
+    ],
+    "actual_lifetime": "local/point-children-chain-ag.log: real867790 primary->auxiliary->event-terminal flow through actual point/definition/component/node/string domains passed",
+    "native_child_caller": "local/point-children-native-ag-probe.log: original full561-byte867790 calls original array bodies with controlled actualcount owners, captured/live traversal parity passed",
+    "call_verification": "local/point-children-ag-call-verification.log: child2 plus array1 direct call rows verified; zero failures"
+  },
+  "contracts": [
+    "Existing actual PointEffectReferenceArray, canonical borrowed owner references, no secondary count or registry.",
+    "Nonempty valid array/iterator for erase; valid spans across callbacks.",
+    "Append borrowed source remains valid across reserve; no snapshot added.",
+    "Terminal actions remain nonthrowing under existing companion contract.",
+    "DWORD arithmetic wraps as native; no overflow/corrupt-header recovery added."
+  ],
+  "uncertainty": "New C++ API, not physical native vtable ABI. Focused diagnostic terminal fixture, not production physical event destruction. Native EH, application-loop and gameplay validation unproven.",
+  "documentation": "docs/POINT_EFFECT_ARRAY_MUTATIONS.md",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T232415Z.json",
+    "readback": "local/point-children-ag-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00867210",
+        "before": {
+          "address": "00867210",
+          "function_name": "BSP_PointEffectReferenceArray_EraseUnordered"
+        },
+        "after": {
+          "address": "00867210",
+          "name": "BSP_PointEffectReferenceArray_EraseUnordered",
+          "evidence": "Capture iterator, assign current tail with publish/retain/release; reload header after terminal reentry, release then clear newly current captured tail, decrement live count last. Complete131 bytes incl RET4, disk/live SHA256 2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5. docs/POINT_EFFECT_ARRAY_MUTATIONS.md; reports/point_effect_array_mutations.json. Complete original-body/ESP/callback-sensitive array fixtures and actual child-event lifetime passed; strict Win32 and both CTests passed. Names are hypotheses. Parameters: ECX actual array header; one stack argument points to iterator slot; RET4; no established result."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00867320",
+        "before": {
+          "address": "00867320",
+          "function_name": "BSP_PointEffectReferenceArray_Append"
+        },
+        "after": {
+          "address": "00867320",
+          "name": "BSP_PointEffectReferenceArray_Append",
+          "evidence": "Grow only count==capacity with signed max(1, wrapped capacity*2); reload destination, write null before reading source, publish/retain, increment live count last. Complete115 bytes incl RET4, disk/live SHA256 cb87acca77a37855791589bd65eedc628376a1d7dcf9601a3d84d8d4a041ff6e. docs/POINT_EFFECT_ARRAY_MUTATIONS.md; reports/point_effect_array_mutations.json. Complete original-body/ESP/callback-sensitive array fixtures and actual child-event lifetime passed; strict Win32 and both CTests passed. Names are hypotheses. Parameters: ECX actual array header; one stack argument points to borrowed source reference slot; RET4; no established result."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

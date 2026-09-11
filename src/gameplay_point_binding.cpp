@@ -116,12 +116,23 @@ RenderCommandReference* GameplayPointRows::create_virtual_18(void* row,
     if (function == 0x0086a820u) return create_point_shake_0086a820(row, &effect, spatial_);
     return remaining_.create_current(function, row, effect);
 }
+PointEffectRestartRowView GameplayPointRows::restart_fields(void* row) noexcept {
+    return {field<const std::uint8_t>(row, 0x10), field<const std::uint32_t>(row, 0x14)};
+}
+std::uint8_t GameplayPointRows::restart_virtual_08(void* row) {
+    const auto function = current_virtual(row, 2);
+    if (function == 0x0086b7b0u) return effect_component_restart_false_0086b7b0(row);
+    return remaining_.restart_current(function, row);
+}
 
 GameplayPointRumbleComponents::GameplayPointRumbleComponents(NativeGamepadForceEvents& events,
     GameplayPointRemainingComponents& remaining) noexcept : events_(events), remaining_(remaining) {}
 std::uint8_t GameplayPointRumbleComponents::admit_current(std::uint32_t function, void* row,
     EffectPointView point, CameraTransform& reference) {
     return remaining_.admit_current(function, row, point, reference);
+}
+std::uint8_t GameplayPointRumbleComponents::restart_current(std::uint32_t function, void* row) {
+    return remaining_.restart_current(function, row);
 }
 RenderCommandReference* GameplayPointRumbleComponents::create_current(std::uint32_t function,
     void* row, PointEffectInstanceStorage& effect) {
@@ -132,6 +143,28 @@ RenderCommandReference* GameplayPointRumbleComponents::create_current(std::uint3
         return events_.create(function, row, &effect);
     default: return remaining_.create_current(function, row, effect);
     }
+}
+
+GameplayPointChildEvents::GameplayPointChildEvents(NativeGamepadForceEvents& events,
+    PointEffectChildEvents& remaining) noexcept : events_(events), remaining_(remaining) {}
+PointEffectChildView GameplayPointChildEvents::child_fields(RenderCommandReference& value) noexcept {
+    if (auto* event = events_.find(value)) {
+        auto& raw = event->storage();
+        return {raw.active_0c, raw.event_type_18};
+    }
+    return remaining_.child_fields(value);
+}
+void GameplayPointChildEvents::update_virtual_28(RenderCommandReference& value, float delta, void* reference) {
+    if (auto* event = events_.find(value)) events_.update(*event, delta, reference);
+    else remaining_.update_virtual_28(value, delta, reference);
+}
+std::uint8_t GameplayPointChildEvents::complete_virtual_08(RenderCommandReference& value) {
+    if (auto* event = events_.find(value)) return events_.complete(*event) ? 1 : 0;
+    return remaining_.complete_virtual_08(value);
+}
+void GameplayPointChildEvents::deactivate_virtual_30(RenderCommandReference& value) {
+    if (auto* event = events_.find(value)) events_.deactivate(*event);
+    else remaining_.deactivate_virtual_30(value);
 }
 
 GameplayPointConstruction::GameplayPointConstruction(GameplayDefinitionReferences& definitions,
