@@ -55,7 +55,7 @@ enum class PlatformNotificationEffect {
     kStorageHook,
     // 00a3e600(parameter).
     kProfileSettingChanged,
-    // 00a40416: compares the update path against the "\\setup.exe" image.
+    // 00a40416: a nonempty update path gets "\\setup.exe" appended, then launches.
     kTitleUpdate,
     // 00a404a9: XLiveUpdateSystem then _exit(0). The process does not return.
     kSystemUpdateAndExit,
