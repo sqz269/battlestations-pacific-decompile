@@ -1,7 +1,9 @@
 #include "bsp/gui_lua_runtime.hpp"
 #include <limits>
+#include <cmath>
 #include <stdexcept>
 #include <unordered_map>
+#include <unordered_set>
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
@@ -58,6 +60,69 @@ struct StackTop {
     explicit StackTop(lua_State* s) : state(s), top(lua_gettop(s)) {}
     ~StackTop() { lua_settop(state, top); }
 };
+struct TableSnapshot {
+    lua_State* state;
+    std::unordered_map<const void*, std::shared_ptr<GuiTable>> tables;
+    std::unordered_set<const void*> active;
+    std::size_t entries{};
+
+    GuiValue value(int index, std::size_t depth) {
+        switch (lua_type(state, index)) {
+        case LUA_TNIL: return {};
+        case LUA_TBOOLEAN: return GuiValue(lua_toboolean(state, index) != 0);
+        case LUA_TNUMBER: return GuiValue(lua_tonumber(state, index));
+        case LUA_TSTRING: {
+            std::size_t length{};
+            const char* text = lua_tolstring(state, index, &length);
+            return GuiValue(std::string(text, length));
+        }
+        case LUA_TTABLE: return GuiValue(table(index, depth));
+        default: throw std::runtime_error("GUI table contains a non-data Lua value");
+        }
+    }
+    std::shared_ptr<const GuiTable> table(int index, std::size_t depth) {
+        StackTop restore(state);
+        if (depth > 128) throw std::runtime_error("GUI table exceeds host snapshot depth");
+        if (!lua_checkstack(state, 8))
+            throw std::runtime_error("GUI table snapshot could not extend the Lua stack");
+        const void* identity = lua_topointer(state, index);
+        if (active.count(identity)) throw std::runtime_error("GUI table contains a cycle");
+        const auto previous = tables.find(identity);
+        if (previous != tables.end()) return previous->second;
+        if (lua_getmetatable(state, index))
+            throw std::runtime_error("GUI table metatables require a live widget reader");
+        lua_pushvalue(state, index);
+        const int source = lua_gettop(state);
+        auto result = std::make_shared<GuiTable>();
+        tables.emplace(identity, result);
+        active.insert(identity);
+        lua_pushnil(state);
+        while (lua_next(state, source)) {
+            if (++entries > 100000)
+                throw std::runtime_error("GUI table exceeds host snapshot size");
+            if (lua_type(state, -2) == LUA_TSTRING) {
+                std::size_t length{};
+                const char* key = lua_tolstring(state, -2, &length);
+                if (std::char_traits<char>::length(key) != length)
+                    throw std::runtime_error("GUI table key contains an embedded NUL");
+                std::string name(key, length);
+                result->named.emplace_back(std::move(name), value(-1, depth + 1));
+            } else if (lua_type(state, -2) == LUA_TNUMBER) {
+                const double key = lua_tonumber(state, -2);
+                if (!std::isfinite(key) || key < 1 || key > 100000 || std::floor(key) != key)
+                    throw std::runtime_error("GUI numeric key is outside the retained array domain");
+                const auto slot = static_cast<std::size_t>(key - 1);
+                if (result->array.size() <= slot) result->array.resize(slot + 1);
+                result->array[slot] = value(-1, depth + 1);
+            } else {
+                throw std::runtime_error("GUI table contains an unsupported key type");
+            }
+            lua_pop(state, 1);
+        }
+        active.erase(identity);
+        return result;
+    }
+};
 }
 GuiLua51Host::GuiLua51Host() : impl_(std::make_unique<Impl>()) {}
 GuiLua51Host::GuiLua51Host(lua_State& borrowed) : impl_(std::make_unique<Impl>(borrowed)) {}
@@ -74,6 +139,15 @@ bool GuiLua51Host::execute_archive(std::string_view text, std::string& error) {
     }
     error.clear();
     return true;
+}
+std::shared_ptr<const GuiTable> GuiLua51Host::snapshot_table(const GuiLuaRef& object) {
+    StackTop restore(impl_->state);
+    impl_->push(object);
+    if (lua_isnil(impl_->state, -1)) return {};
+    if (!lua_istable(impl_->state, -1))
+        throw std::runtime_error("GuiScreen is not a Lua table");
+    TableSnapshot snapshot{impl_->state, {}, {}, 0};
+    return snapshot.table(-1, 0);
 }
 GuiLuaRef GuiLua51Host::globals() {
     return impl_->globals();
