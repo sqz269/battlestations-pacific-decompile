@@ -124,6 +124,15 @@ NativeMaterialStorage* clone_native_material_00b18b60(void* slot,
     } catch (...) { material.vtable_00 = base_table; throw; }
 }
 
+void set_native_material_parameter_owner_00b18a40(NativeMaterialStorage& material,
+    void* actual_owner, std::uint8_t retain_flag, NativeRenderActualOwners& owners) {
+    if (material.retain_source_10d)
+        release_then_clear(material.source_owner_0c, owners);
+    material.source_owner_0c = actual_owner;
+    material.retain_source_10d = retain_flag;
+    if (retain_flag && actual_owner) retain_actual(actual_owner);
+}
+
 void destroy_native_material_00b192f0(NativeMaterialStorage& material,
     NativeMaterialDestructionAccess& access) {
     material.vtable_00 = material_table;

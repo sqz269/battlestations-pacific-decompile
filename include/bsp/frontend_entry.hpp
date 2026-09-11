@@ -1,4 +1,6 @@
 #pragma once
+
+#include "bsp/gameplay_effect_manager.hpp"
 #include "bsp/native_render_batch_keys.hpp"
 #include <cstdint>
 #include <string>
@@ -205,7 +207,7 @@ struct FrontEndShellHost {
     virtual void renderer_set_budget(std::uint32_t value) = 0;
     virtual void probe_texture_memory(const char* label) = 0; // vtable +70h
     virtual void probe_sound_memory(const char* label) = 0; // 00a7a460
-    virtual void probe_effect_memory(const char* label) = 0; // 004c1650 then 0086b0b0
+    virtual GameplayEffectManagerContext& effect_manager_context() = 0;
     virtual bool title_screen_present() = 0; // 00E198C8
     virtual void destroy_title_screen() = 0; // vtable +0h with 1, then null it
     virtual bool front_end_manager_b8_present() = 0; // 00E198B8

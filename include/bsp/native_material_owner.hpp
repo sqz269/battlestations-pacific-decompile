@@ -66,6 +66,14 @@ NativeMaterialStorage* initialize_native_material_00b18900(void* actual_slot,
 NativeMaterialStorage* clone_native_material_00b18b60(void* actual_slot,
     const NativeMaterialStorage& source, NativeRenderActualOwners&);
 
+// Original ECX material, stack actual owner and low-byte retain flag, RET8.
+// Release the old +0C iff +10D is nonzero, clearing it AFTER any terminal
+// callback; then store the incoming pointer/exact byte and retain incoming+04
+// iff both are nonzero. Equal pointers still release and reacquire. Incoming
+// must independently survive old-owner release; no protective retain is added.
+void set_native_material_parameter_owner_00b18a40(NativeMaterialStorage&,
+    void* actual_owner, std::uint8_t retain_flag, NativeRenderActualOwners&);
+
 // Complete native destruction ordering over actual storage. Reload texture
 // end/parameter count after callbacks; clear captured resource slots only after
 // release. Source+0C is untouched when exact byte+10D is zero. Parameter slots,

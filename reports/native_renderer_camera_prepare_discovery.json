@@ -1,0 +1,1042 @@
+{
+  "packet": "native_renderer_camera_prepare_discovery",
+  "status": "full_parent_not_yet_ready_independent_raw_leaf_packets_identified",
+  "utc": "2026-09-11T16:28:29.693554+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "worktree_base_commit": "72f74c0802fa237c7092e4db914da578ef448039",
+  "guarded_queries": "Each bsp.py ghidra command verifies configured bsp.gpr and /battlestationspacific.exe before querying.",
+  "spans": [
+    {
+      "address": "00b285a0",
+      "length": 544,
+      "end_exclusive": "00b287c0",
+      "role": "full_prepare_camera",
+      "bytes_hex": "81ec14010000535556576a0068980000008be9e8a8beffff8bb424280100008bcee84a7f04008bcee8438104008bf88d9dc0170000578bcbe8d3caffff8b874001000089834001000033ff80bd511b00000089bdec19000089bdf01900000f84880100008bcb897c2410e871ca030085c00f864c010000578bcbe8e1d00300a8040f8526010000578bcbe8d1d00300a8020f84160100008bcee8727604008bd08d4c2464e8e7b40300508d8c24a8000000518bcee8977604008bd08d8c24ec000000e869ac03008bc8e8b2b28eff8bf0b9100000008d7c2414f3a5f30f10442418f30f104c24248b4c2410f30f114c2418f30f104c2434f30f11442424f30f1044241cf30f114c241cf30f104c2444f30f11442434f30f10442420f30f114c2420f30f104c2438f30f11442444f30f1044242c8d542414528d442458f30f114c2430f30f104c244cf30f1144243cf30f1044243450f30f114c2438f30f104c2454f30f11442450f30f10442448518bcbf30f114c244cf30f11442458e8cfcf03008bc8e878d403008b85f01900008d54245452508bcde815b7ffff8385f0190000018b7c24108bb4242801000083c7018bcb897c2410e825c903003bf80f82b4feffff8b8df0190000ba01000000d3e28bcd83ea01526898000000e8e0bcffff8b85f01900008985ec1900008bb68401000085f6741d8bcee8c3c40500508d4c2414e8a9309dff8b08516a228bcde8adbcffff5f5e5d5b81c414010000c20400",
+      "sha256": "27a20b51491a9f478eaabd0354c1663f3a2266a46c1ed3c502e10b8e962e72d3",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b6fcb0",
+      "length": 58,
+      "end_exclusive": "00b6fcea",
+      "role": "full_view_getter",
+      "bytes_hex": "83ec40568bf18b465ca8087525a8027505e8aadeffff8d96f00000008d4c2404e85b3effff508d4e60e812388aff834e5c088d46605e83c440c3",
+      "sha256": "8b4b0f0440ec1d808154d06308255ecb4c34e8ee4f9784b0d0c7f67315c29e4b",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b6fcf0",
+      "length": 112,
+      "end_exclusive": "00b6fd60",
+      "role": "full_projection_getter",
+      "bytes_hex": "83ec40568bf1f686f0020000087556d986d80100005783ec10d95c240c8d4c2418d986d40100008dbee0010000d95c2408d986c8010000d95c2404d986c4010000d91c24e8b745ffff508bcfe8af378aff578d8ea0020000e8a3378aff838ef0020000085f8d86a00200005e83c440c3",
+      "sha256": "6345b27bd12e2844a965ac9257a87aa63f7da309d591da429866c0f2e0eea62f",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b70490",
+      "length": 116,
+      "end_exclusive": "00b70504",
+      "role": "full_view_projection_getter",
+      "bytes_hex": "81ec80000000568bf1f686f00200001075548b465ca8087525a8027505e8bed6ffff8d96f00000008d4c2404e86f36ffff508d4e60e826308aff834e5c088bcee81bf8ffff508d442448508d4e60e83d348aff508d8e20020000e801308aff838ef0020000108d86200200005e81c480000000c3",
+      "sha256": "7281e7396c3c21b3f621fe16160cd7e58b671a8320d0158c2a12e4d05dcbd20b",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b70510",
+      "length": 61,
+      "end_exclusive": "00b7054d",
+      "role": "full_inverse_view_projection_getter",
+      "bytes_hex": "83ec40568bf1f686f0020000207523e86cffffff8bd08d4c2404e8a12dffff508d8e60020000e8b52f8aff838ef0020000208d86600200005e83c440c3",
+      "sha256": "17ffebc0e45274aaea899ae6264f8d11bc8e31bc7037348e2d0d6dcd63f3026f",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b70710",
+      "length": 69,
+      "end_exclusive": "00b70755",
+      "role": "full_frustum_getter",
+      "bytes_hex": "83ec60568bf18b86f0020000a804752a83c8048986f0020000e862fdffff508d4c2408e8b84cffff6a078d442408508d8ef4020000e89651ffff8d86f40200005e83c460c3",
+      "sha256": "699e34ca84fb9a530aa33d05869275ff1a1f7f707a6c7898ebb09f5eba1a7a46",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b6db70",
+      "length": 80,
+      "end_exclusive": "00b6dbc0",
+      "role": "full_world_refresh",
+      "bytes_hex": "568bf1578b7e3085ff742cf6475c0275078bcfe8e8ffffff81c7f0000000578d96b00000008d8ef0000000e830f9ffff834e5c025f5ec38d86b0000000508d8ef0000000e837598aff834e5c025f5ec3",
+      "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "004134f0",
+      "length": 103,
+      "end_exclusive": "00413557",
+      "role": "full_x87_matrix_copy",
+      "bytes_hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00413920",
+      "length": 874,
+      "end_exclusive": "00413c8a",
+      "role": "full_matrix_multiply",
+      "bytes_hex": "83ec408b542448d942108b442444d95c2430d94104d95c243cd902d95c2428d901d95c242cd94220d95c2434d94108d95c2424d94230d95c2438d9410cd95c2448d944243cd9c0d9442430d9c0decad944242cd9c0d9442428d9c0decad9ccdec1d9442424d9c0d84c2434dec2d9442448d84c2438dec2d9c9d918d94214d95c2408d94204d95c243cd94224d95c240cd94234d95c2410d944243cd8cad9442408d8cedec1d944240cd8cadec1d9442410d84c2448dec1d95804d94218d95c2418d94208d95c2414d94228d95c241cd94238d95c2420d9442414d8cad9442418d8cedec1d944241cd8cadec1d9442420d84c2448dec1d95808d9421cd95c2428d9420cd95c2424d9422cd95c242cd9423cd95c2430d9442424decad9442428decdd9c9dec4d84c242cdec3d9442430d84c2448dec3d9cad9580cd94114d95c2448d94110d95c2404d94118d95c2444d9411cd91c24d9442404d9c0d8cad9442448d8ccdec1d9442444d9442434d9c0decad9cadec1d90424d9442438d9c0decad9cadec1d95810d944243cd9c0deccd9442448d84c2408dec4d9442444d84c240cdec4d90424d84c2410dec4d9cbd95814d9442404d84c2414d9442448d84c2418dec1d9442444d84c241cdec1d90424d84c2420dec1d95818d9442404d84c2424d9442448d84c2428dec1d9442444d84c242cdec1d90424d84c2430dec1d9581cd94124d95c2444d94120d95c2448d94128d91c24d9412cd95c2404d9442448d8ccd9442444d8cedec1d90424d8cbdec1d9442404d8cadec1d95820d9442448d8cbd9442444d84c2408dec1d90424d84c240cdec1d9442404d84c2410dec1d95824d9442448d84c2414d9442444d84c2418dec1d90424d84c241cdec1d9442404d84c2420dec1d95828d9442448d84c2424d9442444d84c2428dec1d90424d84c242cdec1d9442404d84c2430dec1d9582cd94134d95c2444d94130d95c2448d94138d95c243cd9413cd95c2438d9442448d9c0decdd9442444d9c0decfd9cddec6d944243cd9c0deccd9cedec3d9442438d9c0decbd9cbdec2d9c9d95830d9c0decbd9c3d84c2408dec3d9c4d84c240cdec3d9c1d84c2410dec3d9cad95834d9c1d84c2414d9c3d84c2418dec1d9c4d84c241cdec1d9c1d84c2420dec1d95838d9442424decad9442428decbd9c9dec2d944242cdecbd9c9dec2d84c2430dec1d9583c83c440c20800",
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b63b30",
+      "length": 531,
+      "end_exclusive": "00b63d43",
+      "role": "full_scaled_affine_inverse",
+      "bytes_hex": "83ec34568bc157b9100000008bf28bf8f3a5d94204d95c2408d94208d95c2410d9442408f30f104220f30f11442424f30f104224f30f11442420f30f104228f30f11442428f30f104210f30f11442418f30f104214f30f11442414f30f104218f30f1144241cf30f1002f30f1144240cd944240cf30f1144242cd9442410d9c1decad9c9d95c2410d9442410d9c2decbd9cad95c2410d9442410dec2dcc8d95c2410d8442410d95c2430d9442414d9442418d944241cd9c1decad9c9d95c241cd944241cd9c2decbd9cad95c241cd944241cdec2dcc8d95c241cd844241cd95c2434d9442420d9442424d9442428d9c1decad9c9d95c2428d9442428d9c2decbd9cad95c2428d9442428dec2dcc8d95c2428d8442428d95c2438d944242cd9442430f30f100508a2d700d9c00f28c8defa0f28d05f5ed9c9d918d94204d8f1d95810d87a08d95820d94210d944242cd9c0defad9c9d95804d94214d8f1d95814d87a18d95824d94220d9442430d9c0defad9c9d95808d94224d8f1d95818d87a28d95c2424d9442424d95028d94034d95c2420d94030d95c2424d94038d95c241cd9442424d9c0d808d9442420d9c0d84810dec2d944241cd9c0d84820dec3d9cad95c2428d9c2f30f5c4c2428d84804d9c1d84814dec1d9c2d84824dec1d95c242cd94008f30f5c54242cdecbd84818f30f114830f30f115034dec2decadec1d95c2430f30f5c442430f30f11403883c434c3",
+      "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b632d0",
+      "length": 2136,
+      "end_exclusive": "00b63b28",
+      "role": "full_general_inverse",
+      "bytes_hex": "81ecb00000000f57c0538bd955f30f100d4ca2d70056f30f102d08a2d7008bf28d5424508bc28944244cb82c0000002bc3898424980000008d4424542bc3898424b80000008d4424582bc38984249400000057b8fcffffff2bc3b9100000008d7c2454f3a5898424b400000033ff8bea2bebb8040000008bf28d4b042bc6f30f110bf30f1101f30f114308f30f11430cf30f114310f30f114b14f30f114318f30f11431cf30f114320f30f114324f30f114b28f30f11432cf30f114330f30f114334f30f114338f30f114b3c897c2420897c241c89542424c744244c0300000089ac2494000000898424ac000000eb048b7c2420837c244c048d770189b424a40000000f8cd70100008b84249c0000008b6c241c8b9424b400000003c1894424488b8424ac00000003c58b6c244803d1034424208d4404548d448464894424108b442410f30f1048f00f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058bfe8d55e08b442410f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e018d55f08b442410f30f1048100f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058d7e028bd58b442410f30f1048200f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e038d5510834424104083c54083c60483fd300f8c6bfeffff8bac24940000008b54242483fe040f8da20000008bef8bc6c1e504c1e004894424108b4424208d04b08d44845489442424eb088da42400000000908b442424f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c5f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068b6c24108bfe8344241010834424241083c601837c2410407c8c8bac2494000000d9028bb424bc000000c1e704837c2420008bc7f30f104c0454d95c0454f30f10540458d90429d95c0458f30f105c045cf30f10640460d9040ed95c045c8bbc2498000000d9040fd95c0460f30f11240fd941fcf30f1064180cf30f111429f30f10541804f30f110af30f100c18d91c18d901f30f111c0ef30f105c18088d7c1804897c24488d7c1808897c24248d7c180c8b442448d9188b442424d94104d9188b442450d94108d91ff30f1149fcd900f30f1111d95c2448f30f115904f30f116108d941fcd94424488bbc2498000000d9c0defad9c9d959fcd901d8f1d919d94104d8f1d95904d94108d8f1d95908d902d8f1d91ad90429d8f1d91c29d9040ed8f1d91c0ed83c0fd91c0f0f84cd0000008b44241cf30f104c04540f2ec89ff6c444f30f118c24b00000000f8bad000000d98424b0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d903d8642438d91bd94304d864243cd95b04d94308d8642440d95b08d9430cd8642444d95b0cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442454d8642428d95c2454d9442458d864242cd95c2458d944245cd8642430d95c245cd9442460d8642434d95c2460837c2420010f84cf0000008b44241cf30f104c04640f2ec89ff6c444f30f118c24a80000000f8baf000000d98424a8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94310d8642438d95b10d94314d864243cd95b14d94318d8642440d95b18d9431cd8642444d95b1cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442464d8642428d95c2464d9442468d864242cd95c2468d944246cd8642430d95c246cd9442470d8642434d95c2470837c2420020f84d50000008b44241cf30f104c04740f2ec89ff6c444f30f118c24b80000000f8bb5000000d98424b8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94320d8642438d95b20d94324d864243cd95b24d94328d8642440d95b28d9432cd8642444d95b2cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442474d8642428d95c2474d9442478d864242cd95c2478d944247cd8642430d95c247cd9842480000000d8642434d99c2480000000837c2420030f84ea0000008b44241cf30f108c04840000000f2ec89ff6c444f30f118c24a00000000f8bc7000000d98424a0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94330d8642438d95b30d94334d864243cd95b34d94338d8642440d95b38d9433cd8642444d95b3cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9842484000000d8642428d99c2484000000d9842488000000d864242cd99c2488000000d984248c000000d8642430d99c248c000000d9842490000000d8642434d99c24900000008b8424a400000083442450148344241c04894424208b44244c83e80183c21083c11083f8ff8944244c895424240f8fa5f8ffff5f5e5d8bc35b81c4b0000000c3",
+      "sha256": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b62d10",
+      "length": 184,
+      "end_exclusive": "00b62dc8",
+      "role": "full_vector_transform",
+      "bytes_hex": "83ec10d941048b442414d91c24d901d95c2404d94108d95c2408d9410c8b4c2418d95c240cd94110d90424d9c0decad9442404d9c0d809dec3d94120d9442408d9c0decad9ccdec1d94130d944240cd9c0decad9cadec1d918d94104d8cad94114d8ccdec1d94124d8cddec1d94134d8cadec1d95804d94108d8cad94118d8ccdec1d94128d8cddec1d94138d8cadec1d95808d9410cdecad9411cdecbd9c9dec2d9412cdecbd9c9dec2d8493cdec1d9580c83c410c20800",
+      "sha256": "bff9fed3d6c782b47de1bef6a6f44cdfd676bc2636fefd1f5e715b352b70cf5d",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b65ba0",
+      "length": 129,
+      "end_exclusive": "00b65c21",
+      "role": "full_plane_transform",
+      "bytes_hex": "83ec20f30f10018b442428f30f110424f30f104104f30f11442404f30f104108f30f11442408f30f10410c508d4c2414518d4c2408f30f11442414e830d1fffff30f1000f30f110424f30f104804f30f114c2404f30f105008f30f11542408f30f10580c8b442424f30f1100f30f114804f30f115008f30f11580c83c420c20800",
+      "sha256": "0ec82737b38f39af0df1f24136c01ceaf60356656df01fe37b6e84d2330d4363",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b6d4d0",
+      "length": 339,
+      "end_exclusive": "00b6d623",
+      "role": "full_affine_compose",
+      "bytes_hex": "8b442404d902d8080f57c0d94204d84810dec1d94020d84a08dec1d919d94014d84a04d94004d80adec1d94208d84824dec1d95904d94018d84a04d94008d80adec1d94208d84828f30f11410cdec1d95908d94214d84810d900d84a10dec1d94218d84820dec1d95910d94004d84a10d94214d84814dec1d94218d84824dec1d95914d94008d84a10d94214d84818dec1d94218d84828f30f11411cdec1d95918d94220d808d94224d84810dec1d94020d84a28dec1d95920d94224d84814d94220d84804dec1d94228d84824dec1d95924d94224d84818d94220d84808dec1d94228d84828f30f11412cf30f10054ca2d700dec1d95928d94234d84810d900d84a30dec1d94238d84820dec1d84030d95930d94004d84a30d94234d84814dec1d94238d84824dec1d84034d95934d94008d84a30d94234d84818dec1d94238d84828dec1d84038f30f11413cd95938c20400",
+      "sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b653f0",
+      "length": 360,
+      "end_exclusive": "00b65558",
+      "role": "full_frustum_extract",
+      "bytes_hex": "8b442404d90053d8400c55568bf1d91e57d9401c8d7e10d840108d5e208d6e30d95e04d9402cd84020d95e08d9403cd84030d95e0cd9400cd820d91fd9401cd86010d95e14d9402cd86020d95e18d9403cd86030d95e1cd9400cd86004d91bd9401cd86014d95e24d9402cd86024d95e28d9403cd86034d95e2cd94004d8400cd95d00d9401cd84014d95e34d9402cd84024d95e38d9403cd84034d95e3cd94008dcc0d95e40d94018dcc0d95e44d94028dcc0d95e48d94038dcc0d95e4cd9400cd86008d95e50d9401cd86018d95e54d9402cd86028d95e58d9403cd86038d95e5cf30f100508a2d7000f28c8f30f5c4e0cf30f114e0c0f28c8f30f5c4e1cf30f114e1c0f28c8f30f5c4e2cf30f114e2c0f28c8f30f5c4e3cf30f114e3c0f28c8f30f5c4e4cf30f5c465cf30f114e4cf30f11465ce886fbffff8bcfe87ffbffff8bcbe878fbffff8bcde871fbffff8d4e40e869fbffff8d4e50e861fbffff5f8bc65e5d5bc20400",
+      "sha256": "b0903b45985f724d124508411960cc54d213b0ccf31782bd799503f5c9273ec0",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b650b0",
+      "length": 87,
+      "end_exclusive": "00b65107",
+      "role": "full_plane_normalize",
+      "bytes_hex": "51568bf1e887438bffd95c2404d9eed9442404dbf1ddd9760ad9e8def1d95c2404eb0b0f57c0ddd8f30f11442404d9068bc6d9442404d9c0decad9c9d91ed94604d8c9d95e04d9c0d84e08d95e08d84e0cd95e0c5e59c3",
+      "sha256": "8be4e359b99f4e599f3d102878dd84332307878dfe237bc3622f014699951f18",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b658e0",
+      "length": 171,
+      "end_exclusive": "00b6598b",
+      "role": "full_six_plane_assignment",
+      "bytes_hex": "8b442404d9008b542408d919d94004d95904d94008d95908d9400cd9590c895110d94010d95914d94014d95918d94018d9591cd9401cd95920895124d94020d95928d94024d9592cd94028d95930d9402cd95934895138d94030d9593cd94034d95940d94038d95944d9403cd9594889514cd94040d95950d94044d95954d94048d95958d9404cd9595c895160d94050d95964d94054d95968d94058d9596cd9405cd95970895174c20800",
+      "sha256": "c565808bfd1a03115ee448f82ae5c447f118e292e998797730ebf68816dab4a8",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b642f0",
+      "length": 176,
+      "end_exclusive": "00b643a0",
+      "role": "full_projection_builder",
+      "bytes_hex": "d944240456dc0d80a2d700518bf1d95c240cd944240cd91c24e812eb8affd9e80f57c0def1f30f114604f30f114608f30f11460cf30f114610f30f114618f30f11461cf30f114620f30f114624f30f114630f30f114634f30f11463c8bc6d95c2408d9442414d9442410d9c0f30f104c2408d8eaf30f114e14defad9c9d95c2414d9442408d874240cf30f104c2414f30f114e28f30f100d4ca2d700f30f114e2cd91ed9e0d84c2414d95e385ec21000",
+      "sha256": "434aa71d29dc916a29e4b8723c612f341b54ab7a7c0c922ab0afee503c2e6bf3",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00412e20",
+      "length": 19,
+      "end_exclusive": "00412e33",
+      "role": "full_tangent_helper",
+      "bytes_hex": "51d9442408d9fbdef9d91c24d9042459c20400",
+      "sha256": "6282a7c6801acc042953893b813184c14e395f5215fa6bd1981b9d159d363ee0",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00419440",
+      "length": 98,
+      "end_exclusive": "004194a2",
+      "role": "full_vector_length",
+      "bytes_hex": "83ec0cd901d95c2404d94104d91c24d94108d95c2408d90424d9442404d9442408d9c1decad9c9d95c2408d9442408d9c2decbd9cad95c2408d9442408dec2dcc8d95c2408d8442408d95c2408d9442408e89adb7d00d95c2408d944240883c40cc3",
+      "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "004fb850",
+      "length": 159,
+      "end_exclusive": "004fb8ef",
+      "role": "full_rgba_argb_converter",
+      "bytes_hex": "56578b7c240cd9078bf1dd05484bce00dcc9d9c9e8b7bb6f0085c07d0433c0eb0c3dff0000007e05b8ff000000884602d94704d8c9e896bb6f0085c07d0433c0eb0c3dff0000007e05b8ff000000884601d94708d8c9e875bb6f0085c07d0433c0eb0c3dff0000007e05b8ff0000008806d84f0ce857bb6f0085c07d0c33c08846035f8bc65ec204003dff0000007e05b8ff0000008846035f8bc65ec20400",
+      "sha256": "1de65b996e750df4ce8b0a1a9d3589e699a1818f6e01790a2ac2957e5f2ca4c5",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b84c60",
+      "length": 4,
+      "end_exclusive": "00b84c64",
+      "role": "full_ambient_color_address_getter",
+      "bytes_hex": "8d4108c3",
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b71a80",
+      "length": 604,
+      "end_exclusive": "00b71cdc",
+      "role": "full_camera_constructor_layout_evidence",
+      "bytes_hex": "6aff68f11acc0064a100000000506489250000000083ec1c8b44242c535556578bf15089742414e8f4daffff33db6a34895c2438c706f02cd600e85c4d080083c4048944243c3bc3c64424340174098bc8e87addfaffeb0233c00f57c0898680010000899e840100008d8ef4020000885c2434f30f1186b8010000f30f1186bc010000f30f1186c0010000e8c03effff899e380400008d4c2414518b8e80010000c644243802899e3c040000895c2418895c241ce8e7ddfaff8b0d94d3f8008b118b42308bf9ffd08b178b68108b42308bcfffd08b480c8d542414894c24148b8e8001000052896c241ce8d1ddfaffd9ee51d91c248b8e80010000e8d0dbfaffd9e851d91c248b8e80010000e8cfdbfaff0f57c0f30f100d083dce008d442414508d4c2424518bcef30f1144241cf30f114c2420f30f114c2424f30f11442428f30f114c242cf30f11442430e80fe5fffff30f1005207dce00f30f1015f8c5d000f30f100d4ca2d700f30f1186c4010000f30f100598bdd500b801000000f30f1186c80100000f57c0f30f1196d8010000f30f1015fc77ce00f30f1186cc010000f30f1186d0010000f30f118ed4010000f30f1196780100008986f0020000899e9801000089869c010000899e88010000885c243e885c243d885c243cf30f1015883cce008b4c242c899e9401000088867c010000f30f118e8c010000f30f1196dc010000885c243f8b54243c899690010000f30f118640040000f30f118e44040000f30f118648040000f30f118e4c040000f30f118650040000f30f1186540400008886740100005f8bc65e5d5b64890d0000000083c428c20400",
+      "sha256": "3172b0daf4b067f4e778c300acaba758da790ecfe290f9733150baf87fcd533a",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b84e50",
+      "length": 273,
+      "end_exclusive": "00b84f61",
+      "role": "full_fog_owner_constructor_layout_evidence",
+      "bytes_hex": "83ec100f57c08bc1f30f100d6c38ce00f30f10158831d600f30f1104248b0c24f30f114424048b542404f30f11442408f30f1144240c8948088b4c2408f30f110424f30f11442404f30f1144240889500c8b54240cf30f1144240cf30f10050478ce00f30f114068f30f114078f30f1005f877ce00f30f11407cf30f10055039ce00f30f118080000000f30f1005e877ce008948108b0c24f30f118084000000f30f1005e477ce008950148b5424048948188b4c240889501c8b54240cf30f118088000000f30f1005e077ce00c70030b1ce00f30f11808c000000f30f1005dc77ce00894820c7400401000000c7008031d600895024f30f11486cf30f115070f30f114874f30f11809000000083c410c3",
+      "sha256": "a9e64942e3cb6ac462d76d57d9f6a9fc05b26e0293bb85fb5c68b0ebb179146e",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b71940",
+      "length": 65,
+      "end_exclusive": "00b71981",
+      "role": "full_actual_camera_fog_owner_writer",
+      "bytes_hex": "8b442404568bb1840100003bf0742e85c0898184010000740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b84c40",
+      "length": 30,
+      "end_exclusive": "00b84c5e",
+      "role": "full_raw_color_writer",
+      "bytes_hex": "8b4424048b108951088b500489510c8b50088951108b400c894114c20400",
+      "sha256": "d9cb5c0d507ffe81aa7c8d989bb4870877a3600a219dc7d1635127e71632c680",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b659d0",
+      "length": 165,
+      "end_exclusive": "00b65a75",
+      "role": "full_initial_frustum_constructor",
+      "bytes_hex": "81eca0000000568bf1e8f2f8ffff0f57c0f30f100d4ca2d7006a078d442408508d4c244cc7864001000006000000f30f114c240cf30f11442410f30f11442414f30f11442418f30f1144241cf30f114c2420f30f11442424f30f11442428f30f1144242cf30f11442430f30f114c2434f30f11442438f30f1144243cf30f11442440f30f11442444f30f114c2448e88df9ffff508bcee875feffff8bc65e81c4a0000000c3",
+      "sha256": "ceb95d5a12137cd77b33e4c94874af527b83547531a6c716dba0367d8919c983",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b6fd60",
+      "length": 57,
+      "end_exclusive": "00b6fd99",
+      "role": "full_projection_matrix_writer",
+      "bytes_hex": "56578b7c240c8bf1578d8ee0010000e87c378aff578d8ea0020000e870378aff8b86f0020000254bffffff83c8085f8986f00200005ec20400",
+      "sha256": "45b4209b4e30da86eca930b174a941dd31935e555328e4fb422781f6bc2d0e80",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00bf7030",
+      "length": 20,
+      "end_exclusive": "00bf7044",
+      "role": "sqrt_entry_provider_boundary",
+      "bytes_hex": "83ec0cdd1424e8dd130100e80d00000083c40cc3",
+      "sha256": "204b44024d5ad691ddd38ad34bc9d5d0e9eb4930f96cb8294bb70ded80fb3638",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00bf704d",
+      "length": 157,
+      "end_exclusive": "00bf70ea",
+      "role": "sqrt_body_provider_boundary",
+      "bytes_hex": "529bd93c248b44240c745166813c247f027405e840130100a900000080751fd9fa833d78dd0901000f85b3130100ba050000008d0de054e100e9b0130100a90000f07f752ca9ffff0f007525837c240800751eebcce815130100eb22a9ffff0f0075f2837c24080075eb250000008074b0ddd8db2d705ce100b801000000833d78dd0901000f8556130100ba050000008d0de054e100e85f1201005ac3",
+      "sha256": "3f831d8c23e911d66e29eef7d2adce8cfc4e071914654b0474221d06de6410f3",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00bf7420",
+      "length": 28,
+      "end_exclusive": "00bf743c",
+      "role": "runtime_truncation_dispatch",
+      "bytes_hex": "833da4ee090100742d558bec83ec0883e4f8dd1c24f20f2c0424c9c3",
+      "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00bf7456",
+      "length": 117,
+      "end_exclusive": "00bf74cb",
+      "role": "full_x87_truncation",
+      "bytes_hex": "558bec83ec2083e4f0d9c0d9542418df7c2410df6c24108b5424188b44241085c0743cdee985d2791ed91c248b0c2481f10000008081c1ffffff7f83d0008b54241483d200eb2cd91c248b0c2481c1ffffff7f83d8008b54241483da00eb148b542414f7c2ffffff7f75b8d95c2418d95c2418c9c3",
+      "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00ce4b48",
+      "length": 8,
+      "end_exclusive": "00ce4b50",
+      "role": "actual_color_scale_double",
+      "bytes_hex": "0000000000e06f40",
+      "sha256": "729bef532e854760af95391c84e7ba32d372f3384227e6d952a809b8b7f35eb5",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00d62cf0",
+      "length": 88,
+      "end_exclusive": "00d62d48",
+      "role": "camera_profile_first_22_DWORDs",
+      "bytes_hex": "e030bd00e01fb70060fbb600e01cb700f0f8b60070fbb60010f3b600b0d7b60080fbb600e00db70020d8b600d013b7000014b7006014b7003014b700c0dbb600e0dbb60000dcb600c0e8b60020dcb60080edb60010eeb600",
+      "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00d63180",
+      "length": 8,
+      "end_exclusive": "00d63188",
+      "role": "fog_owner_profile_first_two_DWORDs",
+      "bytes_hex": "e030bd00704fb800",
+      "sha256": "16a820ef68ad567650fd7ba59007edf54ae004e7c727b0da6daa8ecdb1509e6d",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b23e50",
+      "length": 166,
+      "end_exclusive": "00b23ef6",
+      "role": "ready_full_clip_provider",
+      "bytes_hex": "64a1000000006aff6838cfcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e853fc0000884424048b54241c8b4c2420d9018bc2c1e0048d84300c190000d91851d9410452d95804c744241c00000000d94108d95808d9410cd9580c8b86101a00008b308b8edc00000050ffd1803ddcd6080100c7442414ffffffff5e740d8b14248b4c240452e81bfc00008b4c240864890d0000000083c414c20800",
+      "sha256": "55251f22050632ec9a39f361a2d24f6d3ac8c3fe87a38f759c2e085d0bd1cc8f",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b24460",
+      "length": 169,
+      "end_exclusive": "00b24509",
+      "role": "closed_full_cached_state_provider",
+      "bytes_hex": "64a1000000006aff6898cfcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e843f60000884424048b44241c807c3040008b542420c744241400000000740939948614010000742857c644304001899486140100008b8e101a00008b3952508b87e400000051ffd08386a01b0000015f803ddcd6080100c7442414ffffffff5e740d8b0c24518b4c2408e808f600008b4c240864890d0000000083c414c20800",
+      "sha256": "15d1a0f0eac7219cc3014d3f2d3dca94fad638cd6c5c43f8e6d00ea38775dfea",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b250b0",
+      "length": 346,
+      "end_exclusive": "00b2520a",
+      "role": "ready_full_plane_copy_provider",
+      "bytes_hex": "5356578b7c24108bc18d77208d50182bf8bb02000000eb088da4240000000090d946e081c6a0000000d95ae8d98644ffffffd95aecd98648ffffffd95af0d9864cffffffd95af48b8e50ffffff894af8d98654ffffffd95afcd90417d91ad9865cffffffd95a04d98660ffffffd95a088b8e64ffffff894a0cd98668ffffffd95a10d9866cffffffd95a14d98670ffffffd95a18d98674ffffffd95a1c8b8e78ffffff894a20d9867cffffffd95a24d94680d95a28d94684d95a2cd94688d95a308b4e8c894a34d94690d95a38d94694d95a3cd94698d95a40d9469cd95a448b4ea0894a48d946a4d95a4cd946a8d95a50d946acd95a54d946b0d95a588b4eb4894a5cd946b8d95a60d946bcd95a64d946c0d95a68d946c4d95a6c8b4ec8894a70d946ccd95a74d946d0d95a78d946d4d95a7cd946d8d99a800000008b4edc898a8400000081c2a000000083eb010f85ccfeffff5f5e5bc20400",
+      "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b65080",
+      "length": 7,
+      "end_exclusive": "00b65087",
+      "role": "ready_full_plane_count_provider",
+      "bytes_hex": "8b8140010000c3",
+      "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b656f0",
+      "length": 13,
+      "end_exclusive": "00b656fd",
+      "role": "ready_full_plane_address_provider",
+      "bytes_hex": "8b4424048d04808d0481c20400",
+      "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00b65700",
+      "length": 14,
+      "end_exclusive": "00b6570e",
+      "role": "ready_full_plane_flags_provider",
+      "bytes_hex": "8b4424048d04808b448110c20400",
+      "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "total_spans": 41,
+  "total_bytes": 8745,
+  "current_provider_pins": [
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "bytes": 4860,
+      "sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "bytes": 14079,
+      "sha256": "a84798e710ad1292d0b8d52d1767fbdd246eddd1eb0369ced67894cb07aa882a",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 4386,
+      "sha256": "3ae9db310ee90a7644922371e155cec1a7ab2c6e51d8e25e6374f711a824bb93",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 6848,
+      "sha256": "4b1b122ebf8f8d0d6b595f79340692bfdf6463b56e986d06422e75efeb282ae7",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/system_fog_owner.hpp",
+      "bytes": 5808,
+      "sha256": "1c50b77e0e9ac0188aeb1a578ec7aec81a2faa6448304d7b2f771dc53c70ee03",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/system_fog_owner.cpp",
+      "bytes": 8915,
+      "sha256": "a745ea0d569f296fa6de9d3bf4730a30ef4b1691e5723a71366ac678040bd998",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/system_camera_axes.hpp",
+      "bytes": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/system_camera_axes.cpp",
+      "bytes": 15696,
+      "sha256": "6a54b1464f8d5d28e36ac602f46fe493e927d83257c7e9a434fcf13010d7f3e6",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/legacy_crt_math.hpp",
+      "bytes": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/legacy_crt_math.cpp",
+      "bytes": 11469,
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "bytes": 1858,
+      "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "bytes": 5004,
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/native_renderer_cached_states.hpp",
+      "bytes": 2075,
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/native_renderer_cached_states.cpp",
+      "bytes": 5702,
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/native_renderer_clip_planes.hpp",
+      "bytes": 1712,
+      "sha256": "022877a19219c3c5b17b4bfcb23bd91b1b5dce8f19845afb6acee9a4cef86e70",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/native_renderer_clip_planes.cpp",
+      "bytes": 4016,
+      "sha256": "57f65777a6de49ec38de3bdd57f8b220c6759183de4c99d7661590b8ece60208",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/camera_frame_state.hpp",
+      "bytes": 8365,
+      "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/camera_frame_state.cpp",
+      "bytes": 51422,
+      "sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 5445,
+      "sha256": "d80677f0ae998c0bfc02fd2175a63abf787481dde67c3681ad0d645d698ad1e5",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "bytes": 9403,
+      "sha256": "9a28e5f5b4d2cc584bfcd6e7262bc502f051de61972d4dc1a6ee425565a21d04",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/camera_projection.cpp",
+      "bytes": 5226,
+      "sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/camera_inverse.hpp",
+      "bytes": 702,
+      "sha256": "b41cb1166a51cd588af4017498d51985f4f3689b1f08f58c4eb69840d2e43248",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/camera_inverse.cpp",
+      "bytes": 7562,
+      "sha256": "f29f900fcff8921724ba308a3b56462e3d753c4c55262aa782441088124f3a13",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "include/bsp/camera_multiply.hpp",
+      "bytes": 568,
+      "sha256": "3c35ae95652cd16a0e232cccc628a4cc3791256f94d527edb422149918e9bcca",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "src/camera_multiply.cpp",
+      "bytes": 10537,
+      "sha256": "46fc6ea58c5cc7fddb30e5dc25c8f9a2d3f311b6d355e4ba7a9787c864cab531",
+      "role": "current_dependency_contract_not_new_fixture_claim"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\include\\bsp\\native_plane_set.hpp",
+      "bytes": 1915,
+      "sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246",
+      "role": "sealed_bc7d3e21_provider_authorized_ready_by_primary"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\src\\native_plane_set.cpp",
+      "bytes": 4676,
+      "sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8",
+      "role": "sealed_bc7d3e21_provider_authorized_ready_by_primary"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\reports\\native_plane_set_audit.json",
+      "bytes": 42427,
+      "sha256": "dcae9795995fb60b9bf109b55db773a86595e5566b9efb3a771f9ecadc1c74b3",
+      "role": "sealed_bc7d3e21_provider_authorized_ready_by_primary"
+    }
+  ],
+  "source_changed": false,
+  "Ghidra_changed": false,
+  "shared_metadata_changed": false,
+  "original_fixture": false,
+  "build_tested": false,
+  "game_validated": false,
+  "tests_reason": "Read-only discovery; prior provider validation is provenance only.",
+  "parent": {
+    "address": "00b285a0",
+    "length": 544,
+    "ABI": "ECX actual renderer, stack camera, RET4; no outer guard or own EH frame",
+    "stack_relative_to_after_local_allocation_and_saved_registers": {
+      "camera_argument": "128",
+      "loop_index": "10",
+      "transposed_product": "14",
+      "output_plane": "54",
+      "inverse_view": "64",
+      "multiply_output": "a4",
+      "inverse_projection": "e4"
+    },
+    "renderer_fields": {
+      "17c0": "16 inline plane records",
+      "1900": "raw count",
+      "190c": "clip cache through child provider",
+      "19ec": "active count",
+      "19f0": "pending count",
+      "1b51": "support byte"
+    },
+    "ordered_operations": [
+      "Set current renderer state98=0; only then load camera stack argument.",
+      "Always call inverse VP getter for side effects, then frustum getter; copy16 records and separately current source count.",
+      "Test support byte before clearing both counts; unsupported path still performed both dirty getters.",
+      "Loop on current renderer plane count; two current flag reads implement !(flags&4) then flags&2.",
+      "Per admitted plane fetch view -> inverse view; fetch projection -> general inverse; multiply inverse projection * inverse view with previously pushed destination/right arguments.",
+      "REP MOVSD16 then six MOVSS swaps transpose; get current plane address; transform through B65BA0/B62D10.",
+      "Set clip plane at current pending count; increment CURRENT count after normal return regardless HRESULT; reload current plane count for loop.",
+      "Set state98 using current pending low5bit shift; reload pending after state callback and store active.",
+      "Read current camera+184 actual owner; color address+8; ordered ARGB conversion; state22."
+    ],
+    "source_ready": false
+  },
+  "getter_contracts": [
+    {
+      "address": "00b6fcb0",
+      "returns": "camera+60",
+      "gate": "camera+5C bit8",
+      "effects": "If missing bit2 call B6DB70; inverse world+F0 to stack, x87copy to+60, OR current flags8"
+    },
+    {
+      "address": "00b6fcf0",
+      "returns": "camera+2A0",
+      "gate": "camera+2F0 bit8",
+      "effects": "Ordered far/near/aspect/FOV x87 stack stores from+1D8/+1D4/+1C8/+1C4; perspective build; copy+1E0 then+2A0; OR8"
+    },
+    {
+      "address": "00b70490",
+      "returns": "camera+220",
+      "gate": "camera+2F0 bit10h",
+      "effects": "Inline view/world refresh, projection getter, view*projection, x87copy+220, OR10h"
+    },
+    {
+      "address": "00b70510",
+      "returns": "camera+260",
+      "gate": "camera+2F0 bit20h",
+      "effects": "VP getter, general inverse tostack, x87copy+260, OR20h"
+    },
+    {
+      "address": "00b70710",
+      "returns": "camera+2F4",
+      "gate": "camera+2F0 bit4",
+      "effects": "Publish bit4 before VP getter/extract; assign6planes flags7; leave count unchanged"
+    },
+    {
+      "address": "00b84c60",
+      "returns": "actual fog/ambient owner+8",
+      "gate": "none",
+      "effects": "No mutation; four-byte body LEA EAX,[ECX+8]; plain RET"
+    }
+  ],
+  "actual_layout_evidence": {
+    "camera_constructor": "B71A80 installs D62CF0; NativeCameraOwner prepares same45Ch slot with174h node prefix and2E4h tail.",
+    "tail": "NativeCameraTailStorage checked offsets and typed lifetimes establish actual matrix/plane/fog fields; constructor owner binds CameraProjection/CameraFrameState references to them.",
+    "fog": "B71940 raw camera+184 owner store; B84E50 D63180 constructor; B84C40 writes actual color+8. SystemFogOwner fields_08 is checked+8.",
+    "hierarchy_mismatch": "NativeNodeStorage parent_30/first_child_34/next_sibling_3c are CameraTransform* companions. Original B6DB70 dereferences raw parent+5C/+F0; these pointer representations are not interchangeable.",
+    "required_boundary": "Actual raw parent chain or separately proven exact producer/integration mapping; no companion overlay cast or null-parent-only closure."
+  },
+  "existing_provider_classification": [
+    {
+      "files": [
+        "native_renderer_cached_states",
+        "native_renderer_clip_planes",
+        "native_renderer_synchronization_actual"
+      ],
+      "state": "ready actual renderer storage/context providers"
+    },
+    {
+      "commit": "bc7d3e21",
+      "files": [
+        "native_plane_set"
+      ],
+      "state": "ready sealed actual plane storage provider; primary integrating"
+    },
+    {
+      "files": [
+        "camera_inverse",
+        "camera_multiply"
+      ],
+      "state": "Existing typed wrappers call private naked raw kernels using genuine CameraMatrix data addresses; not newly verified original-entry interfaces"
+    },
+    {
+      "files": [
+        "camera_projection"
+      ],
+      "state": "Typed x87-copy loop and scalar builder interfaces; raw projection/getter closure remains"
+    },
+    {
+      "files": [
+        "camera_frame_state"
+      ],
+      "state": "General inverse private raw kernel; plane typed temporary wrapper; frustum still private finite-only FSQRT substitution; ambient bool mode is not current selector"
+    },
+    {
+      "files": [
+        "system_camera_axes",
+        "legacy_crt_math"
+      ],
+      "state": "Reusable actual length/sqrt/C27489 provider chain with required actual CRT globals and errno binding; not an unreconstructed __87except source blocker"
+    },
+    {
+      "files": [
+        "native_render_batch_keys"
+      ],
+      "state": "Reusable ST0 BF7420 with actual volatile0109EEA4 plus complete BF7456; reread selector for each channel"
+    }
+  ],
+  "independent_packets": [
+    {
+      "name": "native_ambient_color2",
+      "functions": [
+        "00b84c60",
+        "004fb850"
+      ],
+      "proposed_files": [
+        "include/bsp/native_ambient_color.hpp",
+        "src/native_ambient_color.cpp",
+        "docs/NATIVE_AMBIENT_COLOR.md",
+        "reports/native_ambient_color_audit.json"
+      ],
+      "dependency_contract": "Actual CE4B48 double255, actual current0109EEA4, existing native_crt_truncate_st0_00bf7420/native_x87_truncate_st0_00bf7456.",
+      "review_notes": "163bytes; retain scale across RGB then alpha, partial byte order2/1/0/3, signed low32 clamp, overlap/exception effects. Sent to primary free worker.",
+      "status": "bounded_ready_proposal_no_lease_claimed_here"
+    },
+    {
+      "name": "native_camera_plane_transform2",
+      "functions": [
+        "00b62d10",
+        "00b65ba0"
+      ],
+      "proposed_files": [
+        "include/bsp/native_camera_plane_transform.hpp",
+        "src/native_camera_plane_transform.cpp",
+        "docs/NATIVE_CAMERA_PLANE_TRANSFORM.md",
+        "reports/native_camera_plane_transform_audit.json"
+      ],
+      "dependency_contract": "Both full bodies owned in pair; no external lifetime/provider callback.",
+      "review_notes": "313bytes; MOVSS snapshot then distinct transform result plus full inner x87 schedule.",
+      "status": "bounded_ready_proposal_no_lease_claimed_here"
+    },
+    {
+      "name": "native_camera_frustum3",
+      "functions": [
+        "00b650b0",
+        "00b653f0",
+        "00b658e0"
+      ],
+      "proposed_files": [
+        "include/bsp/native_camera_frustum.hpp",
+        "src/native_camera_frustum.cpp",
+        "docs/NATIVE_CAMERA_FRUSTUM.md",
+        "reports/native_camera_frustum_audit.json"
+      ],
+      "dependency_contract": "Existing actual camera_vector_length_00419440 and CameraAxesCrtAccess; real legacy_crt_87except_00c27489 and runtime binding.",
+      "review_notes": "618bytes; replace finite-only private helper route with actual provider composition. FCOMI/JBE chooses zero reciprocal for nonpositive/unordered length. Assignment preserves count.",
+      "status": "bounded_ready_proposal_no_lease_claimed_here"
+    },
+    {
+      "name": "native_camera_matrix_copy1",
+      "functions": [
+        "004134f0"
+      ],
+      "proposed_files": [
+        "include/bsp/native_camera_matrix_copy.hpp",
+        "src/native_camera_matrix_copy.cpp",
+        "docs/NATIVE_CAMERA_MATRIX_COPY.md",
+        "reports/native_camera_matrix_copy_audit.json"
+      ],
+      "dependency_contract": "None beyond addressed memory/ambient x87 state.",
+      "review_notes": "103bytes; sequential x87 pairs and ordered overlap, preserve semantic API.",
+      "status": "bounded_ready_proposal_no_lease_claimed_here"
+    },
+    {
+      "name": "native_camera_general_inverse1",
+      "functions": [
+        "00b632d0"
+      ],
+      "proposed_files": [
+        "include/bsp/native_camera_general_inverse.hpp",
+        "src/native_camera_general_inverse.cpp",
+        "docs/NATIVE_CAMERA_GENERAL_INVERSE.md",
+        "reports/native_camera_general_inverse_audit.json"
+      ],
+      "dependency_contract": "Full independent kernel; verify actual referenced constants in implementation review.",
+      "review_notes": "2136bytes; preserve snapshot/pivot/comparison/FP/singular behavior; no owner context.",
+      "status": "bounded_ready_proposal_no_lease_claimed_here"
+    }
+  ],
+  "named_but_incomplete_parent_prerequisites": [
+    "Complete actual world/view/projection/VP/inverseVP/frustum getter family B6DB70/B6FCB0/B6FCF0/B70490/B70510/B70710 and raw hierarchy integration.",
+    "Raw perspective builder/tangent B642F0[176]/412E20[19] or an explicitly verified full provider composition.",
+    "Promoted full raw general inverse, plane/vector transform, frustum normalize/extract/six-plane assignment and ambient conversion as separated packets.",
+    "B63B30/413920/B6D4D0 existing schedules need explicit raw interface or complete-library composition proof preserving constants, input storage and alias domain.",
+    "NativeCameraOwner tail is real storage, but its companion hierarchy pointers are not a substitute for original parent object addresses."
+  ],
+  "limitations": [
+    "Read-only dependency/layout discovery; no new original instruction execution, source promotion, build or game validation.",
+    "Original fullbytes pinned does not prove current compiled helper equivalence; provider source pins define review input.",
+    "Do not use semantic-overlay casts, arbitrary callbacks, cached-only/unsupported-clip/null-ambient cases to claim full parent closure.",
+    "Candidate functions/files are proposed disjoint packets, not claims or edits to shared metadata.",
+    "No broader camera/math or hierarchy rewrite undertaken; full original parent exception/callback/stack behavior awaits its own implementation fixture."
+  ],
+  "primary_review": {
+    "utc": "2026-09-11T16:36:29.861727+00:00",
+    "original_spans_verified": 41,
+    "original_bytes_verified": 8745,
+    "provider_pins": [
+      {
+        "path": "include/bsp/native_camera_owner.hpp",
+        "current_bytes": 4860,
+        "current_sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/native_camera_owner.cpp",
+        "current_bytes": 14079,
+        "current_sha256": "a84798e710ad1292d0b8d52d1767fbdd246eddd1eb0369ced67894cb07aa882a",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "current_bytes": 4386,
+        "current_sha256": "3ae9db310ee90a7644922371e155cec1a7ab2c6e51d8e25e6374f711a824bb93",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/native_node_construction.cpp",
+        "current_bytes": 6848,
+        "current_sha256": "4b1b122ebf8f8d0d6b595f79340692bfdf6463b56e986d06422e75efeb282ae7",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/system_fog_owner.hpp",
+        "current_bytes": 5808,
+        "current_sha256": "1c50b77e0e9ac0188aeb1a578ec7aec81a2faa6448304d7b2f771dc53c70ee03",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/system_fog_owner.cpp",
+        "current_bytes": 8915,
+        "current_sha256": "a745ea0d569f296fa6de9d3bf4730a30ef4b1691e5723a71366ac678040bd998",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "current_bytes": 3143,
+        "current_sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "current_bytes": 15696,
+        "current_sha256": "6a54b1464f8d5d28e36ac602f46fe493e927d83257c7e9a434fcf13010d7f3e6",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/legacy_crt_math.hpp",
+        "current_bytes": 1108,
+        "current_sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/legacy_crt_math.cpp",
+        "current_bytes": 11469,
+        "current_sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/native_render_batch_keys.hpp",
+        "current_bytes": 1858,
+        "current_sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/native_render_batch_keys.cpp",
+        "current_bytes": 5004,
+        "current_sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/native_renderer_cached_states.hpp",
+        "current_bytes": 2075,
+        "current_sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/native_renderer_cached_states.cpp",
+        "current_bytes": 5702,
+        "current_sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/native_renderer_clip_planes.hpp",
+        "current_bytes": 1712,
+        "current_sha256": "022877a19219c3c5b17b4bfcb23bd91b1b5dce8f19845afb6acee9a4cef86e70",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/native_renderer_clip_planes.cpp",
+        "current_bytes": 4016,
+        "current_sha256": "57f65777a6de49ec38de3bdd57f8b220c6759183de4c99d7661590b8ece60208",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "current_bytes": 2877,
+        "current_sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/native_renderer_synchronization_actual.cpp",
+        "current_bytes": 3242,
+        "current_sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/camera_frame_state.hpp",
+        "current_bytes": 8365,
+        "current_sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/camera_frame_state.cpp",
+        "current_bytes": 51422,
+        "current_sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "current_bytes": 5445,
+        "current_sha256": "d80677f0ae998c0bfc02fd2175a63abf787481dde67c3681ad0d645d698ad1e5",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/camera_transform.cpp",
+        "current_bytes": 9403,
+        "current_sha256": "9a28e5f5b4d2cc584bfcd6e7262bc502f051de61972d4dc1a6ee425565a21d04",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "current_bytes": 2413,
+        "current_sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/camera_projection.cpp",
+        "current_bytes": 5226,
+        "current_sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "include/bsp/camera_inverse.hpp",
+        "current_bytes": 702,
+        "current_sha256": "b41cb1166a51cd588af4017498d51985f4f3689b1f08f58c4eb69840d2e43248",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "src/camera_inverse.cpp",
+        "current_bytes": 7744,
+        "current_sha256": "a154d9ab13a8332c3d6ee07e2157ffa053da6c327389f74c2f3af44ac554377e",
+        "literal_equal": false,
+        "only_CRLF_to_LF_if_not_literal": true
+      },
+      {
+        "path": "include/bsp/camera_multiply.hpp",
+        "current_bytes": 580,
+        "current_sha256": "c714f41106e837e833d23dc8963cb306b212601738ffb67b3f10643e946d60be",
+        "literal_equal": false,
+        "only_CRLF_to_LF_if_not_literal": true
+      },
+      {
+        "path": "src/camera_multiply.cpp",
+        "current_bytes": 10862,
+        "current_sha256": "2459b03b810d82b4a08e83c7d733a2fb8bd980b57f964feec2a2c16810669511",
+        "literal_equal": false,
+        "only_CRLF_to_LF_if_not_literal": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\include\\bsp\\native_plane_set.hpp",
+        "current_bytes": 1915,
+        "current_sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\src\\native_plane_set.cpp",
+        "current_bytes": 4676,
+        "current_sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\reports\\native_plane_set_audit.json",
+        "current_bytes": 42427,
+        "current_sha256": "dcae9795995fb60b9bf109b55db773a86595e5566b9efb3a771f9ecadc1c74b3",
+        "literal_equal": true,
+        "only_CRLF_to_LF_if_not_literal": false
+      }
+    ],
+    "literal_provider_matches": 28,
+    "CRLF_only_matches": 3,
+    "source_differences": false,
+    "native_plane_set_integrated": "92574d71",
+    "native_clip_planes_integrated": "05b33746",
+    "ambient_worker_assigned": true,
+    "frustum_worker_assigned": true,
+    "full_parent_source_ready": false
+  }
+}

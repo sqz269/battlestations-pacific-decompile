@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00b24010",
+    "before": {
+      "address": "00b24010",
+      "function_name": "BSP_D3D9Renderer_DrawIndexedPrimitive",
+      "comment": "[BSP reconstruction 00b24010]\nRecovered vtable+13ch, RET14h. Gated by inhibit+1d90h/lost+1d8ah and nonzero vertex/primitive counts; special stream0 tag40000001h rejects requested vertices beyond stream count. Calls DrawIndexedPrimitive with stored base vertex+17bch, optional guard. Logical stream gate remains unported.\n\n[BSP reconstruction 00b24010] update\nRecovered vtable+13ch, RET14h. Gated by inhibit+1d90h/lost+1d8ah and nonzero vertex/primitive counts; special stream0 tag40000001h rejects requested vertices beyond stream count. Calls DrawIndexedPrimitive with stored base vertex+17bch, optional guard. Logical stream gate remains unported. Update: semantic binding/draw projection now ported with shared logical ownership and diagnostic indexed pixel readback; native constructors, registry and ABI remain incomplete."
+    },
+    "after": {
+      "address": "00b24010",
+      "old_name": "BSP_D3D9Renderer_DrawIndexedPrimitive",
+      "name": "BSP_D3D9Renderer_DrawIndexedPrimitive",
+      "evidence": "Complete B24010..B2415B331 bytes; ECX renderer, five stack DWORDs type/min/count/start/primitives, RET14h; new explicit C++ context. Inhibit1D90 before lost byte1D8A; both gates precede renderer1904 read/full B1F740 LEA getter and optional guard. Capture mode before entry and reload after entry; raw skipped saved-renderer word read preserved. Vertex TEST precedes EH arm B2407D. Zero counts use captured post-entry mode. Borrow current stream1774; if nonnull current D61D6C/profile20 full B48CD0 is queried even ordinary tag. Unsigned requested>count rereads current stream then tag54 with no invented second-null guard; only40000001 rejects. Current device1A10 then table then signed bits base17BC then slot148; all raw args pass unchanged, HRESULT ignored, no counter. Rejection/postdraw read fresh mode before disarm. Entry exception unarmed; armed full guards/FH3 cleanup; normal Leave exception postdisarm, secondary exception termination. Primary independently verified 75 immutable worker pins and seven unchanged current provider files, then replayed unchanged fixture against actual frozen main library 9a9de67d355ddadcfdd957b89d4479c0f057ffc159f327adf2e502ad31d663b9. Strict main Win32 build, two existing CTests and eight fresh original seeds pass. Thirteen fresh guarded live/PE spans total 604 bytes; all three complete originals total339 bytes execute at original addresses in a separate reserved fixture child with full guards/FH3. D61D6C thirteen-slot profile and full four-byte count getter remain byte-identical; no provider bridge or invented getter callback. Sixteen pairs compare249641 literal DWORDs/125 frames, no pointer normalization, including complete renderer/logical/global/CS storage, actual VB/IB getter results and actual HAL red-pixel triangle readback. Two exact main archive objects,317 complete COFF sections/all relocations,121 entries15424 unique code bytes include fixture.33 normal and two each termination postimage phases preserve complete original/linked text/read-only data and actual/cloned tables.68 provider calls resolve to original/full-library call sites and real HAL D3D9/Windows CS; both secondary-cleanup throws terminate73 after real Leave. Exact source access-order audit proves early gates, captured modes, TEST-before-EH-arm, unsigned count/query/current-tag sequence and device/table/base ordering. The actual absent-index draw returned S_OK with blackpixel; ignored HRESULT is code proof, no failing-HRESULT claim. No entry-disabled mode enabling, foreign profiles, full logical ownership/binding, general original caller ABI or gameplay validation. reports/native_renderer_indexed_draw_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f740",
+    "before": {
+      "address": "00b1f740",
+      "function_name": "BSP_Viewport_GetSize",
+      "comment": "[BSP reconstruction 00b1f740]\n[BSP reconstruction] Returns viewport wrapper+10 DWORD WH. Original ABI: ECX viewport; EAX object+10; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f740",
+      "old_name": "BSP_Viewport_GetSize",
+      "name": "BSP_Viewport_GetSize",
+      "evidence": "Complete B1F740..B1F744 four bytes, LEA EAX,[ECX+10h]; RET. Raw wrapped address computation, no viewport pointee read. Compiled complete leaf byte-identical to original. Primary independently verified 75 immutable worker pins and seven unchanged current provider files, then replayed unchanged fixture against actual frozen main library 9a9de67d355ddadcfdd957b89d4479c0f057ffc159f327adf2e502ad31d663b9. Strict main Win32 build, two existing CTests and eight fresh original seeds pass. Thirteen fresh guarded live/PE spans total 604 bytes; all three complete originals total339 bytes execute at original addresses in a separate reserved fixture child with full guards/FH3. D61D6C thirteen-slot profile and full four-byte count getter remain byte-identical; no provider bridge or invented getter callback. Sixteen pairs compare249641 literal DWORDs/125 frames, no pointer normalization, including complete renderer/logical/global/CS storage, actual VB/IB getter results and actual HAL red-pixel triangle readback. Two exact main archive objects,317 complete COFF sections/all relocations,121 entries15424 unique code bytes include fixture.33 normal and two each termination postimage phases preserve complete original/linked text/read-only data and actual/cloned tables.68 provider calls resolve to original/full-library call sites and real HAL D3D9/Windows CS; both secondary-cleanup throws terminate73 after real Leave. Exact source access-order audit proves early gates, captured modes, TEST-before-EH-arm, unsigned count/query/current-tag sequence and device/table/base ordering. The actual absent-index draw returned S_OK with blackpixel; ignored HRESULT is code proof, no failing-HRESULT claim. No entry-disabled mode enabling, foreign profiles, full logical ownership/binding, general original caller ABI or gameplay validation. reports/native_renderer_indexed_draw_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48cd0",
+    "before": {
+      "address": "00b48cd0",
+      "function_name": "BSP_D3D9LogicalVertexStream_GetVertexCount",
+      "comment": "[BSP reconstruction 00b48cd0]\nRecovered vtable+20h getter; MOV EAX,[ECX+64h]; RET. Used in indexed-draw stream0 limit gate."
+    },
+    "after": {
+      "address": "00b48cd0",
+      "old_name": "BSP_D3D9LogicalVertexStream_GetVertexCount",
+      "name": "BSP_D3D9LogicalVertexStream_GetVertexCount",
+      "evidence": "Complete B48CD0..B48CD4 four bytes, MOV EAX,[ECX+64h]; RET. Actual borrowed logical stream raw DWORD count, D61D6C slot20; no owner operation or callback. Compiled complete leaf byte-identical to original. Primary independently verified 75 immutable worker pins and seven unchanged current provider files, then replayed unchanged fixture against actual frozen main library 9a9de67d355ddadcfdd957b89d4479c0f057ffc159f327adf2e502ad31d663b9. Strict main Win32 build, two existing CTests and eight fresh original seeds pass. Thirteen fresh guarded live/PE spans total 604 bytes; all three complete originals total339 bytes execute at original addresses in a separate reserved fixture child with full guards/FH3. D61D6C thirteen-slot profile and full four-byte count getter remain byte-identical; no provider bridge or invented getter callback. Sixteen pairs compare249641 literal DWORDs/125 frames, no pointer normalization, including complete renderer/logical/global/CS storage, actual VB/IB getter results and actual HAL red-pixel triangle readback. Two exact main archive objects,317 complete COFF sections/all relocations,121 entries15424 unique code bytes include fixture.33 normal and two each termination postimage phases preserve complete original/linked text/read-only data and actual/cloned tables.68 provider calls resolve to original/full-library call sites and real HAL D3D9/Windows CS; both secondary-cleanup throws terminate73 after real Leave. Exact source access-order audit proves early gates, captured modes, TEST-before-EH-arm, unsigned count/query/current-tag sequence and device/table/base ordering. The actual absent-index draw returned S_OK with blackpixel; ignored HRESULT is code proof, no failing-HRESULT claim. No entry-disabled mode enabling, foreign profiles, full logical ownership/binding, general original caller ABI or gameplay validation. reports/native_renderer_indexed_draw_audit.json."
+    },
+    "status": "applied"
+  }
+]
