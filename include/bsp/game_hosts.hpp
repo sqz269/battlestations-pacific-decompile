@@ -129,6 +129,10 @@ struct GameExecutableOptions {
     long press_start_frame{-1};
     // --screenshot <path>: save the back buffer of the last frame as a PNG.
     std::string screenshot_path;
+    // --screenshot-frame N: capture that frame instead of the last one, so a run can
+    // photograph the title page before the injected press-start as well as the main
+    // menu after it. Negative keeps the last-frame default.
+    long screenshot_frame{-1};
     // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.
@@ -272,10 +276,10 @@ public:
     GameLoopCallbacks(GameHostLog& log, ApplicationFrameState& frame_state,
         FrameMarkerColor& color, GameFrameHost& frame_host, GameDeviceHost& device,
         PlatformLoopState& loop, long frame_limit,
-        std::function<void(IDirect3DDevice9&)> capture = {})
+        std::function<void(IDirect3DDevice9&)> capture = {}, long screenshot_frame = -1)
         : log_(log), frame_state_(frame_state), color_(color), frame_host_(frame_host),
           device_(device), loop_(loop), frame_limit_(frame_limit),
-          capture_(std::move(capture)) {}
+          capture_(std::move(capture)), screenshot_frame_(screenshot_frame) {}
 
     bool pretranslate(MSG& message) override;
     void frame() override;
@@ -291,6 +295,9 @@ private:
     PlatformLoopState& loop_;
     long frame_limit_{-1};
     std::function<void(IDirect3DDevice9&)> capture_;
+    // --screenshot-frame N, milestone 2d: the frame index to capture. Negative keeps the
+    // last-frame (or close-request) rule the switch shipped with.
+    long screenshot_frame_{-1};
     bool capture_requested_{};
     unsigned long long frames_{};
 };
@@ -371,6 +378,13 @@ struct GameRunSummary {
     std::size_t screen_owned_pages{};
     bool screenshot_written{};
     std::string screenshot_path;
+    long screenshot_frame{-1};
+    // Milestone 2d, the text half of the sprite bridge.
+    bool text_bridge_open{};
+    std::size_t text_widgets{};
+    std::size_t text_runs{};
+    std::size_t text_glyphs{};
+    std::size_t text_quads{};
 };
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
