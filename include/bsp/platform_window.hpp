@@ -41,6 +41,7 @@ struct Win32PlatformState {
     std::int32_t y{};            // +020
     std::int32_t present_width{};    // +024
     std::int32_t present_height{};   // +028
+    bool settings_changed_2c{};      // +02c, mouse cooperative-mode refresh flag
     HWND window{};               // +030
     std::int32_t requested_width{};  // +034
     std::int32_t requested_height{}; // +038

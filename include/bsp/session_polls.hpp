@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include "bsp/xlive_types.hpp"
 
 // Per-frame session polling reached from BSP_Game_OnMove (004e4a40).
 //
@@ -97,7 +98,9 @@ struct PlatformManagerFlags {
     bool system_ui_visible{false}; // +3E8h (manager+1000), set from the parameter
     // +3C0h holds the status of an outstanding asynchronous operation. 00a3e3b0
     // suppresses the profile-changed report while it is 3E5h (ERROR_IO_PENDING).
-    std::uint32_t async_status{0};
+    // Own the entire durable DLL output block, so the profile poll observes
+    // words[0] directly rather than a stale copy of an asynchronous result.
+    XLiveOverlapped profile_overlapped_3c0{};
 };
 
 // Applies one notification to the manager flags. Only the arms that write a flag
