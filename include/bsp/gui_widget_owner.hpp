@@ -21,6 +21,13 @@ public:
     virtual void set_active60(GuiWidgetOwner&, bool) = 0;
     virtual bool is_visible38(GuiWidgetOwner&) = 0;
     virtual void visibility_changed3c(GuiWidgetOwner&, bool) = 0;
+    // Existing base types use00AA8530; cGuiLayer overrides the current slot34.
+    virtual void set_visible34(GuiWidgetOwner&, bool);
+    // Base and supported Icon/FrameBox readers have no pre-base continuation.
+    // cGuiLayer00AC4C50 acquires its camera/scene BEFORE00AAA710.
+    virtual void before_properties(GuiWidgetOwner&, const GuiTable&) {}
+    // Derived destruction precedes the base00AA9730 node/tree release.
+    virtual void before_scene_release(GuiWidgetOwner&) {}
 };
 using GuiWidgetImplementationFactory = std::function<
     std::unique_ptr<GuiWidgetTypeImplementation>(GuiWidgetOwner&)>;
@@ -64,13 +71,15 @@ public:
     NativeModelReference* model_reference() noexcept;
     GuiWidgetTypeImplementation& implementation();
 
-    void bind_scene_00aa6720(NativeNodeBinding*);
+    void bind_scene_00aa6720(NativeNodeBinding*) noexcept;
     void base_constructed74_00a9ac00() noexcept; // proven single RET, no Ghidra function
     void base_loaded78_00aa7170();
     void base_set_active60_00aa6a30(bool) noexcept;
     bool base_is_visible38_00a9e0d0() const noexcept;
     void base_visibility_changed3c_00a9e100(bool) noexcept; // proven RET4
     void set_visible_00aa8530(bool);
+    void set_visible34(bool); // actual current virtual34, including cGuiLayer
+    void propagate_visibility_00aa8450(const GuiWidgetVisibilityArgs&);
     void recompose_00aa7220();
     void refresh_bounds_00aa70e0();
     void set_position_00aa7dc0(const GuiWidgetPoint&);
@@ -107,6 +116,7 @@ public:
     NativeNodeBinding& node(std::uint32_t actual_identity) const;
     void set_node_parent(std::uint32_t child, std::uint32_t parent);
     void constructed74(GuiLayoutWidget&);
+    void before_properties(GuiLayoutWidget&, const GuiTable&);
     void base_properties_bound(GuiLayoutWidget&);
     void properties_bound(GuiLayoutWidget&, const GuiTable&);
     void loaded78(GuiLayoutWidget&);

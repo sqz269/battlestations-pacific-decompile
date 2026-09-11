@@ -329,6 +329,10 @@ struct GuiLayoutHost {
     // Required: callers must dispatch the actual type, not silently omit them.
     virtual void on_widget_constructed(GuiLayoutWidget&) = 0;
     virtual void on_widget_loaded(GuiLayoutWidget&) = 0;
+    // cGuiLayer00AC4C50 reads ordering/acquires its scene before base fields.
+    // Retained hosts route to GuiWidgetOwnerRuntime::before_properties.
+    // Base, Icon and FrameBox have no pre-base continuation.
+    virtual void on_widget_before_properties(GuiLayoutWidget&, const GuiTable&) {}
     // Base projection completed, before the native00AAA710 child traversal.
     // A retained runtime MUST publish its base transform/visibility here.
     // Diagnostic hosts have no actual scene fields to publish.
