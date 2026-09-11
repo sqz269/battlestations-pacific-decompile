@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS // Recovered CRT text-file read/write contract.
 // bsp_game.exe milestone 2a bindings. See include/bsp/game_hosts_vfs.hpp and
 // docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed goes through GameHostLog::unimplemented with its native call site.
@@ -8,6 +9,9 @@
 
 #include <algorithm>
 #include <cstring>
+#include <cstdio>
+#include <stdexcept>
+#include <utility>
 
 #include "bsp/memory_stream.hpp"
 #include "bsp/physical_file.hpp"
@@ -36,18 +40,6 @@ const char* scan_disposition_name(PackageScanDisposition disposition) {
         case PackageScanDisposition::failed: break;
     }
     return "failed";
-}
-
-// The sixteen token names 008d8190 compares against, in the literal spellings of the table
-// in docs/APP_INIT_BOOTSTRAP.md (00d15f1c down to 00d15e7c, plus "Resolution" at 00cf3a78).
-const char* const kOptionTokenNames[] = {
-    "Language", "Fullscreen", "HiResShadow", "NoLOD", "Resolution", "VSync", "ShaderModel",
-    "Antialias", "Clouds", "Foliage", "Shadow", "Reflection", "TextureDetail", "ObjectDetail",
-    "SoundEnabled", "Firewall",
-};
-
-bool equals_ignore_case(const std::string& left, const char* right) {
-    return _stricmp(left.c_str(), right) == 0;
 }
 
 }  // namespace
@@ -340,113 +332,61 @@ std::size_t GameVfsHost::package_entries_mounted() const noexcept {
 // GameSettingsBinding
 // ---------------------------------------------------------------------------
 
-GameSettingsBinding::GameSettingsBinding(GameHostLog& log) : log_(log) {
-    // 008d5150: SHGetSpecialFolderPathA(NULL, buf, CSIDL_PERSONAL, TRUE) joined with the
-    // per-title directory and options.txt. 008d8205 falls back to the global path buffer at
-    // 00f88a3c when the folder call yields an empty string; that buffer has no writer in
-    // this process, so an empty personal folder leaves the path empty and selects path B.
-    char personal[MAX_PATH] = {};
-    if (SHGetSpecialFolderPathA(nullptr, personal, CSIDL_PERSONAL, TRUE)) {
-        options_path_ = personal;
-        options_path_ += kOptionsDirectory;
-        options_path_ += kOptionsFileName;
+GameSettingsBinding::GameSettingsBinding(GameHostLog& log, VfsMountContext& mounts,
+    const VfsCandidateRegistrations& registrations, const std::vector<std::string>& suffixes,
+    ProfileHintsOwner& hints, std::string personal_root)
+    : log_(log), text_host_(std::move(personal_root)),
+      locale_source_(mounts, registrations, suffixes,
+          [&hints] { return static_cast<std::uint32_t>(hints.field_08); }) {
+    api_ = Direct3DCreate9(D3D_SDK_VERSION);
+    if (!api_) throw std::runtime_error("Settings renderer Direct3DCreate9 failed");
+    try {
+        Win32SettingsCapabilityQueries queries(*api_);
+        enumerate_settings_resolutions_00b27d80(capabilities_, queries);
+        if (!gather_settings_shader_caps_00b2c8e0(capabilities_, queries))
+            throw std::runtime_error("Settings renderer GetDeviceCaps failed");
+    } catch (...) {
+        api_->Release();
+        api_ = nullptr;
+        throw;
     }
-    enumerate_adapter_modes();
 }
 
-GameSettingsBinding::~GameSettingsBinding() = default;
-
-void GameSettingsBinding::enumerate_adapter_modes() {
-    // MILESTONE ADDITION, not recovered behaviour. The native supported-resolution table at
-    // DAT_00f8895c is assigned at 008d81bf from the renderer's own vector (renderer+1Ch via
-    // TRIV_body_00b1fff0), and nothing fills that vector in this reconstruction: the
-    // renderer resource phase 00b14a10 is unimplemented. An empty table would make 008d8190
-    // reject every parsed resolution and fall back to 640x480, so the milestone supplies the
-    // adapter's own mode list, which is what a D3D9 renderer must be enumerating. The same
-    // interface supplies the shader-model ceiling that TRIV_body_00b200b0 returns.
-    IDirect3D9* api = Direct3DCreate9(D3D_SDK_VERSION);
-    if (api == nullptr) {
-        log_.note("Direct3DCreate9 failed; supported resolution table is empty");
-        return;
-    }
-    const UINT count = api->GetAdapterModeCount(D3DADAPTER_DEFAULT, D3DFMT_X8R8G8B8);
-    for (UINT index = 0; index < count; ++index) {
-        D3DDISPLAYMODE mode = {};
-        if (FAILED(api->EnumAdapterModes(D3DADAPTER_DEFAULT, D3DFMT_X8R8G8B8, index, &mode))) {
-            continue;
-        }
-        const Resolution entry{static_cast<int>(mode.Width), static_cast<int>(mode.Height)};
-        const bool present = std::any_of(resolutions_.begin(), resolutions_.end(),
-            [&entry](const Resolution& known) {
-                return known.width == entry.width && known.height == entry.height;
-            });
-        if (!present) resolutions_.push_back(entry);
-    }
-    D3DCAPS9 caps = {};
-    if (SUCCEEDED(api->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps))) {
-        max_shader_model_ = static_cast<int>(D3DSHADER_VERSION_MAJOR(caps.PixelShaderVersion));
-    }
-    api->Release();
-    log_.notef("adapter modes=%zu distinct resolutions, max pixel shader model=%d",
-        resolutions_.size(), max_shader_model_);
+GameSettingsBinding::~GameSettingsBinding() {
+    if (api_) api_->Release();
 }
 
-std::optional<std::string> GameSettingsBinding::read_options_file() const {
-    // fopen(path, "rt") in the original; PhysicalFile is the reconstructed read path.
+void GameSettingsBinding::build_language_catalog_008d7bc0() {
+    bsp::build_language_catalog_008d7bc0(languages_, locale_source_);
+    log_.implemented("GameSettingsHost::build_language_catalog", "008d7bc0");
+    log_.notef("settings catalog entries=%zu", languages_.size());
+}
+
+const std::vector<LanguageEntry>& GameSettingsBinding::language_catalog() const { return languages_; }
+
+void GameSettingsBinding::copy_supported_resolutions_008d4ea0() {
+    resolutions_ = settings_resolutions_00b1fff0(capabilities_);
+    log_.notef("settings native resolution pairs=%zu shader ceiling=%d pixel version=0x%04x",
+        resolutions_.size(), capabilities_.max_shader_model, capabilities_.pixel_shader_version_28);
+}
+
+std::optional<std::string> GameSettingsBinding::read_options_file() {
+    // Preserve CRT text translation. The host keeps only actual fread bytes;
+    // native's unused tail after CRLF translation has no defined byte content.
     options_present_ = false;
-    recased_.clear();
-    if (options_path_.empty()) return std::nullopt;
-    PhysicalFile file;
-    DWORD error = 0;
-    if (!file.open_read_only_00bf52a0_fragment(options_path_.c_str(), error)) {
-        return std::nullopt;
-    }
-    const std::uint64_t size = file.size_00bf4f90();
-    std::string text(static_cast<std::size_t>(size), '\0');
-    std::uint32_t read = 0;
-    if (size != 0 && file.read_00bf5030(text.data(), static_cast<std::uint32_t>(size), read,
-            error)) {
-        text.resize(read);
-    } else {
-        text.clear();
-    }
-    file.close_00bf5090_fragment(error);
+    options_path_ = build_options_path_008d5150(text_host_);
+    std::FILE* file = std::fopen(options_path_.c_str(), "rt");
+    if (!file) return std::nullopt;
+    struct CloseFile { std::FILE* file; ~CloseFile() { std::fclose(file); } } close{file};
+    if (std::fseek(file, 0, SEEK_END) != 0) throw std::runtime_error("Options seek failed");
+    const long length = std::ftell(file);
+    if (length < 0 || std::fseek(file, 0, SEEK_SET) != 0) throw std::runtime_error("Options extent failed");
+    std::string text(static_cast<std::size_t>(length), '\0');
+    const auto actual = std::fread(text.data(), 1, text.size(), file);
+    if (std::ferror(file)) throw std::runtime_error("Options read failed");
+    text.resize(actual);
     options_present_ = true;
-
-    // The native token comparison at 008d8190 runs through FUN_00467cc0, which calls
-    // BSP_CString_CompareInsensitive: the token names are matched case-insensitively. The
-    // shared reconstruction in src/app_bootstrap.cpp compares them with ==, so a file
-    // written by the game itself does not round-trip (008d6170 writes "Vsync ", the reader
-    // literal at 00d15ef4 is "VSync"). That file is owned by another packet, so this host
-    // canonicalizes recognized token spellings before handing the text to the loader and
-    // reports every token it had to recase. Only case changes; no token is added, removed
-    // or reordered, and the loader's own split characters are preserved.
-    std::string canonical;
-    canonical.reserve(text.size());
-    std::string token;
-    auto flush = [&canonical, &token, this]() {
-        if (token.empty()) return;
-        for (const char* name : kOptionTokenNames) {
-            if (token != name && equals_ignore_case(token, name)) {
-                recased_.push_back(token + " -> " + name);
-                token = name;
-                break;
-            }
-        }
-        canonical += token;
-        token.clear();
-    };
-    for (const char character : text) {
-        if (character == ' ' || character == '\t' || character == '\r' || character == '\n'
-            || character == ',') {
-            flush();
-            canonical.push_back('\n');
-        } else {
-            token.push_back(character);
-        }
-    }
-    flush();
-    return canonical;
+    return text;
 }
 
 std::optional<std::uint32_t> GameSettingsBinding::read_registry_language_lcid() const {
@@ -478,21 +418,33 @@ const std::vector<Resolution>& GameSettingsBinding::supported_resolutions() cons
 }
 
 const std::vector<int>& GameSettingsBinding::supported_antialias_levels() const {
-    // DAT_00f88968 / DAT_00f8896c, the stride-4 table 008d8850 snaps the parsed sample count
-    // onto. It has the same unreconstructed renderer source as the resolution table, and no
-    // safe substitute: an invented list would silently move the sample count. Left empty,
-    // which is exactly the "no snapping" branch of the loader tail, so the file's Antialias
-    // value survives unchanged and its index stays zero.
     return antialias_levels_;
 }
 
-int GameSettingsBinding::max_shader_model() const { return max_shader_model_; }
+int GameSettingsBinding::max_shader_model() const { return settings_max_shader_model_00b200b0(capabilities_); }
 
-void GameSettingsBinding::apply_detected_defaults(GameSettings& settings) const {
-    // 008d6170's no-options-file path, which derives the remaining settings from detected
-    // hardware. Not recovered, so nothing is written and the defaults stand.
-    (void)settings;
-    log_.unimplemented("GameSettingsHost::apply_detected_defaults", "008d6170");
+void GameSettingsBinding::write_options_text_008d6170(const GameSettingsBlock& settings) {
+    bsp::write_settings_text_008d6170(settings, languages_, text_host_);
+    log_.implemented("GameSettingsHost::write_options_text", "008d6170");
+}
+
+void GameSettingsBinding::select_shader_model_00b200c0(int selected) {
+    select_settings_shader_model_00b200c0(selected);
+}
+
+std::uint32_t GameSettingsBinding::pixel_shader_version_28() const {
+    return capabilities_.pixel_shader_version_28;
+}
+
+void GameSettingsBinding::rebuild_antialias_levels_00b295c0(std::uint32_t format) {
+    Win32SettingsCapabilityQueries queries(*api_);
+    rebuild_settings_antialias_00b295c0(capabilities_, queries, format);
+    log_.implemented("GameSettingsHost::rebuild_antialias_levels", "00b295c0");
+    log_.notef("settings AA surface format=%u supported levels=%zu", format, capabilities_.antialias_levels.size());
+}
+
+void GameSettingsBinding::copy_supported_antialias_008d4df0() {
+    antialias_levels_ = settings_antialias_levels_00b20000(capabilities_);
 }
 
 void GameSettingsBinding::log(const std::string& line) const {

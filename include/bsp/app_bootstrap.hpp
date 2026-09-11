@@ -19,6 +19,9 @@
 
 namespace bsp {
 
+struct GameSettingsBlock;
+struct LanguageEntry;
+
 // ---------------------------------------------------------------------------
 // 00439040 - module path capture
 // ---------------------------------------------------------------------------
@@ -213,11 +216,15 @@ const char* language_name_for_lcid_008d8190(std::uint32_t lcid);
 class GameSettingsHost {
 public:
     virtual ~GameSettingsHost() = default;
+    virtual void build_language_catalog_008d7bc0() = 0;
+    virtual const std::vector<LanguageEntry>& language_catalog() const = 0;
+    // Native copies the renderer table into the persistent settings table.
+    virtual void copy_supported_resolutions_008d4ea0() = 0;
     // 008d5150 builds <CSIDL_PERSONAL>\...\options.txt; 008d8205 falls back to
     // the global path buffer at 00f88a3c when that string is empty. An empty
     // optional stands for the fopen(path, "rt") failure that selects the
     // registry path below.
-    virtual std::optional<std::string> read_options_file() const = 0;
+    virtual std::optional<std::string> read_options_file() = 0;
     // RegOpenKeyExA(HKEY_LOCAL_MACHINE, kSettingsRegistryKey, 0, KEY_READ) then
     // RegQueryValueExA(kSettingsRegistryLanguageValue). The value is used only
     // when the query succeeds and the type is REG_DWORD.
@@ -232,18 +239,24 @@ public:
     // TRIV_body_00b200b0, the renderer's highest supported shader model. Read
     // twice: once to seed +0x88 and once to clamp it.
     virtual int max_shader_model() const = 0;
-    // 008d6170, the no-options-file path that derives the remaining settings
-    // from detected hardware. Not recovered; left to the host.
-    virtual void apply_detected_defaults(GameSettings& settings) const = 0;
+    // Missing input file: persist the retained object BEFORE the common tail.
+    virtual void write_options_text_008d6170(const GameSettingsBlock& settings) = 0;
+    virtual void select_shader_model_00b200c0(int selected) = 0;
+    // Renderer virtual+104 returns the capability record; +28 is the low
+    // word of PixelShaderVersion, not the constant-buffer limit.
+    virtual std::uint32_t pixel_shader_version_28() const = 0;
+    virtual void rebuild_antialias_levels_00b295c0(std::uint32_t format) = 0;
+    virtual void copy_supported_antialias_008d4df0() = 0;
     // TRIV_body_004254b0, including the original's "Destop size=%d %d" typo.
     virtual void log(const std::string& line) const;
 };
 
 // 008d8190, __fastcall(this) with RET 0; the native `this` is the static object
-// at 00f88980. Clamping of shader model against the renderer caps (008d88??),
-// the 0x200-byte constant-buffer check and the post-effect selection at
-// 00b295c0 are outside this reconstruction; see the doc.
-GameSettings load_game_settings_008d8190(const GameSettingsHost& host);
+// at 00f88980. Updates the actual retained object, including its language index.
+// AA enumeration uses format21 or113 according to byte+8c. An empty AA table
+// or negative final index is outside the native valid domain and throws.
+// Evidence and host adaptation limits: docs/SETTINGS_STARTUP_OWNER.md.
+void load_game_settings_008d8190(GameSettingsBlock& settings, GameSettingsHost& host);
 
 // ---------------------------------------------------------------------------
 // 00737c40 and the bootstrap order
@@ -278,6 +291,7 @@ public:
     virtual std::string command_line() const = 0;
     virtual HardwareProbeHost& hardware_probe() = 0;
     virtual GameSettingsHost& game_settings() = 0;
+    virtual GameSettingsBlock& retained_game_settings() = 0;
 };
 
 // The bootstrap subset of Init in native order. `vfs_first_time` mirrors the

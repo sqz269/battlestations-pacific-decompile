@@ -16,6 +16,7 @@
 
 #include <cstdio>
 #include <string>
+#include <exception>
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -70,7 +71,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     if (!options.parse(__argc, __argv, error)) {
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
-            " [--game-root <dir>] [--vfs-probe <virtual path>]\n");
+            " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]\n");
         return 2;
     }
 
@@ -103,7 +104,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     arguments.command_line = command_line;
     arguments.show_command = show_command;
 
-    const int result = bsp::run_win_main(arguments, host);
+    int result = 1;
+    try {
+        result = bsp::run_win_main(arguments, host);
+    } catch (const std::exception& error) {
+        log.notef("startup failed: %s", error.what());
+    }
 
     bsp::game::GameRunSummary summary = host.summary();
     summary.exit_code = result;

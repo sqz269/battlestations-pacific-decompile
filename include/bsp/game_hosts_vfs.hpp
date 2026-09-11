@@ -42,6 +42,9 @@
 #include "bsp/vfs_candidates.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 #include "bsp/vfs_startup.hpp"
+#include "bsp/vfs_locale_runtime.hpp"
+#include "bsp/settings_capabilities.hpp"
+#include "bsp/settings_text.hpp"
 
 namespace bsp::game {
 
@@ -127,6 +130,7 @@ public:
     const VfsStartupState& startup_state() const noexcept { return state_; }
     bool cached_load() const noexcept { return cached_load_; }
     VfsProviderManager* manager() const noexcept { return manager_.get(); }
+    const VfsCandidateRegistrations& search_registrations() const noexcept { return search_registrations_; }
 
 private:
     PackageScanCallbacks package_scan_callbacks();
@@ -148,39 +152,48 @@ private:
     std::uint8_t factory_tokens_[3]{};
 };
 
-// Concrete GameSettingsHost for 008d8190. The options file, the registry language value and
-// the desktop size are real reads; the two native capability tables are described at the
-// members that supply them.
+// Settings startup over the retained game state, mounted catalog and recovered
+// D3D9 capability operations. See docs/SETTINGS_STARTUP_OWNER.md.
 class GameSettingsBinding final : public GameSettingsHost {
 public:
-    explicit GameSettingsBinding(GameHostLog& log);
+    GameSettingsBinding(GameHostLog& log, VfsMountContext& mounts,
+        const VfsCandidateRegistrations& registrations, const std::vector<std::string>& suffixes,
+        ProfileHintsOwner& hints, std::string personal_root = {});
     ~GameSettingsBinding() override;
+    GameSettingsBinding(const GameSettingsBinding&) = delete;
+    GameSettingsBinding& operator=(const GameSettingsBinding&) = delete;
 
-    std::optional<std::string> read_options_file() const override;
+    void build_language_catalog_008d7bc0() override;
+    const std::vector<LanguageEntry>& language_catalog() const override;
+    void copy_supported_resolutions_008d4ea0() override;
+    std::optional<std::string> read_options_file() override;
     std::optional<std::uint32_t> read_registry_language_lcid() const override;
     Resolution desktop_size() const override;
     const std::vector<Resolution>& supported_resolutions() const override;
     const std::vector<int>& supported_antialias_levels() const override;
     int max_shader_model() const override;
-    void apply_detected_defaults(GameSettings& settings) const override;
+    void write_options_text_008d6170(const GameSettingsBlock& settings) override;
+    void select_shader_model_00b200c0(int selected) override;
+    std::uint32_t pixel_shader_version_28() const override;
+    void rebuild_antialias_levels_00b295c0(std::uint32_t format) override;
+    void copy_supported_antialias_008d4df0() override;
     void log(const std::string& line) const override;
 
-    // 008d5150 with SHGetSpecialFolderPathA(CSIDL_PERSONAL); empty when the folder is absent.
     const std::string& options_path() const noexcept { return options_path_; }
     bool options_file_present() const noexcept { return options_present_; }
-    // Recognized token names whose spelling the file disagreed with; see the .cpp.
-    const std::vector<std::string>& recased_tokens() const noexcept { return recased_; }
+    VfsLocaleRuntime& locale_source() noexcept { return locale_source_; }
 
 private:
-    void enumerate_adapter_modes();
-
     GameHostLog& log_;
-    std::string options_path_;
-    mutable bool options_present_{};
-    mutable std::vector<std::string> recased_;
+    Win32SettingsTextHost text_host_;
+    VfsLocaleRuntime locale_source_;
+    std::vector<LanguageEntry> languages_;
+    IDirect3D9* api_{};
+    SettingsRendererCapabilities capabilities_;
     std::vector<Resolution> resolutions_;
-    std::vector<int> antialias_levels_;  // stays empty; see the .cpp
-    int max_shader_model_{};
+    std::vector<int> antialias_levels_;
+    std::string options_path_;
+    bool options_present_{};
 };
 
 }  // namespace bsp::game

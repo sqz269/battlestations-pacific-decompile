@@ -1,0 +1,15 @@
+{
+  "packet": "orch2_settings_startup_owner",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "addresses": ["008d8190", "008d6170"],
+  "source": "src/app_bootstrap.cpp",
+  "integration_sources": ["src/game_hosts.cpp", "src/game_hosts_vfs.cpp", "src/game_main.cpp"],
+  "documentation": "docs/SETTINGS_STARTUP_OWNER.md",
+  "dependencies": ["settings_initial_state", "settings_capabilities", "options_token_reader", "locale_startup_integration"],
+  "status": "implemented_pending_combined_validation",
+  "validation": "pending worker integration",
+  "annotations": "pending",
+  "abi_compatible": false,
+  "game_validated": false
+}
