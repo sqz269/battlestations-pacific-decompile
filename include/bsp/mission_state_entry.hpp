@@ -20,6 +20,8 @@
 
 namespace bsp {
 
+struct AudioSettings;
+
 // ---------------------------------------------------------------------------
 // State 0Ch, the device wait screen (004db920)
 // ---------------------------------------------------------------------------
@@ -120,11 +122,6 @@ struct MissionStateEntryState {
     bool hud_suppressed{false}; // +608h, the byte docs/GAME_SIMULATION_GATE.md reads with game+1FE4h
 };
 
-// The float 004da724 loads is the global at 00f889a0, which the whole image
-// references exactly once, from this instruction, and which ships as zero.
-// So the audio level applied on mission entry is a constant 0.0f.
-inline constexpr float kMissionEntryAudioLevel = 0.0f; // 00f889a0
-
 // The mask 00a7a440 substitutes for its stack argument before tail-jumping to
 // 00a7a3f0, which marks every bus whose class bit is in the mask dirty.
 inline constexpr std::uint32_t kAudioEnvironmentBusMask = 0xFFFF; // 00a7a44b
@@ -183,8 +180,11 @@ struct MissionStateEntryHost {
 // the only input, RET with no immediate. Returns true when the routine ran to
 // the end, false when the multiplayer check moved the state away from 0Dh and
 // the native code took the early return at 004da761 - in that case the
-// cinematic reset and the +608h store do not happen.
-bool run_mission_state_entry(MissionStateEntryState& state, MissionStateEntryHost& host);
+// cinematic reset and the +608h store do not happen. Audio settings project
+// the mutable static settings object at 00f88980; its master_20 is read at
+// the native 004da724 point, after the earlier host calls, not at entry.
+bool run_mission_state_entry(MissionStateEntryState& state,
+    const AudioSettings& audio_settings, MissionStateEntryHost& host);
 
 // One method per native call site of 004db920 that is not already a predicate
 // above.

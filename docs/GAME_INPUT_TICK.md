@@ -210,3 +210,26 @@ One test case was added to `tests/math_tests.cpp`, covering the edge asymmetry b
   at +10h/+14h to `docs/INPUT_SETTINGS_TREE_CLUSTER.md`.
 - Correct `docs/GAME_ON_MOVE_MAP.md` phase 15 and its flow-break 4, which describe these containers
   as lists and 004d11d0 as a suspect throw site. That file is owned by another packet.
+
+## Correction from docs/INPUT_ACTION_CLASSIFIER.md
+
+The listener classifier at `00a91a50` is now reconstructed and called directly by
+`update_input_manager_00a92c40`. The `InputTickHost::listener_classify` callback is
+removed; the three timing globals are explicit `InputTickState::listener_thresholds`
+with image defaults 0.25, 0.5 and 0.1 seconds. The native confirmation flags are
+`+09 = +08 && !+0A` and `+0C = +0B && !+0D`, as the conditional jumps at
+`00a91b94..00a91baa` prove. The earlier positive conjunctions above were incorrect.
+See the classifier document for the timing branches and bounded rebind behavior.
+
+`00425850` is a native-string comparison helper: ECX points to the eight-byte
+length/data header, the C-string argument is on the stack, AL is the boolean
+result, and it returns with `RET 4`. Its nonnull-data branch calls CRT `stricmp`;
+with null data, the fixed nonempty `holdPress` argument cannot match. Thus the
+modifier-name dispatch needs no unknown query behavior. `InputEffectParam::length`
+replaces the incorrectly typed `object` pointer at +0, and the `00a92aa0` modifier
+gate tests this length. Both comparisons use the host CRT instead of copied
+ASCII-folding code; cross-CRT locale equivalence is not claimed.
+
+The null-listener guard and projected record ownership remain intentional host
+differences. This update does not establish the native ABI or game validation.
+Combined checks are recorded in `reports/orch3_input_audio_session_integration.json`.
