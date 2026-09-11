@@ -1,0 +1,175 @@
+{
+  "packet": "cc_exe_2e",
+  "owner": "agent/cc-exe-2e",
+  "title": "bsp_game.exe milestone 2e: from the main menu to the mission load request",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only",
+    "mutations": 0
+  },
+  "sources": [
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts_text.cpp",
+    "include/bsp/game_hosts_text.hpp",
+    "src/game_hosts_frontend.cpp",
+    "include/bsp/game_hosts_frontend.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+  "reconstructions_wired": [
+    "include/bsp/mission_tree_data.hpp: load_mission_tree_005caaf0, read_mission_record_005c6a70, read_mission_group_005c9f70, read_mission_side_block_005c5da0, find_mission_by_id_005c3470, MissionTreeScriptHost, MissionTreeLuaView",
+    "include/bsp/mission_briefing_start.hpp: publish_main_menu_mission_selection_00580940, selected_mission_005806a0, mission_side_index_005c27e0, group_completed_005c3be0, run_briefing_play_005922f0, run_briefing_movie_finished_0058d9d0, run_start_selected_mission_0058bdf0, run_mission_stats_reset_00626930",
+    "include/bsp/main_menu_mission_detail.hpp: build_mission_detail_page_0058c010, MissionDetailHost, mission_detail_group, mission_detail_campaign_flags, mission_map_flag_widget_name, mission_map_point_widget_name",
+    "include/bsp/main_menu_screen.hpp: run_main_menu_screen_update_00599db0, MainMenuScreenUpdateHost, mission_group_binding, mission_group_for_page",
+    "include/bsp/main_menu_screens.hpp: kMainMenuItems, kMainMenuScreens",
+    "include/bsp/mission_load_path.hpp: run_set_pending_scene_004e2770, run_build_scene_record_004e1d70, run_select_scene_record_004c6890, mission_start_state_requests_00439020, mission_load_host_steps, SetPendingSceneHost",
+    "include/bsp/mission_scene_load.hpp: derive_scene_short_name, mission_load_phase_block_name, mission_script_path",
+    "include/bsp/scene_file.hpp: parse_scene_document, split_scene_path_0046df00",
+    "include/bsp/scene_entity_factory.hpp: scene_entity_class_is_registered, scene_entity_class_id_from_name, scene_registration_pass_handles_class, scene_registration_fallback_class",
+    "include/bsp/lua_state_owner.hpp: PcStorageLuaOwner over VfsLuaScriptFiles::owner_environment",
+    "include/bsp/gui_lua_runtime.hpp: GuiLua51Host, lua_global_by_name_00b67980",
+    "include/bsp/gui_text.hpp: set_localised_source_00abaed0 at a run-time call site",
+    "include/bsp/gui_layout_loader.hpp: find_child_by_name_00aa7e00, find_descendant_by_name",
+    "include/bsp/gui_widget.hpp: resolved_position (00AA6750)"
+  ],
+  "new_switch": {
+    "name": "--menu-select <mission id>",
+    "meaning": "the mission id the mission-tree screen's loader asks the shell for at 00586150",
+    "note": "the key is the record's Lua `id`, a short code such as USN02, not the scene file's stem; an unknown id takes 005CAAF0's clamp to the first mission of the first group"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings",
+    "tests": "ctest reconstructed_math 1/1 passed; no test cases added",
+    "command": "bsp_game.exe --frames 240 --press-start-frame 30 --menu-select USN02 --log local/game_run.log --screenshot local/run.png --screenshot-frame 200 --game-root \"I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\"",
+    "exit_code": 0,
+    "host_methods": {
+      "concrete": 193,
+      "unimplemented": 176,
+      "distinct": 369,
+      "unimplemented_reached_by_a_call": 122,
+      "unimplemented_inventory_only": 54,
+      "milestone_2d_same_tree": {
+        "concrete": 154,
+        "unimplemented": 80,
+        "distinct": 234
+      }
+    },
+    "regressions_checked": {
+      "no_menu_select_120_frames": "exit 0, 154 concrete / 80 unimplemented, unchanged from milestone 2d",
+      "title_only_40_frames": "exit 0, 129 concrete / 49 unimplemented, unchanged from milestone 2d",
+      "vfs_probe_present": "--vfs-probe fonts/fonts.lua exits 0",
+      "vfs_probe_missing": "--vfs-probe does/not/exist.lua exits 3"
+    }
+  },
+  "mission_tree": {
+    "script": "Scripts/datatables/MissionTree.lua",
+    "lua_library_mask": 4,
+    "groups": [
+      {"index": 0, "name": "Training grounds", "missions": 22, "first_ids": ["TRN1", "TRN2", "TRN5", "TRN3"]},
+      {"index": 1, "name": "IJN campaign", "missions": 30, "first_ids": ["IJN01", "IJN02", "IJN03", "IJN04"]},
+      {"index": 2, "name": "USN campaign", "missions": 36, "first_ids": ["BSM01", "BSM02", "BSM03", "BSM04"]},
+      {"index": 3, "name": "IJN DLC", "missions": 27, "first_ids": ["JM02", "JM03", "JM04", "JM05"]},
+      {"index": 4, "name": "USN DLC", "missions": 28, "first_ids": ["PRCP01", "PRCP02", "PRCP03", "PRCP04"]}
+    ],
+    "missions_total": 143,
+    "multi_mission_infos": 34,
+    "selection": {
+      "requested_id": "USN02",
+      "group": 2,
+      "mission": 13,
+      "title": "New - Battle of the Java Sea",
+      "scene": "universe/Scenes/missions/USN/usn_2_java.scn",
+      "allied_block_enabled": 1,
+      "allied_briefing_key": "USN02",
+      "allied_hints": 3,
+      "japanese_block_enabled": 0,
+      "movie_name": "",
+      "forced_difficulty_level": 3
+    }
+  },
+  "page_pairing_00580940": {
+    "published_group": 2,
+    "published_mission": 13,
+    "sub_selection": -1,
+    "side_index_005c27e0": 0,
+    "page": 5,
+    "page_name": "CampaignUs",
+    "confirms": "docs/MAIN_MENU_MISSION_DETAIL.md's {4,5} = Japan then the United States"
+  },
+  "mission_detail_0058c010": {
+    "built": true,
+    "page_written_to_00e08874": 9,
+    "group_missions_visited": 36,
+    "map_flag_icons_found": 0,
+    "map_point_icons_found": 0,
+    "icon_lookups_missed": 72,
+    "briefing_text_source": "the record's `background` key, pushed into content_main_Text through 00ABAED0",
+    "briefing_glyphs_drawn": 683
+  },
+  "briefing_start": {
+    "play_action": "005922F0 took the no-movie arm because the record's MovieName is empty",
+    "start": "0058BDF0",
+    "requests_enqueued_by_00439020": [6, 10]
+  },
+  "scene_record": {
+    "built_by": "004E2770 Create arm through 004E1D70, selected by 004C6890 at index 0",
+    "scene_path": "universe/Scenes/missions/USN/usn_2_java.scn",
+    "bytes": 48680,
+    "unique_id": 1,
+    "short_name_004cd7f0": "usn_2",
+    "database_stem": "universe/Scenes/missions/USN/usn_2_java",
+    "vfs_blocks": ["1_usn_2", "3_usn_2", "4_usn_2", "5_usn_2", "6_usn_2"],
+    "mission_script_path": "Scripts/missions/usn_2_java.lua",
+    "side_blocks_in_record": 0,
+    "slot_records_filled": 0,
+    "entities": 34,
+    "distinct_classes": 2,
+    "classes": [
+      {"name": "DestroyerGen", "count": 32, "registered": true, "registration_pass": false},
+      {"name": "NavPoint", "count": 2, "registered": true, "registration_pass": false}
+    ],
+    "unregistered": 0,
+    "agrees_with": "src/mission_scene_probe.exe on the same file"
+  },
+  "load_stop": {
+    "host_steps_total": 68,
+    "host_steps_needing_a_subsystem_owner": 57,
+    "stopped_at": {
+      "method": "reset_render_scene",
+      "address": "00874640",
+      "owner": "renderer",
+      "preceded_by": "global_subsystems [004dc6a0] world"
+    }
+  },
+  "corrections": [
+    "src/mission_tree_data.cpp read_mission_record_005c6a70 fills MissionRecordData::sides but every screen-facing consumer reads MissionRecord::sides through record.screen, which the reader never writes, so a record loaded from the real table answers every side query from a default-constructed block. The executable projects the blocks itself and records the defect; the fix belongs in the reader.",
+    "mission_load_host_steps records MissionLoadOwner::SceneGraph for SetPendingSceneHost::load_scene_header_pass (0046DF00). The header pass needs the reader and the VFS only; the scene-graph owner is first required by the passes inside 004D4DF0.",
+    "docs/MAIN_MENU_MISSION_DETAIL.md reads the numbered mission map icons as existing children of the group widget. On the installed FE_worldmap_historical the five mission group widgets are authored with no children at all, so all 72 lookups of a 36-mission group miss and only the two template icons exist.",
+    "005861B0 cannot reach content_main_Text, test_Clipbox or video_Movie with a single 00AA7E00: they are nested three levels under historical_Group, so the native chains lookups.",
+    "The mission id --menu-select takes is the record's Lua `id` (USN02), not the scene stem usn_2_java the scene probe defaults to."
+  ],
+  "no_ghidra_function": [],
+  "ledger": {
+    "names_added": 0,
+    "evidence_appended": [
+      "00580940", "005caaf0", "0058c010", "005922f0", "0058bdf0",
+      "004e2770", "004c6890", "0046df00", "004dfb70"
+    ]
+  },
+  "follow_ups": [
+    "read_mission_record_005c6a70 should fill the screen-facing MissionRecord::sides projection from the blocks it reads.",
+    "00597870, the mission-list page builder, and 00584F50 / 005853C0 / 005886F0, the other page builders, so the run can navigate rather than publish.",
+    "00598B60, the page dispatcher whose campaign arm at 00599318 calls the detail builder.",
+    "Whatever clones mission_mapflag_template_Icon and mission_mappoint_template_Icon into the numbered per-mission icons; it is not 005861B0 and not 0058C010.",
+    "00AAB4C0 and the list-box widget, so the seven top-level menu labels are drawn instead of only resolved.",
+    "00588C70, the world-map drive, and 00414130, the mission-detail offset blend.",
+    "004DFB70 itself, which needs 004DC6A0's global subsystems and then the renderer and scene-graph owners."
+  ]
+}
