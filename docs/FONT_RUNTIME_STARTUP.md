@@ -90,4 +90,4 @@ sizes and modification times. GUI render and gameplay remain unvalidated.
 Sixteen reviewed names/comments were saved and verified,11 prior comment fields
 preserved, and16 exports refreshed. Twenty-four worker artifacts were preserved
 with hashes. The report identifies the tested source commit and29 selected source
-hashes, separately from18 artifact hashes and the runtime executable hash.
+hashes, separately from19 artifact hashes and the runtime executable hash.
