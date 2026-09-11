@@ -7,8 +7,8 @@ report (`host_steps`, `path_steps`, `steps`, `host_methods`, ...), the script ch
 
   1. the callee is the start of a Ghidra function (or a thunk that is one);
   2. the call site lies inside some Ghidra function F (live `get_function_by_address`);
-  3. F calls the callee according to the local index (`calls` table), or, when the index has no
-     row, according to the live listing of F (a `CALL <callee>` instruction at the site).
+  3. the live listing contains `CALL <callee>` at that exact site. A caller/callee graph edge
+     alone cannot validate an instruction address elsewhere in the same function.
 
 Rows that name a `function` (or `caller`) are also checked to be that F. Vtable slots written as
 `<addr>+vtableNN` or `<addr>+<hex>` are reported as `indirect` and skipped. The script is read-only
@@ -70,7 +70,9 @@ class Live:
     def __init__(self):
         cfg = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
         self.client = Client(cfg)
+        self.client.verify()
         self.cache = {}
+        self.listings = {}
 
     def containing(self, addr):
         """Return (start, end_inclusive, name) of the function containing addr, or None."""
@@ -108,9 +110,14 @@ class Live:
         """'direct' when the site is CALL <callee>, 'indirect' when the site is a CALL through a
         register or memory operand (a virtual the report resolved), 'other' when the site is a
         CALL to a different immediate or not a CALL, None when the listing is unavailable."""
-        try:
-            text = self.client.get('disassemble_function', address=f'{fn_start:08x}')
-        except Exception:
+        if fn_start not in self.listings:
+            try:
+                self.listings[fn_start] = self.client.get(
+                    'disassemble_function', address=f'{fn_start:08x}')
+            except Exception:
+                self.listings[fn_start] = None
+        text = self.listings[fn_start]
+        if text is None:
             return None
         if not isinstance(text, str):
             text = json.dumps(text)
@@ -144,13 +151,11 @@ def check_report(path, index, live):
             continue  # an entry row (the routine itself), not a call site
         checked += 1
         problems = []
-        is_fn = index.is_function(callee)
-        if is_fn is False and live.containing(callee) is None:
+        body = live.containing(callee)
+        if body is None:
             problems.append(f'callee {callee:08x} is not a Ghidra function')
-        elif is_fn is False:
-            body = live.containing(callee)
-            if body and body[0] != callee:
-                problems.append(f'callee {callee:08x} is inside {body[0]:08x}, not a function start')
+        elif body[0] != callee:
+            problems.append(f'callee {callee:08x} is inside {body[0]:08x}, not a function start')
         fn = live.containing(site)
         if fn is None:
             problems.append(f'call site {site:08x} is in no Ghidra function')
@@ -159,16 +164,14 @@ def check_report(path, index, live):
             claimed = parse_addr(row.get('function') or row.get('caller'))
             if claimed is not None and claimed != start:
                 problems.append(f'call site {site:08x} is inside {start:08x} ({name}), row claims {claimed:08x}')
-            edge = index.calls(start, callee)
-            if edge is False:
-                seen = live.listing_calls(start, site, callee)
-                if seen == 'indirect':
-                    print(f'  indirect  {where}: {site:08x} calls through a register or memory operand; '
-                          f'the report resolves it to {callee:08x} (not verifiable here)')
-                elif seen == 'other':
-                    problems.append(f'{site:08x} in {start:08x} is not a CALL to {callee:08x} (index and listing)')
-                elif seen is None:
-                    problems.append(f'{start:08x} -> {callee:08x} not in index; listing unavailable')
+            seen = live.listing_calls(start, site, callee)
+            if seen == 'indirect':
+                print(f'  indirect  {where}: {site:08x} calls through a register or memory operand; '
+                      f'the report resolves it to {callee:08x} (not verifiable here)')
+            elif seen == 'other':
+                problems.append(f'{site:08x} in {start:08x} is not a CALL to {callee:08x} (live listing)')
+            elif seen is None:
+                problems.append(f'{site:08x} -> {callee:08x}: live listing unavailable')
         if problems:
             failures += 1
             print(f'  FAIL      {where}: ' + '; '.join(problems))

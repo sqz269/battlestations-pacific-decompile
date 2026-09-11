@@ -2,20 +2,56 @@
   "orchestrator": "orch5-20260911",
   "branch": "agent/orch5-20260911",
   "worktree": "J:/PROG/battlestations-pacific-decompile-orch5-20260911",
-  "status": "reviewed_build_tested_and_annotated_pending_shared_registry_and_main_integration",
+  "status": "standard_registration_build_passed_ready_for_main_integration",
   "workers": [
-    {"branch": "agent/orch5-command-bar", "commit": "eecb8e4ddbb3bbc65ae283081b30531751f9d3e4", "reconstructed": ["005495a0", "005495e0", "0054a0c0", "0054b530"]},
-    {"branch": "agent/orch5-map-points", "commit": "f0b92abe56d3ca3afb487887f2046cc49f3ae0e4", "reconstructed": ["005803e0", "00588c70"], "library_contract_only": ["004215d0"]},
-    {"branch": "agent/orch5-mission-flag", "commit": "126251423ff250020b38d4df15c453fee536ec72", "reconstructed": ["00599340", "005c2f70"], "existing_implementation_retained": ["005c27e0"]}
+    {
+      "branch": "agent/orch5-command-bar",
+      "commit": "eecb8e4ddbb3bbc65ae283081b30531751f9d3e4",
+      "reconstructed": [
+        "005495a0",
+        "005495e0",
+        "0054a0c0",
+        "0054b530"
+      ]
+    },
+    {
+      "branch": "agent/orch5-map-points",
+      "commit": "f0b92abe56d3ca3afb487887f2046cc49f3ae0e4",
+      "reconstructed": [
+        "005803e0",
+        "00588c70"
+      ],
+      "library_contract_only": [
+        "004215d0"
+      ]
+    },
+    {
+      "branch": "agent/orch5-mission-flag",
+      "commit": "126251423ff250020b38d4df15c453fee536ec72",
+      "reconstructed": [
+        "00599340",
+        "005c2f70"
+      ],
+      "existing_implementation_retained": [
+        "005c27e0"
+      ]
+    }
   ],
   "validation": {
     "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
     "baseline_build_passed": true,
     "combined_build_passed": true,
     "standard_build_command": "./scripts/build.ps1",
-    "source_registration": "local/orch5_sources.cmake via cached CMAKE_PROJECT_INCLUDE_BEFORE; shared startup.cmake untouched",
-    "sources_confirmed_compiled": ["src/main_menu_command_bar.cpp", "src/main_menu_map_point_geometry.cpp", "src/mission_map_flag_policy.cpp"],
-    "existing_tests_passed": ["reconstructed_math", "native_math_differential"],
+    "source_registration": "Normal deferred target_sources in cmake/startup.cmake; temporary CMAKE_PROJECT_INCLUDE_BEFORE cache option removed",
+    "sources_confirmed_compiled": [
+      "src/main_menu_command_bar.cpp",
+      "src/main_menu_map_point_geometry.cpp",
+      "src/mission_map_flag_policy.cpp"
+    ],
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
     "seed_ranges_compared": 8,
     "seed_ranges_all_matched": true,
     "new_tests": 0,
@@ -23,9 +59,29 @@
     "menu_native_differential_tested": false,
     "abi_compatible": false,
     "game_validated": false,
-    "logs": ["local/orch5_baseline_build.log", "local/orch5_batch_build.log", "local/orch5_seed_verification.json"],
-    "integration_tool_checks": ["python compile", "worktree main resolution", "local trailer default", "explicit trailer override", "legacy main trailer path", "no duplicate top-level header names", "independent read-only review"],
-    "map_cross_review": "No concrete defects in zoom gate, float-store sequence, mission-count reload or GUI callback order; live assembly checked"
+    "logs": [
+      "local/orch5_baseline_build.log",
+      "local/orch5_batch_build.log",
+      "local/orch5_seed_verification.json",
+      "local/orch5_default_registration_build.log"
+    ],
+    "integration_tool_checks": [
+      "python compile",
+      "worktree main resolution",
+      "local trailer default",
+      "explicit trailer override",
+      "legacy main trailer path",
+      "no duplicate top-level header names",
+      "independent read-only review"
+    ],
+    "map_cross_review": "No concrete defects in zoom gate, float-store sequence, mission-count reload or GUI callback order; live assembly checked",
+    "callsite_reports": {
+      "direct_sites_checked": 33,
+      "direct_failures": 0,
+      "indirect_targets_not_mechanically_verified": 18,
+      "log": "local/orch5_menu_call_verification.log"
+    },
+    "verifier_regression": "Accepts CALL at 005c2f7f and rejects MOV at 005c2f78 targeting the same callee 0090c560; target project and live function boundaries verified"
   },
   "ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -40,11 +96,16 @@
   },
   "integration": {
     "worker_branches_merged_into_orchestrator": true,
-    "shared_registry_modified": false,
+    "shared_registry_modified": true,
     "main_merged": false,
     "main_pushed": false,
-    "blocker": "cmake/startup.cmake held by agent/orch3-20260910:orch3_gameplay_point_binding_ab; respecting live lease",
-    "next_steps": "See docs/ORCH5_MENU_BATCH.md for normal registration, build and integration commands"
+    "blocker": null,
+    "next_steps": "Coordinate current main merge through integrate_workers.py, then record actual outcome and push the batch."
   },
-  "limitations": ["GUI owners and host binding remain external", "Stored zoom-delta producer/reset unresolved", "Native allocation/SEH and exceptional floating-point timing are outside the typed interfaces", "Ghidra descriptive names are hypotheses"]
+  "limitations": [
+    "GUI owners and host binding remain external",
+    "Stored zoom-delta producer/reset unresolved",
+    "Native allocation/SEH and exceptional floating-point timing are outside the typed interfaces",
+    "Ghidra descriptive names are hypotheses"
+  ]
 }

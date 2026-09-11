@@ -1,6 +1,6 @@
 {
   "packet": "orch5_main_menu_map_points",
-  "status": "reconstructed_pending_source_registration_and_build",
+  "status": "reconstructed_standard_build_tested",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
   "ghidra_mutations": false,
@@ -13,36 +13,167 @@
       "abi": "ECX=vector, stack=source element pointer, RET4; no consumed return",
       "last_instruction": "0042166c",
       "last_instruction_length": 3,
-      "evidence": ["004215d7..00421612 size/capacity divided by 12", "00421633 count-one three-dword construction via 0041c7b0", "00421638..0042163b last += 12", "00421661 delegates full-capacity append to 004206a0"],
-      "uncertainty": "Exact STL type/debug configuration and fallback allocation/failure policy were not reconstructed."
+      "evidence": [
+        "004215d7..00421612 size/capacity divided by 12",
+        "00421633 count-one three-dword construction via 0041c7b0",
+        "00421638..0042163b last += 12",
+        "00421661 delegates full-capacity append to 004206a0"
+      ],
+      "uncertainty": "Exact STL type/debug configuration and fallback allocation/failure policy were not reconstructed.",
+      "coverage": "complete append-contract analysis; STL implementation not ported"
     },
     {
       "address": "005803e0",
       "proposed_name": "BSP_Float3_LerpRounded",
-      "status": "reconstructed_pending_build",
+      "status": "reconstructed_standard_build_tested",
       "abi": "ECX=output, EDX=old XYZ, stack=(target pointer, fraction pointer), RET8, EAX=output pointer",
       "last_instruction": "0058048e",
       "last_instruction_length": 3,
-      "evidence": ["005803e5 retains result pointer in EAX", "005803f9/00580411/0058042d difference float stores", "00580445/0058044f/00580457 product float stores", "00580463/0058046b/00580473 sum float stores"],
-      "uncertainty": "New array value interface; exact exceptional x87 status and trap timing not established."
+      "evidence": [
+        "005803e5 retains result pointer in EAX",
+        "005803f9/00580411/0058042d difference float stores",
+        "00580445/0058044f/00580457 product float stores",
+        "00580463/0058046b/00580473 sum float stores"
+      ],
+      "uncertainty": "New array value interface; exact exceptional x87 status and trap timing not established.",
+      "coverage": "complete normal path; storage lifetime and exceptional x87 trap timing remain external"
     },
     {
       "address": "00588c70",
       "proposed_name": "BSP_MainMenuScreen_UpdateMapPointGeometry",
-      "status": "reconstructed_pending_build",
+      "status": "reconstructed_standard_build_tested",
       "abi": "ECX=screen; stack=(unused seconds, lookup root, zoom delta, list index, additional offset pointer, low-byte immediate flag); RET18h; return unused",
       "last_instruction": "00589428",
       "last_instruction_length": 3,
-      "call_sites": {"interpolate": "00588e36", "find_point": "00588f9c", "find_flag": "005890fe", "move_point": "005892f0", "move_flag": "00589326", "move_backdrop": "00589378", "resize_backdrop_virtual_58": "005893b5", "read_selected_position": "005893c5", "move_companion": "0058940b"},
-      "evidence": ["00588c8b..00588d52 carried delta overrides supplied delta and controls anchor fraction", "00588d54 null +330h gate occurs after zoom", "00588db2..00588e64 selected XY target and stored anchor", "00588e71..00588ed6 group mission count, independent of point-list selector", "0058919e..005891ab both widget handles required before point access", "00589210..00589326 marker depths and constant flag offsets", "00589343..0058940b backdrop and companion tail"],
-      "uncertainty": "+19Ch writer/reset, +338h layout role, GUI runtime adapter and reentrant lifetime behavior remain external."
+      "call_sites": {
+        "interpolate": "00588e36",
+        "find_point": "00588f9c",
+        "find_flag": "005890fe",
+        "move_point": "005892f0",
+        "move_flag": "00589326",
+        "move_backdrop": "00589378",
+        "resize_backdrop_virtual_58": "005893b5",
+        "read_selected_position": "005893c5",
+        "move_companion": "0058940b"
+      },
+      "evidence": [
+        "00588c8b..00588d52 carried delta overrides supplied delta and controls anchor fraction",
+        "00588d54 null +330h gate occurs after zoom",
+        "00588db2..00588e64 selected XY target and stored anchor",
+        "00588e71..00588ed6 group mission count, independent of point-list selector",
+        "0058919e..005891ab both widget handles required before point access",
+        "00589210..00589326 marker depths and constant flag offsets",
+        "00589343..0058940b backdrop and companion tail"
+      ],
+      "uncertainty": "+19Ch writer/reset, +338h layout role, GUI runtime adapter and reentrant lifetime behavior remain external.",
+      "coverage": "complete normal path; storage lifetime and exceptional x87 trap timing remain external"
     }
   ],
   "name_provenance": "All proposed names are hypotheses, not recovered symbols.",
   "no_ghidra_function": [],
-  "library_dependencies": ["0041c7b0", "004206a0", "004263b0", "004261a0", "0041dd40", "00bf6713", "00bf7680"],
-  "existing_gui_contracts": {"00aa7e00": "Direct-child lookup, final argument ignored", "00aa8240": "Set resolved position", "00aa6750": "Get resolved position"},
+  "library_dependencies": [
+    "0041c7b0",
+    "004206a0",
+    "004263b0",
+    "004261a0",
+    "0041dd40",
+    "00bf6713",
+    "00bf7680"
+  ],
+  "existing_gui_contracts": {
+    "00aa7e00": "Direct-child lookup, final argument ignored",
+    "00aa8240": "Set resolved position",
+    "00aa6750": "Get resolved position"
+  },
   "existing_consumer_correction": "apply_map_zoom_00588c70 models carried_delta=0 only. Full new driver already owns zoom; do not accumulate the same delta again through the old helper after drive_map. Primary owns consumer integration.",
-  "validation": {"assembly_review": true, "constant_bytes_decoded": true, "exported": ["004215d0", "005803e0", "00588c70"], "source_registered": false, "build": "pending primary integration", "new_tests": 0, "native_differential": false, "abi_compatible": false, "game_validated": false},
-  "tool_problems": ["Some guessed caller instruction starts were refused by the verified disasm wrapper; exact call-site context was recovered from the shared exported listing.", "Worktree has no local exports tree by design; exports were read through bsp.py or the explicit shared main export path."]
+  "validation": {
+    "assembly_review": true,
+    "constant_bytes_decoded": true,
+    "exported": [
+      "004215d0",
+      "005803e0",
+      "00588c70"
+    ],
+    "source_registered": true,
+    "build": "Standard MSVC Win32 Release build and both existing tests passed.",
+    "new_tests": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "tool_problems": [
+    "Some guessed caller instruction starts were refused by the verified disasm wrapper; exact call-site context was recovered from the shared exported listing.",
+    "Worktree has no local exports tree by design; exports were read through bsp.py or the explicit shared main export path."
+  ],
+  "host_steps": [
+    {
+      "address": "00588e36",
+      "native": "005803e0",
+      "function": "00588c70",
+      "operation": "float3 interpolation",
+      "native_expression": "0x005803e0"
+    },
+    {
+      "address": "00588f9c",
+      "native": "00aa7e00",
+      "function": "00588c70",
+      "operation": "find direct child",
+      "native_expression": "0x00aa7e00"
+    },
+    {
+      "address": "005890fe",
+      "native": "00aa7e00",
+      "function": "00588c70",
+      "operation": "find direct child",
+      "native_expression": "0x00aa7e00"
+    },
+    {
+      "address": "005892f0",
+      "native": "00aa8240",
+      "function": "00588c70",
+      "operation": "set resolved position",
+      "native_expression": "0x00aa8240"
+    },
+    {
+      "address": "00589326",
+      "native": "00aa8240",
+      "function": "00588c70",
+      "operation": "set resolved position",
+      "native_expression": "0x00aa8240"
+    },
+    {
+      "address": "00589378",
+      "native": "00aa8240",
+      "function": "00588c70",
+      "operation": "set resolved position",
+      "native_expression": "0x00aa8240"
+    },
+    {
+      "address": "005893b5",
+      "native": "00588c70+indirect",
+      "function": "00588c70",
+      "operation": "indirect widget or screen dispatch; see native expression",
+      "native_expression": "EDX"
+    },
+    {
+      "address": "005893c5",
+      "native": "00aa6750",
+      "function": "00588c70",
+      "operation": "get resolved position",
+      "native_expression": "0x00aa6750"
+    },
+    {
+      "address": "0058940b",
+      "native": "00aa8240",
+      "function": "00588c70",
+      "operation": "set resolved position",
+      "native_expression": "0x00aa8240"
+    }
+  ],
+  "data_read_methods": [
+    "selected_mission_index",
+    "current_group_mission_count",
+    "point_at"
+  ],
+  "callsite_verification_scope": "Exact direct call instructions checked; size virtual58 identity remains a runtime-adapter dependency."
 }

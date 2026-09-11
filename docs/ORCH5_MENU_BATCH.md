@@ -56,31 +56,37 @@ tool's Ghidra write lock. Prior annotations are preserved in
 `reports/orch5_menu_annotations.json`; the project was saved and all nine affected
 exports were refreshed. No new Ghidra functions or flow repairs were required.
 
-## Remaining main integration
+## Normal registration and main integration
 
-The shared registry `cmake/startup.cmake` is leased by
-`agent/orch3-20260910:orch3_gameplay_point_binding_ab` (observed 2026-09-11
-20:02 UTC, expiry 2026-09-12 01:51 UTC). Although `COORDINATION.md` says this
-append-only registry should not be leased, the live lease was respected.
-Main has not been merged or pushed by this batch.
+After the shared registry lease cleared, all three sources were registered in
+`cmake/startup.cmake`: `main_menu_command_bar.cpp`,
+`main_menu_map_point_geometry.cpp` and `mission_map_flag_policy.cpp`.
+The temporary `CMAKE_PROJECT_INCLUDE_BEFORE` cache option was removed.
+`scripts/build.ps1` then passed with normal registration and both existing tests;
+the project file contains all three compiled sources. The initial local-hook
+build remains earlier evidence, superseded by this standard build.
 
-To build the complete batch while that lease is held, this worktree's ignored
-`local/orch5_sources.cmake` registers the three sources through the cached
-`CMAKE_PROJECT_INCLUDE_BEFORE` option; the standard build script still performs
-configuration, compilation and tests. This is local build verification, not
-default source registration. Once the registry is free:
+The batch is ready for coordinated main integration through
+`tools/integrate_workers.py` with `BSP_AGENT=agent/orch5-20260911`,
+`BSP_INTEGRATE=orch5-20260911` and the worker branches
+`agent/orch5-command-bar`, `agent/orch5-map-points`, `agent/orch5-mission-flag`.
+The integration helper reconciles current main and rebuilds before forwarding it.
+Worker worktrees are retired only after main integration succeeds. The next
+owner/layout/runtime packets use separate worktrees and leases.
 
-1. Append the normal deferred `target_sources` registration for
-   `src/main_menu_command_bar.cpp`, `src/main_menu_map_point_geometry.cpp` and
-   `src/mission_map_flag_policy.cpp` to `cmake/startup.cmake`.
-2. Remove the temporary `CMAKE_PROJECT_INCLUDE_BEFORE` cache option and run
-   `scripts/build.ps1` with normal registration; commit the owned changes.
-3. Set `BSP_AGENT=agent/orch5-20260911` and `BSP_INTEGRATE=orch5-20260911`, then
-   run `tools/integrate_workers.py` with the three worker branch names
-   `agent/orch5-command-bar`, `agent/orch5-map-points`, `agent/orch5-mission-flag`.
-   It reconciles current main, builds, fast-forwards, annotates and pushes.
-4. Retire worker worktrees only with `bsp.py worktree remove` after successful
-   main integration. The orchestrator worktree remains available for the next batch.
+## Verification follow-up from the current main checklist
 
-Worker reports retain their original pre-integration validation states; the
-batch report records the later combined build and saved annotations.
+The first reports used routine-specific call maps, so the newly introduced
+`tools/verify_report_calls.py` initially discovered zero compatible rows.
+They now carry explicit `address`, `native` and containing `function` rows:
+16 direct command-bar calls, 8 direct map calls and 9 mission-policy calls.
+All 33 direct sites passed current live verification. Eighteen indirect
+dispatch rows are retained explicitly; their targets are not established by
+the mechanical direct-call check.
+
+The verifier now confirms the project/program before querying, checks the
+callee's current function boundary, and checks the exact CALL instruction
+even when a caller/callee edge is already present in the index. A focused
+live check accepts `005C2F7F -> 0090C560` and rejects `005C2F78 -> 0090C560`
+(a MOV in the same caller). The old graph-edge shortcut accepted that wrong
+instruction. Per-function listing caching keeps the stricter check bounded.
