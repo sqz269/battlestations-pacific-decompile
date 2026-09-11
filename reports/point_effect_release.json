@@ -1,0 +1,144 @@
+{
+  "packet": "orch3_point_effect_release_y",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/point_effect_release.cpp",
+  "header": "include/bsp/point_effect_release.hpp",
+  "documentation": "docs/POINT_EFFECT_RELEASE.md",
+  "native_spans": [
+    {
+      "name": "release",
+      "address": "008683e0",
+      "end_exclusive": "00868416",
+      "length": 54,
+      "sha256": "748db4a569dae4d2d6b31f697bef7bc94977814c927bd5fa4ac985b37bca7df7",
+      "live_disk_equal": true
+    },
+    {
+      "name": "effect_table",
+      "address": "00d0d3ec",
+      "end_exclusive": "00d0d3f4",
+      "length": 8,
+      "sha256": "84a6b87ed09201513a9f0ab1356e67f88320ff4343fccb8a6e3f6427bfed279e",
+      "live_disk_equal": true
+    },
+    {
+      "name": "node_table",
+      "address": "00d62c88",
+      "end_exclusive": "00d62ce0",
+      "length": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "live_disk_equal": true
+    },
+    {
+      "name": "events",
+      "address": "00d6821c",
+      "end_exclusive": "00d6822c",
+      "length": 16,
+      "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+      "live_disk_equal": true
+    },
+    {
+      "name": "base_table",
+      "address": "00d68650",
+      "end_exclusive": "00d68668",
+      "length": 24,
+      "sha256": "64cf20c66e4f8dc86a6020c0fc38300574a22f76f96edcb1e27051df60812a64",
+      "live_disk_equal": true
+    },
+    {
+      "name": "frame_table",
+      "address": "00ce7554",
+      "end_exclusive": "00ce756c",
+      "length": 24,
+      "sha256": "2ebb201dffb89306044fd85b738ae180eb54dd22f5e16ac2b121a451a21cd93f",
+      "live_disk_equal": true
+    }
+  ],
+  "reconstructed": {
+    "address": "008683e0",
+    "end_exclusive": "00868416",
+    "cpp_symbol": "release_point_effect_instance_008683e0",
+    "original_abi": "ECX captured nullable raw effect; plainRET; no established return register",
+    "behavior": "Hypothesis, not a recovered symbol. Complete54-byte8683E0..868415: ECX captured nullable raw effect, RET; no established return value. Always get4C1130, call currentsecondary+04 virtual10/AL (CE7554slot4=4BFAB0, SIGNEDactive18>0). Inactive nonnull calls CURRENT effectvirtual04(flags1); active gets4D1100 and enqueues captured raw pointer via868010, including null. No retain/decrement/flush/localEH. ActualD0D3EC slots8683E0/867CE0 have canonical borrowed-count companions, scalar dispatch without another decrement, actualpoint/node destruction and nativequeue/shared-domain composition. StrictWin32 and original54-byte/realowner fixture passed. docs/POINT_EFFECT_RELEASE.md; reports/point_effect_release.json. NewC++ABI; wholeconstructor, originalEH andgameplay unvalidated."
+  },
+  "canonical_binding": {
+    "reference": "NativePointEffectReference borrows actual114h+04, validatescurrentD0D3EC slots0/4, no initialization/retain",
+    "lookup": "PointEffectReleaseRuntime canonicalborrowed association vector, implementsNativeRenderActualOwners andEffectDeletionDispatch without duplicateactualcounts/owners/queue",
+    "zero": "Currentvirtual0 obtainsactualframepool and either scalar-deletes or enqueuesraw; deferredowner/companion survive atcount0",
+    "scalar": "Currentvirtual04 dispatchescanonical867CE0 irrespectiveofcount; no decrement/redefer. Actualpointteardown usesexistingnode/parent/counterbindings",
+    "retirement": "Removehostassociation afterscalar success orcompletedmemberunwind; callbackmaydeletecompanion, neveractualowner/node; storage_freed onlyafterflags1success",
+    "failure": "Explicitqueue/scalarpropagatewithoutnativeownerfree; intrusivezero retainsnonthrowingterminalboundary",
+    "frame_predicate": "CurrentD68650/CE7554 slot10 validatedbeforecanonical4BFAB0 signedpredicate",
+    "domain": "Allactualpublications borrowed; deletion-lockadapter shares suppliedsingletondomain"
+  },
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/point-effect-release-y-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/point-effect-release-y-fixture.log",
+    "fixture_source": "local/point_release_probe_y.cpp",
+    "native_cases": [
+      "Completeoriginal54-bytebody andfiveactualtables live/disk equal",
+      "Unconditionalnullinputframegetter createsactualsuspendedworker/events",
+      "Immediateactualpointdestruction ->logicalnode/actualcountzero ->realplainnode/stringreturn/sceneunbind/poolreturn; returnedphysicalslot immediatelyreused",
+      "Releasejobinsideactualcaller-onlyframedispatch queuesactualpointatcount0; laterflushscalardestroyswithoutadditionaldecrement",
+      "Signedactive-1 immediate and256 deferred",
+      "Activenullinputreallyenqueued; payloadinspected andfixturelistmanuallyrepairedwithoutinvalidscalarcall",
+      "Sharedactualdomain live-managerdestructorflushesrealpendingeffect andshutsdownstring/frame/deletionlockowners"
+    ],
+    "cpp_cases": [
+      "Canonicalcompaniondeletesitselfduringretirement, lookupalreadyremoved",
+      "Currenteffectscalarprofilemismatch throwsbeforemutation",
+      "Flags2 atactualrefcount7 destroyswithoutdecrement/free, thenretirescompanion",
+      "Actualnodezero-lookupfailure triggerspointmemberunwind andhostretirement, retainsnativeeffectallocation; fixturelatercleansretainednode/effect explicitly"
+    ],
+    "rebindings": [
+      "OriginalthreeCALLrel32targets -> canonicalactualframe/livegetters andenqueue",
+      "Originalindirectcalls usefixturecallabletables onactualrawowner; bridge restoresoriginalprofile beforecanonicalpredicate/scalar",
+      "ActualWin32threads/events, nodepool/stringpool andcanonicalpoint/node teardown; no substitutednode terminalowner",
+      "Fixtureframejobreleasesactualeffect; realgamejobnotclaimed",
+      "PreinitializedtypeIDs andhostcompanionretirementinstrumentation; childonlyNUMBER_OF_PROCESSORS=2"
+    ],
+    "original_point_scalar_body_executed": false,
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Whole008680B0 construction andactualrowfactory orchestration",
+    "Applicationframeentry/gamejob andregisteredmanager scalar routes",
+    "NativeEH, concurrencycoverage, ABIreplacement andgameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/point_release_probe_y.cpp": "7906beeefe5659960b9df3e4ade7fe54ac9a8c1c09de70923813d238572322cb",
+    "local/run_point_release_probe_y.cmd": "da3b8a972814eed7608e670b6706ec724f0f0af4f9af7ca09e3ede9a8929d279",
+    "local/point_release_native_bytes_y.hpp": "d887d90f3e33b8f1d38517f7156487cba9a322b3262cd02b4f5cc1c6cb6caf1b",
+    "local/point-release-byte-evidence-y.json": "ee637f5ccbcdab34428c96b7403414fa87593d60e4bb49ab3dc349e5ff8483a9"
+  },
+  "ghidra_annotations": {
+    "saved": true,
+    "audit_path": "local/ghidra-annotations-20260911T184749Z.json",
+    "readback_path": "local/point-release-y-comments.json",
+    "name_and_evidence_verified": true,
+    "previous_comments_preserved": true,
+    "old_and_new_values": [
+      {
+        "address": "008683e0",
+        "before": {
+          "address": "008683e0",
+          "function_name": "FUN_008683e0"
+        },
+        "after": {
+          "address": "008683e0",
+          "name": "BSP_PointEffect_ReleaseOrDefer",
+          "evidence": "Hypothesis, not a recovered symbol. Complete54-byte8683E0..868415: ECX captured nullable raw effect, RET; no established return value. Always get4C1130, call currentsecondary+04 virtual10/AL (CE7554slot4=4BFAB0, SIGNEDactive18>0). Inactive nonnull calls CURRENT effectvirtual04(flags1); active gets4D1100 and enqueues captured raw pointer via868010, including null. No retain/decrement/flush/localEH. ActualD0D3EC slots8683E0/867CE0 have canonical borrowed-count companions, scalar dispatch without another decrement, actualpoint/node destruction and nativequeue/shared-domain composition. StrictWin32 and original54-byte/realowner fixture passed. docs/POINT_EFFECT_RELEASE.md; reports/point_effect_release.json. NewC++ABI; wholeconstructor, originalEH andgameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "exports_refreshed": true
+  }
+}

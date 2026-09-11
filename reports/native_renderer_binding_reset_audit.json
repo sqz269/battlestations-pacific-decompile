@@ -1,0 +1,450 @@
+{
+  "packet": "native_renderer_binding_reset1",
+  "status": "dependency discovery only; not source-ready",
+  "base_commit": "b6d949d68dda2b22251fbcd6bd65cd607ffd4b5a",
+  "owned_address": "00b24bf0",
+  "full_parent_bytes": 453,
+  "reconstructed_functions": 0,
+  "source_added": false,
+  "original_abi": {
+    "ecx": "actual renderer",
+    "stack_arguments": [],
+    "epilogue": "RET",
+    "return_value": "no semantic result"
+  },
+  "deferred_new_abi": "Proposed ECX renderer/EDX fixed context; existing texture/index/layout/synchronization/profile views can be borrowed. No declaration until missing logical-owner/vertex-binding context is concrete.",
+  "providers": [
+    {
+      "selector": "+130",
+      "address": "00b24710",
+      "status": "complete raw texture binding",
+      "parameters": "index0..19, null"
+    },
+    {
+      "selector": "+134",
+      "address": "00b24840",
+      "status": "missing raw logical-vertex binding",
+      "parameters": "FOUR calls all(0,null), not indices0..3"
+    },
+    {
+      "selector": "+138",
+      "address": "00b24b00",
+      "status": "complete raw index binding",
+      "parameters": "null,0"
+    },
+    {
+      "selector": "+E0",
+      "address": "00b23f20",
+      "status": "complete raw vertex-layout binding",
+      "parameters": "null"
+    },
+    {
+      "selector": "direct",
+      "address": "00b23d80",
+      "status": "complete raw color binding",
+      "parameters": "index0..3,null"
+    },
+    {
+      "selector": "guard",
+      "address": "00b33ad0/00b33b00/00b21110",
+      "status": "complete raw synchronization"
+    }
+  ],
+  "parent_order": "Reload current renderer table per virtual call. After texture/stream/index resets clear captured pixel/vertex shader slots before current-device calls; increment current counters after returning HRESULT-ignored calls; reread current mode for disarm/leave and next entry. Reuse ONE native8-byte guard record across3 independent cleanup states. Null vertex-layout then4colors then always currentdevice/table+9C depth-null call.",
+  "parent_FH3": {
+    "handler": "00cbd088",
+    "info": "00df5728",
+    "map": "00df5710",
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "helper": "00cbd070",
+        "record": "EBP-14",
+        "target": "00b21110"
+      },
+      {
+        "state": 1,
+        "previous": -1,
+        "helper": "00cbd078",
+        "record": "EBP-14",
+        "target": "00b21110"
+      },
+      {
+        "state": 2,
+        "previous": -1,
+        "helper": "00cbd080",
+        "record": "EBP-14",
+        "target": "00b21110"
+      }
+    ]
+  },
+  "missing_chain": [
+    {
+      "address": "00b24840",
+      "bytes": 504,
+      "blocker": "final-zero logical ownership in both replacement and equal-device binding paths"
+    },
+    {
+      "address": "00b23710",
+      "bytes": 59,
+      "blocker": "full intrusive assignment may dispatch final-zero old logical owner"
+    },
+    {
+      "address": "00b4bf10",
+      "bytes": 32,
+      "blocker": "requires full logical destructor then actual pool return"
+    },
+    {
+      "address": "00b4b5d0",
+      "bytes": 280,
+      "blocker": "requires full base B62010 for normal and EH cleanup"
+    },
+    {
+      "address": "00b62010",
+      "bytes": 135,
+      "blocker": "independent retained+4C actual nonnull writer/type/profile/current-zero terminal unresolved"
+    }
+  ],
+  "concrete_profiles": {
+    "renderer": "B3243B installsD5F0A8; current cells130=B24710,134=B24840,138=B24B00,E0=B23F20",
+    "logical": "D61D6C slot0BD30E0/+4B4BF10/+24B48CE0/+28B48D10/+2CB48CF0",
+    "physical": "D61E34/D61E7C+1CB4B9F0; original numeric tokens need concrete source adapter, not direct host calls"
+  },
+  "next_ready_source_leaves": [],
+  "next_evidence": "Identify a concrete nonnull logical-base+4C producer, actual incoming profile, complete current-zero/deleting terminal and allocation domain. Prior bounded exclusions do not prove a null lifetime.",
+  "existing_dependency_sources": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_renderer_texture_binding.cpp",
+      "bytes": 6109,
+      "sha256": "426edcb14ec67173d50e5b103d2e3b392d76e5aeb7c1ad76548ef69d9b00f179"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_renderer_texture_binding.hpp",
+      "bytes": 3102,
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_renderer_index_binding.cpp",
+      "bytes": 5552,
+      "sha256": "3d1ac30f49516977dfae1452d4d69a94c85086f1d87dc6ac9a73877897f6d2c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_renderer_index_binding.hpp",
+      "bytes": 2927,
+      "sha256": "86aa477085b1dce3d029177714ac26a752199e6300dc979331810a8a97563135"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_renderer_vertex_layout_binding.cpp",
+      "bytes": 4890,
+      "sha256": "c016e2d22c0d1ff84f2ff1aebcd79a2b50c865619f8683fe1bceb6dcad69c78e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_renderer_vertex_layout_binding.hpp",
+      "bytes": 1675,
+      "sha256": "ebf9d62dea25edfdeb5703b110533afd1ab9d71f975fb313f847701e48169939"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_renderer_surface_bindings.cpp",
+      "bytes": 4717,
+      "sha256": "af57c4b07b98c0e71f5f2fb56f73faa654da5f4034913d6d4a589b7441f2fc67"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_renderer_surface_bindings.hpp",
+      "bytes": 1570,
+      "sha256": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_renderer_binding_getters.cpp",
+      "bytes": 1759,
+      "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_renderer_binding_getters.hpp",
+      "bytes": 2180,
+      "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_logical_vertex_pool_return.cpp",
+      "bytes": 2509,
+      "sha256": "acf5b39e00f791c7fe37155e2412cfab0c93556f490aa6c684ad2f070a16f50b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_logical_vertex_pool_return.hpp",
+      "bytes": 1111,
+      "sha256": "ecd38c30ea9df37e3720f4484abbe1973bfd50d8fade17fe360164678a671c5d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\src\\native_render_buffer_unregistration.cpp",
+      "bytes": 5514,
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\include\\bsp\\native_render_buffer_unregistration.hpp",
+      "bytes": 2244,
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+    }
+  ],
+  "prior_discovery": [
+    "reports/native_logical_vertex_owner_next.json",
+    "reports/native_logical_vertex_terminal_next.json",
+    "docs/NATIVE_VERTEX_STREAM_OWNER_DISCOVERY.md",
+    "docs/NATIVE_VERTEX_STREAM_ALIAS_ESCAPE_DISCOVERY.md"
+  ],
+  "original_evidence": {
+    "utc": "2026-09-11T18:28:35.125736+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every bsp.py ghidra bytes batch checks saved bsp.gpr and /battlestationspacific.exe.",
+    "spans": [
+      {
+        "address": "00b24bf0",
+        "length": 453,
+        "role": "owned_reset",
+        "bytes_hex": "64a1000000006aff6888d0cb00506489250000000083ec085556578bf133ff908b068b90300100006a00578bceffd283c70183ff147ce9bf040000008d6424008b068b90340100006a006a008bceffd283ef0175eb8b068b903801000057578bceffd2803ddcd608010074138bfe8bce897c2410e867ee00008844240ceb048b7c24108b866c17000085c0c744241c00000000c7866c17000000000000741a8b86101a00008b088b91ac0100006a0050ffd28386bc1b00000183cdff803ddcd6080100896c241c74288b44240c508bcfe83bee0000803ddcd608010074138bfe8bce897c2410e8f5ed00008844240ceb048b7c24108b867017000085c0c744241c01000000c7867017000000000000741a8b86101a00008b106a00508b8270010000ffd08386c01b000001803ddcd6080100896c241c740c8b4c240c518bcfe8cced00008b168b82e00000006a008bceffd033ff6a00578bcee832f0ffff83c70183ff047cee803ddcd6080100740f8bce89742410e866ed00008844240c8bb6101a00008b0e8b919c0000006a0056c744242402000000ffd2803ddcd60801005f5e896c24145d740d8b04248b4c240450e85aed00008b4c240864890d0000000083c414c3",
+        "sha256": "9f8f41242778b5c0fa78eb890e032cd8eca416046ed989f69d7b232757f5e195",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cbd070",
+        "length": 24,
+        "role": "reset_three_unwind_helpers",
+        "bytes_hex": "8d4dece99840e6ff8d4dece99040e6ff8d4dece98840e6ff",
+        "sha256": "f6cb9ce8a428830f5dc2b877005fd22d105e4f558052561c84cf5614085c1c82",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cbd088",
+        "length": 10,
+        "role": "reset_FH3_handler",
+        "bytes_hex": "b82857df00e9b19af3ff",
+        "sha256": "160ad0b59eda7dd6e32e83a19b2eebfadee18a56ffe07eda37eec2a5cf355217",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00df5710",
+        "length": 24,
+        "role": "reset_unwind_map",
+        "bytes_hex": "ffffffff70d0cb00ffffffff78d0cb00ffffffff80d0cb00",
+        "sha256": "714d840a15932ecee8efcc26f1ef8deb280e508afdc474adc3049f2a84ccb141",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00df5728",
+        "length": 36,
+        "role": "reset_FH3_info",
+        "bytes_hex": "22059319030000001057df00000000000000000000000000000000000000000001000000",
+        "sha256": "487d2603be61cf7aacbc12074b7b576f933093efd9ebded267dc5db633f94029",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b3243b",
+        "length": 6,
+        "role": "renderer_profile_install",
+        "bytes_hex": "c706a8f0d500",
+        "sha256": "859e8754914ed32a28ceebba7105bd95ad98896e90a766a4f67fb8867a47ab6f",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d5f188",
+        "length": 4,
+        "role": "renderer_selector_E0",
+        "bytes_hex": "203fb200",
+        "sha256": "1b7fbade132c43fb388e6f00740a08170015dd3ba071b863711b914411c6c2a3",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d5f1d8",
+        "length": 12,
+        "role": "renderer_selectors_130_134_138",
+        "bytes_hex": "1047b2004048b200004bb200",
+        "sha256": "d1d488699a057e9905ed7ccb8dab9df561ea84f6ec6fd631ca531ff8b86d2320",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b24840",
+        "length": 504,
+        "role": "missing_full_vertex_binding",
+        "bytes_hex": "6aff6818d0cb0064a100000000506489250000000083ec1c803ddcd608010055568be957896c241c740d896c2424e85df20000884424208b4424388b74243cc1e0048d3c288b8f741700003bce8d8774170000c7442430000000008944240c7537803ddcd6080100c7442430ffffffff0f846e0100008b4c2420518b4c2428e83cf200005f5e5d8b4c241c64890d0000000083c428c2080085c9530f849400000085f60f848c0000008b118b422cffd08b168bd88b422c8bceffd08b8f781700008b168be88b4224894c24188bceffd08b88cc0000008b977c1700008b06894c24148954241c8b50288bceffd23bdd753c8b4c2414394c241875323944241c752c8b4c24108d542440e8c2edffff803ddcd6080100c7442434ffffffff0f84c00000008b54242452e9ad0000008b6c24208b4424108b183bde742a85f68930740a8d460450ff151c22ce0085db74168d4b0451ff152022ce0085c075088b138b028bcbffd033d233db33c085f674298b168b422c8bceffd08b16894424408b42248bceffd08b168b98cc0000008b42288bceffd08b542440535089877c170000528b542448899f781700008b8d101a00008b318b86900100005251ffd08385b41b000001803ddcd6080100c7442434ffffffff740e8b4c2424518b4c242ce8ddf000005b8b4c24285f5e5d64890d0000000083c428c20800",
+        "sha256": "4ad1011fcd017a2680c9d11335211300b8a2053aaa30ae00a6c1d30e2df80451",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b23710",
+        "length": 59,
+        "role": "missing_full_intrusive_assignment",
+        "bytes_hex": "8b02568bf1578b3e3bf8742a85c08906740a83c00450ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd05f8bc65ec3",
+        "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cbd010",
+        "length": 8,
+        "role": "vertex_binding_guard_unwind",
+        "bytes_hex": "8d4dece9f840e6ff",
+        "sha256": "11a75cc0c29e1dcbaacf75947aab6613a6ded2db24efac5c6820eca896a0a611",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cbd018",
+        "length": 10,
+        "role": "vertex_binding_FH3_handler",
+        "bytes_hex": "b89456df00e9219bf3ff",
+        "sha256": "430d32fb267d25af7f684d74a93a5ae7e438098355b18d859fec31c0f79038d2",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00df568c",
+        "length": 8,
+        "role": "vertex_binding_unwind_map",
+        "bytes_hex": "ffffffff10d0cb00",
+        "sha256": "b2e530332f54a055e380719f21563a9be630f1880707e720e1ffc42dd07a79f5",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00df5694",
+        "length": 36,
+        "role": "vertex_binding_FH3_info",
+        "bytes_hex": "22059319010000008c56df00000000000000000000000000000000000000000001000000",
+        "sha256": "1f0900ca1d87e9549edfd0d705825af2cedd26f8c589d086ad7ac226ed8c31df",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d61d6c",
+        "length": 48,
+        "role": "logical_vertex_profile",
+        "bytes_hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400",
+        "sha256": "a805cc75a6a31a849987d7cb0b47d255324d14aecea650897153021d8d00591a",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d61e34",
+        "length": 32,
+        "role": "private_physical_vertex_profile",
+        "bytes_hex": "e030bd0040bbb40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400",
+        "sha256": "2d4b40c3f7d39406ed62acf269aa68c1b61f0f02b518e38965dbf363c9c785ed",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d61e7c",
+        "length": 32,
+        "role": "pooled_physical_vertex_profile",
+        "bytes_hex": "e030bd0030c2b40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400",
+        "sha256": "9229c3380476313f953a6e610c96df0c4e280693925fb134fd13aa930a2c94ed",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b4bf10",
+        "length": 32,
+        "role": "missing_logical_deleting_wrapper",
+        "bytes_hex": "568bf1e8b8f6fffff644240801740b56b918fe0801e846d6ffff8bc65ec20400",
+        "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b4b5d0",
+        "length": 280,
+        "role": "missing_logical_destructor",
+        "bytes_hex": "6aff6830f9cb0064a100000000506489250000000083ec0c568bf189742404c7066c1dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce8bb84feff88442408578b46602500f000003d00100000c644241c01753a8b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e8a2fdffffa194d3f80083800c1a0000ff05f419000050ff151022ce00eb068b4e588b51048b0d94d3f8005556e865b2fdff8b7e688b2d2022ce008d470450ffd585c075088b178b028bcfffd08b7e588d4f0451ffd585c05d75088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e83784feff8bcec7442418ffffffffe8386901008b4c24105e64890d0000000083c418c3",
+        "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b62010",
+        "length": 135,
+        "role": "missing_base_destructor",
+        "bytes_hex": "6aff68a814cc0064a100000000506489250000000051568bf15789742408c706682bd6008b7e4c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7464c000000008b465085c0741050e83f45090083c404c74650000000008bcec7442414ffffffffe86a1007008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+        "fresh_live_PE_match": true
+      }
+    ]
+  },
+  "complete_disassembly": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\local\\renderer_binding_reset_discovery\\instructions.json",
+    "bytes": 48490,
+    "sha256": "549d01a970958d4adf64b7935e12d710a2aa9fba4dd5b3109b06435e06e3a12b"
+  },
+  "capture_script": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\local\\renderer_binding_reset_discovery\\capture.py",
+    "bytes": 3049,
+    "sha256": "9c480bd56ef9761e567fdcaec507cc307959a9fa526396f67971d172d5fcf82a"
+  },
+  "ignored_bundle": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\local\\renderer_binding_reset_discovery",
+  "immutable_manifest": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\local\\renderer_binding_reset_discovery\\sealed.json",
+  "validation": {
+    "fresh_spans": 20,
+    "fresh_bytes": 1753,
+    "complete_decoded_instructions": 461,
+    "cpp_build": false,
+    "fixture": false,
+    "native_ABI": false,
+    "gameplay": false
+  },
+  "limitations": [
+    "No generic callbacks, invented retained profiles, null-only terminal or semantic binding substitution.",
+    "No claim that previous bounded writer exclusions establish whole-program/lifetime absence.",
+    "Read-only target analysis; no Ghidra/shared-metadata/CMake or parent B29670 edits."
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-reset\\local\\renderer_binding_reset_discovery\\sealed.json",
+      "bytes": 7552,
+      "sha256": "79c69df2bb84b0f19129d686705b85207ecf1cb0b66cf746917508de3b319502"
+    },
+    "worker_pins_verified": 43,
+    "fresh_guarded_spans": 20,
+    "fresh_guarded_bytes": 1753,
+    "complete_decoded_instructions": 461,
+    "full_parent_bytes": 453,
+    "source_added": false,
+    "reconstructed_functions": 0,
+    "remaining": "B24840 -> B23710/logical owner B4BF10/B4B5D0/B62010 -> unresolved actual nonnull retained+4C writer/profile/terminal/allocation domain. Constructor null and bounded negative searches are not lifetime proof.",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_binding_reset_discovery_primary\\sealed.json",
+      "bytes": 5579,
+      "sha256": "c0feeb8e59b5e9a016f40e28e5872696643387517b6bef3aa22b18ad990b3f19"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_binding_reset_discovery_primary\\verified.json",
+      "bytes": 743,
+      "sha256": "85c6e95bf8b1a3cc17a0b3fc315668fa595c1e47f3e5fdf1e31f32d63171e1aa"
+    }
+  },
+  "annotations_applied": true,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_renderer_binding_reset_annotations.json",
+    "bytes": 1462,
+    "sha256": "d3437c3171ebf583b2237b709dd244a26f0857e5c11fb6012f2b3286433174b6"
+  },
+  "refreshed_export": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b24bf0\\decompiled.c",
+    "bytes": 3095,
+    "sha256": "f66d3398d8b78fff4c6a6374d5f6cac1abed9677ea826a7925c3ca08051ae500"
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_BINDING_RESET.md",
+    "bytes": 6620,
+    "sha256": "8429e9c0d78d95317f0414da75fb0fb916a09c004525ac379cfac9524c2ebc9e"
+  }
+}

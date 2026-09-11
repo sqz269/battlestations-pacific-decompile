@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_alias_nodes.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <new>
@@ -19,6 +20,11 @@ template<class T> T read(const void* header, std::size_t offset) noexcept {
 }
 template<class T> void write(void* header, std::size_t offset, T value) noexcept {
     std::memcpy(static_cast<std::byte*>(header) + offset, &value, sizeof(value));
+}
+
+void resize_fresh_header(void* destination, std::uint32_t requested,
+    ActualNativeStringPoolStorage& strings) {
+    resize_native_string_header_0041dd40(destination, strings, requested, true);
 }
 
 void resize_fresh_header(void* destination, std::uint32_t requested, SizedStoragePool& pool) {
@@ -43,8 +49,9 @@ void resize_fresh_header(void* destination, std::uint32_t requested, SizedStorag
 }
 } // namespace
 
-void construct_native_render_alias_string_0044bcb0(void* destination,
-    const void* source, SizedStoragePool& pool) {
+template<class Pool>
+static void construct_alias_string_with_pool(void* destination,
+    const void* source, Pool& pool) {
     if (!destination) return; // Native 0044BCE0 skips even the source read.
     const bool same_header = destination == source;
     write<std::uint32_t>(destination, 0, 0);
@@ -61,9 +68,20 @@ void construct_native_render_alias_string_0044bcb0(void* destination,
     // No string destruction or synthesized exception cleanup belongs here.
 }
 
-NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
-    NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
+void construct_native_render_alias_string_0044bcb0(void* destination,
     const void* source, SizedStoragePool& pool) {
+    construct_alias_string_with_pool(destination, source, pool);
+}
+
+void construct_native_render_alias_string_0044bcb0(void* destination,
+    const void* source, ActualNativeStringPoolStorage& pool) {
+    construct_alias_string_with_pool(destination, source, pool);
+}
+
+template<class Pool>
+static NativeRenderResourceAliasNode* allocate_alias_node_with_pool(
+    NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
+    const void* source, Pool& pool) {
     void* const raw = singleton_lifetime_allocate({SingletonAllocationKind::object,
         0x10, sizeof(NativeRenderResourceAliasNode)});
     try {
@@ -79,5 +97,17 @@ NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
         singleton_lifetime_free(raw);
         throw;
     }
+}
+
+NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
+    NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
+    const void* source, SizedStoragePool& pool) {
+    return allocate_alias_node_with_pool(next, previous, source, pool);
+}
+
+NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
+    NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
+    const void* source, ActualNativeStringPoolStorage& pool) {
+    return allocate_alias_node_with_pool(next, previous, source, pool);
 }
 } // namespace bsp

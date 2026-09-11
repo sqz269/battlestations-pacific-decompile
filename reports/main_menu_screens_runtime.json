@@ -1,0 +1,90 @@
+{
+  "packet": "cc_main_menu_screens",
+  "owner": "agent/cc-main-menu-screens",
+  "question": "What pumps and gates the front-end screens once the main-menu shell rests at game state 5",
+  "doc": "docs/MAIN_MENU_SCREENS_RUNTIME.md",
+  "reconstruction": {
+    "header": "include/bsp/main_menu_screens_runtime.hpp",
+    "source": "src/main_menu_screens_runtime.cpp"
+  },
+  "new_reconstruction": {
+    "004c40f0": {
+      "name": "BSP_Game_UpdateInterfaceOnly",
+      "abi": "__fastcall(GGame* ECX), no stack arguments, RET at 004c42f8",
+      "callers": ["004e5259", "004e53b6", "004e5469"],
+      "status": "analyzed, reconstructed, build-tested",
+      "note": "The only routine in the packet with no body anywhere. run_render_tail and SessionPollHost both called it as an opaque host method."
+    }
+  },
+  "confirmed_unchanged": {
+    "00684700": "activate_front_end_manager_00684700, include/bsp/frontend_managers.hpp",
+    "00683aa0": "deactivate_front_end_manager_00683aa0, include/bsp/frontend_managers.hpp",
+    "00683e90": "front_end_request_rejected_00683e90, include/bsp/frontend_managers.hpp",
+    "006840f0": "service_pending_menu_requests_006840f0, include/bsp/session_polls.hpp",
+    "005884a0": "start_title_music_005884a0, include/bsp/main_menu_screens.hpp",
+    "004e53b4_frame": "run_render_tail, include/bsp/render_tail.hpp"
+  },
+  "state5_frame_order": [
+    {"site": "004e53b4", "call": "004c40f0", "role": "non-simulating fallback, reaches the pump at 004c4165"},
+    {"site": "004e5442", "call": "006840f0", "role": "service pending interface requests, four channels"},
+    {"site": "004e544c", "call": "00e18cdc = 0", "role": "clear pump sentinel"},
+    {"site": "004e5462", "call": "00776230", "role": "peer message queues, ECX = game+1ef0h"},
+    {"site": "004e5469", "call": "004c40f0", "role": "second interface update, over the published set"},
+    {"site": "004e5477", "call": "006840f0", "role": "service pass, loop condition"},
+    {"site": "004e5481", "call": "00e18cdc = 0", "role": "clear pump sentinel"}
+  ],
+  "key_finding": "The main menu is visible on the frame it is entered, and the drain loop is not what does it. 00684600 syncs applied to pending twice before OnMove reaches 004e5442: once in BSP_MainMenu_Init at 006868bd, and again through 00684700's replay at 0068477e calling 00685820. So 006840f0 reports nothing on the entry frame and the drain loop never runs. The level-4 screen set is published by the Activate replay, not by the service pass. The menu becomes visible because the post-drain state test at 004e4d12 compares only against 1, 2 and 4, so state 5 falls through into the render tail and 004c40f0 at 004e53b4 pumps an already-published set.",
+  "superseded_key_finding": "An earlier version of this report and doc credited the drain loop at 004e5460 with making the menu visible on the entry frame. That mechanism is wrong; the conclusion that it is visible on the entry frame is unchanged. Corrected after agent/cc-exe-2c observed a 120-frame run in which the service pass was idle.",
+  "004c40f0_structure": {
+    "head": "arm = (00e188ae != 0 || 00e18b34 != 0) && game+719eh == 0; game+719eh = 0; 00e18b34 = 00e188ae",
+    "arm_system_ui": {
+      "site": "004c4205",
+      "gate": "00e198c4 != 0, null for every front-end frame",
+      "walk_offsets_in_call_order": ["0xc8", "0x9c", "0xa4"],
+      "registry_slots": ["0x51", "0x37", "0x33"],
+      "per_entry": "+5h set: +4h set -> 004f71f0(screen, game+21f0h); +4h clear -> 004b6e50(screen)"
+    },
+    "arm_front_end": {
+      "site": "004c4130",
+      "no_modal": "004f8830(game+635h ? game+21ech : game+21f0h) at 004c4165",
+      "modal": "update-or-close the 00425d10 singleton at 004c416f, then *(00e19698) at 004c41bd with no null test"
+    },
+    "tail": {
+      "site": "004c42a6",
+      "gate": "game+624h != 0 && 00e198c4 != 0 && 00e198c4+a4h != 0",
+      "body": "+4h = +5h = 1; 004f83b0; vtable +18h; tail jump 005b6960"
+    }
+  },
+  "interface_lock_00e19894": {
+    "arms": {
+      "00683e97": "byte clear -> pass, no change",
+      "00683ea0": "id 0x2c INTF_MOVIECAMERANEW -> pass, byte stays set",
+      "00683ea5": "id >= 0x20 -> rejected",
+      "00683ea7": "id < 0x20 -> pass and clear the byte"
+    },
+    "only_engage_site": "005cd1e9, storing EBX=1 set at 005cd1a4, right after 005cd1ce pushes request 0x2c on 00e198c4, gated on game+1fe4h != 0",
+    "clear_sites": ["004dab5d", "004d2c5f", "004bc493", "00683ea7"],
+    "shell_push_verdict": "Interface id 1 is below 0x20, so the shell's push at step 9 always passes and clears the lock. The lock can never make it a no-op."
+  },
+  "corrections": [
+    "006840f0 walks four managers (00e198ac, 00e198b4, 00e198b8, 00e198c4). The first sentence of its ledger record named only two; a later append from packet game_session_polls already listed all four, so this was a stale sentence, not a live error. Instruction-level confirmation appended.",
+    "The manager registry at 00e19898 is a std::set, not a std::map: 00683d10 is the MSVC _Tree iterator increment and +11h is _Isnil. The +0ch payload offset and the address ordering in frontend_managers.hpp are both right.",
+    "docs/MAIN_MENU_PATH.md's frontend_interface_lock follow-up says the lock decides whether step 9 is a no-op. It does not; id 1 takes the passing arm that also releases the lock.",
+    "FUN_00425d10(uVar4) in the 004c40f0 pseudocode is a decompiler artefact: at 004c4183 the float is pushed before 00425d10 is called with no arguments.",
+    "The 0068412d arm of 006840f0 is dead in all four blocks; the branch at 00684114 already excluded the case that reaches it."
+  ],
+  "names_added": {
+    "00683d10": "STL_TreeIterator_Increment_00683d10"
+  },
+  "unresolved": {
+    "005b6960": "Reads screen+bch, calls that child's vtable +34h with 1, writes a zeroed three-float vector and the constant at 00d7a24c. One caller. Left as a host method, no name proposed.",
+    "00e19698": "A front-end screen pointer 004c40f0 dereferences without a null test. Owner not established.",
+    "game+624h": "Read as the session termination reason on the authority of docs/GAME_SESSION_POLLS.md, not re-derived."
+  },
+  "not_done": {
+    "in_game_interface_screen_sets": "The stretch item, 0068aca0 level-1 table and its 0068b390 jump-table arm, was not started. The turn went to reconstructing 004c40f0's body."
+  },
+  "no_ghidra_function": [],
+  "validation": "Win32 /W4 /WX build clean, existing reconstructed_math CTest passes. No new test added.",
+  "game_validated": false
+}

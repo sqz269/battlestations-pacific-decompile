@@ -1,0 +1,18 @@
+[
+  {
+    "address": "00b285a0",
+    "before": {
+      "address": "00b285a0",
+      "function_name": "BSP_Renderer_PrepareCamera",
+      "comment": "[BSP reconstruction 00b285a0]\n[BSP reconstruction] No outer guard. Set state152=0; refresh inverseVP/frustum; copy all16 inline records via00B250B0 (four FLD/FSTP coefficient pairs and MOV flags per record), then separately copy count+140. Zero counts+19EC/+19F0. Support+1B51 selects flags without4 and with2; transform by transposed inverseProjection*inverseView, upload compact slots, count attempts. Restore pending mask then optional ambient state34. Original ABI: ECX renderer; stack camera; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b285a0",
+      "evidence": "Complete544-byte B285A0 parent preserves138original instructions with9context plumbing instructions,20CALLrelocations,6branch remaps and two saved-context camera stack displacement corrections. Added immutable16-byte EDX context borrows full frustum/synchronization/ambient-scale/current conversion globals. State0x98 before camera slot load; full inverseVP/frustum; copy16planes before count reread; support TEST before counter clears; separate current plane flags; full inverse-view/inverse-projection/multiply/transposition/plane transform; full guarded clip child then pending increment ignoring HRESULT; reload caller camera slot; mask state then pending reload to active; late current fog owner+184/raw color+8. No outer guard/EH. Strict main2CTests/8seeds. Verified623worker pins,36fresh spans7430bytes, unchanged3original-parent/full-main pairs935408bytes and22realS_OKCOMcalls including live caller-slot/device/flags/pending/fog changes and post-real-clip C++exception with full child guard cleanup. Original parent alone executes as original; all descendants actual complete rebuilt providers.22exact main objects419completeCOFFsections1591relocations258localfunctions with f/i,399immutable runtime sections7postimage phases146provider records,2mutable CRT imports identity/value only. Fullcurrentlinked code matches worker; changed hierarchy-layout refresh_axes section43 is unlinked in both. Full original descendant runtime, all EH faults/unmaskedFP, arbitrary hierarchy, original caller ABI and gameplay unclaimed. reports/native_renderer_camera_prepare_audit.json Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract.",
+      "old_name": "BSP_Renderer_PrepareCamera",
+      "name": "BSP_Renderer_PrepareCamera",
+      "saved_body_end": "00b287bf"
+    },
+    "status": "applied"
+  }
+]

@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_record.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include "bsp/native_render_alias_insertion.hpp"
 #include "bsp/native_string.hpp"
@@ -27,6 +28,14 @@ static_assert(offsetof(NativeRenderResourceRecord, payload_14_24) == 0x14);
 static_assert(offsetof(NativeRenderResourceRecord, resource_28) == 0x28);
 
 namespace {
+void release_alias_string(SizedStoragePool& pool, char* data, std::uint32_t size) {
+    pool.release_00bd1510(data, size);
+}
+void release_alias_string(ActualNativeStringPoolStorage& strings, char* data,
+    std::uint32_t size) noexcept {
+    strings.release(data, size); // Repeats current 419CC0 -> BD1510 for this return.
+}
+
 template<class T>
 volatile T& list_field(void* actual_owner, std::size_t offset) {
     return *reinterpret_cast<volatile T*>(
@@ -55,8 +64,9 @@ struct RecordNameUnwind {
 };
 }
 
-void clear_native_render_resource_aliases_004d05e0(
-    void* actual_list_owner, SizedStoragePool& actual_string_pool) {
+template<class Pool>
+static void clear_aliases_with_pool(
+    void* actual_list_owner, Pool& actual_string_pool) {
     // Volatile accesses preserve reloads even when actual owner/sentinel
     // storage overlaps. The initial equality test precedes the count store.
     auto* first_sentinel = sentinel(actual_list_owner);
@@ -76,11 +86,21 @@ void clear_native_render_resource_aliases_004d05e0(
         auto* const data = node->string_data_0c;
         auto* const next = node->next_00;
         if (data) {
-            actual_string_pool.release_00bd1510(data, node->string_length_08 + 1u);
+            release_alias_string(actual_string_pool, data, node->string_length_08 + 1u);
         }
         singleton_lifetime_free(cursor);
         cursor = next;
     } while (cursor != sentinel(actual_list_owner));
+}
+
+void clear_native_render_resource_aliases_004d05e0(
+    void* actual_list_owner, SizedStoragePool& actual_string_pool) {
+    clear_aliases_with_pool(actual_list_owner, actual_string_pool);
+}
+
+void clear_native_render_resource_aliases_004d05e0(
+    void* actual_list_owner, ActualNativeStringPoolStorage& actual_string_pool) {
+    clear_aliases_with_pool(actual_list_owner, actual_string_pool);
 }
 
 NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(

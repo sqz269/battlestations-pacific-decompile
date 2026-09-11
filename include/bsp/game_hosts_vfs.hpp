@@ -37,7 +37,9 @@
 #include <vector>
 
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/app_init_tail.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/package_scan.hpp"
 #include "bsp/vfs_candidates.hpp"
 #include "bsp/vfs_provider_manager.hpp"
@@ -82,7 +84,9 @@ public:
     // The mount system path is whatever GetCurrentDirectoryA returns at 0073d697. bsp_game
     // sets the process current directory from --game-root before Init, so this stays the
     // recovered call rather than an injected path.
-    GameVfsHost(GameHostLog& log, bool cached_load);
+    // hardware_probe_commit lets the phase-2 probe raise its message box and
+    // perform its registry write-back; see include/bsp/game_hosts_init_tail.hpp.
+    GameVfsHost(GameHostLog& log, bool cached_load, bool hardware_probe_commit = false);
     ~GameVfsHost() override;
 
     // ---- phase 2, 0073d604..0073d899 ----
@@ -134,11 +138,23 @@ public:
     VfsProviderManager* manager() const noexcept { return manager_.get(); }
     const VfsCandidateRegistrations& search_registrations() const noexcept { return search_registrations_; }
 
+    // ---- milestone 2c ----
+    const GameHardwareProbeSummary& hardware_probe() const noexcept;
+    // The manager the two 004c1400 fetches return; the same object both times.
+    GameResourceManager* resource_manager() const noexcept { return resource_manager_.get(); }
+    // Factories appended by 00be0660, in call order: physical, FileStore, MPKG
+    // then the MPAK singleton the factory tail adds.
+    std::size_t registered_factories() const noexcept { return registered_factories_.size(); }
+    std::size_t registered_parsers() const noexcept;
+    bool pak_registry_published() const noexcept { return pak_registry_published_; }
+    bool pak_lock_published() const noexcept { return pak_lock_ != nullptr; }
+
 private:
     PackageScanCallbacks package_scan_callbacks();
 
     GameHostLog& log_;
     bool cached_load_{};
+    bool hardware_probe_commit_{};
     std::shared_ptr<VfsProviderFactories> factories_;
     std::unique_ptr<VfsProviderManager> manager_;
     VfsCandidateRegistrations search_registrations_;
@@ -147,11 +163,22 @@ private:
     std::array<PackageScanPass, 2> scans_;
     VfsStartupState state_;
     int scan_pass_{};
-    // The three phase-2 factory tokens. VfsProviderFactories is one object holding the
-    // physical, FileStore and MPKG factories, so the getters hand back that object and
-    // register_provider_factory_00be0660 has nothing left to append; the MPAK factory
-    // 00736b60 has no reconstruction at all and stays null.
-    std::uint8_t factory_tokens_[3]{};
+    // The four factory tokens. VfsProviderFactories is one object holding the physical,
+    // FileStore and MPKG factories, so those getters hand back that object; the MPAK
+    // factory 00736b60 is the 8-byte singleton of kMpakProviderFactory_00736b60, whose
+    // Create 00bb83a0 is packet `mpak_provider_create` and is not reconstructed.
+    std::uint8_t factory_tokens_[4]{};
+    // Milestone 2c: the factory tail 0073d94f-0073d98d and phase 6.
+    std::unique_ptr<GameHardwareProbe> hardware_probe_;
+    std::vector<const void*> registered_factories_;
+    PakArchiveRegistryState pak_registry_{};
+    bool pak_registry_published_{};
+    FileManagerKnobs manager_knobs_{};
+    SharedLock pak_lock_storage_{};
+    SharedLock* pak_lock_{};
+    std::unique_ptr<GameResourceManager> resource_manager_;
+    std::unique_ptr<GameStructuredParser> animation_channels_parser_;
+    std::unique_ptr<GameStructuredParser> bone_parser_;
 };
 
 // Settings startup over the retained game state, mounted catalog and recovered

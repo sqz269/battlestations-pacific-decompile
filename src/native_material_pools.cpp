@@ -3,6 +3,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
+#include <cstdlib>
 #include <cstring>
 #include <new>
 
@@ -47,7 +48,7 @@ void replace_table(NativeMaterialPoolStorage& storage, std::byte** replacement) 
     if (storage.slabs_28) singleton_lifetime_free(storage.slabs_28);
     storage.slabs_28 = replacement;
 }
-// B17630/B17670 receive ECX=pool+28 and free only the current pointer. They
+// B17630/B17670/B402B0 receive ECX=pool+28 and free only the current pointer. They
 // preserve pointer/count/capacity fields, including during constructor unwind.
 void free_table(NativeMaterialPoolStorage& storage) noexcept {
     if (storage.slabs_28) singleton_lifetime_free(storage.slabs_28);
@@ -64,7 +65,7 @@ template<class Pool> void initialize_pool(
     list.prepend_base_element(storage.allocator_00);
     storage.allocator_00.native_vtable_00 = Pool::native_vtable;
     unsigned unwind_state = 0;
-    // B17FA0/B18340: states 0/1/2 unwind list, section, pointer table. As in
+    // B17FA0/B18340/B41090: states 0/1/2 unwind list, section, pointer table. As in
     // the actual constructor, allocation failure does not reset native fields.
     __try {
         ::new (storage.critical_section_0c) CRITICAL_SECTION;
@@ -89,7 +90,7 @@ template<class Pool> void initialize_pool(
     }
 }
 template<class Pool> struct SlabBytes { std::byte bytes[Pool::slab_bytes]; };
-// B17440/B17510 initialize metadata only: free stack in descending order,
+// B17440/B17510/B401D0 initialize metadata only: free stack in descending order,
 // identical slab ID in every slot, untouched object payload and tail padding.
 template<class Pool> std::byte* initialize_slab(void* raw, std::uint32_t index) noexcept {
     auto* bytes = (::new (raw) SlabBytes<Pool>)->bytes;
@@ -105,7 +106,7 @@ template<class Pool> std::byte* initialize_slab(void* raw, std::uint32_t index) 
 template<class Pool> void* allocate_slot(NativeMaterialPoolStorage& storage) {
     EnterCriticalSection(section(storage));
     adjust_recursion(storage, 1);
-    // Neither allocator has an unwind region. Preserve early first-free and
+    // These allocators have no unwind region. Preserve early first-free and
     // capacity publication, without rollback or automatic unlock on failure.
     if (storage.first_free_slab_34 == no_free_slab) {
         storage.first_free_slab_34 = storage.slab_count_2c;
@@ -142,7 +143,7 @@ template<class Pool> void* allocate_slot(NativeMaterialPoolStorage& storage) {
 template<class Pool> void return_slot(NativeMaterialPoolStorage& storage, void* slot) noexcept {
     EnterCriticalSection(section(storage));
     adjust_recursion(storage, 1);
-    // The material return and B193FA parameter fragment both load the live ID
+    // The material return, B193FA parameter fragment and B40A40 load the live ID
     // here, under the real lock. Trimming may have moved its slab table entry.
     const auto slab_index = read<std::uint32_t>(
         static_cast<const std::byte*>(slot) + Pool::slot_slab_index_offset);
@@ -152,7 +153,8 @@ template<class Pool> void return_slot(NativeMaterialPoolStorage& storage, void* 
     std::int32_t offset;
     std::memcpy(&offset, &offset_bits, sizeof(offset));
     // Signed IMUL/SAR/SHR sequences implement signed division toward zero by
-    // 114h (magic 76B981DB) or 88h (78787879). Valid slots lie in this slab.
+    // 114h (magic 76B981DB), 88h (78787879) or 8Ch (EA0EA0EB).
+    // Valid slots lie in this slab.
     const auto index = static_cast<std::uint16_t>(offset / static_cast<std::int32_t>(Pool::slot_bytes));
     const auto count = read<std::uint16_t>(slab + Pool::free_count_offset);
     write<std::uint16_t>(slab + Pool::free_indices_offset + count * 2u, index);
@@ -171,7 +173,7 @@ template<class Pool> void trim_empty_slabs(NativeMaterialPoolStorage& storage) {
             continue;
         }
         singleton_lifetime_free(slab);
-        // Full free continuations B18186/B18527 copy even the last entry before
+        // Full free continuations B18186/B18527/B41196 copy even the last entry before
         // decrementing count, rewrite EVERY moved slot ID, then retry the index.
         storage.slabs_28[index] = storage.slabs_28[storage.slab_count_2c - 1u];
         --storage.slab_count_2c;
@@ -234,5 +236,53 @@ void NativeMaterialParameterPool::destroy_00b18470() {
 }
 void NativeMaterialParameterPool::invoke_trim(void* context) {
     static_cast<NativeMaterialParameterPool*>(context)->trim_empty_slabs_00b18500();
+}
+
+NativeMaterialPassPool::NativeMaterialPassPool(AllocatorListDomain& list, NativeMaterialPassPoolStorage& storage)
+    : allocator_list_(list), storage_(storage) {
+    list.bind_virtual0(storage.allocator_00, {native_vtable, native_virtual0, this, &invoke_trim});
+}
+void NativeMaterialPassPool::initialize_00b41090() {
+    initialize_pool<NativeMaterialPassPool>(allocator_list_, storage_);
+}
+void* NativeMaterialPassPool::allocate_slot_00b41210() {
+    return allocate_slot<NativeMaterialPassPool>(storage_);
+}
+void NativeMaterialPassPool::return_slot_00b40a40(void* slot) noexcept {
+    return_slot<NativeMaterialPassPool>(storage_, slot);
+}
+void NativeMaterialPassPool::trim_empty_slabs_00b41170() {
+    trim_empty_slabs<NativeMaterialPassPool>(storage_);
+}
+void NativeMaterialPassPool::destroy_00b40980() {
+    destroy_pool<NativeMaterialPassPool>(allocator_list_, storage_);
+}
+void NativeMaterialPassPool::invoke_trim(void* context) {
+    static_cast<NativeMaterialPassPool*>(context)->trim_empty_slabs_00b41170();
+}
+void* initialize_native_material_pass_slab_00b401d0(void* raw, std::uint32_t index) noexcept {
+    return initialize_slab<NativeMaterialPassPool>(raw, index);
+}
+void destroy_native_material_pass_pool_table_00b402b0(void* header) noexcept {
+    std::byte** table;
+    std::memcpy(&table, header, sizeof(table));
+    if (table) singleton_lifetime_free(table);
+}
+namespace { NativeMaterialPassPool* canonical_pass_pool; }
+void bind_static_native_material_pass_pool_0108fbf8(NativeMaterialPassPool& pool) noexcept {
+    canonical_pass_pool = &pool;
+}
+void* allocate_static_native_material_pass_slot_00b41820() {
+    return canonical_pass_pool->allocate_slot_00b41210();
+}
+void return_static_native_material_pass_slot_00b41040(void* slot) {
+    canonical_pass_pool->return_slot_00b40a40(slot);
+}
+int initialize_static_native_material_pass_pool_00cd7bc0() {
+    canonical_pass_pool->initialize_00b41090();
+    return std::atexit(&destroy_static_native_material_pass_pool_00ce0cd0);
+}
+void destroy_static_native_material_pass_pool_00ce0cd0() noexcept {
+    canonical_pass_pool->destroy_00b40980();
 }
 } // namespace bsp

@@ -6363,7 +6363,7 @@
       "packet": "native_camera_world1",
       "worker": "main",
       "done": true,
-      "state": "complete_raw_world_primary_main_Win32_full_COFF_provider_proof_companion_integration_pending",
+      "state": "complete_raw_world_main_COFF_verified_canonical_hierarchy_host_integration_verified",
       "source_ready": true,
       "function_addresses": [
         "00b6db70"
@@ -6375,7 +6375,7 @@
         "reports/native_camera_world_audit.json"
       ],
       "prerequisite_packets": [],
-      "scope": "Raw world refresh over actual parent addresses; companion owner integration remains pending.",
+      "scope": "Complete raw world over actual node-address words; canonical hierarchy host integration verified. Full camera owner and other owner ABI remain separate.",
       "evidence": "reports/native_camera_world_audit.json"
     },
     {
@@ -6433,7 +6433,7 @@
         "reports/native_camera_cache_getters_audit.json"
       ],
       "prerequisite_packets": [],
-      "scope": "Complete raw camera getters through original provider closure, current semantic hierarchy integration pending.",
+      "scope": "Complete raw getter provider closure; canonical four-word hierarchy host integration verified. Full camera owner lifecycle and other object ABI remain separate.",
       "evidence": "reports/native_camera_cache_getters_audit.json"
     },
     {
@@ -6536,6 +6536,261 @@
       ],
       "integration_report": "reports/gameplay_effect_sound.json",
       "discovery_evidence": "docs/GAMEPLAY_EFFECT_SOUND.md"
+    },
+    {
+      "id": "native_renderer_camera_prepare1",
+      "packet": "native_renderer_camera_prepare1",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_parent_primary_main_Win32_original_composition_full_COFF_and_runtime_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00b285a0"
+      ],
+      "code_ownership": [
+        "src/native_renderer_camera_prepare.cpp",
+        "include/bsp/native_renderer_camera_prepare.hpp",
+        "docs/NATIVE_RENDERER_CAMERA_PREPARE.md",
+        "reports/native_renderer_camera_prepare_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_raw_parent_primary_main_Win32_original_composition_full_COFF_and_runtime_verified",
+      "evidence": "reports/native_renderer_camera_prepare_audit.json"
+    },
+    {
+      "id": "native_node_raw_hierarchy",
+      "packet": "native_node_raw_hierarchy",
+      "worker": "main",
+      "done": true,
+      "state": "canonical_four_raw_hierarchy_words_main_integrated_host_sequence_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_NODE_RAW_HIERARCHY.md",
+        "reports/native_node_raw_hierarchy_audit.json",
+        "include/bsp/camera_transform.hpp",
+        "include/bsp/native_node_construction.hpp",
+        "include/bsp/scene_attachment.hpp",
+        "src/camera_transform.cpp",
+        "src/gui_widget_owner.cpp",
+        "src/light_scene_retention.cpp",
+        "src/native_node_construction.cpp",
+        "src/native_node_destruction.cpp",
+        "src/native_node_parenting.cpp",
+        "src/scene_attachment.cpp"
+      ],
+      "prerequisite_packets": [],
+      "scope": "canonical_four_raw_hierarchy_words_main_integrated_host_sequence_and_COFF_verified",
+      "evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "new_native_bodies": 0
+    },
+    {
+      "id": "native_xlive_device_adapter2",
+      "packet": "native_xlive_device_adapter2",
+      "worker": "main",
+      "done": true,
+      "state": "external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim",
+      "source_ready": true,
+      "function_addresses": [
+        "00c2f1c0",
+        "00c2f1c6"
+      ],
+      "code_ownership": [
+        "src/native_xlive_device_adapter.cpp",
+        "include/bsp/native_xlive_device_adapter.hpp",
+        "docs/NATIVE_XLIVE_DEVICE_ADAPTER.md",
+        "reports/native_xlive_device_adapter.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim",
+      "evidence": "reports/native_xlive_device_adapter.json"
+    },
+    {
+      "id": "native_vfs_lookup_leaves",
+      "packet": "native_vfs_lookup_leaves",
+      "worker": "main",
+      "done": true,
+      "state": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00bb5540",
+        "00bb8e00",
+        "00bb8e80",
+        "00bba650",
+        "00bba710",
+        "00be5c00",
+        "00be5c40",
+        "00be6040"
+      ],
+      "code_ownership": [
+        "src/native_vfs_lookup_leaves.cpp",
+        "include/bsp/native_vfs_lookup_leaves.hpp",
+        "docs/NATIVE_VFS_LOOKUP_LEAVES.md",
+        "reports/native_vfs_lookup_leaves_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json"
+    },
+    {
+      "id": "native_hardware_layout_create_if_missing1",
+      "packet": "native_hardware_layout_create_if_missing1",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00b60a10"
+      ],
+      "code_ownership": [
+        "src/native_hardware_layout_create_if_missing.cpp",
+        "include/bsp/native_hardware_layout_create_if_missing.hpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_CREATE_IF_MISSING.md",
+        "reports/native_hardware_layout_create_if_missing_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_raw_hardware_create_if_missing_primary_main_Win32_original_COM_composition_and_COFF_verified",
+      "evidence": "reports/native_hardware_layout_create_if_missing_audit.json"
+    },
+    {
+      "id": "native_renderer_viewport_clear6",
+      "packet": "native_renderer_viewport_clear6",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_viewport_clear_primary_main_Win32_original_COM_guard_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00b1f730",
+        "00b1f740",
+        "00b1f7b0",
+        "00b1f7d0",
+        "00b21430",
+        "00b26770"
+      ],
+      "code_ownership": [
+        "src/native_renderer_viewport_clear.cpp",
+        "include/bsp/native_renderer_viewport_clear.hpp",
+        "docs/NATIVE_RENDERER_VIEWPORT_CLEAR.md",
+        "reports/native_renderer_viewport_clear_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_raw_viewport_clear_primary_main_Win32_original_COM_guard_composition_and_COFF_verified",
+      "evidence": "reports/native_renderer_viewport_clear_audit.json"
+    },
+    {
+      "id": "native_vfs_lookup_routes",
+      "packet": "native_vfs_lookup_routes",
+      "worker": "main",
+      "done": true,
+      "state": "complete_qualified_lookup_routes_primary_main_Win32_original_pool_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00bb8640",
+        "00bba080",
+        "00bd8fe0",
+        "00bd90d0",
+        "00bd90f0",
+        "00bdb5d0",
+        "00bdb5e0",
+        "00bdbc00",
+        "00bdd0a0",
+        "00bdd440",
+        "00bdd600"
+      ],
+      "code_ownership": [
+        "src/native_vfs_lookup_routes.cpp",
+        "include/bsp/native_vfs_lookup_routes.hpp",
+        "docs/NATIVE_VFS_LOOKUP_ROUTES.md",
+        "reports/native_vfs_lookup_routes_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "complete_qualified_lookup_routes_primary_main_Win32_original_pool_composition_and_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_routes_audit.json"
+    },
+    {
+      "id": "native_renderer_binding_reset1",
+      "packet": "native_renderer_binding_reset1",
+      "state": "discovery_verified_not_ready_unresolved_logical_retained_4c_terminal",
+      "done": false,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00b24bf0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_BINDING_RESET.md",
+        "reports/native_renderer_binding_reset_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_logical_vertex_owner"
+      ],
+      "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
+      "evidence": "reports/native_renderer_binding_reset_audit.json"
+    },
+    {
+      "id": "native_logical_vertex_retained_4c_writers12",
+      "packet": "native_logical_vertex_retained_4c_writers12",
+      "state": "bounded_discovery_verified_twelve_exclusions_no_logical_retained_producer",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00a3b150",
+        "00a4a890",
+        "00ae1e10",
+        "00afa280",
+        "00b0cc10",
+        "00b0f6e0",
+        "00b354d0",
+        "00b56b90",
+        "00b5e270",
+        "00ba71c0",
+        "00bb0e30",
+        "00bc0510"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_LOGICAL_VERTEX_RETAINED_4C_WRITERS.md",
+        "reports/native_logical_vertex_retained_4c_writers_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_logical_vertex_owner"
+      ],
+      "scope": "Twelve bounded decoded writer exclusions; renderer embedded lock identified as a distinct domain. Logical retained writer/profile/terminal unresolved; no source bodies.",
+      "evidence": "reports/native_logical_vertex_retained_4c_writers_audit.json"
+    },
+    {
+      "id": "native_resource_alias_pool_integration7",
+      "packet": "native_resource_alias_pool_integration7",
+      "state": "seven_actual_pool_overloads_integrated_main_Win32_original_parent_catch_composition_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "004d48a0",
+        "004d26a0",
+        "004ce6f0",
+        "0044bcb0",
+        "004d0990",
+        "004d05e0",
+        "004d0a10"
+      ],
+      "code_ownership": [
+        "src/native_render_resource_alias_nodes.cpp",
+        "include/bsp/native_render_resource_alias_nodes.hpp",
+        "src/native_render_alias_insertion.cpp",
+        "include/bsp/native_render_alias_insertion.hpp",
+        "src/native_render_alias_checked_ops.cpp",
+        "include/bsp/native_render_alias_checked_ops.hpp",
+        "src/native_render_resource_record.cpp",
+        "include/bsp/native_render_resource_record.hpp",
+        "src/native_render_resource_record_construction.cpp",
+        "include/bsp/native_render_resource_record_construction.hpp",
+        "docs/NATIVE_RESOURCE_ALIAS_POOL_INTEGRATION.md",
+        "reports/native_resource_alias_pool_integration_audit.json"
+      ],
+      "new_native_body_count": 0,
+      "scope": "Seven actual owning-pool overloads of existing full algorithms; range-parent original catch composition verified; no record/cache/vector consumer implementation.",
+      "evidence": "reports/native_resource_alias_pool_integration_audit.json"
     }
   ],
   "snapshot_after_analysis": {

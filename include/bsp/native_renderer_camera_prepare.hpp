@@ -27,8 +27,8 @@ static_assert(sizeof(NativeRendererCameraPrepareContext) == 16);
 // Full B285A0[544]: original ECX renderer, stack actual camera, RET4; no
 // semantic return. EDX adds the concrete context in this new interface.
 // Actual camera/parents must have ORIGINAL raw node links and camera fields.
-// Current NativeCameraOwner/NativeNodeStorage companion links are not accepted
-// as raw parent chains. No camera, projection, plane or callback snapshot.
+// NativeNodeStorage's canonical prefix is valid; pass its actual raw address,
+// never a CameraTransform companion. No camera, plane or callback snapshot.
 // State98=0 runs before the camera argument load. All raw getter side effects,
 // current plane/count/flags reads, clip/state calls, and ambient conversion
 // retain native order. No outer synchronization/EH guard or HRESULT policy.

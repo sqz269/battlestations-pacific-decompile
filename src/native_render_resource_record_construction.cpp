@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_record_construction.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include "bsp/native_render_alias_insertion.hpp"
 #include "bsp/native_string.hpp"
@@ -41,16 +42,28 @@ NativeRenderResourceAliasNode* allocate_native_render_alias_sentinel_004c3020() 
     return node;
 }
 
-void destroy_native_render_alias_list_004d0a10(void* actual_owner,
-    SizedStoragePool& actual_string_pool) {
+template<class Pool>
+static void destroy_alias_list_with_pool(void* actual_owner,
+    Pool& actual_string_pool) {
     clear_native_render_resource_aliases_004d05e0(actual_owner, actual_string_pool);
     singleton_lifetime_free(sentinel(actual_owner)); // Current, after clear callbacks.
     // 004D0A24 follows the returning free despite Ghidra's no-return truncation.
     owner_field<NativeRenderResourceAliasNode*>(actual_owner, 4) = nullptr;
 }
 
-void* copy_construct_native_render_alias_list_004d48a0(void* actual_destination_owner,
-    const void* actual_source_owner, SizedStoragePool& actual_string_pool,
+void destroy_native_render_alias_list_004d0a10(void* actual_owner,
+    SizedStoragePool& actual_string_pool) {
+    destroy_alias_list_with_pool(actual_owner, actual_string_pool);
+}
+
+void destroy_native_render_alias_list_004d0a10(void* actual_owner,
+    ActualNativeStringPoolStorage& actual_string_pool) {
+    destroy_alias_list_with_pool(actual_owner, actual_string_pool);
+}
+
+template<class Pool>
+static void* copy_alias_list_with_pool(void* actual_destination_owner,
+    const void* actual_source_owner, Pool& actual_string_pool,
     const SingletonLifetimeCallbacks& callbacks) {
     auto* const allocated_sentinel = allocate_native_render_alias_sentinel_004c3020();
     owner_field<NativeRenderResourceAliasNode*>(actual_destination_owner, 4) = allocated_sentinel;
@@ -72,6 +85,18 @@ void* copy_construct_native_render_alias_list_004d48a0(void* actual_destination_
         throw;
     }
     return actual_destination_owner;
+}
+
+void* copy_construct_native_render_alias_list_004d48a0(void* actual_destination_owner,
+    const void* actual_source_owner, SizedStoragePool& actual_string_pool,
+    const SingletonLifetimeCallbacks& callbacks) {
+    return copy_alias_list_with_pool(actual_destination_owner, actual_source_owner, actual_string_pool, callbacks);
+}
+
+void* copy_construct_native_render_alias_list_004d48a0(void* actual_destination_owner,
+    const void* actual_source_owner, ActualNativeStringPoolStorage& actual_string_pool,
+    const SingletonLifetimeCallbacks& callbacks) {
+    return copy_alias_list_with_pool(actual_destination_owner, actual_source_owner, actual_string_pool, callbacks);
 }
 
 NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc60(

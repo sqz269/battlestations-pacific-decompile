@@ -11,6 +11,7 @@ target_include_directories(bsp_core PUBLIC include)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
 target_sources(bsp_core PRIVATE src/material_samplers.cpp)
 target_sources(bsp_core PRIVATE src/native_material_pass_states.cpp)
+target_sources(bsp_core PRIVATE src/native_material_pass_base.cpp)
 target_sources(bsp_core PRIVATE src/material_shadow_samplers.cpp)
 target_sources(bsp_core PRIVATE src/material_lighting.cpp)
 target_sources(bsp_core PRIVATE src/resource_path.cpp)
@@ -128,6 +129,12 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_camera_world.cpp
   src/native_camera_cache_getters.cpp
   src/native_vfs_date_route.cpp
+  src/native_xlive_device_adapter.cpp
+  src/native_renderer_camera_prepare.cpp
+  src/native_vfs_lookup_leaves.cpp
+  src/native_hardware_layout_create_if_missing.cpp
+  src/native_renderer_viewport_clear.cpp
+  src/native_vfs_lookup_routes.cpp
   src/native_renderer_texture_stage_state.cpp
   src/native_occlusion_query_device_reset.cpp
   src/native_diagnostic_sink_lifetime.cpp

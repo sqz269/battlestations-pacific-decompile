@@ -58,7 +58,7 @@ __declspec(naked) void* __fastcall plane_abi(const void*, void*, void*, const vo
 
 // Complete B285A0..B287BF. The original schedule is retained; only explicit
 // integer context/ABI plumbing and corresponding local branch offsets differ.
-// The raw camera hierarchy contract is separate from current companion owners.
+// Pass canonical native storage; owning C++ companions have separate addresses.
 __declspec(naked) void __fastcall prepare_native_renderer_camera_00b285a0(void*, const NativeRendererCameraPrepareContext*, void*) {
     __asm {
         push edx // immutable context outside the original scratch/save frame

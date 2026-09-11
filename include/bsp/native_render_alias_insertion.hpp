@@ -28,6 +28,12 @@ void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
     NativeRenderAliasIterator insertion_position_by_value,
     NativeRenderAliasIterator source_by_value, NativeRenderAliasIterator end_by_value,
     SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks&);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
+    NativeRenderAliasIterator insertion_position_by_value,
+    NativeRenderAliasIterator source_by_value, NativeRenderAliasIterator end_by_value,
+    ActualNativeStringPoolStorage& actual_string_pool, const SingletonLifetimeCallbacks&);
 
 // Valid actual owner/node/string storage and the same shared allocation/handler
 // domains are required. These new C++ entries use the owning host exception

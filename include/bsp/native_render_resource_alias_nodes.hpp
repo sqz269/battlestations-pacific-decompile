@@ -17,6 +17,10 @@ namespace bsp {
 // no buffer release or header rollback is added when copying throws.
 void construct_native_render_alias_string_0044bcb0(void* actual_destination_header,
     const void* actual_source_header, SizedStoragePool& actual_string_pool);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+void construct_native_render_alias_string_0044bcb0(void* actual_destination_header,
+    const void* actual_source_header, ActualNativeStringPoolStorage& actual_string_pool);
 
 // Complete 004CE6F0 plus catch004CE75C. Original ECX/EDX are not inputs;
 // stack {next, previous, source-string-header}, EAX=actual new10h node, RET0C.
@@ -28,5 +32,10 @@ void construct_native_render_alias_string_0044bcb0(void* actual_destination_head
 NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
     NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
     const void* actual_source_string_header, SizedStoragePool& actual_string_pool);
+// Actual owning-pool overload: every string operation uses the current 419CC0
+// publication/gate/lifetime binding. Same native algorithm and exception limits.
+NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
+    NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
+    const void* actual_source_string_header, ActualNativeStringPoolStorage& actual_string_pool);
 
 } // namespace bsp
