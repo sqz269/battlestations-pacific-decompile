@@ -1,0 +1,136 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e9e40",
+    "end_address": "004e9f7d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e9e40",
+    "end_address": "004e9f7c",
+    "bytes_disassembled": 317,
+    "message": "Successfully disassembled 317 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e9e40",
+    "disassemble_first": false,
+    "name": "BSP_SceneCloud_Instantiate"
+   },
+   "result": {
+    "success": true,
+    "address": "004e9e40",
+    "function_name": "BSP_SceneCloud_Instantiate",
+    "entry_point": "004e9e40",
+    "body_size": 319,
+    "message": "Function created successfully at 004e9e40",
+    "warnings": [
+     "Function name 'BSP_SceneCloud_Instantiate' \u2014 main part 'SceneCloud_Instantiate' is not PascalCase. Expected: ScenecloudInstantiate",
+     "Function name 'BSP_SceneCloud_Instantiate' \u2014 main part 'SceneCloud_Instantiate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneCloud_Instantiate' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e9e40",
+   "end": "004e9f7d",
+   "name": "BSP_SceneCloud_Instantiate",
+   "after": "Function: BSP_SceneCloud_Instantiate at 004e9e40\nSignature: undefined BSP_SceneCloud_Instantiate(void)\nEntry: 004e9e40\nBody: 004e9e40 - 004e9f7e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e9920",
+    "end_address": "004e99a9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e9920",
+    "end_address": "004e99a8",
+    "bytes_disassembled": 137,
+    "message": "Successfully disassembled 137 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e9920",
+    "disassemble_first": false,
+    "name": "BSP_SceneCloud_RegisterClass"
+   },
+   "result": {
+    "success": true,
+    "address": "004e9920",
+    "function_name": "BSP_SceneCloud_RegisterClass",
+    "entry_point": "004e9920",
+    "body_size": 137,
+    "message": "Function created successfully at 004e9920",
+    "warnings": [
+     "Function name 'BSP_SceneCloud_RegisterClass' \u2014 main part 'SceneCloud_RegisterClass' is not PascalCase. Expected: ScenecloudRegisterclass",
+     "Function name 'BSP_SceneCloud_RegisterClass' \u2014 main part 'SceneCloud_RegisterClass' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneCloud_RegisterClass' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e9920",
+   "end": "004e99a9",
+   "name": "BSP_SceneCloud_RegisterClass",
+   "after": "Function: BSP_SceneCloud_RegisterClass at 004e9920\nSignature: undefined BSP_SceneCloud_RegisterClass(void)\nEntry: 004e9920\nBody: 004e9920 - 004e99a8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004e9f80",
+    "end_address": "004ea073"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004e9f80",
+    "end_address": "004ea072",
+    "bytes_disassembled": 243,
+    "message": "Successfully disassembled 243 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004e9f80",
+    "disassemble_first": false,
+    "name": "BSP_SceneWaterMine_Instantiate"
+   },
+   "result": {
+    "success": true,
+    "address": "004e9f80",
+    "function_name": "BSP_SceneWaterMine_Instantiate",
+    "entry_point": "004e9f80",
+    "body_size": 245,
+    "message": "Function created successfully at 004e9f80",
+    "warnings": [
+     "Function name 'BSP_SceneWaterMine_Instantiate' \u2014 main part 'SceneWaterMine_Instantiate' is not PascalCase. Expected: ScenewatermineInstantiate",
+     "Function name 'BSP_SceneWaterMine_Instantiate' \u2014 main part 'SceneWaterMine_Instantiate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneWaterMine_Instantiate' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004e9f80",
+   "end": "004ea073",
+   "name": "BSP_SceneWaterMine_Instantiate",
+   "after": "Function: BSP_SceneWaterMine_Instantiate at 004e9f80\nSignature: undefined BSP_SceneWaterMine_Instantiate(void)\nEntry: 004e9f80\nBody: 004e9f80 - 004ea074"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
