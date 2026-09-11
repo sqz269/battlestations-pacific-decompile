@@ -1,0 +1,59 @@
+{
+  "branch": "agent/orch5-20260911",
+  "status": "reviewed_standard_build_passed_ready_for_coordinated_main_integration",
+  "workers": {
+    "command_owner": "3726bc45",
+    "layout": "593319fd",
+    "map_runtime": [
+      "0376bb23",
+      "febd2f77"
+    ]
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "passed": true,
+    "log": "local/orch5_owner_layout_build.log",
+    "source_registration": "cmake/startup.cmake",
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tests": 0,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "call_verification": {
+    "numeric_rows": 159,
+    "failures": 0,
+    "direct_calls": 156,
+    "indirect_targets_require_separate_evidence": 28,
+    "log": "local/orch5_owner_layout_call_verification.log"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "new_functions": [
+      "00549570",
+      "00549580",
+      "0054a960",
+      "0054a970",
+      "00ab2820"
+    ],
+    "affected_exports_refreshed": 15,
+    "saved": true,
+    "records": [
+      "reports/orch5_menu_owner_definitions.json",
+      "reports/orch5_icon_scale_definition.json",
+      "reports/orch5_menu_owner_annotations.json",
+      "reports/orch5_menu_layout_map_annotations.json"
+    ]
+  },
+  "map_owner_probe": "Worker actual-owner focused probe passed; Icon resize/scale/filter/rebuild not executed",
+  "limitations": [
+    "Native ABI and game validation absent",
+    "Command/Text/Movie/Listbox owner services and game composition remain required",
+    "Canonical GUI factory does not yet construct Text",
+    "Borrowed point lists must be populated by mission-detail setup"
+  ]
+}

@@ -629,7 +629,44 @@
       "evidence": "004E3E27/30/40 allocation/publication/init;0054A8D0 writes00CEDFDC/00CEDFC4/00CEDFA4 and constructs strings"
     }
   ],
-  "no_ghidra_function": [
+  "verification": {
+    "source_registered": true,
+    "build_tested": true,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": 0,
+    "report_calls_verified": true,
+    "direct_call_rows_checked": 55,
+    "call_verification_failures": 0,
+    "verifier": "Parent strengthened tools/verify_report_calls.py checks actual instruction CALL addresses and the target project",
+    "note": "Normal source registration and combined build passed; executable owner host remains unbound"
+  },
+  "uncertainty": [
+    "Native pooled strings, vector allocation, SEH, vtable/callback ABI and allocation failures are outside new C++ projection.",
+    "GUI manager, widget callbacks, text companion and shadow scene-node operations require real host implementations.",
+    "Event forwarding through callback subobject+1C and scalar deleting destructor remain external.",
+    "Global00F88A30 device-level meaning and game+61F broader policy are not newly named.",
+    "Missing page/widget behavior is a new diagnostic exception, not a reconstructed native failure path.",
+    "Constructor0054A8D0 is analyzed only; C++ member defaults are not a native constructor reconstruction."
+  ],
+  "primary_integration": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "passed": true,
+    "log": "local/orch5_owner_layout_build.log",
+    "source_registration": "cmake/startup.cmake",
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tests": 0,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "status": "reviewed_standard_win32_build_and_existing_tests_passed",
+  "ghidra_worker_phase": "Read only; primary later applied locked annotations and saved/refreshed exports",
+  "undefined_at_worker_analysis": [
     {
       "address": "0054a960",
       "end_inclusive": "0054a965",
@@ -663,25 +700,6 @@
       "evidence": "ECX owner; one stack dword; RET4 at00549580 length3"
     }
   ],
-  "verification": {
-    "source_registered": false,
-    "build_tested": false,
-    "fixture_tested": false,
-    "abi_compatible": false,
-    "game_validated": false,
-    "tests_added": 0,
-    "report_calls_verified": true,
-    "direct_call_rows_checked": 55,
-    "call_verification_failures": 0,
-    "verifier": "Parent strengthened tools/verify_report_calls.py checks actual instruction CALL addresses and the target project",
-    "note": "Primary owns normal source registration and combined Win32 build. Worker adds no redundant baseline build. New owner host not wired to executable; no frame timing/visual claims."
-  },
-  "uncertainty": [
-    "Native pooled strings, vector allocation, SEH, vtable/callback ABI and allocation failures are outside new C++ projection.",
-    "GUI manager, widget callbacks, text companion and shadow scene-node operations require real host implementations.",
-    "Event forwarding through callback subobject+1C and scalar deleting destructor remain external.",
-    "Global00F88A30 device-level meaning and game+61F broader policy are not newly named.",
-    "Missing page/widget behavior is a new diagnostic exception, not a reconstructed native failure path.",
-    "Constructor0054A8D0 is analyzed only; C++ member defaults are not a native constructor reconstruction."
-  ]
+  "no_ghidra_function": [],
+  "defined_by_primary": "reports/orch5_menu_owner_definitions.json"
 }

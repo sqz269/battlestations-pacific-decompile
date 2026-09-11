@@ -1,0 +1,132 @@
+[
+  {
+    "address": "00549570",
+    "before": {
+      "address": "00549570",
+      "function_name": "BSP_MainMenuCommandOwner_ExitNoOp"
+    },
+    "after": {
+      "address": "00549570",
+      "name": "BSP_MainMenuCommandOwner_ExitNoOp",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; RET at00549570 length1. Complete evidenced no-op. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00549580",
+    "before": {
+      "address": "00549580",
+      "function_name": "BSP_MainMenuCommandOwner_UpdateNoOp"
+    },
+    "after": {
+      "address": "00549580",
+      "name": "BSP_MainMenuCommandOwner_UpdateNoOp",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; one stack dword; RET4 at00549580 length3. Complete evidenced no-op. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00549620",
+    "before": {
+      "address": "00549620",
+      "function_name": "FUN_00549620"
+    },
+    "after": {
+      "address": "00549620",
+      "name": "BSP_MainMenuCommandOwner_SetHelpVariant",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; stack variant dword; RET4 at00549648 length3. Complete low-byte behavior, incidental upper stack bytes excluded. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00549fc0",
+    "before": {
+      "address": "00549fc0",
+      "function_name": "FUN_00549fc0"
+    },
+    "after": {
+      "address": "00549fc0",
+      "name": "BSP_MainMenuCommandOwner_Enter",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; RET at0054A0BE length1. Complete normal path; retains style-byte reads across callbacks. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0054a8d0",
+    "before": {
+      "address": "0054a8d0",
+      "function_name": "CG_array_ctor_helper_0054a8d0"
+    },
+    "after": {
+      "address": "0054a8d0",
+      "name": "BSP_MainMenuCommandOwner_Construct",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; EAX owner; RET at0054A953 length1. Game_OnInit allocatesACh; constructor sets screen/callback vtables and empties five cached strings; no +20/page/widget initialization. Existing CG_array_ctor_helper name is a categorization, not the full owner behavior. docs/MAIN_MENU_COMMAND_OWNER.md. Analysis only, no constructor implementation or Ghidra mutation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0054a960",
+    "before": {
+      "address": "0054a960",
+      "function_name": "BSP_MainMenuCommandOwner_GetScreenId"
+    },
+    "after": {
+      "address": "0054a960",
+      "name": "BSP_MainMenuCommandOwner_GetScreenId",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; EAX=58h; RET at0054A965 length1. Complete. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0054a970",
+    "before": {
+      "address": "0054a970",
+      "function_name": "BSP_MainMenuCommandOwner_Virtual04False"
+    },
+    "after": {
+      "address": "0054a970",
+      "name": "BSP_MainMenuCommandOwner_Virtual04False",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; AL=0; RET at0054A972 length1; upper EAX unspecified. Complete low-byte return. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0054a990",
+    "before": {
+      "address": "0054a990",
+      "function_name": "CG_vector_deleting_dtor_0054a990"
+    },
+    "after": {
+      "address": "0054a990",
+      "name": "CG_vector_deleting_dtor_0054a990",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; RET at0054AA30 length1. Complete normal path; native vtable/SEH/pool representation excluded. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0054b500",
+    "before": {
+      "address": "0054b500",
+      "function_name": "FUN_0054b500"
+    },
+    "after": {
+      "address": "0054b500",
+      "name": "BSP_MainMenuCommandOwner_CollectPages",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; stack vector pointer; RET4 at0054B520 length3. Complete two append behavior; standard vector storage. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0054c050",
+    "before": {
+      "address": "0054c050",
+      "function_name": "FUN_0054c050"
+    },
+    "after": {
+      "address": "0054c050",
+      "name": "BSP_MainMenuCommandOwner_BindPages",
+      "evidence": "Hypothesis, not a recovered symbol. ECX owner; RET at0054D3BD length1. Complete normal path; native string/SEH allocation failures excluded. docs/MAIN_MENU_COMMAND_OWNER.md; reports/main_menu_command_owner.json. New C++ interface, Ghidra read-only; no ABI/runtime claim."
+    },
+    "status": "applied"
+  }
+]

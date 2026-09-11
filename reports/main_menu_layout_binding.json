@@ -1041,5 +1041,21 @@
     "worktree": "J:/PROG/battlestations-pacific-decompile-orch5-map-runtime",
     "method": "GuiIconRuntime::set_scale48_00ab2820(GuiWidgetOwner&,const GuiWidgetSize&)",
     "reason": "Binder directly consumes actual derived Icon+48, no forwarding/native-host fallback."
-  }
+  },
+  "primary_integration": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "passed": true,
+    "log": "local/orch5_owner_layout_build.log",
+    "source_registration": "cmake/startup.cmake",
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tests": 0,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "status": "reviewed_standard_win32_build_and_existing_tests_passed",
+  "ghidra_worker_phase": "Read only; primary later applied locked annotations and saved/refreshed exports"
 }

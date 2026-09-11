@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab2820",
+    "end_address": "00ab284c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab2820",
+    "end_address": "00ab284b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab2820",
+    "disassemble_first": false,
+    "name": "BSP_GuiIcon_SetScale"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab2820",
+    "function_name": "BSP_GuiIcon_SetScale",
+    "entry_point": "00ab2820",
+    "body_size": 44,
+    "message": "Function created successfully at 00ab2820",
+    "warnings": [
+     "Function name 'BSP_GuiIcon_SetScale' \u2014 main part 'GuiIcon_SetScale' is not PascalCase. Expected: GuiiconSetscale",
+     "Function name 'BSP_GuiIcon_SetScale' \u2014 main part 'GuiIcon_SetScale' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiIcon_SetScale' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab2820",
+   "end": "00ab284c",
+   "name": "BSP_GuiIcon_SetScale",
+   "after": "Function: BSP_GuiIcon_SetScale at 00ab2820\nSignature: undefined BSP_GuiIcon_SetScale(void)\nEntry: 00ab2820\nBody: 00ab2820 - 00ab284b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
