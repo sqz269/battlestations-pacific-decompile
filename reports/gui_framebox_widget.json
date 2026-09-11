@@ -1,0 +1,199 @@
+{
+  "packet": "orch2_gui_framebox_k",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "implementation": {
+    "header": "include/bsp/gui_framebox.hpp",
+    "source": "src/gui_framebox.cpp",
+    "dependency": "gui_icon_runtime shared native geometry helper"
+  },
+  "address_ranges": [
+    {
+      "address": "00aa1a40",
+      "last_instruction": "00aa1ac3",
+      "name": "BSP_GuiFrameBox_AllocateAndConstruct",
+      "original_abi": "ECX optional source; EAX object; RET",
+      "status": "analysis_only",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ad0280",
+      "last_instruction": "00ad0285",
+      "name": "BSP_GuiFrameBox_AllocatePoolBlock",
+      "original_abi": "MOV ECX,00F8C188; tail JMP00AD0050",
+      "status": "analysis_only",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ad2600",
+      "last_instruction": "00ad2697",
+      "name": "BSP_GuiFrameBox_Construct",
+      "original_abi": "ECX destination; EAX same; RET",
+      "status": "derived_state_fragment",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ad27a0",
+      "last_instruction": "00ad2873",
+      "name": "BSP_GuiFrameBox_CopyConstruct",
+      "original_abi": "ECX destination; stack source; RET4",
+      "status": "derived_state_fragment",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ad08e0",
+      "last_instruction": "00ad0c3a",
+      "name": "BSP_GuiFrameBox_ReadPropertiesAndStates",
+      "original_abi": "ECX widget; stack reader; RET4",
+      "status": "derived_reader_fragment",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00acf8f0",
+      "last_instruction": "00acf9a7",
+      "name": "BSP_GuiFrameBox_ConstructedHook",
+      "original_abi": "ECX widget; RET; virtual+74",
+      "status": "reconstructed_with_required_runtime_services",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00aceb50",
+      "last_instruction": "00aceb67",
+      "name": "BSP_GuiFrameBox_LoadedHook",
+      "original_abi": "ECX widget; RET; virtual+78",
+      "status": "reconstructed_with_required_runtime_services",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00acf070",
+      "last_instruction": "00acf0bd",
+      "name": "BSP_GuiFrameBox_SelectState",
+      "original_abi": "ECX widget; stack signed16 state; RET4; virtual+84",
+      "status": "reconstructed_with_required_runtime_services",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ad0d80",
+      "last_instruction": "00ad157e",
+      "name": "BSP_GuiFrameBox_RebuildGeometry",
+      "original_abi": "ECX widget; stack signed16 state; RET4; virtual+80",
+      "status": "reconstructed_with_required_runtime_services",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00acf9b0",
+      "last_instruction": "00acff66",
+      "name": "BSP_GuiFrameBox_WriteNineSliceGeometry",
+      "original_abi": "ECX widget; stack stream,size; RET8; virtual+7C",
+      "status": "reconstructed_native_fixture_passed",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00acf260",
+      "last_instruction": "00acf483",
+      "name": "BSP_GuiFrameBox_WriteRectangleTriangles",
+      "original_abi": "stack stream,index pointer,position rectangle,UV rectangle; RET10h",
+      "status": "reconstructed_native_fixture_passed",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00aceb70",
+      "last_instruction": "00acebd7",
+      "name": "BSP_GuiFrameBox_TextureNativeSize",
+      "original_abi": "ECX output,EDX texture; EAX output; RET",
+      "status": "reconstructed",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00ad2b30",
+      "last_instruction": "00ad2d4c",
+      "name": "BSP_GuiFrameBox_AddTextureState",
+      "original_abi": "ECX widget; stack name,pivot,size; RET0Ch; low16 EAX index",
+      "status": "no_ghidra_function_reconstructed_fragment",
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00ad26d0",
+      "last_instruction": "00ad26d7",
+      "name": "BSP_GuiFrameBox_GetCurrentState",
+      "original_abi": "ECX widget; AX state bits; RET",
+      "status": "no_ghidra_function_field_projection",
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00ad2750",
+      "last_instruction": "00ad2792",
+      "name": "BSP_GuiFrameBox_StateAt",
+      "original_abi": "ECX widget; stack signed16 index; EAX record; RET4",
+      "status": "no_ghidra_function_reconstructed_fragment",
+      "no_ghidra_function": true
+    }
+  ],
+  "evidence": {
+    "vtable": "00d5d130",
+    "default_x_bits": "3d6eee95",
+    "default_y_bits": "3d9f498c",
+    "y_scale_global": "00e1301c",
+    "y_scale": 0.75,
+    "mesh_lod_sentinel": -1.0,
+    "state_stride": 44,
+    "vertex_count": 54,
+    "primitive_count": 18,
+    "primitive": 4
+  },
+  "validation": {
+    "verify_seeds": "passed",
+    "msvc_win32_release": "passed",
+    "ctests_passed": 2,
+    "ctests_total": 2,
+    "installed_lua": "interface/_highlight.lua",
+    "evaluated_with": "GuiLua51Host Lua5.1.1",
+    "framebox_count": 4,
+    "snapshot_matches_live_reader": true,
+    "native_geometry_differing_words": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "native_atlas_geometry_differing_words": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "fixture_texture_dimensions": [
+      128,
+      64
+    ],
+    "actual_texture_loading_validated": false,
+    "actual_material_render_validated": false,
+    "game_validated": false,
+    "permanent_tests_added": false,
+    "build_dependency_overlay": "J:/PROG/battlestations-pacific-decompile-orch2-gui-icon-runtime-20260910k/include"
+  },
+  "uncertainty": [
+    "New C++ ABI, not native object layout or intrusive reference-count ABI",
+    "Base ownership/construct/copy/factory and allocator/SEH are external",
+    "Native copy call order only documented; helper transfers derived state",
+    "Malformed Lua scope and native memory errors become checked host errors",
+    "FrameBox state mutation/serialization methods outside startup are not claimed",
+    "Numeric fixture supplies texture dimensions rather than installed asset resolution"
+  ],
+  "required_runtime_services": [
+    "same GuiLayoutWidget/GuiWidgetOwner base",
+    "real GuiTextureCallbacks VFS/atlas/texture ownership",
+    "real LogicalTexture and COM lifetime",
+    "actual D3D9StateCache/device and vertex format/stream creation",
+    "compiled MaterialCloneState/effect and actual queue metadata",
+    "clip parameter and widget ownership registration",
+    "generated model geometry association",
+    "base loaded78 and position/bounds/transform/color operations"
+  ],
+  "ghidra_mutated": false,
+  "ghidra_annotation_status": "read_only_packet_names_pending_integrator_annotation",
+  "game_installation_modified": false,
+  "docs": "docs/GUI_FRAMEBOX_WIDGET.md"
+}
