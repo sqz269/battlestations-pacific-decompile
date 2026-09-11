@@ -164,3 +164,28 @@ Reproduce the frozen fixture from a fresh output directory by invoking the
 worker's `build/texture-binding-check/texture_binding_check.exe` with the
 installed game executable path. Use optional `native-double` or `host-double`
 only in separate output directories; those intentionally exit91.
+
+## Primary integration
+
+The primary CMake target now includes the binding source and all owner providers,
+including the volume owner. Its strict Win32 build, both existing CTests and
+eight fresh native seeds passed. The primary verified 151 immutable worker
+files, 39 current source/provider files, 41 fresh live-Ghidra/installed-PE spans
+(1,834 bytes) and sixteen exact main archive members. The unchanged fixture
+links solely against the actual main library
+`0d04df0a400912a5e3ccccef567e8095212548d2b4c55606bc57371b49528d0a`.
+No companion library is present; all reached volume entries resolve from main.
+
+All fourteen paired cases match: 16,068 literal DWORDs, 206 frames, 56 call
+records and 76 observed writes. All 1,189 original runtime postimages and
+70,187 bytes of whole fixture .text remain as declared. The 168 real texture
+and surface objects drain to zero. Separate original/source double-exception
+processes both exit91 with identical terminal state. Real module, COM-table,
+getter/call-site and write-instruction evidence is verified. The existing
+provider-composition and failed-HRESULT coverage limitations still apply.
+
+Both missing four-byte getter functions were defined and saved in Ghidra.
+All three names and appended evidence are saved with prior comments preserved;
+full ledger records and forced exports are registered. No permanent tests
+were added. Original parent caller ABI, complete renderer integration, gameplay
+and visual validation remain unclaimed.
