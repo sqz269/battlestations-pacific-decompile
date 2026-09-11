@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_native_string_pool_storage_m",
+  "source": "src/native_string_pool_storage.cpp",
+  "header": "include/bsp/native_string_pool_storage.hpp",
+  "documentation": "docs/NATIVE_STRING_POOL_STORAGE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "00bd1120",
+      "end_exclusive": "00bd11d2",
+      "length": 178,
+      "sha256": "cc8d8f80693b5182720bfe12d9b8bae05637d37fe51e756fbe770ded1a08762b",
+      "live_disk_equal": true,
+      "original_abi": "ECX actual owner; stack size and unread word; RET8; EAX block",
+      "cpp_symbol": "allocate_native_string_pool_00bd1120",
+      "reviewed_name": "BSP_SizedStoragePool_AllocateBlock"
+    },
+    {
+      "address": "00bd1510",
+      "end_exclusive": "00bd156f",
+      "length": 95,
+      "sha256": "ae7cc468fd929f90e9a2a6a8a5107d4375c16271eb96e9d7829504911105a4d4",
+      "live_disk_equal": true,
+      "original_abi": "ECX actual owner; stack block,size,unread word; RET0C",
+      "cpp_symbol": "return_native_string_pool_00bd1510",
+      "reviewed_name": "BSP_SizedStoragePool_ReturnBlock"
+    },
+    {
+      "address": "00bd12a0",
+      "end_exclusive": "00bd1375",
+      "length": 213,
+      "sha256": "bedbfd3db0788f4ff1359b6567981dadbf96007cfbe043a16f753ec83dd3271b",
+      "live_disk_equal": true,
+      "original_abi": "ECX actual embedded ring; stack address-of-block,class0..149; RET8",
+      "cpp_symbol": "return_native_string_pool_small_00bd12a0",
+      "reviewed_name": "BSP_SizedStoragePool_ReturnSmallBlock"
+    }
+  ],
+  "source_registration": "cmake/startup.cmake registered in combined strict build",
+  "bridge": "ActualNativeStringPoolStorage borrows actual publication01090AA8, gate01090AA4 and canonical SingletonLifetimeDomain; getter every operation; no private owner/domain; real NativeStringPoolLifetimeBinding deleting dispatch",
+  "padding": {
+    "address": "00bd12d8",
+    "bytes": "8d a4 24 00 00 00 00 90",
+    "interpretation": "unreachable alignment after BD12D6 JMP BD12E0; not flow gap"
+  },
+  "fixture": {
+    "source": "local/pool_storage_fixture.cpp",
+    "log": "local/pool-storage-m-fixture.log",
+    "result": "PASS original-byte allocation/return/ring differential and canonical narrow/wide lifetime composition",
+    "rebindings": {
+      "relative_calls": [
+        "BD1131 -> current malloc",
+        "BD1525 -> current free",
+        "BD1559 -> copied BD12A0"
+      ],
+      "absolute_operands": [
+        "BD1149,BD1545 -> current EnterCriticalSection import cell",
+        "BD118A,BD11C5,BD1565 -> current LeaveCriticalSection import cell",
+        "BD1534 -> actual fixture gate"
+      ]
+    },
+    "byte_comparisons": "entire embedded ring, bump, tracked depth; returned arena offsets or exact external pointer identity",
+    "cases": [
+      "zero/small149 allocation",
+      "unchecked bump wrap",
+      "LIFO",
+      "occupied/empty neighbor displacement",
+      "input pointer aliases slot",
+      "class149 to0 and slot wrap",
+      "full collision revolution",
+      "signed peak overflow",
+      "small gate with null owner",
+      "large nullable allocation/free with null owner",
+      "null free",
+      "actual narrow/wide header composition and reuse",
+      "real lifetime drain then release recreates owner despite gate1"
+    ]
+  },
+  "validation": {
+    "build": "PASS scripts/build.ps1; local/pool-storage-m-build.log",
+    "ctests": "2/2 existing tests passed",
+    "new_permanent_tests": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "boundaries": [
+    "Current CRT/Windows bindings; original process CRT/exception policy not recreated",
+    "Existing NativeStringStorage release is noexcept: lazy getter C++ failure terminates under that host interface; native EH/SEH ABI not claimed",
+    "No bounds/class repair; caller owns valid native storage",
+    "Startup actual global/header ownership remains integration work",
+    "No game entry or gameplay validation"
+  ]
+}

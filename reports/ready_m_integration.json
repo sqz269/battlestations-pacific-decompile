@@ -1,0 +1,225 @@
+{
+  "packet": "orch3_ready_m",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reviewed_packets": [
+    "orch3_camera_position_modes_l",
+    "orch3_native_wide_string_l",
+    "orch3_effect_admission_l"
+  ],
+  "changes": [
+    {
+      "address": "0042cf10",
+      "before": {
+        "address": "0042cf10",
+        "function_name": "FUN_0042cf10"
+      },
+      "after": {
+        "address": "0042cf10",
+        "name": "BSP_Geometry_AsinClamped",
+        "evidence": "Ordered clamps beyond float+/-1 to float+/-pi/2. Save double input; float-store square,1-square,sqrt,input/(sqrt+double1),atan,and2*atan. Genuine current host CRT _CIsqrt and_CIatan; originalBF8490 reaches FLD1/FPATAN and E154F0 atan descriptor. Original CRT policy is not reimplemented. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00436430",
+      "before": {
+        "address": "00436430",
+        "function_name": "BSP_WideString_Destruct",
+        "comment": "[BSP reconstruction 00436430]\nHypothesis, not a recovered symbol. fastcall(this), RET 0, 81 callers. Frees the wide string buffer at +4 through the sized pool (BSP_SizedStoragePool_GetSingleton then ReturnBlock) with size length*2+2 bytes, which is what identifies the element type as 16-bit. Null buffer is a no-op; the length field is not cleared. Called at 008f82b7 on the widened GDF path. docs/WINMAIN_STARTUP.md"
+      },
+      "after": {
+        "address": "00436430",
+        "name": "BSP_WideString_Destruct",
+        "evidence": "Hypothesis, not a recovered symbol. fastcall(this), RET 0, 81 callers. Frees the wide string buffer at +4 through the sized pool (BSP_SizedStoragePool_GetSingleton then ReturnBlock) with size length*2+2 bytes, which is what identifies the element type as 16-bit. Null buffer is a no-op; the length field is not cleared. Called at 008f82b7 on the widened GDF path. docs/WINMAIN_STARTUP.md | Packet orch3_native_wide_string_l: complete actual-header API in src/native_wide_string.cpp. ECX actual8h header; inferred __fastcall; RET. 00436430 capture pointer; 00436435 null skips length; 00436437 length; 0043643b wrapped 2*length+2; pool release; no header writes. NativeStringStorage remains required; no shadow string owner or new allocator. Preserves allocation/copy/release field reloads, wrapped32-bit sizes, and no-clearing destruction. Strict combined Win32/2CTest and lifetime/alias fixture passed; no original wide machine-code differential, native pool binding, ABI or gameplay closure. docs/NATIVE_WIDE_STRING.md; reports/native_wide_string.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "004c53e0",
+      "before": {
+        "address": "004c53e0",
+        "function_name": "BSP_WideString_Resize",
+        "comment": "[BSP reconstruction 004c53e0]\nHypothesis, not a recovered symbol. thiscall(this, uint new_length, bool preserve), wide counterpart of BSP_NativeString_Resize (0041dd40). Returns immediately when the length is unchanged, so resize(0) on a fresh {0,0} object leaves the data pointer null; new_length 0 frees through the sized pool with length*2+2. Sole callee of BSP_WideString_ConstructFromCString. docs/WINMAIN_STARTUP.md"
+      },
+      "after": {
+        "address": "004c53e0",
+        "name": "BSP_WideString_Resize",
+        "evidence": "Hypothesis, not a recovered symbol. thiscall(this, uint new_length, bool preserve), wide counterpart of BSP_NativeString_Resize (0041dd40). Returns immediately when the length is unchanged, so resize(0) on a fresh {0,0} object leaves the data pointer null; new_length 0 frees through the sized pool with length*2+2. Sole callee of BSP_WideString_ConstructFromCString. docs/WINMAIN_STARTUP.md | Packet orch3_native_wide_string_l: complete actual-header API in src/native_wide_string.cpp. ECX actual8h header; stack DWORD length and byte preserve; RET8. 004c53ec equal-length no-op; 004c5411 pointer then length clears after release; 004c5436 allocate; 004c5444 current length; 004c545a memcpy; 004c5462 current pointer; 004c547f pointer then length then WORD terminator. NativeStringStorage remains required; no shadow string owner or new allocator. Preserves allocation/copy/release field reloads, wrapped32-bit sizes, and no-clearing destruction. Strict combined Win32/2CTest and lifetime/alias fixture passed; no original wide machine-code differential, native pool binding, ABI or gameplay closure. docs/NATIVE_WIDE_STRING.md; reports/native_wide_string.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "004c5e60",
+      "before": {
+        "address": "004c5e60",
+        "function_name": "BSP_WideString_ConstructFromCString",
+        "comment": "[BSP reconstruction 004c5e60]\nHypothesis, not a recovered symbol. thiscall(this, const char*), RET 4, returns this. Wide string object is {uint length at +0; wchar_t* data at +4}. Zeroes both fields, measures strlen, calls BSP_WideString_Resize(len, preserve=1), then zero-extends each byte into the buffer including the terminator. This is not MultiByteToWideChar: bytes above 0x7f pass through unconverted. Used at 008f8288 to widen the Game Explorer GDF path. docs/WINMAIN_STARTUP.md\n\n[BSP reconstruction 004c5e60] update\nHypothesis, not a recovered symbol. thiscall(this, const char*), RET 4, returns this. Wide string object is {uint length at +0; wchar_t* data at +4}. Zeroes both fields, measures strlen, calls BSP_WideString_Resize(len, preserve=1), then zero-extends each byte into the buffer including the terminator. This is not MultiByteToWideChar: bytes above 0x7f pass through unconverted. Used at 008f8288 to widen the Game Explorer GDF path. docs/WINMAIN_STARTUP.md | Hypothesis, not recovered symbol. ECX native wide header8h; nonnull C-string pointer stack; RET4; EAX header. Complete unsigned-byte widening values reuse startup_widen_path/std::wstring. Native wide pool allocation/header/empty null-pointer ABI is explicitly not reconstructed here. docs/XLIVE_UPDATES.md; reports/xlive_updates.json."
+      },
+      "after": {
+        "address": "004c5e60",
+        "name": "BSP_WideString_ConstructFromCString",
+        "evidence": "Hypothesis, not a recovered symbol. thiscall(this, const char*), RET 4, returns this. Wide string object is {uint length at +0; wchar_t* data at +4}. Zeroes both fields, measures strlen, calls BSP_WideString_Resize(len, preserve=1), then zero-extends each byte into the buffer including the terminator. This is not MultiByteToWideChar: bytes above 0x7f pass through unconverted. Used at 008f8288 to widen the Game Explorer GDF path. docs/WINMAIN_STARTUP.md | Hypothesis, not recovered symbol. ECX native wide header8h; nonnull C-string pointer stack; RET4; EAX header. Complete unsigned-byte widening values reuse startup_widen_path/std::wstring. Native wide pool allocation/header/empty null-pointer ABI is explicitly not reconstructed here. docs/XLIVE_UPDATES.md; reports/xlive_updates.json. | Packet orch3_native_wide_string_l: complete actual-header API in src/native_wide_string.cpp. ECX actual8h header; stack source C-string; RET4; EAX returns header. 004c5e6a/70 clear before scan; 004c5e90 resize preserve1; 004c5e95 capture pointer; 004c5ea0..004c5eb0 unsigned-byte streaming widening through NUL. NativeStringStorage remains required; no shadow string owner or new allocator. Preserves allocation/copy/release field reloads, wrapped32-bit sizes, and no-clearing destruction. Strict combined Win32/2CTest and lifetime/alias fixture passed; no original wide machine-code differential, native pool binding, ABI or gameplay closure. docs/NATIVE_WIDE_STRING.md; reports/native_wide_string.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00794070",
+      "before": {
+        "address": "00794070",
+        "function_name": "FUN_00794070"
+      },
+      "after": {
+        "address": "00794070",
+        "name": "BSP_CameraPosition_AimAtPoint",
+        "evidence": "Binary32 target-minus-position XYZ, canonical419440 length, ordered-positive reciprocal else+0, separately float-stored normalizedXYZ. Genuine CRT atan2 with ST0=Z/ST1=X, float-round then negate-store rho3C8 before42CF10(normalizedY) theta3C4 store. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00794130",
+      "before": {
+        "address": "00794130",
+        "function_name": "FUN_00794130"
+      },
+      "after": {
+        "address": "00794130",
+        "name": "BSP_CameraPosition_AimAtTargetOffset",
+        "evidence": "Ordered-negative scale loads actual configuration4D0->54. Canonical actual pose C8 refresh. Inline x87 squared-sum has one float store and1e-10 cutoff, unlike419440. Repeated actual C8 checks; capture condition7941F4 for later794277. World rowEC/F0/F4 times distance, times scale, divided by captured camera460 with separate XYZ float stages; add live world translation then subtract live camera position; canonical419440 normalization and rho-before-theta stores. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "007954a0",
+      "before": {
+        "address": "007954a0",
+        "function_name": "FUN_007954a0"
+      },
+      "after": {
+        "address": "007954a0",
+        "name": "BSP_CameraPosition_ApplyRecordMode",
+        "evidence": "Capture selected actual record from +47C/+480 pointer vector, kind +48 dispatch0..5. Kind0 actual +464 sampler and live +394 position; kind1 actual target+24 with -1 scale; kind2 direct XYZ; kind3 actual parent+14 canonical C8/worldCC and414CD0; kind4 sequential float stores; kind5 canonical42D7E0 world then6E47A0 and live post-call record angle loads. Unknown kind no-op. CRT bounds failure remains required genuine boundary. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00865fb0",
+      "before": {
+        "address": "00865fb0",
+        "function_name": "FUN_00865fb0"
+      },
+      "after": {
+        "address": "00865fb0",
+        "name": "BSP_EffectManager_UnwindBase",
+        "evidence": "Complete base unwind: unconditional F87650 clear then CE3818 identity store | Original ABI: ECX owner; RET; no defined result. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00866230",
+      "before": {
+        "address": "00866230",
+        "function_name": "FUN_00866230"
+      },
+      "after": {
+        "address": "00866230",
+        "name": "BSP_EffectManager_Construct",
+        "evidence": "Complete identity store and actual section creation plus verified base EH unwind | Original ABI: ECX raw owner; EAX same owner; RET. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00866440",
+      "before": {
+        "address": "00866440",
+        "function_name": "FUN_00866440"
+      },
+      "after": {
+        "address": "00866440",
+        "name": "BSP_EffectManager_Get",
+        "evidence": "Complete lazy getter/control flow with actual constructor, canonical shared lifetime access, explicit required application lifetime dispatcher | Original ABI: No inputs; EAX owner; RET. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008669d0",
+      "before": {
+        "address": "008669d0",
+        "function_name": "CG_scalar_deleting_dtor_008669d0"
+      },
+      "after": {
+        "address": "008669d0",
+        "name": "BSP_EffectManager_DeletingDestructor",
+        "evidence": "Complete lock destruction, unconditional publication clear, base identity, optional free; no unregister | Original ABI: ECX owner; stack flags; EAX original pointer including free branch; RET4. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0086a650",
+      "before": {
+        "address": "0086a650",
+        "function_name": "FUN_0086a650"
+      },
+      "after": {
+        "address": "0086a650",
+        "name": "BSP_EffectTemplate_AdmitPoint",
+        "evidence": "Complete captured-array admission loop, canonical transform refresh, exact x87 operation/spill order, required actual row projection/current virtual dispatch | Original ABI: ECX template; stack original XYZ and reference transform; AL result; RET8; upper EAX stale. Evidence docs/EFFECT_ADMISSION.md; reports/effect_admission.json. New C++ interface, original vtable identities are not callable process vtables; required actual dispatch bindings; no native ABI/game-validation claim."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c94cc8",
+      "before": {
+        "address": "00c94cc8",
+        "function_name": "FUN_00c94cc8"
+      },
+      "after": {
+        "address": "00c94cc8",
+        "name": "BSP_PointEffectManager_Construct_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. Compiler10-byte MOV/JMP handler for00866230; constructor failure invokes00865FB0 to clear actual singleton and restore base identity. docs/EFFECT_ADMISSION.md; reports/effect_admission.json. Handler defined from verified live/disk bytes; no original SEH ABI claim."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c94d13",
+      "before": {
+        "address": "00c94d13",
+        "function_name": "FUN_00c94d13"
+      },
+      "after": {
+        "address": "00c94d13",
+        "name": "BSP_PointEffectManager_GetSingleton_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. Compiler10-byte MOV/JMP handler for00866440; allocation unwind C94D08 precedes captured lock cleanup. C94D08 stored body still omits restored POP/RET tail. docs/EFFECT_ADMISSION.md; reports/effect_admission.json. Handler defined from verified live/disk bytes; no original SEH ABI claim."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_verification": "All14 names/evidence and prior comments verified; local/ready-m-comments.json",
+  "exports": "All14 plus existingC94D08 refreshed; local/ready-m-export.log",
+  "deferred_annotation": {
+    "006e47a0": "Camera decomposition worker owns function while closing its required dependency."
+  },
+  "function_definitions": "reports/effect_admission_definitions_m.json; two10-byte compiler handlers defined from verified bytes",
+  "flow_repair": "reports/effect_admission_flow_m.json",
+  "flow_limits": [
+    "8669FE returning-free gap repaired with zero remaining call gaps and complete stored body",
+    "C94D11 POP ECX/C94D12 RET decoded, but stored C94D08 body still ends C94D10; no full body repair claim"
+  ],
+  "build": "PASS strict MSVC Win32; local/ready-m-build.log",
+  "ctests": "2/2 existing CTests passed",
+  "combined_fixtures": {
+    "camera": "33 asin,12 point,12 target,24 dispatch native comparisons; invalid-index boundary; local/ready-m-camera-fixture.log",
+    "wide_string": "Actual-header allocation/copy/release alias checks; local/ready-m-wide-fixture.log",
+    "effect": "Captured range/distance, callback slot replacement/throw, threshold spill, actual lock/registration identity, constructor EH and failed registration retention; local/ready-m-effect-fixture.log"
+  },
+  "fixture_linkage": "Existing ignored worker fixtures relinked against combined bsp_core.lib, without standalone duplicate module objects.",
+  "new_permanent_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": [
+    "Actual path sampler and matrix decomposition for camera",
+    "Actual native string pool allocation/release/owner binding",
+    "Real application lifetime and row virtual dispatch for effects",
+    "Whole application and gameplay validation"
+  ]
+}

@@ -84,6 +84,7 @@ struct SceneResource {
 using SceneTypePredicate = bool (*)(SceneAttachmentRuntime&, SceneNodeAttachment&, std::uint32_t);
 using SceneAttachOverride = void (*)(SceneAttachmentRuntime&, SceneNodeAttachment&, SceneResource*, bool);
 using SceneWorldChangedOverride = void (*)(SceneAttachmentRuntime&, SceneNodeAttachment&);
+using SceneWorldMatrixOverride = void (*)(SceneAttachmentRuntime&, SceneNodeAttachment&, const CameraMatrix&);
 using SceneRemoveOverride = SceneAttachOverride;
 
 struct SceneNodeAttachment {
@@ -108,6 +109,9 @@ public:
     // Destruction updates these on the same node when its native vtable changes.
     SceneWorldChangedOverride world_changed{};
     SceneRemoveOverride remove_scene{};
+    // Actual current virtual+34, on this same owner/transform binding. Null is
+    // unbound; matrix operations require the recovered concrete implementation.
+    SceneWorldMatrixOverride set_world_matrix{};
     // Explicit projection of this SAME native key when its concrete owner is a
     // directional light. Null is unbound and must not become a light fallback.
     SystemDirectionalLight* system_directional_light{};

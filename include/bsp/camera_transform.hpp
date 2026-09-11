@@ -103,5 +103,10 @@ void notify_camera_world_changed_00b6dbe0(CameraTransform&);
 // Flags=2 is assigned only after notification, derivation, descendants and callback.
 void set_transform_world_matrix_00b6e870(CameraTransform&, const CameraMatrix&,
     void (&world_changed)(CameraTransform&));
+// Same native body with explicit callback context. The callback resolves the
+// current virtual+40 at invocation time, after attachment notification and
+// hierarchy work; context is borrowed for this synchronous call only.
+void set_transform_world_matrix_00b6e870(CameraTransform&, const CameraMatrix&,
+    void* callback_context, void (&world_changed)(void*, CameraTransform&));
 void set_camera_world_matrix_00b71460(CameraState&, const CameraMatrix&);
 }

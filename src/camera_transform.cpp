@@ -4,6 +4,11 @@
 #include "bsp/camera_multiply.hpp"
 
 namespace bsp {
+namespace {
+void forward_world_changed(void* context, CameraTransform& transform) {
+    (*static_cast<void (**)(CameraTransform&)>(context))(transform);
+}
+}
 CameraState::CameraState() noexcept
     : transform(owned_.transform), projection(owned_.projection),
       view_projection(owned_.view_projection), direction(owned_.direction), target(owned_.target) {}
@@ -86,11 +91,16 @@ void notify_camera_world_changed_00b6dbe0(CameraTransform& transform) {
 }
 void set_transform_world_matrix_00b6e870(CameraTransform& transform, const CameraMatrix& source,
     void (&world_changed)(CameraTransform&)) {
+    auto* callback = &world_changed;
+    set_transform_world_matrix_00b6e870(transform, source, &callback, forward_world_changed);
+}
+void set_transform_world_matrix_00b6e870(CameraTransform& transform, const CameraMatrix& source,
+    void* callback_context, void (&world_changed)(void*, CameraTransform&)) {
     copy_camera_matrix_004134f0(transform.world, source);
     if (transform.notify_changed) transform.notify_changed(transform.notification_context);
     derive_camera_local_from_world_00b6e7e0(transform);
     invalidate_camera_descendants_00b6da30(transform);
-    world_changed(transform);
+    world_changed(callback_context, transform);
     transform.valid_flags = 2;
 }
 void set_camera_world_matrix_00b71460(CameraState& camera, const CameraMatrix& source) {

@@ -1,0 +1,99 @@
+{
+  "packet": "orch3_camera_path_n_integration",
+  "worker_commit": "39643ee",
+  "changes": [
+    {
+      "address": "007954a0",
+      "before": {
+        "address": "007954a0",
+        "function_name": "BSP_CameraPosition_ApplyRecordMode",
+        "comment": "[BSP reconstruction 007954a0]\nCapture selected actual record from +47C/+480 pointer vector, kind +48 dispatch0..5. Kind0 actual +464 sampler and live +394 position; kind1 actual target+24 with -1 scale; kind2 direct XYZ; kind3 actual parent+14 canonical C8/worldCC and414CD0; kind4 sequential float stores; kind5 canonical42D7E0 world then6E47A0 and live post-call record angle loads. Unknown kind no-op. CRT bounds failure remains required genuine boundary. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof."
+      },
+      "after": {
+        "address": "007954a0",
+        "name": "BSP_CameraPosition_ApplyRecordMode",
+        "evidence": "Capture selected actual record from +47C/+480 pointer vector, kind +48 dispatch0..5. Kind0 actual +464 sampler and live +394 position; kind1 actual target+24 with -1 scale; kind2 direct XYZ; kind3 actual parent+14 canonical C8/worldCC and414CD0; kind4 sequential float stores; kind5 canonical42D7E0 world then6E47A0 and live post-call record angle loads. Unknown kind no-op. CRT bounds failure remains required genuine boundary. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof. | Packet orch3_camera_path_n integration: mode0 calls canonical007B04C0 through borrowed actual path/knot/pose lookup; no opaque sample callback remains. BF6713 is returning, correcting the prior CameraPositionHost noreturn declaration: native7954C5 falls through to7954CA and reloads actual begin47C before selecting original index. Focused copied-dispatch returning-callback comparison and canonical mode0 composition passed, along with9991 original path comparisons and strict combined Win32/2CTest. docs/CAMERA_PATH_SAMPLER.md; reports/camera_path_n_integration.json. Native owner/exception ABI and gameplay unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "007ae200",
+      "before": {
+        "address": "007ae200",
+        "function_name": "FUN_007ae200"
+      },
+      "after": {
+        "address": "007ae200",
+        "name": "BSP_Vector3f_LerpStaged",
+        "evidence": "Three coordinates compute from + t*(to-from), with each subtraction and product rounded through binary32 stores before final x87 additions. All by-value inputs are captured before output writes. Native ABI: ECX destination; stack from XYZ, to XYZ, parameter as seven by-value floats; EAX destination; RET1Ch. Evidence: docs/CAMERA_PATH_SAMPLER.md; reports/camera_path_sampler.json. Descriptive name is a hypothesis."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "007afac0",
+      "before": {
+        "address": "007afac0",
+        "function_name": "FUN_007afac0"
+      },
+      "after": {
+        "address": "007afac0",
+        "name": "BSP_CameraPath_SampleLocalLinear",
+        "evidence": "Scans actual pointer records, normalizes parameter by current start/duration, selects following or record zero, calls complete staged vector lerp; after position writes re-reads actual current record and copies stored +0C vector. CRT range callback may return. Native ABI: ECX actual path; stack float parameter, position pointer, optional direction pointer; RET0Ch. Evidence: docs/CAMERA_PATH_SAMPLER.md; reports/camera_path_sampler.json. Descriptive name is a hypothesis."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "007afe80",
+      "before": {
+        "address": "007afe80",
+        "function_name": "FUN_007afe80"
+      },
+      "after": {
+        "address": "007afe80",
+        "name": "BSP_CameraPath_SampleLocalCubic",
+        "evidence": "Count below three calls complete linear fallback. Unordered-or-parameter<=start+duration chooses first knot. Actual adjacent vectors form duration-scaled Hermite tangents; +24 wraps neighbors, low flags byte gates first/penultimate tangents; position then derivative with exact x87 spills. 007B02D0 bytes DC C9 update ST1,ST0 despite ambiguous Ghidra FMUL ST1. Native ABI: ECX actual path; stack float parameter, position pointer, optional direction pointer, flags DWORD; RET10h. Evidence: docs/CAMERA_PATH_SAMPLER.md; reports/camera_path_sampler.json. Descriptive name is a hypothesis."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "007b04c0",
+      "before": {
+        "address": "007b04c0",
+        "function_name": "FUN_007b04c0"
+      },
+      "after": {
+        "address": "007b04c0",
+        "name": "BSP_CameraPath_SampleWorld",
+        "evidence": "Calls complete local sampler, captures actual +14 pose and refreshes canonical +C8/+CC if dirty, homogeneous float4 transform and rounded reciprocal-W position writes; re-reads +14 for optional unnormalized direction transform. Native ABI: ECX actual path; stack float parameter, position pointer, optional direction pointer, flags DWORD; RET10h; no meaningful return. Evidence: docs/CAMERA_PATH_SAMPLER.md; reports/camera_path_sampler.json. Descriptive name is a hypothesis."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_readback": "All5 names/evidence and prior comments verified; local/camera-path-n-comments.json",
+  "exports": "All5 refreshed after saved annotation",
+  "source_registration": "src/camera_path_sampler.cpp registered in cmake/startup.cmake",
+  "dispatcher": "CameraPositionHost derives CameraPathHost; mode0 directly calls canonical sample_camera_path_world_007b04c0 on actual lookup, parameter468, position394 and separate derivative output, flags0",
+  "range_correction": "Removed erroneous noreturn declaration. Actual7954C5 BF6713 may return;7954CA reloads records_begin47C and uses original index. No recovery loop/default record introduced.",
+  "validation": {
+    "combined_build": "PASS strict Win32 scripts/build.ps1; local/camera-path-n-combined-build.log",
+    "existing_ctests": "2/2 pass",
+    "sampler_fixture": "9991 isolated native comparisons,0 failures,3 x87 precisions, aliasing and returning range; local/combined-camera_path_probe.log",
+    "integration_fixture": "Copied original dispatcher with actual returning callback rebinding agrees for null begin and out-of-range empty span, record pointer repair/reload; canonical mode0 linear path/aim composition passes; local/combined-camera_path_integration_probe.log",
+    "linkage": "Combined bsp_core.lib only, no duplicate standalone path source. Probe uses C++20 for bit_cast; production source builds project C++17."
+  },
+  "supersedes": [
+    "Path sampler host boundary in camera_position_modes/decomposition reports",
+    "Pending source registration/wiring/annotation in camera_path_sampler report",
+    "CameraPositionHost invalid-parameter noreturn declaration"
+  ],
+  "remaining": [
+    "Canonical dirty pose refresh is source-grounded but not covered by path differential",
+    "Actual lookup/owner and authored path producer integration",
+    "Original CRT exception/trap policy and malformed storage domain",
+    "Native object/vtable ABI and gameplay"
+  ],
+  "new_permanent_tests": 0,
+  "game_executed": false,
+  "game_validated": false,
+  "abi_compatible": false
+}
