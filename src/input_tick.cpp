@@ -103,17 +103,16 @@ bool timed_entry_expired(const TimedInputEntry& entry, float expiry_reference) n
 void update_input_manager_00a92c40(InputTickState& state, float seconds, InputTickHost& host) {
     host.backend_update(seconds);                       // 00a92c57
     if (host.take_backend_bindings_dirty()) {           // 00a92c5e..00a92c6d
-        host.rebind_all_actions(state);                 // 00a92c71
+        rebind_all_input_actions_00a922a0(state.records,
+            host.binding_device_groups());             // 00a92c71
     }
-    // The loop reloads base and count from the singleton on every step
-    // (00a92cef..00a92cfe), so a rebind that resizes the table during the walk is
-    // observed by the next comparison. The reconstruction re-reads size() for the
-    // same reason.
+    // Native reloads base/count to compute the end on each step (00a92cef..fe),
+    // while advancing its record pointer. Rebind has already finished. The
+    // typed projection requires stable record/binding storage across host calls.
     for (std::size_t i = 0; i < state.records.size(); ++i) {
         InputActionRecord& record = state.records[i];
         if (!record.enabled) continue;                  // 00a92c88
-        begin_action_frame_00a92370(record);
-        host.poll_action_bindings(record, i);           // rest of 00a92370
+        poll_input_action_bindings_00a92370(record, host); // includes the one shift
         InputActionListener* listener = listener_of(state, record);
         if (listener == nullptr) continue;              // 00a92c95..00a92ca4
         update_input_action_listener_00a91a50(*listener, seconds,

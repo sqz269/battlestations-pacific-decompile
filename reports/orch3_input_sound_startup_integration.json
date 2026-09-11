@@ -1,0 +1,245 @@
+{
+  "packet": "orch3_input_sound_startup_integration",
+  "verified_utc": "2026-09-11T03:02:51.238292+00:00",
+  "branch": "agent/orch3-20260910",
+  "worker_commits": {
+    "input_poll": "ce71bd0",
+    "sound_classes": "7938e36",
+    "sound_configuration": "04e76e4"
+  },
+  "source_head_before_final_commit": "51063166b176da868d4a086dedba7bba710c38ee",
+  "changes": [
+    "Record-owned binding arrays and direct full poll/rebind in frame manager",
+    "Input floats identified as values, not durations",
+    "Concrete retained class descriptor/table ownership",
+    "Eight Lua-driven sound configuration functions plus constructor-default/loaded-Lua fragments",
+    "Concrete installed Win32 FMOD C export adapter"
+  ],
+  "source_registration": [
+    "src/input_binding_poll.cpp",
+    "src/sound_class_ownership.cpp",
+    "src/sound_configuration.cpp",
+    "src/fmod_configuration_library.cpp"
+  ],
+  "validation": {
+    "win32_release": "scripts/build.ps1 passed",
+    "ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "input_native_differential": {
+      "full_poll_cases": 6000,
+      "paired_helper_cases": 400,
+      "native_disk_bytes_verified": true,
+      "limits": [
+        "shared explicit sqrt service",
+        "NaN payloads excluded",
+        "default masked FPU only",
+        "native ABI and gameplay not established"
+      ]
+    },
+    "class_ownership": "focused local ownership/lifetime/dirty-level fixture passed",
+    "configuration": "real Lua5.1.1 fixture with recording FMOD host passed",
+    "installed_fmod": {
+      "version_hex": "41804",
+      "recorded_calls": 111,
+      "errors": [],
+      "proof": "reports/installed_sound_configuration.json"
+    }
+  },
+  "independent_review": {
+    "input_integration": "poll exactly once; rebind/enable/classifier/hook order match00a92c40; corrected stale resize comment",
+    "configuration": "Lua cursor/ref ownership, class retain balance, advanced offsets, DSP default values and stdcall call sites checked; empty Type avoids unnecessary CRT comparisons"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "annotations_readback": [
+      {
+        "address": "00a7bbe0",
+        "name": "BSP_SoundClassTable_Reserve",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "89156e545206edf15790568891592378457be33ef0c00d921f248b74d3cdc756",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a7c2c0",
+        "name": "BSP_SoundClassTable_Resize",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "8d681a5ba7b6014f29b415c76295614d43b5df53e42a26dcf2fa87594cbe7e43",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a7c350",
+        "name": "BSP_SoundClass_Construct",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "9a92fceb1ebfd787cf059a5bfd48bb316392243e1ac01fdafab877ceb672223e",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a7c3f0",
+        "name": "BSP_SoundClass_Destroy",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "a96b07383863b5d959bfc2e9c8899cc54f116169383ab46ea6f54dbba7eff38b",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a7c460",
+        "name": "CG_scalar_deleting_dtor_00a7c460",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "3501c4496217d9d74fe16335493a8190acfa207771383439d8152e4af73635f3",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a91d60",
+        "name": "BSP_InputBinding_AdjustPairedValue",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "839be9e3510c36227caec542744f2948154ca8607a900e61d29edf84a355d956",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a92090",
+        "name": "BSP_InputAction_HasDeviceQuery1C",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "d4d9f0df55afe40f9f46cbfea9a2ebfa26c0364d5882ba2a7012f55984d11a24",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a922a0",
+        "name": "BSP_InputManager_RebindAllActions",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "83240d202f72b113967a902e2a749c337df746ec91f0a94cc696ad230a4e652d",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a92370",
+        "name": "BSP_InputAction_PollBindings",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "5c31217e7150e097278634afce9fa2f9f06d3e186136ba397b3d5ac9b236712d",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a92c40",
+        "name": "BSP_InputManager_Update",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "d03feb7c3ef20b61b91f2b928bc883476ea67996fa66d6adcd14645417989474",
+        "log": "local/ghidra-annotations-20260911T025433Z.json"
+      },
+      {
+        "address": "00a7ae00",
+        "name": "BSP_SoundListenerTable_FindIndexOrZero",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "df4db70e3559f3ff87808a6ad99e0b96b4d5fd80018f8b451fea29c4f8d9c795",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7ae80",
+        "name": "BSP_SoundListenerTable_SelectByName",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "ce160b179e6405be5ba77f4767024cd3eed9517d496bdedd9d5220ebdaf530b5",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7b120",
+        "name": "BSP_SoundSystem_FindChannelGroup",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "a4fd5839b2a1646e9825ae7ac121ca3d4f86e49377c7fd6786688899d5a8f1f9",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7c740",
+        "name": "BSP_SoundSystem_CreateConfiguredDsp",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "a5ec06fa8483ce4b2c40c2becdf5e4f20c5b161ed44cbedacb4a7ccfd749a9ea",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7de10",
+        "name": "BSP_SoundSystem_ConfigureChannelGroup",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "d73053ee1dbe57c063a3f3e481ccb1679c32417fa127b8438871a69d759b953f",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7e0d0",
+        "name": "BSP_SoundSystem_ConfigureSystemDsps",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "75deb1724a05724d00112889a1170ccee0fe0a147ed37a217f3e6396c83bc5e9",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7f9f0",
+        "name": "BSP_SoundListenerTable_AppendCopy",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "fbc47371c9c70bc2cf4ed1eebbc8e13a2c79f906712ad88a4f1420f3e30b6f20",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a7ff80",
+        "name": "BSP_SoundSystem_InitializeLuaConfiguration",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "cbfc732bf6a2aca88ea605056374037dc1c0e3368659d25f83d12b77fad1a022",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      },
+      {
+        "address": "00a81480",
+        "name": "BSP_SoundSystem_Construct_Provisional",
+        "name_readback": true,
+        "evidence_readback": true,
+        "old_comment_preserved": true,
+        "comment_sha256": "dfce7d74d341b3183ca76c1a44b4796620777befe2b4c85d5fed96dc93f83302",
+        "log": "local/ghidra-annotations-20260911T025633Z.json"
+      }
+    ],
+    "flow_repair_reports": [
+      "reports/orch3_sound_configuration_flow_repair.json",
+      "reports/orch3_sound_array_flow_repair.json",
+      "reports/orch3_sound_class_table_flow_repair.json",
+      "reports/orch3_sound_class_delete_flow_repair.json"
+    ],
+    "affected_exports_refreshed": true
+  },
+  "limits": [
+    "No concrete input device virtual implementation",
+    "No original object or exception ABI claim",
+    "Full sound constructor/VFS Lua load/teardown not runtime exercised",
+    "No audible output or gameplay validation"
+  ]
+}

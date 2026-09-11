@@ -1,0 +1,393 @@
+{
+  "packet": "orch3_installed_sound_configuration",
+  "verified_utc": "2026-09-11T03:01:51.235496+00:00",
+  "library_adapter": "src/fmod_configuration_library.cpp",
+  "native_policy": "src/sound_configuration.cpp",
+  "installed_files": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+      "size": 350544,
+      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/soundsetup.lua",
+      "size": 6559,
+      "sha256": "17a237a56369d11af275533f0e7a1e3b0d0c68ff817a1aa1f4fd365660390d65"
+    }
+  ],
+  "bootstrap": {
+    "output": "FMOD_OUTPUTTYPE_NOSOUND=2",
+    "channels": 512,
+    "flags": "0x10",
+    "lua": "actual Lua5.1.1 execute_archive protected host entry",
+    "configuration_entry": "apply_sound_configuration_lua_00a7ff80_fragment",
+    "master_group_queried": true,
+    "update_release_succeeded": true
+  },
+  "probe": {
+    "fmod_version_hex": "41804",
+    "lua_bytes": 6559,
+    "hrtf_readback": [
+      120,
+      180,
+      10000
+    ],
+    "scalars": [
+      2,
+      120,
+      180,
+      10000,
+      1000,
+      -0.4,
+      0.1,
+      1200,
+      2600,
+      6500,
+      15000,
+      500,
+      4
+    ],
+    "groups": [
+      {
+        "name": "Normal",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 0
+      },
+      {
+        "name": "AirSpecialInUnderwater",
+        "volume": 0.7,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Distance3",
+        "volume": 0.9,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Distance4",
+        "volume": 0.8,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Cockpit",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Silent",
+        "volume": 0.5,
+        "pitch": 1,
+        "dsps": 0
+      },
+      {
+        "name": "Distance1",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Distance2",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Warnings",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Muzzle",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 0
+      },
+      {
+        "name": "UnderwaterReverbed",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 1
+      },
+      {
+        "name": "Reverbed",
+        "volume": 1,
+        "pitch": 1,
+        "dsps": 2
+      }
+    ],
+    "group_dsps": 10,
+    "system_dsps": 1,
+    "listeners": [
+      "Air",
+      "Underwater",
+      "Cockpit"
+    ],
+    "classes": [
+      {
+        "name": "Warnings",
+        "index": 0,
+        "volume": 1
+      },
+      {
+        "name": "InGameGUI",
+        "index": 1,
+        "volume": 1
+      },
+      {
+        "name": "GUITestSpeech",
+        "index": 2,
+        "volume": 1
+      },
+      {
+        "name": "InPauseGUI",
+        "index": 3,
+        "volume": 1
+      },
+      {
+        "name": "GUIMusic",
+        "index": 4,
+        "volume": 1
+      },
+      {
+        "name": "3DEffect",
+        "index": 5,
+        "volume": 1
+      },
+      {
+        "name": "Sonar",
+        "index": 6,
+        "volume": 1
+      }
+    ],
+    "types": [
+      {
+        "name": "Normal_dist2",
+        "groups": [
+          "Distance2",
+          "UnderwaterReverbed",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Underwater_dist2",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Normal_dist3",
+        "groups": [
+          "Distance3",
+          "UnderwaterReverbed",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "AirSpecial_dist3",
+        "groups": [
+          "Distance3",
+          "AirSpecialInUnderwater",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Normal_dist4",
+        "groups": [
+          "Distance4",
+          "UnderwaterReverbed",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "UnderwaterSpecial_dist2",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Air_dist2",
+        "groups": [
+          "Distance2",
+          null,
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "AirSpecial_dist1",
+        "groups": [
+          "Distance1",
+          "AirSpecialInUnderwater",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Air_dist1",
+        "groups": [
+          "Distance1",
+          null,
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "AirSpecial_dist2",
+        "groups": [
+          "Distance2",
+          "AirSpecialInUnderwater",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Normal",
+        "groups": [
+          "Normal",
+          "UnderwaterReverbed",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Air_dist3",
+        "groups": [
+          "Distance3",
+          null,
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Underwater",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "UnderwaterSpecial",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Underwater_dist1",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "UnderwaterSpecial_dist3",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "UnderwaterSpecial_dist1",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Normal_dist1",
+        "groups": [
+          "Distance1",
+          "UnderwaterReverbed",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "UnderwaterSpecial_dist4",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Underwater_dist3",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Air_dist4",
+        "groups": [
+          "Distance4",
+          null,
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "Underwater_dist4",
+        "groups": [
+          null,
+          "UnderwaterReverbed"
+        ]
+      },
+      {
+        "name": "Air",
+        "groups": [
+          "Normal",
+          null,
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "AirSpecial_dist4",
+        "groups": [
+          "Distance4",
+          "AirSpecialInUnderwater",
+          "Cockpit"
+        ]
+      },
+      {
+        "name": "AirSpecial",
+        "groups": [
+          "Normal",
+          "AirSpecialInUnderwater",
+          "Cockpit"
+        ]
+      }
+    ],
+    "memory_bytes": [
+      2126277,
+      2126277
+    ],
+    "call_counts": {
+      "FMOD_ChannelGroup_AddDSP": 10,
+      "FMOD_ChannelGroup_SetPitch": 12,
+      "FMOD_ChannelGroup_SetVolume": 12,
+      "FMOD_DSP_SetParameter": 42,
+      "FMOD_Memory_GetStats": 1,
+      "FMOD_System_AddDSP": 1,
+      "FMOD_System_Create": 1,
+      "FMOD_System_CreateChannelGroup": 12,
+      "FMOD_System_CreateDSPByType": 11,
+      "FMOD_System_GetAdvancedSettings": 2,
+      "FMOD_System_GetMasterChannelGroup": 1,
+      "FMOD_System_GetVersion": 1,
+      "FMOD_System_Init": 1,
+      "FMOD_System_Release": 1,
+      "FMOD_System_SetAdvancedSettings": 1,
+      "FMOD_System_SetOutput": 1,
+      "FMOD_System_Update": 1
+    },
+    "fmod_errors": []
+  },
+  "probe_source": "local/installed_sound_configuration_probe.cpp",
+  "probe_command": "local/run_installed_sound_configuration_probe.cmd",
+  "limits": [
+    "No audible output or DSP perceptual verification",
+    "No native object/exception ABI compatibility",
+    "Original base-library owner/VFS loader not exercised",
+    "No full manager constructor/destructor or gameplay verification"
+  ]
+}
