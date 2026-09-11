@@ -36,7 +36,7 @@
     "source": "local/sound_resource_probe.cpp",
     "command": "local/run_sound_resource_probe.cmd",
     "log": "local/sound-resource-probe.log",
-    "result": "local/sound_resource_probe.json",
+    "result": "local/sound_resource_probe_initial.json",
     "actual_services": [
       "VFS ordered mounts and whole-file bytes",
       "installed FMOD Ex and Event DLLs",
@@ -101,7 +101,16 @@
     "combined_main_build": "Win32 Release including bsp_game and both existing CTests passed",
     "combined_main_log": "local/orch3-sound-resource-integration.log",
     "installed_probe_source_commit": "621ecc9",
-    "worker_evidence_copies": "local/sound-resource-evidence/{cache,asset,cleanup}"
+    "worker_evidence_copies": "local/sound-resource-evidence/{cache,asset,cleanup}",
+    "final_combined_main_build_commit": "033d79e",
+    "final_combined_main_build_log": "local/orch3-sound-resource-final-integration.log",
+    "final_combined_main_build": "Win32 Release including bsp_game and both existing CTests passed after concurrent locale/Lua-reader changes",
+    "installed_runtime_recheck": {
+      "source_commit": "033d79e",
+      "results_identical_to_initial_probe": true,
+      "result": "local/sound_resource_probe_final.json",
+      "log": "local/sound-resource-probe-final.log"
+    }
   },
   "analysis_repairs": {
     "definitions": "reports/orch3_sound_resource_function_definitions.json",

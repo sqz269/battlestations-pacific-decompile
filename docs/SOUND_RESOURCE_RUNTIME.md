@@ -129,3 +129,8 @@ Combined integration build `4c0d029` compiled `bsp_game` and passed both existin
 CTests. All 31 reviewed names and evidence comments were saved and read back,
 with prior comments preserved. The 32 affected exports were refreshed, including
 the analyzed reserve helper whose internal free-call gap was repaired.
+
+After concurrent locale/Lua-reader integration, Win32 build and both CTests
+passed again at `033d79e`. The installed sound constructor/FSB/FEV fixture was
+rerun against that build and reproduced all reported results, including 133
+successful FMOD calls. The platform observer and gameplay limits remain.
