@@ -3206,8 +3206,8 @@
       "id": "native_renderer_surface_bindings",
       "packet": "native_renderer_surface_bindings",
       "worker": "main",
-      "done": false,
-      "state": "actual_surface_binders_build_passed_original_COM_ABI_composition_fixture_in_progress",
+      "done": true,
+      "state": "integrated_two_actual_surface_binders_original_COM_ABI_composition_real_Win32_and_native_EH_checked",
       "function_addresses": [
         "00b23d80",
         "00b21690"
@@ -3218,8 +3218,9 @@
         "docs/NATIVE_RENDERER_SURFACE_BINDINGS.md",
         "reports/native_renderer_surface_bindings_audit.json"
       ],
-      "fixture_worker": "particle_clock_lifetime",
-      "real_D3D_fixture_adapter_unavailable": true
+      "fixture_worker": null,
+      "real_D3D_fixture_adapter_unavailable": true,
+      "evidence": "reports/native_renderer_surface_bindings_audit.json"
     },
     {
       "id": "native_renderer_binding_getters",
@@ -3268,7 +3269,7 @@
       "packet": "native_physical_buffer_owner",
       "worker": "main",
       "done": false,
-      "state": "actual_physical_buffer_owner_implemented_initial_build_passed_fixture_pending",
+      "state": "actual_physical_buffer_owner_build_passed_original_caller_fixture_active",
       "function_addresses": [
         "00b4bb60",
         "00b4bbb0",
@@ -3292,7 +3293,8 @@
         "src/native_physical_buffer_owner.cpp",
         "docs/NATIVE_PHYSICAL_BUFFER_OWNER.md",
         "reports/native_physical_buffer_owner_audit.json"
-      ]
+      ],
+      "fixture_worker": "particle_clock_lifetime"
     },
     {
       "id": "native_vertex_declaration_owner",
@@ -4305,8 +4307,8 @@
     {
       "packet": "native_renderer_surface_bindings",
       "worker": "main",
-      "state": "implementing_actual_color_and_depth_surface_binding_with_actual_synchronization",
-      "validation": null
+      "state": "integrated_two_actual_surface_binders_original_COM_ABI_composition_real_Win32_and_native_EH_checked",
+      "validation": "reports/native_renderer_surface_bindings_audit.json"
     },
     {
       "packet": "native_renderer_binding_getters",
@@ -4334,14 +4336,6 @@
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_renderer_surface_bindings",
-      "worker": "main",
-      "function_addresses": [
-        "00b23d80",
-        "00b21690"
-      ]
-    },
     {
       "packet": "native_render_resource_container_removal_closure",
       "worker": "material_effect_plane",

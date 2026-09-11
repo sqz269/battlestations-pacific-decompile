@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b23d80",
+    "before": {
+      "address": "00b23d80",
+      "function_name": "BSP_D3D9Renderer_BindColorSurface",
+      "comment": "[BSP reconstruction 00b23d80]\nOptional guard; direct SetRenderTarget. Nonnull wrapper supplies COM surface+2C and increments renderer+1BA0 even after failed call. Null slot0 reads retained default wrapper renderer+197C; other null slots unbind. No wrapper retain/release or identity cache. Original ABI: ECX renderer; stack slot, surface wrapper; RET8. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX renderer; stack slot, surface wrapper; RET8. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b23d80",
+      "old_name": "BSP_D3D9Renderer_BindColorSurface",
+      "name": "BSP_D3D9Renderer_BindColorSurface",
+      "evidence": "Actual nonnullwrapper+2C captured BEFOREcurrentdevice+1A10/table+94. Nullslot0 dereferences actualdefaultwrapper+197C then+2C beforedevice; othernullslotsunbind. Only supplied nonnullwrapper increments CURRENT DWORD+1BA0 after COM returns, even failure/nullCOM. No wrapperretain/release/cache. Actual optionalguard: renderer savedbeforeenter,ALafter; entryoutsideEHstate0; COM+counterprotected; normalleaveafterdisarm. ExceptionusesactualB21110/currentmode. Newinterfacepassesdefinedlowbyte instead of nativeignoredDWORDpadding. Original ABI: ECX actualrenderer; stackslot,wrapper;RET8;no stableHRESULTreturn. Evidence reports/native_renderer_surface_bindings_audit.json and docs/NATIVE_RENDERER_SURFACE_BINDINGS.md. Primary-library ONEoriginalcaller fixture27comparisons2898DWORDs, originalEHmaps/actions+3actualsyncbodies, realWin32locks; strictWin32+2CTest. Controlled fixture-onlyCOM/HRESULTs: actualD3D9attempt0adapters/8876086c. No driver/surface/render/fullpipeline/ABI/game validation claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b21690",
+    "before": {
+      "address": "00b21690",
+      "function_name": "BSP_D3D9Renderer_BindDepthSurface",
+      "comment": "[BSP reconstruction 00b21690]\nOptional renderer guard around device virtual 9ch SetDepthStencilSurface; null wrapper binds null, otherwise uses surface at wrapper+2ch and increments counter this+1bcch. Not yet ported.\n\n[BSP reconstruction 00b21690] update\nECX renderer, stack surface-wrapper pointer, RET4. Optional renderer guard; always call SetDepthStencilSurface with wrapper+2C or null. Non-null wrapper increments32-bit counter+1BCC even if COMpointer null or HRESULTfailure; nullwrapper doesnotincrement. Uncached and no retainedwrapper. Typed semantic port exposes HRESULT; probe checked guard, counts and device binding."
+    },
+    "after": {
+      "address": "00b21690",
+      "old_name": "BSP_D3D9Renderer_BindDepthSurface",
+      "name": "BSP_D3D9Renderer_BindDepthSurface",
+      "evidence": "Actualdevice+1A10 captured BEFOREnonnullwrapper+2C thencaptureddevice currenttable+9C. Nullwrapper passesnull. Only nonnullwrapper increments CURRENT DWORD+1BCC after COM returns, even failure/nullCOM. No wrapperretain/release/cache. Actual optionalguard: renderer savedbeforeenter,ALafter; entryoutsideEHstate0; COM+counterprotected; normalleaveafterdisarm. ExceptionusesactualB21110/currentmode. Newinterfacepassesdefinedlowbyte instead of nativeignoredDWORDpadding. Original ABI: ECX actualrenderer; stackwrapper;RET4;no stableHRESULTreturn. Evidence reports/native_renderer_surface_bindings_audit.json and docs/NATIVE_RENDERER_SURFACE_BINDINGS.md. Primary-library ONEoriginalcaller fixture27comparisons2898DWORDs, originalEHmaps/actions+3actualsyncbodies, realWin32locks; strictWin32+2CTest. Controlled fixture-onlyCOM/HRESULTs: actualD3D9attempt0adapters/8876086c. No driver/surface/render/fullpipeline/ABI/game validation claim."
+    },
+    "status": "applied"
+  }
+]

@@ -5111,7 +5111,7 @@
       }
     ],
     "getters_worker_active": false,
-    "surface_binders_primary_implementation_complete_fixture_pending": true,
+    "surface_binders_primary_implementation_complete_fixture_pending": false,
     "physical_lifetime_primary_next": true,
     "declaration_lifetime_ready": true,
     "arbitrary_texture_logical_stream_layout_lifetime_complete": false,
@@ -5119,6 +5119,9 @@
     "status": "integrated_reviewed_profile_discovery",
     "getters_complete_evidence": "reports/native_renderer_binding_getters_audit.json",
     "physical_lifetime_primary_active": true,
-    "declaration_lifetime_worker_active": true
+    "declaration_lifetime_worker_active": true,
+    "surface_binders_complete_evidence": "reports/native_renderer_surface_bindings_audit.json",
+    "surface_fixture_real_COM": false,
+    "surface_fixture_real_Win32": true
   }
 }
