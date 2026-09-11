@@ -1,0 +1,640 @@
+{
+ "packet": "cc_mission_frame",
+ "owner": "agent/cc-mission-frame",
+ "date": "2026-09-11",
+ "kind": "analysis+reconstruction",
+ "doc": "docs/MISSION_STATE_FRAME.md",
+ "anchor": "004e4a40",
+ "ghidra": "read-only; nothing was written back",
+ "headline": "Closes the two unreconstructed routines of the mission-state entry (00447060 the deferred dynamics release, 004d87b0 the multiplayer player-count check) and turns the in-mission branch of BSP_Game_OnMove into one ordered dispatch of 57 native call sites over MissionFrameHost, each tagged with its owner area and the reconstruction on main that implements it. 004da6c0 creates no manager: every subsystem the frame walks was built one frame earlier by 004dfb70 through 004dc6a0 and 004de610; the entry only resets state, writes 0Dh and hides the loading interface. The exit is state request 0Fh from 004d7ea0 into 004d7970, referenced from docs/MISSION_RESULT_DECISION.md.",
+ "abi": {
+  "00447060": {
+   "convention": "__thiscall void(sub)",
+   "ecx": "game+30h, loaded at 004da6d1 and dropped by the decompiler",
+   "stack_args": 0,
+   "ret": "RET 0 at 0044713a",
+   "body": "00447060-0044713a",
+   "note": "the release target [00e188a8]+18h is captured once at 0044706a"
+  },
+  "004d87b0": {
+   "convention": "__fastcall void(GGame*)",
+   "ecx": "game object",
+   "stack_args": 0,
+   "ret": "RET 0 at 004d8996",
+   "seh": "handler 00c664f0, not modelled"
+  },
+  "00446ef0": {
+   "convention": "__thiscall std::vector<T>::erase(iterator, iterator), T stride 8",
+   "ecx": "the vector",
+   "stack_args": 5,
+   "ret": "RET 14h at 00446f57",
+   "note": "hidden return-iterator pointer plus two {container, ptr} checked iterators"
+  },
+  "00685c80": {
+   "convention": "__thiscall void(manager, float rawDelta)",
+   "ecx": "DAT_00e198ac at the sole call site 004e542d",
+   "stack_args": 1,
+   "ret": "RET 4 at 00685ce8"
+  },
+  "004e4a40": {
+   "convention": "__thiscall void(GGame*, float rawDelta)",
+   "ecx": "game object",
+   "stack_args": 1,
+   "ret": "RET 4 at 004e5535",
+   "note": "the in-mission portion reconstructed here is 004e4df4-004e551e; the stored Ghidra body is still eight bytes"
+  }
+ },
+ "entry_contract": {
+  "state_written": "0Dh at 004da73c",
+  "managers_created": [],
+  "managers_reset": [
+   "game+21F0h scaled delta to 0.0f",
+   "game+30h dynamics list released",
+   "game+1EE1h..+1EE5h one-shots rearmed",
+   "game+634h/+635h cinematic flags cleared",
+   "game+608h cleared"
+  ],
+  "interface_requested": "BSP_Game_ApplyInGameInterface(game, 0) at 004da746: the teardown arm, which releases the loading element, drops interface/textures/allbutingame.ats, selects front-end layout set 3 and writes game+1EE0h",
+  "script_entry_called": null,
+  "subsystems_built_earlier": {
+   "004dc6a0": [
+    "game+21D0h",
+    "game+21E4h",
+    "game+21E0h",
+    "game+21C4h",
+    "00f88c30"
+   ],
+   "004de610": [
+    "game+19CCh",
+    "game+19E8h",
+    "game+19ECh",
+    "game+19F0h",
+    "game+19FCh",
+    "game+1A00h",
+    "game+21C8h",
+    "game+21CCh",
+    "game+21D4h",
+    "game+21DCh",
+    "game+21E8h",
+    "00f89b3c"
+   ],
+   "004e3e74": [
+    "game+21A0h"
+   ]
+  }
+ },
+ "frame_steps": [
+  {
+   "host_method": "session_counts_mission_start_004b6260",
+   "call_site": "004e4e0f",
+   "callee": "004b6260",
+   "owner": "session",
+   "reconstruction_on_main": "bsp::session_counts_mission_004b6260"
+  },
+  {
+   "host_method": "adjust_mission_start_counters_004bcaa0",
+   "call_site": "004e4e25",
+   "callee": "004bcaa0",
+   "owner": "session",
+   "reconstruction_on_main": "bsp::adjust_mission_counters_004bcaa0"
+  },
+  {
+   "host_method": "update_warning_manager_00987590",
+   "call_site": "004e4e67",
+   "callee": "00987590",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::update_mission_events_00987590"
+  },
+  {
+   "host_method": "run_input_effect_sets_004e4e6c",
+   "call_site": "004e4e6c",
+   "callee": null,
+   "owner": "input",
+   "reconstruction_on_main": "bsp::run_input_effect_lists_004e4e6c"
+  },
+  {
+   "host_method": "record_action_deadlines_004d8cd0",
+   "call_site": "004e4feb",
+   "callee": "004d8cd0",
+   "owner": "unit",
+   "reconstruction_on_main": "bsp::record_action_deadlines_004d8cd0"
+  },
+  {
+   "host_method": "multiplayer_tick_00778560",
+   "call_site": "004e5036",
+   "callee": "00778560",
+   "owner": "session",
+   "reconstruction_on_main": "bsp::run_multiplayer_tick_00778560"
+  },
+  {
+   "host_method": "begin_game_profile_block",
+   "call_site": "004e50ab",
+   "callee": "00be3640",
+   "owner": "profiler",
+   "reconstruction_on_main": "bsp::profiler_begin_frame_slot_00be3640"
+  },
+  {
+   "host_method": "register_game_block_label",
+   "call_site": "004e50e3",
+   "callee": "0041e870",
+   "owner": "profiler",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "update_in_mission_subsystems_004c40a0",
+   "call_site": "004e5133",
+   "callee": "004c40a0",
+   "owner": "unit",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "begin_engine_movie_004cce50",
+   "call_site": "004e5147",
+   "callee": "004cce50",
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "pause_gate_branch_004e5153",
+   "call_site": "004e5153",
+   "callee": null,
+   "owner": "pure",
+   "reconstruction_on_main": "bsp::decide_simulation_gate_branch"
+  },
+  {
+   "host_method": "tutorial_hint_step_available",
+   "call_site": "004e5227",
+   "callee": null,
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "advance_tutorial_hint_0054e440",
+   "call_site": "004e522d",
+   "callee": "0054e440",
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "toggle_pause_menu_004db030",
+   "call_site": "004e5234",
+   "callee": "004db030",
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "toggle_pause_menu_004db030",
+   "call_site": "004e523b",
+   "callee": "004db030",
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "in_game_interface_active",
+   "call_site": "004e524c",
+   "callee": null,
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "update_in_game_interface_0068c1f0",
+   "call_site": "004e5252",
+   "callee": "0068c1f0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::audio_environment_0068c1f0"
+  },
+  {
+   "host_method": "update_interface_only_004c40f0",
+   "call_site": "004e5259",
+   "callee": "004c40f0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::run_interface_only_update_004c40f0"
+  },
+  {
+   "host_method": "hint_tick_cooldowns_0068ec10",
+   "call_site": "004e526d",
+   "callee": "0068ec10",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::tick_hint_cooldowns_0068ec10"
+  },
+  {
+   "host_method": "hint_drain_queued_00692b00",
+   "call_site": "004e5279",
+   "callee": "00692b00",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::should_drain_queued_hint_00692b00"
+  },
+  {
+   "host_method": "hint_unit_class_00692b60",
+   "call_site": "004e5285",
+   "callee": "00692b60",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::unit_class_hint_00692b60"
+  },
+  {
+   "host_method": "hint_weapon_006926f0",
+   "call_site": "004e5291",
+   "callee": "006926f0",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::surface_weapon_hint_006926f0"
+  },
+  {
+   "host_method": "hint_environment_00692580",
+   "call_site": "004e529d",
+   "callee": "00692580",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::environment_hint_00692580"
+  },
+  {
+   "host_method": "hint_zone_first_get_00692fd0",
+   "call_site": "004e52a9",
+   "callee": "00692fd0",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::scan_capture_zones_00692fd0"
+  },
+  {
+   "host_method": "hint_strategic_map_00692960",
+   "call_site": "004e52b5",
+   "callee": "00692960",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::should_show_strategic_map_hint_00692960"
+  },
+  {
+   "host_method": "update_bot_scheduler_00914ef0",
+   "call_site": "004e52ca",
+   "callee": "00914ef0",
+   "owner": "unit",
+   "reconstruction_on_main": "bsp::update_bot_scheduler_00914ef0"
+  },
+  {
+   "host_method": "update_markers_006dc1a0",
+   "call_site": "004e52df",
+   "callee": "006dc1a0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::update_markers_006dc1a0"
+  },
+  {
+   "host_method": "update_entity_manager_00481640",
+   "call_site": "004e52f4",
+   "callee": "00481640",
+   "owner": "unit",
+   "reconstruction_on_main": "bsp::update_entity_manager_00481640"
+  },
+  {
+   "host_method": "update_rain_descriptor_00865ab0",
+   "call_site": "004e5309",
+   "callee": "00865ab0",
+   "owner": "renderer",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "update_ocean_00bbddd0",
+   "call_site": "004e5325",
+   "callee": "00bbddd0",
+   "owner": "renderer",
+   "reconstruction_on_main": "bsp::run_ocean_and_effects_tick"
+  },
+  {
+   "host_method": "update_decals_00740e10",
+   "call_site": "004e533a",
+   "callee": "00740e10",
+   "owner": "renderer",
+   "reconstruction_on_main": "bsp::update_decal_manager_00740e10"
+  },
+  {
+   "host_method": "update_00f89b3c_0094c8f0",
+   "call_site": "004e534f",
+   "callee": "0094c8f0",
+   "owner": "renderer",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "update_power_ups_008eb110",
+   "call_site": "004e535a",
+   "callee": "008eb110",
+   "owner": "unit",
+   "reconstruction_on_main": "bsp::update_power_ups_008eb110"
+  },
+  {
+   "host_method": "update_effect_manager_00867ee0",
+   "call_site": "004e5377",
+   "callee": "00867ee0",
+   "owner": "renderer",
+   "reconstruction_on_main": "bsp::run_ocean_and_effects_tick"
+  },
+  {
+   "host_method": "flush_entity_activations_00903670",
+   "call_site": "004e5382",
+   "callee": "00903670",
+   "owner": "unit",
+   "reconstruction_on_main": "bsp::flush_entity_activations_00903670"
+  },
+  {
+   "host_method": "check_mission_completion_004d7ea0",
+   "call_site": "004e5389",
+   "callee": "004d7ea0",
+   "owner": "script",
+   "reconstruction_on_main": "bsp::check_mission_completion_004d7ea0"
+  },
+  {
+   "host_method": "set_particle_clock_time_00b19a10",
+   "call_site": "004e53ad",
+   "callee": "00b19a10",
+   "owner": "renderer",
+   "reconstruction_on_main": "bsp::set_particle_clock_time_00b19a10"
+  },
+  {
+   "host_method": "update_interface_only_004c40f0",
+   "call_site": "004e53b6",
+   "callee": "004c40f0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::run_interface_only_update_004c40f0"
+  },
+  {
+   "host_method": "set_foliage_shader_time_00af0450",
+   "call_site": "004e53d9",
+   "callee": "00af0450",
+   "owner": "renderer",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "build_foliage_visible_set_00af0c50",
+   "call_site": "004e540f",
+   "callee": "00af0c50",
+   "owner": "renderer",
+   "reconstruction_on_main": "bsp::build_foliage_visible_set_00af0c50"
+  },
+  {
+   "host_method": "apply_gui_visibility_004c6c70",
+   "call_site": "004e5416",
+   "callee": "004c6c70",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::decide_gui_visibility_004c6c70"
+  },
+  {
+   "host_method": "interface_manager_present",
+   "call_site": "004e541b",
+   "callee": null,
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "update_interface_music_00685c80",
+   "call_site": "004e542d",
+   "callee": "00685c80",
+   "owner": "sound",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "update_multiplayer_interface_004d80d0",
+   "call_site": "004e5434",
+   "callee": "004d80d0",
+   "owner": "session",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "service_pending_menu_requests_006840f0",
+   "call_site": "004e5442",
+   "callee": "006840f0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::service_pending_menu_requests_006840f0"
+  },
+  {
+   "host_method": "pump_peer_queues_00776230",
+   "call_site": "004e5462",
+   "callee": "00776230",
+   "owner": "session",
+   "reconstruction_on_main": "bsp::run_menu_interface_drain_004e5434"
+  },
+  {
+   "host_method": "update_interface_only_004c40f0",
+   "call_site": "004e5469",
+   "callee": "004c40f0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::run_interface_only_update_004c40f0"
+  },
+  {
+   "host_method": "service_pending_menu_requests_006840f0",
+   "call_site": "004e5477",
+   "callee": "006840f0",
+   "owner": "hud",
+   "reconstruction_on_main": "bsp::service_pending_menu_requests_006840f0"
+  },
+  {
+   "host_method": "apply_sound_requests_00941140",
+   "call_site": "004e5496",
+   "callee": "00941140",
+   "owner": "sound",
+   "reconstruction_on_main": "bsp::apply_sound_request_00941140"
+  },
+  {
+   "host_method": "update_front_end_screens_004d8620",
+   "call_site": "004e549d",
+   "callee": "004d8620",
+   "owner": "hud",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "end_game_profile_block",
+   "call_site": "004e54b0",
+   "callee": "00be3660",
+   "owner": "profiler",
+   "reconstruction_on_main": "bsp::profiler_end_frame_slot_00be3660"
+  },
+  {
+   "host_method": "begin_render_profile_block",
+   "call_site": "004e54ca",
+   "callee": "00be3640",
+   "owner": "profiler",
+   "reconstruction_on_main": "bsp::profiler_begin_frame_slot_00be3640"
+  },
+  {
+   "host_method": "render_004ca440",
+   "call_site": "004e54d1",
+   "callee": "004ca440",
+   "owner": "renderer",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "end_render_profile_block",
+   "call_site": "004e54e4",
+   "callee": "00be3660",
+   "owner": "profiler",
+   "reconstruction_on_main": "bsp::profiler_end_frame_slot_00be3660"
+  },
+  {
+   "host_method": "finish_render_frame_004ca1f0",
+   "call_site": "004e54eb",
+   "callee": "004ca1f0",
+   "owner": "renderer",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "frame_metrics_enabled",
+   "call_site": "004e550c",
+   "callee": null,
+   "owner": "profiler",
+   "reconstruction_on_main": null
+  },
+  {
+   "host_method": "submit_frame_metrics_00757ce0",
+   "call_site": "004e551e",
+   "callee": "00757ce0",
+   "owner": "profiler",
+   "reconstruction_on_main": null
+  }
+ ],
+ "frame_guards": [
+  {
+   "at": "004e4df4",
+   "test": "game+5D4h == 0Dh",
+   "admits": "steps 1-4"
+  },
+  {
+   "at": "004e4e00",
+   "test": "game+1EE7h clear",
+   "admits": "steps 1-2, once per mission"
+  },
+  {
+   "at": "004e4e18",
+   "test": "game+624h == 0",
+   "admits": "step 2"
+  },
+  {
+   "at": "004e4e31",
+   "test": "game+634h == 0",
+   "admits": "steps 3-4"
+  },
+  {
+   "at": "004e4e50",
+   "test": "COMISS scaled delta vs 0.0f at 00d7a218, JBE skips",
+   "admits": "step 3"
+  },
+  {
+   "at": "004e5000-004e5020",
+   "test": "NOT (state 0Dh AND [00f876b0] > 0 AND scaled delta > 0)",
+   "admits": "step 6"
+  },
+  {
+   "at": "004e50b0",
+   "test": "game+634h == 0 || game+635h != 0",
+   "admits": "steps 8-37"
+  },
+  {
+   "at": "004e5118-004e5124",
+   "test": "state 0Dh AND game+7184h == 0",
+   "admits": "steps 9-37"
+  },
+  {
+   "at": "004e5138",
+   "test": "game+1EE0h set, cleared at 004e514c after the call",
+   "admits": "step 10"
+  },
+  {
+   "at": "004e5153-004e5211",
+   "test": "decide_simulation_gate_branch",
+   "admits": "steps 12-18"
+  },
+  {
+   "at": "004e5213-004e522b",
+   "test": "game+634h set AND [[00e198c4]+A8h]+8h set",
+   "admits": "steps 13-14"
+  },
+  {
+   "at": "004e52f9",
+   "test": "game+19E8h != 0",
+   "admits": "steps 29-30"
+  },
+  {
+   "at": "004e53bb",
+   "test": "state 0Dh",
+   "admits": "steps 39-40"
+  },
+  {
+   "at": "004e541b",
+   "test": "00e198ac != 0",
+   "admits": "step 43"
+  },
+  {
+   "at": "004e5455-004e5488",
+   "test": "the out byte 006840f0 writes, unbounded do/while",
+   "admits": "steps 46-48"
+  }
+ ],
+ "exit": {
+  "producer": "004d7ea0, state request 0Fh, only while game+5E8h == 0 and [game+7188h]+21h is set",
+  "handler": "004d7970 BSP_Game_EndScene, dispatched by the drain 004e4430",
+  "teardown_request": "10h, enqueued by 004d7970 while game+5D4h is 0Dh or 0Fh",
+  "second_route": "004d87b0 calls 004d7970(0) directly in mode 1 past the eight second deadline",
+  "reference": "docs/MISSION_RESULT_DECISION.md; not re-derived here"
+ },
+ "corrections": [
+  {
+   "target": "docs/MISSION_STATE_ENTRY.md, 004d87b0",
+   "was": "the side-balance block at 004d88eb is the session+29Ch arm",
+   "is": "it is the shared continuation: 004d88e4 falls through into it and the selector-set arm jumps to it; only the counting arm's failure paths skip it",
+   "evidence": "004d88e4 MOV byte [00e18b44],0 then 004d88eb CMP byte [00e188bd],0 with no intervening jump"
+  },
+  {
+   "target": "ledger 004c9ca0 BSP_Game_ApplyInGameInterface",
+   "was": "argument 1 is the loading case",
+   "is": "argument 0 takes the teardown arm at 004c9d6b and argument 1 allocates the element; the entry arm is the writer of game+1EE0h, the engine-movie one-shot",
+   "evidence": "004c9cc0 CMP byte [ESP+1Ch],0 / JE 004c9d6b; 004c9e1d CALL 007f8d60 / SETE DL / MOV [EAX+1EE0h],DL"
+  },
+  {
+   "target": "docs/GAME_ON_MOVE_MAP.md step 23, 00685c80",
+   "was": "GUI/HUD, DAT_00e198ac unidentified",
+   "is": "sound: it re-applies the music volume at 00f889a8 to manager+50h/+54h through 00a864f0 and advances each with 00a874d0(rawDelta)",
+   "evidence": "00685ca2..00685ce2; 00f889a8 = settings 00f88980 + 28h, also read by BSP_MainMenu_StartTitleMusic 0058858c"
+  },
+  {
+   "target": "docs/GAME_ON_MOVE_MAP.md step 18",
+   "was": "the pause branch runs 0054e440 and 004db030 twice",
+   "is": "0054e440 needs game+634h set as well as the hint object's +8h byte, and the double 004db030 is the tutorial arm's own call at 004e5234 falling through into the shared call at 004e523b; a pause with no cinematic calls it once",
+   "evidence": "004e5213 CMP byte [ESI+634h],0 / JE 004e5239"
+  }
+ ],
+ "names_added": [
+  {
+   "address": "00685c80",
+   "name": "BSP_InterfaceManager_UpdateMusicStreams",
+   "confidence": "medium"
+  }
+ ],
+ "reconstructions": [
+  {
+   "address": "00447060",
+   "symbol": "bsp::release_all_dynamics_00447060",
+   "kind": "function"
+  },
+  {
+   "address": "004d87b0",
+   "symbol": "bsp::run_mission_player_count_check_004d87b0",
+   "kind": "function"
+  },
+  {
+   "address": "004e4a40",
+   "symbol": "bsp::run_mission_frame",
+   "kind": "fragment",
+   "extent": "004e4df4-004e551e"
+  }
+ ],
+ "deviations": [
+  {
+   "where": "count_bound_side_entries",
+   "what": "the native code indexes a three-slot stack array with the slot's own +28h dword and never bounds checks it; a side outside 0..2 is dropped here instead of writing past the array"
+  },
+  {
+   "where": "run_mission_frame",
+   "what": "the SEH frame, the dead render gate at 004e54b5 and the optimised-away 0x3200000 comparison at 004e54fd are not modelled"
+  }
+ ],
+ "no_ghidra_function": [],
+ "files": [
+  "docs/MISSION_STATE_FRAME.md",
+  "include/bsp/mission_state_frame.hpp",
+  "src/mission_state_frame.cpp",
+  "reports/mission_state_frame.json"
+ ],
+ "validation": "MSVC Win32 /W4 /WX build through scripts/build.ps1; the existing reconstructed_math test passes. No new test was added; nothing here is ABI-compatible or game-validated."
+}
