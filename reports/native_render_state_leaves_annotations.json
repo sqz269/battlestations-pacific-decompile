@@ -1,0 +1,61 @@
+[
+  {
+    "address": "00b20240",
+    "before": {
+      "address": "00b20240",
+      "function_name": "BSP_D3D9Renderer_CanExecuteCommand",
+      "comment": "[BSP reconstruction 00b20240]\nReturns1 exactly when DWORD renderer+1D90 inhibit is0 and byte+1D8A device_lost is0, otherwise0. No writes or optional lock. Original ABI: ECX renderer; EAX boolean; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX renderer; EAX boolean; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b20240",
+      "old_name": "BSP_D3D9Renderer_CanExecuteCommand",
+      "name": "BSP_D3D9Renderer_CanExecuteCommand",
+      "evidence": "Read DWORD renderer+1D90 first; nonzero returns0 without reading byte+1D8A. Otherwise return1 exactly when that byte is0. No writes or lock. Full original 00b20240 body implemented as a MSVC Win32 naked entry; all 27 compiled bytes match live Ghidra and installed PE. ECX actual renderer; EAX exact 0 or 1; RET. Evidence docs/NATIVE_RENDER_STATE_LEAVES.md; reports/native_render_state_leaves_audit.json. Strict Win32 build and two existing CTests pass. No full renderer, queue execution or game validation claim; names are hypotheses."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1fe20",
+    "before": {
+      "address": "00b1fe20",
+      "function_name": "BSP_D3D9Renderer_IsFrameActive",
+      "comment": "[BSP reconstruction 00b1fe20]\nRenderer primary vtable+2Ch; boolean AL=(DWORD+1998h !=0). Gates batch execution and causes EndFrame Present path to proceed only after activefield cleared. Recovered missing11-byte function.\n\n[BSP reconstruction 00b1fe20] update\nReturns whether DWORD renderer+1998 is nonzero. Shared actual state is read independently at command and batch gates. Original ABI: ECX renderer; AL boolean; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX renderer; AL boolean; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1fe20",
+      "old_name": "BSP_D3D9Renderer_IsFrameActive",
+      "name": "BSP_D3D9Renderer_IsFrameActive",
+      "evidence": "CMP DWORD renderer+1998,0 followed by SETNZ AL. Keep original flags and upper EAX bits. Full original 00b1fe20 body implemented as a MSVC Win32 naked entry; all 11 compiled bytes match live Ghidra and installed PE. ECX actual renderer; AL only predicate; upper24 EAX unchanged; RET. Evidence docs/NATIVE_RENDER_STATE_LEAVES.md; reports/native_render_state_leaves_audit.json. Strict Win32 build and two existing CTests pass. No full renderer, queue execution or game validation claim; names are hypotheses."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b20210",
+    "before": {
+      "address": "00b20210",
+      "function_name": "BSP_D3D9Renderer_CommandHookNoOp",
+      "comment": "[BSP reconstruction 00b20210]\nEntire concrete vtable+114 body is RET4. Command execution passes address command+1C; this renderer override does nothing. No interpretation of the ignored argument is required. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b20210",
+      "old_name": "BSP_D3D9Renderer_CommandHookNoOp",
+      "name": "BSP_D3D9Renderer_CommandHookNoOp",
+      "evidence": "Entire concrete renderer virtual+114 override is RET4. It reads no argument or renderer field and invokes no callback. This is an observed complete no-op body, not a placeholder. Full original 00b20210 body implemented as a MSVC Win32 naked entry; all 3 compiled bytes match live Ghidra and installed PE. ECX ignored; one ignored stack DWORD; RET4. Evidence docs/NATIVE_RENDER_STATE_LEAVES.md; reports/native_render_state_leaves_audit.json. Strict Win32 build and two existing CTests pass. No full renderer, queue execution or game validation claim; names are hypotheses."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b51b20",
+    "before": {
+      "address": "00b51b20",
+      "function_name": "TRIV_body_00b51b20"
+    },
+    "after": {
+      "address": "00b51b20",
+      "old_name": "TRIV_body_00b51b20",
+      "name": "BSP_RenderBatch_GetCount",
+      "evidence": "Return actual batch count word at+10 without validation, normalization or writes. Signed interpretation belongs to callers. Full original 00b51b20 body implemented as a MSVC Win32 naked entry; all 4 compiled bytes match live Ghidra and installed PE. ECX actual batch; raw DWORD+10 returned in EAX; RET. Evidence docs/NATIVE_RENDER_STATE_LEAVES.md; reports/native_render_state_leaves_audit.json. Strict Win32 build and two existing CTests pass. No full renderer, queue execution or game validation claim; names are hypotheses."
+    },
+    "status": "applied"
+  }
+]

@@ -60,6 +60,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_model_pool.cpp src/model_type_bootstrap.cpp src/native_model_owner.cpp
   src/native_render_batch_lifetime.cpp src/native_render_batch_reference.cpp
   src/native_render_batch_keys.cpp
+  src/native_render_state_leaves.cpp
   src/native_render_queue_rows.cpp src/native_render_pointer_slot_sort.cpp
   src/native_pooled_string_substring.cpp
   src/native_render_command_owner.cpp
