@@ -382,5 +382,22 @@
       "packet": "sound_manager_teardown",
       "scope": "Remaining manager/auxiliary owners and sound active-list teardown orchestration."
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_manager_fixture_tested",
+    "validated_revision": "e4cbe337439ddc693a3e320c410909ecb329e54a",
+    "main_base": "d433f5dd",
+    "integration_log": "local/sound_active_s_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "library_sha256": "9d46e85d7fd704240cbac8da08baffaa535fbc5ebbf5078ae2baaeeca0c911b1",
+    "fixture_provenance": "Controlled and installed manager fixture ran on validation.code_revision with validation.library_sha256. The combined integration build/CTest result is separate.",
+    "saved_annotations": 10,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T204839Z.json",
+    "refreshed_exports": "local/sound_active_s_integration_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }
