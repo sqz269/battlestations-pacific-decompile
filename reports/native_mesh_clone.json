@@ -1,0 +1,47 @@
+{
+  "packet": "orch5_mesh_clone",
+  "status": "actual_text_flags26_clone_strict_win32_compiled",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "sources": ["src/native_mesh_clone.cpp", "src/gui_native_geometry.cpp"],
+  "documentation": "docs/NATIVE_MESH_CLONE.md",
+  "functions": [
+    {"address": "00b742a0", "name": "BSP_Mesh_CloneCurrent10", "original_abi": "ECX source; stack flags,ignored second DWORD; EAX selected mesh; RET8", "native_end_exclusive": "00b742fa", "coverage": "complete successful flags26 branch through actual pool constructor and canonical acquired creator transport; null faults become explicit diagnostics"},
+    {"address": "00b73f50", "name": "BSP_Mesh_CopyCloneState", "original_abi": "ECX source; stack destination,flags; RET8", "native_end_exclusive": "00b74271", "coverage": "complete successful flags26 stream-sharing and copied-section/material branch including physical LOD, optional payloads, pooled weight-name copies and pending creators on exceptions"},
+    {"address": "00b72bd0", "name": "BSP_Mesh_CopyLodPhaseArray", "original_abi": "ECX destination+10; stack source+10; RET4", "native_end_exclusive": "00b72c17", "coverage": "full valid native array domain; all four DWORDs of active entries then live count"}
+  ],
+  "host_steps": [
+    {"function": "00b742a0", "address": "00b742b3", "native": "00b73a10", "binding": "canonical0108FFF8 pool allocation"},
+    {"function": "00b742a0", "address": "00b742be", "native": "00b73d70", "binding": "actual fresh mesh construction"},
+    {"function": "00b742a0", "address": "00b742c9", "native": "00b73f50", "binding": "source ECX; allocated destination,flags26"},
+    {"function": "00b73f50", "address": "00b73f7f", "native": "00b72bd0", "binding": "physical LOD array copy"},
+    {"function": "00b73f50", "address": "00b740db", "native": "00b73bb0", "binding": "retained vertex stream sharing"},
+    {"function": "00b73f50", "address": "00b74082", "native": "00b85ee0", "binding": "canonical section raw allocation"},
+    {"function": "00b73f50", "address": "00b74098", "native": "00b85ef0", "binding": "actual copied section construction"},
+    {"function": "00b73f50", "address": "00b740b6", "native": "00b18780", "binding": "canonical material raw allocation"},
+    {"function": "00b73f50", "address": "00b740ce", "native": "00b18b60", "binding": "actual material copy constructor"},
+    {"function": "00b73f50", "address": "00b740f2", "native": "00b864c0", "binding": "copied section material publication"},
+    {"function": "00b73f50", "address": "00b74124", "native": "00b72e10", "binding": "section pointer array reserve; rest of inline append composed by existingB73C60"},
+    {"function": "00b73f50", "address": "00b7421d", "native": "00427110", "binding": "actual destination name vector resize0"},
+    {"function": "00b73f50", "address": "00b7422b", "native": "00426520", "binding": "actual destination name vector reserve current source count"},
+    {"function": "00b73f50", "address": "00b7424c", "native": "004cdc20", "binding": "local call-site composition of actual pooled name append; generic helper remains separately leased"}
+  ],
+  "exception_evidence": {
+    "copy_unwind_map": "00dfabd0",
+    "state0": "-1,00cc1c00 ->00b85b20 raw section slot return",
+    "state1": "-1,00cc1c08 ->00b17d70 raw material slot return",
+    "post_constructor": "state disarmed; pending actual mesh/section/material creator state retained on later failures",
+    "append_unwind": "00d8e2c0 ->00c659e0 ->00401130 bare return; no name rollback"
+  },
+  "validation": {
+    "strict_win32_compile": "passed for native_mesh_clone.cpp and gui_native_geometry.cpp with actual section-copy declaration",
+    "numeric_call_rows": "14 checked, 0 failed against live Ghidra listing",
+    "full_build": "primary integrator after section and Model integration",
+    "new_tests": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": "Generic stream-copy flags8/10 and flags2-clear dispatch outside fixedText route; native fault/SEH equivalence, actual runtime rendering and gameplay not validated"
+}

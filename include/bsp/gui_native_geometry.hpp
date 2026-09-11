@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_mesh_owner.hpp"
+#include "bsp/native_mesh_clone.hpp"
 #include "bsp/native_mesh_section.hpp"
 #include "bsp/native_model_owner.hpp"
 #include "bsp/native_material_factory.hpp"
@@ -34,6 +35,28 @@ public:
     // return ONE creator reference. Release through the canonical owners.
     NativeMeshStorage* create_mesh();
     NativeMeshSectionStorage* create_section();
+
+    // B742A0 -> B73F50, fixed Text flags26h. Source is a registered actual
+    // D62D60 mesh. Explicit actual current table has at least five DWORDs;
+    // its +10 must be B742A0. Allocate a distinct mesh; share actual streams;
+    // copy sections, clone their materials, copy LOD/optional fields/names.
+    // Return ONE registered creator reference in this SAME owner domain.
+    // Material access/profile survive every resulting material's final release.
+    // Null allocation throws; it cannot produce an empty successful clone.
+    // Acquired starts empty; receives mesh BEFORE copying and retains partial
+    // native effects plus any pending creators on exception. Do not retry it.
+    NativeMeshStorage* clone_mesh_for_text_00b742a0(NativeMeshStorage& source,
+        const volatile std::uint32_t* current_vtable_00d62d60,
+        NativeMaterialDestructionAccess&,
+        const volatile std::uint32_t* current_vtable_00d5e520,
+        NativeMeshCloneAcquired& acquired);
+
+    // Actual copied creators used by B73F50. Each result is canonically
+    // registered with +04=1; caller transfers/releases that creator reference.
+    NativeMeshSectionStorage* clone_section_00b85ef0(const NativeMeshSectionStorage&);
+    NativeMaterialStorage* clone_material_00b18b60(const NativeMaterialStorage&,
+        NativeMaterialDestructionAccess&,
+        const volatile std::uint32_t* current_vtable_00d5e520);
 
     // Existing00535320 actual factory plus canonical material companion.
     // Return one creator reference; SAME registration/retained-owner domain.
