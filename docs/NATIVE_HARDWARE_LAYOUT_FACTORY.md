@@ -89,8 +89,14 @@ the retained local evidence with `local/prepare_hardware_factory.py`,
 `local/build_hardware_factory.ps1`, and
 `local/build_hardware_factory_check.ps1`; the audit writer validates saved
 traces, runtime postimages, source and artifact hashes. The private harness
-and raw exports remain ignored. Shared build registration, ledger updates,
-Ghidra creation/annotation and export refresh belong to the primary integrator.
+and raw exports remain ignored. Primary integration registered the source,
+created the complete Ghidra function, saved evidence comments and ledger records,
+and refreshed the export. A new comparison selects the factory and complete
+constructor/tree dependencies from a frozen current primary library. It retains
+the unchanged worker fixture and exact production observation providers, and
+again matches all 11,700 DWORDs. All 160 worker pins, 21 fresh live/PE spans,
+and 63 loaded postimages were independently checked; the linked factory's
+exception information still has zero C++ try blocks.
 The initial saved program had no function object at `B2F710`; its complete
 span is established by fresh disassembly and the executed original bytes.
 

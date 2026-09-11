@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b2f710",
+    "before": {
+      "address": "00b2f710",
+      "function_name": "BSP_Renderer_GetOrCreateHardwareLayout"
+    },
+    "after": {
+      "address": "00b2f710",
+      "old_name": "BSP_Renderer_GetOrCreateHardwareLayout",
+      "name": "BSP_Renderer_GetOrCreateHardwareLayout",
+      "evidence": "Complete 231-byte factory. Actual tree lookup and checked hit retain; miss uses actual canonical pool and constructor. Arm raw-slot unwind only after allocation returns and disarm before pair copy/insertion; insertion failure retains completed owner and slot. Original DF60A0/CBD800/CBD808 cleanup and source both have no C++ try blocks; second C++ exception during raw return terminates during search. Current frozen primary library original-caller comparison matches 9,230 normal and 2,470 terminal DWORDs; 21 fresh live/PE spans, all 63 loaded spans verified with 11 declared bindings each. Deterministic COM boundary is not GPU proof. Original ABI: Unused native renderer ECX; stack actual stream key/list identity; EAX selected owner; RET4. Complete src/native_hardware_layout_factory.cpp; reports/native_hardware_layout_factory_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, or game validation."
+    },
+    "status": "applied"
+  }
+]

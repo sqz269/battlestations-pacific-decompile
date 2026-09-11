@@ -24,9 +24,10 @@ inside the new count, it reloads the moved slab and writes the index into all
 32 tokens. It rescans that index, so a moved slab that is also wholly free is
 removed in the same pass.
 
-The current Ghidra listing/decompile omits **55 bytes at B60376..B603AC** after
+The initial Ghidra listing/decompile omitted **55 bytes at B60376..B603AC** after
 the free call. Fresh live/installed-byte comparison and full x86 decode recover
-this returning continuation. Stopping at the decompiler's early return would
+this returning continuation. Primary integration restored it, preserved existing
+comments, and saved the corrected body. Stopping at the early return would
 lose table compaction, token rewriting, count updates, and replacement rescan.
 
 After the deletion loop, the native nonempty comparison precedes writing
@@ -90,11 +91,19 @@ The single fixture checks:
 
 `./scripts/build.ps1` and both existing tests (`reconstructed_math` and
 `native_math_differential`) passed after seed verification. The integrator
-owns shared source registration: that baseline library does not yet include
-this new translation unit. The ignored fixture separately compiles the owned
+owns shared source registration: the worker baseline did not include
+this new translation unit. Its ignored fixture separately compiled the owned
 production source with `/O2 /Oy- /MD /EHsc /fp:strict /W4 /WX` and links the
 baseline library's actual free and allocator-list implementations. No new
-tracked test target or shared metadata/Ghidra edit is part of this packet.
+tracked test target was added.
+
+Primary integration registered this source and reran the unchanged fixture
+against a frozen current primary library containing the trim, real allocator
+list, and shared free implementations. It again matches all 62,291 DWORDs
+and six frees. All 25 worker pins, four fresh live/PE ranges and four complete
+runtime postimages were checked. The complete original trim body remains
+unpatched. Saved Ghidra annotations, ledger registration and refreshed exports
+close the reconstruction evidence; real CRT free is pinned as the x86 provider.
 
 The [audit report](../reports/native_hardware_layout_pool_trim_audit.json)
 contains all original and patched bytes, complete instruction decode, source

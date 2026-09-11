@@ -3783,8 +3783,8 @@
       "id": "native_hardware_layout_factory",
       "packet": "native_hardware_layout_factory",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_fixture_passed_finishing_complete_factory_evidence",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b2f710"
       ],
@@ -3801,7 +3801,8 @@
         "native_hardware_layout_tree_insert"
       ],
       "scope": "Actual108D530 lookup/retain/allocate/construct/insert route. Create exact missing Ghidra function under lease/lock; retain raw allocation only during construction; no later failure guard or cache AddRef absent from native assembly.",
-      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json",
+      "evidence": "reports/native_hardware_layout_factory_audit.json"
     },
     {
       "id": "native_hardware_layout_pool_lifetime3",
@@ -3828,8 +3829,8 @@
       "id": "native_hardware_layout_pool_trim1",
       "packet": "native_hardware_layout_pool_trim1",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_implementing_actual_slab_trim_and_real_profile_binding",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b60350"
       ],
@@ -3841,7 +3842,8 @@
       ],
       "prerequisite_packets": [],
       "scope": "Actual valid initialized hardware pool plus existing real free service; exposes actual D62AF0/B60350 binding.",
-      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json",
+      "evidence": "reports/native_hardware_layout_pool_trim_audit.json"
     },
     {
       "id": "native_hardware_layout_pool_static2",
@@ -5050,7 +5052,7 @@
     {
       "packet": "native_hardware_layout_factory",
       "worker": "unassigned",
-      "state": "waiting_on_complete_constructor_pool_and_tree_insert",
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_factory_audit.json"
     }
   ],

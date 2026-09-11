@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b60350",
+    "before": {
+      "address": "00b60350",
+      "function_name": "FUN_00b60350"
+    },
+    "after": {
+      "address": "00b60350",
+      "old_name": "FUN_00b60350",
+      "name": "BSP_HardwareLayoutPool_Trim",
+      "evidence": "Complete 160-byte trim including restored returning-free continuation B60376..B603AC. Actual shared free precedes current table/count reload, final pointer replacement and count decrement. Rewrite all 32 moved slot tokens and rescan replacement. Capture nonempty test before earliest=-1, then capture table cursor and reread count while finding first available slab. No lock or payload destruction. Real host binding must precede publication to E188B4. Frozen current primary library and untouched original body/list dispatch match 62,291 DWORDs and six slab frees; all four fresh live/PE runtime spans verified with two relocations and one free bridge. Original ABI: Native ECX actual 38h pool; RET, no semantic result; D62AF0 virtual slot0. Complete src/native_hardware_layout_pool_trim.cpp; reports/native_hardware_layout_pool_trim_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, or game validation."
+    },
+    "status": "applied"
+  }
+]

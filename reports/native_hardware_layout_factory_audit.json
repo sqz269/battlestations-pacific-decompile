@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_hardware_layout_factory1",
-  "status": "complete_source_build_and_original_caller_fixture_tested",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "generated_utc": "2026-09-11T04:20:50.192571+00:00",
   "checkout_head_before_packet_commit": "a8a89d0924eb3a3afcc6785c6780978d864785dd",
   "project": "C:/Users/sqz269/bsp.gpr",
@@ -1960,5 +1960,852 @@
         "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
       }
     ]
+  },
+  "source_pin_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910",
+  "primary_integration": {
+    "verification": {
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910",
+        "worker_pins_verified": 160,
+        "source_pins": 92,
+        "current_source_differences": [],
+        "fresh_spans": [
+          {
+            "address": "00b2f710",
+            "length": 231,
+            "sha256": "18b6e1a4f3f4d8097d1ebb069cc640206dbd30d38f645bf843b66973733e3e46",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60cb0",
+            "length": 81,
+            "sha256": "64e2a22328fd7ce69a9822d4c7ed1c52b452c21fee16a4a9546c9200a78456be",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b606f0",
+            "length": 10,
+            "sha256": "01d5c56c95933e7bf15d963f6fc527438e550deff92f55b9117a7245386aa797",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60260",
+            "length": 12,
+            "sha256": "30c6d752df15f16d223d0e3229bcb75553de93b63b7ba3b904a15650bc9092ab",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b28220",
+            "length": 102,
+            "sha256": "9f1335ea5719f57a602939d7b9963d8cbf5889e2aab08ed2cc7380bfa958cc95",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b282b0",
+            "length": 59,
+            "sha256": "46daf012841afdfdb27a44633421da5ddd55c324855b94ac12472c2a769a0d0a",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b25ef0",
+            "length": 56,
+            "sha256": "8ee1c9389e64f9983218adee983f6a9bda783363800ccea8d5e385e05089bfcd",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b2f540",
+            "length": 235,
+            "sha256": "ca2cffe7151672f686d2f39257e1cb0b01a71f66a297904f28f1af251d6421c0",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00cbd800",
+            "length": 18,
+            "sha256": "0b407fb8d14323e80d204a7f319f9d0d8f2e846cd66fa9d3b95f6427061ffff1",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00df60a0",
+            "length": 44,
+            "sha256": "979fc6976bc84fc93c31ddc9fd856be6cc275abd7d50510d95b1b1794543eaa6",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6713",
+            "length": 5,
+            "sha256": "bf7abaf0a5a5d2cf97a914496699a6fb6fa69363f847ce5ff7fb24cd350a9164",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d5f0a8",
+            "length": 72,
+            "sha256": "c89c70fad2feaec444ded2de95bd38a2d522df128d8f48b55f6e368e6c34fc4e",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d61d1c",
+            "length": 8,
+            "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d61cc0",
+            "length": 76,
+            "sha256": "a2245b2c295374bcb28063067cfc53ca854f7eb8130eb628a7656c55eee3161f",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "0108d530",
+            "length": 12,
+            "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "0108fe9c",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "0108fd38",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00f8d394",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "0108fedc",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce221c",
+            "length": 4,
+            "sha256": "1dd5f9d7c8651bec3c86f5d6bd80b95d5822e70e3e21d07076a378beaaac9327",
+            "live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "matched_words": 11700,
+      "comparisons": [
+        {
+          "case": "normal",
+          "words": 9230,
+          "native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_normal_native.bin",
+            "bytes": 36920,
+            "sha256": "eb525d5326b2c8a349ad7bdaeaaacc0565ad11144215cc5ae87dd5f048e7caaa"
+          },
+          "host": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_normal_host.bin",
+            "bytes": 36920,
+            "sha256": "eb525d5326b2c8a349ad7bdaeaaacc0565ad11144215cc5ae87dd5f048e7caaa"
+          },
+          "equal": true
+        },
+        {
+          "case": "terminal",
+          "words": 2470,
+          "native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_native.bin",
+            "bytes": 9880,
+            "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2"
+          },
+          "host": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_host.bin",
+            "bytes": 9880,
+            "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2"
+          },
+          "equal": true
+        }
+      ],
+      "runtime_postimages": [
+        {
+          "phase": "normal",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_postimages_normal.json",
+            "bytes": 3517,
+            "sha256": "5a8b2a7e20211d2d5a64bc0778bb6ab5152be79832064c8710e591de4387c7e2"
+          },
+          "bindings": [
+            {
+              "site": 11728665,
+              "kind": "word",
+              "target": 805329904
+            },
+            {
+              "site": 13509148,
+              "kind": "word",
+              "target": 805324688
+            },
+            {
+              "site": 11698720,
+              "kind": "jump",
+              "target": 805324416
+            },
+            {
+              "site": 12543763,
+              "kind": "jump",
+              "target": 805324832
+            },
+            {
+              "site": 11929328,
+              "kind": "jump",
+              "target": 805320960
+            },
+            {
+              "site": 11930800,
+              "kind": "jump",
+              "target": 805321328
+            },
+            {
+              "site": 11698864,
+              "kind": "jump",
+              "target": 805329168
+            },
+            {
+              "site": 11689712,
+              "kind": "jump",
+              "target": 805321360
+            },
+            {
+              "site": 11728192,
+              "kind": "jump",
+              "target": 805324720
+            },
+            {
+              "site": 11928160,
+              "kind": "jump",
+              "target": 805332640
+            },
+            {
+              "site": 12544835,
+              "kind": "jump",
+              "target": 805361428
+            }
+          ],
+          "checked_spans": [
+            {
+              "address": "00b2f710",
+              "sha256": "a2d4f360ae07b9f080c35e08231cc32f787cb5d2b8c32d23f5dd93537e0a2a93"
+            },
+            {
+              "address": "00b60cb0",
+              "sha256": "95fb7e51576420ec758444869e155c4ce446efac7a10a4cc04f5e579febac502"
+            },
+            {
+              "address": "00b606f0",
+              "sha256": "1b7ff44ed918022773ee19fc85ac4fb6323cf7102479631b6877ff22fac4017d"
+            },
+            {
+              "address": "00b60260",
+              "sha256": "6a3b70fa358a65d610c7c9a308875a56799aba5924e7c0a8335071ef2381d7f8"
+            },
+            {
+              "address": "00b28220",
+              "sha256": "689e4a986135a753e7a03c09f74c01facfe54d0b57f4abc49790bc23e3a851b3"
+            },
+            {
+              "address": "00b282b0",
+              "sha256": "66503e177d4ae66f5d9ba0646e691fec023973197438bc8ca731ad80805bc14c"
+            },
+            {
+              "address": "00b25ef0",
+              "sha256": "ca88dcc91fe3bb2849e6721d022982d2b428e93c270f39350166f6226d336f92"
+            },
+            {
+              "address": "00b2f540",
+              "sha256": "c64c3e69723002fa2ceab8fdbdffe6f63a9423d1893c7a3431fc4347f28f6a36"
+            },
+            {
+              "address": "00cbd800",
+              "sha256": "0b407fb8d14323e80d204a7f319f9d0d8f2e846cd66fa9d3b95f6427061ffff1"
+            },
+            {
+              "address": "00df60a0",
+              "sha256": "979fc6976bc84fc93c31ddc9fd856be6cc275abd7d50510d95b1b1794543eaa6"
+            },
+            {
+              "address": "00bf6713",
+              "sha256": "e69bf75a8c44b361bd1804eeed985a160f98a547ec81bf71f43c681cbe0b34f1"
+            },
+            {
+              "address": "00bf6b43",
+              "sha256": "853dd558afd73c6ea56c9cf48f0eb0e8211d84f42f280031eec4b72896b6da8b"
+            },
+            {
+              "address": "00d5f0a8",
+              "sha256": "c89c70fad2feaec444ded2de95bd38a2d522df128d8f48b55f6e368e6c34fc4e"
+            },
+            {
+              "address": "00d61d1c",
+              "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78"
+            },
+            {
+              "address": "00d61cc0",
+              "sha256": "a2245b2c295374bcb28063067cfc53ca854f7eb8130eb628a7656c55eee3161f"
+            },
+            {
+              "address": "0108d530",
+              "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+            },
+            {
+              "address": "0108fd38",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+            },
+            {
+              "address": "00f8d394",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            {
+              "address": "0108fedc",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            {
+              "address": "00ce221c",
+              "sha256": "c8823fafa74a43507798d850892b4d0d60a027aab2353b19604c8479d78cc7ea"
+            }
+          ],
+          "only_declared_changes": true
+        },
+        {
+          "phase": "native",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_postimages_native.json",
+            "bytes": 3517,
+            "sha256": "5a8b2a7e20211d2d5a64bc0778bb6ab5152be79832064c8710e591de4387c7e2"
+          },
+          "bindings": [
+            {
+              "site": 11728665,
+              "kind": "word",
+              "target": 805329904
+            },
+            {
+              "site": 13509148,
+              "kind": "word",
+              "target": 805324688
+            },
+            {
+              "site": 11698720,
+              "kind": "jump",
+              "target": 805324416
+            },
+            {
+              "site": 12543763,
+              "kind": "jump",
+              "target": 805324832
+            },
+            {
+              "site": 11929328,
+              "kind": "jump",
+              "target": 805320960
+            },
+            {
+              "site": 11930800,
+              "kind": "jump",
+              "target": 805321328
+            },
+            {
+              "site": 11698864,
+              "kind": "jump",
+              "target": 805329168
+            },
+            {
+              "site": 11689712,
+              "kind": "jump",
+              "target": 805321360
+            },
+            {
+              "site": 11728192,
+              "kind": "jump",
+              "target": 805324720
+            },
+            {
+              "site": 11928160,
+              "kind": "jump",
+              "target": 805332640
+            },
+            {
+              "site": 12544835,
+              "kind": "jump",
+              "target": 805361428
+            }
+          ],
+          "checked_spans": [
+            {
+              "address": "00b2f710",
+              "sha256": "a2d4f360ae07b9f080c35e08231cc32f787cb5d2b8c32d23f5dd93537e0a2a93"
+            },
+            {
+              "address": "00b60cb0",
+              "sha256": "95fb7e51576420ec758444869e155c4ce446efac7a10a4cc04f5e579febac502"
+            },
+            {
+              "address": "00b606f0",
+              "sha256": "1b7ff44ed918022773ee19fc85ac4fb6323cf7102479631b6877ff22fac4017d"
+            },
+            {
+              "address": "00b60260",
+              "sha256": "6a3b70fa358a65d610c7c9a308875a56799aba5924e7c0a8335071ef2381d7f8"
+            },
+            {
+              "address": "00b28220",
+              "sha256": "689e4a986135a753e7a03c09f74c01facfe54d0b57f4abc49790bc23e3a851b3"
+            },
+            {
+              "address": "00b282b0",
+              "sha256": "66503e177d4ae66f5d9ba0646e691fec023973197438bc8ca731ad80805bc14c"
+            },
+            {
+              "address": "00b25ef0",
+              "sha256": "ca88dcc91fe3bb2849e6721d022982d2b428e93c270f39350166f6226d336f92"
+            },
+            {
+              "address": "00b2f540",
+              "sha256": "c64c3e69723002fa2ceab8fdbdffe6f63a9423d1893c7a3431fc4347f28f6a36"
+            },
+            {
+              "address": "00cbd800",
+              "sha256": "0b407fb8d14323e80d204a7f319f9d0d8f2e846cd66fa9d3b95f6427061ffff1"
+            },
+            {
+              "address": "00df60a0",
+              "sha256": "979fc6976bc84fc93c31ddc9fd856be6cc275abd7d50510d95b1b1794543eaa6"
+            },
+            {
+              "address": "00bf6713",
+              "sha256": "e69bf75a8c44b361bd1804eeed985a160f98a547ec81bf71f43c681cbe0b34f1"
+            },
+            {
+              "address": "00bf6b43",
+              "sha256": "853dd558afd73c6ea56c9cf48f0eb0e8211d84f42f280031eec4b72896b6da8b"
+            },
+            {
+              "address": "00d5f0a8",
+              "sha256": "c89c70fad2feaec444ded2de95bd38a2d522df128d8f48b55f6e368e6c34fc4e"
+            },
+            {
+              "address": "00d61d1c",
+              "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78"
+            },
+            {
+              "address": "00d61cc0",
+              "sha256": "a2245b2c295374bcb28063067cfc53ca854f7eb8130eb628a7656c55eee3161f"
+            },
+            {
+              "address": "0108d530",
+              "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+            },
+            {
+              "address": "0108fd38",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+            },
+            {
+              "address": "00f8d394",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            {
+              "address": "0108fedc",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            {
+              "address": "00ce221c",
+              "sha256": "c8823fafa74a43507798d850892b4d0d60a027aab2353b19604c8479d78cc7ea"
+            }
+          ],
+          "only_declared_changes": true
+        },
+        {
+          "phase": "host",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_postimages_host.json",
+            "bytes": 3517,
+            "sha256": "5a8b2a7e20211d2d5a64bc0778bb6ab5152be79832064c8710e591de4387c7e2"
+          },
+          "bindings": [
+            {
+              "site": 11728665,
+              "kind": "word",
+              "target": 805329904
+            },
+            {
+              "site": 13509148,
+              "kind": "word",
+              "target": 805324688
+            },
+            {
+              "site": 11698720,
+              "kind": "jump",
+              "target": 805324416
+            },
+            {
+              "site": 12543763,
+              "kind": "jump",
+              "target": 805324832
+            },
+            {
+              "site": 11929328,
+              "kind": "jump",
+              "target": 805320960
+            },
+            {
+              "site": 11930800,
+              "kind": "jump",
+              "target": 805321328
+            },
+            {
+              "site": 11698864,
+              "kind": "jump",
+              "target": 805329168
+            },
+            {
+              "site": 11689712,
+              "kind": "jump",
+              "target": 805321360
+            },
+            {
+              "site": 11728192,
+              "kind": "jump",
+              "target": 805324720
+            },
+            {
+              "site": 11928160,
+              "kind": "jump",
+              "target": 805332640
+            },
+            {
+              "site": 12544835,
+              "kind": "jump",
+              "target": 805361428
+            }
+          ],
+          "checked_spans": [
+            {
+              "address": "00b2f710",
+              "sha256": "a2d4f360ae07b9f080c35e08231cc32f787cb5d2b8c32d23f5dd93537e0a2a93"
+            },
+            {
+              "address": "00b60cb0",
+              "sha256": "95fb7e51576420ec758444869e155c4ce446efac7a10a4cc04f5e579febac502"
+            },
+            {
+              "address": "00b606f0",
+              "sha256": "1b7ff44ed918022773ee19fc85ac4fb6323cf7102479631b6877ff22fac4017d"
+            },
+            {
+              "address": "00b60260",
+              "sha256": "6a3b70fa358a65d610c7c9a308875a56799aba5924e7c0a8335071ef2381d7f8"
+            },
+            {
+              "address": "00b28220",
+              "sha256": "689e4a986135a753e7a03c09f74c01facfe54d0b57f4abc49790bc23e3a851b3"
+            },
+            {
+              "address": "00b282b0",
+              "sha256": "66503e177d4ae66f5d9ba0646e691fec023973197438bc8ca731ad80805bc14c"
+            },
+            {
+              "address": "00b25ef0",
+              "sha256": "ca88dcc91fe3bb2849e6721d022982d2b428e93c270f39350166f6226d336f92"
+            },
+            {
+              "address": "00b2f540",
+              "sha256": "c64c3e69723002fa2ceab8fdbdffe6f63a9423d1893c7a3431fc4347f28f6a36"
+            },
+            {
+              "address": "00cbd800",
+              "sha256": "0b407fb8d14323e80d204a7f319f9d0d8f2e846cd66fa9d3b95f6427061ffff1"
+            },
+            {
+              "address": "00df60a0",
+              "sha256": "979fc6976bc84fc93c31ddc9fd856be6cc275abd7d50510d95b1b1794543eaa6"
+            },
+            {
+              "address": "00bf6713",
+              "sha256": "e69bf75a8c44b361bd1804eeed985a160f98a547ec81bf71f43c681cbe0b34f1"
+            },
+            {
+              "address": "00bf6b43",
+              "sha256": "853dd558afd73c6ea56c9cf48f0eb0e8211d84f42f280031eec4b72896b6da8b"
+            },
+            {
+              "address": "00d5f0a8",
+              "sha256": "c89c70fad2feaec444ded2de95bd38a2d522df128d8f48b55f6e368e6c34fc4e"
+            },
+            {
+              "address": "00d61d1c",
+              "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78"
+            },
+            {
+              "address": "00d61cc0",
+              "sha256": "a2245b2c295374bcb28063067cfc53ca854f7eb8130eb628a7656c55eee3161f"
+            },
+            {
+              "address": "0108d530",
+              "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+            },
+            {
+              "address": "0108fd38",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+            },
+            {
+              "address": "00f8d394",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            {
+              "address": "0108fedc",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            {
+              "address": "00ce221c",
+              "sha256": "c8823fafa74a43507798d850892b4d0d60a027aab2353b19604c8479d78cc7ea"
+            }
+          ],
+          "only_declared_changes": true
+        }
+      ],
+      "providers": [
+        {
+          "symbol": "get_or_create_native_hardware_layout_00b2f710",
+          "provider": "bsp_core.linked:native_hardware_layout_factory.obj",
+          "line": " 0001:00009190       ?get_or_create_native_hardware_layout_00b2f710@bsp@@YAPAXPBXAAUNativeHardwareLayoutConstructContext@1@@Z 3000a190 f   bsp_core.linked:native_hardware_layout_factory.obj"
+        },
+        {
+          "symbol": "construct_native_hardware_layout_00b60cb0",
+          "provider": "bsp_core.linked:native_hardware_layout_construct.obj",
+          "line": " 0001:00008900       ?construct_native_hardware_layout_00b60cb0@bsp@@YAPAXPAXPBXAAUNativeHardwareLayoutConstructContext@1@@Z 30009900 f   bsp_core.linked:native_hardware_layout_construct.obj"
+        },
+        {
+          "symbol": "find_native_hardware_layout_key_00b28220",
+          "provider": "bsp_core.linked:native_hardware_layout_tree_key.obj",
+          "line": " 0001:00009410       ?find_native_hardware_layout_key_00b28220@bsp@@YAPAUNativeHardwareLayoutTreeIterator@1@PAXPAU21@PBXABUSingletonLifetimeCallbacks@1@@Z 3000a410 f   bsp_core.linked:native_hardware_layout_tree_key.obj"
+        },
+        {
+          "symbol": "insert_native_hardware_layout_pair_00b2f540",
+          "provider": "bsp_core.linked:native_hardware_layout_tree_insert.obj",
+          "line": " 0001:00009540       ?insert_native_hardware_layout_pair_00b2f540@bsp@@YAPAUNativeHardwareLayoutTreeInsertResult@1@PAXPAU21@PBXABUSingletonLifetimeCallbacks@1@@Z 3000a540 f   bsp_core.linked:native_hardware_layout_tree_insert.obj"
+        },
+        {
+          "symbol": "factory_actual_allocate",
+          "provider": "actual_pool.obj",
+          "line": " 0001:00007e40       ?factory_actual_allocate@bsp@@YAPAXPAX@Z 30008e40 f   actual_pool.obj"
+        },
+        {
+          "symbol": "factory_actual_raw_return",
+          "provider": "actual_pool.obj",
+          "line": " 0001:00007e50       ?factory_actual_raw_return@bsp@@YAXPAX0@Z 30008e50 f   actual_pool.obj"
+        },
+        {
+          "symbol": "factory_actual_lifetime_allocate",
+          "provider": "actual_lifetime.obj",
+          "line": " 0001:000075a0       ?factory_actual_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 300085a0 f   actual_lifetime.obj"
+        },
+        {
+          "symbol": "factory_actual_lifetime_free",
+          "provider": "actual_lifetime.obj",
+          "line": " 0001:00007600       ?factory_actual_lifetime_free@bsp@@YAXPAX@Z 30008600 f   actual_lifetime.obj"
+        }
+      ],
+      "source_factory_FuncInfo": {
+        "address": "0x30011c24",
+        "words": [
+          429065506,
+          1,
+          805379100,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "nTryBlocks": 0
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\actual_lifetime.obj",
+          "bytes": 32953,
+          "sha256": "240dc77c408b9dcb0027acb6f28c71da56f710e0c45ed1191a781f60e8f39a31"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\actual_owner.obj",
+          "bytes": 11623,
+          "sha256": "793c41f2575ff2dd2e238660f251aaf47d3367ab4cf3e5de1c4a44dcb85b0a56"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\actual_pool.obj",
+          "bytes": 4317,
+          "sha256": "0f2e7ee2466436d814bd70ac4bb7766a35d890a625b4db8c0631ca979c96e2c8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\bsp_core.linked.lib",
+          "bytes": 25180122,
+          "sha256": "cb6a08ee4335ab634b824cf5358c6a82656b46af9cc7adb0a07b8a1350ed0a16"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\build_factory.cmd",
+          "bytes": 2803,
+          "sha256": "12520cee7e4e6364066594bf66a5796f5de08bea0dc0c8f775657026b44944db"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_normal_host.bin",
+          "bytes": 36920,
+          "sha256": "eb525d5326b2c8a349ad7bdaeaaacc0565ad11144215cc5ae87dd5f048e7caaa"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_normal_native.bin",
+          "bytes": 36920,
+          "sha256": "eb525d5326b2c8a349ad7bdaeaaacc0565ad11144215cc5ae87dd5f048e7caaa"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_postimages_host.json",
+          "bytes": 3517,
+          "sha256": "5a8b2a7e20211d2d5a64bc0778bb6ab5152be79832064c8710e591de4387c7e2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_postimages_native.json",
+          "bytes": 3517,
+          "sha256": "5a8b2a7e20211d2d5a64bc0778bb6ab5152be79832064c8710e591de4387c7e2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_postimages_normal.json",
+          "bytes": 3517,
+          "sha256": "5a8b2a7e20211d2d5a64bc0778bb6ab5152be79832064c8710e591de4387c7e2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_host.bin",
+          "bytes": 9880,
+          "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_native.bin",
+          "bytes": 9880,
+          "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_trace.json",
+          "bytes": 60,
+          "sha256": "42322679916ab9f3473460c25022bff6848ae6e858c94ce89a9aa446ac19f820"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\hardware_factory_check.exe",
+          "bytes": 75776,
+          "sha256": "dc209064e507caa39150e27c0c230e356ed3aef3252c8eeb481197bd1e3d253f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\hardware_factory_check.map",
+          "bytes": 136234,
+          "sha256": "52d18219f3945fd3fbcdb9a3d5cae4df15092ee1f87fa3bdafa7b4c1979bc888"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\hardware_factory_check.obj",
+          "bytes": 260779,
+          "sha256": "c9b6150cfdc8ff1b917f6cdfd2ecc0791eb9db6d9efc5b9dd13e9cf55df2bca1"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_factory.cpp",
+          "bytes": 3628,
+          "sha256": "594aaed26cf62d183600532c1d88be27174b8a65985fd6e1708b97719f9b54f3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_pool_allocate.cpp",
+          "bytes": 5730,
+          "sha256": "4481c2b2b1d2295a57f6788ba49183bf3c5110c82b9842fade07571a680ed46c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_owner.cpp",
+          "bytes": 8337,
+          "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_hardware_factory_primary_check.ps1",
+          "bytes": 3240,
+          "sha256": "e1c6c212613522e18b638a030297f0afdab2750cd962f940234f0eedbc9d0295"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_factory_primary_fixture.txt",
+          "bytes": 660,
+          "sha256": "0f2564c7b02556f66a7b72e0080d90d6f5c1b08f85c9e3617abb95954ad5f53f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_factory_trim_primary_build.txt",
+          "bytes": 3617,
+          "sha256": "088c0db09b596c77cd48ea8ebf2b64ab006ff86fe76777cdbd7b216bd9db3d28"
+        }
+      ]
+    },
+    "owned_source_provider": "Frozen current main bsp_core.linked.lib; unchanged worker fixture; current exact production singleton/pool/owner compiled only for existing observation aliases.",
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_factory_annotations.json",
+    "bytes": 1354,
+    "sha256": "6622fe5d8784394bf2752b3da4f596f99b9aabb3b52af486881ccf13d84f964d",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "path": "exports/bsp/functions/00b2f710/decompiled.c",
+      "bytes": 2320,
+      "sha256": "045f9709842cfc54711884e9ca0eda4cf2a0ec7bdb0ba2512e29594bc2cab780"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:35:52.729690+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b2f710",
+      "name": "get_or_create_native_hardware_layout_00b2f710",
+      "cpp_symbol": "get_or_create_native_hardware_layout_00b2f710",
+      "source": "src/native_hardware_layout_factory.cpp",
+      "native_end_exclusive": "00b2f7f7",
+      "original_abi": "Unused native renderer ECX; stack actual stream key/list identity; EAX selected owner; RET4.",
+      "evidence": "reports/native_hardware_layout_factory_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_FACTORY.md",
+    "bytes": 6655,
+    "sha256": "c79faf08039c510a7194886158fa511de4e369f5a4f366883f63f08e6fa5e7db"
   }
 }
