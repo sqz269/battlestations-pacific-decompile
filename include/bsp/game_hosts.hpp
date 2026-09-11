@@ -101,7 +101,7 @@ private:
 };
 
 // Command line of bsp_game.exe itself. Unrelated to the native switch table at 0073ce20,
-// which the bootstrap phase parses separately from GetCommandLineA.
+// which the bootstrap phase parses from WinMain's application mode argument.
 struct GameExecutableOptions {
     long frame_limit{-1};   // --frames N; negative runs until the window is closed
     std::string log_path;   // --log <path>
@@ -339,7 +339,7 @@ public:
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
 
 private:
-    void run_initialize_phases();
+    void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
 
     GameHostLog& log_;

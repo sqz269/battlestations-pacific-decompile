@@ -1,0 +1,710 @@
+{
+  "packet": "orch3_pipe_peer_contract_h",
+  "status": "bounded_static_investigation_complete_peer_unidentified",
+  "date": "2026-09-11",
+  "owned_files": [
+    "docs/XLIVE_PIPE_PEER_CONTRACT.md",
+    "reports/xlive_pipe_peer_contract.json"
+  ],
+  "address_leases": [],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_function_counts": [
+      63071,
+      63084
+    ],
+    "mode": "read_only",
+    "mutations": false
+  },
+  "target": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "authenticode_status": "HashMismatch",
+    "interpretation": "Current repository analysis target; these bytes are not validated by its embedded Eidos signature."
+  },
+  "conclusion": {
+    "required_dependency": "An already available PID-named pipe server compatible with the recovered encoded frame protocol.",
+    "identified_original_peer": null,
+    "identified_vendor_library": null,
+    "mode_one_callers_found": 0,
+    "limitations": [
+      "No computed or dynamically patched call analysis beyond static references.",
+      "The installed executable is signature-mismatched and adjacent XLive DLL is a replacement.",
+      "Exact string and constant absence does not exclude a differently implemented or encoded peer.",
+      "Cached launch configuration is not a runtime process-parent trace."
+    ]
+  },
+  "native_evidence": {
+    "abi": {
+      "00a5de34": "stdcall(mode DWORD, stop HANDLE, output**); RET 0Ch; EAX signed HRESULT",
+      "00a5e844": "stdcall(mode DWORD, stop HANDLE, output**); RET 0Ch; EAX signed HRESULT"
+    },
+    "call_chain": [
+      {
+        "call": "00a4c264",
+        "target": "00a4c030"
+      },
+      {
+        "call": "00a4c0ea",
+        "target": "00a5de34",
+        "mode": 0,
+        "argument_evidence": "A4C0E7 PUSH ESI(output), A4C0E8 PUSH EAX(stop event), A4C0E9 PUSH EBX(zero)"
+      },
+      {
+        "call": "00a5de50",
+        "target": "00a5e844",
+        "argument_evidence": "Forwards mode and stop event unchanged; local output pointer."
+      }
+    ],
+    "mode_select": "A5E8A7..A5E8C0: zero uses parent PID from A5E557, nonzero uses GetCurrentProcessId.",
+    "name": {
+      "va": "00d25d80",
+      "format": "\\\\.\\pipe\\%08x",
+      "encoding": "UTF-16LE",
+      "file_offset": 9592192,
+      "format_call": "00a5e8de"
+    },
+    "client_open": "A5EA95 branch: CreateFileW read/write, share0, OPEN_EXISTING, FILE_FLAG_OVERLAPPED; SetNamedPipeHandleState mode2; no wait/retry.",
+    "server_create": {
+      "call": "00a5ea4f",
+      "iat": "00ce21d0",
+      "api": "CreateNamedPipeW",
+      "open_flags": "40080003",
+      "pipe_mode": 6,
+      "max_instances": 1,
+      "input_buffer_bytes": 1024,
+      "output_buffer_bytes": 1024,
+      "default_timeout_ms": 5000,
+      "acl": "Deny NETWORK 1FFFFFh; grant logon group C0000000h."
+    },
+    "parent_check": "A5E557: Toolhelp parent PID, OpenProcess access400h, parent creation time strictly before current creation time.",
+    "raw_reference_scan": {
+      "00a5de34": {
+        "literal_dword_candidates": [],
+        "rel32_candidates": [
+          {
+            "file_offset": 6602986,
+            "va": "00a4c0ea",
+            "opcode": "e8451d0100"
+          }
+        ]
+      },
+      "00a5e844": {
+        "literal_dword_candidates": [],
+        "rel32_candidates": [
+          {
+            "file_offset": 6676048,
+            "va": "00a5de50",
+            "opcode": "e8ef090000"
+          }
+        ]
+      },
+      "00a4c030": {
+        "literal_dword_candidates": [],
+        "rel32_candidates": [
+          {
+            "file_offset": 6603364,
+            "va": "00a4c264",
+            "opcode": "e8c7fdffff"
+          }
+        ]
+      },
+      "00a607ee": {
+        "literal_dword_candidates": [],
+        "rel32_candidates": []
+      },
+      "00d25d80": {
+        "literal_dword_candidates": [
+          {
+            "file_offset": 6678743,
+            "va": "00a5e8d7",
+            "preceding_bytes": "8d454468"
+          }
+        ],
+        "rel32_candidates": []
+      },
+      "00ce21d0": {
+        "literal_dword_candidates": [
+          {
+            "file_offset": 6679121,
+            "va": "00a5ea51",
+            "preceding_bytes": "4450ff15"
+          },
+          {
+            "file_offset": 6686704,
+            "va": "00a607f0",
+            "preceding_bytes": "ce00ff25"
+          }
+        ],
+        "rel32_candidates": []
+      }
+    },
+    "raw_reference_method": "Scan all file-backed target sections for E8/E9 rel32 candidates to four target functions and full file for literal DWORD addresses; confirm returned call sites by bounded assembly. This is not a whole-program indirect-call proof.",
+    "payload_contract": "Send little-endian DWORDs 8 and counter+27h, then increment counter; decoded reply must be exactly8 bytes, first DWORD8 and bitwise complement of second DWORD equal current counter. Actual encoded frame protocol is required.",
+    "startup_failure": "A4C030 later failures clean up and call _exit(0). A4C000 terminates current process for worker results other than E_ABORT.",
+    "references": [
+      "docs/XLIVE_IPC.md",
+      "docs/XLIVE_PIPE_TRANSPORT.md",
+      "docs/XLIVE_PIPE_PROTOCOL.md",
+      "docs/XLIVE_PIPE_GLOBALS.md"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "identity": {
+        "company": "Eidos",
+        "file_version": "1.2.0.0",
+        "authenticode_status": "HashMismatch"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": [
+          9592192
+        ]
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [
+          9592220
+        ],
+        "00e12ac8_64": [
+          10562248
+        ]
+      },
+      "relevant_strings": [
+        {
+          "offset": 10509228,
+          "encoding": "ascii",
+          "text": "CreateNamedPipeW"
+        },
+        {
+          "offset": 9592192,
+          "encoding": "utf16",
+          "text": "\\\\.\\pipe\\%08x"
+        }
+      ]
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sus_prog.exe",
+      "size": 611840,
+      "sha256": "84ee3983606eedfd5e9df1f849465968976ff72eaa6df42cf037f6cc9a71bace",
+      "machine": "0x8664",
+      "image_base": "0x140000000",
+      "entry_point": "0x14006efbc",
+      "imported_dlls": null,
+      "identity": {
+        "company": null,
+        "file_version": null,
+        "authenticode_status": null
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": [],
+      "import_parse_status": "PE32+ imports not parsed; null does not mean no imports"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\update.exe",
+      "size": 161032,
+      "sha256": "2d21a714932a41c87d127bf8607d846c02e81f89363cf5e51bc11abddbe05f92",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "0040b70b",
+      "imported_dlls": [
+        "KERNEL32.dll",
+        "USER32.dll",
+        "GDI32.dll",
+        "WINSPOOL.DRV",
+        "ADVAPI32.dll",
+        "SHELL32.dll",
+        "OLEAUT32.dll"
+      ],
+      "identity": {
+        "company": "Eidos",
+        "file_version": "1.0.0.0",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": [
+        {
+          "offset": 122596,
+          "encoding": "ascii",
+          "text": "Battlestations: Pacific Patch - InstallShield Wizard"
+        },
+        {
+          "offset": 151452,
+          "encoding": "utf16",
+          "text": "Battlestations: Pacific - Update Launcher"
+        }
+      ]
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+      "size": 3833856,
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "machine": "x86",
+      "image_base": "10000000",
+      "entry_point": "10153069",
+      "imported_dlls": [
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "USER32.dll",
+        "GDI32.dll",
+        "SHELL32.dll",
+        "WS2_32.dll"
+      ],
+      "identity": {
+        "company": "Team Wolfpack",
+        "file_version": "1.0.0.0",
+        "authenticode_status": "NotSigned"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": []
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\unins000.exe",
+      "size": 3038797,
+      "sha256": "dde8a6110fa330fbbb08c3400eca53d077821263ba343a3128faa198700f02c9",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "006c3650",
+      "imported_dlls": [
+        "mpr.dll",
+        "comdlg32.dll",
+        "comctl32.dll",
+        "shell32.dll",
+        "user32.dll",
+        "version.dll",
+        "oleaut32.dll",
+        "advapi32.dll",
+        "netapi32.dll",
+        "msvcrt.dll",
+        "winhttp.dll",
+        "kernel32.dll",
+        "ole32.dll",
+        "gdi32.dll"
+      ],
+      "identity": {
+        "company": null,
+        "file_version": null,
+        "authenticode_status": null
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": [
+        {
+          "offset": 2943826,
+          "encoding": "ascii",
+          "text": "CreateNamedPipeW"
+        },
+        {
+          "offset": 2248120,
+          "encoding": "utf16",
+          "text": "\\\\.\\pipe\\InnoSetup64BitHelper-%.8x-%.8x-%.8x-%.8x%.8x"
+        },
+        {
+          "offset": 2248240,
+          "encoding": "utf16",
+          "text": "CreateNamedPipe"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\xlive.dll",
+      "size": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "00851b27",
+      "imported_dlls": [
+        "MSVCR90.dll",
+        "KERNEL32.dll",
+        "PSAPI.DLL",
+        "USER32.dll",
+        "ADVAPI32.dll",
+        "Secur32.dll",
+        "SHELL32.dll",
+        "VERSION.dll",
+        "WINHTTP.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "IMM32.dll",
+        "d3dx9_37.dll",
+        "XINPUT1_3.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "IPHLPAPI.DLL",
+        "SHLWAPI.dll",
+        "GDI32.dll",
+        "COMCTL32.dll",
+        "msidcrl40.dll",
+        "DSOUND.dll",
+        "SETUPAPI.dll",
+        "WINTRUST.dll",
+        "CRYPT32.dll",
+        "MSASN1.dll",
+        "MSVCP90.dll"
+      ],
+      "identity": {
+        "company": "Microsoft",
+        "file_version": "2.0.0673.0",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": [
+        {
+          "offset": 22376,
+          "encoding": "ascii",
+          "text": "\\\\.\\pipe\\GFWLive\\"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\xlivefnt.dll",
+      "size": 13643936,
+      "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "00400000",
+      "imported_dlls": [],
+      "identity": {
+        "company": "Microsoft",
+        "file_version": "2.0.0673.0",
+        "authenticode_status": null
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": []
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Games for Windows - LIVE\\Client\\GFWLClient.exe",
+      "size": 827560,
+      "sha256": "af99c6d98e209e26a298002b7f097408f6dd23f8dbda0669fcdcf6e965d2fb5f",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "0047ecce",
+      "imported_dlls": [
+        "mscoree.dll"
+      ],
+      "identity": {
+        "company": "Microsoft",
+        "file_version": "2.0.0675.0",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": [
+        {
+          "offset": 481604,
+          "encoding": "ascii",
+          "text": "CreateNamedPipe"
+        },
+        {
+          "offset": 502594,
+          "encoding": "utf16",
+          "text": "\\\\.\\pipe\\GFWLive\\"
+        },
+        {
+          "offset": 507104,
+          "encoding": "utf16",
+          "text": "\\\\.\\pipe\\GFWLive\\"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Games for Windows - LIVE\\Client\\GFWLive.exe",
+      "size": 757416,
+      "sha256": "2f36a25f58fbb18891c8ee30ea6aa5da871f41aa29ea94ef7ed85966efcd16a8",
+      "machine": "x86",
+      "image_base": "01000000",
+      "entry_point": "0100970d",
+      "imported_dlls": [
+        "ADVAPI32.dll",
+        "KERNEL32.dll",
+        "GDI32.dll",
+        "USER32.dll",
+        "SHLWAPI.dll",
+        "SHELL32.dll",
+        "ole32.dll",
+        "MSIMG32.dll",
+        "VERSION.dll",
+        "GFWLUpdate.dll"
+      ],
+      "identity": {
+        "company": "Microsoft",
+        "file_version": "2.0.0675.0",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": []
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Games for Windows - LIVE\\Client\\GFWLUpdate.dll",
+      "size": 1053352,
+      "sha256": "f775b063c0302dea3c0481669ab0b271835f150ac66e41505d49dcbfe9276a17",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "00409a4d",
+      "imported_dlls": [
+        "KERNEL32.dll",
+        "SHELL32.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "USER32.dll",
+        "WINTRUST.dll",
+        "CRYPT32.dll",
+        "SHLWAPI.dll",
+        "COMCTL32.dll",
+        "GDI32.dll",
+        "ADVAPI32.dll"
+      ],
+      "identity": {
+        "company": "Microsoft",
+        "file_version": "2.0.0675.0",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": []
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Games for Windows - LIVE\\Client\\XLiveServices.dll",
+      "size": 286888,
+      "sha256": "196f404cacba704f5a1de04438b43be82a89d5b2f1fbea889036dc1e52fcfb79",
+      "machine": "x86",
+      "image_base": "00400000",
+      "entry_point": "00442e3e",
+      "imported_dlls": [
+        "mscoree.dll"
+      ],
+      "identity": {
+        "company": "Microsoft",
+        "file_version": "2.0.0675.0",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": []
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "size": 5775512,
+      "sha256": "48ea0576865d2dfda26001b7b210c3f7559d46e647424cd11704eb1ea842fe5a",
+      "machine": "0x8664",
+      "image_base": "0x140000000",
+      "entry_point": "0x1401ea1d8",
+      "imported_dlls": null,
+      "identity": {
+        "company": "Valve",
+        "file_version": "10.96.30.42",
+        "authenticode_status": "Valid"
+      },
+      "exact_parent_pipe_format_offsets": {
+        "ascii": [],
+        "utf16": []
+      },
+      "exact_64_byte_constant_fragment_offsets": {
+        "00d25d9c_64": [],
+        "00e12ac8_64": []
+      },
+      "relevant_strings": []
+    }
+  ],
+  "configuration_artifacts": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\bsp.exe.cfg",
+      "size": 391,
+      "sha256": "0c8bea34058ee5cf7930184c0b0eb378dbf359bfc7450c35118affedc9f45775"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\bsp.exe.cat",
+      "size": 79138,
+      "sha256": "eb50e99cd0435cc75723f32b2967d328011598659d3e7b69252b1a36922be190"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\8170_install.vdf",
+      "size": 1099,
+      "sha256": "55df274b98307acbcee1a9c8257d6df921cea0c43b005979895fa5c4a90d12db"
+    }
+  ],
+  "catalog": {
+    "signature_status": "Valid",
+    "signer": "Microsoft LIVE Gaming for Windows, Microsoft Corporation",
+    "members": [
+      "bsp.exe",
+      "bsp.exe.cfg"
+    ],
+    "limitation": "Catalog membership is not a peer launcher reference; no catalog membership validation of the modified, differently named game EXE was claimed."
+  },
+  "configuration": {
+    "bsp_cfg": "LIVE titleid534307FA, titleversion10000482, LAN/cross-platform settings, OriginalXliveTarget2.0.0673.0; no peer setting.",
+    "install_script": "DirectX DXSETUP /silent and redist/gfwlivesetup.exe /q:a; no peer launch command.",
+    "appmanifest": {
+      "path": "I:/SteamLibrary/steamapps/appmanifest_8170.acf",
+      "appid": 8170,
+      "buildid": 251889,
+      "launcher_path": "C:/Program Files (x86)/Steam/steam.exe"
+    },
+    "steam_appinfo": {
+      "path": "C:\\Program Files (x86)\\Steam\\appcache\\appinfo.vdf",
+      "sha256": "819325992c3741431a860733bf1a3ab9822346547188eec6a54028e444f2e7ad",
+      "size": 1731157,
+      "format_magic": "0x7564429",
+      "string_table_offset": 1700036,
+      "string_table_count": 3449,
+      "record_offset": 157729,
+      "record_end_exclusive": 160266,
+      "appid": 8170,
+      "common": {
+        "name": "Battlestations: Pacific",
+        "type": "game",
+        "oslist": "windows",
+        "clienticon": "487b8009714062865b54636b15f611d94985286b",
+        "releasestate": null
+      },
+      "config": {
+        "contenttype": 3,
+        "installdir": "Battlestations Pacific",
+        "launch": {
+          "0": {
+            "executable": "battlestationspacific.exe"
+          }
+        }
+      },
+      "depots": {
+        "baselanguages": "english,german,french,italian,spanish",
+        "branches": {
+          "public": {
+            "buildid": 251889,
+            "timebuildupdated": 1398967851
+          }
+        }
+      }
+    }
+  },
+  "provenance": {
+    "pipeipc_names": "Analyst-assigned medium-confidence block_pipe_ipc labels, not recovered vendor symbols.",
+    "linked_body_evidence": "Direct call chain and game PE bodies, not a named PIPEIPC DLL IAT dependency.",
+    "vendor_attribution": "Unestablished. Do not classify these bodies as verified Microsoft, Sony, SecuROM, or another vendor library from names/tables/proximity."
+  },
+  "ghidra_followup": {
+    "missing_entries": [
+      {
+        "entry": "00a607ee",
+        "instruction": "JMP DWORD PTR [00ce21d0]",
+        "bytes": "ff25d021ce00",
+        "terminal_instruction_address": "00a607ee",
+        "terminal_instruction_length": 6,
+        "end_exclusive": "00a607f4",
+        "kind": "Unreferenced CreateNamedPipeW import thunk",
+        "evidence": "ghidra proto reports no function; xrefs none; raw relative-call and literal-address scans none.",
+        "owner": "Parent handles metadata; worker makes no address claim or mutation."
+      }
+    ],
+    "flow_repairs": []
+  },
+  "remaining_evidence": [
+    "Identify the verified original bootstrap/server artifact and its precise child-launch ordering.",
+    "Trace the actual startup caller/guard separately to determine when configured entrypoint reaches A4C250/A4C030.",
+    "If a vendor implementation is positively identified, bind the genuine implementation instead of assuming these labels establish library provenance.",
+    "An authorized original runtime trace could establish process parent image and actual CreateNamedPipe creator; none was performed."
+  ],
+  "verification": {
+    "json_parse": true,
+    "diff_whitespace_check": "passed",
+    "build": "not run; documentation-only packet",
+    "runtime": "not run",
+    "installed_artifacts_modified": false,
+    "processes_under_inspection_launched": false,
+    "pipes_or_threads_started": false
+  }
+}

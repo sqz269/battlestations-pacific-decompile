@@ -1,0 +1,23 @@
+{
+  "annotation_events": [
+    {
+      "address": "00a607ee",
+      "before": {
+        "address": "00a607ee",
+        "function_name": "CreateNamedPipeW"
+      },
+      "after": {
+        "address": "00a607ee",
+        "name": "CreateNamedPipeW",
+        "evidence": "Actual Windows import name, not a descriptive game symbol. Exact six-byte thunk FF25D021CE00 at A607EE jumps through CreateNamedPipeW IAT CE21D0; exclusive end A607F4. Missing Ghidra definition verified from original PE and live bytes. No original target caller or server path is established by this unused thunk. docs/XLIVE_PIPE_PEER_CONTRACT.md; reports/xlive_pipe_peer_contract.json. Library implementation remains external; no C++ reconstruction count."
+      },
+      "status": "applied"
+    }
+  ],
+  "saved_name_evidence_and_prior_comment_readback_verified": true,
+  "export_refreshed": true,
+  "original_complete_body": "00a607ee..00a607f3",
+  "native_body_bytes": "ff25d021ce00",
+  "external_library_implementation": true,
+  "no_new_cpp_function_count": true
+}

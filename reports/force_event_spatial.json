@@ -1,0 +1,69 @@
+{
+  "packet": "orch3_force_spatial_i",
+  "coverage": "concrete_composition_of_existing_event_and_pose_algorithms",
+  "new_reconstruction_count": 0,
+  "source": "src/force_event_spatial.cpp",
+  "header": "include/bsp/force_event_spatial.hpp",
+  "shared_header_change": "include/bsp/gamepad_force_events.hpp: ForceEventTargetPose.world_valid_c8 is now uint8_t& instead of bool&",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_target_verified_bsp_disassembly",
+    "address": "00873560",
+    "original_abi": "ECX=allocated event; stack definition,subject pointers; EAX=this; RET8 at008736FB length3, inclusive end008736FD",
+    "native_sequence": [
+      "8735BD/8735C3 current E188A8 game and target1ED4 presence",
+      "8735DF actual subject transform110; 8735ED canonicalB6DB70 refresh when invalid",
+      "8735FA/87361C current game/target reload after source refresh",
+      "873622 target byteC8 zero test; 873633 actual414DB0 refresh",
+      "873638 onward captured target position from actual world fields"
+    ],
+    "ghidra_mutations": 0,
+    "new_missing_definitions_or_flow_gaps": []
+  },
+  "composition": {
+    "type": "ForceEventSpatialRuntime final : ForceEventSpatialHost",
+    "current_target_lookup": "borrowed lvalue std::function<ForceEventTargetPose*()> invoked on every host call; owner reloads actual current game and target",
+    "subject_transform_lookup": "borrowed lvalue std::function<CameraTransform&(void*)> receives the exact subject identity and returns existing canonical transform",
+    "pose_resolver": "borrowed existing PoseRefreshResolver",
+    "refresh": "resolve captured target identity; validate SAME flag and world field addresses; call recovered refresh_pose_00414db0 directly",
+    "owns_or_copies_functions_views_matrices_or_hierarchy": false,
+    "caches_current_game_or_target": false,
+    "normal_geometry_and_request_producer_changed": false,
+    "byte_flag": "uint8_t reference preserves native any-nonzero validity test and exact pose stores"
+  },
+  "binding_guards": [
+    "constructor rejects empty current-target or subject-transform callable",
+    "refresh rejects null captured target identity",
+    "refresh rejects &pose.world_valid_c8 != &target.world_valid_c8",
+    "refresh rejects &pose.world_cc != &target.world_cc",
+    "all identity/field checks finish before actual pose refresh"
+  ],
+  "lifetime_and_limits": [
+    "Borrowed callable objects, captured services, resolver, views and backing fields must remain alive and callable.",
+    "Resolvers/lookups perform actual current field and identity access, with no allocations, ownership retention, fallback views, stale current-game cache or parallel hierarchy.",
+    "Field-address checks do not independently prove correct owner identity, local/parent fields or arbitrary pointer validity; these remain concrete owner binding obligations.",
+    "The captured target is resolved directly during refresh; the runtime does not substitute a newly current target.",
+    "Boolean diagnostic target storage is intentionally no longer accepted; bind actual byte storage without a copied Boolean mirror.",
+    "Typed binding failures throw before refresh; no native exception/object-layout ABI claim.",
+    "No game-owner lifetime integration, input/haptic hardware, focus or gameplay validation."
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "build_log": "local/force-event-spatial-build.log",
+    "existing_ctests_passed": ["reconstructed_math", "native_math_differential"],
+    "seed_verification": "Not repeated: all8 passed immediately preceding pose-refresh packet; no native reference/math changes in this composition",
+    "prior_seed_log": "local/pose-refresh-seeds.json",
+    "fixture": "existing ignored local/gamepad_force_events_fixture.cpp",
+    "fixture_change": "byte-flag adjustment plus one actual recursive pose-refresh composition and two mismatch guard probes",
+    "fixture_command": "cmd /c local\\run_gamepad_force_events_fixture.cmd",
+    "fixture_log": "local/force-event-spatial-fixture.log",
+    "fixture_passed": true,
+    "composed_case": "current-target reload; canonical source refresh; actual parent/child pose refresh over same flag/world; source(10,20,30), target(13,24,30), real FadingGamepadForceRequest initial amplitude0.4",
+    "guard_cases": "independent wrong flag and wrong world references each rejected before changing actual target valid/derived fields",
+    "fixture_lookup_mutation": "deliberate test stimulus for repeated lookup, not a production side-effect contract",
+    "game_or_hardware_calls": false
+  }
+}

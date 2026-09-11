@@ -1,0 +1,1606 @@
+{
+  "annotation_events": [
+    {
+      "address": "0042b2f0",
+      "before": {
+        "address": "0042b2f0",
+        "function_name": "FUN_0042b2f0"
+      },
+      "after": {
+        "address": "0042b2f0",
+        "name": "BSP_Vector3_LengthFloatThreshold",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. x87 (y*y+x*x)+z*z ->float; compare strict double1e-10 atCE3820; actual CRT BF7030 ->float when above, zero otherwise including unordered; FSQRT confirmed BF706C. Final instruction 0042b33c length 1; inclusive end 0042b33c. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00869010",
+      "before": {
+        "address": "00869010",
+        "function_name": "FUN_00869010"
+      },
+      "after": {
+        "address": "00869010",
+        "name": "BSP_ConstantForceEventDefinition_Create",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873450 with definition and subject; null outer allocation returns null. Final instruction 00869073 length 3; inclusive end 00869075. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "008690f0",
+      "before": {
+        "address": "008690f0",
+        "function_name": "FUN_008690f0"
+      },
+      "after": {
+        "address": "008690f0",
+        "name": "BSP_FadingForceEventDefinition_Create",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873560 with definition and subject; null outer allocation returns null. Final instruction 00869153 length 3; inclusive end 00869155. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00869290",
+      "before": {
+        "address": "00869290",
+        "function_name": "FUN_00869290"
+      },
+      "after": {
+        "address": "00869290",
+        "name": "BSP_AlternatingForceEventDefinition_Create",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873750 with definition and subject; null outer allocation returns null. Final instruction 008692f3 length 3; inclusive end 008692f5. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872150",
+      "before": {
+        "address": "00872150",
+        "function_name": "BSP_ForceEvent_CallbackNoop"
+      },
+      "after": {
+        "address": "00872150",
+        "name": "BSP_ForceEvent_CallbackNoop",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Original bytes C20800, genuine no-op at common event vtable2C; no current Ghidra function definition. Final instruction 00872150 length 3; inclusive end 00872152. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872160",
+      "before": {
+        "address": "00872160",
+        "function_name": "FUN_00872160"
+      },
+      "after": {
+        "address": "00872160",
+        "name": "BSP_ForceEvent_CancelRequest",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Common vtable34; if handle1C nonzero callA957F0, then write handle zero after call. Final instruction 00872177 length 1; inclusive end 00872177. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00872180",
+      "before": {
+        "address": "00872180",
+        "function_name": "BSP_ForceEvent_IsRequestComplete"
+      },
+      "after": {
+        "address": "00872180",
+        "name": "BSP_ForceEvent_IsRequestComplete",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Common vtable8; address event1C toA957D0, compare actual resulting handle zero; no current Ghidra function definition. Final instruction 00872193 length 1; inclusive end 00872193. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00873450",
+      "before": {
+        "address": "00873450",
+        "function_name": "FUN_00873450"
+      },
+      "after": {
+        "address": "00873450",
+        "name": "BSP_ConstantForceEvent_Construct",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DCD0/D0DCCC event; 14h D0DB78 kind0 request, definition channel20 duration24 amplitude2C; submit ECX0 EDXrequest at8734ED; returned ID stored1C. Final instruction 00873507 length 3; inclusive end 00873509. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00873530",
+      "before": {
+        "address": "00873530",
+        "function_name": "CG_scalar_deleting_dtor_00873530"
+      },
+      "after": {
+        "address": "00873530",
+        "name": "CG_scalar_deleting_dtor_00873530",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873552. Final instruction 00873558 length 3; inclusive end 0087355a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00873560",
+      "before": {
+        "address": "00873560",
+        "function_name": "FUN_00873560"
+      },
+      "after": {
+        "address": "00873560",
+        "name": "BSP_FadingForceEvent_Construct",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1. Final instruction 008736fb length 3; inclusive end 008736fd. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00873720",
+      "before": {
+        "address": "00873720",
+        "function_name": "CG_scalar_deleting_dtor_00873720"
+      },
+      "after": {
+        "address": "00873720",
+        "name": "CG_scalar_deleting_dtor_00873720",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873742. Final instruction 00873748 length 3; inclusive end 0087374a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00873750",
+      "before": {
+        "address": "00873750",
+        "function_name": "FUN_00873750"
+      },
+      "after": {
+        "address": "00873750",
+        "name": "BSP_AlternatingForceEvent_Construct",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD40/D0DD3C event; 28h D0DBA0 kind2 request; definition channel20 duration24 selector2C values30/34 periods38/3C; submit ECX0 EDXrequest at873819. Final instruction 00873833 length 3; inclusive end 00873835. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00873860",
+      "before": {
+        "address": "00873860",
+        "function_name": "CG_scalar_deleting_dtor_00873860"
+      },
+      "after": {
+        "address": "00873860",
+        "name": "CG_scalar_deleting_dtor_00873860",
+        "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873882. Final instruction 00873888 length 3; inclusive end 0087388a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5df96",
+      "before": {
+        "address": "00a5df96",
+        "function_name": "PIPEIPC_00a5df96",
+        "comment": "[BSP inventory 00a5df96] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5df96",
+        "name": "BSP_PipeIPC_SendXlivePipeCapacity_00a5df96",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5f204. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5dfce",
+      "before": {
+        "address": "00a5dfce",
+        "function_name": "PIPEIPC_00a5dfce",
+        "comment": "[BSP inventory 00a5dfce] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5dfce",
+        "name": "BSP_PipeIPC_ReceiveXlivePipeCapacity_00a5dfce",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5f230. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e055",
+      "before": {
+        "address": "00a5e055",
+        "function_name": "PIPEIPC_00a5e055",
+        "comment": "[BSP inventory 00a5e055] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e055",
+        "name": "BSP_PipeIPC_EncodeXlivePipeFrame_00a5e055",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 20; direct calls 0xa5f6c0. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e09e",
+      "before": {
+        "address": "00a5e09e",
+        "function_name": "PIPEIPC_00a5e09e",
+        "comment": "[BSP inventory 00a5e09e] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e09e",
+        "name": "BSP_PipeIPC_DecodeXlivePipeFrame_00a5e09e",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 20; direct calls 0xa5f7c5. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ebe5",
+      "before": {
+        "address": "00a5ebe5",
+        "function_name": "PIPEIPC_00a5ebe5",
+        "comment": "[BSP inventory 00a5ebe5] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ebe5",
+        "name": "BSP_PipeIPC_Copy_00a5ebe5",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ec07",
+      "before": {
+        "address": "00a5ec07",
+        "function_name": "PIPEIPC_00a5ec07",
+        "comment": "[BSP inventory 00a5ec07] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ec07",
+        "name": "BSP_PipeIPC_Copy_00a5ec07",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ec29",
+      "before": {
+        "address": "00a5ec29",
+        "function_name": "PIPEIPC_00a5ec29",
+        "comment": "[BSP inventory 00a5ec29] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ec29",
+        "name": "BSP_PipeIPC_Copy_00a5ec29",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ec4b",
+      "before": {
+        "address": "00a5ec4b",
+        "function_name": "PIPEIPC_00a5ec4b",
+        "comment": "[BSP inventory 00a5ec4b] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ec4b",
+        "name": "BSP_PipeIPC_Copy_00a5ec4b",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ec6d",
+      "before": {
+        "address": "00a5ec6d",
+        "function_name": "PIPEIPC_00a5ec6d",
+        "comment": "[BSP inventory 00a5ec6d] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ec6d",
+        "name": "BSP_PipeIPC_Copy_00a5ec6d",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ec8f",
+      "before": {
+        "address": "00a5ec8f",
+        "function_name": "PIPEIPC_00a5ec8f",
+        "comment": "[BSP inventory 00a5ec8f] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ec8f",
+        "name": "BSP_PipeIPC_Copy_00a5ec8f",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ecb1",
+      "before": {
+        "address": "00a5ecb1",
+        "function_name": "PIPEIPC_00a5ecb1",
+        "comment": "[BSP inventory 00a5ecb1] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ecb1",
+        "name": "BSP_PipeIPC_Copy_00a5ecb1",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ecd3",
+      "before": {
+        "address": "00a5ecd3",
+        "function_name": "PIPEIPC_00a5ecd3",
+        "comment": "[BSP inventory 00a5ecd3] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ecd3",
+        "name": "BSP_PipeIPC_Copy_00a5ecd3",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ecf5",
+      "before": {
+        "address": "00a5ecf5",
+        "function_name": "PIPEIPC_00a5ecf5",
+        "comment": "[BSP inventory 00a5ecf5] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ecf5",
+        "name": "BSP_PipeIPC_Copy_00a5ecf5",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ed39",
+      "before": {
+        "address": "00a5ed39",
+        "function_name": "PIPEIPC_00a5ed39",
+        "comment": "[BSP inventory 00a5ed39] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ed39",
+        "name": "BSP_PipeIPC_Copy_00a5ed39",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ed5b",
+      "before": {
+        "address": "00a5ed5b",
+        "function_name": "PIPEIPC_00a5ed5b",
+        "comment": "[BSP inventory 00a5ed5b] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ed5b",
+        "name": "BSP_PipeIPC_Copy_00a5ed5b",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ed7d",
+      "before": {
+        "address": "00a5ed7d",
+        "function_name": "PIPEIPC_00a5ed7d",
+        "comment": "[BSP inventory 00a5ed7d] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ed7d",
+        "name": "BSP_PipeIPC_Copy_00a5ed7d",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 0; direct calls . Constant byte copy; immutable table pointer and fixed length are immediate operands. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ee0d",
+      "before": {
+        "address": "00a5ee0d",
+        "function_name": "PIPEIPC_00a5ee0d",
+        "comment": "[BSP inventory 00a5ee0d] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ee0d",
+        "name": "BSP_PipeIPC_Transform_00a5ee0d",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5ecd3, 0xa601aa, 0xa601d5, dword ptr [eax + 8], dword ptr [eax + 8], 0xbfe120. Global-lock acquisition, repeated object-lock aliases, pointer reloads and same-order unlocks preserved; GS-only epilogue does not supply C++ EH cleanup. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ee78",
+      "before": {
+        "address": "00a5ee78",
+        "function_name": "PIPEIPC_00a5ee78",
+        "comment": "[BSP inventory 00a5ee78] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ee78",
+        "name": "BSP_PipeIPC_Transform_00a5ee78",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls dword ptr [eax + 4], 0xa5ecf5, 0xa60203, 0xa6022b, dword ptr [eax + 8], 0xbfe120. Only output lock is entered; no acquisition-global call. Copy72 scratch, transform low/high seed bits, combine with output preimage; reload and leave output lock. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ef36",
+      "before": {
+        "address": "00a5ef36",
+        "function_name": "PIPEIPC_00a5ef36",
+        "comment": "[BSP inventory 00a5ef36] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ef36",
+        "name": "BSP_PipeIPC_Transform_00a5ef36",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5ed39, 0xa602b2, 0xa602dd, dword ptr [eax + 8], dword ptr [eax + 8], 0xbfe120. Global-lock acquisition, repeated object-lock aliases, pointer reloads and same-order unlocks preserved; GS-only epilogue does not supply C++ EH cleanup. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5efa1",
+      "before": {
+        "address": "00a5efa1",
+        "function_name": "PIPEIPC_00a5efa1",
+        "comment": "[BSP inventory 00a5efa1] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5efa1",
+        "name": "BSP_PipeIPC_Transform_00a5efa1",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5ed5b, 0xa6030b, 0xa60339, dword ptr [eax + 8], dword ptr [eax + 8], dword ptr [eax + 8], 0xbfe120. Global-lock acquisition, repeated object-lock aliases, pointer reloads and same-order unlocks preserved; GS-only epilogue does not supply C++ EH cleanup. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f020",
+      "before": {
+        "address": "00a5f020",
+        "function_name": "PIPEIPC_00a5f020",
+        "comment": "[BSP inventory 00a5f020] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f020",
+        "name": "BSP_PipeIPC_Transform_00a5f020",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5ed7d, 0xa60367, 0xa60395, dword ptr [eax + 8], dword ptr [eax + 8], dword ptr [eax + 8], 0xbfe120. Global-lock acquisition, repeated object-lock aliases, pointer reloads and same-order unlocks preserved; GS-only epilogue does not supply C++ EH cleanup. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f09f",
+      "before": {
+        "address": "00a5f09f",
+        "function_name": "PIPEIPC_00a5f09f",
+        "comment": "[BSP inventory 00a5f09f] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f09f",
+        "name": "BSP_PipeIPC_Extend_00a5f09f",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5ec07, 0xa60551, 0xa6057c, 0xbfe120. Initialize72 scratch, extend encoded40 into its first40 bytes, combine with raw72 globalF8B8F8 directly (no +4 offset). See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f0e8",
+      "before": {
+        "address": "00a5f0e8",
+        "function_name": "PIPEIPC_00a5f0e8",
+        "comment": "[BSP inventory 00a5f0e8] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f0e8",
+        "name": "BSP_PipeIPC_Negative_00a5f0e8",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5ec29, 0xa5ec4b, 0xa605a2, 0xa605d0, 0xbfe120. Initialize two40-byte scratch constants; pair transform then packed4 output; SETL tests signed32 packed result, not a proven equality operator. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f144",
+      "before": {
+        "address": "00a5f144",
+        "function_name": "PIPEIPC_00a5f144",
+        "comment": "[BSP inventory 00a5f144] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f144",
+        "name": "BSP_PipeIPC_Negative_00a5f144",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5ec6d, 0xa5ecb1, 0xa605f6, 0xa60624, 0xbfe120. Initialize two72-byte scratch constants; pair transform then packed8 output; high signed/low unsigned comparison implements signed64 negative test. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f204",
+      "before": {
+        "address": "00a5f204",
+        "function_name": "PIPEIPC_00a5f204",
+        "comment": "[BSP inventory 00a5f204] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f204",
+        "name": "BSP_PipeIPC_SendXlivePipeCapacity_00a5f204",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls . See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f230",
+      "before": {
+        "address": "00a5f230",
+        "function_name": "PIPEIPC_00a5f230",
+        "comment": "[BSP inventory 00a5f230] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f230",
+        "name": "BSP_PipeIPC_ReceiveXlivePipeCapacity_00a5f230",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls . See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f25c",
+      "before": {
+        "address": "00a5f25c",
+        "function_name": "PIPEIPC_00a5f25c",
+        "comment": "[BSP inventory 00a5f25c] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f25c",
+        "name": "BSP_PipeIPC_CompareXlivePipeValue_00a5f25c",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5f0e8, dword ptr [eax + 8], dword ptr [eax + 8]. Acquire global lock; enter left then right; release global; invoke A5F0E8; invert AL negative predicate; reload and leave left then right. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f2a4",
+      "before": {
+        "address": "00a5f2a4",
+        "function_name": "PIPEIPC_00a5f2a4",
+        "comment": "[BSP inventory 00a5f2a4] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f2a4",
+        "name": "BSP_PipeIPC_CompareXlivePipeWideValue_00a5f2a4",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5f144, dword ptr [eax + 8], dword ptr [eax + 8]. Acquire global lock; enter left then right; release global; invoke A5F144; invert AL negative predicate; reload and leave left then right. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f2ec",
+      "before": {
+        "address": "00a5f2ec",
+        "function_name": "PIPEIPC_00a5f2ec",
+        "comment": "[BSP inventory 00a5f2ec] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f2ec",
+        "name": "BSP_PipeIPC_Mix_00a5f2ec",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5ebe5, 0xa5f09f, 0xa60527, 0xbfe120. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f397",
+      "before": {
+        "address": "00a5f397",
+        "function_name": "PIPEIPC_00a5f397",
+        "comment": "[BSP inventory 00a5f397] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f397",
+        "name": "BSP_PipeIPC_Transform_00a5f397",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5f94f, dword ptr [eax + 4], dword ptr [eax + 4], dword ptr [eax + 4], 0xa5f95b, 0xa5ec8f, 0xa5f2ec, 0xa6017c, dword ptr [eax + 8], dword ptr [eax + 8], dword ptr [eax + 8], 0xbfe120. Global-lock acquisition, repeated object-lock aliases, pointer reloads and same-order unlocks preserved; GS-only epilogue does not supply C++ EH cleanup. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f6c0",
+      "before": {
+        "address": "00a5f6c0",
+        "function_name": "PIPEIPC_00a5f6c0",
+        "comment": "[BSP inventory 00a5f6c0] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f6c0",
+        "name": "BSP_PipeIPC_EncodeXlivePipeFrame_00a5f6c0",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 16; direct calls edx, 0xa5f25c, 0xa5f397, 0xa5efa1, 0xa5fa5a, 0xa5ee0d, 0xa5efa1, dword ptr [eax], 0xbfe120. Capture protocol before callback; initial72-byte minimum. Callback receives payload pointer/local size/context; negative result propagates. Reload outer capacity for unsigned bounds check; never write it. Predicate controls pending mutation versus required-preimage temporary. Forward REP MOVSD18 header copy; temporary lock deleting destructor flags1. Positive callback result discarded. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f7c5",
+      "before": {
+        "address": "00a5f7c5",
+        "function_name": "PIPEIPC_00a5f7c5",
+        "comment": "[BSP inventory 00a5f7c5] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f7c5",
+        "name": "BSP_PipeIPC_DecodeXlivePipeFrame_00a5f7c5",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 16; direct calls ecx, 0xa5f25c, 0xa5fa5a, 0xa5efa1, 0xa5f397, 0xa5f2a4, dword ptr [eax], dword ptr [eax], 0xa5f020, dword ptr [0xce22bc], dword ptr [0xce2040], dword ptr [0xce2258], 0xa5ee78, 0xa5ef36, 0xbfe120. Capture protocol; minimum72. Payload callback precedes header handling. True predicate reverses transforms then rejects when wide predicate true. False predicate copies10 DWORD header seed, transforms, SetLastError0/CryptGenRandom8; only signed-negative last error exits raw. Nonnegative failures consume local64 preimage; prior seed writes survive. Update pending then key. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fa70",
+      "before": {
+        "address": "00a5fa70",
+        "function_name": "PIPEIPC_00a5fa70",
+        "comment": "[BSP inventory 00a5fa70] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fa70",
+        "name": "BSP_PipeIPC_TransformXlivePipeSeedBits_00a5fa70",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 36; direct calls . Signed minimum lengths; first8 iterations feed zero seed bits, subsequent bits from packed seed. Exact two-state table loop, signed16 rows and 2-bit output; displacement first-byte special table D53A08. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fd15",
+      "before": {
+        "address": "00a5fd15",
+        "function_name": "PIPEIPC_00a5fd15",
+        "comment": "[BSP inventory 00a5fd15] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fd15",
+        "name": "BSP_PipeIPC_TransformXlivePipePackedBits_00a5fd15",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 36; direct calls 0xbf79f0, 0xbf79f0. Clear uint32(output_length/8-1) bytes before signed-min loop; exact two-state table recurrence; emit packed bits starting iteration8, x86 signed divide/remainder and low-byte shift. Reclear on first nonzero-displacement iteration. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ffac",
+      "before": {
+        "address": "00a5ffac",
+        "function_name": "PIPEIPC_00a5ffac",
+        "comment": "[BSP inventory 00a5ffac] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ffac",
+        "name": "BSP_XLivePipeGlobals_ConstructWideB",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5ffac. ECX=destination, stacksource; RET4; EAX=destination. Allocate/store value lock, then forward-copy72 source bytes. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ffcf",
+      "before": {
+        "address": "00a5ffcf",
+        "function_name": "PIPEIPC_00a5ffcf",
+        "comment": "[BSP inventory 00a5ffcf] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ffcf",
+        "name": "BSP_XLivePipeGlobals_ConstructKey",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5ffcf. ECX=destination, stacksource; RET4; EAX=destination. Allocate/store value lock, then forward-copy40 source bytes; preserve null allocation and throwing allocation preimages. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fff2",
+      "before": {
+        "address": "00a5fff2",
+        "function_name": "PIPEIPC_00a5fff2",
+        "comment": "[BSP inventory 00a5fff2] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fff2",
+        "name": "BSP_XLivePipeGlobals_ConstructFrameValue",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5fff2. ECX=destination, stacksource; RET4; EAX=destination. Allocate/store value lock, then forward-copy40 source bytes. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60015",
+      "before": {
+        "address": "00a60015",
+        "function_name": "PIPEIPC_00a60015",
+        "comment": "[BSP inventory 00a60015] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60015",
+        "name": "BSP_XLivePipeGlobals_ConstructSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a60015. ECX=destination, stacksource; RET4; EAX=destination. Allocate/store value lock, then forward-copy40 source bytes; preserve null allocation and throwing allocation preimages. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60038",
+      "before": {
+        "address": "00a60038",
+        "function_name": "PIPEIPC_00a60038",
+        "comment": "[BSP inventory 00a60038] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60038",
+        "name": "BSP_XLivePipeGlobals_ConstructWideA",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a60038. ECX=destination, stacksource; RET4; EAX=destination. Allocate/store value lock, then forward-copy72 source bytes. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60095",
+      "before": {
+        "address": "00a60095",
+        "function_name": "PIPEIPC_00a60095",
+        "comment": "[BSP inventory 00a60095] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60095",
+        "name": "BSP_XLivePipeGlobals_CopyRawConstant",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a60095. ECX=raw destination; RET. Forward-copy72 immutable bytes fromD55230 in checked original protocol table view. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a600ab",
+      "before": {
+        "address": "00a600ab",
+        "function_name": "PIPEIPC_00a600ab",
+        "comment": "[BSP inventory 00a600ab] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a600ab",
+        "name": "BSP_XLivePipeGlobals_ConstructRaw72",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a600ab. ECX=raw destination, stacksource; RET4; EAX=destination. A60095 initial constant copy precedes source forward-copy72, preserving destination/source alias behavior. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a6017c",
+      "before": {
+        "address": "00a6017c",
+        "function_name": "PIPEIPC_00a6017c",
+        "comment": "[BSP inventory 00a6017c] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a6017c",
+        "name": "BSP_PipeIPC_Combine_00a6017c",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a601aa",
+      "before": {
+        "address": "00a601aa",
+        "function_name": "PIPEIPC_00a601aa",
+        "comment": "[BSP inventory 00a601aa] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a601aa",
+        "name": "BSP_PipeIPC_Mix_00a601aa",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a601d5",
+      "before": {
+        "address": "00a601d5",
+        "function_name": "PIPEIPC_00a601d5",
+        "comment": "[BSP inventory 00a601d5] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a601d5",
+        "name": "BSP_PipeIPC_Combine_00a601d5",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60203",
+      "before": {
+        "address": "00a60203",
+        "function_name": "PIPEIPC_00a60203",
+        "comment": "[BSP inventory 00a60203] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60203",
+        "name": "BSP_PipeIPC_Seed_00a60203",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fa70. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a6022b",
+      "before": {
+        "address": "00a6022b",
+        "function_name": "PIPEIPC_00a6022b",
+        "comment": "[BSP inventory 00a6022b] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a6022b",
+        "name": "BSP_PipeIPC_Combine_00a6022b",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a602b2",
+      "before": {
+        "address": "00a602b2",
+        "function_name": "PIPEIPC_00a602b2",
+        "comment": "[BSP inventory 00a602b2] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a602b2",
+        "name": "BSP_PipeIPC_Mix_00a602b2",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a602dd",
+      "before": {
+        "address": "00a602dd",
+        "function_name": "PIPEIPC_00a602dd",
+        "comment": "[BSP inventory 00a602dd] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a602dd",
+        "name": "BSP_PipeIPC_Combine_00a602dd",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a6030b",
+      "before": {
+        "address": "00a6030b",
+        "function_name": "PIPEIPC_00a6030b",
+        "comment": "[BSP inventory 00a6030b] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a6030b",
+        "name": "BSP_PipeIPC_Mix_00a6030b",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60339",
+      "before": {
+        "address": "00a60339",
+        "function_name": "PIPEIPC_00a60339",
+        "comment": "[BSP inventory 00a60339] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60339",
+        "name": "BSP_PipeIPC_Combine_00a60339",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60367",
+      "before": {
+        "address": "00a60367",
+        "function_name": "PIPEIPC_00a60367",
+        "comment": "[BSP inventory 00a60367] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60367",
+        "name": "BSP_PipeIPC_Mix_00a60367",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60395",
+      "before": {
+        "address": "00a60395",
+        "function_name": "PIPEIPC_00a60395",
+        "comment": "[BSP inventory 00a60395] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60395",
+        "name": "BSP_PipeIPC_Combine_00a60395",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60527",
+      "before": {
+        "address": "00a60527",
+        "function_name": "PIPEIPC_00a60527",
+        "comment": "[BSP inventory 00a60527] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60527",
+        "name": "BSP_PipeIPC_Mix_00a60527",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60551",
+      "before": {
+        "address": "00a60551",
+        "function_name": "PIPEIPC_00a60551",
+        "comment": "[BSP inventory 00a60551] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60551",
+        "name": "BSP_PipeIPC_Mix_00a60551",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 8; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. Lengths left40/right72/output72; signed minimum40 leaves final32 initialized output bytes intact. Right constant startsD56948, row tablesD56970/D569C0. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a6057c",
+      "before": {
+        "address": "00a6057c",
+        "function_name": "PIPEIPC_00a6057c",
+        "comment": "[BSP inventory 00a6057c] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a6057c",
+        "name": "BSP_PipeIPC_Combine_00a6057c",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a605a2",
+      "before": {
+        "address": "00a605a2",
+        "function_name": "PIPEIPC_00a605a2",
+        "comment": "[BSP inventory 00a605a2] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a605a2",
+        "name": "BSP_PipeIPC_Mix_00a605a2",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a605d0",
+      "before": {
+        "address": "00a605d0",
+        "function_name": "PIPEIPC_00a605d0",
+        "comment": "[BSP inventory 00a605d0] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a605d0",
+        "name": "BSP_PipeIPC_Pack_00a605d0",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fd15. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a605f6",
+      "before": {
+        "address": "00a605f6",
+        "function_name": "PIPEIPC_00a605f6",
+        "comment": "[BSP inventory 00a605f6] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a605f6",
+        "name": "BSP_PipeIPC_Mix_00a605f6",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fe80. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60624",
+      "before": {
+        "address": "00a60624",
+        "function_name": "PIPEIPC_00a60624",
+        "comment": "[BSP inventory 00a60624] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60624",
+        "name": "BSP_PipeIPC_Pack_00a60624",
+        "evidence": "Complete exported assembly matches installed PE byte span; terminal RET cleanup 12; direct calls 0xa5fd15. Exact table rows, +4 encoded storage adjustments, and signed lengths mapped to canonical generic transforms. See docs/XLIVE_PIPE_FRAMING.md and reports/xlive_pipe_framing.json; descriptive names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6e16",
+      "before": {
+        "address": "00cd6e16",
+        "function_name": "BSP_XLivePipeGlobals_InitializeAcquisition"
+      },
+      "after": {
+        "address": "00cd6e16",
+        "name": "BSP_XLivePipeGlobals_InitializeAcquisition",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. Construct global objectF8B774/actual sectionF8B778 viaA5FA27, then registerCE099A viaBF6FF5. No rollback on registration failure. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6e2c",
+      "before": {
+        "address": "00cd6e2c",
+        "function_name": "BSP_XLivePipeGlobals_InitializeWideA"
+      },
+      "after": {
+        "address": "00cd6e2c",
+        "name": "BSP_XLivePipeGlobals_InitializeWideA",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B9A0, sourceE12AC8/72 bytes, A60038, registerCE09A4. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6e47",
+      "before": {
+        "address": "00cd6e47",
+        "function_name": "BSP_XLivePipeGlobals_InitializeWideB"
+      },
+      "after": {
+        "address": "00cd6e47",
+        "name": "BSP_XLivePipeGlobals_InitializeWideB",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B858, sourceE12B10/72 bytes, A5FFAC, registerCE09B5. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6e62",
+      "before": {
+        "address": "00cd6e62",
+        "function_name": "BSP_XLivePipeGlobals_InitializeSeed"
+      },
+      "after": {
+        "address": "00cd6e62",
+        "name": "BSP_XLivePipeGlobals_InitializeSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B8CC, sourceE12B58/40 bytes, A60015, registerCE09C6. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6e7d",
+      "before": {
+        "address": "00cd6e7d",
+        "function_name": "BSP_XLivePipeGlobals_InitializeFrameValue"
+      },
+      "after": {
+        "address": "00cd6e7d",
+        "name": "BSP_XLivePipeGlobals_InitializeFrameValue",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8BBA0, sourceE12B80/40 bytes, A5FFF2, registerCE09D7. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6e98",
+      "before": {
+        "address": "00cd6e98",
+        "function_name": "BSP_XLivePipeGlobals_InitializeKey"
+      },
+      "after": {
+        "address": "00cd6e98",
+        "name": "BSP_XLivePipeGlobals_InitializeKey",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8BADC, sourceE12BA8/40 bytes, A5FFCF, registerCE09E8. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00cd6f03",
+      "before": {
+        "address": "00cd6f03",
+        "function_name": "BSP_XLivePipeGlobals_InitializeRaw72"
+      },
+      "after": {
+        "address": "00cd6f03",
+        "name": "BSP_XLivePipeGlobals_InitializeRaw72",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=raw destination F8B8F8. ECX F8B8F8, sourceE12CB8/72 bytes, A600AB, no cleanup registration. Raw bytes have no lock/prefix. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00ce099a",
+      "before": {
+        "address": "00ce099a",
+        "function_name": "CG_static_init_00ce099a",
+        "comment": "[BSP inventory 00ce099a] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce099a",
+        "name": "BSP_XLivePipeGlobals_CleanupAcquisition",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce099a. __cdecl(); ECX=global F8B774; terminal JMP A5F91E. Destroy placement global lock/actual section, no storage free. Last instruction is tail jump, not local RET. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00ce09a4",
+      "before": {
+        "address": "00ce09a4",
+        "function_name": "CG_static_init_00ce09a4",
+        "comment": "[BSP inventory 00ce09a4] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce09a4",
+        "name": "BSP_XLivePipeGlobals_CleanupWideA",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09a4. __cdecl(); RET. Reload F8B9A0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00ce09b5",
+      "before": {
+        "address": "00ce09b5",
+        "function_name": "CG_static_init_00ce09b5",
+        "comment": "[BSP inventory 00ce09b5] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce09b5",
+        "name": "BSP_XLivePipeGlobals_CleanupWideB",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09b5. __cdecl(); RET. Reload F8B858 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00ce09c6",
+      "before": {
+        "address": "00ce09c6",
+        "function_name": "CG_static_init_00ce09c6",
+        "comment": "[BSP inventory 00ce09c6] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce09c6",
+        "name": "BSP_XLivePipeGlobals_CleanupSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09c6. __cdecl(); RET. Reload F8B8CC lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00ce09d7",
+      "before": {
+        "address": "00ce09d7",
+        "function_name": "CG_static_init_00ce09d7",
+        "comment": "[BSP inventory 00ce09d7] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce09d7",
+        "name": "BSP_XLivePipeGlobals_CleanupFrameValue",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09d7. __cdecl(); RET. Reload F8BBA0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00ce09e8",
+      "before": {
+        "address": "00ce09e8",
+        "function_name": "CG_static_init_00ce09e8",
+        "comment": "[BSP inventory 00ce09e8] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce09e8",
+        "name": "BSP_XLivePipeGlobals_CleanupKey",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09e8. __cdecl(); RET. Reload F8BADC lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    }
+  ],
+  "readback_verified_count": 85,
+  "source_reports": [
+    "xlive_pipe_framing",
+    "xlive_pipe_globals",
+    "gamepad_force_events"
+  ],
+  "no_callee_noreturn_changes": true
+}

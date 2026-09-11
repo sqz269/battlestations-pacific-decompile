@@ -23,6 +23,7 @@ public:
     XLivePipeValueLock* destroy(std::uint32_t flags) override; // A5FA3E
     void enter() override; // A5F939
     void leave() override; // A5F944
+    CRITICAL_SECTION& native_section() noexcept { return section_04; }
 private:
     CRITICAL_SECTION section_04;
 };
@@ -43,13 +44,16 @@ struct XLivePipeProtocolNativeState {
     XLivePipeEncodedValue key_7c;
 };
 
-// This image includes untouched bytes consumed by native transforms. The
-// provider must supply observed/defined allocator preimages, not invented zero
-// padding. Constructor writes only lock pointers; pending bytes survive.
+// The source is the actual new, default-initialized allocation before any lock
+// construction or payload writes. Observe its machine representation through
+// the explicit capture boundary; do not read indeterminate members in C++.
+// Recording hosts may supply explicit fixture bytes. Production must not invent
+// zero padding: constructor writes only lock pointers; pending bytes survive.
 using XLivePipeProtocolAllocationPreimage = std::array<std::uint8_t, 0xa8>;
 struct XLivePipeProtocolPreimageHost {
     virtual ~XLivePipeProtocolPreimageHost() = default;
-    virtual XLivePipeProtocolAllocationPreimage context_allocation_preimage() = 0;
+    virtual XLivePipeProtocolAllocationPreimage context_allocation_preimage(
+        const XLivePipeProtocolNativeState& actual_allocation) = 0;
 };
 
 // Borrow one canonical already-initialized global section and both global

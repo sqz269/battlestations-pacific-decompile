@@ -1,0 +1,777 @@
+{
+  "packet": "orch3_native_entry_bootstrap_i",
+  "date": "2026-09-11",
+  "status": "bounded_read_only_audit_complete",
+  "owned_files": [
+    "docs/NATIVE_ENTRY_BOOTSTRAP.md",
+    "reports/native_entry_bootstrap.json"
+  ],
+  "address_leases": [],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live_counts": [
+      63084,
+      63088
+    ],
+    "read_only": true,
+    "mutations": false
+  },
+  "conclusions": {
+    "entry": "The configured on-disk AEP directly calls the security cookie initializer and tail-jumps the named CRT startup; no EXE entry wrapper was found.",
+    "tls": "No PE TLS directory. Optional CRT callback slot109FED8 is zero-filled and has only read xrefs.",
+    "online_gate": "Under normal callee return, ApplicationInitialize reaches the online allocation. Only null allocation skips its constructor; immediate following code dereferences the published online global. No supported offline bypass is established.",
+    "argument_mismatch": "Native WinMain supplies literal cachedload to ApplicationInitialize; its parser reads that supplied argument. Parent GameStartupHost at96e7d2e instead discards mode and parses GetCommandLineA.",
+    "self_launch": "Observed process-launch facilities are the Lua shell families and update notification launch. No explicit self-launch bootstrap was identified in the configured entry chain.",
+    "peer": "Original parent/server launch arrangement and compatible encoded-frame peer remain unidentified.",
+    "vendor": "No vendor or DRM attribution established."
+  },
+  "pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "pe_offset": 288,
+    "optional_header_offset": 312,
+    "machine": "014c",
+    "image_base": "00400000",
+    "entry_rva": "007fd2bd",
+    "entry_va": "00bfd2bd",
+    "entry_file_offset": 8377021,
+    "entry_bytes16": "e89cae0100e916feffff558bec515157",
+    "sections": [
+      {
+        "name": ".text",
+        "rva": 4096,
+        "virtual_size": 9306422,
+        "raw_size": 9310208,
+        "raw_offset": 4096,
+        "characteristics": 1610612768
+      },
+      {
+        "name": ".rdata",
+        "rva": 9314304,
+        "virtual_size": 1202980,
+        "raw_size": 1204224,
+        "raw_offset": 9314304,
+        "characteristics": 1073741888
+      },
+      {
+        "name": ".data",
+        "rva": 10518528,
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "raw_offset": 10518528,
+        "characteristics": 3221225536
+      },
+      {
+        "name": ".rsrc",
+        "rva": 13238272,
+        "virtual_size": 1630400,
+        "raw_size": 1634304,
+        "raw_offset": 10584064,
+        "characteristics": 1073741888
+      }
+    ],
+    "tls": {
+      "directory_rva": "00000000",
+      "directory_size": 0
+    },
+    "data_directories": {
+      "import": {
+        "rva_or_file_offset": "00a04aa4",
+        "size": 380
+      },
+      "security": {
+        "rva_or_file_offset": "00ba7000",
+        "size": 5384
+      },
+      "tls": {
+        "rva_or_file_offset": "00000000",
+        "size": 0
+      },
+      "load_config": {
+        "rva_or_file_offset": "0097a3a8",
+        "size": 64
+      },
+      "iat": {
+        "rva_or_file_offset": "008e2000",
+        "size": 1844
+      },
+      "delay_import": {
+        "rva_or_file_offset": "00000000",
+        "size": 0
+      },
+      "clr": {
+        "rva_or_file_offset": "00000000",
+        "size": 0
+      }
+    },
+    "launch_relevant_imports": [
+      {
+        "dll": "SHELL32.dll",
+        "name": "ShellExecuteExA",
+        "iat": "00ce22f4",
+        "literal_references": [
+          {
+            "literal_va": "00a3e5b9",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00a4d3ee",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "CreateProcessA",
+        "iat": "00ce20d0",
+        "literal_references": [
+          {
+            "literal_va": "00c02c77",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c02de7",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c2a7b9",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c2f2ac",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "GetCommandLineA",
+        "iat": "00ce20ec",
+        "literal_references": [
+          {
+            "literal_va": "00bfd1ec",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c2f282",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress",
+        "iat": "00ce20f4",
+        "literal_references": [
+          {
+            "literal_va": "00bfba44",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c04fbd",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c05034",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c05139",
+            "preceding_bytes": "8b1d"
+          },
+          {
+            "literal_va": "00c053fa",
+            "preceding_bytes": "8b35"
+          },
+          {
+            "literal_va": "00c068aa",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c175b1",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c176ae",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c269d9",
+            "preceding_bytes": "8b35"
+          },
+          {
+            "literal_va": "00c2f276",
+            "preceding_bytes": "ff25"
+          },
+          {
+            "literal_va": "00c2f505",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c2f643",
+            "preceding_bytes": "ff15"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "LoadLibraryA",
+        "iat": "00ce2164",
+        "literal_references": [
+          {
+            "literal_va": "00c17581",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c269c9",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c2f34e",
+            "preceding_bytes": "ff25"
+          },
+          {
+            "literal_va": "00c2f4e4",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00c2f61b",
+            "preceding_bytes": "ff15"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "CreateNamedPipeW",
+        "iat": "00ce21d0",
+        "literal_references": [
+          {
+            "literal_va": "00a5ea51",
+            "preceding_bytes": "ff15"
+          },
+          {
+            "literal_va": "00a607f0",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "CreateToolhelp32Snapshot",
+        "iat": "00ce21d8",
+        "literal_references": [
+          {
+            "literal_va": "00a607e4",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "Process32FirstW",
+        "iat": "00ce21e0",
+        "literal_references": [
+          {
+            "literal_va": "00a607d8",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "name": "Process32NextW",
+        "iat": "00ce21e4",
+        "literal_references": [
+          {
+            "literal_va": "00a607d2",
+            "preceding_bytes": "ff25"
+          }
+        ]
+      }
+    ]
+  },
+  "byte_comparisons": [
+    {
+      "start": "00bfd2bd",
+      "end_exclusive": "00bfd2cd",
+      "length": 16,
+      "disk_bytes": "e89cae0100e916feffff558bec515157",
+      "ghidra_bytes_equal": true
+    },
+    {
+      "start": "0073dc50",
+      "end_exclusive": "0073dc8e",
+      "length": 62,
+      "disk_bytes": "68f0030000e8c18b4b0083c404894424103bc7c7842444010000140000007411682055730068105573008bc8e86f3130008b0de8abf800c74118607d7300",
+      "ghidra_bytes_equal": true
+    },
+    {
+      "start": "00a40f40",
+      "end_exclusive": "00a40f63",
+      "length": 35,
+      "disk_bytes": "516689442420e893c60000682c43d200e85b459eff83c4048d8eac030000e8edb20000",
+      "ghidra_bytes_equal": true
+    },
+    {
+      "start": "00a4c250",
+      "end_exclusive": "00a4c27f",
+      "length": 47,
+      "disk_bytes": "51568bf185f67508b8570007805e59c38d4c2404e8c7fdffff33c985c00f9cc183e901234c2404890e5e59c3cccccc",
+      "ghidra_bytes_equal": true
+    }
+  ],
+  "entry_chain": [
+    {
+      "address": "00bfd2bd",
+      "operation": "CALL security_init_cookie",
+      "target": "00c1815e",
+      "length": 5
+    },
+    {
+      "address": "00bfd2c2",
+      "operation": "JMP ___tmainCRTStartup",
+      "target": "00bfd0dd",
+      "length": 5,
+      "end_exclusive": "00bfd2c7"
+    },
+    {
+      "address": "00bfd24f",
+      "operation": "CALL WinMain",
+      "target": "008f81f0",
+      "arguments": [
+        "image_base00400000",
+        "previous_instance0",
+        "__wincmdln result",
+        "show_command"
+      ]
+    },
+    {
+      "address": "008f8429",
+      "operation": "CALL ApplicationInitialize",
+      "target": "0073d410",
+      "ecx": "application",
+      "stack_arguments": [
+        "0",
+        "pointer00ce8168 to cachedload"
+      ]
+    },
+    {
+      "address": "0073dc7c",
+      "operation": "CALL XLiveManager constructor on nonnull allocation",
+      "target": "00a40df0"
+    },
+    {
+      "address": "00a40f5e",
+      "operation": "CALL IPC slot initializer without testing XLiveInitializeEx result",
+      "target": "00a4c250"
+    },
+    {
+      "address": "00a4c264",
+      "operation": "CALL IPC create",
+      "target": "00a4c030"
+    }
+  ],
+  "crt": {
+    "library_evidence": "Ghidra Library Function Single Match: ___tmainCRTStartup and __cinit, Visual Studio2005 Release. No CRT code reconstructed in this packet.",
+    "normal_failures": "CRT heap/thread/io/argv/environment/C-initializer errors can terminate before WinMain; no successful library behavior is fabricated.",
+    "initializer_tables": [
+      {
+        "start": "00ce36e8",
+        "end_exclusive": "00ce3708",
+        "bytes": 32,
+        "slots": 8,
+        "nonzero_slots": 7,
+        "sha256": "69fbdc1fb26df63705896cb44c76e3e6e705449e1c27e3cd92330caf83362ee4",
+        "direct_launch_family_entries": []
+      },
+      {
+        "start": "00ce2734",
+        "end_exclusive": "00ce36e4",
+        "bytes": 4016,
+        "slots": 1004,
+        "nonzero_slots": 343,
+        "sha256": "1cd1050e082b0044f85199f8575e894f3162063f254f3a98df89de22d344bab8",
+        "direct_launch_family_entries": []
+      }
+    ],
+    "floating_point_callback": {
+      "slot": "00d693d8",
+      "value": "00bf6a58",
+      "role": "__fpmath; guarded by nonwritable-image test"
+    },
+    "optional_callback": {
+      "slot": "0109fed8",
+      "value": "00000000",
+      "storage": "PE .data virtual tail, zero-filled beyond raw bytes",
+      "references": "Only reads BFBCB0 andBFBCD0, plus address-taking BFBCBB in __cinit; no writing xrefs.",
+      "arguments_if_called": [
+        0,
+        2,
+        0
+      ],
+      "additional_guard": "__IsNonwritableInCurrentImage(slot address)"
+    },
+    "limit": "The343 nonnull C++ initializers were counted and hashed, not exhaustively audited transitively. Imported DLL initialization remains outside the EXE-entry proof."
+  },
+  "native_gates": [
+    {
+      "range": "008f81f8..008f82cc",
+      "condition": "COM/CoCreateInstance failures",
+      "behavior": "Continue startup; CoUninitialize still reached."
+    },
+    {
+      "range": "008f82aa..008f82f0",
+      "condition": "Game Explorer output BOOL at current ESP+10h equals zero",
+      "behavior": "Ignore HRESULT, call _exit(0). No claim about unwritten output."
+    },
+    {
+      "range": "008f8301..008f831c",
+      "condition": "CreateMutexA nonnull AND GetLastError()==B7h",
+      "behavior": "Already-running message and return0; null handle continues."
+    },
+    {
+      "range": "008f8429..008f8432",
+      "condition": "ApplicationInitialize returns normally",
+      "behavior": "Platform loop called with no return-value test."
+    },
+    {
+      "range": "0073dc25..0073dc2e",
+      "condition": "Window vslot4 returns normally",
+      "behavior": "EAX overwritten by temporary-string pointer; callback return ignored."
+    },
+    {
+      "range": "0073dc50..0073dc87",
+      "condition": "3F0-byte allocation nonnull",
+      "behavior": "Call A40DF0; null skips constructor only. Following code loadsF8ABE8 and writes+18=737D60 without null test."
+    },
+    {
+      "range": "00a40f46..00a40f63",
+      "condition": "XLiveInitializeEx returns any result",
+      "behavior": "Store result, call A4C250, then XOnlineStartup; no HRESULT success gate."
+    }
+  ],
+  "application_normal_return_cfg": {
+    "scope": "normal-return direct CFG; external calls and exceptions excluded",
+    "start": "0073d410",
+    "end_exclusive": "0073e52d",
+    "instruction_count": 1162,
+    "returns": [
+      {
+        "address": "0073e52a",
+        "length": 3,
+        "instruction": "ret 8"
+      }
+    ],
+    "return_reachable_without_online_allocation": false,
+    "after_online_reachable_without_constructor": true,
+    "constructor_skip_branch": {
+      "branch": "0073dc6e",
+      "target": "0073dc81",
+      "condition": "allocation return equals EDI=0"
+    }
+  },
+  "exact_argument_path": {
+    "caller": [
+      {
+        "site": "008f841e",
+        "instruction": "PUSH 00ce8168",
+        "literal": "cachedload"
+      },
+      {
+        "site": "008f8423",
+        "instruction": "PUSH0"
+      },
+      {
+        "site": "008f8425",
+        "instruction": "LEA ECX, application"
+      },
+      {
+        "site": "008f8429",
+        "instruction": "CALL0073d410"
+      }
+    ],
+    "callee_stack": "Prologue pushes12 bytes, subtracts12Ch, pushes16 bytes: total148h below entry ESP. First stack argument=[current ESP+14Ch], second=[current ESP+150h].",
+    "callee": [
+      {
+        "site": "0073d4c2",
+        "instruction": "MOV EBP,[ESP+150h]",
+        "meaning": "Second argument cachedload; subsequently used by debug/shader substring scans."
+      },
+      {
+        "site": "0073d926",
+        "instruction": "MOV ECX,[ESP+14Ch]",
+        "meaning": "First argument0"
+      },
+      {
+        "site": "0073d92d",
+        "instruction": "MOV [E1AE7C],ECX"
+      },
+      {
+        "site": "0073d933",
+        "instruction": "MOV ECX,EBP"
+      },
+      {
+        "site": "0073d93c",
+        "instruction": "CALL00438E40",
+        "meaning": "Duplicate supplied string; ECX const char*, EAX copy."
+      },
+      {
+        "site": "0073d945",
+        "instruction": "MOV [E1AE78],EAX"
+      },
+      {
+        "site": "0073d94a",
+        "instruction": "CALL0073CE20",
+        "meaning": "Parser reads E1AE78."
+      }
+    ],
+    "only_known_caller": "008f81f0",
+    "parser_tokens": [
+      "cachedload",
+      "nozip",
+      "fixfps",
+      "1frame",
+      "filelog",
+      "freecam",
+      "ip:",
+      "localport:",
+      "connectport:",
+      "debug:",
+      "auto",
+      "memlimit",
+      "nomemlimit"
+    ],
+    "early_substring_tokens": [
+      "genshaders",
+      "devshaders",
+      "hiresmode",
+      "reloadresources",
+      "devrr"
+    ],
+    "configured_input": "cachedload",
+    "os_command_line_consumed_by_winmain": false,
+    "ipc_disable_token": null
+  },
+  "process_creation": {
+    "create_process_a": {
+      "iat": "00ce20d0",
+      "calls": [
+        "00c02c75",
+        "00c02de5",
+        "00c2a7b7"
+      ],
+      "unreferenced_thunk": "00c2f2aa"
+    },
+    "popen_family": "C0297A validates stream modes and creates command-shell pipe/process; sole direct callerA64703 in Lua io_popenA646A0. Lua registration pointerD578DC.",
+    "system_family": "C2A630 spawn helper called viaC1B2C4, C1B33C/C1B04E, BFFC8A. BFFC8A usesCOMSPEC andcmd.exe/command.com; non-CRT direct callerA63A22 in Lua os_executeA63A10, registration pointerD5770C.",
+    "shell_execute_ex_a": {
+      "iat": "00ce22f4",
+      "call": "00a3e5b7",
+      "wrapper": "00a3e560",
+      "caller": "00a40492 in notificationsA40110",
+      "unreferenced_thunk": "00a4d3ec",
+      "ordering": "Normal initial manager pump invokes notification drain only after IPC creation; it cannot create the prerequisite peer for the earlier client open."
+    },
+    "exact_name_strings": {
+      "CreateProcessA": [
+        10516416
+      ],
+      "CreateProcessW": [],
+      "ShellExecuteExA": [
+        10507846
+      ],
+      "ShellExecuteExW": [],
+      "WinExec": []
+    },
+    "raw_references": {
+      "00c0297a": {
+        "rel32": [
+          {
+            "site": "00a64703",
+            "opcode": "e872e21900"
+          }
+        ],
+        "literal": []
+      },
+      "00c2a630": {
+        "rel32": [
+          {
+            "site": "00c1b31d",
+            "opcode": "e80ef30000"
+          }
+        ],
+        "literal": []
+      },
+      "00c1b2c4": {
+        "rel32": [
+          {
+            "site": "00c1b45f",
+            "opcode": "e860feffff"
+          },
+          {
+            "site": "00c1b52e",
+            "opcode": "e891fdffff"
+          }
+        ],
+        "literal": []
+      },
+      "00c1b33c": {
+        "rel32": [
+          {
+            "site": "00bffd17",
+            "opcode": "e820b60100"
+          },
+          {
+            "site": "00c1b0d5",
+            "opcode": "e862020000"
+          },
+          {
+            "site": "00c1b21f",
+            "opcode": "e818010000"
+          }
+        ],
+        "literal": []
+      },
+      "00c1b04e": {
+        "rel32": [
+          {
+            "site": "00bffd7f",
+            "opcode": "e8cab20100"
+          }
+        ],
+        "literal": []
+      },
+      "00bffc8a": {
+        "rel32": [
+          {
+            "site": "00a63a22",
+            "opcode": "e863c21900"
+          }
+        ],
+        "literal": []
+      },
+      "00a646a0": {
+        "rel32": [],
+        "literal": [
+          {
+            "file_offset": 9795804,
+            "va": "00d578dc"
+          }
+        ]
+      },
+      "00a63a10": {
+        "rel32": [],
+        "literal": [
+          {
+            "file_offset": 9795340,
+            "va": "00d5770c"
+          }
+        ]
+      },
+      "00a3e560": {
+        "rel32": [
+          {
+            "site": "00a40492",
+            "opcode": "e8c9e0ffff"
+          }
+        ],
+        "literal": []
+      },
+      "00c2f2aa": {
+        "rel32": [],
+        "literal": []
+      },
+      "00a4d3ec": {
+        "rel32": [],
+        "literal": []
+      }
+    },
+    "limits": "No universal proof against computed calls, encoded API resolution, arbitrary script calls, imported DLL initialization, or runtime patching."
+  },
+  "reconstruction_comparison": {
+    "parent_checkout": "J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+    "parent_head_at_read": "96e7d2e",
+    "matches": [
+      "src/winmain_startup.cpp forwards0/cachedload and ignores application return.",
+      "src/xlive_manager_owner.cpp retains IPC immediately after XLiveInitializeEx."
+    ],
+    "discrepancy": {
+      "file": "src/game_hosts.cpp",
+      "sites": [
+        660,
+        663,
+        706,
+        707
+      ],
+      "before": "application_initialize logs/discards mode; run_initialize_phases parses GetCommandLineA.",
+      "required_native_binding": "Pass supplied application string through to parser at its existing phase position. Keep separate bsp_game.exe host CLI options distinct."
+    },
+    "partial_executable_boundary": "src/game_main.cpp invokes run_win_main, but current GameStartupHost documents missing later owners and has no XLive manager constructor call. Its run is not validation of the native online path.",
+    "worker_source_edits": false,
+    "parent_notified": true
+  },
+  "metadata_gaps": [
+    {
+      "range_start": "00bfd26a",
+      "range_end_inclusive": "00bfd297",
+      "end_exclusive": "00bfd298",
+      "blocks": [
+        {
+          "start": "00bfd26a",
+          "terminal_instruction": "00bfd27d",
+          "terminal_length": 1,
+          "instruction": "RET",
+          "end_exclusive": "00bfd27e",
+          "role": "CRT SEH filter"
+        },
+        {
+          "start": "00bfd27e",
+          "last_instruction": "00bfd293",
+          "last_instruction_length": 5,
+          "instruction": "CALL00bfbdec",
+          "end_exclusive": "00bfd298",
+          "role": "CRT SEH handler; falls through to existing continuation"
+        }
+      ]
+    },
+    {
+      "range_start": "00bfd2a4",
+      "range_end_inclusive": "00bfd2b1",
+      "end_exclusive": "00bfd2b2",
+      "blocks": [
+        {
+          "start": "00bfd2a4",
+          "terminal_instruction": "00bfd2a7",
+          "terminal_length": 1,
+          "instruction": "RET",
+          "end_exclusive": "00bfd2a8",
+          "role": "CRT SEH filter"
+        },
+        {
+          "start": "00bfd2a8",
+          "last_instruction": "00bfd2ab",
+          "last_instruction_length": 7,
+          "instruction": "MOV [EBP-4],FFFFFFFE",
+          "end_exclusive": "00bfd2b2",
+          "role": "CRT SEH handler; falls through to existing return path"
+        }
+      ]
+    }
+  ],
+  "metadata_policy": "No new ordinary function entries requested for interior CRT SEH blocks. Parent owns previously reported A607EE thunk. No small missing game wrapper found for source expansion.",
+  "verification": {
+    "read_only_pe_parse": true,
+    "bounded_ghidra_and_raw_disassembly": true,
+    "critical_disk_ghidra_spans_equal": true,
+    "json_assertions": "passed",
+    "staged_whitespace_check": "passed",
+    "build": "not run; evidence-only packet",
+    "runtime": "not run",
+    "installed_files_modified": false,
+    "inspected_processes_launched": false,
+    "pipes_or_threads_started": false
+  },
+  "remaining_dependency": "Verified original parent/server image and its actual child-launch/protocol arrangement; current target HashMismatch and replacement runtime do not establish this. Genuine DLL loading by itself has not been shown to provide the peer."
+}

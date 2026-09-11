@@ -1,0 +1,110 @@
+{
+  "packet": "orch3_pipe_preimage_capture_i",
+  "source": "src/xlive_pipe_preimage.cpp",
+  "inherited_evidence": [
+    "reports/xlive_pipe_preimage_audit.json at143d280",
+    "reports/xlive_pipe_framing.json at9fc65fb",
+    "reports/xlive_pipe_protocol.json atb9aadab"
+  ],
+  "native_reconstruction_changes": false,
+  "ghidra_writes": false,
+  "new_native_address_claims": 0,
+  "changes": {
+    "protocol_provider": "context_allocation_preimage(const XLivePipeProtocolNativeState& actual_allocation)",
+    "temporary_provider": "temporary_wide_preimage(const XLivePipeEncodedWideValue& actual_temporary)",
+    "production_binding": "CurrentProcessXLivePipePreimageHost implements both providers through actual source addresses.",
+    "allocation": "Default initialization leaves actual payload unwritten. unique_ptr owns new context until provider/copy succeed; provider throw frees it before original exception propagation.",
+    "temporary": "Default-initialized actual Wide local; create/store lock first; capture payload and copy observed representation back. Provider throw deletes actual lock flags1. Native transform exception semantics unchanged.",
+    "random": "Real API receives an uninitialized local8 buffer. Capture immediately after API into output, including partial failure writes and untouched remainder; mark all8 bytes known, preserve BOOL and LastError.",
+    "random_provider": "Removed unused random method from FramePreimageHost. SystemHost recording-input method retained; Win32 returns unknown carrier never passed to real API.",
+    "construction_compatibility": "Win32 protocol/frame system-host constructor signatures still take their existing provider host references."
+  },
+  "compiled_leaf": {
+    "abi": "new MSVC x86 cdecl(source,destination,size_t), caller stack cleanup; not original-game ABI",
+    "bytes": "56578b74240c8b7c24108b4c2414f3a45f5ec3",
+    "byte_length": 19,
+    "sha256": "ffeb0ecea352d0c1d317043e2b745ae1481b87f70c8dcbd1e1bf39024a559f30",
+    "disassembly": "?capture_current_process_xlive_pipe_bytes@bsp@@YAXPBXPAXI@Z (void __cdecl bsp::capture_current_process_xlive_pipe_bytes(void const *,void *,unsigned int)):\n  00000000: 56                 push        esi\n  00000001: 57                 push        edi\n  00000002: 8B 74 24 0C        mov         esi,dword ptr [esp+0Ch]\n  00000006: 8B 7C 24 10        mov         edi,dword ptr [esp+10h]\n  0000000A: 8B 4C 24 14        mov         ecx,dword ptr [esp+14h]\n  0000000E: F3 A4              rep movs    byte ptr es:[edi],byte ptr [esi]\n  00000010: 5F                 pop         edi\n  00000011: 5E                 pop         esi\n  00000012: C3                 ret",
+    "no_calls": true,
+    "no_tls": true,
+    "no_win32_apis": true,
+    "no_allocation": true,
+    "nonvolatile_registers_preserved": [
+      "ESI",
+      "EDI"
+    ],
+    "preconditions": [
+      "valid distinct owned ranges",
+      "normal Win32 direction flag clear",
+      "MSVC Win32 x86 compiler extension"
+    ]
+  },
+  "optimized_evidence": {
+    "compiler": "MSVC14.51.36231 Win32 /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict",
+    "random_method_assembly": "\n; _this$ = ecx\n\n; 399  : bool Win32XLivePipeFrameSystemHost::random_bytes(HCRYPTPROV p, XLivePipeRandomOutput& out) {\n\n\tsub\tesp, 12\t\t\t\t\t; 0000000cH\n\tmov\teax, DWORD PTR ___security_cookie\n\txor\teax, esp\n\tmov\tDWORD PTR __$ArrayPad$[esp+12], eax\n\tpush\tebx\n\tpush\tesi\n\tmov\tesi, DWORD PTR _out$[esp+16]\n\n; 400  :     // This is the actual API output region. Braces/value initialization here\n; 401  :     // would replace the failure preimage with invented zeros.\n; 402  :     std::array<Byte, 8> native_output;\n; 403  :     const bool success = CryptGenRandom(p, 8, native_output.data()) != FALSE;\n\n\tlea\teax, DWORD PTR _native_output$[esp+20]\n\tpush\teax\n\tpush\t8\n\tpush\tDWORD PTR _p$[esp+24]\n\tcall\tDWORD PTR __imp__CryptGenRandom@12\n\ttest\teax, eax\n\n; 404  :     capture_current_process_xlive_pipe_bytes(native_output.data(), out.bytes.data(), native_output.size());\n\n\tlea\teax, DWORD PTR _native_output$[esp+20]\n\tpush\t8\n\tpush\tesi\n\tpush\teax\n\tsetne\tbl\n\tcall\t?capture_current_process_xlive_pipe_bytes@bsp@@YAXPBXPAXI@Z ; bsp::capture_current_process_xlive_pipe_bytes\n\n; 407  : }\n\n\tmov\tecx, DWORD PTR __$ArrayPad$[esp+32]\n\tadd\tesp, 12\t\t\t\t\t; 0000000cH\n; File C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\bitset\n\n; 350  :             _CSTD memset(&_Array, 0xFF, sizeof(_Array));\n\n\tmov\tDWORD PTR [esi+8], -1\n; File J:\\PROG\\battlestations-pacific-decompile-orch3-xlive-updates-20260910f\\src\\xlive_pipe_framing.cpp\n\n; 406  :     return success;\n\n\tmov\tal, bl\n; File C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\bitset\n\n; 585  :             _Array[_Words] &= (_Ty{1} << _Bits % _Bitsperword) - 1;\n\n\tand\tDWORD PTR [esi+8], 255\t\t\t; 000000ffH\n; File J:\\PROG\\battlestations-pacific-decompile-orch3-xlive-updates-20260910f\\src\\xlive_pipe_framing.cpp\n\n; 406  :     return success;\n\n\tpop\tesi\n\tpop\tebx\n\n; 407  : }\n\n\txor\tecx, esp\n\tcall\t@__security_check_cookie@4\n\tadd\tesp, 12\t\t\t\t\t; 0000000cH\n\tret\t8\n",
+    "allocation_method_assembly": "\n; _this$ = ecx\n\n; 179  : XLivePipeProtocolNativeState* Win32XLivePipeProtocolSystemHost::allocate_context() {\n\n\tpush\tebp\n\tmov\tebp, esp\n\tpush\t-1\n\tpush\t__ehhandler$?allocate_context@Win32XLivePipeProtocolSystemHost@bsp@@UAEPAUXLivePipeProtocolNativeState@2@XZ\n\tmov\teax, DWORD PTR fs:0\n\tpush\teax\n\tsub\tesp, 176\t\t\t\t; 000000b0H\n\tmov\teax, DWORD PTR ___security_cookie\n\txor\teax, ebp\n\tmov\tDWORD PTR __$ArrayPad$[ebp], eax\n\tpush\tebx\n\tpush\tesi\n\tpush\tedi\n\tpush\teax\n\tlea\teax, DWORD PTR __$EHRec$[ebp]\n\tmov\tDWORD PTR fs:0, eax\n\tmov\tesi, ecx\n\n; 180  :     // Default initialization is deliberate: value initialization would erase\n; 181  :     // the actual allocation bytes before the provider can observe them.\n; 182  :     std::unique_ptr<XLivePipeProtocolNativeState> context(new XLivePipeProtocolNativeState);\n\n\tpush\t168\t\t\t\t\t; 000000a8H\n\tcall\t??2@YAPAXI@Z\t\t\t\t; operator new\n\tmov\tebx, eax\n\tadd\tesp, 4\n; File C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xmemory\n\n; 1551 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}\n\n\tmov\tDWORD PTR _context$[ebp], ebx\n; File J:\\PROG\\battlestations-pacific-decompile-orch3-xlive-updates-20260910f\\src\\xlive_pipe_protocol.cpp\n\n; 183  :     const auto preimage = preimages_.context_allocation_preimage(*context);\n\n\tmov\tecx, DWORD PTR [esi+4]\n\tlea\teax, DWORD PTR _preimage$[ebp]\n\tpush\tebx\n\tpush\teax\n\tmov\tDWORD PTR __$EHRec$[ebp+8], 0\n\tmov\tedx, DWORD PTR [ecx]\n\tcall\tDWORD PTR [edx+4]\n\n; 184  :     std::memcpy(context.get(), preimage.data(), preimage.size());\n\n\tmov\tecx, 42\t\t\t\t\t; 0000002aH\n\tlea\tesi, DWORD PTR _preimage$[ebp]\n\tmov\tedi, ebx\n\n; 185  :     return context.release(); // provider failure frees this still-unpublished allocation\n\n\tmov\teax, ebx\n\trep movsd\n\n; 186  : }\n\n\tmov\tecx, DWORD PTR __$EHRec$[ebp]\n\tmov\tDWORD PTR fs:0, ecx\n\tpop\tecx\n\tpop\tedi\n\tpop\tesi\n\tpop\tebx\n\tmov\tecx, DWORD PTR __$ArrayPad$[ebp]\n\txor\tecx, ebp\n\tcall\t@__security_check_cookie@4\n\tmov\tesp, ebp\n\tpop\tebp\n\tret\t0\n_TEXT\tENDS\n;\tCOMDAT text$x\ntext$x\tSEGMENT\n__unwindfunclet$?allocate_context@Win32XLivePipeProtocolSystemHost@bsp@@UAEPAUXLivePipeProtocolNativeState@2@XZ$0:\n\tlea\tecx, DWORD PTR _context$[ebp]\n\tjmp\t??1?$unique_ptr@UXLivePipeProtocolNativeState@bsp@@U?$default_delete@UXLivePipeProtocolNativeState@bsp@@@std@@@std@@QAE@XZ ; std::unique_ptr<bsp::XLivePipeProtocolNativeState,std::default_delete<bsp::XLivePipeProtocolNativeState> >::~unique_ptr<bsp::XLivePipeProtocolNativeState,std::default_delete<bsp::XLivePipeProtocolNativeState> >\n\tint\t3\n\tint\t3\n\tint\t3\n\tint\t3\n\tint\t3\n__ehhandler$?allocate_context@Win32XLivePipeProtocolSystemHost@bsp@@UAEPAUXLivePipeProtocolNativeState@2@XZ:\n\tnpad\t1\n\tnpad\t1\n\tmov\tedx, DWORD PTR [esp+8]\n\tlea\teax, DWORD PTR [edx+12]\n\tmov\tecx, DWORD PTR [edx-192]\n\txor\tecx, eax\n\tcall\t@__security_check_cookie@4\n\tmov\tecx, DWORD PTR [edx-4]\n\txor\tecx, eax\n\tcall\t@__security_check_cookie@4\n\tmov\teax, OFFSET __ehfuncinfo$?allocate_context@Win32XLivePipeProtocolSystemHost@bsp@@UAEPAUXLivePipeProtocolNativeState@2@XZ\n\tjmp\t___CxxFrameHandler3\ntext$x\tENDS\n",
+    "pending_payload_zeroed": false,
+    "temporary_payload_zeroed": false,
+    "random_buffer_zeroed": false
+  },
+  "representation": {
+    "observed": "actual current-process heap/stack bytes",
+    "not_claimed": [
+      "original-game allocation/stack trace",
+      "native game ABI compatibility",
+      "same bytes across compiler/allocator/execution histories",
+      "portable ISO C++ indeterminate-value access"
+    ],
+    "encoded_dependency": "Only low2 bits of each encoded preimage byte affect recovered transforms. All8 actual bits are captured into fully written C++ bytes.",
+    "random_dependency": "All64 bits of raw8 API output/preimage are consumed; encoded low2-bit rule does not apply."
+  },
+  "checks": {
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "ctest": "2/2 reconstructed_math and native_math_differential passed",
+    "frame_fixture": "local/frame_fixture.cpp passed with new actual-temporary argument and throwing-provider deleting-lock cleanup",
+    "capture_fixture": "local/pipe_preimage_capture_fixture.cpp passed against built bsp_core.lib",
+    "capture_fixture_cases": [
+      "actual allocated object address passed to provider",
+      "default initialization preserves known fixture payload patterns",
+      "actual captured allocation representation copied back unchanged",
+      "heap allocation freed exactly once on provider throw",
+      "current-process capture preserves LastError sentinels",
+      "real compiled Win32 random method with recording IAT binding: partial failure writes2 bytes and leaves6 untouched",
+      "all8 observed bytes and exact BOOL/error preserved on failure",
+      "recorded success writes all8 and preserves exact status/error"
+    ],
+    "capture_last_error_sentinels": [
+      "1234abcd",
+      "3456789a"
+    ],
+    "recorded_api_last_error": "8abc1234",
+    "real_crypt_gen_random_calls": 0,
+    "endpoints_opened": 0,
+    "threads_started": 0,
+    "sdk_account_operations": 0,
+    "game_launches": 0,
+    "permanent_tests_added": 0
+  },
+  "fixture_import_boundary": "Only the ignored fixture executable temporarily replaces its own CryptGenRandom IAT slot with a synchronous recording function, then restores the original slot. Production always forwards to the real import.",
+  "files": {
+    "include/bsp/xlive_pipe_protocol.hpp": "e4a944748e814766b539638fa9266e82ff966b5f87288225718cb800ebf4ffb1",
+    "src/xlive_pipe_protocol.cpp": "9d06731b2ac6358d79d602252c88844960f99577b0cae2feadd963683696c634",
+    "include/bsp/xlive_pipe_framing.hpp": "38bdf31eee42d9e36fcb5d29fb552675d8d5716da087ba45b84b04ec4ebdb924",
+    "src/xlive_pipe_framing.cpp": "0833accc90dc4b08e32eef20eb8afd096c5167053660beb6d3639ca9adb1a1c3",
+    "include/bsp/xlive_pipe_preimage.hpp": "fb03ca3eaa568546304b88243203a880f943e044f88362061c2731912b135068",
+    "src/xlive_pipe_preimage.cpp": "d8d7708366641d3578cc9979dcce35e59a651043bbda485a62976c847d75e77a",
+    "local/frame_fixture.cpp": "4657b623d3168f316387f768bc4412cc867584266db323e7e5322fb7a7bf0392",
+    "local/pipe_preimage_capture_fixture.cpp": "d53fa615fd29eb9ad47975aa5d6b23041fbd92ee2b8f869ef6066e5745798549",
+    "local/xlive_pipe_preimage_optimized.obj": "1339dd050258633a70a6fca1b99cab404295eb6a615b24cea215c42a9bb7bf64",
+    "local/xlive_pipe_preimage_disasm.txt": "c40ddc0c0755519ab1c8db7eeaf6c92b11ddc12ebf7de42b2c40ba0959e436ee",
+    "local/xlive_pipe_framing_optimized.asm": "57b999f539a28cbc65d10c524e3d9c2eb3bbed697c265c06ea525bf200ab7bf8",
+    "local/xlive_pipe_protocol_optimized.asm": "0609508045f12e6fe1f8a81fab505b475b1855a31f2002a8b7c592dd643efdb3"
+  },
+  "remaining_contracts": [
+    "Caller preserves valid buffer/global/host lifetimes and native transform preconditions.",
+    "Recording providers are explicit fixture inputs, not production traces.",
+    "Capture leaf uses compiler-specific machine semantics and assumes valid storage; no fake success on invalid pointers.",
+    "Native frame/pipe endpoint compatibility remains a separate runtime validation boundary.",
+    "Earlier framing packet pre-lock capture description is superseded by docs/XLIVE_PIPE_PREIMAGE.md."
+  ]
+}

@@ -143,3 +143,21 @@ not game execution, rendering parity, arbitrary-profile support or native CRT
 TLS equivalence. The fixture uses the host FH3 personality and explicit C++
 exceptions at observer boundaries. No game installation or saved analysis was
 modified. See [the complete audit](../reports/native_renderer_vertex_layout_binding_audit.json).
+
+## Primary integration
+
+The primary registered the source in CMake, passed the strict Win32 build and
+both existing CTests, verified 90 worker artifact/source pins and 22 current
+source/provider files, and refreshed 19 live-Ghidra/installed-PE spans (511 bytes).
+The unchanged fixture linked frozen main library `741589f873ca1219d29febe875ebc7f6278bb6cf6acf7ac547b21a0a24704f2d`.
+Its 14 scenarios again matched all 32,370 DWORDs, 24 getter/COM/catch records
+and 31 field writes per implementation. Paired isolated double-fault processes
+matched exit 91 and the complete captured terminal state. Real HAL devices and
+vertex declarations participated, including full hardware/tree/CPU owner cleanup.
+All 14 compiled providers, 40 actual module-entry/disk checks, four complete
+original-code postimages and every observed getter/call/write PC passed.
+The main process uses Windows apphelp for Direct3DCreate9; that verified routing
+is admitted only for the factory label, while actual COM methods remain in
+d3d9 and section methods in ntdll. No runtime/source change was needed.
+The preserved name now has appended saved Ghidra evidence, a refreshed export
+and complete reconstruction record. No permanent tests were added.

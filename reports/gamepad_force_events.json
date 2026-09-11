@@ -1,0 +1,84 @@
+{
+  "packet": "orch3_gamepad_force_events_g",
+  "source": "src/gamepad_force_events.cpp",
+  "header": "include/bsp/gamepad_force_events.hpp",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_target_verified_bsp_wrappers_and_original_PE_decode",
+    "names": "descriptive hypotheses; existing compiler-generated wrapper names retained",
+    "ghidra_mutations": 0
+  },
+  "functions": [
+    {"address":"00869010","name":"create_constant_force_event_00869010","hypothesis":"BSP_ConstantForceEventDefinition_Create","original_abi":"thiscall ECX=definition; stack subject; EAX=event/null; RET4","end":"00869075","final_instruction":"00869073","final_length":3,"evidence":"20h outer allocation, then 873450 with definition and subject; null outer allocation returns null"},
+    {"address":"008690f0","name":"create_fading_force_event_008690f0","hypothesis":"BSP_FadingForceEventDefinition_Create","original_abi":"thiscall ECX=definition; stack subject; EAX=event/null; RET4","end":"00869155","final_instruction":"00869153","final_length":3,"evidence":"20h outer allocation, then 873560 with definition and subject; null outer allocation returns null"},
+    {"address":"00869290","name":"create_alternating_force_event_00869290","hypothesis":"BSP_AlternatingForceEventDefinition_Create","original_abi":"thiscall ECX=definition; stack subject; EAX=event/null; RET4","end":"008692f5","final_instruction":"008692f3","final_length":3,"evidence":"20h outer allocation, then 873750 with definition and subject; null outer allocation returns null"},
+    {"address":"00873450","name":"construct_constant_force_event_00873450","hypothesis":"BSP_ConstantForceEvent_Construct","original_abi":"thiscall ECX=20h event storage; stack definition,subject; EAX=this; RET8","end":"00873509","final_instruction":"00873507","final_length":3,"evidence":"D0DCD0/D0DCCC event; 14h D0DB78 kind0 request, definition channel20 duration24 amplitude2C; submit ECX0 EDXrequest at8734ED; returned ID stored1C"},
+    {"address":"00873560","name":"construct_fading_force_event_00873560","hypothesis":"BSP_FadingForceEvent_Construct","original_abi":"thiscall ECX=20h event storage; stack definition,subject POINTER; EAX=this; RET8","end":"008736fd","final_instruction":"008736fb","final_length":3,"evidence":"D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1"},
+    {"address":"00873750","name":"construct_alternating_force_event_00873750","hypothesis":"BSP_AlternatingForceEvent_Construct","original_abi":"thiscall ECX=20h event storage; stack definition,subject; EAX=this; RET8","end":"00873835","final_instruction":"00873833","final_length":3,"evidence":"D0DD40/D0DD3C event; 28h D0DBA0 kind2 request; definition channel20 duration24 selector2C values30/34 periods38/3C; submit ECX0 EDXrequest at873819"},
+    {"address":"00872150","name":"force_event_callback_noop_00872150","hypothesis":"BSP_ForceEvent_CallbackNoop","original_abi":"ECX=event; two ignored DWORD stack arguments; RET8; return not specified","end":"00872152","final_instruction":"00872150","final_length":3,"evidence":"Original bytes C20800, genuine no-op at common event vtable2C; no current Ghidra function definition"},
+    {"address":"00872160","name":"cancel_force_event_00872160","hypothesis":"BSP_ForceEvent_CancelRequest","original_abi":"thiscall ECX=event; no stack arguments; RET; no consumed return","end":"00872177","final_instruction":"00872177","final_length":1,"evidence":"Common vtable34; if handle1C nonzero callA957F0, then write handle zero after call"},
+    {"address":"00872180","name":"force_event_complete_00872180","hypothesis":"BSP_ForceEvent_IsRequestComplete","original_abi":"thiscall ECX=event; no stack arguments; AL=bool; RET","end":"00872193","final_instruction":"00872193","final_length":1,"evidence":"Common vtable8; address event1C toA957D0, compare actual resulting handle zero; no current Ghidra function definition"},
+    {"address":"00873530","name":"delete_force_event","hypothesis":"CG_scalar_deleting_dtor_00873530","original_abi":"thiscall ECX=event; stack flags; EAX=old this; RET4","end":"0087355a","final_instruction":"00873558","final_length":3,"evidence":"Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873552"},
+    {"address":"00873720","name":"delete_force_event","hypothesis":"CG_scalar_deleting_dtor_00873720","original_abi":"thiscall ECX=event; stack flags; EAX=old this; RET4","end":"0087374a","final_instruction":"00873748","final_length":3,"evidence":"Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873742"},
+    {"address":"00873860","name":"delete_force_event","hypothesis":"CG_scalar_deleting_dtor_00873860","original_abi":"thiscall ECX=event; stack flags; EAX=old this; RET4","end":"0087388a","final_instruction":"00873888","final_length":3,"evidence":"Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873882"},
+    {"address":"0042b2f0","name":"force_event_vector_length_0042b2f0","hypothesis":"BSP_Vector3_LengthFloatThreshold","original_abi":"ECX=float[3]; no stack arguments; ST0=float; RET","end":"0042b33c","final_instruction":"0042b33c","final_length":1,"evidence":"x87 (y*y+x*x)+z*z ->float; compare strict double1e-10 atCE3820; actual CRT BF7030 ->float when above, zero otherwise including unordered; FSQRT confirmed BF706C"}
+  ],
+  "native_definition_fields": {
+    "shared": {"channel":"20","duration":"24"},
+    "constant": {"amplitude":"2c"},
+    "fading": {"radius":"28","amplitude":"2c"},
+    "alternating": {"selector_byte":"2c","first_value":"30","second_value":"34","first_period":"38","second_period":"3c"}
+  },
+  "ownership": {
+    "event_subject_and_definition":"borrowed",
+    "event_common_state":"references4=1; activeC=1; type18=6; returned request ID1C",
+    "request_owner":"existing canonical device GamepadForceState registry after successful insertion",
+    "submission":"active gamepad index0 through existing GamepadForceContext, no copied groups or registry",
+    "event_delete_cancels_request":false,
+    "explicit_cancel":"remove current request if nonzero; then zero actual event handle after callback",
+    "complete":"validate actual handle by reference; true iff resulting handle zero"
+  },
+  "spatial_dependencies": {
+    "source":"actual subject+110 canonical CameraTransform, existing B6DB70 refresh when flags5C lacks2",
+    "source_position":"worldF0 indices12..14, native120/124/128",
+    "target":"current E188A8 game+1ED4 reloaded after source refresh",
+    "target_pose":"borrowed validC8 and worldCC; positionFC/100/104",
+    "target_refresh":"required actual00414DB0 operation, same explicit boundary used by existing unit hosts; not reimplemented",
+    "calculation":"float target-source components; recovered thresholded length; float(1-distance/radius), ordered lower clamp only, amplitude multiplication after request allocation",
+    "absent_target":"no source access, gain0, actual request still allocated and amplitude multiplied"
+  },
+  "analysis_gaps": {
+    "missing_function_ranges":[["00872150","00872152"],["00872180","00872193"]],
+    "false_noreturn_free_fallthroughs":[["00873552","00873554"],["00873742","00873744"],["00873882","00873884"]],
+    "scalar_wrapper_stored_outer_bounds":"already include final RET; missing interior ADD ESP4 instruction is confirmed from PE bytes",
+    "parent_informed":true
+  },
+  "uncertainty": [
+    "Typed storage/layout, standard allocator, and C++ exception cleanup are not native event vtable/intrusive/SEH ABI.",
+    "Typed handle begins at zero during host calls; native writes1C only after submission returns.",
+    "Inner nothrow allocation null uses canonical typed submit guard for a present device; native dereferences unchecked. Outer allocation null return preserved.",
+    "Null subject with a present target and disappearing target after refresh are typed errors instead of unchecked native dereferences.",
+    "Current-target class semantic identity is unresolved; required actual pose refresh and owner lifetime binding remain external.",
+    "Existing registry exhausted-ID duplicate ownership behavior remains; this packet adds no collision policy.",
+    "Actual installed CRT sqrt is used; exhaustive native CRT/FPU-control, signaling-NaN, allocation failure and unwind equivalence were not tested.",
+    "No native event-system integration, hardware haptics, or gameplay validation."
+  ],
+  "validation": {
+    "seed_command":"python tools/ghidra_export.py verify-seeds",
+    "verified_seeds":8,
+    "seed_log":"local/gamepad-force-events-seeds.json",
+    "build_command":"./scripts/build.ps1",
+    "target":"MSVC Win32 Release /W4 /WX",
+    "build_passed":true,
+    "build_log":"local/gamepad-force-events-build.log",
+    "existing_ctests":["reconstructed_math","native_math_differential"],
+    "existing_ctests_passed":2,
+    "focused_fixture":"local/gamepad_force_events_fixture.cpp",
+    "fixture_command":"cmd /c local\\run_gamepad_force_events_fixture.cmd",
+    "fixture_log":"local/gamepad-force-events-fixture.log",
+    "fixture_passed":true,
+    "fixture_scope":"real request classes/maps and canonical source transform; explicit recording device/spatial doubles; mapping/index0, ownership/cancel ordering, target reload, geometry, missing target, selected clamp/NaN/threshold cases",
+    "hardware_or_game_runtime_calls":false
+  }
+}

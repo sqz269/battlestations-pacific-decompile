@@ -1,0 +1,77 @@
+{
+  "packet": "orch3_pose_refresh_h",
+  "source": "src/pose_refresh.cpp",
+  "header": "include/bsp/pose_refresh.hpp",
+  "function": {
+    "address": "00414db0",
+    "name": "refresh_pose_00414db0",
+    "hypothesis": "BSP_EntityPose_RefreshWorld",
+    "original_abi": "ECX=pose owner, no stack arguments, RET; no meaningful EAX contract because clean path leaves EAX untouched",
+    "end": "00414e08",
+    "final_instruction": "00414e08",
+    "final_length": 1,
+    "length": 89,
+    "instruction_count": 28,
+    "sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175"
+  },
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_target_verified_bsp_wrappers_and_original_PE_decode",
+    "ghidra_mutations": 0,
+    "missing_definitions": [],
+    "flow_gaps": [],
+    "final_instruction_missing": false,
+    "fixture_bytes_match_disk": true,
+    "byte_comparison": "local/pose-refresh-byte-comparison.json"
+  },
+  "sequence": [
+    {"address":"00414db6","operation":"if actual byteC8 is any nonzero value, return without parent/matrix accesses or stores"},
+    {"address":"00414dbf","operation":"read actual parent3C; recurse414DB0 when nonnull"},
+    {"address":"00414dcb","operation":"reload actual parent3C after recursion; do not separately refresh a changed new parent"},
+    {"address":"00414de0","operation":"nonnull parent: canonical full413920(local74 * parent.worldCC) into disjoint40h scratch"},
+    {"address":"00414df1","operation":"canonical sequential x874134F0 copy scratch to worldCC, or local74 directly for root"},
+    {"address":"00414df6","operation":"store byteC8=1 after matrix completes"},
+    {"address":"00414dfd","operation":"store byte10C=0 after byteC8"}
+  ],
+  "canonical_composition": {
+    "matrix_type": "CameraMatrix from camera_projection.hpp",
+    "matrix_copy": "copy_camera_matrix_004134f0",
+    "matrix_multiply": "multiply_camera_matrices_00413920",
+    "view": "PoseRefreshView borrows actual parent slot, local74, validity byteC8, worldCC and derived byte10C",
+    "owned_matrices_flags_or_hierarchy": false,
+    "parent_slot": "borrow actual PoseRefreshView* field, or actual void* owner field plus pure existing-view resolver; both reread the actual field",
+    "existing_type_audit": ["CameraTransform uses different native offsets and is not substituted", "SceneEntity and scene factory frames are parse/factory values", "UnitInstanceState and UnitMotionState contain partial pose projections", "UnitShiftedUpdateState already borrows canonical CameraMatrix at74"],
+    "shared_scene_renderer_unit_force_event_files_modified": false,
+    "caller_binding": "parent integrator binds existing host operations to this real refresh using the same live pose fields"
+  },
+  "semantics_and_limits": [
+    "No descendant traversal, notification, ownership operation or game virtual callback.",
+    "Native any-nonzero valid byte is preserved verbatim on clean return; dirty completion writes1 then derived0.",
+    "No cycle guard, early valid mark, self-validity recheck, changed-parent refresh, matrix sanitization, FPU-control change or rollback.",
+    "Dirty ancestry cycles retain native unbounded recursion behavior; stable valid ancestry is required for successful completion.",
+    "Canonical x87 multiplication/copy retain arithmetic and sequential float spills; disjoint product precedes final copy.",
+    "Exact matrix aliases are supported through existing canonical operations; arbitrary partial overlap or matrix/hierarchy/flag overlap is outside the typed contract.",
+    "Resolver is a pure existing-view lookup with no allocation, retention, callbacks or fallback; unsupported nonnull identity is an explicit binding failure.",
+    "View/parent/field lifetimes remain owner obligations; no original object-layout, native allocator or SEH ABI claim.",
+    "FPU traps, signaling NaNs, reentrant/asynchronous mutation and malformed cycles were not exhaustively tested; no gameplay validation."
+  ],
+  "validation": {
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "verified_seeds": 8,
+    "seed_log": "local/pose-refresh-seeds.json",
+    "build_command": "./scripts/build.ps1",
+    "build_target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "build_log": "local/pose-refresh-build.log",
+    "existing_ctests_passed": ["reconstructed_math", "native_math_differential"],
+    "fixture_source": "local/pose_refresh_fixture.cpp",
+    "fixture_command": "cmd /c local\\run_pose_refresh_fixture.cmd",
+    "fixture_log": "local/pose-refresh-fixture.log",
+    "fixture_passed": true,
+    "fixture_reference": "disk-matched original89-byte414DB0 body; recursion unchanged; two matrix calls redirected through ABI adapters to shared canonical matrix implementations",
+    "fixture_cases": ["three-level bit-equal world matrices", "full projective coefficient and local-times-parent order", "parent lookup/reload ordering", "dirty flags", "noncanonical nonzero clean byte and invalid parent skipped", "actual typed parent field rebinding", "exact local/world and parent-world aliases"],
+    "fixture_limit": "Differential pose control flow/state, not independent matrix-arithmetic validation or original native object lifetime/SEH behavior",
+    "game_or_hardware_calls": false
+  }
+}

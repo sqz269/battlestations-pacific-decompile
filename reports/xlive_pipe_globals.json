@@ -1,0 +1,472 @@
+{
+  "packet": "orch3_xlive_pipe_globals_g",
+  "source": "src/xlive_pipe_globals.cpp",
+  "header": "include/bsp/xlive_pipe_globals.hpp",
+  "shared_header_change": "Parent-authorized nonvirtual native_section() accessor in xlive_pipe_protocol.hpp, returns the same actual section without layout casts.",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live_count": 63071,
+    "mode": "read-only",
+    "mutated": false,
+    "evidence": "capped assembly/decompile/proto/flow/export; raw missing initializer disassembly; exact terminal bytes; CRT initializer array xrefs and bytes"
+  },
+  "functions": [
+    {
+      "address": "00cd6e16",
+      "name": "initialize_xlive_pipe_acquisition_global_00cd6e16",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeAcquisition",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=actual CRT registration int",
+      "native_last_instruction": "00cd6e2b",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6e2b",
+      "native_exclusive_end": "00cd6e2c",
+      "notes": "Construct global objectF8B774/actual sectionF8B778 viaA5FA27, then registerCE099A viaBF6FF5. No rollback on registration failure."
+    },
+    {
+      "address": "00cd6e2c",
+      "name": "initialize_xlive_pipe_frame_global_00cd6e2c",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeWideA",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=actual CRT registration int",
+      "native_last_instruction": "00cd6e46",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6e46",
+      "native_exclusive_end": "00cd6e47",
+      "notes": "ECX F8B9A0, sourceE12AC8/72 bytes, A60038, registerCE09A4."
+    },
+    {
+      "address": "00cd6e47",
+      "name": "initialize_xlive_pipe_frame_global_00cd6e47",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeWideB",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=actual CRT registration int",
+      "native_last_instruction": "00cd6e61",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6e61",
+      "native_exclusive_end": "00cd6e62",
+      "notes": "ECX F8B858, sourceE12B10/72 bytes, A5FFAC, registerCE09B5."
+    },
+    {
+      "address": "00cd6e62",
+      "name": "initialize_xlive_pipe_seed_global_00cd6e62",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeSeed",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=actual CRT registration int",
+      "native_last_instruction": "00cd6e7c",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6e7c",
+      "native_exclusive_end": "00cd6e7d",
+      "notes": "ECX F8B8CC, sourceE12B58/40 bytes, A60015, registerCE09C6."
+    },
+    {
+      "address": "00cd6e7d",
+      "name": "initialize_xlive_pipe_frame_global_00cd6e7d",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeFrameValue",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=actual CRT registration int",
+      "native_last_instruction": "00cd6e97",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6e97",
+      "native_exclusive_end": "00cd6e98",
+      "notes": "ECX F8BBA0, sourceE12B80/40 bytes, A5FFF2, registerCE09D7."
+    },
+    {
+      "address": "00cd6e98",
+      "name": "initialize_xlive_pipe_key_global_00cd6e98",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeKey",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=actual CRT registration int",
+      "native_last_instruction": "00cd6eb2",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6eb2",
+      "native_exclusive_end": "00cd6eb3",
+      "notes": "ECX F8BADC, sourceE12BA8/40 bytes, A5FFCF, registerCE09E8."
+    },
+    {
+      "address": "00cd6f03",
+      "name": "initialize_xlive_pipe_raw_global_00cd6f03",
+      "reviewed_name": "BSP_XLivePipeGlobals_InitializeRaw72",
+      "previous_function_name": null,
+      "native_abi": "__cdecl(); RET; EAX=raw destination F8B8F8",
+      "native_last_instruction": "00cd6f12",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00cd6f12",
+      "native_exclusive_end": "00cd6f13",
+      "notes": "ECX F8B8F8, sourceE12CB8/72 bytes, A600AB, no cleanup registration. Raw bytes have no lock/prefix."
+    },
+    {
+      "address": "00ce099a",
+      "name": "cleanup_xlive_pipe_acquisition_00ce099a",
+      "reviewed_name": "BSP_XLivePipeGlobals_CleanupAcquisition",
+      "previous_function_name": "CG_static_init_00ce099a",
+      "native_abi": "__cdecl(); ECX=global F8B774; terminal JMP A5F91E",
+      "native_last_instruction": "00ce099f",
+      "native_last_instruction_length": 5,
+      "native_last_instruction_bytes": "e97aefd7ff",
+      "native_inclusive_end": "00ce09a3",
+      "native_exclusive_end": "00ce09a4",
+      "notes": "Destroy placement global lock/actual section, no storage free. Last instruction is tail jump, not local RET."
+    },
+    {
+      "address": "00ce09a4",
+      "name": "cleanup_xlive_pipe_frame_value_00ce09a4",
+      "reviewed_name": "BSP_XLivePipeGlobals_CleanupWideA",
+      "previous_function_name": "CG_static_init_00ce09a4",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00ce09b4",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00ce09b4",
+      "native_exclusive_end": "00ce09b5",
+      "notes": "Reload F8B9A0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload."
+    },
+    {
+      "address": "00ce09b5",
+      "name": "cleanup_xlive_pipe_frame_value_00ce09b5",
+      "reviewed_name": "BSP_XLivePipeGlobals_CleanupWideB",
+      "previous_function_name": "CG_static_init_00ce09b5",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00ce09c5",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00ce09c5",
+      "native_exclusive_end": "00ce09c6",
+      "notes": "Reload F8B858 lock; ifnonnull vslot0(flag1), do not clear pointer/payload."
+    },
+    {
+      "address": "00ce09c6",
+      "name": "cleanup_xlive_pipe_seed_00ce09c6",
+      "reviewed_name": "BSP_XLivePipeGlobals_CleanupSeed",
+      "previous_function_name": "CG_static_init_00ce09c6",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00ce09d6",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00ce09d6",
+      "native_exclusive_end": "00ce09d7",
+      "notes": "Reload F8B8CC lock; ifnonnull vslot0(flag1), do not clear pointer/payload."
+    },
+    {
+      "address": "00ce09d7",
+      "name": "cleanup_xlive_pipe_frame_value_00ce09d7",
+      "reviewed_name": "BSP_XLivePipeGlobals_CleanupFrameValue",
+      "previous_function_name": "CG_static_init_00ce09d7",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00ce09e7",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00ce09e7",
+      "native_exclusive_end": "00ce09e8",
+      "notes": "Reload F8BBA0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload."
+    },
+    {
+      "address": "00ce09e8",
+      "name": "cleanup_xlive_pipe_key_00ce09e8",
+      "reviewed_name": "BSP_XLivePipeGlobals_CleanupKey",
+      "previous_function_name": "CG_static_init_00ce09e8",
+      "native_abi": "__cdecl(); RET",
+      "native_last_instruction": "00ce09f8",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00ce09f8",
+      "native_exclusive_end": "00ce09f9",
+      "notes": "Reload F8BADC lock; ifnonnull vslot0(flag1), do not clear pointer/payload."
+    },
+    {
+      "address": "00a60015",
+      "name": "construct_xlive_pipe_seed_global_00a60015",
+      "reviewed_name": "BSP_XLivePipeGlobals_ConstructSeed",
+      "previous_function_name": "PIPEIPC_00a60015",
+      "native_abi": "ECX=destination, stacksource; RET4; EAX=destination",
+      "native_last_instruction": "00a60035",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a60037",
+      "native_exclusive_end": "00a60038",
+      "notes": "Allocate/store value lock, then forward-copy40 source bytes; preserve null allocation and throwing allocation preimages."
+    },
+    {
+      "address": "00a5ffcf",
+      "name": "construct_xlive_pipe_key_global_00a5ffcf",
+      "reviewed_name": "BSP_XLivePipeGlobals_ConstructKey",
+      "previous_function_name": "PIPEIPC_00a5ffcf",
+      "native_abi": "ECX=destination, stacksource; RET4; EAX=destination",
+      "native_last_instruction": "00a5ffef",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a5fff1",
+      "native_exclusive_end": "00a5fff2",
+      "notes": "Allocate/store value lock, then forward-copy40 source bytes; preserve null allocation and throwing allocation preimages."
+    },
+    {
+      "address": "00a5fff2",
+      "name": "construct_xlive_pipe_frame_value_00a5fff2",
+      "reviewed_name": "BSP_XLivePipeGlobals_ConstructFrameValue",
+      "previous_function_name": "PIPEIPC_00a5fff2",
+      "native_abi": "ECX=destination, stacksource; RET4; EAX=destination",
+      "native_last_instruction": "00a60012",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a60014",
+      "native_exclusive_end": "00a60015",
+      "notes": "Allocate/store value lock, then forward-copy40 source bytes."
+    },
+    {
+      "address": "00a60038",
+      "name": "construct_xlive_pipe_frame_value_00a60038",
+      "reviewed_name": "BSP_XLivePipeGlobals_ConstructWideA",
+      "previous_function_name": "PIPEIPC_00a60038",
+      "native_abi": "ECX=destination, stacksource; RET4; EAX=destination",
+      "native_last_instruction": "00a60058",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a6005a",
+      "native_exclusive_end": "00a6005b",
+      "notes": "Allocate/store value lock, then forward-copy72 source bytes."
+    },
+    {
+      "address": "00a5ffac",
+      "name": "construct_xlive_pipe_frame_value_00a5ffac",
+      "reviewed_name": "BSP_XLivePipeGlobals_ConstructWideB",
+      "previous_function_name": "PIPEIPC_00a5ffac",
+      "native_abi": "ECX=destination, stacksource; RET4; EAX=destination",
+      "native_last_instruction": "00a5ffcc",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a5ffce",
+      "native_exclusive_end": "00a5ffcf",
+      "notes": "Allocate/store value lock, then forward-copy72 source bytes."
+    },
+    {
+      "address": "00a600ab",
+      "name": "construct_xlive_pipe_raw_global_00a600ab",
+      "reviewed_name": "BSP_XLivePipeGlobals_ConstructRaw72",
+      "previous_function_name": "PIPEIPC_00a600ab",
+      "native_abi": "ECX=raw destination, stacksource; RET4; EAX=destination",
+      "native_last_instruction": "00a600cc",
+      "native_last_instruction_length": 3,
+      "native_last_instruction_bytes": "c20400",
+      "native_inclusive_end": "00a600ce",
+      "native_exclusive_end": "00a600cf",
+      "notes": "A60095 initial constant copy precedes source forward-copy72, preserving destination/source alias behavior."
+    },
+    {
+      "address": "00a60095",
+      "name": "initialize_xlive_pipe_raw_constant_00a60095",
+      "reviewed_name": "BSP_XLivePipeGlobals_CopyRawConstant",
+      "previous_function_name": "PIPEIPC_00a60095",
+      "native_abi": "ECX=raw destination; RET",
+      "native_last_instruction": "00a600aa",
+      "native_last_instruction_length": 1,
+      "native_last_instruction_bytes": "c3",
+      "native_inclusive_end": "00a600aa",
+      "native_exclusive_end": "00a600ab",
+      "notes": "Forward-copy72 immutable bytes fromD55230 in checked original protocol table view."
+    }
+  ],
+  "missing_function_starts": [
+    {
+      "address": "00cd6e16",
+      "native_last_instruction": "00cd6e2b",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6e2b",
+      "native_exclusive_end": "00cd6e2c"
+    },
+    {
+      "address": "00cd6e2c",
+      "native_last_instruction": "00cd6e46",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6e46",
+      "native_exclusive_end": "00cd6e47"
+    },
+    {
+      "address": "00cd6e47",
+      "native_last_instruction": "00cd6e61",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6e61",
+      "native_exclusive_end": "00cd6e62"
+    },
+    {
+      "address": "00cd6e62",
+      "native_last_instruction": "00cd6e7c",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6e7c",
+      "native_exclusive_end": "00cd6e7d"
+    },
+    {
+      "address": "00cd6e7d",
+      "native_last_instruction": "00cd6e97",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6e97",
+      "native_exclusive_end": "00cd6e98"
+    },
+    {
+      "address": "00cd6e98",
+      "native_last_instruction": "00cd6eb2",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6eb2",
+      "native_exclusive_end": "00cd6eb3"
+    },
+    {
+      "address": "00cd6f03",
+      "native_last_instruction": "00cd6f12",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00cd6f12",
+      "native_exclusive_end": "00cd6f13"
+    }
+  ],
+  "false_no_return_gaps": [],
+  "parent_repair_commands": [
+    "python tools/ghidra_define_function.py 00cd6e16 00cd6e2c 00cd6e2c 00cd6e47 00cd6e47 00cd6e62 00cd6e62 00cd6e7d 00cd6e7d 00cd6e98 00cd6e98 00cd6eb3 00cd6f03 00cd6f13 --record reports/orch3_xlive_pipe_globals_definitions.json"
+  ],
+  "repair_caveats": [
+    "Parent only after lease release, through tool write locks, then annotate/re-export as appropriate.",
+    "The seven missing entries are actual pointers in the CRT initializer array. Do not define interior MOV ECX sites CD6E31/CD6E4C/CD6E67/CD6E82/CD6E9D/CD6F08 as entries.",
+    "CE099A ends with five-byte JMP A5F91E atCE099F, exclusiveCE09A4. No invented local RET.",
+    "All thirteen existing functions have zero reported flow gaps."
+  ],
+  "fixed_data": {
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_size": 12223752,
+    "data_start": "00e12ac8",
+    "data_rva": "00a12ac8",
+    "data_exclusive_end": "00e12d00",
+    "data_size": 568,
+    "data_file_offset": 10562248,
+    "data_sha256": "20436ee57ad0c179e4cde3ffd80ea75b53339dea4d500cda75769177176eae21",
+    "global_section": {
+      "name": ".data",
+      "rva": "00a08000",
+      "virtual_size": 2719452,
+      "raw_size": 65536,
+      "raw_offset": 10518528,
+      "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+    },
+    "global_loader_zero_fill": true
+  },
+  "loader_preimage": {
+    "section": ".data",
+    "section_rva": "00a08000",
+    "raw_size": 65536,
+    "raw_exclusive_rva": "00a18000",
+    "virtual_exclusive_rva": "00c9fedc",
+    "covered_global_va_start": "00f8b774",
+    "covered_global_va_exclusive_end": "00f8bbcc",
+    "proof": "All selected globals lie after the PE section raw bytes and within its virtual extent; initial representation is actual loader zero-fill.",
+    "api": "original_xlive_pipe_loader_preimage() explicitly returns this pre-startup image, owner requires explicit preimage argument. Constructors subsequently install actual fixed encoded bytes.",
+    "distinct_boundary": "Protocol heap allocation preimages remain unknown/explicit as in XLIVE_PIPE_PROTOCOL.md; this loader proof does not supply them."
+  },
+  "bindings": [
+    {
+      "global": "00f8b774",
+      "shape": "1Ch lock, actual acquisition section+4=F8B778",
+      "initializer": "00cd6e16",
+      "constructor": "00a5fa27",
+      "cleanup": "00ce099a",
+      "crt_slot": "00ce33e0"
+    },
+    {
+      "global": "00f8b9a0",
+      "shape": "lock+72 bytes",
+      "source": "00e12ac8",
+      "length": 72,
+      "initializer": "00cd6e2c",
+      "constructor": "00a60038",
+      "cleanup": "00ce09a4",
+      "crt_slot": "00ce33e4"
+    },
+    {
+      "global": "00f8b858",
+      "shape": "lock+72 bytes",
+      "source": "00e12b10",
+      "length": 72,
+      "initializer": "00cd6e47",
+      "constructor": "00a5ffac",
+      "cleanup": "00ce09b5",
+      "crt_slot": "00ce33e8"
+    },
+    {
+      "global": "00f8b8cc",
+      "shape": "lock+40 bytes",
+      "source": "00e12b58",
+      "length": 40,
+      "initializer": "00cd6e62",
+      "constructor": "00a60015",
+      "cleanup": "00ce09c6",
+      "crt_slot": "00ce33ec"
+    },
+    {
+      "global": "00f8bba0",
+      "shape": "lock+40 bytes",
+      "source": "00e12b80",
+      "length": 40,
+      "initializer": "00cd6e7d",
+      "constructor": "00a5fff2",
+      "cleanup": "00ce09d7",
+      "crt_slot": "00ce33f0"
+    },
+    {
+      "global": "00f8badc",
+      "shape": "lock+40 bytes",
+      "source": "00e12ba8",
+      "length": 40,
+      "initializer": "00cd6e98",
+      "constructor": "00a5ffcf",
+      "cleanup": "00ce09e8",
+      "crt_slot": "00ce33f4"
+    },
+    {
+      "global": "00f8b8f8",
+      "shape": "raw72, no lock/prefix",
+      "source": "00e12cb8",
+      "length": 72,
+      "initializer": "00cd6f03",
+      "constructor": "00a600ab",
+      "cleanup": null,
+      "crt_slot": "00ce340c",
+      "initial_constant": "00d55230/72 viaA60095 before source copy"
+    }
+  ],
+  "crt_semantics": {
+    "boundary": "Required XLivePipeGlobalsStartupHost::register_cleanup_00bf6ff5(native identity, typed callback, retained owner) returns genuine application CRT registration result; no private callback queue or successful stub.",
+    "result": "Six native initializers return actual EAX registration int. Raw initializer returns raw destination pointer.",
+    "failure": "Registration failure leaves constructed object and payload intact; no rollback and no fabricated successful registration.",
+    "order": "Original CRT array bytes CE33E0..CE33F4 prove six initializer order; raw entry atCE340C follows five other initializers outside this packet.",
+    "convenience_scope": "initialize_xlive_pipe_globals runs only owned subset in original relative order and returns all six registration results; does not claim intervening/global CRT dispatcher behavior.",
+    "cleanup": "Reload live global lock; conditional vslot0(flag1) without clearing pointers/payload. Acquisition cleanup destroys actual section/object without freeing global storage."
+  },
+  "integration_contract": {
+    "owner": "XLivePipeGlobalsOwner is stable-address, noncopyable, explicit-preimage storage. It must outlive consumers and registered CRT callbacks; its C++ destructor adds no native cleanup.",
+    "protocol": "owner.protocol_globals() returns references to exactly the owned acquisition section/seed/key.",
+    "framing": "Bind acquisition_lock_f8b778(), value_f8b858, value_f8b9a0, value_f8bba0, key_f8badc and raw_f8b8f8 to XLivePipeFrameGlobals.",
+    "remaining": "Application-specific genuine CRT callback/context binding is required. Original checked data/table backing and protocol heap preimage provider remain explicit.",
+    "closed": "Previously unresolved acquisition/seed/key initialization and selected framing globals now reconstructed."
+  },
+  "provenance": {
+    "names": "PIPEIPC_* and CG_static_init_* are analyst inventory names; new descriptive names are hypotheses, not recovered symbols.",
+    "standard_boundaries": "Actual Win32 critical sections/lock allocator and actual CRT exit registration; no CRT port.",
+    "data": "Fixed values from original disk .data block validated by size/SHA256, not synthesized zero payloads."
+  },
+  "validation": {
+    "build": "Strict MSVC Win32 Release scripts/build.ps1 passed; local/xlive-pipe-globals-build.log",
+    "ctests": "2/2 passed reconstructed_math and native_math_differential",
+    "verify_seeds": "8/8 disk/Ghidra matches; local/xlive-pipe-globals-seeds.json",
+    "fixture": "One ignored synchronous local/xlive_pipe_globals_fixture.cpp passed; local/xlive-pipe-globals-fixture.log",
+    "fixture_scope": "Exact fixed payloads and reference identity; real Win32 locks; CRT registration order/negative status without rollback; explicit cleanup; raw source alias; null and throwing lock allocation; hash rejection.",
+    "actual_crt_exit_registration_tested": false,
+    "named_pipes_opened": false,
+    "threads_started": false,
+    "network_endpoints_started": false,
+    "game_validated": false,
+    "abi_compatible": false
+  }
+}
