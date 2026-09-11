@@ -1,0 +1,468 @@
+{
+  "packet": "native_render_diagnostic_labels",
+  "status": "two_full_bodies_reconstructed_private_build_and_original_caller_fixture_passed",
+  "document": "docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md",
+  "base_commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+  "discovery_commit": "4b51af45dcc71b97fb39cb27d76ebfa43e7a3066",
+  "discovery_document": "docs/NATIVE_RENDER_QUEUE_EXECUTION_NEXT.md",
+  "scope": "Actual borrowed diagnostic service+684 string header and supplied actual F8D39C slot; no whole service/singleton construction.",
+  "api_frozen_with_primary": true,
+  "functions": [
+    {
+      "address": "00b13030",
+      "body_end_exclusive": "00b13069",
+      "bytes": 57,
+      "prior_name": "BSP_RenderDiagnostics_SetCommandLabel_Provisional",
+      "suggested_name": "BSP_RenderDiagnostics_SetCommandLabel",
+      "original_abi": "ECX actual service, stack actual8h source header, RET4; no error-return contract",
+      "implementation": "set_native_render_diagnostic_label_00b13030(void*, const void*, NativeStringStorage&)",
+      "reconstruction": "full body",
+      "behavior": [
+        "Compute actual service+684 destination; exact header identity returns before memory/storage access.",
+        "Read initial source length, actual41DD40 destination resize preserve=true.",
+        "Reread source length for nonzero gate.",
+        "Read current destination length, source data, destination data; copy destination-length bytes.",
+        "No terminator copy, no source initialization/ownership transfer, no local cleanup guard."
+      ],
+      "noexcept": false
+    },
+    {
+      "address": "00b13510",
+      "body_end_exclusive": "00b135b5",
+      "bytes": 165,
+      "prior_name": "BSP_RenderDiagnostics_ResetCommandLabel_Provisional",
+      "suggested_name": "BSP_RenderDiagnostics_ResetCommandLabel",
+      "original_abi": "No inputs, ECX unused, RET; no error-return contract",
+      "implementation": "reset_native_render_diagnostic_label_00b13510(void* const volatile&, NativeStringStorage&)",
+      "reconstruction": "full body",
+      "behavior": [
+        "Read supplied actual F8D39C slot; initially null returns.",
+        "Construct one fresh actual8h NativeString from fixed literal X through41E870, before arm.",
+        "Reload current global service, capture temporary data, capture temporary length, then form destination+684 and alias comparison.",
+        "Arm only copy region; if not aliased, resize from captured temporary length.",
+        "Captured nonzero length gates current destination-length copy from captured temporary data.",
+        "On guarded exception use actual41DD20 on CURRENT temporary header and rethrow.",
+        "On normal path disarm, then release CAPTURED temporary data with CAPTURED length+1 DWORD wrap.",
+        "No automatic second release, temporary header clearing, second global null check, retry or empty-string substitution."
+      ],
+      "noexcept": false,
+      "literal": {
+        "address": "00ce9a38",
+        "hex": "5800",
+        "text": "X"
+      },
+      "cleanup": {
+        "arm": "00b1355c",
+        "normal_disarm": "00b13586",
+        "handler": "00cbc278",
+        "eh_info": "00df4360",
+        "unwind_map": "00df4358",
+        "from_state": 0,
+        "to_state": -1,
+        "action": "00cbc270",
+        "action_target": "0041dd20",
+        "action_disassembly": "LEA ECX,[EBP-14]; JMP0041DD20",
+        "constructor_covered": false,
+        "normal_release_covered": false,
+        "temporary_automatic_cleanup": "NativeString is statically required to be trivially destructible."
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "0041e870",
+      "implementation": "NativeString::assign_0041e870",
+      "use": "fresh actual8h temporary constructor"
+    },
+    {
+      "address": "0041dd40",
+      "implementation": "resize_native_string_header_0041dd40",
+      "use": "actual destination headers, same current-field storage behavior"
+    },
+    {
+      "address": "0041dd20",
+      "implementation": "destroy_native_string_header_0041dd20",
+      "use": "current temporary header on EH only"
+    },
+    {
+      "addresses": [
+        "00419cc0",
+        "00bd1120",
+        "00bd1510"
+      ],
+      "implementation": "existing NativeStringStorage boundary",
+      "use": "allocate/release with actual native byte counts; no new allocator/provider interface"
+    }
+  ],
+  "release_exception_boundary": {
+    "host_contract": "NativeStringStorage::release and actual41DD20 are noexcept.",
+    "native_observation": "B13586 disarms before normal release; reset EH uses current header.",
+    "limitation": "Host pool-release exceptions are unrepresentable; no claim that native pool release cannot throw."
+  },
+  "validation": {
+    "live_spans": 12,
+    "live_bytes": 582,
+    "all_live_installed_equal": true,
+    "existing_seed_ranges": 8,
+    "existing_seed_comparison": "passed",
+    "existing_build": "scripts/build.ps1 Win32 Release passed",
+    "existing_tests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "new_source_registered_in_shared_cmake": false,
+    "new_source_build": "Private MSVC Win32 compile and link with /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX passed.",
+    "private_fixture": "One original-caller executable; passed8 focused scenarios and7096 normalized words.",
+    "public_tests_added": 0,
+    "metadata_mutations": false,
+    "ghidra_mutations": false,
+    "binary_abi_compatible": false,
+    "game_validated": false,
+    "audit_json_parsed": true,
+    "staged_whitespace_checked": true
+  },
+  "fixture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_check.cpp",
+    "executable": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\build\\native-render-diagnostic-labels-check\\native_render_diagnostic_labels_check.exe",
+    "original_bodies": [
+      "00b13030",
+      "00b13510",
+      "0041e870",
+      "0041dd40",
+      "0041dd20"
+    ],
+    "original_eh": [
+      "00cbc270 action",
+      "00cbc278 handler",
+      "00df4358 map",
+      "00df4360 info"
+    ],
+    "boundary_hooks": [
+      "00419cc0 storage getter",
+      "00bd1120 allocate",
+      "00bd1510 release",
+      "00bf7680 memcpy"
+    ],
+    "original_hook_preimages_verified": true,
+    "relocation_operands": [
+      {
+        "address": "00b1352a",
+        "old": "00f8d39c",
+        "replacement": "supplied fixture global slot"
+      },
+      {
+        "address": "00b13544",
+        "old": "00f8d39c",
+        "replacement": "same supplied fixture global slot"
+      },
+      {
+        "address": "00b13535",
+        "old": "00ce9a38",
+        "replacement": "checked relocated literal X"
+      },
+      {
+        "address": "00b13519",
+        "old": "00cbc278",
+        "replacement": "fixture-executable registered_handler trampoline to checked relocated CBC278"
+      },
+      {
+        "address": "00cbc279",
+        "old": "00df4360",
+        "replacement": "checked relocated EH info"
+      },
+      {
+        "address": "00df435c",
+        "old": "00cbc270",
+        "replacement": "checked relocated action"
+      },
+      {
+        "address": "00df4368",
+        "old": "00df4358",
+        "replacement": "checked relocated unwind map"
+      },
+      {
+        "address": "00cbc27d",
+        "old": "native CRT handler JMP",
+        "replacement": "observing bridge to host __CxxFrameHandler3"
+      }
+    ],
+    "fixture_only_link_option": "/SAFESEH:NO",
+    "eh_observations": {
+      "state_0_searches": 1,
+      "state_0_unwinds": 1,
+      "state_minus_1_searches": 1,
+      "state_minus_1_unwinds": 1,
+      "magic": "19930522",
+      "temporary_release_only_for_state_0": true
+    },
+    "scenarios": [
+      "setter actual-header self alias skips all allocation/release",
+      "setter allocation mutates source length/data; current destination length controls copied bytes",
+      "setter allocation changes current source length to zero and suppresses final copy",
+      "initial null reset skips construction and cleanup",
+      "reset first allocation replaces global destination; second replacement does not change captured destination; normal sized releases",
+      "reset destination allocation throws in state0; current temporary header cleanup and retained destination preimage",
+      "reset temporary construction allocation throws in state-1; no cleanup",
+      "setter allocation throws with no setter cleanup"
+    ],
+    "normalized_words": 7096,
+    "native_pool_getter_boundaries": 13,
+    "existing_zero_byte_memcpy_omissions": 2,
+    "compared": [
+      "ordered allocation/release calls and exact sizes",
+      "complete guarded service bytes with normalized pointers",
+      "source/destination headers",
+      "global identity",
+      "source and allocated buffer bytes",
+      "exception timing"
+    ],
+    "not_injected": [
+      "reset destination equals temporary header",
+      "external mutation of temporary header distinguishing current EH fields from captured normal fields"
+    ],
+    "not_injected_evidence": "Native assembly plus direct source review; no production fixture hook added.",
+    "reproduction_workdir": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910",
+    "reproduction_commands": [
+      "python local/prepare_native_render_diagnostic_labels.py",
+      "python tools/ghidra_export.py verify-seeds",
+      "./scripts/build.ps1",
+      "./local/build_native_render_diagnostic_labels_check.ps1"
+    ]
+  },
+  "runtime_limits": [
+    "New C++ entry interfaces, not original register/stack replacement ABI.",
+    "No whole diagnostic service lifetime, singleton construction, statistics or system-time ownership.",
+    "Borrowed actual service/header spans and nonnull allocation results remain existing caller/storage preconditions.",
+    "A global becoming null during construction has no second native check; invalid memory/process fault behavior is not tested.",
+    "No concurrency or externally mutated temporary-header fixture claim.",
+    "Actual game allocator and complete historical CRT runtime are not exercised.",
+    "Existing zero-byte memcpy omission and noexcept release boundary are retained."
+  ],
+  "preserved_prior_metadata": [
+    {
+      "address": "00b13030",
+      "annotation": {
+        "address": "00b13030",
+        "function_name": "BSP_RenderDiagnostics_SetCommandLabel_Provisional",
+        "comment": "[BSP reconstruction 00b13030]\nIf source view differs from owner+684, resize destination to source length then memcpy nonempty payload using resulting destination length. Native pooled string ABI separate from typed diagnostic value storage. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b13510",
+      "annotation": {
+        "address": "00b13510",
+        "function_name": "BSP_RenderDiagnostics_ResetCommandLabel_Provisional",
+        "comment": "[BSP reconstruction 00b13510]\nReload optional global00F8D39C; if present construct native temporary from literal00CE9A38 bytes58 00 (X), copy to owner+684, then return temporary length+1 bytes to size-class pool. Exit value is X, NOT empty string. Native allocator and SEH ABI unported. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    }
+  ],
+  "evidence": {
+    "verified_utc": "2026-09-11T00:10:16.109484+00:00",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra bytes call verifies project/program before reading; all ranges equal installed PE.",
+    "ranges": [
+      {
+        "address": "00b13030",
+        "end_exclusive": "00b13069",
+        "bytes": 57,
+        "offset": 7417904,
+        "hex": "56578b7c240c8db1840600003bf774248b076a01508bcee8f4ac90ff833f0074138b0e8b57048b4604515250e81f460e0083c40c5f5ec20400",
+        "sha256": "2f49afcb4c57b6cdde832faabafa48619d1a802f87a466b7bc0e6d0b092e9090",
+        "installed_disk_equal": true,
+        "purpose": "full setter"
+      },
+      {
+        "address": "00b13510",
+        "end_exclusive": "00b135b5",
+        "bytes": 165,
+        "offset": 7419152,
+        "hex": "64a1000000006aff6878c2cb00506489250000000083ec08833d9cd3f80000747553565768389ace008d4c2410e82eb390ff8b359cd3f8008b5c24108b7c240c81c6840600008d44240c3bf0c744241c00000000741e6a01578bcee8d0a790ff85ff74108b068b4e04505351e8ff400e0083c40c85dbc744241cffffffff74136a0183c7015753e8246790ff8bc8e86ddf0b005f5e5b8b4c240864890d0000000083c414c3",
+        "sha256": "a05fe8017c36100e82cf5c93e42058337cfe2465f180a4df4263c8db1a0288ba",
+        "installed_disk_equal": true,
+        "purpose": "full reset"
+      },
+      {
+        "address": "0041e870",
+        "end_exclusive": "0041e8c3",
+        "bytes": 83,
+        "offset": 125040,
+        "hex": "56578b7c240c8bf18bc7c70600000000c74604000000008d50018d9b000000008a0883c00184c975f72bc26a01508bcee89bf4ffff8b460485c074108b0e83c101515750e8c78d7d0083c40c5f8bc65ec20400",
+        "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+        "installed_disk_equal": true,
+        "purpose": "full C-string constructor"
+      },
+      {
+        "address": "0041dd40",
+        "end_exclusive": "0041dde4",
+        "bytes": 164,
+        "offset": 122176,
+        "hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "installed_disk_equal": true,
+        "purpose": "full actual resize"
+      },
+      {
+        "address": "0041dd20",
+        "end_exclusive": "0041dd3d",
+        "bytes": 29,
+        "offset": 122144,
+        "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "installed_disk_equal": true,
+        "purpose": "full actual destructor"
+      },
+      {
+        "address": "00cbc270",
+        "end_exclusive": "00cbc282",
+        "bytes": 18,
+        "offset": 9159280,
+        "hex": "8d4dece9a81a76ffb86043df00e9c1a8f3ff",
+        "sha256": "7a94fc19c949b9d8cc6c9b55f3278e9ed60c4050cec06973c68a6e54cf047368",
+        "installed_disk_equal": true,
+        "purpose": "reset unwind action and handler"
+      },
+      {
+        "address": "00df4358",
+        "end_exclusive": "00df4384",
+        "bytes": 44,
+        "offset": 10437464,
+        "hex": "ffffffff70c2cb0022059319010000005843df00000000000000000000000000000000000000000001000000",
+        "sha256": "00728bc109a9585cec7f4214e05ebbf2708260646a3bab1f68b959c5232fd2f4",
+        "installed_disk_equal": true,
+        "purpose": "reset unwind map and EH info"
+      },
+      {
+        "address": "00ce9a38",
+        "end_exclusive": "00ce9a3a",
+        "bytes": 2,
+        "offset": 9345592,
+        "hex": "5800",
+        "sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+        "installed_disk_equal": true,
+        "purpose": "literal X"
+      },
+      {
+        "address": "00419cc0",
+        "end_exclusive": "00419cc5",
+        "bytes": 5,
+        "offset": 105664,
+        "hex": "64a1000000",
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "installed_disk_equal": true,
+        "purpose": "storage getter hook preimage"
+      },
+      {
+        "address": "00bd1120",
+        "end_exclusive": "00bd1125",
+        "bytes": 5,
+        "offset": 8196384,
+        "hex": "538b5c2408",
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+        "installed_disk_equal": true,
+        "purpose": "sized allocation hook preimage"
+      },
+      {
+        "address": "00bd1510",
+        "end_exclusive": "00bd1515",
+        "bytes": 5,
+        "offset": 8197392,
+        "hex": "538b5c240c",
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+        "installed_disk_equal": true,
+        "purpose": "sized release hook preimage"
+      },
+      {
+        "address": "00bf7680",
+        "end_exclusive": "00bf7685",
+        "bytes": 5,
+        "offset": 8353408,
+        "hex": "558bec5756",
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+        "installed_disk_equal": true,
+        "purpose": "memcpy hook preimage"
+      }
+    ]
+  },
+  "dependency_source_hashes": [
+    {
+      "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "commit": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    }
+  ],
+  "implementation_source_hashes": [
+    {
+      "path": "include/bsp/native_render_diagnostic_labels.hpp",
+      "sha256": "f11cef01bbf2b654c4537c493e6d1b967d6a3de52b4d923e77177e1ed6b5d32c"
+    },
+    {
+      "path": "src/native_render_diagnostic_labels.cpp",
+      "sha256": "c7e83660c1111bed827bade3a2ce3ebf2a9f8e3f1a9f0b96dec01758677b414c"
+    }
+  ],
+  "private_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\prepare_native_render_diagnostic_labels.py",
+      "sha256": "c4cd0edad91dda2bffca5c5e7b91ab994675897f0534e30bb4372b8517362841"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_spans.hpp",
+      "sha256": "12f173924dc2b43d37aa544b78ad8eb0e5c61463c9d38f8e1f0a7b0aac8ae15d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_check.cpp",
+      "sha256": "f3e44ca6e2b33a72a76b210d63064640293b07459596ba4139997cb1010e62ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\build_native_render_diagnostic_labels_check.ps1",
+      "sha256": "d96cb5aa6c3baa6f9bb2e08ed7064a0c2350e455648329b5d474bfc3863c68c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_preparation.json",
+      "sha256": "35b633a36a8f995038de6c5fd8c9a088e0a61c778e84ca558cdb1e430521629e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_fixture.txt",
+      "sha256": "03430456e44e0e722a69d6e59eac3b0a41cc557d94fd5fe4f4ad744d0baf2830"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_existing_build.txt",
+      "sha256": "5f472aeffb646022cc24ba97e13359541a9bb987f8aa4ded240c6d2dc8f4c2d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\local\\native_render_diagnostic_labels_seed_check.txt",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-render-diagnostic-labels-20260910\\build\\native-render-diagnostic-labels-check\\native_render_diagnostic_labels_check.exe",
+      "sha256": "9129d1b9e18f51699cda6c3d513b8228f776fb66caa99ecfaabd9fe89630e669"
+    }
+  ],
+  "integration": {
+    "primary_owned": [
+      "shared CMake source registration",
+      "Ghidra annotations preserving prior metadata",
+      "name/reconstruction ledgers",
+      "packet state"
+    ],
+    "proposed_names": [
+      "BSP_RenderDiagnostics_SetCommandLabel",
+      "BSP_RenderDiagnostics_ResetCommandLabel"
+    ]
+  }
+}
