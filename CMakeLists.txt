@@ -67,6 +67,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_event_owner.cpp
   src/native_render_diagnostic_labels.cpp
   src/native_renderer_synchronization_actual.cpp
+  src/native_renderer_binding_getters.cpp
   src/native_render_cache_construction.cpp
   src/native_render_resource_record_construction.cpp
   src/native_render_resource_record_array.cpp

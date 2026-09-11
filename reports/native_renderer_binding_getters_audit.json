@@ -541,14 +541,428 @@
     "heap_and_pool_getter_identity_does_not_close_lifetime": true
   },
   "primary_integration": {
-    "register_source_in_cmake": "src/native_renderer_binding_getters.cpp",
-    "create_exact_function_definitions": [
-      "00b3cea0..00b3cea3",
-      "00b4b9f0..00b4b9f3",
-      "00b4b840..00b4b843"
+    "status": "integrated_eight_complete_native_getters_primary_object_byte_identical_and_host_routes_checked",
+    "worker_commit": "f0c984e38d9ce3c54b21b664126b4b37d94fc010",
+    "new_complete_functions": 8,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b3cea0",
+        "name": "native_texture_get_com_00b3cea0",
+        "cpp_symbol": "native_texture_get_com_00b3cea0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b3cea4",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48ce0",
+        "name": "native_logical_vertex_stream_get_declaration_00b48ce0",
+        "cpp_symbol": "native_logical_vertex_stream_get_declaration_00b48ce0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48ce4",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48d10",
+        "name": "native_logical_vertex_stream_get_offset_00b48d10",
+        "cpp_symbol": "native_logical_vertex_stream_get_offset_00b48d10",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48d14",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48cf0",
+        "name": "native_logical_vertex_stream_get_buffer_00b48cf0",
+        "cpp_symbol": "native_logical_vertex_stream_get_buffer_00b48cf0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48cfa",
+        "original_abi": "ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48dc0",
+        "name": "native_logical_index_stream_get_buffer_00b48dc0",
+        "cpp_symbol": "native_logical_index_stream_get_buffer_00b48dc0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b48dca",
+        "original_abi": "ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b4b9f0",
+        "name": "native_physical_vertex_buffer_get_com_00b4b9f0",
+        "cpp_symbol": "native_physical_vertex_buffer_get_com_00b4b9f0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b4b9f4",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b4b840",
+        "name": "native_physical_index_buffer_get_com_00b4b840",
+        "cpp_symbol": "native_physical_index_buffer_get_com_00b4b840",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b4b844",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b5ff00",
+        "name": "native_vertex_layout_get_com_00b5ff00",
+        "cpp_symbol": "native_vertex_layout_get_com_00b5ff00",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "native_end_exclusive": "00b5ff04",
+        "original_abi": "ECX actual storage; EAX borrowed pointer or raw offset; RET with no stack arguments",
+        "evidence": "reports/native_renderer_binding_getters_audit.json",
+        "status": "complete_native_hardware_leaf_primary_object_byte_identical_and_concrete_host_route_checked",
+        "native_differential_fixture": false,
+        "native_hardware_bytes_identical": true,
+        "concrete_host_route_checked": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
     ],
-    "preserve_existing_names_and_comments": true,
-    "annotate_record_ledgers_and_refresh_exports": true
+    "verified_evidence": {
+      "ranges": [
+        {
+          "address": "00b3cea0",
+          "length": 4,
+          "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 735,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48ce0",
+          "length": 4,
+          "sha256": "7f67506f6b2359c1273015e2f239f36f68d4e1680fa96efe5ff997e4fca26457",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 719,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48d10",
+          "length": 4,
+          "sha256": "e8a390f77a2c35edee25e41f4902293a876d5b3af20791cc05da79c2f55d4983",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 723,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48cf0",
+          "length": 10,
+          "sha256": "8eb76e331df34562f4dee65474396e5cdb7ad4afeff7bbfacf8b5d0a419afc6b",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 709,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b48dc0",
+          "length": 10,
+          "sha256": "7d66b7281691dd0c0078942cf0c04c60450fa6769b9d26b925ec72a39c451dc1",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 699,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b4b9f0",
+          "length": 4,
+          "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 731,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b4b840",
+          "length": 4,
+          "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 727,
+          "object_relocations": 0
+        },
+        {
+          "address": "00b5ff00",
+          "length": 4,
+          "sha256": "68b70ba1e6ad2356c69cac8e846649e599945994fa7690a0bf4af28fa25c24a5",
+          "live_PE_match": true,
+          "primary_object_identical": true,
+          "object_file_offset": 739,
+          "object_relocations": 0
+        },
+        {
+          "address": "00d61964",
+          "length": 4,
+          "sha256": "f7071c0376170a7a9a1aa999584605edd662f9444355d2848ab1a3899541a543",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61d90",
+          "length": 4,
+          "sha256": "c2024f81685402b967b0d9fbbfa5b52b2250695315fee75aa88aee2d019b485f",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61d94",
+          "length": 4,
+          "sha256": "a1a7f414d031b78bb8b3f593568148c1e4b0d7c20a5afd8b1a23eadaef993cc9",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61d98",
+          "length": 4,
+          "sha256": "304de17dab824aa9cb9f10e09af4037c1c5834ac9f9f5d271c948084f3efd49f",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e08",
+          "length": 4,
+          "sha256": "cac879b86486c4d7108cd385b1a671b24d8b30aa40ea51b013c6f23268579807",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e50",
+          "length": 4,
+          "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e98",
+          "length": 4,
+          "sha256": "dac745bfe018d69520810213b96c9a641854b8e2a0fee2e97c7c70ef211451a9",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e2c",
+          "length": 4,
+          "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d61e74",
+          "length": 4,
+          "sha256": "1a63e0d3f75752d817158eceb50ecb960fb805b2703749ba206f4fecae5e085c",
+          "live_PE_match": true
+        },
+        {
+          "address": "00d62afc",
+          "length": 4,
+          "sha256": "1ef30ee2f643da9d057296297db2f0aa328290ee1cc8188f8caf8fa8ed32acc4",
+          "live_PE_match": true
+        }
+      ],
+      "private_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_route_check.cpp",
+          "sha256": "1672d7a3aa4e6c1028f76eaa21a98c6b72d4af05ad307ac27830841b79085cf4"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\build_native_renderer_binding_getters_check.ps1",
+          "sha256": "38e0ddcf8ebfc90c64e4700b2cc7165d1b24719ae8b5a0d9cb9910d07a091da3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\verify_native_renderer_binding_getters.py",
+          "sha256": "0b73d8b1f47d00ad65ac3faea04563e358d27cfec8fb2f55584ca0e6d1c68f79"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\finalize_native_renderer_binding_getters_audit.py",
+          "sha256": "748e2388bff643097dbcbfb9105e5dd6077975ed8baa23bdb92d3f38ed2df706"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_private_check.txt",
+          "sha256": "7ff464a3cfa7f893f6b8374d812df7e27c746da6e6eab953c98562bf518ae283"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_verification.json",
+          "sha256": "fd65102247772ae42893994828d2bbbde32ed65f7d0c8d1c24a81fc237c423c2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_annotation_before.json",
+          "sha256": "ebb5b541b101731aaaa33c32b9368754dc4a81eb592f80c0396bf3cf4568e627"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_prior_proto.txt",
+          "sha256": "b197c1d5abbf8211ac1d8da758b515d367c7acf8650a91633e4a4cb9268dc575"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_seed_check.txt",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\local\\native_renderer_binding_getters_existing_build.txt",
+          "sha256": "8815ac21b35a3ae40db8e3557a3001ce1e45ec094aae9a148f99da5069a25489"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-binding-getters-20260910\\build\\native-renderer-binding-getters-check\\native_renderer_binding_getters_check.exe",
+          "sha256": "4a724ecd31ed3fb1ebca7f79b006b758965f270bb0b74ba45be3e87d275fcf47"
+        }
+      ],
+      "source_artifacts": [
+        {
+          "path": "include/bsp/native_renderer_binding_getters.hpp",
+          "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+        },
+        {
+          "path": "src/native_renderer_binding_getters.cpp",
+          "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+        },
+        {
+          "path": "docs/NATIVE_RENDERER_BINDING_GETTERS.md",
+          "sha256": "f10a29e4320150427aa034cb0256e446261546868d244cdf77c949c7ed46a0f2"
+        }
+      ],
+      "primary_object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_renderer_binding_getters.obj",
+        "sha256": "948f9e487fff004e173c9407259d35a10fbb3f0161f8c045552b81401a61fdbc",
+        "all44bytes_identical": true,
+        "relocations": 0
+      }
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_renderer_binding_getters.hpp",
+        "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+      },
+      {
+        "path": "src/native_renderer_binding_getters.cpp",
+        "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+      },
+      {
+        "path": "local/native_binding_getters_primary_route.txt",
+        "sha256": "04ca8998be443042574510705f398c15026843bd2ef059018893f6207b2ad624"
+      },
+      {
+        "path": "local/build_native_renderer_binding_getters_check.ps1",
+        "sha256": "4407788dc11c4430128de401f9c5f5771e5d1af0168ca57ca93c46dccd1553af"
+      },
+      {
+        "path": "build/native-renderer-binding-getters-check/native_renderer_binding_getters_check.exe",
+        "sha256": "a66826e5cf1e0e861560ab2dd61cacde4ec67d29d191ab6b78b999feedb230b8"
+      }
+    ],
+    "primary_library_routes": true,
+    "build": {
+      "path": "reports/native_binding_getters_primary_build.txt",
+      "sha256": "71e3eda8deb8b76cabc58916eefbe47c67a9c44ae1625bd14a60cfe3d2a60630",
+      "tests": 2,
+      "passed": true
+    },
+    "defined_functions": {
+      "path": "reports/native_binding_getters_defined_functions.json",
+      "sha256": "73778ff1b4c674c8ab5b8b485a89bcd9c1da7d04f3f5844497903578f68b9d02",
+      "project_saved": true
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_getters_annotations.json",
+      "sha256": "927176acb49dddfccd9e6c252d857087ec4326b58e71624bc8e215065d3ad870",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b3cea0",
+        "path": "exports/bsp/functions/00b3cea0/decompiled.c",
+        "sha256": "4bb9f99800f1c7aba49af66db6903102c1d8be33924f9b421032125d59d75641"
+      },
+      {
+        "address": "00b48ce0",
+        "path": "exports/bsp/functions/00b48ce0/decompiled.c",
+        "sha256": "aa53c0f5ae9bc9576d6cf3a4e39044df1695b59658b554242045948b51728af8"
+      },
+      {
+        "address": "00b48d10",
+        "path": "exports/bsp/functions/00b48d10/decompiled.c",
+        "sha256": "fc2e46f589119d8d0c5d31432142b2b5755b187b836cd9f2a808d8405561428b"
+      },
+      {
+        "address": "00b48cf0",
+        "path": "exports/bsp/functions/00b48cf0/decompiled.c",
+        "sha256": "5e90ff0b51c8e1c368f87bb13cb0988dfec550901f08a94fff5ca9259b13b74a"
+      },
+      {
+        "address": "00b48dc0",
+        "path": "exports/bsp/functions/00b48dc0/decompiled.c",
+        "sha256": "6031f87a870ad85a8723a88495c7edccbe44b657ac4970a48f94ea5d018ca649"
+      },
+      {
+        "address": "00b4b9f0",
+        "path": "exports/bsp/functions/00b4b9f0/decompiled.c",
+        "sha256": "9cf2f6e4726a96af3be70e00f84e55647649a8478d380faa992134c70c9d98ca"
+      },
+      {
+        "address": "00b4b840",
+        "path": "exports/bsp/functions/00b4b840/decompiled.c",
+        "sha256": "9d486de9ede64a4ff000ea943c4af8987ef97ece1ab2bef9205863f0a751f979"
+      },
+      {
+        "address": "00b5ff00",
+        "path": "exports/bsp/functions/00b5ff00/decompiled.c",
+        "sha256": "882c260eac583c50cb0860228b91568b2754227d4c5288c67f18884c687e2591"
+      }
+    ],
+    "closure_utc": "2026-09-11T01:05:07.107093+00:00"
   },
   "shared_cmake_or_ledger_edits": false,
   "ghidra_mutated": false,

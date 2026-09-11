@@ -3175,13 +3175,14 @@
         "docs/NATIVE_RENDERER_ACTUAL_BINDING_PROFILES_NEXT.md",
         "reports/native_renderer_actual_binding_profiles_next.json"
       ],
-      "state": "read_only_concrete_binding_owner_getter_and_terminal_profile_discovery",
+      "state": "integrated_reviewed_concrete_binding_owner_and_terminal_profile_discovery",
       "packet": "native_renderer_actual_binding_profiles_next",
-      "done": false,
+      "done": true,
       "transferred_surface_bindings_to_primary": [
         "00b23d80",
         "00b21690"
-      ]
+      ],
+      "evidence": "reports/native_renderer_actual_binding_profiles_next.json"
     },
     {
       "id": "native_render_resource_record_array",
@@ -3206,7 +3207,7 @@
       "packet": "native_renderer_surface_bindings",
       "worker": "main",
       "done": false,
-      "state": "implementing_actual_color_and_depth_surface_binding_with_actual_synchronization",
+      "state": "actual_surface_binders_build_passed_original_COM_ABI_composition_fixture_in_progress",
       "function_addresses": [
         "00b23d80",
         "00b21690"
@@ -3216,14 +3217,16 @@
         "src/native_renderer_surface_bindings.cpp",
         "docs/NATIVE_RENDERER_SURFACE_BINDINGS.md",
         "reports/native_renderer_surface_bindings_audit.json"
-      ]
+      ],
+      "fixture_worker": "particle_clock_lifetime",
+      "real_D3D_fixture_adapter_unavailable": true
     },
     {
       "id": "native_renderer_binding_getters",
       "packet": "native_renderer_binding_getters",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "implementing_eight_exact_native_binding_getter_leaves",
+      "done": true,
+      "state": "integrated_eight_complete_native_getters_primary_object_byte_identical_and_host_routes_checked",
       "function_addresses": [
         "00b3cea0",
         "00b48ce0",
@@ -3239,7 +3242,8 @@
         "src/native_renderer_binding_getters.cpp",
         "docs/NATIVE_RENDERER_BINDING_GETTERS.md",
         "reports/native_renderer_binding_getters_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_renderer_binding_getters_audit.json"
     },
     {
       "id": "native_render_resource_container_removal_closure",
@@ -3249,13 +3253,69 @@
       "state": "closing_actual_resource_dispatch_for_container_removal",
       "function_addresses": [
         "00b31dc0",
-        "00b3ce30"
+        "00b3ce30",
+        "00a82250"
       ],
       "code_ownership": [
         "include/bsp/native_render_resource_container_removal.hpp",
         "src/native_render_resource_container_removal.cpp",
         "docs/NATIVE_RENDER_RESOURCE_CONTAINER_REMOVAL.md",
         "reports/native_render_resource_container_removal_audit.json"
+      ]
+    },
+    {
+      "id": "native_physical_buffer_owner",
+      "packet": "native_physical_buffer_owner",
+      "worker": "main",
+      "done": false,
+      "state": "actual_physical_buffer_owner_implemented_initial_build_passed_fixture_pending",
+      "function_addresses": [
+        "00b4bb60",
+        "00b4bbb0",
+        "00b4c250",
+        "00b4c370",
+        "00b4b900",
+        "00b4bab0",
+        "00b4b490",
+        "00b4b530",
+        "00b4bb20",
+        "00b4bb40",
+        "00b4c210",
+        "00b4c230",
+        "00b49500",
+        "00b496a0",
+        "00b49700",
+        "00b3f4c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_buffer_owner.hpp",
+        "src/native_physical_buffer_owner.cpp",
+        "docs/NATIVE_PHYSICAL_BUFFER_OWNER.md",
+        "reports/native_physical_buffer_owner_audit.json"
+      ]
+    },
+    {
+      "id": "native_vertex_declaration_owner",
+      "packet": "native_vertex_declaration_owner",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "implementing_actual_CPU_vertex_declaration_arrays_and_lifetime",
+      "function_addresses": [
+        "00b48af0",
+        "00b47910",
+        "00b488e0",
+        "00b48ad0",
+        "00b480f0",
+        "00b47a30",
+        "00b48b70",
+        "00b48ca0",
+        "00b47950"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vertex_declaration_owner.hpp",
+        "src/native_vertex_declaration_owner.cpp",
+        "docs/NATIVE_VERTEX_DECLARATION_OWNER.md",
+        "reports/native_vertex_declaration_owner_audit.json"
       ]
     }
   ],
@@ -4233,8 +4293,8 @@
     {
       "packet": "native_renderer_actual_binding_profiles_next",
       "worker": "particle_clock_lifetime",
-      "state": "read_only_concrete_binding_owner_getter_and_terminal_profile_discovery",
-      "validation": null
+      "state": "integrated_reviewed_concrete_binding_owner_and_terminal_profile_discovery",
+      "validation": "reports/native_renderer_actual_binding_profiles_next.json"
     },
     {
       "packet": "native_render_resource_record_array",
@@ -4251,27 +4311,29 @@
     {
       "packet": "native_renderer_binding_getters",
       "worker": "system_fog_owner_discovery",
-      "state": "implementing_eight_exact_native_binding_getter_leaves",
-      "validation": null
+      "state": "integrated_eight_complete_native_getters_primary_object_byte_identical_and_host_routes_checked",
+      "validation": "reports/native_renderer_binding_getters_audit.json"
     },
     {
       "packet": "native_render_resource_container_removal_closure",
       "worker": "material_effect_plane",
       "state": "closing_actual_resource_dispatch_for_container_removal",
       "validation": null
+    },
+    {
+      "packet": "native_physical_buffer_owner",
+      "worker": "main",
+      "state": "actual_physical_buffer_owner_implemented_initial_build_passed_fixture_pending",
+      "validation": null
+    },
+    {
+      "packet": "native_vertex_declaration_owner",
+      "worker": "system_fog_owner_discovery",
+      "state": "implementing_actual_CPU_vertex_declaration_arrays_and_lifetime",
+      "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_renderer_actual_binding_profiles_next",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": [
-        "00b23710",
-        "00b24710",
-        "00b24840",
-        "00b24b00"
-      ]
-    },
     {
       "packet": "native_renderer_surface_bindings",
       "worker": "main",
@@ -4281,25 +4343,49 @@
       ]
     },
     {
-      "packet": "native_renderer_binding_getters",
-      "worker": "system_fog_owner_discovery",
-      "function_addresses": [
-        "00b3cea0",
-        "00b48ce0",
-        "00b48d10",
-        "00b48cf0",
-        "00b48dc0",
-        "00b4b9f0",
-        "00b4b840",
-        "00b5ff00"
-      ]
-    },
-    {
       "packet": "native_render_resource_container_removal_closure",
       "worker": "material_effect_plane",
       "function_addresses": [
         "00b31dc0",
-        "00b3ce30"
+        "00b3ce30",
+        "00a82250"
+      ]
+    },
+    {
+      "packet": "native_physical_buffer_owner",
+      "worker": "main",
+      "function_addresses": [
+        "00b4bb60",
+        "00b4bbb0",
+        "00b4c250",
+        "00b4c370",
+        "00b4b900",
+        "00b4bab0",
+        "00b4b490",
+        "00b4b530",
+        "00b4bb20",
+        "00b4bb40",
+        "00b4c210",
+        "00b4c230",
+        "00b49500",
+        "00b496a0",
+        "00b49700",
+        "00b3f4c0"
+      ]
+    },
+    {
+      "packet": "native_vertex_declaration_owner",
+      "worker": "system_fog_owner_discovery",
+      "function_addresses": [
+        "00b48af0",
+        "00b47910",
+        "00b488e0",
+        "00b48ad0",
+        "00b480f0",
+        "00b47a30",
+        "00b48b70",
+        "00b48ca0",
+        "00b47950"
       ]
     }
   ],
