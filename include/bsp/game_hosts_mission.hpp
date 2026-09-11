@@ -45,6 +45,9 @@ class GameHostLog;
 class GameVfsHost;
 class GameScriptHost;
 class GameFrontendHost;
+class GameFrameProfiler;
+class GameMissionLuaHost;
+class GameMissionFrameHost;
 
 // One class token of the selected mission's `.scn`, as the reconstructed
 // reader counted it. `registered` is bsp::scene_entity_class_is_registered.
@@ -73,7 +76,14 @@ enum class GameMissionStep {
     BriefingStart, // 005922f0 then 0058bdf0 ran
     LoadRequested, // 00439020's two requests are on the queue
     SceneRecord,   // 004e2770 built the record and the .scn was read
-    Stopped,       // the load stopped at the first renderer/scene-graph host
+    // Milestone 2f. The load no longer stops in front of the first
+    // renderer-owner host: it walks the recovered inventory to its end, the
+    // state 0Ch handler enters the mission and the in-mission branch of
+    // 004e4a40 runs headless.
+    SceneLoaded,   // the load ran to game state 0Ch
+    InMission,     // 004da6c0 wrote game state 0Dh
+    MissionFrames, // --mission-frames N frames of 004e4a40 ran
+    Stopped,       // nothing left to do
 };
 const char* game_mission_step_name(GameMissionStep step) noexcept;
 
@@ -134,6 +144,20 @@ struct GameMissionSummary {
     std::size_t load_host_steps{0};
     std::size_t load_host_external{0};
     std::string load_stopped_at;
+    // Milestone 2f
+    long mission_frames_requested{0};
+    unsigned long long mission_frames_run{0};
+    unsigned long long mission_frames_simulated{0};
+    bool mission_load_finished{false};
+    bool mission_entered{false};
+    int mission_game_state{0};
+    std::size_t mission_load_concrete{0};
+    std::size_t mission_load_records{0};
+    std::size_t lua_bindings{0};
+    std::size_t lua_natives{0};
+    unsigned long long lua_native_calls{0};
+    std::string lua_script_path;
+    std::string mission_exit_note;
     GameMissionStep step{GameMissionStep::Idle};
 };
 
@@ -147,7 +171,9 @@ struct GameMissionSummary {
 class GameMissionHost {
 public:
     GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
-        GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id);
+        GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
+        long mission_frames = 0, GameFrameProfiler* profiler = nullptr,
+        std::string language = {});
     ~GameMissionHost();
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;
