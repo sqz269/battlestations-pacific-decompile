@@ -589,5 +589,19 @@
         "004d9c00"
       ]
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_tested",
+    "validated_revision": "385e4917f99c5c857ecde3ecf7ab71cb0c466219",
+    "main_base": "0c08adba",
+    "log": "local/effect_scalar_o_integrate.log",
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "library_sha256": "66375e00feedf9c3cdcc49bc719c9b598ba7bf161d182a92e5b22bf3a9c2acd3",
+    "fixture_provenance": "The scalar-component real-Lua fixture and existing startup fixture ran on source5b0dee1e and validation.library_sha256; this combined CTest build is separate.",
+    "ghidra_integration_saved_names": 20,
+    "prior_annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T182058Z.json",
+    "native_abi": false,
+    "game_validated": false
+  }
 }
