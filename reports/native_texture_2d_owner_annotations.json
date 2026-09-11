@@ -1,0 +1,46 @@
+[
+  {
+    "address": "00b3f930",
+    "before": {
+      "address": "00b3f930",
+      "function_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "comment": "[BSP reconstruction 00b3f930]\nECX wrapper, five stack arguments, RET14h. Actual GetLevelDesc(0) Width/Height/Format stored at +28/+2C/+18; saved policy dimensions are separate +34/+38. Loader subsequently sets +3C to requested mips. Typed initializer now captures actual metadata for retained recreation; native allocator/base/registry/diagnostic reference pairs remain outside projection. Complete337 bytes verified; docs/TEXTURE_IMAGE_LOADING.md.\n\n[BSP reconstruction 00b3f930] update\nCalls named base00b34230->00b34120 before COM metadata queries. Base assigns full DWORD texture+20 from shared global0108d6e8 then increments. File caller00b2c5d4 checks nonnull D3DX output and00b2c5e9 checks wrapper allocation before00b2c60d invokes this constructor. Earlier failures consume no serial; later failures after counter step keep it consumed. Retaining/recreating existing wrapper does not allocate another serial. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation. Original ABI: ECX wrapper; five stack values; RET14h; EAX wrapper. Evidence: docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b3f930",
+      "old_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "evidence": "Complete 50h texture2D owner constructor in a 54h canonical pool slot. Composes the actual named base, D61948 profile, current COM level count, ignored GetLevelDesc HRESULT, native uninitialized descriptor scratch, actual diagnostic string lifetime, support and tracking state. FH3 cleanup states and termination during exception search are preserved. Fixture E_FAIL writes the descriptor fields; unwritten stack bytes and GPU behavior are outside its proof. Current primary library and exact production observation providers passed 46 live/PE span checks, every loaded postimage check, 8,978 normal words and 402/335 terminal words. Two existing CTests passed. No original binary ABI or game validation. Original ABI: ECX owner; stack actual-name/input-COM/saved-width/saved-height/flags; EAX owner; RET14h Complete src/native_texture_2d_owner.cpp; reports/native_texture_2d_owner_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f2e0",
+    "before": {
+      "address": "00b3f2e0",
+      "function_name": "BSP_D3D9Texture_Destroy",
+      "comment": "[BSP reconstruction 00b3f2e0]\nECX2Dtexture,RET. Release retainedstream+4C before renderer notifications, COMtexture+10 cleanup,cachedsurfaces andbase. Rawfullbody302bytes beyond truncatedfreeexport. Typedowner implements source-before-COM cleanup only; registry/cachedsurfaces/base/allocator remain unported."
+    },
+    "after": {
+      "address": "00b3f2e0",
+      "old_name": "BSP_D3D9Texture_Destroy",
+      "name": "BSP_D3D9Texture_Destroy",
+      "evidence": "Complete texture2D destructor: release current retained source; capture actual renderer/profile notification; unregister through current global; preserve balanced and current COM reads/releases; traverse current surface-cache count/data while clearing captured slots. Current flags control tracking. Cache destruction uses state0, then named-base destruction runs after state-1. Restored returning-free continuation B3F3E9 through RET at B3F40D. No added cleanup retry or lock repair. Current primary library and exact production observation providers passed 46 live/PE span checks, every loaded postimage check, 8,978 normal words and 402/335 terminal words. Two existing CTests passed. No original binary ABI or game validation. Original ABI: ECX actual owner; plain RET; no semantic EAX Complete src/native_texture_2d_owner.cpp; reports/native_texture_2d_owner_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f590",
+    "before": {
+      "address": "00b3f590",
+      "function_name": "FUN_00b3f590"
+    },
+    "after": {
+      "address": "00b3f590",
+      "old_name": "FUN_00b3f590",
+      "name": "BSP_D3D9Texture2D_Delete",
+      "evidence": "Complete scalar texture2D deletion. Calls the full owner destructor before returning the actual slot to the canonical texture2D pool when flags bit0 is set. No pool return after a throwing destructor. The 54h slot index at +50h is preserved. Current primary library and exact production observation providers passed 46 live/PE span checks, every loaded postimage check, 8,978 normal words and 402/335 terminal words. Two existing CTests passed. No original binary ABI or game validation. Original ABI: ECX owner; stack flags; EAX original address; RET4 Complete src/native_texture_2d_owner.cpp; reports/native_texture_2d_owner_audit.json."
+    },
+    "status": "applied"
+  }
+]

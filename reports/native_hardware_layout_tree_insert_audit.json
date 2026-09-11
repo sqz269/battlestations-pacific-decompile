@@ -1,6 +1,6 @@
 {
   "packet": "native_hardware_layout_tree_insert",
-  "status": "complete_source_static_assembly_and_primary_build_checked_pending_independent_original_fixture",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe",
@@ -78,7 +78,12 @@
     },
     {
       "path": "docs/NATIVE_HARDWARE_LAYOUT_TREE_INSERT.md",
-      "sha256": "026bc38685c980b5aa3876ffbde172f90e13857977ea5406733f2c327581ad5f"
+      "sha256": "4b2420ac0bd7d988fb80142363a4627f76a7be0cd92baa1ad509a7517852da38",
+      "previous_source_time_pin": {
+        "sha256": "026bc38685c980b5aa3876ffbde172f90e13857977ea5406733f2c327581ad5f",
+        "archive": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-insert-fixture-20260910\\docs\\NATIVE_HARDWARE_LAYOUT_TREE_INSERT.md"
+      },
+      "bytes": 4453
     },
     {
       "path": "local/native_hardware_insert_primary_build.txt",
@@ -91,9 +96,374 @@
     "new_tracked_tests": 0
   },
   "exception": "Actual D69260/28h owner constructed/copied/destroyed through existing 411700/411940/411780; new host RTTI/catch/throw ABI. DF6050 one-state unwind map DF6048 ->CBD7C0 string destruction; no catch map.",
-  "native_differential_fixture": false,
-  "annotations_applied": false,
-  "ledger_registered": false,
+  "native_differential_fixture": true,
+  "annotations_applied": true,
+  "ledger_registered": true,
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "worker_commit": "640dc30",
+    "worker_evidence": "reports/native_hardware_layout_tree_insert_fixture.json",
+    "worker_source_pins_verified": 14,
+    "worker_fixture_pins_verified": 23,
+    "current_production_source_closure_matches": true,
+    "frozen_primary_library_sha256": "0c2a637b2735b6df010fd7011937faaebea5a5e6500af1b9828701185fab2e97",
+    "live_PE_postimages_verified": [
+      {
+        "address": "004072d0",
+        "length": 5,
+        "postimage_sha256": "d2dfed4285111e0335454b5e74fd5f43026ec3e7c480444c5f61b69b86a4a83e"
+      },
+      {
+        "address": "00408120",
+        "length": 5,
+        "postimage_sha256": "586e9d9bbfb5faf483030e7d6490086844d22a2b04fc9d49c89d016cc0bfc9f8"
+      },
+      {
+        "address": "00408720",
+        "length": 5,
+        "postimage_sha256": "b646fcf91d05ac4f6decacd9a3f445dac14b56f454234e37cf9bfd465eccdcb4"
+      },
+      {
+        "address": "00411700",
+        "length": 95,
+        "postimage_sha256": "845cf0481ceba3b30bbe7084c3b38db4568e9859a280133449ec44561780de57"
+      },
+      {
+        "address": "00411780",
+        "length": 50,
+        "postimage_sha256": "8490cd3c81f5f5b9fe0419d9b86450f6cfcfcff186fb0de91b56c7b36fc199f5"
+      },
+      {
+        "address": "004118d0",
+        "length": 101,
+        "postimage_sha256": "ff0dca7d97eacdd1dd4e869f395109ad28d27f698085e22df55a586f7b16529d"
+      },
+      {
+        "address": "00411940",
+        "length": 25,
+        "postimage_sha256": "70437509a99231553565df048ed07fdfa6e166270e55daaeb8bd8b82fc1eb1ca"
+      },
+      {
+        "address": "00b20910",
+        "length": 82,
+        "postimage_sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb"
+      },
+      {
+        "address": "00b20bf0",
+        "length": 85,
+        "postimage_sha256": "6e6d6669f660a3c4b509d65c395f5fb965bba338cf83b66e22faea58334db079"
+      },
+      {
+        "address": "00b20d30",
+        "length": 137,
+        "postimage_sha256": "267eb4535b6833c506f6ad22ad8105b14c1d7f4bf9aaf0f402635ac88d4751bf"
+      },
+      {
+        "address": "00b22bd0",
+        "length": 78,
+        "postimage_sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564"
+      },
+      {
+        "address": "00b28370",
+        "length": 94,
+        "postimage_sha256": "d35caaf02f8a80fdeaa66aa752a7cc0351a52c67e71efe229401dee786ad6d55"
+      },
+      {
+        "address": "00b29cd0",
+        "length": 55,
+        "postimage_sha256": "c19949ba1a457e038523eb69dbe98f1ce50b9189bc23fd960b122fdad28f508b"
+      },
+      {
+        "address": "00b2f1b0",
+        "length": 492,
+        "postimage_sha256": "73e9ea2d026f270076275284121147f8b6d65506c3216a4a21898656d2c6e8b9"
+      },
+      {
+        "address": "00b2f540",
+        "length": 235,
+        "postimage_sha256": "ca2cffe7151672f686d2f39257e1cb0b01a71f66a297904f28f1af251d6421c0"
+      },
+      {
+        "address": "00bf632f",
+        "length": 17,
+        "postimage_sha256": "3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70"
+      },
+      {
+        "address": "00bf63a6",
+        "length": 88,
+        "postimage_sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d"
+      },
+      {
+        "address": "00bf6454",
+        "length": 22,
+        "postimage_sha256": "5aa135c550cfa5127551047f9b505f7313399dc686df7d16a9711763dc56a8bc"
+      },
+      {
+        "address": "00bf65ac",
+        "length": 5,
+        "postimage_sha256": "89ec732bd92bb75f37a30c4d4d19f16c5161893ade3c9d18e791bc36da34f45f"
+      },
+      {
+        "address": "00bf66ef",
+        "length": 5,
+        "postimage_sha256": "509f8f96805b89d81ee9850ad99752a11912be89e44f1db2d0cfcf5162b32fe4"
+      },
+      {
+        "address": "00bf6713",
+        "length": 16,
+        "postimage_sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77"
+      },
+      {
+        "address": "00bf681b",
+        "length": 5,
+        "postimage_sha256": "84824811de1ac2b7183501755231f7d61a24d0c093434e635c4a279922a78a14"
+      },
+      {
+        "address": "00bf6885",
+        "length": 5,
+        "postimage_sha256": "268a51a18dc32c1798df75385cf0fd1a62b4a2fdca06110e4818e286a6a77a84"
+      },
+      {
+        "address": "00bf6b43",
+        "length": 5,
+        "postimage_sha256": "b4a87b14179da9c3eea9f08efaae29f8a7a07ba2aadd5ee6fe547bc5460ff611"
+      },
+      {
+        "address": "00bf93a4",
+        "length": 101,
+        "postimage_sha256": "37f6ca4a9837d3dc1b66fea45322239161645c536656f7748390d2725ba5133e"
+      },
+      {
+        "address": "00bf9dc8",
+        "length": 5,
+        "postimage_sha256": "6d4dd583de220820f7046f972352d9dcd4fe60f8d65928b5d620b0633bf33118"
+      },
+      {
+        "address": "00bf9f1a",
+        "length": 5,
+        "postimage_sha256": "ea68228baf74f370e212bb8220be154ac4747f06196f3a74b45e8704ebad3db2"
+      },
+      {
+        "address": "00bffb8b",
+        "length": 5,
+        "postimage_sha256": "1d8ab5429ca03c4216596e274167a43ce36f72c775dcdff0bac7e53023ca9569"
+      },
+      {
+        "address": "00c03de0",
+        "length": 5,
+        "postimage_sha256": "97fd4fce1fdaaf105d64d769dced85f1117597fdc24ce5b3301e50baccdd039d"
+      },
+      {
+        "address": "00c5e010",
+        "length": 8,
+        "postimage_sha256": "e296c371192b19cdccfc365de53909e116163053522ac9127588bd30bec496ab"
+      },
+      {
+        "address": "00c5e018",
+        "length": 10,
+        "postimage_sha256": "bc56051aaaa361c2819fc91b524e09ecae5225da841128849c2d2b1724dbb08c"
+      },
+      {
+        "address": "00c5e050",
+        "length": 8,
+        "postimage_sha256": "2fa8c212968a2fcb80b9d077ee6871d3b33df36d85ebec055a2ace5f10b871ad"
+      },
+      {
+        "address": "00c5e058",
+        "length": 10,
+        "postimage_sha256": "82a38bf2f28632d9a7a235c1b2493e3bfc4546967d13fa45fef89b8355a065f3"
+      },
+      {
+        "address": "00cbd7c0",
+        "length": 8,
+        "postimage_sha256": "f83ffb8e49da92231981f95d6eccd6aeec3c4d48fc8e8d162a9d83eb91ffbaf6"
+      },
+      {
+        "address": "00cbd7c8",
+        "length": 10,
+        "postimage_sha256": "e00caf9bdd9182177378c972a6fce9799a90cff152dd22c6ad0a65ee8ef1d3f8"
+      },
+      {
+        "address": "00ce47bc",
+        "length": 20,
+        "postimage_sha256": "d9812c08dd702f493578cf64ef34c80bcb5acf24e29d246839c9ad664db812df"
+      },
+      {
+        "address": "00d83f6c",
+        "length": 44,
+        "postimage_sha256": "7b005800a06f89dc3275b35e2e2564a7cb70a5d98d6c838961c805238ae4f3f1"
+      },
+      {
+        "address": "00d83f98",
+        "length": 16,
+        "postimage_sha256": "7749c393a92e6b22e3351ddf1ab757ebedf8c17751a01473fa1dcf478f92eae7"
+      },
+      {
+        "address": "00d83fd4",
+        "length": 44,
+        "postimage_sha256": "5811a24ebeec89d573d3543fed1d623fbea1f88fcb79e7e4c0b92635bfe7e69d"
+      },
+      {
+        "address": "00d84000",
+        "length": 28,
+        "postimage_sha256": "27faf8e92098fbc4b0e5bd923519d3dc967213ded49f98facee0dbf40a32ff83"
+      },
+      {
+        "address": "00d8401c",
+        "length": 44,
+        "postimage_sha256": "f852eff07a2111956e3fbfb7548d01deceefa45d0abdfacbfc0f5dc50a177ff3"
+      },
+      {
+        "address": "00df6048",
+        "length": 44,
+        "postimage_sha256": "1446bc469cbe736d9799420b365f3c174a400e603dac93d9d41da6919cc6c6f4"
+      },
+      {
+        "address": "00e03c7c",
+        "length": 28,
+        "postimage_sha256": "bb7b94250e6d69869c497f71c2e4ccc2436a0def62ca1cc387704fe81bfb6217"
+      },
+      {
+        "address": "00e08000",
+        "length": 32,
+        "postimage_sha256": "65b713e50ac45d0e5332a82e4a0ab432f5de048d063c7c69574f64f05e48f481"
+      },
+      {
+        "address": "00e08020",
+        "length": 32,
+        "postimage_sha256": "7e24adcf7aae48960413bfef7a04ebdc27e4f3a251ff455e7dcf7ed1f2f4d90a"
+      },
+      {
+        "address": "00e174f0",
+        "length": 32,
+        "postimage_sha256": "018be7aae3d2dbb25352d3760c9ce5601ee8f2e26db02247ff5e28feb12dd3da"
+      }
+    ],
+    "behavior_words": 8582,
+    "output_stores_each": 56,
+    "actual_CRT_throw_events_each": 5,
+    "library_providers_verified": 16,
+    "no_source_defects_found": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_tree_insert_annotations.json",
+    "bytes": 6659,
+    "sha256": "9d259be97eeb5b1a24d55d97a9e7c32bc8100ee39fd28c51aac57f117cae10f1",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b20d30",
+      "path": "exports/bsp/functions/00b20d30/decompiled.c",
+      "bytes": 2198,
+      "sha256": "d6f3458888018ccedc3f7568063482b82847cf740adce274bcdcd7a1248ed6e3"
+    },
+    {
+      "address": "00b28370",
+      "path": "exports/bsp/functions/00b28370/decompiled.c",
+      "bytes": 1796,
+      "sha256": "fedcefac5c44f00f5b9e8a22ea914bc56c067fb07828f7c4c5306008ecdb82d6"
+    },
+    {
+      "address": "00b29cd0",
+      "path": "exports/bsp/functions/00b29cd0/decompiled.c",
+      "bytes": 1374,
+      "sha256": "6514aecdda744173bc0dadc160d4cc07248bc5ee2a7c2a58d1db53a38886e4f9"
+    },
+    {
+      "address": "00b2f1b0",
+      "path": "exports/bsp/functions/00b2f1b0/decompiled.c",
+      "bytes": 5315,
+      "sha256": "9e389d46429dfe2888b86d3bb6b800dc58fb900b19b5825298d7974be8d3279e"
+    },
+    {
+      "address": "00b2f540",
+      "path": "exports/bsp/functions/00b2f540/decompiled.c",
+      "bytes": 2486,
+      "sha256": "b577efb54d26f38e0e80353b2c59da046666b14edef71c8c15fe32ba2d2ab62d"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:13:22.316636+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b20d30",
+      "name": "decrement_native_hardware_layout_iterator_00b20d30",
+      "cpp_symbol": "decrement_native_hardware_layout_iterator_00b20d30",
+      "source": "src/native_hardware_layout_tree_insert.cpp",
+      "native_end_exclusive": "00b20db9",
+      "original_abi": "ECX actual iterator; RET or invalid-parameter tail",
+      "evidence": "reports/native_hardware_layout_tree_insert_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b28370",
+      "name": "initialize_native_hardware_layout_node_00b28370",
+      "cpp_symbol": "initialize_native_hardware_layout_node_00b28370",
+      "source": "src/native_hardware_layout_tree_insert.cpp",
+      "native_end_exclusive": "00b283ce",
+      "original_abi": "ECX node; stack left/parent/right/pair/color; RET14h; EAX node",
+      "evidence": "reports/native_hardware_layout_tree_insert_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b29cd0",
+      "name": "allocate_native_hardware_layout_node_00b29cd0",
+      "cpp_symbol": "allocate_native_hardware_layout_node_00b29cd0",
+      "source": "src/native_hardware_layout_tree_insert.cpp",
+      "native_end_exclusive": "00b29d07",
+      "original_abi": "Stack left/parent/right/pair/color; callee RET14h; EAX node",
+      "evidence": "reports/native_hardware_layout_tree_insert_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b2f1b0",
+      "name": "link_native_hardware_layout_node_00b2f1b0",
+      "cpp_symbol": "link_native_hardware_layout_node_00b2f1b0",
+      "source": "src/native_hardware_layout_tree_insert.cpp",
+      "native_end_exclusive": "00b2f39c",
+      "original_abi": "ECX tree; stack output/left-byte/parent/pair; RET10h; EAX output",
+      "evidence": "reports/native_hardware_layout_tree_insert_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b2f540",
+      "name": "insert_native_hardware_layout_pair_00b2f540",
+      "cpp_symbol": "insert_native_hardware_layout_pair_00b2f540",
+      "source": "src/native_hardware_layout_tree_insert.cpp",
+      "native_end_exclusive": "00b2f62b",
+      "original_abi": "ECX tree; stack output/pair; RET8; EAX output",
+      "evidence": "reports/native_hardware_layout_tree_insert_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_TREE_INSERT.md",
+    "bytes": 4453,
+    "sha256": "4b2420ac0bd7d988fb80142363a4627f76a7be0cd92baa1ad509a7517852da38"
+  }
 }

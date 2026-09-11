@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_hardware_layout_construct2",
-  "status": "two_complete_functions_reconstructed_original_body_fixture_passed",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-construct-20260910",
   "branch": "agent/native-hardware-layout-construct-20260910",
   "base_commit": "c2f5e01",
@@ -1119,5 +1119,635 @@
       "bytes": 22181666,
       "sha256": "ee9067c08621eb2acd766262d18a0a801e603342549d2fc0c3183c0995380957"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verification": {
+      "worker_preverification": {
+        "worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-construct-20260910",
+        "worker_commit": "e250dd5",
+        "worker_pins_verified": 37,
+        "same_current_source_files": [
+          "include\\bsp\\native_hardware_layout_construct.hpp",
+          "src\\native_hardware_layout_construct.cpp",
+          "include\\bsp\\native_hardware_layout_fields.hpp",
+          "src\\native_hardware_layout_fields.cpp",
+          "include\\bsp\\native_hardware_layout_owner.hpp",
+          "src\\native_hardware_layout_owner.cpp",
+          "include\\bsp\\native_string.hpp",
+          "src\\native_string.cpp",
+          "include\\bsp\\native_physical_buffer_owner.hpp",
+          "src\\native_physical_buffer_owner.cpp",
+          "include\\bsp\\native_resource_support.hpp",
+          "src\\native_resource_support.cpp"
+        ],
+        "changed_shared_files": [
+          "src\\singleton_lifetime.cpp"
+        ],
+        "used_allocate_free_bodies_unchanged": true,
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "live_PE_spans": [
+          {
+            "address": "00b60790",
+            "length": 625,
+            "sha256": "85f05328e0179c8568bb20fa25d07fec6ea1348008e9ec4b743b0e91cdef008e"
+          },
+          {
+            "address": "00b60cb0",
+            "length": 81,
+            "sha256": "64e2a22328fd7ce69a9822d4c7ed1c52b452c21fee16a4a9546c9200a78456be"
+          },
+          {
+            "address": "00cc1310",
+            "length": 32,
+            "sha256": "da33cb97ecd59602701f2eda1150f1ab30bcabb561232abb90216c1ce78306cb"
+          },
+          {
+            "address": "00cc1350",
+            "length": 18,
+            "sha256": "bbca437440870cf20b3a0ec86d1b4e21272e5f8e9eb46db7695bea6959340df8"
+          },
+          {
+            "address": "00dfa0a8",
+            "length": 52,
+            "sha256": "53cfd56b209bc5eb86f1029c96d79011cd015f1ba5498b2738be80d50f3b7a08"
+          },
+          {
+            "address": "00dfa110",
+            "length": 44,
+            "sha256": "78e62e9116387cbf6074a8502895e7ec08433a5e5f116622f14c1de78de59d16"
+          },
+          {
+            "address": "00d61bd0",
+            "length": 13,
+            "sha256": "d646723f4c499d91c842bf483b646f9f94f258b07d7610ad1e89f94b3a6e8233"
+          },
+          {
+            "address": "00d61d1c",
+            "length": 8,
+            "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78"
+          },
+          {
+            "address": "00d61cc0",
+            "length": 72,
+            "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e"
+          },
+          {
+            "address": "00d5f0a8",
+            "length": 72,
+            "sha256": "c89c70fad2feaec444ded2de95bd38a2d522df128d8f48b55f6e368e6c34fc4e"
+          },
+          {
+            "address": "00b48a00",
+            "length": 5,
+            "sha256": "ec9277444f18e65f6c2f9af165769dd84d8839eafc78c9ff0276a09698fb7cf0"
+          },
+          {
+            "address": "00b47d60",
+            "length": 5,
+            "sha256": "45e4fcb5c1fe93c324eb3ae8a23230068860ddd10f40ecf6aa71bc08d295a070"
+          },
+          {
+            "address": "00b48c00",
+            "length": 5,
+            "sha256": "c56c29cda62704c8fdda4236daa3c29323dd14af6b748f65f593dc3f84c7a22f"
+          },
+          {
+            "address": "00b48960",
+            "length": 5,
+            "sha256": "eb4c61ad8f5ef147a4162ef10fa00aa3920b6df79f181a1533aaa9734dd13249"
+          },
+          {
+            "address": "0041dd40",
+            "length": 5,
+            "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35"
+          },
+          {
+            "address": "0041dd20",
+            "length": 5,
+            "sha256": "dca452e0b0521bb6b5ecf5e9c5a46ce8dd446665d1a55f931c87f7635507dce7"
+          },
+          {
+            "address": "00b3f4c0",
+            "length": 5,
+            "sha256": "ea5c5113ff7879921633b5c0bc2142fef6d0be5979b9a3da40f36b88c33b532f"
+          },
+          {
+            "address": "00b3e730",
+            "length": 5,
+            "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+          },
+          {
+            "address": "00419cc0",
+            "length": 5,
+            "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11"
+          },
+          {
+            "address": "00bd1510",
+            "length": 5,
+            "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247"
+          },
+          {
+            "address": "00bf7680",
+            "length": 5,
+            "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885"
+          },
+          {
+            "address": "00bf6b43",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d"
+          }
+        ],
+        "span_bytes": 1077
+      },
+      "loaded_spans_verified": [
+        {
+          "address": "00b60790",
+          "length": 625,
+          "sha256": "e6e6f733e925cabd2350983dccc00d5c80ababafa753cd5b6ed8c6d415bf261e"
+        },
+        {
+          "address": "00b60cb0",
+          "length": 81,
+          "sha256": "b7f767ef36dd9206cbdfcc710cf2d80b110f5ca41587e8598f508efadc97a3ac"
+        },
+        {
+          "address": "00cc1310",
+          "length": 32,
+          "sha256": "78d07100fca27419e1e6827ee6bd22d5636ceb74e0fda57a83c866d100822cbb"
+        },
+        {
+          "address": "00cc1350",
+          "length": 18,
+          "sha256": "1017c56ed1035999e3b467ccef034de4f332ca84ccf2f5c2a76767b258da5e88"
+        },
+        {
+          "address": "00dfa0a8",
+          "length": 52,
+          "sha256": "50ad30001b418c7d977abf17ab48122e8aff891debcaa3586c9f17694ea5e7a4"
+        },
+        {
+          "address": "00dfa110",
+          "length": 44,
+          "sha256": "c10904cf4cee6ac80a25c4ff1c1f52246a164f09be88b7a73000039c39c43240"
+        },
+        {
+          "address": "00d61bd0",
+          "length": 13,
+          "sha256": "d646723f4c499d91c842bf483b646f9f94f258b07d7610ad1e89f94b3a6e8233"
+        },
+        {
+          "address": "00d61d1c",
+          "length": 8,
+          "sha256": "b2fcfd5a2a48bb025a2751f6a02cd1b0189ab8c1c9c2a8b4da2269e4b457a9ae"
+        },
+        {
+          "address": "00d61cc0",
+          "length": 72,
+          "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e"
+        },
+        {
+          "address": "00d5f0a8",
+          "length": 72,
+          "sha256": "11fe8fcdf00d8a403faf0ad717b9104b0ddfd9031e1e32d8a25a597669b30bce"
+        },
+        {
+          "address": "00b48a00",
+          "length": 5,
+          "sha256": "106c5ec5dacd57a8ec758008ca375c3434ff1b0c6437cc7d96f709d53ae195d6"
+        },
+        {
+          "address": "00b47d60",
+          "length": 5,
+          "sha256": "f3c6813a95888fa5f0b145b13223470ed1a07cafe4ec472a06c9f1733f940a48"
+        },
+        {
+          "address": "00b48c00",
+          "length": 5,
+          "sha256": "50cc3306d3f2c243ef2bfc4675d61b982b224517e327583b05d2f29d047586fd"
+        },
+        {
+          "address": "00b48960",
+          "length": 5,
+          "sha256": "8542ef76758282456c648fda8717149f96fe48708e0b3bbd0a5b2ea0d0770099"
+        },
+        {
+          "address": "0041dd40",
+          "length": 5,
+          "sha256": "8acee68ab011efb3a109badb349d521a05d67b2f4319fb9a14d4dd8a55b2d46b"
+        },
+        {
+          "address": "0041dd20",
+          "length": 5,
+          "sha256": "c4c50ac1564a0d3994d8215dab3663663771dbb45d5ef70c7e6151d6c8e0f729"
+        },
+        {
+          "address": "00b3f4c0",
+          "length": 5,
+          "sha256": "3ab1b448618a4b93003f43e48741993b8e29959a97657fe594a9464c9b48e822"
+        },
+        {
+          "address": "00b3e730",
+          "length": 5,
+          "sha256": "e387e8dfc00a07da1207fcf6346744430ab926619ea07296603de7f24a26862d"
+        },
+        {
+          "address": "00419cc0",
+          "length": 5,
+          "sha256": "732c3d2133d8371b4b8be303edb806e9f9e1bae971417e36c81a231dea877356"
+        },
+        {
+          "address": "00bd1510",
+          "length": 5,
+          "sha256": "f5ef7eb6200412e043b9d7587e1395d0fc49b69b8ab79e8535bc0765ec8e1176"
+        },
+        {
+          "address": "00bf7680",
+          "length": 5,
+          "sha256": "32ab9eb285007e50b4c6432a6339575dd1e3d9a1ccf40e41581cdb1e209d9c47"
+        },
+        {
+          "address": "00bf6b43",
+          "length": 5,
+          "sha256": "3b35b97939d7e6b1cd6981e80f5cc7391061abcf2c91727ec2b19a949f8324b9"
+        }
+      ],
+      "owned_providers": [
+        {
+          "symbol": "create_native_hardware_layout_from_streams_00b60790",
+          "map_line": "0001:00007250       ?create_native_hardware_layout_from_streams_00b60790@bsp@@YAXPAXPBXAAUNativeHardwareLayoutConstructContext@1@@Z 30008250 f   bsp_core.linked:native_hardware_layout_construct.obj"
+        },
+        {
+          "symbol": "construct_native_hardware_layout_00b60cb0",
+          "map_line": "0001:000071c0       ?construct_native_hardware_layout_00b60cb0@bsp@@YAPAXPAXPBXAAUNativeHardwareLayoutConstructContext@1@@Z 300081c0 f   bsp_core.linked:native_hardware_layout_construct.obj"
+        }
+      ],
+      "shared_library_providers": [
+        {
+          "symbol": "append_native_hardware_layout_stream_00b48a00",
+          "map_line": "0001:00006bf0       ?append_native_hardware_layout_stream_00b48a00@bsp@@YAXPAX0AAUNativeHardwareLayoutOwnerContext@1@@Z 30007bf0 f   bsp_core.linked:native_hardware_layout_fields.obj"
+        },
+        {
+          "symbol": "initialize_native_hardware_layout_base_00b48c00",
+          "map_line": "0001:00006df0       ?initialize_native_hardware_layout_base_00b48c00@bsp@@YAPAXPAX@Z 30007df0 f   bsp_core.linked:native_hardware_layout_fields.obj"
+        },
+        {
+          "symbol": "recompute_native_hardware_layout_stride_00b47d60",
+          "map_line": "0001:00006ea0       ?recompute_native_hardware_layout_stride_00b47d60@bsp@@YAXPAX@Z 30007ea0 f   bsp_core.linked:native_hardware_layout_fields.obj"
+        },
+        {
+          "symbol": "destroy_native_hardware_layout_base_00b48960",
+          "map_line": "0001:00006870       ?destroy_native_hardware_layout_base_00b48960@bsp@@YAXPAXAAUNativeHardwareLayoutOwnerContext@1@@Z 30007870 f   bsp_core.linked:native_hardware_layout_owner.obj"
+        },
+        {
+          "symbol": "resize_native_string_header_0041dd40",
+          "map_line": "0001:000070e0       ?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z 300080e0 f   bsp_core.linked:native_string.obj"
+        },
+        {
+          "symbol": "destroy_native_string_header_0041dd20",
+          "map_line": "0001:000070c0       ?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 300080c0 f   bsp_core.linked:native_string.obj"
+        },
+        {
+          "symbol": "crt_string_storage",
+          "map_line": "0001:00007060       ?crt_string_storage@bsp@@YAAAVNativeStringStorage@1@XZ 30008060 f   bsp_core.linked:native_string.obj"
+        },
+        {
+          "symbol": "destroy_native_buffer_diagnostic_record_00b3f4c0",
+          "map_line": "0001:00007a30       ?destroy_native_buffer_diagnostic_record_00b3f4c0@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30008a30 f   bsp_core.linked:native_physical_buffer_owner.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_allocate",
+          "map_line": "0001:000067c0       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 300077c0 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_free",
+          "map_line": "0001:00006820       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30007820 f   bsp_core.linked:singleton_lifetime.obj"
+        }
+      ],
+      "exact_production_source_observers": [
+        {
+          "symbol": "fixture_actual_resource_support",
+          "map_line": "0001:00005cf0       ?fixture_actual_resource_support@bsp@@YAPAUNativeResourceSupportStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z 30006cf0 f   actual_resource_support.obj"
+        }
+      ],
+      "checks": {
+        "comparisons": [
+          {
+            "case": "create-current-full-scratch",
+            "equal_dwords": 9264
+          },
+          {
+            "case": "construct-failed-HRESULT",
+            "equal_dwords": 5404
+          },
+          {
+            "case": "negative-count",
+            "equal_dwords": 1544
+          },
+          {
+            "case": "second-string-allocation-failure",
+            "equal_dwords": 3474
+          },
+          {
+            "case": "support-allocation-failure",
+            "equal_dwords": 5018
+          },
+          {
+            "case": "COM-write-then-throw",
+            "equal_dwords": 5790
+          }
+        ],
+        "equal_words": 30494,
+        "native_creation_search": 3,
+        "native_creation_unwind": 3,
+        "native_constructor_search": 3,
+        "native_constructor_unwind": 3,
+        "patches": [
+          {
+            "address": "00b60793",
+            "kind": "registered_creation_handler",
+            "value": "30005420"
+          },
+          {
+            "address": "00b608c4",
+            "kind": "relocated_original",
+            "value": "014e1bd0"
+          },
+          {
+            "address": "00b6099e",
+            "kind": "relocated_original",
+            "value": "0170d394"
+          },
+          {
+            "address": "00b60cb3",
+            "kind": "registered_constructor_handler",
+            "value": "30005430"
+          },
+          {
+            "address": "00cc1327",
+            "kind": "relocated_original",
+            "value": "0157a0b8"
+          },
+          {
+            "address": "00cc1359",
+            "kind": "relocated_original",
+            "value": "0157a118"
+          },
+          {
+            "address": "00dfa0ac",
+            "kind": "relocated_original",
+            "value": "01441310"
+          },
+          {
+            "address": "00dfa0b4",
+            "kind": "relocated_original",
+            "value": "0144131b"
+          },
+          {
+            "address": "00dfa0c0",
+            "kind": "relocated_original",
+            "value": "0157a0a8"
+          },
+          {
+            "address": "00dfa114",
+            "kind": "relocated_original",
+            "value": "01441350"
+          },
+          {
+            "address": "00dfa120",
+            "kind": "relocated_original",
+            "value": "0157a110"
+          },
+          {
+            "address": "00d61d1c",
+            "kind": "relocated_original",
+            "value": "013530e0"
+          },
+          {
+            "address": "00d61d20",
+            "kind": "relocated_original",
+            "value": "012c8ca0"
+          },
+          {
+            "address": "00d5f0ec",
+            "kind": "relocated_original",
+            "value": "012af4c0"
+          },
+          {
+            "address": "00bf6b43",
+            "kind": "cxx",
+            "hex": "e908c6c82e"
+          },
+          {
+            "address": "00b48a00",
+            "kind": "append",
+            "hex": "e90ba5d32e"
+          },
+          {
+            "address": "00b47d60",
+            "kind": "stride",
+            "hex": "e91be2d32e"
+          },
+          {
+            "address": "00b48c00",
+            "kind": "initialize",
+            "hex": "e9bbb4d32e"
+          },
+          {
+            "address": "00b48960",
+            "kind": "destroy_base",
+            "hex": "e90ba8d32e"
+          },
+          {
+            "address": "0041dd40",
+            "kind": "resize_string",
+            "hex": "e92b78462f"
+          },
+          {
+            "address": "0041dd20",
+            "kind": "destroy_string",
+            "hex": "e9ab54462f"
+          },
+          {
+            "address": "00b3f4c0",
+            "kind": "destroy_diagnostic",
+            "hex": "e9cb3cd42e"
+          },
+          {
+            "address": "00b3e730",
+            "kind": "support",
+            "hex": "e9bb78d42e"
+          },
+          {
+            "address": "00419cc0",
+            "kind": "string_pool",
+            "hex": "e9cbc2462f"
+          },
+          {
+            "address": "00bd1510",
+            "kind": "string_release",
+            "hex": "e98b4acb2e"
+          },
+          {
+            "address": "00bf7680",
+            "kind": "copy",
+            "hex": "e9bbb8c82e"
+          }
+        ],
+        "support_observer": "Exact current production support source compiled with only symbol alias; all other reported providers come from frozen current bsp_core library."
+      },
+      "artifact_pins": [
+        {
+          "path": "build/hardware-construct-primary-check/hardware_construct_check.exe",
+          "bytes": 63488,
+          "sha256": "1868820383d85f8167899e4baf2c30ef2f2d7f27d80b1a0ed3f01006e841d0c9"
+        },
+        {
+          "path": "build/hardware-construct-primary-check/hardware_construct_check.map",
+          "bytes": 125150,
+          "sha256": "b7e8bd36eec038bcf7d6ce70a269fdcd79a7643db3207f99d5647ff11853b14b"
+        },
+        {
+          "path": "build/hardware-construct-primary-check/bsp_core.linked.lib",
+          "bytes": 23443124,
+          "sha256": "8cd77891dc873c76bd399277086a543784cd466e997e09152457d62fc1e1d155"
+        },
+        {
+          "path": "build/hardware-construct-primary-check/hardware_construct_check.obj",
+          "bytes": 213345,
+          "sha256": "e4ccc4af7632df04ad359e5e773b2b7e852fc377b8f9e4c9f8e605e220535c37"
+        },
+        {
+          "path": "build/hardware-construct-primary-check/actual_resource_support.obj",
+          "bytes": 4967,
+          "sha256": "da835adb3875a19d592e6c9ba01c0ba3706183b7dff61dd28f2eaec9b3ec4d5e"
+        },
+        {
+          "path": "local/build_hardware_construct_primary_check.ps1",
+          "bytes": 2186,
+          "sha256": "c42af47ae6d067557fa48ea10b06920a4571c2e92568adf8bf016c89fcea8c1e"
+        },
+        {
+          "path": "local/hardware_construct_postimages.json",
+          "bytes": 3190,
+          "sha256": "895231b01f6f9966ebedce53b38c68123fcfce77d527c49b1454a22d66c40b05"
+        },
+        {
+          "path": "local/hardware_construct_raw_traces.json",
+          "bytes": 184424,
+          "sha256": "49d1cd7f86d8d44fe9cd25c941e7807ce4c56616ac55943c25e121033eacabed"
+        },
+        {
+          "path": "local/native_hardware_construct_primary_fixture.txt",
+          "bytes": 448,
+          "sha256": "6e339585fce599129df665d43bde4e705034248173a380a25bca39864238eb63"
+        },
+        {
+          "path": "src/native_hardware_layout_construct.cpp",
+          "bytes": 8272,
+          "sha256": "eb91a58f817ab65da5e70aba21502f5459ccc92693055b2ca28642a8c13646a9"
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_construct.hpp",
+          "bytes": 2237,
+          "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798"
+        },
+        {
+          "path": "src/native_resource_support.cpp",
+          "bytes": 3238,
+          "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "local/native_texture_construct_primary_build.txt",
+          "bytes": 1825,
+          "sha256": "dd79800e6f04e5aaa7b94770cd49fe3b68bd97c31dec57313df1aad275a25fe4"
+        },
+        {
+          "path": "local/prepare_texture_construct_primary.py",
+          "bytes": 3816,
+          "sha256": "848d192504cf95e31bb59e5afde46a1c9670827ba60699ef0461eacc25787d99"
+        },
+        {
+          "path": "local/make_texture_construct_primary_drivers.py",
+          "bytes": 3992,
+          "sha256": "bc4daa5320fb3f5c0eba9c14b13620b9058baebdc9130fe1760f65032cbcd3d6"
+        },
+        {
+          "path": "local/verify_texture_construct_primary.py",
+          "bytes": 9639,
+          "sha256": "9cf9cb09328a23486e61cbe36fc7f4a3f2e50b7adf9def7b82b877a9f7ad99fb"
+        }
+      ],
+      "existing_CTests_passed": 2,
+      "new_tracked_tests": 0,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_construct_annotations.json",
+    "bytes": 3471,
+    "sha256": "b76921f50e65c6b7d4d0b7cccbfa769ccd32860b039714c07079d5b0b4866fe2",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b60790",
+      "path": "exports/bsp/functions/00b60790/decompiled.c",
+      "bytes": 4477,
+      "sha256": "59a9e22f35a1e8dc56a4d6d217cc5efc391ffa805c4846ffea6a6fe5f1269d7a"
+    },
+    {
+      "address": "00b60cb0",
+      "path": "exports/bsp/functions/00b60cb0/decompiled.c",
+      "bytes": 1672,
+      "sha256": "554d1ba5f4ac4c1b3ed98cf47438aa760cf97d7d755d81bfda5d34bdd3adcf31"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:13:22.280218+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b60790",
+      "name": "create_native_hardware_layout_from_streams_00b60790",
+      "cpp_symbol": "create_native_hardware_layout_from_streams_00b60790",
+      "source": "src/native_hardware_layout_construct.cpp",
+      "native_end_exclusive": "00b60a01",
+      "original_abi": "ECX actual owner; stack stream list; RET4; EAX unspecified.",
+      "evidence": "reports/native_hardware_layout_construct_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b60cb0",
+      "name": "construct_native_hardware_layout_00b60cb0",
+      "cpp_symbol": "construct_native_hardware_layout_00b60cb0",
+      "source": "src/native_hardware_layout_construct.cpp",
+      "native_end_exclusive": "00b60d01",
+      "original_abi": "ECX actual owner; stack stream list; EAX same owner; RET4.",
+      "evidence": "reports/native_hardware_layout_construct_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_CONSTRUCT.md",
+    "bytes": 9850,
+    "sha256": "7f7c63d1bd084da1ab08d7d2254a70ed332a090f581411a46d4577eaa890f6e2"
+  }
 }

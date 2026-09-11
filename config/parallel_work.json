@@ -3616,8 +3616,8 @@
       "id": "native_texture_2d_owner",
       "packet": "native_texture_2d_owner",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "implementing_complete_actual_owner_all_four_direct_dependencies_integrated",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3f930",
         "00b3f2e0",
@@ -3641,7 +3641,8 @@
         "actual canonical D3D9Texture2DPool"
       ],
       "discovery_evidence": "reports/native_texture_2d_owner_next.json",
-      "scope": "Full50h owner inside54h poolslot: constructor/base destruction/scalar deletion, exactcurrentprofiles/COM/surfacecache and nativeFH3states. Actualdomains only; no missing terminal callback substitution."
+      "scope": "Full50h owner inside54h poolslot: constructor/base destruction/scalar deletion, exactcurrentprofiles/COM/surfacecache and nativeFH3states. Actualdomains only; no missing terminal callback substitution.",
+      "evidence": "reports/native_texture_2d_owner_audit.json"
     },
     {
       "id": "native_hardware_layout_construction_next",
@@ -3733,8 +3734,8 @@
       "id": "native_hardware_layout_construct",
       "packet": "native_hardware_layout_construct",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_full_constructor_and_fixed_scratch_conversion",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b60790",
         "00b60cb0"
@@ -3749,14 +3750,15 @@
         "native_hardware_layout_fields"
       ],
       "scope": "Complete conversion and derived constructor including actual native header strings, diagnostic record, B3E730, current renderer/device/table reads, fixed frame scratch behavior, and B48960 constructor cleanup. Requires existing initialized owner-teardown domain and NativeStringStorage; no callback replacement or forced runtime field values.",
-      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json",
+      "evidence": "reports/native_hardware_layout_construct_audit.json"
     },
     {
       "id": "native_hardware_layout_tree_insert",
       "packet": "native_hardware_layout_tree_insert",
       "worker": "main",
-      "done": false,
-      "state": "implementing_actual_node_insert_and_owning_length_error",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b20d30",
         "00b28370",
@@ -3774,14 +3776,15 @@
         "native_hardware_layout_tree_key"
       ],
       "scope": "Checked decrement, actual28h node initialization/allocation, link/rebalance and insert. Reuse B20910/B22BD0 and native legacy SBO/logic-error owners; preserve D69260/D83F98 length-error storage/cleanup in owned files rather than an invented throw callback.",
-      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json",
+      "evidence": "reports/native_hardware_layout_tree_insert_audit.json"
     },
     {
       "id": "native_hardware_layout_factory",
       "packet": "native_hardware_layout_factory",
-      "worker": "unassigned",
+      "worker": "material_effect_plane",
       "done": false,
-      "state": "waiting_on_complete_constructor_pool_and_tree_insert",
+      "state": "worker_fixture_passed_finishing_complete_factory_evidence",
       "function_addresses": [
         "00b2f710"
       ],
@@ -3799,6 +3802,69 @@
       ],
       "scope": "Actual108D530 lookup/retain/allocate/construct/insert route. Create exact missing Ghidra function under lease/lock; retain raw allocation only during construction; no later failure guard or cache AddRef absent from native assembly.",
       "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_pool_lifetime3",
+      "packet": "native_hardware_layout_pool_lifetime3",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_implementing_actual_pool_lifetime_with_required_trim_binding",
+      "function_addresses": [
+        "00b604d0",
+        "00b60270",
+        "00b60020"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_pool_lifetime.hpp",
+        "src/native_hardware_layout_pool_lifetime.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_LIFETIME.md",
+        "reports/native_hardware_layout_pool_lifetime_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Genuine trim binding is required before actual node publication. Source implementation may proceed independently; verified initialization composition requires trim1.",
+      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
+    },
+    {
+      "id": "native_hardware_layout_pool_trim1",
+      "packet": "native_hardware_layout_pool_trim1",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_actual_slab_trim_and_real_profile_binding",
+      "function_addresses": [
+        "00b60350"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_pool_trim.hpp",
+        "src/native_hardware_layout_pool_trim.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_TRIM.md",
+        "reports/native_hardware_layout_pool_trim_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Actual valid initialized hardware pool plus existing real free service; exposes actual D62AF0/B60350 binding.",
+      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
+    },
+    {
+      "id": "native_hardware_layout_pool_static2",
+      "packet": "native_hardware_layout_pool_static2",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "assigned_after_factory_waiting_for_actual_lifetime_and_trim_composition",
+      "function_addresses": [
+        "00cd7ca0",
+        "00ce0d40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_pool_static.hpp",
+        "src/native_hardware_layout_pool_static.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_STATIC.md",
+        "reports/native_hardware_layout_pool_static_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_hardware_layout_pool_lifetime3",
+        "native_hardware_layout_pool_trim1"
+      ],
+      "scope": "One canonical actual 108FE9C-equivalent storage and shared list domain; real host atexit with actual destructor callback.",
+      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
     }
   ],
   "snapshot_after_analysis": {
@@ -4897,8 +4963,8 @@
     {
       "packet": "native_texture_2d_owner",
       "worker": "material_effect_plane",
-      "state": "implementing_complete_actual_owner_all_four_direct_dependencies_integrated",
-      "validation": null
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "validation": "reports/native_texture_2d_owner_audit.json"
     },
     {
       "packet": "native_hardware_layout_construction_next",
@@ -4927,13 +4993,13 @@
     {
       "packet": "native_hardware_layout_construct",
       "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_full_constructor_and_fixed_scratch_conversion",
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_construct_audit.json"
     },
     {
       "packet": "native_hardware_layout_tree_insert",
       "worker": "main",
-      "state": "implementing_actual_node_insert_and_owning_length_error",
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_tree_insert_audit.json"
     },
     {
@@ -4943,18 +5009,7 @@
       "validation": "reports/native_hardware_layout_factory_audit.json"
     }
   ],
-  "next_dispatch": [
-    {
-      "packet": "native_texture_2d_owner",
-      "worker": "material_effect_plane",
-      "state": "implementing_complete_actual_owner_waiting_cache_integration",
-      "function_addresses": [
-        "00b3f930",
-        "00b3f2e0",
-        "00b3f590"
-      ]
-    }
-  ],
+  "next_dispatch": [],
   "current_partition": {
     "utc": "2026-09-10T03:25:05.752091+00:00",
     "candidates": 23700,

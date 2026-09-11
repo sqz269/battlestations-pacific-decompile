@@ -76,12 +76,14 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_hardware_layout_fields.cpp
   src/native_hardware_layout_tree_insert.cpp
   src/native_hardware_layout_pool_allocate.cpp
+  src/native_hardware_layout_construct.cpp
   src/native_hardware_layout_owner.cpp
   src/native_logical_index_owner.cpp
   src/native_retained_memory_owners.cpp
   src/native_renderer_texture_name_notification.cpp
   src/native_logical_texture_named_base.cpp
   src/native_texture_surface_cache_storage.cpp
+  src/native_texture_2d_owner.cpp
   src/native_vertex_declaration_owner.cpp
   src/native_render_buffer_unregistration.cpp
   src/native_render_cache_construction.cpp
