@@ -1,0 +1,73 @@
+{
+  "packet": "orch2_plane_bow_wave_record",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verification": "Every live read uses bsp.py client.verify(); worker performed no Ghidra mutations.",
+  "conclusion": "BowWaves trailing words are model-space x/y/z floats, populated from first point of exact-name wave marker with one-based numeric id, then copied into runtime effect records.",
+  "layout": {
+    "descriptor_container": "550h; begin/end/capacity at 554h/558h/55Ch",
+    "definition_record": {"stride": "10h", "00h": "refcounted effect definition", "04h": "model x float", "08h": "model y float", "0Ch": "model z float"},
+    "instance_descriptor_pointer": "538h",
+    "runtime_container": "A3Ch; begin/end/capacity at A40h/A44h/A48h",
+    "runtime_record": {"stride": "10h", "00h": "refcounted effect instance or null", "04h": "model x float", "08h": "model y float", "0Ch": "model z float"}
+  },
+  "analyzed": [
+    {"address": "007cd2f0", "role": "fill retained definition copies, source fixed, x87 float members", "abi": "ECX destination, EDX count, stack source plus three unused normal-path words, RET 10h", "evidence": "007cd31f..007cd346"},
+    {"address": "007d1d30", "role": "definition vector push back", "abi": "ECX vector, stack source, RET 4", "evidence": "007d1d36..007d1db0"},
+    {"address": "007d1b50", "role": "insert-one iterator wrapper over 007cf4b0", "abi": "ECX vector, stack output iterator / position owner / position pointer / source, RET 10h", "evidence": "007d1b50..007d1bd8"},
+    {"address": "00718000", "role": "exact marker name plus separate numeric id lookup; last match wins", "state": "read only, not renamed or reconstructed"},
+    {"address": "007c3700", "role": "runtime model point transformed by instance +CCh and ocean height sampled", "evidence": "007c3803..007c384f", "state": "partial read only, not renamed or reconstructed"},
+    {"address": "00868420", "role": "effect factory host boundary", "state": "call ABI inspected; internals not reconstructed"}
+  ],
+  "reconstructed": [
+    {"address": "007d4812", "parent": "007d3e60", "end_instruction": "007d4953", "end_instruction_length": 5, "kind": "fragment", "name": "bind_plane_bow_wave_points_007d4812", "abi": "parent ECX descriptor; interior EBP descriptor, EBX zero", "effect": "writes model marker first point to each definition, one-based id, exact name wave"},
+    {"address": "007d5890", "end_instruction": "007d5ab7", "end_instruction_length": 1, "kind": "function", "name": "create_plane_bow_waves_007d5890", "abi": "ECX plane instance, no stack args, RET", "effect": "identity transform and zero flags passed to factory; writes nonnull effect byte +9 to zero; appends even null effect result, retains model point, releases temporary"}
+  ],
+  "evidence_sites": {
+    "lua_record_first_dword_only": "007d3608..007d367d",
+    "float_copy": "007cd337..007cd346",
+    "marker_literal": "00d06560 = 77 61 76 65 00 (wave)",
+    "marker_lookup": "007d4843..007d487e",
+    "point_write": "007d48d7..007d4946",
+    "create_identity": "007d592d..007d5991; 00d7a24c = 00 00 80 3f",
+    "factory_call": "007d59a3..007d59c8",
+    "point_copy_and_flag": "007d5a1a..007d5a49",
+    "append_and_release": "007d5a4d..007d5a87",
+    "runtime_local_to_world": "007c3803..007c380c"
+  },
+  "flow_repair": {
+    "owner": "parent integrator",
+    "report": "reports/plane_bow_wave_flow_repair.json",
+    "function": "007d3e60",
+    "restored_call_fallthrough_instructions": 17,
+    "remaining_call_gaps": 0,
+    "intentional_jump_gaps_unchanged": 2,
+    "saved_and_exported": true,
+    "worker_raw_check": "007d48a1 add esp,4 (length 3); repaired pseudocode continues to point writer"
+  },
+  "validation": {
+    "state": "Win32 Release build passed; existing reconstructed_math CTest passed 1/1",
+    "build_command": "./scripts/build.ps1",
+    "build_log": "local/bow-wave-build.log",
+    "new_tests": 0,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "name_changes": [
+    {"address": "007cd2f0", "old_ghidra_name": "FUN_007cd2f0", "new_ledger_name": "BSP_PlaneBowWaveDefinition_FillRetainedCopies"},
+    {"address": "007d1b50", "old_ghidra_name": "FUN_007d1b50", "new_ledger_name": "BSP_PlaneBowWaveVector_InsertOne"},
+    {"address": "007d3e60", "old_ghidra_name": "FUN_007d3e60", "new_ledger_name": "BSP_PlaneClass_BindModelData_Provisional"},
+    {"address": "007d5890", "old_ghidra_name": "FUN_007d5890", "new_ledger_name": "BSP_Plane_CreateBowWaveEffects"}
+  ],
+  "limitations": [
+    "New C++ host interface with opaque 32-bit tokens; no drop-in native ABI.",
+    "Stable valid record span and initialized model points are preconditions.",
+    "Lua-stage unset coordinates and x87 fill-copy NaN/exception edge cases are not reproduced.",
+    "Marker lookup, factory, vector allocation, exact native refcount churn and full MSVC SEH/iterator checks remain host boundaries.",
+    "Effect byte +9 general meaning remains unknown; no name inferred.",
+    "Whole parent 007d3e60 and update 007c3700 are not reconstructed here."
+  ],
+  "no_ghidra_function": [],
+  "follow_up": [{"address": "007cc580", "status": "no_ghidra_function", "role": "runtime effect teardown observed incidentally", "extent": "not established", "action": "separate packet; no function definition proposed here"}]
+}
