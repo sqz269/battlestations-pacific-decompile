@@ -2,12 +2,43 @@
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_inverse.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/scene_attachment.hpp"
+#include <stdexcept>
 
 namespace bsp {
 namespace {
 void forward_world_changed(void* context, CameraTransform& transform) {
     (*static_cast<void (**)(CameraTransform&)>(context))(transform);
 }
+}
+CameraTransformLink::CameraTransformLink(CameraTransform*& diagnostic) noexcept
+    : diagnostic_(&diagnostic) {}
+CameraTransformLink::CameraTransformLink(CameraTransform& owner, std::uint32_t& actual_word) noexcept
+    : owner_(&owner), actual_word_(&actual_word) {}
+CameraTransform* CameraTransformLink::get() const {
+    if (diagnostic_) return *diagnostic_;
+    const auto key = *actual_word_; // a fresh read at each access, including after callbacks
+    if (!key) return nullptr;
+    if (!owner_->hierarchy_runtime_)
+        throw std::logic_error("raw hierarchy access requires a live scene-runtime binding");
+    auto& target = owner_->hierarchy_runtime_->resolve_key(key).transform;
+    if (target.raw_node_key_ != key)
+        throw std::logic_error("raw hierarchy key does not identify native node storage");
+    return &target;
+}
+void CameraTransformLink::validate_target(CameraTransform* target) const {
+    if (!diagnostic_ && target) {
+        if (!owner_->hierarchy_runtime_ || !target->raw_node_key_ ||
+            target->hierarchy_runtime_ != owner_->hierarchy_runtime_ ||
+            &owner_->hierarchy_runtime_->resolve_key(target->raw_node_key_).transform != target)
+            throw std::logic_error("raw hierarchy links require live native nodes in the same runtime");
+    }
+}
+CameraTransformLink& CameraTransformLink::operator=(CameraTransform* target) {
+    validate_target(target);
+    if (diagnostic_) { *diagnostic_ = target; return *this; }
+    *actual_word_ = target ? target->raw_node_key_ : 0; // one actual raw publication
+    return *this;
 }
 CameraState::CameraState() noexcept
     : transform(owned_.transform), projection(owned_.projection),
@@ -17,10 +48,10 @@ CameraState::CameraState(CameraTransform& actual_transform, CameraProjection& ac
     std::array<float, 3>& actual_target) noexcept
     : transform(actual_transform), projection(actual_projection),
       view_projection(actual_view_projection), direction(actual_direction), target(actual_target) {}
-CameraState::CameraState(const CameraState& other) noexcept : CameraState() { *this = other; }
-CameraState::CameraState(CameraState&& other) noexcept
+CameraState::CameraState(const CameraState& other) : CameraState() { *this = other; }
+CameraState::CameraState(CameraState&& other)
     : CameraState(static_cast<const CameraState&>(other)) {}
-CameraState& CameraState::operator=(const CameraState& other) noexcept {
+CameraState& CameraState::operator=(const CameraState& other) {
     if (this == &other) return *this;
     transform = other.transform;
     projection = other.projection;
@@ -29,7 +60,7 @@ CameraState& CameraState::operator=(const CameraState& other) noexcept {
     target = other.target;
     return *this;
 }
-CameraState& CameraState::operator=(CameraState&& other) noexcept {
+CameraState& CameraState::operator=(CameraState&& other) {
     return *this = static_cast<const CameraState&>(other);
 }
 
@@ -42,25 +73,36 @@ CameraTransform::CameraTransform() noexcept
 
 CameraTransform::CameraTransform(CameraTransformBacking backing,
     void (*actual_notify_changed)(void*)) noexcept
-    : parent(backing.parent), first_child(backing.first_child), child_count(backing.child_count),
-      next_sibling(backing.next_sibling), previous_sibling(backing.previous_sibling),
+    : raw_node_key_(backing.actual_node_key),
+      parent(*this, backing.parent), first_child(*this, backing.first_child), child_count(backing.child_count),
+      next_sibling(*this, backing.next_sibling), previous_sibling(*this, backing.previous_sibling),
       root_list(backing.root_list), valid_flags(backing.valid_flags),
       auxiliary_flags(backing.auxiliary_flags), notification_context(backing.notification_context),
       notify_changed(actual_notify_changed), view(backing.view), local(backing.local), world(backing.world) {}
 
-CameraTransform::CameraTransform(const CameraTransform& other) noexcept : CameraTransform() {
+CameraTransform::CameraTransform(const CameraTransform& other) : CameraTransform() {
     *this = other;
 }
-CameraTransform::CameraTransform(CameraTransform&& other) noexcept
+CameraTransform::CameraTransform(CameraTransform&& other)
     : CameraTransform(static_cast<const CameraTransform&>(other)) {}
 
-CameraTransform& CameraTransform::operator=(const CameraTransform& other) noexcept {
+CameraTransform& CameraTransform::operator=(const CameraTransform& other) {
     if (this == &other) return *this;
-    parent = other.parent;
-    first_child = other.first_child;
+    auto* const incoming_parent = other.parent.get();
+    auto* const incoming_first = other.first_child.get();
+    auto* const incoming_next = other.next_sibling.get();
+    auto* const incoming_previous = other.previous_sibling.get();
+    parent.validate_target(incoming_parent);
+    first_child.validate_target(incoming_first);
+    next_sibling.validate_target(incoming_next);
+    previous_sibling.validate_target(incoming_previous);
+    // Resolution has no callback/mutation; all host-domain failures precede
+    // writes. These stores preserve the target's link storage and resolver.
+    parent = incoming_parent;
+    first_child = incoming_first;
     child_count = other.child_count;
-    next_sibling = other.next_sibling;
-    previous_sibling = other.previous_sibling;
+    next_sibling = incoming_next;
+    previous_sibling = incoming_previous;
     root_list = other.root_list;
     valid_flags = other.valid_flags;
     auxiliary_flags = other.auxiliary_flags;
@@ -71,7 +113,7 @@ CameraTransform& CameraTransform::operator=(const CameraTransform& other) noexce
     world = other.world;
     return *this;
 }
-CameraTransform& CameraTransform::operator=(CameraTransform&& other) noexcept {
+CameraTransform& CameraTransform::operator=(CameraTransform&& other) {
     return *this = static_cast<const CameraTransform&>(other);
 }
 
@@ -110,7 +152,7 @@ void set_camera_world_matrix_00b71460(CameraState& camera, const CameraMatrix& s
 }
 
 void invalidate_camera_descendants_00b6da30(CameraTransform& transform) {
-    for (auto* child = transform.first_child; child; child = child->next_sibling) {
+    for (auto* child = transform.first_child.get(); child; child = child->next_sibling) {
         if (child->valid_flags & 2) {
             child->auxiliary_flags &= 0xffffffcfu;
             child->valid_flags &= 0xfffffff5u;

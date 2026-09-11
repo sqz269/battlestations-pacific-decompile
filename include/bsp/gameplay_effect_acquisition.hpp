@@ -1,17 +1,15 @@
 #pragma once
 
 #include "bsp/gameplay_effect_definition.hpp"
+#include "bsp/gameplay_effect_components.hpp"
 #include "bsp/gameplay_effect_name_index.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 
 namespace bsp {
-struct GameplayEffectAcquisitionHost : GameplayEffectNameIndexHost {
-    // D0DA58[8] ->00870400. Dispatch the actual definition's current slot+8
-    // with the retained Lua definition. Component construction/loading is
-    // still a required service; the acquisition sequence executes directly.
-    virtual void load_definition_slot_08(GameplayEffectDefinition&,
-        GuiLua51Host&, const GuiLuaRef& definition) = 0;
-};
+// Concrete definition allocation publishes D0DA58, whose slot8 is00870400.
+// Its construction/iteration runs directly; component virtuals remain bound.
+struct GameplayEffectAcquisitionHost : GameplayEffectNameIndexHost,
+    GameplayEffectComponentServices {};
 struct GameplayEffectAcquisitionContext {
     GameplayEffectManagerContext& manager;
     NativeStringStorage& strings;

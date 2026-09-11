@@ -105,3 +105,14 @@ Lua file loads and reference-order assertions. Test and library provenance is in
 - Bind remaining consumers such as warning initialization to concrete acquisition.
 - Stored cleanup-body extents remain incomplete; see `GHIDRA_BODY_EXTENTS.md` for
   the actual bridge gate rejection and the four evidence-backed end addresses.
+
+## Correction from docs/GAMEPLAY_EFFECT_COMPONENTS.md
+
+Acquisition now invokes concrete00870400 immediately after its known D0DA58
+constructor. The whole-definition loader host method is removed. All13 component
+allocation/constructor paths, filtering, naming and reference-array insertion are
+concrete, as is shared base reader00868BF0. Individual component current virtual
+readers and zero-reference dispatch remain required services. The new focused
+fixture covers real-Lua acquisition through all13 factories and isolated native
+constructor byte comparisons; the prior packet's fixture evidence remains tied
+to its original source revision and service interface.

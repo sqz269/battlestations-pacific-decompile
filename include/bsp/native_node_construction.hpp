@@ -22,17 +22,18 @@ struct NativeNodePointLightArray {
 // Deliberately no member initializers: constructor-unwritten bytes retain the
 // actual slot preimage. NativeString/atomic default construction touches only
 // fields that 00B6F5A0 initializes before its first potentially throwing call.
-// Native-layout scalar storage does not make host pointers a binary-compatible
-// replacement: hierarchy pointers refer to the shared C++ binding companions.
+// The four hierarchy DWORDs contain actual node addresses. Host companion
+// traversal resolves those same words through the live scene-runtime binding;
+// no companion pointer is stored in this native prefix.
 struct NativeNodeStorage {
     std::uint32_t vtable_00;
     std::atomic<std::int32_t> references_04;
     std::array<std::byte, 0x28> untouched_08;
-    CameraTransform* parent_30;
-    CameraTransform* first_child_34;
+    std::uint32_t parent_30;
+    std::uint32_t first_child_34;
     std::uint32_t child_count_38;
-    CameraTransform* next_sibling_3c;
-    CameraTransform* previous_sibling_40;
+    std::uint32_t next_sibling_3c;
+    std::uint32_t previous_sibling_40;
     std::uint8_t released_44;
     std::array<std::byte, 3> untouched_45;
     std::uint32_t mask_48;

@@ -1,0 +1,273 @@
+{
+  "reason": "Stored void/no-parameter signatures hid allocation-base returns and actual ECX/stack inputs. Assembly proves all12 constructors return EAX=this, and both loaders consume ECX plus one stack argument with RET4.",
+  "convention_boundary": "fastcall is an explicit register/stack analysis model. Loader unused_edx occupies the unconsumed EDX register so Lua stays on the stack. This does not recover original source-language calling convention or add a consumed native input.",
+  "entries": [
+    {
+      "address": "0086bc80",
+      "name": "BSP_EffectParticle_Construct",
+      "proposed": "void * __fastcall BSP_EffectParticle_Construct(void *allocation)",
+      "before": "Function: FUN_0086bc80 at 0086bc80\nSignature: undefined FUN_0086bc80(void)\nEntry: 0086bc80\nBody: 0086bc80 - 0086bcba",
+      "apply": "Successfully set prototype for function at 0086bc80 with __fastcall calling convention",
+      "after": "Function: BSP_EffectParticle_Construct at 0086bc80\nSignature: void * __fastcall BSP_EffectParticle_Construct(void * allocation)\nEntry: 0086bc80\nBody: 0086bc80 - 0086bcba",
+      "readback_verified": true
+    },
+    {
+      "address": "0086b8b0",
+      "name": "BSP_EffectTracer_Construct",
+      "proposed": "void * __fastcall BSP_EffectTracer_Construct(void *allocation)",
+      "before": "Function: FUN_0086b8b0 at 0086b8b0\nSignature: undefined FUN_0086b8b0(void)\nEntry: 0086b8b0\nBody: 0086b8b0 - 0086b974",
+      "apply": "Successfully set prototype for function at 0086b8b0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectTracer_Construct at 0086b8b0\nSignature: void * __fastcall BSP_EffectTracer_Construct(void * allocation)\nEntry: 0086b8b0\nBody: 0086b8b0 - 0086b974",
+      "readback_verified": true
+    },
+    {
+      "address": "0086bcc0",
+      "name": "BSP_EffectWaterTracer_Construct",
+      "proposed": "void * __fastcall BSP_EffectWaterTracer_Construct(void *allocation)",
+      "before": "Function: FUN_0086bcc0 at 0086bcc0\nSignature: undefined FUN_0086bcc0(void)\nEntry: 0086bcc0\nBody: 0086bcc0 - 0086bd09",
+      "apply": "Successfully set prototype for function at 0086bcc0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectWaterTracer_Construct at 0086bcc0\nSignature: void * __fastcall BSP_EffectWaterTracer_Construct(void * allocation)\nEntry: 0086bcc0\nBody: 0086bcc0 - 0086bd09",
+      "readback_verified": true
+    },
+    {
+      "address": "0086bd30",
+      "name": "BSP_EffectShake_Construct",
+      "proposed": "void * __fastcall BSP_EffectShake_Construct(void *allocation)",
+      "before": "Function: FUN_0086bd30 at 0086bd30\nSignature: undefined FUN_0086bd30(void)\nEntry: 0086bd30\nBody: 0086bd30 - 0086bd5b",
+      "apply": "Successfully set prototype for function at 0086bd30 with __fastcall calling convention",
+      "after": "Function: BSP_EffectShake_Construct at 0086bd30\nSignature: void * __fastcall BSP_EffectShake_Construct(void * allocation)\nEntry: 0086bd30\nBody: 0086bd30 - 0086bd5b",
+      "readback_verified": true
+    },
+    {
+      "address": "0086bd70",
+      "name": "BSP_EffectFlare_Construct",
+      "proposed": "void * __fastcall BSP_EffectFlare_Construct(void *allocation)",
+      "before": "Function: FUN_0086bd70 at 0086bd70\nSignature: undefined FUN_0086bd70(void)\nEntry: 0086bd70\nBody: 0086bd70 - 0086bda4",
+      "apply": "Successfully set prototype for function at 0086bd70 with __fastcall calling convention",
+      "after": "Function: BSP_EffectFlare_Construct at 0086bd70\nSignature: void * __fastcall BSP_EffectFlare_Construct(void * allocation)\nEntry: 0086bd70\nBody: 0086bd70 - 0086bda4",
+      "readback_verified": true
+    },
+    {
+      "address": "0086fec0",
+      "name": "BSP_EffectThunderStorm_Construct",
+      "proposed": "void * __fastcall BSP_EffectThunderStorm_Construct(void *allocation)",
+      "before": "Function: FUN_0086fec0 at 0086fec0\nSignature: undefined FUN_0086fec0(void)\nEntry: 0086fec0\nBody: 0086fec0 - 0086fefa",
+      "apply": "Successfully set prototype for function at 0086fec0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectThunderStorm_Construct at 0086fec0\nSignature: void * __fastcall BSP_EffectThunderStorm_Construct(void * allocation)\nEntry: 0086fec0\nBody: 0086fec0 - 0086fefa",
+      "readback_verified": true
+    },
+    {
+      "address": "0086bdc0",
+      "name": "BSP_EffectWaterdrops_Construct",
+      "proposed": "void * __fastcall BSP_EffectWaterdrops_Construct(void *allocation)",
+      "before": "Function: FUN_0086bdc0 at 0086bdc0\nSignature: undefined FUN_0086bdc0(void)\nEntry: 0086bdc0\nBody: 0086bdc0 - 0086bdeb",
+      "apply": "Successfully set prototype for function at 0086bdc0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectWaterdrops_Construct at 0086bdc0\nSignature: void * __fastcall BSP_EffectWaterdrops_Construct(void * allocation)\nEntry: 0086bdc0\nBody: 0086bdc0 - 0086bdeb",
+      "readback_verified": true
+    },
+    {
+      "address": "0086cf90",
+      "name": "BSP_EffectConstRumble_Construct",
+      "proposed": "void * __fastcall BSP_EffectConstRumble_Construct(void *allocation)",
+      "before": "Function: FUN_0086cf90 at 0086cf90\nSignature: undefined FUN_0086cf90(void)\nEntry: 0086cf90\nBody: 0086cf90 - 0086cfbb",
+      "apply": "Successfully set prototype for function at 0086cf90 with __fastcall calling convention",
+      "after": "Function: BSP_EffectConstRumble_Construct at 0086cf90\nSignature: void * __fastcall BSP_EffectConstRumble_Construct(void * allocation)\nEntry: 0086cf90\nBody: 0086cf90 - 0086cfbb",
+      "readback_verified": true
+    },
+    {
+      "address": "0086cfe0",
+      "name": "BSP_EffectSlopeRumble_Construct",
+      "proposed": "void * __fastcall BSP_EffectSlopeRumble_Construct(void *allocation)",
+      "before": "Function: FUN_0086cfe0 at 0086cfe0\nSignature: undefined FUN_0086cfe0(void)\nEntry: 0086cfe0\nBody: 0086cfe0 - 0086d00b",
+      "apply": "Successfully set prototype for function at 0086cfe0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSlopeRumble_Construct at 0086cfe0\nSignature: void * __fastcall BSP_EffectSlopeRumble_Construct(void * allocation)\nEntry: 0086cfe0\nBody: 0086cfe0 - 0086d00b",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d030",
+      "name": "BSP_EffectSquareRumble_Construct",
+      "proposed": "void * __fastcall BSP_EffectSquareRumble_Construct(void *allocation)",
+      "before": "Function: FUN_0086d030 at 0086d030\nSignature: undefined FUN_0086d030(void)\nEntry: 0086d030\nBody: 0086d030 - 0086d05b",
+      "apply": "Successfully set prototype for function at 0086d030 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSquareRumble_Construct at 0086d030\nSignature: void * __fastcall BSP_EffectSquareRumble_Construct(void * allocation)\nEntry: 0086d030\nBody: 0086d030 - 0086d05b",
+      "readback_verified": true
+    },
+    {
+      "address": "0086be00",
+      "name": "BSP_EffectLight_Construct",
+      "proposed": "void * __fastcall BSP_EffectLight_Construct(void *allocation)",
+      "before": "Function: FUN_0086be00 at 0086be00\nSignature: undefined FUN_0086be00(void)\nEntry: 0086be00\nBody: 0086be00 - 0086be2b",
+      "apply": "Successfully set prototype for function at 0086be00 with __fastcall calling convention",
+      "after": "Function: BSP_EffectLight_Construct at 0086be00\nSignature: void * __fastcall BSP_EffectLight_Construct(void * allocation)\nEntry: 0086be00\nBody: 0086be00 - 0086be2b",
+      "readback_verified": true
+    },
+    {
+      "address": "0086be40",
+      "name": "BSP_EffectSplash_Construct",
+      "proposed": "void * __fastcall BSP_EffectSplash_Construct(void *allocation)",
+      "before": "Function: FUN_0086be40 at 0086be40\nSignature: undefined FUN_0086be40(void)\nEntry: 0086be40\nBody: 0086be40 - 0086be6b",
+      "apply": "Successfully set prototype for function at 0086be40 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSplash_Construct at 0086be40\nSignature: void * __fastcall BSP_EffectSplash_Construct(void * allocation)\nEntry: 0086be40\nBody: 0086be40 - 0086be6b",
+      "readback_verified": true
+    },
+    {
+      "address": "00870400",
+      "name": "BSP_GameplayEffectDefinition_LoadComponents",
+      "proposed": "void __fastcall BSP_GameplayEffectDefinition_LoadComponents(void *definition, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00870400 at 00870400\nSignature: undefined FUN_00870400(void)\nEntry: 00870400\nBody: 00870400 - 00870ab3",
+      "apply": "Successfully set prototype for function at 00870400 with __fastcall calling convention",
+      "after": "Function: BSP_GameplayEffectDefinition_LoadComponents at 00870400\nSignature: void __fastcall BSP_GameplayEffectDefinition_LoadComponents(void * definition, uint unused_edx, void * lua_definition)\nEntry: 00870400\nBody: 00870400 - 00870ab3",
+      "readback_verified": true
+    },
+    {
+      "address": "00868bf0",
+      "name": "BSP_EffectComponent_ReadLuaBase",
+      "proposed": "void __fastcall BSP_EffectComponent_ReadLuaBase(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00868bf0 at 00868bf0\nSignature: undefined FUN_00868bf0(void)\nEntry: 00868bf0\nBody: 00868bf0 - 00868cc7",
+      "apply": "Successfully set prototype for function at 00868bf0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectComponent_ReadLuaBase at 00868bf0\nSignature: void __fastcall BSP_EffectComponent_ReadLuaBase(void * component, uint unused_edx, void * lua_definition)\nEntry: 00868bf0\nBody: 00868bf0 - 00868cc7",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086bc80",
+        "prototype": "void * __fastcall BSP_EffectParticle_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086bc80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086b8b0",
+        "prototype": "void * __fastcall BSP_EffectTracer_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086b8b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086bcc0",
+        "prototype": "void * __fastcall BSP_EffectWaterTracer_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086bcc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086bd30",
+        "prototype": "void * __fastcall BSP_EffectShake_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086bd30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086bd70",
+        "prototype": "void * __fastcall BSP_EffectFlare_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086bd70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086fec0",
+        "prototype": "void * __fastcall BSP_EffectThunderStorm_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086fec0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086bdc0",
+        "prototype": "void * __fastcall BSP_EffectWaterdrops_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086bdc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086cf90",
+        "prototype": "void * __fastcall BSP_EffectConstRumble_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086cf90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086cfe0",
+        "prototype": "void * __fastcall BSP_EffectSlopeRumble_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086cfe0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d030",
+        "prototype": "void * __fastcall BSP_EffectSquareRumble_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d030 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086be00",
+        "prototype": "void * __fastcall BSP_EffectLight_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086be00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086be40",
+        "prototype": "void * __fastcall BSP_EffectSplash_Construct(void *allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086be40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00870400",
+        "prototype": "void __fastcall BSP_GameplayEffectDefinition_LoadComponents(void *definition, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00870400 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00868bf0",
+        "prototype": "void __fastcall BSP_EffectComponent_ReadLuaBase(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00868bf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save_attempt_errors": [
+    "First save was rejected: Unable to lock due to active transaction. Applied prototype readbacks were already verified."
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

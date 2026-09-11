@@ -95,7 +95,7 @@ void set_native_node_attachment_00b6d7b0(NativeNodeParentingRuntime& runtime,
     publish_attachment(runtime, node, group);
     if (!group) return;
     register_native_node_attachment_00b8f460(runtime, runtime.nodes.attachments.attachment(group), node);
-    auto* child = node.first_child;
+    auto* child = node.first_child.get();
     while (child) {
         invoke_attachment(runtime, *child, group);
         child = child->next_sibling;

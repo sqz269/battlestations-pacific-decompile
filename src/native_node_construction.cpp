@@ -50,7 +50,8 @@ CameraTransformBacking transform_backing(NativeNodeStorage& node) noexcept {
     return {node.parent_30, node.first_child_34, node.child_count_38,
         node.next_sibling_3c, node.previous_sibling_40, node.root_list_a4,
         node.valid_flags_5c, node.auxiliary_flags_138, node.notification_context_a0,
-        node.view_60, node.local_b0, node.world_f0};
+        node.view_60, node.local_b0, node.world_f0,
+        static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&node))};
 }
 }
 
@@ -65,11 +66,11 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     node.vtable_00 = 0x00ceb130u;
     node.references_04.store(1, std::memory_order_relaxed);
     node.vtable_00 = 0x00d62c88u;
-    node.parent_30 = nullptr;
-    node.first_child_34 = nullptr;
+    node.parent_30 = 0;
+    node.first_child_34 = 0;
     node.child_count_38 = 0;
-    node.next_sibling_3c = nullptr;
-    node.previous_sibling_40 = nullptr;
+    node.next_sibling_3c = 0;
+    node.previous_sibling_40 = 0;
     node.mask_48 = 0;
     node.bounds_scalar_50 = positive_bound_word;
     node.notification_context_a0 = nullptr;
