@@ -1,0 +1,155 @@
+{
+  "packet": "orch2_native_material_parameter_owner_w",
+  "utc": "2026-09-11T16:26:34.668010+00:00",
+  "tested_source_commit": "b982f3a49f1ddead2d5d6c5f3f88d91bbf0a6d9b",
+  "source_sha256": {
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "cmake/startup.cmake": "d5dafe7737fb7b3644ad796b7707fbd01c8d0e227f01b14dee6fe53f36803d50",
+    "CMakeLists.txt": "cbc2451e0640d03e335ede298227f957a9fb6c524118e4c18b8ea71c5cb94787"
+  },
+  "artifacts_sha256": {
+    "local/native-material-parameter-owner-annotation-addresses.json": "f5862582f4400e081112a539b7c3ce8074fb3c8f561a0c7298ec9dced46089cb",
+    "local/native-material-parameter-owner-annotation-verification.json": "98683472114ab88b75f0923d1510a19eb684c8049ee5570d0fb75bf82aea16ad",
+    "local/native-material-parameter-owner-annotations.log": "0b9b124fddc585f328318f2b81943f510607ace5d5aec4031d828c27ed9cc2cc",
+    "local/native-material-parameter-owner-build.log": "fb34292575ae9331d6a7db703456d07c164925706ec1f2deffd163b5b26620b2",
+    "local/native-material-parameter-owner-comments-after.json": "e6f34c71ab4051ebcd75beccb8d99d94836b5417667c714ef883b11b9fd5c712",
+    "local/native-material-parameter-owner-comments-after.log": "bfaed24ddf68b2e25de4a56da7b034effc6e1dabcac361823a044e365bef154a",
+    "local/native-material-parameter-owner-comments-before.json": "fcff73191ec6e41796aa39a41698813dc75cd3a951fe11ac4a014656ab3af4d7",
+    "local/native-material-parameter-owner-comments-before.log": "dda896ff949b11d4c4073c934519d18e847ae9216a269cba8fb3a290824b8ac5",
+    "local/native-material-parameter-owner-context_table-bytes.txt": "544b5b0a7db1485e297eadf0ca408d1dde58b4ba9ce88e1e18684423e24c0168",
+    "local/native-material-parameter-owner-context_table.bin": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+    "local/native-material-parameter-owner-export-refresh.log": "445b7bf330fde75573d9d9965cb53fdc9f0cf220755f08990369e4b38ac50d56",
+    "local/native-material-parameter-owner-ledger.log": "76c5740feae1fcb29d3e7f9d8d3fa6f6b2627b3b01c16d7d619b0b6c4b7e6067",
+    "local/native-material-parameter-owner-names-after.txt": "f6bce63f4302a134c804e9efe7d1fc3f2441667b82ab46226a8cdb371c75ea88",
+    "local/native-material-parameter-owner-names-before.txt": "f6bce63f4302a134c804e9efe7d1fc3f2441667b82ab46226a8cdb371c75ea88",
+    "local/native-material-parameter-owner-names-expected.json": "c5a4fad90354fa74994d73b7636260b3ca89321c8d10725345a18e4ced732b4c",
+    "local/native-material-parameter-owner-native.hpp": "d077c59b59c5e694b79a0c04e59dccb990cfafe4721695b40e0d16c3b74fa095",
+    "local/native-material-parameter-owner-probe-result.log": "11665b00deda75b6471efb0087af4624c43e7e1ebf244475bfb90f85440bca49",
+    "local/native-material-parameter-owner-probe.cpp": "5cb5d08ed3a7da3764c93658e39683ac69285b02e709a3721be207113ce5c28e",
+    "local/native-material-parameter-owner-probe.exe": "49cf8bfd6f7d5338f52dc7de025f5b3d5afbda27de0056f6df3631593c92495e",
+    "local/native-material-parameter-owner-probe.obj": "d6e2e24e9d173bce33289f48f6986b14b07caede7f80ce2474a224141043d112",
+    "local/native-material-parameter-owner-probe_compile.log": "1030e1909c9258d53f5c618db15cec154e1ec8c5563768577b6bb8fcc274ab15",
+    "local/native-material-parameter-owner-setter-bytes.txt": "cda1c26bfcd28330fccbfd0e73fc2c22eeee8bff8fc86f0ba1120dfb9750c708",
+    "local/native-material-parameter-owner-setter.bin": "1e1d714ac9ca72dc6edcc4d6bc58fce47c9e5be0a9882d8e4d136c30cd169cf0",
+    "local/native-material-parameter-owner-spans.json": "6043475dd8d559f19895c7c6e48b13d9a24cffc2e9ac2a6666f15407d9c35c59",
+    "local/prepare_native_material_parameter_owner.py": "474e8054a6ccfd02989bebf308e86f72779ae5575d0c888b9602c75ded609ac9",
+    "local/prepare_native_material_parameter_owner_probe.py": "1585fc14515e7d0cf83d3cf1acb4a868867f8b1940fe251516cc2c5945187d6d",
+    "local/run_native_material_parameter_owner_probe.ps1": "99f55680c114eb7b967bbbfb8085d7cc7c5b20d576ee6f3e5306d5ba80020ef2",
+    "local/record_native_material_parameter_owner.py": "d27f4c9d36c9e1b0a1251a4b255d6cddbcbe713552936abad72ee37a0036f697",
+    "local/native_material_parameter_owner_annotations.py": "bc9d1d11ac5c2795240ae453977ccf8fda30ced55ca3c0794820ba851d43e4f2",
+    "local/finalize_native_material_parameter_owner.py": "a27d728c8548ca6e5f045f95200ef0af672a51445ffb86cbdc931b3164f7624c",
+    "local/native-material-parameter-owner-tested/bsp_core.lib": "a191497ff8466cf4aa35c26dcad77e25141515f9a0e3712cbe001f5b14bc886a",
+    "local/native-material-parameter-owner-tested/bsp_game.exe": "88be8c82d8c2f1293cd3ce22ffc7589ac7aead4fd9fcde5d1f390ad842d69f67",
+    "local/native-material-parameter-owner-tested/LastTest.log": "fda0b578cdc4a77d443212f2ab8ca49c462eb3e93270f8f4eb53118db2ded113"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-material-parameter-owner-tested/bsp_core.lib",
+      "sha256": "a191497ff8466cf4aa35c26dcad77e25141515f9a0e3712cbe001f5b14bc886a"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-material-parameter-owner-tested/bsp_game.exe",
+      "sha256": "88be8c82d8c2f1293cd3ce22ffc7589ac7aead4fd9fcde5d1f390ad842d69f67"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-material-parameter-owner-tested/LastTest.log",
+      "sha256": "fda0b578cdc4a77d443212f2ab8ca49c462eb3e93270f8f4eb53118db2ded113"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "setter",
+      "address": "00b18a40",
+      "end_exclusive": "00b18a9b",
+      "bytes": 91,
+      "sha256": "1e1d714ac9ca72dc6edcc4d6bc58fce47c9e5be0a9882d8e4d136c30cd169cf0",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "context_table",
+      "address": "00d5e5c4",
+      "end_exclusive": "00d5e5cc",
+      "bytes": 8,
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "matches_disk": true,
+      "external_branches": []
+    }
+  ],
+  "implementation": {
+    "address": "00b18a40",
+    "source": "src/native_material_owner.cpp",
+    "owner_field_offset": 12,
+    "retention_byte_offset": 269,
+    "actual_owner_atomic_offset": 4,
+    "old_release_before_clear": true,
+    "store_before_incoming_retain": true,
+    "equal_pointer_shortcut": false,
+    "exact_retention_byte": true,
+    "shared_actual_owner_domain": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "full_native_slot_comparisons": 8,
+    "bytes_per_comparison": 276,
+    "owner_pointer_identity_normalized": true,
+    "reference_counts_match": true,
+    "terminal_observations_match": true,
+    "actual_context_final_zero_deletions": 4,
+    "comparison_cases": [
+      "first retained owner with nonzero high flag bytes",
+      "same pointer release/reacquire",
+      "retained to borrowed owner",
+      "borrowed to retained owner without releasing borrowed identity",
+      "old final-zero before incoming publication and retain, including callback mutations",
+      "null incoming with nonzero exact flag",
+      "borrowed incoming after retained null",
+      "borrowed old owner not released"
+    ],
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_dependencies": {
+    "original_code": [
+      "00b18a40"
+    ],
+    "original_profile_table": "00d5e5c4:BD30E0/B1D570",
+    "imports": "Two relocated FF15 imports call host Windows InterlockedIncrement/InterlockedDecrement.",
+    "terminal_boundary": "Relocated original virtual0 enters the same canonical NativeRenderContextReference and reconstructed physical final-zero context deletion as the host path.",
+    "material": "Scratch114h slots use the previously reconstructed null-effect constructor and flags0 destructor; no parameters or strings are allocated.",
+    "identities": "Two actual18h contexts per run, one canonical companion per context and actual+04 counters; no semantic retention token."
+  },
+  "ghidra": {
+    "addresses": [
+      "00b18a40"
+    ],
+    "names_verified": 1,
+    "prior_comment_fields_preserved": 1,
+    "forced_exports": 1,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [],
+    "flow_repairs": [],
+    "remaining_call_gaps": 0,
+    "saved": true
+  },
+  "limitations": [
+    "Actual aligned live owners and nonthrowing terminal services required; incoming must survive old release independently.",
+    "Original context destructor, allocator and generic virtual-zero thunk are outside this setter fixture.",
+    "GUI widget/page/ancestor ownership and effect lifetime are not established by this setter.",
+    "No source consumption, drawing, binary replacement or gameplay validation."
+  ]
+}

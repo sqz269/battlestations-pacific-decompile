@@ -1,0 +1,2587 @@
+{
+  "packet": "native_renderer_file_reload_discovery",
+  "status": "read_only_full_route_contracts_and_concrete_dependency_blockers_captured_no_source_claim",
+  "utc": "2026-09-11T16:11:00.732186+00:00",
+  "base_commit": "cd52b91d",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "spans": [
+    {
+      "address": "00b24fb0",
+      "end_exclusive": "00b24fe1",
+      "length": 49,
+      "role": "full_renderer_reload_entry",
+      "bytes_hex": "803dbbd4080100568bf174238d8e981a0000e869d0ffff8b068b90200100008bceffd28d8e741a00005ee991cfffff5ec3",
+      "sha256": "9c76c5279b1c8f56e636ac90e813abcc241ce0fbdaba5fab88b11890f12c2364",
+      "original_ABI": "ECX renderer; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b24fc2",
+          "operation": "call",
+          "target": "00b22030",
+          "current_name": "FUN_00b22030"
+        },
+        {
+          "site": "00b24fda",
+          "operation": "jmp",
+          "target": "00b21f70",
+          "current_name": "FUN_00b21f70"
+        }
+      ],
+      "instruction_count": 15,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b21f70",
+      "end_exclusive": "00b2200e",
+      "length": 158,
+      "role": "full_texture_record_date_poll",
+      "bytes_hex": "83ec188b41086bc02c578b790403c73bf8894424040f847e0000005355568d771c8b0decce0901578d44241850e89eb30b008b46f88b4c24143bc18b5424208b5c241c8b6c24187225773f8b46fc3bc5721c77368b063bc37214772e8b46043bc2720b77258b46083b442424731c894ef88b4c2424896efc891e895604894e088b4e0c8b118b4208ffd083c72c83c62c3b7c2410758b5e5d5b5f83c418c3",
+      "sha256": "2b32f7da93910e8b2ab43693f6c5f7c9be271f55554b720f60ea7332c8a78fd9",
+      "original_ABI": "ECX actual container; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b21f9d",
+          "operation": "call",
+          "target": "00bdd340",
+          "current_name": "BSP_VFS_GetFileDate"
+        }
+      ],
+      "instruction_count": 61,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b22030",
+      "end_exclusive": "00b220ce",
+      "length": 158,
+      "role": "full_effect_record_date_poll",
+      "bytes_hex": "83ec188b41086bc02c578b790403c73bf8894424040f847e0000005355568d771c8b0decce0901578d44241850e8deb20b008b46f88b4c24143bc18b5424208b5c241c8b6c24187225773f8b46fc3bc5721c77368b063bc37214772e8b46043bc2720b77258b46083b442424731c894ef88b4c2424896efc891e895604894e088b4e0c8b118b4208ffd083c72c83c62c3b7c2410758b5e5d5b5f83c418c3",
+      "sha256": "af9a14cac8476cf14d8b3e505cd68bdb3ee89c526991c4627a8e0e8799696868",
+      "original_ABI": "ECX actual container; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b2205d",
+          "operation": "call",
+          "target": "00bdd340",
+          "current_name": "BSP_VFS_GetFileDate"
+        }
+      ],
+      "instruction_count": 61,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b24dd0",
+      "end_exclusive": "00b24e11",
+      "length": 65,
+      "role": "full_selected_renderer_virtual120",
+      "bytes_hex": "56578bf98b87a01a00008bb79c1a00006bc02c03c63bf074258da424000000008b4e28e80842ffff8b8fa01a00006bc92c038f9c1a000083c62c3bf175e25f5ec3",
+      "sha256": "546c5e92b87cea6a70b1ecf786b9a6f721a51ae8e4e043eef7ee854cb622152b",
+      "original_ABI": "ECX renderer; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b24df3",
+          "operation": "call",
+          "target": "00b19000",
+          "current_name": "FUN_00b19000"
+        }
+      ],
+      "instruction_count": 21,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b19000",
+      "end_exclusive": "00b191ce",
+      "length": 462,
+      "role": "full_effect_registered_texture_load",
+      "bytes_hex": "558bec83e4f86aff64a10000000068f0c5cb00506489250000000083ec14535556578bf933db33ed66399f940000000f8686010000eb098da424000000008bff895c2410895c24140fbf87940000003be8895c242c720a8d4d0166898f940000008b0d34d4f8008d54ef3c528d44241c50e8fa2b00008b4424183bc3c644242c0174186a01508d4c2418e8b14c90ff395c2418744f8b54241ceb360fbf8f940000003be9720a8d5501668997940000008d74ef3c8d4424103bc674288b066a01508d4c2418e8764c90ff391e74168b56048b4c24108b442414515250e89fe50d0083c40c395c241074748b0d94d3f8008b118b5264538d44241450ffd28bf00fbf47383be872078d4d0166894f388b5caf0c3bde742c85f68974af0c740a8d560452ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd085f674168d4e0451ff152022ce0085c075088b168b028bceffd033db8b4c241c3bcbc644242c0074178b4424186a0183c0015051e8450b90ff8bc8e88e830b008b4c24143bcbc744242cffffffff74178b4424106a0183c0015051e81e0b90ff8bc8e867830b000fbf8f9400000083c5013be90f8285feffff8b4c24245f64890d000000005e5d5b8be55dc3",
+      "sha256": "efac483a85ca420e0c670bd25547e6678b8ce87779d1490f34ab2211f4899c56",
+      "original_ABI": "ECX actual effect owner; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b19071",
+          "operation": "call",
+          "target": "00b1bc70",
+          "current_name": "FUN_00b1bc70"
+        },
+        {
+          "site": "00b1908a",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b190c5",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b190dc",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b19122",
+          "operation": "call",
+          "import_address": "0xce221c",
+          "import": "InterlockedIncrement"
+        },
+        {
+          "site": "00b19130",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b1914a",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b19176",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b1917d",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b1919d",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b191a4",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 155,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b1bc70",
+      "end_exclusive": "00b1bd1d",
+      "length": 173,
+      "role": "full_Lua_texture_name_override",
+      "bytes_hex": "6aff68e9c8cb0064a100000000506489250000000083ec2c568d44241c5083c104c744240800000000e8e2bc04008b4c2444518d54240c528bc8c744244001000000e849c404008d4c241cc644243803e83bba04008d4c2408e8e2a2040084c08b742440740e6838d4f8008bcee88e2b90ffeb0f680c3ace00568d4c2410e8cdc804008d4c2408c744240401000000c644243800e8f7b904008b4c24308bc65e64890d0000000083c438c20800",
+      "sha256": "777f8f5afa7e2cc968c3bd63a00703134d7a6842e69693e90c62db6730385ef0",
+      "original_ABI": "ECX override manager; stack output/native-name; EAX output; RET8",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b1bc99",
+          "operation": "call",
+          "target": "00b67980",
+          "current_name": "BSP_LuaStateOwner_GetGlobals"
+        },
+        {
+          "site": "00b1bcb2",
+          "operation": "call",
+          "target": "00b68100",
+          "current_name": "FUN_00b68100"
+        },
+        {
+          "site": "00b1bcc0",
+          "operation": "call",
+          "target": "00b67700",
+          "current_name": "BSP_LuaObject_Destruct"
+        },
+        {
+          "site": "00b1bcc9",
+          "operation": "call",
+          "target": "00b65fb0",
+          "current_name": "BSP_LuaObject_IsNil"
+        },
+        {
+          "site": "00b1bcdd",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "00b1bcee",
+          "operation": "call",
+          "target": "00b685c0",
+          "current_name": "FUN_00b685c0"
+        },
+        {
+          "site": "00b1bd04",
+          "operation": "call",
+          "target": "00b67700",
+          "current_name": "BSP_LuaObject_Destruct"
+        }
+      ],
+      "instruction_count": 45,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b469a0",
+      "end_exclusive": "00b46a6f",
+      "length": 207,
+      "role": "full_unrecorded_effect_reload",
+      "bytes_hex": "64a1000000006aff6858f6cb00506489250000000083ec08803df1d6080100568bf10f8497000000e80309fdff8b400485c07505b834fd08015068a41cd600e8ccea8dff83c4088bcee822b1ffff8bcee8ab1dfdff8bcee8d408fdff508bcee84cffffff84c075578bcee801b1ffff8bcee88a1dfdff68881cd6008d4c2408e84c7e8dff8d442404508bcec744241800000000e818ffffff8b4c240885c9c7442414ffffffff74178b4424046a0183c0015051e868328dff8bc8e8b1aa08008b4c240c5e64890d0000000083c414c3",
+      "sha256": "3a115ab85e10724a50e2c8bc15b9df3ab1ffd32f351e6d42392982132bf64d36",
+      "original_ABI": "ECX actual effect owner; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b469c8",
+          "operation": "call",
+          "target": "00b172d0",
+          "current_name": "TRIV_body_00b172d0"
+        },
+        {
+          "site": "00b469df",
+          "operation": "call",
+          "target": "004254b0",
+          "current_name": "TRIV_body_004254b0"
+        },
+        {
+          "site": "00b469e9",
+          "operation": "call",
+          "target": "00b41b10",
+          "current_name": "FUN_00b41b10"
+        },
+        {
+          "site": "00b469f0",
+          "operation": "call",
+          "target": "00b187a0",
+          "current_name": "FUN_00b187a0"
+        },
+        {
+          "site": "00b469f7",
+          "operation": "call",
+          "target": "00b172d0",
+          "current_name": "TRIV_body_00b172d0"
+        },
+        {
+          "site": "00b469ff",
+          "operation": "call",
+          "target": "00b46950",
+          "current_name": "BSP_MaterialEffect_LoadShaderVariants"
+        },
+        {
+          "site": "00b46a0a",
+          "operation": "call",
+          "target": "00b41b10",
+          "current_name": "FUN_00b41b10"
+        },
+        {
+          "site": "00b46a11",
+          "operation": "call",
+          "target": "00b187a0",
+          "current_name": "FUN_00b187a0"
+        },
+        {
+          "site": "00b46a1f",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "00b46a33",
+          "operation": "call",
+          "target": "00b46950",
+          "current_name": "BSP_MaterialEffect_LoadShaderVariants"
+        },
+        {
+          "site": "00b46a53",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b46a5a",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 59,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3fa90",
+      "end_exclusive": "00b3fd7b",
+      "length": 747,
+      "role": "full_2D_texture_file_reload",
+      "bytes_hex": "6aff6888efcb0064a100000000506489250000000083ec6056578bf18b0decce09018b118d46086a0289442420508b4204ffd08bf88b178b42188bcfffd084c08bcf751a8b178b42046a01ffd05f5e8b4c246064890d0000000083c46cc35355e85bfc0a008d4f04518bd8ff152022ce0085c075088b178b028bcfffd08b2d94d3f8008b7d008bce83c76ce82043ffff8b17508bcdffd28b0d94d3f80056e80d82feffe8f8ebffff8b138d442434508b42308bcbffd0508bcbe8c2fa0a0050e898e40e008b4424408b54243883c9ff83f801894c2414894c24108b4c24348be8896c2418894c241c895424200f86d2000000a194d3f80083b8841d0000000f84c00000008b7c24248b470485c0741e68f0e7d50050e896980b0083c40885c0740c2b470483f8ff0f85970000008b470485c0741a68e8e7d50050e871980b0083c40885c074082b470483f8ff75768b470485c0741a68c8e7d50050e850980b0083c40885c074082b470483f8ff75558b0d94d3f8008b89841d00008b442434d3e8ba010000003bc2894424147f04895424148b442438d3e83bc2894424107f04895424108b4424148944241c8b4424102be9894424208bc53bc2894424187f04895424188b461085c08d7e10740e8b088b510850ffd2c707000000008b0d94d3f800e87902feff8b4c24108b542414576a006a006a006aff68040007006a016a008be88b4424386a00508b0351528b50308bcbffd2508bcbe863f90a005055e832e30e0033ed392f744f8b038b50308bcbffd28946248b078b088b513450ffd28946148b078b088d5424505255508b4144ffd08b4c24688b54246c8b442450894e288b4c241c89562c8b542420894618894e34895638896e308d430450ff152022ce0085c075088b138b028bcbffd08b0f8b542424528d442424894c2424508d4c2430e898f8ffff896c2478e8efe9ffff8b4424303bc55dc7442474ffffffff5b74178b4c24246a0183c1015150e85d9f8dff8bc8e8a61709008b4c24685f5e64890d0000000083c46cc3",
+      "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09",
+      "original_ABI": "ECX actual texture owner; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3faf0",
+          "operation": "call",
+          "target": "00bef750",
+          "current_name": "BSP_Stream_ConvertToMemory"
+        },
+        {
+          "site": "00b3fafb",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b3fb1b",
+          "operation": "call",
+          "target": "00b33e40",
+          "current_name": "BSP_LogicalTextureBase_GetNameAddress"
+        },
+        {
+          "site": "00b3fb2e",
+          "operation": "call",
+          "target": "00b27d40",
+          "current_name": "BSP_Renderer_UnregisterTexture"
+        },
+        {
+          "site": "00b3fb33",
+          "operation": "call",
+          "target": "00b3e730",
+          "current_name": "bsp_resource_support_get_singleton"
+        },
+        {
+          "site": "00b3fb49",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b3fb4f",
+          "operation": "call",
+          "target": "00c2dfec",
+          "current_name": "D3DXGetImageInfoFromFileInMemory"
+        },
+        {
+          "site": "00b3fba5",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "00b3fbca",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "00b3fbeb",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "00b3fc72",
+          "operation": "call",
+          "target": "00b1fef0",
+          "current_name": "BSP_D3D9Renderer_GetDevice"
+        },
+        {
+          "site": "00b3fca8",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b3fcaf",
+          "operation": "call",
+          "target": "00c2dfe6",
+          "current_name": "D3DXCreateTextureFromFileInMemoryEx"
+        },
+        {
+          "site": "00b3fd0d",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b3fd33",
+          "operation": "call",
+          "target": "00b3f5d0",
+          "current_name": "FUN_00b3f5d0"
+        },
+        {
+          "site": "00b3fd3c",
+          "operation": "call",
+          "target": "00b3e730",
+          "current_name": "bsp_resource_support_get_singleton"
+        },
+        {
+          "site": "00b3fd5e",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b3fd65",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 258,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3df40",
+      "end_exclusive": "00b3e042",
+      "length": 258,
+      "role": "full_cube_texture_file_reload",
+      "bytes_hex": "83ec2056578bf98b0decce09018b018b40046a028d570852ffd08bf08b168b42188bceffd084c08bce750f8b168b42046a01ffd05f5e83c420c353e8d0170b008d4e04518bd8ff152022ce0085c075088b168b028bceffd08b3594d3f800558b2e8bcfe8985effff8b556c508bceffd28b471085c08d7710740e8b088b510850ffd2c706000000008b0d94d3f800e81d1ffeff8be88b038b5030568bcbffd2508bcbe829160b005055e8f2ff0e008b0685c05d742a8b088d54240c526a00508b4144ffd08b4c24248b36894f248b168b423456ffd08b4c240c894714894f188d530452ff152022ce0085c0750e8b038b108bcb5b5f5e83c420ffe25b5f5e83c420c3",
+      "sha256": "2a44620c5e6e8a0f903014f87093462d2fd673cb1c26bf3681f7190c354a8d20",
+      "original_ABI": "ECX actual cube owner; RET or terminal tail dispatch",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3df7b",
+          "operation": "call",
+          "target": "00bef750",
+          "current_name": "BSP_Stream_ConvertToMemory"
+        },
+        {
+          "site": "00b3df86",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b3dfa3",
+          "operation": "call",
+          "target": "00b33e40",
+          "current_name": "BSP_LogicalTextureBase_GetNameAddress"
+        },
+        {
+          "site": "00b3dfce",
+          "operation": "call",
+          "target": "00b1fef0",
+          "current_name": "BSP_D3D9Renderer_GetDevice"
+        },
+        {
+          "site": "00b3dfe2",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b3dfe9",
+          "operation": "call",
+          "target": "00c2dfe0",
+          "current_name": "D3DXCreateCubeTextureFromFileInMemory"
+        },
+        {
+          "site": "00b3e023",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        }
+      ],
+      "instruction_count": 110,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3e080",
+      "end_exclusive": "00b3e190",
+      "length": 272,
+      "role": "full_volume_texture_file_reload",
+      "bytes_hex": "83ec1c568bf18b0decce09018b018b4004576a028d560852ffd08bf88b178b42188bcfffd084c08bcf750f8b178b42046a01ffd05f5e83c41cc353e890160b008d4f04518bd8ff152022ce0085c075088b178b028bcfffd08b3d94d3f800558b2f8bcee8585dffff8b556c508bcfffd28b461085c08d7e10740e8b088b510850ffd2c707000000008b0d94d3f800e8dd1dfeff8be88b038b5030578bcbffd2508bcbe8e9140b005055e8acfe0e008b0785c05d74388b088d54240c526a00508b4144ffd08b4c241c8b5424208b4424248b3f895628894e2489462c8b0f8b513457ffd28946148b44240c8946188d4b0451ff152022ce0085c0750e8b138b028bcb5b5f5e83c41cffe05b5f5e83c41cc3",
+      "sha256": "78ce346fc0a6128bc2b755b315b8dcfe3f8e8f51f0366e02d15437290c5903bc",
+      "original_ABI": "ECX actual volume owner; RET or terminal tail dispatch",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3e0bb",
+          "operation": "call",
+          "target": "00bef750",
+          "current_name": "BSP_Stream_ConvertToMemory"
+        },
+        {
+          "site": "00b3e0c6",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b3e0e3",
+          "operation": "call",
+          "target": "00b33e40",
+          "current_name": "BSP_LogicalTextureBase_GetNameAddress"
+        },
+        {
+          "site": "00b3e10e",
+          "operation": "call",
+          "target": "00b1fef0",
+          "current_name": "BSP_D3D9Renderer_GetDevice"
+        },
+        {
+          "site": "00b3e122",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b3e129",
+          "operation": "call",
+          "target": "00c2dfda",
+          "current_name": "D3DXCreateVolumeTextureFromFileInMemory"
+        },
+        {
+          "site": "00b3e171",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        }
+      ],
+      "instruction_count": 114,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b46950",
+      "end_exclusive": "00b4699e",
+      "length": 78,
+      "role": "full_effect_mode_variant_load_dispatch",
+      "bytes_hex": "803df0d6080100568bf17430578b7c240c6a036a0057e875f5ffff8bcee89eb1ffff8bcee8271efdff6a036a01578bcee85bf5ffff5fb0015ec204008b4424086a006a0050e846f5ffff5ec20400",
+      "sha256": "d75cce99921eb31a204e48565800d1574647d8c3a372fb325509069549f15f57",
+      "original_ABI": "ECX effect; stack native filename; AL result; RET4",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b46966",
+          "operation": "call",
+          "target": "00b45ee0",
+          "current_name": "BSP_MaterialEffect_LoadDescriptorAndModePrograms"
+        },
+        {
+          "site": "00b4696d",
+          "operation": "call",
+          "target": "00b41b10",
+          "current_name": "FUN_00b41b10"
+        },
+        {
+          "site": "00b46974",
+          "operation": "call",
+          "target": "00b187a0",
+          "current_name": "FUN_00b187a0"
+        },
+        {
+          "site": "00b46980",
+          "operation": "call",
+          "target": "00b45ee0",
+          "current_name": "BSP_MaterialEffect_LoadDescriptorAndModePrograms"
+        },
+        {
+          "site": "00b46995",
+          "operation": "call",
+          "target": "00b45ee0",
+          "current_name": "BSP_MaterialEffect_LoadDescriptorAndModePrograms"
+        }
+      ],
+      "instruction_count": 30,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b41b10",
+      "end_exclusive": "00b41bce",
+      "length": 190,
+      "role": "full_effect_descriptor_and_program_release",
+      "bytes_hex": "558be98b8dc400000085c95674128b018b106a01ffd2c785c40000000000000053578dbdc8000000bb0e0000008d49008b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c7070000000083c70483eb0175d68dbd00010000bb0e0000008b3785f6741c8d4e0451ff152022ce0085c075088b168b028bceffd0c7070000000083c70483eb0175d68bb53801000085f65f5b74208d4e0451ff152022ce0085c075088b168b028bceffd0c78538010000000000005e5dc3",
+      "sha256": "5c6331d27bdf7e8372970308f464efe79d6f4aa4e9f641ec9906f6dbea17e6f5",
+      "original_ABI": "ECX effect; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b41b4a",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b41b7f",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b41baf",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        }
+      ],
+      "instruction_count": 68,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b187a0",
+      "end_exclusive": "00b18849",
+      "length": 169,
+      "role": "full_shader_owner_texture_and_secondary_release",
+      "bytes_hex": "5355568be90fbf4538578d7d0c8bf78d0c873bf174308b1e85db741c8d530452ff152022ce0085c075088b038b108bcbffd2c706000000000fbf472c83c6048d0c873bf175d033c08d9d9c000000668945388b530c8bf38d0c933bf174408bff8b3e85ff741c8d570452ff152022ce0085c075088b078b108bcfffd2c706000000008b430c83c6048d0c833bf175d15f5ec785a8000000000000005d5bc35f5e8985a80000005d5bc3",
+      "sha256": "2328b8d60a6d6236d79ebb8904a7776b3e3043ee9ab6c785dd1e2f4010a1181b",
+      "original_ABI": "ECX shader owner; RET; EAX incidental",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b187c0",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b1880a",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        }
+      ],
+      "instruction_count": 68,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b172d0",
+      "end_exclusive": "00b172d7",
+      "length": 7,
+      "role": "full_effect_name_header_getter",
+      "bytes_hex": "8d81b8000000c3",
+      "sha256": "b26137ce17a8386215bb1fde2b53f227d965b04ec16598700dc9cd28de01928f",
+      "original_ABI": "ECX owner; EAX owner+B8; RET",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3f5d0",
+      "end_exclusive": "00b3f621",
+      "length": 81,
+      "role": "full_reload_diagnostic_record_constructor",
+      "bytes_hex": "8b442404538b5c240c56578bf98b088d77043bf3890fc70600000000c746040000000074248b136a01528bcee83fe78dff833b0074138b068b4b048b5604505152e86a800b0083c40c8bc75f5e5bc20800",
+      "sha256": "3aa9760e0b19f182c5ce3dbe7cd569b53b3f7c020bf3e3c22c7c5cfe4d2a1dcd",
+      "original_ABI": "ECX output record; stack COM-pointer-cell/name-header; EAX output; RET8",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3f5fc",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b3f611",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        }
+      ],
+      "instruction_count": 33,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b319b0",
+      "end_exclusive": "00b31ab1",
+      "length": 257,
+      "role": "full_current_renderer_virtual64_loader",
+      "bytes_hex": "64a1000000006aff6800dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e8eb200000884424148b7c242c33f68d44240c3bc7c744242400000000c744240c000000008974241074288b076a01508d4c2414e827c38eff39378b74241074128b4c240c8b5704515256e8505c0c0083c40c8d4c240cc644242401e8bfb198ff8b4424306a016a00508d4c2418518d8d741a0000e8e6f0ffff85f68bf8c64424240074178b44240c6a0183c0015056e84b828eff8bc8e894fa0900803ddcd6080100c7442424ffffffff740e8b5424148b4c241852e8652000008b4c241c8bc75f5e5d64890d0000000083c41cc20800",
+      "sha256": "6f9a8dd2ce45b3b51b4d3efd4e61a6086783e229bcf5197544c882b76fb7c0a5",
+      "original_ABI": "ECX renderer; stack native-name/flags; EAX texture; RET8",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b319e0",
+          "operation": "call",
+          "target": "00b33ad0",
+          "current_name": "BSP_Renderer_EnterOptionalGuard"
+        },
+        {
+          "site": "00b31a14",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b31a2b",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b31a3c",
+          "operation": "call",
+          "target": "004bcc00",
+          "current_name": "BSP_String_LowercaseAscii"
+        },
+        {
+          "site": "00b31a55",
+          "operation": "call",
+          "target": "00b30b40",
+          "current_name": "FUN_00b30b40"
+        },
+        {
+          "site": "00b31a70",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b31a77",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b31a96",
+          "operation": "call",
+          "target": "00b33b00",
+          "current_name": "BSP_Renderer_LeaveOptionalGuard"
+        }
+      ],
+      "instruction_count": 77,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00bdd340",
+      "end_exclusive": "00bdd439",
+      "length": 249,
+      "role": "full_current_VFS_file_date_entry",
+      "bytes_hex": "6aff681063cc0064a100000000506489250000000083ec205333db56578bf9c7442414b083d600895c2428895c2424895c2420895c241c895c24188b7424408d44240c3bc6895c2434895c240c895c241074288b066a01508d4c2414e89f0984ff391e74168b4c240c8b56048b442410515250e8c8a2010083c40c8d4c240cc644243401e8c71201008d4c2414518d542410528bcfe8c6fcffff8b74243c8b4424188b4c241c8b54242089068b442424894e048b4c242889560889460c894e108b4c24103bcb885c243474178b44240c6a0183c0015051e8a4c883ff8bc8e8ed40ffff8b4c242c5f8bc65e5b64890d0000000083c42cc20800",
+      "sha256": "9f20ec71fc7f1ed6b819301a928b75b8b7e58e4d76f6a9901855ebbcfc61be61",
+      "original_ABI": "ECX VFS manager; stack hidden-output/native-name; EAX output; RET8",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00bdd39c",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00bdd3b3",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00bdd3c4",
+          "operation": "call",
+          "target": "00bee690",
+          "current_name": "BSP_Path_NormalizeResourceName"
+        },
+        {
+          "site": "00bdd3d5",
+          "operation": "call",
+          "target": "00bdd0a0",
+          "current_name": "BSP_VFS_VisitMatchingMounts"
+        },
+        {
+          "site": "00bdd417",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00bdd41e",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 79,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b2ebb0",
+      "end_exclusive": "00b2eed3",
+      "length": 803,
+      "role": "full_effect_registry_creation_provider",
+      "bytes_hex": "558bec83e4f86aff688bd7cb0064a100000000506489250000000083ec305356578b7d0833f68d4424203bc7897424208974242474288b076a01508d4c2428e84cf18eff393774168b4c24208b57048b442424515250e8758a0c0083c40c8d4c24183bcf89742444897424188974241c74248b076a0150e814f18eff393774168b5424188b47048b4c241c525051e83d8a0c0083c40c6a016a058d4c2430c644244c018974243089742434e8e0f08eff8b5c242c3bde74168b54242883c2015268d0efd50053e8058a0c0083c40c6a016a058d4c2418c644244c02897424188974241ce8a8f08eff8b74241485f674168b44241083c0015068c8efd50056e8cd890c0083c40c68ffffff7f8d4c242c518d542418528d4c2424c644245003e86dc099ff85f6c64424440274178b4424106a0183c0015056e8d4af8eff8bc8e81d280a0085dbc64424440174178b4424286a0183c0015053e8b4af8eff8bc8e8fd270a008b0decce09018d44241850e89d070b0084c074486878010000e8ea7a0c0083c4048944241085c0c644244404740b8bc8e8581a01008bf0eb0233f68d4c2418518bcec644244801e8f17b0100578bcee809a2feff85f60f8503010000689043ce008d4c242ce8f3fa8eff57bae4efd5008d4c2434c644244805e89fd390ff8d542428528d4c2414518bc8c644244c06e8f9738fff8b44243485c0c64424440874178b4c24306a0183c1015150e8fcae8eff8bc8e845270a008b4c242c85c9c64424440974178b4424286a0183c0015051e8d8ae8eff8bc8e821270a008b44241485c07505b8a4d5080150ff157422ce008b4c241485c9c64424440174178b4424106a0183c0015051e8a0ae8eff8bc8e8e9260a0068d8efd5008d4c242ce83bfa8eff8b0d94d3f8008b118b52488d44242850c64424480affd28bf08b44242c85c0c64424440174178b4c24286a0183c1015150e855ae8eff8bc8e89e260a008b4c241c85c9c64424440074178b4424186a0183c0015051e831ae8eff8bc8e87a260a008b44242485c0c7442444ffffffff74178b4c24206a0183c1015150e80aae8eff8bc8e853260a008b4c243c5f8bc65e64890d000000005b8be55dc20800",
+      "sha256": "37f556ad7a43d3d46354018093dd878008b10fba5f01e75bf803a2f09327a725",
+      "original_ABI": "ECX registry; stack native-name/context; EAX effect; RET8",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b2ebef",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b2ec06",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b2ec27",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b2ec3e",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b2ec5b",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b2ec76",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b2ec93",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b2ecae",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b2ecce",
+          "operation": "call",
+          "target": "004cad40",
+          "current_name": "BSP_String_ReplaceSubstrings"
+        },
+        {
+          "site": "00b2ece7",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2ecee",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2ed07",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2ed0e",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2ed1e",
+          "operation": "call",
+          "target": "00bdf4c0",
+          "current_name": "BSP_VFS_ResolveExistingName"
+        },
+        {
+          "site": "00b2ed2c",
+          "operation": "call",
+          "target": "00bf681b",
+          "current_name": "operator_new"
+        },
+        {
+          "site": "00b2ed43",
+          "operation": "call",
+          "target": "00b407a0",
+          "current_name": "BSP_MaterialEffect_Construct"
+        },
+        {
+          "site": "00b2ed5a",
+          "operation": "call",
+          "target": "00b46950",
+          "current_name": "BSP_MaterialEffect_LoadShaderVariants"
+        },
+        {
+          "site": "00b2ed62",
+          "operation": "call",
+          "target": "00b18f70",
+          "current_name": "FUN_00b18f70"
+        },
+        {
+          "site": "00b2ed78",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "00b2ed8c",
+          "operation": "call",
+          "target": "0043c130",
+          "current_name": "FUN_0043c130"
+        },
+        {
+          "site": "00b2eda2",
+          "operation": "call",
+          "target": "004261a0",
+          "current_name": "BSP_NativeString_Concat"
+        },
+        {
+          "site": "00b2edbf",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2edc6",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2ede3",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2edea",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2edfd",
+          "operation": "call",
+          "import_address": "0xce2274",
+          "import": "OutputDebugStringA"
+        },
+        {
+          "site": "00b2ee1b",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2ee22",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2ee30",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "00b2ee66",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2ee6d",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2ee8a",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2ee91",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2eeb1",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2eeb8",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 259,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b2c2d0",
+      "end_exclusive": "00b2c897",
+      "length": 1479,
+      "role": "full_texture_registry_creation_provider",
+      "bytes_hex": "6aff6848d5cb0064a100000000506489250000000083ec5453558b6c246c33db8d4424283bc557895c2428895c242c895c2430742a8b45006a01508d4c2434e82c1a8fff395d0074168b4c242c8b55048b442430515250e854b30c0083c40c8b0decce09018b118b52046a028d44243050895c2470ffd28bf88b078b50188bcfffd284c08bcf75468b078b50046a01ffd28b4c2430c7442468ffffffff3bcb74178b44242c6a0183c0015051e83fd98eff8bc8e888510a005f5d33c05b8b4c245464890d0000000083c460c2080056e8ac330c008bf08d47045089742424ff152022ce0085c075088b178b028bcfffd08b0d94d3f800895c24148b068d542448895c241c8b99101a0000528b50308bce895c2428ffd2508bcee822320c0050e8f81b10008b44245c83f8038b7c24540f855f0200008b4424488b4c244c83cbff803ddcd6080100895c24188944242c894c242874138b0d94d3f800894c243ce89c76000088442438837c245401c644246c010f86da0000008b1594d3f80083ba841d0000000f84c700000068f0e7d5008d4c2444e807248fff8d442440508bcde87bd691ff84c074498b450485c0741a68e8e7d50050e8b5cf0c0083c40885c074082b450483f8ff75288b450485c0741a68c8e7d50050e894cf0c0083c40885c074082b450483f8ff7507c644241301eb05c6442413008d4c2440e850188fff807c241300744b8b0d94d3f8008b89841d00008b442448d3e883f801894424187f08c7442418010000008b5c244cd3eb83fb017f05bb010000008b5424182bf983ff018954242c895c24287f05bf0100000033ed837c2458147505bd150000008b4c24188b168d442414508b42306a006a006a006aff68040007006a01556a005753518bceffd0508bcee8b1300c008b4c24585051e87c1a1000837c241400756a85c00f84cf0000003d7c0176880f84c40000003d0e0007800f84b90000008b0d94d3f800e8d6d0ffff8b4424188d542414528b166a006a006a006aff68040007006a01556a005753508b42308bceffd0508bcee847300c008b4c24585051e8121a1000837c241400746db950000000e8cb2c01008944242485c0c644246c0274248b5424288b4c242c6a00528b54241c518b8c248000000052518bc8e81e3301008be8eb0233ed8d4d4c8d542420c644246c01e81770ffff8b44247885c0897d3c74048bcdffd08b168b42308bce896c241cffd0894524803ddcd6080100c644246c000f84d90100008b4c243851e9c601000083f8050f85da000000803ddcd608010074138b0d94d3f800894c243ce84b740000884424388b068d542414528b50308bcec644247003ffd2508bcee86c2f0c005053e835191000837c241400755185c00f845d0100003d7c0176880f84520100003d0e0007800f84470100008b0d94d3f800e895cfffff8b168d442414508b42308bceffd0508bcee81f2f0c005053e8e8181000837c2414000f8414010000b930000000e8b32b01008944247485c0c644246c04741e8b4c24146a0051558bc8e8a70701008bf8c644246c038d4f2ce9d200000033ffc644246c038d4f2ce9c300000083f8040f85e3000000803ddcd608010074138b0d94d3f800894c243ce868730000884424388b168d442414508b42308bcec644247005ffd0508bcee8892e0c005053e84c181000837c241400754185c0747e3d7c01768874773d0e00078074708b0d94d3f800e8beceffff8b168b42308d4c2414518bceffd0508bcee8482e0c005053e80b181000837c2414007441b934000000e8f02a01008944247485c0c644246c0674138b4c24146a0051558bc8e8a40701008bf8eb0233ffc644246c058d4f308d542420e82d6effff897c241c803ddcd6080100c644246c00740e8b542438528b4c2440e8cd7200008d460450ff152022ce0085c075088b168b028bceffd0837c2414008b4c24345ec7442468ffffffff750785c9e90bfbffff85c974178b44242c6a0183c0015051e848d48eff8bc8e8914c0a008b4c24608b4424185f5d5b64890d0000000083c460c20800",
+      "sha256": "b9cde0abf2b8b2efd6bda382f436c26ce66aa1b19e73350e6a48030f5ad221b3",
+      "original_ABI": "ECX registry; stack native-name/flags; EAX texture; RET8",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b2c30f",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b2c327",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b2c37c",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2c383",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b2c39f",
+          "operation": "call",
+          "target": "00bef750",
+          "current_name": "BSP_Stream_ConvertToMemory"
+        },
+        {
+          "site": "00b2c3ae",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b2c3e9",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c3ef",
+          "operation": "call",
+          "target": "00c2dfec",
+          "current_name": "D3DXGetImageInfoFromFileInMemory"
+        },
+        {
+          "site": "00b2c42f",
+          "operation": "call",
+          "target": "00b33ad0",
+          "current_name": "BSP_Renderer_EnterOptionalGuard"
+        },
+        {
+          "site": "00b2c464",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "00b2c470",
+          "operation": "call",
+          "target": "00449af0",
+          "current_name": "BSP_NativeString_NotEqualCaseInsensitive"
+        },
+        {
+          "site": "00b2c486",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "00b2c4a7",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "00b2c4cb",
+          "operation": "call",
+          "target": "0041dd20",
+          "current_name": "BSP_NativeString_DestroyStorage"
+        },
+        {
+          "site": "00b2c55a",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c565",
+          "operation": "call",
+          "target": "00c2dfe6",
+          "current_name": "D3DXCreateTextureFromFileInMemoryEx"
+        },
+        {
+          "site": "00b2c595",
+          "operation": "call",
+          "target": "00b29670",
+          "current_name": "BSP_D3D9Renderer_RecreateDevice"
+        },
+        {
+          "site": "00b2c5c4",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c5cf",
+          "operation": "call",
+          "target": "00c2dfe6",
+          "current_name": "D3DXCreateTextureFromFileInMemoryEx"
+        },
+        {
+          "site": "00b2c5e0",
+          "operation": "call",
+          "target": "00b3f2b0",
+          "current_name": "BSP_D3D9Texture2DPool_AllocateCanonicalSlot"
+        },
+        {
+          "site": "00b2c60d",
+          "operation": "call",
+          "target": "00b3f930",
+          "current_name": "BSP_D3D9Texture_ConstructFromLoaded2D"
+        },
+        {
+          "site": "00b2c624",
+          "operation": "call",
+          "target": "00b23640",
+          "current_name": "BSP_ReferenceSlot_Assign"
+        },
+        {
+          "site": "00b2c680",
+          "operation": "call",
+          "target": "00b33ad0",
+          "current_name": "BSP_Renderer_EnterOptionalGuard"
+        },
+        {
+          "site": "00b2c69f",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c6a6",
+          "operation": "call",
+          "target": "00c2dfe0",
+          "current_name": "D3DXCreateCubeTextureFromFileInMemory"
+        },
+        {
+          "site": "00b2c6d6",
+          "operation": "call",
+          "target": "00b29670",
+          "current_name": "BSP_D3D9Renderer_RecreateDevice"
+        },
+        {
+          "site": "00b2c6ec",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c6f3",
+          "operation": "call",
+          "target": "00c2dfe0",
+          "current_name": "D3DXCreateCubeTextureFromFileInMemory"
+        },
+        {
+          "site": "00b2c708",
+          "operation": "call",
+          "target": "00b3f2c0",
+          "current_name": "BSP_CubeTexturePool_Allocate"
+        },
+        {
+          "site": "00b2c724",
+          "operation": "call",
+          "target": "00b3ced0",
+          "current_name": "FUN_00b3ced0"
+        },
+        {
+          "site": "00b2c763",
+          "operation": "call",
+          "target": "00b33ad0",
+          "current_name": "BSP_Renderer_EnterOptionalGuard"
+        },
+        {
+          "site": "00b2c782",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c789",
+          "operation": "call",
+          "target": "00c2dfda",
+          "current_name": "D3DXCreateVolumeTextureFromFileInMemory"
+        },
+        {
+          "site": "00b2c7ad",
+          "operation": "call",
+          "target": "00b29670",
+          "current_name": "BSP_D3D9Renderer_RecreateDevice"
+        },
+        {
+          "site": "00b2c7c3",
+          "operation": "call",
+          "target": "00bef610",
+          "current_name": "BSP_MemoryStream_GetData"
+        },
+        {
+          "site": "00b2c7ca",
+          "operation": "call",
+          "target": "00c2dfda",
+          "current_name": "D3DXCreateVolumeTextureFromFileInMemory"
+        },
+        {
+          "site": "00b2c7db",
+          "operation": "call",
+          "target": "00b3f2d0",
+          "current_name": "CG_static_dtor_stub_00b3f2d0"
+        },
+        {
+          "site": "00b2c7f7",
+          "operation": "call",
+          "target": "00b3cfa0",
+          "current_name": "FUN_00b3cfa0"
+        },
+        {
+          "site": "00b2c80e",
+          "operation": "call",
+          "target": "00b23640",
+          "current_name": "BSP_ReferenceSlot_Assign"
+        },
+        {
+          "site": "00b2c82e",
+          "operation": "call",
+          "target": "00b33b00",
+          "current_name": "BSP_Renderer_LeaveOptionalGuard"
+        },
+        {
+          "site": "00b2c837",
+          "operation": "call",
+          "import_address": "0xce2220",
+          "import": "InterlockedDecrement"
+        },
+        {
+          "site": "00b2c873",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b2c87a",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 462,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b407a0",
+      "end_exclusive": "00b4081a",
+      "length": 122,
+      "role": "full_effect_concrete_profile_constructor",
+      "bytes_hex": "568bf1e8b885fdff33c08986c400000089863801000088863c010000c706001ad60089864001000089864401000089864801000089864c01000089865001000089865401000089865801000089865c01000089866001000089866401000089866801000089866c0100008986700100008986740100008bc65ec3",
+      "sha256": "0ea607c152952b26bda56dedd2848a6b7f48985e49bd194935b576bdcd25ce12",
+      "original_ABI": "ECX destination; EAX destination; RET",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b407a3",
+          "operation": "call",
+          "target": "00b18d60",
+          "current_name": "BSP_MaterialEffectBase_Construct"
+        }
+      ],
+      "instruction_count": 25,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b18d60",
+      "end_exclusive": "00b18e90",
+      "length": 304,
+      "role": "full_shader_owner_base_constructor",
+      "bytes_hex": "6aff6899c5cb0064a100000000506489250000000083ec0c53568bf1c70630b1ce00578974240cc746040100000033db6a2c8d460c53c70634e5d50050895c242c6689582ce846ec0d0083c40c6820dd410068705241006a0b6a088d7e3c57e80def0d006a58535766895f58e81fec0d0083c40c899ea8000000899eb8000000899ebc0000006a016a098d4c2418c644242802895c2418895c241ce8404f90ff8b4424143bc374168b4c241083c101516828e5d50050e865e80d0083c40c8b0d94d3f8008b118b5264538d44241450c644242803ffd28986980000008b4424143bc3c64424200274178b4c24106a0183c1015150e8670e90ff8bc8e8b0860b00a1a8d3f8008b4c24188986c000000083c001885e08889eb4000000a3a8d3f8005f8bc65e5b64890d0000000083c418c3",
+      "sha256": "b7aa3f1e6a7a8f18575d4901439ba841e54aa873fb6a2b236dcc8ee7335ebebc",
+      "original_ABI": "ECX destination; EAX destination; RET",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b18da5",
+          "operation": "call",
+          "target": "00bf79f0",
+          "current_name": "_memset"
+        },
+        {
+          "site": "00b18dbf",
+          "operation": "call",
+          "target": "00bf7cd1",
+          "current_name": "`eh_vector_constructor_iterator'"
+        },
+        {
+          "site": "00b18dcc",
+          "operation": "call",
+          "target": "00bf79f0",
+          "current_name": "_memset"
+        },
+        {
+          "site": "00b18dfb",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b18e16",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b18e54",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b18e5b",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 91,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "role": "full_2D_concrete_profile_constructor",
+      "bytes_hex": "6aff686befcb0064a100000000506489250000000083ec308b442450538b5c24445556578b7c245450578bf1538974241ce8ca48ffff33edc7064819d600896e24896e3c896c2448896e40896e44896e488b4610896e4c8b088b513450c644244c01ffd23bfd8946148b44246089461c74108b0f8b510457ffd28b078b480857ffd18b178b4a448d442420505557ffd18b5424388b44243c89562889462c8b0f8b510457ffd28b078b480857ffd18b5424588b44245c8b4c2420895634897c241433ff8d5424183bd3894638896e30894e18896c2418897c241c74268b036a01508bcae828e38dff392b8b7c241c74128b4424188b4b04505157e8517c0b0083c40cc644244802e8f4ecffff3bfdc64424480174178b5424186a0183c2015257e86ba28dff8bc8e8b41a0900f6442460108bc674078305f8da0801018b4c24405f5e5d5b64890d0000000083c43cc21400",
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "original_ABI": "ECX owner; stack name/COM/saved-width/saved-height/flags; EAX owner; RET14",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3f961",
+          "operation": "call",
+          "target": "00b34230",
+          "current_name": "BSP_LogicalTextureBase_ConstructNamed_D5F228"
+        },
+        {
+          "site": "00b3fa13",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b3fa2a",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b3fa37",
+          "operation": "call",
+          "target": "00b3e730",
+          "current_name": "bsp_resource_support_get_singleton"
+        },
+        {
+          "site": "00b3fa50",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b3fa57",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 120,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3ced0",
+      "end_exclusive": "00b3cf51",
+      "length": 129,
+      "role": "full_cube_concrete_profile_constructor",
+      "bytes_hex": "6aff6828edcb0064a100000000506489250000000083ec248b44243c56578b7c24408bf18b4c243c5057518bce89742414e87a73ffff33c08d4c240c51c7067018d60089462c8b178b5244505789442440ffd28b4424248946248b0f8b513457ffd28b4c242c8946148b44240c8946185f8bc65e64890d0000000083c430c20c00",
+      "sha256": "5e5b136cccd90bff6451b7b819e67403af000e012e603daf828871817f2fd9b6",
+      "original_ABI": "ECX owner; stack name/COM/flags; EAX owner; RETC",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3cf01",
+          "operation": "call",
+          "target": "00b34280",
+          "current_name": "BSP_LogicalTextureBase_ConstructNamed_D5F280"
+        }
+      ],
+      "instruction_count": 45,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b3cfa0",
+      "end_exclusive": "00b3d02f",
+      "length": 143,
+      "role": "full_volume_concrete_profile_constructor",
+      "bytes_hex": "6aff6848edcb0064a100000000506489250000000083ec208b44243856578b7c243c8bf18b4c24385057518bce89742414e8fa72ffff33c08d4c240c51c706b018d6008946308b178b524450578944243cffd28b44241c8b4c24208b542424894e2889462489562c8b078b483457ffd18b54240c8b4c24288946148956185f8bc65e64890d0000000083c42cc20c00",
+      "sha256": "7dbdef0ad3341e85326ca272714eeab415b8dafd6cfcc253cc980545ebab73d4",
+      "original_ABI": "ECX owner; stack name/COM/flags; EAX owner; RETC",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b3cfd1",
+          "operation": "call",
+          "target": "00b342d0",
+          "current_name": "BSP_LogicalTextureBase_ConstructNamed_D5F2C0"
+        }
+      ],
+      "instruction_count": 49,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "role": "full_current_renderer_virtual6C_notification",
+      "bytes_hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "original_ABI": "ECX renderer; stack native-name; RET4",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b32280",
+          "operation": "call",
+          "target": "00b33ad0",
+          "current_name": "BSP_Renderer_EnterOptionalGuard"
+        },
+        {
+          "site": "00b322b4",
+          "operation": "call",
+          "target": "0041dd40",
+          "current_name": "BSP_NativeString_Resize"
+        },
+        {
+          "site": "00b322cb",
+          "operation": "call",
+          "target": "00bf7680",
+          "current_name": "_memcpy"
+        },
+        {
+          "site": "00b322dc",
+          "operation": "call",
+          "target": "004bcc00",
+          "current_name": "BSP_String_LowercaseAscii"
+        },
+        {
+          "site": "00b322e8",
+          "operation": "call",
+          "target": "00b31dc0",
+          "current_name": "BSP_NativeRenderResourceContainer_RemoveByAlias"
+        },
+        {
+          "site": "00b32301",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "00b32308",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "00b3232a",
+          "operation": "call",
+          "target": "00b33b00",
+          "current_name": "BSP_Renderer_LeaveOptionalGuard"
+        }
+      ],
+      "instruction_count": 70,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b27d40",
+      "end_exclusive": "00b27d53",
+      "length": 19,
+      "role": "full_actual_texture_unregistration",
+      "bytes_hex": "8d4424045081c1001b0000e830d8ffffc20400",
+      "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3",
+      "original_ABI": "ECX renderer; stack texture; RET4",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00b27d4b",
+          "operation": "call",
+          "target": "00b25580",
+          "current_name": "BSP_RendererTexturePointerArray_RemoveSwapLast"
+        }
+      ],
+      "instruction_count": 5,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00befaf0",
+      "end_exclusive": "00befaf1",
+      "length": 1,
+      "role": "full_base_shader_owner_reload_noop",
+      "bytes_hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "original_ABI": "No inputs consumed; RET",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [],
+      "instruction_count": 1,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "004254b0",
+      "end_exclusive": "004254b1",
+      "length": 1,
+      "role": "full_native_diagnostic_noop",
+      "bytes_hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "original_ABI": "RET; arguments ignored",
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [],
+      "instruction_count": 1,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "0073d410",
+      "end_exclusive": "0073d604",
+      "length": 500,
+      "role": "initializer_option_parsing_fragment",
+      "bytes_hex": "6aff68ba6cc80064a100000000506489250000000081ec2c010000535556578bf16a1033ff6a1089742434897c2428e83c43490083c40450e85343490083c408c6461801c6461900e8e3bbcfff6a0ce8b7934b0083c404894424183bc789bc244401000074078bc8e883544a0083cbff393db00a0901899c2444010000752e6880000000e882934b0083c404894424183bc7c78424440100000100000074078bc8e8fa0a4b00899c2444010000e80efcf6ff8bac2450010000558d4c2428e89d13ceff8b7424283bf77416687c7fce0056e85abf4b0083c4083bc774042bc6eb028bc33bc70f9dc03bf7a2f0d60801741668707fce0056e834bf4b0083c4083bc774042bc6eb028bc33bc70f9dc13bf7880df1d6080174178b4424246a0183c0015056e888c7cdff8bc8e8d13f4900558d4c2428e82713ceff8b7424283bf7741668987fce0056e8e4be4b0083c4083bc774042bc6eb028bc33bc70f9dc23bf78815bad40801741668887fce0056e8bdbe4b0083c4083bc774042bc6eb028bc33bc70f9dc03bf7a2bbd4080174178b4424246a0183c0015056e812c7cdff8bc8e85b3f4900558d4c2428e8b112ceff8b7424283bf7743d68687fce0056e86ebe4b0083c4083bc774142bc63bc77c0ec605f1d6080101c605bbd40801018b4424246a0183c0015056e8c3c6cdff8bc8e80c3f4900",
+      "sha256": "3abae9042bba5766d34f5e40bcb4a3f84ecc976deeb52b2581bcff61af993ab7",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "0073d43f",
+          "operation": "call",
+          "target": "00bd1780",
+          "current_name": "BSP_GameAllocator_Allocate"
+        },
+        {
+          "site": "0073d448",
+          "operation": "call",
+          "target": "00bd17a0",
+          "current_name": "BSP_GameAllocator_Release"
+        },
+        {
+          "site": "0073d458",
+          "operation": "call",
+          "target": "00439040",
+          "current_name": "BSP_Application_CaptureModulePath"
+        },
+        {
+          "site": "0073d45f",
+          "operation": "call",
+          "target": "00bf681b",
+          "current_name": "operator_new"
+        },
+        {
+          "site": "0073d478",
+          "operation": "call",
+          "target": "00be2900",
+          "current_name": "BSP_AllocationStats_Construct"
+        },
+        {
+          "site": "0073d494",
+          "operation": "call",
+          "target": "00bf681b",
+          "current_name": "operator_new"
+        },
+        {
+          "site": "0073d4b1",
+          "operation": "call",
+          "target": "00bedfb0",
+          "current_name": "BSP_FrameClock_Construct"
+        },
+        {
+          "site": "0073d4bd",
+          "operation": "call",
+          "target": "006ad0d0",
+          "current_name": "BSP_Application_InstallObjectHandleResolvers"
+        },
+        {
+          "site": "0073d4ce",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "0073d4e1",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "0073d507",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "0073d533",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "0073d53a",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "0073d544",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "0073d557",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "0073d57e",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "0073d5a9",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "0073d5b0",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        },
+        {
+          "site": "0073d5ba",
+          "operation": "call",
+          "target": "0041e870",
+          "current_name": "BSP_NativeString_Assign"
+        },
+        {
+          "site": "0073d5cd",
+          "operation": "call",
+          "target": "00bf9440",
+          "current_name": "_strstr"
+        },
+        {
+          "site": "0073d5f8",
+          "operation": "call",
+          "target": "00419cc0",
+          "current_name": "BSP_SizedStoragePool_GetSingleton"
+        },
+        {
+          "site": "0073d5ff",
+          "operation": "call",
+          "target": "00bd1510",
+          "current_name": "BSP_SizedStoragePool_ReturnBlock"
+        }
+      ],
+      "instruction_count": 158,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "008f841e",
+      "end_exclusive": "008f842e",
+      "length": 16,
+      "role": "WinMain_constant_initializer_argument_fragment",
+      "bytes_hex": "686881ce006a008d4c2428e8e24fe4ff",
+      "sha256": "9bfd53b73221eb261e6e8abc93fe0cca7b236295d84e8f1bd6700c21f688818c",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "008f8429",
+          "operation": "call",
+          "target": "0073d410",
+          "current_name": "BSP_Application_Initialize"
+        }
+      ],
+      "instruction_count": 4,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00bed45d",
+      "end_exclusive": "00bed4be",
+      "length": 97,
+      "role": "platform_activation_reload_call_fragment",
+      "bytes_hex": "6a01e80e1d0400807e0c00741a8b46288b4e248b56306a2050516a006a006aff52ff152423ce006a00c6464001c6464101e81d3e8dff8bc8e8065febff8b0dd8bbf800e8fbcfe8ff6a00e864428dff8bc8e81deee5ff8b0d94d3f800e8f27af3ff",
+      "sha256": "461dc59b067dab599bf8a4be82856bfff53144aef316b809d58da0d45b032a77",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00bed45f",
+          "operation": "call",
+          "target": "00c2f172",
+          "current_name": "XInputEnable"
+        },
+        {
+          "site": "00bed47e",
+          "operation": "call",
+          "import_address": "0xce2324",
+          "import": "SetWindowPos"
+        },
+        {
+          "site": "00bed48e",
+          "operation": "call",
+          "target": "004c12b0",
+          "current_name": "BSP_GuiManager_GetOrCreate"
+        },
+        {
+          "site": "00bed495",
+          "operation": "call",
+          "target": "00aa33a0",
+          "current_name": "STL_inst_00aa33a0"
+        },
+        {
+          "site": "00bed4a0",
+          "operation": "call",
+          "target": "00a7a4a0",
+          "current_name": "FUN_00a7a4a0"
+        },
+        {
+          "site": "00bed4a7",
+          "operation": "call",
+          "target": "004c1710",
+          "current_name": "FUN_004c1710"
+        },
+        {
+          "site": "00bed4ae",
+          "operation": "call",
+          "target": "00a4c2d0",
+          "current_name": "TRIV_body_00a4c2d0"
+        },
+        {
+          "site": "00bed4b9",
+          "operation": "call",
+          "target": "00b24fb0",
+          "current_name": "FUN_00b24fb0"
+        }
+      ],
+      "instruction_count": 29,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00b32556",
+      "end_exclusive": "00b325b2",
+      "length": 92,
+      "role": "renderer_registry_initialization_fragment",
+      "bytes_hex": "899e781a0000899e7c1a0000899e801a0000899e841a0000c786741a000088f0d500899e881a0000899e8c1a0000889e901a0000899e941a0000899e9c1a0000899ea01a0000899ea41a0000899ea81a0000c786981a000074f0d500",
+      "sha256": "673f7c166c84ada442a72db9d9056a1b003dbb408b2873d06621527f6eb786d4",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [],
+      "instruction_count": 14,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbf650",
+      "end_exclusive": "00cbf658",
+      "length": 8,
+      "role": "effect_reload_fallback_string_funclet",
+      "bytes_hex": "8d4dece9c8e675ff",
+      "sha256": "60ed8438bc7b935c66230418d1d06c46cbdb7c0411ebcca5fbe31a6680af6926",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbf653",
+          "operation": "jmp",
+          "target": "0041dd20",
+          "current_name": "BSP_NativeString_DestroyStorage"
+        }
+      ],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbf658",
+      "end_exclusive": "00cbf662",
+      "length": 10,
+      "role": "effect_reload_FH3_handler",
+      "bytes_hex": "b82080df00e9e174f3ff",
+      "sha256": "34f270bd2b600c32ff0e9aee2156a88f83e31760c66e87a47dc1e88803cc2cc8",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbf65d",
+          "operation": "jmp",
+          "target": "00bf6b43",
+          "current_name": "FID_conflict:___CxxFrameHandler3"
+        }
+      ],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbc5e0",
+      "end_exclusive": "00cbc5f0",
+      "length": 16,
+      "role": "registered_texture_load_two_string_funclets",
+      "bytes_hex": "8d4de0e9381776ff8d4de8e9301776ff",
+      "sha256": "80bb18363084d0665cf2c2d7786724eaf3c60409f3c656a197660d8c0e79e5e9",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbc5e3",
+          "operation": "jmp",
+          "target": "0041dd20",
+          "current_name": "BSP_NativeString_DestroyStorage"
+        },
+        {
+          "site": "00cbc5eb",
+          "operation": "jmp",
+          "target": "0041dd20",
+          "current_name": "BSP_NativeString_DestroyStorage"
+        }
+      ],
+      "instruction_count": 4,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbc5f0",
+      "end_exclusive": "00cbc5fa",
+      "length": 10,
+      "role": "registered_texture_load_FH3_handler",
+      "bytes_hex": "b89848df00e949a5f3ff",
+      "sha256": "7778a2e4e64e7aa29bf8e78d662dbfea7fa7e475940365a314ce0501ae9f8375",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbc5f5",
+          "operation": "jmp",
+          "target": "00bf6b43",
+          "current_name": "FID_conflict:___CxxFrameHandler3"
+        }
+      ],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbc8c0",
+      "end_exclusive": "00cbc8e9",
+      "length": 41,
+      "role": "Lua_override_output_and_Lua_object_funclets",
+      "bytes_hex": "8d4de0e938aeeaff8d4dcce930aeeaff8b45c883e0010f840c0000008365c8fe8b4d04e9381476ffc3",
+      "sha256": "f862119aa15df8ed78cc53ba28ab8de1568c8358cf311a76377fb79353c5cad7",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbc8c3",
+          "operation": "jmp",
+          "target": "00b67700",
+          "current_name": "BSP_LuaObject_Destruct"
+        },
+        {
+          "site": "00cbc8cb",
+          "operation": "jmp",
+          "target": "00b67700",
+          "current_name": "BSP_LuaObject_Destruct"
+        },
+        {
+          "site": "00cbc8e3",
+          "operation": "jmp",
+          "target": "0041dd20",
+          "current_name": "BSP_NativeString_DestroyStorage"
+        }
+      ],
+      "instruction_count": 11,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbc8e9",
+      "end_exclusive": "00cbc8f3",
+      "length": 10,
+      "role": "Lua_override_FH3_handler",
+      "bytes_hex": "b8f04cdf00e950a2f3ff",
+      "sha256": "e2ac1fde2948c02e231a278a5a1a5a09a06255d8093748763913880f0500c24c",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbc8ee",
+          "operation": "jmp",
+          "target": "00bf6b43",
+          "current_name": "FID_conflict:___CxxFrameHandler3"
+        }
+      ],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbef80",
+      "end_exclusive": "00cbef88",
+      "length": 8,
+      "role": "texture_2D_reload_diagnostic_string_funclet",
+      "bytes_hex": "8d4dace93805e8ff",
+      "sha256": "d5ab9d837cee9549b0d2973949b41608463ccfc95a50418c6d725734bc078b3b",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbef83",
+          "operation": "jmp",
+          "target": "00b3f4c0",
+          "current_name": "BSP_NativeBufferDiagnosticRecord_Destroy"
+        }
+      ],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00cbef88",
+      "end_exclusive": "00cbef92",
+      "length": 10,
+      "role": "texture_2D_reload_FH3_handler",
+      "bytes_hex": "b86878df00e9b17bf3ff",
+      "sha256": "47bf42bf14f1d94408711e2eac699329b64e28cae4d44592b37cfa9eb3a38288",
+      "original_ABI": null,
+      "fresh_live_PE_match": true,
+      "direct_calls_and_terminal_jumps": [
+        {
+          "site": "00cbef8d",
+          "operation": "jmp",
+          "target": "00bf6b43",
+          "current_name": "FID_conflict:___CxxFrameHandler3"
+        }
+      ],
+      "instruction_count": 2,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00d5f074",
+      "end_exclusive": "00d5f09c",
+      "length": 40,
+      "role": "five_slot_effect_and_texture_registry_profiles",
+      "bytes_hex": "3022b30040e9b200b0ebb200f01fb3001020b300d039b300201cb300d0c2b200801db300a01db300",
+      "sha256": "996520e5af0694600d095fa914b3ed9470af1a4ed5f9b2c4c37781c716762d60",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f1c8",
+      "end_exclusive": "00d5f1d0",
+      "length": 8,
+      "role": "renderer_virtual120_and124",
+      "bytes_hex": "d04db200204eb200",
+      "sha256": "af13e708ce42e48cca414e62f35b7a8b3d5154a6302a732b809ab95cc288c743",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f10c",
+      "end_exclusive": "00d5f110",
+      "length": 4,
+      "role": "renderer_virtual64_texture_loader",
+      "bytes_hex": "b019b300",
+      "sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f114",
+      "end_exclusive": "00d5f118",
+      "length": 4,
+      "role": "renderer_virtual6C_texture_name_notification",
+      "bytes_hex": "5022b300",
+      "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f18c",
+      "end_exclusive": "00d5f190",
+      "length": 4,
+      "role": "renderer_virtualE4_B24FF0_exclusion",
+      "bytes_hex": "f04fb200",
+      "sha256": "309f7bfc473b0398c4237d31e7a67f4b39b4fcdadbd8e6d797589605751a83b2",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d61a00",
+      "end_exclusive": "00d61a18",
+      "length": 24,
+      "role": "effect_concrete_profile_reload_and_owner_methods",
+      "bytes_hex": "e030bd00d022b400a069b4005022a800604db4006053b400",
+      "sha256": "644da9343c6c886620e18fb805f2c6d9b649da131683a8f050fdb4eab12dd97f",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5e534",
+      "end_exclusive": "00d5e548",
+      "length": 20,
+      "role": "shader_owner_base_profile",
+      "bytes_hex": "e030bd00d092b100f0fabe005022a800908eb100",
+      "sha256": "1f9d01142f2cac659a4e042070db44ecf4f49d8a792050bf0ba25b8de46e73d1",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d61948",
+      "end_exclusive": "00d61958",
+      "length": 16,
+      "role": "texture_2D_profile",
+      "bytes_hex": "e030bd0090f5b30090fab30030ceb300",
+      "sha256": "542b64bcdeadd2c8bd7811d0a309990b6cfc27c76c23c7444cfdc44bf01ea3a8",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d61870",
+      "end_exclusive": "00d61880",
+      "length": 16,
+      "role": "texture_cube_profile",
+      "bytes_hex": "e030bd0010f4b30040dfb3005022a800",
+      "sha256": "f80cd9fbde2f289c173073186af3e29dacf1726201e1c207e3f0be31c8d7ee2a",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d618b0",
+      "end_exclusive": "00d618c0",
+      "length": 16,
+      "role": "texture_volume_profile",
+      "bytes_hex": "e030bd0030f4b30080e0b3005022a800",
+      "sha256": "010379be0026bc595bb5b096d6e1af3da0cda3b0beea2ef604a7ee09835630cb",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00ce7f68",
+      "end_exclusive": "00ce7f98",
+      "length": 48,
+      "role": "devrr_and_reloadresources_option_C_strings",
+      "bytes_hex": "646576727200000064657673686164657273000067656e73686164657273000072656c6f61647265736f757263657300",
+      "sha256": "5d0210fc5c35e613d7de581b251435170ab428e90af21c32b3c25976caba4d5b",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00ce8168",
+      "end_exclusive": "00ce8173",
+      "length": 11,
+      "role": "WinMain_cachedload_mode_C_string",
+      "bytes_hex": "6361636865646c6f616400",
+      "sha256": "c7fc43e3967083789627ad829de58e9ede017753d453895d098366344652f0af",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d61c88",
+      "end_exclusive": "00d61ca4",
+      "length": 28,
+      "role": "effect_fallback_shader_path_C_string",
+      "bytes_hex": "73686164657266782f636f6d6d6f6e2f6572726f722e736866780000",
+      "sha256": "9cab0299277fcd6b1ae1adbc59ed2eb4a06d15399ccb5e6608408db6f5713996",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00df8018",
+      "end_exclusive": "00df8044",
+      "length": 44,
+      "role": "effect_reload_unwind_map_FuncInfo",
+      "bytes_hex": "ffffffff50f6cb0022059319010000001880df00000000000000000000000000000000000000000001000000",
+      "sha256": "33da697f6209c3fd0e5ec1525cfe1290304e6650a335e8e0589c486dfd58dc9d",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00df4888",
+      "end_exclusive": "00df48bc",
+      "length": 52,
+      "role": "registered_texture_load_unwind_map_FuncInfo",
+      "bytes_hex": "ffffffffe0c5cb0000000000e8c5cb0022059319020000008848df00000000000000000000000000000000000000000001000000",
+      "sha256": "970ea854b41e130bcdac4a60c7051210bbf0ec6ed8caf0e23269ad38e02bcdc5",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00df4cd0",
+      "end_exclusive": "00df4d14",
+      "length": 68,
+      "role": "Lua_override_unwind_map_FuncInfo",
+      "bytes_hex": "ffffffffd0c8cb0000000000c0c8cb0001000000c8c8cb0000000000c8c8cb002205931904000000d04cdf00000000000000000000000000000000000000000001000000",
+      "sha256": "9e0ea0a364a8513ac7f1cbbc67d35322c54686e8da86a473877dae1024f69ee0",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00df7860",
+      "end_exclusive": "00df788c",
+      "length": 44,
+      "role": "texture_2D_reload_unwind_map_FuncInfo",
+      "bytes_hex": "ffffffff80efcb0022059319010000006078df00000000000000000000000000000000000000000001000000",
+      "sha256": "359165a3d76f9c6d2d7dbcb0f6f1692a22b27e35e4a6b970ecdb0615dea05ba4",
+      "fresh_live_PE_match": true
+    }
+  ],
+  "total_spans": 57,
+  "total_bytes": 8423,
+  "current_provider_pins": [
+    {
+      "path": "src/vfs_file_date.cpp",
+      "role": "typed_context_and_string_date_projection_not_complete_raw_adapter",
+      "bytes": 3277,
+      "sha256": "1e74117b9188f5a4c2713abd9061efa852571f09aa6bbfd98cb69a09ab65d533"
+    },
+    {
+      "path": "include/bsp/vfs_file_date.hpp",
+      "role": "typed_context_and_string_date_projection_not_complete_raw_adapter",
+      "bytes": 1305,
+      "sha256": "69781cbe3fc43cd91b7c75ae4741dc7f4b8d4b9e0dc4ddd48540067fbe89c37a"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "role": "actual_2Ch_record_storage_and_assignment",
+      "bytes": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "role": "actual_2Ch_record_storage_and_assignment",
+      "bytes": 3197,
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "src/native_render_resource_record_array.cpp",
+      "role": "actual_record_array_operations",
+      "bytes": 5258,
+      "sha256": "aad619d1dddb72948d1e0aa920c52544aa88e7a0041797efe262271974aba6c9"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record_array.hpp",
+      "role": "actual_record_array_operations",
+      "bytes": 1537,
+      "sha256": "320bd4d56663b4734f9a3bf7c185dfed3c3611d110d21e97de3d47752a9506b9"
+    },
+    {
+      "path": "src/native_render_resource_container_removal.cpp",
+      "role": "actual_alias_removal_and_current_texture_accounting",
+      "bytes": 7488,
+      "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+    },
+    {
+      "path": "include/bsp/native_render_resource_container_removal.hpp",
+      "role": "actual_alias_removal_and_current_texture_accounting",
+      "bytes": 2076,
+      "sha256": "14ca26673033211047f0796e3a387b2f8773cc99b13c886a63889839e3bf6e6c"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "role": "full_current_renderer_virtual6C",
+      "bytes": 5111,
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "role": "full_current_renderer_virtual6C",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "role": "actual_2D_construction_deletion_not_file_reload",
+      "bytes": 11544,
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "role": "actual_2D_construction_deletion_not_file_reload",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "role": "actual_cube_construction_deletion_not_file_reload",
+      "bytes": 6420,
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "role": "actual_cube_construction_deletion_not_file_reload",
+      "bytes": 2750,
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+    },
+    {
+      "path": "src/native_volume_texture_owner.cpp",
+      "role": "actual_volume_construction_deletion_not_file_reload",
+      "bytes": 5380,
+      "sha256": "f17e5c2634b9ef4d53cedcd1f0868bf1befe71ab79aca01c5d8b1496a7f2e29f"
+    },
+    {
+      "path": "include/bsp/native_volume_texture_owner.hpp",
+      "role": "actual_volume_construction_deletion_not_file_reload",
+      "bytes": 2610,
+      "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "role": "actual_retained_memory_owner_release_domains",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "role": "actual_retained_memory_owner_release_domains",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/native_shader_owner_texture_release.cpp",
+      "role": "full_B188A0_and_B24E20_not_B19000_or_B24DD0",
+      "bytes": 4288,
+      "sha256": "17fd864bc9cf9ed6d10c2bd5dcf6cde4ccbfac2bea848e35e7789317201faa9e"
+    },
+    {
+      "path": "include/bsp/native_shader_owner_texture_release.hpp",
+      "role": "full_B188A0_and_B24E20_not_B19000_or_B24DD0",
+      "bytes": 1751,
+      "sha256": "b42b42f25a916289d5398c8ca4b69cb226604c809092df9d13b937c50e9bc8c0"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "role": "existing_native_string_construction_resize_and_lifetime",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "role": "existing_native_string_construction_resize_and_lifetime",
+      "bytes": 6280,
+      "sha256": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "role": "actual_shared_native_string_pool_adapter",
+      "bytes": 4579,
+      "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "role": "actual_shared_native_string_pool_adapter",
+      "bytes": 2488,
+      "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+    },
+    {
+      "path": "src/native_renderer_texture_binding.cpp",
+      "role": "actual_current_texture_profile_and_lifetime_dispatch",
+      "bytes": 6109,
+      "sha256": "426edcb14ec67173d50e5b103d2e3b392d76e5aeb7c1ad76548ef69d9b00f179"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_binding.hpp",
+      "role": "actual_current_texture_profile_and_lifetime_dispatch",
+      "bytes": 3102,
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762"
+    },
+    {
+      "path": "src/d3d9_texture.cpp",
+      "role": "bounded_initial_load_and_retained_recreation_not_native_file_reload",
+      "bytes": 5125,
+      "sha256": "7b2b0ad88292f757bb7a152a6e309e1cef9bbee02c67e66da254ff6632417eab"
+    },
+    {
+      "path": "include/bsp/d3d9_texture.hpp",
+      "role": "bounded_initial_load_and_retained_recreation_not_native_file_reload",
+      "bytes": 4535,
+      "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d"
+    },
+    {
+      "path": "src/texture_load_policy.cpp",
+      "role": "bounded_initial_2D_policy_differs_reload_detail_substring",
+      "bytes": 1702,
+      "sha256": "9142cc0a588e3f9943d12d57d6f2e70b0e68121c93e599594fe8bc3a34e36308"
+    },
+    {
+      "path": "include/bsp/texture_load_policy.hpp",
+      "role": "bounded_initial_2D_policy_differs_reload_detail_substring",
+      "bytes": 1088,
+      "sha256": "24d389349fdd647d132596f19d97cce45e42819b0b51998533179dc94620e619"
+    },
+    {
+      "path": "src/effect_cache.cpp",
+      "role": "bounded_shared_owner_fixed_flags_projection_not_raw_reload_registry",
+      "bytes": 3927,
+      "sha256": "987bfb8518b854ae9da4beaa3317adc571aa930d5d71e396b7ba839f57255979"
+    },
+    {
+      "path": "include/bsp/effect_cache.hpp",
+      "role": "bounded_shared_owner_fixed_flags_projection_not_raw_reload_registry",
+      "bytes": 3345,
+      "sha256": "d12c368faee42775973791a92af8c04aa974cfc7f27898b4ff54cfc4e8ffee23"
+    },
+    {
+      "path": "src/lua_state_owner.cpp",
+      "role": "existing_Lua_state_owner_helpers_not_full_B1BC70",
+      "bytes": 4017,
+      "sha256": "6744fdecb3f6a5a215b777bfa1c421250109fe73c84221b7bfbbba515e663e23"
+    },
+    {
+      "path": "include/bsp/lua_state_owner.hpp",
+      "role": "existing_Lua_state_owner_helpers_not_full_B1BC70",
+      "bytes": 2266,
+      "sha256": "12092791fb8d18799c6f474f58093d385a8bf10d2aef7c8a571e2ac93d3f32c1"
+    }
+  ],
+  "guarded_queries": {
+    "target_count": "live function count 63138; snapshot 63138; same\n",
+    "enable_byte_xrefs": "From 0073d597 in BSP_Application_Initialize [WRITE]\nFrom 0073d5e6 in BSP_Application_Initialize [WRITE]\nFrom 00b24fb0 in FUN_00b24fb0 [READ]\n",
+    "entry_callers": "BSP_Win32Platform_HandleMessage @ 00bed3b0\n",
+    "initializer_callers": "BSP_WinMain @ 008f81f0\n",
+    "renderer_profile_installers": "From 00b32942 in FUN_00b32920 [DATA]\nFrom 00b3243b in BSP_D3D9Renderer_Construct [DATA]\n",
+    "effect_reload_function_record": "00b469a0 ?  ?  body ?\n",
+    "fallback_C_string_xrefs": "From 00b1bcd6 in FUN_00b1bc70 [DATA]\n",
+    "fallback_C_string_saved_program_byte": "00f8d438  00  .\n"
+  },
+  "entry_contract": {
+    "address": "00b24fb0",
+    "stage_order": [
+      "current_enable_byte_0108D4BB_nonzero",
+      "00b22030(renderer+1A98)",
+      "current_renderer_table+120",
+      "tail_00b21f70(renderer+1A74)"
+    ],
+    "receiver": "Capture ECX renderer once; do not reload F8D394 between stages.",
+    "exceptions": "No EH guard or rollback; later stages do not run after an earlier throw.",
+    "enable_semantics": "Initializer second mode-string argument contains case-sensitive substring reloadresources or devrr; devrr also enables108D6F1. Byte is not reset by polling. Observed WinMain passes literal cachedload, not OS command_line."
+  },
+  "poll_contract": {
+    "functions": [
+      "00b21f70",
+      "00b22030"
+    ],
+    "container_fields": {
+      "0": "profile",
+      "4": "record_begin",
+      "8": "count",
+      "C": "capacity",
+      "10": "accounting"
+    },
+    "record_stride": 44,
+    "record_fields": {
+      "00": "name_length",
+      "04": "name_data",
+      "08": "preserved_list_owner_word",
+      "0C": "alias_sentinel",
+      "10": "alias_count",
+      "14": "date_word0",
+      "18": "date_word1",
+      "1C": "date_word2",
+      "20": "date_word3",
+      "24": "date_word4",
+      "28": "raw_resource_pointer"
+    },
+    "iteration": "Capture begin/end once with DWORD arithmetic. Reload global109CEEC per iteration. Advance old cursor; compare equality with captured end after callback.",
+    "changed_test": "Strict unsigned lexicographic comparison of new five-word tuple versus saved tuple.",
+    "commit": "Write all five saved date words before current resource+28/table+8 callback; no retain, rollback, or retry."
+  },
+  "profiles": {
+    "renderer_D5F0A8": {
+      "+120": "00b24dd0",
+      "+64": "00b319b0",
+      "+6C": "00b32250",
+      "+E4": "00b24ff0 (outside route)"
+    },
+    "effect_registry_D5F074": {
+      "renderer_offset": "1A98",
+      "+8_loader": "00b2ebb0",
+      "+C_retain": "00b31ff0",
+      "+10_release": "00b32010"
+    },
+    "texture_registry_D5F088": {
+      "renderer_offset": "1A74",
+      "+8_loader": "00b2c2d0",
+      "+C_retain": "00b31d80",
+      "+10_release": "00b31da0"
+    },
+    "resource_reload_profiles": [
+      {
+        "profile": "00d61a00",
+        "constructor": "00b407a0",
+        "slot8": "00b469a0"
+      },
+      {
+        "profile": "00d61948",
+        "constructor": "00b3f930",
+        "slot8": "00b3fa90"
+      },
+      {
+        "profile": "00d61870",
+        "constructor": "00b3ced0",
+        "slot8": "00b3df40"
+      },
+      {
+        "profile": "00d618b0",
+        "constructor": "00b3cfa0",
+        "slot8": "00b3e080"
+      }
+    ]
+  },
+  "virtual120_contract": {
+    "address": "00b24dd0",
+    "child": "00b19000 on each current effect record+28",
+    "iteration": "Initial empty check; after each child reread count then base, advance OLD cursor and compare to recomputed end.",
+    "always_refresh": "Visits all reached effects regardless of changed dates."
+  },
+  "exception_contracts": {
+    "00b19000": {
+      "funcinfo": "00df4898",
+      "states": [
+        "0 -> -1 selected string cleanup CBC5E0",
+        "1 -> 0 override string cleanup CBC5E8"
+      ],
+      "resource_temporary_cleanup": false,
+      "normal_order": "Disarm override to state0 before its release; disarm selected name to state-1 before its release."
+    },
+    "00b469a0": {
+      "funcinfo": "00df8020",
+      "states": [
+        "0 -> -1 fallback name cleanup CBF650"
+      ],
+      "other_cleanup": "No resource/program rollback"
+    },
+    "00b1bc70": {
+      "funcinfo": "00df4cf0",
+      "states": [
+        "0 -> -1 conditional output cleanup CBC8D0",
+        "1 -> 0 first Lua object CBC8C0",
+        "2 -> 1 second Lua object CBC8C8",
+        "3 -> 0 second Lua object CBC8C8"
+      ]
+    },
+    "00b3fa90": {
+      "funcinfo": "00df7868",
+      "states": [
+        "0 -> -1 late diagnostic string CBEF80"
+      ],
+      "stream_or_COM_cleanup_guard": false
+    },
+    "00b3df40_00b3e080": "No FH3 registration; final memory-stream release can tail-dispatch current slot0."
+  },
+  "source_ready": false,
+  "reconstructed": false,
+  "build_tested": false,
+  "original_body_fixture": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "Ghidra_mutations": false,
+  "boundaries": [
+    "B469A0 is a complete207-byte raw native body but has no Ghidra function record; no function/annotation was created.",
+    "Current saved initial byte atF8D438 does not prove an always-empty runtime fallback. It is a C string source, not a native string header.",
+    "B19037..B1903F are nine alignment-NOP bytes absent from the Ghidra listing but present in the complete native pin.",
+    "Texture callback B32250 can remove from the same registry whose poller retains a captured end. No mutation-safe repair is inferred.",
+    "Full BED3B0 implementation was not established in the fresh committed source checkout; native activation call and existing message fragments are separate evidence.",
+    "B24FF0 is not selected by+120 and its body was not investigated."
+  ],
+  "dependency_packets": [
+    {
+      "id": "native_VFS_file_date_actual_adapter",
+      "addresses": [
+        "00bdd340",
+        "00bdd0a0",
+        "00bd9e80",
+        "00bd9f00"
+      ],
+      "scope": "Bind the raw current109CEEC manager and current mount date providers to complete native name/output/EH behavior; existing typed VfsMountContext projection has added host guards.",
+      "implementation_ready": false,
+      "ready_for_bounded_discovery": true
+    },
+    {
+      "id": "native_shader_owner_registered_texture_load",
+      "addresses": [
+        "00b19000",
+        "00b1bc70",
+        "00b67980",
+        "00b68100",
+        "00b685c0"
+      ],
+      "scope": "Actual owner names/high-water shorts, actual Lua override owner and native output cleanup; preserve publish-retain-release ordering and no resource temporary cleanup.",
+      "requires": [
+        "actual renderer+64 B319B0 and texture cache/file loader",
+        "current texture owner lifetime domains"
+      ],
+      "implementation_ready": false,
+      "ready_for_bounded_discovery": true
+    },
+    {
+      "id": "native_effect_file_reload",
+      "addresses": [
+        "00b469a0",
+        "00b41b10",
+        "00b187a0",
+        "00b46950"
+      ],
+      "scope": "Current D61A00 slot8,108D6F1/108D6F0 gates, descriptor/program and secondary-owner closure plus actual fallback shader parsing/loading. Coordinate creation of missing B469A0 function separately under a write lease.",
+      "implementation_ready": false,
+      "ready_for_bounded_discovery": true
+    },
+    {
+      "id": "native_texture_file_reload",
+      "addresses": [
+        "00b3fa90",
+        "00b3df40",
+        "00b3e080",
+        "00b3f5d0"
+      ],
+      "scope": "Actual VFS open/memory conversion, concrete D3DX file reload, current COM/registry access and diagnostic string cleanup. Existing reset/initial-load projections are not these callback bodies.",
+      "requires": [
+        "actual stream-open/convert lifetime",
+        "existing B32250/B27D40 domains",
+        "actual current device and D3DX imports"
+      ],
+      "implementation_ready": false,
+      "ready_for_bounded_discovery": true
+    },
+    {
+      "id": "native_renderer_file_reload_integration",
+      "addresses": [
+        "00b24fb0",
+        "00b21f70",
+        "00b22030",
+        "00b24dd0"
+      ],
+      "scope": "Complete raw entry/poll/refresh integration after concrete child operations above exist; current profile dispatch, exact captured/reloaded bounds, original exceptions and enable byte.",
+      "implementation_ready": false,
+      "ready_for_bounded_discovery": false
+    }
+  ]
+}

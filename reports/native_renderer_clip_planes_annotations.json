@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00b23e50",
+    "before": {
+      "address": "00b23e50",
+      "function_name": "BSP_Renderer_SetClipPlane",
+      "comment": "[BSP reconstruction 00b23e50]\n[BSP reconstruction] Optional shared renderer guard. Four FLD/FSTP coefficient pairs copy into renderer+190C+index*16 before device SetClipPlane(vtable+DC). Masked signaling NaNs quiet in cached coefficients and raise x87 invalid; SetClipPlane receives the original input pointer and original coefficient bits. HRESULT ignored. Original ABI: ECX renderer; stack index,float4; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b23e50",
+      "old_name": "BSP_Renderer_SetClipPlane",
+      "name": "BSP_Renderer_SetClipPlane",
+      "evidence": "Full B23E50..B23EF6 166bytes. Optional guard entry before coefficient access; sequential x87 FLD/FSTP to190C+DWORD(index<<4), EH state arms after second store/before third load. Raw index wraps; alias reads occur sequentially; masked SNaN quiets cache while original input pointer reaches current device1A10/current tableDC. Current mode read before cleanup disarm; full cleanup including entry throw/unarmed, normal Leave throw/postdisarm and secondary exception termination. No counter/mask or HRESULT handling. Complete three actual-renderer-storage functions total274bytes in src/native_renderer_clip_planes.cpp; new C++ context interfaces. Primary independently verified79worker artifact pins and9unchanged source/provider files, replayed unchanged fixture against frozen actual main28dbf127271da094b943a832790b69ef3408dfca38b8cd12ce95875fc2835f10 library. Strict main Win32 build/two CTests/eight fresh original seed ranges pass;13fresh live/PE spans656bytes. Full three originals and original optional guards/FH3 execute in isolated relocated pages; explicit B24460 entry bridge calls full frozen cached-state provider.23pairs517904literalDWORDs271snapshots, no pointer normalization;47normal plus2each termination postimage phases. Three exact archive objects309wholeCOFFsections/allrelocations119linkedentries14885unique codebytes include fixture;156real HAL D3D9/WindowsCS provider call proofs. Both secondary-cleanup exceptions terminate73 after real Leave. Compiled full body proves EH arm after second x87 store, append current-memory increment/reread, restore pending reload around child. All whole-code/read-only/profile postimages unchanged. Only masked hardware FP tested here; selected actual HAL invalid indices returned success, so ignoredHRESULT is code proof. No skipped-entry mode enabling, foreign profiles, original caller ABI or gameplay claim. reports/native_renderer_clip_planes_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b25040",
+    "before": {
+      "address": "00b25040",
+      "function_name": "BSP_Renderer_AppendClipPlane",
+      "comment": "[BSP reconstruction 00b25040]\n[BSP reconstruction] Set plane at active+19EC through00b23e50, increment active, set state152 lowbit mask with x86 shiftcount31. Pending unchanged. Original ABI: ECX renderer; stack float4; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b25040",
+      "old_name": "BSP_Renderer_AppendClipPlane",
+      "name": "BSP_Renderer_AppendClipPlane",
+      "evidence": "Full B25040..B2507E 62bytes. Calls full B23E50 with current active19EC. After return ADD current memory active by1 then reread, computes DWORD((1<<(active&31))-1), calls full B24460 state98. No outer guard, direct pending store or rollback; unchecked child cache/input alias and callbacks can change active/pending. Complete three actual-renderer-storage functions total274bytes in src/native_renderer_clip_planes.cpp; new C++ context interfaces. Primary independently verified79worker artifact pins and9unchanged source/provider files, replayed unchanged fixture against frozen actual main28dbf127271da094b943a832790b69ef3408dfca38b8cd12ce95875fc2835f10 library. Strict main Win32 build/two CTests/eight fresh original seed ranges pass;13fresh live/PE spans656bytes. Full three originals and original optional guards/FH3 execute in isolated relocated pages; explicit B24460 entry bridge calls full frozen cached-state provider.23pairs517904literalDWORDs271snapshots, no pointer normalization;47normal plus2each termination postimage phases. Three exact archive objects309wholeCOFFsections/allrelocations119linkedentries14885unique codebytes include fixture;156real HAL D3D9/WindowsCS provider call proofs. Both secondary-cleanup exceptions terminate73 after real Leave. Compiled full body proves EH arm after second x87 store, append current-memory increment/reread, restore pending reload around child. All whole-code/read-only/profile postimages unchanged. Only masked hardware FP tested here; selected actual HAL invalid indices returned success, so ignoredHRESULT is code proof. No skipped-entry mode enabling, foreign profiles, original caller ABI or gameplay claim. reports/native_renderer_clip_planes_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b25080",
+    "before": {
+      "address": "00b25080",
+      "function_name": "BSP_Renderer_RestorePendingClipPlanes",
+      "comment": "[BSP reconstruction 00b25080]\n[BSP reconstruction] Set state152 lowbit mask from pending+19F0 with x86 shiftcount31, then copy pending to active+19EC. Original ABI: ECX renderer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b25080",
+      "old_name": "BSP_Renderer_RestorePendingClipPlanes",
+      "name": "BSP_Renderer_RestorePendingClipPlanes",
+      "evidence": "Full B25080..B250AE 46bytes. Reads current pending19F0, computes DWORD((1<<(pending&31))-1), calls full B24460 state98, then reloads pending and stores active19EC only after successful return. No outer guard or rollback; child mutation and exception order preserved. Complete three actual-renderer-storage functions total274bytes in src/native_renderer_clip_planes.cpp; new C++ context interfaces. Primary independently verified79worker artifact pins and9unchanged source/provider files, replayed unchanged fixture against frozen actual main28dbf127271da094b943a832790b69ef3408dfca38b8cd12ce95875fc2835f10 library. Strict main Win32 build/two CTests/eight fresh original seed ranges pass;13fresh live/PE spans656bytes. Full three originals and original optional guards/FH3 execute in isolated relocated pages; explicit B24460 entry bridge calls full frozen cached-state provider.23pairs517904literalDWORDs271snapshots, no pointer normalization;47normal plus2each termination postimage phases. Three exact archive objects309wholeCOFFsections/allrelocations119linkedentries14885unique codebytes include fixture;156real HAL D3D9/WindowsCS provider call proofs. Both secondary-cleanup exceptions terminate73 after real Leave. Compiled full body proves EH arm after second x87 store, append current-memory increment/reread, restore pending reload around child. All whole-code/read-only/profile postimages unchanged. Only masked hardware FP tested here; selected actual HAL invalid indices returned success, so ignoredHRESULT is code proof. No skipped-entry mode enabling, foreign profiles, original caller ABI or gameplay claim. reports/native_renderer_clip_planes_audit.json."
+    },
+    "status": "applied"
+  }
+]

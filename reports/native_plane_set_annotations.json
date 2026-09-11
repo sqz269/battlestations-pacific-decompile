@@ -1,0 +1,62 @@
+[
+  {
+    "address": "00b250b0",
+    "before": {
+      "address": "00b250b0",
+      "function_name": "BSP_PlaneSet_CopyInlineRecords",
+      "comment": "[BSP reconstruction 00b250b0]\n[BSP reconstruction] Copies all16 inline20-byte records regardless of active count: each coefficient uses FLD/FSTP, then the flags word uses MOV. Masked signaling NaNs quiet in destination and raise x87 invalid; source bits remain unchanged. The written record extent is140h; caller00B285A0 separately copies count+140. Original ABI: ECX destination; stack source; RET4; writes16 inline20-byte records (140h extent), excluding count. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b250b0",
+      "old_name": "BSP_PlaneSet_CopyInlineRecords",
+      "name": "BSP_PlaneSet_CopyInlineRecords",
+      "evidence": "Full B250B0..B2520A346bytes ECXdst/stacksrc RET4. Sixteen inline20byte records copied regardless count140, countnotcopied. Eight-record unrolltwice, coefficientFLD/FSTPsequential then flagsMOV; original address arithmetic and8unreachablealignmentbytes retained. Preserves raw alias propagation, unalignedaccess and partialexception stores; no snapshot/memcpy/SSE/validation. Complete native plane storage four-body primary integration total380bytes in src/native_plane_set.cpp. Exact full COFF sections have zero relocations and match original executable, linked frozen MAIN library entries and runtime bodies byte-for-byte. Primary verified148worker pins and unchanged two source/header files, strict actual main Win32 build/two existing CTests/eight fresh original seeds; fresh complete four live/PE spans380bytes. Actual main native_plane_set.obj occurs exactly once in frozen bsp_core.lib; fixture never recompiles owned source. Four originals execute in private RX allocation without rewriting, relocation or bridge; full original and linked text immutable14postimage stages.13original/library pairs26624literal arena bytes, exact nonvolatile registers/native stack cleanup and x87 control/status/tag/opcode/all8x80payload/data pointer/MXCSR. Only final FIP normalized to matching instruction offset. Actual unmasked SNaN with037E raises C0000090 atcopy+3B afterexactly2stores; partial arena/code/instruction offset/x87control/status/tag match. Raw flags/count and wrapped address/index, overlap byte/word/record andself covered. Ambient x87 pending exceptions/fullstack/denormal unmask/allOS faults not separately exercised. No helper/global/owner/virtual dependencies; names descriptive. Explicit raw C++ entry interfaces include unusedEDX where needed; fullgame caller integration/ABI and gameplay notclaimed. reports/native_plane_set_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b65080",
+    "before": {
+      "address": "00b65080",
+      "function_name": "BSP_PlaneSet_GetCount",
+      "comment": "[BSP reconstruction 00b65080]\n[BSP reconstruction] Returns DWORD plane count at+140. Original ABI: ECX plane set; EAX count; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b65080",
+      "old_name": "BSP_PlaneSet_GetCount",
+      "name": "BSP_PlaneSet_GetCount",
+      "evidence": "Full B65080..B650877bytes ECXset/EAXrawDWORDcount140 RET; no validation. Complete native plane storage four-body primary integration total380bytes in src/native_plane_set.cpp. Exact full COFF sections have zero relocations and match original executable, linked frozen MAIN library entries and runtime bodies byte-for-byte. Primary verified148worker pins and unchanged two source/header files, strict actual main Win32 build/two existing CTests/eight fresh original seeds; fresh complete four live/PE spans380bytes. Actual main native_plane_set.obj occurs exactly once in frozen bsp_core.lib; fixture never recompiles owned source. Four originals execute in private RX allocation without rewriting, relocation or bridge; full original and linked text immutable14postimage stages.13original/library pairs26624literal arena bytes, exact nonvolatile registers/native stack cleanup and x87 control/status/tag/opcode/all8x80payload/data pointer/MXCSR. Only final FIP normalized to matching instruction offset. Actual unmasked SNaN with037E raises C0000090 atcopy+3B afterexactly2stores; partial arena/code/instruction offset/x87control/status/tag match. Raw flags/count and wrapped address/index, overlap byte/word/record andself covered. Ambient x87 pending exceptions/fullstack/denormal unmask/allOS faults not separately exercised. No helper/global/owner/virtual dependencies; names descriptive. Explicit raw C++ entry interfaces include unusedEDX where needed; fullgame caller integration/ABI and gameplay notclaimed. reports/native_plane_set_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b656f0",
+    "before": {
+      "address": "00b656f0",
+      "function_name": "BSP_PlaneSet_GetPlane",
+      "comment": "[BSP reconstruction 00b656f0]\n[BSP reconstruction] Returns plane-record address base+index*20. Original ABI: ECX plane set; stack index; EAX plane pointer; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b656f0",
+      "old_name": "BSP_PlaneSet_GetPlane",
+      "name": "BSP_PlaneSet_GetPlane",
+      "evidence": "Full B656F0..B656FD13bytes ECXbase/stacku32index EAXwrappedbase+index20 RET4. Pure raw32bit LEAs, no memorydereference; tested FFFFFFF0+1*20 returns4. Complete native plane storage four-body primary integration total380bytes in src/native_plane_set.cpp. Exact full COFF sections have zero relocations and match original executable, linked frozen MAIN library entries and runtime bodies byte-for-byte. Primary verified148worker pins and unchanged two source/header files, strict actual main Win32 build/two existing CTests/eight fresh original seeds; fresh complete four live/PE spans380bytes. Actual main native_plane_set.obj occurs exactly once in frozen bsp_core.lib; fixture never recompiles owned source. Four originals execute in private RX allocation without rewriting, relocation or bridge; full original and linked text immutable14postimage stages.13original/library pairs26624literal arena bytes, exact nonvolatile registers/native stack cleanup and x87 control/status/tag/opcode/all8x80payload/data pointer/MXCSR. Only final FIP normalized to matching instruction offset. Actual unmasked SNaN with037E raises C0000090 atcopy+3B afterexactly2stores; partial arena/code/instruction offset/x87control/status/tag match. Raw flags/count and wrapped address/index, overlap byte/word/record andself covered. Ambient x87 pending exceptions/fullstack/denormal unmask/allOS faults not separately exercised. No helper/global/owner/virtual dependencies; names descriptive. Explicit raw C++ entry interfaces include unusedEDX where needed; fullgame caller integration/ABI and gameplay notclaimed. reports/native_plane_set_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b65700",
+    "before": {
+      "address": "00b65700",
+      "function_name": "BSP_PlaneSet_GetFlags",
+      "comment": "[BSP reconstruction 00b65700]\n[BSP reconstruction] Returns DWORD flags at base+index*20+16. Original ABI: ECX plane set; stack index; EAX flags; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b65700",
+      "old_name": "BSP_PlaneSet_GetFlags",
+      "name": "BSP_PlaneSet_GetFlags",
+      "evidence": "Full B65700..B6570E14bytes ECXbase/stacku32index EAXrawDWORDatwrappedbase+index20+10h RET4. Rawflags untouched by x87; index40000000wrapsto0, negativebits preserved. Complete native plane storage four-body primary integration total380bytes in src/native_plane_set.cpp. Exact full COFF sections have zero relocations and match original executable, linked frozen MAIN library entries and runtime bodies byte-for-byte. Primary verified148worker pins and unchanged two source/header files, strict actual main Win32 build/two existing CTests/eight fresh original seeds; fresh complete four live/PE spans380bytes. Actual main native_plane_set.obj occurs exactly once in frozen bsp_core.lib; fixture never recompiles owned source. Four originals execute in private RX allocation without rewriting, relocation or bridge; full original and linked text immutable14postimage stages.13original/library pairs26624literal arena bytes, exact nonvolatile registers/native stack cleanup and x87 control/status/tag/opcode/all8x80payload/data pointer/MXCSR. Only final FIP normalized to matching instruction offset. Actual unmasked SNaN with037E raises C0000090 atcopy+3B afterexactly2stores; partial arena/code/instruction offset/x87control/status/tag match. Raw flags/count and wrapped address/index, overlap byte/word/record andself covered. Ambient x87 pending exceptions/fullstack/denormal unmask/allOS faults not separately exercised. No helper/global/owner/virtual dependencies; names descriptive. Explicit raw C++ entry interfaces include unusedEDX where needed; fullgame caller integration/ABI and gameplay notclaimed. reports/native_plane_set_audit.json."
+    },
+    "status": "applied"
+  }
+]

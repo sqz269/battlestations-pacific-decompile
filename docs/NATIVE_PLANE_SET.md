@@ -1,0 +1,52 @@
+# Native plane-set storage
+
+Four complete routines now operate on the original plane-set storage in [native_plane_set.cpp](../src/native_plane_set.cpp), with its layout and explicit entry interfaces in [native_plane_set.hpp](../include/bsp/native_plane_set.hpp). Each of the four complete compiled bodies is byte-identical to its original executable body. Existing semantic camera/plane APIs are unchanged. Names are descriptive hypotheses; this packet does not claim general game-call integration or rendering validation.
+
+| Original entry | Complete extent | Original behavior and ABI |
+| --- | --- | --- |
+| B250B0 | 346 bytes through B25209 | ECX destination, stack source, RET 4. Copy sixteen inline records, excluding count. EAX incidentally remains destination; no semantic result is required. |
+| B65080 | 7 bytes through B65086 | ECX plane set, RET; EAX is raw DWORD count at +140. |
+| B656F0 | 13 bytes through B656FC | ECX base, stack raw index, RET 4; EAX is wrapped `base + index*20`. No dereference. |
+| B65700 | 14 bytes through B6570D | ECX base, stack raw index, RET 4; EAX is raw DWORD at wrapped `base + index*20 + 16`. |
+
+The set has sixteen inline 20-byte records. Each record contains four 32-bit coefficients followed by a flags DWORD at +10h; the raw count is at +140h and the complete storage is 144h bytes. Static assertions cover those offsets and sizes. Raw pointer entry arguments allow unaligned and overlapping byte views without introducing C++ pointer-arithmetic or floating-assignment semantics. An explicit unused EDX argument on the copy and indexed accessors keeps their final argument in the original stack position.
+
+B250B0 retains the original eight-record unroll, executed twice. Every coefficient is loaded with `FLD m32` and immediately stored with `FSTP m32`, followed by the record's integer flags load/store. Its exact source-minus-destination calculation, intervening address updates and write order are retained. There is no snapshot, `memcpy`, SSE float copy, count check, bounds check or count store. Overlap therefore has the original forward propagation behavior, including byte-offset overlap. The eight unreachable original alignment bytes are preserved; all executable operations are written as assembly instructions.
+
+The ambient x87 state is an input. Masked signaling NaNs become quiet in their destination coefficient and set invalid status; signaling-NaN-like flags remain raw integer bits. Existing x87 stack values, control word and exception state follow the original instructions. An unmasked exception can leave a partially written destination. The getters perform raw 32-bit LEA arithmetic and do not substitute signed C++ multiplication or validated indices. These routines have no virtual, allocator, owner-lifetime, global-state or helper dependencies.
+
+The [audit report](../reports/native_plane_set_audit.json) records fresh comparisons from the verified `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, against the installed executable. Every query used guarded `bsp.py ghidra`; all four complete spans, 380 bytes, matched. The complete executable SHA-256 is `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`. The isolated worktree starts at `cab05995ebbc5875ab27cbc29728860c97b091fd`. Ghidra, the installed game and shared metadata were not modified.
+
+The strict MSVC Win32 Release build passed with `/W4 /WX /fp:strict`; both existing CTests passed after all eight native seed spans were verified. An ignored `CMAKE_PROJECT_INCLUDE_BEFORE` hook adds this source to the actual `bsp_core` target and then runs the repository build script. No shared CMake file or permanent test was added.
+
+The ignored probe in `local/plane_set/` links the resulting `bsp_core.lib`; it does not compile another copy of the owned source. The audit proves that the exact built `native_plane_set.obj` occurs once in that archive and that all four linked symbols come from that member. Their complete COFF sections contain **zero relocations** and match the complete original, linked PE and runtime bytes, including alignment. All 380 original bytes execute unchanged in a private RX allocation: no original-body rewrite, operand relocation, provider bridge or callback substitution. Four original bodies and the complete linked `.text` retain identical postimages at fourteen stages.
+
+One focused parametrized probe passed thirteen original/library pairs, comparing the entire 2,048-byte arena after each call, for 26,624 matching bytes. It covers count-zero disjoint copies under two x87 control words, self alias, forward/backward word overlap, forward byte overlap, record overlap, an actual unmasked invalid exception, raw count, wrapped plane addresses and wrapped/negative-bit flags indices. In the disjoint case an independent per-record check verifies all sixteen records, NaN quieting, raw flags and unchanged count. The address-only getter returns `00000004` from base `FFFFFFF0`, index 1; flags index `40000000` wraps to record zero.
+
+Normal calls preserve the nonvolatile-register sentinels and original stack cleanup. The probe compares x87 control/status, abridged tag/opcode, all eight 80-bit register payloads, data pointer and MXCSR. The final x87 instruction pointer is compared after normalization to the same original/library instruction offset; XMM register payloads are not compared. With control word `037E`, the signaling NaN produces real exception `C0000090` at copy offset `3B`, after exactly two coefficient stores. Original and library partial memory, exception instruction offset and x87 control/status/tag agree. Other pending-exception states, stack overflow, unmasked denormal and all possible OS memory faults are not separately exercised; the complete instruction identity is recorded without converting those into additional runtime claims.
+
+The header/source/document/report form the four-file handoff. All ignored build/probe sources, executable, archive, object, command log, results and postimages are pinned and preserved for primary replay. Camera B285A0 and renderer clip-plane parent integration remain outside this packet.
+
+
+## Primary integration
+
+The primary reviewed all four complete sources and the focused fixture,
+verified all 148 worker artifact pins, and integrated the unchanged source
+into the main CMake target. The strict Win32 main build and both existing
+CTests passed. A new actual main library, exact archive object, source/header
+and build-command log were frozen before linking the unchanged fixture.
+Fresh guarded Ghidra/installed-PE checks covered all 380 original bytes; all
+eight native seeds matched.
+
+The independent primary replay passed the same 13 original/library pairs,
+including the actual unmasked invalid exception. All 26,624 arena bytes
+matched; the complete four original/COFF/linked/runtime bodies remain
+identical with zero relocations. Fourteen stages preserve all original
+bodies and the entire linked text. Main-library evidence and raw artifacts
+are sealed read-only under `local/plane_set_primary/`; the tracked audit
+contains their hashes and full verification.
+
+The four existing Ghidra names and prior comments were preserved, reviewed
+evidence was appended and saved, and exports and complete reconstruction
+records were refreshed. No general original-caller integration or gameplay
+validation is claimed.
