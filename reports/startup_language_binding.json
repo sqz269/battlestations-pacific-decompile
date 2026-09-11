@@ -1,0 +1,107 @@
+{
+  "packet": "orch3_startup_language_l",
+  "date": "2026-09-11",
+  "status": "bounded_actual_header_message_selector_build_and_fixture_passed",
+  "source": [
+    "include/bsp/winmain_startup.hpp",
+    "src/winmain_startup.cpp"
+  ],
+  "documentation": "docs/STARTUP_LANGUAGE_BINDING.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_function_count": 63100,
+    "read_only": true,
+    "mutations": false
+  },
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "fragment": {
+    "enclosing_function": "008f81f0",
+    "address": "008f832b",
+    "end_exclusive": "008f83bf",
+    "length": 148,
+    "name": "startup_already_running_message_from_native_header_008f832b",
+    "name_status": "descriptive hypothesis, not a recovered symbol",
+    "original_abi": "Interior WinMain fragment; actual header at stable ESP+0C. Each literal push shifts ESP before LEA ECX,[ESP+10]. Calls00425850 with ECX actual header, stack candidate, AL boolean, RET4. ESI=text and EDI=caption fall through at008F83BF; no independent RET.",
+    "bytes": "68145bd1008d4c2410be106ad100bf006ad100e80dd5b2ff84c07402eb71682c43ce008d4c2410e8f9d4b2ff84c0740cbe9069d100bf7c69d100eb58682443ce008d4c2410e8dbd4b2ff84c0740cbe2069d100bf1069d100eb3a680843ce008d4c2410e8bdd4b2ff84c0740cbec068d100bfb068d100eb1c681c43ce008d4c2410e89fd4b2ff84c0740abe5868d100bf006ad100",
+    "sha256": "fa4cdf353ee1b1e13a6a07d3658f73b3be3841d4d1acec6d5c658b303bc2429f",
+    "disk_matches_live_ghidra": true,
+    "gaps": [],
+    "canonical_dependency": "equal_native_string_header_00425850, shared actual-header implementation; no dependency source or metadata edits",
+    "call_sites": [
+      {
+        "call": "008f833e",
+        "candidate": "english",
+        "literal": "00d15b14"
+      },
+      {
+        "call": "008f8352",
+        "candidate": "french",
+        "literal": "00ce432c"
+      },
+      {
+        "call": "008f8370",
+        "candidate": "italian",
+        "literal": "00ce4324"
+      },
+      {
+        "call": "008f838e",
+        "candidate": "german",
+        "literal": "00ce4308"
+      },
+      {
+        "call": "008f83ac",
+        "candidate": "spanish",
+        "literal": "00ce431c"
+      }
+    ],
+    "selection": "Default English pair; first case-insensitive match ends comparisons. Spanish changes text and keeps the English caption. All candidates are fixed nonnull nonempty strings."
+  },
+  "identity_and_lifetime": {
+    "acquisition": "008F8322 passes caller stack header in ECX to008F7DB0. Resolver saves pointer at008F7DD6 and constructs english through0041E870 at008F7DE5.",
+    "assignment": "Options008F8086 and registry008F8171 reload saved header before0041E350.008F81B6 returns the same pointer.",
+    "comparison": "Same captured actual header address passed to all five canonical calls; each call reloads data. No projected pointer cache, header copy, or new owner.",
+    "release": "After MessageBoxW at008F83C5,008F83CB captures current data. Null skips length/release.008F83D7 then captures current length+1 with DWORD wrap before00419CC0 and00BD1510. No header clearing.",
+    "existing_owner_helpers": "NativeString constructor0041E870 and actual-header destructor0041DD20 exist; no runtime resolver supplies their actual owner at this callsite.",
+    "resolver_padding": {
+      "address": "008f8009",
+      "bytes": "8da42400000000",
+      "interpretation": "LEA ESP,[ESP+0], skipped by008F8007 unconditional JMP008F8010; not an executed owner transition"
+    }
+  },
+  "projection_audit": {
+    "message_selection_bug_established": false,
+    "result_equivalence": "For these fixed nonnull nonempty candidates, nonnull data uses_stricmp and ignores recorded length; null data never matches. Existing C-string convenience selects the same pair for valid data and every recorded length.",
+    "trace_difference": "Canonical null-data branch scans each complete candidate; C-string convenience skips comparison. No general00425850 or instruction trace equivalence claimed.",
+    "general_difference_outside_subset": "Nonnull data/null candidate tests recorded length in canonical function; old private projection tested first byte. No caller here supplies null candidate.",
+    "removed_helper": "private language_equals_00425850",
+    "runtime_caller": "run_win_main still uses documented C-string convenience because GameStartupHost::resolve_language returns std::string.",
+    "runtime_native_owner_adopted": false
+  },
+  "verification": {
+    "strict_build": "scripts/build.ps1 Win32 Release /W4 /WX /fp:strict passed",
+    "ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "existing_native_seed_checks": "all8 passed",
+    "focused_fixture": {
+      "source": "local/startup_language_fixture.cpp (ignored)",
+      "result": "passed",
+      "cases": 8,
+      "build_flags": "MSVC Win32 /O2 /W4 /WX /EHsc /std:c++17 /MD /link /MANIFEST:EMBED",
+      "scope": "Actual NativeString owner constructed/destroyed through existing helpers; null, empty, unknown, all languages and mixed case; expected message pairs, projection agreement, unchanged header.",
+      "native_winmain_instructions_executed": false
+    },
+    "build_log": "local/startup-language-build.log",
+    "fixture_log": "local/startup-language-fixture.log",
+    "permanent_tests_added": false,
+    "original_entry_or_game_executed": false
+  },
+  "remaining_boundaries": [
+    "Full008F7DB0 resolver acquisition, I/O, tokenizer, allocator and SEH ownership; current executable uses std::string and split_option_tokens.",
+    "Native language owner must survive MessageBoxW and follow original current-header cleanup order before runtime adoption; no manufactured owner from projected text.",
+    "Selection API excludes MessageBoxW and release. New C++ struct return is not native WinMain ABI.",
+    "No full WinMain closure, original CRT locale equivalence or game validation."
+  ]
+}

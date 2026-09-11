@@ -59,12 +59,24 @@ bool startup_language_from_options_tokens(const char* const* tokens, std::size_t
                                           std::string& language);
 
 // Text and caption of the "already running" message box (008f832b..008f83c5).
-// The native comparison goes through 00425850, which is case-insensitive and treats a null
-// or empty stored language as a non-match, so an unknown language yields the english pair.
 struct StartupMessage {
     const wchar_t* text;
     const wchar_t* caption;
 };
+
+// Bounded 008f832b..008f83bf selection, before MessageBoxW. actual_language_header is
+// the same live eight-byte header initialized by 008f7db0: length +0, data +4.
+// Each comparison calls canonical 00425850 with that unchanged header address and a
+// fixed nonnull language literal, in native order. No copy, allocation, release or
+// null-header guard. The caller retains the owner through the message box; the native
+// inline release at 008f83cb..008f83e9 follows it. This is not the WinMain ABI.
+StartupMessage startup_already_running_message_from_native_header_008f832b(
+    const void* actual_language_header) noexcept;
+
+// C-string projection used by the existing std::string StartupHost. For these five
+// nonnull, nonempty candidates it selects the same message as native 00425850,
+// including null data and any recorded length. It does not preserve native-header
+// identity, allocation/lifetime, or the complete general-purpose 00425850 contract.
 StartupMessage startup_already_running_message(const char* language);
 
 // Widening performed by 004c5e60: every byte is zero-extended into a UTF-16 unit. This is
@@ -95,8 +107,8 @@ struct StartupHost {
     StartupHost(const StartupHost&) = delete;
     StartupHost& operator=(const StartupHost&) = delete;
 
-    // 008f81f8 CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED), 008f820a
-    // CoInitializeSecurity(..., RPC_C_AUTHN_LEVEL_NONE=0, RPC_C_IMP_LEVEL_IMPERSONATE=3,
+    // 008f81f8 CoInitializeEx(nullptr, COINIT_MULTITHREADED|COINIT_SPEED_OVER_MEMORY=8),
+    // 008f820a CoInitializeSecurity(..., RPC_C_AUTHN_LEVEL_DEFAULT=0, RPC_C_IMP_LEVEL_IMPERSONATE=3,
     // ...), 008f82cc CoUninitialize. Both initializers return an HRESULT and the sequence
     // continues only while it is non-negative.
     virtual long com_initialize() = 0;
@@ -108,14 +120,20 @@ struct StartupHost {
 
     // 008f8245 CoCreateInstance(CLSID_GameExplorer {9a5ea990-3034-4d6f-9128-01f3c61022bc},
     // nullptr, CLSCTX_ALL, IID_IGameExplorer {e7b2fb72-d728-49b3-a5f2-18ebf5f1349e}, &p).
-    // Returns true only when the interface was obtained.
+    // Zero the output pointer before the call. Return true for nonnegative
+    // HRESULT; preserve the actual pointer separately for the release guard.
     virtual bool game_explorer_create() = 0;
     // 008f82aa, vtable slot +18h: IGameExplorer::VerifyAccess(path, &has_access).
+    // Native leaves the BOOL uninitialized before the call and ignores HRESULT.
+    // Return the actual post-call BOOL !=0; do not initialize it to permitted.
     virtual bool game_explorer_verify_access(const wchar_t* gdf_binary_path) = 0;
-    // 008f82c4, vtable slot +08h: IUnknown::Release.
+    // 008f82c4, vtable slot +08h: IUnknown::Release, guarded by actual pointer.
+    // Called after the creation branch even for negative HRESULT; do not clear
+    // the local afterward or add automatic release to the denied exit path.
     virtual void game_explorer_release() = 0;
 
-    // 008f82f0. Reached only when VerifyAccess reports no access. The native call does not
+    // 008f82f0, full-cleanup CRT exit(0), including registered on-exit callbacks.
+    // Reached only when VerifyAccess reports no access. The native call does not
     // return, and it runs before the interface is released and before CoUninitialize.
     virtual void exit_process(int code) = 0;
 
@@ -133,8 +151,9 @@ struct StartupHost {
     virtual SingleInstanceMutex create_single_instance_mutex(const char* name) = 0;
     virtual void close_mutex(void* handle) = 0;
 
-    // 008f8326 -> 008f7db0. Returns the language name; an empty string reproduces the
-    // native case where the string object holds no data.
+    // Projected value of 008f8326 -> 008f7db0. The original initializes the caller's
+    // actual native header in ECX; this interface returns a separate std::string.
+    // Empty preserves message selection for native null data, not its ownership.
     virtual std::string resolve_language() = 0;
 
     // 008f83c5 MessageBoxW(nullptr, text, caption, MB_ICONHAND).

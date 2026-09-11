@@ -1,0 +1,61 @@
+{
+  "packet": "orch3_startup_com_l",
+  "address": "008f81f0",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "src/game_hosts.cpp",
+    "src/winmain_startup.cpp"
+  ],
+  "evidence": "docs/STARTUP_COM_BINDING.md",
+  "original_abi": "WinMain stdcall4 arguments, RET10; fragment COM/stdcall interfaces and cdecl CRT exit. New host API, not binary ABI.",
+  "corrected_bindings": {
+    "CoInitializeEx": {
+      "flags": 8,
+      "meaning": "COINIT_MULTITHREADED(0)|COINIT_SPEED_OVER_MEMORY(8)",
+      "previous": "COINIT_APARTMENTTHREADED(2)"
+    },
+    "CoInitializeSecurity": {
+      "authentication": 0,
+      "impersonation": 3,
+      "previous_authentication": "RPC_C_AUTHN_LEVEL_NONE(1)"
+    },
+    "GameExplorer": "Real SDK CoCreateInstance CLSCTX_ALL17h, VerifyAccess vtable18h, Release vtable08h. No registration calls.",
+    "creation": "Zero actual pointer, branch on signed HRESULT, release independently on actual nonnull pointer.",
+    "access": "Original BOOL has no initializer; ignore HRESULT; explicit post-API machine load retains actual current-process output/remainder.",
+    "exit": "Real std::exit, after verified legacy BFBCD9(code,0,0) full on-exit cleanup; saved _exit library label retained."
+  },
+  "guid_live_bytes": {
+    "00d16a94": "90a95e9a34306f4d912801f3c61022bc",
+    "00d16844": "72fbb2e728d7b349a5f218ebf5f1349e"
+  },
+  "sdk": "Windows SDK 10.0.26100.0 objbase.h, rpcdce.h, combaseapi.h, gameux.h; actual declarations and GUIDs used.",
+  "native_listing": "local/startup-com-l-native.txt",
+  "native_exit_listing": "local/startup-com-l-native-exit.txt",
+  "validation": {
+    "build": "PASS strict MSVC Win32; local/startup-effect-l-build.log",
+    "ctests": "2/2 existing tests passed",
+    "fixture": "local/startup_com_fixture.cpp; local/run_startup_com_fixture.cmd",
+    "fixture_sha256": "cd4b6a989db1a8a7b331e33b8cfbf255399addf8af0e79582703d0878fb32dd1",
+    "fixture_log": "local/startup-com-l-fixture.log",
+    "existing_MTA_then_host_COM": "S_FALSE 00000001",
+    "actual_security_hresult": "S_OK 00000000",
+    "actual_GameExplorer_create": true,
+    "actual_VerifyAccess_BOOL": 1,
+    "queried_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "explicit_release_and_COM_teardown": true,
+    "separate_exit_process": "exit0 and registered atexit callback marker observed",
+    "game_entry_executed": false,
+    "permanent_tests_added": 0
+  },
+  "ghidra_annotation_saved_and_verified": true,
+  "whole_WinMain_closed": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": [
+    "Native pooled wide-string ownership and path failure/overflow behavior",
+    "Actual native language resolver owner",
+    "Later application and game owners",
+    "Original-stack preimage equivalence and original CRT implementation details"
+  ]
+}

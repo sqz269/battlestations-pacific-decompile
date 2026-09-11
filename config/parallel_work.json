@@ -5425,7 +5425,7 @@
       "packet": "native_renderer_texture_binding3",
       "worker": "particle_clock_lifetime",
       "done": false,
-      "state": "actual_profile_owner_guard_API_approved_source_and_original_fixture_in_progress",
+      "state": "full_source_strict_main_Win32_checked_original_main_library_fixture_pending",
       "function_addresses": [
         "00b24710",
         "00b3cf90",
@@ -5483,6 +5483,42 @@
       "source_ready": true,
       "evidence": "reports/native_renderer_cached_states_audit.json",
       "scope": "Full749nativebytes:actualcachedrender/sampler setters andordereddefaultinitializer, fullactualsynchronization; independent ofunknownlogicalowner lifetimes."
+    },
+    {
+      "id": "native_renderer_stream_frequency1",
+      "packet": "native_renderer_stream_frequency1",
+      "worker": "main",
+      "done": false,
+      "state": "full_source_strict_main_Win32_checked_original_main_library_fixture_pending",
+      "function_addresses": [
+        "00b24a40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_stream_frequency.hpp",
+        "src/native_renderer_stream_frequency.cpp",
+        "docs/NATIVE_RENDERER_STREAM_FREQUENCY.md",
+        "reports/native_renderer_stream_frequency_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
+    },
+    {
+      "id": "native_renderer_texture_stage_state1",
+      "packet": "native_renderer_texture_stage_state1",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "complete_actual_storage_source_build_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b24510"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_texture_stage_state.hpp",
+        "src/native_renderer_texture_stage_state.cpp",
+        "docs/NATIVE_RENDERER_TEXTURE_STAGE_STATE.md",
+        "reports/native_renderer_texture_stage_state_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
     }
   ],
   "snapshot_after_analysis": {
