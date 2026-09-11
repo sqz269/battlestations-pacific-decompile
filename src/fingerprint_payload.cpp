@@ -5,7 +5,7 @@ namespace bsp {
 namespace {
 // Key at00e15120, SHA256980b8314de94e468a4e3db6b078f3a3856727f0fa9bae8386965f181b7bff6c9.
 // Generated verbatim from the verified original image; see FONT_RUNTIME_STARTUP.md.
-constexpr FallbackEncodedBytes kFallbackKey = {
+constexpr FingerprintEncodedBytes kFingerprintKey = {
     0x29, 0x40, 0x23, 0x48, 0xbe, 0x18, 0x84, 0x67, 0xe1, 0x4a, 0x6c, 0x3d, 0xd6, 0x2c, 0xae, 0x72,
     0x52, 0x69, 0x90, 0x5f, 0x49, 0x16, 0xf1, 0x6d, 0xf1, 0x5a, 0xbb, 0x41, 0xe9, 0x26, 0xeb, 0x01,
     0xb3, 0x0b, 0xa6, 0x2e, 0xdb, 0x12, 0x3c, 0x15, 0x87, 0x7e, 0x0c, 0x39, 0x3e, 0x0f, 0x99, 0x02,
@@ -41,9 +41,9 @@ constexpr FallbackEncodedBytes kFallbackKey = {
 };
 }
 
-FallbackDecodedPrefix decode_fallback_payload_00be9630(
-    const FallbackEncodedBytes& source, const FallbackEncodedBytes& key) noexcept {
-    FallbackDecodedPrefix result{};
+FingerprintDecodedPrefix decode_fingerprint_payload_00be9630(
+    const FingerprintEncodedBytes& source, const FingerprintEncodedBytes& key) noexcept {
+    FingerprintDecodedPrefix result{};
     for (std::size_t i = 16; i < 256; ++i) {
         const unsigned word = (source[2 * i] ^ key[2 * i])
             | ((source[2 * i + 1] ^ key[2 * i + 1]) << 8);
@@ -61,11 +61,11 @@ void FingerprintPayload::load_00be9760(MemoryStream& stream) {
         decoded_ = false;
         return;
     }
-    FallbackEncodedBytes encoded;
+    FingerprintEncodedBytes encoded;
     std::uint32_t actual = 0;
     if (!stream.read_00bef590(encoded.data(), 512, &actual) || actual != 512)
-        throw std::runtime_error("Fallback payload read left undefined bytes");
-    const auto result = decode_fallback_payload_00be9630(encoded, kFallbackKey);
+        throw std::runtime_error("Fingerprint payload read left undefined bytes");
+    const auto result = decode_fingerprint_payload_00be9630(encoded, kFingerprintKey);
     prefix_.assign(result.begin(), result.end());
     decoded_ = true;
 }
