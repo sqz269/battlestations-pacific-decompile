@@ -59,6 +59,7 @@
 #include "bsp/vehicle_class_fields.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/entity_think_dispatch.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -1918,6 +1919,60 @@ int main() {
                          == bsp::ShipLeafDefaults::kUpDownRotation,
             "the installed I400 submarine row leaves +810h at -1.0f through the "
             "SwimDepth1 alias branch and takes the literal UpDownRotation default");
+    }
+
+    {
+        // 00929460 never re-arms +1E0h, so an entity whose delay has run out stops
+        // being a timed entry and falls onto the shared countdown at 00F89A04. The
+        // risk is reading 009294BC as "expired means fire again"; it means the
+        // opposite, the entry waits for the three-second pass.
+        struct CountingHost : bsp::EntityThinkHost {
+            int thinks = 0;
+            void run_entity_think_00929150(std::uint32_t) override { ++thinks; }
+            void free_think_node_0092952c(const bsp::EntityThinkNode&) override {}
+            bool gc_gate_predicate_0109cefc_vtable0c() override { return false; }
+            void lua_run_string_006b8ad0(const char*, int) override {}
+            void splice_pending_into_live_00928380(bsp::EntityThinkList& live,
+                const bsp::EntityThinkList& pending) override {
+                live.nodes.insert(live.nodes.end(), pending.nodes.begin(), pending.nodes.end());
+            }
+            void clear_pending_00928330(bsp::EntityThinkList& pending) override {
+                pending.nodes.clear();
+            }
+        } host;
+        bsp::EntityThinkList live;
+        bsp::EntityThinkList pending;
+        bsp::register_pending_think_entity_0088a240(pending, 0x1000u);
+        std::vector<bsp::EntityThinkFields> fields(1);
+        fields[0].entity = 0x1000u;
+        fields[0].initialised = true;
+        fields[0].has_think_name = true;
+        fields[0].delay_armed = true;
+        fields[0].delay_seconds = bsp::clamp_think_delay(0.1f); // clamped to 0.5f at 008982B0
+        float countdown = 2.0f;
+        const float step = 0.05f;
+        int first_fire = -1;
+        for (int call = 0; call < 20; ++call) {
+            // The native decrements +1E0h only while walking the node, and a
+            // registration is spliced in at the end of the call that made it.
+            const bool walked = !live.nodes.empty();
+            const bsp::EntityThinkRunSummary summary = bsp::run_entity_think_list_00929460(
+                step, countdown, live, pending, fields, host);
+            if (summary.thinks_run != 0 && first_fire < 0) first_fire = call;
+            if (walked && fields[0].delay_armed && fields[0].delay_seconds > 0.0f) {
+                fields[0].delay_seconds
+                    = bsp::entity_think_delay_after_step(fields[0].delay_seconds, step);
+            }
+        }
+        const int after_timeout = host.thinks;
+        countdown = -0.01f; // the pass 00929542 tests, before the 3.0 refill
+        const bsp::EntityThinkRunSummary expired = bsp::run_entity_think_list_00929460(
+            step, countdown, live, pending, fields, host);
+        check(first_fire == 10 && after_timeout == 1 && expired.thinks_run == 1
+                  && expired.countdown_expired
+                  && std::fabs(countdown - (3.0f - 0.06f)) < 1e-5f,
+            "an armed think fires once when its clamped delay runs out, then waits for the "
+            "three-second script countdown instead of firing every step");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
