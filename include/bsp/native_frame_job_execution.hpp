@@ -57,6 +57,8 @@ public:
     void signal(NativeEventOwnerStorage*);
     void wait(NativeEventOwnerStorage*);
     void reset(NativeEventOwnerStorage*);
+    void delete_event(NativeEventOwnerStorage*);
+    void require_dispatch_virtual_08(const NativeFrameJobPoolStorage&) const;
     void require_worker_virtual_0c(const NativeFrameJobPoolStorage&) const;
     RandomThreads& random_threads() noexcept { return random_; }
 private:
@@ -109,7 +111,7 @@ void run_native_frame_job_worker_00be2ea0(NativeFrameJobPoolStorage&, NativeFram
 std::uint32_t native_frame_job_thread_entry_00be2ba0(
     NativeFrameJobPoolStorage&, NativeFrameJobExecution&);
 
-// Actual layout/new C++ ABI, not native integer-vtable execution. Pool allocation,
-// suspended-thread creation, getter/destruction and complete job owner bindings
-// remain separate. Valid spans and coordinated producer/lifetime access required.
+// Actual layout/new C++ ABI, not native integer-vtable execution. Owner lifetime
+// is in native_frame_job_lifetime.hpp; complete job execution bindings remain
+// required. Valid spans and coordinated producer/lifetime access are necessary.
 } // namespace bsp

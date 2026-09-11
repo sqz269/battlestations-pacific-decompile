@@ -1,0 +1,1007 @@
+{
+  "packet": "orch3_native_frame_job_lifetime_x",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_frame_job_lifetime.cpp",
+  "header": "include/bsp/native_frame_job_lifetime.hpp",
+  "documentation": "docs/NATIVE_FRAME_JOB_LIFETIME.md",
+  "binding_extensions": [
+    "NativeFrameJobExecution::delete_event validates actualcurrenteventscalar beforecanonicalBD19B0",
+    "NativeFrameJobExecution::require_dispatch_virtual_08 captures/validatescurrentD68650/CE7554 dispatchslot beforestopstore"
+  ],
+  "native_spans": [
+    {
+      "name": "owner_base",
+      "address": "004b7a00",
+      "end_exclusive": "004b7a11",
+      "length": 17,
+      "sha256": "d62bd7c6ea00f887b926dd631c74b3a5e45d0a0a7cc93c47fccf0e5a2d789014",
+      "live_disk_equal": true,
+      "operands": {
+        "0109cf08": [
+          2
+        ]
+      },
+      "relative_calls": []
+    },
+    {
+      "name": "pool_base",
+      "address": "00be2c30",
+      "end_exclusive": "00be2c37",
+      "length": 7,
+      "sha256": "8379615fad8f17338e59075600b6abdcd41c7ac149ac10654c2d326e454f53d8",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "processors",
+      "address": "00be4800",
+      "end_exclusive": "00be484f",
+      "length": 79,
+      "sha256": "8290b35aa6601e65bec44d39ddaef9593035cf1c7a8de0432ff1c818fc34ffdb",
+      "live_disk_equal": true,
+      "operands": {
+        "00d68894": [
+          4
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "00be481a",
+          "target": "0xc00653",
+          "instruction": "call"
+        },
+        {
+          "address": "00be482b",
+          "target": "0xbf8417",
+          "instruction": "call"
+        },
+        {
+          "address": "00be4837",
+          "target": "0xbf9dc8",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "create_workers",
+      "address": "00be2c70",
+      "end_exclusive": "00be2d98",
+      "length": 296,
+      "sha256": "ec257801cb349c4458d0d2c134b47e6c28da680b92005a1383a2603bb76c1c44",
+      "live_disk_equal": true,
+      "operands": {
+        "00be2ba0": [
+          248
+        ],
+        "00ce2238": [
+          182
+        ],
+        "00ce22a0": [
+          275
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "00be2c93",
+          "target": "0xbf79f0",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2cbb",
+          "target": "0xbf55be",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2cd7",
+          "target": "0xbf55be",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2cf3",
+          "target": "0xbf55be",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2d0f",
+          "target": "0xbf55be",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2d39",
+          "target": "0xbd1970",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2d46",
+          "target": "0xbd1970",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "pool_ctor",
+      "address": "00be3040",
+      "end_exclusive": "00be30b7",
+      "length": 119,
+      "sha256": "bd7a5170b9fdd7cec47534fcddb5d6cff15b54c05899e10b37d3343428a84e6d",
+      "live_disk_equal": true,
+      "operands": {
+        "00d68650": [
+          37
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "00be3096",
+          "target": "0xbe4800",
+          "instruction": "call"
+        },
+        {
+          "address": "00be309e",
+          "target": "0xbe2c70",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "stop_workers",
+      "address": "00be2da0",
+      "end_exclusive": "00be2e98",
+      "length": 248,
+      "sha256": "3a3bd3e43436b8417b037390c50b77865f868547cc1a17605ee8a67aac641be3",
+      "live_disk_equal": true,
+      "operands": {
+        "00ce21fc": [
+          71
+        ],
+        "00ce225c": [
+          99
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "00be2e50",
+          "target": "0xbf6989",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2e63",
+          "target": "0xbf6989",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2e76",
+          "target": "0xbf6989",
+          "instruction": "call"
+        },
+        {
+          "address": "00be2e89",
+          "target": "0xbf6989",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "pool_dtor",
+      "address": "00be30c0",
+      "end_exclusive": "00be3106",
+      "length": 70,
+      "sha256": "fc9511b1a5a71d455a3b678c941e6aba995ca4cfeb9a3c23b6ea90b0e085f6ff",
+      "live_disk_equal": true,
+      "operands": {
+        "00d68650": [
+          31
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "00be30eb",
+          "target": "0xbe2da0",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "pool_scalar",
+      "address": "00be31e0",
+      "end_exclusive": "00be323a",
+      "length": 90,
+      "sha256": "9a041396003463113891c74b4c6e8f85943d17c9e6893540412f8e7be7718c1a",
+      "live_disk_equal": true,
+      "operands": {
+        "00d68650": [
+          31
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "00be320b",
+          "target": "0xbe2da0",
+          "instruction": "call"
+        },
+        {
+          "address": "00be321e",
+          "target": "0xbf65ac",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "owner_ctor",
+      "address": "004bfa40",
+      "end_exclusive": "004bfa97",
+      "length": 87,
+      "sha256": "04738b6b8acef7e9b12f2eb76b042857eaf0a979fb1b94e27b1da01b7307f96d",
+      "live_disk_equal": true,
+      "operands": {
+        "00ce7550": [
+          68
+        ],
+        "00ce7554": [
+          62
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "004bfa73",
+          "target": "0xbe3040",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "owner_dtor",
+      "address": "004bfad0",
+      "end_exclusive": "004bfb25",
+      "length": 85,
+      "sha256": "3c826dfb5f1766538678fb038d75944157990b05aec4d8424a7a4c2e7adae540",
+      "live_disk_equal": true,
+      "operands": {
+        "0109cf08": [
+          59
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "004bfb00",
+          "target": "0xbe30c0",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "owner_scalar",
+      "address": "004bfb30",
+      "end_exclusive": "004bfb4e",
+      "length": 30,
+      "sha256": "c2bbfa5174f6cb684baf56cfb2183249bbf8e7cac46e5a9153eb08c4e468b36b",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "004bfb33",
+          "target": "0x4bfad0",
+          "instruction": "call"
+        },
+        {
+          "address": "004bfb40",
+          "target": "0xbf65ac",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "adjustor",
+      "address": "004bfac0",
+      "end_exclusive": "004bfac8",
+      "length": 8,
+      "sha256": "52a4b4ed3645ec7930b09d04c0af2190dbc5dafc538df75001e7f632af293264",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "004bfac3",
+          "target": "0x4bfb30",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "getter",
+      "address": "004c1130",
+      "end_exclusive": "004c11f0",
+      "length": 192,
+      "sha256": "19aa7a680afae3e573f631bf6652e260ae2d511049352f83e6416d516bf11de6",
+      "live_disk_equal": true,
+      "operands": {
+        "0109cf08": [
+          22,
+          83,
+          133,
+          144,
+          172
+        ],
+        "00ce2218": [
+          65
+        ],
+        "00ce2210": [
+          167
+        ]
+      },
+      "relative_calls": [
+        {
+          "address": "004c1156",
+          "target": "0x415350",
+          "instruction": "call"
+        },
+        {
+          "address": "004c118f",
+          "target": "0xbf681b",
+          "instruction": "call"
+        },
+        {
+          "address": "004c11a6",
+          "target": "0x4bfa40",
+          "instruction": "call"
+        },
+        {
+          "address": "004c11b9",
+          "target": "0x415350",
+          "instruction": "call"
+        },
+        {
+          "address": "004c11c7",
+          "target": "0xbd0c30",
+          "instruction": "call"
+        }
+      ]
+    },
+    {
+      "name": "owner_ctor_eh",
+      "address": "00c64da0",
+      "end_exclusive": "00c64db2",
+      "length": 18,
+      "sha256": "51cad02300a6c4c3a79054486fae53fb5ac83e7e6d4dbda615140387b3fcb708",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "00c64da3",
+          "target": "0x4b7a00",
+          "instruction": "jmp"
+        },
+        {
+          "address": "00c64dad",
+          "target": "0xbf6b43",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "owner_dtor_eh",
+      "address": "00c64dc0",
+      "end_exclusive": "00c64dd2",
+      "length": 18,
+      "sha256": "16d7dbe85de669be67cb8662f654a69c210a625f9abadb27e32e65ad6fd07c51",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "00c64dc3",
+          "target": "0x4b7a00",
+          "instruction": "jmp"
+        },
+        {
+          "address": "00c64dcd",
+          "target": "0xbf6b43",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "getter_eh",
+      "address": "00c64ee0",
+      "end_exclusive": "00c64efd",
+      "length": 29,
+      "sha256": "53d38b8609f457af2f7c38f67d389a947be9ef7337c565d696232459ec7c4690",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "00c64ee3",
+          "target": "0x411ee0",
+          "instruction": "jmp"
+        },
+        {
+          "address": "00c64eec",
+          "target": "0xbf65ac",
+          "instruction": "call"
+        },
+        {
+          "address": "00c64ef8",
+          "target": "0xbf6b43",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "pool_ctor_eh",
+      "address": "00cc6b40",
+      "end_exclusive": "00cc6b52",
+      "length": 18,
+      "sha256": "bf08ca594a793af3af6b93bccae94a8774164d6fc2f32f056f16165d0c913452",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "00cc6b43",
+          "target": "0xbe2c30",
+          "instruction": "jmp"
+        },
+        {
+          "address": "00cc6b4d",
+          "target": "0xbf6b43",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "pool_dtor_eh",
+      "address": "00cc6b60",
+      "end_exclusive": "00cc6b72",
+      "length": 18,
+      "sha256": "95702e066cc682ea83778067616341f15c361002b07dfcabab00371fc8c047a4",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "00cc6b63",
+          "target": "0xbe2c30",
+          "instruction": "jmp"
+        },
+        {
+          "address": "00cc6b6d",
+          "target": "0xbf6b43",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "pool_scalar_eh",
+      "address": "00cc6b80",
+      "end_exclusive": "00cc6b92",
+      "length": 18,
+      "sha256": "0483c112301af85293cd15ce2f52ccba2b4357eee4d965592139a7f5f3e3a8f3",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": [
+        {
+          "address": "00cc6b83",
+          "target": "0xbe2c30",
+          "instruction": "jmp"
+        },
+        {
+          "address": "00cc6b8d",
+          "target": "0xbf6b43",
+          "instruction": "jmp"
+        }
+      ]
+    },
+    {
+      "name": "pool_ctor_map",
+      "address": "00e01320",
+      "end_exclusive": "00e0134c",
+      "length": 44,
+      "sha256": "89d454d0674cd2767b879093b61dd87e8319538bcb2e4344193388d249208550",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "pool_dtor_map",
+      "address": "00e0134c",
+      "end_exclusive": "00e01378",
+      "length": 44,
+      "sha256": "d43f5efdefcf9ca2cab109784644a673dc708cda831b3495905bdfbe51d745d0",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "pool_scalar_map",
+      "address": "00e01378",
+      "end_exclusive": "00e013a4",
+      "length": 44,
+      "sha256": "c94fe69611032fc6c24d8656a3da6e7fd7501d4c93d2e274936c184aca6582c3",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "owner_ctor_map",
+      "address": "00d8d328",
+      "end_exclusive": "00d8d354",
+      "length": 44,
+      "sha256": "1ae1e318bcc0f3ca69616e913ac10698950b58109a2fad49077591deae0927be",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "owner_dtor_map",
+      "address": "00d8d354",
+      "end_exclusive": "00d8d380",
+      "length": 44,
+      "sha256": "a1296eb62604f0ed343493526326dfb660692c94358b47fbd35ef53321aa4dec",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "getter_map",
+      "address": "00d8d4e0",
+      "end_exclusive": "00d8d514",
+      "length": 52,
+      "sha256": "26f741f0ee88c73a50721bc3cf0d663b9bec76a1061250638d99555ea0bcb37b",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "processor_name",
+      "address": "00d68894",
+      "end_exclusive": "00d688a9",
+      "length": 21,
+      "sha256": "fe0b8885b30c45914f7dea1a2471a0f010770dcfcd387abf688b2b00115e2663",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    },
+    {
+      "name": "owner_tables",
+      "address": "00ce7550",
+      "end_exclusive": "00ce756c",
+      "length": 28,
+      "sha256": "e0b3dae4b070611a2bd67effeed819acb263635a89fe7f7cfd76fcfa5ef2749e",
+      "live_disk_equal": true,
+      "operands": {},
+      "relative_calls": []
+    }
+  ],
+  "reconstructed": [
+    {
+      "address": "004b7a00",
+      "cpp_symbol": "unwind_frame_job_owner_base_004b7a00",
+      "end_exclusive": "004b7a11",
+      "original_abi": "ECX primary owner; RET",
+      "behavior": "Unconditionally clear0109CF08 then primaryCE3818; preserve secondary/other bytes."
+    },
+    {
+      "address": "00be2c30",
+      "cpp_symbol": "unwind_frame_job_pool_base_00be2c30",
+      "end_exclusive": "00be2c37",
+      "original_abi": "ECX secondary pool; RET",
+      "behavior": "Only secondaryD68638 identity; no array/event/thread cleanup."
+    },
+    {
+      "address": "00be4800",
+      "cpp_symbol": "frame_job_processor_count_00be4800",
+      "end_exclusive": "00be484f",
+      "original_abi": "cdecl no inputs; EAX signedatol result or1; RET",
+      "behavior": "dupenv_s NUMBER_OF_PROCESSORS; error1, success captureatol thenfree andreturncapturedresult. No clamp/OS query/nulltextfallback. Repaired10-byte returningfree tail."
+    },
+    {
+      "address": "00be2c70",
+      "cpp_symbol": "create_native_frame_job_workers_00be2c70",
+      "end_exclusive": "00be2d98",
+      "original_abi": "ECX secondary pool; stack processorsDWORD; RET4",
+      "behavior": "Zeroactive/stop/remaining/jobs, signedworker_count=DWORDprocessors-1. Positivecount allocatesfourarrays with unsignedcount*4 overflow FFFFFFFF; eachworker createsmanualresetevents, signalsdone, realCreateThread SUSPENDED withactualpool+IDcell, storescurrenthandle, requestspriority2. No local rollback."
+    },
+    {
+      "address": "00be3040",
+      "cpp_symbol": "construct_native_frame_job_pool_00be3040",
+      "end_exclusive": "00be30b7",
+      "original_abi": "ECX secondary pool; stack processorsDWORD; RET4; EAXpool",
+      "behavior": "D68650, clear04/08/10 but NOT0C, zerojobs, -1 resolvesBE4800, createBE2C70. Nonpositivecount preserves0Cpreimage. State0 unwind onlyBE2C30 identity; partialallocations retained."
+    },
+    {
+      "address": "00be2da0",
+      "cpp_symbol": "stop_native_frame_job_workers_00be2da0",
+      "end_exclusive": "00be2e98",
+      "original_abi": "ECX secondary pool; RET",
+      "behavior": "Waitcurrentdone, capturevirtual08, stop1, dispatch1, realWaitForMultipleObjects(all,INFINITE), closecurrenthandles, eventscalar1 and clearcapturedcells AFTERcalls. Free/clearcurrentstart,done,handles,IDs arrays; count/flags stale. No localEH. Four6-byte free/clear gaps restored."
+    },
+    {
+      "address": "00be30c0",
+      "cpp_symbol": "destroy_native_frame_job_pool_00be30c0",
+      "end_exclusive": "00be3106",
+      "original_abi": "ECX secondary pool; RET",
+      "behavior": "PublishD68650, stopBE2DA0, restoreD68638 onnormal andstate0unwind; no extra cleanup onfailure."
+    },
+    {
+      "address": "00be31e0",
+      "cpp_symbol": "delete_native_frame_job_pool_00be31e0",
+      "end_exclusive": "00be323a",
+      "original_abi": "ECX secondary pool; stackflags; RET4; EAXoriginalsecondaryallocation",
+      "behavior": "D68650,stop,baseD68638; flags1free onlyaftersuccess. State0 failureonlybaseidentity. Three-byte returningfree stackfixup restored."
+    },
+    {
+      "address": "004bfa40",
+      "cpp_symbol": "construct_native_frame_job_owner_004bfa40",
+      "end_exclusive": "004bfa97",
+      "original_abi": "ECX primary138A8h; RET; EAXprimary",
+      "behavior": "CE7520; constructsecondary+04 viaBE3040(-1); secondaryCE7554 thenprimaryCE7550. No publication. State0 unwind4B7A00 clearsglobal/base only."
+    },
+    {
+      "address": "004bfad0",
+      "cpp_symbol": "destroy_native_frame_job_owner_004bfad0",
+      "end_exclusive": "004bfb25",
+      "original_abi": "ECX primary138A8h; RET",
+      "behavior": "Destroy actualsecondary+04 viaBE30C0 then clear0109CF08/primaryCE3818. State0 also4B7A00 aftersecondaryunwind; no ownerfree onfailure."
+    },
+    {
+      "address": "004bfb30",
+      "cpp_symbol": "delete_native_frame_job_owner_004bfb30",
+      "end_exclusive": "004bfb4e",
+      "original_abi": "ECX primary138A8h; stackflags; RET4; EAXoriginalprimaryallocation",
+      "behavior": "Retain correct compiler scalar name. Unconditional4BFAD0 thenflags1ordinaryfree aftersuccess. Three-byte returningfree stackfixup restored."
+    },
+    {
+      "address": "004bfac0",
+      "cpp_symbol": "delete_native_frame_job_secondary_004bfac0",
+      "end_exclusive": "004bfac8",
+      "original_abi": "ECX secondary pool; stackflags; tail4BFB30/RET4; EAXoriginalPRIMARYallocation",
+      "behavior": "Eight-byte SUBECX,4/JMP4BFB30; no nulladjustor guard. ActualCE7554slot0. Definedfromverifiedbytes."
+    },
+    {
+      "address": "004c1130",
+      "cpp_symbol": "native_frame_job_singleton_004c1130",
+      "end_exclusive": "004c11f0",
+      "original_abi": "cdecl no inputs; EAXcurrent0109CF08; RET",
+      "behavior": "Complete138A8h actualframeowner getter: shared01090AA0domain capturedlock/recheck/alloc/construct4BFA40/publish/getmanageragain/registerCURRENTglobal/unlock/reload. Construction rawfree precedesunlock; no registrationrollback. Correct+10 secondaryarray is doneevents, not workerobjects."
+    }
+  ],
+  "exception_handlers": [
+    {
+      "address": "00cc6b48",
+      "name": "EH_FrameJobPool_Construct",
+      "evidence": "E01328/mapE01320 state0->-1 CC6B40->BE2C30"
+    },
+    {
+      "address": "00cc6b68",
+      "name": "EH_FrameJobPool_Destroy",
+      "evidence": "E01354/mapE0134C state0->-1 CC6B60->BE2C30"
+    },
+    {
+      "address": "00cc6b88",
+      "name": "EH_FrameJobPool_ScalarDelete",
+      "evidence": "E01380/mapE01378 state0->-1 CC6B80->BE2C30"
+    },
+    {
+      "address": "00c64da8",
+      "name": "EH_FrameJobOwner_Construct",
+      "evidence": "D8D330/mapD8D328 state0->-1 C64DA0->4B7A00"
+    },
+    {
+      "address": "00c64dc8",
+      "name": "EH_FrameJobOwner_Destroy",
+      "evidence": "D8D35C/mapD8D354 state0->-1 C64DC0->4B7A00"
+    },
+    {
+      "address": "00c64ef3",
+      "name": "EH_FrameJobPool_GetSingleton",
+      "evidence": "D8D4F0/mapD8D4E0 state1->0 C64EE8 savedrawfree, state0->-1 C64EE0->411EE0 capturedunlock"
+    }
+  ],
+  "definitions": "reports/native_frame_job_lifetime_definitions_x.json",
+  "flow_repair": "reports/native_frame_job_lifetime_flow_x.json",
+  "ownership": "Actual138A8h primary and138A4h secondary; fouractualarrays/Win32threads/events; borrows existingexecution/randomregistry/sharedscope/sharedsingletondomain. Required applicationBE2BA0 Win32entry receivesactualpool; no automaticnewglobal/registry/substitutecontext.",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/native-frame-job-x-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/native-frame-job-x-fixture.log",
+    "fixture_source": "local/frame_job_probe_x.cpp",
+    "native_cases": [
+      "All13fulloriginalfunctions plus sixEHfunclet/handler/map spans verifiedagainstlive/disk",
+      "Actualprocessor environment helper withchild-onlyNUMBER_OF_PROCESSORS=2",
+      "Nonpositivecounts preserve0Cpreimage, otherconstructor pointers andallslots match",
+      "RealCreateThread SUSPENDED/currentpool+IDcell, priority2 andmanualreset done/start state",
+      "Caller-onlyjobs and32paralleljobs requireactualworker participation",
+      "Shutdownqueuedjobs still execute oncaller, actualworkerjoins exit0, fourarraysfree/clearinorder",
+      "Secondary andprimarydestructors, scalarsflags2/1 andadjustorreturnsprimary",
+      "Actualshareddomain lazygetter fastpath, single registration, shutdownscalar deletesactualowner"
+    ],
+    "rebindings": [
+      "Copiedoriginaldirectcalls pointtocopiedoriginaldependentbodies orcanonicalCRT/event/random/domain bridges",
+      "IAToperands pointtorealWin32 APIs; nativeglobal/scope operandsuseactualfixturewords",
+      "Executedpool/eventtableidentities maptocallableoriginal/currentcanonical entrybridges",
+      "RequiredCppWin32entryreceivesactualpool andpassesexistingexecution; instrumentedfixturejobs do not implementgamejobs",
+      "Module-localallocation/free symbolinterposition observesfailure/freeorder; noproductionhooks"
+    ],
+    "cpp_failure_cases": [
+      "Thirdarrayallocationfailure: firsttwoarraysretained,0Cpreimagepreserved,onlybaseidentityrestored",
+      "INT_MINprocessors wrapsworkercountINT_MAX andrequestsFFFFFFFF allocation beforefailure",
+      "Gettersecondarrayfailure: secondarybase thenprimaryglobal/base, rawfree atcapturedlockdepth1, unlock0, noregistration; retainedarraynotrolledback",
+      "Shutdownjobfailure: stop1/active1/scope1/failedslotretained, secondary/primarybasecleanup, globalclear, no scalarownerfree"
+    ],
+    "worker_scope": "One realworker pluscaller; exactconstruction-to-shutdown composition, notconcurrencystress/performanceproof.",
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "ApplicationwideBE2BA0entrymappingtoexistingexecutionandactualpool",
+    "Concretegamejobcurrentvirtual00 andactualregisteredprimaryscalar routes",
+    "Point-effectvirtual0composition andwholeconstructor",
+    "OriginalEHdispatch andgameplayvalidation"
+  ],
+  "fixture_artifact_sha256": {
+    "local/frame_job_probe_x.cpp": "0d53fd6f005b7eb71915ae92bf324805ce2230fe3176a2c927e1e47550a9c8c6",
+    "local/run_frame_job_probe_x.cmd": "da24213579a5583666bb7c3a41ca9884a374d4afaeca5d97f2366d66f460597b",
+    "local/frame_job_native_bytes_x.hpp": "ba984eba6ab197e9fb56661ab550c9aed2ef72ca2ecb3dc51f3e9dacbcee025b",
+    "local/frame-job-byte-evidence-x.json": "768eb5ca3b9940460669ccbffeb72513c5287d1fc39884526e93f2c117c79d3b"
+  },
+  "ghidra_annotations": {
+    "saved": true,
+    "audit_path": "local/ghidra-annotations-20260911T183307Z.json",
+    "readback_path": "local/native-frame-job-x-comments.json",
+    "all_19_names_and_evidence_verified": true,
+    "previous_comments_preserved": true,
+    "old_and_new_values": [
+      {
+        "address": "004b7a00",
+        "before": {
+          "address": "004b7a00",
+          "function_name": "FUN_004b7a00"
+        },
+        "after": {
+          "address": "004b7a00",
+          "name": "BSP_FrameJobOwner_UnwindBase",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Unconditionally clear0109CF08 then primaryCE3818; preserve secondary/other bytes. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004bfa40",
+        "before": {
+          "address": "004bfa40",
+          "function_name": "FUN_004bfa40"
+        },
+        "after": {
+          "address": "004bfa40",
+          "name": "BSP_FrameJobOwner_Construct",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. CE7520; constructsecondary+04 viaBE3040(-1); secondaryCE7554 thenprimaryCE7550. No publication. State0 unwind4B7A00 clearsglobal/base only. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004bfac0",
+        "before": {
+          "address": "004bfac0",
+          "function_name": "FUN_004bfac0"
+        },
+        "after": {
+          "address": "004bfac0",
+          "name": "BSP_FrameJobOwner_SecondaryScalarAdjustor",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Eight-byte SUBECX,4/JMP4BFB30; no nulladjustor guard. ActualCE7554slot0. Definedfromverifiedbytes. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004bfad0",
+        "before": {
+          "address": "004bfad0",
+          "function_name": "FUN_004bfad0"
+        },
+        "after": {
+          "address": "004bfad0",
+          "name": "BSP_FrameJobOwner_Destroy",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Destroy actualsecondary+04 viaBE30C0 then clear0109CF08/primaryCE3818. State0 also4B7A00 aftersecondaryunwind; no ownerfree onfailure. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004bfb30",
+        "before": {
+          "address": "004bfb30",
+          "function_name": "CG_scalar_deleting_dtor_004bfb30"
+        },
+        "after": {
+          "address": "004bfb30",
+          "name": "CG_scalar_deleting_dtor_004bfb30",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Retain correct compiler scalar name. Unconditional4BFAD0 thenflags1ordinaryfree aftersuccess. Three-byte returningfree stackfixup restored. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c1130",
+        "before": {
+          "address": "004c1130",
+          "function_name": "BSP_FrameJobPool_GetSingleton",
+          "comment": "[BSP reconstruction 004c1130]\nHypothesis, not a recovered symbol. __cdecl(void) -> 0109cf08, plain RET. Double-checked lazy singleton under BSP_SingletonLifetime_GetManager()+10h; allocates 0x138A8 bytes through 00bf681b, constructs with 004bfa40 and registers with BSP_SingletonLifetime_Register. The base subobject at +4 is built by 00be3040 with a thread count of -1 that 00be4800 resolves, and holds worker handles at +4h, worker objects at +10h, the worker count at +14h, a running flag at +18h, a job count at +20h and 10000 unchecked two-word job slots from +24h. BSP_Game_Render 004ca569 uses vtable +4h (00be3020 enqueue, RET 8) twice and +8h (00be3150 dispatch, RET 4) once. docs/GAME_RENDER_FRAME.md"
+        },
+        "after": {
+          "address": "004c1130",
+          "name": "BSP_FrameJobPool_GetSingleton",
+          "evidence": "Hypothesis, not a recovered symbol. __cdecl(void) -> 0109cf08, plain RET. Double-checked lazy singleton under BSP_SingletonLifetime_GetManager()+10h; allocates 0x138A8 bytes through 00bf681b, constructs with 004bfa40 and registers with BSP_SingletonLifetime_Register. The base subobject at +4 is built by 00be3040 with a thread count of -1 that 00be4800 resolves, and holds worker handles at +4h, worker objects at +10h, the worker count at +14h, a running flag at +18h, a job count at +20h and 10000 unchecked two-word job slots from +24h. BSP_Game_Render 004ca569 uses vtable +4h (00be3020 enqueue, RET 8) twice and +8h (00be3150 dispatch, RET 4) once. docs/GAME_RENDER_FRAME.md | Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Complete138A8h actualframeowner getter: shared01090AA0domain capturedlock/recheck/alloc/construct4BFA40/publish/getmanageragain/registerCURRENTglobal/unlock/reload. Construction rawfree precedesunlock; no registrationrollback. Correct+10 secondaryarray is doneevents, not workerobjects. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be2c30",
+        "before": {
+          "address": "00be2c30",
+          "function_name": "FUN_00be2c30"
+        },
+        "after": {
+          "address": "00be2c30",
+          "name": "BSP_FrameJobPool_UnwindBase",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Only secondaryD68638 identity; no array/event/thread cleanup. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be2c70",
+        "before": {
+          "address": "00be2c70",
+          "function_name": "FUN_00be2c70"
+        },
+        "after": {
+          "address": "00be2c70",
+          "name": "BSP_FrameJobPool_CreateWorkers",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Zeroactive/stop/remaining/jobs, signedworker_count=DWORDprocessors-1. Positivecount allocatesfourarrays with unsignedcount*4 overflow FFFFFFFF; eachworker createsmanualresetevents, signalsdone, realCreateThread SUSPENDED withactualpool+IDcell, storescurrenthandle, requestspriority2. No local rollback. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be2da0",
+        "before": {
+          "address": "00be2da0",
+          "function_name": "FUN_00be2da0"
+        },
+        "after": {
+          "address": "00be2da0",
+          "name": "BSP_FrameJobPool_StopWorkers",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Waitcurrentdone, capturevirtual08, stop1, dispatch1, realWaitForMultipleObjects(all,INFINITE), closecurrenthandles, eventscalar1 and clearcapturedcells AFTERcalls. Free/clearcurrentstart,done,handles,IDs arrays; count/flags stale. No localEH. Four6-byte free/clear gaps restored. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be3040",
+        "before": {
+          "address": "00be3040",
+          "function_name": "FUN_00be3040"
+        },
+        "after": {
+          "address": "00be3040",
+          "name": "BSP_FrameJobPool_Construct",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. D68650, clear04/08/10 but NOT0C, zerojobs, -1 resolvesBE4800, createBE2C70. Nonpositivecount preserves0Cpreimage. State0 unwind onlyBE2C30 identity; partialallocations retained. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be30c0",
+        "before": {
+          "address": "00be30c0",
+          "function_name": "FUN_00be30c0"
+        },
+        "after": {
+          "address": "00be30c0",
+          "name": "BSP_FrameJobPool_Destroy",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. PublishD68650, stopBE2DA0, restoreD68638 onnormal andstate0unwind; no extra cleanup onfailure. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be31e0",
+        "before": {
+          "address": "00be31e0",
+          "function_name": "FUN_00be31e0"
+        },
+        "after": {
+          "address": "00be31e0",
+          "name": "BSP_FrameJobPool_ScalarDelete",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. D68650,stop,baseD68638; flags1free onlyaftersuccess. State0 failureonlybaseidentity. Three-byte returningfree stackfixup restored. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be4800",
+        "before": {
+          "address": "00be4800",
+          "function_name": "FUN_00be4800"
+        },
+        "after": {
+          "address": "00be4800",
+          "name": "BSP_FrameJobPool_ReadProcessorEnvironment",
+          "evidence": "Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. dupenv_s NUMBER_OF_PROCESSORS; error1, success captureatol thenfree andreturncapturedresult. No clamp/OS query/nulltextfallback. Repaired10-byte returningfree tail. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c64da8",
+        "before": {
+          "address": "00c64da8",
+          "function_name": "FUN_00c64da8"
+        },
+        "after": {
+          "address": "00c64da8",
+          "name": "EH_FrameJobOwner_Construct",
+          "evidence": "Ten-byte compiler handler selectsD8D330/mapD8D328 state0->-1 C64DA0->4B7A00. Live/disk handler/funclet/map verified, defined/saved; originalEHdispatch unexecuted. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c64dc8",
+        "before": {
+          "address": "00c64dc8",
+          "function_name": "FUN_00c64dc8"
+        },
+        "after": {
+          "address": "00c64dc8",
+          "name": "EH_FrameJobOwner_Destroy",
+          "evidence": "Ten-byte compiler handler selectsD8D35C/mapD8D354 state0->-1 C64DC0->4B7A00. Live/disk handler/funclet/map verified, defined/saved; originalEHdispatch unexecuted. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c64ef3",
+        "before": {
+          "address": "00c64ef3",
+          "function_name": "FUN_00c64ef3"
+        },
+        "after": {
+          "address": "00c64ef3",
+          "name": "EH_FrameJobPool_GetSingleton",
+          "evidence": "Ten-byte compiler handler selectsD8D4F0/mapD8D4E0 state1->0 C64EE8 savedrawfree, state0->-1 C64EE0->411EE0 capturedunlock. Live/disk handler/funclet/map verified, defined/saved; originalEHdispatch unexecuted. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cc6b48",
+        "before": {
+          "address": "00cc6b48",
+          "function_name": "FUN_00cc6b48"
+        },
+        "after": {
+          "address": "00cc6b48",
+          "name": "EH_FrameJobPool_Construct",
+          "evidence": "Ten-byte compiler handler selectsE01328/mapE01320 state0->-1 CC6B40->BE2C30. Live/disk handler/funclet/map verified, defined/saved; originalEHdispatch unexecuted. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cc6b68",
+        "before": {
+          "address": "00cc6b68",
+          "function_name": "FUN_00cc6b68"
+        },
+        "after": {
+          "address": "00cc6b68",
+          "name": "EH_FrameJobPool_Destroy",
+          "evidence": "Ten-byte compiler handler selectsE01354/mapE0134C state0->-1 CC6B60->BE2C30. Live/disk handler/funclet/map verified, defined/saved; originalEHdispatch unexecuted. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json"
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cc6b88",
+        "before": {
+          "address": "00cc6b88",
+          "function_name": "FUN_00cc6b88"
+        },
+        "after": {
+          "address": "00cc6b88",
+          "name": "EH_FrameJobPool_ScalarDelete",
+          "evidence": "Ten-byte compiler handler selectsE01380/mapE01378 state0->-1 CC6B80->BE2C30. Live/disk handler/funclet/map verified, defined/saved; originalEHdispatch unexecuted. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json"
+        },
+        "status": "applied"
+      }
+    ],
+    "exports_refreshed": true
+  }
+}

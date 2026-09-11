@@ -79,6 +79,17 @@ void NativeFrameJobExecution::reset(NativeEventOwnerStorage* owner) {
     require_event(*owner, 3, 0x00bd1960u);
     (void)reset_native_event_owner_00bd1960(owner);
 }
+void NativeFrameJobExecution::delete_event(NativeEventOwnerStorage* owner) {
+    require_event(*owner, 0, 0x00bd19b0u);
+    (void)delete_native_event_owner_00bd19b0(owner, 1);
+}
+void NativeFrameJobExecution::require_dispatch_virtual_08(const NativeFrameJobPoolStorage& pool) const {
+    const auto identity = pool.native_vtable_00;
+    const auto* table = identity == 0x00d68650u ? base_table_
+        : identity == 0x00ce7554u ? frame_table_ : nullptr;
+    if (!table || table[2] != 0x00be3150u)
+        throw std::invalid_argument("Missing current native frame job dispatch binding");
+}
 void NativeFrameJobExecution::require_worker_virtual_0c(const NativeFrameJobPoolStorage& pool) const {
     const auto identity = pool.native_vtable_00;
     const auto* table = identity == 0x00d68650u ? base_table_
