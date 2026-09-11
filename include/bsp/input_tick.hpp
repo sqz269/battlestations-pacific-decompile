@@ -32,19 +32,19 @@ namespace bsp {
 // so +8h is a count and not an end pointer (00a92c40 at 00a92c7c, 00a922a0 at
 // 00a922aa, and the index scaling `id*3 << 4` at 004e4eb9 and 004e4f8b).
 //
-// Only the fields this packet touches are modelled. The record is 30h bytes; the
-// binding array it polls lives at +10h/+14h with a 34h stride (00a92370 at
-// 00a9239b) and belongs to the input-settings layer, not to this packet.
+// Native record is 30h bytes; bindings live at +10h/+14h with a 34h stride.
+// This projection owns those bindings for the recovered rebind/poll sequence.
 struct InputActionRecord {
     bool enabled{false};        // +01h, gate at 00a92c88; a cleared record is skipped
-    float previous_hold{0.0f};  // +1Ch
+    float previous_hold{0.0f};  // +1Ch, legacy name: previous input VALUE, not time
     bool previous_down{false};  // +20h
-    float current_hold{0.0f};   // +24h
+    float current_hold{0.0f};   // +24h, legacy name: current input VALUE, not time
     bool current_down{false};   // +28h
     // +2Ch holds the listener pointer. It is kept beside the record instead of
     // inside it because the reconstruction owns listeners by index, not address.
     std::size_t listener{0};    // index into InputTickState::listeners, 0 = none
     bool has_listener{false};   // +2Ch != 0
+    std::vector<InputActionBinding> bindings; // +10h/count+14h, native 34h stride
 };
 
 // The listener object at record+2Ch. 00a91e20 clears bytes +8h..+13h and floats
