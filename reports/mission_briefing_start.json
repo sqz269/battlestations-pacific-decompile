@@ -1,0 +1,181 @@
+{
+  "packet": "cc_mission_briefing",
+  "owner": "agent/cc-mission-briefing",
+  "doc": "docs/MISSION_BRIEFING_START.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "sources": [
+    "include/bsp/mission_briefing_start.hpp",
+    "src/mission_briefing_start.cpp"
+  ],
+  "state": "reconstructed, build-tested",
+  "routines": [
+    {
+      "address": "0051dce0",
+      "name": "BSP_BriefingScreen_SetMissionData",
+      "abi": "__thiscall void(BriefingScreen* this, MissionRecord* record, int side), RET 8",
+      "state": "re-read, offsets confirmed",
+      "reconstruction": "set_briefing_mission_0051dce0 (existing, unchanged)",
+      "evidence": "full decompile; record+08h -> this+0C4h, record+60h/64h/68h -> this+0CCh/0D0h/0D4h, block = record + side*154h + 0B8h, block+04h -> this+0D8h, 00506C80 on block+14h and block+24h. Two call sites: 005C5754 and 005E49C1, the second in a gap with no Ghidra function."
+    },
+    {
+      "address": "005c57d0",
+      "name": "BSP_MissionTreeScreen_ActivateSelectedMission",
+      "abi": "__fastcall void(MissionTreeScreen* this), RET",
+      "state": "re-read, unchanged",
+      "reconstruction": "activate_selected_mission_005c57d0 (existing)",
+      "evidence": "005C3870 then 007FC820(ECX = game+650h, record+78h) then 005C5600"
+    },
+    {
+      "address": "00626930",
+      "name": "BSP_MissionStats_ResetForMission",
+      "abi": "__fastcall void(MissionRecord* record), ECX only, RET; EDX is loaded by both callers and never read",
+      "state": "analysed, reconstructed",
+      "reconstruction": "run_mission_stats_reset_00626930",
+      "evidence": "full listing 00626930..00626b??; record+08h -> the string at 00E19798 (0062694D/00626968), record+38h -> the string at 00E197A0 (00626985/006269A1), then twelve containers at 00E196CC..00E19788 cleared through 004954F0, 005F6190 and 006226F0. Prologue SUB ESP,8 / PUSH EBX / PUSH ESI / PUSH EDI / MOV EDI,ECX; first write to EDX at 0062695D."
+    },
+    {
+      "address": "00580940",
+      "name": "BSP_MainMenu_PublishMissionSelection",
+      "abi": "__thiscall void(MainMenuScreen* this), RET; 62 instructions",
+      "state": "analysed, reconstructed",
+      "reconstruction": "publish_main_menu_mission_selection_00580940",
+      "evidence": "full listing 00580940..00580A18; gate on game+1FE4h at 00580945, 00E194D8 at 00580960, 00E194DC at 00580982, 00E08878 = -1 at 00580987, page 8 at 0058099A, page 2 at 005809BF, NEG/SBB/ADD 7 at 005809EF..005809F6 and ADD 5 at 00580A0B..00580A12"
+    },
+    {
+      "address": "005806a0",
+      "name": "BSP_MainMenu_GetSelectedMission",
+      "abi": "__cdecl MissionRecord*(); ECX is loaded by callers and unused",
+      "state": "analysed, reconstructed",
+      "reconstruction": "selected_mission_005806a0",
+      "evidence": "full decompile; [00E198AC]+5Ch, group stride 0x34 at +18h/+1Ch, nested mission vector at group+24h..+30h, record stride 0x434, bound checks trapping through 00BF6713"
+    },
+    {
+      "address": "005c27e0",
+      "name": "BSP_MissionRecord_SideIndex",
+      "abi": "__fastcall bool(MissionRecord* record)",
+      "state": "analysed, reconstructed",
+      "reconstruction": "mission_side_index_005c27e0",
+      "evidence": "the whole body is `return record[0B8h] == 0`"
+    },
+    {
+      "address": "005922f0",
+      "name": "BSP_MainMenu_PlaySelectedMission",
+      "abi": "__thiscall void(MainMenuScreen* this), ECX only, RET, SEH handler 00C70948; 169 instructions",
+      "state": "analysed, reconstructed",
+      "reconstruction": "run_briefing_play_005922f0",
+      "evidence": "full listing; movie test on the size dword of record+58h at 00592325, 004F8A20(&record+58h, 1, [00CEFCB8], 0) at 00592383, 004F8970 with 0058D9D0 at 0059239C, 0058BDF0 at 005923B3, 0054B530 at 0059244C"
+    },
+    {
+      "address": "0058bdf0",
+      "name": "BSP_MainMenu_StartSelectedMission",
+      "abi": "__thiscall void(MainMenuScreen* this), ECX dead, RET, SEH handler 00C700C8; 162 instructions",
+      "state": "analysed, reconstructed",
+      "reconstruction": "run_start_selected_mission_0058bdf0",
+      "evidence": "full listing 0058BDF0..0058C006; see the site table in the doc"
+    },
+    {
+      "address": "0058d9d0",
+      "name": "BSP_MainMenu_OnMissionMovieFinished",
+      "abi": "__cdecl void(); three instructions, MOV ECX,[00E198AC]+58h then JMP 0058BDF0",
+      "state": "analysed, reconstructed",
+      "reconstruction": "run_briefing_movie_finished_0058d9d0",
+      "evidence": "raw listing 0058D9D0..0058D9DC; no Ghidra function, the preceding function FUN_0058D930 ends at 0058D9A4. Its address is pushed at 00592397 and handed to 004F8970."
+    },
+    {
+      "address": "0051b7b0",
+      "name": "BSP_BriefingScreen_ActivatePlay",
+      "abi": "__thiscall void(BriefingScreen* this, bool start_now), one stack argument, RET 4",
+      "state": "analysed, reconstructed, proven unreachable",
+      "reconstruction": "run_briefing_activate_play_0051b7b0",
+      "evidence": "full listing 0051B7B0..0051B88A; selector CMP byte [ESP+0Ch],BL at 0051B857. Unreachable: a linear E8/E9 scan of .text finds no branch into 0051B7B0..0051B88C, and the bytes B0 B7 51 00 occur nowhere in the file. The same scan reproduces the three known call sites of 00439020 and of 0051B450."
+    },
+    {
+      "address": "005c3850",
+      "name": "BSP_MissionTreeScreen_MissionIndexOf",
+      "abi": "__thiscall int(MissionTreeScreen* this, const NativeString* id)",
+      "state": "analysed",
+      "evidence": "four instructions: 005C3470 into a local pair, returns element 0"
+    },
+    {
+      "address": "005c3be0",
+      "name": "BSP_MissionTreeScreen_IsGroupCompleted",
+      "abi": "__thiscall bool(MissionTreeScreen* this, const NativeString* id)",
+      "state": "analysed, reconstructed",
+      "reconstruction": "group_completed_005c3be0",
+      "evidence": "005C3470 for the group, then BSP_MissionProgress_IsCompleted over the group's 0x434-stride records; any false returns false, an empty group returns true"
+    }
+  ],
+  "structures": {
+    "mission_record_additions": {
+      "+38h": "debriefingText, read by 00626930",
+      "+58h": "MovieName, read by 005922F0"
+    },
+    "globals": {
+      "00E194D8": "the main menu's copy of the selected group",
+      "00E194DC": "the main menu's copy of the selected mission index",
+      "00E08874": "the main-menu page",
+      "00E08878": "a sub-selection 00580940 resets to -1",
+      "00E19798": "the string 00626930 fills from record+08h",
+      "00E197A0": "the string 00626930 fills from record+38h",
+      "00E196CC..00E19788": "twelve per-mission containers 00626930 clears",
+      "00E1AED4": "the metrics gate",
+      "00E18D48": "the movie player singleton pointer"
+    },
+    "front_end_manager_00E198AC": {
+      "+50h": "the object 00A85C00 is called on before a movie",
+      "+58h": "the main-menu screen (005902E0, interface id 1)",
+      "+5Ch": "the mission-tree screen",
+      "+64h": "the briefing screen object"
+    },
+    "main_menu_screen": {
+      "+5Ch": "a byte that gates the difficulty inheritance, the checkpoint write and one metrics argument; not identified, and distinct from the downloadable-content flag at +55Ch"
+    }
+  },
+  "corrections": [
+    "include/bsp/mission_load_path.hpp: kMissionLoadRecordTitleOffset/kMissionRecordSubtitleOffset named the record's strings one slot apart. Renamed to kMissionLoadRecordIdOffset (+0h, the Lua id) and kMissionLoadRecordNameOffset (+8h, the Lua name); MissionTreeSelection::title/subtitle renamed to id/name. include/bsp/mission_tree_screens.hpp was already right and is unchanged.",
+    "include/bsp/mission_tree_screens.hpp: MissionLaunchHost::set_pending_scene's second parameter was `int flags`; it is the weather-descriptor override name forwarded to 0046DF00 argument 5 and 005C5682 pushes null. Retyped to std::string_view weather_override, with src/mission_tree_screens.cpp updated. Closes the mission_tree_host_fix follow-up.",
+    "00626930 takes no side argument: 005C5732 and 0058BF1D load EDX and the callee never reads it. The ledger evidence for 005C5600, 00626930 and docs/MISSION_TREE_BRIEFING_SCREENS.md all said otherwise.",
+    "0051B7B0 is not the reachable play action of the briefing screen: nothing in the image references it. The reachable one is 005922F0 on the main-menu screen.",
+    "docs/MISSION_TREE_BRIEFING_SCREENS.md's open question `nothing requests interface 3` is answered: the briefing surface is the main-menu screen's mission-detail page (00E08874 = 9), raised by 004CC460(1, 0) at 005C5762.",
+    "0051B8C0's Ghidra body ends at 0051B90D but the routine runs at least to 0051B9CA; the decompiled 14 lines are one arm only. Not repaired (Ghidra read-only)."
+  ],
+  "host_steps": {
+    "table": "bsp::mission_briefing_host_steps in src/mission_briefing_start.cpp",
+    "count": 36,
+    "interfaces": [
+      "MissionBriefingPlayHost (005922F0)",
+      "MissionStartHost (0058BDF0)",
+      "MissionStatsResetHost (00626930)"
+    ],
+    "unreconstructed_owners": [
+      "movie: 004F8A20, 004F8970",
+      "metrics: 00753810",
+      "profile: 007F8D60, 00437C70"
+    ]
+  },
+  "no_ghidra_function": [
+    {
+      "start": "0058d9d0",
+      "end": "0058d9dc",
+      "role": "the movie-completion thunk; ECX = [00E198AC]+58h then JMP 0058BDF0"
+    }
+  ],
+  "gaps_not_named": [
+    {
+      "start": "0051b250",
+      "end": "0051b44f",
+      "role": "the briefing's 00CEC934 slot +08h handler, SEH handler 00C6AA80; read only as far as its list walk"
+    },
+    {
+      "start": "005e4478",
+      "end": "005e4fbf",
+      "role": "contains a second call to 0051DCE0 at 005E49C1; the owning screen is unidentified"
+    }
+  ],
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 1/1 passed",
+  "tests_added": 0
+}

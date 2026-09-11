@@ -233,13 +233,31 @@ measured.
 - **`004E2770`'s ledger evidence said `004E1D70(scene, 0, FFFFFFFFh, flags)`.** The last argument
   is the override name, and the `FFFFFFFFh` is dead. Both recorded under the appended evidence.
 
+### Corrections to this document from `docs/MISSION_BRIEFING_START.md`
+
+- **The record's strings were named one slot apart here.** `kMissionLoadRecordTitleOffset = 0x0`
+  and `kMissionRecordSubtitleOffset = 0x8` are now `kMissionLoadRecordIdOffset` and
+  `kMissionLoadRecordNameOffset`, and `MissionTreeSelection::title`/`subtitle` are `id`/`name`.
+  `+0h` is the Lua `id` and `+8h` the Lua `name`; `kMissionRecordSchema` of
+  `bsp/mission_tree_data.hpp` is the producer evidence and `0051DCE0` copying `+8h` into the
+  briefing's title field at `+0C4h` the consumer evidence. What `005C5600` copies into `game+2198h`
+  and `game+6B8h` is therefore the **id**, which is also what `005C3870`'s non-campaign arm matches
+  back against record `+0h`.
+- **`00626930` takes no `side` argument.** `005C5732` loads EDX with the side index, but
+  `00626930` reads ECX only. The "runs `00626930` with the side" wording above is wrong.
+- **The briefing arm queues nothing.** `004CC460(1, 0)` at `005C5762` raises `INTF_MAINMENU`; the
+  request pair this document consumes is queued later by `0058BDF0`, which calls `004E2770` a
+  second time and so destroys and rebuilds the scene record `005C5600` had just built.
+- **`mission_tree_host_fix` is done.** `set_pending_scene`'s second parameter in
+  `include/bsp/mission_tree_screens.hpp` is now `std::string_view weather_override`.
+
 ## Follow-up packets
 
 | Packet | Addresses | Files | Contract |
 | --- | --- | --- | --- |
-| `mission_tree_host_fix` | 005c5600 004e2770 | include/bsp/mission_tree_screens.hpp, src/mission_tree_screens.cpp | Retype `set_pending_scene`'s second parameter as the override name; the header is owned elsewhere |
+| ~~`mission_tree_host_fix`~~ | 005c5600 004e2770 | include/bsp/mission_tree_screens.hpp, src/mission_tree_screens.cpp | **Done** by packet `cc_mission_briefing`: the parameter is now `std::string_view weather_override` |
 | `scene_record_storage` | 004e1d70 00419cc0 0041dd40 | docs/SCENE_RECORD_STORAGE.md | The sized-storage-pool string plumbing `004E1D70` uses for `record+90Ch/910h`, which this packet modelled as `std::string` |
-| `mission_briefing_start` | 0051dce0 004cc460 005c57d0 00626930 | docs/MISSION_BRIEFING_START.md | The briefing arm of `005C5600` and what starts the mission from the briefing screen |
+| ~~`mission_briefing_start`~~ | 0051dce0 004cc460 005c57d0 00626930 | docs/MISSION_BRIEFING_START.md | **Done** by packet `cc_mission_briefing`: the start comes from the main-menu mission-detail page (`005922F0` then `0058BDF0`), not from the briefing screen class |
 | `scene_record_side_blocks` | 004e1d70 0046df00 | docs/SCENE_RECORD_SIDE_BLOCKS.md | What fills the `0x120` side blocks at `record+0h` and the count at `+988h`; the `.scn` reader is the only candidate producer and this packet did not find the write |
 | `leaderboard_publish` | 004c6890 00f8a2fc | docs/LEADERBOARD_PUBLISH.md | The `00F8A2FC` vtable `+178h`/`+17Ch` pair `004C6890` runs in session mode 1 |
 | `scene_class_count_delta` | 0046cf40 | - | The nine-entity difference between this sweep (133655) and `docs/SCENE_ENTITY_FACTORY.md` (133664) |

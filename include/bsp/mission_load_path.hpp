@@ -264,8 +264,14 @@ const std::uint32_t* mission_start_state_requests_00439020(std::size_t& count) n
 
 // Offsets into the mission-tree record 005c3870 returns. Only what 005c5600
 // reads is listed.
-inline constexpr std::size_t kMissionLoadRecordTitleOffset = 0x0;    // native string pair
-inline constexpr std::size_t kMissionRecordSubtitleOffset = 0x8; // native string pair
+// Corrected by packet cc_mission_briefing: +0h is the Lua `id` (the key the
+// selection lookup matches and game+2198h round-trips), +8h is the Lua `name`,
+// the display string the loading screen and the briefing show. The previous
+// title/subtitle pair named them one slot apart. kMissionRecordSchema in
+// bsp/mission_tree_data.hpp is the producer-side evidence; 0051DCE0 copying
+// +8h into briefing+0C4h is the consumer-side evidence.
+inline constexpr std::size_t kMissionLoadRecordIdOffset = 0x0;    // native string pair
+inline constexpr std::size_t kMissionLoadRecordNameOffset = 0x8;  // native string pair
 // The native string pair sits at +20h; 005c5670 loads its data pointer from
 // +24h and passes that, so an empty string with a null buffer is substituted at
 // 005c5677 by the empty literal below.
@@ -290,8 +296,8 @@ inline constexpr std::int32_t kMissionModeInherit = 3;
 // side index the routine computes is (side_flag == 0), so a zero byte selects
 // side block 1.
 struct MissionTreeSelection {
-    std::string title;        // record+0h
-    std::string subtitle;     // record+8h
+    std::string id;           // record+0h, the Lua `id`
+    std::string name;         // record+8h, the Lua `name` (the display string)
     std::string scene_path;   // record+24h, empty when the pointer was null
     std::uint8_t side_flag{0};// record+0B8h
     bool briefing_present{false}; // side block +4h non-null
@@ -311,9 +317,10 @@ struct MissionTreeStartDecision {
 
 // 005c5600. Native __thiscall void(MissionTreeScreen* this), ECX only, RET with
 // no immediate, SEH frame (handler 00c72dd8); Ghidra renders it __cdecl(void).
-// The routine copies the record title to game+2198h and game+6B8h, sets the
-// pending scene with a null override, hands the loading screen its text, runs
-// 00626930 with the side, and then branches.
+// The routine copies the record id (+0h) to game+2198h and game+6B8h, sets the
+// pending scene with a null override, hands the loading screen its text (the
+// record name at +8h), runs 00626930 and then branches. 005C5732 loads EDX with
+// the side index before that call, but 00626930 never reads EDX.
 MissionTreeStartDecision decide_mission_tree_start_005c5600(
     const MissionTreeSelection& selection) noexcept;
 
