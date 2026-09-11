@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b24b00",
+    "before": {
+      "address": "00b24b00",
+      "function_name": "BSP_D3D9Renderer_BindIndexStream",
+      "comment": "[BSP reconstruction 00b24b00]\nRecovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported.\n\n[BSP reconstruction 00b24b00] update\nRecovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported. Update: semantic binding/draw projection now ported with shared logical ownership and diagnostic indexed pixel readback; native constructors, registry and ABI remain incomplete."
+    },
+    "after": {
+      "address": "00b24b00",
+      "old_name": "BSP_D3D9Renderer_BindIndexStream",
+      "name": "BSP_D3D9Renderer_BindIndexStream",
+      "evidence": "Full236-byte actual renderer index binding. Optional entry precedes outer +17B8 identity; arm cleanup before unconditional +17BC base write. Changed outer path reloads/captures old; inner identity may now match. Publish/increment incoming then decrement captured old, zero via current logical slot0 BD30E0/current slot4 B4C1F0 with full existing owner lifetime. Original incoming nonnull resolves current logical+28 then physical getter; null still calls SetIndices(NULL). Device+1A10 and its current table+1A0 are loaded AFTER getter; current counter1BB8 increment only after returning COM work. Capture current mode and disarm before normal leave. Full CBD058/DF5718/DF5710/CBD050 FH3 state0 cleanup via B21110. Entry-off/exit-on uninitialized guard domain excluded; source passes defined low byte of ignored guard word. reports/native_renderer_index_binding_audit.json. Source src/native_renderer_index_binding.cpp uses actual D61DE0 11-DWORD logical profile, Win32 intrusive atomics and actual logical/physical registries/pools/COM providers, never numeric host calls or a semantic wrapper. Primary strict Win32 CMake/build/two CTests/eight seeds passed;107worker artifact/source pins,18current files,26fresh live-PE spans1165bytes verified. Frozen actual main library comparison17ordinary scenarios/17184DWORDs/68736bytes,30getter-COM-catch events/59writes per process and matching isolated double-fault terminal processes exit91. Real HAL NVIDIA RTX5090 buffers, GetDesc/Lock data/GetIndices roundtrip.16 actual providers and all35 mapped closure fragments,48actual x86 DLL entry16/disk checks,4complete native image postimages and every observed getter/call/write PC verified. Nonempty logical/physical registry removal and both pool returns execute; freed physical array pointer/capacity deliberately retained with count0. No permanent tests; new C++ ABI, no draw/fullreset/game validation. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48dc0",
+    "before": {
+      "address": "00b48dc0",
+      "function_name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "comment": "[BSP reconstruction 00b48dc0]\nRecovered vtable+28h; loads physical wrapper stream+8h then tailcalls wrapper+1ch. Concrete physical getter00b4b840 bytes8b4128c3 returns COM buffer+28h.\n\n[BSP reconstruction 00b48dc0] update\nlogical index+08 -> physical owner -> current table+1C -> tail JMP EDX. Original ABI: ECX logical storage; replace ECX with physical owner, EAX with its current table, EDX with table+1C; JMP EDX, target supplies EAX/RET; no local EH frame. Complete native naked leaf; all 10 primary-object instruction bytes equal live Ghidra and installed PE, zero code relocations. Evidence reports/native_renderer_binding_getters_audit.json and docs/NATIVE_RENDERER_BINDING_GETTERS.md. Primary-library route fixture10callablecells/4physicalheap-and-pooledroutes passes; no lifetime or whole-table initialization. Current physical table must contain callable relocated concrete getter; original numeric table identity alone is not callable. Noexcept=False. No installed binary/game claim."
+    },
+    "after": {
+      "address": "00b48dc0",
+      "old_name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "name": "BSP_D3D9LogicalIndexStream_GetBuffer",
+      "evidence": "Full10-byte B48DC0 actual-token adapter: capture current logical+08 physical, read its current original D61E10/D61E58 profile, read current borrowed table+1C B4B840 token, dispatch full actual four-byte physical COM getter. Both profile views are eight immutable DWORDs, shared with existing full owner lifetime context. Existing byte-identical naked native_logical_index_stream_get_buffer_00b48dc0 in native_renderer_binding_getters.cpp remains unchanged for genuinely relocated callable tables. reports/native_renderer_index_binding_audit.json. Source src/native_renderer_index_binding.cpp uses actual D61DE0 11-DWORD logical profile, Win32 intrusive atomics and actual logical/physical registries/pools/COM providers, never numeric host calls or a semantic wrapper. Primary strict Win32 CMake/build/two CTests/eight seeds passed;107worker artifact/source pins,18current files,26fresh live-PE spans1165bytes verified. Frozen actual main library comparison17ordinary scenarios/17184DWORDs/68736bytes,30getter-COM-catch events/59writes per process and matching isolated double-fault terminal processes exit91. Real HAL NVIDIA RTX5090 buffers, GetDesc/Lock data/GetIndices roundtrip.16 actual providers and all35 mapped closure fragments,48actual x86 DLL entry16/disk checks,4complete native image postimages and every observed getter/call/write PC verified. Nonempty logical/physical registry removal and both pool returns execute; freed physical array pointer/capacity deliberately retained with count0. No permanent tests; new C++ ABI, no draw/fullreset/game validation. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  }
+]
