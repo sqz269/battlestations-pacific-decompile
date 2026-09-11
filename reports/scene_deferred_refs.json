@@ -1,0 +1,201 @@
+{
+  "packet": "cc2_scene_deferred_refs",
+  "worktree": "agent/cc2-scene-deferred-refs",
+  "ghidra": "read-only",
+  "names_are_hypotheses": true,
+  "doc": "docs/SCENE_DEFERRED_REFS.md",
+  "subject": "How the R / RPath / RFort references an entity's properties make to other scene objects are resolved after the instantiate pass.",
+  "headline": "The deferred-reference list is an entity-command queue. Each record is one `\"Command\" { Command = E CommandType : <name> ; CommandTarget = R \"<entity>\" ; }` sub-block; 0046AAB0 matches the command name against the global command-type registry at 00E19A70, resolves the target name to an entity through 00925A90, and issues the order through 0077D600, which builds a \" Mv\" session message.",
+  "routines": [
+    {
+      "address": "0046aab0",
+      "name": "BSP_SceneDatabase_ResolveDeferredReferences",
+      "abi": "__thiscall(void), effective RET 0 (POP EBX / ADD ESP,0x20 / JMP 0046a9f0 at 0046ac34)",
+      "coverage": "complete: 0046aab0-0046ac34",
+      "notes": "Ghidra drops ECX at the 0077d600, 00414db0 and 00438e10 sites; the listing supplies it."
+    },
+    {
+      "address": "0046a9f0",
+      "name": "BSP_SceneDatabase_ClearPendingReferences",
+      "abi": "__thiscall(void), RET 0, this = scene database + 14Ch",
+      "coverage": "complete: header {count +0h, head +4h, tail +8h}, node {prev +0h, next +4h, record +8h}"
+    },
+    {
+      "address": "00469610",
+      "name": "BSP_SceneDatabase_QueueEntityCommand",
+      "abi": "__thiscall(void* entity, const char* command, const char* target), RET 0Ch",
+      "coverage": "complete: operator new(0x14) at 00469627, 004690d0 at 00469654, LEA ECX,[ESI+0x14c] at 0046965e, 00468350 at 0046966c"
+    },
+    {
+      "address": "004690d0",
+      "name": "BSP_SceneCommandRecord_Construct",
+      "abi": "__thiscall(record, void* owner, const char* command, const char* target)",
+      "coverage": "complete"
+    },
+    {
+      "address": "00468350",
+      "name": "BSP_SceneCommandList_PushBack",
+      "abi": "__thiscall(listHeader, void* record)",
+      "coverage": "complete"
+    },
+    {
+      "address": "00467170",
+      "name": "BSP_CommandRegistry_FindByName",
+      "abi": "__cdecl(const char* name) with the name in the 00438e10 register pair; returns the command object or 0",
+      "coverage": "complete: the same scan 0046aab0 inlines"
+    },
+    {
+      "address": "00925a90",
+      "name": "BSP_EntityRegistry_FindEntityByName",
+      "abi": "__thiscall(registry, const char* name), RET 4 at 00925ae3",
+      "coverage": "complete; callee 009251f0 is a contract"
+    },
+    {
+      "address": "0077d600",
+      "name": "BSP_Entity_IssueCommand",
+      "abi": "__thiscall(entity, void* command, const SceneCommandTarget* target, int flags), RET 0Ch at 0077d7ea",
+      "coverage": "partial: the call contract and the five body steps in the doc. Not reconstructed: the handle tables at 00f89a54/00f89aa8, the 00521ea0 gate, 00a2bd90, 007798d0 and the message layout."
+    }
+  ],
+  "record_layout": {
+    "size": "0x14",
+    "allocator": "operator_new 00bf681b at 00469627",
+    "destructor": "00469010, returns exactly the two pooled string blocks",
+    "fields": [
+      {"offset": "+0h", "field": "owner entity", "producer": "004690d0 *param_1 = param_2", "consumer": "0046aad7 MOV EDI,[EAX]"},
+      {"offset": "+4h", "field": "command name length", "producer": "BSP_NativeString_Resize(strlen)", "consumer": "not read"},
+      {"offset": "+8h", "field": "command name chars", "producer": "_memcpy", "consumer": "0046aad9, the 00438e10 this"},
+      {"offset": "+0Ch", "field": "target name length", "producer": "second Resize", "consumer": "0046ab2a, selects the branch"},
+      {"offset": "+10h", "field": "target name chars", "producer": "second memcpy", "consumer": "0046ab2f, the 00925a90 argument"}
+    ]
+  },
+  "list_layout": {
+    "header": "scene database +14Ch {count +0h, head +4h, tail +8h}",
+    "node": "operator new(0xC) {prev +0h, next +4h, record +8h}",
+    "order": "00468350 pushes at the tail, 0046aab0 walks from the head, so drain order is insertion order"
+  },
+  "target_descriptor": {
+    "size": "0x18",
+    "site": "stack block at [ESP+18h] in 0046aab0, LEA ECX,[ESP+1Ch] after PUSH 1",
+    "confirmed_by": "0077d600 copies all seven fields in the same order",
+    "fields": [
+      {"offset": "+0h", "field": "byte kind", "position_branch": "0", "object_branch": "1"},
+      {"offset": "+1h", "field": "byte, provisional position-valid", "position_branch": "1", "object_branch": "0"},
+      {"offset": "+2h", "field": "uint16 object id", "position_branch": "0", "object_branch": "[target+174h]"},
+      {"offset": "+4h", "field": "object pointer", "position_branch": "0", "object_branch": "the 00925a90 result"},
+      {"offset": "+8h/+Ch/+10h", "field": "float3 position", "position_branch": "owner +FCh/+100h/+104h", "object_branch": "00f87574/78/7c, a read-only zero vector"},
+      {"offset": "+14h", "field": "float", "position_branch": "0.0 (XORPS at 0046abf8)", "object_branch": "0.0"}
+    ]
+  },
+  "host_table": [
+    {"step": "command name", "address": "0046aafd", "native": "indirect vtable[4] on the registry object", "this": "node+8h", "args": "none", "ret": "const char*", "gate": "every registry node"},
+    {"step": "name compare", "address": "0046ab03", "native": "00438e10", "this": "record+8h or 00e18560", "args": "EDX = the registry object's name", "ret": "0 on match", "gate": "every registry node until the first match"},
+    {"step": "command requires target", "address": "0046aba2", "native": "indirect vtable[8] on the matched object", "this": "the matched object", "args": "none", "ret": "bool; true drops the record", "gate": "target name length == 0"},
+    {"step": "pose refresh", "address": "0046abb2", "native": "00414db0", "this": "record+0h, the owner", "args": "none", "ret": "void", "gate": "target name length == 0 and owner byte +C8h == 0"},
+    {"step": "entity lookup", "address": "0046ab48", "native": "00925a90", "this": "*(*(00e188a8)+19cch)", "args": "record+10h or 00e18560", "ret": "entity or null", "gate": "target name length != 0"},
+    {"step": "issue command", "address": "0046ac0b", "native": "0077d600", "this": "record+0h, the owner", "args": "the matched command object, &descriptor, 1", "ret": "void", "gate": "a command matched and the branch produced a descriptor"},
+    {"step": "clear the queue", "site": "0046ac34", "target": "0046a9f0", "instruction": "JMP, a tail call", "this": "scene database +14Ch", "args": "none", "ret": "void", "gate": "always, including the empty-queue path from 0046aac6", "why_not_an_address_row": "tools/verify_report_calls.py accepts CALL instructions only; 0046ac34 is the tail JMP, which is why 0046aab0's effective RET is 0"}
+  ],
+  "producer_call_site": {
+    "address": "00469654",
+    "native": "004690d0",
+    "containing_function": "00469610",
+    "note": "the record constructor; the queue itself is pushed at 0046966c (00468350) with ECX = scene database + 14Ch"
+  },
+  "queue_entry_point": {
+    "address": "004e6b30",
+    "name": "BSP_SceneUnit_ApplyCommandProperty",
+    "owner": "docs/SCENE_UNIT_CREATORS.md, packet scene_entity_command_queue; read here, not renamed",
+    "note": "this packet answers that packet's open question, 'who drains it'"
+  },
+  "call_sites_00925a90_read": [
+    {"address": "0046ab48", "native": "00925a90", "containing_function": "0046aab0"},
+    {"address": "0046bb41", "native": "00925a90", "containing_function": "0046b730"},
+    {"address": "0046da55", "native": "00925a90", "containing_function": "0046d930"},
+    {"address": "007b37e4", "native": "00925a90", "containing_function": "007b3730"}
+  ],
+  "call_sites_00925a90_not_read": [
+    "0046dd31", "0054fb1f", "0054fcb7", "0054fee0", "00550077", "006acf23", "006acf8c", "006acfc3",
+    "006acffc", "006d21cc", "006d5c76", "006d5d8a", "006d5db0", "006d5fcf", "007420ec", "008093ad",
+    "0084a074", "0084a09c", "0084a1e4", "0095137e", "009271b0", "007f4c85", "007f4cd6"
+  ],
+  "command_registry": {
+    "head": "00e19a70",
+    "node": "{unused +0h, next +4h, object +8h}",
+    "populated_by": "static initialisers 00cdc6a0..00cdc7e0",
+    "base_vtable": {
+      "+4h": "006f7f30, returns the literal \"undefined command name\" at 00cfb38c",
+      "+8h": "006f7f40, XOR AL,AL / RET",
+      "+0Ch": "__purecall 00bf698e"
+    },
+    "evidence": "the base name string is what identifies the list as command types rather than scene objects"
+  },
+  "installed_data": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "method": "read-only ripgrep over 259 .scn files",
+    "command_target_properties": 13194,
+    "command_target_empty": 12060,
+    "command_target_named": 1134,
+    "command_keys": 5018,
+    "command_key_followed_by_empty_target_within_two_lines": 3734,
+    "command_key_followed_by_named_target_within_two_lines": 1005,
+    "command_names": {
+      "Cruise": 3892, "Follow": 888, "Moveto": 95, "AttackMove": 56, "follow": 32,
+      "MoveOnPath": 27, "Stop": 12, "SetTarget": 4, "Kamikaze": 4, "LevelBomb": 3,
+      "MoveTo": 2, "DiveBomb": 2, "cruise": 1
+    },
+    "note": "the lower-case spellings are why the compare at 0046ab03 is case-insensitive"
+  },
+  "corrections": [
+    {
+      "doc": "docs/SCENE_FILE_READER.md",
+      "was": "+14Ch pending deferred-reference list {count, head, tail}, and +150h a separate deferred-reference list walked by 0046AAB0",
+      "is": "one list: +14Ch is the header and +150h is its head pointer",
+      "evidence": "00469610 computes LEA ECX,[ESI+0x14c] before the push at 0046966c; 0046aab3 reads [ECX+0x150] as the head and 0046ac2a tail-calls 0046a9f0 on this+14Ch"
+    },
+    {
+      "doc": "docs/SCENE_FILE_READER.md",
+      "was": "on a match it takes either the referenced object's position (+FCh/+100h/+104h) ...",
+      "is": "the position on that branch is the OWNER's, EDI = record+0h loaded at 0046aad7; the matched registry object is the command and its position is never read",
+      "evidence": "filtering the 0046aab0 listing for EDI shows one write, 0046aad7 MOV EDI,[EAX] with EAX = node+8h, and no reassignment before 0046ac03 MOV ECX,EDI"
+    },
+    {
+      "doc": "packet brief",
+      "was": "00925a90 is presumably the registrar that queues one deferred reference",
+      "is": "00925a90 is a find-entity-by-name lookup over the party registry; the registrar is 00469610, reached only from 004e6b30",
+      "evidence": "00925a90 walks registry+8h and defers to 009251f0; every read call site passes a name and uses the result as a target or parent"
+    }
+  ],
+  "no_ghidra_function": [
+    {"start": "006f7f40", "end": "006f7f42", "what": "the base vtable[8] body, XOR AL,AL / RET, read from the raw listing; Ghidra folds it into 006f7f30"},
+    {"start": "006f7f50", "end": "006f7f50", "what": "the base vtable[10h] entry; no Ghidra function starts there"}
+  ],
+  "uncertainties": [
+    "vtable[8] on a command object is read as 'requires an explicit target' from its effect here and its false default; no derived override was read.",
+    "The descriptor byte at +1h is 1 only on the position branch. 0077d600 copies the whole 16-bit word and tests byte 0 alone, so the meaning of byte +1h is provisional.",
+    "The descriptor float at +14h is always written 0.0 by this caller; what it means to 0077d600's callees was not established.",
+    "No run-time evidence: bsp_game.exe does not reach the scene instantiate pass, so the record counts above are static scans of the shipped .scn files, not observed queue lengths."
+  ],
+  "tooling_problems": [
+    "bsp.py ghidra disasm --start rejects an address that is not an instruction boundary, which costs a retry when paging into the middle of a body; disasm-raw resyncs but desyncs on the first few instructions.",
+    "mcp__ghidra__search_byte_patterns ignores the mask argument: a masked pattern returns 'No matches found' while the same bytes matched exactly. Only exact patterns are usable.",
+    "A bare four-byte pattern search returns every hit in the image with no way to cap the output."
+  ],
+  "build": "scripts/build.ps1, Win32, warnings as errors",
+  "tests": "no new test: the rule has no arithmetic, and the two branches are covered by the doc's evidence",
+  "follow_up_packets": [
+    {"packet": "scene_command_types", "addresses": ["006f7f30", "006f9110", "00cdc6a0"], "contract": "which derived command class each static initialiser registers, its vtable[0Ch] id, and which of the eleven authored names exist"},
+    {"packet": "entity_order_message", "addresses": ["0077d600", "007798d0", "0075b430", "00a2bd90"], "contract": "the \" Mv\" order message: handle tables, the 00521ea0 gate and the wire layout"},
+    {"packet": "entity_registry_find", "addresses": ["009251f0"], "contract": "the per-party name match, including the _strchr / __strnicmp qualified-name path"}
+  ],
+  "state_per_address": [
+    {"address": "0046aab0", "state": "exported, analyzed, reconstructed, build-tested"},
+    {"address": "0046a9f0", "state": "exported, analyzed"},
+    {"address": "00469610", "state": "analyzed, reconstructed"},
+    {"address": "004690d0", "state": "analyzed, reconstructed"},
+    {"address": "00468350", "state": "analyzed, reconstructed"},
+    {"address": "00467170", "state": "analyzed, reconstructed"},
+    {"address": "00925a90", "state": "analyzed; modelled as a host call"},
+    {"address": "0077d600", "state": "analyzed partially; modelled as a host call"}
+  ]
+}
