@@ -1,0 +1,44 @@
+{
+  "function": "00a99710",
+  "handler": "00cb6aa9",
+  "func_info": "00deceec",
+  "magic": "19930522",
+  "max_state": 5,
+  "unwind_map": "00decf10",
+  "entries": [
+    {
+      "state": 0,
+      "to": -1,
+      "action": "00cb6a70",
+      "semantics": "if EBP-18 bit0 set, clear flag and tailcall41DD20 on pointer EBP+4; retain actual result header"
+    },
+    {
+      "state": 1,
+      "to": 0,
+      "action": "00cb6aa1",
+      "semantics": "destroy suffix at EBP-14"
+    },
+    {
+      "state": 2,
+      "to": 0,
+      "action": "00cb6a99",
+      "semantics": "destroy suffix at EBP-14"
+    },
+    {
+      "state": 3,
+      "to": 0,
+      "action": "00cb6a89",
+      "semantics": "destroy suffix at EBP-14"
+    },
+    {
+      "state": 4,
+      "to": 0,
+      "action": "00cb6a91",
+      "semantics": "destroy suffix at EBP-14"
+    }
+  ],
+  "evidence_method": "Live Ghidra metadata bytes; installed-image raw disassembly of compiler funclets; preserve correct generated names",
+  "fixture": "local/joystick-labels-unwind-g-fixture.log",
+  "fixture_process_exit": 0,
+  "limits": "Compiler ABI not reproduced; typed guards for invalid native indices"
+}

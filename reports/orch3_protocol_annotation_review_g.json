@@ -1,0 +1,511 @@
+{
+  "annotation_events": [
+    {
+      "address": "00425e10",
+      "before": {
+        "address": "00425e10",
+        "function_name": "FUN_00425e10"
+      },
+      "after": {
+        "address": "00425e10",
+        "name": "BSP_NativeString_Append",
+        "evidence": "Hypothesis, not a recovered symbol. ECX destination; source pointer stack; RET4; return unspecified on empty source. normal body over existing NativeString storage. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ebc3",
+      "before": {
+        "address": "00a5ebc3",
+        "function_name": "PIPEIPC_00a5ebc3",
+        "comment": "[BSP inventory 00a5ebc3] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ebc3",
+        "name": "BSP_XLivePipeProtocol_CopySeedConstant",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5ebc3. ECX=output40; RET. Copy40 immutable bytes from D25D9C; native forward byte loop. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ed17",
+      "before": {
+        "address": "00a5ed17",
+        "function_name": "PIPEIPC_00a5ed17",
+        "comment": "[BSP inventory 00a5ed17] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ed17",
+        "name": "BSP_XLivePipeProtocol_CopyKeyConstant",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5ed17. ECX=output40; RET. Copy40 immutable bytes from D26010; native forward byte loop. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5ed9f",
+      "before": {
+        "address": "00a5ed9f",
+        "function_name": "PIPEIPC_00a5ed9f",
+        "comment": "[BSP inventory 00a5ed9f] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5ed9f",
+        "name": "BSP_XLivePipeProtocol_InitializeSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5ed9f. __stdcall(source*, DWORD seed, destination*); RET12. Global section enter; source/destination lock enter; global leave; copy40, two exact transforms; source/destination lock leave, with reloads. Destination preimage consumed. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5eecb",
+      "before": {
+        "address": "00a5eecb",
+        "function_name": "PIPEIPC_00a5eecb",
+        "comment": "[BSP inventory 00a5eecb] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5eecb",
+        "name": "BSP_XLivePipeProtocol_InitializeKey",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5eecb. __stdcall(source*, destination*); RET8. Same lock ordering, fixed40-byte key constant and table transforms; destination preimage consumed. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f1d8",
+      "before": {
+        "address": "00a5f1d8",
+        "function_name": "PIPEIPC_00a5f1d8",
+        "comment": "[BSP inventory 00a5f1d8] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f1d8",
+        "name": "BSP_XLivePipeProtocol_DestroyMembers",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f1d8. ECX=context; RET. Reload/conditionally destroy lock pointers +7C,+30,+4 via vslot0 flag1; do not clear pointers/payloads. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f336",
+      "before": {
+        "address": "00a5f336",
+        "function_name": "PIPEIPC_00a5f336",
+        "comment": "[BSP inventory 00a5f336] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f336",
+        "name": "BSP_XLivePipeProtocol_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f336. ECX=A8h context; RET; EAX=context. Allocate/store only locks+4/+30/+7C in that order; all payload/provider bytes retain allocation preimage. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f371",
+      "before": {
+        "address": "00a5f371",
+        "function_name": "PIPEIPC_00a5f371",
+        "comment": "[BSP inventory 00a5f371] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f371",
+        "name": "BSP_XLivePipeProtocol_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f371. ECX=pointer to owner protocol slot; RET. Load context once, release nonzero provider, reverse member destruction, free context. Owner slot and fields not cleared. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f416",
+      "before": {
+        "address": "00a5f416",
+        "function_name": "PIPEIPC_00a5f416",
+        "comment": "[BSP inventory 00a5f416] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f416",
+        "name": "BSP_XLivePipeProtocol_Initialize",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f416. ECX=pointer to owner protocol slot; RET; no meaningful return. AllocateA8, construct three locks, acquire CryptoAPI provider and random4; seed then key transforms; publish only at end. Failures release/destroy/free and publish null; raw hidden XOR ESI,ESI verified. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f91e",
+      "before": {
+        "address": "00a5f91e",
+        "function_name": "PIPEIPC_00a5f91e",
+        "comment": "[BSP inventory 00a5f91e] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f91e",
+        "name": "BSP_XLivePipeProtocol_DestructValueLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f91e. ECX=lock; RET. Native vtableD539FC, DeleteCriticalSection(+4), basevtableD539F0. New interface uses C++ destructor/vtable transitions; no original vtable writes. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f939",
+      "before": {
+        "address": "00a5f939",
+        "function_name": "BSP_XLivePipeProtocol_EnterValueLock"
+      },
+      "after": {
+        "address": "00a5f939",
+        "name": "BSP_XLivePipeProtocol_EnterValueLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; verified virtual entry missing. ECX=lock; RET. ADD ECX,4; actual EnterCriticalSection import. Direct D539FC+4 vtable entry missing in Ghidra. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f944",
+      "before": {
+        "address": "00a5f944",
+        "function_name": "BSP_XLivePipeProtocol_LeaveValueLock"
+      },
+      "after": {
+        "address": "00a5f944",
+        "name": "BSP_XLivePipeProtocol_LeaveValueLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: none; verified virtual entry missing. ECX=lock; RET. ADD ECX,4; actual LeaveCriticalSection import. Direct D539FC+8 vtable entry missing in Ghidra. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f94f",
+      "before": {
+        "address": "00a5f94f",
+        "function_name": "PIPEIPC_00a5f94f",
+        "comment": "[BSP inventory 00a5f94f] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f94f",
+        "name": "BSP_XLivePipeProtocol_EnterGlobalLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f94f. __cdecl(); RET. EnterCriticalSection at F8B778; projection borrows the actual shared section. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5f95b",
+      "before": {
+        "address": "00a5f95b",
+        "function_name": "PIPEIPC_00a5f95b",
+        "comment": "[BSP inventory 00a5f95b] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5f95b",
+        "name": "BSP_XLivePipeProtocol_LeaveGlobalLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5f95b. __cdecl(); RET. LeaveCriticalSection at F8B778; no duplicate global. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fa27",
+      "before": {
+        "address": "00a5fa27",
+        "function_name": "PIPEIPC_00a5fa27",
+        "comment": "[BSP inventory 00a5fa27] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fa27",
+        "name": "BSP_XLivePipeProtocol_ConstructValueLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5fa27. ECX=lock; RET; EAX=lock. Set native vtable D539FC and InitializeCriticalSection at+4; C++ virtual projection with actual Win32 section. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fa3e",
+      "before": {
+        "address": "00a5fa3e",
+        "function_name": "PIPEIPC_00a5fa3e",
+        "comment": "[BSP inventory 00a5fa3e] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fa3e",
+        "name": "BSP_XLivePipeProtocol_DeleteValueLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5fa3e. ECX=lock; stackflags; RET4; EAX=old lock address. Destroy section/object; flags&1 frees storage; return old pointer. Raw post-free POP ECX verified. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fa5a",
+      "before": {
+        "address": "00a5fa5a",
+        "function_name": "PIPEIPC_00a5fa5a",
+        "comment": "[BSP inventory 00a5fa5a] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fa5a",
+        "name": "BSP_XLivePipeProtocol_CreateValueLock",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5fa5a. __cdecl(); RET; EAX=1Ch lock object. Allocate1Ch; null result returnsnull; nonnull tail-jumps concrete lock constructor. Native allocation exceptions have no invented rollback. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fbc3",
+      "before": {
+        "address": "00a5fbc3",
+        "function_name": "PIPEIPC_00a5fbc3",
+        "comment": "[BSP inventory 00a5fbc3] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fbc3",
+        "name": "BSP_XLivePipeProtocol_TransformSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5fbc3. __stdcall(left,seed,out,rows1,rows2,displacement,width1,width2,width3); RET36. Full signed-min-width recurrence; zero seed bits first8 then little-endian bits, signed16 rows, unsigned masks/XOR state, two-bit output, displacement special case and in-place order. Original machine-code differential passed. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5fe80",
+      "before": {
+        "address": "00a5fe80",
+        "function_name": "PIPEIPC_00a5fe80",
+        "comment": "[BSP inventory 00a5fe80] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5fe80",
+        "name": "BSP_XLivePipeProtocol_TransformPair",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a5fe80. __stdcall(left,right,out,rows1,rows2,displacement,width1,width2,width3); RET36. Full two-input table recurrence with low2-bit values, signed16 rows, signed-min-width and first output/displacement recurrence reset. Original machine-code differential passed. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60123",
+      "before": {
+        "address": "00a60123",
+        "function_name": "PIPEIPC_00a60123",
+        "comment": "[BSP inventory 00a60123] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60123",
+        "name": "BSP_XLivePipeProtocol_MixSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a60123. __stdcall(encodedsource*, DWORDseed, output40*); RET12. FBC3 source+4, address of little-endian seed, rowD55288/D552D8, displacement0 widths40. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a6014e",
+      "before": {
+        "address": "00a6014e",
+        "function_name": "PIPEIPC_00a6014e",
+        "comment": "[BSP inventory 00a6014e] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a6014e",
+        "name": "BSP_XLivePipeProtocol_CombineSeed",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a6014e. __stdcall(left40*, encodedright*, encodedoutput*); RET12. FE80 left,right+4,out+4, rowD55328/D55378, displacement0 widths40. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60259",
+      "before": {
+        "address": "00a60259",
+        "function_name": "PIPEIPC_00a60259",
+        "comment": "[BSP inventory 00a60259] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60259",
+        "name": "BSP_XLivePipeProtocol_MixKey",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a60259. __stdcall(encodedsource*, output40*); RET8. FE80 source+4, fixedD559F8, output, rowD55A20/D55A70, displacement0 widths40. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a60284",
+      "before": {
+        "address": "00a60284",
+        "function_name": "PIPEIPC_00a60284",
+        "comment": "[BSP inventory 00a60284] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a60284",
+        "name": "BSP_XLivePipeProtocol_CombineKey",
+        "evidence": "Hypothesis, not a recovered symbol. Previous name: PIPEIPC_00a60284. __stdcall(left40*, encodedright*, encodedoutput*); RET12. FE80 left,right+4,out+4, rowD55AC0/D55B10, displacement0 widths40. docs/XLIVE_PIPE_PROTOCOL.md; reports/xlive_pipe_protocol.json. Original assembly and table-image SHA checked; Win32 build/two CTests and one synchronous fixture with original native transform differential passed. Actual static global initialization/preimage binding remains explicit; no game or binary ABI claim."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a982d0",
+      "before": {
+        "address": "00a982d0",
+        "function_name": "BSP_InputDeviceManager_Construct",
+        "comment": "[BSP reconstruction 00a982d0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dd8e; direct callee DirectInput8Create plus FUN_00a904e0 and an array constructor over the device slots. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00a982d0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only; supersedes the earlier BSP_DirectInput_CreateDevices, which understated it as a factory. __fastcall on ECX, RET with no operand, returns this in EAX, so it is a constructor. Calls the base helper 00a91570, stamps vtable 00d5b72c, zeroes +0xe0/+0xe8/+0xec/+0xf0/+0xf4, then DirectInput8Create(GetModuleHandleA(nullptr), 0x0800, IID_IDirectInput8A at 00d78d8c, &this+0xe0, nullptr), AddRef through vtable+0x04 and EnumDevices(DI8DEVCLASS_ALL, callback 00a982b0, this, DIEDFL_ATTACHEDONLY) through vtable+0x10. It then allocates four 0x240-byte devices, constructs each with 00a9a5a0(index) and attaches them with 00a904e0(this, -1, device). The HRESULT is discarded and the pointer dereferenced on the next instruction; a failed allocation is passed on as null. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json."
+      },
+      "after": {
+        "address": "00a982d0",
+        "name": "BSP_InputDeviceManager_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only; supersedes the earlier BSP_DirectInput_CreateDevices, which understated it as a factory. __fastcall on ECX, RET with no operand, returns this in EAX, so it is a constructor. Calls the base helper 00a91570, stamps vtable 00d5b72c, zeroes +0xe0/+0xe8/+0xec/+0xf0/+0xf4, then DirectInput8Create(GetModuleHandleA(nullptr), 0x0800, IID_IDirectInput8A at 00d78d8c, &this+0xe0, nullptr), AddRef through vtable+0x04 and EnumDevices(DI8DEVCLASS_ALL, callback 00a982b0, this, DIEDFL_ATTACHEDONLY) through vtable+0x10. It then allocates four 0x240-byte devices, constructs each with 00a9a5a0(index) and attaches them with 00a904e0(this, -1, device). The HRESULT is discarded and the pointer dereferenced on the next instruction; a failed allocation is passed on as null. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | Runtime composition packet orch3_directinput_runtime_g adds DirectInputRuntime over the existing constructor sequence, without a new reconstruction count or native-layout claim. Read-only assembly: GetModuleHandleA(null), actual DirectInput8Create version800h/IID_D78D8C/output+E0/nullouter, immediate AddRef, EnumDevices0/1, four XInput constructors; final RET A983B0/1. Real SDK fixture returned HRESULT0 and verified created plus added references and explicit final releases. docs/DIRECTINPUT_RUNTIME.md; reports/directinput_runtime.json. Existing typed null-output/allocation guards and helper-unwind reference limitations remain explicit."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99710",
+      "before": {
+        "address": "00a99710",
+        "function_name": "FUN_00a99710"
+      },
+      "after": {
+        "address": "00a99710",
+        "name": "BSP_JoystickInputDevice_ControlName",
+        "evidence": "Hypothesis, not a recovered symbol. ECX device; output pointer/code stack; EAX output; RET8. full normal body and temporary suffix cleanup; output exception cleanup unresolved. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json. | Hypothesis, not a recovered symbol. ECX device; output pointer/code stack; EAX output; RET8. full normal body and temporary suffix cleanup; output exception cleanup unresolved. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99710",
+      "before": {
+        "address": "00a99710",
+        "function_name": "BSP_JoystickInputDevice_ControlName",
+        "comment": "[BSP reconstruction 00a99710]\nHypothesis, not a recovered symbol. ECX device; output pointer/code stack; EAX output; RET8. full normal body and temporary suffix cleanup; output exception cleanup unresolved. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json. | Hypothesis, not a recovered symbol. ECX device; output pointer/code stack; EAX output; RET8. full normal body and temporary suffix cleanup; output exception cleanup unresolved. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json."
+      },
+      "after": {
+        "address": "00a99710",
+        "name": "BSP_JoystickInputDevice_ControlName",
+        "evidence": "Hypothesis, not a recovered symbol. ECX device; output pointer/code stack; EAX output; RET8. full normal body and temporary suffix cleanup; output exception cleanup unresolved. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json. | Hypothesis, not a recovered symbol. ECX device; output pointer/code stack; EAX output; RET8. full normal body and temporary suffix cleanup; output exception cleanup unresolved. Full normal body checked in live assembly; docs/JOYSTICK_LABELS.md; reports/joystick_labels.json. | Result unwind now recovered: FuncInfo DECEEC, five-entry map DECF10. Suffix states1..4 transition to0; CB6A70 checks result bit and invokes41DD20 on output. Free storage without clearing the native header. docs/JOYSTICK_LABELS.md; reports/orch3_joystick_label_unwind_g.json."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    }
+  ],
+  "readback_verified_count": 26,
+  "flow_limits": [
+    "A95A80 stored body still ends A95B93 after tail instruction repair",
+    "A991F0 stored body still ends A99227 after tail instruction repair; original last RET is A992DE",
+    "No callee no-return flags changed; no function deletion/recreation"
+  ],
+  "tag_corrections": "reports/orch3_joystick_tag_corrections_g.json",
+  "integration_validation": {
+    "strict_build": "local/joystick-labels-unwind-g-build.log",
+    "ctests_passed": 2,
+    "directinput_fixture": "local/directinput-runtime-g-composed-fixture.log",
+    "directinput_fixture_exit": 0,
+    "directinput_fixture_real_create_hresult": 0,
+    "directinput_fixture_scope": "actual interface/AddRef/two Releases plus four XInput wrappers against canonical force base; no device enumeration or controller calls",
+    "label_fixture": "local/joystick-labels-unwind-g-fixture.log",
+    "label_fixture_exit": 0
+  }
+}
