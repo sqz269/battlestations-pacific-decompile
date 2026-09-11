@@ -1,0 +1,75 @@
+{
+  "packet": "orch2_input_script_startup",
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "base_commit": "c33924f",
+  "source": "src/input_script_startup.cpp",
+  "documentation": "docs/INPUT_SCRIPT_STARTUP.md",
+  "names_are_hypotheses": true,
+  "ghidra_name_annotations": "existing names retained; appended evidence pending integrator locked annotation batch",
+  "entries": [
+    {
+      "address": "006a7be0",
+      "name": "BSP_InputSettings_LoadDataTables",
+      "kind": "function",
+      "native_end_exclusive": "006a9844",
+      "original_abi": "ECX this; plain RET; no recovered return value",
+      "cpp_symbol": "bsp::InputScriptStartup::load_data_tables_006a7be0",
+      "evidence": [
+        "006a7c09..006a7c25 guard+4 set before persistent owner+78 mask1 open",
+        "006a7c2a..006a7c47 ControlPresets forward-slash literal, flag0",
+        "006a7c74..006a7cb7 temporary owner and mask1 KeyboardSetup execution",
+        "006a7cee/006a7d32 clear only devices and device_order",
+        "006a947a DEVINPUTS stored before006a94bd ControllerInputNames execution in same temporary owner",
+        "006a9829 destroys temporary owner;006a9843 RET"
+      ],
+      "flow_gaps": {"call_fallthroughs": 0, "non_call_alignment_gaps": 2, "repair_required": false}
+    },
+    {
+      "address": "006ab6b0",
+      "name": "BSP_InputSettings_Construct",
+      "kind": "fragment",
+      "native_end_exclusive": "006ab7fc",
+      "original_abi": "ECX this; EAX returns this; plain RET",
+      "cpp_symbol": "bsp::InputScriptStartup::InputScriptStartup",
+      "evidence": [
+        "006ab6da..006ab7c6 vtable/five tree heads/three vectors",
+        "006ab7d1 constructs native Lua owner+78",
+        "006ab7dd and006ab7e0 separately clear+4/+5;006ab7e3 calls loader",
+        "006ab7ed EAX=this;006ab7fb RET"
+      ],
+      "flow_gaps": {"call_fallthroughs": 0, "non_call_alignment_gaps": 0, "repair_required": false},
+      "unmodeled": ["native trees+54/+6c unused by loader", "native layout/vtable/allocator", "singleton getter and registry"]
+    }
+  ],
+  "dependencies_reused": ["VfsLuaScriptFiles", "LuaScriptRuntime", "PcStorageLuaOwner", "load_keyboard_setup", "load_controller_input_names"],
+  "validation": {
+    "verify_seeds": "8of8 match disk bytes",
+    "build": "scripts/build.ps1 MSVC Win32 Release pass",
+    "build_log": "local/input_script_startup_build.log",
+    "existing_tests": "2of2 pass",
+    "ignored_fixture": "local/input_script_startup_fixture.cpp",
+    "fixture_runner": "local/run_input_script_startup_fixture.ps1",
+    "fixture_log": "local/input_script_startup_fixture.log",
+    "fixture": "pass installed scripts and nested DoFile via actual VFS, suffix execution, mask1, state isolation/sharing, parse-before-controller, guard+4 and runtime+5 preservation, persistent MULTRET, temporary and persistent close",
+    "fixture_counts": {"devices": 4, "input_names": 16, "controller_maps_including_fixture": 13, "successful_reads": 12, "observed_owner_closes": 2},
+    "installed_sources": [
+      {"relative_path": "scripts/fundamentals.lua", "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"},
+      {"relative_path": "scripts/datatables/controlpresets.lua", "sha256": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f"},
+      {"relative_path": "scripts/datatables/KeyboardSetup.lua", "sha256": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb"},
+      {"relative_path": "scripts/datatables/controllerinputnames.lua", "sha256": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"},
+      {"relative_path": "scripts/datatables/inputs.lua", "sha256": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"}
+    ],
+    "installed_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "installation_modified": false,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "host_adaptations": [
+    "new C++ owned aggregate, standard containers and unique ownership",
+    "existing protected Lua/schema failures throw instead of native panic/fault",
+    "C++ Lua owner allocation/environment capture follows guard, before open; native wrapper construct precedes cleared flags"
+  ],
+  "annotation_before": "local/input_script_startup_comments_before.json"
+}
