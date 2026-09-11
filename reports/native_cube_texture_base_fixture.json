@@ -1,0 +1,1001 @@
+{
+  "packet": "native_cube_texture_base_fixture",
+  "generated_at": "2026-09-11T05:31:46.746232+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-base-fixture-20260910",
+  "branch": "agent/native-cube-texture-base-fixture-20260910",
+  "base_commit": "34a35b20dda472158d1cb47f1160d625ef673029",
+  "owned_tracked_files": [
+    "docs/NATIVE_CUBE_TEXTURE_BASE_FIXTURE.md",
+    "reports/native_cube_texture_base_fixture.json"
+  ],
+  "status": "complete_native_owned_constructor_and_forwarding_entry_compared_against_frozen_primary_library",
+  "production_defects_found": [],
+  "production_changes": false,
+  "permanent_test_target_added": false,
+  "ghidra_mutations": false,
+  "shared_metadata_edits": false,
+  "preparation": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_each_live_read": true,
+    "executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b34020",
+        "length": 71,
+        "role": "complete_constructor",
+        "offset": 7553056,
+        "hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70080f2d500c20800",
+        "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+        "live_PE_match": true,
+        "instructions": [
+          "00b34020: mov eax, ecx",
+          "00b34022: mov dword ptr [eax], 0xceb130",
+          "00b34028: xor ecx, ecx",
+          "00b3402a: mov dword ptr [eax], 0xd5f1f4",
+          "00b34030: mov edx, 1",
+          "00b34035: mov dword ptr [eax + 4], edx",
+          "00b34038: mov dword ptr [eax + 8], ecx",
+          "00b3403b: mov dword ptr [eax + 0xc], ecx",
+          "00b3403e: mov dword ptr [eax + 0x14], ecx",
+          "00b34041: mov ecx, dword ptr [esp + 4]",
+          "00b34045: mov dword ptr [eax + 0x10], ecx",
+          "00b34048: mov ecx, dword ptr [esp + 8]",
+          "00b3404c: mov dword ptr [eax + 0x1c], ecx",
+          "00b3404f: mov ecx, dword ptr [0x108d6e8]",
+          "00b34055: mov dword ptr [eax + 0x20], ecx",
+          "00b34058: add dword ptr [0x108d6e8], edx",
+          "00b3405e: mov dword ptr [eax], 0xd5f280",
+          "00b34064: ret 8"
+        ]
+      },
+      {
+        "address": "00b34090",
+        "length": 5,
+        "role": "complete_unwind_entry",
+        "offset": 7553168,
+        "hex": "e9bbfeffff",
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+        "live_PE_match": true,
+        "instructions": [
+          "00b34090: jmp 0xb33f50"
+        ]
+      },
+      {
+        "address": "00b33f50",
+        "length": 5,
+        "role": "genuine_named_base_provider_bridge",
+        "offset": 7552848,
+        "hex": "6aff6898e0",
+        "sha256": "e9b44cda5264cb84391699c999afcf2aa08b3c0e78be81a8a501b408d8622051",
+        "live_PE_match": true
+      }
+    ],
+    "source_pins": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_cube_texture_base.hpp",
+        "snapshot": "local\\cube_base_fixture\\production\\include\\bsp\\native_cube_texture_base.hpp",
+        "bytes": 1382,
+        "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_cube_texture_base.cpp",
+        "snapshot": "local\\cube_base_fixture\\production\\src\\native_cube_texture_base.cpp",
+        "bytes": 1518,
+        "sha256": "9b0f4adc8b12a058b0e539eacf6fd8d0d8e6ff436596d9757e31412d6add87dc"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_logical_texture_named_base.hpp",
+        "snapshot": "local\\cube_base_fixture\\production\\include\\bsp\\native_logical_texture_named_base.hpp",
+        "bytes": 2598,
+        "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_logical_texture_named_base.cpp",
+        "snapshot": "local\\cube_base_fixture\\production\\src\\native_logical_texture_named_base.cpp",
+        "bytes": 4363,
+        "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string.hpp",
+        "snapshot": "local\\cube_base_fixture\\production\\include\\bsp\\native_string.hpp",
+        "bytes": 6001,
+        "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string.cpp",
+        "snapshot": "local\\cube_base_fixture\\production\\src\\native_string.cpp",
+        "bytes": 6003,
+        "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\storage_pool.hpp",
+        "snapshot": "local\\cube_base_fixture\\production\\include\\bsp\\storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\src\\storage_pool.cpp",
+        "snapshot": "local\\cube_base_fixture\\production\\src\\storage_pool.cpp",
+        "bytes": 6169,
+        "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+      }
+    ],
+    "primary_library": {
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-base-primary-check\\bsp_core.linked.lib",
+      "snapshot": "local\\cube_base_fixture\\bsp_core.linked.lib",
+      "bytes": 26192886,
+      "sha256": "e868288d29c1a2d75b09e520ea75648a792c9976d74b7b5307a381563e11ee6c"
+    },
+    "production_recompiled": false,
+    "source_aliases": false
+  },
+  "verification": {
+    "passed": true,
+    "postimage_checks": [
+      {
+        "mode": "native",
+        "scenario": 0,
+        "address": "00b34020",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 49,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          },
+          {
+            "offset": 58,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          }
+        ],
+        "sha256": "cedf807e422c0207425a04ea0004424a77c3c08f82b16b36b6691c8aacb1f728"
+      },
+      {
+        "mode": "native",
+        "scenario": 0,
+        "address": "00b34090",
+        "complete_postimage_verified": true,
+        "patches": [],
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+      },
+      {
+        "mode": "native",
+        "scenario": 0,
+        "address": "00b33f50",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 0,
+            "bytes": 5,
+            "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+          }
+        ],
+        "sha256": "42c7b655bf976523d27025af2b63728acbbdd6510f36fbb3f28de026a68432a9"
+      },
+      {
+        "mode": "native",
+        "scenario": 1,
+        "address": "00b34020",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 49,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          },
+          {
+            "offset": 58,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          }
+        ],
+        "sha256": "91d3ec0a1a855c4729c75957efd5bb1240d61e26c4918827fcb57d9e3dd26d38"
+      },
+      {
+        "mode": "native",
+        "scenario": 1,
+        "address": "00b34090",
+        "complete_postimage_verified": true,
+        "patches": [],
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+      },
+      {
+        "mode": "native",
+        "scenario": 1,
+        "address": "00b33f50",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 0,
+            "bytes": 5,
+            "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+          }
+        ],
+        "sha256": "42c7b655bf976523d27025af2b63728acbbdd6510f36fbb3f28de026a68432a9"
+      },
+      {
+        "mode": "native",
+        "scenario": 2,
+        "address": "00b34020",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 49,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          },
+          {
+            "offset": 58,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          }
+        ],
+        "sha256": "692dc92cf8a770f3aee74aafcf58c4c8ff3d6f78eda1d99c4133be6f9fd7e0ab"
+      },
+      {
+        "mode": "native",
+        "scenario": 2,
+        "address": "00b34090",
+        "complete_postimage_verified": true,
+        "patches": [],
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+      },
+      {
+        "mode": "native",
+        "scenario": 2,
+        "address": "00b33f50",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 0,
+            "bytes": 5,
+            "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+          }
+        ],
+        "sha256": "42c7b655bf976523d27025af2b63728acbbdd6510f36fbb3f28de026a68432a9"
+      },
+      {
+        "mode": "host",
+        "scenario": 0,
+        "address": "00b34020",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 49,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          },
+          {
+            "offset": 58,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          }
+        ],
+        "sha256": "6de3e8c6e10642705fe0c8a2092c81eb88ea255d12a84ed895289eb0b566f5b1"
+      },
+      {
+        "mode": "host",
+        "scenario": 0,
+        "address": "00b34090",
+        "complete_postimage_verified": true,
+        "patches": [],
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+      },
+      {
+        "mode": "host",
+        "scenario": 0,
+        "address": "00b33f50",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 0,
+            "bytes": 5,
+            "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+          }
+        ],
+        "sha256": "99854f874e793862166772a05c8954287851b408313976e485977619e1a3dd56"
+      },
+      {
+        "mode": "host",
+        "scenario": 1,
+        "address": "00b34020",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 49,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          },
+          {
+            "offset": 58,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          }
+        ],
+        "sha256": "b7885ef6a91ed36f5ca4b20092f00c6b631eac934302e3ec41b07357c72636eb"
+      },
+      {
+        "mode": "host",
+        "scenario": 1,
+        "address": "00b34090",
+        "complete_postimage_verified": true,
+        "patches": [],
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+      },
+      {
+        "mode": "host",
+        "scenario": 1,
+        "address": "00b33f50",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 0,
+            "bytes": 5,
+            "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+          }
+        ],
+        "sha256": "99854f874e793862166772a05c8954287851b408313976e485977619e1a3dd56"
+      },
+      {
+        "mode": "host",
+        "scenario": 2,
+        "address": "00b34020",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 49,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          },
+          {
+            "offset": 58,
+            "bytes": 4,
+            "role": "same_actual_backed_serial_operand"
+          }
+        ],
+        "sha256": "bf14ec079a8d9c7df3387f6cf3922a47b746b0b7c05501d1e25fdbcc22983b0d"
+      },
+      {
+        "mode": "host",
+        "scenario": 2,
+        "address": "00b34090",
+        "complete_postimage_verified": true,
+        "patches": [],
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+      },
+      {
+        "mode": "host",
+        "scenario": 2,
+        "address": "00b33f50",
+        "complete_postimage_verified": true,
+        "patches": [
+          {
+            "offset": 0,
+            "bytes": 5,
+            "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+          }
+        ],
+        "sha256": "99854f874e793862166772a05c8954287851b408313976e485977619e1a3dd56"
+      }
+    ],
+    "providers": [
+      {
+        "symbol": "?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z",
+        "address": 805331264,
+        "provider": "bsp_core.linked:native_cube_texture_base.obj"
+      },
+      {
+        "symbol": "?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "address": 805331488,
+        "provider": "bsp_core.linked:native_cube_texture_base.obj"
+      },
+      {
+        "symbol": "?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "address": 805331504,
+        "provider": "bsp_core.linked:native_logical_texture_named_base.obj"
+      },
+      {
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "address": 805331216,
+        "provider": "bsp_core.linked:native_string.obj"
+      },
+      {
+        "symbol": "?allocate@PooledStringStorage@bsp@@UAEPADI@Z",
+        "address": 805331200,
+        "provider": "bsp_core.linked:native_string.obj"
+      },
+      {
+        "symbol": "?release@PooledStringStorage@bsp@@UAEXPADI@Z",
+        "address": 805331248,
+        "provider": "bsp_core.linked:native_string.obj"
+      },
+      {
+        "symbol": "?allocate_00bd1120@SizedStoragePool@bsp@@QAEPAXI@Z",
+        "address": 805330144,
+        "provider": "bsp_core.linked:storage_pool.obj"
+      },
+      {
+        "symbol": "?release_00bd1510@SizedStoragePool@bsp@@QAEXPAXI@Z",
+        "address": 805330832,
+        "provider": "bsp_core.linked:storage_pool.obj"
+      },
+      {
+        "symbol": "?string_pool_config_00419cc0@bsp@@YA?AUSizedStoragePoolConfig@1@XZ",
+        "address": 805331152,
+        "provider": "bsp_core.linked:storage_pool.obj"
+      },
+      {
+        "symbol": "??0SizedStoragePool@bsp@@QAE@ABUSizedStoragePoolConfig@1@AAVSystemAllocator@1@@Z",
+        "address": 805329296,
+        "provider": "bsp_core.linked:storage_pool.obj"
+      },
+      {
+        "symbol": "?crt_system_allocator@bsp@@YAAAVSystemAllocator@1@XZ",
+        "address": 805330736,
+        "provider": "bsp_core.linked:storage_pool.obj"
+      }
+    ],
+    "compiled_provider_bodies": [
+      {
+        "symbol": "?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z",
+        "address": 805331264,
+        "provider": "bsp_core.linked:native_cube_texture_base.obj",
+        "bytes": 224,
+        "sha256": "f9a7be133dfe07d7ff7683059791143eb4f44cd6b8081cbd364ebdec13964b7f",
+        "instructions": [
+          "30006140: push ebp",
+          "30006141: mov ebp, esp",
+          "30006143: push ecx",
+          "30006144: mov eax, dword ptr [ebp + 8]",
+          "30006147: mov edx, 0",
+          "3000614c: mov ecx, 0xceb130",
+          "30006151: mov dword ptr [eax + edx], ecx",
+          "30006154: mov eax, dword ptr [ebp + 8]",
+          "30006157: mov edx, 0",
+          "3000615c: mov ecx, 0xd5f1f4",
+          "30006161: mov dword ptr [eax + edx], ecx",
+          "30006164: mov eax, dword ptr [ebp + 8]",
+          "30006167: mov edx, 4",
+          "3000616c: mov ecx, 1",
+          "30006171: mov dword ptr [eax + edx], ecx",
+          "30006174: mov eax, dword ptr [ebp + 8]",
+          "30006177: mov edx, 8",
+          "3000617c: mov ecx, 0",
+          "30006181: mov dword ptr [eax + edx], ecx",
+          "30006184: mov eax, dword ptr [ebp + 8]",
+          "30006187: mov edx, 0xc",
+          "3000618c: mov ecx, 0",
+          "30006191: mov dword ptr [eax + edx], ecx",
+          "30006194: mov eax, dword ptr [ebp + 8]",
+          "30006197: mov edx, 0x14",
+          "3000619c: mov ecx, 0",
+          "300061a1: mov dword ptr [eax + edx], ecx",
+          "300061a4: mov eax, dword ptr [ebp + 8]",
+          "300061a7: mov edx, 0x10",
+          "300061ac: mov ecx, dword ptr [ebp + 0xc]",
+          "300061af: mov dword ptr [eax + edx], ecx",
+          "300061b2: mov eax, dword ptr [ebp + 8]",
+          "300061b5: mov edx, 0x1c",
+          "300061ba: mov ecx, dword ptr [ebp + 0x10]",
+          "300061bd: mov dword ptr [eax + edx], ecx",
+          "300061c0: mov eax, dword ptr [ebp + 0x14]",
+          "300061c3: mov edx, 0",
+          "300061c8: mov eax, dword ptr [eax + edx]",
+          "300061cb: mov dword ptr [ebp - 4], eax",
+          "300061ce: mov eax, dword ptr [ebp - 4]",
+          "300061d1: mov dword ptr [ebp - 4], eax",
+          "300061d4: mov eax, dword ptr [ebp + 8]",
+          "300061d7: mov edx, 0x20",
+          "300061dc: mov ecx, dword ptr [ebp - 4]",
+          "300061df: mov dword ptr [eax + edx], ecx",
+          "300061e2: mov eax, dword ptr [ebp + 0x14]",
+          "300061e5: mov edx, 0",
+          "300061ea: mov eax, dword ptr [eax + edx]",
+          "300061ed: mov dword ptr [ebp - 4], eax",
+          "300061f0: inc dword ptr [ebp - 4]",
+          "300061f3: mov eax, dword ptr [ebp + 0x14]",
+          "300061f6: mov edx, 0",
+          "300061fb: mov ecx, dword ptr [ebp - 4]",
+          "300061fe: mov dword ptr [eax + edx], ecx",
+          "30006201: mov eax, dword ptr [ebp + 8]",
+          "30006204: mov edx, 0",
+          "30006209: mov ecx, 0xd5f280",
+          "3000620e: mov dword ptr [eax + edx], ecx",
+          "30006211: mov eax, dword ptr [ebp + 8]",
+          "30006214: mov esp, ebp",
+          "30006216: pop ebp",
+          "30006217: ret ",
+          "30006218: int3 ",
+          "30006219: int3 ",
+          "3000621a: int3 ",
+          "3000621b: int3 ",
+          "3000621c: int3 ",
+          "3000621d: int3 ",
+          "3000621e: int3 ",
+          "3000621f: int3 "
+        ]
+      },
+      {
+        "symbol": "?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "address": 805331488,
+        "provider": "bsp_core.linked:native_cube_texture_base.obj",
+        "bytes": 16,
+        "sha256": "44ee56a41dc861ee5c1505f5066a58a216b3c0e1ac6cd3f7b154f2e3924e3a20",
+        "instructions": [
+          "30006220: jmp 0x30006230",
+          "30006225: int3 ",
+          "30006226: int3 ",
+          "30006227: int3 ",
+          "30006228: int3 ",
+          "30006229: int3 ",
+          "3000622a: int3 ",
+          "3000622b: int3 ",
+          "3000622c: int3 ",
+          "3000622d: int3 ",
+          "3000622e: int3 ",
+          "3000622f: int3 "
+        ]
+      },
+      {
+        "symbol": "?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "address": 805331504,
+        "provider": "bsp_core.linked:native_logical_texture_named_base.obj",
+        "bytes": 37,
+        "sha256": "7caa783b2bd65c1649353afbf8fce6703c2459c01f343cd8c1f1848e4dcda5e5",
+        "instructions": [
+          "30006230: push ebp",
+          "30006231: mov ebp, esp",
+          "30006233: push esi",
+          "30006234: mov esi, dword ptr [ebp + 8]",
+          "30006237: push dword ptr [ebp + 0xc]",
+          "3000623a: lea eax, [esi + 8]",
+          "3000623d: mov dword ptr [esi], 0xd5f1f4",
+          "30006243: push eax",
+          "30006244: call 0x30006110",
+          "30006249: add esp, 8",
+          "3000624c: mov dword ptr [esi], 0xceb130",
+          "30006252: pop esi",
+          "30006253: pop ebp",
+          "30006254: ret "
+        ]
+      },
+      {
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "address": 805331216,
+        "provider": "bsp_core.linked:native_string.obj",
+        "bytes": 32,
+        "sha256": "5705d49f6f1c093297c7c90ca540867b6f2fe53d3e150699d600154aad6d756b",
+        "instructions": [
+          "30006110: push ebp",
+          "30006111: mov ebp, esp",
+          "30006113: mov eax, dword ptr [ebp + 8]",
+          "30006116: mov ecx, dword ptr [eax + 4]",
+          "30006119: test ecx, ecx",
+          "3000611b: je 0x3000612a",
+          "3000611d: mov eax, dword ptr [eax]",
+          "3000611f: inc eax",
+          "30006120: push eax",
+          "30006121: push ecx",
+          "30006122: mov ecx, dword ptr [ebp + 0xc]",
+          "30006125: mov eax, dword ptr [ecx]",
+          "30006127: call dword ptr [eax + 8]",
+          "3000612a: pop ebp",
+          "3000612b: ret ",
+          "3000612c: int3 ",
+          "3000612d: int3 ",
+          "3000612e: int3 ",
+          "3000612f: int3 "
+        ]
+      },
+      {
+        "symbol": "?allocate@PooledStringStorage@bsp@@UAEPADI@Z",
+        "address": 805331200,
+        "provider": "bsp_core.linked:native_string.obj",
+        "bytes": 16,
+        "sha256": "c1cc2a1af77d242da3dd398a54b8e9298258afd7a7a3225449a8bdc0f51d9bc3",
+        "instructions": [
+          "30006100: push ebp",
+          "30006101: mov ebp, esp",
+          "30006103: mov ecx, dword ptr [ecx + 4]",
+          "30006106: pop ebp",
+          "30006107: jmp 0x30005ce0",
+          "3000610c: int3 ",
+          "3000610d: int3 ",
+          "3000610e: int3 ",
+          "3000610f: int3 "
+        ]
+      },
+      {
+        "symbol": "?release@PooledStringStorage@bsp@@UAEXPADI@Z",
+        "address": 805331248,
+        "provider": "bsp_core.linked:native_string.obj",
+        "bytes": 16,
+        "sha256": "92b2945837c47375980c4563cab6e51b91ced33ed6aa19768d4e03447fce6f57",
+        "instructions": [
+          "30006130: push ebp",
+          "30006131: mov ebp, esp",
+          "30006133: mov ecx, dword ptr [ecx + 4]",
+          "30006136: pop ebp",
+          "30006137: jmp 0x30005f90",
+          "3000613c: int3 ",
+          "3000613d: int3 ",
+          "3000613e: int3 ",
+          "3000613f: int3 "
+        ]
+      },
+      {
+        "symbol": "?named_base_bridge@@YIXPAX0@Z",
+        "address": 805320864,
+        "provider": "fixture.obj",
+        "bytes": 32,
+        "sha256": "364cc1d44c6a256ab139c992909c97b7d6b2a32a220f142a9f94663fd1a22e38",
+        "instructions": [
+          "300038a0: push dword ptr [0x3000c42c]",
+          "300038a6: inc dword ptr [0x3000c430]",
+          "300038ac: push ecx",
+          "300038ad: call 0x30006230",
+          "300038b2: add esp, 8",
+          "300038b5: ret ",
+          "300038b6: int3 ",
+          "300038b7: int3 ",
+          "300038b8: int3 ",
+          "300038b9: int3 ",
+          "300038ba: int3 ",
+          "300038bb: int3 ",
+          "300038bc: int3 ",
+          "300038bd: int3 ",
+          "300038be: int3 ",
+          "300038bf: int3 "
+        ]
+      }
+    ],
+    "actual_pooled_string_vtable": {
+      "address": "30008374",
+      "words": [
+        "30002ac0",
+        "30006100",
+        "30006130"
+      ],
+      "actual_library_allocate_release": true
+    },
+    "store_checks": [
+      {
+        "mode": "native",
+        "scenario": 0,
+        "constructor_store_count": 11,
+        "actual_instruction_PC_verified": true
+      },
+      {
+        "mode": "native",
+        "scenario": 1,
+        "constructor_store_count": 11,
+        "actual_instruction_PC_verified": true
+      },
+      {
+        "mode": "native",
+        "scenario": 2,
+        "constructor_store_count": 11,
+        "actual_instruction_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "scenario": 0,
+        "constructor_store_count": 11,
+        "actual_instruction_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "scenario": 1,
+        "constructor_store_count": 11,
+        "actual_instruction_PC_verified": true
+      },
+      {
+        "mode": "host",
+        "scenario": 2,
+        "constructor_store_count": 11,
+        "actual_instruction_PC_verified": true
+      }
+    ],
+    "trace": {
+      "words": 1152,
+      "bytes": 4608,
+      "observed_stores": 35,
+      "sha256": "48e5826d9974dc4777f07a9b9834dfba2c65999100fcbee26aacb08f11a9a455",
+      "matched": true,
+      "decoded_events": 79
+    },
+    "source_pins_reverified_current": true,
+    "primary_library_reverified_current": true,
+    "installed_PE_reverified_current": true,
+    "all_eight_seeds_matched": true
+  },
+  "scenarios": [
+    {
+      "serial_backing": "separate_actual_DWORD_initial_FFFFFFFF",
+      "owner_serial": "FFFFFFFF",
+      "final_shared_serial": "00000000",
+      "stores": 11
+    },
+    {
+      "serial_backing": "owner_plus_00",
+      "owner_serial": "00D5F1F4",
+      "final_owner_profile": "00D5F280",
+      "stores": 11
+    },
+    {
+      "serial_backing": "backed_unaligned_owner_plus_1E",
+      "owner_serial": "00087654",
+      "final_shared_serial": "76547655",
+      "final_flags": "76553210",
+      "reload_after_overlapping_owner_serial_store_proved": true,
+      "stores": 11
+    }
+  ],
+  "current_name_cleanup": {
+    "native_owned_entry": "00B34090",
+    "native_owned_entry_bytes_unchanged": true,
+    "explicit_dependency_bridge": "00B33F50",
+    "genuine_provider": "destroy_native_logical_texture_named_base_00b33f50",
+    "string_storage": "actual_PooledStringStorage_over_actual_SizedStoragePool",
+    "geometry": "string_pool_config_00419cc0",
+    "abandoned_prior_name_allocation_bytes": 7,
+    "current_name_allocation_bytes": 14,
+    "profile_stores": [
+      "00D5F1F4",
+      "00CEB130"
+    ],
+    "pool_free_counts_at_profile_stores": [
+      0,
+      1
+    ],
+    "exact_current_name_pointer_reused": true,
+    "current_name_header_retained": true,
+    "abandoned_old_name_not_returned": true,
+    "nonprofile_owner_words_and_serial_retained": true,
+    "fixture_cleanup_after_observed_execution_and_reuse_checks": true
+  },
+  "build": {
+    "target": "MSVC_Win32_fixture_only",
+    "flags": [
+      "/W4",
+      "/WX",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/EHsc",
+      "/fp:strict"
+    ],
+    "production_library_recompiled": false,
+    "passed": true
+  },
+  "runtime": {
+    "processes": 2,
+    "native_returncode": 0,
+    "host_returncode": 0,
+    "all_constructor_store_PCs_verified": true,
+    "all_destructor_store_PCs_from_actual_primary_named_base": true,
+    "matched_trace_words": 1152,
+    "matched_trace_bytes": 4608,
+    "actual_store_count_per_mode": 35,
+    "normalization": [
+      "two_actual_name_buffer_pointer_identities_only"
+    ],
+    "raw_program_counters_retained_separately": true,
+    "owner_bytes_observed": 64,
+    "preserved_offsets": [
+      "18..1B",
+      "24..3F_including_raw_pool_slot_30"
+    ]
+  },
+  "limitations": [
+    "B33F50 original body and original native string-pool instructions remain explicit dependency boundaries; both comparison modes use the genuine existing compiled C++ providers.",
+    "Three standalone-backed serial bindings test current source contract; no original global-address integration claim.",
+    "No independent original exception-dispatch test or arbitrary throwing NativeStringStorage provider claim.",
+    "No original binary replacement ABI, game validation or visual/render proof."
+  ],
+  "artifacts": [
+    {
+      "path": "build/cube-base-fixture/build.cmd",
+      "bytes": 906,
+      "sha256": "aceeb35a140b94a1cbf60c84a2d5675eb2430a0fab743b030fcd887bef1785ab"
+    },
+    {
+      "path": "build/cube-base-fixture/cube_base_fixture.exe",
+      "bytes": 43008,
+      "sha256": "6ac7c3561533ae10aa4d5d5f68334632544a40aad8e1a15e538f5d4f33d97dc6"
+    },
+    {
+      "path": "build/cube-base-fixture/cube_base_fixture.map",
+      "bytes": 84615,
+      "sha256": "d32562bca7a6013edbad11c080bcca43375a3fc497a24110e198a59f61ab299e"
+    },
+    {
+      "path": "local/build_cube_base_fixture.ps1",
+      "bytes": 1262,
+      "sha256": "0dba32262b5ed2c93528880b82fefe0c6bebdcb814160b1ecacf6c492c544c0d"
+    },
+    {
+      "path": "local/cube_base_fixture/bsp_core.linked.lib",
+      "bytes": 26192886,
+      "sha256": "e868288d29c1a2d75b09e520ea75648a792c9976d74b7b5307a381563e11ee6c"
+    },
+    {
+      "path": "local/cube_base_fixture/decoded_trace.json",
+      "bytes": 27754,
+      "sha256": "83ed839a10a62de443e83218791d399fc7bed2d954a1e8f995823c09f59e3596"
+    },
+    {
+      "path": "local/cube_base_fixture/fixture.cpp",
+      "bytes": 12409,
+      "sha256": "7eca3e3790763b4fe5586df39b6606d333ad6598f5f1de62dd415d2186283d90"
+    },
+    {
+      "path": "local/cube_base_fixture/live_00b33f50.txt",
+      "bytes": 33,
+      "sha256": "e748ece464ccba3ef8927a4783fb0ef21b2861b94e500eea1809c077b3a2710d"
+    },
+    {
+      "path": "local/cube_base_fixture/live_00b34020.txt",
+      "bytes": 349,
+      "sha256": "8d7a6fc2b116355dd4083987560290bcacdda4383d3f8a3cca390eab2a002630"
+    },
+    {
+      "path": "local/cube_base_fixture/live_00b34090.txt",
+      "bytes": 33,
+      "sha256": "526a7f6bb85e008fabb499afc96ebd2495e70d6fc5f7c0eddb889a3ce743f955"
+    },
+    {
+      "path": "local/cube_base_fixture/preparation.json",
+      "bytes": 5208,
+      "sha256": "e16e8aedd4db71363cccd5dea98fbe17591ed2467920738bb4fcb2947e9d52e8"
+    },
+    {
+      "path": "local/cube_base_fixture/production/include/bsp/native_cube_texture_base.hpp",
+      "bytes": 1382,
+      "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb"
+    },
+    {
+      "path": "local/cube_base_fixture/production/include/bsp/native_logical_texture_named_base.hpp",
+      "bytes": 2598,
+      "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+    },
+    {
+      "path": "local/cube_base_fixture/production/include/bsp/native_string.hpp",
+      "bytes": 6001,
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "local/cube_base_fixture/production/include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "local/cube_base_fixture/production/src/native_cube_texture_base.cpp",
+      "bytes": 1518,
+      "sha256": "9b0f4adc8b12a058b0e539eacf6fd8d0d8e6ff436596d9757e31412d6add87dc"
+    },
+    {
+      "path": "local/cube_base_fixture/production/src/native_logical_texture_named_base.cpp",
+      "bytes": 4363,
+      "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+    },
+    {
+      "path": "local/cube_base_fixture/production/src/native_string.cpp",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "local/cube_base_fixture/production/src/storage_pool.cpp",
+      "bytes": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/postimages_0.json",
+      "bytes": 338,
+      "sha256": "61702781ddefdec0dc07cf5790dba1ed16c6820448e015489fe9a19baa6a9f96"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/postimages_1.json",
+      "bytes": 339,
+      "sha256": "de4ecbecbee077f664b89b4b25b773a00d0f04bd68f76c7f65dcd615bda106d6"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/postimages_2.json",
+      "bytes": 339,
+      "sha256": "2fb653518273933fa5d5e244da269de20c37a2b985840925bec3d95d8249ee65"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/result.json",
+      "bytes": 123,
+      "sha256": "9b6807c0ac2999ba68df8e58c2b29c64936d0b8389fa08bca072d5340a1ea301"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/run.log",
+      "bytes": 76,
+      "sha256": "ba33c89c51574c3e6b1788d8af54660cf029c0dd696173ab8fbca4bbbc5f8317"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/stores.json",
+      "bytes": 1806,
+      "sha256": "bedc3e7cd374b801d4d345f58ae9e9f8dac3cd9c05ca2efd7595d9d9ea39a5c6"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/host/trace.bin",
+      "bytes": 4608,
+      "sha256": "48e5826d9974dc4777f07a9b9834dfba2c65999100fcbee26aacb08f11a9a455"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/postimages_0.json",
+      "bytes": 339,
+      "sha256": "c520814185946a666cd2ddd05ae01c3ca093cb84e4dbeaf4f3fe89b773581512"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/postimages_1.json",
+      "bytes": 339,
+      "sha256": "07b06959fa99dd2d15d27ea6059dc8127aeaf752d65676f02cff25e813b5decb"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/postimages_2.json",
+      "bytes": 339,
+      "sha256": "7f79414c68baa5359d931b7d24011e29bfc6d475342b4d560c61680a8b6a538b"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/result.json",
+      "bytes": 122,
+      "sha256": "9f6684ad5fac9174daef15a08b6dbb9e12dd6bfe2fd80a5c7a9798ce99bcf08a"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/run.log",
+      "bytes": 78,
+      "sha256": "f03fc99c342c3035ec964687e2900b28ed3134932e5a1eae963c30ad3523f850"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/stores.json",
+      "bytes": 1773,
+      "sha256": "b548ba398efb77677ae2a48ed7ef1ec49d1b9a3b55901b924e2cca18fd8afeef"
+    },
+    {
+      "path": "local/cube_base_fixture/runs/native/trace.bin",
+      "bytes": 4608,
+      "sha256": "48e5826d9974dc4777f07a9b9834dfba2c65999100fcbee26aacb08f11a9a455"
+    },
+    {
+      "path": "local/cube_base_fixture/spans.hpp",
+      "bytes": 753,
+      "sha256": "df22eb3bf18656953a6f93a102534a72e7b17613cfedc25fe12ba80debd23f12"
+    },
+    {
+      "path": "local/cube_base_fixture/verified.json",
+      "bytes": 18345,
+      "sha256": "87867f10466cdd466bc665ac8d8fce50d31c022ad92a24efb37c2e64e473cf76"
+    },
+    {
+      "path": "local/cube_base_fixture/verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/prepare_cube_base_fixture.py",
+      "bytes": 3830,
+      "sha256": "f5aae15ef37592237a91488581df070bf99b1f3d1800dcd0df0848c3076daa6b"
+    },
+    {
+      "path": "local/run_cube_base_fixture.py",
+      "bytes": 835,
+      "sha256": "af7be232d140a80071c95b1dc336124ba9c838c4ad0b612a7faaaef85796f3ac"
+    },
+    {
+      "path": "local/verify_cube_base_fixture.py",
+      "bytes": 8587,
+      "sha256": "c56713615ff829c5d3c76db010099305242d35239cc7593c9070950a069d03c6"
+    },
+    {
+      "path": "local/write_cube_base_report.py",
+      "bytes": 4036,
+      "sha256": "de2bbfc5af61f104a58a778620e84ff509163e65da3bee9458e9744a9bef56fb"
+    }
+  ]
+}

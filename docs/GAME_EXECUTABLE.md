@@ -417,3 +417,12 @@ resolved3/3 VFS probes and exited0; the original executable and live options
 kept their hashes and timestamps. The milestone remains a clear/present process;
 input, GUI and gameplay owners still require integration. Shared native renderer
 API ownership and the full capability record remain outside this settings batch.
+
+### Follow-up: persistent input, renderer and locale owners
+
+See [RUNTIME_STARTUP_OWNERS.md](RUNTIME_STARTUP_OWNERS.md). The executable now
+retains the input-script Lua state and parsed settings, shares one Direct3D API
+and parameter region between settings queries and device creation, and loads
+locale tables with the native setter/register/reload order. The old log label
+`gui_startup` at00aa06d0 referred to locale reload; fonts/GUI resource loading
+at0073bae0 remains unimplemented. Startup process checks do not validate gameplay.

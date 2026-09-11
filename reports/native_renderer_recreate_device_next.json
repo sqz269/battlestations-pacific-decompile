@@ -1,0 +1,1457 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_recreate_device_next",
+  "status": "bounded_read_only_native_dependency_discovery_complete",
+  "generated_utc": "2026-09-11T05:32:25.581060+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_body": {
+    "address": "00b29670",
+    "length": 1191,
+    "end_exclusive": "00b29b17",
+    "hex": "558bec83e4f86aff64a10000000068fbd2cb00506489250000000081ec44010000803ddcd6080100535556578bf1740d8974241ce827a40000884424188bbe9c19000057c784246001000000000000ff151822ce00834718018b068b90980000006a008bcec6868a1d000000ffd28bcee80bb5ffff8bcee8e4a0ffff8bcee8cdcbffffa134d508018b28bf30d50801896c2414897c2410eb078da4240000000085ff8b1d34d50801740881ff30d508017405e8eccf0c003beb742e85ff7505e8dfcf0c003b6f047505e8d5cf0c008b4d20e86a6903008d4c2410e87176ffff8b6c24148b7c2410ebb733ff39beb01a00007626eb0b8da424000000008d6424008b8eac1a00008b0cb9e88205020083c7013bbeb01a000072e733ff39bebc1a00007626eb0b8da424000000008d6424008b96b81a00008b0cbae8d207020083c7013bbebc1a000072e733ff39bec81a00007626eb0b8da424000000008d6424008b86c41a00008b0cb8e83250030083c7013bbec81a000072e733ff39bed41a00007626eb0b8da424000000008d6424008b8ed01a00008b0cb9e8424f030083c7013bbed41a000072e78b967c1a00008bbe781a00006bd22c03d73bfa74228bff8b4f288b018b5028ffd28b867c1a00006bc02c0386781a000083c72c3bf875e0833de8abf800007405e8685910008bae101a000085ed8dbe101a000074128b4d008b510455ffd28b45008b480855ffd18b078b10508b4208ffd08b86901900008d542420526a01c707000000008b086a00508b4138ffd0f744243c0000010074150fb78c24e400000081f901010000b9400000007305b9200000008b86901900008b108b52405783c9048dae281a000055518b8e441a0000516a016a0050ffd233c03986381a00008bce0f95c05068a1000000e858abffff8bcee861c8ffffd9866c1900008b168b82f0000000518bced91c24ffd08bcee8e4a1ffff80be8c1d000000753080be8a1d00000075278b8e741900008b07c6868c1d0000018b118b522050ffd28b8e781900008b018b178b402052ffd0833de8abf8000074098b0f5551e8495810008b1534d508018b2abf30d50801896c2414897c24108d64240085ff8b1d34d50801740881ff30d508017405e86ccd0c003beb742e85ff7505e85fcd0c003b6f047505e855cd0c008b4d20e84a7003008d4c2410e8f173ffff8b6c24148b7c2410ebb733ff39beb01a00007626eb0b8da424000000008d6424008b86ac1a00008b0cb8e8c203020083c7013bbeb01a000072e733ff39bebc1a00007626eb0b8da424000000008d6424008b8eb81a00008b0cb9e81206020083c7013bbebc1a000072e733ff39bec81a00007626eb0b8da424000000008d6424008b96c41a00008b0cbae8824e030083c7013bbec81a000072e733ff39bed41a00007626eb0b8da424000000008d6424008b86d01a00008b0cb8e8024e030083c7013bbed41a000072e78b8e7c1a00008bbe781a00006bc92c03cf3bf974228bff8b4f288b118b422cffd08b8e7c1a00006bc92c038e781a000083c72c3bf975e08bb69c19000083cfff017e1856ff151022ce00803ddcd608010089bc245c010000740e8b5424188b4c241c52e8ff9f00008b8c24540100005f64890d000000005e5d5b8be55dc3",
+    "sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+    "fresh_live_PE_match": true
+  },
+  "fresh_live_PE_spans": [
+    {
+      "address": "00b29670",
+      "length": 1191,
+      "end_exclusive": "00b29b17",
+      "hex": "558bec83e4f86aff64a10000000068fbd2cb00506489250000000081ec44010000803ddcd6080100535556578bf1740d8974241ce827a40000884424188bbe9c19000057c784246001000000000000ff151822ce00834718018b068b90980000006a008bcec6868a1d000000ffd28bcee80bb5ffff8bcee8e4a0ffff8bcee8cdcbffffa134d508018b28bf30d50801896c2414897c2410eb078da4240000000085ff8b1d34d50801740881ff30d508017405e8eccf0c003beb742e85ff7505e8dfcf0c003b6f047505e8d5cf0c008b4d20e86a6903008d4c2410e87176ffff8b6c24148b7c2410ebb733ff39beb01a00007626eb0b8da424000000008d6424008b8eac1a00008b0cb9e88205020083c7013bbeb01a000072e733ff39bebc1a00007626eb0b8da424000000008d6424008b96b81a00008b0cbae8d207020083c7013bbebc1a000072e733ff39bec81a00007626eb0b8da424000000008d6424008b86c41a00008b0cb8e83250030083c7013bbec81a000072e733ff39bed41a00007626eb0b8da424000000008d6424008b8ed01a00008b0cb9e8424f030083c7013bbed41a000072e78b967c1a00008bbe781a00006bd22c03d73bfa74228bff8b4f288b018b5028ffd28b867c1a00006bc02c0386781a000083c72c3bf875e0833de8abf800007405e8685910008bae101a000085ed8dbe101a000074128b4d008b510455ffd28b45008b480855ffd18b078b10508b4208ffd08b86901900008d542420526a01c707000000008b086a00508b4138ffd0f744243c0000010074150fb78c24e400000081f901010000b9400000007305b9200000008b86901900008b108b52405783c9048dae281a000055518b8e441a0000516a016a0050ffd233c03986381a00008bce0f95c05068a1000000e858abffff8bcee861c8ffffd9866c1900008b168b82f0000000518bced91c24ffd08bcee8e4a1ffff80be8c1d000000753080be8a1d00000075278b8e741900008b07c6868c1d0000018b118b522050ffd28b8e781900008b018b178b402052ffd0833de8abf8000074098b0f5551e8495810008b1534d508018b2abf30d50801896c2414897c24108d64240085ff8b1d34d50801740881ff30d508017405e86ccd0c003beb742e85ff7505e85fcd0c003b6f047505e855cd0c008b4d20e84a7003008d4c2410e8f173ffff8b6c24148b7c2410ebb733ff39beb01a00007626eb0b8da424000000008d6424008b86ac1a00008b0cb8e8c203020083c7013bbeb01a000072e733ff39bebc1a00007626eb0b8da424000000008d6424008b8eb81a00008b0cb9e81206020083c7013bbebc1a000072e733ff39bec81a00007626eb0b8da424000000008d6424008b96c41a00008b0cbae8824e030083c7013bbec81a000072e733ff39bed41a00007626eb0b8da424000000008d6424008b86d01a00008b0cb8e8024e030083c7013bbed41a000072e78b8e7c1a00008bbe781a00006bc92c03cf3bf974228bff8b4f288b118b422cffd08b8e7c1a00006bc92c038e781a000083c72c3bf975e08bb69c19000083cfff017e1856ff151022ce00803ddcd608010089bc245c010000740e8b5424188b4c241c52e8ff9f00008b8c24540100005f64890d000000005e5d5b8be55dc3",
+      "sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b1fef0",
+      "length": 7,
+      "end_exclusive": "00b1fef7",
+      "hex": "8b81101a0000c3",
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b600b0",
+      "length": 52,
+      "end_exclusive": "00b600e4",
+      "hex": "568bf1578b7e4085ff74108b078b480457ffd18b178b420857ffd08b464085c0740f8b088b510850ffd2c74640000000005f5ec3",
+      "sha256": "2decac8ce357ed05b6fd65ff309d2b1f7d8e75bea7dbc5bf6c5104c15124de26",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b5e750",
+      "length": 105,
+      "end_exclusive": "00b5e7b9",
+      "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8366e09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+      "sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b5e810",
+      "length": 105,
+      "end_exclusive": "00b5e879",
+      "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8766d09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+      "sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b5e890",
+      "length": 68,
+      "end_exclusive": "00b5e8d4",
+      "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e84216fcff8b560c8b085752508b81a8010000ffd08b4e0c51e8c280090083c404c7460c000000005f5ec3",
+      "sha256": "2e7c0d9661ef0754834b4f26b3ef51ebb4de29121df9310e9d9e62d53a3f7b7d",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b5e8e0",
+      "length": 68,
+      "end_exclusive": "00b5e924",
+      "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e8f215fcff8b560c8b085752508b816c010000ffd08b4e0c51e87280090083c404c7460c000000005f5ec3",
+      "sha256": "8602129831d448716a42da9c0773dcb804d14f2631c778a39c372da93dea40e4",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00cbd2f0",
+      "length": 21,
+      "end_exclusive": "00cbd305",
+      "hex": "8d8db8feffffe9153ee6ffb8d05adf00e93e98f3ff",
+      "sha256": "ca4ec119e89c59e6c700394f5a9fd5f0854ac20090a102608aa9025e7c891b7f",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00df5ac8",
+      "length": 44,
+      "end_exclusive": "00df5af4",
+      "hex": "fffffffff0d2cb002205931901000000c85adf00000000000000000000000000000000000000000001000000",
+      "sha256": "9a252e185bb5635eaa1451cdf67137be7e5bb110923fe2f5d7849537791a3c62",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b21110",
+      "length": 22,
+      "end_exclusive": "00b21126",
+      "hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+      "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b3243b",
+      "length": 13,
+      "end_exclusive": "00b32448",
+      "hex": "c706a8f0d500c7460ca4f0d500",
+      "sha256": "d3321d724108e300089c070fcea14fb2b3e0fa023a9499c8b8e3c5febd798bf5",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00c2f1c0",
+      "length": 12,
+      "end_exclusive": "00c2f1cc",
+      "hex": "ff25d025ce00ff25d425ce00",
+      "sha256": "a18fc805257991b11bb260de758bbd5f2b06c9d422f918eabdc518e49a64fd09",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00bf6713",
+      "length": 16,
+      "end_exclusive": "00bf6723",
+      "hex": "33c05050505050e8d0ffffff83c414c3",
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f140",
+      "length": 4,
+      "end_exclusive": "00d5f144",
+      "hex": "704eb200",
+      "sha256": "2c3c2fb780030a8f21e0d33270ccda46e9bff87f5272a62dab47aab4f47e1da9",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f188",
+      "length": 4,
+      "end_exclusive": "00d5f18c",
+      "hex": "203fb200",
+      "sha256": "1b7fbade132c43fb388e6f00740a08170015dd3ba071b863711b914411c6c2a3",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f198",
+      "length": 4,
+      "end_exclusive": "00d5f19c",
+      "hex": "6019b200",
+      "sha256": "eebaec6ba405711c2d19b0a7ed19e7fcf434d931c53dc153ad657746028054a3",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f1d8",
+      "length": 4,
+      "end_exclusive": "00d5f1dc",
+      "hex": "1047b200",
+      "sha256": "052b98a55783ba43bf0ad2c4649ae37521476795e27c7d0c760c409156cc6348",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f1dc",
+      "length": 4,
+      "end_exclusive": "00d5f1e0",
+      "hex": "4048b200",
+      "sha256": "27b1f1d0293c766c813ce2b85dd052f4c6418006fd5b9cddabd15aed494e955a",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00d5f1e0",
+      "length": 4,
+      "end_exclusive": "00d5f1e4",
+      "hex": "004bb200",
+      "sha256": "1d283e78e430795c371905e902ccb35df1e0d57f3470b9dd39867f2c1484805f",
+      "fresh_live_PE_match": true
+    },
+    {
+      "address": "00b21960",
+      "length": 474,
+      "end_exclusive": "00b21b3a",
+      "hex": "64a1000000006aff68dbcdcb00506489250000000081ec14060000803ddcd608010053578bf974118bdf895c2414e83d21010088442410eb048b5c241480bf531b000000c7842424060000000000007522803ddcd6080100c7842424060000ffffffff0f84580100008b44241050e947010000d9876c190000d984242c060000d9c0d9cadfeaddd99ff6c4440f8b0d010000dc05c03dce00f30f1084242c060000f30f11876c190000dc35883dce00d95c2408d9442408d9eedff1ddd80f86b10000000f57c0f30f11442408d944240856dcc033f6d9e88974240cdef1d95c241cdb44240cdc35484bce00d95c240cd944240cd944241ce8b4d00d00d95c240cd944240c83c601dc0d905fce00d97c240c0fb744240c0d000c000081fe0001000089442410d96c2410db5c2410668b442410668984741e040000668984741e020000d96c240c668944741e8974240c7c9080bf541b0000008bbf101a00008b0f8b41545e8d54241c52742b6a016a0057ffd0eb2df30f10442408f30f100d4ca2d7000f2fc10f863bfffffff30f114c2408e936ffffff6a006a0057ffd0eb02ddd8803ddcd6080100c7842424060000ffffffff740c8b4c2410518bcbe8df1f01008b8c241c0600005f5b64890d0000000081c420060000c20400",
+      "sha256": "395daf39c6ea3f1871fd11d6aea7b1d6e5d9d2005f6d876b39fd3ffc26ef894a",
+      "fresh_live_PE_match": true
+    }
+  ],
+  "span_count": 20,
+  "span_bytes": 2222,
+  "native_abi": "ECX actual renderer; no stack arguments; RET; native void semantics. EBP frame and eight-byte stack alignment; original FH3 handler CBD2FB.",
+  "native_calls": [
+    {
+      "site": "00b296a4",
+      "instruction": "call 0xb33ad0",
+      "immediate_target": "00b33ad0"
+    },
+    {
+      "site": "00b296bf",
+      "instruction": "call dword ptr [0xce2218]",
+      "immediate_target": null
+    },
+    {
+      "site": "00b296dc",
+      "instruction": "call edx",
+      "immediate_target": null
+    },
+    {
+      "site": "00b296e0",
+      "instruction": "call 0xb24bf0",
+      "immediate_target": "00b24bf0"
+    },
+    {
+      "site": "00b296e7",
+      "instruction": "call 0xb237d0",
+      "immediate_target": "00b237d0"
+    },
+    {
+      "site": "00b296ee",
+      "instruction": "call 0xb262c0",
+      "immediate_target": "00b262c0"
+    },
+    {
+      "site": "00b29722",
+      "instruction": "call 0xbf6713",
+      "immediate_target": "00bf6713"
+    },
+    {
+      "site": "00b2972f",
+      "instruction": "call 0xbf6713",
+      "immediate_target": "00bf6713"
+    },
+    {
+      "site": "00b29739",
+      "instruction": "call 0xbf6713",
+      "immediate_target": "00bf6713"
+    },
+    {
+      "site": "00b29741",
+      "instruction": "call 0xb600b0",
+      "immediate_target": "00b600b0"
+    },
+    {
+      "site": "00b2974a",
+      "instruction": "call 0xb20dc0",
+      "immediate_target": "00b20dc0"
+    },
+    {
+      "site": "00b29779",
+      "instruction": "call 0xb49d00",
+      "immediate_target": "00b49d00"
+    },
+    {
+      "site": "00b297a9",
+      "instruction": "call 0xb49f80",
+      "immediate_target": "00b49f80"
+    },
+    {
+      "site": "00b297d9",
+      "instruction": "call 0xb5e810",
+      "immediate_target": "00b5e810"
+    },
+    {
+      "site": "00b29809",
+      "instruction": "call 0xb5e750",
+      "immediate_target": "00b5e750"
+    },
+    {
+      "site": "00b29838",
+      "instruction": "call edx",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29859",
+      "instruction": "call 0xc2f1c6",
+      "immediate_target": "00c2f1c6"
+    },
+    {
+      "site": "00b29875",
+      "instruction": "call edx",
+      "immediate_target": null
+    },
+    {
+      "site": "00b2987e",
+      "instruction": "call ecx",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29888",
+      "instruction": "call eax",
+      "immediate_target": null
+    },
+    {
+      "site": "00b298a5",
+      "instruction": "call eax",
+      "immediate_target": null
+    },
+    {
+      "site": "00b298ee",
+      "instruction": "call edx",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29903",
+      "instruction": "call 0xb24460",
+      "immediate_target": "00b24460"
+    },
+    {
+      "site": "00b2990a",
+      "instruction": "call 0xb26170",
+      "immediate_target": "00b26170"
+    },
+    {
+      "site": "00b29923",
+      "instruction": "call eax",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29927",
+      "instruction": "call 0xb23b10",
+      "immediate_target": "00b23b10"
+    },
+    {
+      "site": "00b29953",
+      "instruction": "call edx",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29963",
+      "instruction": "call eax",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29972",
+      "instruction": "call 0xc2f1c0",
+      "immediate_target": "00c2f1c0"
+    },
+    {
+      "site": "00b299a2",
+      "instruction": "call 0xbf6713",
+      "immediate_target": "00bf6713"
+    },
+    {
+      "site": "00b299af",
+      "instruction": "call 0xbf6713",
+      "immediate_target": "00bf6713"
+    },
+    {
+      "site": "00b299b9",
+      "instruction": "call 0xbf6713",
+      "immediate_target": "00bf6713"
+    },
+    {
+      "site": "00b299c1",
+      "instruction": "call 0xb60a10",
+      "immediate_target": "00b60a10"
+    },
+    {
+      "site": "00b299ca",
+      "instruction": "call 0xb20dc0",
+      "immediate_target": "00b20dc0"
+    },
+    {
+      "site": "00b299f9",
+      "instruction": "call 0xb49dc0",
+      "immediate_target": "00b49dc0"
+    },
+    {
+      "site": "00b29a29",
+      "instruction": "call 0xb4a040",
+      "immediate_target": "00b4a040"
+    },
+    {
+      "site": "00b29a59",
+      "instruction": "call 0xb5e8e0",
+      "immediate_target": "00b5e8e0"
+    },
+    {
+      "site": "00b29a89",
+      "instruction": "call 0xb5e890",
+      "immediate_target": "00b5e890"
+    },
+    {
+      "site": "00b29ab8",
+      "instruction": "call eax",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29add",
+      "instruction": "call dword ptr [0xce2210]",
+      "immediate_target": null
+    },
+    {
+      "site": "00b29afc",
+      "instruction": "call 0xb33b00",
+      "immediate_target": "00b33b00"
+    }
+  ],
+  "direct_call_dependencies": [
+    {
+      "address": "00b20dc0",
+      "prototype": "00b20dc0 BSP_HardwareVertexLayoutTree_AdvanceIterator  undefined BSP_HardwareVertexLayoutTree_AdvanceIterator(void)  body 00b20dc0 - 00b20e22",
+      "length_in_saved_Ghidra_body": 99,
+      "lookup": "00b20dc0  BSP_HardwareVertexLayoutTree_AdvanceIterator  thunk=no  export=exports/bsp/functions/00b20dc0\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \ntag: stl_probable (medium, bookmark) \nledger name: BSP_HardwareVertexLayoutTree_AdvanceIterator - Null owner handler then reload node; sentinel handler returns without advance; publish every climbed parent. Original ABI: ECX actual eight-byte iterator; RET or BF6713 tail; no semantic result. Complete actual-storage implementation in src/native_hardware_layout_tree.cpp; reports/native_hardware_la\nreconstruction: function increment_native_hardware_layout_iterator_00b20dc0 status=integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_hardware_layout_tree.cpp\ncallers (6): 00b23070 FUN_00b23070, 00b25cd0 FUN_00b25cd0 ...\ncallees (1): 00bf6713 LIBCRT_unmatched_00bf6713\n",
+      "reconstruction_lines": [
+        "reconstruction: function increment_native_hardware_layout_iterator_00b20dc0 status=integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_hardware_layout_tree.cpp"
+      ],
+      "complete_native_actual_storage_provider": true
+    },
+    {
+      "address": "00b237d0",
+      "prototype": "00b237d0 BSP_D3D9Renderer_ReleaseDynamicBuffersForReset  undefined BSP_D3D9Renderer_ReleaseDynamicBuffersForReset(void)  body 00b237d0 - 00b238c2",
+      "length_in_saved_Ghidra_body": 243,
+      "lookup": "00b237d0  BSP_D3D9Renderer_ReleaseDynamicBuffersForReset  thunk=no  export=exports/bsp/functions/00b237d0\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_ReleaseDynamicBuffersForReset - Optional guard. If +1d8ch enabled, clears flag, releases and nulls COM pointers +28h in wrappers at renderer+1974h/+1978h, vertex before index. Wrapper objects survive. Guardedtyped implementation now composes bodyfragment; guard precedes readinessskip, ready cleared before vertex/index COMoperation\nreconstruction: function release_dynamic_buffers status=real_device_reset_readiness_metadata_guard_checked source=src/d3d9_states.cpp\ncallers (2): 00b29670 BSP_D3D9Renderer_RecreateDevice, 00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset\ncallees (2): 00b33ad0 BSP_Renderer_EnterOptionalGuard, 00b33b00 BSP_Renderer_LeaveOptionalGuard\ndocs (4): docs/D3D9_RESOURCES.md (Surface and buffer ownership); docs/DEVICE_RESET_SCHEDULER.md (Device reset scheduler)\n",
+      "reconstruction_lines": [
+        "reconstruction: function release_dynamic_buffers status=real_device_reset_readiness_metadata_guard_checked source=src/d3d9_states.cpp"
+      ],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b23b10",
+      "prototype": "00b23b10 BSP_D3D9Renderer_RestoreResourcesAfterReset  undefined BSP_D3D9Renderer_RestoreResourcesAfterReset(void)  body 00b23b10 - 00b23c4e",
+      "length_in_saved_Ghidra_body": 319,
+      "lookup": "00b23b10  BSP_D3D9Renderer_RestoreResourcesAfterReset  thunk=no  export=exports/bsp/functions/00b23b10\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_RestoreResourcesAfterReset - Runs when resources not ready (+1d8bh=0) and device not marked lost (+1d8ah=0). Reacquires default render/depth surfaces through GetRenderTarget/GetDepthStencilSurface and wrapper+14h initialize; invokes registered restore callbacks, including surface+40h recreation. Fullroutine not ported. Surface \nreconstruction: fragment recreate_registered_surfaces status=device_reset_probe_checked source=src/d3d9_resources.cpp\nreconstruction: fragment restore_default_surfaces status=real_device_default_and_registered_surface_reset_checked source=src/d3d9_resources.cpp\nreconstruction: fragment restore_query_list status=real_query_reset_probe_checked source=src/d3d9_query.cpp\ncallers (2): 00b29670 BSP_D3D9Renderer_RecreateDevice, 00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset\ncallees (0): \ndocs (5): docs/D3D9_RESOURCES.md (Surface and buffer ownership); docs/DEVICE_RESET_SCHEDULER.md (Device reset scheduler)\n",
+      "reconstruction_lines": [
+        "reconstruction: fragment recreate_registered_surfaces status=device_reset_probe_checked source=src/d3d9_resources.cpp",
+        "reconstruction: fragment restore_default_surfaces status=real_device_default_and_registered_surface_reset_checked source=src/d3d9_resources.cpp",
+        "reconstruction: fragment restore_query_list status=real_query_reset_probe_checked source=src/d3d9_query.cpp"
+      ],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b24460",
+      "prototype": "00b24460 BSP_D3D9Renderer_SetRenderStateCached  undefined BSP_D3D9Renderer_SetRenderStateCached(void)  body 00b24460 - 00b24508",
+      "length_in_saved_Ghidra_body": 169,
+      "lookup": "00b24460  BSP_D3D9Renderer_SetRenderStateCached  thunk=no  export=exports/bsp/functions/00b24460\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_SetRenderStateCached - thiscall RET 8h. Valid byte at this+40h+state, value at this+114h+4*state. Writes cache before device virtual E4h SetRenderState, increments +1ba0h even on API failure; skips unchanged valid entries. Optional renderer guard.\nreconstruction: function BSP_D3D9Renderer_SetRenderStateCached status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp\ncallers (16): 00b24e70 BSP_D3D9Renderer_BindFrameTargets, 00b25040 BSP_Renderer_AppendClipPlane ...\ncallees (2): 00b33ad0 BSP_Renderer_EnterOptionalGuard, 00b33b00 BSP_Renderer_LeaveOptionalGuard\ndocs (3): docs/D3D9_STARTUP.md (D3D9 startup recovery); docs/D3D9_STATES.md (Renderer state initialization)\n",
+      "reconstruction_lines": [
+        "reconstruction: function BSP_D3D9Renderer_SetRenderStateCached status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp"
+      ],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b24bf0",
+      "prototype": "00b24bf0 FUN_00b24bf0  undefined FUN_00b24bf0(void)  body 00b24bf0 - 00b24db4",
+      "length_in_saved_Ghidra_body": 453,
+      "lookup": "00b24bf0  FUN_00b24bf0  thunk=no  export=none\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \ncallers (2): 00b29670 BSP_D3D9Renderer_RecreateDevice, 00b32920 FUN_00b32920\ncallees (3): 00b23d80 BSP_D3D9Renderer_BindColorSurface, 00b33ad0 BSP_Renderer_EnterOptionalGuard ...\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b26170",
+      "prototype": "00b26170 BSP_D3D9Renderer_InitializeDefaultStates  undefined BSP_D3D9Renderer_InitializeDefaultStates(void)  body 00b26170 - 00b262be",
+      "length_in_saved_Ghidra_body": 335,
+      "lookup": "00b26170  BSP_D3D9Renderer_InitializeDefaultStates  thunk=no  export=exports/bsp/functions/00b26170\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_D3D9Renderer_InitializeDefaultStates - thiscall no stack args. Calls cached setter for 19 ordered render states, then seven sampler defaults on each of twenty banks. Defaults include ZFUNC LESS, CULL CCW, linear min/mag, point mip and wrap UVW. Invoked at startup and after successful device reset.\nreconstruction: function BSP_D3D9Renderer_InitializeDefaultStates status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp\ncallers (3): 00b29670 BSP_D3D9Renderer_RecreateDevice, 00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset ...\ncallees (2): 00b24460 BSP_D3D9Renderer_SetRenderStateCached, 00b24610 BSP_D3D9Renderer_SetSamplerStateCached\ndocs (5): docs/D3D9_STARTUP.md (D3D9 startup recovery); docs/D3D9_STATES.md (Renderer state initialization)\n",
+      "reconstruction_lines": [
+        "reconstruction: function BSP_D3D9Renderer_InitializeDefaultStates status=real_device_defaults_and_cache_probe_checked_single_thread source=src/d3d9_states.cpp"
+      ],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b262c0",
+      "prototype": "00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  undefined BSP_D3D9Renderer_ReleaseResourcesForReset(void)  body 00b262c0 - 00b26493",
+      "length_in_saved_Ghidra_body": 468,
+      "lookup": "00b262c0  BSP_D3D9Renderer_ReleaseResourcesForReset  thunk=no  export=exports/bsp/functions/00b262c0\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_D3D9Renderer_ReleaseResourcesForReset - Optional guard, enabled byte+1d8bh. Unbinds textures/streams/index via virtual calls; invokes surface release +3ch and other registered resource callbacks; finally clears cache subobject at this+34h using 00b241c0. Full dependency graph not ported. Surface loop00b263FF..00b26432 retains rawcursor an\nreconstruction: fragment release_default_surfaces status=real_device_default_and_registered_surface_reset_checked source=src/d3d9_resources.cpp\nreconstruction: fragment release_query_list status=real_query_reset_probe_checked source=src/d3d9_query.cpp\nreconstruction: fragment release_registered_surfaces status=device_reset_probe_checked source=src/d3d9_resources.cpp\ncallers (2): 00b29670 BSP_D3D9Renderer_RecreateDevice, 00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset\ncallees (3): 00b241c0 BSP_D3D9Renderer_ClearBindingCache, 00b33ad0 BSP_Renderer_EnterOptionalGuard ...\ndocs (6): docs/D3D9_RESOURCES.md (Surface and buffer ownership); docs/DEVICE_RESET_SCHEDULER.md (Device reset scheduler)\n",
+      "reconstruction_lines": [
+        "reconstruction: fragment release_default_surfaces status=real_device_default_and_registered_surface_reset_checked source=src/d3d9_resources.cpp",
+        "reconstruction: fragment release_query_list status=real_query_reset_probe_checked source=src/d3d9_query.cpp",
+        "reconstruction: fragment release_registered_surfaces status=device_reset_probe_checked source=src/d3d9_resources.cpp"
+      ],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b33ad0",
+      "prototype": "00b33ad0 BSP_Renderer_EnterOptionalGuard  undefined BSP_Renderer_EnterOptionalGuard(void)  body 00b33ad0 - 00b33afd",
+      "length_in_saved_Ghidra_body": 46,
+      "lookup": "00b33ad0  BSP_Renderer_EnterOptionalGuard  thunk=no  export=exports/bsp/functions/00b33ad0\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_Renderer_EnterOptionalGuard - Increments non-atomic global nesting 0108d6e0; if mode 0108d6dc enabled and this+4 lock nonnull, enters tracked critical section and increments depth+18h, returns true; otherwise false. | wrapping non-atomic nesting increment first; current mode; capture actual renderer+04; actual EnterCriticalSecti\nreconstruction: function enter_native_renderer_optional_guard_00b33ad0 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp\ncallers (53): 00b21430 BSP_Renderer_Clear, 00b214e0 FUN_00b214e0 ...\ncallees (0): \ndocs (1): docs/D3D9_STATES.md (Renderer state initialization)\n",
+      "reconstruction_lines": [
+        "reconstruction: function enter_native_renderer_optional_guard_00b33ad0 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp"
+      ],
+      "complete_native_actual_storage_provider": true
+    },
+    {
+      "address": "00b33b00",
+      "prototype": "00b33b00 BSP_Renderer_LeaveOptionalGuard  undefined BSP_Renderer_LeaveOptionalGuard(void)  body 00b33b00 - 00b33b42",
+      "length_in_saved_Ghidra_body": 67,
+      "lookup": "00b33b00  BSP_Renderer_LeaveOptionalGuard  thunk=no  export=exports/bsp/functions/00b33b00\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_Renderer_LeaveOptionalGuard - thiscall RET 4h; ignores saved enter-result stack argument. Decrements nesting 0108d6e0, conditionally decrements depth/leaves this+4 lock using CURRENT mode 0108d6dc, and when nesting zero copies mode to observed byte 0108d6dd. Concurrent mode transitions not validated. | capture mode before wrappi\nreconstruction: function leave_native_renderer_optional_guard_00b33b00 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp\ncallers (54): 00b21110 BSP_Renderer_DestroyOptionalGuard, 00b21430 BSP_Renderer_Clear ...\ncallees (0): \ndocs (1): docs/D3D9_STATES.md (Renderer state initialization)\n",
+      "reconstruction_lines": [
+        "reconstruction: function leave_native_renderer_optional_guard_00b33b00 status=complete_actual_storage_original_caller_real_Win32_fixture_and_strict_build_checked source=src/native_renderer_synchronization_actual.cpp"
+      ],
+      "complete_native_actual_storage_provider": true
+    },
+    {
+      "address": "00b49d00",
+      "prototype": "00b49d00 FUN_00b49d00  undefined FUN_00b49d00(void)  body 00b49d00 - 00b49dbd",
+      "length_in_saved_Ghidra_body": 190,
+      "lookup": "00b49d00  FUN_00b49d00  thunk=no  export=none\nsegment 85 [00b402e0-00b4b0a0] 122 candidates wave 0  keywords: uf44uf44uf44, shadow_passtrough, shfx, default, mvfm\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (3): 00b23270 FUN_00b23270, 00bf55be operator_new ...\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b49dc0",
+      "prototype": "00b49dc0 FUN_00b49dc0  undefined FUN_00b49dc0(void)  body 00b49dc0 - 00b49f6f",
+      "length_in_saved_Ghidra_body": 432,
+      "lookup": "00b49dc0  FUN_00b49dc0  thunk=no  export=none\nsegment 85 [00b402e0-00b4b0a0] 122 candidates wave 0  keywords: uf44uf44uf44, shadow_passtrough, shfx, default, mvfm\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (3): 00b1fef0 BSP_D3D9Renderer_GetDevice, 00bf6989 _free ...\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b49f80",
+      "prototype": "00b49f80 FUN_00b49f80  undefined FUN_00b49f80(void)  body 00b49f80 - 00b4a03d",
+      "length_in_saved_Ghidra_body": 190,
+      "lookup": "00b49f80  FUN_00b49f80  thunk=no  export=none\nsegment 85 [00b402e0-00b4b0a0] 122 candidates wave 0  keywords: uf44uf44uf44, shadow_passtrough, shfx, default, mvfm\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (3): 00b23180 FUN_00b23180, 00bf55be operator_new ...\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b4a040",
+      "prototype": "00b4a040 FUN_00b4a040  undefined FUN_00b4a040(void)  body 00b4a040 - 00b4a181",
+      "length_in_saved_Ghidra_body": 322,
+      "lookup": "00b4a040  FUN_00b4a040  thunk=no  export=exports/bsp/functions/00b4a040\nsegment 85 [00b402e0-00b4b0a0] 122 candidates wave 0  keywords: uf44uf44uf44, shadow_passtrough, shfx, default, mvfm\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (4): 00b1fef0 BSP_D3D9Renderer_GetDevice, 00b20a80 BSP_D3D9_TranslateResourceFlags ...\ndocs (1): docs/BUFFER_LIFETIME.md (Physical buffer registry and frame boundary)\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b5e750",
+      "prototype": "00b5e750 FUN_00b5e750  undefined FUN_00b5e750(void)  body 00b5e750 - 00b5e7b8",
+      "length_in_saved_Ghidra_body": 105,
+      "lookup": "00b5e750  FUN_00b5e750  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (1): 00bf55be operator_new\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b5e810",
+      "prototype": "00b5e810 FUN_00b5e810  undefined FUN_00b5e810(void)  body 00b5e810 - 00b5e878",
+      "length_in_saved_Ghidra_body": 105,
+      "lookup": "00b5e810  FUN_00b5e810  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (1): 00bf55be operator_new\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b5e890",
+      "prototype": "00b5e890 FUN_00b5e890  undefined FUN_00b5e890(void)  body 00b5e890 - 00b5e8d3",
+      "length_in_saved_Ghidra_body": 68,
+      "lookup": "00b5e890  FUN_00b5e890  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (2): 00b1fef0 BSP_D3D9Renderer_GetDevice, 00bf6989 _free\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b5e8e0",
+      "prototype": "00b5e8e0 FUN_00b5e8e0  undefined FUN_00b5e8e0(void)  body 00b5e8e0 - 00b5e923",
+      "length_in_saved_Ghidra_body": 68,
+      "lookup": "00b5e8e0  FUN_00b5e8e0  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (2): 00b1fef0 BSP_D3D9Renderer_GetDevice, 00bf6989 _free\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b600b0",
+      "prototype": "00b600b0 FUN_00b600b0  undefined FUN_00b600b0(void)  body 00b600b0 - 00b600e3",
+      "length_in_saved_Ghidra_body": 52,
+      "lookup": "00b600b0  FUN_00b600b0  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (0): \n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00b60a10",
+      "prototype": "00b60a10 BSP_D3D9VertexLayout_CreateIfMissing  undefined BSP_D3D9VertexLayout_CreateIfMissing(void)  body 00b60a10 - 00b60ca9",
+      "length_in_saved_Ghidra_body": 666,
+      "lookup": "00b60a10  BSP_D3D9VertexLayout_CreateIfMissing  thunk=no  export=exports/bsp/functions/00b60a10\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\nledger name: BSP_D3D9VertexLayout_CreateIfMissing - If COM pointer+40h null, converts stored stream declarations with same cross-stream usage counters and END as00b60790, calls CreateVertexDeclaration then recomputes total stride. Conversion/API/stride path ported; diagnostics omitted and new API returns HRESULT/S_FALSE.\nreconstruction: fragment create_if_missing status=hardware_declaration_and_pixel_readback_checked source=src/d3d9_vertex_layout.cpp\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (6): 00419cc0 BSP_SizedStoragePool_GetSingleton, 0041dd40 BSP_NativeString_Resize ...\nstring refs (1, immediates in the body, not necessarily call arguments): VertexFormat\ndocs (1): docs/HARDWARE_VERTEX_LAYOUT.md (Hardware vertex layout conversion)\n",
+      "reconstruction_lines": [
+        "reconstruction: fragment create_if_missing status=hardware_declaration_and_pixel_readback_checked source=src/d3d9_vertex_layout.cpp"
+      ],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00bf6713",
+      "prototype": "00bf6713 LIBCRT_unmatched_00bf6713  undefined LIBCRT_unmatched_00bf6713(void)  body 00bf6713 - 00bf6722",
+      "length_in_saved_Ghidra_body": 16,
+      "lookup": "00bf6713  LIBCRT_unmatched_00bf6713  thunk=no  export=none\nsegment 97 [00be4460-00c30570] 343 candidates wave 2  keywords: cFileStore, iterator, long, removefile, removed, profile, cShaderTextureSource, cPhysicalDirectoryX86\ntag: crt_unmatched (high, rename) LIBCRT_unmatched_00bf6713\ncallers (6752): 00410240 STL_inst_00410240, 00410270 STL_inst_00410270 ...\ncallees (1): 00bf66ef LIBCRT_unmatched_00bf66ef\ndocs (13): docs/APP_INIT_WORLD_EFFECTS.md (World-content phase of cSkeletonAppMidway::Init); docs/FILE_BLOCK_LIFETIME.md (FileBlock destruction and paired VFS block exit)\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00c2f1c0",
+      "prototype": "00c2f1c0 XLiveOnCreateDevice  undefined XLiveOnCreateDevice(void)  body 00c2f1c0 - 00c2f1c5",
+      "length_in_saved_Ghidra_body": 6,
+      "lookup": "00c2f1c0  XLiveOnCreateDevice  thunk=yes  export=none\nsegment 97 [00be4460-00c30570] 343 candidates wave 2  keywords: cFileStore, iterator, long, removefile, removed, profile, cShaderTextureSource, cPhysicalDirectoryX86\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (0): \ndocs (1): docs/APP_INIT_AUDIO_ONLINE.md (Application init, audio and online phase)\n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    },
+    {
+      "address": "00c2f1c6",
+      "prototype": "00c2f1c6 XLiveOnDestroyDevice  undefined XLiveOnDestroyDevice(void)  body 00c2f1c6 - 00c2f1cb",
+      "length_in_saved_Ghidra_body": 6,
+      "lookup": "00c2f1c6  XLiveOnDestroyDevice  thunk=yes  export=none\nsegment 97 [00be4460-00c30570] 343 candidates wave 2  keywords: cFileStore, iterator, long, removefile, removed, profile, cShaderTextureSource, cPhysicalDirectoryX86\ncallers (1): 00b29670 BSP_D3D9Renderer_RecreateDevice\ncallees (0): \n",
+      "reconstruction_lines": [],
+      "complete_native_actual_storage_provider": false
+    }
+  ],
+  "FH3": {
+    "handler": "00cbd2fb",
+    "FuncInfo": "00df5ad0",
+    "unwind_map": "00df5ac8",
+    "unwind_states": 1,
+    "try_blocks": 0,
+    "cleanup": "00cbd2f0 -> actual guard at EBP-148 -> 00b21110",
+    "tracked_section_199c_unwind_cleanup": false
+  },
+  "renderer_primary_profile_slots": [
+    {
+      "profile": "00d5f0a8",
+      "offset": 152,
+      "address": "00d5f140",
+      "target": "00b24e70",
+      "lookup": "00b24e70  BSP_D3D9Renderer_BindFrameTargets  thunk=no  export=exports/bsp/functions/00b24e70\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_BindFrameTargets - Optional guard before identity comparison. Publish and retain new renderer+1908 target group before releasing old. Null changes no GPU state. Nonnull optionally writes render state194 from exact group+3C byte, unbinds color slots1..3, binds all four color slots from group+8..14, then depth from+18. \nreconstruction: fragment renderer_retained_frame_targets status=typed_fragment_build_checked source=src/d3d9_states.cpp\ncallers (0): \ncallees (8): 00b1f6d0 BSP_FrameTargets_GetColorSurface, 00b1f6e0 BSP_FrameTargets_GetDepthSurface ...\n"
+    },
+    {
+      "profile": "00d5f0a8",
+      "offset": 224,
+      "address": "00d5f188",
+      "target": "00b23f20",
+      "lookup": "00b23f20  BSP_D3D9Renderer_BindVertexLayout  thunk=no  export=exports/bsp/functions/00b23f20\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_BindVertexLayout - Thiscall RET4. Renderer+17B4h logical identity check before optional guard. Retain new/release old layout; nonnull virtual+8 returns COM declaration then device+15Ch SetVertexDeclaration. Null replacement releases cached layout without API unbind. Renderer+1BACh increments for replacements including\nreconstruction: function bind_vertex_layout status=semantic_logical_stream_atlas_draw_identity_null_readback_checked source=src/d3d9_states.cpp\ncallers (0): \ncallees (2): 00b33ad0 BSP_Renderer_EnterOptionalGuard, 00b33b00 BSP_Renderer_LeaveOptionalGuard\ndocs (2): docs/HARDWARE_VERTEX_LAYOUT.md (Hardware vertex layout conversion); docs/MATERIAL_EXECUTION.md (Material execution to native drawing)\n"
+    },
+    {
+      "profile": "00d5f0a8",
+      "offset": 240,
+      "address": "00d5f198",
+      "target": "00b21960",
+      "lookup": "00b21960: no function starts here; enclosing candidate 00b218c0 BSP_D3D9Renderer_SetPixelShaderConstantsF\n"
+    },
+    {
+      "profile": "00d5f0a8",
+      "offset": 304,
+      "address": "00d5f1d8",
+      "target": "00b24710",
+      "lookup": "00b24710  BSP_D3D9Renderer_BindTexture  thunk=no  export=exports/bsp/functions/00b24710\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_BindTexture - Recovered missing function, ECX renderer stack sampler/logical RET8. Guard precedes identity check, retains new/releases old logical; texture via virtual+1Ch; sampler>=16 addsF1h; SetTexture including null, attempted counter+1BC4h. Typed shared logical/borrowedCOM port; real atlas draw and null unbi\nreconstruction: function bind_texture status=semantic_real_atlas_texture_binding_checked source=src/d3d9_states.cpp\ncallers (0): \ncallees (2): 00b33ad0 BSP_Renderer_EnterOptionalGuard, 00b33b00 BSP_Renderer_LeaveOptionalGuard\ndocs (2): docs/ATLAS_RENDERING.md (First installed atlas image); docs/MATERIAL_EXECUTION.md (Material execution to native drawing)\n"
+    },
+    {
+      "profile": "00d5f0a8",
+      "offset": 308,
+      "address": "00d5f1dc",
+      "target": "00b24840",
+      "lookup": "00b24840  BSP_D3D9Renderer_BindVertexStream  thunk=no  export=exports/bsp/functions/00b24840\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_BindVertexStream - Vtable+134h. Caches logical stream object and intrusive ref; compares underlying COM buffer, stride from declaration+cc and offset to skip redundant SetStreamSource. Same logical object returns early. Device slot190h, counter+1bb4h. Wrapper-based path not yet ported. Update: semantic binding/draw pr\nreconstruction: function bind_vertex_stream status=semantic_logical_stream_indexed_pixel_readback_checked source=src/d3d9_states.cpp\ncallers (0): \ncallees (3): 00b23710 FUN_00b23710, 00b33ad0 BSP_Renderer_EnterOptionalGuard ...\ndocs (2): docs/D3D9_DRAW.md (Draw submission recovery); docs/MATERIAL_EXECUTION.md (Material execution to native drawing)\n"
+    },
+    {
+      "profile": "00d5f0a8",
+      "offset": 312,
+      "address": "00d5f1e0",
+      "target": "00b24b00",
+      "lookup": "00b24b00  BSP_D3D9Renderer_BindIndexStream  thunk=no  export=exports/bsp/functions/00b24b00\nsegment 83 [00b1bf40-00b25d90] 175 candidates wave 0  keywords: \nledger name: BSP_D3D9Renderer_BindIndexStream - Recovered vtable+138h. Always writes base vertex+17bch; only changes SetIndices when logical index wrapper+17b8h changes, managing intrusive ref and obtaining COM pointer through wrapper+28h. Counter+1bb8h. Not ported. Update: semantic binding/draw projection now ported with shared logical ownership\nreconstruction: function bind_index_stream status=semantic_logical_stream_indexed_pixel_readback_checked source=src/d3d9_states.cpp\ncallers (0): \ncallees (2): 00b33ad0 BSP_Renderer_EnterOptionalGuard, 00b33b00 BSP_Renderer_LeaveOptionalGuard\ndocs (2): docs/D3D9_DRAW.md (Draw submission recovery); docs/MATERIAL_EXECUTION.md (Material execution to native drawing)\n"
+    }
+  ],
+  "SDK": {
+    "headers": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+        "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+        "selected_lines": [
+          {
+            "line": 1833,
+            "text": "#define D3DCREATE_MULTITHREADED                 0x00000004L"
+          },
+          {
+            "line": 1836,
+            "text": "#define D3DCREATE_SOFTWARE_VERTEXPROCESSING     0x00000020L"
+          },
+          {
+            "line": 1837,
+            "text": "#define D3DCREATE_HARDWARE_VERTEXPROCESSING     0x00000040L"
+          }
+        ]
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9caps.h",
+        "sha256": "ce1d3698749e228cb952651ddfe03f75915f0d322c6d88ae01b9139102624a4f",
+        "selected_lines": [
+          {
+            "line": 302,
+            "text": "#define D3DDEVCAPS_HWTRANSFORMANDLIGHT  0x00010000L /* Device can support transformation and lighting in hardware and DRAWPRIMITIVES2EX must be also */"
+          }
+        ]
+      }
+    ],
+    "methods": {
+      "IDirect3D9": [
+        {
+          "index": 14,
+          "offset": 56,
+          "name": "GetDeviceCaps"
+        },
+        {
+          "index": 16,
+          "offset": 64,
+          "name": "CreateDevice"
+        }
+      ],
+      "IDirect3DDevice9": [
+        {
+          "index": 91,
+          "offset": 364,
+          "name": "CreateVertexShader"
+        },
+        {
+          "index": 92,
+          "offset": 368,
+          "name": "SetVertexShader"
+        },
+        {
+          "index": 106,
+          "offset": 424,
+          "name": "CreatePixelShader"
+        },
+        {
+          "index": 107,
+          "offset": 428,
+          "name": "SetPixelShader"
+        }
+      ],
+      "IDirect3DPixelShader9": [
+        {
+          "index": 4,
+          "offset": 16,
+          "name": "GetFunction"
+        }
+      ],
+      "IDirect3DVertexShader9": [
+        {
+          "index": 4,
+          "offset": 16,
+          "name": "GetFunction"
+        }
+      ]
+    },
+    "caps_layout": {
+      "DevCaps_offset": 28,
+      "VertexShaderVersion_offset": 196,
+      "basis": "Installed SDK declaration order through VertexShaderVersion; all prior scalar fields are four-byte MSVC Win32 D3DDEVTYPE/UINT/DWORD/float."
+    }
+  },
+  "ready_leaf_instruction_decode": {
+    "00b1fef0": [
+      "00b1fef0: mov eax, dword ptr [ecx + 0x1a10]",
+      "00b1fef6: ret "
+    ],
+    "00b600b0": [
+      "00b600b0: push esi",
+      "00b600b1: mov esi, ecx",
+      "00b600b3: push edi",
+      "00b600b4: mov edi, dword ptr [esi + 0x40]",
+      "00b600b7: test edi, edi",
+      "00b600b9: je 0xb600cb",
+      "00b600bb: mov eax, dword ptr [edi]",
+      "00b600bd: mov ecx, dword ptr [eax + 4]",
+      "00b600c0: push edi",
+      "00b600c1: call ecx",
+      "00b600c3: mov edx, dword ptr [edi]",
+      "00b600c5: mov eax, dword ptr [edx + 8]",
+      "00b600c8: push edi",
+      "00b600c9: call eax",
+      "00b600cb: mov eax, dword ptr [esi + 0x40]",
+      "00b600ce: test eax, eax",
+      "00b600d0: je 0xb600e1",
+      "00b600d2: mov ecx, dword ptr [eax]",
+      "00b600d4: mov edx, dword ptr [ecx + 8]",
+      "00b600d7: push eax",
+      "00b600d8: call edx",
+      "00b600da: mov dword ptr [esi + 0x40], 0",
+      "00b600e1: pop edi",
+      "00b600e2: pop esi",
+      "00b600e3: ret "
+    ],
+    "00b5e750": [
+      "00b5e750: push ecx",
+      "00b5e751: push esi",
+      "00b5e752: mov esi, ecx",
+      "00b5e754: push edi",
+      "00b5e755: mov edi, dword ptr [esi + 8]",
+      "00b5e758: test edi, edi",
+      "00b5e75a: je 0xb5e7b5",
+      "00b5e75c: mov eax, dword ptr [edi]",
+      "00b5e75e: mov ecx, dword ptr [eax + 4]",
+      "00b5e761: push edi",
+      "00b5e762: call ecx",
+      "00b5e764: mov edx, dword ptr [edi]",
+      "00b5e766: mov eax, dword ptr [edx + 8]",
+      "00b5e769: push edi",
+      "00b5e76a: call eax",
+      "00b5e76c: mov eax, dword ptr [esi + 8]",
+      "00b5e76f: mov ecx, dword ptr [eax]",
+      "00b5e771: lea edx, [esp + 8]",
+      "00b5e775: push edx",
+      "00b5e776: push 0",
+      "00b5e778: push eax",
+      "00b5e779: mov eax, dword ptr [ecx + 0x10]",
+      "00b5e77c: call eax",
+      "00b5e77e: mov ecx, dword ptr [esp + 8]",
+      "00b5e782: push ecx",
+      "00b5e783: call 0xbf55be",
+      "00b5e788: mov ecx, dword ptr [esi + 8]",
+      "00b5e78b: add esp, 4",
+      "00b5e78e: lea edi, [esp + 8]",
+      "00b5e792: push edi",
+      "00b5e793: mov dword ptr [esi + 0xc], eax",
+      "00b5e796: mov edx, dword ptr [ecx]",
+      "00b5e798: push eax",
+      "00b5e799: mov eax, dword ptr [edx + 0x10]",
+      "00b5e79c: push ecx",
+      "00b5e79d: call eax",
+      "00b5e79f: mov eax, dword ptr [esi + 8]",
+      "00b5e7a2: test eax, eax",
+      "00b5e7a4: je 0xb5e7b5",
+      "00b5e7a6: mov ecx, dword ptr [eax]",
+      "00b5e7a8: mov edx, dword ptr [ecx + 8]",
+      "00b5e7ab: push eax",
+      "00b5e7ac: call edx",
+      "00b5e7ae: mov dword ptr [esi + 8], 0",
+      "00b5e7b5: pop edi",
+      "00b5e7b6: pop esi",
+      "00b5e7b7: pop ecx",
+      "00b5e7b8: ret "
+    ],
+    "00b5e810": [
+      "00b5e810: push ecx",
+      "00b5e811: push esi",
+      "00b5e812: mov esi, ecx",
+      "00b5e814: push edi",
+      "00b5e815: mov edi, dword ptr [esi + 8]",
+      "00b5e818: test edi, edi",
+      "00b5e81a: je 0xb5e875",
+      "00b5e81c: mov eax, dword ptr [edi]",
+      "00b5e81e: mov ecx, dword ptr [eax + 4]",
+      "00b5e821: push edi",
+      "00b5e822: call ecx",
+      "00b5e824: mov edx, dword ptr [edi]",
+      "00b5e826: mov eax, dword ptr [edx + 8]",
+      "00b5e829: push edi",
+      "00b5e82a: call eax",
+      "00b5e82c: mov eax, dword ptr [esi + 8]",
+      "00b5e82f: mov ecx, dword ptr [eax]",
+      "00b5e831: lea edx, [esp + 8]",
+      "00b5e835: push edx",
+      "00b5e836: push 0",
+      "00b5e838: push eax",
+      "00b5e839: mov eax, dword ptr [ecx + 0x10]",
+      "00b5e83c: call eax",
+      "00b5e83e: mov ecx, dword ptr [esp + 8]",
+      "00b5e842: push ecx",
+      "00b5e843: call 0xbf55be",
+      "00b5e848: mov ecx, dword ptr [esi + 8]",
+      "00b5e84b: add esp, 4",
+      "00b5e84e: lea edi, [esp + 8]",
+      "00b5e852: push edi",
+      "00b5e853: mov dword ptr [esi + 0xc], eax",
+      "00b5e856: mov edx, dword ptr [ecx]",
+      "00b5e858: push eax",
+      "00b5e859: mov eax, dword ptr [edx + 0x10]",
+      "00b5e85c: push ecx",
+      "00b5e85d: call eax",
+      "00b5e85f: mov eax, dword ptr [esi + 8]",
+      "00b5e862: test eax, eax",
+      "00b5e864: je 0xb5e875",
+      "00b5e866: mov ecx, dword ptr [eax]",
+      "00b5e868: mov edx, dword ptr [ecx + 8]",
+      "00b5e86b: push eax",
+      "00b5e86c: call edx",
+      "00b5e86e: mov dword ptr [esi + 8], 0",
+      "00b5e875: pop edi",
+      "00b5e876: pop esi",
+      "00b5e877: pop ecx",
+      "00b5e878: ret "
+    ],
+    "00b5e890": [
+      "00b5e890: push esi",
+      "00b5e891: mov esi, ecx",
+      "00b5e893: cmp dword ptr [esi + 8], 0",
+      "00b5e897: push edi",
+      "00b5e898: lea edi, [esi + 8]",
+      "00b5e89b: jne 0xb5e8d1",
+      "00b5e89d: cmp dword ptr [esi + 0xc], 0",
+      "00b5e8a1: je 0xb5e8d1",
+      "00b5e8a3: mov ecx, dword ptr [0xf8d394]",
+      "00b5e8a9: call 0xb1fef0",
+      "00b5e8ae: mov edx, dword ptr [esi + 0xc]",
+      "00b5e8b1: mov ecx, dword ptr [eax]",
+      "00b5e8b3: push edi",
+      "00b5e8b4: push edx",
+      "00b5e8b5: push eax",
+      "00b5e8b6: mov eax, dword ptr [ecx + 0x1a8]",
+      "00b5e8bc: call eax",
+      "00b5e8be: mov ecx, dword ptr [esi + 0xc]",
+      "00b5e8c1: push ecx",
+      "00b5e8c2: call 0xbf6989",
+      "00b5e8c7: add esp, 4",
+      "00b5e8ca: mov dword ptr [esi + 0xc], 0",
+      "00b5e8d1: pop edi",
+      "00b5e8d2: pop esi",
+      "00b5e8d3: ret "
+    ],
+    "00b5e8e0": [
+      "00b5e8e0: push esi",
+      "00b5e8e1: mov esi, ecx",
+      "00b5e8e3: cmp dword ptr [esi + 8], 0",
+      "00b5e8e7: push edi",
+      "00b5e8e8: lea edi, [esi + 8]",
+      "00b5e8eb: jne 0xb5e921",
+      "00b5e8ed: cmp dword ptr [esi + 0xc], 0",
+      "00b5e8f1: je 0xb5e921",
+      "00b5e8f3: mov ecx, dword ptr [0xf8d394]",
+      "00b5e8f9: call 0xb1fef0",
+      "00b5e8fe: mov edx, dword ptr [esi + 0xc]",
+      "00b5e901: mov ecx, dword ptr [eax]",
+      "00b5e903: push edi",
+      "00b5e904: push edx",
+      "00b5e905: push eax",
+      "00b5e906: mov eax, dword ptr [ecx + 0x16c]",
+      "00b5e90c: call eax",
+      "00b5e90e: mov ecx, dword ptr [esi + 0xc]",
+      "00b5e911: push ecx",
+      "00b5e912: call 0xbf6989",
+      "00b5e917: add esp, 4",
+      "00b5e91a: mov dword ptr [esi + 0xc], 0",
+      "00b5e921: pop edi",
+      "00b5e922: pop esi",
+      "00b5e923: ret "
+    ],
+    "00cbd2f0": [
+      "00cbd2f0: lea ecx, [ebp - 0x148]",
+      "00cbd2f6: jmp 0xb21110",
+      "00cbd2fb: mov eax, 0xdf5ad0",
+      "00cbd300: jmp 0xbf6b43"
+    ],
+    "00b21110": [
+      "00b21110: cmp byte ptr [0x108d6dc], 0",
+      "00b21117: je 0xb21125",
+      "00b21119: movzx eax, byte ptr [ecx]",
+      "00b2111c: mov ecx, dword ptr [ecx + 4]",
+      "00b2111f: push eax",
+      "00b21120: call 0xb33b00",
+      "00b21125: ret "
+    ],
+    "00b3243b": [
+      "00b3243b: mov dword ptr [esi], 0xd5f0a8",
+      "00b32441: mov dword ptr [esi + 0xc], 0xd5f0a4"
+    ],
+    "00c2f1c0": [
+      "00c2f1c0: jmp dword ptr [0xce25d0]",
+      "00c2f1c6: jmp dword ptr [0xce25d4]"
+    ],
+    "00bf6713": [
+      "00bf6713: xor eax, eax",
+      "00bf6715: push eax",
+      "00bf6716: push eax",
+      "00bf6717: push eax",
+      "00bf6718: push eax",
+      "00bf6719: push eax",
+      "00bf671a: call 0xbf66ef",
+      "00bf671f: add esp, 0x14",
+      "00bf6722: ret "
+    ]
+  },
+  "behavior": {
+    "entry": "Optional guard uses current global108D6DC. State0 is armed before EnterCriticalSection on current renderer+199C; actual lock+18 increments after Enter. The single FH3 action destroys only stack optional guard at EBP-148, not the tracked section. Inner failure can retain tracked section/depth.",
+    "release": "Clear byte1D8A before virtual98(0); call unbindB24BF0, dynamic releaseB237D0, resource releaseB262C0. Checked hardware tree global108D530 iteration with real returning invalid-parameter calls releases each current node+20 layout viaB600B0. Four current pointer-array loops release resources from headers1AAC,1AB8,1AC4,1AD0; current table/count reread each iteration. 2Ch registry records at1A78 call owner+28 virtual28.",
+    "device": "If globalF8ABE8 call XLiveOnDestroyDevice. Captured device+1A10 gets AddRef/Release if initially nonnull, then current device is unconditionally Released without null repair and owner field cleared. Current interface+1990 GetDeviceCaps(adapter0,HAL1) output is used without HRESULT gate; DevCaps bit10000 and lowWORD VertexShaderVersion>=101 choose hardware40 else software20, OR multithreaded4. Current CreateDevice(adapter0,HAL1,window+1A44,flags,presentation+1A28,out current1A10) HRESULT is not checked.",
+    "restore": "State161 value=(current presentation+10 !=0), default state initialization, x87 load/store of cached gamma+196C into virtualF0 float argument, resource restoreB23B10. If bytes1D8C and1D8A are zero, publish1D8C=1 before invoking current auxiliary owners1974/1978 virtual20 with current device. Gated XLiveOnCreateDevice(current device,presentation), checked tree CreateIfMissing, four current array restore loops, then current2Ch registry virtual2C callbacks.",
+    "normal_exit": "Reload current renderer+199C independently of captured entry section, decrement current lock+18 before actual Leave, clear native EH state, then conditionally destroy optional guard using current global mode and its captured owner/byte.",
+    "shader_save_input": "Both save prologues PUSH ECX initialize the GetFunction size DWORD to incoming owner pointer bits. GetFunction may leave this value on failure; zero initialization is not supported. Native results ignore HRESULTs, preserve captured versus current shader reads and clear COM only after final Release.",
+    "shader_restore_tails": "B5E8C7..B5E8D0 and B5E917..B5E920 each contain ADD ESP,4 then MOV owner+C,0 after actual free. Saved decompilation omits these ten-byte continuations.",
+    "gamma_boundary": "Primary profileD5F0A8 slotF0 points to rawB21960, not enclosing B218C0. Fresh474-byte gamma span matches prior documented hash. Missing Ghidra function and open legacy power/arithmetic behavior remain explicit; existing gamma docs are static evidence only."
+  },
+  "proposed_disjoint_packets": [
+    {
+      "id": "native_shader_device_reset5",
+      "ready": true,
+      "addresses": [
+        "00b1fef0",
+        "00b5e750",
+        "00b5e810",
+        "00b5e890",
+        "00b5e8e0"
+      ],
+      "bytes": 353,
+      "files": [
+        "include/bsp/native_shader_device_reset.hpp",
+        "src/native_shader_device_reset.cpp",
+        "docs/NATIVE_SHADER_DEVICE_RESET.md",
+        "reports/native_shader_device_reset_audit.json"
+      ],
+      "dependencies": [
+        "Existing actual singleton allocation/free services",
+        "Borrowed real current renderer-global slot, actual renderer and COM ABI storage"
+      ],
+      "worker": "particle_clock_lifetime",
+      "state": "worker_source_and_original_fixture_in_progress",
+      "scope": "Complete borrowed renderer device getter plus pixel/vertex shader save/release/restore. Preserve both current fields and captured shader pointers, owner-address-initialized size DWORD, actual allocation/free and full returning-free clear tails. No own EH or invented HRESULT checks."
+    },
+    {
+      "id": "native_hardware_layout_device_release1",
+      "ready": true,
+      "addresses": [
+        "00b600b0"
+      ],
+      "bytes": 52,
+      "files": [
+        "include/bsp/native_hardware_layout_device_release.hpp",
+        "src/native_hardware_layout_device_release.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_DEVICE_RELEASE.md",
+        "reports/native_hardware_layout_device_release_audit.json"
+      ],
+      "dependencies": [
+        "Actual writable hardware layout owner with COM pointer+40 and real COM ABI"
+      ],
+      "worker": null,
+      "state": "ready_bounded_implementation",
+      "scope": "Capture initial declaration+40 for AddRef/Release with current vtable reload between calls; reread current owner+40 for final conditional Release, then clear field only after that call. No tree erase, owner destruction, metadata reset or own EH."
+    },
+    {
+      "id": "native_renderer_recreate_device_actual1",
+      "ready": false,
+      "addresses": [
+        "00b29670"
+      ],
+      "bytes": 1191,
+      "files": [
+        "include/bsp/native_renderer_recreate_device.hpp",
+        "src/native_renderer_recreate_device.cpp",
+        "docs/NATIVE_RENDERER_RECREATE_DEVICE.md",
+        "reports/native_renderer_recreate_device_audit.json"
+      ],
+      "dependencies": [
+        "Full actual-storage renderer unbinding and resource release/restore dependencies",
+        "Full current hardware-layout CreateIfMissing B60A10",
+        "Complete virtual frame-target and gamma path including exact gamma arithmetic",
+        "Actual current registry owners and their virtual reset callbacks",
+        "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
+      ],
+      "worker": null,
+      "state": "blocked_on_named_and_semantic_actual_storage_dependencies",
+      "scope": "Whole native device recreation requires native ownership, list/iterator checks, actual tracked section and guard cleanup, all current loads and HRESULT/COM ordering. Existing typed renderer state/cache projections are evidence but are not substitute actual-storage implementations."
+    }
+  ],
+  "source_and_evidence_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_hardware_layout_tree.hpp",
+      "bytes": 3491,
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_tree.cpp",
+      "bytes": 13258,
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_renderer_surface_bindings.hpp",
+      "bytes": 1570,
+      "sha256": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_renderer_surface_bindings.cpp",
+      "bytes": 4717,
+      "sha256": "af57c4b07b98c0e71f5f2fb56f73faa654da5f4034913d6d4a589b7441f2fc67"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\d3d9_states.hpp",
+      "bytes": 15076,
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\d3d9_states.cpp",
+      "bytes": 19554,
+      "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\d3d9_vertex_layout.hpp",
+      "bytes": 1257,
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\d3d9_vertex_layout.cpp",
+      "bytes": 1722,
+      "sha256": "018b8ebc46702a6c7b005c899ccdeea066065b3661d64c5a6c9fdad7c8335718"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\GAMMA_RAMP.md",
+      "bytes": 8441,
+      "sha256": "4260373fb81d4ff3e7a3d6940736c6d173fb1ea0309cc24fa5f071ce12722a5f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\GAMMA_CAPABILITIES.md",
+      "bytes": 7289,
+      "sha256": "7188ddf9a3cbede68ab6448006bd4d3df21da8bf43b26469d1522b253b36dff3"
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b1fef0.asm",
+      "bytes": 61,
+      "sha256": "6c8b098e18bbace113ad799828c5ba8a5fc3e893c676336350b77a958103efcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b21110.asm",
+      "bytes": 200,
+      "sha256": "df4ca2c2f0254b53967e82fc728de0d25a91f9db218abaedacab182bf70f37a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b3243b.asm",
+      "bytes": 88,
+      "sha256": "1d1308d419abb613387bd6a616981bfee7ff25989c6af8d82d326d887e2aacbf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b5e750.asm",
+      "bytes": 1324,
+      "sha256": "fd94991766aa16355a6508b09e0b01aabd53b1d6041082ce4d1f93bdafbd44ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b5e810.asm",
+      "bytes": 1324,
+      "sha256": "4beb3f5f221f7871a012146153b358cd59f942f2987fb2ee9b6bea468e94c545"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b5e890.asm",
+      "bytes": 690,
+      "sha256": "b94789b78bb195594491090f56c553e6bbadda484f204241e9219cd7d6587794"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b5e8e0.asm",
+      "bytes": 690,
+      "sha256": "0660b4fa3361e109dd79e27634cf27c19366fb2b2a39ba9ae3cfb4262d99b740"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00b600b0.asm",
+      "bytes": 689,
+      "sha256": "b70de8c28d54bf1369f9eed83018b4659aabf77d7aeb431e956afc1cce76e688"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00bf6713.asm",
+      "bytes": 190,
+      "sha256": "05f6833bb12e79ed7c4affd01386251980bbf00f157f59ddbb3f31f25f824abd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00c2f1c0.asm",
+      "bytes": 72,
+      "sha256": "ca5260a2ecbbf5c42b50d6ad439069076507d8ab8378e8752359ecec43322cbc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\00cbd2f0.asm",
+      "bytes": 111,
+      "sha256": "c497a0b9b9bd8e12aec9bff2cd82ef904fd04f3af62db19aa3a1ee297c5d222e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\capture.json",
+      "bytes": 29845,
+      "sha256": "afcdf6dd1caac1cbee1c45def74ae73d9b0672179bdcf26bc374f32af3f35503"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\dependency_protos.txt",
+      "bytes": 2276,
+      "sha256": "d59adb8f5a1ebe615d9bf6739965f130dfe16c4e083fb941851e4a5e122c0c0a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\extended.json",
+      "bytes": 55375,
+      "sha256": "08f37d3a948c750df01074b289d19a81bdbd2fa82e5a325ad12b766661f28ff5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\full_recreate.asm",
+      "bytes": 10148,
+      "sha256": "cb286b20b02dc27647e82a19c09dd574236da5052720383b1ed08ddcd1f0523b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\leaf_exports.log",
+      "bytes": 885,
+      "sha256": "a2c6a4cf9a351873468a96b20ab435f3baa1e5b74b2df1d729bf0164a538f59d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b1fef0.txt",
+      "bytes": 41,
+      "sha256": "e545de402c70014ce8028c562c73dd3b8128bacff7b7687cdc5838416d0c1de8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b21110.txt",
+      "bytes": 114,
+      "sha256": "458e42c749f86a27976f1385ecd56b3a963b9e9d3ae92b0adf1ab5ad2c362296"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b21960.txt",
+      "bytes": 2286,
+      "sha256": "575157f79cb5cca017625a8e7db06b80259c67dd6e6ddd1d4f141bf156f6fec8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b29670.txt",
+      "bytes": 5739,
+      "sha256": "4441ec9c8ad8c7b6f7530d5987b9f02f5be457824ff3dcb689a7243133506fff"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b3243b.txt",
+      "bytes": 65,
+      "sha256": "ef5a13e6219034b72fac9d1b1fd4ca5aa7bfc9e7795ad97103afeb2801af8392"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b5e750.txt",
+      "bytes": 511,
+      "sha256": "9136203c36b2e2e68952e728e609ab43b587974348ab41839f1a21d7a62b8c06"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b5e810.txt",
+      "bytes": 511,
+      "sha256": "2dae3d4e46ff416a9802469f1bcd4f28c1388bbf607fdddfa26798e4ad75478b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b5e890.txt",
+      "bytes": 337,
+      "sha256": "3eb1b616afd5ef821fb9310da6a37242e329ef2997cb2917a93cd978f1df1555"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b5e8e0.txt",
+      "bytes": 337,
+      "sha256": "88c696c24bb70f7afefda1835d16d446a057eeb458473f6363172379fcb0113e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00b600b0.txt",
+      "bytes": 260,
+      "sha256": "0246ee3e1d23edee8a59fae898402f5b26f2a2abb2b7d3d4d5377682dd7c5192"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00bf6713.txt",
+      "bytes": 77,
+      "sha256": "37dc4d754a408a185694a5bc3bdc2c03ef9cd9ea91591d2db8dfd95b12a76d80"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00c2f1c0.txt",
+      "bytes": 61,
+      "sha256": "f30b2f204995cf6a4f668c653d28642d85fb0690fb635b30ac42f3ea3fe24461"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00cbd2f0.txt",
+      "bytes": 110,
+      "sha256": "11fc90a1c665d5191422a11032bee9ed7137b2378ae03023cf9f6c9aee64bfc1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00d5f140.txt",
+      "bytes": 29,
+      "sha256": "969496d504a3605d677a06fb9040bbf9d1889fecd58857b8417c18d20ac7652b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00d5f188.txt",
+      "bytes": 29,
+      "sha256": "9bcd74e49447841c8665e6ee3b67e57dca0bb74dff37a19e69cf540c06d7961e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00d5f198.txt",
+      "bytes": 29,
+      "sha256": "8778f38217aed71348b69ddbcb7c0abbcc286cea48ffacffa4d4c4dc7ff915f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00d5f1d8.txt",
+      "bytes": 29,
+      "sha256": "b84e2ac1178978d7ebccbd6c2cf1fd7aaa928e7ae4d48ca81d27f620b42f6437"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00d5f1dc.txt",
+      "bytes": 29,
+      "sha256": "625751809631a563b5c212d52d4ea0ed97b3d00bd033c43b6c009aeb0324a5b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00d5f1e0.txt",
+      "bytes": 29,
+      "sha256": "44e137e90bb88fe483f9852d988ed33d6555bee442d4c4261b88a98503484e63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\live_00df5ac8.txt",
+      "bytes": 215,
+      "sha256": "c765bba67b48c6e432f171774c40103f136fd66317d81aeb954a121701643031"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b20dc0.txt",
+      "bytes": 894,
+      "sha256": "c9cbecab514c6f3b62c7146dd1745047699df6b8e9519bd71dae7c4926d40174"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b237d0.txt",
+      "bytes": 992,
+      "sha256": "540c5b4c1b46b8d231e49641873c04015e7bf6d6767eedb80676e44ae359e828"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b23b10.txt",
+      "bytes": 1142,
+      "sha256": "dd0b50c9ee3c7d3abec19a3ed21b3e48c21cea0b2d5fe3ada7e6a1707a6c1fce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b24460.txt",
+      "bytes": 907,
+      "sha256": "034b38348f38c96654c1db55f2930317009b40910b0800fa44ffd91f934e6d84"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b24bf0.txt",
+      "bytes": 294,
+      "sha256": "8c35851da9b6f477e047bd2d520ccba1426155fe75574332a0aee7706ea9a77c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b26170.txt",
+      "bytes": 1043,
+      "sha256": "e962a65777e5c7410e0a921b6b846a0f0179eb19ce84d7708b972f280675b202"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b262c0.txt",
+      "bytes": 1301,
+      "sha256": "613622a0d6099a1d3748e866b28aeee27d9b845350cb11717b71c06b37cec792"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b33ad0.txt",
+      "bytes": 947,
+      "sha256": "30282d796a30bfe4b4a6299d113da171ca544c56a2fb5895df12b8bf18c4c9eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b33b00.txt",
+      "bytes": 968,
+      "sha256": "d73791a28c0af99f85f0396b0757aed28772bd3f632e1525d42c22a77d869ba5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b49d00.txt",
+      "bytes": 283,
+      "sha256": "1b2dd9d420e7ec8f26ad2ca1456821b4817c15be5f1badcea46e46da2614f633"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b49dc0.txt",
+      "bytes": 290,
+      "sha256": "a911e2a657e200be7c22ff25074dcd42d8c48bf779a36980194e9fc44e574a35"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b49f80.txt",
+      "bytes": 283,
+      "sha256": "ffa955f618e3c00e0789f9013cab7177fea99570be6099be7d997f8e05852843"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b4a040.txt",
+      "bytes": 423,
+      "sha256": "9021c715c40a7e4dee0c98053298d168ed81c51766ffe9c653c04fcedbaafe07"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b5e750.txt",
+      "bytes": 307,
+      "sha256": "370f1e8f36151cd382028023a396deb6af524af379ee4beb04cce1bdc7ef471f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b5e810.txt",
+      "bytes": 307,
+      "sha256": "5d92b76540696a826ea47ddd5803ff8d6eb8e2a9938a1a42b51c7d36e6df7ae8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b5e890.txt",
+      "bytes": 337,
+      "sha256": "f876810914df8cb95432d5d961a8e5784acee1874c402dca40ff02a7285bee14"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b5e8e0.txt",
+      "bytes": 337,
+      "sha256": "2eee0474b76d7f431f9055423ffd574429090c8dafa531a375c7684af3c33012"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b600b0.txt",
+      "bytes": 286,
+      "sha256": "fa985688927ccbc1001ced19f5ad74e372c054a6033d8bbeb37996b7758e222b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00b60a10.txt",
+      "bytes": 1038,
+      "sha256": "dcee2b3f3fe949c897aa59a03d2223b23f2c69d82c15592054eebe78b1197c4c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00bf6713.txt",
+      "bytes": 585,
+      "sha256": "4563a73d15cfd6543ef7c7a98ea5761c764e7967a7846b5bc70d43893c4ea9c1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00c2f1c0.txt",
+      "bytes": 376,
+      "sha256": "fc5a226885ead5536f56222a62fda2947989e37541af2c9760351fea4555ddea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\lookup_00c2f1c6.txt",
+      "bytes": 293,
+      "sha256": "fd56a7d3e7524cb59bb5f3b7f9c45b649286b58b506e5e34d41b1d9c4aa27b91"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\slot_098_lookup.txt",
+      "bytes": 750,
+      "sha256": "dcb96b7b3dfae8afaf3b0bc36238436e6d98bb0c0aaedd3cc311ecd9c3334f46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\slot_0e0_lookup.txt",
+      "bytes": 913,
+      "sha256": "d47a00838237f86db4d820dea79d04425f725a69624127718325e9e0bc494fc6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\slot_0f0_lookup.txt",
+      "bytes": 107,
+      "sha256": "8a0caba9e9852c8d8ebe44f783c095f8d13f1878f1fcdefb0ffb5f548e5aae95"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\slot_130_lookup.txt",
+      "bytes": 862,
+      "sha256": "d476863024db0a5eb4bcc7784a8b60d3a85573c1d54e320a10bbf2c6e980fa6f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\slot_134_lookup.txt",
+      "bytes": 865,
+      "sha256": "f4a2b0bc309ee5168fd787ada0d81b5592204a7c2414ec7016b8e153e53eb37b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_recreate_next\\slot_138_lookup.txt",
+      "bytes": 877,
+      "sha256": "eb872b445f6aa7061fec7d396d53397f4ac35c0af7c67ac9170cd83d35ff0425"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\capture_renderer_recreate_next.py",
+      "bytes": 3070,
+      "sha256": "e83d7ece8a7c05b299fbe6ccdbb85345628cb064ae864c9c8b71a00a9ada90d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\extend_renderer_recreate_next.py",
+      "bytes": 4211,
+      "sha256": "7bfd4479d94c1d96f4ad07844f32c0cdbc56b0314cd5762257b537687237d8d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\finalize_renderer_recreate_next.py",
+      "bytes": 10063,
+      "sha256": "a55f9c4a67e7fcd5d638776ade59e2a140f35373839c98b6cf199616a5260716"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive names are hypotheses; full renderer constructor/profile extent is not reconstructed by this discovery. Selected original profile cells and constructor profile stores were verified.",
+    "Existing full-function ledger entries in typed D3D9 state/cache classes are not treated as current native raw-storage dependencies. Fragments and named-but-incomplete entries remain open.",
+    "Auxiliary owners1974/1978 and2Ch registry callback concrete ownership/type coverage requires further dependency work.",
+    "No source implementation, saved Ghidra mutation, new tests, native fixture execution, GPU run or game validation in this discovery."
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}

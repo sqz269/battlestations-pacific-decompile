@@ -1,0 +1,42 @@
+{
+  "address": "00aa4650",
+  "before_tag": {
+    "address": "00aa4650",
+    "name": "STL_inst_00aa4650",
+    "category": "stl_instantiation",
+    "confidence": "high",
+    "action": "rename",
+    "create": false,
+    "source": "reports/library_inventory/templates_and_generated.json",
+    "evidence_id": "e0028"
+  },
+  "correction": "Remove erroneous standalone STL classification; reconstructed game-owned GUI locale traversal. docs/GUI_LOCALE_REFRESH.md",
+  "ghidra_bookmark_removed": true,
+  "bookmark_result": {
+    "success": true,
+    "deleted": 1,
+    "address": "00aa4650"
+  },
+  "additional_corrections": [
+    {
+      "address": "00ce0d60",
+      "before_tag": {
+        "address": "00ce0d60",
+        "name": "CG_static_init_00ce0d60",
+        "category": "static_init",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/crt_stl.json",
+        "evidence_id": "e0681"
+      },
+      "correction": "Registered atexit cleanup, not startup initialization. docs/LUA_RUNTIME_GLOBALS.md",
+      "ghidra_bookmark_removed": true,
+      "bookmark_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00ce0d60"
+      }
+    }
+  ]
+}

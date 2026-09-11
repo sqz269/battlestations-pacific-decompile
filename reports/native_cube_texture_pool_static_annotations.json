@@ -1,0 +1,31 @@
+[
+  {
+    "address": "00cd7b80",
+    "before": {
+      "address": "00cd7b80",
+      "function_name": "BSP_Static_InitializeCubeTexturePool"
+    },
+    "after": {
+      "address": "00cd7b80",
+      "old_name": "BSP_Static_InitializeCubeTexturePool",
+      "name": "BSP_Static_InitializeCubeTexturePool",
+      "evidence": "Complete22byte canonical cube pool static initializer. Actual B3F090 constructor on bound actual108DB70-equivalent pool/shared list before real std::atexit registration of exact CE0CB0 source callback. Return real status without rollback; construction exception precedes registration. Explicit binder establishes genuine D61944/B3E690 trim before both borrowed pointer publications. Native CRT table CE3518 lies in established C++ initialization interval. Independent actual frozen primary-library fixture:18,931 matched DWORDs/33 events through real CRT exit;32 original static bytes and33 global-list dispatcher bytes unchanged. Four actual dependency entry bridges; all22 reference postimages,12 real import observations and18 primary/CRT providers rechecked. One deliberately failed malloc128 observation invokes real new-handler and genuine shared-list trim/retry. Actual33 canonical allocations/32 returns,32 moved token rewrites and held-depth2 shutdown. No production recompile/aliases/substitutions. Original ABI: No arguments; EAX actual atexit registration result; RET. Complete src/native_cube_texture_pool_static.cpp; reports/native_cube_texture_pool_static_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; original ABI, full game CRT startup, GPU and gameplay unproved."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ce0cb0",
+    "before": {
+      "address": "00ce0cb0",
+      "function_name": "CG_static_init_00ce0cb0",
+      "comment": "[BSP inventory 00ce0cb0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+    },
+    "after": {
+      "address": "00ce0cb0",
+      "old_name": "CG_static_init_00ce0cb0",
+      "name": "BSP_Static_DestroyCubeTexturePool",
+      "evidence": "Complete10byte canonical cube pool shutdown tailcall. Select actual108DB70 and run full B3E5B0 using same borrowed shared list. Real process-exit callback frees current slabs/table, drains held recursion and unlinks current neighbors. Correct prior CG_static_init inventory name to shutdown; retain prior comment. Independent actual frozen primary-library fixture:18,931 matched DWORDs/33 events through real CRT exit;32 original static bytes and33 global-list dispatcher bytes unchanged. Four actual dependency entry bridges; all22 reference postimages,12 real import observations and18 primary/CRT providers rechecked. One deliberately failed malloc128 observation invokes real new-handler and genuine shared-list trim/retry. Actual33 canonical allocations/32 returns,32 moved token rewrites and held-depth2 shutdown. No production recompile/aliases/substitutions. Original ABI: No arguments; set ECX actual108DB70 and tailcall B3E5B0. Complete src/native_cube_texture_pool_static.cpp; reports/native_cube_texture_pool_static_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; original ABI, full game CRT startup, GPU and gameplay unproved."
+    },
+    "status": "applied"
+  }
+]

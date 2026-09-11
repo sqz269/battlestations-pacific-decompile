@@ -3,6 +3,7 @@
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
 #include "bsp/settings_initial_state.hpp"
+#include "bsp/lua_runtime_globals.hpp"
 #include <stdexcept>
 
 #include <objbase.h>
@@ -242,6 +243,10 @@ ATOM GameWindowHost::register_class(const WNDCLASSA& window_class) {
     return registered_class_;
 }
 
+void GameWindowHost::unregister_class(const char* name) noexcept {
+    if (registered_class_ != 0 && UnregisterClassA(name, instance_)) registered_class_ = 0;
+}
+
 BOOL GameWindowHost::adjust_window_rect(RECT& rectangle, DWORD style, BOOL menu) {
     log_.implemented("PlatformWindowHost::adjust_window_rect", "00becfd6");
     return AdjustWindowRect(&rectangle, style, menu);
@@ -311,16 +316,7 @@ bool GameSaveStorageHost::create_directory(const std::string& path) {
 GameDeviceHost::~GameDeviceHost() { release(); }
 
 bool GameDeviceHost::create(const RendererInitRequest& request) {
-    // Direct3DCreate9(20h) inside renderer constructor 00b32410.
-    log_.implemented("RendererHost::direct3d_create", "00b32410");
-    api_ = Direct3DCreate9(D3D_SDK_VERSION);
-    if (api_ == nullptr) {
-        log_.note("Direct3DCreate9 returned null; no device this run");
-        return false;
-    }
-
-    NativeRendererParametersOwner renderer_parameters{};
-    initialize_native_renderer_parameters_00b32410_fragment(renderer_parameters);
+    release();
 
     RendererDisplaySettings settings{};
     settings.width = static_cast<std::uint32_t>(request.width);
@@ -330,8 +326,8 @@ bool GameDeviceHost::create(const RendererInitRequest& request) {
         request.window);
 
     log_.implemented("RendererHost::create_device", "00b2aeb0");
-    creation_result_ = d3d9_create_device_prefix_00b2aeb0(*api_, options,
-        renderer_parameters, parameters_, behavior_flags_, device_);
+    creation_result_ = d3d9_create_device_prefix_00b2aeb0(api_, options,
+        renderer_parameters_, parameters_, behavior_flags_, device_);
     if (FAILED(creation_result_) || device_ == nullptr) {
         log_.notef("device creation failed hr=0x%08lx",
             static_cast<unsigned long>(creation_result_));
@@ -371,10 +367,6 @@ void GameDeviceHost::release() {
     if (device_ != nullptr) {
         device_->Release();
         device_ = nullptr;
-    }
-    if (api_ != nullptr) {
-        api_->Release();
-        api_ = nullptr;
     }
 }
 
@@ -489,9 +481,14 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
 GameStartupHost::~GameStartupHost() {
     delete loop_callbacks_;
     delete frame_host_;
-    delete device_;
-    delete window_host_;
+    delete locale_;
+    delete scripts_;
     delete settings_host_;
+    delete device_;
+    delete renderer_parameters_;
+    if (renderer_api_) renderer_api_->Release();
+    release_platform_window();
+    delete window_host_;
     delete vfs_;
     delete random_threads_;
 }
@@ -687,6 +684,19 @@ void GameStartupHost::run_initialize_phases() {
     VfsStartupState vfs_state;
     run_vfs_startup_phase2(vfs_state, *vfs_);
 
+    // Phase 3, platform, window and save storage (0073d8c0-0073d988).
+    construct_win32_platform_00becda0(platform_, nullptr);
+    log_.implemented("Phase 3 construct_win32_platform", "00becda0");
+    set_active_platform_state(&platform_);
+
+    GameSaveStorageHost save_storage(log_);
+    if (initialize_save_storage_00beb2c0(save_storage, save_roots_)) {
+        log_.implemented("Phase 3 initialize_save_storage", "00beb2c0");
+        log_.notef("save directory %s", save_roots_.save_directory.c_str());
+    } else {
+        log_.note("save storage initialization failed");
+    }
+
     // The command line is parsed at 0073d94a, after the whole phase-2 block, which is why
     // cachedload cannot have influenced any phase-2 mount. Milestone 1 parsed it before
     // phase 2; the native position is used here.
@@ -697,9 +707,8 @@ void GameStartupHost::run_initialize_phases() {
         command_line.cached_load ? 1 : 0, command_line.fixed_frame_rate ? 1 : 0,
         command_line.file_access_log ? 1 : 0);
 
-    // Factory tail 0073d94f-0073d98d, then phase 6 parsers 0073db41-0073db69.
+    // Factory tail 0073d94f-0073d98d follows platform/save and command-line setup.
     run_vfs_startup_factory_tail(vfs_state, *vfs_, command_line.cached_load);
-    run_vfs_startup_phase6(vfs_state, *vfs_);
 
     summary_.vfs_ready = vfs_->ready();
     summary_.mounts_requested = vfs_->mounts().size();
@@ -714,25 +723,42 @@ void GameStartupHost::run_initialize_phases() {
         summary_.mounts_requested, summary_.mounts_created, summary_.package_entries,
         summary_.package_mounts);
 
-    // Phase 3, platform, window and save storage (0073d8c0-0073d988).
-    construct_win32_platform_00becda0(platform_, nullptr);
-    log_.implemented("Phase 3 construct_win32_platform", "00becda0");
-    set_active_platform_state(&platform_);
+    // Renderer constructor0073da88, input getter0073da94/loader0073da9b,
+    // then settings0073daa5. The same Direct3D API survives into device creation.
+    if (!vfs_->manager()) throw std::runtime_error("Script/settings startup requires the mounted VFS");
+    renderer_api_ = Direct3DCreate9(D3D_SDK_VERSION);
+    if (!renderer_api_) throw std::runtime_error("Renderer Direct3DCreate9 failed");
+    log_.implemented("RendererHost::direct3d_create", "00b32410");
+    renderer_parameters_ = new NativeRendererParametersOwner;
+    initialize_native_renderer_parameters_00b32410_fragment(*renderer_parameters_);
+    Win32SettingsCapabilityQueries renderer_queries(*renderer_api_);
+    enumerate_settings_resolutions_00b27d80(renderer_capabilities_, renderer_queries);
+    HRESULT capabilities_result = query_renderer_adapter_identifier_00b32410(
+        renderer_full_capabilities_, *renderer_api_);
+    if (FAILED(capabilities_result)) throw std::runtime_error("Renderer adapter identification failed");
+    capabilities_result = gather_renderer_capabilities_00b2c8e0(
+        renderer_full_capabilities_, renderer_capabilities_, *renderer_api_);
+    if (FAILED(capabilities_result)) throw std::runtime_error("Renderer capability query failed");
+    log_.implemented("RendererHost::gather_capabilities", "00b2c8e0");
+    log_.notef("renderer capabilities api=%p pixel_version=0x%04x shader_ceiling=%d "
+        "formats=%zu declaration_types=%zu", static_cast<void*>(renderer_api_),
+        renderer_capabilities_.pixel_shader_version_28, renderer_capabilities_.max_shader_model,
+        renderer_full_capabilities_.texture_formats_1b68.size(),
+        renderer_full_capabilities_.declaration_types_1b5c.size());
 
-    GameSaveStorageHost save_storage(log_);
-    if (initialize_save_storage_00beb2c0(save_storage, save_roots_)) {
-        log_.implemented("Phase 3 initialize_save_storage", "00beb2c0");
-        log_.notef("save directory %s", save_roots_.save_directory.c_str());
-    } else {
-        log_.note("save storage initialization failed");
-    }
+    scripts_ = new GameScriptHost(log_, vfs_->manager()->context(), content_suffixes_,
+        make_initial_lua_runtime_globals_0108ff20());
+    summary_.input_scripts_ready = scripts_->input().data_tables_started();
+    summary_.input_devices = scripts_->input().settings().devices.size();
+    summary_.input_names = scripts_->input().settings().input_names.size();
+    summary_.controller_names = scripts_->input().settings().controller_input_names.size();
 
     // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before
     // window creation at 0073dc0f, which is the ordering constraint the whole phase exists
     // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.
-    if (!vfs_->manager()) throw std::runtime_error("Settings startup requires the mounted VFS");
     settings_host_ = new GameSettingsBinding(log_, vfs_->manager()->context(),
-        vfs_->search_registrations(), content_suffixes_, profile_hints_, options_.settings_personal_root);
+        vfs_->search_registrations(), content_suffixes_, profile_hints_, *renderer_api_,
+        renderer_capabilities_, options_.settings_personal_root);
     auto& settings_host = *settings_host_;
     load_game_settings_008d8190(settings_, settings_host);
     log_.implemented("Phase 5 load_game_settings", "008d8190");
@@ -751,6 +777,9 @@ void GameStartupHost::run_initialize_phases() {
         settings_.options_file.resolution_index_78, settings_.options_file.fullscreen_1e ? 1 : 0,
         settings_.options_file.vsync_60 ? 1 : 0, settings_.options_file.antialias_58, settings_.options_file.shader_model_88,
         settings_.options_file.language.empty() ? "(none)" : settings_.options_file.language.c_str());
+
+    // Native parser registration0073db41..db69 follows settings loading.
+    run_vfs_startup_phase6(vfs_state, *vfs_);
 
     // The three VFS reads the later milestones depend on: a GUI script, the locale table the
     // settings language selects, and one texture.
@@ -818,20 +847,31 @@ void GameStartupHost::run_initialize_phases() {
     }
 
     // Phase 4, renderer (0073d9cc-0073da88): the device creation point.
-    device_ = new GameDeviceHost(log_);
+    device_ = new GameDeviceHost(log_, *renderer_api_, *renderer_parameters_);
     if (summary_.window_created && renderer_request_.requested) {
         summary_.device_created = device_->create(renderer_request_);
         summary_.device_result = device_->creation_result();
         summary_.back_buffer_width = device_->parameters().BackBufferWidth;
         summary_.back_buffer_height = device_->parameters().BackBufferHeight;
+        IDirect3D9* device_api = nullptr;
+        if (summary_.device_created && SUCCEEDED(device_->device()->GetDirect3D(&device_api))) {
+            summary_.renderer_api_shared = device_api == renderer_api_
+                && &settings_host.renderer_api() == &device_->renderer_api();
+            device_api->Release();
+        }
     }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
 
-    // Phases 5 to 11: everything past the device is out of milestone 1.
-    log_.unimplemented("Phase 5 input_settings", "005547d0");
+    // Locale construction and exact setter/register/reload order0073e057..e135.
+    locale_ = new GameLocaleHost(log_);
+    locale_->initialize(settings_host.locale_source(), language_name_008d4870(
+        settings_host.language_catalog(), static_cast<std::size_t>(settings_.gameplay.language_index_04)));
+    summary_.locale_keys = locale_->tables().size();
+    summary_.locale_files = locale_->tables().loaded_files().size();
+
+    // Required later owners remain outside the currently runnable spine.
     log_.unimplemented("Phase 5 sound_system_initialize", "00a88770");
-    log_.unimplemented("Phase 6 locale_tables", "00aa09d0");
-    log_.unimplemented("Phase 7 gui_startup", "00aa06d0");
+    log_.unimplemented("Phase 7 fonts_and_gui_resources", "0073bae0");
     log_.unimplemented("Phase 8 world_effects_startup", "00af0b10");
     log_.unimplemented("Phase 9 game_entry", "00740840");
 
@@ -857,21 +897,24 @@ void GameStartupHost::platform_run_loop_dispatch() {
         loop_callbacks_->frames(), summary_.frames_presented);
 }
 
-void GameStartupHost::application_shutdown() {
-    // 00737f30 tears down 23 singletons, the GUI manager, the game and four datatable
-    // files. None of those subsystems exist in this milestone, so only the two steps the
-    // process actually owns run: the device is released and the window is destroyed.
-    log_.implemented("StartupHost::application_shutdown", "00737f30");
-    log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
-    if (device_ != nullptr) device_->release();
-    set_active_platform_state(nullptr);
+void GameStartupHost::release_platform_window() noexcept {
+    // Host cleanup also runs if a required startup service throws. Do not log:
+    // WinMain can close the log before this object's destructor executes.
+    if (g_active_platform == &platform_) set_active_platform_state(nullptr);
     if (platform_.window != nullptr) {
         DestroyWindow(platform_.window);
         platform_.window = nullptr;
     }
-    if (window_host_ != nullptr && window_host_->registered_class() != 0) {
-        UnregisterClassA(window_class_name_.c_str(), instance_);
-    }
+    if (window_host_ != nullptr) window_host_->unregister_class(window_class_name_.c_str());
+}
+
+void GameStartupHost::application_shutdown() {
+    // Native00737f30's full singleton teardown remains unbound. Retained C++
+    // input/locale/settings owners close later in dependency order at destruction.
+    log_.implemented("StartupHost::application_shutdown", "00737f30");
+    log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
+    if (device_ != nullptr) device_->release();
+    release_platform_window();
 }
 
 void GameStartupHost::application_destruct() {

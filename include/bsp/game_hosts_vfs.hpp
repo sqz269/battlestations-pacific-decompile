@@ -45,6 +45,8 @@
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/settings_capabilities.hpp"
 #include "bsp/settings_text.hpp"
+#include "bsp/input_script_startup.hpp"
+#include "bsp/gui_locale_refresh.hpp"
 
 namespace bsp::game {
 
@@ -154,12 +156,49 @@ private:
 
 // Settings startup over the retained game state, mounted catalog and recovered
 // D3D9 capability operations. See docs/SETTINGS_STARTUP_OWNER.md.
+// Persistent VFS, runtime, globals and input owner. The interpreter closes before
+// its DoFile runtime/files are destroyed; the mounted VFS and suffix list outlive
+// this aggregate. Other startup Lua consumers can borrow the same services.
+class GameScriptHost {
+public:
+    GameScriptHost(GameHostLog&, VfsMountContext&, const std::vector<std::string>&,
+        LuaRuntimeGlobals globals);
+    InputScriptStartup& input() noexcept { return input_; }
+    VfsLuaScriptFiles& files() noexcept { return files_; }
+    LuaScriptRuntime& runtime() noexcept { return runtime_; }
+    LuaRuntimeGlobals& globals() noexcept { return globals_; }
+    const LuaRuntimeGlobals& globals() const noexcept { return globals_; }
+private:
+    LuaRuntimeGlobals globals_;
+    VfsLuaScriptFiles files_;
+    LuaScriptRuntime runtime_;
+    InputScriptStartup input_;
+};
+
+// The locale table owner is created at0073e057. GUI state remains lazy: the
+// initial setter runs before registering "globals" and does not request a GUI
+// refresh. Later changes traverse the actual retained page registry.
+class GameLocaleHost final : public LocaleGuiRefreshHost {
+public:
+    explicit GameLocaleHost(GameHostLog& log) : log_(log) {}
+    void initialize(LocaleTableSource&, const std::string& language);
+    void refresh_locale_00aa4650() override;
+    LocaleTables& tables() noexcept { return tables_; }
+    GuiLocaleRefreshManager& gui();
+    bool gui_created() const noexcept { return gui_ != nullptr; }
+private:
+    GameHostLog& log_;
+    LocaleTables tables_;
+    std::unique_ptr<GuiLocaleRefreshManager> gui_;
+};
+
+// Borrows the application's renderer API and capability state for its lifetime.
 class GameSettingsBinding final : public GameSettingsHost {
 public:
     GameSettingsBinding(GameHostLog& log, VfsMountContext& mounts,
         const VfsCandidateRegistrations& registrations, const std::vector<std::string>& suffixes,
-        ProfileHintsOwner& hints, std::string personal_root = {});
-    ~GameSettingsBinding() override;
+        ProfileHintsOwner& hints, IDirect3D9& api, SettingsRendererCapabilities& capabilities,
+        std::string personal_root = {});
     GameSettingsBinding(const GameSettingsBinding&) = delete;
     GameSettingsBinding& operator=(const GameSettingsBinding&) = delete;
 
@@ -182,14 +221,15 @@ public:
     const std::string& options_path() const noexcept { return options_path_; }
     bool options_file_present() const noexcept { return options_present_; }
     VfsLocaleRuntime& locale_source() noexcept { return locale_source_; }
+    IDirect3D9& renderer_api() noexcept { return api_; }
 
 private:
     GameHostLog& log_;
     Win32SettingsTextHost text_host_;
     VfsLocaleRuntime locale_source_;
     std::vector<LanguageEntry> languages_;
-    IDirect3D9* api_{};
-    SettingsRendererCapabilities capabilities_;
+    IDirect3D9& api_;
+    SettingsRendererCapabilities& capabilities_;
     std::vector<Resolution> resolutions_;
     std::vector<int> antialias_levels_;
     std::string options_path_;
