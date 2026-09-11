@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bb9d50",
+    "end_address": "00bb9d67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bb9d50",
+    "end_address": "00bb9d66",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bb9d50",
+    "disassemble_first": false,
+    "name": "BSP_MpkgProvider_GetEmptyFileDate"
+   },
+   "result": {
+    "success": true,
+    "address": "00bb9d50",
+    "function_name": "BSP_MpkgProvider_GetEmptyFileDate",
+    "entry_point": "00bb9d50",
+    "body_size": 23,
+    "message": "Function created successfully at 00bb9d50",
+    "warnings": [
+     "Function name 'BSP_MpkgProvider_GetEmptyFileDate' \u2014 main part 'MpkgProvider_GetEmptyFileDate' is not PascalCase. Expected: MpkgproviderGetemptyfiledate",
+     "Function name 'BSP_MpkgProvider_GetEmptyFileDate' \u2014 main part 'MpkgProvider_GetEmptyFileDate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MpkgProvider_GetEmptyFileDate' does not start with a recognized verb. First word 'Mpkg' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00bb9d50",
+   "end": "00bb9d67",
+   "name": "BSP_MpkgProvider_GetEmptyFileDate",
+   "after": "Function: BSP_MpkgProvider_GetEmptyFileDate at 00bb9d50\nSignature: undefined BSP_MpkgProvider_GetEmptyFileDate(void)\nEntry: 00bb9d50\nBody: 00bb9d50 - 00bb9d66"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

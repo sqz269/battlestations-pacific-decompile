@@ -110,7 +110,7 @@ Probe source, command and results are local/sound_resource_probe.cpp,
 local/run_sound_resource_probe.cmd, local/sound-resource-probe.log and
 local/sound_resource_probe.json. Installed files were read only.
 
-Four missing Ghidra function entries were defined from verified bytes. Internal
+Five missing Ghidra function entries were defined from verified bytes. Internal
 free-call gaps in A84450 and A85AC0 were repaired. A842E0, A85500 and A84D00
 tails were decoded after clearing false CALL_RETURN overrides, but their saved
 function bodies remain short. Physical BF3A80 is also split from its existing
@@ -118,8 +118,14 @@ BF3ACC continuation in saved analysis. These metadata limits do not invalidate
 the inspected native bytes; complete function-body repair is not claimed.
 
 The current game executable still reports phase-5 sound initialization as
-unimplemented in `src/game_hosts.cpp`. Its owner should bind these adapters to actual application lifetime,
+unimplemented in `src/game_hosts.cpp`. Its owner should bind these adapters to
+actual application lifetime,
 mounts, platform policy and clock, then keep the cache published through cleanup.
 No change to that separately owned executable host was made in this packet.
 Enabled hardware-audio startup, audible playback, actual XLive/cursor policy,
 native binary/exception ABI and gameplay remain unvalidated.
+
+Combined integration build `4c0d029` compiled `bsp_game` and passed both existing
+CTests. All 31 reviewed names and evidence comments were saved and read back,
+with prior comments preserved. The 32 affected exports were refreshed, including
+the analyzed reserve helper whose internal free-call gap was repaired.

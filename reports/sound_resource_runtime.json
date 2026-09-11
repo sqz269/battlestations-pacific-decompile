@@ -96,7 +96,12 @@
       "Date fields and last-write FILETIME stack offset",
       "Canonical provider date bindings and current disabled flag",
       "Asset/runtime ownership, Lua/clock adapters and 12 actual installed DLL exports"
-    ]
+    ],
+    "combined_main_build_commit": "4c0d029",
+    "combined_main_build": "Win32 Release including bsp_game and both existing CTests passed",
+    "combined_main_log": "local/orch3-sound-resource-integration.log",
+    "installed_probe_source_commit": "621ecc9",
+    "worker_evidence_copies": "local/sound-resource-evidence/{cache,asset,cleanup}"
   },
   "analysis_repairs": {
     "definitions": "reports/orch3_sound_resource_function_definitions.json",
@@ -107,7 +112,9 @@
       "00a84d00",
       "00bf3a80 (existing 00bf3acc continuation)"
     ],
-    "full_body_repair_claimed": false
+    "full_body_repair_claimed": false,
+    "package_date_definition": "reports/orch3_sound_package_date_definition.json",
+    "defined_function_entries": 5
   },
   "native_accounting_caveat": "Same-cache final release can subtract size twice and outer clear can pop the new tail storage without releasing that resource. Preserved from independent assembly review; not a balanced arbitrary multi-entry teardown claim.",
   "integration_boundary": "src/game_hosts.cpp phase5 currently logs sound_system_initialize as unimplemented; executable-host binding is separately owned. Current sound owner and +54 must stay published through resource destruction.",
@@ -119,5 +126,50 @@
     "Enabled hardware-audio branch and audible playback",
     "Native object, checked iterator, allocator and exception ABI",
     "Full gameplay validation"
-  ]
+  ],
+  "ghidra_annotations": {
+    "saved": true,
+    "readback_verified": 31,
+    "prior_comments_preserved": true,
+    "affected_exports_refreshed": 32,
+    "annotation_logs": [
+      "local/ghidra-annotations-20260911T041616Z.json",
+      "local/ghidra-annotations-20260911T041710Z.json"
+    ],
+    "readback_log": "local/sound-resource-annotation-readback.json",
+    "export_log": "local/sound-resource-export-refresh.log",
+    "addresses": [
+      "00a79910",
+      "00a818b0",
+      "00a823f0",
+      "00a82720",
+      "00a82ea0",
+      "00a83450",
+      "00a835b0",
+      "00a842e0",
+      "00a84530",
+      "00a845a0",
+      "00a84680",
+      "00a84740",
+      "00a84c90",
+      "00a84d00",
+      "00a854c0",
+      "00a854e0",
+      "00a85500",
+      "00a85560",
+      "00a85790",
+      "00a85a50",
+      "00a85ac0",
+      "00a88770",
+      "00bd91f0",
+      "00bd9e80",
+      "00bd9f00",
+      "00bdc8b0",
+      "00bdd340",
+      "00be5c80",
+      "00beccd0",
+      "00bf3a80",
+      "00bb9d50"
+    ]
+  }
 }
