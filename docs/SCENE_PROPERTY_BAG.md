@@ -305,3 +305,13 @@ models each as one host call and does not reproduce their storage.
 - The reference payload at `record+18h..1Fh` is bounded by the zeroing in `008F38A0` and by the
   array pointer at `+20h`, but its internal shape needs `008F0420` and `008F0340`.
 - `008F5A00`'s remaining callers `008F67B0` and `009512F0` were not read.
+
+## Corrections from docs/SCENE_PROPERTY_BAG_MERGE.md (packet cc2_property_bag_merge)
+
+Two readings above are corrected by the merge packet, which read every arm of `008F4F60`
+and `008F0700`: the twelve type codes share one vtable and one destructor switch, so the
+record is one class with a type tag, not twelve subclasses; and record `+24h` is the array's
+byte size, not its element count (the element count is derived per type). The decompiler's
+early return after the free in five of these routines is a mis-model; the bytes show
+free, null, then copy. The reference payload is three fields: sub-kind 0..7 at `+08h`, a
+dword at `+18h` every producer passes as zero, and the owned target-name copy at `+1Ch`.
