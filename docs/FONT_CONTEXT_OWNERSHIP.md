@@ -68,7 +68,7 @@ The direct callers explain the separate flags:
 |---|---|---|
 | `00ab6ab0` | ECX context; UTF-16 wrapper; `RET4` | Calls `00aba8d0`, then context virtual `+50` with `context+50`, even if text compared equal or was cleared. |
 | `00abaed0` | ECX context; narrow-string wrapper, byte flag; `RET8` | Compares/caches narrow input at `+F4/+F8`. Zero flag calls narrow-to-UTF-16 helper `004c5e60`; nonzero calls singleton helper `00a9fad0` with the input and output wrapper. Either result goes to `00aba8d0`, followed by virtual `+50`. The external resolver's full lookup semantics are not established here. |
-| `00abb000` | ECX context; narrow wrapper, float width, byte flag; `RET0C` | Same conversion choice, then `00ab8f00` ellipsis before update. Ordered equality with the saved zero constant selects `context+20` as width. Equal cached narrow input skips the body, including reconsideration of width/flag. |
+| `00abb000` | ECX context; narrow wrapper, float width, byte flag; `RET0C` | Same conversion choice, then `00ab8f00` ellipsis before update. Ordered equality with **-1.0f** selects `context+20` as width; zero remains an explicit zero target and NaN does not select the fallback. Live bytes at `00d7a260` are `00 00 80 BF`, correcting this audit's earlier zero-constant interpretation. See [GUI_TEXT_ELLIPSIS.md](GUI_TEXT_ELLIPSIS.md). Equal cached narrow input skips the body, including reconsideration of width/flag. |
 | `00abb1d0` | ECX context; no stack args; `RET` | Copies current UTF-16 text, assigns empty text to `+EC/+F0`, then calls `00aba8d0` with the saved copy. This forces a rebuild for previously nonempty text; an already empty string still compares equal. |
 
 The update call at `00ab9e61` belongs to the optional per-glyph child route

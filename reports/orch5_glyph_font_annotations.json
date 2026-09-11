@@ -1,0 +1,100 @@
+[
+  {
+    "address": "00ab98f0",
+    "before": {
+      "address": "00ab98f0",
+      "function_name": "BSP_TextContext_WriteGlyphQuad",
+      "comment": "[BSP reconstruction 00ab98f0]\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md.\n\n[BSP reconstruction 00ab98f0] update\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab98f0] update\nECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Run-time evidence, packet cc_exe_2d: bsp_game.exe milestone 2d drives write_font_quad_00ab98f0_fragment over the wrapped layout of the two title Text widgets and draws the result through the executable's sprite bridge. 55 glyph quads (46 for press_start_Text at Viper19, 9 for title_Text) are readable in local/title.png and local/run.png. The writer's /960 and /720 normalisation puts the quads in the same 0..1 GUI space the bridge already draws Icon rectangles in, so the widget's resolved position with its own pivot subtracted is the only placement the executable adds."
+    },
+    "after": {
+      "address": "00ab98f0",
+      "name": "BSP_TextContext_WriteGlyphQuad",
+      "evidence": "ECX text context, ten stack slots, RET28h. Ordinary prefix emits TL/TR/BR/BL positions, UVs, white colors and six low16 indices. Signed bearing, unsigned width/height, x87 960/720 normalization and mutable vertical scale preserved; single isolated native prefix fixture matches all output bytes. Later conditional UV blanking and child-UI path is unported. Full1747 bytes and prefix878 bytes verified; docs/FONT_GEOMETRY.md. ECX context; ten stack slots; RET28h. Keep existing glyph-writer name. Optional child path after ordinary quad requires +1B0,+1AC nonnull, +DC zero, +1A4 nonempty and codeunit membership. It calls00aba8d0 on a child; ordinary scalar writer remains independent. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Run-time evidence, packet cc_exe_2d: bsp_game.exe milestone 2d drives write_font_quad_00ab98f0_fragment over the wrapped layout of the two title Text widgets and draws the result through the executable's sprite bridge. 55 glyph quads (46 for press_start_Text at Viper19, 9 for title_Text) are readable in local/title.png and local/run.png. The writer's /960 and /720 normalisation puts the quads in the same 0..1 GUI space the bridge already draws Icon rectangles in, so the widget's resolved position with its own pivot subtracted is the only placement the executable adds. | Mapped native writer adapter over SAME GuiTextLifetime, actual logical08/0C/10/28/34..44/64 and actual index slice. Reuses x87 kernel directly into mapped vertices; six index stores in original order/low16 wrap. After current substitution gate, blank actual UV pairs and report needs_glyph_child atAB9D33. Covered98F0..9D32 plus ordinary returns; optional actual Text allocation/setup/attach/position tail9D33..9FAD excluded. AB9FD0/ABA270 consumers read only; full metrics/material/font resources remain separate. docs/GUI_TEXT_GEOMETRY.md; reports/gui_text_geometry.json. Hypothesis names retained; Ghidra unchanged."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ad4c30",
+    "before": {
+      "address": "00ad4c30",
+      "function_name": "BSP_Font_LoadGlyphDataAndTextures",
+      "comment": "[BSP reconstruction 00ad4c30]\nECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported.\n\n[BSP reconstruction 00ad4c30] update\nECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported. Specialscalarrecords nowported: zero-space/LF with signedscaledheight/4advance; missingknownfields bitcopied0091; CRzero. Native2resourcefields/padding omitted. ActualArial16 selection/fallbackchecked.\n\n[BSP reconstruction 00ad4c30] update\nECXfont,5stackargumentsRET14. Loads textures/VFSdata, scalarcount/height,24bytesperglyph,scale viaCVTSI2SS/MULSS/CVTTSS2SI; height signed16 metricsunsigned16; firstduplicatewins. Required0091fallback. TypedDATpopulationfragment completeinputguards/mapownership; texturepaths/registry/resourcefields/specialrecords/lifetime unported. Specialscalarrecords nowported: zero-space/LF with signedscaledheight/4advance; missingknownfields bitcopied0091; CRzero. Native2resourcefields/padding omitted. ActualArial16 selection/fallbackchecked. FontResources now composes successful initial GFX/alpha/DAT loading with exact explicit prefix/extra paths and two shared image owners; per-glyph resources are aliases. Transactional host failures and physical resolver differ native VFS/unchecked partial state. Actual font draw checked with explicit white DDS mapping; native reload not ported.\n\n[BSP reconstruction 00ad4c30] update\nECX font, five stack arguments, RET14. Loads GFX, alpha and DAT in that order. DAT stores scalar count/height and 24 bytes per glyph; CVTSI2SS/MULSS/CVTTSS2SI scaling, signed16 height and unsigned16 metrics, first duplicate wins, required 0091 fallback. Special scalar records project space/LF advance, 0091 fallback fields and zero CR; native resource fields/padding omitted. FontResources now projects successful initial GFX/alpha/DAT loading from mounted MemoryStreams with exact prefix/extra concatenation. Image sources retain reset wrapper clones sharing backing; DAT consumes supplied cursor. Per-glyph resources alias the two image owners. Installed native search rules and priority300 FileStore supplied all three resources (3 cache opens, 0 physical opens); glyph draw and retained texture recreation passed. Physical-path compatibility API delegates to same loader. Host priming/transactional failures/shared ownership differ native preload policy, reload, unchecked partial state and full VFS/allocator ABI. docs/MOUNTED_RESOURCE_STREAMS.md and docs/FONT_RESOURCE_OWNERSHIP.md."
+    },
+    "after": {
+      "address": "00ad4c30",
+      "name": "BSP_Font_LoadGlyphDataAndTextures",
+      "evidence": "ECX font, five stack arguments, RET14. Loads GFX, alpha and DAT in that order. DAT stores scalar count/height and 24 bytes per glyph; CVTSI2SS/MULSS/CVTTSS2SI scaling, signed16 height and unsigned16 metrics, first duplicate wins, required 0091 fallback. Special scalar records project space/LF advance, 0091 fallback fields and zero CR; native resource fields/padding omitted. FontResources now projects successful initial GFX/alpha/DAT loading from mounted MemoryStreams with exact prefix/extra concatenation. Image sources retain reset wrapper clones sharing backing; DAT consumes supplied cursor. Per-glyph resources alias the two image owners. Installed native search rules and priority300 FileStore supplied all three resources (3 cache opens, 0 physical opens); glyph draw and retained texture recreation passed. Physical-path compatibility API delegates to same loader. Host priming/transactional failures/shared ownership differ native preload policy, reload, unchecked partial state and full VFS/allocator ABI. docs/MOUNTED_RESOURCE_STREAMS.md and docs/FONT_RESOURCE_OWNERSHIP.md. | NativeFontResources partial initial-load publication now transfers one existing decoded FontData allocation without relocation and two actual texture refs, filling SAME FontGlyphData+18/+1C, space owning64/68, fallback0091 resource copy and CR aliases. Exact FontDescriptor identity resolves sole live FontData; signed height reads current lowword. Existing scalar/semantic loaders leave actual slots null. Renderer/VFS/native tree/reload/SEH remain external. docs/NATIVE_FONT_RESOURCES.md; reports/native_font_resources.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ad53a0",
+    "before": {
+      "address": "00ad53a0",
+      "function_name": "BSP_Font_Destroy",
+      "comment": "[BSP reconstruction 00ad53a0]\nECX font, plain RET at00ad5586. Raw continuation beyond misanalyzed free traverses/frees glyph payloads without image decrements, releases exactly font+64 GFX then+68 alpha, then strings/tree nodes/sentinel and clears tree fields. All other glyph image fields alias these owners. FontResources destructor projects payload-before-images with shared owners; native pool/string/tree/intrusive ABI absent. docs/FONT_RESOURCE_OWNERSHIP.md."
+    },
+    "after": {
+      "address": "00ad53a0",
+      "name": "BSP_Font_Destroy",
+      "evidence": "ECX font, plain RET at00ad5586. Raw continuation beyond misanalyzed free traverses/frees glyph payloads without image decrements, releases exactly font+64 GFX then+68 alpha, then strings/tree nodes/sentinel and clears tree fields. All other glyph image fields alias these owners. FontResources destructor projects payload-before-images with shared owners; native pool/string/tree/intrusive ABI absent. docs/FONT_RESOURCE_OWNERSHIP.md. | NativeFontResources partial actual-resource teardown uses SAME space-glyph owning slots: typed glyph destruction then captured GFX actual+04 release/clear, reread alpha release/clear. No per-glyph texture retain/release. Actual resource domain outlives materials retaining images. Native string/tree/sentinel tail5477..5586 and pool/SEH ABI excluded; saved function still ends5568, full raw continuation checked. docs/NATIVE_FONT_RESOURCES.md | Primary integration repaired false free CALL_RETURN sites00AD540F and00AD5564, restored full487bytebody00AD53A0..00AD5586, and verified0gaps. Prior documentation archived; name,signature,callingconvention,parameters,plate/instructioncomments,17labels and11local variable name/type/storage triples preserved. Actual NativeFontResources fragment passes combined Win32 build; normal resource execution and game validation remain unclaimed. reports/orch5_font_function_recreated.json; reports/orch5_font_documentation_before.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49980",
+    "before": {
+      "address": "00b49980",
+      "function_name": "BSP_LogicalVertexStream_Lock",
+      "comment": "[BSP reconstruction 00b49980]\nRecovered vtable+10h. Optional global renderer guard. Dynamic flags nibble1000h with physical wrapper sets count+64h, locks count*stride bytes and offset*stride, forces read-only false, captures physical base offset at+5ch. Non-dynamic zero-byte count uses full stored count, adds base vertex+70h to offset, preserves bound offset. Caches mapped pointer+8h."
+    },
+    "after": {
+      "address": "00b49980",
+      "name": "BSP_LogicalVertexStream_Lock",
+      "evidence": "Recovered vtable+10h. Optional global renderer guard. Dynamic flags nibble1000h with physical wrapper sets count+64h, locks count*stride bytes and offset*stride, forces read-only false, captures physical base offset at+5ch. Non-dynamic zero-byte count uses full stored count, adds base vertex+70h to offset, preserves bound offset. Caches mapped pointer+8h. | ECX logical; count,offset,readonly DWORD stack; EAX data; RET0Ch atB49A79 length3/endB49A7B. Actual storage flags60/dynamic count64/declaration68 strideCC; physical58 current virtual08; dynamic output5C/readonly0; ordinary zero-product count fallback/base70/count stack output. Publish mapped08, test current mode then capture mapped return before guard leave. Existing actual physical mapping/unlock and four immutable profile views reused. New context inEDX; no fake upload/owner or HRESULT/clamp/rollback. Entry-disabled/exit-enabled guard transition and original SEH/stack ABI excluded. docs/NATIVE_LOGICAL_BUFFER_MAPPING.md; reports/native_logical_buffer_mapping.json. Ghidra unchanged."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49a80",
+    "before": {
+      "address": "00b49a80",
+      "function_name": "BSP_LogicalVertexStream_Unlock",
+      "comment": "[BSP reconstruction 00b49a80]\nRecovered vtable+14h. Optional global renderer guard; calls physical wrapper+Ch Unlock when present, always clears mapped pointer+8h."
+    },
+    "after": {
+      "address": "00b49a80",
+      "name": "BSP_LogicalVertexStream_Unlock",
+      "evidence": "Recovered vtable+14h. Optional global renderer guard; calls physical wrapper+Ch Unlock when present, always clears mapped pointer+8h. | ECX logical; no stack args; RET atB49B0A length1. Actual current physical58 virtual0C then clear mapped08 after callback; captured renderer/current-mode optional guard. Existing actual physical mapping/unlock and four immutable profile views reused. New context inEDX; no fake upload/owner or HRESULT/clamp/rollback. Entry-disabled/exit-enabled guard transition and original SEH/stack ABI excluded. docs/NATIVE_LOGICAL_BUFFER_MAPPING.md; reports/native_logical_buffer_mapping.json. Ghidra unchanged."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49b60",
+    "before": {
+      "address": "00b49b60",
+      "function_name": "BSP_LogicalIndexStream_Lock",
+      "comment": "[BSP reconstruction 00b49b60]\nRecovered vtable+Ch. Optional renderer guard; INDEX16/32 imply2/4 bytes, other format0. Zero requested byte count uses stored count+14h; byte offset=(base index+20h+requested offset)*size. Captures physical lock offset at+Ch; physical wrapper at+8h."
+    },
+    "after": {
+      "address": "00b49b60",
+      "name": "BSP_LogicalIndexStream_Lock",
+      "evidence": "Recovered vtable+Ch. Optional renderer guard; INDEX16/32 imply2/4 bytes, other format0. Zero requested byte count uses stored count+14h; byte offset=(base index+20h+requested offset)*size. Captures physical lock offset at+Ch; physical wrapper at+8h. | ECX logical; count,offset,readonly DWORD stack; EAX data; RET0Ch atB49C69 length3/endB49C6B. Actual physical08 current virtual08; format18 size2/4/0, zero-product stored count14 fallback, base20 offset, actual output0C, nullphysical returnsnull; DWORD wrapping preserved. Existing actual physical mapping/unlock and four immutable profile views reused. New context inEDX; no fake upload/owner or HRESULT/clamp/rollback. Entry-disabled/exit-enabled guard transition and original SEH/stack ABI excluded. docs/NATIVE_LOGICAL_BUFFER_MAPPING.md; reports/native_logical_buffer_mapping.json. Ghidra unchanged."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49c70",
+    "before": {
+      "address": "00b49c70",
+      "function_name": "BSP_LogicalIndexStream_Unlock",
+      "comment": "[BSP reconstruction 00b49c70]\nRecovered vtable+10h. Optional renderer guard then physical wrapper+Ch Unlock if physical pointer+8h exists."
+    },
+    "after": {
+      "address": "00b49c70",
+      "name": "BSP_LogicalIndexStream_Unlock",
+      "evidence": "Recovered vtable+10h. Optional renderer guard then physical wrapper+Ch Unlock if physical pointer+8h exists. | ECX logical; no stack args; RET atB49CF5 length1. Actual check/reload physical08 virtual0C; no cached vertex-like pointer clear; captured renderer/current-mode optional guard. Existing actual physical mapping/unlock and four immutable profile views reused. New context inEDX; no fake upload/owner or HRESULT/clamp/rollback. Entry-disabled/exit-enabled guard transition and original SEH/stack ABI excluded. docs/NATIVE_LOGICAL_BUFFER_MAPPING.md; reports/native_logical_buffer_mapping.json. Ghidra unchanged."
+    },
+    "status": "applied"
+  }
+]

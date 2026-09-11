@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00abb000",
+    "before": {
+      "address": "00abb000",
+      "function_name": "FUN_00abb000",
+      "comment": "[BSP reconstruction 00abb000]\nECX context; narrow wrapper, float width, byte flag; RET0Ch. Same narrow conversion flag, then00ab8f00 ellipsis and00aba8d0. Ordered zero width uses context+20. Equal narrow input skips width/flag reconsideration. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00abb000] update\nECX Text; narrow wrapper, float width, low-byte localize; RET0Ch. Corrected sentinel: live00D7A260 bytes00 00 80 BF are -1.0f; ordered equality selects context+20, zero stays zero and NaN does not fallback. Source equality skips changed width/flag. Concrete preparation fragment preserves cache, conversion and ellipsis; actual00ABA8D0 plus virtual50 remain excluded. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Read-only Ghidra; existing name retained."
+    },
+    "after": {
+      "address": "00abb000",
+      "name": "BSP_GuiText_SetEllipsizedSource",
+      "evidence": "ECX Text; narrow wrapper, float width, low-byte localize; RET0Ch. Corrected sentinel: live00D7A260 bytes00 00 80 BF are -1.0f; ordered equality selects context+20, zero stays zero and NaN does not fallback. Source equality skips changed width/flag. Concrete preparation fragment preserves cache, conversion and ellipsis; actual00ABA8D0 plus virtual50 remain excluded. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Read-only Ghidra; existing name retained. | Full native body and58 callers establish cached narrow-source comparison/store, ordered -1 width fallback, optional localization,00AB8F00 trimming,00ABA8D0 content assignment then current50 color. Native name is a hypothesis; the new C++ API covers only preparation. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json."
+    },
+    "status": "applied"
+  }
+]

@@ -1,0 +1,122 @@
+{
+  "packet": "orch5_text_builders_batch",
+  "worker_commits": [
+    "35173c7b",
+    "3a5af118",
+    "c4d7f562",
+    "941f9d3f",
+    "575a021e",
+    "69c8acf3",
+    "5aa78adf",
+    "a4f5fcdc"
+  ],
+  "registered_sources": [
+    "src/gui_text_material.cpp",
+    "src/gui_text_single_line.cpp",
+    "src/gui_text_wrapped.cpp",
+    "src/gui_text_child_lifetime.cpp",
+    "src/gui_text_type_dispatch.cpp",
+    "src/native_vertex_position_read.cpp",
+    "src/gui_text_runtime_content.cpp"
+  ],
+  "verification": [
+    {
+      "report": "reports/gui_text_material.json",
+      "numeric_rows": 326,
+      "direct_rows": 326,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 9,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_content.json",
+      "numeric_rows": 154,
+      "direct_rows": 154,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 3,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_child_lifetime.json",
+      "numeric_rows": 50,
+      "direct_rows": 48,
+      "reported_indirect_targets": 2,
+      "symbolic_indirect_rows": 3,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_single_line.json",
+      "numeric_rows": 13,
+      "direct_rows": 9,
+      "reported_indirect_targets": 4,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_wrapped.json",
+      "numeric_rows": 36,
+      "direct_rows": 32,
+      "reported_indirect_targets": 4,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_type_dispatch.json",
+      "numeric_rows": 1545,
+      "direct_rows": 1545,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 5,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_vertex_position_read.json",
+      "numeric_rows": 26,
+      "direct_rows": 26,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_runtime_content.json",
+      "numeric_rows": 2,
+      "direct_rows": 2,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    }
+  ],
+  "numeric_rows": 2152,
+  "failed": 0,
+  "build": "scripts/build.ps1 Release MSVC Win32 passed; all seven new sources registered in bsp_core",
+  "existing_tests": [
+    "reconstructed_math passed",
+    "native_math_differential passed"
+  ],
+  "new_tests": 0,
+  "ghidra": {
+    "base_body": "00aa9730..00aa99b8 inclusive,649 bytes,204 listed instructions,0 gaps",
+    "preserved": "name, signature, calling convention, parameters, plate/instruction comments,27 existing labels,12 local variable names/types/storage",
+    "defined": [
+      "00ab6aa0..00ab6aa4",
+      "00aa6800..00aa6807"
+    ],
+    "global_no_return_changed": false
+  },
+  "remaining": [
+    "optional glyph-child factory and callee continuation",
+    "nonzero timed-entry native storage and unsupported child deletion",
+    "complete Text property/current70/factory dispatch",
+    "native string, slot-pool, SEH and binary ABI",
+    "operation runtime and gameplay validation"
+  ],
+  "integration": {
+    "commit": "6825816e",
+    "merged_main": "8be28943",
+    "combined_win32_build": "passed",
+    "existing_tests": "2 passed,0 failed",
+    "annotation_entries": 23,
+    "annotation_archive": "reports/orch5_text_builders_annotations.json",
+    "exports": "annotation tool refreshed affected exports; raw thunks and complete base destructor explicitly exported after annotations",
+    "snapshot_index": "refreshed by integration workflow"
+  }
+}

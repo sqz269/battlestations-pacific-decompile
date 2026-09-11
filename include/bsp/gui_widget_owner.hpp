@@ -8,6 +8,8 @@
 namespace bsp {
 class GuiWidgetOwner;
 class GuiWidgetOwnerRuntime;
+class GuiTextLifetime;
+class GuiTextChildDeletion;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
 // creation performs the derived constructor, before node binding/parenting.
@@ -28,6 +30,10 @@ public:
     virtual void before_properties(GuiWidgetOwner&, const GuiTable&) {}
     // Derived destruction precedes the base00AA9730 node/tree release.
     virtual void before_scene_release(GuiWidgetOwner&) {}
+    //00AA8372/00AA837B derived type-query branch, after child+20 and before
+    // primary unlink. Text supplies the live descriptor predicate and AB73B0.
+    // Existing supported profiles own no secondary scene nodes.
+    virtual void release_secondary_scene_nodes(GuiWidgetOwner&) {}
 };
 using GuiWidgetImplementationFactory = std::function<
     std::unique_ptr<GuiWidgetTypeImplementation>(GuiWidgetOwner&)>;
@@ -72,6 +78,9 @@ public:
     GuiWidgetBaseExtraFields& extra_fields() noexcept { return extra_; }
     NativeNodeBinding* node_binding() noexcept { return node_; }
     NativeModelReference* model_reference() noexcept;
+    // Borrowed canonical companion, published before Text constructor callbacks.
+    // Not another Text state or factory registration. Null after typed teardown.
+    GuiTextLifetime* text_lifetime() noexcept { return text_lifetime_; }
     GuiWidgetTypeImplementation& implementation();
 
     void bind_scene_00aa6720(NativeNodeBinding*) noexcept;
@@ -89,12 +98,15 @@ public:
     void release_scene_nodes_00aa8320();
 private:
     friend class GuiWidgetOwnerRuntime;
+    friend class GuiTextLifetime;
+    friend class GuiTextChildDeletion;
     GuiWidgetOwner(GuiLayoutWidget&, GuiWidgetOwnerRuntime&);
     GuiLayoutWidget& layout_;
     GuiWidgetOwnerRuntime& runtime_;
     GuiWidgetSceneFlags scene_;
     GuiWidgetBaseExtraFields extra_;
     NativeNodeBinding* node_{};
+    GuiTextLifetime* text_lifetime_{};
     std::unique_ptr<GuiWidgetTypeImplementation> implementation_;
 };
 
@@ -114,6 +126,12 @@ public:
     //00AA6640 standalone sequence; loader calls construct_child then74 only
     // AFTER attaching widget and node, matching its distinct inline sequence.
     GuiWidgetOwner& create_with_scene_00aa6640(GuiLayoutWidget&);
+    //00AB8530 auxiliary drawable fragment: reuse this runtime's SAME model
+    // pool/owner/reference map; publish to the caller's live +188 association
+    // before releasing the temporary name. Returns one creator reference,
+    // retired through the existing node lifetime binding, not a second owner.
+    void create_auxiliary_model_00ab8530_fragment(NativeNodeBinding*& publication,
+        const std::string& name);
     GuiWidgetOwner& owner(GuiLayoutWidget&) const;
     GuiWidgetOwner& owner(GuiWidgetTransform&) const;
     NativeNodeBinding& node(std::uint32_t actual_identity) const;
@@ -132,12 +150,14 @@ public:
     GuiWidgetOwnerEnvironment& environment() noexcept { return environment_; }
 private:
     friend class GuiWidgetOwner;
+    friend class GuiTextChildDeletion;
     struct ModelRecord;
     GuiWidgetOwnerEnvironment environment_;
     std::unordered_map<GuiLayoutWidget*, std::unique_ptr<GuiWidgetOwner>> widgets_;
     std::unordered_map<void*, std::unique_ptr<ModelRecord>> models_;
     GuiWidgetOwner& construct_base(GuiLayoutWidget&);
-    NativeNodeBinding* create_model(const std::string&);
+    NativeNodeBinding* create_model(const std::string&,
+        NativeNodeBinding** publication_before_name_release = nullptr);
     void stamp_visibility(NativeNodeBinding&, float, bool);
     void propagate_visibility(GuiWidgetOwner&, const GuiWidgetVisibilityArgs&);
     void erase_tree(GuiLayoutWidget&);

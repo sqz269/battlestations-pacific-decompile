@@ -149,3 +149,12 @@ deferred/immediate stop and retained sample cleanup are runtime-tested with
 FMOD's no-sound output. See `docs/SOUND_INSTANCE.md` and
 `reports/sound_instance.json`; audible output, spatial/event instances and
 application-wide voice/effect composition remain open.
+
+## Playback evidence from docs/SOUND_EVENT_INSTANCE.md
+
+The earlier FEV acquisition fixture established metadata and lifetime behavior,
+but did not require LoadEventData to succeed. The first event playback fixture
+showed result23 for the missing basename muzzle_5_inch.fsb, followed by GetEvent
+mode2 result24. Mounting the installed sound/muzzle directory supplies that
+basename and permits actual parameter/update/playback/retirement checks. Keep
+acquisition proof separate from successful event-data loading and playback.

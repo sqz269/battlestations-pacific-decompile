@@ -1,0 +1,200 @@
+{
+  "packet": "orch5_text_geometry",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/native_logical_buffer_mapping.cpp",
+  "documentation": "docs/NATIVE_LOGICAL_BUFFER_MAPPING.md",
+  "reconstructed": [
+    {
+      "address": "00b49980",
+      "name": "lock_native_logical_vertex_stream_00b49980",
+      "end": "00b49a7b",
+      "final_instruction": "00b49a79",
+      "final_instruction_length": 3,
+      "coverage": "complete",
+      "abi": "ECX logical; stack count,offset,readonly DWORD; EAX data; RET0Ch",
+      "domain": "Four observed physical profiles, actual storage/global contexts; original native SEH/stack layout and entry-disabled/exit-enabled guard transition excluded"
+    },
+    {
+      "address": "00b49a80",
+      "name": "unlock_native_logical_vertex_stream_00b49a80",
+      "end": "00b49b0a",
+      "final_instruction": "00b49b0a",
+      "final_instruction_length": 1,
+      "coverage": "complete",
+      "abi": "ECX logical; no stack args; RET",
+      "domain": "Four observed physical profiles, actual storage/global contexts; original native SEH/stack layout and entry-disabled/exit-enabled guard transition excluded"
+    },
+    {
+      "address": "00b49b60",
+      "name": "lock_native_logical_index_stream_00b49b60",
+      "end": "00b49c6b",
+      "final_instruction": "00b49c69",
+      "final_instruction_length": 3,
+      "coverage": "complete",
+      "abi": "ECX logical; stack count,offset,readonly DWORD; EAX data; RET0Ch",
+      "domain": "Four observed physical profiles, actual storage/global contexts; original native SEH/stack layout and entry-disabled/exit-enabled guard transition excluded"
+    },
+    {
+      "address": "00b49c70",
+      "name": "unlock_native_logical_index_stream_00b49c70",
+      "end": "00b49cf5",
+      "final_instruction": "00b49cf5",
+      "final_instruction_length": 1,
+      "coverage": "complete",
+      "abi": "ECX logical; no stack args; RET",
+      "domain": "Four observed physical profiles, actual storage/global contexts; original native SEH/stack layout and entry-disabled/exit-enabled guard transition excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b499b1",
+      "native": "00b33ad0",
+      "function": "00b49980",
+      "operation": "capture current renderer before optional guard entry; no stack args"
+    },
+    {
+      "address": "00b49a40",
+      "native": "00b4ba00",
+      "function": "00b49980",
+      "operation": "observed vertex physical virtual08(bytes,offset,1,output,readonly), RET14h; dynamic output=logical5C readonly0; ordinary output=count stack cell"
+    },
+    {
+      "address": "00b49a62",
+      "native": "00b33b00",
+      "function": "00b49980",
+      "operation": "leave captured renderer/saved AL after current mode test and mapped08 capture; RET4"
+    },
+    {
+      "address": "00b49ab1",
+      "native": "00b33ad0",
+      "function": "00b49a80",
+      "operation": "capture renderer optional guard entry; no stack args"
+    },
+    {
+      "address": "00b49ad4",
+      "native": "00b4b9d0",
+      "function": "00b49a80",
+      "operation": "current physical vertex virtual0C no stack args; logical08 cleared after callback"
+    },
+    {
+      "address": "00b49af5",
+      "native": "00b33b00",
+      "function": "00b49a80",
+      "operation": "current-mode leave captured renderer/saved AL; RET4"
+    },
+    {
+      "address": "00b49b92",
+      "native": "00b33ad0",
+      "function": "00b49b60",
+      "operation": "capture renderer optional guard entry; no stack args"
+    },
+    {
+      "address": "00b49c34",
+      "native": "00b4b850",
+      "function": "00b49b60",
+      "operation": "observed index physical virtual08(bytes,offset,1,logical0C,readonly); RET14h"
+    },
+    {
+      "address": "00b49c51",
+      "native": "00b33b00",
+      "function": "00b49b60",
+      "operation": "current-mode leave captured renderer/saved AL; RET4"
+    },
+    {
+      "address": "00b49ca1",
+      "native": "00b33ad0",
+      "function": "00b49c70",
+      "operation": "capture renderer optional guard entry; no stack args"
+    },
+    {
+      "address": "00b49cc6",
+      "native": "00b4b820",
+      "function": "00b49c70",
+      "operation": "check/reload physical index virtual0C; no stack args"
+    },
+    {
+      "address": "00b49ce0",
+      "native": "00b33b00",
+      "function": "00b49c70",
+      "operation": "current-mode leave captured renderer/saved AL; RET4"
+    }
+  ],
+  "text_consumers": [
+    {
+      "address": "00aba00e",
+      "native": "00b49980",
+      "function": "00ab9fd0",
+      "operation": "vertex virtual10(current stored length*4,0,0); RET0Ch"
+    },
+    {
+      "address": "00aba02c",
+      "native": "00b49b60",
+      "function": "00ab9fd0",
+      "operation": "index virtual0C(current stored length*6,0,0); RET0Ch"
+    },
+    {
+      "address": "00aba241",
+      "native": "00b49c70",
+      "function": "00ab9fd0",
+      "operation": "index virtual10 unlock FIRST; no args"
+    },
+    {
+      "address": "00aba24a",
+      "native": "00b49a80",
+      "function": "00ab9fd0",
+      "operation": "vertex virtual14 unlock SECOND; no args"
+    },
+    {
+      "address": "00aba302",
+      "native": "00b49980",
+      "function": "00aba270",
+      "operation": "vertex virtual10(current stored length*4,0,0); RET0Ch"
+    },
+    {
+      "address": "00aba328",
+      "native": "00b49b60",
+      "function": "00aba270",
+      "operation": "index virtual0C(current stored length*6,0,0); RET0Ch"
+    },
+    {
+      "address": "00aba8b2",
+      "native": "00b49c70",
+      "function": "00aba270",
+      "operation": "index virtual10 unlock FIRST; no args"
+    },
+    {
+      "address": "00aba8bb",
+      "native": "00b49a80",
+      "function": "00aba270",
+      "operation": "vertex virtual14 unlock SECOND; no args"
+    }
+  ],
+  "producer_fields": [
+    "B61E20 actual vertex base: mapped08=0, writer stride0C=declarationCC, offsets10/28/34 selected by actual declaration helpers.",
+    "B4BC00 actual logical vertex: physical58,offset5C,flags60,count64,declaration68,shadow6C,basevertex70. Existing actual profiles and storage contracts reused.",
+    "B4BF30 actual logical index: physical08,offset0C,flags10,count14,format18,shadow1C,baseindex20.",
+    "NativePhysicalBufferLockContext and actual physical access routines preserve real COM Lock output, cursor/depth and diagnostic/null sentinel behavior."
+  ],
+  "provenance": [
+    "Complete-function EBX/EBP/ESI/EDI filters read for all four leaves; ESI initial logical, vertex EDI captured renderer, index EBX captured renderer and EDI physical table/result; pointer reloads and stack cells checked.",
+    "Xrefs to these functions are data cells only: D61D7C/80 -> B49980/B49A80 and D61DEC/F0 -> B49B60/B49C70. Live bytes checked; both known Text virtual-call argument setups read.",
+    "No backing array allocation/relocation in logical methods. Physical COM callback can change returned mapping/metadata; vertex08 publication and post-callback clear are preserved.",
+    "Existing actual physical implementations read before reuse; their original RET14h and no-arg unlock contracts retained. Full native DWORD wrap and zero-product fallback preserved."
+  ],
+  "remaining_dependencies": [
+    "Actual initialized logical/physical storage, original immutable physical profile views, current renderer synchronization state and existing diagnostic/lifetime context.",
+    "Original stream constructor/factory and renderer binding composition; no new allocator, retained owner or registry.",
+    "No SEH/ABI compatibility or concurrent synchronization transition equivalence claim."
+  ],
+  "validation": {
+    "compile": "Strict MSVC Win32 two new TUs /std:c++17 /EHsc /W4 /WX /O2 /fp:strict passed",
+    "call_verifier": "Stronger live verify_report_calls.py:20 numeric rows,0failed;8exactdirect plus12resolvedindirect rows separately checked against current body/table evidence.",
+    "new_tests": 0,
+    "abi_compatible": false,
+    "native_differential": false,
+    "game_validated": false,
+    "runtime_evidence": "Not integrated/reachable through current ordinary Text factory; parent performs standard combined build"
+  }
+}

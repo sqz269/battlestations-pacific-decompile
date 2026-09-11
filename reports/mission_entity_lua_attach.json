@@ -1,0 +1,180 @@
+{
+ "packet": "cc2_entity_lua_attach",
+ "doc": "docs/MISSION_ENTITY_LUA_ATTACH.md",
+ "owner": "agent/cc2-entity-lua-attach",
+ "addresses": [
+  "00928A00",
+  "0077E830",
+  "00928C80",
+  "00928F50",
+  "00779AF0",
+  "00951F30",
+  "00CE6290"
+ ],
+ "files": [
+  "docs/MISSION_ENTITY_LUA_ATTACH.md",
+  "reports/mission_entity_lua_attach.json",
+  "include/bsp/mission_entity_lua_attach.hpp",
+  "src/mission_entity_lua_attach.cpp"
+ ],
+ "finding": "Attaching a Lua self table is not a call graph but a virtual slot. The root entity vtable 00CE6290 carries 00928A00 at slot 39 (+9Ch), 00928C80 at slot 32 (+80h) and 00928F50 at slot 11 (+2Ch). 0077E830 is an override of slot 39 that calls the base 00928A00 first and then reads the ResourceUsage property; the nine functions that call 0077E830 are themselves slot-39 overrides in derived classes, so all nine reach 00928A00 unconditionally. Forty-three vtables install a slot-39 attach: 1 base, 17 that take 0077E830 unchanged, and 25 belonging to the nine overrides. Twenty-one of the classes are named from the image through docs/VEHICLE_CLASS_DESCRIPTORS.md. The unread kind-3 branch is a skip, not an alternative path: when entity+C0h is non-null and its kind is 3 the stale-slot clear, the fresh-table assign, ID and Dead are all jumped over at 00928AB8 and only Ptr is rebound, so a script-owned entity keeps the Lua object it already has and has its light userdata refreshed. 00928C80 is the on-killed half of the same contract: under the entity lock it sets Ptr to lightuserdata(0) and writes LastPosition = {x,y,z}; it never sets Dead. 00928F50 mirrors the entity's Race and Party integers into the same self object after the base 00923B80 has written them.",
+ "virtual_slots": [
+  {
+   "slot": "+9Ch",
+   "index": 39,
+   "role": "attach or refresh the Lua self table",
+   "base": "00928A00",
+   "base_vtable": "00CE6290",
+   "installations": 43
+  },
+  {
+   "slot": "+80h",
+   "index": 32,
+   "role": "on-killed",
+   "base": "00928C80",
+   "base_vtable": "00CE6290",
+   "player_unit_override": "00779AF0",
+   "adjustor_thunk": "00951FB0"
+  },
+  {
+   "slot": "+2Ch",
+   "index": 11,
+   "role": "set party and race, mirrored into the self table",
+   "base": "00928F50",
+   "base_vtable": "00CE6290",
+   "adjustor_thunk": "00951F30"
+  }
+ ],
+ "host_steps": [
+  {"address": "00928A1E", "native": "00927050", "function": "00928A00", "name": "prepare_00927050", "this": "entity", "args": "none read", "ret": "ignored", "gate": "none", "contract": "unread"},
+  {"address": "00928A2F", "native": "004260B0", "function": "00928A00", "name": "format_key", "this": "stack NativeString at ESP+1Ch", "args": "the zero-extended u16 at entity+174h (00928A23 MOVZX)", "ret": "NativeString", "gate": "none"},
+  {"address": "00928A54", "native": "0041DD40", "function": "00928A00", "name": "cache_key_on_entity (resize)", "this": "entity+178h", "args": "size, 1", "ret": "void", "gate": "the key object is not the entity's own field"},
+  {"address": "00928A6A", "native": "00BF7680", "function": "00928A00", "name": "cache_key_on_entity (copy)", "this": "none, cdecl memcpy", "args": "entity+17Ch, source, size+1", "ret": "void", "gate": "size != 0"},
+  {"address": "00928A9F", "native": "00927B40", "function": "00928A00", "name": "self_object", "this": "entity (ECX = EDI)", "args": "[esp+4] = &out LuaObject at ESP+20h", "ret": "out parameter", "gate": "none"},
+  {"address": "00928AC2", "native": "00B65FB0", "function": "00928A00", "name": "self_object_is_nil", "this": "the LuaObject at ESP+20h", "args": "none", "ret": "AL", "gate": "not entity+C0h kind 3 (00928AB8)"},
+  {"address": "00928ADC", "native": "00B67980", "function": "00928A00", "name": "clear_stale_slot (globals)", "this": "[00E188A8]+1A0Ch", "args": "&out", "ret": "out parameter", "gate": "self object not nil"},
+  {"address": "00928AF2", "native": "00B67800", "function": "00928A00", "name": "clear_stale_slot (thisTable)", "this": "the globals object", "args": "&out, \"thisTable\" (00CE7494)", "ret": "out parameter", "gate": "self object not nil"},
+  {"address": "00928AFF", "native": "00B67350", "function": "00928A00", "name": "clear_stale_slot (set nil)", "this": "the thisTable object", "args": "the key NativeString at entity+178h", "ret": "void", "gate": "self object not nil"},
+  {"address": "00928B30", "native": "00B67980", "function": "00928A00", "name": "assign_fresh_table (globals)", "this": "[00E188A8]+1A0Ch", "args": "&out", "ret": "out parameter", "gate": "not kind 3"},
+  {"address": "00928B46", "native": "00B67800", "function": "00928A00", "name": "assign_fresh_table (thisTable)", "this": "the globals object", "args": "&out, \"thisTable\"", "ret": "out parameter", "gate": "not kind 3"},
+  {"address": "00928B53", "native": "00B67580", "function": "00928A00", "name": "assign_fresh_table (new table)", "this": "the thisTable object", "args": "the key NativeString", "ret": "void", "gate": "not kind 3"},
+  {"address": "00928B7A", "native": "00927B40", "function": "00928A00", "name": "self_object (re-fetch)", "this": "entity", "args": "&out", "ret": "out parameter", "gate": "not kind 3"},
+  {"address": "00928B89", "native": "00B67690", "function": "00928A00", "name": "assign the refreshed slot object", "this": "the LuaObject at ESP+20h", "args": "the object just fetched", "ret": "void", "gate": "not kind 3"},
+  {"address": "00928BA5", "native": "00B67630", "function": "00928A00", "name": "set_id_string", "this": "the self object", "args": "\"ID\" (00CE59B4), the key NativeString at entity+178h", "ret": "void", "gate": "not kind 3"},
+  {"address": "00928BB3", "native": "0041E870", "function": "00928A00", "name": "set_dead_false (name)", "this": "stack NativeString", "args": "\"Dead\" (00CF829C)", "ret": "void", "gate": "not kind 3"},
+  {"address": "00928BC7", "native": "00B673A0", "function": "00928A00", "name": "set_dead_false", "this": "the self object", "args": "the name, 0 (EBP)", "ret": "void", "gate": "not kind 3"},
+  {"address": "00928BFD", "native": "0041DD40", "function": "00928A00", "name": "set_ptr_lightuserdata (name resize)", "this": "stack NativeString", "args": "3, 1", "ret": "void", "gate": "none, the kind-3 jump lands at 00928BEE"},
+  {"address": "00928C18", "native": "00BF7680", "function": "00928A00", "name": "set_ptr_lightuserdata (name copy)", "this": "none, cdecl memcpy", "args": "buffer, \"Ptr\" (00CFAD08), 4", "ret": "void", "gate": "none"},
+  {"address": "00928C2F", "native": "00B67530", "function": "00928A00", "name": "set_ptr_lightuserdata", "this": "the self object", "args": "the name, entity (PUSH EDI at 00928C20)", "ret": "void", "gate": "none"},
+  {"address": "00928C62", "native": "00B67700", "function": "00928A00", "name": "release the self object", "this": "the LuaObject at ESP+20h", "args": "none", "ret": "void", "gate": "none"},
+
+  {"address": "0077E834", "native": "00928A00", "function": "0077E830", "name": "base slot-39 attach", "this": "entity (MOV ESI,ECX at 0077E832)", "args": "none", "ret": "void", "gate": "none"},
+  {"address": "0077E857", "native": "0048F5D0", "function": "0077E830", "name": "read_resource_usage_property", "this": "entity+C0h -> +8h (0077E84C)", "args": "\"ResourceUsage\" (00CFACAC), 0.0f pushed by FLDZ/FSTP at 0077E849", "ret": "x87 ST0, stored to entity+304h at 0077E864", "gate": "entity+C0h != 0 and its kind == 1"},
+  {"address": "0077E886", "native": "0043D870", "function": "0077E830", "name": "apply_resource_usage_property", "this": "entity+C0h -> +8h, reloaded at 0077E878", "args": "\"ResourceUsage\"", "ret": "ignored", "gate": "the stored float is not ordered-equal to zero (0077E86E FUCOMIP, 0077E873 TEST AH,0x44, JNP)", "contract": "unread"},
+
+  {"address": "00928CAA", "native": "004C1570", "function": "00928C80", "name": "enter_entity_lock (singleton)", "this": "none read", "args": "none read", "ret": "the lock holder; the section is at holder+4h", "gate": "entity+178h != 0"},
+  {"address": "00928CDC", "native": "00927B40", "function": "00928C80", "name": "self_object", "this": "entity (ESI)", "args": "&out", "ret": "out parameter", "gate": "entity+178h != 0"},
+  {"address": "00928CEF", "native": "0041E870", "function": "00928C80", "name": "set_ptr_null (name)", "this": "stack NativeString", "args": "\"Ptr\" (00CFAD08)", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928D04", "native": "00B67530", "function": "00928C80", "name": "set_ptr_null", "this": "the self object", "args": "the name, 0", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928D36", "native": "0041E870", "function": "00928C80", "name": "make_last_position_table (name)", "this": "stack NativeString", "args": "\"LastPosition\"", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928D49", "native": "00B67580", "function": "00928C80", "name": "make_last_position_table (new table)", "this": "the self object", "args": "the name", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928D81", "native": "00B67800", "function": "00928C80", "name": "make_last_position_table (bind)", "this": "the self object", "args": "&out, \"LastPosition\"", "ret": "out parameter", "gate": "entity+178h != 0"},
+  {"address": "00928D97", "native": "00414DB0", "function": "00928C80", "name": "refresh_world_pose", "this": "entity", "args": "none read", "ret": "ignored", "gate": "the byte at entity+C8h is zero (00928D86)", "contract": "unread"},
+  {"address": "00928DE6", "native": "00B67400", "function": "00928C80", "name": "set_number x", "this": "the LastPosition table", "args": "\"x\" (00CEB488), the float at entity+FCh", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928E32", "native": "00B67400", "function": "00928C80", "name": "set_number y", "this": "the LastPosition table", "args": "\"y\" (00D045F8), the float at entity+100h", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928E7E", "native": "00B67400", "function": "00928C80", "name": "set_number z", "this": "the LastPosition table", "args": "\"z\" (00CFD718), the float at entity+104h", "ret": "void", "gate": "entity+178h != 0"},
+  {"address": "00928F14", "native": "004254B0", "function": "00928C80", "name": "log_entity_killed", "this": "none, varargs", "args": "\"Entity %u killed: %s (%s)\", the u16 at entity+174h, the name at entity+158h or \"<null name>\", a table entry indexed by entity+C4h", "ret": "void", "gate": "none: outside the self-table gate and outside the lock"},
+  {"address": "00928F30", "native": "00923050", "function": "00928C80", "name": "on-killed tail", "this": "entity", "args": "none read", "ret": "void", "gate": "none", "contract": "unread"},
+
+  {"address": "00928F7D", "native": "00923B80", "function": "00928F50", "name": "base_set_party_race_00923b80", "this": "entity", "args": "the three forwarded stack arguments", "ret": "void", "gate": "none", "contract": "unread"},
+  {"address": "00928F89", "native": "00927B40", "function": "00928F50", "name": "self_object", "this": "entity (ESI)", "args": "&out", "ret": "out parameter", "gate": "none"},
+  {"address": "00928FD9", "native": "00B67460", "function": "00928F50", "name": "set_integer Race", "this": "the self object", "args": "\"Race\" (00CE8EE0), the dword at entity+58h (00928FC7)", "ret": "void", "gate": "none"},
+  {"address": "00929046", "native": "00B67460", "function": "00928F50", "name": "set_integer Party", "this": "the self object", "args": "\"Party\", the dword at entity+54h (00929034)", "ret": "void", "gate": "none"}
+ ],
+ "tail_jumps": [
+  {
+   "site": "00779B58",
+   "target": "00928C80",
+   "function": "00779AF0",
+   "instruction": "JMP 0x00928c80",
+   "note": "not a CALL. 00779AF0 restores ESI/EDI, loads ECX from EBX at 00779B55, pops EBX and jumps, so the base on-killed runs on the same frame with the entity in ECX and returns to 00779AF0's caller. tools/verify_report_calls.py rejected an earlier row that claimed a call here."
+  }
+ ],
+ "attach_overrides": [
+  {"override": "004426C0", "call_site": "004426DB", "vtables": ["00CFDC58"], "classes": ["unnamed"], "constructor": "00728960", "evidence": "vtable 00CFDC58 slot 39; the only writer of 00CFDC58 is 00728960, called by 0072E510 in the gun segment; the body reads the Lua properties \"platform\" and \"_device\". Named class not recovered."},
+  {"override": "006D0C80", "call_site": "006D0C99", "vtables": ["00CF8C08"], "classes": ["MAirfield"], "constructor": "006D1C20", "evidence": "docs/VEHICLE_CLASS_DESCRIPTORS.md AirField slot +28h = 006D3110; 006D3110 calls 006D1C20, which writes 00CF8C08; 00CF8C08+9Ch = 006D0C80."},
+  {"override": "00743450", "call_site": "0074347E", "vtables": ["00CEA570"], "classes": ["unnamed land convoy"], "constructor": "004F2410", "evidence": "vtable 00CEA570 slot 39; 004F2410 writes it and is called by 004F2700 (segment 11, keyword landconvoy) and 00743B70; the body reads Columns, Rows, RowGap, ColumnGap, Reverse, Offset, Speed, Position, Type. Provisional."},
+  {"override": "00743E90", "call_site": "00743EA9", "vtables": ["00CFB028", "00CFF3F8"], "classes": ["MCommandBuilding", "MLandFort"], "constructor": "006F5610, 00745940", "evidence": "CommandBuilding slot +28h = 006F5C10 -> 006F5610 -> vtable 00CFB028; LandFort slot +28h = 00747000 -> 00745940 -> vtable 00CFF3F8. Both +9Ch = 00743E90."},
+  {"override": "0074CCF0", "call_site": "0074CCF3", "vtables": ["00CFFDE0"], "classes": ["MLandVehicle"], "constructor": "0074DCC0", "evidence": "LandVehicle slot +28h = 0074DF10 -> 0074DCC0 -> vtable 00CFFDE0; +9Ch = 0074CCF0."},
+  {"override": "007CDF20", "call_site": "007CDF24", "vtables": ["00D00070", "00D00308", "00D05F20", "00D06638", "00D06920", "00D0BA80", "00D19D28", "00D1A000", "00D1A2D8"], "classes": ["MReconPlane", "MLargeReconPlane", "unnamed", "MPlaneBomber", "MPlaneFighter", "MSmallReconPlane", "MPlaneDiveBomber", "MPlaneTorpedoBomber", "MPlaneKamikaze"], "constructor": "0074E0F0, 0074E2D0, 007CFD20, 007D7720, 007DD9B0, 0084C920, 00951B60, 00951C40, 00951D20", "evidence": "each class's descriptor slot +28h allocator from docs/VEHICLE_CLASS_DESCRIPTORS.md calls the constructor that writes the vtable; every listed vtable+9Ch = 007CDF20. 00D05F20 has no descriptor row."},
+  {"override": "007F4580", "call_site": "007F45A7", "vtables": ["00D087C0"], "classes": ["plane squadron, unnamed"], "constructor": "007F2C60", "evidence": "007F2C60 writes 00D087C0 and is called by BSP_SceneUnit_CreatePlaneSquadronGen 004F0AD0 (docs/SCENE_UNIT_CREATORS.md); the body reads PlaneParentID, WingCount, classIndex, _planeSquadron."},
+  {"override": "00810F60", "call_site": "00810F7B", "vtables": ["00CF90B0", "00CFA778", "00CFB738", "00CFC3D0", "00CFFA30", "00D01630", "00D09678", "00D0BF80", "00D0C648"], "classes": ["MBattleship", "MCargo", "MCruiser", "MDestroyer", "MLandingShip", "MMothership", "unnamed", "MSubmarine", "MTorpedoBoat"], "constructor": "006DFC90, 006EB160, 006FB300, 006FE460, 0074BB00, 00758550, 0081ED40, 00852F10, 00857CD0", "evidence": "same chain; 00CFC3D0 is the MDestroyer instance vtable already recorded in docs/SCENE_UNIT_CREATORS.md. 00D09678 has no descriptor row."},
+  {"override": "008429E0", "call_site": "008429F9", "vtables": ["00D0B770"], "classes": ["MShipyard"], "constructor": "00848080", "evidence": "Shipyard slot +28h = 00848380 -> 00848080 -> vtable 00D0B770; +9Ch = 008429E0."}
+ ],
+ "direct_0077e830_vtables": [
+  "00CEA218", "00CF9438", "00CFBA80", "00CFC698", "00CFC910", "00CFCB48",
+  "00CFCD60", "00CFD018", "00D03E80", "00D040B8", "00D05060", "00D054D0",
+  "00D090E8", "00D0C3E8", "00D0D130", "00D0DF70", "00D1A698"
+ ],
+ "kind_three_branch": {
+  "test": "00928AA4 MOV EAX,[EDI+0xC0]; 00928AAC CMP EAX,EBP; 00928AB2 JZ 00928ABE; 00928AB4 CMP dword ptr [EAX+0x4],0x3; 00928AB8 JZ 00928BEE",
+  "effect": "a skip, not an alternative path: the target 00928BEE is the start of the Ptr sequence, so the nil test, the stale-slot clear, the fresh-table assign, ID and Dead are all bypassed and only Ptr is rebound",
+  "consequence": "a script-owned entity keeps whatever Lua object it already has across re-attach, and its ID and Dead are whatever a previous pass or a script left; the key at entity+178h is still refreshed, because 00928A2F..00928A6A run before the test"
+ },
+ "no_ghidra_function": [],
+ "names_recorded": [
+  {"address": "0077E830", "name": "BSP_MissionEntity_AttachLuaSelfWithResourceUsage"},
+  {"address": "00928C80", "name": "BSP_MissionEntity_OnKilledReleaseLuaSelf"},
+  {"address": "00928F50", "name": "BSP_MissionEntity_SetPartyRaceLuaMirror"},
+  {"address": "00779AF0", "name": "BSP_MissionEntity_OnKilledPlayerUnit"},
+  {"address": "00951F30", "name": "thunk_BSP_MissionEntity_SetPartyRaceLuaMirror"}
+ ],
+ "corrections": [
+  {
+   "doc": "docs/MISSION_LUA_SELF_TABLE.md",
+   "was": "00928A00, __thiscall(ECX = entity), sole caller 0077E830",
+   "is": "00928A00 is virtual slot 39 (+9Ch) of the root entity vtable 00CE6290 and is called indirectly through it; 0077E830 is a derived override of the same slot that calls the base directly at 0077E834",
+   "evidence": "the dword at 00CE6290+9Ch is 00928A00; 43 vtables install a slot-39 attach"
+  },
+  {
+   "doc": "docs/MISSION_LUA_SELF_TABLE.md",
+   "was": "the 00928AB4 branch of 00928A00 (entity->[C0] with kind 3) was not read, so what a script entity that already owns a Lua object does instead is unknown",
+   "is": "kind 3 jumps to 00928BEE and therefore does nothing instead: it skips the reset and keeps the existing table, rebinding only Ptr",
+   "evidence": "00928AB8 JZ 0x00928BEE and 00928BEE is inside the Ptr sequence that the fall-through also reaches"
+  },
+  {
+   "doc": "docs/MISSION_LUA_SELF_TABLE.md",
+   "was": "which entity kinds 0077E830 reaches 00928A00 for was not established; only that it is the sole caller",
+   "is": "all nine callers of 0077E830 are slot-39 overrides that call it unconditionally as their first or near-first act, and 0077E834 calls 00928A00 unconditionally, so every one of the 25 classes behind them reaches the base attach",
+   "evidence": "the nine call sites are UNCONDITIONAL_CALL xrefs and 0077E834 is the first call of 0077E830"
+  }
+ ],
+ "uncertainties": [
+  "00927050 (00928A1E), 0043D870 (0077E886), 00414DB0 (00928D97), 00923050 (00928F30) and 00923B80 (00928F7D) were not read; they are named by address in the host table and carry contract: unread",
+  "the class names of 00CFDC58 (004426C0) and 00CEA570 (00743450), and of the two leftover vtables 00D05F20 and 00D09678, were not recovered; the 17 vtables that take 0077E830 unchanged were not named at all",
+  "nothing sets Dead to true. 00928C80 nulls Ptr and writes LastPosition but leaves Dead as 00928BC7 left it, so the field the shipped scripts test is written somewhere this packet did not find",
+  "00928C80's own tail past the log line (the +134h virtual taken when entity+30h != 0, and 00923050) was not read",
+  "00928F50's three stack arguments were not attributed individually; the mirror reads entity+58h and entity+54h after the base call rather than the arguments"
+ ],
+ "coverage": {
+  "00928A00": "complete",
+  "0077E830": "complete",
+  "00928C80": "partial: the Lua half and the log line; 00928F1C-00928F44 unread",
+  "00928F50": "complete",
+  "00779AF0": "analyzed only, not reconstructed"
+ },
+ "state": {
+  "reconstructed": ["00928A00", "0077E830", "00928C80", "00928F50"],
+  "analyzed": ["00779AF0", "00951F30", "00CE6290", "the 43 slot-39 vtables"],
+  "build_tested": true,
+  "fixture_tested": false,
+  "abi_compatible": false,
+  "game_validated": false
+ },
+ "build": {
+  "command": "./scripts/build.ps1",
+  "result": "pass",
+  "tests": "reconstructed_math 1/1 passed"
+ },
+ "not_binary_compatible": "The host interface is a new C++ contract over the native call sites, not a drop-in replacement for the virtual slots."
+}

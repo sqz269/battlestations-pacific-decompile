@@ -1,0 +1,222 @@
+{
+  "packet": "orch5_text_geometry",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_geometry.cpp",
+  "documentation": "docs/GUI_TEXT_GEOMETRY.md",
+  "reconstructed": [
+    {
+      "address": "00ab98f0",
+      "name": "write_gui_text_quad_00ab98f0_fragment",
+      "end": "00ab9fc2",
+      "final_instruction": "00ab9fc0",
+      "final_instruction_length": 3,
+      "abi": "ECX Text; ten stack DWORDs; RET28h at9CD8 and9FC0, both3bytes",
+      "coverage": "partial_projection",
+      "reconstructed_ranges": [
+        "00ab98f0-00ab9d32",
+        "00ab9fae-00ab9fc2"
+      ],
+      "excluded_ranges": [
+        "00ab9d33-00ab9fad"
+      ],
+      "domain": "Valid nonaliasing zero-offset actual mappings/current writer fields and sufficient native capacity; no invalid-input or floating trap-timing equivalence"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aba1f8",
+      "native": "00ab98f0",
+      "function": "00ab9fd0",
+      "operation": "glyph,pen,actualvertex,actualindices,two unconsumed local slots,quad,heightlow16,firstvertex,codeunitlow16; RET28h"
+    },
+    {
+      "address": "00aba730",
+      "native": "00ab98f0",
+      "function": "00aba270",
+      "operation": "same ten-argument writer contract; wrapped caller uses independently advanced pen/index/vertex and lowwordheight; RET28h"
+    }
+  ],
+  "excluded_optional_calls": [
+    {
+      "address": "00ab9d38",
+      "native": "00ab78a0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9d4f",
+      "native": "00ab9650",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9d70",
+      "native": "005dad40",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9d87",
+      "native": "source_model+vtable10",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9d8c",
+      "native": "00aa6720",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9d93",
+      "native": "00ab8530",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9da5",
+      "native": "child+vtable34",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9db2",
+      "native": "00aa6bc0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9dc9",
+      "native": "00ab8c30",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e05",
+      "native": "00ab6c30",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e13",
+      "native": "0041e870",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e1f",
+      "native": "00ab8e70",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e39",
+      "native": "00419cc0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e40",
+      "native": "00bd1510",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e51",
+      "native": "00ab81c0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e61",
+      "native": "00aba8d0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e71",
+      "native": "child+vtable50",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e8a",
+      "native": "00419cc0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e91",
+      "native": "00bd1510",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9e9b",
+      "native": "00aaa5a0",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9ec0",
+      "native": "child+vtable30",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9ecd",
+      "native": "00aa6750",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    },
+    {
+      "address": "00ab9fa9",
+      "native": "00aa8240",
+      "function": "00ab98f0",
+      "operation": "Not executed; exact optional child continuation remains required. No new host contract asserted."
+    }
+  ],
+  "state_and_writes": [
+    "Uses SAME GuiTextLifetime.text/font_scale and fields pointer1B0/1AC,string1A4; same owner.extra_fields.layout_listener_dc. No duplicated Text state.",
+    "Reads actual stream08 mapping,0C stride,10 position,28 UV,34 packedcolor or38/3C/40/44floatcolor,64capacity established by B61E20/B4BC00.",
+    "Existing x87 kernel writes four vertices directly into actual08; six scalar index results are stored into actual index slice in native order1,0,3,2,4,5 and low16 wrap.",
+    "After writes, current optional gate and first-NUL-terminated substitution scan select complete versus four actual UV-pair zero stores and needs_glyph_child atAB9D33.",
+    "No native calls in covered writer range; all23 omitted optional calls listed with exact owning function. Current mapped pointer is read at writer call, after both consumer locks."
+  ],
+  "consumer_coverage": [
+    {
+      "address": "00ab9fd0",
+      "coverage": "read_only_not_implemented",
+      "end": "00aba263",
+      "evidence": "Full660-byte single-line listing; actual lock/order/count/material/firstpen path read; scalar kernel reused only by future full builder."
+    },
+    {
+      "address": "00aba270",
+      "coverage": "read_only_not_implemented",
+      "end": "00aba8c6",
+      "evidence": "Full wrapped listing; source mutation, actual locks, material resources, metrics and final per-vertex offset remain outside this packet."
+    }
+  ],
+  "provenance": [
+    "Full AB98F0 body proto98F0..9FC2; prefix final UV store9D2E length5 ends9D32; next9D33 sets pool before9D38 allocation.",
+    "All direct xrefs:ABA1F8 inAB9FD0 andABA730 inABA270. Each ten-word setup checked against RET28h.",
+    "Full register filter: EAX writer, ESI firstvertex, EBP first+3 at9BA7, EDI Text restored fromESP+10 aftercolorstores; full filters for ESP+6C/70 show no covered consumer for native slots5/6.",
+    "Original new helper remains semantic C++ ABI; existing scalar writer native-prefix fixture is prior evidence only, not a new test of this adapter."
+  ],
+  "remaining_dependencies": [
+    "Optional child continuationAB9D33..AB9FAD: actual Text pool/factory, vector ownership, node copy, setup, recursive content, attachment and positioning.",
+    "Complete AB9FD0/ABA270 builders and metrics: canonical actual font/glyph texture association for native glyph18/1C plus material/currentfont behavior, section counts/layout.",
+    "Actual logical buffer creation/current physical mapping contexts and renderer draw composition. No fake upload or vector-only result supplied."
+  ],
+  "validation": {
+    "compile": "Strict MSVC Win32 mapping+geometry TUs compiled; includes canonical lifetime/content/style headers from coordinated sibling worktrees",
+    "call_verifier": "Stronger live verify_report_calls.py:21exactdirect rows,0failed;4symbolic optional virtual calls separately identified in the excluded body.",
+    "new_tests": 0,
+    "abi_compatible": false,
+    "native_differential": false,
+    "game_validated": false,
+    "runtime_evidence": "Current ordinary Text factory remains disabled; no executable/visual result claimed. Parent combined build pending integration."
+  }
+}

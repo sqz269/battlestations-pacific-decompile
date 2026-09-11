@@ -1,0 +1,478 @@
+{
+  "packet": "cc2_entity_lookup",
+  "owner": "agent/cc2-entity-lookup",
+  "docs": [
+    "docs/LUA_BINDING_ENTITY_LOOKUP.md",
+    "docs/LUA_BINDING_GENERATE_OBJECT.md"
+  ],
+  "reconstruction": [
+    "include/bsp/lua_binding_entity_lookup.hpp",
+    "src/lua_binding_entity_lookup.cpp"
+  ],
+  "ghidra": "read-only for this packet; no renames, comments, prototypes or saves",
+  "routines": [
+    {
+      "address": "0088b1b0",
+      "name": "BSP_MissionEntity_FindByName",
+      "coverage": "complete",
+      "body": "0088b1b0-0088b30a",
+      "abi": "__stdcall, RET 8: NativeString {int length; char* data} by value, destroyed by the callee; entity or 0 in EAX"
+    },
+    {
+      "address": "00898e30",
+      "name": "BSP_LuaBinding_FindEntity",
+      "coverage": "partial: 00898E30..00898EF0 (the one-time 'luaMW_FindEntity failed:' string init and the SEH state stores) not modelled",
+      "body": "00898e30-008990ae"
+    },
+    {
+      "address": "00944fd0",
+      "name": "BSP_LuaBinding_GenerateObject",
+      "coverage": "partial: 00944FDA..00945076 (the one-time 'luakod' string init) and the unwind funclets not modelled; 00945076..009453BB complete",
+      "body": "00944fd0-0094544f"
+    },
+    {
+      "address": "0046d930",
+      "name": "scene database named-object generator",
+      "coverage": "partial: 0046DA33..0046DB02 (property bag and party handling) not read",
+      "body": "0046d930-0046dc01"
+    },
+    {
+      "address": "0046dc10",
+      "name": "scene database named-object generator with placement",
+      "coverage": "partial: ABI, position copy and yaw gate read; the remainder not read",
+      "body": "0046dc10-0046dfd8"
+    }
+  ],
+  "find_by_name_steps": [
+    {
+      "address": "0088b242",
+      "native": "0088b242+vtable04",
+      "name": "entity name accessor, (*(*entity + 10h))()",
+      "function": "0088b1b0",
+      "args": "this = entity",
+      "ret": "const char*",
+      "gate": "the four flag bytes pass"
+    },
+    {
+      "address": "0088b2a8",
+      "native": "00bf7fbf",
+      "name": "__stricmp",
+      "function": "0088b1b0",
+      "args": "wanted, candidate name",
+      "ret": "0 on match",
+      "gate": "both names non-null"
+    },
+    {
+      "address": "0088b277",
+      "native": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton",
+      "function": "0088b1b0",
+      "args": "none; the three pushes belong to 00bd1510",
+      "ret": "pool",
+      "gate": "argument data pointer non-null"
+    },
+    {
+      "address": "0088b27e",
+      "native": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock",
+      "function": "0088b1b0",
+      "args": "this = pool; data, length + 1, 1",
+      "ret": "void",
+      "gate": "argument data pointer non-null"
+    },
+    {
+      "address": "0088b2ea",
+      "native": "00419cc0",
+      "name": "BSP_SizedStoragePool_GetSingleton, the not-found exit",
+      "function": "0088b1b0",
+      "args": "none",
+      "ret": "pool",
+      "gate": "argument data pointer non-null"
+    },
+    {
+      "address": "0088b2f1",
+      "native": "00bd1510",
+      "name": "BSP_SizedStoragePool_ReturnBlock, the not-found exit",
+      "function": "0088b1b0",
+      "args": "this = pool; data, length + 1, 1",
+      "ret": "void",
+      "gate": "argument data pointer non-null"
+    }
+  ],
+  "find_entity_steps": [
+    {
+      "address": "00898f83",
+      "native": "00bf7680",
+      "name": "memcpy into the NativeString passed by value",
+      "function": "00898e30",
+      "args": "dst, src, length",
+      "ret": "dst",
+      "gate": "length non-zero"
+    },
+    {
+      "address": "00898f8b",
+      "native": "0088b1b0",
+      "name": "BSP_MissionEntity_FindByName",
+      "function": "00898e30",
+      "args": "NativeString by value on the stack",
+      "ret": "entity or 0",
+      "gate": "always"
+    },
+    {
+      "address": "00898fa7",
+      "native": "004260b0",
+      "name": "BSP_NativeString_FromInt, the decimal key of the u16 at entity+174h",
+      "function": "00898e30",
+      "args": "this = string, id",
+      "ret": "string",
+      "gate": "entity non-null"
+    },
+    {
+      "address": "00898fc4",
+      "native": "00b67910",
+      "name": "BSP_LuaObject_GetByLiteral, \"thisTable\" at 00ce7494",
+      "function": "00898e30",
+      "args": "this = frame, out, literal",
+      "ret": "object",
+      "gate": "entity non-null"
+    },
+    {
+      "address": "00898fda",
+      "native": "00b678e0",
+      "name": "BSP_LuaObject_GetByNativeString",
+      "function": "00898e30",
+      "args": "this = table, out, key",
+      "ret": "object",
+      "gate": "entity non-null"
+    },
+    {
+      "address": "00898fe9",
+      "native": "00b663d0",
+      "name": "BSP_LuaObject_PushValue",
+      "function": "00898e30",
+      "args": "this = object",
+      "ret": "void",
+      "gate": "entity non-null"
+    },
+    {
+      "address": "0089903c",
+      "native": "00b66430",
+      "name": "BSP_LuaObject_PushNil",
+      "function": "00898e30",
+      "args": "this = frame",
+      "ret": "void",
+      "gate": "entity null"
+    },
+    {
+      "address": "00899045",
+      "native": "00b66400",
+      "name": "BSP_LuaObject_ResultCount, lua_gettop - base",
+      "function": "00898e30",
+      "args": "this = frame",
+      "ret": "count",
+      "gate": "always"
+    }
+  ],
+  "generate_object_steps": [
+    {
+      "address": "009450c0",
+      "native": "00b663f0",
+      "name": "argument count on the call frame",
+      "function": "00944fd0",
+      "args": "this = frame",
+      "ret": "count",
+      "gate": "always"
+    },
+    {
+      "address": "009450e6",
+      "native": "00b660a0",
+      "name": "BSP_LuaObject_IsString on argument 1",
+      "function": "00944fd0",
+      "args": "this = object",
+      "ret": "bool",
+      "gate": "count > 1"
+    },
+    {
+      "address": "00945136",
+      "native": "00b662b0",
+      "name": "BSP_LuaObject_GetString on argument 1",
+      "function": "00944fd0",
+      "args": "this = object",
+      "ret": "char*",
+      "gate": "argument 1 is a string"
+    },
+    {
+      "address": "00945159",
+      "native": "0041dd40",
+      "name": "BSP_NativeString_Resize for the second name",
+      "function": "00944fd0",
+      "args": "this = string, length, fill",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "009451b7",
+      "native": "0088b840",
+      "name": "position-table predicate: a table of exactly three entries",
+      "function": "00944fd0",
+      "args": "this = object",
+      "ret": "bool",
+      "gate": "count > 1"
+    },
+    {
+      "address": "00945265",
+      "native": "00b66270",
+      "name": "BSP_LuaObject_GetNumber, the yaw in radians",
+      "function": "00944fd0",
+      "args": "this = object",
+      "ret": "float",
+      "gate": "a slot exists after the position table"
+    },
+    {
+      "address": "009452bc",
+      "native": "00888760",
+      "name": "read three floats out of the table into a Vector3; RET 0 leaves the yaw on the stack",
+      "function": "00944fd0",
+      "args": "ECX = out Vector3, EDX = LuaObject, one float stack argument",
+      "ret": "out",
+      "gate": "placed form"
+    },
+    {
+      "address": "009452ca",
+      "native": "004c6be0",
+      "name": "create with position and yaw, forwards to 0046dc10 on the scene database",
+      "function": "00944fd0",
+      "args": "this = game; name, second name, Vector3*, yaw",
+      "ret": "entity",
+      "gate": "placed form"
+    },
+    {
+      "address": "00945308",
+      "native": "004c6ba0",
+      "name": "create without position, forwards to 0046d930 on the scene database",
+      "function": "00944fd0",
+      "args": "this = game; name, second name, 0",
+      "ret": "entity",
+      "gate": "unplaced form"
+    },
+    {
+      "address": "00945311",
+      "native": "00874d00",
+      "name": "deferred-work pump, CL = 1",
+      "function": "00944fd0",
+      "args": "flag in CL",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "00945325",
+      "native": "004260b0",
+      "name": "BSP_NativeString_FromInt, the decimal key of the u16 at entity+174h",
+      "function": "00944fd0",
+      "args": "this = string, id",
+      "ret": "string",
+      "gate": "always, unguarded against a null entity"
+    },
+    {
+      "address": "00945342",
+      "native": "00b67910",
+      "name": "BSP_LuaObject_GetByLiteral, \"thisTable\"",
+      "function": "00944fd0",
+      "args": "this = frame, out, literal",
+      "ret": "object",
+      "gate": "always"
+    },
+    {
+      "address": "00945358",
+      "native": "00b678e0",
+      "name": "BSP_LuaObject_GetByNativeString",
+      "function": "00944fd0",
+      "args": "this = table, out, key",
+      "ret": "object",
+      "gate": "always"
+    },
+    {
+      "address": "00945367",
+      "native": "00b663d0",
+      "name": "BSP_LuaObject_PushValue",
+      "function": "00944fd0",
+      "args": "this = object",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "009453bb",
+      "native": "0046aab0",
+      "name": "BSP_SceneDatabase_ResolveDeferredReferences",
+      "function": "00944fd0",
+      "args": "this = scene database",
+      "ret": "void",
+      "gate": "always"
+    }
+  ],
+  "creator_steps": [
+    {
+      "address": "004c6bb9",
+      "native": "0046d930",
+      "name": "scene database named-object generator",
+      "function": "004c6ba0",
+      "args": "this = [00e18680]; name, second name, 0",
+      "ret": "entity or 0",
+      "gate": "always"
+    },
+    {
+      "address": "004c6c01",
+      "native": "0046dc10",
+      "name": "scene database named-object generator with placement",
+      "function": "004c6be0",
+      "args": "this = [00e18680]; name, second name, Vector3*, yaw",
+      "ret": "entity or 0",
+      "gate": "always"
+    },
+    {
+      "address": "0046d96f",
+      "native": "00468cd0",
+      "name": "named-object map lookup on sceneDb+18h",
+      "function": "0046d930",
+      "args": "this = map, key, out node",
+      "ret": "node",
+      "gate": "always"
+    },
+    {
+      "address": "0046d9fe",
+      "native": "00468fb0",
+      "name": "BSP_SceneClassMap_FindNode on sceneDb+34h",
+      "function": "0046d930",
+      "args": "this = map, class token, out hash",
+      "ret": "node",
+      "gate": "the name was found"
+    },
+    {
+      "address": "0046db1d",
+      "native": "00468660",
+      "name": "BSP_SceneDatabase_ClassIdToName",
+      "function": "0046d930",
+      "args": "this = sceneDb, class id",
+      "ret": "const char*",
+      "gate": "the class token resolved"
+    },
+    {
+      "address": "0046db27",
+      "native": "0046c550",
+      "name": "BSP_SceneEntity_ShouldGenerate",
+      "function": "0046d930",
+      "args": "this = sceneDb; className, entityName, parent, localFrame, bag, 0, parentFrame[16]",
+      "ret": "bool in AL",
+      "gate": "the class token resolved"
+    },
+    {
+      "address": "0046db4b",
+      "native": "0046db4b+descriptor04",
+      "name": "the class descriptor's instantiate-pass creator, descriptor[1]",
+      "function": "0046d930",
+      "args": "this = descriptor; record fields",
+      "ret": "entity",
+      "gate": "ShouldGenerate returned non-zero"
+    },
+    {
+      "address": "0046dbe8",
+      "native": "00925f20",
+      "name": "BSP_SEntity_InitAll",
+      "function": "0046d930",
+      "args": "CL = 0",
+      "ret": "void",
+      "gate": "always on the creating path"
+    },
+    {
+      "address": "0046dd9f",
+      "native": "00467050",
+      "name": "apply a yaw rotation to the placement frame",
+      "function": "0046dc10",
+      "args": "this = frame; 0.0f, yaw, 0.0f",
+      "ret": "void",
+      "gate": "yaw < 2*pi (the double at 00ce3828)"
+    }
+  ],
+  "list_producer_steps": [
+    {
+      "address": "006fe62f",
+      "native": "00484540",
+      "name": "push the unit instance onto the parent node's bucket at +30h",
+      "function": "006fe620",
+      "args": "this = parent + 30h, value = instance",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "006fe65f",
+      "native": "00484540",
+      "name": "push the unit instance onto the parent node's bucket at +6Ch",
+      "function": "006fe620",
+      "args": "this = parent + 6Ch, value = instance",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "00487222",
+      "native": "00484540",
+      "name": "push a Path entity onto the parent node's bucket at +36Ch, world kind 41h",
+      "function": "00487210",
+      "args": "this = parent + 36Ch, value = entity",
+      "ret": "void",
+      "gate": "always"
+    },
+    {
+      "address": "0090369b",
+      "native": "00922fd0",
+      "name": "mark the entity released: +5Eh = 1, +5Dh = 1, +5Ch = 0, +6Ch = 1",
+      "function": "00903670",
+      "args": "this = entity",
+      "ret": "void",
+      "gate": "entity+5Eh set, +6Ch clear, parent not already released"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "was": "the packet brief placed the call site 00944E0A inside 00944FD0 BSP_LuaBinding_GenerateObject",
+      "is": "00944E0A is inside BSP_LuaBinding_Spawn, body 00944680-00944FC0; GenerateObject's body is 00944FD0-0094544F",
+      "evidence": "python tools/bsp.py ghidra proto 00944e0a --brief. 00944680 is leased to agent/cc-lua-core, so the site was not read and no claim here rests on it."
+    },
+    {
+      "was": "docs/LUA_BINDING_ENTITY.md: 0088B1B0 skips entries whose four flag bytes at +5C..+5E and piVar4[0x17] disagree",
+      "is": "the four bytes are +5Ch (must be non-zero), +5Dh, +5Eh and +60h (must be zero); piVar4[0x17] is +5Ch itself and piVar4[0x18] is +60h",
+      "evidence": "0088B213 CMP byte ptr [EAX+0x5c],0 / JZ; 0088B21D +0x5d / JNZ; 0088B227 +0x60 / JNZ; 0088B231 +0x5e / JNZ"
+    },
+    {
+      "was": "docs/LUA_BINDING_ENTITY.md: it walks the bucket lists at [[00E188A8]+19CCh]+1Ch+n",
+      "is": "the list bases are at world+18h with stride 0Ch, indexed by kind+6; 1Ch is the head field of the base, the producer 00484540 lays a base out as {count, head, tail}",
+      "evidence": "00484540 stores count at [this], head at [this+4], tail at [this+8]; every one of the 174 registration sites adds an offset of the form 18h + n*0Ch to the parent node"
+    },
+    {
+      "was": "docs/LUA_BINDING_ENTITY.md: the set of kind indices 0088B1B0 searches was not decoded past the jump table",
+      "is": "fourteen kinds are searched: 00h, 09h, 12h, 13h, 14h, 15h, 16h, 3Bh, 3Eh, 3Fh, 40h, 41h, 44h, 47h; the negative kinds and 48h..5Ah fail the unsigned bound at 0088B1E0 and are never searched",
+      "evidence": "the selector bytes at 0088B318 read with bsp.py ghidra bytes; 0088B1E0 CMP EBX,0x47 / JA is unsigned while EBX starts at 0xFFFFFFFA"
+    },
+    {
+      "was": "docs/LUA_BINDING_ENTITY.md: whether 00944FD0 GenerateObject creates the entity it returns is not established",
+      "is": "it creates it: 004C6BA0/004C6BE0 forward to 0046D930/0046DC10 on the scene database, which resolve the name in the map at sceneDb+18h, the class in the map at sceneDb+34h, and call the class descriptor's instantiate-pass creator at 0046DB4B",
+      "evidence": "0046D96F 00468CD0, 0046D9FE 00468FB0, 0046DB27 0046C550, 0046DB4B CALL EAX with EAX = [descriptor+4], 0046DBE8 00925F20"
+    },
+    {
+      "was": "the decompiler renders the NativeString release as BSP_SizedStoragePool_GetSingleton(data, length+1, 1)",
+      "is": "00419CC0 takes no arguments; the three pushes are 00BD1510's, __thiscall(pool, block, size, flag) with RET 0Ch",
+      "evidence": "docs/NATIVE_STRING_POOL_OWNER.md line 23; 0088B270..0088B27E PUSH 1 / PUSH len+1 / PUSH EDI / CALL 00419cc0 / MOV ECX,EAX / CALL 00bd1510"
+    }
+  ],
+  "checklist": {
+    "callee_before_contract": "every host method above was named from the callee's body except 00874D00 and 0046AAB0, whose contracts come from their own callee lists and existing ledger names",
+    "boundary_before_attribution": "every row carries the containing function; 00944E0A was rejected on this rule",
+    "all_call_sites": "0088B1B0 has one caller, 00898E30; 004C6BA0 and 004C6BE0 have two and one caller respectively and both were read",
+    "producer_before_layout": "the list base and node layout come from 00484540, the push-back; the flag bytes from 00922FD0, 00903670 and 00903610",
+    "partial_projection_labelled": "see routines[].coverage",
+    "runtime_evidence": "not collected: no run reaches a mission script in this packet's budget, so the GenerateObject fault claim is labelled a static reading",
+    "argument_counts_from_cleanup": "RET 8 for 0088B1B0, RET 0Ch for 004C6BA0 and 0046D930, RET 10h for 004C6BE0, RET 0 for 00888760 which is why its float becomes 004C6BE0's fourth dword",
+    "register_provenance": "EDI and EBP in 00944FD0 were resolved by filtering the whole listing (local/gen_object.lst) for each register; EBP in 00898E30 is the zero register",
+    "lease_only_what_is_annotated": "0088B1B0, 00898E30, 00944FD0, 00944E0A, 00888760, 0088B840, 00487210; 004C6BA0 and 004C6BE0 were refused, held by agent/cc2-scene-entity-create, and are treated as external contracts"
+  }
+}

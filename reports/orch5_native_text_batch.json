@@ -1,0 +1,98 @@
+{
+  "branch": "agent/orch5-20260911",
+  "status": "integrated_main_normal_win32_build_and_existing_tests_passed",
+  "worker_commits": {
+    "buffers": "28e9cf55",
+    "content_prefix": "c79cb75b",
+    "canonical_lifetime": "229fb285"
+  },
+  "registered_sources": [
+    "gui_widget_detach.cpp",
+    "gui_text_ellipsis.cpp",
+    "gui_text_style.cpp",
+    "gui_text_buffers.cpp",
+    "gui_text_content.cpp",
+    "gui_text_lifetime.cpp",
+    "gui_native_clip_parameters.cpp"
+  ],
+  "validation": {
+    "normal_win32_build": true,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "numeric_call_rows": 214,
+    "direct_calls": 208,
+    "resolved_indirect_rows": 6,
+    "symbolic_indirect_rows": 23,
+    "failed_call_rows": 0,
+    "indirect_dispatch_proved_by_checker": false,
+    "existing_actual_owner_detach_probe": "passed with rebuilt library",
+    "new_persistent_tests": 0,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "new_buffer_lifetime_clip_operations_executed": false,
+    "logs": [
+      "local/orch5_native_text_build.log",
+      "local/orch5_native_text_calls.log",
+      "local/orch5_native_text_detach_probe.log"
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_function": "00ab83d0",
+    "definition_bytes": 40,
+    "named_and_commented_addresses": [
+      "00aa8320",
+      "00aa9f10",
+      "00ab73b0",
+      "00ab8250",
+      "00ab83d0",
+      "00ab8400",
+      "00ab8530",
+      "00ab8ee0",
+      "00ab9650"
+    ],
+    "saved": true,
+    "affected_exports_refreshed": true,
+    "records": [
+      "reports/orch5_text_lifetime_definitions.json",
+      "reports/orch5_native_text_annotations.json"
+    ],
+    "merge_annotation_record": "reports/orch5_native_text_merge_annotations.json",
+    "merge_applied_addresses": [
+      "00aa8320",
+      "00aa83a0",
+      "00aa9f10",
+      "00ab6b50",
+      "00ab6c30",
+      "00ab7200",
+      "00ab73b0",
+      "00ab75a0",
+      "00ab80c0",
+      "00ab8250",
+      "00ab83d0",
+      "00ab8400",
+      "00ab8530",
+      "00ab8ee0",
+      "00ab8f00",
+      "00ab9650",
+      "00abb000"
+    ],
+    "deferred_leased_address": "00aba8d0",
+    "changed_merge_annotations_exported": [
+      "00ab75a0",
+      "00ab80c0"
+    ]
+  },
+  "remaining": [
+    "mapping/glyph packet7ae534f3 awaits separate primary review",
+    "actual font resources and material/shader continuation packets active",
+    "nonempty builders and optional child recursive Text deletion",
+    "complete factory and command/menu runtime wiring",
+    "gameplay validation"
+  ],
+  "main_integration_commit": "c2d7def9",
+  "integration_validation": "combined normal Win32 build and2existing tests passed after main merge"
+}

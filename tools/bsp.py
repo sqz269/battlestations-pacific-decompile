@@ -635,20 +635,25 @@ def ghidra_cmd(args):
         cmd = [sys.executable, str(ROOT / 'tools/ghidra_flow_repair.py'), *[norm(v) for v in args.addresses]]
         run = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding='utf-8', errors='replace')
         cap((run.stdout + run.stderr).strip(), args.lines)
-    elif sub == 'comments':
+    elif sub in ('comments', 'documentation'):
         # Annotation readback often spans a batch. Persist complete records in
         # ignored local storage while keeping the interactive view bounded.
         path = None
         if args.output:
             path = (ROOT / args.output).resolve()
             if not path.is_relative_to((ROOT / 'local').resolve()) or path.suffix != '.json':
-                sys.exit('Comment output must be a JSON file under local/.')
-        rows = [{'address': norm(a), 'annotation': c.get('get_plate_comment', address=norm(a))}
-                for a in args.addresses]
+                sys.exit('Annotation output must be a JSON file under local/.')
+        if sub == 'documentation':
+            rows = [{'address': norm(a), 'documentation':
+                     c.get('get_function_documentation', address=norm(a))}
+                    for a in args.addresses]
+        else:
+            rows = [{'address': norm(a), 'annotation': c.get('get_plate_comment', address=norm(a))}
+                    for a in args.addresses]
         if path:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(rows, indent=2) + '\n', encoding='utf-8', newline='\n')
-            print(f'Saved {len(rows)} comment records to {path.relative_to(ROOT).as_posix()}')
+            print(f'Saved {len(rows)} {sub} records to {path.relative_to(ROOT).as_posix()}')
         else:
             cap(as_text(rows), args.lines, args.start)
     elif sub in ('xrefs', 'callers', 'callees'):
@@ -938,6 +943,7 @@ def main():
     q = gs.add_parser('proto'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20); q.add_argument('--brief', action='store_true', help='one line per address: name, signature, body span')
     q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
     q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
+    q = gs.add_parser('documentation', help='archive full function documentation before body repairs'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
         q = gs.add_parser(name); q.add_argument('address'); q.add_argument('--limit', type=int, default=25); q.add_argument('--lines', type=int, default=40)
     q = gs.add_parser('bytes'); q.add_argument('address'); q.add_argument('--length', '--limit', dest='length', type=int, default=64)

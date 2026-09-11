@@ -1,0 +1,1136 @@
+{
+  "schema": 1,
+  "packet": "native_renderer_capabilities_storage_discovery",
+  "kind": "bounded_read_only_source_readiness",
+  "created_utc": "2026-09-11T21:39:11.221595+00:00",
+  "source_base_commit": "ec137b6894482a9cbbeac73b4f0382f713c5f802",
+  "owned_addresses": [
+    "00b2c8e0"
+  ],
+  "owned_files": [
+    "docs/NATIVE_RENDERER_CAPABILITIES_STORAGE_DISCOVERY.md",
+    "reports/native_renderer_capabilities_storage_discovery.json"
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "result": "Full actual-storage B2C8E0 is not source-closed. Two primitive reserves are a concrete 225-byte ready next packet; a finite four-function nested closure follows. CRT source bindings must remain explicit.",
+  "full_owned_body": {
+    "entry": "00b2c8e0",
+    "end_exclusive": "00b2d8de",
+    "bytes": 4094,
+    "decoded_instructions": 885,
+    "sha256": "8694261e128742a42f0b64eb1a447932e1929eaa9e30da100effeb738b49c43b",
+    "original_abi": "ECX actual renderer, plain RET, no semantic HRESULT result; stack reserve760h plus four saved general registers and original FS registration.",
+    "minimum_direct_renderer_extent": "0x1d8a",
+    "bound": "Access bound only; not a complete renderer owner/lifetime layout.",
+    "no_outer_guard": true,
+    "no_renderer_profile_selector_read": true
+  },
+  "immediate_dependencies": [
+    {
+      "address": "00419cc0",
+      "bytes": 192,
+      "identity": "BSP_SizedStoragePool_GetSingleton",
+      "status": "complete_actual_source_service",
+      "provider": "src/native_string_pool_owner.cpp",
+      "boundary": "Borrow the actual singleton lifetime and sized-storage pool; no new private pool."
+    },
+    {
+      "address": "0041dd40",
+      "bytes": 164,
+      "identity": "BSP_NativeString_Resize",
+      "status": "complete_actual_header_source_provider",
+      "provider": "src/native_string.cpp",
+      "boundary": "Actual 8-byte length/data header, actual owning pool, preserve=true. Parent EH state is armed only after resize and following memcpy."
+    },
+    {
+      "address": "00b22b30",
+      "bytes": 130,
+      "identity": "FUN_00b22b30",
+      "status": "complete_raw_body_source_ready_not_implemented",
+      "role": "stride-12 reserve",
+      "boundary": "Actual 12-byte header and writable actual callee request slot; full returning-free publication tail must be included."
+    },
+    {
+      "address": "00b236b0",
+      "bytes": 95,
+      "identity": "FUN_00b236b0",
+      "status": "complete_raw_body_source_ready_not_implemented",
+      "role": "DWORD reserve",
+      "boundary": "Actual 12-byte header; full returning-free publication tail must be included."
+    },
+    {
+      "address": "00b2ae20",
+      "bytes": 116,
+      "identity": "FUN_00b2ae20",
+      "status": "raw_source_missing_finite_nested_helper_closure_identified",
+      "role": "outer array of inner headers resize",
+      "boundary": "Requires full B29D40 outer reserve, B25E60 inner copy, B23120 inner resize and B22B30 primitive reserve."
+    },
+    {
+      "address": "00bd1510",
+      "bytes": 95,
+      "identity": "BSP_SizedStoragePool_ReturnBlock",
+      "status": "complete_actual_pool_source_provider",
+      "provider": "src/native_string_pool_storage.cpp",
+      "boundary": "Current pool selection and captured pointer/length+1/type1; no zeroing the local header on normal cleanup."
+    },
+    {
+      "address": "00bf7680",
+      "bytes": 869,
+      "identity": "_memcpy",
+      "status": "captured_original_not_complete_native_source_closure",
+      "boundary": "Full span includes embedded jump tables. Mutable 0109EEA4 and size/alignment branch can reach __VEC_memcpy C0C82B. Backward overlap path exists. Existing explicit host memmove valid-range/zero-omission bridges are source adaptations, not native instruction/fault identity."
+    },
+    {
+      "address": "00bf9440",
+      "bytes": 134,
+      "identity": "_strstr",
+      "status": "captured_original_not_complete_native_source_closure",
+      "boundary": "Single-character needle tail jumps to internal _strchr BF86F6 with character in AL after register restoration. Only the needed BF86F0 prefix was captured. Gather needles have length3/4; no complete generic CRT reconstruction claim."
+    }
+  ],
+  "current_COM_contract": {
+    "raw_interface_word": "renderer+1990",
+    "identity": "IDirect3D9 factory, not device+1A10",
+    "static_sites": [
+      {
+        "address": "00b2c91a",
+        "assembly": "call eax"
+      },
+      {
+        "address": "00b2c998",
+        "assembly": "call edx"
+      },
+      {
+        "address": "00b2c9bb",
+        "assembly": "call eax"
+      },
+      {
+        "address": "00b2ce97",
+        "assembly": "call eax"
+      },
+      {
+        "address": "00b2d74c",
+        "assembly": "call edx"
+      },
+      {
+        "address": "00b2d785",
+        "assembly": "call edx"
+      },
+      {
+        "address": "00b2d7af",
+        "assembly": "call eax"
+      },
+      {
+        "address": "00b2d7dc",
+        "assembly": "call edx"
+      },
+      {
+        "address": "00b2d7ff",
+        "assembly": "call edx"
+      }
+    ],
+    "current_reads": "Every reached call reloads renderer+1990 and its current table.",
+    "methods": {
+      "0x14": "GetAdapterIdentifier",
+      "0x28": "CheckDeviceFormat",
+      "0x38": "GetDeviceCaps"
+    },
+    "query_contract": "Adapter0, HAL. GetDeviceCaps/GetAdapterIdentifier HRESULTs are ignored and outputs are not initialized here; CheckDeviceFormat support requires exact HRESULT zero. No AddRef/Release/fallback."
+  },
+  "raw_order": {
+    "first_caps": "Caps output at baseline stack+1F4. Before ATOC: byte1B54, DWORD1B1C, DWORD1B18, byte1B53, DWORD1B44, DWORD1B40, DWORD1B20 are published in that order.",
+    "identifier": "Output at baseline stack+324; Description stack+524. Unbounded NUL byte scan, then actual local {length,data} at stack+14/+18; resize preserve=true; copy current length+1 only if captured destination nonnull.",
+    "strings": [
+      {
+        "address": "00d5e810",
+        "value": "8800",
+        "bytes": 5
+      },
+      {
+        "address": "00d5e808",
+        "value": "8600",
+        "bytes": 5
+      },
+      {
+        "address": "00d5e800",
+        "value": "8200",
+        "bytes": 5
+      },
+      {
+        "address": "00d5e7fc",
+        "value": "ATI",
+        "bytes": 4
+      }
+    ],
+    "string_results": "Captured data is used for each strstr; found pointer subtraction and -1 comparison are preserved; result byte writes renderer+1D89.",
+    "shader_reads": "Current PS word1B40 reloads after string calls and after declaration allocations before INST. Non-104/200/300 branch cases retain prior fields where native does.",
+    "sticky_ATOC": "Probe usage0, SURFACE1, X8R8G8B8; success writes1B55=1, failure does not clear.",
+    "INST": "PS>=300 skips probe and writes1B50=1; lower PS uses INST SURFACE/usage0 and exact-zero success. Native then unconditionally writes1B50=0.",
+    "declarations": "Actual header {data1B5C,count1B60,capacity1B64}; append0,1,2,3,4 then selected5,8..15 without clearing. Grow only equality count==capacity; current append count/base; null computed destination skips store but still increments count.",
+    "field_stores": [
+      {
+        "address": "00b2c936",
+        "renderer_offset": "1b54",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b54], al"
+      },
+      {
+        "address": "00b2c948",
+        "renderer_offset": "1b1c",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b1c], eax"
+      },
+      {
+        "address": "00b2c95a",
+        "renderer_offset": "1b18",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b18], edx"
+      },
+      {
+        "address": "00b2c96a",
+        "renderer_offset": "1b53",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b53], cl"
+      },
+      {
+        "address": "00b2c977",
+        "renderer_offset": "1b44",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b44], eax"
+      },
+      {
+        "address": "00b2c985",
+        "renderer_offset": "1b40",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b40], edx"
+      },
+      {
+        "address": "00b2c98b",
+        "renderer_offset": "1b20",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b20], ecx"
+      },
+      {
+        "address": "00b2c99e",
+        "renderer_offset": "1b55",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b55], 1"
+      },
+      {
+        "address": "00b2ca80",
+        "renderer_offset": "1d89",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1d89], al"
+      },
+      {
+        "address": "00b2caa0",
+        "renderer_offset": "1b48",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b48], ecx"
+      },
+      {
+        "address": "00b2caab",
+        "renderer_offset": "1b2c",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b2c], edi"
+      },
+      {
+        "address": "00b2cab1",
+        "renderer_offset": "1b30",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b30], bl"
+      },
+      {
+        "address": "00b2cac0",
+        "renderer_offset": "1b2c",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b2c], edi"
+      },
+      {
+        "address": "00b2cac6",
+        "renderer_offset": "1b30",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b30], bl"
+      },
+      {
+        "address": "00b2cadc",
+        "renderer_offset": "1b30",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b30], 1"
+      },
+      {
+        "address": "00b2cae3",
+        "renderer_offset": "1b2c",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b2c], ecx"
+      },
+      {
+        "address": "00b2cb05",
+        "renderer_offset": "1b4c",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b4c], edx"
+      },
+      {
+        "address": "00b2cb19",
+        "renderer_offset": "1b28",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b28], eax"
+      },
+      {
+        "address": "00b2cb1f",
+        "renderer_offset": "1b24",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b24], ecx"
+      },
+      {
+        "address": "00b2cb25",
+        "renderer_offset": "1b51",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b51], dl"
+      },
+      {
+        "address": "00b2cb3c",
+        "renderer_offset": "1b74",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b74], bl"
+      },
+      {
+        "address": "00b2cb44",
+        "renderer_offset": "1b74",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b74], 1"
+      },
+      {
+        "address": "00b2cb4b",
+        "renderer_offset": "1b44",
+        "width": 4,
+        "assembly": "mov dword ptr [ebp + 0x1b44], 0x101"
+      },
+      {
+        "address": "00b2ce9d",
+        "renderer_offset": "1b50",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b50], 1"
+      },
+      {
+        "address": "00b2ceae",
+        "renderer_offset": "1b50",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b50], bl"
+      },
+      {
+        "address": "00b2ceb4",
+        "renderer_offset": "1b52",
+        "width": 1,
+        "assembly": "mov byte ptr [ebp + 0x1b52], cl"
+      }
+    ]
+  },
+  "nested_storage": {
+    "outer": "Renderer1B68/1B6C/1B70 is data/count/capacity of 12-byte inner headers.",
+    "selected": "Only resource type/index3 (TEXTURE) iterates. If signed current outer count does not contain3, resize4, then read current outer data and capture selected inner-header address at stack+28.",
+    "append": "Reserve selected captured header through B22B30 if its current count==capacity. Reload the saved inner-header address after reserve, not a changed outer base. Copy three DWORDs and increment its current count.",
+    "record": "12-byte record: formatDWORD+0, four initialized flag bytes+4 including zero+7, DWORD+8 copied from scratch+24 where only low byte is initialized here; upper three raw stack bytes remain native payload.",
+    "table": {
+      "rows": 57,
+      "stride": 8,
+      "bytes": 456,
+      "initializing_stores": 285,
+      "table_sha256": "3ae6903b948bb2a4ffc38801d20e8ff2403570edd2b5a14c275dd0ad92c15833",
+      "all_stores_and_rows_in": {
+        "path": "local/renderer_capabilities_storage_discovery/verified.json",
+        "sha256": "62e5ec030a6a047002631cefc3ee92db17531d896be1456b2411b2adb2cf1cae"
+      },
+      "typed_table_only_agrees": true
+    },
+    "probe_schedule": "Initial usage0 must return0; then metadata0/1/2 gate usage1/2/200h; usage80001h always follows initial support. Metadata3 is initialized but not read.",
+    "remaining_entries": [
+      {
+        "address": "00b23120",
+        "bytes": 96,
+        "role": "inner resize",
+        "contract": "Grow via B22B30 when signed target>capacity; current base per added record, zero DWORD+0 and bytes+4..7, leave entire DWORD+8 untouched. Shrink decrements current count; final captured target store."
+      },
+      {
+        "address": "00b25e60",
+        "bytes": 133,
+        "role": "inner copy assignment",
+        "contract": "Resize destination0, then load source and unconditionally reserve its current count. Empty copy can allocate one12-byte record. Capture source row before possible destination reserve and retain that pointer across it. Current source count is reread each iteration; no identity skip."
+      },
+      {
+        "address": "00b29d40",
+        "bytes": 248,
+        "role": "outer reserve",
+        "contract": "Allocate target*12; read current old count/base; initialize each fresh header then deep-copy using B25E60. Afterwards resize current old inner headers0/free their current data, free current outer data, publish fresh outer data/captured capacity last. EH action is a no-op terminal, not rollback."
+      },
+      {
+        "address": "00b2ae20",
+        "bytes": 116,
+        "role": "outer resize",
+        "contract": "Grow capacity via B29D40, initialize added headers to three zero words. Shrink publishes decrement of current outer count before captured child resize0/current child data free, then rereads current outer count. Final target count store."
+      }
+    ],
+    "remaining_full_bytes": 593,
+    "scope": "Finite heap-backed value/header composition; no unknown intrusive resource terminal/profile was introduced. No source implementation in this discovery."
+  },
+  "EH": {
+    "verified_chains": [
+      {
+        "entry": "00b2c8e0",
+        "handler": "00cbd56b",
+        "FuncInfo": "00df5df8",
+        "map": "00df5df0",
+        "action": "00cbd560",
+        "terminal": "0041dd20",
+        "each_edge_verified": true
+      },
+      {
+        "entry": "00b29d40",
+        "handler": "00cbd327",
+        "FuncInfo": "00df5afc",
+        "map": "00df5af4",
+        "action": "00cbd310",
+        "terminal": "00401130",
+        "each_edge_verified": true
+      }
+    ],
+    "gather_state_arm": "B2CA0A after full native-string resize and description memcpy. Earlier failure does not gain rollback.",
+    "gather_unwind": "CBD56B -> FuncInfoDF5DF8/mapDF5DF0 {-1,CBD560}; action addresses EH-frame local header and jumps full41DD20. Only local string is cleaned; raw renderer/arrays stay partly published.",
+    "normal_cleanup": "Test local data before register restoration/state disarm; if nonnull capture current length then current data; current419CC0 then BD1510(pointer,length+1,type1), no header zeroing.",
+    "exceptional_cleanup": "Full41DD20 reads pointer before length, unlike normal inline cleanup; actual pool/lifetime must be borrowed.",
+    "outer_reserve": "CBD327 -> FuncInfoDF5AFC/mapDF5AF4 {-1,CBD310}. CBD310 computes/pushes two arguments and calls complete401130[1]=RET. It frees neither fresh outer nor completed inner buffers if copying throws.",
+    "runtime_boundary": "Decoded original EH edges only; native SEH and exceptional runtime were not executed."
+  },
+  "next_source_proposal": {
+    "packet": "native_renderer_capability_array_reserves2",
+    "status": "source_ready_proposal_only_no_new_source_or_lease",
+    "addresses": [
+      "00b22b30",
+      "00b236b0"
+    ],
+    "total_full_original_bytes": 225,
+    "files": [
+      "include/bsp/native_renderer_capability_array_reserves.hpp",
+      "src/native_renderer_capability_array_reserves.cpp",
+      "docs/NATIVE_RENDERER_CAPABILITY_ARRAY_RESERVES.md",
+      "reports/native_renderer_capability_array_reserves_audit.json"
+    ],
+    "original_abi": "ECX actual 12-byte {data, signed count, signed capacity}; one raw request DWORD in actual callee argument storage; RET4; no semantic result.",
+    "proposed_source_api": [
+      "void __fastcall reserve_native_capability_records_00b22b30(void* actual_header, std::uint32_t unused_edx, std::int32_t requested_capacity);",
+      "void __fastcall reserve_native_capability_dwords_00b236b0(void* actual_header, std::uint32_t unused_edx, std::int32_t requested_capacity);"
+    ],
+    "source_abi_boundary": "Explicit ignored EDX position is a new source-call interface; request remains the original callee stack slot, not a pointer to owner storage. No callback/context or original caller ABI claim.",
+    "concrete_provider_edges": [
+      "BF55BE[5] -> BF681B[105] actual operator new; existing singleton_lifetime_allocate({object, wrapping_bytes, wrapping_bytes}) preserves established malloc/current-new-handler/retry/throw source contract.",
+      "BF6989[5] -> BF65AC[5] -> BF9DC8 _free; matching singleton_lifetime_free under existing shared-heap valid-pointer domain."
+    ],
+    "exact_schedule": [
+      "Signed requested capacity clamps to1; signed capacity comparison; native wrapping DWORD allocation size uses stride12 or4.",
+      "Current source count/base are read after allocation and current base/count reread per row; native null destination tests remain.",
+      "Free current old data before publishing fresh data and captured capacity; count remains unchanged.",
+      "B22B60 writes fresh allocation to actual request slot [ESP+14] and B22B97 reloads it after EBP served as row temporary. B236B0 has no such write.",
+      "No added extent/overflow checks, rollback, allocator callback or typed-vector ownership policy."
+    ],
+    "valid_domain": "All reached raw headers/backing reads/writes must have valid readable/writable extents for actual arithmetic. Allocation/free use the existing shared host heap/lifetime contract. Native CRT exception objects and original caller/SEH ABI are outside that source boundary.",
+    "saved_analysis_gaps": [
+      {
+        "entry": "00b22b30",
+        "length": 130,
+        "instructions": 52,
+        "direct_calls": [
+          {
+            "address": "00b22b51",
+            "target": "00bf55be"
+          },
+          {
+            "address": "00b22b9e",
+            "target": "00bf6989"
+          }
+        ],
+        "returning_free_site": "00b22b9e",
+        "saved_analysis_gap_start": "00b22ba3",
+        "saved_analysis_gap_end_exclusive": "00b22bad",
+        "gap_bytes": "83c4045f892e895e085d",
+        "gap_full_instructions": [
+          "00b22ba3 add esp, 4",
+          "00b22ba6 pop edi",
+          "00b22ba7 mov dword ptr [esi], ebp",
+          "00b22ba9 mov dword ptr [esi + 8], ebx",
+          "00b22bac pop ebp"
+        ],
+        "full_raw_decode_includes_publication_tail": true
+      },
+      {
+        "entry": "00b236b0",
+        "length": 95,
+        "instructions": 38,
+        "direct_calls": [
+          {
+            "address": "00b236d0",
+            "target": "00bf55be"
+          },
+          {
+            "address": "00b236fc",
+            "target": "00bf6989"
+          }
+        ],
+        "returning_free_site": "00b236fc",
+        "saved_analysis_gap_start": "00b23701",
+        "saved_analysis_gap_end_exclusive": "00b2370a",
+        "gap_bytes": "83c404891e897e085b",
+        "gap_full_instructions": [
+          "00b23701 add esp, 4",
+          "00b23704 mov dword ptr [esi], ebx",
+          "00b23706 mov dword ptr [esi + 8], edi",
+          "00b23709 pop ebx"
+        ],
+        "full_raw_decode_includes_publication_tail": true
+      }
+    ],
+    "full_original_spans": [
+      {
+        "address": "00b22b30",
+        "length": 130,
+        "role": "immediate_raw_stride12_reserve_candidate",
+        "bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d668d045b5503c003c05750e8682a0d0033ff83c404397e048be8896c24147e3533d28bcd8d9b0000000085c974158b068b2c1003c289298b68048969048b400889410883c70183c20c83c10c3b7e047cd98b6c24148b0e51e8e63d0d0083c4045f892e895e085d5e5bc20400",
+        "sha256": "835d9aa48422ee56a96b05b64f91e81123f2f3dda909f4ba2e7b5ae9b0bcdff7",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 52,
+        "decoded_bytes": 130,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00b236b0",
+        "length": 95,
+        "role": "immediate_raw_DWORD_reserve_candidate",
+        "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8e91e0d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e888320d0083c404891e897e085b5f5ec20400",
+        "sha256": "ecb38f4ed11e350279e2e3f4667831275bb288bdd3613ef20496b4b66e77eb64",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 38,
+        "decoded_bytes": 95,
+        "linear_decode_complete": true
+      }
+    ]
+  },
+  "typed_source_boundary": "Typed capability/settings outputs, fixed IDirect3D9 reference, vectors, rejected failed queries and staged publication do not establish the actual renderer storage/callback/exception schedules; no casts proposed.",
+  "evidence": {
+    "fresh_guarded_spans": 30,
+    "fresh_bytes": 6705,
+    "all_spans_match_original_PE": true,
+    "full_owned_decode": true,
+    "full_primitive_reserve_decode": true,
+    "capture": {
+      "path": "local/renderer_capabilities_storage_discovery/capture.json",
+      "sha256": "3672527f0709d7419bba3d4b6c90e682a419ad64733cd20c2a1cc13527b52e05"
+    },
+    "verification": {
+      "path": "local/renderer_capabilities_storage_discovery/verified.json",
+      "sha256": "62e5ec030a6a047002631cefc3ee92db17531d896be1456b2411b2adb2cf1cae"
+    },
+    "source_header_pins": [
+      {
+        "path": "include/bsp/app_bootstrap.hpp",
+        "bytes": 13989,
+        "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "bytes": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/frontend_screen_animation.hpp",
+        "bytes": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/gui_layout_loader.hpp",
+        "bytes": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "bytes": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "include/bsp/gui_widget.hpp",
+        "bytes": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5399,
+        "sha256": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 2488,
+        "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+      },
+      {
+        "path": "include/bsp/object_handle_resolvers.hpp",
+        "bytes": 3175,
+        "sha256": "46459014e65cbf8c64cab2cc9414032c410967553d5d353764089a1adb2c91c8"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/renderer_capabilities.hpp",
+        "bytes": 3396,
+        "sha256": "bf8a2533b35ffa45f8d6d36aa446549765786f8902eb0413b882d44ff5503863"
+      },
+      {
+        "path": "include/bsp/settings_capabilities.hpp",
+        "bytes": 4349,
+        "sha256": "57348eb3ff1545b939a45c01274b8733efd23d21f772a4474d98182055d1355d"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "bytes": 6295,
+        "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "bytes": 4579,
+        "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+      },
+      {
+        "path": "src/renderer_capabilities.cpp",
+        "bytes": 8436,
+        "sha256": "0d244716448101d023d79861fd155cf1a859fefe926db69022c95e16f29088da"
+      },
+      {
+        "path": "src/settings_capabilities.cpp",
+        "bytes": 5183,
+        "sha256": "2f5f680f37c6be5785cf6093acaa4c7d2d39ea01beba3d7fd4cf676736d0464d"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "fresh_span_inventory": [
+      {
+        "address": "00b2c8e0",
+        "length": 4094,
+        "role": "complete_owned_gather",
+        "sha256": "8694261e128742a42f0b64eb1a447932e1929eaa9e30da100effeb738b49c43b",
+        "decoded_instructions": 885,
+        "decoded_bytes": 4094,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00b22b30",
+        "length": 130,
+        "role": "immediate_raw_stride12_reserve_candidate",
+        "sha256": "835d9aa48422ee56a96b05b64f91e81123f2f3dda909f4ba2e7b5ae9b0bcdff7",
+        "decoded_instructions": 52,
+        "decoded_bytes": 130,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00b236b0",
+        "length": 95,
+        "role": "immediate_raw_DWORD_reserve_candidate",
+        "sha256": "ecb38f4ed11e350279e2e3f4667831275bb288bdd3613ef20496b4b66e77eb64",
+        "decoded_instructions": 38,
+        "decoded_bytes": 95,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00b2ae20",
+        "length": 116,
+        "role": "immediate_raw_nested_array_resize_candidate",
+        "sha256": "d357641d7a9c45a8210f0be81d8bf5573f1930036c881c650eee1e1adba09b8b",
+        "decoded_instructions": 48,
+        "decoded_bytes": 116,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00419cc0",
+        "length": 192,
+        "role": "immediate_actual_pool_singleton",
+        "sha256": "43eaf61f27efa9fd1c8905e3266d3183717240b825126da7d970fbecb703190a",
+        "decoded_instructions": 51,
+        "decoded_bytes": 192,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "0041dd40",
+        "length": 164,
+        "role": "immediate_actual_native_string_resize",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "decoded_instructions": 65,
+        "decoded_bytes": 164,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bd1510",
+        "length": 95,
+        "role": "immediate_actual_pool_return",
+        "sha256": "ae7cc468fd929f90e9a2a6a8a5107d4375c16271eb96e9d7829504911105a4d4",
+        "decoded_instructions": 32,
+        "decoded_bytes": 95,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bf7680",
+        "length": 869,
+        "role": "immediate_native_memcpy",
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "decoded_instructions": 251,
+        "decoded_bytes": 714,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00bf9440",
+        "length": 134,
+        "role": "immediate_native_strstr",
+        "sha256": "0aa74e3eadfb78899c55fa44b65c6aa4fd0cc653ad09eff41df06903fb03faa9",
+        "decoded_instructions": 66,
+        "decoded_bytes": 134,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00b23120",
+        "length": 96,
+        "role": "nested_inner_resize_provider_required_by_B2AE20",
+        "sha256": "06a578d29ac4f965c77ff2c9f3f2b5bf4c0cc8e297780330033d49e00e071169",
+        "decoded_instructions": 41,
+        "decoded_bytes": 96,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00b29d40",
+        "length": 248,
+        "role": "nested_reserve_provider_required_by_B2AE20",
+        "sha256": "783f16a2b19d00ccb4b60884ad0389d2da9c78e3a2805a716f97558d9a5f978d",
+        "decoded_instructions": 85,
+        "decoded_bytes": 248,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bf55be",
+        "length": 5,
+        "role": "actual_operator_new_thunk",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "decoded_instructions": 1,
+        "decoded_bytes": 5,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bf6989",
+        "length": 5,
+        "role": "actual_free_thunk",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "decoded_instructions": 1,
+        "decoded_bytes": 5,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00cbd56b",
+        "length": 10,
+        "role": "owned_gather_FH3_handler",
+        "sha256": "cdac217fe6df062573da79cd7cdef708fe52f22fbbcf733fb6f025d0023baf83",
+        "decoded_instructions": 2,
+        "decoded_bytes": 10,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00df5df0",
+        "length": 44,
+        "role": "owned_gather_unwind_map_and_FuncInfo",
+        "sha256": "290c798ce005a8d0a79ae5ad5fcd0dd02b7ba87c368b651a42699db70ed89d0f",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00d5e7fc",
+        "length": 4,
+        "role": "ATI_literal",
+        "sha256": "d313d12943b9c3786d93d4994050205e40b41c9d3df10e703c9e8b7fc00c8e6c",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00d5e800",
+        "length": 5,
+        "role": "8200_literal",
+        "sha256": "abcb3b556e8e34a2374060eb751e7cbf71b6f0a4c54dd1c649a0508328898c2c",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00d5e808",
+        "length": 5,
+        "role": "8600_literal",
+        "sha256": "9f8cd26a863e6a55c597edad4568d951e899483ae46177cbc5d6ba9d35db1702",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00d5e810",
+        "length": 5,
+        "role": "8800_literal",
+        "sha256": "c8696af7a45562c958195eb9886298e071cb5edca7d258df4f3af1197a7c687c",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00b25e60",
+        "length": 133,
+        "role": "nested_inner_array_copy_assignment",
+        "sha256": "2b7592fe3f4a4c88be005876d31a3c51698e73de6762e07fb4199299c37479c3",
+        "decoded_instructions": 53,
+        "decoded_bytes": 133,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "0041dd20",
+        "length": 29,
+        "role": "actual_string_header_destroy_dependency",
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "decoded_instructions": 12,
+        "decoded_bytes": 29,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00cbd560",
+        "length": 11,
+        "role": "gather_string_unwind_action",
+        "sha256": "4a3664069a9a943f09e3620247f1df473de4e0d2325f60a491190cc966640aed",
+        "decoded_instructions": 2,
+        "decoded_bytes": 11,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00cbd327",
+        "length": 10,
+        "role": "outer_nested_reserve_FH3",
+        "sha256": "f67fd568db6bbbcaf295d73cf39b3ac7f787da571addad1f558bfbcc30f81723",
+        "decoded_instructions": 2,
+        "decoded_bytes": 10,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00df5af4",
+        "length": 44,
+        "role": "outer_nested_reserve_map_FuncInfo",
+        "sha256": "ee26dac4d631866f2e71ce51fcf3435fc248a97b780293813eda2703df2cd050",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      },
+      {
+        "address": "00cbd310",
+        "length": 23,
+        "role": "outer_nested_reserve_noop_unwind_action",
+        "sha256": "c3be7bf6544ca032317357086c4dd158764bd6d60dfb4876de7f782458ca2fb5",
+        "decoded_instructions": 9,
+        "decoded_bytes": 23,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00401130",
+        "length": 1,
+        "role": "complete_noop_unwind_target",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "decoded_instructions": 1,
+        "decoded_bytes": 1,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bf681b",
+        "length": 105,
+        "role": "actual_operator_new_full_under_existing_host_service_boundary",
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+        "decoded_instructions": 33,
+        "decoded_bytes": 105,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bf65ac",
+        "length": 5,
+        "role": "next_free_thunk",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "decoded_instructions": 1,
+        "decoded_bytes": 5,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "00bf86f0",
+        "length": 24,
+        "role": "strchr_entry_and_strstr_single_character_internal_tail_boundary",
+        "sha256": "002ba324d8e4380bc3d02f97c7a02cfe74928aaf992ba41313b44579ea254ab0",
+        "decoded_instructions": 8,
+        "decoded_bytes": 24,
+        "linear_decode_complete": true
+      },
+      {
+        "address": "0109eea4",
+        "length": 4,
+        "role": "memcpy_mutable_dispatch_storage_static_bytes_only",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "decoded_instructions": 0,
+        "decoded_bytes": 0,
+        "linear_decode_complete": false
+      }
+    ],
+    "original_memcpy_limit": "All869 bytes captured; linear decode714 bytes stops in embedded tables. No complete optimized-provider instruction proof.",
+    "saved_analysis_tail_evidence": [
+      {
+        "path": "local/renderer_capabilities_storage_discovery/saved_analysis_tail_B22B30.txt",
+        "sha256": "758b206810b2f08d797af2fb716c09ed049bea1b9cf2dae09ffeab89cba0d88d"
+      },
+      {
+        "path": "local/renderer_capabilities_storage_discovery/saved_analysis_tail_B236B0.txt",
+        "sha256": "875d2f52076336d35647c62bb1352cb7a0f61f30116afeff100494752f0a9a09"
+      }
+    ],
+    "verification_result": "PASS 30 PE-matching spans; full owned885 instructions;8 immediate identities;9 COM sites;57 rows/285 initialization stores;26 source/header pins;2 EH chains;2 complete reserve publication tails.",
+    "sealed_manifest": "local/renderer_capabilities_storage_discovery/sealed.json (generated after the two-file commit; its SHA256 is supplied in the handoff)."
+  },
+  "checks": {
+    "build": "not_run_discovery_only",
+    "runtime": "not_run",
+    "new_tests": 0,
+    "device_display_game_changes": false,
+    "Ghidra_mutation": false,
+    "shared_metadata_mutation": false,
+    "source_implementation": false
+  },
+  "uncertainty": [
+    "No complete raw gather source claim until primitive/nested helpers and explicit CRT source boundaries are implemented and reviewed.",
+    "Full original memcpy and generic strstr/_strchr source/exception/fault semantics remain outside this pass.",
+    "No gamma/device-recreation closure, unrelated renderer resource lifetime, gameplay or native drop-in claim.",
+    "Saved-analysis missing publication tails require primary repair after review; fresh raw full bodies are authoritative."
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capabilities-storage-discovery\\local\\renderer_capabilities_storage_discovery\\sealed.json",
+      "bytes": 18531,
+      "sha256": "8c4c6ffbfe961eaeee0250c2a8c3a663107310e7bf468841b861ea15e558617c"
+    },
+    "worker_sealed_pins_verified": 107,
+    "additional_report_pins_verified": 30,
+    "fresh_guarded_spans": 30,
+    "fresh_guarded_bytes": 6705,
+    "current_main_source_header_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\app_bootstrap.hpp",
+        "bytes": 13989,
+        "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\d3d9_startup.hpp",
+        "bytes": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\frontend_screen_animation.hpp",
+        "bytes": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\gui_layout_loader.hpp",
+        "bytes": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\gui_lua_reader.hpp",
+        "bytes": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\gui_widget.hpp",
+        "bytes": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string.hpp",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_pool_owner.hpp",
+        "bytes": 5399,
+        "sha256": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_pool_storage.hpp",
+        "bytes": 2488,
+        "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\object_handle_resolvers.hpp",
+        "bytes": 3175,
+        "sha256": "46459014e65cbf8c64cab2cc9414032c410967553d5d353764089a1adb2c91c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\renderer_capabilities.hpp",
+        "bytes": 3396,
+        "sha256": "bf8a2533b35ffa45f8d6d36aa446549765786f8902eb0413b882d44ff5503863"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\settings_capabilities.hpp",
+        "bytes": 4349,
+        "sha256": "57348eb3ff1545b939a45c01274b8733efd23d21f772a4474d98182055d1355d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string.cpp",
+        "bytes": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_pool_owner.cpp",
+        "bytes": 6295,
+        "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_pool_storage.cpp",
+        "bytes": 4579,
+        "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\renderer_capabilities.cpp",
+        "bytes": 8436,
+        "sha256": "0d244716448101d023d79861fd155cf1a859fefe926db69022c95e16f29088da"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\settings_capabilities.cpp",
+        "bytes": 5183,
+        "sha256": "2f5f680f37c6be5785cf6093acaa4c7d2d39ea01beba3d7fd4cf676736d0464d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "current_main_source_drift": [],
+    "complete_source_proposals_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "remaining_boundary": "Primitive reserves assigned separately. Four nested array bodies and explicit valid-buffer host CRT or full native CRT bindings remain before raw B2C8E0. Original free-call tails need separate saved-analysis repairs; no global free no-return change.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_capabilities_storage_discovery_primary\\sealed.json",
+      "bytes": 8617,
+      "sha256": "c094d086f304a2f1ed7912cd306cc18ac2b9d2605069062c3768f9a884686e35"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_CAPABILITIES_STORAGE_DISCOVERY.md",
+    "bytes": 14109,
+    "sha256": "a09f144e4ba247cdf8d0753d21d9fb3a2e50470992833926f485a2902f0fd24f"
+  }
+}

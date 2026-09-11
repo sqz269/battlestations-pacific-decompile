@@ -69,4 +69,19 @@ void* __fastcall NativeShaderSamplerCallableBinding::invoke(void* raw,void*,std:
     if(self.storage_!=owner || table!=self.table_.data())std::terminate();
     self.detach();return delete_native_shader_sampler_00b56fc0(owner,self.pool_,self.strings_,flags);
 }
+NativeShaderSamplerClassBinding::NativeShaderSamplerClassBinding(NativeShaderStateListPool& pool,NativeStringStorage& strings) noexcept
+    :table_{reinterpret_cast<std::uintptr_t>(&invoke),reinterpret_cast<std::uintptr_t>(this)},pool_(pool),strings_(strings){}
+void NativeShaderSamplerClassBinding::bind(NativeShaderSamplerStorage& owner){
+    if(owner.vtable_00!=0x00d621f4)throw std::invalid_argument("sampler class binding requires native D621F4 profile");
+    owner.vtable_00=reinterpret_cast<std::uintptr_t>(table_.data());
+}
+void NativeShaderSamplerClassBinding::detach(NativeShaderSamplerStorage& owner) noexcept {
+    if(owner.vtable_00!=reinterpret_cast<std::uintptr_t>(table_.data()))std::terminate();owner.vtable_00=0x00d621f4;
+}
+void* __fastcall NativeShaderSamplerClassBinding::invoke(void* raw,void*,std::uint32_t flags){
+    auto* const owner=static_cast<NativeShaderSamplerStorage*>(raw);
+    const auto* const table=reinterpret_cast<const std::uintptr_t*>(owner->vtable_00);
+    auto& self=*reinterpret_cast<NativeShaderSamplerClassBinding*>(table[1]);self.detach(*owner);
+    return delete_native_shader_sampler_00b56fc0(owner,self.pool_,self.strings_,flags);
+}
 } // namespace bsp

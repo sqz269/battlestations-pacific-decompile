@@ -230,3 +230,6 @@ The separately completed lookup source is worker commit `1238271b`, still
 outside this packet's `ce587728` base. Its sealed audit is pinned as an
 external reference, not represented as a provider already present in this
 checkout or as a teardown dependency.
+
+
+Primary verified all 128 sealed worker files, 61 additional report pins and 41 freshly guarded spans (2,571 bytes), and checked 26 current main source/header inputs. Complete tree leaves are assigned separately. Full erase, range erase and singleton destruction remain pending. Primary saved-analysis repairs of returning-free tails are a separate step; native owning invalid-iterator exception and no-rollback destructor behavior must be retained. Immutable review evidence: `local/registry_lifetime_discovery_primary/`. No source, original-body execution or gameplay claim is added by this review.

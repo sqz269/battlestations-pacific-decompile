@@ -1,0 +1,105 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab6aa0",
+    "end_address": "00ab6aa5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab6aa0",
+    "end_address": "00ab6aa4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab6aa0",
+    "disassemble_first": false,
+    "name": "BSP_GuiText_LoadedBaseTail"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab6aa0",
+    "function_name": "BSP_GuiText_LoadedBaseTail",
+    "entry_point": "00ab6aa0",
+    "body_size": 5,
+    "message": "Function created successfully at 00ab6aa0",
+    "warnings": [
+     "Function name 'BSP_GuiText_LoadedBaseTail' \u2014 main part 'GuiText_LoadedBaseTail' is not PascalCase. Expected: GuitextLoadedbasetail",
+     "Function name 'BSP_GuiText_LoadedBaseTail' \u2014 main part 'GuiText_LoadedBaseTail' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiText_LoadedBaseTail' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab6aa0",
+   "end": "00ab6aa5",
+   "name": "BSP_GuiText_LoadedBaseTail",
+   "after": "Function: BSP_GuiText_LoadedBaseTail at 00ab6aa0\nSignature: undefined BSP_GuiText_LoadedBaseTail(void)\nEntry: 00ab6aa0\nBody: 00ab6aa0 - 00ab6aa4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa6800",
+    "end_address": "00aa6808"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa6800",
+    "end_address": "00aa6807",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa6800",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00aa6800",
+    "function_name": "FUN_00aa6800",
+    "entry_point": "00aa6800",
+    "body_size": 8,
+    "message": "Function created successfully at 00aa6800"
+   }
+  },
+  {
+   "defined": "00aa6800",
+   "end": "00aa6808",
+   "name": null,
+   "after": "Function: FUN_00aa6800 at 00aa6800\nSignature: undefined FUN_00aa6800(void)\nEntry: 00aa6800\nBody: 00aa6800 - 00aa6807"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

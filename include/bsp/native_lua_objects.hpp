@@ -74,4 +74,31 @@ void release_native_lua_tracked_object_00b66de0(
 // Kind0 skips everything; otherwise release using captured owner/index and
 // then clear CURRENT kind04 only. The other16 bytes remain unchanged.
 void destroy_native_lua_object_00b67700(NativeLuaObjectStorage&);
+// Full native predicates/getters over the actual stack object. B661B0 treats
+// every nonzero kind other than 2 as a table without accessing the interpreter.
+bool native_lua_is_boolean_00b66000(const NativeLuaObjectStorage&);
+bool native_lua_is_table_00b661b0(const NativeLuaObjectStorage&);
+bool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage&);
+const char* native_lua_string_00b662b0(const NativeLuaObjectStorage&);
+std::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage&,std::uint8_t fallback);
+bool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage&) noexcept;
+// ECX table; stack key/value; RET8. Existing value is released before key.
+// Results keep word0C/padding unchanged and register their actual addresses.
+// Next consumes a top key in place, or copies then removes a non-top key.
+void native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,
+    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
+void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,
+    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
+// Exact NUMBER or the full signed fallback DWORD; unlike integer coercion,
+// numeric strings take the fallback. ECX object, stack fallback, EAX, RET4.
+std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage&,
+    std::int32_t fallback,const bool& crt_sse2_conversion);
+// Exact STRING or supplied C-string fallback, then construct fresh8h output.
+// ECX object, stack output/fallback, EAX output, RET8; no prior-output cleanup.
+NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage&,
+    void* fresh,const char* fallback,NativeStringStorage&);
+bool native_lua_is_string_00b660a0(const NativeLuaObjectStorage&);
+// Kind2/exact NUMBER yields a float32-rounded result; every other value
+// returns the supplied float. Original ECX object, stack float, ST0, RET4.
+float native_lua_number_or_00b66330(const NativeLuaObjectStorage&,float fallback);
 } // namespace bsp

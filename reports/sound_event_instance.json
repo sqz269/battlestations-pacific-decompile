@@ -1,0 +1,1074 @@
+{
+  "packet": "orch4_sound_event_u",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a89dc0",
+      "name": "construct_spatial_sound_event_00a89dc0",
+      "proposed_name": "BSP_SpatialSoundEvent_Construct",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack void* sample, void* class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz; EAX=result; RET 0x28.",
+      "meaning": "Native90h D5B4C8. BaseA7C480 then eventD5B480; clear parameters58/count5C/capacity60/dirty64/group68/event54, vectors and band88/ended8C. InstallD5B4C8; velocity78,position6C,dirty84=1. RET28.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89e7d",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89e80",
+      "byte_span": 192,
+      "sha256": "a483e2182082ce8760caf05a2d22961e9aba09919e944602b44c875881345ae8",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack void* sample, void* class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz; EAX=result; RET 0x28. Native90h D5B4C8. BaseA7C480 then eventD5B480; clear parameters58/count5C/capacity60/dirty64/group68/event54, vectors and band88/ended8C. InstallD5B4C8; velocity78,position6C,dirty84=1. RET28. Full native byte-span SHA256 a483e2182082ce8760caf05a2d22961e9aba09919e944602b44c875881345ae8. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89c80",
+      "name": "destroy_sound_event_00a89c80",
+      "proposed_name": "BSP_SoundEvent_Destruct",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; RET.",
+      "meaning": "InstallD5B480; ifevent54nonnull EventStop(false); resizeparameters0 and freebuffer; baseA7BD90. DEC50C EH state1 arrayA89BE0 thenstate0 base. Disk-verified tailA89CD4..A89CF6 decoded aftercalloverride repair; stored Ghidra body remains short atA89CD3, NOT full flow repair.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89cf6",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89cf7",
+      "byte_span": 119,
+      "sha256": "075d4dd3c09d91111c277264ccccfd0c1e635d37ff6b509cff29e7442dcf77da",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "ghidra_stored_body_end_inclusive": "00a89cd3",
+      "decoded_tail_in_report": true,
+      "full_stored_body_repair": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; RET. InstallD5B480; ifevent54nonnull EventStop(false); resizeparameters0 and freebuffer; baseA7BD90. DEC50C EH state1 arrayA89BE0 thenstate0 base. Disk-verified tailA89CD4..A89CF6 decoded aftercalloverride repair; stored Ghidra body remains short atA89CD3, NOT full flow repair. Full native byte-span SHA256 075d4dd3c09d91111c277264ccccfd0c1e635d37ff6b509cff29e7442dcf77da. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89ee0",
+      "name": "scalar_delete_spatial_sound_event_00a89ee0",
+      "proposed_name": "BSP_SpatialSoundEvent_ScalarDeletingDestructor",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack uint flags; EAX=result; RET 4.",
+      "meaning": "Call eventdtorA89C80, free onlyflagsbit0, returnreceiver; repairedcallsitefreefallthroughA89EF5 withoutchangingcallee no-return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89efb",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89efe",
+      "byte_span": 30,
+      "sha256": "7f2501881a40f0ba1adedf56a933d902dbaa401c0e212a6ed9a106e7ed0b2be6",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack uint flags; EAX=result; RET 4. Call eventdtorA89C80, free onlyflagsbit0, returnreceiver; repairedcallsitefreefallthroughA89EF5 withoutchangingcallee no-return. Full native byte-span SHA256 7f2501881a40f0ba1adedf56a933d902dbaa401c0e212a6ed9a106e7ed0b2be6. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a894e0",
+      "name": "create_sound_event_00a894e0",
+      "proposed_name": "BSP_SoundEvent_CreateAndStart",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; RET.",
+      "meaning": "Capture currentEventSystem48; sampleNativeString60 currentdata orliveF8BBEF; GetEvent mode2 ERROR_ON_DISKACCESS intoactual event54; memory2Bstats; start CURRENThandle and memory2Bstats; reloadcurrentmanager mastergroup140 intogroup68. Errors otherwise ignored, no fabricatedhandle.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8955b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a8955c",
+      "byte_span": 124,
+      "sha256": "90a216746e7b149f0c7f587e0a1e9a800263e9dcf0fd30ce946d7544c09650c0",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; RET. Capture currentEventSystem48; sampleNativeString60 currentdata orliveF8BBEF; GetEvent mode2 ERROR_ON_DISKACCESS intoactual event54; memory2Bstats; start CURRENThandle and memory2Bstats; reloadcurrentmanager mastergroup140 intogroup68. Errors otherwise ignored, no fabricatedhandle. Full native byte-span SHA256 90a216746e7b149f0c7f587e0a1e9a800263e9dcf0fd30ce946d7544c09650c0. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89560",
+      "name": "update_sound_event_parameters_00a89560",
+      "proposed_name": "BSP_SoundEvent_UpdateParameters",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; RET.",
+      "meaning": "Ifdirty64 clearitbeforeloop; walkcurrent signedcount5C, dirtyrecord+4 clearbeforecallbacks; getParameterByIndex ifcachedhandle8null, then reloadcurrentarrayvalue/handle and setValue; memory2Bstats atbothcalls. No clamping, retrydirty or handle release.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a895f9",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a895fa",
+      "byte_span": 154,
+      "sha256": "07cee61dacae112628ec3a9f0b2222269f7e0397da7492e6ba6e6dbd80de412b",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; RET. Ifdirty64 clearitbeforeloop; walkcurrent signedcount5C, dirtyrecord+4 clearbeforecallbacks; getParameterByIndex ifcachedhandle8null, then reloadcurrentarrayvalue/handle and setValue; memory2Bstats atbothcalls. No clamping, retrydirty or handle release. Full native byte-span SHA256 07cee61dacae112628ec3a9f0b2222269f7e0397da7492e6ba6e6dbd80de412b. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89170",
+      "name": "stop_sound_event_00a89170",
+      "proposed_name": "BSP_SoundEvent_Stop",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack byte immediate; RET 4.",
+      "meaning": "Capture event54 thenrequest51=1; noevent setsstopped15. Existingevent ALWAYS getParameter Stop withnulloutput; immediate orStop-present causes EventStop(true) oncurrenthandle. Otherwise getLoop nulloutput and keyOff ifnonnull. Resultsignored; stopped15 unchanged onexistingevent.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a891e9",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a891ec",
+      "byte_span": 124,
+      "sha256": "68e6d49ccae9477cc76b07f0c3eddeda53939378c9963d190481173c08f6df4b",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack byte immediate; RET 4. Capture event54 thenrequest51=1; noevent setsstopped15. Existingevent ALWAYS getParameter Stop withnulloutput; immediate orStop-present causes EventStop(true) oncurrenthandle. Otherwise getLoop nulloutput and keyOff ifnonnull. Resultsignored; stopped15 unchanged onexistingevent. Full native byte-span SHA256 68e6d49ccae9477cc76b07f0c3eddeda53939378c9963d190481173c08f6df4b. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a88ba0",
+      "name": "spatial_sound_event_completed_00a88ba0",
+      "proposed_name": "BSP_SpatialSoundEvent_IsComplete",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; EAX=result; RET.",
+      "meaning": "Ifstoprequested51 callvirtual10; then withnonnull event54 returnstopped15||ended8C, otherwise returnrequest51. Original EAX0/1; C++bool projection with explicit derivedvirtualhost.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a88bda",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a88bdb",
+      "byte_span": 59,
+      "sha256": "3522e55343c5c0a12d9d253419de562524511954b25faeb82c3aa5b8feed1539",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; EAX=result; RET. Ifstoprequested51 callvirtual10; then withnonnull event54 returnstopped15||ended8C, otherwise returnrequest51. Original EAX0/1; C++bool projection with explicit derivedvirtualhost. Full native byte-span SHA256 3522e55343c5c0a12d9d253419de562524511954b25faeb82c3aa5b8feed1539. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89340",
+      "name": "refresh_spatial_sound_event_ended_00a89340",
+      "proposed_name": "BSP_SpatialSoundEvent_RefreshEnded",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; AL=result; RET.",
+      "meaning": "Stopped15 setsended8Ctrue; nullevent setsfalse. Otherwise zero-state output, EventGetState resultignored, ended8C=(statebit8clear). ALresult; not FMOD channel isPlaying.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8938d",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a8938e",
+      "byte_span": 78,
+      "sha256": "f7dba3c42638c519b465ea29e303fccb50745089880c35bc05efb7b40416945f",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; AL=result; RET. Stopped15 setsended8Ctrue; nullevent setsfalse. Otherwise zero-state output, EventGetState resultignored, ended8C=(statebit8clear). ALresult; not FMOD channel isPlaying. Full native byte-span SHA256 f7dba3c42638c519b465ea29e303fccb50745089880c35bc05efb7b40416945f. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89c40",
+      "name": "sound_event_nonvirtual_00a89c40",
+      "proposed_name": "BSP_SoundEvent_IsNonvirtual",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; AL=result; RET.",
+      "meaning": "D5B480/D5B4C8slot14 is literally XORAL,AL;RET, alwaysfalse, no FMOD query. Native manager unprotected six-update retirement therefore applies to eventprofile.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89c42",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89c43",
+      "byte_span": 3,
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; AL=result; RET. D5B480/D5B4C8slot14 is literally XORAL,AL;RET, alwaysfalse, no FMOD query. Native manager unprotected six-update retirement therefore applies to eventprofile. Full native byte-span SHA256 01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89c70",
+      "name": "sound_event_virtual_transition_00a89c70",
+      "proposed_name": "BSP_SoundEvent_DidVirtualStateChange",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; AL=result; RET.",
+      "meaning": "D5B480/D5B4C8slot24 alwaysALfalse, no field reads or history writes.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89c72",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89c73",
+      "byte_span": 3,
+      "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; AL=result; RET. D5B480/D5B4C8slot24 alwaysALfalse, no field reads or history writes. Full native byte-span SHA256 01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a88ff0",
+      "name": "normalize_sound_event_velocity_00a88ff0",
+      "proposed_name": "BSP_SoundVector_NormalizeVelocity",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack void* output; EAX=result; RET 4.",
+      "meaning": "ECXfloat3source, hiddenoutputpointer stack,EAXoutput,RET4. x87unspilled squares/sum thenfloatspill, nativeCRT_ST0sqrt,floatspill, compare doubleD7A268. Ordered belowthreshold zeroesall; otherwise divide savedx and current y/z in native write/read order. C++EDX addsborrowed CRT binding. Aliasing, float schedule and unordereddivision preserved.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89075",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89078",
+      "byte_span": 136,
+      "sha256": "2129d6a60157c9c038b9f5559d7655daa8258e9956b145a43a674ca6e2038c63",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack void* output; EAX=result; RET 4. ECXfloat3source, hiddenoutputpointer stack,EAXoutput,RET4. x87unspilled squares/sum thenfloatspill, nativeCRT_ST0sqrt,floatspill, compare doubleD7A268. Ordered belowthreshold zeroesall; otherwise divide savedx and current y/z in native write/read order. C++EDX addsborrowed CRT binding. Aliasing, float schedule and unordereddivision preserved. Full native byte-span SHA256 2129d6a60157c9c038b9f5559d7655daa8258e9956b145a43a674ca6e2038c63. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a893d0",
+      "name": "reserve_sound_event_parameters_00a893d0",
+      "proposed_name": "BSP_SoundEventParameters_Reserve",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack int requested; RET 4.",
+      "meaning": "Actual12h header/12h records. Clamprequested>=1, growifcapacitysmaller, allocate12*n, copy3dwords percurrentrecord, freeold, publishdataandcapacity. Preservevalue and padding bytes, no pointee ownership. RepairedfreefallthroughA89443.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8944f",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89452",
+      "byte_span": 130,
+      "sha256": "a516b3898a0a2a31c8ae27108b296a3e1f4a3b61d3e99ad73e90080f38ee738c",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack int requested; RET 4. Actual12h header/12h records. Clamprequested>=1, growifcapacitysmaller, allocate12*n, copy3dwords percurrentrecord, freeold, publishdataandcapacity. Preservevalue and padding bytes, no pointee ownership. RepairedfreefallthroughA89443. Full native byte-span SHA256 a516b3898a0a2a31c8ae27108b296a3e1f4a3b61d3e99ad73e90080f38ee738c. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a899e0",
+      "name": "resize_sound_event_parameters_00a899e0",
+      "proposed_name": "BSP_SoundEventParameters_Resize",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack int requested; RET 4.",
+      "meaning": "Reserveifneeded; newrecords clearonlybyte4 andpointer8, leavevalue0/padding5..7 untouched. Shrink countwithoutrelease; finalrequestedcount. Defined nonnegative/nonoverflowing storage domain.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89a32",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89a35",
+      "byte_span": 85,
+      "sha256": "2415da075197564db2e8d03c1f768eb9cdad4953778225620e0a33d5f0da34d9",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack int requested; RET 4. Reserveifneeded; newrecords clearonlybyte4 andpointer8, leavevalue0/padding5..7 untouched. Shrink countwithoutrelease; finalrequestedcount. Defined nonnegative/nonoverflowing storage domain. Full native byte-span SHA256 2415da075197564db2e8d03c1f768eb9cdad4953778225620e0a33d5f0da34d9. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89be0",
+      "name": "destroy_sound_event_parameters_00a89be0",
+      "proposed_name": "BSP_SoundEventParameters_Destruct",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; RET.",
+      "meaning": "Resizeactualheader0, freecurrentdata, leavepointer/capacityfields unchanged. Disk-verifiedtailA89BF2..A89BF6 decoded afteroverride repair; storedGhidrabodyremainsA89BF1, not full flow repair.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89bf6",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89bf7",
+      "byte_span": 23,
+      "sha256": "fe813d5c8a283f5ff82759fd025d3a1fbf06eda559e2431c2d14260c906c8a3b",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "ghidra_stored_body_end_inclusive": "00a89bf1",
+      "decoded_tail_in_report": true,
+      "full_stored_body_repair": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; RET. Resizeactualheader0, freecurrentdata, leavepointer/capacityfields unchanged. Disk-verifiedtailA89BF2..A89BF6 decoded afteroverride repair; storedGhidrabodyremainsA89BF1, not full flow repair. Full native byte-span SHA256 fe813d5c8a283f5ff82759fd025d3a1fbf06eda559e2431c2d14260c906c8a3b. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a896e0",
+      "name": "find_sound_event_parameter_00a896e0",
+      "proposed_name": "BSP_SoundEvent_FindParameter",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack void* output, char* name; EAX=result; RET 8.",
+      "meaning": "D5B4C8slot28. Sampleoptions8 parameters3C/count40 are actual16h descriptors index/min/max/name. CRTcase-insensitive search; matchcopiesdescriptor, misscopiesFIRSTrecord evenemptycount (requiresvalidfirststorage). Nativehiddenoutput+name stack,RET8,EAXoutput. Preserveword read/write schedule.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89769",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8976c",
+      "byte_span": 140,
+      "sha256": "7c706ef11996051904dd2aa6cba12b5b5907b55cb50c3919a1f5fc54d4ee1788",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack void* output, char* name; EAX=result; RET 8. D5B4C8slot28. Sampleoptions8 parameters3C/count40 are actual16h descriptors index/min/max/name. CRTcase-insensitive search; matchcopiesdescriptor, misscopiesFIRSTrecord evenemptycount (requiresvalidfirststorage). Nativehiddenoutput+name stack,RET8,EAXoutput. Preserveword read/write schedule. Full native byte-span SHA256 7c706ef11996051904dd2aa6cba12b5b5907b55cb50c3919a1f5fc54d4ee1788. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89b80",
+      "name": "set_sound_event_parameter_00a89b80",
+      "proposed_name": "BSP_SoundEvent_SetParameter",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack int index, float value; RET 8.",
+      "meaning": "D5B4C8slot2C. Growthroughindex+1, globaldirty64=1 beforegrow. Compare existingfloat0 includingnativeuntouchednewslotbytes; changed/unordered setsrecorddirty4,storesvalue,setsdirty64. No clamping. Initialized backing value required for defined comparison; no inventedzero default.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89bcb",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89bce",
+      "byte_span": 78,
+      "sha256": "56dc8e4d58fdd4168aa73778f0558e304d61ec15955ef721a453fa44ed32fbe9",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack int index, float value; RET 8. D5B4C8slot2C. Growthroughindex+1, globaldirty64=1 beforegrow. Compare existingfloat0 includingnativeuntouchednewslotbytes; changed/unordered setsrecorddirty4,storesvalue,setsdirty64. No clamping. Initialized backing value required for defined comparison; no inventedzero default. Full native byte-span SHA256 56dc8e4d58fdd4168aa73778f0558e304d61ec15955ef721a453fa44ed32fbe9. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89120",
+      "name": "set_spatial_sound_event_attributes_00a89120",
+      "proposed_name": "BSP_SpatialSoundEvent_SetAttributes",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack float px, float py, float pz, float vx, float vy, float vz; RET 0x18.",
+      "meaning": "D5B4C8slot34; velocity78 first thenposition6C fromsixbyvaluefloatwords, dirty84=1,RET18.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8916c",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8916f",
+      "byte_span": 79,
+      "sha256": "20b1b5e4e71e02eb283f4013a2cbff866e82bc8c7c6d761d26e9a69c7a1ecaae",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack float px, float py, float pz, float vx, float vy, float vz; RET 0x18. D5B4C8slot34; velocity78 first thenposition6C fromsixbyvaluefloatwords, dirty84=1,RET18. Full native byte-span SHA256 20b1b5e4e71e02eb283f4013a2cbff866e82bc8c7c6d761d26e9a69c7a1ecaae. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89e80",
+      "name": "get_spatial_sound_event_position_00a89e80",
+      "proposed_name": "BSP_SpatialSoundEvent_GetPosition",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack void* output; EAX=result; RET 4.",
+      "meaning": "D5B4C8slot38; snapshotposition6C/70/74 beforealloutputstores, hiddenfloat3output,RET4,EAXoutput.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89ea1",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89ea4",
+      "byte_span": 36,
+      "sha256": "8e668a9c0cbe33a9c4dee0c6897e1583f362bdf0adb4bcad4e3419282d126d39",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack void* output; EAX=result; RET 4. D5B4C8slot38; snapshotposition6C/70/74 beforealloutputstores, hiddenfloat3output,RET4,EAXoutput. Full native byte-span SHA256 8e668a9c0cbe33a9c4dee0c6897e1583f362bdf0adb4bcad4e3419282d126d39. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89770",
+      "name": "update_spatial_sound_event_00a89770",
+      "proposed_name": "BSP_SpatialSoundEvent_Update",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack float dt, void* listener; RET 8.",
+      "meaning": "Stoppedearlyout; fade/delay withNaN38preservation, lazycreate/start,updates18++. Currentmanager distance/type/group rules reused. GetChannelGroup output reusesdtstackword (remainingdelay ifcountdownran), preserves unwrittenoutputbits, addschildgroup ornullmappingmutes. Pitch=frequencyScale20-1 RAW0, mixedvolume andpanboost, orientation fromnormalizedvelocity78 withx87helper, spatial snapshots, parameterupdate, pausebits. FMODresultserrorsignoredexceptmemory2Bstats atgetgroup.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a899d7",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a899da",
+      "byte_span": 618,
+      "sha256": "71f0002dbb74f4ded226130e1f31eff879388e71ec8ab7093c0d102e9a1cc185",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "new reconstruction",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack float dt, void* listener; RET 8. Stoppedearlyout; fade/delay withNaN38preservation, lazycreate/start,updates18++. Currentmanager distance/type/group rules reused. GetChannelGroup output reusesdtstackword (remainingdelay ifcountdownran), preserves unwrittenoutputbits, addschildgroup ornullmappingmutes. Pitch=frequencyScale20-1 RAW0, mixedvolume andpanboost, orientation fromnormalizedvelocity78 withx87helper, spatial snapshots, parameterupdate, pausebits. FMODresultserrorsignoredexceptmemory2Bstats atgetgroup. Full native byte-span SHA256 71f0002dbb74f4ded226130e1f31eff879388e71ec8ab7093c0d102e9a1cc185. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7f710",
+      "name": "create_spatial_sound_00a7f710",
+      "proposed_name": "BSP_SoundManager_CreateSpatialSound",
+      "source": "src/sound_event_instance.cpp",
+      "document": "docs/SOUND_EVENT_INSTANCE.md",
+      "status": "reconstructed_build_and_installed_event_manager_fixture_tested",
+      "abi": "ECX=self/source/header; stack void* sample, int class_index, uint type, byte flag; EAX=result; RET 0x10.",
+      "meaning": "COMPLETE factory supersedesprior bank-onlyfragment. Counter160increments once beforeA818C0 resourceFMODsound gate. Bankbranchallocate84h/A8A2E0; eventbranchallocate90h/A89DC0. Both zero vectors, signedclassgrowth, sameclass-slot/type/flag, allocationnullreturnsnull. DEB7E8state0/1 freeallocationonly; baseconstructor ownsitsown unwind behavior. Manager insertion remainsA7E490 caller.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7f88c",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f88f",
+      "byte_span": 383,
+      "sha256": "9cea11471b0f37f0acee96c7066d106eaadaa428c25e7fd2de3e0d80d06b9254",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "classification": "complete factory promoted from bank-only fragment",
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self/source/header; stack void* sample, int class_index, uint type, byte flag; EAX=result; RET 0x10. COMPLETE factory supersedesprior bank-onlyfragment. Counter160increments once beforeA818C0 resourceFMODsound gate. Bankbranchallocate84h/A8A2E0; eventbranchallocate90h/A89DC0. Both zero vectors, signedclassgrowth, sameclass-slot/type/flag, allocationnullreturnsnull. DEB7E8state0/1 freeallocationonly; baseconstructor ownsitsown unwind behavior. Manager insertion remainsA7E490 caller. Full native byte-span SHA256 9cea11471b0f37f0acee96c7066d106eaadaa428c25e7fd2de3e0d80d06b9254. docs/SOUND_EVENT_INSTANCE.md. Win32 and installed bank/event manager fixture passed with no-sound output and explicit VFS/CRT fixture bindings. Canonical instance projection; native ABI, allocator/SEH identity, audible output and gameplay remain open."
+    }
+  ],
+  "new_routines": 19,
+  "promoted_complete_factory": "00a7f710",
+  "no_ghidra_function": [],
+  "read_only_evidence": [
+    {
+      "address": "00d5b480",
+      "size": 68,
+      "bytes_hex": "e030bd00c09ea8007091a8001092a800509ca800409ca800908ba800009da800609ca800709ca800e096a800809ba8000096a80080bea700d0bea70090bea700f091a800",
+      "sha256": "11471748a2d31efce5e1344ee031b3a0aea01aa2494b3cb5553fcae2baf4563b",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d5b4c8",
+      "size": 68,
+      "bytes_hex": "e030bd00e09ea8007091a800a08ba8004093a800409ca800908ba800009da800609ca800709ca800e096a800809ba8007097a8002091a800809ea80090bea700f091a800",
+      "sha256": "696f3e06b0eef525367967eeb303e75dde4a39fbe84faf20b96faa8ce7207d70",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00dec4fc",
+      "size": 52,
+      "bytes_hex": "ffffffff1063cb00000000001863cb002205931902000000fcc4de00000000000000000000000000000000000000000001000000",
+      "sha256": "92f81a2980a98e64de8823b7bdb877504678715035c0aebcc4d9b4ca447eeedf",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00deb7d8",
+      "size": 52,
+      "bytes_hex": "ffffffff3057cb00ffffffff3b57cb002205931902000000d8b7de00000000000000000000000000000000000000000001000000",
+      "sha256": "ccbaea3b989444227460454cfa8ec9028c284f7915fe63d30f52bc3721e0c23c",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d7a268",
+      "size": 8,
+      "bytes_hex": "000000e0e2361a3f",
+      "sha256": "564be83b341e452f4492fa81f7d5f215f446119f583c33a94b619cd1ee7287fd",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d7a210",
+      "size": 8,
+      "bytes_hex": "000000000000f03f",
+      "sha256": "6c3c396ed6b5c36dcae172271f462051b1266b851e92df3deea8ac65478fd712",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d5b470",
+      "size": 5,
+      "bytes_hex": "53746f7000",
+      "sha256": "ddc2dcaa4e18b15eb75953540bd79f768358abee4654fcca59b2b744d0b67509",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d5b1a4",
+      "size": 5,
+      "bytes_hex": "4c6f6f7000",
+      "sha256": "8ce655a81049eea7439e5f85171608d4ba4375cee0473bb936dfca9e573c59af",
+      "disk_analysis_equal": true,
+      "read_only": true
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a89dd9",
+      "native": "00a7c480",
+      "caller": "00a89dc0"
+    },
+    {
+      "address": "00a89cb6",
+      "native": "00c2df86",
+      "caller": "00a89c80"
+    },
+    {
+      "address": "00a89cc7",
+      "native": "00a899e0",
+      "caller": "00a89c80"
+    },
+    {
+      "address": "00a89ccf",
+      "native": "00bf6989",
+      "caller": "00a89c80"
+    },
+    {
+      "address": "00a89ee3",
+      "native": "00a89c80",
+      "caller": "00a89ee0"
+    },
+    {
+      "address": "00a89ef0",
+      "native": "00bf65ac",
+      "caller": "00a89ee0"
+    },
+    {
+      "address": "00a8951d",
+      "native": "00a7a460",
+      "caller": "00a894e0"
+    },
+    {
+      "address": "00a89525",
+      "native": "00c2dfa4",
+      "caller": "00a894e0"
+    },
+    {
+      "address": "00a8953b",
+      "native": "00a7a460",
+      "caller": "00a894e0"
+    },
+    {
+      "address": "00a895a7",
+      "native": "00c2df74",
+      "caller": "00a89560"
+    },
+    {
+      "address": "00a895bc",
+      "native": "00a7a460",
+      "caller": "00a89560"
+    },
+    {
+      "address": "00a895d1",
+      "native": "00c2dfaa",
+      "caller": "00a89560"
+    },
+    {
+      "address": "00a895e6",
+      "native": "00a7a460",
+      "caller": "00a89560"
+    },
+    {
+      "address": "00a89192",
+      "native": "00c2df92",
+      "caller": "00a89170"
+    },
+    {
+      "address": "00a891bb",
+      "native": "00c2df92",
+      "caller": "00a89170"
+    },
+    {
+      "address": "00a891c9",
+      "native": "00c2df8c",
+      "caller": "00a89170"
+    },
+    {
+      "address": "00a891d9",
+      "native": "00c2df86",
+      "caller": "00a89170"
+    },
+    {
+      "address": "00a89375",
+      "native": "00c2df9e",
+      "caller": "00a89340"
+    },
+    {
+      "address": "00a8901e",
+      "native": "00bf7030",
+      "caller": "00a88ff0"
+    },
+    {
+      "address": "00a893f1",
+      "native": "00bf55be",
+      "caller": "00a893d0"
+    },
+    {
+      "address": "00a8943e",
+      "native": "00bf6989",
+      "caller": "00a893d0"
+    },
+    {
+      "address": "00a899ee",
+      "native": "00a893d0",
+      "caller": "00a899e0"
+    },
+    {
+      "address": "00a89be5",
+      "native": "00a899e0",
+      "caller": "00a89be0"
+    },
+    {
+      "address": "00a89bed",
+      "native": "00bf6989",
+      "caller": "00a89be0"
+    },
+    {
+      "address": "00a896e7",
+      "native": "00a81860",
+      "caller": "00a896e0"
+    },
+    {
+      "address": "00a8970a",
+      "native": "00bf7fbf",
+      "caller": "00a896e0"
+    },
+    {
+      "address": "00a89b98",
+      "native": "00a899e0",
+      "caller": "00a89b80"
+    },
+    {
+      "address": "00a89788",
+      "native": "00a7a2e0",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a897c8",
+      "native": "00a894e0",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a8980f",
+      "native": "00419440",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a8981e",
+      "native": "00a79a40",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a8983c",
+      "native": "00a7ec60",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a8984f",
+      "native": "00a7ba40",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a89868",
+      "native": "00c2dfc2",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a8987d",
+      "native": "00a7a460",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a89888",
+      "native": "00c2df3e",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a898e8",
+      "native": "00c2dfb6",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a898ef",
+      "native": "00a7aaa0",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a89926",
+      "native": "00c2dfb0",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a89942",
+      "native": "00a88ff0",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a89997",
+      "native": "00c2dfbc",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a899a5",
+      "native": "00a89560",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a899ce",
+      "native": "00c2df98",
+      "caller": "00a89770"
+    },
+    {
+      "address": "00a7f73d",
+      "native": "00a818c0",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f74f",
+      "native": "00bf681b",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f7b3",
+      "native": "00a7c2c0",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f7cb",
+      "native": "00a8a2e0",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f7ea",
+      "native": "00bf681b",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f846",
+      "native": "00a7c2c0",
+      "caller": "00a7f710"
+    },
+    {
+      "address": "00a7f85e",
+      "native": "00a89dc0",
+      "caller": "00a7f710"
+    }
+  ],
+  "decoded_tails": [
+    {
+      "function": "00a89c80",
+      "stored_body_end_inclusive": "00a89cd3",
+      "decoded_tail_start": "00a89cd4",
+      "decoded_end_exclusive": "00a89cf7",
+      "disk_analysis_equal": true,
+      "full_stored_body_repair": false,
+      "instructions": [
+        {
+          "address": "00a89cd4",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "address": "00a89cd7",
+          "mnemonic": "mov",
+          "operands": "ecx, esi",
+          "bytes_hex": "8bce"
+        },
+        {
+          "address": "00a89cd9",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], 0xffffffff",
+          "bytes_hex": "c7442414ffffffff"
+        },
+        {
+          "address": "00a89ce1",
+          "mnemonic": "call",
+          "operands": "0xa7bd90",
+          "bytes_hex": "e8aa20ffff"
+        },
+        {
+          "address": "00a89ce6",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]",
+          "bytes_hex": "8b4c240c"
+        },
+        {
+          "address": "00a89cea",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "bytes_hex": "5f"
+        },
+        {
+          "address": "00a89ceb",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "address": "00a89cec",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "address": "00a89cf3",
+          "mnemonic": "add",
+          "operands": "esp, 0x10",
+          "bytes_hex": "83c410"
+        },
+        {
+          "address": "00a89cf6",
+          "mnemonic": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ],
+      "decoded_tail_calls": [
+        {
+          "site": "00a89ce1",
+          "native_target": "00a7bd90",
+          "verified_by": "matched disk/live byte decode, outside current Ghidra stored body"
+        }
+      ]
+    },
+    {
+      "function": "00a89be0",
+      "stored_body_end_inclusive": "00a89bf1",
+      "decoded_tail_start": "00a89bf2",
+      "decoded_end_exclusive": "00a89bf7",
+      "disk_analysis_equal": true,
+      "full_stored_body_repair": false,
+      "instructions": [
+        {
+          "address": "00a89bf2",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "address": "00a89bf5",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "address": "00a89bf6",
+          "mnemonic": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ],
+      "decoded_tail_calls": []
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_event_u_build.log",
+    "fixture": "local/sound_event_fixture.cpp",
+    "fixture_sha256": "aec838750adcb78d3a5e718850a2a5eff63bc830c5ebded3263144a4a587f272",
+    "fixture_log": "local/sound_event_u_fixture.log",
+    "runner": "local/run_sound_event_fixture.ps1",
+    "runner_sha256": "6e47496068f91ff403160cf63c0d07870abb19bb1cc5dd2f57993de690f0e43e",
+    "library_sha256": "bf637b22cb8a68405dc0741ef3b07dc84e836263095ce5ce1a349e08ff730e05",
+    "code_revision": "6a619dd3e42795a96392a0ce9088ebe24c7a0221",
+    "seed_log": "local/sound_event_u_verify_seeds.log",
+    "focused": "Existing controlled manager checks; bank regression now uses full factory. Event normalizer zero, finite and partial-alias cases; descriptor miss copiesfirst; parameter reserve/resize/dirty/cachedhandle and untouched padding; no-event stop and force-stop ordering.",
+    "installed": {
+      "event": "planes.fev:planes/muzzle/muzzle5inch/muzzle_5_inch",
+      "bank": "sound/splash/splash_medium.fsb",
+      "parameter": "param00",
+      "parameter_range": [
+        0,
+        1
+      ],
+      "parameter_values": [
+        0.5,
+        0
+      ],
+      "first_position": [
+        1110,
+        20,
+        30
+      ],
+      "first_velocity": [
+        0,
+        3,
+        4
+      ],
+      "first_orientation": [
+        0,
+        0.6,
+        0.8
+      ],
+      "raw_pitch": 0.5,
+      "base_volume": 0.5,
+      "distance_bands": [
+        1,
+        2,
+        0
+      ],
+      "null_mapping_mute_and_parent_preservation": true,
+      "nonnull_mapping_volume_and_parent_restored": true,
+      "protected_event_natural_retirements": 1,
+      "event_virtual_transitions": 0,
+      "bank_natural_retirements": 1,
+      "forced_event_stop": true,
+      "all_owned_resources_released": true,
+      "device": "explicit FMOD no-sound",
+      "fixture_adaptations": [
+        "Game root, sound/events and sound/muzzle mounted at empty VFS prefixes to resolve FEV and its bank basename.",
+        "Actual parameter backing bytes initialized in fixture before native resize/set comparison; production resize leaves values/padding untouched.",
+        "Explicit finite CRT access with bypass=1; unexpected exceptional callback throws.",
+        "Bank regression retains its explicit borrowed sound3D mode setup."
+      ],
+      "assets": [
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+          "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+          "bytes": 350544
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll",
+          "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+          "bytes": 238936
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/splash/splash_medium.fsb",
+          "sha256": "7ea3fec9910d5f995824aa56719d86f17058f91436d22f0122816b6eb963e068",
+          "bytes": 261216
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/events/planes.fev",
+          "sha256": "b239cda305e3574d44a7e483111e6b71225591591f0df8cb9b34e62c1d44d458",
+          "bytes": 118753
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/muzzle/muzzle_5_inch.fsb",
+          "sha256": "9a5f3a781668fc757dcb432bff0daf1423e85699c40c465d9bf1c9a672b4f076",
+          "bytes": 903456
+        }
+      ],
+      "exports": {
+        "fmodex.dll": [
+          "FMOD_ChannelGroup_AddGroup",
+          "FMOD_ChannelGroup_GetParentGroup"
+        ],
+        "fmod_event.dll": [
+          "_FMOD_EventSystem_GetEvent@16",
+          "_FMOD_Event_Start@4",
+          "_FMOD_Event_Stop@8",
+          "_FMOD_Event_GetState@8",
+          "_FMOD_Event_GetParameter@12",
+          "_FMOD_Event_GetParameterByIndex@12",
+          "_FMOD_EventParameter_KeyOff@4",
+          "_FMOD_EventParameter_SetValue@8",
+          "_FMOD_Event_GetChannelGroup@8",
+          "_FMOD_Event_SetPitch@12",
+          "_FMOD_Event_SetVolume@8",
+          "_FMOD_Event_Set3DAttributes@16",
+          "_FMOD_Event_SetPaused@8",
+          "_FMOD_Event_Get3DAttributes@16",
+          "_FMOD_EventParameter_GetValue@8",
+          "_FMOD_Event_GetPitch@12",
+          "_FMOD_Event_GetVolume@8"
+        ]
+      }
+    },
+    "first_attempt": {
+      "log": "local/sound_event_u_missing_mount.log",
+      "root_cause": "Fixture lacked sound/muzzle basename mount; LoadEventData23, GetEvent(mode2)24, Start37. Existing acquisition fixture did not require event bank loading to succeed.",
+      "corrected": "Mount installed sound/muzzle in fixture; no production error behavior or installed files altered."
+    },
+    "unexercised_branches": [
+      "Loop parameter keyOff branch is assembly-grounded and actual export verified, but the selected one-shot event does not have Loop.",
+      "Full native allocation-failure/SEH and exceptional CRT/NaN payload behavior are not runtime-validated."
+    ],
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false,
+    "seed_functions_verified": 8,
+    "call_site_check": "50 rows checked, 0 failed; local/sound_event_u_call_check.log",
+    "fixture_scope": "All nineteen new routines and both complete factory branches executed in focused/installed checks; Loop keyOff and broader exceptional/native behavior remain unexercised."
+  },
+  "ghidra": {
+    "prototypes": "reports/sound_event_instance_prototypes.json",
+    "prototype_count": 20,
+    "function_definitions": "reports/sound_event_instance_function_definitions.json",
+    "functions_defined": [
+      "00a89170",
+      "00a89340",
+      "00a89c40",
+      "00a89c70",
+      "00a896e0",
+      "00a89b80",
+      "00a89120",
+      "00a89e80"
+    ],
+    "flow_repairs": "reports/sound_event_instance_flow.json",
+    "callsite_flow_repairs": 4,
+    "stored_body_tails_still_short": [
+      "00a89c80",
+      "00a89be0"
+    ],
+    "no_return_flags_changed": false,
+    "annotations": {
+      "count": 20,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260911T214604Z.json",
+      "readback": "local/sound_event_u_comments.json",
+      "exports": "local/sound_event_u_final_exports.log",
+      "all20_prototypes_verified_after_annotation": true
+    }
+  },
+  "boundaries": [
+    "Canonical C++ instances/managers; parameter arrays and sample descriptors use actual Win32 raw storage. No native instance-layout/ABI claim.",
+    "Parameter setter follows native existing-value comparison; initialized backing bytes, valid indices and nonoverflowing extents required. No invented zeroing or clamp.",
+    "Current global/CRT/voice/VFS composition remains a production application task; installed fixture supplies explicit services and directories.",
+    "Two decoded tails are verified against native bytes but remain outside short Ghidra stored bodies. No full stored-body-repair claim.",
+    "Loop keyOff, broader event assets, full exceptional behavior, audible playback and gameplay remain unvalidated."
+  ],
+  "followups": [
+    {
+      "packet": "sound_spatial_dsp_and_event_virtuals",
+      "addresses": [
+        "00a8a700",
+        "00a88b90",
+        "00a89d00",
+        "00a89c60",
+        "00a891f0"
+      ]
+    },
+    {
+      "packet": "sound_application_voice_composition",
+      "scope": "Production VFS sound-directory registration, global/time/CRT services and complete voice/startup sound ownership."
+    },
+    {
+      "packet": "sound_event_stored_body_bounds",
+      "addresses": [
+        "00a89c80",
+        "00a89be0"
+      ]
+    }
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_event_manager_fixture_tested",
+    "validated_revision": "1d587a00a02863da4e22f87c32816b2d6de627e3",
+    "main_base": "606726c2",
+    "integration_log": "local/sound_event_u_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_event_u_integrate.log",
+    "library_sha256": "55b2966c1b84aa052bd342e0a727366216e96d1228cc6629e4defb00ca09a5bc",
+    "fixture_provenance": "Focused routing and installed bank and event manager fixture ran on validation.code_revision with validation.library_sha256. Combined build/CTest is recorded separately.",
+    "saved_annotations": 20,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T214926Z.json",
+    "refreshed_exports": "local/sound_event_u_integration_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
+}

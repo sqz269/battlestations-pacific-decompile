@@ -1,0 +1,19 @@
+{
+  "packet": "orch5_text_content_composition",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe"},
+  "source": "src/gui_text_runtime_content.cpp",
+  "routines": [{
+    "address": "00aba8d0",
+    "name": "build_gui_text_content_00aba8d0",
+    "abi": "Native ECX Text, UTF16 wrapper stack argument, RET4. New C++ interface.",
+    "scope": "Actual owner composition of prefix, preparation, selected real builder and post tail; complete supported ordinary paths, explicit pending glyph-child or undefined native format/alignment boundary."
+  }],
+  "host_steps": [
+    {"address": "00abab6a", "native": "00aba270", "function": "00aba8d0", "contract": "Captured wrapped selection calls actual builder with the same retained outer temporary and main section; post tail waits for completion."},
+    {"address": "00abab78", "native": "00ab9fd0", "function": "00aba8d0", "contract": "Captured single-line selection calls actual builder; unused source argument and captured main section preserved; post tail waits for completion."}
+  ],
+  "evidence_reports": ["reports/gui_text_content.json", "reports/gui_text_single_line.json", "reports/gui_text_wrapped.json", "reports/native_vertex_position_read.json", "reports/gui_text_child_lifetime.json"],
+  "ownership": "One outer temporary and selected move-only frame; same borrowed canonical owners/services, mappings and actual D3DX module; native float3 aliases retain stable allocation.",
+  "remaining": ["AB98F0 optional-child callee/factory continuation", "native uninitialized alignment or position-format cases", "native pool/string/SEH ABI", "full Text factory dispatch", "runtime and gameplay validation"],
+  "validation": "See reports/orch5_text_builders_batch.json for normal Win32 build, existing tests and call verification. No new runtime claim."
+}

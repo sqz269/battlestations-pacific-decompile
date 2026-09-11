@@ -132,3 +132,7 @@ conversion rules for the installed debug/dummy fixture. Real evaluated strings
 and fields now feed source generation and pixel readback. See
 `SHADER_LUA_ADAPTER.md` for implemented scope, adapter differences and remaining
 full-loader work.
+
+## Correction from docs/NATIVE_SHADER_FIELD_READER.md
+
+Full B573F0/B419B0 readers now allocate actual1Ch records with native8h names, append actual pointers and clean them through descriptor D0/DC ownership. Missing type/count/semantic ordinals use explicit native stack-preimage inputs; no zero defaults are invented. All five packet routines pass original-instruction fixtures, including seven installed shader fields and paired allocation/release traces. Original exception ABI, full descriptor loading and gameplay remain unvalidated; see reports/native_shader_field_reader.json.

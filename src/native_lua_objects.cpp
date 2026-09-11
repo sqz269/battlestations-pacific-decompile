@@ -1,5 +1,6 @@
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/lua_numeric.hpp"
+#include "bsp/gui_lua_reader.hpp"
 #include <cstring>
 #include <new>
 #include <stdexcept>
@@ -93,5 +94,69 @@ void release_native_lua_tracked_object_00b66de0(
 void destroy_native_lua_object_00b67700(NativeLuaObjectStorage& object){
     if(!object.kind_04)return;
     release_native_lua_tracked_object_00b66de0(object.owner_00,object,object.index_08,1);object.kind_04=0;
+}
+bool native_lua_is_boolean_00b66000(const NativeLuaObjectStorage& object){
+    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TBOOLEAN;
+}
+bool native_lua_is_table_00b661b0(const NativeLuaObjectStorage& object){
+    if(!object.kind_04)return false;
+    return object.kind_04!=2 || lua_type(object.owner_00->state_04,object.index_08)==LUA_TTABLE;
+}
+bool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage& object){
+    return native_lua_is_number_00b66050(object) &&
+        gui_lua_is_integer_number_00b66a60(lua_tonumber(object.owner_00->state_04,object.index_08));
+}
+const char* native_lua_string_00b662b0(const NativeLuaObjectStorage& object){
+    return lua_tolstring(object.owner_00->state_04,object.index_08,nullptr);
+}
+std::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage& object,std::uint8_t fallback){
+    if(!native_lua_is_boolean_00b66000(object))return fallback;
+    return lua_toboolean(object.owner_00->state_04,object.index_08)!=0?1:0;
+}
+bool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage& object) noexcept {return object.kind_04==0;}
+bool native_lua_is_string_00b660a0(const NativeLuaObjectStorage& object){
+    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TSTRING;
+}
+float native_lua_number_or_00b66330(const NativeLuaObjectStorage& object,float fallback){
+    return native_lua_is_number_00b66050(object)?native_lua_number_00b66270(object):fallback;
+}
+std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage& object,std::int32_t fallback,const bool& mode){
+    return native_lua_is_number_00b66050(object)?native_lua_integer_00b66290(object,mode):fallback;
+}
+NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage& object,void* fresh,const char* fallback,NativeStringStorage& strings){
+    const char* text=fallback;
+    if(object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TSTRING)
+        text=native_lua_string_00b662b0(object);
+    auto* output=::new(fresh) NativeString;output->assign_0041e870(strings,text);return output;
+}
+namespace {
+void publish_iteration_object(NativeLuaObjectStorage& table,NativeLuaObjectStorage& object,int index){
+    auto* const owner=table.owner_00;
+    object.owner_00=owner;object.kind_04=2;object.index_08=index;object.tracked_10=1;
+    const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(index));
+    if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;
+    auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=&object;++slot.count_14;
+}
+void finish_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    if(!lua_next(table.owner_00->state_04,table.index_08))return;
+    const auto key_index=lua_gettop(table.owner_00->state_04)-1;publish_iteration_object(table,key,key_index);
+    const auto value_index=lua_gettop(table.owner_00->state_04);publish_iteration_object(table,value,value_index);
+}
+}
+void native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    destroy_native_lua_object_00b67700(value);destroy_native_lua_object_00b67700(key);
+    (void)lua_checkstack(table.owner_00->state_04,2);lua_pushnil(table.owner_00->state_04);
+    finish_iteration(table,key,value);
+}
+void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    destroy_native_lua_object_00b67700(value);
+    const auto key_index=key.index_08;
+    if(key_index==lua_gettop(table.owner_00->state_04)){
+        if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key_index,0);key.kind_04=0;}
+    }else{
+        lua_pushvalue(table.owner_00->state_04,key_index);
+        if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key.index_08,1);key.kind_04=0;}
+    }
+    finish_iteration(table,key,value);
 }
 } // namespace bsp

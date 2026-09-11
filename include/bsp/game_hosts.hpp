@@ -143,6 +143,12 @@ struct GameExecutableOptions {
     // in-mission branch of 004e4a40 headless. Zero or negative runs none, which
     // leaves the run exactly where milestone 2e left it.
     long mission_frames{0};
+    // --mission-complete-frame N, milestone 2g: on in-mission frame N the
+    // executable makes the call a mission script's end-movie binding makes
+    // (0089a480 -> 0089a390 -> 004cd390 with the debrief byte set), so the run
+    // leaves state 0Dh through the recovered path instead of a frame count.
+    // Negative injects nothing.
+    long mission_complete_frame{-1};
     // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.
@@ -416,6 +422,10 @@ struct GameRunSummary {
     long mission_frames_requested{};
     unsigned long long mission_frames_run{};
     unsigned long long mission_frames_simulated{};
+    // Milestone 2g: the frames after game state 0Dh and how the path ended.
+    unsigned long long mission_exit_frames{};
+    bool mission_exit_completed{};
+    bool mission_complete_injected{};
     std::size_t mission_lua_bindings{};
     std::size_t mission_lua_natives{};
     unsigned long long mission_lua_native_calls{};

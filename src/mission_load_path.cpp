@@ -400,7 +400,7 @@ constexpr MissionLoadHostStep kHostSteps[] = {
     {0x004de610, "MissionSceneLoadHost", "construct_world", MissionLoadOwner::World,
         "game+19CCh and game+21D4h, the ocean and the sky"},
     {0x00951560, "MissionSceneLoadHost", "reset_shader_globals", MissionLoadOwner::Renderer, ""},
-    {0x005e2f00, "MissionSceneLoadHost", "lua_reset_state", MissionLoadOwner::Lua, ""},
+    {0x005e2f00, "MissionSceneLoadHost", "sync_lobby_settings_from_lua", MissionLoadOwner::Lua, ""},
     {0x004f2800, "MissionSceneLoadHost", "resolve_named_scene_objects", MissionLoadOwner::SceneGraph,
         "the 26-class registration table"},
     {0x0095ba60, "MissionSceneLoadHost", "reset_slot_cameras", MissionLoadOwner::Renderer, ""},

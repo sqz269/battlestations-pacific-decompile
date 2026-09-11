@@ -1,0 +1,1865 @@
+{
+  "schema": 1,
+  "packet": "native_renderer_capability_nested_arrays4",
+  "status": "complete_raw_source_strict_build_and_focused_original_full_provider_composition",
+  "created_utc": "2026-09-11T22:21:57.635541+00:00",
+  "base_commit": "94a42d43bcaf08e0dfd2a7a1b8dc18ba137418d9",
+  "owned_files": [
+    "src/native_renderer_capability_nested_arrays.cpp",
+    "include/bsp/native_renderer_capability_nested_arrays.hpp",
+    "docs/NATIVE_RENDERER_CAPABILITY_NESTED_ARRAYS.md",
+    "reports/native_renderer_capability_nested_arrays_audit.json"
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "fresh_guarded_spans": [
+    {
+      "address": "00b23120",
+      "length": 96,
+      "role": "owned_inner_resize",
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e8fdf9ffff8b46043bc77d2b8d0c4003c98bd75303c92bd033db8b0603c1740e891888580488580588580688580783c10c83ea0175e45b3b7e047d0e83c8ff8d49000146043b7e047cf8897e045f5ec20400",
+      "sha256": "06a578d29ac4f965c77ff2c9f3f2b5bf4c0cc8e297780330033d49e00e071169",
+      "instructions": 41,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00b25e60",
+      "length": 133,
+      "role": "owned_inner_copy",
+      "bytes_hex": "53555633ed558bf1e8b3d2ffff8b5c24108b4304508bcee8b4ccffff396b04896c24107e58578b3b8b460803fd394604751403c083f8017f05b801000000508bcee88accffff8b46048b168d0c408d048a85c074108b0f89088b57048950048b4f088948088b4424148346040183c00183c50c3b4304894424147caa5f8bc65e5d5bc20400",
+      "sha256": "2b7592fe3f4a4c88be005876d31a3c51698e73de6762e07fb4199299c37479c3",
+      "instructions": 53,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00b29d40",
+      "length": 248,
+      "role": "owned_outer_reserve",
+      "bytes_hex": "64a1000000006aff6827d3cb00506489250000000083ec0c558b6c242083fd01578bf97d0cc7442424010000008b6c2424396f080f8dab0000008d446d005303c003c05650e834b80c0033f683c40439770489442410897424147e4383cbff908b4c24108d047603c003c003c8894c2418c74424240000000074148b1703d033c0528901894104894108e891c0ffff83c6013b7704895c2424897424147cc133db395f047e2933ed8b3703f56a008bcee82b93ffff8b1652e88ccb0c0083c30183c40483c50c3b5f047cdd8b6c242c8b0750e872cb0c008b4c241483c4045e890f896f085b8b4c24145f5d64890d0000000083c418c20400",
+      "sha256": "783f16a2b19d00ccb4b60884ad0389d2da9c78e3a2805a716f97558d9a5f978d",
+      "instructions": 85,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00b2ae20",
+      "length": 116,
+      "role": "owned_outer_resize",
+      "bytes_hex": "538b5c2408568bf13b5e08577e0653e80cefffff8b46043bc37d238d0c4003c98bd303c92bd08b0603c1740a33ff893889780489780883c10c83ea0175e83b5e047d28834604ff8b46048b0e8d04408d3c816a008bcfe8a582ffff8b1752e806bb0c0083c4043b5e047cd85f895e045e5bc20400",
+      "sha256": "d357641d7a9c45a8210f0be81d8bf5573f1930036c881c650eee1e1adba09b8b",
+      "instructions": 48,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00b22b30",
+      "length": 130,
+      "role": "complete_primitive_reserve_provider",
+      "bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d668d045b5503c003c05750e8682a0d0033ff83c404397e048be8896c24147e3533d28bcd8d9b0000000085c974158b068b2c1003c289298b68048969048b400889410883c70183c20c83c10c3b7e047cd98b6c24148b0e51e8e63d0d0083c4045f892e895e085d5e5bc20400",
+      "sha256": "835d9aa48422ee56a96b05b64f91e81123f2f3dda909f4ba2e7b5ae9b0bcdff7",
+      "instructions": 52,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf55be",
+      "length": 5,
+      "role": "operator_new_thunk",
+      "bytes_hex": "e958120000",
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf681b",
+      "length": 105,
+      "role": "operator_new_existing_source_boundary",
+      "bytes_hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "instructions": 33,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "role": "free_thunk",
+      "bytes_hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "role": "free_second_thunk",
+      "bytes_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00cbd327",
+      "length": 10,
+      "role": "outer_FH3_handler",
+      "bytes_hex": "b8fc5adf00e91298f3ff",
+      "sha256": "f67fd568db6bbbcaf295d73cf39b3ac7f787da571addad1f558bfbcc30f81723",
+      "instructions": 2,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00df5af4",
+      "length": 44,
+      "role": "outer_map_and_FuncInfo",
+      "bytes_hex": "ffffffff10d3cb002205931901000000f45adf00000000000000000000000000000000000000000001000000",
+      "sha256": "ee26dac4d631866f2e71ce51fcf3435fc248a97b780293813eda2703df2cd050",
+      "instructions": 0,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00cbd310",
+      "length": 23,
+      "role": "outer_noop_unwind_action",
+      "bytes_hex": "8b45ec6bc00c0345e8508b4df051e80d3e74ff83c408c3",
+      "sha256": "c3be7bf6544ca032317357086c4dd158764bd6d60dfb4876de7f782458ca2fb5",
+      "instructions": 9,
+      "fresh_guarded_live_PE_match": true
+    },
+    {
+      "address": "00401130",
+      "length": 1,
+      "role": "complete_noop_unwind_target",
+      "bytes_hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instructions": 1,
+      "fresh_guarded_live_PE_match": true
+    }
+  ],
+  "owned_original_bytes": 593,
+  "owned_original_instructions": 227,
+  "original_ABI": "ECX actual 12-byte {data,signed count,signed capacity}, one callee argument DWORD, RET4. B25E60 returns destination in EAX; other entries have no semantic result.",
+  "source_ABI": "Explicit unused EDX fastcall argument. B29D40 naked entry forwards actual request-slot address to fixed C++ core; new internal EH frame has an explicit native private-frame alias/SEH boundary.",
+  "functions": [
+    {
+      "address": "00b23120",
+      "bytes": 96,
+      "source": "resize_native_capability_records_00b23120",
+      "contract": "Signed target/capacity grow through complete primitive; current base, zero DWORD+0 then BYTE+4,+5,+6,+7; payloadDWORD+8 untouched. Shrink current count then final target."
+    },
+    {
+      "address": "00b25e60",
+      "bytes": 133,
+      "source": "copy_native_capability_records_00b25e60",
+      "contract": "Resize destination0 first, capture source afterward, unconditionally reserve its current count including zero. Reuse actual source-argument slot for counter. Capture source row before destination reserve, append current destination and compare current source count."
+    },
+    {
+      "address": "00b29d40",
+      "bytes": 248,
+      "source": "reserve_native_capability_headers_00b29d40",
+      "contract": "Clamp actual request slot in place. Current count before saving allocation/completed; each saved current target/state0 before copy; count compare before disarm/completed store. Destroy current old children/data; reload actual request slot only after entered old-child loop; free current outer then reload/publish saved fresh and capacity. No outer count write or rollback."
+    },
+    {
+      "address": "00b2ae20",
+      "bytes": 116,
+      "source": "resize_native_capability_headers_00b2ae20",
+      "contract": "Grow through full outer reserve, zero three DWORDs of each added header using current base. Shrink publishes decrement, captures child, resize0/current data free; current count reread then final target."
+    }
+  ],
+  "raw_domain": "Actual headers and all reached backing reads/writes have valid extents/lifetimes for native wrapping DWORD arithmetic. No malformed-storage/overflow/self-assignment guard or new ownership policy. Existing shared heap only.",
+  "EH": {
+    "handler": "00cbd327",
+    "FuncInfo": "00df5afc",
+    "map": "00df5af4",
+    "action": "00cbd310",
+    "terminal": "00401130",
+    "original_terminal": "c3",
+    "FuncInfo_final_flags": 1,
+    "source_specialization": "c20000",
+    "encoding_boundary": "Source RET0 has identical return/stack/flags effect; not identical bytes/address and not a generic401130 reconstruction.",
+    "state0": "Saved current target then arm before raw initialization/copy; after copy increment index, compare current count, disarm, store completed.",
+    "cleanup": "Read saved completed, multiply12, add saved fresh; push result, read/push saved current; RET-only terminal. No fresh/completed allocations freed.",
+    "source_boundary": "Fixed volatile saved-state core; catch runs action only at state0 then rethrows. No added rollback. Native private EH-frame aliases/CRT exception objects/hardware SEH dispatch excluded.",
+    "exception_runtime": false
+  },
+  "saved_analysis_gaps": [
+    {
+      "call": "00b29df8",
+      "start": "00b29dfd",
+      "end_exclusive": "00b29e0f"
+    },
+    {
+      "call": "00b29e12",
+      "start": "00b29e17",
+      "end_exclusive": "00b29e25"
+    },
+    {
+      "call": "00b2ae7e",
+      "start": "00b2ae83",
+      "end_exclusive": "00b2ae8b"
+    }
+  ],
+  "provider_bindings": [
+    "Full reserve_native_capability_records_00b22b30 from actual primitive source/archive member.",
+    "Fixed allocate_nested_array cdecl bridge -> singleton_lifetime_allocate({object,bytes,bytes}); same wrapping bytes, existing current malloc/new-handler/retry/throw source contract.",
+    "Fixed free_nested_array cdecl bridge -> singleton_lifetime_free; current data before publication, shared heap.",
+    "Original private FH3 edge -> actual linked __CxxFrameHandler3 import thunk/provider, no exceptional dispatch exercised."
+  ],
+  "strict_build": {
+    "MSVC_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seeds": 8,
+    "log": {
+      "path": "local/capability_nested_arrays/build.txt",
+      "sha256": "9f8c6058bc164c221c30e659e89a7f734f96d7729aea85c6f30e8b49405da11c"
+    },
+    "seed_evidence": {
+      "path": "local/capability_nested_arrays/verify_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "new_permanent_tests": 0,
+    "shared_CMake_changed": false,
+    "initial_attempt": "Main94a42d43 contained primitive source/header but no committed CMake registration. Initial strict build/2CTests passed; fixture link failed unresolved primitive. Preserve first_attempt_missing_primitive library/log; add existing primitive only to ignored extra-source hook and complete incremental strict build.",
+    "initial_library": {
+      "path": "local/capability_nested_arrays/first_attempt_missing_primitive/frozen/bsp_core.lib",
+      "sha256": "6dd88612504213eb1b9b6e905da935ec13176c282d1f65812c1c0dfdfc26d61c"
+    },
+    "initial_build": {
+      "path": "local/capability_nested_arrays/first_attempt_missing_primitive/build.txt",
+      "sha256": "d44ba03a7394deab5cf0088ff366938cbef7642d33cfc45a1c1e8742b41eca46"
+    },
+    "initial_link": {
+      "path": "local/capability_nested_arrays/first_attempt_missing_primitive/probe_build.log",
+      "sha256": "93c496cef1a01c95f3327674dbf80397ac096c16e8c0db2469f07235cfbddc0a"
+    }
+  },
+  "frozen_actual_library": {
+    "sha256": "99501fde797cb4f4f9e57a00b7bc208ab81c4eb575f3f9348a4f6b21a89adcda",
+    "archive_membership": [
+      {
+        "object": "native_renderer_capability_array_reserves.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_capability_array_reserves.obj",
+        "sha256": "a344dcc42ba825b81eff8b3a83937018e233411e13d5b92ad5c0abd9b404f22e",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_capability_nested_arrays.obj",
+        "sha256": "6a14a89f810a169d995bf33ddc8860f2658609f5eb4a9ff967a054a32c1100ff",
+        "exact_member_match": true
+      },
+      {
+        "object": "singleton_lifetime.obj",
+        "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "sha256": "3a014ffc50ce37aff8e567a3362d05713a7bd98e4a34b067731fa0b6b2f7f7a7",
+        "exact_member_match": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\bsp_core.lib",
+        "bytes": 39683416,
+        "sha256": "99501fde797cb4f4f9e57a00b7bc208ab81c4eb575f3f9348a4f6b21a89adcda"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\native_renderer_capability_array_reserves.obj",
+        "bytes": 2220,
+        "sha256": "a344dcc42ba825b81eff8b3a83937018e233411e13d5b92ad5c0abd9b404f22e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\native_renderer_capability_nested_arrays.obj",
+        "bytes": 5346,
+        "sha256": "6a14a89f810a169d995bf33ddc8860f2658609f5eb4a9ff967a054a32c1100ff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\singleton_lifetime.obj",
+        "bytes": 32983,
+        "sha256": "3a014ffc50ce37aff8e567a3362d05713a7bd98e4a34b067731fa0b6b2f7f7a7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\native_renderer_capability_array_reserves.hpp",
+        "bytes": 1836,
+        "sha256": "2aee901abca68352c1addff6a22411c81e7e54c141fbe2821f6825a146cd1e85"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\native_renderer_capability_nested_arrays.hpp",
+        "bytes": 2752,
+        "sha256": "62c6335e6efb9f756f237a8e40605169cabc29cf61b039bd3c2a52d6bdc311fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\src\\native_renderer_capability_array_reserves.cpp",
+        "bytes": 3727,
+        "sha256": "f42c3e0f8fd58a65da6b2b9368b8b361dd6b3c9a8d96f8a32659cf2981fc0722"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\src\\native_renderer_capability_nested_arrays.cpp",
+        "bytes": 9849,
+        "sha256": "b5d389ffad73d982b0f102508203ba30fc5d81d40c4113345518dab28aa0535e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capability-nested-arrays\\local\\capability_nested_arrays\\frozen\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "freeze_record": {
+      "path": "local/capability_nested_arrays/frozen.json",
+      "sha256": "54ac749140e9290c85db49ecf855e4df6d7f37f9d0f447a4e2199e7a3f1e5154"
+    },
+    "first_complete_freeze": {
+      "path": "local/capability_nested_arrays/first_frozen.json",
+      "sha256": "2fa8b3ce0da485547eb111ca523f1d0404568b381b62938710e5f8a95c1f4bf8"
+    },
+    "rule": "Complete strict library plus source inputs frozen before successful fixture link; all needed members extracted solely from that archive. No mutable build references in proof after completed freeze."
+  },
+  "proof": {
+    "literal_owned_bytes": 345,
+    "literal_owned_entries": [
+      {
+        "original_address": "00b23120",
+        "source_symbol": "?resize_native_capability_records_00b23120@bsp@@YIXPAXIH@Z",
+        "source_address": 805316608,
+        "bytes": 96,
+        "instructions": 41,
+        "original_sha256": "06a578d29ac4f965c77ff2c9f3f2b5bf4c0cc8e297780330033d49e00e071169",
+        "full_literal_bytes_except_declared_call_operands": true,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316816,
+            "resolved": 189
+          }
+        ]
+      },
+      {
+        "original_address": "00b25e60",
+        "source_symbol": "?copy_native_capability_records_00b25e60@bsp@@YIPAXPAXI0@Z",
+        "source_address": 805315936,
+        "bytes": 133,
+        "instructions": 53,
+        "original_sha256": "2b7592fe3f4a4c88be005876d31a3c51698e73de6762e07fb4199299c37479c3",
+        "full_literal_bytes_except_declared_call_operands": true,
+        "relocations": [
+          {
+            "offset": 9,
+            "symbol": "?resize_native_capability_records_00b23120@bsp@@YIXPAXIH@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316608,
+            "resolved": 659
+          },
+          {
+            "offset": 24,
+            "symbol": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316816,
+            "resolved": 852
+          },
+          {
+            "offset": 66,
+            "symbol": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316816,
+            "resolved": 810
+          }
+        ]
+      },
+      {
+        "original_address": "00b2ae20",
+        "source_symbol": "?resize_native_capability_headers_00b2ae20@bsp@@YIXPAXIH@Z",
+        "source_address": 805316480,
+        "bytes": 116,
+        "instructions": 48,
+        "original_sha256": "d357641d7a9c45a8210f0be81d8bf5573f1930036c881c650eee1e1adba09b8b",
+        "full_literal_bytes_except_declared_call_operands": true,
+        "relocations": [
+          {
+            "offset": 16,
+            "symbol": "?reserve_native_capability_headers_00b29d40@bsp@@YIXPAXIH@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316448,
+            "resolved": 4294967244
+          },
+          {
+            "offset": 87,
+            "symbol": "?resize_native_capability_records_00b23120@bsp@@YIXPAXIH@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316608,
+            "resolved": 37
+          },
+          {
+            "offset": 95,
+            "symbol": "?free_nested_array@?A0x27fb9341@bsp@@YAXPAX@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805316096,
+            "resolved": 4294966813
+          }
+        ]
+      }
+    ],
+    "complete_primitive130": {
+      "original": "00b22b30",
+      "bytes": 130,
+      "source_symbol": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+      "full_literal_bytes_except_fixed_provider_calls": true,
+      "relocations": [
+        {
+          "offset": 34,
+          "symbol": "?allocate_capability_array@?A0xb564bd01@bsp@@YAPAXI@Z",
+          "type": 20,
+          "addend": 0,
+          "target": 805316736,
+          "resolved": 4294967178
+        },
+        {
+          "offset": 111,
+          "symbol": "?free_capability_array@?A0xb564bd01@bsp@@YAXPAX@Z",
+          "type": 20,
+          "addend": 0,
+          "target": 805316800,
+          "resolved": 4294967165
+        }
+      ]
+    },
+    "outer248_translation": {
+      "original": "00b29d40",
+      "original_bytes": 248,
+      "entry_and_complete_core_and_EH_helpers_mapped": true,
+      "no_literal_248_byte_identity_claim": true,
+      "EH_chain_verified": true,
+      "RET_only_action_target_verified": true,
+      "source_frame_boundary": "Fixed volatile saved-state C++ core; actual request slot retained; private native EH-frame alias/SEH ABI excluded.",
+      "RET_only_specialization_bytes_hex": "c20000"
+    },
+    "all_owned_sections": 20,
+    "owned_relocations": 29,
+    "all_mapped_sections": 127,
+    "mapped_relocations": 450,
+    "all_map_f_i_flags_stripped": true,
+    "linked_functions": [
+      {
+        "name": "?reserve_native_capability_records_00b22b30@bsp@@YIXPAXIH@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805316816,
+        "bytes": 130,
+        "sha256": "fa3c55290c72dffc244943f53d16a8b7673e4115e8f5e6d122f5e70956bac756"
+      },
+      {
+        "name": "?allocate_capability_array@?A0xb564bd01@bsp@@YAPAXI@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805316736,
+        "bytes": 58,
+        "sha256": "14d4974e8a0d4557d5f5214a9db6f50f3f8bc227256f1c42307bca37686724e3"
+      },
+      {
+        "name": "?free_capability_array@?A0xb564bd01@bsp@@YAXPAX@Z",
+        "object": "native_renderer_capability_array_reserves.obj",
+        "address": 805316800,
+        "bytes": 5,
+        "sha256": "d075efa73c5826db497aa3370025c6dad6d079d6c223a2b89d4dd23eb2c730c1"
+      },
+      {
+        "name": "?resize_native_capability_records_00b23120@bsp@@YIXPAXIH@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316608,
+        "bytes": 96,
+        "sha256": "5e2948e23ce1db7570b4eeaf4133f712a613e28dc39801c8bfbfe2dbe19407a8"
+      },
+      {
+        "name": "?copy_native_capability_records_00b25e60@bsp@@YIPAXPAXI0@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805315936,
+        "bytes": 133,
+        "sha256": "a9be6ebf640461463d71d5f9a4758018b953925d748300240cad6176c8418e93"
+      },
+      {
+        "name": "?reserve_native_capability_headers_00b29d40@bsp@@YIXPAXIH@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316448,
+        "bytes": 17,
+        "sha256": "ba5582a553e85eb8da0c799e4f47334b69d1ccd8211311e5eb1e2065254368d8"
+      },
+      {
+        "name": "?resize_native_capability_headers_00b2ae20@bsp@@YIXPAXIH@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316480,
+        "bytes": 116,
+        "sha256": "63c1ac43c992b8558ae50f3984325218ce3f3642be7f4a52e6416a8f88e8a3b0"
+      },
+      {
+        "name": "?allocate_nested_array@?A0x27fb9341@bsp@@YAPAXI@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805315872,
+        "bytes": 58,
+        "sha256": "1f3f9641a61c9862ab664ecc5f606fb0e22be078d1d56d4ea049d3cb6a2f1c7d"
+      },
+      {
+        "name": "?free_nested_array@?A0x27fb9341@bsp@@YAXPAX@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316096,
+        "bytes": 5,
+        "sha256": "642ca17c8d112ac1af3ce87fc0a1c1c389be4e2689db0a0c7f875087b473b1be"
+      },
+      {
+        "name": "?finish_failed_header@?A0x27fb9341@bsp@@YAXPAX0@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316080,
+        "bytes": 3,
+        "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b"
+      },
+      {
+        "name": "?run_failed_header_action@?A0x27fb9341@bsp@@YIXPAUOuterSavedState@12@@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316704,
+        "bytes": 22,
+        "sha256": "78626a614ba892eb288d5a695231fed085b5ecc589452eb5557cba8a13ad2a25"
+      },
+      {
+        "name": "?reserve_headers_core@?A0x27fb9341@bsp@@YAXPAXPCH@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316112,
+        "bytes": 322,
+        "sha256": "01206e1df3b9e9459269696046164bc656f7eb7c6e7131baffaa07c89a4dd45b"
+      },
+      {
+        "name": "__ehhandler$?reserve_headers_core@?A0x27fb9341@bsp@@YAXPAXPCH@Z",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805321072,
+        "bytes": 29,
+        "sha256": "adfd87a9b721f1fc6921abfa4d0b78bd7468783a5b36c6d0ed2fdf762c9c5400"
+      },
+      {
+        "name": "__catch$?reserve_headers_core@?A0x27fb9341@bsp@@YAXPAXPCH@Z$0",
+        "object": "native_renderer_capability_nested_arrays.obj",
+        "address": 805316405,
+        "bytes": 29,
+        "sha256": "c66bc7b0b426e070dfa86b3a6e0598ce5b87ac22572ec5bb2c2c3e026f800989"
+      },
+      {
+        "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805317232,
+        "bytes": 90,
+        "sha256": "32f69ff591dbbed274548844e60ca0e445153aff3c5c450d64fdb24d58c5b876"
+      },
+      {
+        "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805317328,
+        "bytes": 6,
+        "sha256": "8a5af76776f8c1a8408dda32ec8bf1c96b34d7302188ba689f7fd390d5e95f22"
+      },
+      {
+        "name": "??0exception@std@@QAE@ABV01@@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805317056,
+        "bytes": 45,
+        "sha256": "9d79c35de77115204e9476d68c2d77805aec4bf1695a3d7ad04979b8abbffb9d"
+      },
+      {
+        "name": "?what@exception@std@@UBEPBDXZ",
+        "object": "singleton_lifetime.obj",
+        "address": 805317344,
+        "bytes": 14,
+        "sha256": "4f7f174f8fdc6b5575c25bed3841cfffa0dee4c9211317e8db1d8eb23e252b07"
+      },
+      {
+        "name": "??_Gexception@std@@UAEPAXI@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805317184,
+        "bytes": 48,
+        "sha256": "2ccd847561d9b5a565965ebb8735562d0f18f1d8cf0f34a80b9aff9f68ccc174"
+      },
+      {
+        "name": "??0bad_alloc@std@@QAE@XZ",
+        "object": "singleton_lifetime.obj",
+        "address": 805317024,
+        "bytes": 24,
+        "sha256": "e4e5019c3a06e2b1c4e27251318af8c9041e0036b9202d77ff0db79ed82c5aa1"
+      },
+      {
+        "name": "??1bad_alloc@std@@UAE@XZ",
+        "object": "singleton_lifetime.obj",
+        "address": 805317104,
+        "bytes": 17,
+        "sha256": "e23161b072b84470a9959f907a23e88bec10411995dea35d18750297d7322551"
+      },
+      {
+        "name": "??0bad_alloc@std@@QAE@ABV01@@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805316960,
+        "bytes": 51,
+        "sha256": "818e42182c0b656b9d1b1c454f3a29aab7a65bfe20e96bb9d77c746bc3f14a04"
+      },
+      {
+        "name": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "object": "singleton_lifetime.obj",
+        "address": 805317136,
+        "bytes": 48,
+        "sha256": "f474e15d971d9f2b21eea2e4e5bb989ec4f28327e990e220f20cdf699afcd723"
+      },
+      {
+        "name": "___local_stdio_printf_options",
+        "object": "fixture.obj",
+        "address": 805314528,
+        "bytes": 6,
+        "sha256": "1330e8d925f6b184b930dedb4ff178f30a5ec45604bdaef1b18424cd13c7cba7"
+      },
+      {
+        "name": "___local_stdio_scanf_options",
+        "object": "fixture.obj",
+        "address": 805314544,
+        "bytes": 6,
+        "sha256": "4fc3a1568b89fe267373b29bc234fb8d9954937fc9889301fad9c991b4abde50"
+      },
+      {
+        "name": "_fprintf",
+        "object": "fixture.obj",
+        "address": 805314560,
+        "bytes": 36,
+        "sha256": "66414862ea62d74b388a989f170fb84ec0927f52d4c7af09a7471c0de6ca907a"
+      },
+      {
+        "name": "_printf",
+        "object": "fixture.obj",
+        "address": 805315760,
+        "bytes": 49,
+        "sha256": "c19505890c90329979e3670f48f2bbc46cd3baaa7b1dc2844a1f7d8ef524b8c1"
+      },
+      {
+        "name": "_fscanf_s",
+        "object": "fixture.obj",
+        "address": 805314608,
+        "bytes": 40,
+        "sha256": "c147869b22ee4e359dba6dd17adb421275ebda244706101facac65ad45d5a323"
+      },
+      {
+        "name": "_sprintf_s",
+        "object": "fixture.obj",
+        "address": 805315824,
+        "bytes": 47,
+        "sha256": "0d3f5403626d5d2acb5d270857513b545b6b1ecdae000b372599345ca97a7c31"
+      },
+      {
+        "name": "?dump@@YAXPBDPBXI@Z",
+        "object": "fixture.obj",
+        "address": 805310560,
+        "bytes": 125,
+        "sha256": "5f801aad642da0bf4075d93766f07ffce4f2dd5e839d145265c7dcefe7b8baac"
+      },
+      {
+        "name": "?find_import@@YAPAPAXPBD@Z",
+        "object": "fixture.obj",
+        "address": 805310688,
+        "bytes": 162,
+        "sha256": "6d15b6245db161460327ae5828b4f4d683f9abdc25cf383c2976c3a5647f1c38"
+      },
+      {
+        "name": "?replace@@YAXPAPAXPAX@Z",
+        "object": "fixture.obj",
+        "address": 805312752,
+        "bytes": 121,
+        "sha256": "4c2416b00159a1b60a6bf060cc828ce5fff2c40ced362f6e2a0b4fe3d9007ad7"
+      },
+      {
+        "name": "?image_snapshot@@YAXXZ",
+        "object": "fixture.obj",
+        "address": 805310864,
+        "bytes": 898,
+        "sha256": "70b101bea04a835ea9c9849bcd1a38f5d2c05c615d0a41e7dcfd54b38645fd75"
+      },
+      {
+        "name": "??$sprintf_s@$0CI@@@YAHAAY0CI@DPBDZZ",
+        "object": "fixture.obj",
+        "address": 805310512,
+        "bytes": 46,
+        "sha256": "12a7a5e1e68a5d4dcd1d1d1cdca8d2379d39edc12882baf9ffa7c07166fd7d5e"
+      },
+      {
+        "name": "?observed_malloc@@YAPAXI@Z",
+        "object": "fixture.obj",
+        "address": 805312144,
+        "bytes": 604,
+        "sha256": "bf79cfc6663de90ceb019a555f4f01c6eeedd5e2f9fe9160ee04dc5413691404"
+      },
+      {
+        "name": "?observed_free@@YAXPAX@Z",
+        "object": "fixture.obj",
+        "address": 805311888,
+        "bytes": 253,
+        "sha256": "b91f455377c5201ec08d87e19793a1c4c653dac324d57334b966edd54c8415e6"
+      },
+      {
+        "name": "?normalize@@YAXAAUTrace@@@Z",
+        "object": "fixture.obj",
+        "address": 805311776,
+        "bytes": 111,
+        "sha256": "d85fd4403f8f9e712ac733df2bd05b1a8fc23ed10b0bfa06d7dd8de0d99706fd"
+      },
+      {
+        "name": "?run@@YAXP6IXPAXIH@Z1IAAUTrace@@@Z",
+        "object": "fixture.obj",
+        "address": 805312880,
+        "bytes": 1645,
+        "sha256": "db51fcdd914eec505f7edb6b2b5cc48bc61c5e2f3937ef91437748f836956062"
+      },
+      {
+        "name": "??$sprintf_s@$0CA@@@YAHAAY0CA@DPBDZZ",
+        "object": "fixture.obj",
+        "address": 805310464,
+        "bytes": 46,
+        "sha256": "2b403502dc97b9d125d2764f5d4b828f58742cfe43e64f2c9f5515a4d32e49f3"
+      },
+      {
+        "name": "_main",
+        "object": "fixture.obj",
+        "address": 805314656,
+        "bytes": 1100,
+        "sha256": "2042ec2a9b00d1cece6ca4835af6c2fb222b3f5656c43ae0b66634dcc979b6c2"
+      }
+    ],
+    "verification": {
+      "path": "local/capability_nested_arrays/verified.json",
+      "sha256": "80a422a22c9b8b31fd29e5fe4d813e833a6705e06dc4784ec2f3e0315be9b2b6"
+    }
+  },
+  "focused_fixture": {
+    "fixture": {
+      "path": "local/capability_nested_arrays/fixture.cpp",
+      "sha256": "58e4437bdfc5d58f08be7def9cc7dd397abd057d852b787ce2f40c6a189fc94a"
+    },
+    "support": {
+      "path": "local/capability_nested_arrays/fixture_support.hpp",
+      "sha256": "90951ad4a9faf188b78084e1c689085655cbb0f80b0862abaf39c908959fde28"
+    },
+    "verifier": {
+      "path": "local/capability_nested_arrays/verify.py",
+      "sha256": "623845a4c188203c7cda71327524c02d3e24b46e35afbd43536f799ba2ac344e"
+    },
+    "build": {
+      "path": "local/capability_nested_arrays/build_probe.ps1",
+      "sha256": "4a7de3454ca8a57c4797da041d53e185cba2e8043d4cc599bc5cd5617a08d011"
+    },
+    "bindings": {
+      "path": "local/capability_nested_arrays/bindings.json",
+      "sha256": "e33490f4db248c284539b569cb01fb5ada574d667e8396a8f7a235a8fe8b8e41"
+    },
+    "log": {
+      "path": "local/capability_nested_arrays/run/run.txt",
+      "sha256": "babdfcf90bf651f12446d380477a7378c8abc7e2ecc22835730688dd9b8a86db"
+    },
+    "original_page": {
+      "page_address": 4718592,
+      "bytes": 4096,
+      "preimage_sha256": "1be9f7b37862b754463e080e8a30d327672ee81cb7de8f03e31bd691fbe0d686",
+      "bound_postimage_sha256": "546a8733086bfa4800aabbda8ca86c620570712bd277a89d045412e7c6c9febc",
+      "whole_postimage_unchanged": true,
+      "all_changed_operands": [
+        {
+          "offset": 15,
+          "target": 0,
+          "kind": 1,
+          "relative": 1,
+          "preimage": 4294965757,
+          "role": "full_source_provider_for_00b22b30",
+          "postimage": 800598205,
+          "actual_target": 805316816
+        },
+        {
+          "offset": 265,
+          "target": 0,
+          "kind": 0,
+          "relative": 1,
+          "preimage": 4294955699,
+          "role": "full_owned_00b23120",
+          "postimage": 4294967027,
+          "actual_target": 4718592
+        },
+        {
+          "offset": 280,
+          "target": 0,
+          "kind": 1,
+          "relative": 1,
+          "preimage": 4294954164,
+          "role": "full_source_provider_for_00b22b30",
+          "postimage": 800597940,
+          "actual_target": 805316816
+        },
+        {
+          "offset": 322,
+          "target": 0,
+          "kind": 1,
+          "relative": 1,
+          "preimage": 4294954122,
+          "role": "full_source_provider_for_00b22b30",
+          "postimage": 800597898,
+          "actual_target": 805316816
+        },
+        {
+          "offset": 582,
+          "target": 0,
+          "kind": 2,
+          "relative": 1,
+          "preimage": 833588,
+          "role": "full_source_provider_for_00bf55be",
+          "postimage": 800596694,
+          "actual_target": 805315872
+        },
+        {
+          "offset": 651,
+          "target": 256,
+          "kind": 0,
+          "relative": 1,
+          "preimage": 4294951057,
+          "role": "full_owned_00b25e60",
+          "postimage": 4294966897,
+          "actual_target": 4718848
+        },
+        {
+          "offset": 689,
+          "target": 0,
+          "kind": 0,
+          "relative": 1,
+          "preimage": 4294939435,
+          "role": "full_owned_00b23120",
+          "postimage": 4294966603,
+          "actual_target": 4718592
+        },
+        {
+          "offset": 697,
+          "target": 0,
+          "kind": 3,
+          "relative": 1,
+          "preimage": 838540,
+          "role": "full_source_provider_for_00bf6989",
+          "postimage": 800596803,
+          "actual_target": 805316096
+        },
+        {
+          "offset": 723,
+          "target": 0,
+          "kind": 3,
+          "relative": 1,
+          "preimage": 838514,
+          "role": "full_source_provider_for_00bf6989",
+          "postimage": 800596777,
+          "actual_target": 805316096
+        },
+        {
+          "offset": 784,
+          "target": 512,
+          "kind": 0,
+          "relative": 1,
+          "preimage": 4294962956,
+          "role": "full_owned_00b29d40",
+          "postimage": 4294967020,
+          "actual_target": 4719104
+        },
+        {
+          "offset": 855,
+          "target": 0,
+          "kind": 0,
+          "relative": 1,
+          "preimage": 4294935205,
+          "role": "full_owned_00b23120",
+          "postimage": 4294966437,
+          "actual_target": 4718592
+        },
+        {
+          "offset": 863,
+          "target": 0,
+          "kind": 3,
+          "relative": 1,
+          "preimage": 834310,
+          "role": "full_source_provider_for_00bf6989",
+          "postimage": 800596637,
+          "actual_target": 805316096
+        },
+        {
+          "offset": 521,
+          "target": 1056,
+          "kind": 0,
+          "relative": 0,
+          "preimage": 13357863,
+          "role": "original_handler_pointer",
+          "postimage": 4719648,
+          "actual_target": 4719648
+        },
+        {
+          "offset": 1057,
+          "target": 1112,
+          "kind": 0,
+          "relative": 0,
+          "preimage": 14637820,
+          "role": "original_handler_FuncInfo_pointer",
+          "postimage": 4719704,
+          "actual_target": 4719704
+        },
+        {
+          "offset": 1062,
+          "target": 0,
+          "kind": 4,
+          "relative": 1,
+          "preimage": 4294154258,
+          "role": "concrete_linked___CxxFrameHandler3_normal_path_only",
+          "postimage": 800601026,
+          "actual_target": 805320684
+        },
+        {
+          "offset": 1087,
+          "target": 1096,
+          "kind": 0,
+          "relative": 1,
+          "preimage": 4285808141,
+          "role": "complete_RET_only_terminal",
+          "postimage": 5,
+          "actual_target": 4719688
+        },
+        {
+          "offset": 1108,
+          "target": 1072,
+          "kind": 0,
+          "relative": 0,
+          "preimage": 13357840,
+          "role": "original_unwind_action_pointer",
+          "postimage": 4719664,
+          "actual_target": 4719664
+        },
+        {
+          "offset": 1120,
+          "target": 1104,
+          "kind": 0,
+          "relative": 0,
+          "preimage": 14637812,
+          "role": "original_FuncInfo_unwind_map_pointer",
+          "postimage": 4719696,
+          "actual_target": 4719696
+        }
+      ],
+      "handler_import_thunk": 805320684,
+      "handler_IAT": 805322816,
+      "exception_path_runtime": false
+    },
+    "raw_traces": [
+      {
+        "index": 0,
+        "sha256": "0dd11ec494023430f40feb5f08278e254b7e5d4736c51d3f7726e5cd499b2ea9",
+        "bytes_hex": "80de70000100000001000000c0dd7000010000003412000000000000000000000000000078e770000100000001000000d82470000200000002000000d82470000200000002000000b8237000010000000100000030dd70000300000003000000d8227000020000000200000000000000000000000000000000000000000000000000000030dd7000030000000300000010dc7000030000000300000000000000000000000000000000000000000000000000000030dd70000200000003000000e0db7000010000000300000010dc7000030000000300000000000000000000000000000008e870000100000001000000ddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaa0000000000000000cccccccc80de7000c0dd700078e77000d8247000b823700008e8700030dd700070e97000d822700010dc7000e0db7000",
+        "explicit_pointer_fields": [
+          {
+            "offset": 0,
+            "raw_pointer": 7396992,
+            "normalized_role": 1
+          },
+          {
+            "offset": 12,
+            "raw_pointer": 7396800,
+            "normalized_role": 2
+          },
+          {
+            "offset": 24,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 36,
+            "raw_pointer": 7399288,
+            "normalized_role": 3
+          },
+          {
+            "offset": 48,
+            "raw_pointer": 7349464,
+            "normalized_role": 4
+          },
+          {
+            "offset": 60,
+            "raw_pointer": 7349464,
+            "normalized_role": 4
+          },
+          {
+            "offset": 72,
+            "raw_pointer": 7349176,
+            "normalized_role": 5
+          },
+          {
+            "offset": 84,
+            "raw_pointer": 7396656,
+            "normalized_role": 7
+          },
+          {
+            "offset": 96,
+            "raw_pointer": 7348952,
+            "normalized_role": 9
+          },
+          {
+            "offset": 108,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 120,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 132,
+            "raw_pointer": 7396656,
+            "normalized_role": 7
+          },
+          {
+            "offset": 144,
+            "raw_pointer": 7396368,
+            "normalized_role": 10
+          },
+          {
+            "offset": 156,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 168,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 180,
+            "raw_pointer": 7396656,
+            "normalized_role": 7
+          },
+          {
+            "offset": 192,
+            "raw_pointer": 7396320,
+            "normalized_role": 11
+          },
+          {
+            "offset": 204,
+            "raw_pointer": 7396368,
+            "normalized_role": 10
+          },
+          {
+            "offset": 216,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 228,
+            "raw_pointer": 7399432,
+            "normalized_role": 6
+          }
+        ],
+        "raw_role_identities": [
+          7396992,
+          7396800,
+          7399288,
+          7349464,
+          7349176,
+          7399432,
+          7396656,
+          7399792,
+          7348952,
+          7396368,
+          7396320
+        ],
+        "normalized_sha256": "507b54edfde8f673283eff31a70924d845fd4ffebb6af0161fe4b30a5590fccf"
+      },
+      {
+        "index": 1,
+        "sha256": "a566fb91a692e0a180251d3fd8d2e6ef9815ffca5c87336507500c9d06951501",
+        "bytes_hex": "c0dd7000010000000100000080db7000010000003412000000000000000000000000000018e77000010000000100000018237000020000000200000018237000020000000200000078237000010000000100000070dc7000030000000300000058247000020000000200000000000000000000000000000000000000000000000000000070dc7000030000000300000050db7000030000000300000000000000000000000000000000000000000000000000000070dc7000020000000300000090dd7000010000000300000050db70000300000003000000000000000000000000000000a0e970000100000001000000ddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaa0000000000000000ccccccccc0dd700080db700018e770001823700078237000a0e9700070dc7000c0e770005824700050db700090dd7000",
+        "explicit_pointer_fields": [
+          {
+            "offset": 0,
+            "raw_pointer": 7396800,
+            "normalized_role": 1
+          },
+          {
+            "offset": 12,
+            "raw_pointer": 7396224,
+            "normalized_role": 2
+          },
+          {
+            "offset": 24,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 36,
+            "raw_pointer": 7399192,
+            "normalized_role": 3
+          },
+          {
+            "offset": 48,
+            "raw_pointer": 7349016,
+            "normalized_role": 4
+          },
+          {
+            "offset": 60,
+            "raw_pointer": 7349016,
+            "normalized_role": 4
+          },
+          {
+            "offset": 72,
+            "raw_pointer": 7349112,
+            "normalized_role": 5
+          },
+          {
+            "offset": 84,
+            "raw_pointer": 7396464,
+            "normalized_role": 7
+          },
+          {
+            "offset": 96,
+            "raw_pointer": 7349336,
+            "normalized_role": 9
+          },
+          {
+            "offset": 108,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 120,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 132,
+            "raw_pointer": 7396464,
+            "normalized_role": 7
+          },
+          {
+            "offset": 144,
+            "raw_pointer": 7396176,
+            "normalized_role": 10
+          },
+          {
+            "offset": 156,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 168,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 180,
+            "raw_pointer": 7396464,
+            "normalized_role": 7
+          },
+          {
+            "offset": 192,
+            "raw_pointer": 7396752,
+            "normalized_role": 11
+          },
+          {
+            "offset": 204,
+            "raw_pointer": 7396176,
+            "normalized_role": 10
+          },
+          {
+            "offset": 216,
+            "raw_pointer": 0,
+            "normalized_role": 0
+          },
+          {
+            "offset": 228,
+            "raw_pointer": 7399840,
+            "normalized_role": 6
+          }
+        ],
+        "raw_role_identities": [
+          7396800,
+          7396224,
+          7399192,
+          7349016,
+          7349112,
+          7399840,
+          7396464,
+          7399360,
+          7349336,
+          7396176,
+          7396752
+        ],
+        "normalized_sha256": "507b54edfde8f673283eff31a70924d845fd4ffebb6af0161fe4b30a5590fccf"
+      }
+    ],
+    "actual_imports": [
+      {
+        "label": "30004000",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973812704,
+        "loaded_base": 1973682176,
+        "rva": 130528,
+        "first16": "83c8ffc3cccccccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004004",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973777984,
+        "loaded_base": 1973682176,
+        "rva": 95808,
+        "first16": "8bff558bec5dff25c018ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004008",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973773808,
+        "loaded_base": 1973682176,
+        "rva": 91632,
+        "first16": "8bff558bec5dff25b016ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000400c",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973775152,
+        "loaded_base": 1973682176,
+        "rva": 92976,
+        "first16": "8bff558bec5dff258c16ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004010",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973768208,
+        "loaded_base": 1973682176,
+        "rva": 86032,
+        "first16": "8bff558bec5dff259416ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004014",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973800336,
+        "loaded_base": 1973682176,
+        "rva": 118160,
+        "first16": "8bff558bec5dff250c15ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004018",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973798768,
+        "loaded_base": 1973682176,
+        "rva": 116592,
+        "first16": "8bff558bec5dff25f814ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000401c",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973883424,
+        "loaded_base": 1973682176,
+        "rva": 201248,
+        "first16": "8bff558bec5dff252815ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004020",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973782016,
+        "loaded_base": 1973682176,
+        "rva": 99840,
+        "first16": "8bff558bec5dff253019ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004024",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973812720,
+        "loaded_base": 1973682176,
+        "rva": 130544,
+        "first16": "64a120000000c3cccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004028",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973764592,
+        "loaded_base": 1973682176,
+        "rva": 82416,
+        "first16": "64a124000000c3cccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000402c",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973767920,
+        "loaded_base": 1973682176,
+        "rva": 85744,
+        "first16": "ff25b81bac75cccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004030",
+        "path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+        "module_sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "target": 2006839536,
+        "loaded_base": 2006384640,
+        "rva": 454896,
+        "first16": "8bff558bec8b4508832000836004005d",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004034",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973801712,
+        "loaded_base": 1973682176,
+        "rva": 119536,
+        "first16": "8bff558bec5dff25f411ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004038",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973795440,
+        "loaded_base": 1973682176,
+        "rva": 113264,
+        "first16": "8bff558bec5dff25cc18ac75cccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004040",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923176560,
+        "loaded_base": 1923088384,
+        "rva": 88176,
+        "first16": "558bec83ec08535657fc8945fc6a006a",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004044",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923178912,
+        "loaded_base": 1923088384,
+        "rva": 90528,
+        "first16": "57568b7424108b4c24148b7c240c8bc1",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004048",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923180320,
+        "loaded_base": 1923088384,
+        "rva": 91936,
+        "first16": "8b4c240c0fb64424088bd78b7c240485",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000404c",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923108160,
+        "loaded_base": 1923088384,
+        "rva": 19776,
+        "first16": "558bec83ec108b450853578b7d0cbb20",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004050",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923107568,
+        "loaded_base": 1923088384,
+        "rva": 19184,
+        "first16": "558bec578b7d08807f040074508b0f85",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004054",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923107680,
+        "loaded_base": 1923088384,
+        "rva": 19296,
+        "first16": "558bec568b7508807e0400740bff36ff",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004058",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923100080,
+        "loaded_base": 1923088384,
+        "rva": 11696,
+        "first16": "e85b22000083c010c3cccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000405c",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923100096,
+        "loaded_base": 1923088384,
+        "rva": 11712,
+        "first16": "e84b22000083c014c3cccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004060",
+        "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+        "module_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "target": 1923165184,
+        "loaded_base": 1923088384,
+        "rva": 76800,
+        "first16": "558bec83ec208b4d08538b5d145657c6",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040e0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970635280,
+        "loaded_base": 1970405376,
+        "rva": 229904,
+        "first16": "8bff558becff75108b550c8b4d08e809",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040e4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970820304,
+        "loaded_base": 1970405376,
+        "rva": 414928,
+        "first16": "8bff558bec83e4f883ec2c8d4c240456",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040e8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970610224,
+        "loaded_base": 1970405376,
+        "rva": 204848,
+        "first16": "8bff558bec83e4f881ec9c040000a100",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040ec",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970955360,
+        "loaded_base": 1970405376,
+        "rva": 549984,
+        "first16": "8bff558bec568b750881fe0040000075",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040f0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970552832,
+        "loaded_base": 1970405376,
+        "rva": 147456,
+        "first16": "8bff558bec83e4f883ec585333db5689",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040f4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971162432,
+        "loaded_base": 1970405376,
+        "rva": 757056,
+        "first16": "8bff558bec83e4f883ec2c8d4c240456",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040f8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970816032,
+        "loaded_base": 1970405376,
+        "rva": 410656,
+        "first16": "8bff558bec83e4f8ff751c8b5514ff75",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040fc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970960928,
+        "loaded_base": 1970405376,
+        "rva": 555552,
+        "first16": "b868478275c3cccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004100",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970905536,
+        "loaded_base": 1970405376,
+        "rva": 500160,
+        "first16": "8bff558bec6b45083805b03a82755dc3",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004104",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970566880,
+        "loaded_base": 1970405376,
+        "rva": 161504,
+        "first16": "8bff558bec83e4f883ec2c8d4c240456",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000408c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970592320,
+        "loaded_base": 1970405376,
+        "rva": 186944,
+        "first16": "8bff558bec83e4f8e830ec050085c074",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004090",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971124512,
+        "loaded_base": 1970405376,
+        "rva": 719136,
+        "first16": "6a086800478175e8349cfeffe86fdaf7",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004094",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970740288,
+        "loaded_base": 1970405376,
+        "rva": 334912,
+        "first16": "8bff558bec8b4d108b450c81e1fffff7",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004098",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971122592,
+        "loaded_base": 1970405376,
+        "rva": 717216,
+        "first16": "8bff558bec515657e897e5f7ff8bf085",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000409c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970952784,
+        "loaded_base": 1970405376,
+        "rva": 547408,
+        "first16": "8bff558bec8b4508a3f44682755dc3cc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040a0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970968352,
+        "loaded_base": 1970405376,
+        "rva": 562976,
+        "first16": "b81c478275c3cccccccccccc8b0da443",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040a4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970966256,
+        "loaded_base": 1970405376,
+        "rva": 560880,
+        "first16": "8bff558bec8b4d085de90f4bfeffcccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040a8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970961488,
+        "loaded_base": 1970405376,
+        "rva": 556112,
+        "first16": "e9b38ffbffcccccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040ac",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970955584,
+        "loaded_base": 1970405376,
+        "rva": 550208,
+        "first16": "a1b849827585c07401c3e800a1fbffa3",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040b0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970820000,
+        "loaded_base": 1970405376,
+        "rva": 414624,
+        "first16": "8bff558bec568b75083b750c7410578b",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040b4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970819808,
+        "loaded_base": 1970405376,
+        "rva": 414432,
+        "first16": "8bff558bec568b7508573b750c74258b",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040b8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970951872,
+        "loaded_base": 1970405376,
+        "rva": 546496,
+        "first16": "8bff558bec8b4d0833d26a00e8090000",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040bc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970951840,
+        "loaded_base": 1970405376,
+        "rva": 546464,
+        "first16": "8bff558bec8b4d086a006a025ae82800",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040c0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970961472,
+        "loaded_base": 1970405376,
+        "rva": 556096,
+        "first16": "b830478275c3cccccccccccccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040c4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970804368,
+        "loaded_base": 1970405376,
+        "rva": 398992,
+        "first16": "8bff558becff7508685c478275e88e00",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040c8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971131808,
+        "loaded_base": 1970405376,
+        "rva": 726432,
+        "first16": "6a0133d233c9e82f41fdff59c3cccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040cc",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971131776,
+        "loaded_base": 1970405376,
+        "rva": 726400,
+        "first16": "6a016a025a33c9e84e41fdff59c3cccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040d0",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971131840,
+        "loaded_base": 1970405376,
+        "rva": 726464,
+        "first16": "8bff558bec8b15003382758bc26a2083",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040d4",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970804528,
+        "loaded_base": 1970405376,
+        "rva": 399152,
+        "first16": "8bff558bec83ec108d45088945f08d45",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "300040d8",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970903152,
+        "loaded_base": 1970405376,
+        "rva": 497776,
+        "first16": "8bff558bec8b4d0885c974188b013b41",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004068",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970955296,
+        "loaded_base": 1970405376,
+        "rva": 549920,
+        "first16": "8bff558bec568b750885f67513e80e74",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000406c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970974720,
+        "loaded_base": 1970405376,
+        "rva": 569344,
+        "first16": "8bff558bec56e855ffffff8bf085f674",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004070",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970602272,
+        "loaded_base": 1970405376,
+        "rva": 196896,
+        "first16": "8bff558bec5de905deffffcccccccccc",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004074",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970602144,
+        "loaded_base": 1970405376,
+        "rva": 196768,
+        "first16": "8bff558bec51ff7508c745fc00000000",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "30004084",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1971244576,
+        "loaded_base": 1970405376,
+        "rva": 839200,
+        "first16": "8bff558beca100338275568b750883e0",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "3000407c",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970936176,
+        "loaded_base": 1970405376,
+        "rva": 530800,
+        "first16": "8bff558bec56e825bafaff8b55088bf0",
+        "loader_relocations_only": true
+      }
+    ],
+    "runtime_code_postimages": [
+      {
+        "section": 0,
+        "address": 805310464,
+        "bytes": 10637,
+        "sha256": "e52dd041377bd184a9ce08c4a393bcbde618745337fb59964d13d647e1bcf6e5",
+        "whole_linked_code_postimage_matches": true
+      }
+    ],
+    "scope": "One nested original/full-library sequence: current outer base after allocation, initially empty-copy reserve, current source count and captured source row across further reserve, inner payload+8 preservation, outer shrink publication and current-count/base mutation after real free. Complete original593 bodies use actual compiled primitive/allocator/free providers and original EH data bound to concrete linked __CxxFrameHandler3. Only normal execution tested; no allocation-failure/new-handler/exception/SEH/fault, generic CRT or game/native caller ABI proof.",
+    "normalization": "Only twenty header data fields, by explicit observation-specific identities. All raw pointer values/eleven allocation roles retained, including address reuse across generations; no arbitrary address-range normalization.",
+    "forwarding": "Only fixture executable malloc/free IAT cells temporarily forward. Actual CRT call occurs first; observers mutate fixture inputs only. Import cells restored before all import/code snapshots. Actual DLL and game code unchanged."
+  },
+  "seal": "local/capability_nested_arrays/sealed.json generated after four-file commit; SHA256 in handoff",
+  "changes": {
+    "Ghidra": false,
+    "shared_metadata": false,
+    "shared_CMake": false,
+    "game_display_device": false
+  },
+  "limitations": [
+    "No B2C8E0 raw gather/gamma/device/game implementation or gameplay claim.",
+    "B29D40 is a full source translation with explicit new EH/private-frame ABI, not a literal248-byte match.",
+    "Original593 normal execution composes full compiled primitive/allocator/free providers, not original whole CRT execution.",
+    "Original handler/action and source catch specialization are fully pinned but exceptional dispatch is not runtime-tested.",
+    "No allocation failure/current new-handler/exception/SEH, malformed extents, native private-frame alias or native caller ABI claim.",
+    "Three saved-analysis free-call tails await primary repair after lease transfer."
+  ]
+}
