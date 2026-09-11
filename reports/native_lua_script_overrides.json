@@ -1,0 +1,316 @@
+{
+  "packet": "orch2_native_lua_script_overrides_am",
+  "functions": [
+    {
+      "address": "00bdef90",
+      "name": "BSP_VfsManager_AppendLuaScriptOverrides",
+      "cpp": "append_native_lua_script_overrides_00bdef90",
+      "source": "src/native_lua_script_overrides.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual manager; stack actual path/output vector; RET8",
+      "evidence": "Full887-byte original. Last slash then first dot split; actual native temporary strings/ten EH states. Captured suffix range at manager48/4C; current virtual08 per candidate; append mutable accepted candidate with duplicates and prior output preserved. Diagnostic4254B0 bareRET. Full original/rebuilt nestedDoFile and installedshaderbytes fixture; actual VFS existence/stream owners external.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00bdef80",
+      "name": "BSP_VfsManager_RegisterLuaScriptSuffix",
+      "cpp": "register_native_lua_script_suffix_00bdef80",
+      "source": "src/native_lua_script_overrides.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual manager; stack actual suffix; inherited RET4",
+      "evidence": "Complete8-byte ADD ECX,48/JMP4CDC20 thunk. BE1DC0 producer zeros manager48/4C/50 and actual vector appends8-byte strings. Original thunk/growth/duplicate suffix order executed.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "004bcb80",
+      "name": "BSP_NativeString_ReverseFindAnyByte",
+      "cpp": "reverse_find_native_string_bytes_004bcb80",
+      "source": "src/native_lua_script_overrides.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual string; stack C-string byte set/signed start; EAX index or FFFFFFFF; RET8",
+      "evidence": "Complete120-byte no-call routine. Captured data/count, reject null/empty/negative start, unsigned clamp, reverse counted-byte search with strlen-set semantics and unsigned pointer boundary. 150 paired combinations plus embeddedNUL.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "004cdc20",
+      "name": "BSP_NativeStringVector_Append",
+      "cpp": "append_native_string_vector_004cdc20",
+      "source": "src/native_string_vector.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual vector; stack actual source string; RET4",
+      "evidence": "Complete187-byte append. Grow only count==capacity; signed-wrap doubledcap at least1; capture currentdest, zero then copyactualheader, increment livecount afterward. Sole unwind401130 bareRET so no rollback. Same-destination alias discards oldheader, verified original/rebuilt plus actualreserve growth.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00419ca0",
+      "name": "BSP_NativeString_DataOrEmpty",
+      "cpp": "native_string_data_or_00419ca0",
+      "source": "src/native_lua_script_overrides.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual string; EAX data or E17654 empty fallback; RET",
+      "evidence": "Complete13-byte accessor returns data04 or externalE17654 emptyBSS. Original/rebuilt pointer identity verified. Diagnostic caller4254B0 is bareRET.",
+      "stored_body_complete": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00bdefc9",
+      "native": "004bcb80",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdeffc",
+      "native": "00bf9a50",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf045",
+      "native": "00469840",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf05e",
+      "native": "0041dd40",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf076",
+      "native": "00bf7680",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf096",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf09d",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf0d6",
+      "native": "0041dd40",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf0fc",
+      "native": "0041dd40",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf114",
+      "native": "00bf7680",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf152",
+      "native": "0041dd40",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf16d",
+      "native": "00bf7680",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf188",
+      "native": "004261a0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf19a",
+      "native": "004261a0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf1b0",
+      "native": "004261a0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf1cd",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf1d4",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf1f1",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf1f8",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf20d",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf214",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf235",
+      "native": "004cdc20",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf244",
+      "native": "00419ca0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf24f",
+      "native": "004254b0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf26f",
+      "native": "004254b0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf28f",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf296",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf2c0",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf2c7",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf2e7",
+      "native": "00419cc0",
+      "function": "00bdef90"
+    },
+    {
+      "address": "00bdf2ee",
+      "native": "00bd1510",
+      "function": "00bdef90"
+    },
+    {
+      "address": "004cdc55",
+      "native": "00426520",
+      "function": "004cdc20"
+    },
+    {
+      "address": "004cdc8f",
+      "native": "0041dd40",
+      "function": "004cdc20"
+    },
+    {
+      "address": "004cdca4",
+      "native": "00bf7680",
+      "function": "004cdc20"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00bdf227",
+      "operand": "edx",
+      "function": "00bdef90"
+    }
+  ],
+  "no_ghidra_function": [],
+  "tail_branches": [
+    {
+      "branch_site": "00bdef83",
+      "target": "004cdc20",
+      "function": "00bdef80",
+      "opcode": "JMP"
+    }
+  ],
+  "source_boundaries": {
+    "required": [
+      "actual manager+48 suffix vector",
+      "callable original-ABI current manager+08 existence method",
+      "existing actual NativeStringStorage"
+    ],
+    "implemented": "Full suffix producer, registration thunk, reverse byte search, vector append and data accessor.",
+    "not_implemented": "Actual VFS manager/provider ownership and numeric-vtable resolution."
+  },
+  "override": {
+    "last_separator": "/",
+    "extension": "first dot from last slash or index0",
+    "captured_suffix_begin_end": true,
+    "current_vtable_per_candidate": true,
+    "current_candidate_after_exists": true,
+    "duplicates_preserved": true,
+    "prior_output_preserved": true,
+    "normal_underscore_release_captured_header": true,
+    "unwind_reads_current_headers": true,
+    "diagnostics": "4254B0 bare RET omitted"
+  },
+  "vector_append": {
+    "growth_condition": "count == capacity",
+    "capacity": "max(signed32wrapped(capacity*2),1)",
+    "zero_destination_before_copy": true,
+    "count_increment_after_copy": true,
+    "destination_alias_discards_old_header": true,
+    "unwind": "401130 bare RET",
+    "rollback": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_packet_functions_executed": 5,
+    "prior_dependency_bodies_relocated": 40,
+    "search_combinations": 150,
+    "embedded_nul": true,
+    "path_shapes": 9,
+    "paired_native_string_events": true,
+    "vector_aliasing_growth": true,
+    "current_candidate_and_vtable_mutation": true,
+    "captured_suffix_range_mutation": true,
+    "nested_duplicate_dofile_order": "MCppPP",
+    "installed_scripts": [
+      "debugshader.shfx",
+      "alphablend.shfx",
+      "dx9_lua.inc"
+    ],
+    "rebuilt_exists_exception_temporary_cleanup": true,
+    "original_exception_execution": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "corrections": [
+    {
+      "was": "BDEF90 remained a required external actual-header service in NATIVE_LUA_FILE_LOADING.",
+      "is": "Actual producer now implemented; VFS existence/stream owner integration remains external.",
+      "evidence": "Five complete original bodies and nested file/DoFile fixture."
+    }
+  ],
+  "fixture_boundaries": {
+    "dependencies": "40 previously captured native bodies; 469840 substring and 4261A0 concatenation bind previously reconstructed helpers; stock CRT/Lua use explicit ABI adapters.",
+    "vfs": "Same explicit callable existence and stream services; installed bytes supplied through fixture streams.",
+    "exceptions": "Eleven original EH states checked; original EH not executed. Rebuilt existence exception lifetime checked."
+  },
+  "limitations": [
+    "Not original binary ABI/SEH replacements.",
+    "Actual VFS manager/provider/stream ownership must be bound for complete startup composition.",
+    "Malformed extents, growth overflow and arbitrary callback mutation remain unvalidated.",
+    "No game rendering or gameplay validation."
+  ]
+}
