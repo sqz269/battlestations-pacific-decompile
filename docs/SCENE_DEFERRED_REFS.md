@@ -236,3 +236,16 @@ the compare is case-insensitive.
 | `scene_command_types` | 006f7f30 006f9110 00cdc6a0 | The command-type registry: which derived class each static initialiser registers, its `vtable[0Ch]` id, and which of the eleven authored names exist as objects |
 | `entity_order_message` | 0077d600 007798d0 0075b430 00a2bd90 | The `" Mv"` order message: the handle tables, the `00521EA0` gate and the wire layout |
 | `entity_registry_find` | 009251f0 | The per-party name match, including the `_strchr`/`__strnicmp` qualified-name path |
+
+## Corrections from docs/ENTITY_ORDER_MESSAGE.md and docs/SCENE_COMMAND_TYPES.md (packet cc2_entity_orders)
+
+Six readings above are corrected by the packet that read `0077D600` and the command
+registry in full: `00521EA0` is the target descriptor's own id-to-pointer resolver, not a
+singleton getter, so the `vtable[5Ch](0Fh)` call is `IsKindOf` on the resolved target; there
+is no `" Mv"` message tag, those bytes are a hex dump of the message vtable's first slot
+pointer (the message is `MT_COMMAND`, type byte `58h`, vtable `00D03630`); `00CDC6A0+40h*k`
+are the command-type destructors while the constructors are `00CCE500+40h*k` (26 classes,
+names recovered from their constant-returning `vtable[4]` bodies; all ten distinct authored
+command names exist as objects); the remaining three are in that packet's report with their
+evidence. The 26 constructors are now Ghidra functions
+(`reports/entity_orders_function_definitions.json`).
