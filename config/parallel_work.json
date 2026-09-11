@@ -7107,6 +7107,76 @@
         "src/native_renderer_surface_save_publish.cpp"
       ],
       "evidence": "reports/native_renderer_surface_save_publish_audit.json"
+    },
+    {
+      "id": "native_crt_x87_double_load1",
+      "packet": "native_crt_x87_double_load1",
+      "state": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c083d5"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_X87_DOUBLE_LOAD.md",
+        "reports/native_crt_x87_double_load_audit.json",
+        "src/native_crt_x87_double_load.cpp"
+      ],
+      "evidence": "reports/native_crt_x87_double_load_audit.json"
+    },
+    {
+      "id": "native_crt_x87_power_leaves2",
+      "packet": "native_crt_x87_power_leaves2",
+      "state": "complete_two_original_main_archived_COFF_bodies_single_half_operand_adaptation_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c08390",
+        "00bfed32"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_X87_POWER_LEAVES.md",
+        "reports/native_crt_x87_power_leaves_audit.json",
+        "src/native_crt_x87_power_leaves.cpp"
+      ],
+      "evidence": "reports/native_crt_x87_power_leaves_audit.json"
+    },
+    {
+      "id": "native_resource_registry_lookup1",
+      "packet": "native_resource_registry_lookup1",
+      "state": "complete_qualified_actual_registry_lookup_primary_main_library_original_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b19e90"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RESOURCE_REGISTRY_LOOKUP.md",
+        "reports/native_resource_registry_lookup_audit.json",
+        "src/native_resource_registry_lookup.cpp"
+      ],
+      "evidence": "reports/native_resource_registry_lookup_audit.json"
+    },
+    {
+      "id": "native_renderer_material_state_binding2",
+      "packet": "native_renderer_material_state_binding2",
+      "state": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b27a80",
+        "00b27b90"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_MATERIAL_STATE_BINDING.md",
+        "reports/native_renderer_material_state_binding_audit.json",
+        "src/native_renderer_material_state_binding.cpp"
+      ],
+      "evidence": "reports/native_renderer_material_state_binding_audit.json"
     }
   ],
   "snapshot_after_analysis": {

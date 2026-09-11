@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T20:51:20.995055+00:00",
-  "status": "complete source reconstructed, strict build and complete original/actual COFF equality verified",
+  "status": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
   "base_commit": "77cef00140afd8721c272ee8b3112a2b7649f501",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_double_load",
   "ownership": {
@@ -340,5 +340,64 @@
       "bytes": 5350,
       "sha256": "18bfc4748c4998fc42839cd262c49c58802b2b177d0288d9f24edd7fd2673a80"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
+    "main_library_sha256": "047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 34,
+    "report_pins": 33,
+    "fresh_spans": 1,
+    "fresh_bytes": 67,
+    "whole_object_sections": 4,
+    "function_relocations": 0,
+    "original_owned_execution": false,
+    "boundary": "Complete67-byte original __fload_withFB. OriginalEDX live8-byte input, pushedST0/EAX/EFLAGS result, plainRET. Assembly-only newfastcall declaration uses unusedECX to place inputEDX. Retain original current high/low reloads, overlapping10-byte stack temporary, bothRET paths and current x87 environment. Entire actual main archived67bytes/21instructions exact to fresh original, zero relocations/providers/normalizations.34 sealed worker files+33 report pins,1fresh67-byte span;4wholeCOFFsections. No runtime/linked-address/original-caller/SEH/pow/gamma/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_double_load_primary\\sealed.json",
+      "bytes": 10949,
+      "sha256": "c94b78266adb87477325f933c40bc637e8f24f142e32d4c805418ebeb9166d90"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_x87_material_registry_annotations.json",
+    "bytes": 9848,
+    "sha256": "f8b1e90c596c3b726b85c0eddacb78fd98b5267c0e8e5680b7233b436bea51f3"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c083d5",
+      "name": "__fload_withFB",
+      "cpp_symbol": "bsp::load_native_crt_double_x87_00c083d5",
+      "source": "src/native_crt_x87_double_load.cpp",
+      "native_end_exclusive": "00c08418",
+      "status": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_double_load_audit.json",
+      "original_abi": "Original register/x87/stack interface documented in public header and audit; assembly controls the contract.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": false,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c083d5",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c083d5\\decompiled.c",
+      "bytes": 1265,
+      "sha256": "76b3f91dc56fb7ed083eacc50eaf2c9e9dd2794182d042cc7902f95d9c86f799"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_X87_DOUBLE_LOAD.md",
+    "bytes": 6179,
+    "sha256": "5325bc15ebbf585489777f36baa6b2948ab2de9e4a97e49cb6129d54f506d7dd"
+  },
+  "closure_utc": "2026-09-11T21:14:34.603022+00:00"
 }

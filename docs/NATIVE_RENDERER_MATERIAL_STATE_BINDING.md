@@ -137,3 +137,8 @@ execution, arbitrary original callers or gameplay. Existing provider validation
 and host exception boundaries are inherited explicitly. Evidence is under
 `local/renderer_material_state_binding/`; no permanent tests or shared build,
 ledger or Ghidra changes are part of this packet.
+
+
+## Primary integration
+
+Main registered the unchanged instruction/body implementations and passed the strict Win32 build, both existing CTests and eight fresh original seeds. Every packet used the same frozen main library `047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f`. Primary verified304 sealed worker files,29 current source/header inputs and27 fresh spans1804bytes. The owned CPP differs from its frozen worker snapshot only in CRLF/LF; decoded text is exactly equal. The unchanged main-library fixture passed74whole raw comparisons and8realHALcalls. All218mappedCOFFsections690relocations71imports and13652runtime code bytes pass, with only listed pointer/profile normalizations. Actual device/table remains unchanged; original child/child-EH and full COM-object execution remain unclaimed. The existing cached-sampler EH record was independently confirmed correct. The primary saved reviewed names/comments while retaining prior values, registered raw source entries, and refreshed all affected exports. Immutable proof: `local/material_state_binding_primary/`. Original-caller/SEH and gameplay limits remain.
