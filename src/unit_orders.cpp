@@ -24,17 +24,6 @@ void publish_unit_order_0080dad0(UnitOrderQueue& queue, const UnitOrderRecord& r
     queue.current_kind = queue.slot[i].kind;
 }
 
-void issue_unit_order_00816a40(UnitOrderIssueHost& host, UnitOrderQueue& queue,
-                               std::uint32_t a, std::uint32_t b, std::uint32_t c)
-{
-    const UnitOrderRecord record = host.build_order_record(a, b, c); // 00815440
-    publish_unit_order_0080dad0(queue, record);                      // 0080DAD0
-
-    if (host.session_mode() == kUnitOrderSessionMode) { // 00816A69
-        host.send_order_message(kUnitOrderSessionMessageId, record);
-    }
-}
-
 float raise_unit_load_latch_009d4fb0(float current, float request) noexcept
 {
     // fcomip on (request, current) then jbe: the store runs only when the

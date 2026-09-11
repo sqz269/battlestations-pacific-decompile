@@ -1,0 +1,1864 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_owner_next",
+  "status": "read_only_discovery_live_PE_verified_no_implementation_or_runtime_claim",
+  "utc": "2026-09-11T05:09:54.546414+00:00",
+  "checkout_commit": "3ceb1ea9990c268ffe04ca312975d7b2d631da76",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "target_verification": "Every bsp.py ghidra command invokes client.verify before querying; expected bsp project, /battlestationspacific.exe, x86:LE:32:default and image base00400000.",
+  "installed_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "complete_candidate_bytes": 389,
+  "live_PE_spans": [
+    {
+      "address": "00b34020",
+      "end_exclusive": "00b34067",
+      "length": 71,
+      "role": "candidate_unnamed_base",
+      "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+      "hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70080f2d500c20800",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b34090",
+      "end_exclusive": "00b34095",
+      "length": 5,
+      "role": "candidate_unnamed_base_unwind_forwarder",
+      "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+      "hex": "e9bbfeffff",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b3d650",
+      "end_exclusive": "00b3d6ca",
+      "length": 122,
+      "role": "candidate_cube_constructor",
+      "sha256": "86a572fb445ae113c3b466cb6c74eec7a6b04fec9d4240b1cb05dc8ec6f55ec2",
+      "hex": "6aff6868edcb0064a100000000506489250000000083ec248b44243856578b7c243c508bf15789742410e8a169ffff33c08d54240c5289462cc7067018d6008b0f508944243c8b414457ffd08b4c2424894e248b178b423457ffd08b4c240c894e188b4c242c8946145f8bc65e64890d0000000083c430c20800",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b3ead0",
+      "end_exclusive": "00b3eb6f",
+      "length": 159,
+      "role": "candidate_cube_destructor",
+      "sha256": "7a83246a860603f4ec73a4d467f5fa725b4e2edf02e13b131a60cc0ac81f084d",
+      "hex": "6aff68c8edcb0064a100000000506489250000000051568bf15789742408c7067018d6008b7e2c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7462c000000008b3d94d3f800538b1f8bcee81053ffff8b536c508bcfffd28b461085c05b740f8b088b510850ffd2c74610000000008bcec7442414ffffffffe8f253ffff8b4c240c5f5e64890d0000000083c410c3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b3f410",
+      "end_exclusive": "00b3f430",
+      "length": 32,
+      "role": "candidate_cube_scalar_delete",
+      "sha256": "854a0644361726fda417159185e8440fbc537700d7d1f5315545503e6bb3816b",
+      "hex": "568bf1e8b8f6fffff644240801740b56b970db0801e816e5ffff8bc65ec20400",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00cbed60",
+      "end_exclusive": "00cbed68",
+      "length": 8,
+      "role": "constructor_unwind_thunk",
+      "sha256": "e73976e6d636435748331b6f9f91da836239930f8641821edad2bf3b8130e7ae",
+      "hex": "8b4dd0e92853e7ff",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00cbed68",
+      "end_exclusive": "00cbed72",
+      "length": 10,
+      "role": "constructor_FH3_handler",
+      "sha256": "8f1a31cad3bd36a12b956244e83b20b0025f307adf558d6ec5a5b123dd0b23e6",
+      "hex": "b87075df00e9d17df3ff",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00df7568",
+      "end_exclusive": "00df7594",
+      "length": 44,
+      "role": "constructor_unwind_map_and_FuncInfo",
+      "sha256": "6a7bda0010ac383d6307b2aebc1570ffe29db0adc651ebfb7ba79c9c86848cd1",
+      "hex": "ffffffff60edcb0022059319010000006875df00000000000000000000000000000000000000000001000000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00cbedc0",
+      "end_exclusive": "00cbedc8",
+      "length": 8,
+      "role": "destructor_unwind_thunk",
+      "sha256": "bb747887ed0805efb714c8ac460e35fe3f6ddddcf63b5855d021fec63ad49651",
+      "hex": "8b4df0e9c852e7ff",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00cbedc8",
+      "end_exclusive": "00cbedd2",
+      "length": 10,
+      "role": "destructor_FH3_handler",
+      "sha256": "a27c914e3ed25c15374777f16b45984ee386a0bb51bebd4c1760100adc6948e6",
+      "hex": "b8fc75df00e9717df3ff",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00df75f4",
+      "end_exclusive": "00df7620",
+      "length": 44,
+      "role": "destructor_unwind_map_and_FuncInfo",
+      "sha256": "a0bf6cf5814a864ac72c142de638090df25ff07ca14d7974b9f77f55fe0b2b8b",
+      "hex": "ffffffffc0edcb002205931901000000f475df00000000000000000000000000000000000000000001000000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b33e40",
+      "end_exclusive": "00b33e44",
+      "length": 4,
+      "role": "complete_name_address_dependency",
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "hex": "8d4108c3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b33f50",
+      "end_exclusive": "00b33fb7",
+      "length": 103,
+      "role": "complete_named_base_destroy_dependency",
+      "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+      "hex": "6aff6898e0cb0064a100000000506489250000000051568bf189742404c706f4f1d5008b460c85c0c74424100000000074168b4e086a0183c1015150e82f5d8eff8bc8e878d509008bcec7442410ffffffffe849f109008b4c24085e64890d0000000083c410c3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00cbe090",
+      "end_exclusive": "00cbe0a2",
+      "length": 18,
+      "role": "base_unwind_thunk_and_FH3_handler",
+      "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+      "hex": "8b4df0e9e837dcffb80c69df00e9a18af3ff",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00df6904",
+      "end_exclusive": "00df6930",
+      "length": 44,
+      "role": "base_unwind_map_and_FuncInfo",
+      "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+      "hex": "ffffffff90e0cb0022059319010000000469df00000000000000000000000000000000000000000001000000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00a81880",
+      "end_exclusive": "00a81885",
+      "length": 5,
+      "role": "base_unwind_JMP_dependency",
+      "sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+      "hex": "e96b181500",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "role": "reference_base_action",
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "hex": "c70130b1ce00c3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "role": "zero_reference_deleting_dispatch",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "hex": "85c974098b018b50046a01ffd2c3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "role": "complete_renderer_notification_dependency",
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "008d4440",
+      "end_exclusive": "008d446d",
+      "length": 45,
+      "role": "backing_destroy_full_returning_free_tail",
+      "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+      "hex": "568bf18b460850c706d85ad100e85a213200832d98db0901018b4e0c83c404290d9cdb09018bce5ee983ec2f00",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "008d4470",
+      "end_exclusive": "008d44b2",
+      "length": 66,
+      "role": "backing_delete_full_returning_free_tails",
+      "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+      "hex": "568bf18b460850c706d85ad100e82a213200832d98db0901018b4e0c290d9cdb090183c4048bcee854ec2f00f644240801740956e80321320083c4048bc65ec20400",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00bef9c0",
+      "end_exclusive": "00befa36",
+      "length": 118,
+      "role": "stream_destroy_dependency",
+      "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+      "hex": "6aff68b876cc0064a100000000506489250000000051568bf15789742408c706c042d6008b7e0885ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c74608000000008bcec7442414ffffffffc70604c1d500e8cb36feff8b4c240c5f5e64890d0000000083c410c3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00bb8f90",
+      "end_exclusive": "00bb8fae",
+      "length": 30,
+      "role": "stream_delete_full_returning_free_tail",
+      "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+      "hex": "568bf1e8286a0300f644240801740956e807d6030083c4048bc65ec20400",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "actual_CRT_free_JMP_entry",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "hex": "e917380000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00bf6b43",
+      "end_exclusive": "00bf6b79",
+      "length": 54,
+      "role": "actual_FH3_entry",
+      "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+      "hex": "558bec83ec08535657fc8945fc33c0505050ff75fcff7514ff7510ff750cff7508e8280e010083c4208945f85f5e5b8b45f88be55dc3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b3d940",
+      "end_exclusive": "00b3d9a5",
+      "length": 101,
+      "role": "actual_cube_slot_return_dependency",
+      "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+      "hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58308b4e288b0c992bc18bd0b84fecc44ef7eac1fa048bc2c1e81f03c20fb791c00600006689845180060000668381c0060000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00b3dce0",
+      "end_exclusive": "00b3dcec",
+      "length": 12,
+      "role": "actual_cube_raw_return_adapter",
+      "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+      "hex": "51b970db0801e855fcffffc3",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00d61870",
+      "end_exclusive": "00d618b0",
+      "length": 64,
+      "role": "cube_profile_table_16_slots",
+      "sha256": "9551267b5b784c47a650abf5e1c854b0c6d7d1298b2ec570b4662e8c76605a10",
+      "hex": "e030bd0010f4b30040dfb3005022a80060cfb300803eb300903eb30090cfb300103fb300203fb300c0d7b300f0e1b30050e0b30090feb30070cfb30080cfb300",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00d5f280",
+      "end_exclusive": "00d5f2c0",
+      "length": 64,
+      "role": "base_profile_table_16_slots",
+      "sha256": "26ee395f7010c8558fa93180fa2657fa1be2394e869ff9892098452380805dc4",
+      "hex": "e030bd006042b300f0fabe005022a8008e69bf00803eb300903eb3008e69bf00103fb300203fb300303fb300403fb3007040b3008040b3008e69bf008e69bf00",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00d5f114",
+      "end_exclusive": "00d5f118",
+      "length": 4,
+      "role": "renderer_D5F0A8_slot6C",
+      "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+      "hex": "5022b300",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00d15ad8",
+      "end_exclusive": "00d15ae0",
+      "length": 8,
+      "role": "backing_reference_dispatch_slots",
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "hex": "e030bd0070448d00",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00d642c0",
+      "end_exclusive": "00d642c8",
+      "length": 8,
+      "role": "stream_reference_dispatch_slots",
+      "sha256": "2755848844406d8a6a0e5301377e32c2f3d1aa1b7a87abcb9856164311e22ec8",
+      "hex": "e030bd00908fbb00",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "0108d6e8",
+      "end_exclusive": "0108d6ec",
+      "length": 4,
+      "role": "shared_serial_loader_preimage",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "hex": "00000000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "role": "renderer_publication_loader_preimage",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "hex": "00000000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "0108db70",
+      "end_exclusive": "0108dba8",
+      "length": 56,
+      "role": "canonical_cube_pool_loader_preimage",
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "live_matches_installed_PE": true
+    },
+    {
+      "address": "00ce2220",
+      "end_exclusive": "00ce2224",
+      "length": 4,
+      "role": "InterlockedDecrement_IAT_prebinding_word",
+      "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+      "hex": "e856a000",
+      "live_matches_installed_PE": true
+    }
+  ],
+  "all_spans_match": true,
+  "total_live_PE_bytes": 1595,
+  "native_FH3": [
+    {
+      "owner": "00b3d650",
+      "handler": "00cbed68",
+      "FuncInfo": "00df7570",
+      "raw_dwords": [
+        429065506,
+        1,
+        14644584,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "unwind_map": "00df7568",
+      "state": 0,
+      "previous_state": -1,
+      "thunk": "00cbed60",
+      "saved_owner": "[EBP-30h]",
+      "terminal": "00b34090 -> 00b33f50"
+    },
+    {
+      "owner": "00b3ead0",
+      "handler": "00cbedc8",
+      "FuncInfo": "00df75fc",
+      "raw_dwords": [
+        429065506,
+        1,
+        14644724,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "unwind_map": "00df75f4",
+      "state": 0,
+      "previous_state": -1,
+      "thunk": "00cbedc0",
+      "saved_owner": "[EBP-10h]",
+      "terminal": "00b34090 -> 00b33f50"
+    },
+    {
+      "owner": "00b33f50",
+      "handler": "00cbe098",
+      "FuncInfo": "00df690c",
+      "raw_dwords": [
+        429065506,
+        1,
+        14641412,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "unwind_map": "00df6904",
+      "state": 0,
+      "previous_state": -1,
+      "thunk": "00cbe090",
+      "saved_owner": "[EBP-10h]",
+      "terminal": "00a81880 -> 00bd30f0"
+    }
+  ],
+  "current_ledger_lookup_evidence": {
+    "00b34020": "00b34020  BSP_LogicalTextureBase_ConstructUnnamed_D5F280  thunk=no  export=exports/bsp/functions/00b34020\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_LogicalTextureBase_ConstructUnnamed_D5F280 - Initializes unnamed refcounted base fields, copies old shared global 0108d6e8 to object+20 at00b34055, increments at00b34058, then installs vtable00d5f280. Counter is shared with00b34120 and other unnamed variants; numeric step uses same typed producer. Vtable suffix describes evidence; original sub\ncallers (1): 00b3d650 FUN_00b3d650\ncallees (0): \ndocs (1): docs/MATERIAL_SORT_METADATA.md (Material and texture sort metadata producers)\n",
+    "00b34090": "00b34090  FUN_00b34090  thunk=yes  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (3): 00cbed20 Unwind@00cbed20, 00cbed60 Unwind@00cbed60, 00cbedc0 Unwind@00cbedc0\ncallees (1): 00b33f50 BSP_LogicalTextureBase_DestroyNamed\n",
+    "00b3d650": "00b3d650  FUN_00b3d650  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (1): 00b2a380 FUN_00b2a380\ncallees (1): 00b34020 BSP_LogicalTextureBase_ConstructUnnamed_D5F280\ndocs (2): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp); docs/MATERIAL_SORT_METADATA.md (Material and texture sort metadata producers)\n",
+    "00b3ead0": "00b3ead0  FUN_00b3ead0  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (1): 00b3f410 FUN_00b3f410\ncallees (2): 00b33e40 BSP_LogicalTextureBase_GetNameAddress, 00b33f50 BSP_LogicalTextureBase_DestroyNamed\ndocs (2): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp); docs/TEXTURE_STREAM_LIFETIME.md (Texture stream lifetime and D3DX handoff)\n",
+    "00b3f410": "00b3f410  FUN_00b3f410  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (0): \ncallees (2): 00b3d940 FUN_00b3d940, 00b3ead0 FUN_00b3ead0\ndocs (1): docs/TEXTURE_STREAM_LIFETIME.md (Texture stream lifetime and D3DX handoff)\n",
+    "00b33e40": "00b33e40  BSP_LogicalTextureBase_GetNameAddress  thunk=no  export=exports/bsp/functions/00b33e40\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ntag: trivial_body (high, rename) TRIV_body_00b33e40\nledger name: BSP_LogicalTextureBase_GetNameAddress - Full four-byte LEA EAX,[ECX+8]; RET. No owner/name dereference, DWORD wrap retained. Actual owner/name and shared serial108D6E8, fullcurrentreads/rawCOM/flags, currentname thenbase unwind; borrowed initializedstringsizedpool. DirectBF7680 copy usesmemmove from full869byteoverlapbody evidence; origin\nreconstruction: function native_logical_texture_name_address_00b33e40 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_logical_texture_named_base.cpp\ncallers (16): 00711510 FUN_00711510, 00711a20 FUN_00711a20, 00ab4ce0 FUN_00ab4ce0, 00ab64c0 BSP_GuiIcon_AddState ...\ncallees (0): \ndocs (1): docs/APP_INIT_WORLD_EFFECTS.md (World-content phase of cSkeletonAppMidway::Init)\n",
+    "00b33f50": "00b33f50  BSP_LogicalTextureBase_DestroyNamed  thunk=no  export=exports/bsp/functions/00b33f50\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_LogicalTextureBase_DestroyNamed - D5F1F4 profile, captured current name release without header clearing, complete BD30F0 base action normally or in native unwind. Actual owner/name and shared serial108D6E8, fullcurrentreads/rawCOM/flags, currentname thenbase unwind; borrowed initializedstringsizedpool. DirectBF7680 copy usesmemmove \nreconstruction: function destroy_native_logical_texture_named_base_00b33f50 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_logical_texture_named_base.cpp\ncallers (10): 00b34010 BSP_LogicalTextureBase_UnwindNamed, 00b34090 FUN_00b34090, 00b340f0 FUN_00b340f0, 00b34100 CG_scalar_deleting_dtor_00b34100 ...\ncallees (3): 00419cc0 BSP_SizedStoragePool_GetSingleton, 00bd1510 BSP_SizedStoragePool_ReturnBlock, 00bd30f0 BSP_RefCounted_DestroyBase\ndocs (2): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp); docs/TEXTURE_STREAM_LIFETIME.md (Texture stream lifetime and D3DX handoff)\n",
+    "00b32250": "00b32250  BSP_D3D9Renderer_NotifyTextureNameRemoval  thunk=no  export=exports/bsp/functions/00b32250\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_D3D9Renderer_NotifyTextureNameRemoval - Full240byteB32250. CapturedECXreceiver separatefromguardglobalrenderer, originalname passedtoactualcontainer+1A74 afterrealtemporarycopy/lowercase. Normalfreecapturedpostresizepointer/currentlength; unwindCURRENTnameheader. NativeFH3states0/1,noCatchmaps; armedguards plusSEHsearch-time terminationma\nreconstruction: function notify_native_renderer_texture_name_removal_00b32250 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_renderer_texture_name_notification.cpp\ncallers (0): \ncallees (8): 00419cc0 BSP_SizedStoragePool_GetSingleton, 0041dd40 BSP_NativeString_Resize, 004bcc00 BSP_String_LowercaseAscii, 00b31dc0 BSP_NativeRenderResourceContainer_RemoveByAlias ...\ndocs (1): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp)\n",
+    "008d4440": "008d4440  BSP_MemoryBacking_Destroy  thunk=no  export=exports/bsp/functions/008d4440\nsegment 56 [0088b410-008dcd40] 716 candidates wave 2  keywords: luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail, targetindicator\nledger name: BSP_MemoryBacking_Destroy - Capture data8 before D15AD8; free captureddata; decrement current109DB98; reload currentstoredlengthC afterfree then subtract from109DB9C; CEB130. Preserve count/staledata/length. Complete returning-free continuation restored. Original ABI: ECX backing; RET through BD30F0 base tail. Complete actual-\nreconstruction: function destroy_native_memory_backing_008d4440 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_retained_memory_owners.cpp\ncallers (0): \ncallees (2): 00bd30f0 BSP_RefCounted_DestroyBase, 00bf65ac _free\n",
+    "008d4470": "008d4470  BSP_MemoryBacking_DeleteScalar  thunk=no  export=exports/bsp/functions/008d4470\nsegment 56 [0088b410-008dcd40] 716 candidates wave 2  keywords: luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail, targetindicator\nledger name: BSP_MemoryBacking_DeleteScalar - Preserve compiler-generated name. Complete66-byte body: free bytes, decrement0109db98, subtract storedlength from0109db9c, base cleanup, optional storagefree(flags bit0), EAX original object, RET4. Tail008d4482..008d44b1 exists after first free. Check per-instruction flow override before repair; cal\nreconstruction: function delete_native_memory_backing_008d4470 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_retained_memory_owners.cpp\ncallers (0): \ncallees (2): 00bd30f0 BSP_RefCounted_DestroyBase, 00bf65ac _free\ndocs (3): docs/MEMORY_STREAM_HANDOFF.md (Native memory stream and backing ownership); docs/MEMORY_STREAM_IMPLEMENTATION.md (Typed memory stream implementation); docs/STREAM_CONVERSION_LIFETIME.md (Stream conversion lifetime and empty physical sour)\n",
+    "00bef9c0": "00bef9c0  BSP_MemoryStream_Destroy  thunk=no  export=exports/bsp/functions/00bef9c0\nsegment 97 [00be4460-00c30570] 343 candidates wave 2  keywords: cFileStore, iterator, long, removefile, removed, profile, cShaderTextureSource, cPhysicalDirectoryX86\nledger name: BSP_MemoryStream_Destroy - Decrement backing+4; invoke slot0 only atzero; clear wrapper+8 only after callback. Then stream/base vtable cleanup. End/cursor fields not cleared. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX memory wrap\nreconstruction: function destroy_native_memory_stream_00bef9c0 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_retained_memory_owners.cpp\ncallers (2): 00bb8f90 BSP_MemoryStream_DeleteScalar, 00bb9000 CG_scalar_deleting_dtor_00bb9000\ncallees (1): 00bd30f0 BSP_RefCounted_DestroyBase\ndocs (3): docs/MEMORY_STREAM_HANDOFF.md (Native memory stream and backing ownership); docs/MEMORY_STREAM_IMPLEMENTATION.md (Typed memory stream implementation); docs/STREAM_CONVERSION_LIFETIME.md (Stream conversion lifetime and empty physical sour)\n",
+    "00bb8f90": "00bb8f90  BSP_MemoryStream_DeleteScalar  thunk=no  export=exports/bsp/functions/00bb8f90\nsegment 93 [00bb3db0-00bbddd0] 167 candidates wave 3  keywords: mpak, deviceid, shorewavetexturesource2, shorewavetexturesource1, shorewavetexturesource0, open, oceanheightmap, msar\nledger name: BSP_MemoryStream_DeleteScalar - Preserve compiler-generated name. Call00bef9c0; free wrapper only when flags bit0 set; EAX original wrapper on both paths; RET4. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX memory wrapper; stack flags; E\nreconstruction: function delete_native_memory_stream_00bb8f90 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_retained_memory_owners.cpp\ncallers (0): \ncallees (2): 00bef9c0 BSP_MemoryStream_Destroy, 00bf65ac _free\ndocs (3): docs/MEMORY_STREAM_HANDOFF.md (Native memory stream and backing ownership); docs/MEMORY_STREAM_IMPLEMENTATION.md (Typed memory stream implementation); docs/STREAM_CONVERSION_LIFETIME.md (Stream conversion lifetime and empty physical sour)\n",
+    "00b3d940": "00b3d940  FUN_00b3d940  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (2): 00b3dce0 FUN_00b3dce0, 00b3f410 FUN_00b3f410\ncallees (0): \n",
+    "00b3dce0": "00b3dce0  FUN_00b3dce0  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (2): 00cbd388 Unwind@00cbd388, 00cbd530 Unwind@00cbd530\ncallees (1): 00b3d940 FUN_00b3d940\n",
+    "00b3ced0": "00b3ced0  FUN_00b3ced0  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (1): 00b2c2d0 BSP_TextureManager_LoadFromFile\ncallees (1): 00b34280 BSP_LogicalTextureBase_ConstructNamed_D5F280\ndocs (1): docs/TEXTURE_STREAM_LIFETIME.md (Texture stream lifetime and D3DX handoff)\n",
+    "00b34280": "00b34280  BSP_LogicalTextureBase_ConstructNamed_D5F280  thunk=no  export=exports/bsp/functions/00b34280\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_LogicalTextureBase_ConstructNamed_D5F280 - Calls00b34120 to copy name/base fields and consume shared texture serial0108d6e8 once, then installs vtable00d5f280. No second serial. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive\ncallers (1): 00b3ced0 FUN_00b3ced0\ncallees (1): 00b34120 BSP_LogicalTextureBase_ConstructNamed\n",
+    "00b2a380": "00b2a380  FUN_00b2a380  thunk=no  export=none\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ncallers (0): \ncallees (6): 00735ff0 FUN_00735ff0, 00b29670 BSP_D3D9Renderer_RecreateDevice, 00b33ad0 BSP_Renderer_EnterOptionalGuard, 00b33b00 BSP_Renderer_LeaveOptionalGuard ...\ndocs (1): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp)\n",
+    "00b2c2d0": "00b2c2d0  BSP_TextureManager_LoadFromFile  thunk=no  export=exports/bsp/functions/00b2c2d0\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_TextureManager_LoadFromFile - Typed successful2D route now composes real D3DX image info, existing exact initial mip policy, COM creation, actual constructor metadata and retained source. Source base/length independent of cursor. Host complete-input, empty-output and HRESULT boundaries explicit; native VFS/cache/optional guard/c\nreconstruction: fragment load_retained_texture_2d status=installed_DDS_and_font_TGA_recreation_checked source=src/d3d9_texture.cpp\nreconstruction: fragment select_initial_texture_load_policy status=installed_font_registry_and_texture_policy_probe_checked source=src/texture_load_policy.cpp\ncallers (0): \ncallees (24): 00419cc0 BSP_SizedStoragePool_GetSingleton, 0041dd20 BSP_NativeString_DestroyStorage, 0041dd40 BSP_NativeString_Resize, 0041e870 BSP_NativeString_Assign ...\nstring refs (3, immediates in the body, not necessarily call arguments): interface/textures/gui/units | noseart | detail.dds\ndocs (6): docs/MEMORY_STREAM_IMPLEMENTATION.md (Typed memory stream implementation); docs/TEXTURE_FILE_LOADING.md (Native texture filename route); docs/TEXTURE_LOAD_POLICY.md (Initial 2D texture dimension and mip policy); docs/TEXTURE_LOAD_POLICY_IMPLEMENTATION.md (Initial 2D texture policy implementation)\n"
+  },
+  "source_and_evidence_pins": [
+    {
+      "path": "include/bsp/native_logical_texture_named_base.hpp",
+      "bytes": 2598,
+      "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+    },
+    {
+      "path": "src/native_logical_texture_named_base.cpp",
+      "bytes": 4363,
+      "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "bytes": 11544,
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "bytes": 5111,
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "bytes": 2175,
+      "sha256": "20916e98d5097ba8f413a67cf603dc7089f69849f09b9db5f8ab11a408957ec8"
+    },
+    {
+      "path": "src/native_cube_texture_pool_allocate.cpp",
+      "bytes": 6526,
+      "sha256": "8c59a908593c2f2eb4c26182ebff757907f49a91e6d59337ed9e263f39d393f7"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 6001,
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "docs/NATIVE_LOGICAL_TEXTURE_NAMED_BASE.md",
+      "bytes": 10087,
+      "sha256": "6f8efb32caff78d924c7a4780634ac403dd75a2abe351839a0d9227b304ccf52"
+    },
+    {
+      "path": "docs/TEXTURE_STREAM_LIFETIME.md",
+      "bytes": 11566,
+      "sha256": "9ad4171d3e2b94f4a6598e6f70dcdf7131a53118b06281000dc2125725de72d3"
+    },
+    {
+      "path": "docs/GENERIC_RESET_RESOURCES.md",
+      "bytes": 8826,
+      "sha256": "aa348a16f95c3b3d830f642849b33221e721a06226fb53f8dad45f38644a3288"
+    },
+    {
+      "path": "docs/NATIVE_TEXTURE_POOL_GLOBAL_STARTUP_NEXT.md",
+      "bytes": 12164,
+      "sha256": "87e1854895bd847893b584e91749d22d85dc17adf98f1983751298382986f4bb"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 55606,
+      "sha256": "61af8bf3c2ff60acb6af58494c9d287b8fc6613ecd8cd5de3c0cee668c787486"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/capture_cube_owner_next.py",
+      "bytes": 8138,
+      "sha256": "eef2bc7ffe58bce5a77d742761f9e2560324c45600e82dd546b36131113d89f6"
+    },
+    {
+      "path": "local/finalize_cube_owner_next.py",
+      "bytes": 15203,
+      "sha256": "b1c4236e231073915f9ab5d629678a7d151a1cfbf08b9a35e6a6c2c5b9e9ff9d"
+    },
+    {
+      "path": "docs/NATIVE_CUBE_TEXTURE_OWNER_NEXT.md",
+      "bytes": 14076,
+      "sha256": "bc689fdf35943a4c45102ab5a396899d789aec9f63ad07a38fbcce24511ab5d2"
+    }
+  ],
+  "SDK": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+      "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+      "lines": [
+        1378,
+        1404
+      ],
+      "excerpt": "DECLARE_INTERFACE_(IDirect3DCubeTexture9, IDirect3DBaseTexture9)\n{\n    /*** IUnknown methods ***/\n    STDMETHOD(QueryInterface)(THIS_ REFIID riid, void** ppvObj) PURE;\n    STDMETHOD_(ULONG,AddRef)(THIS) PURE;\n    STDMETHOD_(ULONG,Release)(THIS) PURE;\n\n    /*** IDirect3DBaseTexture9 methods ***/\n    STDMETHOD(GetDevice)(THIS_ IDirect3DDevice9** ppDevice) PURE;\n    STDMETHOD(SetPrivateData)(THIS_ REFGUID refguid,CONST void* pData,DWORD SizeOfData,DWORD Flags) PURE;\n    STDMETHOD(GetPrivateData)(THIS_ REFGUID refguid,void* pData,DWORD* pSizeOfData) PURE;\n    STDMETHOD(FreePrivateData)(THIS_ REFGUID refguid) PURE;\n    STDMETHOD_(DWORD, SetPriority)(THIS_ DWORD PriorityNew) PURE;\n    STDMETHOD_(DWORD, GetPriority)(THIS) PURE;\n    STDMETHOD_(void, PreLoad)(THIS) PURE;\n    STDMETHOD_(D3DRESOURCETYPE, GetType)(THIS) PURE;\n    STDMETHOD_(DWORD, SetLOD)(THIS_ DWORD LODNew) PURE;\n    STDMETHOD_(DWORD, GetLOD)(THIS) PURE;\n    STDMETHOD_(DWORD, GetLevelCount)(THIS) PURE;\n    STDMETHOD(SetAutoGenFilterType)(THIS_ D3DTEXTUREFILTERTYPE FilterType) PURE;\n    STDMETHOD_(D3DTEXTUREFILTERTYPE, GetAutoGenFilterType)(THIS) PURE;\n    STDMETHOD_(void, GenerateMipSubLevels)(THIS) PURE;\n    STDMETHOD(GetLevelDesc)(THIS_ UINT Level,D3DSURFACE_DESC *pDesc) PURE;\n    STDMETHOD(GetCubeMapSurface)(THIS_ D3DCUBEMAP_FACES FaceType,UINT Level,IDirect3DSurface9** ppCubeMapSurface) PURE;\n    STDMETHOD(LockRect)(THIS_ D3DCUBEMAP_FACES FaceType,UINT Level,D3DLOCKED_RECT* pLockedRect,CONST RECT* pRect,DWORD Flags) PURE;\n    STDMETHOD(UnlockRect)(THIS_ D3DCUBEMAP_FACES FaceType,UINT Level) PURE;\n    STDMETHOD(AddDirtyRect)(THIS_ D3DCUBEMAP_FACES FaceType,CONST RECT* pDirtyRect) PURE;"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9types.h",
+      "sha256": "ce75dc368d5f37506ada4c32062a96ab4d4894fead5d21ad5844fc9f0a2e62c2",
+      "lines": [
+        1734,
+        1745
+      ],
+      "excerpt": "typedef struct _D3DSURFACE_DESC\n{\n    D3DFORMAT           Format;\n    D3DRESOURCETYPE     Type;\n    DWORD               Usage;\n    D3DPOOL             Pool;\n\n    D3DMULTISAMPLE_TYPE MultiSampleType;\n    DWORD               MultiSampleQuality;\n    UINT                Width;\n    UINT                Height;\n} D3DSURFACE_DESC;"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/cube_owner_next_live_00b34020.txt",
+      "sha256": "0fe89f1fbc889f3208b3a8469abdaba16a5b866aa0a21b8fc19673c9bd605e09",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b34020",
+        "--length",
+        "71"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b34090.txt",
+      "sha256": "3013121b10a5917f87ef5f7579acc1635523fb94f6b699f727afa440dd64c93a",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b34090",
+        "--length",
+        "5"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b3d650.txt",
+      "sha256": "78fc1379b627090ab0f7e1340250ac64c92251eda02f768676375a06c4098508",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b3d650",
+        "--length",
+        "122"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b3ead0.txt",
+      "sha256": "eebf8c1aa83af82c1ae14baaa5844c93d0179ecfc5caf6ec6c3e1d3dbcfb5617",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b3ead0",
+        "--length",
+        "159"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b3f410.txt",
+      "sha256": "1d6ae898b422aa29e276ec0bd0c88ec84927e985f78e510da286fd21a56fd493",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b3f410",
+        "--length",
+        "32"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00cbed60.txt",
+      "sha256": "44db4b204a881e8b72a550b7fa6b81005cbaf80154d649f58d09caf08d8a21b3",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cbed60",
+        "--length",
+        "8"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00cbed68.txt",
+      "sha256": "6eba8fa93dab1dd0c3470835b7a5a49e3aa74a17d22975fbdf4f47c7d32ca57f",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cbed68",
+        "--length",
+        "10"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00df7568.txt",
+      "sha256": "5b66c51837da2b77436d0badb1e860ab27d46480bc4e8befb0269638bc632a29",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df7568",
+        "--length",
+        "44"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00cbedc0.txt",
+      "sha256": "d90b07d6404643e0bc4d8d7ff01438988b74de0747e59495694cb7ed2a3c7d21",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cbedc0",
+        "--length",
+        "8"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00cbedc8.txt",
+      "sha256": "58d815f914ebf69a46c9da1dcb3613e6d1580dbbc3084dd1c87400e7700baf39",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cbedc8",
+        "--length",
+        "10"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00df75f4.txt",
+      "sha256": "d69698ccb366c1aa347b7dc0c613027e3e1043918c3b21107ba1747f4a68f78d",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df75f4",
+        "--length",
+        "44"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b33e40.txt",
+      "sha256": "69941d66f2a21c6b83a298a618b79feda44a1eee35a7d42bf6781c3d4dd8a73e",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b33e40",
+        "--length",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b33f50.txt",
+      "sha256": "23d4447d420934d3ecc774b50433b61e006cf4bb45902869aad3868ec8215791",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b33f50",
+        "--length",
+        "103"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00cbe090.txt",
+      "sha256": "62c4181ec17b615417f32bdbb335e3d508a51c5a356477b2c3024e3aa00effc0",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cbe090",
+        "--length",
+        "18"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00df6904.txt",
+      "sha256": "22236303da3826ca1bdc1cdea230d55cbbd8ed91763cb540e0519a35df69dc42",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00df6904",
+        "--length",
+        "44"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00a81880.txt",
+      "sha256": "6199b8c08c07312a09bebf277ca96c6375607289d52d16b1529398f0e0d93a94",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00a81880",
+        "--length",
+        "5"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00bd30f0.txt",
+      "sha256": "6d4fea5ad462e63418de401a96dbc198bda2fcc5360151283d74204fa50615de",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bd30f0",
+        "--length",
+        "7"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00bd30e0.txt",
+      "sha256": "ec3aac86bbc27a605e99a56425c37373af1323cb70bcfca407f1d17afa1ebbce",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bd30e0",
+        "--length",
+        "14"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b32250.txt",
+      "sha256": "c80b3240db298a0ffe46ae4c074a3b30300cc450a188a34b2ecfd34321de2332",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b32250",
+        "--length",
+        "240"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_008d4440.txt",
+      "sha256": "fd4f64b0a2c7002f01b5966ba8e14d09cd9e7285915395c9b63b94e5f18ac45a",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "008d4440",
+        "--length",
+        "45"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_008d4470.txt",
+      "sha256": "d67ae1c89eead2119b8c19b7ec7734bd3c0d4596f6147863f50a8ff434b3c3a6",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "008d4470",
+        "--length",
+        "66"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00bef9c0.txt",
+      "sha256": "60fd4b4a8729542f15d55adfea0cfd84c47fd5a9a0f3f043240d493a4294c48d",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bef9c0",
+        "--length",
+        "118"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00bb8f90.txt",
+      "sha256": "b637b39f4502a46f74fe357d11e12c475ca2ec0711dd9a257ef64742d90ab3ee",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bb8f90",
+        "--length",
+        "30"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00bf65ac.txt",
+      "sha256": "9e76e3d908a16c7f4e76267eb94a6a6e45f3e8b95138946c3ee8fec466d3c0cc",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bf65ac",
+        "--length",
+        "5"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00bf6b43.txt",
+      "sha256": "119943d4e8bb4b2a17099ba0e3eccaff56da5d4f8abc43d87955bf886f7dd098",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bf6b43",
+        "--length",
+        "54"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b3d940.txt",
+      "sha256": "b42e7a5259afc1432e7c815fcaad1d1231a6b54c1925cdf836bd31dd7e377c21",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b3d940",
+        "--length",
+        "101"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00b3dce0.txt",
+      "sha256": "bdf0b71103b759ad6fae8685bda7e9fb63b30c2ef28f06700a08f3059ae6a9f2",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b3dce0",
+        "--length",
+        "12"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00d61870.txt",
+      "sha256": "8b1278e8ddd113fa2cd068be17ad1cc60eda9502c626cb1d4897cf86627ecd3f",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00d61870",
+        "--length",
+        "64"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00d5f280.txt",
+      "sha256": "f5d16d023fa1a31083a0098c4fc015b7c96461b86d0461f41a95b08949a1cd63",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00d5f280",
+        "--length",
+        "64"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00d5f114.txt",
+      "sha256": "66d7f17d9d4958390d1a97d5b6c85a3fac4ef3ba9416fc92b7c44fa7bf3d3f72",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00d5f114",
+        "--length",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00d15ad8.txt",
+      "sha256": "535336399cfbedb13525861ed7345108f39376ada102ac88a64e1f5893835eaf",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00d15ad8",
+        "--length",
+        "8"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00d642c0.txt",
+      "sha256": "5b03ef0b871460337e276042fb2f16ff3969345b603ce20b4cf8f9339ea02717",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00d642c0",
+        "--length",
+        "8"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_0108d6e8.txt",
+      "sha256": "109388422d08fc05c8b656c416daae152dc6d704111b3d3a5cff6838ae24b611",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "0108d6e8",
+        "--length",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00f8d394.txt",
+      "sha256": "d5a345538d91b963bd354a9b5158cb0ceb0081d1b26a5dd45ae178bb8b46b1a8",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00f8d394",
+        "--length",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_0108db70.txt",
+      "sha256": "54897fc948c22806efd7614aed2acfe0f6341fff95a5458b5bf21169eccc72cd",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "0108db70",
+        "--length",
+        "56"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_live_00ce2220.txt",
+      "sha256": "102b23f97d815a25c26cb3db60e373da13c5fc4b1251514ab112975d2a379ee5",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ce2220",
+        "--length",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b34020.txt",
+      "sha256": "bfc4541a82879ad6458be667907f58047a64f88e88c768f1eeb074319637f1fc",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b34020",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b34090.txt",
+      "sha256": "6129dd6be8876c4e458df711fa475fb65ddeea173f288b56b6e43658b9f2a8ed",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b34090",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b3d650.txt",
+      "sha256": "7d9baa36a77035b00a7496b93eb1aec738fd188d87ec9fff35ede0c13a45722f",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3d650",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b3ead0.txt",
+      "sha256": "7382e530dd1236e54d1a9c8199455323ae8aa74e03fbd21371ea70fd747df134",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3ead0",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b3f410.txt",
+      "sha256": "122b523c10654775fa1fa8969e95c4e41f9f35db8c14ab45d7680517bf8244de",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3f410",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b33e40.txt",
+      "sha256": "632627f8255393a64061e607f29cc55020a16d2e64b67e1fee0298aa2c4d5396",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b33e40",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b33f50.txt",
+      "sha256": "93d18990ba270467601ea13eadda3b5a15f49fd32679e999c3c22c17666208d7",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b33f50",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b32250.txt",
+      "sha256": "9304df2808fffaa1483aef3392693ca6a357e20ab4a390b03236bebf7ae72278",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b32250",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_008d4440.txt",
+      "sha256": "81867c0855b04d9330bca1d61a58cb9f9641d045be5187caa91d9e46affa5e9d",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "008d4440",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_008d4470.txt",
+      "sha256": "913360b09e1a8fff9cd67b5e152ecd1216bd939fd9e83dae7ef5e8483b4abd86",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "008d4470",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00bef9c0.txt",
+      "sha256": "48abb126d8cc5512b83521b9d336dd670d1c722472eab81aa39755debf0da501",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00bef9c0",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00bb8f90.txt",
+      "sha256": "a153eb54d70c0442ab53546e51d741564aeb72b3ed1fce36eccc50983f766de1",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00bb8f90",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b3d940.txt",
+      "sha256": "6e3cd529f299b751bd61d2135a65c1790c5f6a730d1c6cc64fbefcba65393d0e",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3d940",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b3dce0.txt",
+      "sha256": "018e514bc7d07c87a0efa4ee5f2873baf49d44a542881ebf30e1410ac5b46eeb",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3dce0",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b3ced0.txt",
+      "sha256": "5a9e506c7b8820a374ee7cec5dc1d8538fb3c74af0be50066ede2a27e6b543f0",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3ced0",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b34280.txt",
+      "sha256": "2523a3164dbf66bc32786e44b07d3fe55f0b4a4dab6d4d02e7ef5464b4722185",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b34280",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b2a380.txt",
+      "sha256": "520474a45baad851df9e89b67c4a38e886573a80f2a067517016bd0d83e59aa9",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b2a380",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_lookup_00b2c2d0.txt",
+      "sha256": "e7f357e3a01079b6b8ee38ab87e80025e907cb08f7ba48579e0ed953366b0a31",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b2c2d0",
+        "--limit",
+        "4"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_prototype_candidates.txt",
+      "sha256": "781590626a3e0b5e5e33ac23e7687ba812f0a7944f8980c1d8583de11a9bbe7b",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00b34020",
+        "00b34090",
+        "00b3d650",
+        "00b3ead0",
+        "00b3f410",
+        "--brief"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_flow_candidates.txt",
+      "sha256": "8030fa6fed5ea3e6070875c7241f89ab2c99bbb92b31fd3a98bff4ab39da70b6",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "flow",
+        "00b34020",
+        "00b34090",
+        "00b3d650",
+        "00b3ead0",
+        "00b3f410",
+        "--limit",
+        "20"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_flow_returning_dependencies.txt",
+      "sha256": "0cfc49d78459a81183d8d1b420b48663aa641a20174693c94f5f3bc5d1aecd99",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "flow",
+        "00b33f50",
+        "008d4440",
+        "008d4470",
+        "00bef9c0",
+        "00bb8f90",
+        "00b3d940",
+        "--limit",
+        "20"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00b34020.txt",
+      "sha256": "bcd6a90d5cf677b89cb7525f2fb2782e2df70e753d4a3a32ce030802502948dd",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b34020",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00b34090.txt",
+      "sha256": "f0f96a606c646f64710bb6b3154d92d99b281335e40218586da20ca747f49ae6",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b34090",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00b3d650.txt",
+      "sha256": "be5119ad645a01547f765bbbbe8c7cda660cddcdad456895c645b2d96c55539c",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b3d650",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00b3ead0.txt",
+      "sha256": "981a750cccce4556e597052693be0bef6a278cf3cc3c03c5cae86dc566643469",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b3ead0",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00b3f410.txt",
+      "sha256": "90da3516f98bfaed5faabef58481a2e60877deaa1c011442df567b3d209973bf",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b3f410",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00cbed60.txt",
+      "sha256": "75d11029e92ecb839bbfcebed63d0f3235d7868dff9791e739b60565af465eed",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00cbed60",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00cbedc0.txt",
+      "sha256": "46476e79f7cdeb009826cd3d66cd1a571fd295e723654459083d1c3af448b8ac",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00cbedc0",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00b33f50.txt",
+      "sha256": "6a481b5116fd0b4ea02b308f25243f1a897eecdee920db88dd743fc50d109f9e",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b33f50",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_008d4440.txt",
+      "sha256": "5ec86e4823dd9a01b58e792d716aae092b8850e27566e4e4b58960caa6992ebe",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "008d4440",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_008d4470.txt",
+      "sha256": "e06c328366750599dfd9a97876d2f6d272eeb2bf4a36f99a58c4c29aa1f17e74",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "008d4470",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_asm_00bb8f90.txt",
+      "sha256": "a411f827b3bbbf8c28ae499e330b41647ff41af9dc007739ddd006d3d5766440",
+      "command": [
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00bb8f90",
+        "--limit",
+        "100"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_raw_00cbed68.txt",
+      "sha256": "325f2e0df4b9ddef774c4f6fcc04eb257544220a6083e37232256f2621ec67a7",
+      "command": [
+        "tools/bsp.py",
+        "disasm-raw",
+        "00cbed68",
+        "--length",
+        "10",
+        "--lines",
+        "3"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_raw_00cbedc8.txt",
+      "sha256": "d72055eb3df057f346fd5901cb2282b006e981f06d849cb01ea3982c664b5acb",
+      "command": [
+        "tools/bsp.py",
+        "disasm-raw",
+        "00cbedc8",
+        "--length",
+        "10",
+        "--lines",
+        "3"
+      ]
+    },
+    {
+      "path": "local/cube_owner_next_final_main_00b3d940.txt",
+      "sha256": "02447e78fa56c7c4cf2e4907504bdbd46ae00198b32e0a580131b7680fde5b7f",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3d940",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    },
+    {
+      "path": "local/cube_owner_next_final_main_00b3dce0.txt",
+      "sha256": "bdd407d87e28680ede6771a2389f189d34d0ae2c77d196f6662170e05c20fce5",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b3dce0",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    },
+    {
+      "path": "local/cube_owner_next_final_main_00b33f50.txt",
+      "sha256": "3ea5e8f835505ca55e7e60b2a7a98005475dcb30505d1568f25e394f8efa38db",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b33f50",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    },
+    {
+      "path": "local/cube_owner_next_final_main_00b33e40.txt",
+      "sha256": "70ea083275992f74f8380cf0253be2498453bf9b1c2d6f9f02f6b212f48745c9",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b33e40",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    },
+    {
+      "path": "local/cube_owner_next_final_main_00b32250.txt",
+      "sha256": "77ed25eb709c4c429a79d2a953eff5da4155a4e2993fcbb08a57f21ddc417053",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00b32250",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    },
+    {
+      "path": "local/cube_owner_next_final_main_008d4470.txt",
+      "sha256": "913360b09e1a8fff9cd67b5e152ecd1216bd939fd9e83dae7ef5e8483b4abd86",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "008d4470",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    },
+    {
+      "path": "local/cube_owner_next_final_main_00bb8f90.txt",
+      "sha256": "a153eb54d70c0442ab53546e51d741564aeb72b3ed1fce36eccc50983f766de1",
+      "command": [
+        "tools/bsp.py",
+        "lookup",
+        "00bb8f90",
+        "--limit",
+        "3"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile"
+    }
+  ],
+  "owned_deliverables": [
+    "docs/NATIVE_CUBE_TEXTURE_OWNER_NEXT.md",
+    "reports/native_cube_texture_owner_next.json"
+  ],
+  "final_primary_provider_verification": {
+    "main_commit": "4cc7123edfb9414e0ccc73192bade7b2e1f79663",
+    "providers": [
+      {
+        "address": "00b3d940",
+        "lookup": "00b3d940  BSP_CubeTexturePool_ReturnSlot  thunk=no  export=exports/bsp/functions/00b3d940\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_CubeTexturePool_ReturnSlot - Complete actual raw return. Real section/depth; slot30 indexes current slab. Signed low32 slot-minus-slab displacement divided by52 toward zero and truncated to WORD. Index store uses old count, increment rereads current count after possible alias. Unsigned earliest minimum; depth decrement precedes\nreconstruction: function return_native_cube_texture_slot_00b3d940 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_cube_texture_pool_allocate.cpp\ncallers (2): 00b3dce0 BSP_CubeTexturePool_Return, 00b3f410 FUN_00b3f410\ncallees (0): \n"
+      },
+      {
+        "address": "00b3dce0",
+        "lookup": "00b3dce0  BSP_CubeTexturePool_Return  thunk=no  export=exports/bsp/functions/00b3dce0\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_CubeTexturePool_Return - Complete canonical108DB70 raw return adapter. Native ECX raw slot passed to B3D940 on actual pool. Used by constructor unwind; no owner destructor. Source explicit args preserve raw slot then actual pool. 39,664 matching DWORDs/59 events plus full1,732 slab bytes;11 fresh live/PE spans and runtime p\nreconstruction: function return_native_cube_texture_00b3dce0 status=complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked source=src/native_cube_texture_pool_allocate.cpp\ncallers (2): 00cbd388 Unwind@00cbd388, 00cbd530 Unwind@00cbd530\ncallees (1): 00b3d940 BSP_CubeTexturePool_ReturnSlot\n"
+      },
+      {
+        "address": "00b33f50",
+        "lookup": "00b33f50  BSP_LogicalTextureBase_DestroyNamed  thunk=no  export=exports/bsp/functions/00b33f50\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_LogicalTextureBase_DestroyNamed - D5F1F4 profile, captured current name release without header clearing, complete BD30F0 base action normally or in native unwind. Actual owner/name and shared serial108D6E8, fullcurrentreads/rawCOM/flags, currentname thenbase unwind; borrowed initializedstringsizedpool. DirectBF7680 copy usesmemmove \nreconstruction: function destroy_native_logical_texture_named_base_00b33f50 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_logical_texture_named_base.cpp\ncallers (10): 00b34010 BSP_LogicalTextureBase_UnwindNamed, 00b34090 FUN_00b34090, 00b340f0 FUN_00b340f0 ...\ncallees (3): 00419cc0 BSP_SizedStoragePool_GetSingleton, 00bd1510 BSP_SizedStoragePool_ReturnBlock, 00bd30f0 BSP_RefCounted_DestroyBase\ndocs (2): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp); docs/TEXTURE_STREAM_LIFETIME.md (Texture stream lifetime and D3DX handoff)\n"
+      },
+      {
+        "address": "00b33e40",
+        "lookup": "00b33e40  BSP_LogicalTextureBase_GetNameAddress  thunk=no  export=exports/bsp/functions/00b33e40\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\ntag: trivial_body (high, rename) TRIV_body_00b33e40\nledger name: BSP_LogicalTextureBase_GetNameAddress - Full four-byte LEA EAX,[ECX+8]; RET. No owner/name dereference, DWORD wrap retained. Actual owner/name and shared serial108D6E8, fullcurrentreads/rawCOM/flags, currentname thenbase unwind; borrowed initializedstringsizedpool. DirectBF7680 copy usesmemmove from full869byteoverlapbody evidence; origin\nreconstruction: function native_logical_texture_name_address_00b33e40 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_logical_texture_named_base.cpp\ncallers (16): 00711510 FUN_00711510, 00711a20 FUN_00711a20, 00ab4ce0 FUN_00ab4ce0 ...\ncallees (0): \ndocs (1): docs/APP_INIT_WORLD_EFFECTS.md (World-content phase of cSkeletonAppMidway::Init)\n"
+      },
+      {
+        "address": "00b32250",
+        "lookup": "00b32250  BSP_D3D9Renderer_NotifyTextureNameRemoval  thunk=no  export=exports/bsp/functions/00b32250\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_D3D9Renderer_NotifyTextureNameRemoval - Full240byteB32250. CapturedECXreceiver separatefromguardglobalrenderer, originalname passedtoactualcontainer+1A74 afterrealtemporarycopy/lowercase. Normalfreecapturedpostresizepointer/currentlength; unwindCURRENTnameheader. NativeFH3states0/1,noCatchmaps; armedguards plusSEHsearch-time terminationma\nreconstruction: function notify_native_renderer_texture_name_removal_00b32250 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_renderer_texture_name_notification.cpp\ncallers (0): \ncallees (8): 00419cc0 BSP_SizedStoragePool_GetSingleton, 0041dd40 BSP_NativeString_Resize, 004bcc00 BSP_String_LowercaseAscii ...\ndocs (1): docs/GENERIC_RESET_RESOURCES.md (Generic reset resources are concrete texture wrapp)\n"
+      },
+      {
+        "address": "008d4470",
+        "lookup": "008d4470  BSP_MemoryBacking_DeleteScalar  thunk=no  export=exports/bsp/functions/008d4470\nsegment 56 [0088b410-008dcd40] 716 candidates wave 2  keywords: luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail, targetindicator\nledger name: BSP_MemoryBacking_DeleteScalar - Preserve compiler-generated name. Complete66-byte body: free bytes, decrement0109db98, subtract storedlength from0109db9c, base cleanup, optional storagefree(flags bit0), EAX original object, RET4. Tail008d4482..008d44b1 exists after first free. Check per-instruction flow override before repair; cal\nreconstruction: function delete_native_memory_backing_008d4470 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_retained_memory_owners.cpp\ncallers (0): \ncallees (2): 00bd30f0 BSP_RefCounted_DestroyBase, 00bf65ac _free\ndocs (3): docs/MEMORY_STREAM_HANDOFF.md (Native memory stream and backing ownership); docs/MEMORY_STREAM_IMPLEMENTATION.md (Typed memory stream implementation); docs/STREAM_CONVERSION_LIFETIME.md (Stream conversion lifetime and empty physical sour)\n"
+      },
+      {
+        "address": "00bb8f90",
+        "lookup": "00bb8f90  BSP_MemoryStream_DeleteScalar  thunk=no  export=exports/bsp/functions/00bb8f90\nsegment 93 [00bb3db0-00bbddd0] 167 candidates wave 3  keywords: mpak, deviceid, shorewavetexturesource2, shorewavetexturesource1, shorewavetexturesource0, open, oceanheightmap, msar\nledger name: BSP_MemoryStream_DeleteScalar - Preserve compiler-generated name. Call00bef9c0; free wrapper only when flags bit0 set; EAX original wrapper on both paths; RET4. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX memory wrapper; stack flags; E\nreconstruction: function delete_native_memory_stream_00bb8f90 status=complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked source=src/native_retained_memory_owners.cpp\ncallers (0): \ncallees (2): 00bef9c0 BSP_MemoryStream_Destroy, 00bf65ac _free\ndocs (3): docs/MEMORY_STREAM_HANDOFF.md (Native memory stream and backing ownership); docs/MEMORY_STREAM_IMPLEMENTATION.md (Typed memory stream implementation); docs/STREAM_CONVERSION_LIFETIME.md (Stream conversion lifetime and empty physical sour)\n"
+      }
+    ],
+    "note": "Finalcurrentmainlookup supersedes olderproviderledgergaps recordedininitialcheckoutlookups.",
+    "all_pinned_source_headers_match_main": true,
+    "frozen_base2_source_in_progress": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_cube_texture_base.hpp",
+        "bytes": 1382,
+        "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb",
+        "status": "primarysourceexists_frozenAPI_buildfixturepending"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_cube_texture_base.cpp",
+        "bytes": 1498,
+        "sha256": "ca328c6cec63571d524b50bf8bbc013c0d305ff8ddfad92590914abe88634309",
+        "status": "primarysourceexists_frozenAPI_buildfixturepending"
+      }
+    ]
+  },
+  "entry_contracts": [
+    {
+      "address": "00b34020",
+      "proposed_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280",
+      "bytes": 71,
+      "abi": "ECX actual owner; stack actual cube COM, flags; EAX original owner; RET8",
+      "complete_reconstruction_record": false,
+      "current_named_state": "name exists; numeric serial projection is not whole native body",
+      "native_exception_frame": false,
+      "order": [
+        "profile CEB130",
+        "profile D5F1F4",
+        "count+4=1",
+        "name length+8=0",
+        "name data+C=0",
+        "mips+14=0",
+        "COM+10=input",
+        "flags+1C=input",
+        "read actual108D6E8",
+        "store captured serial to owner+20",
+        "increment current actual108D6E8 modulo2^32",
+        "profile D5F280",
+        "return owner"
+      ],
+      "unchanged_offsets": [
+        "18",
+        "24",
+        "28",
+        "2c",
+        "30"
+      ],
+      "direct_dependencies": []
+    },
+    {
+      "address": "00b34090",
+      "proposed_name": "BSP_LogicalTextureBase_UnwindUnnamed_D5F280",
+      "bytes": 5,
+      "abi": "ECX actual owner; complete JMP toB33F50; target RET with no semantic result",
+      "complete_reconstruction_record": false,
+      "native_exception_frame": false,
+      "direct_dependencies": [
+        "00b33f50"
+      ],
+      "note": "Distinct entry from completeB34010; do not omit from ledger or fixture."
+    },
+    {
+      "address": "00b3d650",
+      "proposed_name": "BSP_CubeTexture_ConstructUnnamed",
+      "bytes": 122,
+      "abi": "ECX actual30h owner in34h pool slot; stack actualIDirect3DCubeTexture9*, flags; EAX original owner; RET8",
+      "complete_reconstruction_record": false,
+      "direct_dependencies": [
+        "00b34020"
+      ],
+      "indirect_dependencies": [
+        "input current COM slot44h GetLevelDesc stdcall(input,0,D3DSURFACE_DESC*)",
+        "input freshly reloaded COM slot34h GetLevelCount stdcall(input)"
+      ],
+      "unwind_dependencies": [
+        "00cbed60",
+        "00b34090",
+        "00b33f50"
+      ],
+      "order": [
+        "complete unnamed base",
+        "retained source+2C=0",
+        "profileD61870",
+        "arm state0",
+        "current input COM GetLevelDesc(level0); ignoreHRESULT",
+        "read descriptorWidth+18 ->owner+24",
+        "reload input current COM vtable; GetLevelCount",
+        "read descriptorFormat+0 ->owner+18",
+        "store captured return ->owner+14",
+        "return owner"
+      ],
+      "descriptor": "32-byte native D3DSURFACE_DESC stack storage, uninitialized before COM write; no zeroing or HRESULT guard",
+      "receiver_capture": "EDI keeps original input COM for both calls, independent of callback changes to owner+10",
+      "unwind": "state0 invokes only B34090/B33F50; no COM release, retained release retry, raw pool return, or serial rollback"
+    },
+    {
+      "address": "00b3ead0",
+      "proposed_name": "BSP_CubeTexture_Destroy",
+      "bytes": 159,
+      "abi": "ECX actual owner; no stack arguments; RET; no semantic result",
+      "complete_reconstruction_record": false,
+      "direct_dependencies": [
+        "00b33e40",
+        "00b33f50"
+      ],
+      "indirect_dependencies": [
+        "InterlockedDecrement IAT00ce2220",
+        "captured source current vtable slot0 at reference transition tozero",
+        "captured renderer current table slot6Ch with ECX capturedreceiver/name stack",
+        "current owner+10 COM slot8 Release stdcall(currentCOM)"
+      ],
+      "unwind_dependencies": [
+        "00cbedc0",
+        "00b34090",
+        "00b33f50"
+      ],
+      "order": [
+        "profileD61870",
+        "capture retainedsource+2C",
+        "armstate0",
+        "ifsource decrementrealcount; zero->currentvirtualslot0; then clearowner+2C",
+        "captureactualrendererF8D394 andcurrenttable",
+        "B33E40 returnsowner+8",
+        "read capturedtable+6C; callcapturedreceiver/name",
+        "loadcurrentowner+10; ifnonnull currentCOMRelease then clearowner+10",
+        "disarmstate=-1",
+        "B33F50 currentname/basecleanup",
+        "restoreSEH/RET"
+      ],
+      "excluded_unobserved_actions": [
+        "B27D40 generic registry removal",
+        "resource support singleton",
+        "COM diagnostic AddRef/Release pair",
+        "surface cache",
+        "tracking counter"
+      ],
+      "unwind": "state0 invokes only B34090/B33F50; source or COM release is not retried and clears after throwing calls do not occur"
+    },
+    {
+      "address": "00b3f410",
+      "proposed_name": "BSP_CubeTexture_DeleteScalar",
+      "bytes": 32,
+      "abi": "ECX owner; stack flags; EAX original owner; RET4",
+      "complete_reconstruction_record": false,
+      "native_exception_frame": false,
+      "direct_dependencies": [
+        "00b3ead0",
+        "00b3d940"
+      ],
+      "order": [
+        "complete cube destructor",
+        "if flags bit0 return actual rawslot viaB3D940 with ECX canonical108DB70",
+        "return original potentially reusable address"
+      ],
+      "unwind": "a throwing destructor prevents pool return"
+    }
+  ],
+  "owner_layout": {
+    "payload_bytes": 48,
+    "pool_slot_bytes": 52,
+    "pool_index_offset": 48,
+    "00": "profile",
+    "04": "intrusive reference count",
+    "08": "name length",
+    "0c": "name data",
+    "10": "COM pointer",
+    "14": "mip count",
+    "18": "D3DFORMAT",
+    "1c": "flags",
+    "20": "shared serial old value",
+    "24": "D3DSURFACE_DESC.Width/cube edge length",
+    "28": "untouched, meaning not established here",
+    "2c": "retained logical memory source",
+    "30": "pool slab index preserved"
+  },
+  "returning_free_tail_evidence": [
+    {
+      "entry": "008d4440",
+      "call": "008d444d",
+      "resumes": "008d4452",
+      "end_exclusive": "008d446d",
+      "meaning": "actual CRT free then counters/currentlength and base tail"
+    },
+    {
+      "entry": "008d4470",
+      "call": "008d447d",
+      "resumes": "008d4482",
+      "end_exclusive": "008d44b2",
+      "meaning": "free data then counters/base/conditional ownerfree/return"
+    },
+    {
+      "entry": "008d4470",
+      "call": "008d44a4",
+      "resumes": "008d44a9",
+      "end_exclusive": "008d44b2",
+      "meaning": "optional ownerfree then stackrestore/EAX original/RET4"
+    },
+    {
+      "entry": "00bb8f90",
+      "call": "00bb8fa0",
+      "resumes": "00bb8fa5",
+      "end_exclusive": "00bb8fae",
+      "meaning": "optional streamowner free then EAX original/RET4"
+    },
+    {
+      "entry": "00b33f50",
+      "call": "00b33f93",
+      "resumes": "00b33f98",
+      "end_exclusive": "00b33fb7",
+      "meaning": "real stringpool return then state=-1/base/SEH restoration/RET"
+    }
+  ],
+  "exact_existing_providers": [
+    {
+      "source": "src/native_logical_texture_named_base.cpp",
+      "header": "include/bsp/native_logical_texture_named_base.hpp",
+      "symbols": [
+        "native_logical_texture_name_address_00b33e40",
+        "destroy_native_logical_texture_named_base_00b33f50"
+      ],
+      "storage": "actual owner/name through NativeStringStorage backed by existing actual shared pool; actual shared serial reference reused by new unnamedconstructor"
+    },
+    {
+      "source": "src/native_retained_memory_owners.cpp",
+      "header": "include/bsp/native_retained_memory_owners.hpp",
+      "symbols": [
+        "delete_native_memory_backing_008d4470",
+        "delete_native_memory_stream_00bb8f90"
+      ],
+      "storage": "NativeRetainedMemoryOwnerContext actual counters109DB98/109DB9C and current profilesD15AD8/D642C0; real CRT alloc/free and Win32 atomics; preserve BD30E0 current slot4 flag1dispatch"
+    },
+    {
+      "source": "src/native_renderer_texture_name_notification.cpp",
+      "header": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "symbols": [
+        "notify_native_renderer_texture_name_removal_00b32250"
+      ],
+      "storage": "NativeRendererTextureNameNotificationContext; actual renderer publicationF8D394/string pool/synchronization/lifetime/accounting tables; captured receiver remains independent of guarded global rereads"
+    },
+    {
+      "source": "src/native_cube_texture_pool_allocate.cpp",
+      "header": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "symbols": [
+        "return_native_cube_texture_slot_00b3d940",
+        "return_native_cube_texture_00b3dce0"
+      ],
+      "storage": "Actual initialized canonical38h pool108DB70, actual34h slots/6C4h slabs and Win32 critical section. No replacementpool or ownerpayloadinitialization.",
+      "ledger_snapshot_note": "Initialcheckoutlookup predatesintegration; finalmainlookup confirms complete native actualstorageprimarylibrary/fixture/strictWin32 records forB3D940/B3DCE0, namedandexported. Source/header hashesmatchmain."
+    },
+    {
+      "source": "src/native_texture_2d_owner.cpp",
+      "header": "include/bsp/native_texture_2d_owner.hpp",
+      "role": "existing actual current-table and cleanup search implementation pattern only; do not call its larger destructor as cubeimplementation"
+    }
+  ],
+  "proposed_disjoint_packets": [
+    {
+      "id": "native_cube_texture_base2",
+      "addresses": [
+        "00b34020",
+        "00b34090"
+      ],
+      "bytes": 76,
+      "ready": true,
+      "dependencies": [
+        "complete actual native_logical_texture_named_base and NativeStringStorage"
+      ],
+      "owned_files": [
+        "include/bsp/native_cube_texture_base.hpp",
+        "src/native_cube_texture_base.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_BASE.md",
+        "reports/native_cube_texture_base_audit.json"
+      ],
+      "integration": "primary owns CMake, Ghidra annotation/export and sharedledgers; avoid shared namedbase source edits",
+      "owner": "primary integrator",
+      "proposed_API": [
+        "void* construct_native_logical_texture_unnamed_base_00b34020(void* actual_owner, void* borrowed_com, std::uint32_t flags, std::uint32_t& actual_shared_serial_0108d6e8) noexcept",
+        "void unwind_native_logical_texture_unnamed_base_00b34090(void* actual_owner, NativeStringStorage& actual_strings)"
+      ],
+      "API_status": "Frozen byprimary; actualnative_cube_texture_base.hpp/.cpp presentinprimaryworkspace with compilation/fixturepending. Owner3mustcomposeexactsource."
+    },
+    {
+      "id": "native_cube_texture_owner3",
+      "addresses": [
+        "00b3d650",
+        "00b3ead0",
+        "00b3f410"
+      ],
+      "bytes": 313,
+      "ready": false,
+      "ready_when": "native_cube_texture_base2 integrated; existing canonicalpool return provider now completeonmain",
+      "dependencies": [
+        "native_cube_texture_base2",
+        "native_logical_texture_named_base",
+        "native_retained_memory_owners",
+        "native_renderer_texture_name_notification",
+        "native_cube_texture_pool_allocate5"
+      ],
+      "owned_files": [
+        "include/bsp/native_cube_texture_owner.hpp",
+        "src/native_cube_texture_owner.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+        "reports/native_cube_texture_owner_audit.json"
+      ],
+      "integration": "primary owns CMake, Ghidra annotation/export and sharedledgers; no overlap with active cube pool lifetime/trim/static packets"
+    }
+  ],
+  "caller_and_follow_on_boundaries": {
+    "00b2a380": "Independent factory discovery owns fullHRESULT/COM/publication/caller-FH3 analysis. Caller ofB3D650; not completeproof fromthispacket.",
+    "00b2c2d0": "Currentledger has semantic/fragments only. Its loadedcube path calls B3CED0->B34280, then retains source atowner+2C. Whole loader and named constructors are not complete or claimedhere.",
+    "00b3ced0": "Follow-on namedcube constructor candidate, currentbody129bytes; excludedfrom389bytepacketproof.",
+    "00b34280": "Follow-on namedD5F280profile constructor candidate; excludedfromthispacketproof.",
+    "other_virtual_methods": "Cube/base/reset/profiletable entries pinned only for dispatch evidence, not complete implementations."
+  },
+  "verification_limits": {
+    "fresh_live_PE_equality": true,
+    "candidate_flow_gaps": 0,
+    "selected_returning_dependency_flow_gaps": 0,
+    "implemented": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "original_caller_executed": false,
+    "native_ABI_compatible": false,
+    "game_validated": false,
+    "GPU_or_visual_validated": false,
+    "mutations": [
+      "owned discovery document and report plus ignored scratch only"
+    ],
+    "no_external_effects": "No game install, Ghidra writes, sharedledger edits, CMake edits, codechanges, or originalgameexecution.",
+    "zero_filled_data": "Pinned globals are PE/Ghidra loader preimages only; not running game state and not permission to reset native pools/renderer/serial.",
+    "determinism": "Ignored failingCOMHRESULT with unwritten descriptor fields has no established deterministic output; preserve uninitializedstorage and native readtiming."
+  }
+}

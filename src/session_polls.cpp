@@ -64,7 +64,8 @@ void apply_platform_notification_00a40110(
 }
 
 bool profile_changed_pending_00a3e3b0(const PlatformManagerFlags& flags) noexcept {
-    return flags.profile_changed && flags.async_status != kAsyncStatusPending;
+    return flags.profile_changed &&
+        flags.profile_overlapped_3c0.words[0] != kAsyncStatusPending;
 }
 
 bool invite_already_in_session_004db509(const InviteDecisionInputs& in) noexcept {

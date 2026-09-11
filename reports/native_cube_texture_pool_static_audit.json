@@ -1,0 +1,965 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_pool_static2",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "functions": [
+    {
+      "address": "00cd7b80",
+      "end_exclusive": "00cd7b96",
+      "length": 22,
+      "cpp_function": "initialize_static_native_cube_texture_pool_00cd7b80",
+      "native_abi": "No arguments; EAX actual atexit registration result; RET",
+      "proposed_name": "BSP_Static_InitializeCubeTexturePool"
+    },
+    {
+      "address": "00ce0cb0",
+      "end_exclusive": "00ce0cba",
+      "length": 10,
+      "cpp_function": "destroy_static_native_cube_texture_pool_00ce0cb0",
+      "native_abi": "No arguments; set ECX actual108DB70 and tailcall B3E5B0",
+      "proposed_name": "BSP_Static_DestroyCubeTexturePool"
+    }
+  ],
+  "source": "src/native_cube_texture_pool_static.cpp",
+  "header": "include/bsp/native_cube_texture_pool_static.hpp",
+  "native_spans": [
+    {
+      "address": "00cd7b80",
+      "length": 22,
+      "role": "static_initializer",
+      "offset": 9272192,
+      "hex": "b970db0801e80675e6ff68b00cce00e861f4f1ff59c3",
+      "sha256": "54b684c5b9a7e46bb16ab2745bb247a6d367be5ff991d41b4f7f22b6735beaba",
+      "live_PE_match": true,
+      "instructions": [
+        "00cd7b80: mov ecx, 0x108db70",
+        "00cd7b85: call 0xb3f090",
+        "00cd7b8a: push 0xce0cb0",
+        "00cd7b8f: call 0xbf6ff5",
+        "00cd7b94: pop ecx",
+        "00cd7b95: ret "
+      ]
+    },
+    {
+      "address": "00ce0cb0",
+      "length": 10,
+      "role": "static_shutdown",
+      "offset": 9309360,
+      "hex": "b970db0801e9f6d8e5ff",
+      "sha256": "c9e40648e1aefd3670551e2349ec34e6e1f025fc06412a94ca6fcc3a1d116023",
+      "live_PE_match": true,
+      "instructions": [
+        "00ce0cb0: mov ecx, 0x108db70",
+        "00ce0cb5: jmp 0xb3e5b0"
+      ]
+    },
+    {
+      "address": "00b3f090",
+      "length": 5,
+      "role": "initialize_bridge",
+      "offset": 7598224,
+      "hex": "6aff687eee",
+      "sha256": "eda7c3b1ea2d635556eec74b48ba9ea64996b7b1fb239935d948dea42592fff6",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b3e5b0",
+      "length": 5,
+      "role": "destroy_bridge",
+      "offset": 7595440,
+      "hex": "56578bf933",
+      "sha256": "bbdca1ae5f829d39bc49049ff69ba0231f91e496ef5f97392bb7890b722d5334",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6ff5",
+      "length": 5,
+      "role": "atexit_bridge",
+      "offset": 8351733,
+      "hex": "ff742404e8",
+      "sha256": "7eb4924d82078b1b48adf660ced5b7467ac76e7d8ee881967b530a1e98339803",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b3e690",
+      "length": 5,
+      "role": "trim_bridge",
+      "offset": 7595664,
+      "hex": "56578bf133",
+      "sha256": "35a2e9ed5340a0a4532c4715d5a05fc618f5cf864a2c8abfaa0e3a1a1cecbc75",
+      "live_PE_match": true
+    },
+    {
+      "address": "004b46b0",
+      "length": 33,
+      "role": "complete_global_list_dispatch",
+      "offset": 738992,
+      "hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+      "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+      "live_PE_match": true,
+      "instructions": [
+        "004b46b0: push esi",
+        "004b46b1: mov esi, dword ptr [0xe188b4]",
+        "004b46b7: test esi, esi",
+        "004b46b9: je 0x4b46cf",
+        "004b46bb: jmp 0x4b46c0",
+        "004b46bd: lea ecx, [ecx]",
+        "004b46c0: mov eax, dword ptr [esi]",
+        "004b46c2: mov edx, dword ptr [eax]",
+        "004b46c4: mov ecx, esi",
+        "004b46c6: call edx",
+        "004b46c8: mov esi, dword ptr [esi + 8]",
+        "004b46cb: test esi, esi",
+        "004b46cd: jne 0x4b46c0",
+        "004b46cf: pop esi",
+        "004b46d0: ret "
+      ]
+    },
+    {
+      "address": "00d61944",
+      "length": 4,
+      "role": "cube_profile",
+      "offset": 9836868,
+      "hex": "90e6b300",
+      "sha256": "5e3611c536eb72597819def05f1aeb41d016ccce509f347d01a4aa2b8f32e320",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce3518",
+      "length": 4,
+      "role": "initializer_table_entry",
+      "offset": 9319704,
+      "hex": "807bcd00",
+      "sha256": "5fad0dd0abc6f11e2cae9318de6d4cb606825e2ebef9ea683e41ab975f959bca",
+      "live_PE_match": true
+    },
+    {
+      "address": "00e188b4",
+      "length": 4,
+      "role": "actual_shared_head",
+      "offset": null,
+      "hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_PE_match": true
+    },
+    {
+      "address": "0108db70",
+      "length": 56,
+      "role": "actual_canonical_pool",
+      "offset": null,
+      "hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_PE_match": true
+    }
+  ],
+  "actual_storage": {
+    "pool": "0108db70",
+    "pool_bytes": 56,
+    "profile": "00d61944",
+    "initializer_table_entry": "00ce3518",
+    "cpp_initializer_interval": [
+      "00ce2734",
+      "00ce36e4"
+    ],
+    "borrowed_shared_list_and_pool": true,
+    "genuine_trim_binding_before_publication": true
+  },
+  "primary_integration": {
+    "verification": {
+      "worker_pins_verified": 65,
+      "fresh_spans": [
+        {
+          "address": "00cd7b80",
+          "length": 22,
+          "sha256": "54b684c5b9a7e46bb16ab2745bb247a6d367be5ff991d41b4f7f22b6735beaba",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00ce0cb0",
+          "length": 10,
+          "sha256": "c9e40648e1aefd3670551e2349ec34e6e1f025fc06412a94ca6fcc3a1d116023",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00b3f090",
+          "length": 5,
+          "sha256": "eda7c3b1ea2d635556eec74b48ba9ea64996b7b1fb239935d948dea42592fff6",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00b3e5b0",
+          "length": 5,
+          "sha256": "bbdca1ae5f829d39bc49049ff69ba0231f91e496ef5f97392bb7890b722d5334",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00bf6ff5",
+          "length": 5,
+          "sha256": "7eb4924d82078b1b48adf660ced5b7467ac76e7d8ee881967b530a1e98339803",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00b3e690",
+          "length": 5,
+          "sha256": "35a2e9ed5340a0a4532c4715d5a05fc618f5cf864a2c8abfaa0e3a1a1cecbc75",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "004b46b0",
+          "length": 33,
+          "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00d61944",
+          "length": 4,
+          "sha256": "5e3611c536eb72597819def05f1aeb41d016ccce509f347d01a4aa2b8f32e320",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00ce3518",
+          "length": 4,
+          "sha256": "5fad0dd0abc6f11e2cae9318de6d4cb606825e2ebef9ea683e41ab975f959bca",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00e188b4",
+          "length": 4,
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "0108db70",
+          "length": 56,
+          "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+          "fresh_live_PE_and_worker_preimage_match": true
+        }
+      ],
+      "matched_words": 18931,
+      "events": 33,
+      "actual_primary_library": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-primary-check\\bsp_core.linked.lib",
+        "snapshot": "local\\cube_static_fixture\\bsp_core.linked.lib",
+        "bytes": 25344270,
+        "sha256": "c8ac226e4373d04226066e0a7205893292ff442719a50c4a609e2c117d8d1d12"
+      },
+      "verification": {
+        "status": "passed",
+        "matched_dwords": 18931,
+        "events": 33,
+        "source_pins_rechecked": 12,
+        "primary_library": {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-primary-check\\bsp_core.linked.lib",
+          "snapshot": "local\\cube_static_fixture\\bsp_core.linked.lib",
+          "bytes": 25344270,
+          "sha256": "c8ac226e4373d04226066e0a7205893292ff442719a50c4a609e2c117d8d1d12"
+        },
+        "seed_matches": 8,
+        "postimages": [
+          {
+            "mode": "native",
+            "address": "00cd7b80",
+            "bytes": 22,
+            "sha256": "54b684c5b9a7e46bb16ab2745bb247a6d367be5ff991d41b4f7f22b6735beaba",
+            "changes": "none"
+          },
+          {
+            "mode": "native",
+            "address": "00ce0cb0",
+            "bytes": 10,
+            "sha256": "c9e40648e1aefd3670551e2349ec34e6e1f025fc06412a94ca6fcc3a1d116023",
+            "changes": "none"
+          },
+          {
+            "mode": "native",
+            "address": "00b3f090",
+            "bytes": 5,
+            "sha256": "09ef6734c8ea6999e184b31e3d756d8aff9275b362622363f6fb2aa39746a23e",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "native",
+            "address": "00b3e5b0",
+            "bytes": 5,
+            "sha256": "695692097de123ebd0946f0b0afb1ede1e729d93f72a52dd56266dbae7826b0d",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "native",
+            "address": "00bf6ff5",
+            "bytes": 5,
+            "sha256": "45ad8b4af052efda6b88befba4ac0627c137b198df03d88256b8682499a177f0",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "native",
+            "address": "00b3e690",
+            "bytes": 5,
+            "sha256": "64786d7c1698ab64910ef835644f3e96426acb6809ec76f79e2783075ed814f2",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "native",
+            "address": "004b46b0",
+            "bytes": 33,
+            "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+            "changes": "none"
+          },
+          {
+            "mode": "native",
+            "address": "00d61944",
+            "bytes": 4,
+            "sha256": "5e3611c536eb72597819def05f1aeb41d016ccce509f347d01a4aa2b8f32e320",
+            "changes": "none"
+          },
+          {
+            "mode": "native",
+            "address": "00ce3518",
+            "bytes": 4,
+            "sha256": "5fad0dd0abc6f11e2cae9318de6d4cb606825e2ebef9ea683e41ab975f959bca",
+            "changes": "none"
+          },
+          {
+            "mode": "native",
+            "address": "00e188b4",
+            "bytes": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "changes": "none"
+          },
+          {
+            "mode": "native",
+            "address": "0108db70",
+            "bytes": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "00cd7b80",
+            "bytes": 22,
+            "sha256": "54b684c5b9a7e46bb16ab2745bb247a6d367be5ff991d41b4f7f22b6735beaba",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "00ce0cb0",
+            "bytes": 10,
+            "sha256": "c9e40648e1aefd3670551e2349ec34e6e1f025fc06412a94ca6fcc3a1d116023",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "00b3f090",
+            "bytes": 5,
+            "sha256": "09ef6734c8ea6999e184b31e3d756d8aff9275b362622363f6fb2aa39746a23e",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "host",
+            "address": "00b3e5b0",
+            "bytes": 5,
+            "sha256": "695692097de123ebd0946f0b0afb1ede1e729d93f72a52dd56266dbae7826b0d",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "host",
+            "address": "00bf6ff5",
+            "bytes": 5,
+            "sha256": "45ad8b4af052efda6b88befba4ac0627c137b198df03d88256b8682499a177f0",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "host",
+            "address": "00b3e690",
+            "bytes": 5,
+            "sha256": "64786d7c1698ab64910ef835644f3e96426acb6809ec76f79e2783075ed814f2",
+            "changes": "entry JMP5"
+          },
+          {
+            "mode": "host",
+            "address": "004b46b0",
+            "bytes": 33,
+            "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "00d61944",
+            "bytes": 4,
+            "sha256": "5e3611c536eb72597819def05f1aeb41d016ccce509f347d01a4aa2b8f32e320",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "00ce3518",
+            "bytes": 4,
+            "sha256": "5fad0dd0abc6f11e2cae9318de6d4cb606825e2ebef9ea683e41ab975f959bca",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "00e188b4",
+            "bytes": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "changes": "none"
+          },
+          {
+            "mode": "host",
+            "address": "0108db70",
+            "bytes": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "changes": "none"
+          }
+        ],
+        "import_observers": [
+          {
+            "mode": "native",
+            "name": "malloc",
+            "site": 805347768,
+            "original_target": 1970602272,
+            "observer_target": 805325792,
+            "postimage": 805325792,
+            "observer_symbol": "?observed_malloc@@YAPAXI@Z",
+            "import_symbol": "__imp__malloc"
+          },
+          {
+            "mode": "native",
+            "name": "free",
+            "site": 805347764,
+            "original_target": 1970602144,
+            "observer_target": 805325056,
+            "postimage": 805325056,
+            "observer_symbol": "?observed_free@@YAXPAX@Z",
+            "import_symbol": "__imp__free"
+          },
+          {
+            "mode": "native",
+            "name": "_crt_atexit",
+            "site": 805347848,
+            "original_target": 1970804368,
+            "observer_target": 805324560,
+            "postimage": 805324560,
+            "observer_symbol": "?observed_atexit@@YAHP6AXXZ@Z",
+            "import_symbol": "__imp___crt_atexit"
+          },
+          {
+            "mode": "native",
+            "name": "InitializeCriticalSection",
+            "site": 805347360,
+            "original_target": 2006791200,
+            "observer_target": 805325360,
+            "postimage": 805325360,
+            "observer_symbol": "?observed_initialize@@YGXPAU_RTL_CRITICAL_SECTION@@@Z",
+            "import_symbol": "__imp__InitializeCriticalSection@4"
+          },
+          {
+            "mode": "native",
+            "name": "LeaveCriticalSection",
+            "site": 805347328,
+            "original_target": 2006725728,
+            "observer_target": 805325584,
+            "postimage": 805325584,
+            "observer_symbol": "?observed_leave@@YGXPAU_RTL_CRITICAL_SECTION@@@Z",
+            "import_symbol": "__imp__LeaveCriticalSection@4"
+          },
+          {
+            "mode": "native",
+            "name": "DeleteCriticalSection",
+            "site": 805347356,
+            "original_target": 2006800048,
+            "observer_target": 805324816,
+            "postimage": 805324816,
+            "observer_symbol": "?observed_delete@@YGXPAU_RTL_CRITICAL_SECTION@@@Z",
+            "import_symbol": "__imp__DeleteCriticalSection@4"
+          },
+          {
+            "mode": "host",
+            "name": "malloc",
+            "site": 805347768,
+            "original_target": 1970602272,
+            "observer_target": 805325792,
+            "postimage": 805325792,
+            "observer_symbol": "?observed_malloc@@YAPAXI@Z",
+            "import_symbol": "__imp__malloc"
+          },
+          {
+            "mode": "host",
+            "name": "free",
+            "site": 805347764,
+            "original_target": 1970602144,
+            "observer_target": 805325056,
+            "postimage": 805325056,
+            "observer_symbol": "?observed_free@@YAXPAX@Z",
+            "import_symbol": "__imp__free"
+          },
+          {
+            "mode": "host",
+            "name": "_crt_atexit",
+            "site": 805347848,
+            "original_target": 1970804368,
+            "observer_target": 805324560,
+            "postimage": 805324560,
+            "observer_symbol": "?observed_atexit@@YAHP6AXXZ@Z",
+            "import_symbol": "__imp___crt_atexit"
+          },
+          {
+            "mode": "host",
+            "name": "InitializeCriticalSection",
+            "site": 805347360,
+            "original_target": 2006791200,
+            "observer_target": 805325360,
+            "postimage": 805325360,
+            "observer_symbol": "?observed_initialize@@YGXPAU_RTL_CRITICAL_SECTION@@@Z",
+            "import_symbol": "__imp__InitializeCriticalSection@4"
+          },
+          {
+            "mode": "host",
+            "name": "LeaveCriticalSection",
+            "site": 805347328,
+            "original_target": 2006725728,
+            "observer_target": 805325584,
+            "postimage": 805325584,
+            "observer_symbol": "?observed_leave@@YGXPAU_RTL_CRITICAL_SECTION@@@Z",
+            "import_symbol": "__imp__LeaveCriticalSection@4"
+          },
+          {
+            "mode": "host",
+            "name": "DeleteCriticalSection",
+            "site": 805347356,
+            "original_target": 2006800048,
+            "observer_target": 805324816,
+            "postimage": 805324816,
+            "observer_symbol": "?observed_delete@@YGXPAU_RTL_CRITICAL_SECTION@@@Z",
+            "import_symbol": "__imp__DeleteCriticalSection@4"
+          }
+        ],
+        "providers": [
+          {
+            "symbol": "?bind_static_native_cube_texture_pool_0108db70@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z",
+            "address": 805338256,
+            "provider": "bsp_core.linked:native_cube_texture_pool_static.obj",
+            "line": "0001:00006c90       ?bind_static_native_cube_texture_pool_0108db70@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30007c90 f   bsp_core.linked:native_cube_texture_pool_static.obj"
+          },
+          {
+            "symbol": "?initialize_static_native_cube_texture_pool_00cd7b80@bsp@@YAHXZ",
+            "address": 805338336,
+            "provider": "bsp_core.linked:native_cube_texture_pool_static.obj",
+            "line": "0001:00006ce0       ?initialize_static_native_cube_texture_pool_00cd7b80@bsp@@YAHXZ 30007ce0 f   bsp_core.linked:native_cube_texture_pool_static.obj"
+          },
+          {
+            "symbol": "?destroy_static_native_cube_texture_pool_00ce0cb0@bsp@@YAXXZ",
+            "address": 805338304,
+            "provider": "bsp_core.linked:native_cube_texture_pool_static.obj",
+            "line": "0001:00006cc0       ?destroy_static_native_cube_texture_pool_00ce0cb0@bsp@@YAXXZ 30007cc0 f   bsp_core.linked:native_cube_texture_pool_static.obj"
+          },
+          {
+            "symbol": "?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z",
+            "address": 805338544,
+            "provider": "bsp_core.linked:native_cube_texture_pool_lifetime.obj",
+            "line": "0001:00006db0       ?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 30007db0 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+          },
+          {
+            "symbol": "?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z",
+            "address": 805338368,
+            "provider": "bsp_core.linked:native_cube_texture_pool_lifetime.obj",
+            "line": "0001:00006d00       ?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30007d00 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+          },
+          {
+            "symbol": "?allocate_native_cube_texture_00b3f2c0@bsp@@YAPAXPAX@Z",
+            "address": 805338912,
+            "provider": "bsp_core.linked:native_cube_texture_pool_allocate.obj",
+            "line": "0001:00006f20       ?allocate_native_cube_texture_00b3f2c0@bsp@@YAPAXPAX@Z 30007f20 f   bsp_core.linked:native_cube_texture_pool_allocate.obj"
+          },
+          {
+            "symbol": "?allocate_native_cube_texture_slot_00b3f170@bsp@@YAPAXPAX@Z",
+            "address": 805338928,
+            "provider": "bsp_core.linked:native_cube_texture_pool_allocate.obj",
+            "line": "0001:00006f30       ?allocate_native_cube_texture_slot_00b3f170@bsp@@YAPAXPAX@Z 30007f30 f   bsp_core.linked:native_cube_texture_pool_allocate.obj"
+          },
+          {
+            "symbol": "?return_native_cube_texture_00b3dce0@bsp@@YAXPAX0@Z",
+            "address": 805339968,
+            "provider": "bsp_core.linked:native_cube_texture_pool_allocate.obj",
+            "line": "0001:00007340       ?return_native_cube_texture_00b3dce0@bsp@@YAXPAX0@Z 30008340 f   bsp_core.linked:native_cube_texture_pool_allocate.obj"
+          },
+          {
+            "symbol": "?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z",
+            "address": 805340288,
+            "provider": "bsp_core.linked:native_cube_texture_pool_trim.obj",
+            "line": "0001:00007480       ?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30008480 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+          },
+          {
+            "symbol": "?trim_native_cube_texture_pool_00b3e690@bsp@@YAXPAX@Z",
+            "address": 805340352,
+            "provider": "bsp_core.linked:native_cube_texture_pool_trim.obj",
+            "line": "0001:000074c0       ?trim_native_cube_texture_pool_00b3e690@bsp@@YAXPAX@Z 300084c0 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+          },
+          {
+            "symbol": "?bind_virtual0@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@UAllocatorListVirtual0Binding@2@@Z",
+            "address": 805337632,
+            "provider": "bsp_core.linked:allocator_list.obj",
+            "line": "0001:00006a20       ?bind_virtual0@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@UAllocatorListVirtual0Binding@2@@Z 30007a20 f   bsp_core.linked:allocator_list.obj"
+          },
+          {
+            "symbol": "?prepend_base_element@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z",
+            "address": 805337952,
+            "provider": "bsp_core.linked:allocator_list.obj",
+            "line": "0001:00006b60       ?prepend_base_element@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z 30007b60 f   bsp_core.linked:allocator_list.obj"
+          },
+          {
+            "symbol": "?unlink_base_element_00403970@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z",
+            "address": 805338192,
+            "provider": "bsp_core.linked:allocator_list.obj",
+            "line": "0001:00006c50       ?unlink_base_element_00403970@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z 30007c50 f   bsp_core.linked:allocator_list.obj"
+          },
+          {
+            "symbol": "?trim_all_004b46b0@AllocatorListDomain@bsp@@QAEXXZ",
+            "address": 805338000,
+            "provider": "bsp_core.linked:allocator_list.obj",
+            "line": "0001:00006b90       ?trim_all_004b46b0@AllocatorListDomain@bsp@@QAEXXZ 30007b90 f   bsp_core.linked:allocator_list.obj"
+          },
+          {
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "address": 805340544,
+            "provider": "bsp_core.linked:singleton_lifetime.obj",
+            "line": "0001:00007580       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30008580 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          {
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "address": 805340640,
+            "provider": "bsp_core.linked:singleton_lifetime.obj",
+            "line": "0001:000075e0       ?singleton_lifetime_free@bsp@@YAXPAX@Z 300085e0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          {
+            "symbol": "_atexit",
+            "address": 805341536,
+            "provider": "MSVCRT:utility.obj",
+            "line": "0001:00007960       _atexit                    30008960 f   MSVCRT:utility.obj"
+          },
+          {
+            "symbol": "__crt_atexit",
+            "address": 805344470,
+            "provider": "ucrt:api-ms-win-crt-runtime-l1-1-0.dll",
+            "line": "0001:000084d6       __crt_atexit               300094d6 f   ucrt:api-ms-win-crt-runtime-l1-1-0.dll"
+          }
+        ],
+        "module_pins": [
+          {
+            "mode": "native",
+            "service": "malloc",
+            "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+            "actual_target": 1970602272,
+            "machine": "014c",
+            "timestamp": 2161073551,
+            "image_size": 1114112,
+            "checksum": 1151852,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          {
+            "mode": "native",
+            "service": "free",
+            "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+            "actual_target": 1970602144,
+            "machine": "014c",
+            "timestamp": 2161073551,
+            "image_size": 1114112,
+            "checksum": 1151852,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          {
+            "mode": "native",
+            "service": "_crt_atexit",
+            "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+            "actual_target": 1970804368,
+            "machine": "014c",
+            "timestamp": 2161073551,
+            "image_size": 1114112,
+            "checksum": 1151852,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          {
+            "mode": "native",
+            "service": "InitializeCriticalSection",
+            "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+            "actual_target": 2006791200,
+            "machine": "014c",
+            "timestamp": 1115473341,
+            "image_size": 1830912,
+            "checksum": 1838583,
+            "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+          },
+          {
+            "mode": "native",
+            "service": "LeaveCriticalSection",
+            "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+            "actual_target": 2006725728,
+            "machine": "014c",
+            "timestamp": 1115473341,
+            "image_size": 1830912,
+            "checksum": 1838583,
+            "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+          },
+          {
+            "mode": "native",
+            "service": "DeleteCriticalSection",
+            "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+            "actual_target": 2006800048,
+            "machine": "014c",
+            "timestamp": 1115473341,
+            "image_size": 1830912,
+            "checksum": 1838583,
+            "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+          },
+          {
+            "mode": "host",
+            "service": "malloc",
+            "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+            "actual_target": 1970602272,
+            "machine": "014c",
+            "timestamp": 2161073551,
+            "image_size": 1114112,
+            "checksum": 1151852,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          {
+            "mode": "host",
+            "service": "free",
+            "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+            "actual_target": 1970602144,
+            "machine": "014c",
+            "timestamp": 2161073551,
+            "image_size": 1114112,
+            "checksum": 1151852,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          {
+            "mode": "host",
+            "service": "_crt_atexit",
+            "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+            "actual_target": 1970804368,
+            "machine": "014c",
+            "timestamp": 2161073551,
+            "image_size": 1114112,
+            "checksum": 1151852,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          {
+            "mode": "host",
+            "service": "InitializeCriticalSection",
+            "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+            "actual_target": 2006791200,
+            "machine": "014c",
+            "timestamp": 1115473341,
+            "image_size": 1830912,
+            "checksum": 1838583,
+            "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+          },
+          {
+            "mode": "host",
+            "service": "LeaveCriticalSection",
+            "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+            "actual_target": 2006725728,
+            "machine": "014c",
+            "timestamp": 1115473341,
+            "image_size": 1830912,
+            "checksum": 1838583,
+            "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+          },
+          {
+            "mode": "host",
+            "service": "DeleteCriticalSection",
+            "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "resolved_path": "C:\\WINDOWS\\SysWOW64\\ntdll.dll",
+            "actual_target": 2006800048,
+            "machine": "014c",
+            "timestamp": 1115473341,
+            "image_size": 1830912,
+            "checksum": 1838583,
+            "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+          }
+        ],
+        "metrics": [
+          {
+            "native": true,
+            "words": 18931,
+            "events": 33,
+            "registrations": 1,
+            "registration_status": 0,
+            "initializations": 1,
+            "section_deletions": 1,
+            "allocations": 3,
+            "frees": 3,
+            "leave_calls": 67,
+            "exit_leave_calls": 2,
+            "new_handler_calls": 1,
+            "malloc_failures": 1,
+            "real_process_exit_verified": true
+          },
+          {
+            "native": false,
+            "words": 18931,
+            "events": 33,
+            "registrations": 1,
+            "registration_status": 0,
+            "initializations": 1,
+            "section_deletions": 1,
+            "allocations": 3,
+            "frees": 3,
+            "leave_calls": 67,
+            "exit_leave_calls": 2,
+            "new_handler_calls": 1,
+            "malloc_failures": 1,
+            "real_process_exit_verified": true
+          }
+        ],
+        "bound_before_publication": {
+          "actual_primary_library_code": true,
+          "binder": "30007c90",
+          "trim_binding_call": "30007c9d",
+          "publications": [
+            {
+              "address": "30007cab",
+              "global_address": "3000e3e8",
+              "instruction": "mov dword ptr [0x3000e3e8], esi"
+            },
+            {
+              "address": "30007ca5",
+              "global_address": "3000e3ec",
+              "instruction": "mov dword ptr [0x3000e3ec], edi"
+            }
+          ],
+          "disassembly": [
+            "30007c90: push ebp",
+            "30007c91: mov ebp, esp",
+            "30007c93: push esi",
+            "30007c94: mov esi, dword ptr [ebp + 8]",
+            "30007c97: push edi",
+            "30007c98: mov edi, dword ptr [ebp + 0xc]",
+            "30007c9b: push edi",
+            "30007c9c: push esi",
+            "30007c9d: call 0x30008480",
+            "30007ca2: add esp, 8",
+            "30007ca5: mov dword ptr [0x3000e3ec], edi",
+            "30007cab: mov dword ptr [0x3000e3e8], esi",
+            "30007cb1: pop edi",
+            "30007cb2: pop esi",
+            "30007cb3: pop ebp",
+            "30007cb4: ret "
+          ]
+        },
+        "exact_static_bytes_unchanged": true,
+        "exact_global_dispatch_bytes_unchanged": true,
+        "production_aliases": false,
+        "trace_sha256": "00c4d3cebed4e24ec2e6d28af6e8a2ea72dbab63929af2dac721b09856b0e08a",
+        "held_lock_preleave_depths": [
+          1,
+          0
+        ],
+        "actual_preleave_recursions": [
+          2,
+          1
+        ]
+      },
+      "fixture_report": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_cube_texture_pool_static_fixture.json",
+        "bytes": 48511,
+        "sha256": "1db7b892e814af263636d02a52b1e6848a311f4a979dfbea491f52eea54a8de0"
+      },
+      "rechecker": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\recheck_cube_pool_static_fixture.py",
+        "bytes": 9082,
+        "sha256": "c54d12ec0b2a7a242bcc5153f2371ea22f8ddec226a83d348df71fc5858b4174"
+      },
+      "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-static-fixture-20260910",
+      "independent_source_provider_review": true
+    },
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "definition_and_save_report": {
+      "path": "reports/native_cube_pool_defined_functions.json",
+      "bytes": 31043,
+      "sha256": "fba3466443d132744f426f90a41c7d2afa559104b30ff188f83cc016743eb095"
+    }
+  },
+  "evidence_limits": [
+    "Original static32bytes and global-dispatch33bytes execute unchanged; inner original dependency closure belongs to separate packets.",
+    "Static initializer explicitly called; no whole original CRT startup dispatcher/heap/registration-storage reconstruction.",
+    "Registration exhaustion and construction throw before registration not exercised by this successful-retry scenario.",
+    "One malloc failure deliberately injected; actual new-handler/CRT retry and all other service calls are real.",
+    "Logical cube owner construction, original binary ABI replacement, gameplay and render validation unproved."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_cube_texture_pool_static_annotations.json",
+    "bytes": 3394,
+    "sha256": "38bb54ea7dc16fbfcf4a74ec11a6423c94de4f148f2141027db1dc206614a7e4",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00cd7b80",
+      "path": "exports/bsp/functions/00cd7b80/decompiled.c",
+      "bytes": 1551,
+      "sha256": "b10ad993a5b6c9af03a6e142c49ee0c5cff40684e30c2142f0489cc8e9b0da76"
+    },
+    {
+      "address": "00ce0cb0",
+      "path": "exports/bsp/functions/00ce0cb0/decompiled.c",
+      "bytes": 1518,
+      "sha256": "bf9636d7cc998f70cbdc107a549df5530be9d1b2eb061c8d937ef52a87364c90"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:22:55.755840+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00cd7b80",
+      "name": "initialize_static_native_cube_texture_pool_00cd7b80",
+      "cpp_symbol": "initialize_static_native_cube_texture_pool_00cd7b80",
+      "source": "src/native_cube_texture_pool_static.cpp",
+      "native_end_exclusive": "00cd7b96",
+      "original_abi": "No arguments; EAX actual atexit registration result; RET",
+      "evidence": "reports/native_cube_texture_pool_static_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00ce0cb0",
+      "name": "destroy_static_native_cube_texture_pool_00ce0cb0",
+      "cpp_symbol": "destroy_static_native_cube_texture_pool_00ce0cb0",
+      "source": "src/native_cube_texture_pool_static.cpp",
+      "native_end_exclusive": "00ce0cba",
+      "original_abi": "No arguments; set ECX actual108DB70 and tailcall B3E5B0",
+      "evidence": "reports/native_cube_texture_pool_static_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_CUBE_TEXTURE_POOL_STATIC.md",
+    "bytes": 4039,
+    "sha256": "dfee93b26f1f4d89221bd0a0950f115fad3cdf5778af3c0dfc5a1a7140bd6564"
+  }
+}

@@ -1,0 +1,177 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a983c0",
+    "end_address": "00a983e0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a983c0",
+    "end_address": "00a983df",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a983c0",
+    "disassemble_first": false,
+    "name": "BSP_InputBackend_EnumerateDevices_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a983c0",
+    "function_name": "BSP_InputBackend_EnumerateDevices_Provisional",
+    "entry_point": "00a983c0",
+    "body_size": 32,
+    "message": "Function created successfully at 00a983c0",
+    "warnings": [
+     "Function name 'BSP_InputBackend_EnumerateDevices_Provisional' \u2014 main part 'InputBackend_EnumerateDevices_Provisional' is not PascalCase. Expected: InputbackendEnumeratedevicesProvisional",
+     "Function name 'BSP_InputBackend_EnumerateDevices_Provisional' \u2014 main part 'InputBackend_EnumerateDevices_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputBackend_EnumerateDevices_Provisional' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a983c0",
+   "end": "00a983e0",
+   "name": "BSP_InputBackend_EnumerateDevices_Provisional",
+   "after": "Function: BSP_InputBackend_EnumerateDevices_Provisional at 00a983c0\nSignature: undefined BSP_InputBackend_EnumerateDevices_Provisional(void)\nEntry: 00a983c0\nBody: 00a983c0 - 00a983df"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a918a0",
+    "end_address": "00a91924"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a918a0",
+    "end_address": "00a91923",
+    "bytes_disassembled": 132,
+    "message": "Successfully disassembled 132 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a918a0",
+    "disassemble_first": false,
+    "name": "BSP_InputBackend_UpdateDevices_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a918a0",
+    "function_name": "BSP_InputBackend_UpdateDevices_Provisional",
+    "entry_point": "00a918a0",
+    "body_size": 132,
+    "message": "Function created successfully at 00a918a0",
+    "warnings": [
+     "Function name 'BSP_InputBackend_UpdateDevices_Provisional' \u2014 main part 'InputBackend_UpdateDevices_Provisional' is not PascalCase. Expected: InputbackendUpdatedevicesProvisional",
+     "Function name 'BSP_InputBackend_UpdateDevices_Provisional' \u2014 main part 'InputBackend_UpdateDevices_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputBackend_UpdateDevices_Provisional' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a918a0",
+   "end": "00a91924",
+   "name": "BSP_InputBackend_UpdateDevices_Provisional",
+   "after": "Function: BSP_InputBackend_UpdateDevices_Provisional at 00a918a0\nSignature: undefined BSP_InputBackend_UpdateDevices_Provisional(void)\nEntry: 00a918a0\nBody: 00a918a0 - 00a91923"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a97390",
+    "end_address": "00a97391"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a97390",
+    "end_address": "00a97390",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a97390",
+    "disassemble_first": false,
+    "name": "BSP_InputBackend_PreTickNoOp_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a97390",
+    "function_name": "BSP_InputBackend_PreTickNoOp_Provisional",
+    "entry_point": "00a97390",
+    "body_size": 1,
+    "message": "Function created successfully at 00a97390",
+    "warnings": [
+     "Function name 'BSP_InputBackend_PreTickNoOp_Provisional' \u2014 main part 'InputBackend_PreTickNoOp_Provisional' is not PascalCase. Expected: InputbackendPreticknoopProvisional",
+     "Function name 'BSP_InputBackend_PreTickNoOp_Provisional' \u2014 main part 'InputBackend_PreTickNoOp_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputBackend_PreTickNoOp_Provisional' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a97390",
+   "end": "00a97391",
+   "name": "BSP_InputBackend_PreTickNoOp_Provisional",
+   "after": "Function: BSP_InputBackend_PreTickNoOp_Provisional at 00a97390\nSignature: undefined BSP_InputBackend_PreTickNoOp_Provisional(void)\nEntry: 00a97390\nBody: 00a97390 - 00a97390"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a93eb0",
+    "end_address": "00a93eb3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a93eb0",
+    "end_address": "00a93eb2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a93eb0",
+    "disassemble_first": false,
+    "name": "BSP_InputDevice_IdentifierZero_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00a93eb0",
+    "function_name": "BSP_InputDevice_IdentifierZero_Provisional",
+    "entry_point": "00a93eb0",
+    "body_size": 3,
+    "message": "Function created successfully at 00a93eb0",
+    "warnings": [
+     "Function name 'BSP_InputDevice_IdentifierZero_Provisional' \u2014 main part 'InputDevice_IdentifierZero_Provisional' is not PascalCase. Expected: InputdeviceIdentifierzeroProvisional",
+     "Function name 'BSP_InputDevice_IdentifierZero_Provisional' \u2014 main part 'InputDevice_IdentifierZero_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputDevice_IdentifierZero_Provisional' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a93eb0",
+   "end": "00a93eb3",
+   "name": "BSP_InputDevice_IdentifierZero_Provisional",
+   "after": "Function: BSP_InputDevice_IdentifierZero_Provisional at 00a93eb0\nSignature: undefined BSP_InputDevice_IdentifierZero_Provisional(void)\nEntry: 00a93eb0\nBody: 00a93eb0 - 00a93eb2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

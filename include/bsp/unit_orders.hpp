@@ -36,10 +36,9 @@ inline constexpr std::size_t kUnitOrderSlotParamB = 0x04; // 0080DAF3
 inline constexpr std::size_t kUnitOrderSlotActive = 0x08; // 0080DB1B, cleared to 0
 inline constexpr std::size_t kUnitOrderSlotKind = 0x1C;   // 0080DB0A
 
-// The two leading words of an order record are copied as raw 32-bit values by
-// x87 loads and stores (fld/fstp at 0080DB2E..0080DB4A), so their type is not
-// settled by this packet; they are carried as floats because the mirror at
-// +994h/+998h is read as float by the ship-side consumers.
+// Constructor 00815440 establishes these as floats clamped to [-2,+2].
+// This compact view covers publication only; unit_order_record.hpp preserves
+// the full 20h-byte constructor storage and session-message payload.
 struct UnitOrderRecord {
     float param_a{0.0f};      // slot +00h
     float param_b{0.0f};      // slot +04h
@@ -64,26 +63,10 @@ struct UnitOrderQueue {
 // written from the slot (not from the argument) as param_b, param_a, kind.
 void publish_unit_order_0080dad0(UnitOrderQueue& queue, const UnitOrderRecord& record) noexcept;
 
-// 00816A40, void __cdecl(a, b, c), RET 0. It builds a 20h-byte record through
-// 00815440, publishes it with 0080DAD0, and when the game's session mode at
-// game+1FE4h is 2 it copies the same 20h bytes into session message 8Eh and
-// sends it through 0077C2A0.
-inline constexpr int kUnitOrderSessionMode = 2;        // 00816A69
-inline constexpr int kUnitOrderSessionMessageId = 0x8E; // 00816A76
-
-struct UnitOrderIssueHost {
-    virtual ~UnitOrderIssueHost() = default;
-    // 00815440: fills the 20h-byte record from the three arguments.
-    virtual UnitOrderRecord build_order_record(std::uint32_t a, std::uint32_t b,
-                                               std::uint32_t c) = 0;
-    // Reads the session mode at game+1FE4h (DAT_00E188A8 is the game object).
-    virtual int session_mode() = 0;
-    // 0075B430 + 0077C2A0: construct message 8Eh carrying the record and send it.
-    virtual void send_order_message(int message_id, const UnitOrderRecord& record) = 0;
-};
-
-void issue_unit_order_00816a40(UnitOrderIssueHost& host, UnitOrderQueue& queue,
-                               std::uint32_t a, std::uint32_t b, std::uint32_t c);
+// 00816A40, void __thiscall(unit, float, float, byte), RET 0Ch. The complete
+// constructor/publication/message sequence is declared in unit_order_record.hpp.
+inline constexpr int kUnitOrderSessionMode = 2;        // 00816A8D
+inline constexpr int kUnitOrderSessionMessageId = 0x8E; // 00816A98
 
 // ---------------------------------------------------------------------------
 // The load latches at unit+102Ch and unit+1034h.

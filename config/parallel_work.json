@@ -3921,8 +3921,8 @@
       "id": "native_cube_texture_pool_allocate5",
       "packet": "native_cube_texture_pool_allocate5",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_source_and_native_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3d2a0",
         "00b3f170",
@@ -3947,14 +3947,15 @@
         "lifetime3 establishes actual initialized pool.",
         "trim1 genuine binding is needed before publication if real new-handler traverses shared list."
       ],
-      "active_lease_packet_id": "native_cube_texture_pool_allocate4"
+      "active_lease_packet_id": "native_cube_texture_pool_allocate4",
+      "evidence": "reports/native_cube_texture_pool_allocate_audit.json"
     },
     {
       "id": "native_cube_texture_pool_trim1",
       "packet": "native_cube_texture_pool_trim1",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_source_and_native_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3e690"
       ],
@@ -3971,14 +3972,15 @@
       ],
       "source_ready": true,
       "composition_dependencies": [],
-      "active_lease_packet_id": "native_cube_texture_pool_trim1"
+      "active_lease_packet_id": "native_cube_texture_pool_trim1",
+      "evidence": "reports/native_cube_texture_pool_trim_audit.json"
     },
     {
       "id": "native_cube_texture_pool_lifetime3",
       "packet": "native_cube_texture_pool_lifetime3",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_source_and_native_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3f090",
         "00b3e5b0",
@@ -4002,14 +4004,15 @@
       "composition_dependencies": [
         "native_cube_texture_pool_trim1 genuine binding before publication"
       ],
-      "active_lease_packet_id": "native_cube_texture_pool_lifetime3"
+      "active_lease_packet_id": "native_cube_texture_pool_lifetime3",
+      "evidence": "reports/native_cube_texture_pool_lifetime_audit.json"
     },
     {
       "id": "native_cube_texture_pool_static2",
       "packet": "native_cube_texture_pool_static2",
       "worker": "main",
-      "done": false,
-      "state": "primary_waiting_for_actual_lifetime_and_trim_dependencies",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00cd7b80",
         "00ce0cb0"
@@ -4033,7 +4036,291 @@
         "native_cube_texture_pool_lifetime3",
         "native_cube_texture_pool_trim1"
       ],
-      "active_lease_packet_id": "native_cube_texture_pool_static2"
+      "active_lease_packet_id": "native_cube_texture_pool_static2",
+      "evidence": "reports/native_cube_texture_pool_static_audit.json"
+    },
+    {
+      "id": "orch4_warning_message_table",
+      "packet": "orch4_warning_message_table",
+      "worker": "agent/orch4-warnings-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_bounded_fixture_tested",
+      "function_addresses": [
+        "009870a0",
+        "0097f570",
+        "00979990",
+        "00979730",
+        "0096dbb0"
+      ],
+      "code_ownership": [
+        "include/bsp/warning_messages.hpp",
+        "src/warning_messages.cpp",
+        "docs/WARNING_MESSAGE_TABLE.md",
+        "reports/warning_message_table.json"
+      ],
+      "scope": "Three recursive Lua table loaders, known-id lookup, and the table-loading fragment of Init.",
+      "integration_report": "reports/warning_voice_order_integration.json",
+      "prerequisite_packets": [],
+      "discovery_evidence": "docs/MISSION_EVENTS_UPDATE.md"
+    },
+    {
+      "id": "orch4_voice_line_playback",
+      "packet": "orch4_voice_line_playback",
+      "worker": "agent/orch4-voice-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_bounded_fixture_tested",
+      "function_addresses": [
+        "005bbc10",
+        "005bbdc0",
+        "005b71d0",
+        "005babb0",
+        "007027b0",
+        "005b9760",
+        "005b7790"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_playback.hpp",
+        "src/voice_playback.cpp",
+        "docs/VOICE_LINE_PLAYBACK.md",
+        "reports/voice_line_playback.json"
+      ],
+      "scope": "Stateful single-slot readiness, line construction/queueing, speaker classification, positional admission and fade startup.",
+      "integration_report": "reports/warning_voice_order_integration.json",
+      "prerequisite_packets": [],
+      "discovery_evidence": "docs/MISSION_EVENTS_UPDATE.md"
+    },
+    {
+      "id": "orch4_unit_order_record",
+      "packet": "orch4_unit_order_record",
+      "worker": "agent/orch4-orders-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_bounded_fixture_tested",
+      "function_addresses": [
+        "00815440",
+        "00816a40",
+        "0064b870",
+        "00651800",
+        "0067c4f0"
+      ],
+      "code_ownership": [
+        "include/bsp/unit_order_record.hpp",
+        "src/unit_order_record.cpp",
+        "docs/UNIT_ORDER_RECORD.md",
+        "reports/unit_order_record.json"
+      ],
+      "scope": "Full order constructor/message payload and three bounded HUD publication fragments; outer HUD behavior remains analyzed.",
+      "integration_report": "reports/warning_voice_order_integration.json",
+      "prerequisite_packets": [],
+      "discovery_evidence": "docs/UNIT_COMMAND_PRODUCERS.md"
+    },
+    {
+      "id": "native_cube_texture_base2",
+      "packet": "native_cube_texture_base2",
+      "worker": "main",
+      "done": false,
+      "state": "primary_source_build_tested_independent_original_fixture_in_progress",
+      "function_addresses": [
+        "00b34020",
+        "00b34090"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_base.hpp",
+        "src/native_cube_texture_base.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_BASE.md",
+        "reports/native_cube_texture_base_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_cube_texture_owner_next.json",
+      "scope": {
+        "id": "native_cube_texture_base2",
+        "addresses": [
+          "00b34020",
+          "00b34090"
+        ],
+        "bytes": 76,
+        "ready": true,
+        "dependencies": [
+          "complete actual native_logical_texture_named_base and NativeStringStorage"
+        ],
+        "owned_files": [
+          "include/bsp/native_cube_texture_base.hpp",
+          "src/native_cube_texture_base.cpp",
+          "docs/NATIVE_CUBE_TEXTURE_BASE.md",
+          "reports/native_cube_texture_base_audit.json"
+        ],
+        "integration": "primary owns CMake, Ghidra annotation/export and sharedledgers; avoid shared namedbase source edits",
+        "owner": "primary integrator",
+        "proposed_API": [
+          "void* construct_native_logical_texture_unnamed_base_00b34020(void* actual_owner, void* borrowed_com, std::uint32_t flags, std::uint32_t& actual_shared_serial_0108d6e8) noexcept",
+          "void unwind_native_logical_texture_unnamed_base_00b34090(void* actual_owner, NativeStringStorage& actual_strings)"
+        ],
+        "API_status": "Frozen byprimary; actualnative_cube_texture_base.hpp/.cpp presentinprimaryworkspace with compilation/fixturepending. Owner3mustcomposeexactsource."
+      },
+      "source_ready": true
+    },
+    {
+      "id": "native_cube_texture_owner3",
+      "packet": "native_cube_texture_owner3",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress_composing_actual_base",
+      "function_addresses": [
+        "00b3d650",
+        "00b3ead0",
+        "00b3f410"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_owner.hpp",
+        "src/native_cube_texture_owner.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+        "reports/native_cube_texture_owner_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_cube_texture_base2",
+        "native_cube_texture_pool_allocate5"
+      ],
+      "discovery_evidence": "reports/native_cube_texture_owner_next.json",
+      "scope": {
+        "id": "native_cube_texture_owner3",
+        "addresses": [
+          "00b3d650",
+          "00b3ead0",
+          "00b3f410"
+        ],
+        "bytes": 313,
+        "ready": false,
+        "ready_when": "native_cube_texture_base2 integrated; existing canonicalpool return provider now completeonmain",
+        "dependencies": [
+          "native_cube_texture_base2",
+          "native_logical_texture_named_base",
+          "native_retained_memory_owners",
+          "native_renderer_texture_name_notification",
+          "native_cube_texture_pool_allocate5"
+        ],
+        "owned_files": [
+          "include/bsp/native_cube_texture_owner.hpp",
+          "src/native_cube_texture_owner.cpp",
+          "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+          "reports/native_cube_texture_owner_audit.json"
+        ],
+        "integration": "primary owns CMake, Ghidra annotation/export and sharedledgers; no overlap with active cube pool lifetime/trim/static packets"
+      },
+      "source_ready": false
+    },
+    {
+      "id": "native_cube_texture_owner_array_reserve1",
+      "packet": "native_cube_texture_owner_array_reserve1",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00735ff0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_owner_array_reserve.hpp",
+        "src/native_cube_texture_owner_array_reserve.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_OWNER_ARRAY_RESERVE.md",
+        "reports/native_cube_texture_owner_array_reserve_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_cube_texture_factory_next.json",
+      "scope": {
+        "packet": "native_cube_texture_owner_array_reserve1",
+        "ready": true,
+        "addresses": [
+          "00735ff0"
+        ],
+        "files": [
+          "include/bsp/native_cube_texture_owner_array_reserve.hpp",
+          "src/native_cube_texture_owner_array_reserve.cpp",
+          "docs/NATIVE_CUBE_TEXTURE_OWNER_ARRAY_RESERVE.md",
+          "reports/native_cube_texture_owner_array_reserve_audit.json"
+        ],
+        "API_hypothesis": "void reserve_native_cube_texture_owner_array_00735ff0(void* actual_header, std::int32_t requested_capacity)",
+        "dependencies": [
+          "Existing singleton_lifetime_allocate/free actual CRT service boundaries"
+        ],
+        "minimum_evidence": "Full untouched95-byte original body versus real primary-library source; current-count/table observations across actual allocation/free, exact publication order; existing strict Win32 build/CTests. No new tracked test suite."
+      },
+      "source_ready": true
+    },
+    {
+      "id": "native_cube_texture_factory1",
+      "packet": "native_cube_texture_factory1",
+      "worker": null,
+      "done": false,
+      "state": "blocked_on_actual_native_owner_array_reserve_and_device_recreation",
+      "function_addresses": [
+        "00b2a380",
+        "00cbd380",
+        "00cbd388",
+        "00cbd390"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_factory.hpp",
+        "src/native_cube_texture_factory.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_FACTORY.md",
+        "reports/native_cube_texture_factory_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_cube_texture_base2",
+        "native_cube_texture_owner3",
+        "native_cube_texture_owner_array_reserve1",
+        "native_renderer_recreate_device_next"
+      ],
+      "discovery_evidence": "reports/native_cube_texture_factory_next.json",
+      "scope": {
+        "packet": "native_cube_texture_factory1",
+        "ready": false,
+        "addresses": [
+          "00b2a380",
+          "00cbd380",
+          "00cbd388",
+          "00cbd390"
+        ],
+        "files": [
+          "include/bsp/native_cube_texture_factory.hpp",
+          "src/native_cube_texture_factory.cpp",
+          "docs/NATIVE_CUBE_TEXTURE_FACTORY.md",
+          "reports/native_cube_texture_factory_audit.json"
+        ],
+        "blocked_by": [
+          "Native cube resource base/owner implementations from sibling discovery",
+          "native_cube_texture_owner_array_reserve1",
+          "Complete actual-storage B29670 device recreation and its open dependencies"
+        ],
+        "required_contract": "Actual renderer/global/pool providers; exact original HRESULT equality retry, COM invocation, registration and FH3 cleanup order. No empty or semantic substitute recreation/owner/registry callback."
+      },
+      "source_ready": false
+    },
+    {
+      "id": "native_renderer_recreate_device_next",
+      "packet": "native_renderer_recreate_device_next",
+      "worker": null,
+      "done": false,
+      "state": "ready_bounded_discovery_when_worker_available",
+      "function_addresses": [
+        "00b29670"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_RECREATE_DEVICE_NEXT.md",
+        "reports/native_renderer_recreate_device_next.json"
+      ],
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_cube_texture_factory_next.json",
+      "scope": {
+        "packet": "native_renderer_recreate_device_next",
+        "ready": "bounded_discovery_only",
+        "addresses": [
+          "00b29670"
+        ],
+        "files": [
+          "docs/NATIVE_RENDERER_RECREATE_DEVICE_NEXT.md",
+          "reports/native_renderer_recreate_device_next.json"
+        ],
+        "scope": "Identify full native bounds, indirect calls and dependency partitions before implementation; current24 direct callees include22 internal. Discovery is separate from this factory packet."
+      },
+      "source_ready": false
     }
   ],
   "snapshot_after_analysis": {

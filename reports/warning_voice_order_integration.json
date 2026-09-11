@@ -1,0 +1,90 @@
+{
+  "packet": "orch4_warning_voice_order_integration",
+  "generated_utc": "2026-09-11T05:07:52.161049+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "integration_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+  "worker_commits": {
+    "warnings": "ced11102e178a21ce5ffaf38d6eb9be11b20e6c5",
+    "voice": "29714868e30dfd63bd3fc62e1356e7ab8eaf9f5d",
+    "orders": "54e7db5458dea930393253a7c513b7b4cca75f74"
+  },
+  "evidence_review": {
+    "warning_tables": "Installed warnings.lua and 00979990 inspected; escape tables nest under escapecharacters.",
+    "voice": "005b71d0, 005bbc10, 005bbdc0, 007027b0 assembly independently inspected.",
+    "order": "00815440 and 00816a40 complete assembly, two HUD fragments and third function tail independently inspected.",
+    "correction_found_in_review": "0067c77e loads negative zero from 00d7a208 before SUBSS; worker corrected positive-zero subtraction."
+  },
+  "native_order_constructor_reference": {
+    "ranges": [
+      {
+        "address": "00815440",
+        "length": 209,
+        "disk_matches_ghidra": true,
+        "sha256": "c9e18152833934eb1344ec1f09e012954f7fd7f762c0d321bd775be17f64263f"
+      },
+      {
+        "address": "00ce3958",
+        "length": 4,
+        "disk_matches_ghidra": true,
+        "sha256": "d88c86f15bbea365d658ad95a81d45367c465f7af6f7264fb077f01747ddc77d"
+      },
+      {
+        "address": "00ce7d7c",
+        "length": 4,
+        "disk_matches_ghidra": true,
+        "sha256": "e4767380eb5e2fc046bce28b8b2a30c81c733be1a56203cd9499066086617f6c"
+      }
+    ],
+    "relocation_count": 2,
+    "scope": "Constructor 00815440 only; two immutable constants relocated; no game loading"
+  },
+  "native_order_constructor_result": {
+    "full_record_comparisons": 121,
+    "mismatches": 0,
+    "inputs": "Cartesian pairs of +/-3, +/-2, +/-1.5, +/-0, +/-infinity and quiet NaN; kind 0x93; storage prefilled A5.",
+    "compared": "All 32 native bytes, including untouched bytes, plus compact return projection.",
+    "commands": [
+      "python local/verify_order_constructor.py",
+      "./local/build_order_reference.ps1"
+    ],
+    "limitation": "Isolated constructor under ordinary masked FP exceptions. No original-game process or native object replacement."
+  },
+  "build": {
+    "state": "passed",
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "tested_revision": "30413e17b409fcc1cd0a342165cd460a831dd256",
+    "tests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "native_math_reference_comparisons": 456,
+    "native_math_reference_failures": 0,
+    "log": "local/final_build.log"
+  },
+  "analysis_updates": {
+    "state": "applied_saved_and_read_back",
+    "reviewed_names": 17,
+    "prior_comments_preserved": true,
+    "defined_function": "00651800",
+    "defined_end_exclusive": "00652817",
+    "repaired_functions": [
+      "0097f570",
+      "008ec460",
+      "00973f20",
+      "005bbdc0",
+      "005ba4b0"
+    ],
+    "remaining_repaired_call_gaps": 0,
+    "affected_exports_refreshed": true,
+    "annotation_audit": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T051043Z.json",
+    "unrelated_deferred_annotations": "Other orchestrators retain their leased platform addresses; no orch4 name was deferred."
+  },
+  "limits": [
+    "Reconstructed typed interfaces and bounded HUD/initialization fragments only.",
+    "Injected game and library contracts remain required; no placeholder implementation was added.",
+    "No original object ABI, SEH ABI, general x87 equivalence, audible playback or gameplay validation.",
+    "Signaling-NaN issue/message parity is unverified: native IssueOrder x87 ingress spills quiet signaling NaNs; the typed issue API directly forwards its arguments."
+  ]
+}

@@ -119,33 +119,6 @@ WarningDeadlineResult update_warning_deadlines(WarningManagerState& state, float
     return result;
 }
 
-bool voice_can_play_005b71d0(const VoiceReadinessInputs& inputs) noexcept
-{
-    if (inputs.panel_sequence_active) {
-        return false;
-    }
-    if (inputs.voice_disabled) {
-        return false;
-    }
-    // The slot set does not change inside the native loop, so the per-clip
-    // iteration reduces to one test as long as there is at least one clip.
-    if (inputs.clip_count != 0 && inputs.busy_slots >= kVoicePlaybackSlotCount) {
-        return false;
-    }
-    return !inputs.voice_blocked;
-}
-
-float voice_line_attenuation_005bbdc0(float distance) noexcept
-{
-    return (kVoiceAudibleRange - distance) / kVoiceAudibleRange;
-}
-
-bool voice_line_audible(float attenuation) noexcept
-{
-    // 005bbdc0 requires both clauses: at least the floor and above zero.
-    return attenuation >= kVoiceMinimumAttenuation && attenuation > 0.0f;
-}
-
 bool warning_within_proximity(float dx, float dy, float dz) noexcept
 {
     return dx * dx + dy * dy + dz * dz < kWarningProximityRadiusSquared;

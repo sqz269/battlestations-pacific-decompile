@@ -100,3 +100,9 @@ Permanent shared CMake/ledger/packet changes and Ghidra annotations remain
 integrator-owned. Repair the returning-free flow at `B3E6B1` and refresh its
 export under the write lock; unrelated jump-alignment gaps stay untouched.
 No game validation or complete process startup is claimed by this packet.
+
+## Primary integration closure
+
+The integrated strict MSVC Win32 build and both existing CTests passed. A frozen current primary library was compared again with the original complete bodies: 45,651 matching DWORDs. All worker source/artifact pins and fresh live/PE spans were independently checked, and every runtime postimage was checked against only the declared relocations and service bindings. The comparison uses the actual integrated functions and complete current dependencies.
+
+Ghidra returning-free boundaries were repaired where needed, prior names/comments were preserved in the annotation journal, the reviewed names and evidence comments were saved, full reconstruction records were added through the sharded ledger CLI, and affected exports were refreshed. The audit `primary_integration` records the exact frozen library, source providers, fixtures, and hashes. Native ABI compatibility, the complete game startup sequence, GPU behavior, and gameplay remain unproved.

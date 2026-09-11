@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b3e690",
+    "before": {
+      "address": "00b3e690",
+      "function_name": "FUN_00b3e690"
+    },
+    "after": {
+      "address": "00b3e690",
+      "old_name": "FUN_00b3e690",
+      "name": "BSP_CubeTexturePool_TrimEmptySlabs",
+      "evidence": "Complete actual38h pool trim, genuine D61944 virtual slot0. Exact WORD freecount32 selects free; after actual free reload current table/count, move current last pointer before count decrement, rewrite all32 moved slot30 tokens at34h stride only when still in range, rescan replacement. Capture nonempty before earliest=-1, then cursor once with current count bounds. Preserve payload/table tail/capacity/depth. Restored B3E6B6..B3E6EC returning-free continuation; genuine host list binding precedes publication. 45,651 matching DWORDs/six actual frees;four fresh live/PE and runtime spans;all160 owned bytes unchanged. Actual primary library trim/list/shared-free providers, real global dispatch, post-free table/count replacement and32 moved tokens checked. Original ABI: ECX actual38h pool; RET; no semantic result. D61944 virtual slot0. Complete src/native_cube_texture_pool_trim.cpp; reports/native_cube_texture_pool_trim_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  }
+]

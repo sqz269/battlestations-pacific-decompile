@@ -315,3 +315,22 @@ The bound check in `publish_unit_order_0080dad0` has no native counterpart and i
 | `009F3F80`, `009DE5B0` | analysed; the latch step reconstructed |
 | `009EC7C0`, `00813CA0`, `009998A0`, `009A17D0` | exported and analysed |
 | `00825F20`, `00818340`, `0081ED40`, `00822C20`, `00914EF0`, `009D4E30` | read only |
+
+## Correction from docs/UNIT_ORDER_RECORD.md
+
+The follow-up recovered 00815440 as a float clamp constructor with bounds
+[-2,+2], four stored bound floats and seven untouched bytes in its 20h-byte
+record. 00816A40 is a thiscall taking two floats and a byte, ending in RET 0Ch;
+its constructor/publication calls are 00816A76/00816A82. The full record is
+copied into the message at +1Ch. The obsolete compact-record issue interface
+has been retired in favor of unit_order_record.hpp's complete payload.
+
+The third HUD publication caller starts at 00651800, calls 00816A40 at
+00651AA3 and ends with RET4 at 00652814. 00651760 is a distinct preceding
+function ending at 006517FF. The 0067C4F0 steering fragment subtracts from
+negative zero (80000000 at 00D7A208), not positive zero. Constructor checks
+covered 121 complete records, including quiet NaNs and untouched bytes.
+Signaling-NaN issuance remains outside the verified domain: native 00816A40
+spills arguments through x87 before the constructor, which can quiet them;
+the typed issue API does not reproduce those ingress conversions or FP traps.
+See reports/warning_voice_order_integration.json for the combined checks.

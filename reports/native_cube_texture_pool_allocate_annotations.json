@@ -1,0 +1,72 @@
+[
+  {
+    "address": "00b3d2a0",
+    "before": {
+      "address": "00b3d2a0",
+      "function_name": "FUN_00b3d2a0"
+    },
+    "after": {
+      "address": "00b3d2a0",
+      "old_name": "FUN_00b3d2a0",
+      "name": "BSP_CubeTexturePool_InitializeSlab",
+      "evidence": "Complete actual 6C4h slab initializer. WORD freecount32 first, then each WORD31-index at680 before DWORD slab index at slot30+n*34. Preserve all payload and padding; return actual slab. 39,664 matching DWORDs/59 events plus full1,732 slab bytes;11 fresh live/PE spans and runtime postimages;491 owned bytes unchanged. Actual primary library functions, real CRT new-handler failure and two-thread held-lock probes; only real host Win32 imports observed. Original ABI: ECX actual slab; stack index; EAX same slab; RET4 Complete src/native_cube_texture_pool_allocate.cpp; reports/native_cube_texture_pool_allocate_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f170",
+    "before": {
+      "address": "00b3f170",
+      "function_name": "FUN_00b3f170"
+    },
+    "after": {
+      "address": "00b3f170",
+      "old_name": "FUN_00b3f170",
+      "name": "BSP_CubeTexturePool_AllocateSlot",
+      "evidence": "Complete raw allocation. Real section Enter then current depth increment; publish earliest before actual slab allocation. Wrapped capacity2*n+2 before table allocation; current count/table copy, current old free, captured replacement publication after returning free. Append then increment current count. Decrement and reread WORD freecount before WORD slot lookup, preserve captured cursor and current scan bounds. No own EH; actual allocation failure retains lock/depth, publications and unpublished slab. B3F206 returning-free continuation restored. 39,664 matching DWORDs/59 events plus full1,732 slab bytes;11 fresh live/PE spans and runtime postimages;491 owned bytes unchanged. Actual primary library functions, real CRT new-handler failure and two-thread held-lock probes; only real host Win32 imports observed. Original ABI: ECX actual pool; EAX raw slot; RET Complete src/native_cube_texture_pool_allocate.cpp; reports/native_cube_texture_pool_allocate_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d940",
+    "before": {
+      "address": "00b3d940",
+      "function_name": "FUN_00b3d940"
+    },
+    "after": {
+      "address": "00b3d940",
+      "old_name": "FUN_00b3d940",
+      "name": "BSP_CubeTexturePool_ReturnSlot",
+      "evidence": "Complete actual raw return. Real section/depth; slot30 indexes current slab. Signed low32 slot-minus-slab displacement divided by52 toward zero and truncated to WORD. Index store uses old count, increment rereads current count after possible alias. Unsigned earliest minimum; depth decrement precedes real Leave. 39,664 matching DWORDs/59 events plus full1,732 slab bytes;11 fresh live/PE spans and runtime postimages;491 owned bytes unchanged. Actual primary library functions, real CRT new-handler failure and two-thread held-lock probes; only real host Win32 imports observed. Original ABI: ECX actual pool; stack slot; RET4 Complete src/native_cube_texture_pool_allocate.cpp; reports/native_cube_texture_pool_allocate_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f2c0",
+    "before": {
+      "address": "00b3f2c0",
+      "function_name": "CG_static_dtor_stub_00b3f2c0"
+    },
+    "after": {
+      "address": "00b3f2c0",
+      "old_name": "CG_static_dtor_stub_00b3f2c0",
+      "name": "BSP_CubeTexturePool_Allocate",
+      "evidence": "Complete canonical108DB70 allocation adapter, native ECX selection and tailcall B3F170. Original CG_static_dtor_stub name is incorrect; this returns raw storage without constructing an owner. Source borrows actual canonical pool explicitly. 39,664 matching DWORDs/59 events plus full1,732 slab bytes;11 fresh live/PE spans and runtime postimages;491 owned bytes unchanged. Actual primary library functions, real CRT new-handler failure and two-thread held-lock probes; only real host Win32 imports observed. Original ABI: ECX replaced by canonical108DB70; tailcall B3F170 Complete src/native_cube_texture_pool_allocate.cpp; reports/native_cube_texture_pool_allocate_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3dce0",
+    "before": {
+      "address": "00b3dce0",
+      "function_name": "FUN_00b3dce0"
+    },
+    "after": {
+      "address": "00b3dce0",
+      "old_name": "FUN_00b3dce0",
+      "name": "BSP_CubeTexturePool_Return",
+      "evidence": "Complete canonical108DB70 raw return adapter. Native ECX raw slot passed to B3D940 on actual pool. Used by constructor unwind; no owner destructor. Source explicit args preserve raw slot then actual pool. 39,664 matching DWORDs/59 events plus full1,732 slab bytes;11 fresh live/PE spans and runtime postimages;491 owned bytes unchanged. Actual primary library functions, real CRT new-handler failure and two-thread held-lock probes; only real host Win32 imports observed. Original ABI: ECX raw slot; canonical108DB70 call B3D940; RET Complete src/native_cube_texture_pool_allocate.cpp; reports/native_cube_texture_pool_allocate_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  }
+]
