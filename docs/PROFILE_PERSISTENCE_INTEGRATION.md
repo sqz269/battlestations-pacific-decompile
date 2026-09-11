@@ -55,3 +55,11 @@ not the incomplete decompilation, is the evidence for the missing tail.
 
 Validation for the combined implementation is recorded in
 `reports/profile_persistence_integration.json`.
+
+Combined code `3c6ae89` passed the Win32 Release build and both existing CTests.
+One ignored integration fixture emitted 2,059 bytes of profile/mission Lua text
+and read it back through Lua 5.1.1 and the reconstructed reader. It checked
+numeric section keys, nested maps, string escaping, signed version gates, legacy
+records and both checkpoint quirks. Eight native seed ranges matched the image.
+The fixture observes manager calls through a controlled service; it does not
+validate the real manager, compressed save container or gameplay.
