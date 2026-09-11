@@ -56,6 +56,145 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab2540",
+    "end_address": "00ab25f8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab2540",
+    "end_address": "00ab25f7",
+    "bytes_disassembled": 184,
+    "message": "Successfully disassembled 184 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab2540",
+    "disassemble_first": false,
+    "name": "BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab2540",
+    "function_name": "BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional",
+    "entry_point": "00ab2540",
+    "body_size": 184,
+    "message": "Function created successfully at 00ab2540",
+    "warnings": [
+     "Function name 'BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional' \u2014 main part 'GuiIcon_CreateGeometryAndResetPosition_Provisional' is not PascalCase. Expected: GuiiconCreategeometryandresetpositionProvisional",
+     "Function name 'BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional' \u2014 main part 'GuiIcon_CreateGeometryAndResetPosition_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab2540",
+   "end": "00ab25f8",
+   "name": "BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional",
+   "after": "Function: BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional at 00ab2540\nSignature: undefined BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional(void)\nEntry: 00ab2540\nBody: 00ab2540 - 00ab25f7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ad2b30",
+    "end_address": "00ad2d4f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ad2b30",
+    "end_address": "00ad2d4e",
+    "bytes_disassembled": 543,
+    "message": "Successfully disassembled 543 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ad2b30",
+    "disassemble_first": false,
+    "name": "BSP_GuiFrameBox_AddTextureState"
+   },
+   "result": {
+    "success": true,
+    "address": "00ad2b30",
+    "function_name": "BSP_GuiFrameBox_AddTextureState",
+    "entry_point": "00ad2b30",
+    "body_size": 543,
+    "message": "Function created successfully at 00ad2b30",
+    "warnings": [
+     "Function name 'BSP_GuiFrameBox_AddTextureState' \u2014 main part 'GuiFrameBox_AddTextureState' is not PascalCase. Expected: GuiframeboxAddtexturestate",
+     "Function name 'BSP_GuiFrameBox_AddTextureState' \u2014 main part 'GuiFrameBox_AddTextureState' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiFrameBox_AddTextureState' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ad2b30",
+   "end": "00ad2d4f",
+   "name": "BSP_GuiFrameBox_AddTextureState",
+   "after": "Function: BSP_GuiFrameBox_AddTextureState at 00ad2b30\nSignature: undefined BSP_GuiFrameBox_AddTextureState(void)\nEntry: 00ad2b30\nBody: 00ad2b30 - 00ad2d4e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ad26d0",
+    "end_address": "00ad26d8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ad26d0",
+    "end_address": "00ad26d7",
+    "bytes_disassembled": 8,
+    "message": "Successfully disassembled 8 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ad26d0",
+    "disassemble_first": false,
+    "name": "BSP_GuiFrameBox_GetCurrentState"
+   },
+   "result": {
+    "success": true,
+    "address": "00ad26d0",
+    "function_name": "BSP_GuiFrameBox_GetCurrentState",
+    "entry_point": "00ad26d0",
+    "body_size": 8,
+    "message": "Function created successfully at 00ad26d0",
+    "warnings": [
+     "Function name 'BSP_GuiFrameBox_GetCurrentState' \u2014 main part 'GuiFrameBox_GetCurrentState' is not PascalCase. Expected: GuiframeboxGetcurrentstate",
+     "Function name 'BSP_GuiFrameBox_GetCurrentState' \u2014 main part 'GuiFrameBox_GetCurrentState' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiFrameBox_GetCurrentState' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ad26d0",
+   "end": "00ad26d8",
+   "name": "BSP_GuiFrameBox_GetCurrentState",
+   "after": "Function: BSP_GuiFrameBox_GetCurrentState at 00ad26d0\nSignature: undefined BSP_GuiFrameBox_GetCurrentState(void)\nEntry: 00ad26d0\nBody: 00ad26d0 - 00ad26d7"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
