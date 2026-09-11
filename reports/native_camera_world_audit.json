@@ -1,0 +1,888 @@
+{
+  "packet": "native_camera_world1",
+  "status": "complete_raw_body_and_full_COFF_provider_proof_strict_build_existing_tests_passed_companion_integration_explicitly_pending",
+  "utc": "2026-09-11T17:22:58.627178+00:00",
+  "base_commit": "04fd928ecdd23f4387ccc57c7e70063dd0cdf59e",
+  "dependency_cherry_pick": "04fd928e: exact matrix3 source397c86d7 because initial main95e9396b lacked it",
+  "functions": [
+    {
+      "address": "00b6db70",
+      "length": 80,
+      "source": "src/native_camera_world.cpp",
+      "source_symbol": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z",
+      "original_ABI": "ECX actual raw node; no stack args; RET; incidental EAX captured parent+F0 or self+F0",
+      "interface": "void __fastcall refresh_native_camera_world_00b6db70(void* actual_node), no context"
+    }
+  ],
+  "actual_layout": {
+    "parent_offset": 48,
+    "parent_type": "actual original-layout raw node address, never CameraTransform companion",
+    "flags_offset": 92,
+    "parent_check": "low byte &2",
+    "local_offset": 176,
+    "world_offset": 240,
+    "matrix_bytes": 64
+  },
+  "operation_order": [
+    "capture actual parent once inEDI",
+    "if nonnull, check parent low flags byte mask2 and recursively refresh when missing",
+    "use captured parent+F0 after recursion; compose own local+B0 into own world+F0 with full raw B6D4D0",
+    "if null parent, copy own local+B0 to own world+F0 with full raw4134F0",
+    "only after provider returns, OR current own DWORD+5C with2; restoreEDI/ESI andRET"
+  ],
+  "semantics": {
+    "no_own_cache_fast_return": true,
+    "no_parent_reload_after_recursion": true,
+    "no_cycle_or_null_validation": true,
+    "no_matrix_snapshot": true,
+    "no_arbitrary_callback": true,
+    "no_exception_rollback": true,
+    "incidental_EAX_preserved_in_body_but_public_void": true
+  },
+  "dependencies": {
+    "complete_raw_functions": [
+      "00b6db70 recursive self",
+      "004134f0 raw x87 matrix copy",
+      "00b6d4d0 raw affine compose"
+    ],
+    "matrix_provider_contracts": "original unsafe alias/load/store and x87/SSE order; affine fullbody positive-one constant has matching read-only bits at new address",
+    "unresolved_helpers_within_world_body": [],
+    "owner_integration_requires": [
+      "NativeNodeStorage/CameraTransformBacking/NativeNodeBinding link representation and accessors",
+      "SceneAttachmentRuntime general raw-node-key resolver and binding retirement",
+      "B6E010 prepend and B6E680 reparent in native_node_parenting",
+      "B6D940 unlink and B6D890 root propagation in native_node_destruction",
+      "B6DA30 descendant invalidation in camera_transform",
+      "existing destruction and scene child walks and NativeCameraOwner consumer boundary"
+    ]
+  },
+  "fresh_original_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b6db70",
+        "length": 80,
+        "role": "owned complete world refresh",
+        "bytes_hex": "568bf1578b7e3085ff742cf6475c0275078bcfe8e8ffffff81c7f0000000578d96b00000008d8ef0000000e830f9ffff834e5c025f5ec38d86b0000000508d8ef0000000e837598aff834e5c025f5ec3",
+        "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "004134f0",
+        "length": 103,
+        "role": "complete raw matrix copy provider",
+        "bytes_hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "00b6d4d0",
+        "length": 339,
+        "role": "complete raw affine composition provider",
+        "bytes_hex": "8b442404d902d8080f57c0d94204d84810dec1d94020d84a08dec1d919d94014d84a04d94004d80adec1d94208d84824dec1d95904d94018d84a04d94008d80adec1d94208d84828f30f11410cdec1d95908d94214d84810d900d84a10dec1d94218d84820dec1d95910d94004d84a10d94214d84814dec1d94218d84824dec1d95914d94008d84a10d94214d84818dec1d94218d84828f30f11411cdec1d95918d94220d808d94224d84810dec1d94020d84a28dec1d95920d94224d84814d94220d84804dec1d94228d84824dec1d95924d94224d84818d94220d84808dec1d94228d84828f30f11412cf30f10054ca2d700dec1d95928d94234d84810d900d84a30dec1d94238d84820dec1d84030d95930d94004d84a30d94234d84814dec1d94238d84824dec1d84034d95934d94008d84a30d94234d84818dec1d94238d84828dec1d84038f30f11413cd95938c20400",
+        "sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "role": "read-only positive-one provider constant",
+        "bytes_hex": "0000803f",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_installed_PE": true,
+        "PE_section": ".rdata",
+        "PE_section_characteristics": "40000040"
+      },
+      {
+        "address": "00b6f5e8",
+        "length": 15,
+        "role": "bounded constructor hierarchy zero stores",
+        "bytes_hex": "895e30895e34895e38895e3c895e40",
+        "sha256": "82253daf1f65ce18d7a1fa7d6936be7de69319721a7ca7a324116186176827be",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "00b6f67e",
+        "length": 27,
+        "role": "bounded constructor local address and flags initialization",
+        "bytes_hex": "8d4c2410518d8eb0000000f30f114e4cf30f118eac000000895e5c",
+        "sha256": "c6ef1fefb01beb9fca1ce1dac1d6ed49617e515e51921e55a1454736f590a190",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "00b6f70e",
+        "length": 6,
+        "role": "bounded constructor world matrix address",
+        "bytes_hex": "8d8ef0000000",
+        "sha256": "7e5f03ea1226648be78dfb33ade5319273f9612cc91e45ac081b499baebdc10d",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "00b6e010",
+        "length": 134,
+        "role": "complete prepend shows actual parent/child pointer writes",
+        "bytes_hex": "568b742408578bf9397e307474897e308b87a4000000508bcee862f8ffff83be700100000075128b168b87700100008b52506a01508bceffd28b473489463cc74640000000008b473485c07403897040834738018977348b465ca802741a83a638010000cf83e0f5837e340089465c74078bcee8a8f9ffff8b168b42408bceffd05f5ec20400",
+        "sha256": "d24906ca4c007736ae32a792ea4d62e229b5660fb255c1c9064826fc1fd7e4c9",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      },
+      {
+        "address": "00b6d940",
+        "length": 64,
+        "role": "complete unlink shows actual hierarchy pointer writes",
+        "bytes_hex": "8b44240439483075348b504085d256c740300000000074068b703c89723c8b503c85d274068b70408972408b51343bc25e75068b423c894134834138ffc20400",
+        "sha256": "b0335543971c1fb9de1b9f4c48f5b028e3befb783c28a44bf38e070df6e2942e",
+        "live_equals_installed_PE": true,
+        "PE_section": ".text",
+        "PE_section_characteristics": "60000020"
+      }
+    ]
+  },
+  "complete_COFF_symbols": [
+    {
+      "symbol": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z",
+      "bytes": 80,
+      "COFF_section": 3,
+      "COFF_sha256": "3c45672733b2f1439be4508b03ff76fad1f6bac12fbdca43e36b89d2ff58b851",
+      "original_sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+      "full_COFF_bytes_hex": "568bf1578b7e3085ff742cf6475c0275078bcfe80000000081c7f0000000578d96b00000008d8ef0000000e800000000834e5c025f5ec38d86b0000000508d8ef0000000e800000000834e5c025f5ec3",
+      "full_normalized_bytes_hex": "568bf1578b7e3085ff742cf6475c0275078bcfe8e8ffffff81c7f0000000578d96b00000008d8ef0000000e830f9ffff834e5c025f5ec38d86b0000000508d8ef0000000e837598aff834e5c025f5ec3",
+      "original_COFF_complete_equal_after_only_declared_relocations": true,
+      "relocations": [
+        {
+          "offset": 20,
+          "symbol": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z",
+          "type": 20,
+          "target_contract": "direct recursion into this complete body",
+          "COFF_addend": 0,
+          "original_target": "00b6db70",
+          "normalized_operand": "ffffffe8"
+        },
+        {
+          "offset": 44,
+          "symbol": "?compose_native_camera_affine_00b6d4d0@bsp@@YIPBXPAXPBX1@Z",
+          "type": 20,
+          "target_contract": "direct complete raw function provider",
+          "COFF_addend": 0,
+          "original_target": "00b6d4d0",
+          "normalized_operand": "fffff930"
+        },
+        {
+          "offset": 69,
+          "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+          "type": 20,
+          "target_contract": "direct complete raw function provider",
+          "COFF_addend": 0,
+          "original_target": "004134f0",
+          "normalized_operand": "ff8a5937"
+        }
+      ],
+      "all_relocations_accounted_for": true,
+      "instruction_count": 27,
+      "assembly": [
+        "00b6db70: push esi",
+        "00b6db71: mov esi, ecx",
+        "00b6db73: push edi",
+        "00b6db74: mov edi, dword ptr [esi + 0x30]",
+        "00b6db77: test edi, edi",
+        "00b6db79: je 0xb6dba7",
+        "00b6db7b: test byte ptr [edi + 0x5c], 2",
+        "00b6db7f: jne 0xb6db88",
+        "00b6db81: mov ecx, edi",
+        "00b6db83: call 0xb6db70",
+        "00b6db88: add edi, 0xf0",
+        "00b6db8e: push edi",
+        "00b6db8f: lea edx, [esi + 0xb0]",
+        "00b6db95: lea ecx, [esi + 0xf0]",
+        "00b6db9b: call 0xb6d4d0",
+        "00b6dba0: or dword ptr [esi + 0x5c], 2",
+        "00b6dba4: pop edi",
+        "00b6dba5: pop esi",
+        "00b6dba6: ret ",
+        "00b6dba7: lea eax, [esi + 0xb0]",
+        "00b6dbad: push eax",
+        "00b6dbae: lea ecx, [esi + 0xf0]",
+        "00b6dbb4: call 0x4134f0",
+        "00b6dbb9: or dword ptr [esi + 0x5c], 2",
+        "00b6dbbd: pop edi",
+        "00b6dbbe: pop esi",
+        "00b6dbbf: ret "
+      ]
+    },
+    {
+      "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+      "bytes": 103,
+      "COFF_section": 3,
+      "COFF_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "original_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "full_COFF_bytes_hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+      "full_normalized_bytes_hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+      "original_COFF_complete_equal_after_only_declared_relocations": true,
+      "relocations": [],
+      "all_relocations_accounted_for": true,
+      "instruction_count": 35,
+      "assembly": [
+        "004134f0: mov eax, ecx",
+        "004134f2: mov ecx, dword ptr [esp + 4]",
+        "004134f6: fld dword ptr [ecx]",
+        "004134f8: fstp dword ptr [eax]",
+        "004134fa: fld dword ptr [ecx + 4]",
+        "004134fd: fstp dword ptr [eax + 4]",
+        "00413500: fld dword ptr [ecx + 8]",
+        "00413503: fstp dword ptr [eax + 8]",
+        "00413506: fld dword ptr [ecx + 0xc]",
+        "00413509: fstp dword ptr [eax + 0xc]",
+        "0041350c: fld dword ptr [ecx + 0x10]",
+        "0041350f: fstp dword ptr [eax + 0x10]",
+        "00413512: fld dword ptr [ecx + 0x14]",
+        "00413515: fstp dword ptr [eax + 0x14]",
+        "00413518: fld dword ptr [ecx + 0x18]",
+        "0041351b: fstp dword ptr [eax + 0x18]",
+        "0041351e: fld dword ptr [ecx + 0x1c]",
+        "00413521: fstp dword ptr [eax + 0x1c]",
+        "00413524: fld dword ptr [ecx + 0x20]",
+        "00413527: fstp dword ptr [eax + 0x20]",
+        "0041352a: fld dword ptr [ecx + 0x24]",
+        "0041352d: fstp dword ptr [eax + 0x24]",
+        "00413530: fld dword ptr [ecx + 0x28]",
+        "00413533: fstp dword ptr [eax + 0x28]",
+        "00413536: fld dword ptr [ecx + 0x2c]",
+        "00413539: fstp dword ptr [eax + 0x2c]",
+        "0041353c: fld dword ptr [ecx + 0x30]",
+        "0041353f: fstp dword ptr [eax + 0x30]",
+        "00413542: fld dword ptr [ecx + 0x34]",
+        "00413545: fstp dword ptr [eax + 0x34]",
+        "00413548: fld dword ptr [ecx + 0x38]",
+        "0041354b: fstp dword ptr [eax + 0x38]",
+        "0041354e: fld dword ptr [ecx + 0x3c]",
+        "00413551: fstp dword ptr [eax + 0x3c]",
+        "00413554: ret 4"
+      ]
+    },
+    {
+      "symbol": "?compose_native_camera_affine_00b6d4d0@bsp@@YIPBXPAXPBX1@Z",
+      "bytes": 339,
+      "COFF_section": 4,
+      "COFF_sha256": "87e32be13ee29b3ae69daa0aeb2ccd6b9f71edcc1ebe473d780851eb8f9c51cf",
+      "original_sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+      "full_COFF_bytes_hex": "8b442404d902d8080f57c0d94204d84810dec1d94020d84a08dec1d919d94014d84a04d94004d80adec1d94208d84824dec1d95904d94018d84a04d94008d80adec1d94208d84828f30f11410cdec1d95908d94214d84810d900d84a10dec1d94218d84820dec1d95910d94004d84a10d94214d84814dec1d94218d84824dec1d95914d94008d84a10d94214d84818dec1d94218d84828f30f11411cdec1d95918d94220d808d94224d84810dec1d94020d84a28dec1d95920d94224d84814d94220d84804dec1d94228d84824dec1d95924d94224d84818d94220d84808dec1d94228d84828f30f11412cf30f100500000000dec1d95928d94234d84810d900d84a30dec1d94238d84820dec1d84030d95930d94004d84a30d94234d84814dec1d94238d84824dec1d84034d95934d94008d84a30d94234d84818dec1d94238d84828dec1d84038f30f11413cd95938c20400",
+      "full_normalized_bytes_hex": "8b442404d902d8080f57c0d94204d84810dec1d94020d84a08dec1d919d94014d84a04d94004d80adec1d94208d84824dec1d95904d94018d84a04d94008d80adec1d94208d84828f30f11410cdec1d95908d94214d84810d900d84a10dec1d94218d84820dec1d95910d94004d84a10d94214d84814dec1d94218d84824dec1d95914d94008d84a10d94214d84818dec1d94218d84828f30f11411cdec1d95918d94220d808d94224d84810dec1d94020d84a28dec1d95920d94224d84814d94220d84804dec1d94228d84824dec1d95924d94224d84818d94220d84808dec1d94228d84828f30f11412cf30f10054ca2d700dec1d95928d94234d84810d900d84a30dec1d94238d84820dec1d84030d95930d94004d84a30d94234d84814dec1d94238d84824dec1d84034d95934d94008d84a30d94234d84818dec1d94238d84828dec1d84038f30f11413cd95938c20400",
+      "original_COFF_complete_equal_after_only_declared_relocations": true,
+      "relocations": [
+        {
+          "offset": 239,
+          "symbol": "?one_bits@?A0x54695286@bsp@@3IB",
+          "type": 6,
+          "constant_bytes_hex": "0000803f",
+          "constant_section": 3,
+          "constant_offset": 4,
+          "constant_full_section_bytes_hex": "000000800000803f",
+          "constant_section_characteristics": "40300040",
+          "new_constant_pointer_identity": true,
+          "COFF_addend": 0,
+          "original_target": "00d7a24c",
+          "normalized_operand": "00d7a24c"
+        }
+      ],
+      "all_relocations_accounted_for": true,
+      "instruction_count": 119,
+      "assembly": [
+        "00b6d4d0: mov eax, dword ptr [esp + 4]",
+        "00b6d4d4: fld dword ptr [edx]",
+        "00b6d4d6: fmul dword ptr [eax]",
+        "00b6d4d8: xorps xmm0, xmm0",
+        "00b6d4db: fld dword ptr [edx + 4]",
+        "00b6d4de: fmul dword ptr [eax + 0x10]",
+        "00b6d4e1: faddp st(1)",
+        "00b6d4e3: fld dword ptr [eax + 0x20]",
+        "00b6d4e6: fmul dword ptr [edx + 8]",
+        "00b6d4e9: faddp st(1)",
+        "00b6d4eb: fstp dword ptr [ecx]",
+        "00b6d4ed: fld dword ptr [eax + 0x14]",
+        "00b6d4f0: fmul dword ptr [edx + 4]",
+        "00b6d4f3: fld dword ptr [eax + 4]",
+        "00b6d4f6: fmul dword ptr [edx]",
+        "00b6d4f8: faddp st(1)",
+        "00b6d4fa: fld dword ptr [edx + 8]",
+        "00b6d4fd: fmul dword ptr [eax + 0x24]",
+        "00b6d500: faddp st(1)",
+        "00b6d502: fstp dword ptr [ecx + 4]",
+        "00b6d505: fld dword ptr [eax + 0x18]",
+        "00b6d508: fmul dword ptr [edx + 4]",
+        "00b6d50b: fld dword ptr [eax + 8]",
+        "00b6d50e: fmul dword ptr [edx]",
+        "00b6d510: faddp st(1)",
+        "00b6d512: fld dword ptr [edx + 8]",
+        "00b6d515: fmul dword ptr [eax + 0x28]",
+        "00b6d518: movss dword ptr [ecx + 0xc], xmm0",
+        "00b6d51d: faddp st(1)",
+        "00b6d51f: fstp dword ptr [ecx + 8]",
+        "00b6d522: fld dword ptr [edx + 0x14]",
+        "00b6d525: fmul dword ptr [eax + 0x10]",
+        "00b6d528: fld dword ptr [eax]",
+        "00b6d52a: fmul dword ptr [edx + 0x10]",
+        "00b6d52d: faddp st(1)",
+        "00b6d52f: fld dword ptr [edx + 0x18]",
+        "00b6d532: fmul dword ptr [eax + 0x20]",
+        "00b6d535: faddp st(1)",
+        "00b6d537: fstp dword ptr [ecx + 0x10]",
+        "00b6d53a: fld dword ptr [eax + 4]",
+        "00b6d53d: fmul dword ptr [edx + 0x10]",
+        "00b6d540: fld dword ptr [edx + 0x14]",
+        "00b6d543: fmul dword ptr [eax + 0x14]",
+        "00b6d546: faddp st(1)",
+        "00b6d548: fld dword ptr [edx + 0x18]",
+        "00b6d54b: fmul dword ptr [eax + 0x24]",
+        "00b6d54e: faddp st(1)",
+        "00b6d550: fstp dword ptr [ecx + 0x14]",
+        "00b6d553: fld dword ptr [eax + 8]",
+        "00b6d556: fmul dword ptr [edx + 0x10]",
+        "00b6d559: fld dword ptr [edx + 0x14]",
+        "00b6d55c: fmul dword ptr [eax + 0x18]",
+        "00b6d55f: faddp st(1)",
+        "00b6d561: fld dword ptr [edx + 0x18]",
+        "00b6d564: fmul dword ptr [eax + 0x28]",
+        "00b6d567: movss dword ptr [ecx + 0x1c], xmm0",
+        "00b6d56c: faddp st(1)",
+        "00b6d56e: fstp dword ptr [ecx + 0x18]",
+        "00b6d571: fld dword ptr [edx + 0x20]",
+        "00b6d574: fmul dword ptr [eax]",
+        "00b6d576: fld dword ptr [edx + 0x24]",
+        "00b6d579: fmul dword ptr [eax + 0x10]",
+        "00b6d57c: faddp st(1)",
+        "00b6d57e: fld dword ptr [eax + 0x20]",
+        "00b6d581: fmul dword ptr [edx + 0x28]",
+        "00b6d584: faddp st(1)",
+        "00b6d586: fstp dword ptr [ecx + 0x20]",
+        "00b6d589: fld dword ptr [edx + 0x24]",
+        "00b6d58c: fmul dword ptr [eax + 0x14]",
+        "00b6d58f: fld dword ptr [edx + 0x20]",
+        "00b6d592: fmul dword ptr [eax + 4]",
+        "00b6d595: faddp st(1)",
+        "00b6d597: fld dword ptr [edx + 0x28]",
+        "00b6d59a: fmul dword ptr [eax + 0x24]",
+        "00b6d59d: faddp st(1)",
+        "00b6d59f: fstp dword ptr [ecx + 0x24]",
+        "00b6d5a2: fld dword ptr [edx + 0x24]",
+        "00b6d5a5: fmul dword ptr [eax + 0x18]",
+        "00b6d5a8: fld dword ptr [edx + 0x20]",
+        "00b6d5ab: fmul dword ptr [eax + 8]",
+        "00b6d5ae: faddp st(1)",
+        "00b6d5b0: fld dword ptr [edx + 0x28]",
+        "00b6d5b3: fmul dword ptr [eax + 0x28]",
+        "00b6d5b6: movss dword ptr [ecx + 0x2c], xmm0",
+        "00b6d5bb: movss xmm0, dword ptr [0xd7a24c]",
+        "00b6d5c3: faddp st(1)",
+        "00b6d5c5: fstp dword ptr [ecx + 0x28]",
+        "00b6d5c8: fld dword ptr [edx + 0x34]",
+        "00b6d5cb: fmul dword ptr [eax + 0x10]",
+        "00b6d5ce: fld dword ptr [eax]",
+        "00b6d5d0: fmul dword ptr [edx + 0x30]",
+        "00b6d5d3: faddp st(1)",
+        "00b6d5d5: fld dword ptr [edx + 0x38]",
+        "00b6d5d8: fmul dword ptr [eax + 0x20]",
+        "00b6d5db: faddp st(1)",
+        "00b6d5dd: fadd dword ptr [eax + 0x30]",
+        "00b6d5e0: fstp dword ptr [ecx + 0x30]",
+        "00b6d5e3: fld dword ptr [eax + 4]",
+        "00b6d5e6: fmul dword ptr [edx + 0x30]",
+        "00b6d5e9: fld dword ptr [edx + 0x34]",
+        "00b6d5ec: fmul dword ptr [eax + 0x14]",
+        "00b6d5ef: faddp st(1)",
+        "00b6d5f1: fld dword ptr [edx + 0x38]",
+        "00b6d5f4: fmul dword ptr [eax + 0x24]",
+        "00b6d5f7: faddp st(1)",
+        "00b6d5f9: fadd dword ptr [eax + 0x34]",
+        "00b6d5fc: fstp dword ptr [ecx + 0x34]",
+        "00b6d5ff: fld dword ptr [eax + 8]",
+        "00b6d602: fmul dword ptr [edx + 0x30]",
+        "00b6d605: fld dword ptr [edx + 0x34]",
+        "00b6d608: fmul dword ptr [eax + 0x18]",
+        "00b6d60b: faddp st(1)",
+        "00b6d60d: fld dword ptr [edx + 0x38]",
+        "00b6d610: fmul dword ptr [eax + 0x28]",
+        "00b6d613: faddp st(1)",
+        "00b6d615: fadd dword ptr [eax + 0x38]",
+        "00b6d618: movss dword ptr [ecx + 0x3c], xmm0",
+        "00b6d61d: fstp dword ptr [ecx + 0x38]",
+        "00b6d620: ret 4"
+      ]
+    }
+  ],
+  "archive": {
+    "actual_library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 36016928,
+      "sha256": "ef1d8a8d65ef24050b9b0e86655570f8efa1b3f67a2a413dddf475036d648eae"
+    },
+    "frozen_library": {
+      "path": "local/camera_world/frozen/bsp_core.lib",
+      "bytes": 36016928,
+      "sha256": "ef1d8a8d65ef24050b9b0e86655570f8efa1b3f67a2a413dddf475036d648eae"
+    },
+    "exact_members": [
+      {
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_camera_world.obj",
+          "bytes": 974,
+          "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_camera_world.obj",
+          "offset": 27017966,
+          "bytes": 974,
+          "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+        },
+        "frozen_object": {
+          "path": "local/camera_world/frozen/native_camera_world.obj",
+          "bytes": 974,
+          "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+        },
+        "frozen_extracted_member": {
+          "path": "local/camera_world/frozen/native_camera_world_archive_member.obj",
+          "bytes": 974,
+          "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+        }
+      },
+      {
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_camera_matrix_copy.obj",
+          "bytes": 824,
+          "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_camera_matrix_copy.obj",
+          "offset": 29163110,
+          "bytes": 824,
+          "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+        },
+        "frozen_object": {
+          "path": "local/camera_world/frozen/native_camera_matrix_copy.obj",
+          "bytes": 824,
+          "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+        },
+        "frozen_extracted_member": {
+          "path": "local/camera_world/frozen/native_camera_matrix_copy_archive_member.obj",
+          "bytes": 824,
+          "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+        }
+      },
+      {
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_camera_matrix_math.obj",
+          "bytes": 3021,
+          "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_camera_matrix_math.obj",
+          "offset": 27014884,
+          "bytes": 3021,
+          "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+        },
+        "frozen_object": {
+          "path": "local/camera_world/frozen/native_camera_matrix_math.obj",
+          "bytes": 3021,
+          "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+        },
+        "frozen_extracted_member": {
+          "path": "local/camera_world/frozen/native_camera_matrix_math_archive_member.obj",
+          "bytes": 3021,
+          "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+        }
+      }
+    ],
+    "all_full_build_objects_equal_extracted_members": true
+  },
+  "strict_build": {
+    "Win32": true,
+    "MSVC_version": "19.51.36244.0",
+    "compiler": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    "actual_source_commands": {
+      "native_camera_world": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-native_camera_world/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\SRC\\NATIVE_CAMERA_WORLD.CPP",
+      "native_camera_matrix_copy": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-native_camera_world/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\SRC\\NATIVE_CAMERA_MATRIX_COPY.CPP",
+      "native_camera_matrix_math": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-native_camera_world/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-NATIVE_CAMERA_WORLD\\SRC\\NATIVE_CAMERA_MATRIX_MATH.CPP"
+    },
+    "ignored_CMake_hook": "local/camera_world/extra.cmake",
+    "existing_CTests_passed": 2,
+    "native_seeds_verified": 8,
+    "permanent_tests_added": false,
+    "exact_owned_bytes": 80,
+    "exact_provider_bytes": 442,
+    "complete_instructions": 181,
+    "total_relocations": 4
+  },
+  "proof_scope": {
+    "original_live_PE_equal": true,
+    "whole_COFF_body_and_reached_providers_equal_after_declared_relocations": true,
+    "actual_archive_members_verified": true,
+    "original_runtime_fixture": false,
+    "new_raw_entry_runtime_fixture": false,
+    "linked_byte_fixture": false,
+    "linked_runtime_postimages": false,
+    "fixture_decision": "No new fixture needed for this packet: complete80-byte owned body and every reached442-byte matrix provider match originals after only explicit relocations; no host adapter was implemented"
+  },
+  "representation_boundary": {
+    "status": "bounded read-only plan, not implemented or claimed integrated",
+    "actual_evidence": [
+      {
+        "address": "00b6f5e8",
+        "meaning": "constructor zeros +30/+34/+38/+3C/+40"
+      },
+      {
+        "address": "00b6f683",
+        "meaning": "constructor addresses local+B0"
+      },
+      {
+        "address": "00b6f696",
+        "meaning": "constructor clears flags+5C"
+      },
+      {
+        "address": "00b6f70e",
+        "meaning": "constructor addresses world+F0"
+      },
+      {
+        "address": "00b6e01d",
+        "meaning": "actual parent address published to child+30 before callbacks"
+      },
+      {
+        "address": "00b6e049",
+        "meaning": "actual raw sibling/child link stores"
+      },
+      {
+        "address": "00b6d940",
+        "meaning": "full actual raw unlink stores"
+      }
+    ],
+    "current_evidence": [
+      {
+        "file": "include/bsp/native_node_construction.hpp",
+        "lines": "31-35",
+        "meaning": "NativeNodeStorage hierarchy fields are CameraTransform companion pointers"
+      },
+      {
+        "file": "src/native_node_construction.cpp",
+        "lines": "49-53,120-135",
+        "meaning": "binding references same prefix words; scene pointer_key is actual slot address"
+      },
+      {
+        "file": "include/bsp/camera_transform.hpp",
+        "lines": "10-14,50-54",
+        "meaning": "CameraTransformBacking and CameraTransform use companion pointer references"
+      },
+      {
+        "file": "src/native_node_parenting.cpp",
+        "lines": "37-54",
+        "meaning": "prepend publishes companion &parent/&child into backing words"
+      },
+      {
+        "file": "include/bsp/native_camera_owner.hpp",
+        "lines": "38-41,80-88",
+        "meaning": "owner exposes NativeNodeStorage prefix plus external NativeNodeBinding"
+      },
+      {
+        "file": "include/bsp/scene_attachment.hpp",
+        "lines": "94-102,125-139",
+        "meaning": "raw pointer_key exists but general raw-node-key resolver does not"
+      }
+    ],
+    "plan": [
+      "Keep one canonical physical prefix, flag and matrix storage; make hierarchy words actual raw node addresses, not a second graph",
+      "Replace companion pointer-reference link fields with explicit raw-word accessors/proxies; companion-to-raw conversion uses bound storage address",
+      "Add reviewed general raw-node-key to stable-companion lookup using existing SceneNodeAttachment pointer_key and binding lifetime; bind/unbind/forget_destroyed_binding retirement must stay consistent",
+      "Switch hierarchy writers and current child/sibling traversal consumers together; preserve parent publication before callbacks and current link reloads afterwards",
+      "Retain current semantic call path until nonnull reparent/detach/reentry and raw-world integration checks pass; never temporarily swizzle shared hierarchy words"
+    ],
+    "named_but_incomplete_raw_integration": [
+      "NativeNodeStorage/CameraTransformBacking/NativeNodeBinding link representation and accessors",
+      "SceneAttachmentRuntime general raw-node-key resolver and binding retirement",
+      "B6E010 prepend and B6E680 reparent in native_node_parenting",
+      "B6D940 unlink and B6D890 root propagation in native_node_destruction",
+      "B6DA30 descendant invalidation in camera_transform",
+      "existing destruction and scene child walks and NativeCameraOwner consumer boundary"
+    ],
+    "no_companion_cast_or_temporary_swizzle": true,
+    "no_duplicate_graph_or_owner": true,
+    "no_invented_reference_or_callback": true
+  },
+  "limitations": [
+    "Raw source complete does not mean NativeNodeStorage or NativeCameraOwner nonnull companion hierarchy is compatible",
+    "Null-parent/root cases cannot establish general parent-chain compatibility; current owner consumer integration remains blocked by the named representation migration",
+    "Existing tests do not execute or validate the new raw entry under every recursive/alias/exception environment; no runtime or linked proof claimed",
+    "No arbitrary original caller integration, renderer behavior, complete camera lifecycle, rendering parity or game validation",
+    "Names are descriptive hypotheses; ambient x87/SSE and actually reached memory validity remain provider inputs"
+  ],
+  "existing_semantic_APIs_unchanged": true,
+  "Ghidra_mutations": false,
+  "shared_metadata_mutations": false,
+  "permanent_CMake_mutations": false,
+  "artifacts": [
+    {
+      "path": "src/native_camera_world.cpp",
+      "bytes": 1688,
+      "sha256": "ce38ae3bb4fa869751c746092097ab4be1cf7b8947ce2ed2342da687d645563a"
+    },
+    {
+      "path": "include/bsp/native_camera_world.hpp",
+      "bytes": 1211,
+      "sha256": "1229bd01bfc6f2fb43e2673b5ec4e310c172b4dbda65a5c11eafbc50dbbb8a42"
+    },
+    {
+      "path": "docs/NATIVE_CAMERA_WORLD.md",
+      "bytes": 7219,
+      "sha256": "4cc7294bc44424c6d741c0078869cda898881679940ebc0e5056907d6714173c"
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "bytes": 1626,
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "bytes": 23218,
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_math.hpp",
+      "bytes": 1803,
+      "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 6848,
+      "sha256": "4b1b122ebf8f8d0d6b595f79340692bfdf6463b56e986d06422e75efeb282ae7"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 4386,
+      "sha256": "3ae9db310ee90a7644922371e155cec1a7ab2c6e51d8e25e6374f711a824bb93"
+    },
+    {
+      "path": "src/native_node_parenting.cpp",
+      "bytes": 5166,
+      "sha256": "37cbc2ab608da23d786c36f47012a6d8361160fab1e499add18244bf4b12a017"
+    },
+    {
+      "path": "include/bsp/native_node_parenting.hpp",
+      "bytes": 2193,
+      "sha256": "4f11f3d14f3fec7f8d4144eca293cf3bef42138cd4edfae55e1152fa5935e731"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "bytes": 10853,
+      "sha256": "5a4184fc65c9fa456a3c6e23ead525dff42a581faca73de0f6df505b8324188a"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 4370,
+      "sha256": "5692ef3d4bb337293ca58daafddcaadf24095337e596868fa4bcbb5c39eadee0"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "bytes": 9403,
+      "sha256": "9a28e5f5b4d2cc584bfcd6e7262bc502f051de61972d4dc1a6ee425565a21d04"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 5445,
+      "sha256": "d80677f0ae998c0bfc02fd2175a63abf787481dde67c3681ad0d645d698ad1e5"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "bytes": 15328,
+      "sha256": "4c60e1702bc071399a546520228f18772ffededb2eed0bbb6439bb3c836a0177"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "bytes": 7746,
+      "sha256": "7dd336494d3097fe4958a930f07bf4c6cdc2db4afe6c179faa4f90cf442de498"
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "bytes": 14079,
+      "sha256": "a84798e710ad1292d0b8d52d1767fbdd246eddd1eb0369ced67894cb07aa882a"
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "bytes": 4860,
+      "sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 12065,
+      "sha256": "eef1ceb56f7aaee230c7387028104f76cef5df30f5f7feb36bc033059f78b2c4"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 36016928,
+      "sha256": "ef1d8a8d65ef24050b9b0e86655570f8efa1b3f67a2a413dddf475036d648eae"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 111415,
+      "sha256": "f4d0057796fd7976666ed9b27dc168a15d9a0eb7033d7375fb250efb020fd41a"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19069,
+      "sha256": "7f5afa2d49a54a5cda4d269c62aee4f8d6a9533612d41c67cd5efc611d23b09c"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1733,
+      "sha256": "0c4f52f06298d75a07d383c86b8854ba267bbe393d82bf8422c27ff33443cc06"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 885238,
+      "sha256": "1603416cb45c9f3fe5c32f9759408feaa971c26e9bbffb9db632c62660453d40"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_camera_world.obj",
+      "bytes": 974,
+      "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_camera_matrix_copy.obj",
+      "bytes": 824,
+      "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_camera_matrix_math.obj",
+      "bytes": 3021,
+      "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+    },
+    {
+      "path": "local/camera_world/audit.py",
+      "bytes": 17468,
+      "sha256": "bcc61196d240d6c52466edd0991d4df1c0bdcf4d55d4959b4218c0113a3ea8d2"
+    },
+    {
+      "path": "local/camera_world/build.log",
+      "bytes": 19861,
+      "sha256": "f2800a461dd2ec5d671fb0bdc7d41a482f6faa697c08efdef62e19707c2dc041"
+    },
+    {
+      "path": "local/camera_world/build.ps1",
+      "bytes": 862,
+      "sha256": "06a45241c2b51cb7fa09ec3e3278e883e20fceb0b2c26e9d4f0adba2cbf77fe4"
+    },
+    {
+      "path": "local/camera_world/extra.cmake",
+      "bytes": 153,
+      "sha256": "2d0b7beef92b3455d214df836451bacc71a9d5611100884cd5cc54bab649eff2"
+    },
+    {
+      "path": "local/camera_world/frozen/bsp_core.lib",
+      "bytes": 36016928,
+      "sha256": "ef1d8a8d65ef24050b9b0e86655570f8efa1b3f67a2a413dddf475036d648eae"
+    },
+    {
+      "path": "local/camera_world/frozen/native_camera_matrix_copy.obj",
+      "bytes": 824,
+      "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+    },
+    {
+      "path": "local/camera_world/frozen/native_camera_matrix_copy_archive_member.obj",
+      "bytes": 824,
+      "sha256": "278e92ba972039f45c4597baa7f14fd88c7b9563d4568f427273684ecb3cd11d"
+    },
+    {
+      "path": "local/camera_world/frozen/native_camera_matrix_math.obj",
+      "bytes": 3021,
+      "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+    },
+    {
+      "path": "local/camera_world/frozen/native_camera_matrix_math_archive_member.obj",
+      "bytes": 3021,
+      "sha256": "d306451b00e3b42e609868951f59751009a63fb12213f940b11b110da1c87783"
+    },
+    {
+      "path": "local/camera_world/frozen/native_camera_world.obj",
+      "bytes": 974,
+      "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+    },
+    {
+      "path": "local/camera_world/frozen/native_camera_world_archive_member.obj",
+      "bytes": 974,
+      "sha256": "30a18b991382d770e8ad89f75a03b85293266f15a822285176d108666316072c"
+    },
+    {
+      "path": "local/camera_world/object_proof.json",
+      "bytes": 16465,
+      "sha256": "257f1e4896cc26792d1948a0911c6559935f4daae53418d663c3d8d490d0aa58"
+    },
+    {
+      "path": "local/camera_world/original_assembly.txt",
+      "bytes": 10333,
+      "sha256": "1e531853cb096246df72677b230fe6de6a6a2a4ba386d0aefe82083b2ff0bfb0"
+    },
+    {
+      "path": "local/camera_world/pins.json",
+      "bytes": 5314,
+      "sha256": "51e561223b7cbffabe8721e59c7055c1bd4d585eed157f408191d9eb708e21cb"
+    },
+    {
+      "path": "local/camera_world/prepare.py",
+      "bytes": 2104,
+      "sha256": "8e64fe0b8c68c27f60a4ba153dce4de655cdc2f7c2095b5211cb1c5841c878ac"
+    },
+    {
+      "path": "local/camera_world/seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "build/win32/CMakeFiles/4.2.3-msvc3/CMakeCXXCompiler.cmake",
+      "bytes": 6498,
+      "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854"
+    }
+  ]
+}
