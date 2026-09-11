@@ -107,3 +107,11 @@ ownership and adapter boundaries. The report's `configuration_integration_g`
 records this batch separately from the earlier validation above. Required
 mission/resource service bindings, traffic/powerup/warning owners, native
 STL/SEH/ABI and gameplay validation remain outstanding.
+
+The configuration batch passed the combined Win32 build and both existing tests
+at `eb86365727631c936b74f0e498a2c353a207b794`, then fast-forwarded main to
+that same revision. Six focused fixtures passed against the earlier same-batch
+library at `958ea08cc49292289937716edb194e79e569776b`; their exact logs and
+separate library hashes are retained in the report. All74 annotations were saved
+again by integration. Nine missing functions and25 race/marker/robot call gaps
+were repaired; the documented00886370 stored-body limitation remains.

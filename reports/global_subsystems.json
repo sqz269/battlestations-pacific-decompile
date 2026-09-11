@@ -199,6 +199,25 @@
       "race_marker_call_gaps": 4,
       "robot_call_gaps": 21,
       "script_folder_tail": "Decoded/saved90 bytes and cleared false return; stored00886370 body still ends00886793, documented limitation retained."
+    },
+    "independent_integration_review": "Race/traffic worker independently checked complete004DC6A0 and all five new calls, alias/capture distinctions and preserved effect/publication order; no concrete mismatch. No game-validation claim.",
+    "final_integration": {
+      "tested_revision": "eb86365727631c936b74f0e498a2c353a207b794",
+      "main_after_integration": "eb86365727631c936b74f0e498a2c353a207b794",
+      "main_base": "d2ff40bdc94edd0d6686a50d75614a7f7c934111",
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+      "log": "local/config_g_integrate.log",
+      "library_sha256": "11b8c815298aee7131a149271f4cb537fb3da905ce76f09fa8f80033ff045c00",
+      "fixture_scope": "Six fixtures passed against the same pre-main-merge library at validation.code_revision958ea08; final integration includes independent main changes and has separate successful build/tests.",
+      "mechanical_merges": [
+        "config/names/008f0000.jsonl address union",
+        "config/reconstruction/008f0000.jsonl independent insertions",
+        "config/parallel_work.json independent insertions"
+      ],
+      "ghidra_reapplied_saved_annotations": 74,
+      "ghidra_before_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T090315Z.json",
+      "game_validated": false
     }
   }
 }
