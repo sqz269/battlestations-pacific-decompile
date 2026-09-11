@@ -1,0 +1,125 @@
+{
+  "packet": "orch3_session_teardown_latches",
+  "owner": "agent/orch3-session-teardown-20260910",
+  "date": "2026-09-10",
+  "kind": "analysis+bounded_reconstruction",
+  "doc": "docs/SESSION_TEARDOWN_LATCHES.md",
+  "source": "src/session_teardown_latches.cpp",
+  "header": "include/bsp/session_teardown_latches.hpp",
+  "headline": "Five session lifecycle routes: type 12h end scene, type 13h game closed with a conditional drop latch, and type 0Bh mission reload. The common 007848F0 call flushes three peer buffers rather than destroying the session.",
+  "project": {
+    "project_path": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra/show --live client verifies expected target on every analysis batch",
+    "ghidra_mutations": [],
+    "exports": "Ten existing functions exported through bsp.py ghidra export to shared exports/bsp/functions; no project save or annotation change"
+  },
+  "reconstructed": [
+    {
+      "address": "0076d0e0",
+      "name": "BSP_Session_ReceiveGameClosed",
+      "cpp_name": "receive_session_game_closed_0076d0e0",
+      "abi": "Callee cleans two stack slots, first message pointer read at entry ESP+4, second unused; ECX=session supplied but unused. RET 8 at 0076D133, length 3.",
+      "sequence": ["Nonzero message+18h writes game+624h=2 and returns", "Otherwise derive Boolean from 00E198AC, owner+60h and pointee+4h", "004D7D50(game,boolean)", "game+1EE4h=1"],
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: dispatcher 00777C4F..00777C81 routes type 13h here when session+F4h!=1. 0076D0E4..FA writes game+624h=2 for nonzero message+18h; zero arm calls 004D7D50 then sets game+1EE4h. RET 8 at 0076D133."
+    },
+    {
+      "address": "007727a0",
+      "name": "BSP_Session_BroadcastEndScene",
+      "cpp_name": "broadcast_session_end_scene_007727a0",
+      "abi": "ECX=session; one stack slot read as raw byte; RET 4 at 007728A3, length 3.",
+      "sequence": ["Capture session+188h, then write argument to session+290h", "First peer: update optional [peer+D50h]+1Ah only", "Later peers: construct type 12h, set +4h=1/vtable 00D03160, send via 00770B50, restore base vtable, reload and update optional metadata", "Flush selected +188h or +18Ch through 007848F0", "game+1EE4h=1"],
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: 007727C6 writes session+290h; first peer only receives metadata+1Ah, later peers receive type 12h/vtable 00D03160 through 00770B50 then metadata. 0077287F flushes before 0077288C sets +1EE4h. EndScene 004D7A78 passes 1; state drain 004E45F7 passes 0."
+    },
+    {
+      "address": "007728b0",
+      "name": "BSP_Session_BroadcastGameClosed",
+      "cpp_name": "broadcast_session_game_closed_007728b0",
+      "abi": "ECX=session; one stack slot read as raw byte; RET 4 at 00772987, length 3.",
+      "sequence": ["Require and skip first +188h transport peer", "For later peers construct type 13h, +4h=1/vtable 00CE74DC, byte payload +18h=argument, call 00770B50 and restore base vtable", "Flush selected transport at 0077295F", "Only zero argument sets game+1EE4h; nonzero preserves it"],
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: 007728E9 skips first peer; 007728F6..0077292C sends type 13h/vtable 00CE74DC with byte +18h argument to each later peer. Flush 0077295F precedes the TEST BL and conditional +1EE4h store at 00772967..72."
+    },
+    {
+      "address": "00772990",
+      "name": "BSP_Session_ReceiveEndScene",
+      "cpp_name": "receive_session_end_scene_00772990",
+      "abi": "ECX=session; two unused stack slots (message, output/context supplied by dispatcher); RET 8 at 00772A31, length 3.",
+      "sequence": ["session+274h=1", "Construct type 12h, set +4h=1/vtable 00D03160", "00770AF0 sends through secondary transport; restore base vtable", "Flush selected transport", "004D7970(game,0)", "game+1EE4h=1"],
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: dispatcher 00777C18..45 routes type 12h here when session+F4h!=1. 007729B1 sets +274h, 007729DC sends type 12h through 00770AF0, 00772A03 flushes, 00772A10 calls EndScene(0), then +1EE4h is set. RET 8 at 00772A31."
+    },
+    {
+      "address": "00772610",
+      "name": "BSP_Session_BeginMissionReload",
+      "cpp_name": "begin_session_mission_reload_00772610",
+      "abi": "ECX=session, no stack arguments; RET at 00772702, length 1.",
+      "sequence": ["game+1EE3h=(game+1FE4h!=0)", "game+1EE5h=0", "Ensure [session+188h]+9Ch=4", "Require and skip first transport peer; later peers receive type 0Bh/vtable 00D0314C with dword +18h=0", "Flush selected transport; no +1EE4h write"],
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: caller 004D7940..66 queues state request 0Ah then tail-calls here. 0077263C/48 cache network mode and clear +1EE5h; transport+9Ch becomes 4; later peers receive type 0Bh/vtable 00D0314C with dword +18h=0, followed by flush at 007726EB."
+    }
+  ],
+  "analyzed_only": [
+    {
+      "address": "0075b430",
+      "name": "BSP_SessionMessage_ConstructBase",
+      "previous_ghidra_name": "FUN_0075b430",
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: listing 0075B430..7F constructs base session message, vtable 00D02C68, +4h=3, +8h/+Ch=0, +10h=type byte, +14h=selected game+18CCh slot for signed index 0..7 else null. ECX=message, RET 4. Analyzed contract only."
+    },
+    {
+      "address": "00770b50",
+      "name": "BSP_Session_SendMessageToNonlocalPeer",
+      "previous_ghidra_name": "FUN_00770b50",
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: listing 00770B50..C8 uses session+188h, skips its first/local peer, then calls 00783DC0; secondary +18Ch route tests message virtual+Ch(29h). 00770BB3 loads the actual stack peer argument, not pseudocode unaff_retaddr. RET 8. Analyzed contract only."
+    },
+    {
+      "address": "00770af0",
+      "name": "BSP_Session_SendMessageToSecondaryFirstPeer",
+      "previous_ghidra_name": "STL_inst_00770af0",
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: listing 00770AF0..B41 uses session+18Ch, passes its first peer or null at count zero to 00783DC0; null transport does nothing. ECX=session, stack message, RET 4. Existing automatic STL_inst label describes list machinery but misses the game-specific session routing. Analyzed contract only."
+    },
+    {
+      "address": "007848f0",
+      "name": "BSP_SessionTransport_FlushPeerBuffers",
+      "previous_ghidra_name": "FUN_007848f0",
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: listing 007848F0..007849BA walks transport peers, locks peer+4h, scans three buffers at peer+D40h, invokes virtual+20h for end-base+partial-byte nonzero, resets buffer cursor/bits/first byte, then unlocks. No session destruction. ECX=transport, RET. Analyzed contract only."
+    },
+    {
+      "address": "004d7d50",
+      "name": "BSP_Game_ShowGameClosed",
+      "previous_ghidra_name": "FUN_004d7d50",
+      "evidence": "Hypothesis, not a recovered symbol. docs/SESSION_TEARDOWN_LATCHES.md: 004D7D50..7E9F sets game+608h, cinematic (1,0,1), conditionally closes pause interfaces. Zero argument sets 00F1B038=1 and raises ingame.multi_gameclosed with callback 004D7B50; nonzero sets status 2 without that prompt. ECX=game, low byte argument, RET 4. Analyzed contract only."
+    }
+  ],
+  "original_anchor_names": {
+    "0076d0e0": "FUN_0076d0e0",
+    "007727a0": "FUN_007727a0",
+    "007728b0": "FUN_007728b0",
+    "00772990": "FUN_00772990",
+    "00772610": "FUN_00772610"
+  },
+  "no_ghidra_function": [],
+  "flow_repairs_requested": [],
+  "ghidra_artefacts": [
+    "0076D0E0 and 00772990 both RET 8 although decompiler omits the unused second/first stack slots",
+    "0076D0E0 only modifies AL before PUSH EAX; callee 004D7D50 reads only the low byte",
+    "00770B50 secondary branch pseudocode invents unaff_retaddr; assembly 00770BB3 reads caller peer argument",
+    "007848F0 unreachable 0078490E follows CMP ESI,ESI; this is a redundant checked-iterator guard, not missing teardown",
+    "External queue query at 004E45D2 was not an instruction start; stored listing confirms containing compare starts 004E45D0. Misaligned disk decode from old doc address 004E45E8 was discarded; correct compare starts 004E45E6."
+  ],
+  "external_contracts": ["00BF6713 checked-iterator failure and compiler SEH are not ported", "00783DC0 serialization, message virtual type tests and transport virtual delivery remain external", "004D7970 EndScene and 004D7D50 UI effects are host calls", "Large dispatcher 00777850 and game callers were read only in bounded call-site ranges"],
+  "preconditions": ["Primary transport required for all three broadcasters", "007728B0 and 00772610 require a first/local peer; checked-iterator failure on empty lies outside the valid-state projection", "Selected transport exists at flush time", "Callbacks preserve active peer nodes until traversal ends, while metadata may change", "No native object layout, SEH, concurrent global identity change or invalid iterator behavior is claimed"],
+  "corrections_offered": ["0076D0F0 is a known game+624h writer (value 2 for nonzero type-13h payload), correcting the older no-known-writer statement", "007728B0 and 0076D0E0 preserve +1EE4h on nonzero payload rather than raising it unconditionally", "+1EE4h also follows normal end scene, so the existing session_dropped field label is broader than transport failure", "007848F0 is peer-buffer flush, not teardown"],
+  "validation": {
+    "seed_verification": "8 of 8 matches_disk=true; local/seed-verification.json; generated local/seed_reference.hpp",
+    "build": "scripts/build.ps1 Release Win32 passed; local/session-teardown-build.log",
+    "ctest": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "native_math_differential"]},
+    "tests_added": 0,
+    "module_behavior_fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "note": "Existing tests validate established repo behavior; none exercise the new session routes. New module compilation and focused listing/code review passed."
+  },
+  "open_questions": ["Semantics of game+624h=2 and session+274h/+290h remain raw", "Meaning of peer metadata+1Ah and transport+9Ch=4", "Message serializers and session+F4h==1 receive handlers 0076D260 and 0076D140", "Transport virtual+20h delivery guarantees and 00783DC0 buffering/serialization"],
+  "follow_up_packets": [
+    {"packet": "session_lifecycle_other_role_receive", "addresses": ["0076d260", "0076d140"], "contract": "Role-1 type 12h/13h handlers and consumers of session+274h/+290h; claim separately"},
+    {"packet": "session_message_transport_delivery", "addresses": ["00783dc0"], "contract": "Serialization and enqueue boundary; virtual+20h targets require separate ownership discovery"}
+  ]
+}
