@@ -717,10 +717,20 @@ int main() {
     {
         // 004e4151 compares game+5D4h against the 3 that GGame::OnInit wrote one
         // call earlier, not against the 4 the drain dispatched. When the platform
-        // poll moves the state off 3 the shell is abandoned: no manager is
-        // created and 004e4279 never writes 5. Reading that gate as "still 4"
+        // poll moves the state off 3 the shell is abandoned: no front-end manager
+        // is created and 004e4279 never writes 5. Reading that gate as "still 4"
         // would build the front end after a sign-out and leave the state at 3.
         struct ShellHost final : bsp::FrontEndShellHost {
+            bsp::SingletonLifetimeDomain lifetime{{this,
+                [](void* context, void* owner, std::uint32_t flags) noexcept {
+                    auto& self = *static_cast<ShellHost*>(context);
+                    bsp::scalar_delete_gameplay_effect_manager_008703e0(
+                        static_cast<bsp::GameplayEffectManager*>(owner), flags, self.effects);
+                }, [](void*) { throw std::runtime_error("invalid singleton fixture state"); }}};
+            bsp::GameplayEffectManager* volatile effect_singleton = nullptr;
+            bsp::GameplayEffectManagerAllocationWords effect_words{0xa5a5a5a5};
+            bsp::GameplayEffectManagerContext effects{lifetime, effect_singleton, effect_words};
+            ~ShellHost() override { lifetime.shutdown(); }
             std::int32_t state_after_poll = 3;
             int managers_created = 0;
             int end_loading_calls = 0;
@@ -728,7 +738,7 @@ int main() {
             void renderer_set_budget(std::uint32_t) override {}
             void probe_texture_memory(const char*) override {}
             void probe_sound_memory(const char*) override {}
-            void probe_effect_memory(const char*) override {}
+            bsp::GameplayEffectManagerContext& effect_manager_context() override { return effects; }
             bool title_screen_present() override { return false; }
             void destroy_title_screen() override {}
             bool front_end_manager_b8_present() override { return false; }
@@ -781,6 +791,20 @@ int main() {
             "the shell settles on state 5, never on the 4 the drain dispatched");
         check(aborted.end_loading_calls == 1 && ready.end_loading_calls == 1,
             "0057c250 runs on both exits, so the loading screen never leaks");
+        check(aborted.effect_singleton && ready.effect_singleton
+                && aborted.lifetime.published_manager()->count_00bcf910() == 1
+                && ready.lifetime.published_manager()->count_00bcf910() == 1
+                && ready.effect_singleton->allocator_04 == 0xa5a5a5a5
+                && ready.lifetime.published_manager()->system_owner().section_10->recursion_18 == 0
+                && bsp::get_gameplay_effect_manager_004c1650(ready.effects) == ready.effect_singleton,
+            "effect probe creates and registers its concrete singleton before either shell exit");
+        // The native map owns nodes, not effect definitions. A non-dereferenceable
+        // raw value detects accidental release/dispatch during probe and teardown.
+        ready.effect_singleton->definitions->emplace(7, reinterpret_cast<void*>(1));
+        bsp::probe_gameplay_effect_registry_0086b0b0(*ready.effect_singleton, "ignored");
+        ready.lifetime.shutdown();
+        check(!ready.effect_singleton,
+            "effect manager teardown clears its global without touching weak definition values");
     }
 
     {

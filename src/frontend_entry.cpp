@@ -237,7 +237,9 @@ FrontEndShellOutcome enter_front_end_shell(FrontEndShellState& state, FrontEndSh
     host.renderer_set_budget(kRendererBudget);
     host.probe_texture_memory(kProbeTextures);
     host.probe_sound_memory(kProbeSounds);
-    host.probe_effect_memory(kProbeEffects);
+    auto& effect_context = host.effect_manager_context();
+    probe_gameplay_effect_registry_0086b0b0(
+        *get_gameplay_effect_manager_004c1650(effect_context), kProbeEffects);
 
     if (host.title_screen_present()) {
         host.destroy_title_screen(); // 004e4071, vtable +0h with 1, then null

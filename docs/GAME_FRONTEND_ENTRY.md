@@ -347,3 +347,13 @@ matched float bits, signed units and complete x87 status/TOP for16 comparisons
 against saved/native bytes in both CRT modes, including decreasing input,
 fractional units, signed zeros and NaNs. Win32 `/W4 /WX` and both CTests pass.
 This remains a new C++ service ABI, with no runtime host binding or game proof.
+
+## Correction from docs/GAMEPLAY_EFFECT_MANAGER.md
+
+The effect checkpoint at 004E405B/004E4062 now calls the concrete gameplay-effect
+singleton getter and valid-container probe. Although the probe discards its label
+and produces no output, the getter creates and registers the manager before either
+shell exit. `FrontEndShellHost` supplies its shared lifetime/context binding.
+The manager's cache owns tree nodes but does not release effect definitions during
+teardown. See the linked packet for native evidence and the remaining Ghidra
+destructor-body extent limitation; effect acquisition is still a separate dependency.

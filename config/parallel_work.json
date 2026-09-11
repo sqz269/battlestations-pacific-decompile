@@ -6000,6 +6000,34 @@
       ],
       "scope": "Complete raw clip-plane set/append/pending restore; exact x87 sequential copies/EH arm after second store, actual guards/current real device/full cached state.",
       "evidence": "reports/native_renderer_clip_planes_audit.json"
+    },
+    {
+      "id": "orch4_gameplay_effect_manager_j",
+      "packet": "orch4_gameplay_effect_manager_j",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_pending_integration",
+      "function_addresses": [
+        "004c1650",
+        "00870370",
+        "0086fe20",
+        "008703e0",
+        "0086b0b0",
+        "0086ac00",
+        "0086aa60",
+        "0086ee50",
+        "00869a20",
+        "004e4000"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_manager.hpp",
+        "src/gameplay_effect_manager.cpp",
+        "include/bsp/frontend_entry.hpp",
+        "src/frontend_entry.cpp",
+        "tests/math_tests.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_manager.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_MANAGER.md"
     }
   ],
   "snapshot_after_analysis": {
