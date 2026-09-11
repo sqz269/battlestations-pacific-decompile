@@ -33,7 +33,7 @@ struct NativeGuiSceneEnvironment {
     NativeNodeDestructionRuntime& nodes;
     NativeGuiSceneWeakBase& weak_base;
     const volatile std::uint32_t& one_00d7a24c;
-    const volatile std::uint32_t* vtable_00d62d48; // BD30E0, B72580, B73970
+    const volatile std::uint32_t* vtable_00d62d48; // BD30E0, B72580; two entries
 };
 
 // Canonical companion borrowing actual +04 and +0C/+1C fields. Factory

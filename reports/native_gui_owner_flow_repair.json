@@ -590,6 +590,42 @@
    "body_after": "Function: FUN_00427880 at 00427880\nSignature: undefined FUN_00427880(void)\nEntry: 00427880\nBody: 00427880 - 00427891",
    "stored_body_tail_complete": false,
    "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00b72580",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T07:40:40Z",
+   "decompile_lines_before": 14,
+   "gaps": [
+    {
+     "site": "00b72590",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00b72595",
+     "gap_end_exclusive": "00b72598",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b72590",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00b72595",
+      "gap_end_exclusive": "00b72598",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00b72590 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 11,
+   "gaps_remaining": 0
   }
  ]
 }

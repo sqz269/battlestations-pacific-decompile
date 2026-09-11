@@ -120,7 +120,9 @@ public:
     void base_properties_bound(GuiLayoutWidget&);
     void properties_bound(GuiLayoutWidget&, const GuiTable&);
     void loaded78(GuiLayoutWidget&);
-    // Recursive scene release then erase companions; leaves layout ownership
+    // AA31F0 disposal fragment: recursive current20 scene release BEFORE
+    // derived destruction and the base AA9730 release pass, then erase
+    // companions. Leaves layout ownership
     // and its existing child lists with the page. Never dereference after page dies.
     void retire_tree(GuiLayoutWidget&);
     std::size_t retained_model_count() const noexcept { return models_.size(); }

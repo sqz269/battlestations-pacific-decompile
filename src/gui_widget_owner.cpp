@@ -186,7 +186,6 @@ void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
     refresh_bounds_00aa70e0();
 }
 void GuiWidgetOwner::release_scene_nodes_00aa8320() {
-    implementation().before_scene_release(*this);
     for (const auto& child : layout_.children)
         runtime_.owner(*child).release_scene_nodes_00aa8320();
     //These supported profiles have no glyph-owner secondary node. A new
@@ -361,6 +360,11 @@ void GuiWidgetOwnerRuntime::propagate_visibility(GuiWidgetOwner& retained,
         propagate_visibility(owner(*child), child_args);
 }
 void GuiWidgetOwnerRuntime::erase_tree(GuiLayoutWidget& layout) {
+    auto& retained = owner(layout);
+    // Current deleting destructor: derived teardown precedes base AA9730,
+    // whose AA8320 call is safe after the manager's separate virtual20 pass.
+    retained.implementation().before_scene_release(retained);
+    retained.release_scene_nodes_00aa8320();
     for (const auto& child : layout.children) erase_tree(*child);
     layout.before_destroy = {};
     widgets_.erase(&layout);
@@ -368,6 +372,9 @@ void GuiWidgetOwnerRuntime::erase_tree(GuiLayoutWidget& layout) {
 void GuiWidgetOwnerRuntime::retire_tree(GuiLayoutWidget& layout) {
     const auto found = widgets_.find(&layout);
     if (found == widgets_.end()) return;
+    // AA31F0 calls current virtual20 at AA326A BEFORE deleting virtual04(1)
+    // at AA3276. A scene's final release may consume its remaining roots, so
+    // derived Screen teardown must never precede this logical-node release.
     found->second->release_scene_nodes_00aa8320();
     erase_tree(layout);
 }

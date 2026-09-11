@@ -375,6 +375,104 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab6120",
+    "end_address": "00ab63a0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab6120",
+    "end_address": "00ab639f",
+    "bytes_disassembled": 640,
+    "message": "Successfully disassembled 640 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab6120",
+    "disassemble_first": false,
+    "name": "BSP_GuiIcon_VisibilityChanged"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab6120",
+    "function_name": "BSP_GuiIcon_VisibilityChanged",
+    "entry_point": "00ab6120",
+    "body_size": 640,
+    "message": "Function created successfully at 00ab6120",
+    "warnings": [
+     "Function name 'BSP_GuiIcon_VisibilityChanged' \u2014 main part 'GuiIcon_VisibilityChanged' is not PascalCase. Expected: GuiiconVisibilitychanged",
+     "Function name 'BSP_GuiIcon_VisibilityChanged' \u2014 main part 'GuiIcon_VisibilityChanged' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiIcon_VisibilityChanged' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab6120",
+   "end": "00ab63a0",
+   "name": "BSP_GuiIcon_VisibilityChanged",
+   "after": "Function: BSP_GuiIcon_VisibilityChanged at 00ab6120\nSignature: undefined BSP_GuiIcon_VisibilityChanged(void)\nEntry: 00ab6120\nBody: 00ab6120 - 00ab639f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac6fd0",
+    "end_address": "00ac6fd5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac6fd0",
+    "end_address": "00ac6fd4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac6fd0",
+    "disassemble_first": false,
+    "name": "BSP_GuiGroup_ReadProperties"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac6fd0",
+    "function_name": "BSP_GuiGroup_ReadProperties",
+    "entry_point": "00ac6fd0",
+    "body_size": 5,
+    "message": "Function created successfully at 00ac6fd0",
+    "warnings": [
+     "Function name 'BSP_GuiGroup_ReadProperties' \u2014 main part 'GuiGroup_ReadProperties' is not PascalCase. Expected: GuigroupReadproperties",
+     "Function name 'BSP_GuiGroup_ReadProperties' \u2014 main part 'GuiGroup_ReadProperties' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiGroup_ReadProperties' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac6fd0",
+   "end": "00ac6fd5",
+   "name": "BSP_GuiGroup_ReadProperties",
+   "after": "Function: BSP_GuiGroup_ReadProperties at 00ac6fd0\nSignature: undefined BSP_GuiGroup_ReadProperties(void)\nEntry: 00ac6fd0\nBody: 00ac6fd0 - 00ac6fd4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }

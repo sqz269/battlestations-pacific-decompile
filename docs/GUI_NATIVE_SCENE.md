@@ -42,3 +42,28 @@ transform and visibility, layout logical release, and final retained-reference
 retirement. Its widget virtuals deliberately use a controlled base profile;
 this does not validate Screen construction, camera setup, GUI rendering, or
 gameplay. No permanent tests were added. See `reports/gui_native_scene.json`.
+
+## Page disposal correction
+
+`00aa31f0` resolves the former unload question. After finding the page in the
+manager vector it shifts following entries, reduces end by4 at `00aa325e`,
+calls current virtual20 at `00aa326a`, then current deleting virtual04 with1
+at `00aa3276`. The containing method is ECX manager, stack page, RET4 at
+`00aa327c` (three bytes; end exclusive `00aa327f`). It deletes the page
+directly; this is not a page-reference decrement.
+
+The runtime now follows that disposal order. `release_scene_nodes_00aa8320`
+is a pure logical pass and never invokes derived teardown. `retire_tree`
+performs that pass first, then derived teardown followed by the base
+`00aa9730` logical-release pass and child companion destruction. This is the
+disposal fragment only; manager-vector removal is not supplied by the runtime.
+The old combined callback could destroy a final outer scene while widgets
+still pointed at its roots. The native manager's prior logical pass empties
+the root chain and nulls widget node bindings before the scene is destroyed.
+
+An added branch in the same ignored fixture composes the actual outer scene,
+actual group/model owners and concrete Screen type. It verifies the root chain
+is empty and widgets are unbound when derived cleanup finally releases the
+scene, using no extra node retains. Camera/store acquisition and the weak-base
+provider remain controlled fixture boundaries. The updated type-dispatch
+fixture and the Win32 build with both CTests also passed.

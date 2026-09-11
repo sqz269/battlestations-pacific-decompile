@@ -123,3 +123,13 @@ Group construction, missing-service/input rejection, exact0x81 Screen input,
 pre-base acquisition order, layer-versus-node visibility, edge counts/hooks and
 derived-before-base release. Camera/scene operations in that probe are explicitly
 fixture callbacks. Icon/FrameBox rendering was not exercised by this probe.
+
+# Integration correction: manager page disposal
+
+`docs/GUI_NATIVE_SCENE.md` establishes `00AA31F0`: current virtual20 runs
+before deleting virtual04(1). Derived `00AC5480` still precedes base `00AA9730`
+inside destruction, but widgets are already logically unbound at that point.
+The retained runtime now keeps these two operations separate. The original
+isolated callback probe was adapted to assert a null node in derived cleanup;
+an actual outer-scene/group/model fixture verifies the complete disposal order.
+This does not supply camera acquisition or native weak-base services.

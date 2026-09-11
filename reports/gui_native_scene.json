@@ -14,19 +14,35 @@
       "evidence": "Hypothesis, not a recovered symbol. Plain-page root path00AA58FA..00AA5949 allocates the canonical18Ch group slot, constructs188h object with name, and supplies name/node/exact screen flag to layer construction. GuiNativeScene binds that same group to GuiWidgetOwnerRuntime, with actual current parent/notification dispatch and retained retirement. New C++ interface; controlled-profile host fixture passed, native allocation-failure/EH, Screen setup, model-backed page and rendering excluded. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.",
       "abi_compatible": false,
       "game_validated": false
+    },
+    {
+      "address": "00aa31f0",
+      "name": "GuiWidgetOwnerRuntime::retire_tree",
+      "cpp_symbol": "bsp::GuiWidgetOwnerRuntime::retire_tree",
+      "source": "src/gui_widget_owner.cpp",
+      "status": "reconstructed_disposal_fragment_build_and_focused_fixture_tested",
+      "documentation": "docs/GUI_NATIVE_SCENE.md",
+      "validation_report": "reports/gui_native_scene.json",
+      "evidence": "Hypothesis, not a recovered symbol. ECX manager, stack page, RET4 at00AA327C length3, end00AA327F. Find same page in vector at manager+14; shift following pointers and reduce end at00AA325E, call current virtual20 at00AA326A BEFORE current deleting virtual04(1) at00AA3276. Direct deletion, not ref decrement. GuiWidgetOwnerRuntime::retire_tree composes only disposal after selection, not manager-vector removal. Logical scene-node release empties actual outer-scene root chain before derived AC5480/base AA9730; fixture uses actual outer scene/group/model and no extra node retains, camera and weak base controlled. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. New C++ ABI, no gameplay proof.",
+      "original_abi": "ECX manager, stack page, RET4; C++ fragment only selected-page disposal.",
+      "abi_compatible": false,
+      "game_validated": false
     }
   ],
   "validation": {
-    "build_log": "local/native-gui-group-integrated-build.log",
+    "build_log": "local/gui-owner-cleanup-build.log",
     "existing_ctests": 2,
     "fixture_source": "local/gui_native_scene_probe.cpp",
-    "fixture_log": "local/gui-native-scene-result.log",
+    "fixture_log": "local/gui-owner-native-scene-result.log",
     "fixture_widget_profile": "controlled base profile; not actual Screen",
     "new_permanent_tests": 0,
     "native_differential": false,
     "abi_compatible": false,
     "render_validated": false,
-    "game_validated": false
+    "game_validated": false,
+    "actual_outer_scene_group_model_disposal": true,
+    "extra_node_retains_in_disposal_fixture": 0,
+    "fixture_camera_and_weak_base": "controlled explicit providers; not native acquisition/weak pool"
   },
   "dependencies": [
     "native_group_pool",

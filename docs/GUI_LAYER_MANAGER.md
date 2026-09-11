@@ -584,3 +584,11 @@ skipped, and a tie must keep the first candidate.
 | 00AC57E0 | analyzed from the listing |
 | 00AC51A0, 00AC4C40, 00AC4E50 | analyzed at the call sites |
 | The 97 `interface/*.lua` files | installed-file-checked |
+
+# Correction from GUI native scene integration
+
+The open page-unload question below is resolved by `00AA31F0`. Its verified
+assembly removes a matching page from manager+14h's vector, calls current
+virtual20(), then current virtual04(1), with RET4 at00AA327C. It performs
+direct deletion rather than a page-reference decrement. See
+`docs/GUI_NATIVE_SCENE.md` for the disposal fragment, evidence and fixture.

@@ -20,6 +20,14 @@ are not implemented by this packet. The model's native reference counting,
 logical release, destruction and physical pool return are the existing concrete
 implementations, composed here rather than duplicated.
 
+Correction from `docs/GUI_NATIVE_SCENE.md`: `retire_tree` now follows the
+confirmed `00AA31F0` disposal fragment: current20 logical node release before
+the deleting-destructor route. The latter runs derived teardown before the
+base `00AA9730` release pass. `00AA8320` itself never destroys derived state.
+The real outer-scene/group/model fixture verifies this ordering without an
+extra node reference. Native widget storage and full base destruction remain
+outside this semantic companion, as stated above.
+
 ## Evidence and original ABI
 
 All names are hypotheses unless already established library names. Final
