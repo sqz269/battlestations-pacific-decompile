@@ -1,6 +1,8 @@
-// bsp_game.exe, milestones 1, 2a and 2b: the reconstructed startup spine running as a Win32
-// process, with the phase-2 virtual file system, the phase-5 settings load, the phase-6
-// locale tables and the phase-7 fonts and GUI startup all doing real work.
+// bsp_game.exe, milestones 1 through 2c: the reconstructed startup spine running as a
+// Win32 process, with the phase-2 virtual file system and hardware probe, the phase-5
+// settings load, the phase-6 locale tables and parser registrations, the phase-7 fonts
+// and GUI startup, the phase-9 decal definitions, the title bring-up 004c9a70 and the
+// front-end screen registry all doing real work.
 //
 // Entry sequence 008f81f0 (docs/WINMAIN_STARTUP.md) drives the whole run. Everything this
 // file adds on top of run_win_main is process plumbing: the option parsing for --frames,
@@ -67,6 +69,27 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         summary.gui_bridge_atlas.empty() ? "(none)" : summary.gui_bridge_atlas.c_str(),
         summary.gui_bridge_atlas_items, summary.gui_bridge_textures, summary.gui_bridge_quads,
         summary.gui_bridge_frames);
+    log.notef("summary init_tail hardware_probe=%d stored_values=%d factories=%zu "
+        "parsers=%zu pak_registry=%d pak_lock=%d decals=%zu",
+        summary.hardware_probe_ran ? 1 : 0, summary.hardware_profile_values,
+        summary.provider_factories, summary.resource_parsers,
+        summary.pak_registry ? 1 : 0, summary.pak_lock ? 1 : 0,
+        summary.decal_definitions);
+    log.notef("summary frontend title_init=%d press_start_slot=%d screens=%zu "
+        "screen_pages=%zu pump_frames=%llu enters=%zu exits=%zu commits=%zu",
+        summary.title_init_ran ? 1 : 0, summary.press_start_registered ? 0x5C : -1,
+        summary.screens_registered, summary.screen_owned_pages, summary.pump_frames,
+        summary.screen_enters, summary.screen_exits, summary.visibility_commits);
+    log.notef("summary mainmenu press_start_frame=%ld injected=%d shell=%d manager=%d "
+        "screen=%d step=%s state=%d", summary.press_start_frame,
+        summary.press_start_injected ? 1 : 0, summary.shell_entered ? 1 : 0,
+        summary.main_menu_manager_active ? 1 : 0, summary.published_screen_id,
+        summary.path_step.empty() ? "PressStartPoll" : summary.path_step.c_str(),
+        summary.final_game_state);
+    if (!summary.screenshot_path.empty()) {
+        log.notef("summary screenshot=%d path=%s", summary.screenshot_written ? 1 : 0,
+            summary.screenshot_path.c_str());
+    }
     log.notef("host methods %zu concrete, %zu unimplemented",
         log.implemented_count(), log.unimplemented_count());
     for (const auto& record : log.records()) {
@@ -87,7 +110,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     if (!options.parse(__argc, __argv, error)) {
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
-            " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]\n");
+            " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
+            " [--press-start-frame N] [--screenshot <path>] [--hardware-probe-commit]\n");
         return 2;
     }
 
@@ -96,7 +120,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2b, frames=%ld log=%s", options.frame_limit,
+    log.notef("bsp_game milestone 2c, frames=%ld press_start_frame=%ld log=%s",
+        options.frame_limit, options.press_start_frame,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an

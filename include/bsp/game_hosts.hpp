@@ -34,6 +34,7 @@ struct IGameExplorer;
 #include <vector>
 
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/app_frame_game_state.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/settings_capabilities.hpp"
 #include "bsp/renderer_capabilities.hpp"
@@ -60,6 +61,11 @@ class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
 class GameFrontendHost;
+// Milestone 2c, defined in bsp/game_hosts_menu.hpp and
+// bsp/game_hosts_init_tail.hpp.
+class GameMenuHost;
+class GameFrameProfiler;
+class GameDecalTable;
 
 // One host method, or one initialize phase, observed during a run.
 struct GameHostMethodRecord {
@@ -118,6 +124,15 @@ struct GameExecutableOptions {
     // --vfs-probe <virtual path>, repeatable: resolve and read one path after phase 2 and
     // print its byte count.
     std::vector<std::string> vfs_probes;
+    // --press-start-frame N: inject the input-action edge the press-start page waits on
+    // (action 4Eh through 004c43c0) on frame N. Negative injects nothing.
+    long press_start_frame{-1};
+    // --screenshot <path>: save the back buffer of the last frame as a PNG.
+    std::string screenshot_path;
+    // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
+    // write the machine profile back to HKLM. Off by default so an unattended run cannot
+    // block on a dialog or rewrite a machine's stored profile.
+    bool hardware_probe_commit{false};
     bool parse(int argc, char** argv, std::string& error);
 };
 
@@ -176,6 +191,9 @@ public:
     bool create(const RendererInitRequest& request);
     // Clears to the milestone background and presents. Counts one presented frame.
     bool clear_and_present();
+    // Milestone 2c: runs once, between EndScene and Present of the next frame, so a
+    // capture sees the finished back buffer. Executable plumbing, not a native routine.
+    void request_capture(std::function<void(IDirect3DDevice9&)> capture);
     // Milestone 2b: what the milestone's own present draws between BeginScene and
     // EndScene. The renderer frame routine behind renderer virtual +20h is still not
     // reconstructed, so anything installed here is an executable-side bridge, not a
@@ -196,20 +214,25 @@ private:
     NativeRendererParametersOwner& renderer_parameters_;
     IDirect3DDevice9* device_{};
     std::function<void(IDirect3DDevice9&)> overlay_;
+    std::function<void(IDirect3DDevice9&)> capture_;
     D3DPRESENT_PARAMETERS parameters_{};
     DWORD behavior_flags_{};
     HRESULT creation_result_{E_FAIL};
     unsigned long long presented_{};
 };
 
-// ApplicationFrameHost for 00737a50. The frame clock, the close policy and the two exit
-// flags are concrete; the profiler, the game state, the input edge test, the game update,
-// the VFS tick and the loading queue are the unimplemented policy.
+// ApplicationFrameHost for 00737a50. Milestone 2c turns six of its methods concrete: the
+// game-state field *(00e188a8)+5D4h becomes a real read over the slot the drain advances,
+// the four profiler methods run the reconstructed counter pair, and the front-end branch
+// of the game update runs. The VFS tick and the loading queue are still the unimplemented
+// policy, and so is the rest of GGame::OnMove.
 class GameFrameHost final : public ApplicationFrameHost {
 public:
     GameFrameHost(GameHostLog& log, FrameClock& clock, Win32PlatformState& platform,
-        PlatformLoopState& loop)
-        : log_(log), clock_(clock), platform_(platform), loop_(loop) {}
+        PlatformLoopState& loop, GameStateSlot& game_state, GameFrameProfiler* profiler,
+        GameMenuHost* menu)
+        : log_(log), clock_(clock), platform_(platform), loop_(loop),
+          game_state_(game_state), profiler_(profiler), menu_(menu) {}
 
     void profiler_set_frame_slot_color(std::uint32_t argb) override;
     void profiler_begin_frame_slot() override;
@@ -227,12 +250,17 @@ public:
 
     // Global exit byte 00e1ae75, set by the close policy at 004ca2f0.
     bool global_exit() const noexcept { return global_exit_; }
+    unsigned long long frames() const noexcept { return frame_index_; }
 
 private:
     GameHostLog& log_;
     FrameClock& clock_;
     Win32PlatformState& platform_;
     PlatformLoopState& loop_;
+    GameStateSlot& game_state_;
+    GameFrameProfiler* profiler_{};
+    GameMenuHost* menu_{};
+    unsigned long long frame_index_{};
     bool global_exit_{};
 };
 
@@ -243,9 +271,11 @@ class GameLoopCallbacks final : public PlatformLoopCallbacks {
 public:
     GameLoopCallbacks(GameHostLog& log, ApplicationFrameState& frame_state,
         FrameMarkerColor& color, GameFrameHost& frame_host, GameDeviceHost& device,
-        PlatformLoopState& loop, long frame_limit)
+        PlatformLoopState& loop, long frame_limit,
+        std::function<void(IDirect3DDevice9&)> capture = {})
         : log_(log), frame_state_(frame_state), color_(color), frame_host_(frame_host),
-          device_(device), loop_(loop), frame_limit_(frame_limit) {}
+          device_(device), loop_(loop), frame_limit_(frame_limit),
+          capture_(std::move(capture)) {}
 
     bool pretranslate(MSG& message) override;
     void frame() override;
@@ -260,6 +290,8 @@ private:
     GameDeviceHost& device_;
     PlatformLoopState& loop_;
     long frame_limit_{-1};
+    std::function<void(IDirect3DDevice9&)> capture_;
+    bool capture_requested_{};
     unsigned long long frames_{};
 };
 
@@ -313,6 +345,32 @@ struct GameRunSummary {
     std::size_t gui_bridge_textures{};
     std::size_t gui_bridge_quads{};
     unsigned long long gui_bridge_frames{};
+    // Milestone 2c. The Init tail (0073c3b0, 0073d94f-0073d98d, 0073db41-0073db69,
+    // 00740840) and the front end (004c9a70, 004f8830, 004e4000, 004c40f0).
+    bool hardware_probe_ran{};
+    int hardware_profile_values{};
+    std::size_t provider_factories{};
+    std::size_t resource_parsers{};
+    bool pak_registry{};
+    bool pak_lock{};
+    std::size_t decal_definitions{};
+    bool title_init_ran{};
+    bool press_start_registered{};
+    int final_game_state{};
+    unsigned long long pump_frames{};
+    std::size_t screen_enters{};
+    std::size_t screen_exits{};
+    std::size_t visibility_commits{};
+    long press_start_frame{-1};
+    bool press_start_injected{};
+    bool shell_entered{};
+    bool main_menu_manager_active{};
+    int published_screen_id{};
+    std::string path_step;
+    std::size_t screens_registered{};
+    std::size_t screen_owned_pages{};
+    bool screenshot_written{};
+    std::string screenshot_path;
 };
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
@@ -360,6 +418,8 @@ public:
     GameLocaleHost* locale_host() const noexcept { return locale_; }
     GameFontHost* font_host() const noexcept { return fonts_; }
     GameFrontendHost* frontend_host() const noexcept { return frontend_; }
+    GameMenuHost* menu_host() const noexcept { return menu_; }
+    GameDecalTable* decal_table() const noexcept { return decals_; }
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
 
@@ -397,6 +457,11 @@ private:
     GameLocaleHost* locale_{};
     GameFontHost* fonts_{};
     GameFrontendHost* frontend_{};
+    // Milestone 2c.
+    GameStateSlot game_state_;          // *(00e188a8)+5D4h
+    GameFrameProfiler* profiler_{};     // 004c1dd0's counter arrays
+    GameMenuHost* menu_{};              // the front-end registry and the main-menu path
+    GameDecalTable* decals_{};          // phase 9, 00740840
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
     SettingsRendererCapabilities renderer_capabilities_;

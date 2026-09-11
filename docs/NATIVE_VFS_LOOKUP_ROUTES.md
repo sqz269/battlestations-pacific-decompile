@@ -46,3 +46,41 @@ Inherited boundaries remain explicit: C++ exception/CRT interfaces instead of or
 The ignored focused comparison executes 23 unchanged original bodies, 2230 bytes, covering every new entry and existing lookup/search/comparison/iterator dependencies. Original external string, pool, CRT and physical call targets bridge to the exact linked complete providers. Membership and replacement compositions compare returned bytes, all 2048 arena bytes and all actual pool bytes before the live critical section at 8AD484. Cases include ordered MPKG/MSAR/FileStore routes, misses, prefix boundaries, normalization, empty prefixes, real physical-file success/miss and a returning CRT handler that repairs the current head after nil-node advance. Direct checks cover raw 80 result bytes, the distinct base reset, no-read false leaves and BDB5E0 header/pool effects. Fixed native visitor profile addresses are reserved before the relocated code arena. Physical slot bridges are per-route calling adapters; no new provider behavior is supplied by the fixture.
 
 The report freezes the guarded original spans, current source inputs, complete archive object provenance, probe and strict-build artifacts. This is composition evidence, not independent original execution of every pool/physical/string dependency, a throwing FH3 fixture, mutation testing of all visitor slots, archive startup proof or gameplay validation. Primary integration owns source registration and additional BDD0A0 symbol/source metadata; the generic Ghidra traversal name and existing date record must be retained. Shared date, renderer, node, getter and alias-list files are unchanged.
+
+
+## Primary main-library integration
+
+All entries are registered in main. Strict MSVC Win32 compilation, both existing
+CTests and all eight native seeds passed.
+
+The primary checked 51 worker pins, twenty-four literal current files and
+53 fresh guarded spans totaling 4,397 bytes. The unchanged actual main-library
+fixture passed twenty-four route pairs, one separate destructor pool pair,
+two raw-byte getter pairs, two no-read false-leaf pairs and one explicit
+base-reset pair. All eleven owned original bodies execute across these checks.
+Twenty-three original bodies totaling 2,230 bytes are installed; the existing
+BD90B0 dependency is not called because the normal reset is inlined, and its
+throwing EH edge is checked statically. BD8FE0 is compared by a direct call;
+its separate EH edge is also static evidence.
+
+The comparisons include 51,200 arena bytes and 227,459,300 actual pool-prefix
+bytes across the twenty-five route/destructor pairs, plus the sixteen-byte
+base-reset header and scalar results. The real physical fixture file was
+removed. Native profile tables contain translated code addresses while source
+selectors retain original words; those setup tables are outside arena byte
+comparison. Shared full rebuilt string/pool/normalization/physical/CRT bridges
+do not establish independent original-provider runtime equivalence.
+
+Eleven exact main archive members and 289 complete COFF sections were checked:
+24,270 bytes and 990 relocations. Nine separate owned entries are retained;
+BD90D0 and BDBC00 are inlined into the complete traversal. Entire source
+objects are frozen. No runtime code postimages or throwing native EH case
+was added. Five missing saved functions were defined from complete bytes.
+The new qualified BDD0A0 source record supplements the existing date-specific
+record and keeps its generic Ghidra name and earlier evidence.
+
+The actual main library SHA256 is `afebfdb70e5013aa459ff7bdd15a27db70cc2e28126a6ce3229e43375a5f68ac`.
+The read-only primary bundle is `local/vfs_lookup_routes_primary/`, seal
+`405a8090cb00d69f85f3ba1a7b68bfe2cff0204af4908c64a4650cbf046c8c18`. Reviewed evidence was appended to preserved
+Ghidra names/comments, saved, exported and registered in the sharded ledger.
+Full original caller ABI and gameplay remain unvalidated.

@@ -19,6 +19,8 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_fonts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
+#include "bsp/game_hosts_init_tail.hpp"
+#include "bsp/game_hosts_menu.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/native_renderer_parameters.hpp"
@@ -219,6 +221,36 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             vfs_probes.emplace_back(argv[++index]);
+        } else if (std::strcmp(argument, "--press-start-frame") == 0) {
+            if (index + 1 >= argc) {
+                error = "--press-start-frame needs a frame number";
+                return false;
+            }
+            press_start_frame = std::strtol(argv[++index], nullptr, 10);
+            if (press_start_frame < 0) {
+                error = "--press-start-frame needs a non-negative frame number";
+                return false;
+            }
+        } else if (std::strcmp(argument, "--screenshot") == 0) {
+            if (index + 1 >= argc) {
+                error = "--screenshot needs a path";
+                return false;
+            }
+            // Resolved here, before --game-root changes the current directory,
+            // so a relative path never lands inside the installed game.
+            const char* input = argv[++index];
+            const DWORD required = GetFullPathNameA(input, 0, nullptr, nullptr);
+            if (!required) { error = "cannot resolve the screenshot path"; return false; }
+            screenshot_path.resize(required);
+            const DWORD length = GetFullPathNameA(input, required, screenshot_path.data(),
+                nullptr);
+            if (!length || length >= required) {
+                error = "cannot resolve the screenshot path";
+                return false;
+            }
+            screenshot_path.resize(length);
+        } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
+            hardware_probe_commit = true;
         } else {
             error = std::string("unknown option ") + argument;
             return false;
@@ -361,6 +393,13 @@ bool GameDeviceHost::clear_and_present() {
     if (SUCCEEDED(result)) result = device_->BeginScene();
     if (SUCCEEDED(result) && overlay_) overlay_(*device_);
     if (SUCCEEDED(result)) result = device_->EndScene();
+    // The capture runs on the finished back buffer, before Present makes its
+    // contents driver dependent.
+    if (SUCCEEDED(result) && capture_) {
+        std::function<void(IDirect3DDevice9&)> capture = std::move(capture_);
+        capture_ = nullptr;
+        capture(*device_);
+    }
     if (SUCCEEDED(result)) result = device_->Present(nullptr, nullptr, nullptr, nullptr);
     if (FAILED(result)) {
         log_.notef("present failed hr=0x%08lx", static_cast<unsigned long>(result));
@@ -374,8 +413,13 @@ void GameDeviceHost::set_overlay(std::function<void(IDirect3DDevice9&)> overlay)
     overlay_ = std::move(overlay);
 }
 
+void GameDeviceHost::request_capture(std::function<void(IDirect3DDevice9&)> capture) {
+    capture_ = std::move(capture);
+}
+
 void GameDeviceHost::release() {
     overlay_ = nullptr;
+    capture_ = nullptr;
     if (device_ != nullptr) {
         device_->Release();
         device_ = nullptr;
@@ -387,26 +431,41 @@ void GameDeviceHost::release() {
 // ---------------------------------------------------------------------------
 
 void GameFrameHost::profiler_set_frame_slot_color(std::uint32_t argb) {
-    log_.unimplemented("ApplicationFrameHost::profiler_set_frame_slot_color", "004c1dd0");
-    static_cast<void>(argb);
+    // 00737a9e writes the colour of the frame's own slot into the array at
+    // profiler+24h; the value is bsp::frame_marker_color_00737a6c's.
+    if (profiler_ == nullptr) {
+        log_.unimplemented("ApplicationFrameHost::profiler_set_frame_slot_color", "004c1dd0");
+        return;
+    }
+    profiler_set_slot_color(profiler_->counters(), profiler_->app_update_slot(), argb);
+    log_.implemented("ApplicationFrameHost::profiler_set_frame_slot_color", "004c1dd0");
 }
 
 void GameFrameHost::profiler_begin_frame_slot() {
-    log_.unimplemented("ApplicationFrameHost::profiler_begin_frame_slot", "00be3640");
+    if (profiler_ == nullptr) {
+        log_.unimplemented("ApplicationFrameHost::profiler_begin_frame_slot", "00be3640");
+        return;
+    }
+    profiler_begin_frame_slot_00be3640(profiler_->counters(), profiler_->app_update_slot(),
+        *profiler_);
+    log_.implemented("ApplicationFrameHost::profiler_begin_frame_slot", "00be3640");
 }
 
 int GameFrameHost::game_state() {
     // 00737acc, repeated at 00737b33: MOV ECX,[00e188a8] then MOV EAX,[ECX+5D4h]. A field
     // load off the GGame singleton pointer, not a call, which is why one frame counts two.
-    // The game object does not exist in this milestone, so the field has no storage.
-    log_.unimplemented("ApplicationFrameHost::game_state", "00737acc");
-    return 0;
+    // Milestone 2c owns that field as bsp::GameStateSlot, written by the title bring-up
+    // (2), the shell entry (3 then 5) and the drain's store at 004e449e.
+    log_.implemented("ApplicationFrameHost::game_state", "00737acc");
+    return read_game_state_00737acc(game_state_);
 }
 
 bool GameFrameHost::input_action_pressed(int action) {
-    log_.unimplemented("ApplicationFrameHost::input_action_pressed", "004c43c0");
-    static_cast<void>(action);
-    return false;
+    // 004c43c0 at 00737ae7 with action 0Eh. The executable's action table holds one
+    // record, the press-start action 4Eh the --press-start-frame switch injects, so
+    // every other index has no record and 004c43c0's own gate skips it.
+    log_.implemented("ApplicationFrameHost::input_action_pressed", "004c43c0");
+    return menu_ != nullptr && menu_->input_action_pressed(action);
 }
 
 void GameFrameHost::advance_frame_clock() {
@@ -420,12 +479,18 @@ const ClockTimestamp& GameFrameHost::frame_interval() {
 }
 
 void GameFrameHost::game_on_move(float seconds) {
-    // 004e4a40 itself is not reconstructed. One of its callees is: the window close
-    // processor at 004ca2f0 (docs/WINDOW_CLOSE.md), whose front-end branch reads and
-    // clears platform+180h and sets global exit 00e1ae75. The confirmation-dialog branch
-    // taken for other game states is not reconstructed.
-    log_.unimplemented("ApplicationFrameHost::game_on_move", "004e4a40");
-    static_cast<void>(seconds);
+    // 004e4a40's front-end branch at 004e4b9d runs for game states 1, 2 and 4, and
+    // BSP_Game_UpdateInterfaceOnly 004c40f0 runs for everything else; that split is
+    // bsp::front_end_screen_pump_site. The simulation spine the branch falls through to
+    // at 004e4d32 is not reconstructed.
+    log_.implemented("ApplicationFrameHost::game_on_move", "004e4a40");
+    log_.unimplemented("GameFrameControl::simulation_spine", "004e4d32");
+    if (menu_ != nullptr) menu_->frame(seconds, frame_index_);
+    ++frame_index_;
+    // One of 004e4a40's callees is reconstructed: the window close processor at 004ca2f0
+    // (docs/WINDOW_CLOSE.md), whose front-end branch reads and clears platform+180h and
+    // sets global exit 00e1ae75. The confirmation-dialog branch taken for other game
+    // states is not reconstructed.
     if (platform_.close_requested) {
         platform_.close_requested = false;
         log_.implemented("CloseRequestPolicy::front_end_branch", "004ca2f0");
@@ -453,11 +518,26 @@ void GameFrameHost::update_loading_queue() {
 }
 
 void GameFrameHost::profiler_end_frame_slot() {
-    log_.unimplemented("ApplicationFrameHost::profiler_end_frame_slot", "00be3660");
+    if (profiler_ == nullptr) {
+        log_.unimplemented("ApplicationFrameHost::profiler_end_frame_slot", "00be3660");
+        return;
+    }
+    profiler_end_frame_slot_00be3660(profiler_->counters(), profiler_->app_update_slot(),
+        *profiler_);
+    log_.implemented("ApplicationFrameHost::profiler_end_frame_slot", "00be3660");
 }
 
 void GameFrameHost::profiler_end_frame() {
-    log_.unimplemented("ApplicationFrameHost::profiler_end_frame", "00be34d0");
+    if (profiler_ == nullptr) {
+        log_.unimplemented("ApplicationFrameHost::profiler_end_frame", "00be34d0");
+        return;
+    }
+    // 00be34d0 closes slots 1 .. registered - 1, converts the accumulated ticks through
+    // the scale at 0109db48 and advances the ring index modulo 14h.
+    static_cast<void>(profiler_end_frame_00be34d0(profiler_->counters(),
+        profiler_->registered_slot_count(), profiler_->app_update_slot(),
+        profiler_->tick_scale()));
+    log_.implemented("ApplicationFrameHost::profiler_end_frame", "00be34d0");
 }
 
 // ---------------------------------------------------------------------------
@@ -475,6 +555,14 @@ bool GameLoopCallbacks::pretranslate(MSG& message) {
 
 void GameLoopCallbacks::frame() {
     run_application_frame(frame_state_, color_, frame_host_);
+    // --screenshot saves the back buffer of the last frame: the frame the count
+    // names, or the frame on which the close request was observed.
+    const bool last_frame = frame_limit_ >= 0
+        && frames_ + 1 >= static_cast<unsigned long long>(frame_limit_);
+    if (capture_ && !capture_requested_ && (last_frame || frame_host_.global_exit())) {
+        capture_requested_ = true;
+        device_.request_capture(capture_);
+    }
     device_.clear_and_present();
     ++frames_;
     if (frame_limit_ >= 0 && frames_ >= static_cast<unsigned long long>(frame_limit_)) {
@@ -499,6 +587,9 @@ GameStartupHost::~GameStartupHost() {
     // The sprite bridge holds textures created on the device, so it goes before the
     // device and before the font host whose registry its pages reference.
     if (device_) device_->set_overlay(nullptr);
+    delete menu_;
+    delete profiler_;
+    delete decals_;
     delete frontend_;
     delete locale_;
     delete fonts_;
@@ -718,7 +809,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     // Phase 2, VFS, mounts and packages (0073d604-0073d899). The hardware probe at 0073d610
     // is inside this gate, not before it; milestone 1 recorded it one phase early.
-    vfs_ = new GameVfsHost(log_, false);
+    vfs_ = new GameVfsHost(log_, false, options_.hardware_probe_commit);
     VfsStartupState vfs_state;
     run_vfs_startup_phase2(vfs_state, *vfs_);
 
@@ -950,15 +1041,27 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
 
+    // Phase 8, 00af0b10 at 0073e02b. The foliage group manager is reconstructed in
+    // src/world_effects_startup.cpp; its critical section and its publication are not
+    // bound here, so the phase itself is still a record.
     log_.unimplemented("Phase 8 world_effects_startup", "00af0b10");
-    log_.unimplemented("Phase 9 game_entry", "00740840");
 
-    // The GUI pages GGame::OnInitTitle brings up (docs/GAME_TITLE_INIT.md): the panel and
-    // title layouts 00518250 selects for frame sets 0..2, and the title screen's own
-    // FE_initial. The front-end state machine that would request them is packet
-    // cc_frontend_states and is not reconstructed here; this loads the pages directly.
-    frontend_->load_title_pages({"FE_frame", "FE_frame_title", "FE_initial"});
-    log_.unimplemented("Title bring-up GGame::OnInitTitle", "004c9a70");
+    // Phase 9, 00740840 at 0073de8c. Milestone 2a's host table calls this "game_entry";
+    // it is the decal definition loader, as docs/APP_INIT_TAIL.md establishes.
+    decals_ = new GameDecalTable(log_, *vfs_);
+    decals_->run();
+    summary_.decal_definitions = decals_->summary().definitions;
+
+    // GGame::OnInitTitle 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
+    // It writes game state 2, selects front-end frame set 0 (FE_frame and
+    // FE_frame_title through 00518250) and activates the title screen, whose handover
+    // 0068d8d0 builds the press-start screen, registers it into registry slot 5Ch, marks
+    // it wanted and active, commits it through 004f83b0 and enters it. The register
+    // override 0067ca80 is what loads FE_initial, so all three title pages are now owned
+    // rather than loaded directly as milestone 2b did.
+    profiler_ = new GameFrameProfiler(log_, 8);
+    menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame);
+    menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
     summary_.gui_pages_requested = frontend.pages_requested;
@@ -976,10 +1079,30 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         });
     }
 
+    // The Init tail and the front end, for the run summary.
+    summary_.hardware_probe_ran = vfs_->hardware_probe().ran;
+    summary_.hardware_profile_values = vfs_->hardware_probe().stored_values_read;
+    summary_.provider_factories = vfs_->registered_factories();
+    summary_.resource_parsers = vfs_->registered_parsers();
+    summary_.pak_registry = vfs_->pak_registry_published();
+    summary_.pak_lock = vfs_->pak_lock_published();
+    summary_.press_start_frame = options_.press_start_frame;
+    summary_.screenshot_path = options_.screenshot_path;
+
     loop_.frames_enabled = platform_.frames_enabled;
-    frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_);
+    frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_, game_state_, profiler_,
+        menu_);
+    std::function<void(IDirect3DDevice9&)> capture;
+    if (!options_.screenshot_path.empty()) {
+        GameFrontendHost* frontend_host = frontend_;
+        std::string path = options_.screenshot_path;
+        GameRunSummary* summary = &summary_;
+        capture = [frontend_host, path, summary](IDirect3DDevice9& device) {
+            summary->screenshot_written = frontend_host->save_back_buffer(device, path);
+        };
+    }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
-        *device_, loop_, options_.frame_limit);
+        *device_, loop_, options_.frame_limit, std::move(capture));
 }
 
 void GameStartupHost::platform_run_loop_dispatch() {
@@ -1016,6 +1139,22 @@ void GameStartupHost::application_shutdown() {
     log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
     // The sprite bridge owns managed-pool textures created on this device, so it is torn
     // down before the device is released rather than at destruction.
+    if (menu_ != nullptr) {
+        const GameMenuSummary& menu = menu_->summary();
+        summary_.title_init_ran = menu.title_init_ran;
+        summary_.press_start_registered = menu.press_start_registered;
+        summary_.final_game_state = menu.game_state;
+        summary_.pump_frames = menu.pump_frames;
+        summary_.screen_enters = menu.screen_enters;
+        summary_.screen_exits = menu.screen_exits;
+        summary_.visibility_commits = menu.visibility_commits;
+        summary_.press_start_injected = menu.press_start_injected;
+        summary_.shell_entered = menu.shell_entered;
+        summary_.main_menu_manager_active = menu.main_menu_manager_active;
+        summary_.published_screen_id = menu.published_screen_id;
+        summary_.path_step = menu.path_step;
+        summary_.screens_registered = menu.screens_registered;
+    }
     if (frontend_ != nullptr) {
         const GameFrontendSummary& frontend = frontend_->summary();
         summary_.gui_bridge_open = frontend.bridge_open;
@@ -1024,7 +1163,15 @@ void GameStartupHost::application_shutdown() {
         summary_.gui_bridge_textures = frontend.bridge_textures;
         summary_.gui_bridge_quads = frontend.bridge_quads;
         summary_.gui_bridge_frames = frontend.bridge_frames;
+        summary_.gui_pages_loaded = frontend.pages_loaded;
+        summary_.gui_pages_requested = frontend.pages_requested;
+        summary_.gui_widgets = frontend.widgets;
+        summary_.gui_widgets_with_texture = frontend.widgets_with_texture;
+        summary_.screen_owned_pages = frontend.screen_owned_pages;
     }
+    // The menu host holds the front-end host by reference, so it goes first.
+    delete menu_;
+    menu_ = nullptr;
     delete frontend_;
     frontend_ = nullptr;
     if (device_ != nullptr) device_->release();

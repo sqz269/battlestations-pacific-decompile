@@ -1,0 +1,269 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00bd90f0",
+      "end_exclusive": "00bd90f4",
+      "length": 4,
+      "sha256": "e0eb8cffec07b89f095aa1e60d89eed1f3338b76216e649ad3aeb3ba92dc7d04",
+      "missing_before": true,
+      "function_before": "No function found for 00bd90f0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_VfsExistsVisitor_ReadResultByte at 00bd90f0\nSignature: undefined BSP_VfsExistsVisitor_ReadResultByte(void)\nEntry: 00bd90f0\nBody: 00bd90f0 - 00bd90f3"
+    },
+    {
+      "address": "00bdbc00",
+      "end_exclusive": "00bdbc4c",
+      "length": 76,
+      "sha256": "9d3567758d936e75ddb3c8eb707fc74e791e7c832afcb8bba26303136c97fb1f",
+      "missing_before": true,
+      "function_before": "No function found for 00bdbc00",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_VfsNameProbeVisitor_ReadProvider at 00bdbc00\nSignature: undefined BSP_VfsNameProbeVisitor_ReadProvider(void)\nEntry: 00bdbc00\nBody: 00bdbc00 - 00bdbc4b"
+    },
+    {
+      "address": "00bdb5d0",
+      "end_exclusive": "00bdb5d4",
+      "length": 4,
+      "sha256": "e0eb8cffec07b89f095aa1e60d89eed1f3338b76216e649ad3aeb3ba92dc7d04",
+      "missing_before": true,
+      "function_before": "No function found for 00bdb5d0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_VfsNameProbeVisitor_ReadResultByte at 00bdb5d0\nSignature: undefined BSP_VfsNameProbeVisitor_ReadResultByte(void)\nEntry: 00bdb5d0\nBody: 00bdb5d0 - 00bdb5d3"
+    },
+    {
+      "address": "00bb8640",
+      "end_exclusive": "00bb8645",
+      "length": 5,
+      "sha256": "cc0e3cb106eb0fdec984d44a563d98c3da80700bbb8d2be4e66ebd54a9919626",
+      "missing_before": true,
+      "function_before": "No function found for 00bb8640",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_MpkgProvider_ProbeName at 00bb8640\nSignature: undefined BSP_MpkgProvider_ProbeName(void)\nEntry: 00bb8640\nBody: 00bb8640 - 00bb8644"
+    },
+    {
+      "address": "00bba080",
+      "end_exclusive": "00bba085",
+      "length": 5,
+      "sha256": "cc0e3cb106eb0fdec984d44a563d98c3da80700bbb8d2be4e66ebd54a9919626",
+      "missing_before": true,
+      "function_before": "No function found for 00bba080",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_MsarProvider_ProbeName at 00bba080\nSignature: undefined BSP_MsarProvider_ProbeName(void)\nEntry: 00bba080\nBody: 00bba080 - 00bba084"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bd90f0",
+        "end_address": "00bd90f4"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bd90f0",
+        "end_address": "00bd90f3",
+        "bytes_disassembled": 4,
+        "message": "Successfully disassembled 4 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bd90f0",
+        "name": "BSP_VfsExistsVisitor_ReadResultByte",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bd90f0",
+        "function_name": "BSP_VfsExistsVisitor_ReadResultByte",
+        "entry_point": "00bd90f0",
+        "body_size": 4,
+        "message": "Function created successfully at 00bd90f0",
+        "warnings": [
+          "Function name 'BSP_VfsExistsVisitor_ReadResultByte' \u2014 main part 'VfsExistsVisitor_ReadResultByte' is not PascalCase. Expected: VfsexistsvisitorReadresultbyte",
+          "Function name 'BSP_VfsExistsVisitor_ReadResultByte' \u2014 main part 'VfsExistsVisitor_ReadResultByte' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_VfsExistsVisitor_ReadResultByte' does not start with a recognized verb. First word 'Vfs' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bdbc00",
+        "end_address": "00bdbc4c"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bdbc00",
+        "end_address": "00bdbc4b",
+        "bytes_disassembled": 76,
+        "message": "Successfully disassembled 76 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bdbc00",
+        "name": "BSP_VfsNameProbeVisitor_ReadProvider",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bdbc00",
+        "function_name": "BSP_VfsNameProbeVisitor_ReadProvider",
+        "entry_point": "00bdbc00",
+        "body_size": 76,
+        "message": "Function created successfully at 00bdbc00",
+        "warnings": [
+          "Function name 'BSP_VfsNameProbeVisitor_ReadProvider' \u2014 main part 'VfsNameProbeVisitor_ReadProvider' is not PascalCase. Expected: VfsnameprobevisitorReadprovider",
+          "Function name 'BSP_VfsNameProbeVisitor_ReadProvider' \u2014 main part 'VfsNameProbeVisitor_ReadProvider' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_VfsNameProbeVisitor_ReadProvider' does not start with a recognized verb. First word 'Vfs' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bdb5d0",
+        "end_address": "00bdb5d4"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bdb5d0",
+        "end_address": "00bdb5d3",
+        "bytes_disassembled": 4,
+        "message": "Successfully disassembled 4 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bdb5d0",
+        "name": "BSP_VfsNameProbeVisitor_ReadResultByte",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bdb5d0",
+        "function_name": "BSP_VfsNameProbeVisitor_ReadResultByte",
+        "entry_point": "00bdb5d0",
+        "body_size": 4,
+        "message": "Function created successfully at 00bdb5d0",
+        "warnings": [
+          "Function name 'BSP_VfsNameProbeVisitor_ReadResultByte' \u2014 main part 'VfsNameProbeVisitor_ReadResultByte' is not PascalCase. Expected: VfsnameprobevisitorReadresultbyte",
+          "Function name 'BSP_VfsNameProbeVisitor_ReadResultByte' \u2014 main part 'VfsNameProbeVisitor_ReadResultByte' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_VfsNameProbeVisitor_ReadResultByte' does not start with a recognized verb. First word 'Vfs' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bb8640",
+        "end_address": "00bb8645"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bb8640",
+        "end_address": "00bb8644",
+        "bytes_disassembled": 5,
+        "message": "Successfully disassembled 5 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bb8640",
+        "name": "BSP_MpkgProvider_ProbeName",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bb8640",
+        "function_name": "BSP_MpkgProvider_ProbeName",
+        "entry_point": "00bb8640",
+        "body_size": 5,
+        "message": "Function created successfully at 00bb8640",
+        "warnings": [
+          "Function name 'BSP_MpkgProvider_ProbeName' \u2014 main part 'MpkgProvider_ProbeName' is not PascalCase. Expected: MpkgproviderProbename",
+          "Function name 'BSP_MpkgProvider_ProbeName' \u2014 main part 'MpkgProvider_ProbeName' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_MpkgProvider_ProbeName' does not start with a recognized verb. First word 'Mpkg' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bba080",
+        "end_address": "00bba085"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bba080",
+        "end_address": "00bba084",
+        "bytes_disassembled": 5,
+        "message": "Successfully disassembled 5 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bba080",
+        "name": "BSP_MsarProvider_ProbeName",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bba080",
+        "function_name": "BSP_MsarProvider_ProbeName",
+        "entry_point": "00bba080",
+        "body_size": 5,
+        "message": "Function created successfully at 00bba080",
+        "warnings": [
+          "Function name 'BSP_MsarProvider_ProbeName' \u2014 main part 'MsarProvider_ProbeName' is not PascalCase. Expected: MsarproviderProbename",
+          "Function name 'BSP_MsarProvider_ProbeName' \u2014 main part 'MsarProvider_ProbeName' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_MsarProvider_ProbeName' does not start with a recognized verb. First word 'Msar' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Five complete VFS lookup route functions defined with comments preserved; project saved"
+}

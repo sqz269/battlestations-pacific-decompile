@@ -132,6 +132,9 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_xlive_device_adapter.cpp
   src/native_renderer_camera_prepare.cpp
   src/native_vfs_lookup_leaves.cpp
+  src/native_hardware_layout_create_if_missing.cpp
+  src/native_renderer_viewport_clear.cpp
+  src/native_vfs_lookup_routes.cpp
   src/native_renderer_texture_stage_state.cpp
   src/native_occlusion_query_device_reset.cpp
   src/native_diagnostic_sink_lifetime.cpp

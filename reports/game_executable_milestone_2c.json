@@ -1,0 +1,159 @@
+{
+  "packet": "cc_exe_2c",
+  "owner": "agent/cc-exe-2c",
+  "title": "bsp_game.exe milestone 2c: the frame's game state, the Init tail, the title pump and the main menu",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only",
+    "mutations": 0
+  },
+  "sources": [
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_init_tail.hpp",
+    "src/game_hosts_init_tail.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts_vfs.hpp",
+    "src/game_hosts_vfs.cpp",
+    "include/bsp/game_hosts_frontend.hpp",
+    "src/game_hosts_frontend.cpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+  "reconstructions_wired": [
+    "include/bsp/app_frame_game_state.hpp",
+    "include/bsp/app_init_tail.hpp",
+    "include/bsp/lua_object.hpp",
+    "include/bsp/frontend_state_machine.hpp",
+    "include/bsp/frontend_states.hpp",
+    "include/bsp/frontend_screen_sets.hpp",
+    "include/bsp/frontend_managers.hpp",
+    "include/bsp/frontend_entry.hpp",
+    "include/bsp/main_menu_path.hpp",
+    "include/bsp/main_menu_screens.hpp",
+    "include/bsp/press_start_screen.hpp",
+    "include/bsp/title_init.hpp",
+    "include/bsp/game_frame_control.hpp",
+    "include/bsp/input_tick.hpp"
+  ],
+  "addresses": {
+    "frame_game_state_and_profiler": [
+      "00737acc", "00737b33", "004c1dd0", "00be3260", "00be3640", "00be3660", "00be34d0",
+      "00ce2270", "004c43c0"
+    ],
+    "init_tail": [
+      "0073c3b0", "0098d4e0", "0098d470", "0098d570", "0098d590", "0098d5c0", "0098d5f0",
+      "0098c7f0", "0098c800", "0098c870", "0098c890", "0098d3d0", "00996060", "0098f430",
+      "00736b60", "00be0660", "00736c30", "00bd9230", "00bb40b0",
+      "004c1400", "00736dd0", "00736ea0", "00b80a50",
+      "0073fa70", "00af06a0", "00740410", "0073e9a0", "00740840"
+    ],
+    "title_pump": [
+      "004c9a70", "00518250", "0068d8d0", "0068d850", "0068d8a0",
+      "004f7180", "004f71d0", "004f71a0", "004f71f0", "004f8830", "004f83b0", "004f7620",
+      "0067c840", "0067ca80", "0067cb40", "0067c870", "0067d860", "0067cfb0", "0068d760"
+    ],
+    "main_menu": [
+      "004d7920", "004e4430", "004e4000", "004e4279", "004cc460", "00684600", "00684700",
+      "00683aa0", "00683e90", "006840f0", "00686380", "00686170", "005884a0",
+      "004f8710", "004d8c00", "004c40f0", "00685820"
+    ]
+  },
+  "no_ghidra_function": [],
+  "ledger": {
+    "names_added": 0,
+    "evidence_appended": [
+      "0073c3b0", "00736b60", "00736c30", "00bb40b0", "00b80a50", "004c1400", "00740840",
+      "004c9a70", "0068d8d0", "004f8830", "004f83b0", "0067cfb0", "004e4000", "00686380",
+      "00684700", "006840f0", "004f8710", "004c40f0", "00518250", "00be34d0", "00be3640",
+      "00be3660", "00737a50"
+    ]
+  },
+  "executable_switches_added": {
+    "--press-start-frame N": "injects the input-action 4Eh rising edge on frame N through bsp::start_action_00a92aa0, which is exactly what bsp::action_pressed_this_frame_004c43c0 reports",
+    "--screenshot <path>": "D3DXSaveSurfaceToFileA on the back buffer between EndScene and Present of the last frame; the path is resolved before --game-root changes the current directory",
+    "--hardware-probe-commit": "lets the phase-2 probe 0073c3b0 raise its MessageBoxW at 0073c827 and perform the registry write-back at 0073c843; off by default so an unattended run cannot block or rewrite a machine profile"
+  },
+  "milestone_decisions_not_recovered_behaviour": [
+    "The profiler slot capacity (00e15118 is filled at run time), the PERF_APP_UPDATE slot index (0109d014, same), and the tick scale at 0109db48, which is zero in the image; the run supplies seconds per QueryPerformanceCounter tick.",
+    "The hardware probe's message box and registry write-back are suppressed unless --hardware-probe-commit is given.",
+    "The seven main-menu screen classes have no reconstruction, so the registry records are built from the recovered table in docs/MAIN_MENU_SCREENS.md and only screen id 1's layout FE_main is loaded.",
+    "006840F0 reports the main-menu channel as already applied on a cold boot, because 00686380 synced the manager's records before the shell's push; see the corrections."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings",
+    "ctest": "reconstructed_math 1/1 passed; no test cases added",
+    "run": {
+      "command": "bsp_game.exe --frames 120 --press-start-frame 30 --log local/game_run.log --screenshot local/run.png --game-root \"<install>\"",
+      "exit_code": 0,
+      "frames_presented": 120,
+      "back_buffer": "640x480",
+      "host_methods_concrete": 145,
+      "host_methods_unimplemented": 76,
+      "host_methods_distinct": 221,
+      "drawn": true,
+      "bridge_quads_title": 6,
+      "bridge_quads_main_menu": 5,
+      "bridge_textures": 13,
+      "atlas_items": 678,
+      "screenshot_written": true
+    },
+    "init_tail": {
+      "hardware_probe_ran": true,
+      "hardware_profile_values_read": 0,
+      "hardware_profile_complete": false,
+      "provider_factories_registered": 3,
+      "resource_type_parsers_registered": 2,
+      "pak_registry_published": true,
+      "pak_lock_published": true,
+      "decal_definitions_parsed": 3
+    },
+    "front_end": {
+      "title_init_ran": true,
+      "press_start_registry_slot": 92,
+      "screens_registered": 7,
+      "screen_owned_pages": 4,
+      "pump_frames": 120,
+      "pump_from_front_end_branch": 31,
+      "pump_from_update_interface_only": 89,
+      "screen_enters": 2,
+      "screen_exits": 1,
+      "visibility_commits": 4,
+      "press_start_injected_on_frame": 30,
+      "shell_entered": true,
+      "main_menu_manager_active": true,
+      "published_screen_id": 1,
+      "final_path_step": "ScreenVisible",
+      "final_game_state": 5
+    },
+    "other_runs": [
+      {"command": "--frames 20 --screenshot local/title.png", "exit_code": 0,
+       "note": "the title page before any press"},
+      {"command": "--frames 5 --vfs-probe fonts/fonts.lua", "exit_code": 0},
+      {"command": "--frames 5 --vfs-probe does/not/exist.lua", "exit_code": 3},
+      {"command": "--press-start-frame 30 (no frame limit), closed with CloseMainWindow",
+       "exit_code": 0, "frames_presented": 50459, "host_methods_concrete": 146,
+       "note": "also reaches CloseRequestPolicy::front_end_branch 004ca2f0"}
+    ]
+  },
+  "corrections": [
+    "docs/MAIN_MENU_PATH.md step 13: 006840F0 cannot see manager+4h != manager+20h on a cold boot, because BSP_MainMenu_Init 00686380 already ran 00684600 with INTF_MAINMENU at 006868AD. What publishes the level-4 set in the original is 00684700's replay at 0068477E through the manager's own virtual +10h (00685820); bsp::activate_front_end_manager_00684700 calls the base 00684600 there.",
+    "The milestone 2a host label 'Phase 9 game_entry [00740840]' is 'Phase 9 decal_definitions', as docs/APP_INIT_TAIL.md already recorded.",
+    "Milestone 2b follow-ups 2 and 7 are done; its 'Title bring-up GGame::OnInitTitle [004c9a70]' unimplemented record is gone.",
+    "The sprite bridge's substitute visibility rule now applies only to pages no front-end screen owns: the five 00aa5e20 resource entries and the two 00518250 frame layouts."
+  ],
+  "follow_up_packets": [
+    "main_menu_screen_classes: 005902E0 and its six siblings, and 00584AE0's seven-item list through 00AAB4C0",
+    "gui_layer_draw: bind the reconstructed GUI geometry writers to a device so the sprite bridge can be deleted",
+    "xenon_system_manager: 00f8abe8, the sign-in flow the press-start screen's own arms wait on",
+    "loading_screen: 0057cb60 / 0057c250 / 0057bec0 and the 0x58 singleton at 00e194b4",
+    "hardware_detection_object: 009927d0, 00992830 and the message table at 00d1e918",
+    "mpak_provider_create: 00bb83a0, 00bb8240, 00bb82f0",
+    "resource_item_parsers: 00b8a910 and 00b8a990",
+    "title_music_fmod: 005884a0's stream side, 00a877d0 / 00a867b0 / 00a864f0 / 00a85c20"
+  ],
+  "state": "analyzed, reconstructed, build-tested, runtime-validated; not ABI-compatible and not game-validated"
+}

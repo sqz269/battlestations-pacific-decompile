@@ -32,6 +32,13 @@
 #include <string>
 #include <vector>
 
+namespace bsp {
+// bsp/gui_layout_loader.hpp. Held by pointer and reference only, so this header
+// stays independent of the GUI layout types.
+struct GuiLayoutPage;
+struct GuiLayoutWidget;
+}  // namespace bsp
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -81,6 +88,10 @@ struct GameWidgetRecord {
     bool visible{false};
     bool visible_authored{false};  // the page table carried a "Visible" key
     bool drawn{false};             // the sprite bridge drew a quad for it
+    // Milestone 2c: the page this widget belongs to is owned by a front-end
+    // screen, so its visibility is the byte 004f83b0 published rather than the
+    // bridge's substitute rule.
+    bool screen_owned{false};
 };
 
 // What the milestone-2b phase produced, for the run summary and the report.
@@ -101,6 +112,11 @@ struct GameFrontendSummary {
     std::size_t bridge_textures{0};
     std::size_t bridge_quads{0};
     unsigned long long bridge_frames{0};
+    // Milestone 2c: pages a front-end screen owns, and the number of 004f83b0
+    // pushes that reached them.
+    std::size_t screen_owned_pages{0};
+    std::size_t visibility_pushes{0};
+    std::size_t bridge_rebuilds{0};
 };
 
 // Phase 7 of 0073d410 plus the title pages, owned for the whole run.
@@ -134,6 +150,31 @@ public:
     void open_sprite_bridge(unsigned back_buffer_width, unsigned back_buffer_height);
     // Draws the loaded widget trees. Call between BeginScene and EndScene.
     void draw_bridge(IDirect3DDevice9& device);
+
+    // ---- milestone 2c: pages owned by a front-end screen -------------------
+    // 00aa5840 through the same loader, for a screen's register or enter
+    // virtual (0067ca80 loads FE_initial this way). The page is marked
+    // screen-owned, so the sprite bridge stops applying its substitute
+    // visibility rule to it and reads the byte 004f83b0 published instead.
+    GuiLayoutPage* load_screen_page(const std::string& name);
+    // 00aa31f0 on the GUI manager. The reconstructed registry owns every page
+    // for the run, so the release is recorded and the page is kept.
+    void release_screen_page(GuiLayoutPage* page);
+    // 00aa7e00, the direct-child lookup a screen's enter virtual runs.
+    GuiLayoutWidget* find_page_child(GuiLayoutPage& page, const std::string& name);
+    // The per-child call 004f83b0 makes: the screen's applied byte +5h reaching
+    // the page through the child's vtable +34h.
+    void commit_page_visibility(GuiLayoutPage& page, bool visible);
+    // A single element's vtable +34h and +50h, which the press-start update
+    // calls on its prompt widget every frame.
+    void set_widget_visible(GuiLayoutWidget& widget, bool visible);
+    void set_widget_color(GuiLayoutWidget& widget, float r, float g, float b, float a);
+    // Makes the sprite bridge rebuild its quad list on the next draw, so a
+    // visibility change or a newly loaded page is on screen the same frame.
+    void invalidate_bridge();
+    // D3DXSaveSurfaceToFileA on the back buffer, through the same dynamic D3DX
+    // import the font resources use. Executable plumbing, not a native routine.
+    bool save_back_buffer(IDirect3DDevice9& device, const std::string& path);
 
     const std::vector<GameGuiResourceRecord>& gui_resources() const noexcept;
     const std::vector<GamePageRecord>& pages() const noexcept;

@@ -155,3 +155,31 @@ it is not a binary drop-in replacement, parent-frame integration or gameplay
 validation. Malformed raw objects, invalid guard lifetimes, private stack
 aliasing, asynchronous races and every exception domain are not asserted to be
 covered by the focused runtime cases.
+
+
+## Primary main-library integration
+
+All entries are registered in main. Strict MSVC Win32 compilation, both existing
+CTests and all eight native seeds passed.
+
+The primary verified 578 worker artifacts and all four owned files.
+Twenty-two fresh guarded spans matched 925 bytes, including 477 owned bytes.
+The unchanged fixture linked the actual main archive and passed all five
+original/library pairs: 381,936 state bytes, fourteen real S_OK COM calls and
+twenty-four actual OS guard calls. Actual callee-slot mutations, raw0x80 state,
+current-device/scissor reload, flags-zero skipped reads, normal counter update
+and post-real-Clear exception suppression/cleanup all passed.
+
+Three exact archive members and 355 complete COFF sections matched linked
+bytes after all 1,457 relocations. All 199 local functions (22 library and
+177 fixture, including f/i map entries), 338 immutable runtime sections and
+eleven whole postimages of twenty-seven spans passed. The two native EH
+descriptors are pinned; the Clear state0 cleanup executes through actual host
+FH3 and the complete reconstructed guard bridge. This remains a scoped
+original-C++-exception composition, without a general native SEH ABI claim.
+
+The actual main library SHA256 is `afebfdb70e5013aa459ff7bdd15a27db70cc2e28126a6ce3229e43375a5f68ac`.
+The read-only primary bundle is `local/viewport_clear_primary/`, seal
+`aea730879ae06b55ec0024d472e45eb91a14e8c442bc2f441f3352293f38afbd`. Reviewed evidence was appended to preserved
+Ghidra names/comments, saved, exported and registered in the sharded ledger.
+Full original caller ABI and gameplay remain unvalidated.

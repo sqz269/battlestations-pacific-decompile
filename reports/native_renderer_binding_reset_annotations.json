@@ -1,0 +1,17 @@
+[
+  {
+    "address": "00b24bf0",
+    "before": {
+      "address": "00b24bf0",
+      "function_name": "FUN_00b24bf0"
+    },
+    "after": {
+      "address": "00b24bf0",
+      "old_name": "FUN_00b24bf0",
+      "name": "BSP_D3D9Renderer_ResetBindingsBeforeRecreation",
+      "saved_body_end": "00b24db4",
+      "evidence": "Complete453-byte B24BF0 binding-reset discovery; originalECXrenderer/noargs/RET. Current D5F0A8 table reload before eachcall:20texture+130(sampler,0),fourvertex+134(0,0),index+138(0,0). Three independent FH3 states reuseactualguard; clearcached pixel+176C andvertex+1770 beforecurrentdevice SetPixelShader/SetVertexShader, increment1BBC/1BC0 onlynormalreturn; current-mode read beforedisarm/leave/reentry. Layout+E0 null;fourfullB23D80 nullsurfaces; currentSetDepthStencilSurface+9C state2. FullCBD088/DF5728 three-state map/helpers verified. NOsourcebodypromoted: B24840[504] and B23710[59] can final-release old logicalowner throughD61D6C ->BD30E0/currentB4BF10[32]/B4B5D0[280]/B62010[135]. Actualnonnull base+4C writer/profile/current-zero terminal/allocation unknown; enclosingstreamprofile andconstructorzero do not establish it. Base free+50 continuation included afterreturningfree, despite savedfalseCALL_RETURN. Primary43workerpins20freshspans1753bytes461decodedinstructions; discoveryonly,nosourcestub/build/runtime/game claim. reports/native_renderer_binding_reset_audit.json"
+    },
+    "status": "applied"
+  }
+]
