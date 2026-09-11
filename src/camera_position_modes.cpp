@@ -1,4 +1,5 @@
 #include "bsp/camera_position_modes.hpp"
+#include "bsp/camera_decomposition.hpp"
 #include "bsp/unit_timer_pose.hpp"
 #include "bsp/vector_helpers.hpp"
 
@@ -207,9 +208,8 @@ __declspec(naked) float __stdcall camera_asin_clamped_0042cf10(float) {
     }
 }
 
-float* matrix_angles_006e47a0(const CameraMatrix& matrix, float* output,
-    CameraPositionHost& host) {
-    host.extract_matrix_angles_0042d2e0(matrix, output[0], output[1], output[2]);
+float* matrix_angles_006e47a0(const CameraMatrix& matrix, float* output) {
+    extract_camera_matrix_angles_0042d2e0(matrix, output[0], output[1], output[2]);
     return output;
 }
 
@@ -300,7 +300,7 @@ void apply_camera_position_mode_007954a0(CameraPositionView& camera,
         PoseRefreshView& pose = host.resolve_pose(record.parent_14);
         const CameraMatrix& world = pose_world_matrix_0042d7e0(pose);
         std::array<float, 3> angles;
-        matrix_angles_006e47a0(world, angles.data(), host);
+        matrix_angles_006e47a0(world, angles.data());
         add_float(camera.theta_3c4, record.theta_34, angles[0]);
         add_float(camera.rho_3c8, record.rho_38, angles[1]);
         return;

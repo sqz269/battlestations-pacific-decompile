@@ -41,8 +41,6 @@ public:
     virtual void sample_path_007b04c0(void* actual_path, float parameter,
         std::array<float, 3>& position, std::array<float, 3>& output,
         std::uint32_t flags) = 0;
-    virtual void extract_matrix_angles_0042d2e0(const CameraMatrix& actual_matrix,
-        float& output_x, float& output_y, float& output_z) = 0;
     // Bind the genuine CRT range-failure operation; it does not return.
     [[noreturn]] virtual void range_error_00bf6713() = 0;
 };
@@ -52,10 +50,9 @@ public:
 // original CRT dispatch globals, diagnostics and exceptional policy stay external.
 float __stdcall camera_asin_clamped_0042cf10(float value);
 
-// Native ECX matrix, EDX output XYZ, EAX same output, RET. Required 42D2E0
-// boundary writes the three actual output references in its native order.
-float* matrix_angles_006e47a0(const CameraMatrix&, float* output_xyz,
-    CameraPositionHost&);
+// Native ECX matrix, EDX output XYZ, EAX same output, RET. Canonical 42D2E0
+// writes output X,Z,Y in order; writable matrix/output overlap is supported.
+float* matrix_angles_006e47a0(const CameraMatrix&, float* output_xyz);
 
 // Native ECX camera; three by-value stack floats; RET0Ch. Writes rho first,
 // then theta. The original object layout is represented by the borrowed view.
