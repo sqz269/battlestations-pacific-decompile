@@ -11,6 +11,7 @@
 // children and a scene node, none of which are reproduced.
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -182,6 +183,15 @@ bool parse_gui_page_table(
 // sub-table so a caller can read the per-class properties this packet did not
 // recover (States, Font, Align, ...) without reparsing.
 struct GuiLayoutWidget {
+    // Optional retained runtime companion cleanup, invoked while ALL fields
+    // and children still exist, including allocation/registration exceptions.
+    // The callback's environment must outlive this layout. Diagnostic trees
+    // have no companion. This host lifetime boundary is not a native field.
+    std::function<void(GuiLayoutWidget&)> before_destroy;
+    ~GuiLayoutWidget() {
+        auto cleanup = std::move(before_destroy);
+        if (cleanup) cleanup(*this);
+    }
     std::string key;  // the Lua key, which is also the scene node's name
     GuiWidgetType type{GuiWidgetType::None};
     GuiWidgetTransform transform{};
@@ -284,6 +294,12 @@ struct GuiLayoutHost {
     // the actual selected model; these arguments describe its selection.
     virtual std::uint32_t create_page_root_node(const std::string& name,
         bool model_backed, std::uint8_t screen_flag) = 0;
+    // Retained-owner entry point: exposes the SAME widget before binding.
+    // The string overload remains the compatibility projection boundary.
+    virtual std::uint32_t create_page_root_node(GuiLayoutWidget& widget,
+        bool model_backed, std::uint8_t screen_flag) {
+        return create_page_root_node(widget.key, model_backed, screen_flag);
+    }
 
     // 00AC6600's script half: run interface/_Common.lua, then
     // interface/<page>.lua, then read the global table "GuiScreen". Null means
@@ -297,6 +313,11 @@ struct GuiLayoutHost {
     // bits of node +138h. Null still reaches the parenting call and hooks;
     // it does not skip the child (00AAADC4..00AAAE63).
     virtual std::uint32_t create_widget_node(const std::string& key) = 0;
+    // Runtime implementations perform00AA6560's actual type constructor here,
+    // then bind its native model. Virtual74 still follows parenting below.
+    virtual std::uint32_t create_widget_node(GuiLayoutWidget& widget) {
+        return create_widget_node(widget.key);
+    }
 
     // 00AAAE24: 00B6E680, child node +4Ch under parent node +4Ch.
     virtual void set_node_parent(std::uint32_t child, std::uint32_t parent) = 0;
@@ -308,9 +329,13 @@ struct GuiLayoutHost {
     // Required: callers must dispatch the actual type, not silently omit them.
     virtual void on_widget_constructed(GuiLayoutWidget&) = 0;
     virtual void on_widget_loaded(GuiLayoutWidget&) = 0;
-    // Projection boundary for derived virtual+18 properties (Font, States,
-    // geOrder, etc.). Base fields are already bound; descendants follow.
-    // This is not a recovered uniform ordering of all derived readers.
+    // Base projection completed, before the native00AAA710 child traversal.
+    // A retained runtime MUST publish its base transform/visibility here.
+    // Diagnostic hosts have no actual scene fields to publish.
+    virtual void on_widget_base_properties_bound(GuiLayoutWidget&, const GuiTable&) {}
+    // Derived virtual+18 continuation AFTER00AAA710's base+child traversal
+    // (e.g. Icon00AB3310 and the FrameBox reader). Loaded78 follows this call.
+    // A type with a different native ordering needs its own reader composition.
     virtual void on_widget_properties_bound(GuiLayoutWidget&, const GuiTable&) = 0;
     //00AC6825: propagate node root-list=null through00B6D890, then retire the
     // temporary Lua reader/owner. This is not node-parent=null.
