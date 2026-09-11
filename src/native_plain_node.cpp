@@ -1,0 +1,100 @@
+#include "bsp/native_plain_node.hpp"
+#include "bsp/native_node_pool_allocation.hpp"
+#include "bsp/point_effect_matrix_setters.hpp"
+
+#include <exception>
+#include <stdexcept>
+
+namespace bsp {
+
+void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime& nodes,
+    NativeNodeBinding& binding, NativeStringStorage& strings, void* pool,
+    std::uint32_t flags) {
+    void* const original = &binding.storage;
+    try {
+        destroy_native_node_00b6f440(nodes, binding, strings);
+    } catch (...) {
+        nodes.scenes.forget_destroyed_binding(binding.scene_attachment);
+        throw;
+    }
+    nodes.scenes.forget_destroyed_binding(binding.scene_attachment);
+    if (flags & 1u) return_native_node_pool_slot_00b6e490(pool, original);
+    return original;
+}
+
+NativePlainNodeReference::NativePlainNodeReference(NativeNodeBinding& node,
+    NativeNodeDestructionRuntime& nodes, NativeStringStorage& strings, void* pool,
+    const volatile std::uint32_t* table, NativePlainNodeCompanionDisposal disposal)
+    : RenderCommandReference(node.storage.references_04), node_(node), nodes_(nodes),
+      strings_(strings), pool_(pool), table_(table), disposal_(disposal) {
+    if (!pool || !table || !disposal.retire || node.storage.vtable_00 != 0x00d62c88u ||
+        table[0] != 0x00bd30e0u || table[1] != 0x00b6f8d0u ||
+        table[3] != 0x00b6f570u || table[13] != 0x00b6e870u ||
+        table[16] != 0x00b6dbe0u || table[20] != 0x00b6ed80u || table[21] != 0x00b6ee10u ||
+        reference_count.load(std::memory_order_relaxed) <= 0 ||
+        &nodes.scenes.resolve(node.transform) != &node.scene_attachment)
+        throw std::invalid_argument("plain node reference requires actual constructed owner, pool, table, scene binding and retirement");
+    nodes.attachments.bind(*this);
+    node.scene_attachment.is_type = nodes.node_virtual_0c;
+    node.scene_attachment.set_world_matrix = set_native_node_world_matrix_00b6e870;
+    node.scene_attachment.world_changed = native_node_world_changed_00b6dbe0;
+    node.scene_attachment.attach_scene = set_node_scene_00b6ed80;
+    node.scene_attachment.remove_scene = remove_native_node_scene_00b6ee10;
+}
+
+NativePlainNodeReference::~NativePlainNodeReference() {
+    if (phase_ != Phase::retired) std::terminate();
+}
+
+void NativePlainNodeReference::require_slot(std::uint32_t offset,
+    std::uint32_t address) const noexcept {
+    if (phase_ == Phase::retired || node_.storage.vtable_00 != 0x00d62c88u ||
+        table_[offset / 4] != address) std::terminate();
+}
+
+std::uint32_t NativePlainNodeReference::light_count(void* context) noexcept {
+    const auto& array = static_cast<NativePlainNodeReference*>(context)->node_.storage.point_lights_164;
+    if (array.count < 0 || array.capacity < array.count || (array.count && !array.begin))
+        std::terminate();
+    return static_cast<std::uint32_t>(array.count);
+}
+GeneratedModelPointLightLinks& NativePlainNodeReference::light_element(void* context,
+    std::uint32_t index) noexcept {
+    const auto& array = static_cast<NativePlainNodeReference*>(context)->node_.storage.point_lights_164;
+    auto* light = array.begin[index];
+    if (!light) std::terminate();
+    return *light;
+}
+void NativePlainNodeReference::shrink_lights(void* context) noexcept {
+    auto& array = static_cast<NativePlainNodeReference*>(context)->node_.storage.point_lights_164;
+    shrink_native_node_point_lights_to_zero_00b6ec70(array);
+}
+
+void NativePlainNodeReference::release_model_virtual18_00b6f310() noexcept {
+    if (phase_ != Phase::bound) std::terminate();
+    require_slot(0x18, 0x00b6f310u);
+    release_node_logical_00b6f310({nodes_.attachments, node_.transform,
+        node_.storage.released_44, *this,
+        {this, light_count, light_element, shrink_lights}});
+}
+
+void NativePlainNodeReference::remove_scene_virtual54(SceneResource* scene,
+    bool recurse) noexcept {
+    require_slot(0x54, 0x00b6ee10u);
+    remove_native_node_scene_00b6ee10(nodes_.scenes, node_.scene_attachment, scene, recurse);
+}
+
+void NativePlainNodeReference::release_zero_references() noexcept {
+    if (phase_ != Phase::bound) std::terminate();
+    require_slot(0, 0x00bd30e0u);
+    require_slot(4, 0x00b6f8d0u);
+    phase_ = Phase::destroying;
+    auto& lifetime = nodes_.attachments;
+    const auto disposal = disposal_;
+    delete_native_plain_node_00b6f8d0(nodes_, node_, strings_, pool_, 1);
+    lifetime.unbind(*this);
+    phase_ = Phase::retired;
+    disposal.retire(disposal.context, *this);
+}
+
+} // namespace bsp

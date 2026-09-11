@@ -66,8 +66,13 @@ void native_node_world_changed_00b6dbe0(SceneAttachmentRuntime&, SceneNodeAttach
 // to node-vtable phase, detaches the parent/root, releases +130, removes scenes,
 // frees the actual +164 array and pooled +54 name, then ends the prefix lifetime.
 // Child hierarchy/scene callbacks may reenter; there is no precleared-hierarchy
-// restriction. Does NOT return the 0x1F0 slot or unbind host associations. The
+// restriction. Does NOT return the physical slot or unbind host associations. The
 // caller owns that distinct final disposal step and must not use dead bindings.
+// Explicit storage must be the SAME allocator used to construct this name;
+// ActualNativeStringPoolStorage routes actual native owner/ring operations.
+void destroy_native_node_00b6f440(NativeNodeDestructionRuntime&, NativeNodeBinding&,
+    NativeStringStorage& actual_name_storage);
+// Existing semantic callers use the runtime's SizedStoragePool adapter.
 void destroy_native_node_00b6f440(NativeNodeDestructionRuntime&, NativeNodeBinding&);
 
 } // namespace bsp
