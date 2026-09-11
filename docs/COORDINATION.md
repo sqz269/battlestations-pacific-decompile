@@ -55,6 +55,18 @@ dry-run clear is not a query, it clears), and `python tools/ghidra_flow_repair.p
 never touching the callee's own flag. Run it on a function whose pseudocode shows a spurious return after
 `_free` before a worker reads it.
 
+## Verification before integration
+
+Second-pass reviews found six classes of mistake in merged packets (a host method named from
+its call-site arguments, a call site attributed to the wrong function, a contract taken from one
+of two call sites, a record layout taken from a consumer instead of its producer, a partial
+reconstruction presented as complete, a frame-timing claim the executable's run log
+contradicted). docs/WORKER_VERIFICATION_CHECKLIST.md lists the rules and the check for each;
+every worker brief cites it. The mechanical part is `python tools/verify_report_calls.py
+reports/<name>.json`: it checks each `address`/`native` row against the live Ghidra function
+bodies and the call graph and exits 1 on a mismatch. Workers run it before committing; the
+integrator runs it on every report a branch adds or changes before merging.
+
 ## Leases
 
 Do not lease shared append-only registries: never lease `cmake/startup.cmake` (every worker appends
