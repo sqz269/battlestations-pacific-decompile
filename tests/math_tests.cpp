@@ -21,6 +21,7 @@
 #include "bsp/hud_updates.hpp"
 #include "bsp/ingame_interface.hpp"
 #include "bsp/game_render_frame.hpp"
+#include "bsp/lua_binding_entity_lookup.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/title_init.hpp"
@@ -1780,6 +1781,46 @@ int main() {
                   && ring.confirmed_param_a == 0.4f && ring.confirmed_kind == 3,
             "a ship-sync back-fill leaves unit+980h/+984h alone and the ring tick steps "
             "them toward the clamped slot while holding the client lag");
+    }
+
+    {
+        // docs/LUA_BINDING_ENTITY_LOOKUP.md. Two rules the lookup gets wrong easily:
+        // 0088B1E0 CMP EBX,0x47 / JA is an *unsigned* bound, so the negative buckets every
+        // entity registers on are never searched; and 0088B213..0088B235 wants +5Ch set with
+        // +5Dh, +5Eh and +60h all clear, so a destroyed entity on a searched bucket is skipped
+        // and the next match wins.
+        struct Lists : bsp::MissionEntityListView {
+            bsp::MissionEntityCandidate dead{};
+            bsp::MissionEntityCandidate live{};
+            bsp::MissionEntityCandidate hidden{};
+            std::size_t bucket_size(std::int32_t kind) const override {
+                if (kind == -1) return 1;      // a base bucket, outside the unsigned bound
+                if (kind == 0x00) return 2;    // the unit bucket
+                return 0;
+            }
+            bsp::MissionEntityCandidate bucket_entry(std::int32_t kind,
+                                                     std::size_t index) const override {
+                if (kind == -1) return hidden;
+                return index == 0 ? dead : live;
+            }
+        } lists;
+        int first = 0, second = 0, unreachable = 0;
+        lists.dead.entity = &first;
+        lists.dead.name = "Carrier";
+        lists.dead.active = true;
+        lists.dead.released = true;              // byte +5Dh
+        lists.live.entity = &second;
+        lists.live.name = "CARRIER";             // __stricmp, case-insensitive
+        lists.live.active = true;
+        lists.hidden.entity = &unreachable;
+        lists.hidden.name = "Carrier";
+        lists.hidden.active = true;
+        const void* found = bsp::mission_entity_find_by_name(lists, "carrier", 7);
+        check(found == &second && !bsp::entity_kind_is_searched(-1)
+                  && bsp::entity_kind_is_searched(0x47) && !bsp::entity_kind_is_searched(0x48)
+                  && bsp::world_bucket_head_offset(0x00) == 0x64,
+            "the name lookup skips the released candidate and the negative buckets, and "
+            "matches case-insensitively on the first live entity of a searched kind");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
