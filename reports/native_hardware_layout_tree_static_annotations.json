@@ -1,0 +1,31 @@
+[
+  {
+    "address": "00cd7960",
+    "before": {
+      "address": "00cd7960",
+      "function_name": "BSP_Static_InitializeHardwareLayoutTree"
+    },
+    "after": {
+      "address": "00cd7960",
+      "old_name": "BSP_Static_InitializeHardwareLayoutTree",
+      "name": "BSP_Static_InitializeHardwareLayoutTree",
+      "evidence": "Complete static tree initializer. Actual B25DC0 allocation, publish head, write sentinel1, independently reload current head for parent/minimum/maximum self-links, clear count before genuine std::atexit. Preserve header word0 and untouched sentinel bytes; no rollback or own EH. Actual CRT pointer CE3504 lies in established C++ initializer interval. Independent frozen current primary library fixture:5,597 matched DWORDs across eight real-exit children,19 guarded header stores,17 frees and three registrations per side;all loaded postimages checked. Original ABI: No arguments; EAX actual CRT atexit registration status; RET. Complete src/native_hardware_layout_tree_static.cpp; reports/native_hardware_layout_tree_static_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ce0c50",
+    "before": {
+      "address": "00ce0c50",
+      "function_name": "CG_static_init_00ce0c50",
+      "comment": "[BSP inventory 00ce0c50] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+    },
+    "after": {
+      "address": "00ce0c50",
+      "old_name": "CG_static_init_00ce0c50",
+      "name": "BSP_Static_DestroyHardwareLayoutTree",
+      "evidence": "Complete static tree shutdown. Capture current head/minimum for actual full-range B2F3A0, reload current head after erase, actual shared free, then clear head/count while preserving word0. Full returning-free tail CE0C7C..CE0C8F restored. Source callback is void; native normal return EAX0 is documented. No added exception catch or early termination. Independent frozen current primary library fixture:5,597 matched DWORDs across eight real-exit children,19 guarded header stores,17 frees and three registrations per side;all loaded postimages checked. Original ABI: No arguments; normal EAX0 then RET. New registered void callback does not expose the native result. Complete src/native_hardware_layout_tree_static.cpp; reports/native_hardware_layout_tree_static_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  }
+]

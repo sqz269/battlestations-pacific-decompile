@@ -85,9 +85,15 @@ packet uses those completed APIs; it does not count their functions again.
 Retained local reproduction: `local/prepare_hardware_pool_static.py`,
 `local/build_hardware_pool_static.ps1`,
 `local/build_hardware_pool_static_check.ps1`, and
-`local/write_hardware_pool_static_audit.py`. Build registration is conditional
-and private to `local/pool_static_sources.cmake`; shared CMake and ledgers
-remain with the integrator. The committed audit is
+`local/write_hardware_pool_static_audit.py`. The worker used a private build
+registration include; primary integration now registers the source in shared
+CMake and the ledgers. Its unchanged process-exit fixture was rerun against
+the frozen current primary library and exact production observation providers.
+It again matches 1,805 DWORDs and real registered teardown. All 66 worker pins,
+11 fresh live/PE spans and 22 loaded postimages were independently checked;
+the complete 32 original static bytes remain unchanged. The missing initializer
+was created, prior shutdown comments preserved, annotations saved and exports
+refreshed. The committed audit is
 `reports/native_hardware_layout_pool_static_audit.json`.
 
 Status: complete new source interfaces, build tested and focused original
