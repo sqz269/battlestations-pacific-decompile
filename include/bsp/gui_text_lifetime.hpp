@@ -20,7 +20,7 @@ struct GuiTextConstructorConstants {
     const volatile float& disabled_alpha_00ce3800;
 };
 
-// Only constructor-written fields absent from the existing Text projection.
+// Fields absent from the existing Text projection; unwritten words are marked.
 // Address names intentionally avoid assigning an unverified ownership role.
 // The +180/+184 and +1AC/+1B0 pointers are borrowed:00AB8250 does not release
 // them. The shader+1EC is separately retained below and IS an owned reference.
@@ -33,8 +33,18 @@ struct GuiTextLifetimeFields {
     float field_190{};
     std::u16string string_1a4;
     void* pointer_1ac{};
-    void* pointer_1b0{};
+    // New C++ pointer convention: borrowed canonical reference Text OWNER,
+    // not a native Text address cast to a companion. Resolve through the same
+    // GuiWidgetOwnerRuntime and its existing text_lifetime() association.
+    GuiWidgetOwner* pointer_1b0{};
     std::uint8_t byte_1b4{};
+    // Native AB9650 and ABB2C0 leave these floats unwritten. 00531380 writes
+    // them after byte1B4; do not infer zero offsets from C++ construction.
+    float field_1b8;
+    float field_1bc;
+    // C++ validity metadata only, not a native field or constructor store.
+    // Both floats must be written before marking this true or reading them.
+    bool glyph_offsets_written{};
     // ABAA03/ABAA15 copy current base+94 and font+1D4 after new shader
     // selection. Native constructor leaves this live material payload unwritten.
     float overbright_alphatex_1dc[2];
