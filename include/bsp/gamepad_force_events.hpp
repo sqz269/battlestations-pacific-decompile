@@ -38,10 +38,10 @@ struct GamepadForceEvent {
 
 // View onto the current game+1ED4 target's existing pose storage. This is a
 // different pose representation from the subject's canonical CameraTransform.
-// The owner implements the actual00414DB0 refresh, as existing unit hosts do.
+// ForceEventSpatialRuntime binds the actual 00414DB0 refresh to the same fields.
 struct ForceEventTargetPose {
     void* identity;
-    bool& world_valid_c8;
+    std::uint8_t& world_valid_c8;
     CameraMatrix& world_cc;
 };
 class ForceEventSpatialHost {
