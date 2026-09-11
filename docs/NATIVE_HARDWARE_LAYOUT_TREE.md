@@ -102,8 +102,20 @@ verified all 17 retained live-PE spans and reran the private composition fixture
 
 The primary integrator restored the complete erase extent through exclusive
 `B2F1A7`, preserved prior Ghidra comments, saved all seven names/comments and
-complete-function ledger entries, and refreshed the affected exports. An
-independent original-tree differential fixture remains in progress.
+complete-function ledger entries, and refreshed the affected exports. The final
+independent original-tree comparison verifies 44 live-PE spans (2,115 bytes),
+all permitted relocation/adapter postimages and nine linked primary-library
+providers. Its 17-phase sequence matches 1,618 behavior words. Protected-page
+write observation measures 12 original and 12 rebuilt output stores, confirming
+owner publication before node publication. Both raw CRT traces contain the same
+seven events after the logic-error constructor's synthetic rethrow was removed.
+
+The fixture executes original `441760` success copy and `4412B0` explicit and
+throw-dispatched cleanup. Original string services and the host exception
+personality remain declared adapters. It does not exercise every erase branch,
+throwing invalid callbacks, `441760` member allocation failure/`C5E050` cleanup,
+or native CatchableType-driven typed catch/copy. The final proof, old failed CRT
+trace, source/library pins and measured store states are retained in the audit.
 No tree constructor, insertion, general tree destruction, shader/input semantic
 key, complete renderer binding, binary ABI compatibility or game validation is
 claimed.

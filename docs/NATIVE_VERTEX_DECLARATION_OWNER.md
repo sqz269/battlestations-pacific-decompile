@@ -137,3 +137,23 @@ This proof covers the stated raw-storage and C++ exception contracts. It does
 not establish full pool initialization, original CRT-runtime identity, concurrent
 mutation behavior, hardware-fault unwinding, secondary-exception termination at
 runtime, a callable whole resource hierarchy or gameplay validation.
+
+## Cleanup search follow-up
+
+The complete owner constructor/destructor now use armed cleanup guards instead
+of synthetic catch/rethrow maps. Their native FH3 metadata has cleanup actions
+but no catches. The array constructor/destructor iterators use scalar
+`__try/__finally` with completed/remaining state; unwind-only calls terminate
+on a second C++ exception during SEH search. This preserves the native SEH4
+array counter behavior as well as cleanup order.
+
+The existing nine-entry fixture was linked to the corrected primary library
+and again matches 43,032 words across six checkpoints. Seven standalone map
+providers are present; the trivial initializer and owner destructor are
+optimized within the constructor/scalar-delete translation unit. The hardware
+fixture additionally matches both nested-exception terminal snapshots, but its
+array pool-entry failure occurs after the CPU declaration destructor returns,
+so that case does not establish a failure inside CPU array clear. Original
+static CRT filter code is byte-audited; host CRT adapters execute. The exact
+source pins, build, maps and boundaries are in
+[the cleanup audit](../reports/native_cleanup_search_fidelity.json).

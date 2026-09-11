@@ -1057,5 +1057,109 @@
     "strict_win32_build": true,
     "missing_copy_defined": true,
     "three_free_continuations_restored": true
+  },
+  "cleanup_search_correction": {
+    "report": "reports/native_cleanup_search_fidelity.json",
+    "source_pin": {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+    },
+    "addresses": [
+      "00411700",
+      "004118d0"
+    ],
+    "native_evidence": "FuncInfosD83F74/D84024 have maxstate1 and no catch map. Armedbasecleanup replaces syntheticcatch/rethrow. Existingfive-owner originalsequence rechecked463words; treecallerrawCRT7==7 removesprevioushostextrarethrow.",
+    "existing_fixture_recheck": {
+      "passed": true,
+      "matching_words": 463,
+      "production_map_providers": [
+        {
+          "address": "00411700",
+          "map_line": "0001:00005c70       ?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z 30006c70 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "00411780",
+          "map_line": "0001:00005eb0       ?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z 30006eb0 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "004117c0",
+          "map_line": "0001:00005ef0       ?scalar_delete_native_legacy_logic_error_004117c0@bsp@@YAPAUNativeLegacyExceptionStorage@1@AAU21@I@Z 30006ef0 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "004118d0",
+          "map_line": "0001:00005de0       ?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z 30006de0 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "00411940",
+          "map_line": "0001:00005d00       ?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z 30006d00 f   bsp_core:native_legacy_exception_owner.obj"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "local/native_exception_owner_cleanup_fixture_fixed.txt",
+          "sha256": "57167e9bd8fea9b329e5cfab261eeaacdacb1183291579abf637989a81d3d438"
+        },
+        {
+          "path": "local/build_native_exception_owner_cleanup_check.ps1",
+          "sha256": "25c605028339f30965adafa611cf2db1f0ca57699496aa156789d194a8303a99"
+        },
+        {
+          "path": "local/native_exception_owner_cleanup_check.cpp",
+          "sha256": "04a3e063e960162a9e602daa6aa6363b78d15cd70a5206f2bc7991c0e42e763e"
+        },
+        {
+          "path": "build/exception-owner-cleanup-check/native_exception_owner_cleanup.map",
+          "sha256": "bc5386389d3b91aeedd7436089b91b010cabe0813baf7f9bfbe98886b87d5cfa"
+        },
+        {
+          "path": "build/exception-owner-cleanup-check/native_exception_owner_check.exe",
+          "sha256": "311f1ceb479fc712f5ac511878cd91458d61bf9e5c40c9cdea691e5a52f354a0"
+        },
+        {
+          "path": "build/exception-owner-cleanup-check/native_exception_owner_trace.txt",
+          "sha256": "fd9374c3fc7cbe3a30507c8fb59f0e97a2cb36ac7463cc540b84c84133f94e40"
+        }
+      ],
+      "fixture_normalization_correction": "The old local fixture classified a stale heap word with only its low byte cleared inconsistently when malloc returned a 256-byte-aligned pointer. In an actual empty inline header (capacity15,length0,firstbyte0), prioritize the low-byte-reset allocation identity before exact-pointer matching. Production unchanged; original11 phases/five owners and463 words preserved.",
+      "initial_failure_log": {
+        "path": "local/native_exception_owner_cleanup_fixture.txt",
+        "sha256": "28bed3e49e728def8eb1e48bd5d4fe0f7c27d77b2de2dd959e5fa3bfccc9a84f"
+      }
+    },
+    "build": {
+      "path": "local/native_cleanup_search_primary_build.txt",
+      "sha256": "03e34924726b1f71fd977a0fb678dca5964c20088dc2dcde23932c88bc9a22e0",
+      "passed": true,
+      "tests": 2
+    },
+    "validation_annotations_pending": false,
+    "final_validation_annotations": {
+      "journal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T025615Z.json",
+        "sha256": "6169f8d8890557f46dcc93146fdb29312b9eaeb26c8cf3fef64dd718990e62f0"
+      },
+      "saved_project": true,
+      "force_refreshed_exports": [
+        "00b60700",
+        "00b60770",
+        "00b48960",
+        "00b483f0",
+        "00b48950",
+        "00b60110",
+        "00b2f4c0",
+        "00b2ef00",
+        "00b20dc0",
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0",
+        "00441760",
+        "004412b0",
+        "00b48af0",
+        "00b48b70",
+        "00411700",
+        "004118d0"
+      ]
+    }
   }
 }

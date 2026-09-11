@@ -28,11 +28,19 @@ owner allocation and stale base message/ownership words remain untouched.
 The tree constructs its original payload using the existing `00411700`
 logic-error constructor followed by the out-of-range profile store. The
 completed temporary string is protected only after its counted assignment
-returns. A future owning host exception transport can compose that constructor
-with these copy/cleanup entries; the native throw metadata does not make a
-host C++ exception ABI-compatible.
+returns. The hardware-layout tree now composes that constructor with these
+copy/cleanup entries in its owning host exception transport. Native throw
+metadata does not make a host C++ exception ABI-compatible.
 
 Both native bodies and the concrete exception metadata are checked against
 the saved Ghidra program and installed executable. Validation and annotation
 status are recorded in `reports/native_tree_out_of_range_exception_audit.json`.
 No new tracked tests or game/exception-ABI compatibility claim is introduced.
+
+The final original-tree fixture executes original `441760` success copy and
+`4412B0` explicit/throw-dispatched cleanup against the primary library. The whole
+tree sequence matches 1,618 behavior words and all seven raw CRT events.
+Original member-copy allocation failure and `C5E050` cleanup are captured but
+unexercised in that tree fixture; native typed-catch copy dispatch is also outside
+its scope. [The cleanup audit](../reports/native_cleanup_search_fidelity.json)
+retains exact providers, source pins and the host CRT boundaries.

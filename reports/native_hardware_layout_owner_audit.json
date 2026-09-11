@@ -1,6 +1,6 @@
 {
   "packet": "native_hardware_layout_owner",
-  "status": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
@@ -270,6 +270,1033 @@
     },
     {
       "path": "src/native_hardware_layout_owner.cpp",
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    }
+  ],
+  "build": {
+    "path": "reports/native_index_tree_hardware_primary_build.txt",
+    "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
+    "passed": true,
+    "tests": 2
+  },
+  "native_differential_fixture": true,
+  "input_domain": [
+    "Actual initialized48h hardware pool and D4h CPU declaration pool, actual tree header, shared support/lifetime domain.",
+    "Runtime renderer profile must be D5F0A8 with immutable+44 B2F4C0; current CPU declaration profile D61D1C with BD30E0/B48CA0. Views retain originaladdress tokens.",
+    "Unknown profiles have no callback fallback; runtime active renderer profile is not yet proven."
+  ],
+  "validation_limits": [
+    "Native/fixture and new-C++ interface comparison; not native ABI replacement or game validation.",
+    "Fixture IUnknown Release; no actual D3D driver.",
+    "Tree/declaration/support native full-body parity belongs to independent dependency proofs; this fixture verifies exact production composition at those native entry boundaries.",
+    "Only evidenced immutable renderer/declaration profiles supported.",
+    "No original pool constructor, full renderer construction, or arbitrary runtime profile proof.",
+    "Terminal std::uncaught_exceptions agrees for array 0/0 and derived 1/1 using the actual host MSVC personality. Native static FH3 filter C0695E separately zeroes its own CRT ProcessingThrow field; those original static personality bytes are audited only and are not executed here. No equivalence between native CRT offset90 and host TLS is assumed."
+  ],
+  "new_tracked_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+    "new_complete_functions": 6,
+    "upgraded_complete_functions": 0,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b60700",
+        "name": "destroy_native_hardware_layout_00b60700",
+        "cpp_symbol": "destroy_native_hardware_layout_00b60700",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b60765",
+        "original_abi": "ECX actual44h owner; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false,
+        "validation_addendum": "reports/native_cleanup_search_fidelity.json"
+      },
+      {
+        "kind": "function",
+        "address": "00b60770",
+        "name": "delete_native_hardware_layout_00b60770",
+        "cpp_symbol": "delete_native_hardware_layout_00b60770",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b60790",
+        "original_abi": "ECX owner; stackflags; EAX originalowner; RET4",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false,
+        "validation_addendum": "reports/native_cleanup_search_fidelity.json"
+      },
+      {
+        "kind": "function",
+        "address": "00b48960",
+        "name": "destroy_native_hardware_layout_base_00b48960",
+        "cpp_symbol": "destroy_native_hardware_layout_base_00b48960",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b489cf",
+        "original_abi": "ECX actual44h owner; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false,
+        "validation_addendum": "reports/native_cleanup_search_fidelity.json"
+      },
+      {
+        "kind": "function",
+        "address": "00b483f0",
+        "name": "destroy_native_hardware_layout_record_00b483f0",
+        "cpp_symbol": "destroy_native_hardware_layout_record_00b483f0",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b48419",
+        "original_abi": "ECX actual0Ch record; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false,
+        "validation_addendum": "reports/native_cleanup_search_fidelity.json"
+      },
+      {
+        "kind": "function",
+        "address": "00b48950",
+        "name": "destroy_native_hardware_layout_records_00b48950",
+        "cpp_symbol": "destroy_native_hardware_layout_records_00b48950",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b48960",
+        "original_abi": "ECX FOUR_RECORDS_BEGIN, notowner; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false,
+        "validation_addendum": "reports/native_cleanup_search_fidelity.json"
+      },
+      {
+        "kind": "function",
+        "address": "00b60110",
+        "name": "return_native_hardware_layout_slot_00b60110",
+        "cpp_symbol": "return_native_hardware_layout_slot_00b60110",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b60175",
+        "original_abi": "ECX actualpool108FE9C; stackraw48hslot; RET4",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false,
+        "validation_addendum": "reports/native_cleanup_search_fidelity.json"
+      }
+    ],
+    "verified_evidence": {
+      "source_byte_evidence": "evidence",
+      "source_pins": "source_pins"
+    },
+    "primary_source_pins": [
+      {
+        "path": "src/native_hardware_layout_owner.cpp",
+        "sha256": "c423369cdafb07efdcfb5324ab75a36b55283ee4079b9a03e81df6db933b3583"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_owner.hpp",
+        "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+      }
+    ],
+    "build": {
+      "path": "reports/native_index_tree_hardware_primary_build.txt",
+      "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
+      "tests": 2,
+      "passed": true
+    },
+    "annotations_applied": true,
+    "native_differential_fixture": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "annotation_journal": {
+      "path": "local/ghidra-annotations-20260911T022002Z.json",
+      "sha256": "685df7d2bbac81f1fc05e41cc2efbb832c1ba8b4da1c60c9331ed699cc987107"
+    },
+    "saved_project": true,
+    "exports_force_refreshed": true,
+    "final_build": {
+      "path": "local/native_cleanup_search_primary_build.txt",
+      "sha256": "03e34924726b1f71fd977a0fb678dca5964c20088dc2dcde23932c88bc9a22e0",
+      "passed": true,
+      "tests": 2
+    },
+    "final_native_proof_verified": {
+      "proof": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\native_hardware_layout_fixture_proof.json",
+        "sha256": "3269fc851cb9d1644f925d939b0ec26afef2c8f6802beb5ba30e9ad6c54d897f"
+      },
+      "pins_verified": 31,
+      "native_spans": 26,
+      "native_bytes": 1101,
+      "production_map_providers": 9,
+      "postimages_verified": 26,
+      "comparisons": 14,
+      "words": 72954,
+      "terminal_snapshots": {
+        "array": {
+          "native_exit": 91,
+          "source_exit": 91,
+          "both_reached_requested_second_exception": true,
+          "terminal_snapshots": {
+            "native": "profile=00d61d10 records=10/11/12/0 refs=1/0/0/0 enters=3 leaves=1 invalid=0 uncaught=0",
+            "source": "profile=00d61d10 records=10/11/12/0 refs=1/0/0/0 enters=3 leaves=1 invalid=0 uncaught=0"
+          },
+          "terminal_snapshots_match": true
+        },
+        "derived": {
+          "native_exit": 91,
+          "source_exit": 91,
+          "both_reached_requested_second_exception": true,
+          "terminal_snapshots": {
+            "native": "profile=00d61d10 records=10/11/12/13 refs=1/1/1/1 enters=0 leaves=0 invalid=1 uncaught=1",
+            "source": "profile=00d61d10 records=10/11/12/13 refs=1/1/1/1 enters=0 leaves=0 invalid=1 uncaught=1"
+          },
+          "terminal_snapshots_match": true
+        }
+      }
+    },
+    "validation_annotations_pending": false,
+    "final_validation_annotations": {
+      "journal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T025615Z.json",
+        "sha256": "6169f8d8890557f46dcc93146fdb29312b9eaeb26c8cf3fef64dd718990e62f0"
+      },
+      "saved_project": true,
+      "force_refreshed_exports": [
+        "00b60700",
+        "00b60770",
+        "00b48960",
+        "00b483f0",
+        "00b48950",
+        "00b60110",
+        "00b2f4c0",
+        "00b2ef00",
+        "00b20dc0",
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0",
+        "00441760",
+        "004412b0",
+        "00b48af0",
+        "00b48b70",
+        "00411700",
+        "004118d0"
+      ]
+    }
+  },
+  "final_native_differential": {
+    "packet": "native_hardware_layout_owner_6_original_byte_fixture",
+    "status": "normal_single_exception_and_two_double_fault_terminal_snapshots_passed",
+    "scope": "Ignored local fixture only. No owned-entry stubs, callbacks or production replacements. Root owns production/ledger/Ghidra updates.",
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_read": true,
+    "native_owned_addresses": [
+      "00b60700",
+      "00b60770",
+      "00b48960",
+      "00b60110",
+      "00b483f0",
+      "00b48950"
+    ],
+    "native_owned_bytes": 402,
+    "live_PE_equal_span_count": 26,
+    "all_span_bytes": 1101,
+    "installed_PE_rechecked_at_execution": true,
+    "ordinary_absolute_operand_preimages": 24,
+    "additional_SEH4_prolog_preimages": 2,
+    "actual_owned_original_bodies_executed": true,
+    "native_postimages": {
+      "all_spans_match_only_listed_allowed_patches": true,
+      "captured_private_image_base": "00b80000",
+      "patches": [
+        {
+          "address": "00b60703",
+          "bytes": "f0530030",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b60781",
+          "bytes": "9cfe8001",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b48963",
+          "bytes": "e0530030",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b48985",
+          "bytes": "94d37001",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b4899a",
+          "bytes": "f0832c01",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b6011b",
+          "bytes": "18224601",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b6016b",
+          "bytes": "10224601",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b48400",
+          "bytes": "20224601",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00b48951",
+          "bytes": "f0832c01",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00bf7c13",
+          "bytes": "102d5801",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00bf7c71",
+          "bytes": "302d5801",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00cbf6e4",
+          "bytes": "cc805701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00cc12f9",
+          "bytes": "84a05701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00df80c0",
+          "bytes": "d0f64301",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00df80c8",
+          "bytes": "d8f64301",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00df80d4",
+          "bytes": "bc805701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00dfa080",
+          "bytes": "f0124401",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00dfa08c",
+          "bytes": "7ca05701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00e02d24",
+          "bytes": "337c3701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00e02d28",
+          "bytes": "5c7c3701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00e02d48",
+          "bytes": "b97c3701",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00d5f0ec",
+          "bytes": "c0f42a01",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00d61d1c",
+          "bytes": "e0303501",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00d61d20",
+          "bytes": "a08c2c01",
+          "kind": "audited_absolute_operand"
+        },
+        {
+          "address": "00c07c01",
+          "bytes": "00540030",
+          "kind": "audited_SEH4_prolog_operand"
+        },
+        {
+          "address": "00c07c1e",
+          "bytes": "00100130",
+          "kind": "audited_SEH4_prolog_operand"
+        },
+        {
+          "address": "00bf6b43",
+          "bytes": "e918c3c82e",
+          "kind": "audited_external_entry_boundary"
+        },
+        {
+          "address": "00c07a75",
+          "bytes": "e966d3c72e",
+          "kind": "audited_external_entry_boundary"
+        },
+        {
+          "address": "00b2f4c0",
+          "bytes": "e93b60d52e",
+          "kind": "audited_external_entry_boundary"
+        },
+        {
+          "address": "00b48ca0",
+          "bytes": "e9dba1d32e",
+          "kind": "audited_external_entry_boundary"
+        },
+        {
+          "address": "00b3e730",
+          "bytes": "e98b7bd42e",
+          "kind": "audited_external_entry_boundary"
+        },
+        {
+          "address": "00ce2210",
+          "bytes": "e03f0030",
+          "kind": "audited_import_slot"
+        },
+        {
+          "address": "00ce2218",
+          "bytes": "c03c0030",
+          "kind": "audited_import_slot"
+        },
+        {
+          "address": "00ce2220",
+          "bytes": "f02e0030",
+          "kind": "audited_import_slot"
+        }
+      ],
+      "spans": [
+        {
+          "address": "00b60700",
+          "bytes": 101,
+          "sha256": "7dd3743644ab2916cd1a6ef9b5094d8ae8eb5a15e9b55c0e950b904c0321728f"
+        },
+        {
+          "address": "00b60770",
+          "bytes": 32,
+          "sha256": "13018f86867247ab04b8b92ee06e3afab07bac1a65a1a69387fa8bdcbe6f0483"
+        },
+        {
+          "address": "00b48960",
+          "bytes": 111,
+          "sha256": "5d62172aedf5fd5effbf9ac4790521f4442aa4b32ec8dfad907fccbe224fa3db"
+        },
+        {
+          "address": "00b60110",
+          "bytes": 101,
+          "sha256": "b9dc39ffcd479af50391513fa6651f26040eec8778b82cbd02b98a73ade71b98"
+        },
+        {
+          "address": "00b483f0",
+          "bytes": 41,
+          "sha256": "2c003af9ea8fae9f2bc621a860f03d49825b9489fed0d6094b24befa3d96fb5c"
+        },
+        {
+          "address": "00b48950",
+          "bytes": 16,
+          "sha256": "1eb8882e82cd50dc30c3e4f6c6da02e258a4f9474a9400fe90c6d2f45cb03d71"
+        },
+        {
+          "address": "00bf7c10",
+          "bytes": 193,
+          "sha256": "45d88a071451f7379680e12d6e85bb33b08d58ff9bb22a7c09badb64df3819d5"
+        },
+        {
+          "address": "00c07c00",
+          "bytes": 89,
+          "sha256": "3930adf12142e18028e1eefa9d56b5ebfaf119c768998bdfaf2629c0d5d1680b"
+        },
+        {
+          "address": "00bd30e0",
+          "bytes": 14,
+          "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+        },
+        {
+          "address": "00bd30f0",
+          "bytes": 7,
+          "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+        },
+        {
+          "address": "00cbf6d0",
+          "bytes": 29,
+          "sha256": "fd081deb44a2b4ae0898ead77cd556280be28003db81e33cea7a914959422a7d"
+        },
+        {
+          "address": "00cc12f0",
+          "bytes": 18,
+          "sha256": "685f7927a5d9eeef865dc1d39115c2baccc1f849ac1c91d2ce41128a1719619f"
+        },
+        {
+          "address": "00df80bc",
+          "bytes": 52,
+          "sha256": "4bcc97524dc4aeb0f277e9822efca5157fbbbf33e2412a85e2398482602f984c"
+        },
+        {
+          "address": "00dfa07c",
+          "bytes": 44,
+          "sha256": "d5e9c04c95173664fc56962df22c6fb15a42cb79a75e28523999389d0924242e"
+        },
+        {
+          "address": "00e02d10",
+          "bytes": 64,
+          "sha256": "1321f179652dbda874900afa01ee97b77496f69029174e50fc0afa26e7526455"
+        },
+        {
+          "address": "00d5f0a8",
+          "bytes": 72,
+          "sha256": "11fe8fcdf00d8a403faf0ad717b9104b0ddfd9031e1e32d8a25a597669b30bce"
+        },
+        {
+          "address": "00d61d1c",
+          "bytes": 8,
+          "sha256": "b2fcfd5a2a48bb025a2751f6a02cd1b0189ab8c1c9c2a8b4da2269e4b457a9ae"
+        },
+        {
+          "address": "00d61cc0",
+          "bytes": 72,
+          "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e"
+        },
+        {
+          "address": "00b2f4c0",
+          "bytes": 5,
+          "sha256": "347ff0eb16a794565565b15d5bdb651024a9ecf4041c801d51f3c523ea330088"
+        },
+        {
+          "address": "00b48ca0",
+          "bytes": 5,
+          "sha256": "68fa63f14dd2119d13edf74becc000655160c9a94ec895caceee6563d242c932"
+        },
+        {
+          "address": "00b3e730",
+          "bytes": 5,
+          "sha256": "7826de346e22ee652d1c6f05a7205aa76363089027f2f9053f4daf64f8f5e15f"
+        },
+        {
+          "address": "00bf6b43",
+          "bytes": 5,
+          "sha256": "793761afbc2e3b83acded65ca04995ff2f28ca9e0b104530b3e9114520586112"
+        },
+        {
+          "address": "00c07a75",
+          "bytes": 5,
+          "sha256": "b4347f6cfcc9232dbcc4ef202de7f33561fd0c1f3f59f64546d8684ef155dc6b"
+        },
+        {
+          "address": "00ce2210",
+          "bytes": 4,
+          "sha256": "9f557e2d3e301b785c8e3620d218f24c4c313dcd040238e1a6891640ecd405ac"
+        },
+        {
+          "address": "00ce2218",
+          "bytes": 4,
+          "sha256": "fb75c6c5c29f18c619c95fd8d7a673019a3ff8c8d63b539ab171a54987409326"
+        },
+        {
+          "address": "00ce2220",
+          "bytes": 4,
+          "sha256": "c22f5334d9d518bd245e0dcfdff45b84eea5aaea70d4d23eed48a9ac8a09ccff"
+        }
+      ]
+    },
+    "native_EH": "Original CBF6D0/CC12F0 actions, DF80BC/DFA07C FH3 maps, BF7C10 array unwind, BF7C6E iterator and BF7CB9 cleanup, E02D10/E02D30 SEH4 tables, and C07C00 prolog/epilog execute. Registered host trampolines forward to actual MSVC __CxxFrameHandler3 and _except_handler4_common with actual host cookie.",
+    "native_original_terminals": [
+      "00bd30e0 complete 14 bytes (current declaration table reread)",
+      "00bd30f0 complete 7 bytes (CEB130 base profile)"
+    ],
+    "dependency_adapters": {
+      "00b2f4c0": "Verified renderer D5F0A8+44 slot, captured renderer receiver and owner; forwards exact unchanged production tree7 algorithm on actual raw tree and invalid-parameter callback.",
+      "00b48ca0": "Reached through complete native BD30E0 and relocated D61D1C table; validates flags1, normalizes only original table token, forwards exact unchanged production CPU-declaration owner9 terminal on actual pool/types.",
+      "00b3e730": "Exact unchanged production resource-support algorithm on actual published pointer and initialized lifetime domain.",
+      "00bf6b43": "Native C++ personality entry boundary forwards to real host __CxxFrameHandler3.",
+      "00c07a75": "Native terminate entry boundary calls std::terminate."
+    },
+    "service_observation": "Real Win32 Enter/LeaveCriticalSection called through resolved APIs for native IAT and production host IAT. Native InterlockedDecrement forwards to real intrinsic; source uses its real intrinsic. Shared allocation/free wrappers forward unchanged singleton_lifetime.cpp compiled with only allocator/free symbol aliases. Only deliberate allocation/entry failures and COM Release are fixture-controlled.",
+    "normalization": "Native original profile tokens normalize to their original addresses; object pointers normalize by fixture role. Otherwise snapshots compare raw owner44h/slot48h, all five declarationD4h slots, tree count and head links, COM references, current renderer/support, real lock recursion and logical depth, earliest slab, and full32-free-index/count arrays.",
+    "production_providers": {
+      "00b60700": "0001:00006d60       ?destroy_native_hardware_layout_00b60700@bsp@@YAXPAXAAUNativeHardwareLayoutOwnerContext@1@@Z 30007d60 f   bsp_core:native_hardware_layout_owner.obj",
+      "00b60770": "0001:00006b80       ?delete_native_hardware_layout_00b60770@bsp@@YAPAXPAXIAAUNativeHardwareLayoutOwnerContext@1@@Z 30007b80 f   bsp_core:native_hardware_layout_owner.obj",
+      "00b48960": "0001:00006e10       ?destroy_native_hardware_layout_base_00b48960@bsp@@YAXPAXAAUNativeHardwareLayoutOwnerContext@1@@Z 30007e10 f   bsp_core:native_hardware_layout_owner.obj",
+      "00b60110": "0001:00007020       ?return_native_hardware_layout_slot_00b60110@bsp@@YAXPAX0@Z 30008020 f   bsp_core:native_hardware_layout_owner.obj",
+      "00b483f0": "0001:00006ed0       ?destroy_native_hardware_layout_record_00b483f0@bsp@@YAXPAXAAUNativeHardwareLayoutOwnerContext@1@@Z 30007ed0 f   bsp_core:native_hardware_layout_owner.obj",
+      "00b48950": "0001:00006f70       ?destroy_native_hardware_layout_records_00b48950@bsp@@YAXPAXAAUNativeHardwareLayoutOwnerContext@1@@Z 30007f70 f   bsp_core:native_hardware_layout_owner.obj",
+      "00b2f4c0": "0001:00007730       ?remove_native_hardware_layout_value_00b2f4c0@bsp@@YAXPAX0ABUSingletonLifetimeCallbacks@1@@Z 30008730 f   bsp_core:native_hardware_layout_tree.obj",
+      "00b48ca0": "0001:000079a0       ?delete_native_vertex_declaration_00b48ca0@bsp@@YAPAXPAXI0PDI@Z 300089a0 f   bsp_core:native_vertex_declaration_owner.obj",
+      "00b3e730": "0001:00006a40       ?resource_support_singleton_00b3e730@bsp@@YAPAUNativeResourceSupportStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z 30007a40 f   bsp_core:native_resource_support.obj"
+    },
+    "strict_fixture_build": "MSVC Win32 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX. Frozen actual main bsp_core.lib. /OPT:REF /OPT:NOICF /INCREMENTAL:NO /BASE:0x30000000 /DYNAMICBASE:NO /FIXED /SAFESEH:NO.",
+    "normal_single_exception_comparisons": [
+      {
+        "name": "record-null-payload",
+        "compared_dwords": 756
+      },
+      {
+        "name": "record-nonterminal-reference",
+        "compared_dwords": 756
+      },
+      {
+        "name": "record-terminal-clears-current",
+        "compared_dwords": 2268
+      },
+      {
+        "name": "four-record-reverse-reference-wrap",
+        "compared_dwords": 3780
+      },
+      {
+        "name": "base-current-record-after-tree-free",
+        "compared_dwords": 7560
+      },
+      {
+        "name": "derived-current-COM-and-renderer",
+        "compared_dwords": 8316
+      },
+      {
+        "name": "COM-exception-base-cleanup",
+        "compared_dwords": 8694
+      },
+      {
+        "name": "support-exception-base-cleanup",
+        "compared_dwords": 9072
+      },
+      {
+        "name": "normal-base-notification-exception-no-retry",
+        "compared_dwords": 8316
+      },
+      {
+        "name": "record-exception-remaining-prefix-only",
+        "compared_dwords": 6804
+      },
+      {
+        "name": "delete-flags-even",
+        "compared_dwords": 2268
+      },
+      {
+        "name": "delete-flags-odd",
+        "compared_dwords": 9828
+      },
+      {
+        "name": "pool-free-index-count-alias",
+        "compared_dwords": 2268
+      },
+      {
+        "name": "pool-signed-negative-displacement",
+        "compared_dwords": 2268
+      }
+    ],
+    "compared_dwords": 72954,
+    "native_EH_observations": {
+      "FH3_search_state0": 3,
+      "FH3_search_state1": 1,
+      "FH3_unwind_state0": 3,
+      "FH3_unwind_state1": 1,
+      "SEH4_search": 1,
+      "SEH4_unwind": 1
+    },
+    "isolated_double_faults": {
+      "array": {
+        "native_exit": 91,
+        "source_exit": 91,
+        "both_reached_requested_second_exception": true,
+        "terminal_snapshots": {
+          "native": "profile=00d61d10 records=10/11/12/0 refs=1/0/0/0 enters=3 leaves=1 invalid=0 uncaught=0",
+          "source": "profile=00d61d10 records=10/11/12/0 refs=1/0/0/0 enters=3 leaves=1 invalid=0 uncaught=0"
+        },
+        "terminal_snapshots_match": true
+      },
+      "derived": {
+        "native_exit": 91,
+        "source_exit": 91,
+        "both_reached_requested_second_exception": true,
+        "terminal_snapshots": {
+          "native": "profile=00d61d10 records=10/11/12/13 refs=1/1/1/1 enters=0 leaves=0 invalid=1 uncaught=1",
+          "source": "profile=00d61d10 records=10/11/12/13 refs=1/1/1/1 enters=0 leaves=0 invalid=1 uncaught=1"
+        },
+        "terminal_snapshots_match": true
+      }
+    },
+    "exception_counter_boundary": "Terminal std::uncaught_exceptions agrees for array 0/0 and derived 1/1 using the actual host MSVC personality. Native static FH3 filter C0695E separately zeroes its own CRT ProcessingThrow field; those original static personality bytes are audited only and are not executed here. No equivalence between native CRT offset90 and host TLS is assumed.",
+    "final_cleanup_mechanism": "The primary replaced synthetic cleanup-only catch/rethrow maps with armed owner cleanup guards. Hardware four-record and CPU-declaration array iteration use scalar __try/__finally completed/remaining state, matching native SEH array control flow and avoiding the extra C++ RAII unwind counter. Existing native genuine allocation-retry catches are retained. No host CRT counter mutation or compensation was added.",
+    "finding": "Corrected by primary: COM Release throws, then invalid-parameter callback throws during derived base unwind. The pinned final source now terminates during exception search with D61D10 and untouched four records, matching native. Original mismatch and pre-correction pinned library/source/executable/logs retained under local/before_derived_unwind_fix.",
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\native_hardware_layout_check.cpp",
+        "bytes": 31475,
+        "sha256": "141042eb6432ed7fdd0c2e8966f3b4d5c2a5e828b52ebb3c7be823e171ea8fe6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\build_native_hardware_layout_check.ps1",
+        "bytes": 3423,
+        "sha256": "40a9d1f04bd38517492728143dc6f2069ab620e59c034f525d826ef403445977"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\audit_hardware_layout_spans.py",
+        "bytes": 4558,
+        "sha256": "450c82e318e8126a249568af2936deab2f5ddbda0326a1384e9946d6957e9975"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\native_hardware_layout_spans.hpp",
+        "bytes": 6189,
+        "sha256": "93e3307b328f77446184e524fded93b4b3a25056357035226cc08e789b530e6d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\native_hardware_layout_verified.json",
+        "bytes": 11917,
+        "sha256": "f562e87f0168e17958e313d0a20f966b94d566bc45e4d77834d310bfab60ddc3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_verify_seeds.json",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\native_hardware_layout_owner.cpp",
+        "bytes": 8337,
+        "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\include\\bsp\\native_hardware_layout_owner.hpp",
+        "bytes": 3673,
+        "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\primary_build\\bsp_core.lib",
+        "bytes": 20746650,
+        "sha256": "6c655e0a3c9929f819dbfb134a73d62584aa8c6068a901f0ff5eda30f897a532"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\src\\singleton_lifetime.cpp",
+        "bytes": 10921,
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\build\\hardware-layout-check\\actual_lifetime.obj",
+        "bytes": 31674,
+        "sha256": "9c51cfa287a93b1d2bae2658ad05b136f37165d81aa558a8876fb2672559ebe6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\build\\hardware-layout-check\\native_hardware_layout_check.exe",
+        "bytes": 61952,
+        "sha256": "db5a8a90c47547c6ce7089a37b313695cea3b07c64c1374f50bef8992c891091"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\build\\hardware-layout-check\\native_hardware_layout_check.map",
+        "bytes": 118892,
+        "sha256": "1700dfb97648535fce9210a4419606b025a687a4ae0aac9aee17cac1fabfca3a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_build.log",
+        "bytes": 2769,
+        "sha256": "03dc32e84999e56185fb868acedd312845871e7f72b4e8c617a76705e63f0027"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_comparison.log",
+        "bytes": 1595,
+        "sha256": "fdb2f4fda17063d82b99603c8b09ea1d3999fa199043b3795a7659a4d86ad103"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_array_native.log",
+        "bytes": 210,
+        "sha256": "424cd67f05725040289b7c18157c4c4dfc32295cf6de90a9810cf12463b2e8f6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_array_source.log",
+        "bytes": 210,
+        "sha256": "c24d081290ce2a53391575dd87b327de82bca2cbbda7f7822fd38e7977964318"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_derived_native.log",
+        "bytes": 211,
+        "sha256": "6ec4bcd95474a4a83135760e093c6cc5e0ee93792ab271a34c2788323f7f5c1c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_derived_source.log",
+        "bytes": 211,
+        "sha256": "a7f576a03ed5870c46f6cd058431d4834abf4250712c08292e8376124e521285"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_native_fh3_filter_verified.json",
+        "bytes": 3062,
+        "sha256": "12ef2351b203892e054780dae6d6fd4525a756439b648353afe7243ad81603e7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_native_fh3_frame_unwind.bytes.txt",
+        "bytes": 961,
+        "sha256": "01b5d28949ee56bb375387b84e90caf9098577831acb82a5a06145c2f4697dee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_native_fh3_unwind_filter.bytes.txt",
+        "bytes": 337,
+        "sha256": "229dc41c512b9c87bd4e06a1254699e173b99b960b2420638405c46276ab7386"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_native_fh3_seh4_map.bytes.txt",
+        "bytes": 199,
+        "sha256": "bdb2f50295a853f53fab2053fc302f096cb4c08b54d90dd21a632ac1551b4744"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_native_fh3_unwind_filter.asm.txt",
+        "bytes": 579,
+        "sha256": "26163f90eb3cfc423811a1d2f5ef822296fc6ce515c06fbfed4c96a006b484e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_layout_postimages.json",
+        "bytes": 3301,
+        "sha256": "5205c8777a04b2d67fae054c9c6a5e224a9b185962e3030875a3f8cb5adfa4b1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\dependency_source\\native_vertex_declaration_owner.cpp",
+        "bytes": 9604,
+        "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\dependency_source\\native_legacy_exception_owner.cpp",
+        "bytes": 5121,
+        "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\dependency_source\\native_hardware_layout_tree.cpp",
+        "bytes": 13258,
+        "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\dependency_source\\native_resource_support.cpp",
+        "bytes": 3238,
+        "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\dependency_source\\native_legacy_sbo_string.cpp",
+        "bytes": 7772,
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\hardware_primary_snapshot.json",
+        "bytes": 3366,
+        "sha256": "029223b85e0188ccad1346dd4964c97cd313ba257c4e655223a7082f79056b9b"
+      }
+    ],
+    "before_and_intermediate_correction_pins": {
+      "before_derived_unwind_fix": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\bsp_core.lib",
+          "bytes": 19704064,
+          "sha256": "3d48a51f880b846de09eb171e478bb64448518e0c875c5dd6536c73c0d537cf1"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\build_native_hardware_layout_check.ps1",
+          "bytes": 2861,
+          "sha256": "6410ed398b12def8be93bd4a37f6f8134f041386664f38b79e0e19ff2c46c706"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\hardware_layout_array_native.log",
+          "bytes": 199,
+          "sha256": "735c7fa508c72bcc47a9bf3a63a7817ba8c4c89b3082245c662812d799b8dc55"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\hardware_layout_array_source.log",
+          "bytes": 199,
+          "sha256": "33d711828c2137edd1d81554c5701b6fb5dc3a64b65bef23f68466370e1b5f65"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\hardware_layout_build.log",
+          "bytes": 2607,
+          "sha256": "ae743be1f394f1eab97a92807488f9faad350087cd3309944ae52fdd705bc33b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\hardware_layout_comparison.log",
+          "bytes": 1595,
+          "sha256": "fdb2f4fda17063d82b99603c8b09ea1d3999fa199043b3795a7659a4d86ad103"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\hardware_layout_derived_native.log",
+          "bytes": 200,
+          "sha256": "a0f7c1c5cea1da275df0cd606d0851745252b5345fb72a180d7f958fe2c272e9"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\hardware_layout_derived_source.log",
+          "bytes": 196,
+          "sha256": "9d38548115239854568385e0c1e1a58f1b117195ae43c3ab248ce55dce396074"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\native_hardware_layout_check.cpp",
+          "bytes": 29602,
+          "sha256": "f80e5772b024bbd076b9ce2ea91bbaeb0c225e4e34b6bb91e7a97d183f275630"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\native_hardware_layout_check.exe",
+          "bytes": 56320,
+          "sha256": "46ec14784eadcbeb7eed609e9794de41402dffed487f501a41811793a2ab7497"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\native_hardware_layout_check.map",
+          "bytes": 111414,
+          "sha256": "7709c4a875cdbadd45d0260c4733b8798b762c16a2961bce2c759a768d559c1c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\native_hardware_layout_fixture_proof.json",
+          "bytes": 13492,
+          "sha256": "745ab3f88c755b9c44aeabf8ac7376bfe13362f1a446996dcb15bf1b6c664e94"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\native_hardware_layout_owner.cpp",
+          "bytes": 7209,
+          "sha256": "c423369cdafb07efdcfb5324ab75a36b55283ee4079b9a03e81df6db933b3583"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\native_hardware_layout_owner.hpp",
+          "bytes": 3673,
+          "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\before_derived_unwind_fix\\primary_build.txt",
+          "bytes": 1552,
+          "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5"
+        }
+      ],
+      "after_guards_before_counter_fix": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\bsp_core.lib",
+          "bytes": 20748610,
+          "sha256": "b277f2c9e803d3a1950c4b4582d1b1eb4271446cf0627c8a10066575e7b3736d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\hardware_layout_array_native.log",
+          "bytes": 210,
+          "sha256": "424cd67f05725040289b7c18157c4c4dfc32295cf6de90a9810cf12463b2e8f6"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\hardware_layout_array_source.log",
+          "bytes": 210,
+          "sha256": "7586afb4d2a6b074822c37ce5b7c161ba18b39426c75a22fbb273cdf5524662b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\hardware_layout_build.log",
+          "bytes": 2151,
+          "sha256": "4bbf86dbe9ac7ef4e0eeedd41674d982963d768012058cc65d01a83d1ee2306f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\hardware_layout_comparison.log",
+          "bytes": 1595,
+          "sha256": "fdb2f4fda17063d82b99603c8b09ea1d3999fa199043b3795a7659a4d86ad103"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\hardware_layout_derived_native.log",
+          "bytes": 211,
+          "sha256": "6ec4bcd95474a4a83135760e093c6cc5e0ee93792ab271a34c2788323f7f5c1c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\hardware_layout_derived_source.log",
+          "bytes": 211,
+          "sha256": "a7f576a03ed5870c46f6cd058431d4834abf4250712c08292e8376124e521285"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\native_hardware_layout_check.exe",
+          "bytes": 56320,
+          "sha256": "cd8f1cc216abd157c03520cb36bf21c087cfa473c91e4699fd7dadef1cf95a0d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\native_hardware_layout_check.map",
+          "bytes": 109718,
+          "sha256": "4efd8321480b6a2abc30d54ecea87843fa726cc37349f762513355b035818c17"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\after_guards_before_counter_fix\\native_hardware_layout_owner.cpp",
+          "bytes": 8364,
+          "sha256": "bc7917c1994a213fbaac1f7ab8b8f3c3a0e390462bc44e7c70b837ee14b36559"
+        }
+      ]
+    },
+    "independent_tree_composition_proof": {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-hardware-layout-tree-core-20260910/local/hardware_tree_diff/proof.json",
+      "sha256": "083239de9c302e280d9f71d581c5e85cd2dc2ca26a0088af899da6c93dacb8a5",
+      "tree_source_commit": "0843f2103e5f4ea5c2d0ba1ce2fe0091e1feb214",
+      "legacy_owner_correction_commit": "998f010bb7d4e3fd0c0d2ce518c8a73c0961436b",
+      "native_source_behavior_words": 1618,
+      "measured_output_stores": "12 native and 12 source",
+      "CRT_operations": "7 native and 7 source",
+      "library_sha256": "b277f2c9e803d3a1950c4b4582d1b1eb4271446cf0627c8a10066575e7b3736d",
+      "boundary": "Independent dependency proof uses its own pinned actual main library. Hardware fixture calls the same tree and legacy-owner sources; hardware/CPU-array changes in later main libraries are outside that tree proof."
+    },
+    "limitations": [
+      "Native/fixture and new-C++ interface comparison; not native ABI replacement or game validation.",
+      "Fixture IUnknown Release; no actual D3D driver.",
+      "Tree/declaration/support native full-body parity belongs to independent dependency proofs; this fixture verifies exact production composition at those native entry boundaries.",
+      "Only evidenced immutable renderer/declaration profiles supported.",
+      "No original pool constructor, full renderer construction, or arbitrary runtime profile proof."
+    ]
+  },
+  "cleanup_search_fidelity_report": "reports/native_cleanup_search_fidelity.json",
+  "initial_implementation_source_pins": [
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
       "sha256": "c423369cdafb07efdcfb5324ab75a36b55283ee4079b9a03e81df6db933b3583"
     },
     {
@@ -304,153 +1331,5 @@
       "path": "src/singleton_lifetime.cpp",
       "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
     }
-  ],
-  "build": {
-    "path": "reports/native_index_tree_hardware_primary_build.txt",
-    "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
-    "passed": true,
-    "tests": 2
-  },
-  "native_differential_fixture": false,
-  "input_domain": [
-    "Actual initialized48h hardware pool and D4h CPU declaration pool, actual tree header, shared support/lifetime domain.",
-    "Runtime renderer profile must be D5F0A8 with immutable+44 B2F4C0; current CPU declaration profile D61D1C with BD30E0/B48CA0. Views retain originaladdress tokens.",
-    "Unknown profiles have no callback fallback; runtime active renderer profile is not yet proven."
-  ],
-  "validation_limits": [
-    "No full owner constructor or pool constructor/whole-lifetime claim.",
-    "COM Release is the actual interface call; D3D driver/runtime not tested.",
-    "Original-byte fixture pending at source integration."
-  ],
-  "new_tracked_tests": 0,
-  "abi_compatible": false,
-  "game_validated": false,
-  "primary_integration": {
-    "status": "integrated_complete_actual_storage_build_checked_native_fixture_active",
-    "new_complete_functions": 6,
-    "upgraded_complete_functions": 0,
-    "records": [
-      {
-        "kind": "function",
-        "address": "00b60700",
-        "name": "destroy_native_hardware_layout_00b60700",
-        "cpp_symbol": "destroy_native_hardware_layout_00b60700",
-        "source": "src/native_hardware_layout_owner.cpp",
-        "native_end_exclusive": "00b60765",
-        "original_abi": "ECX actual44h owner; RET",
-        "evidence": "reports/native_hardware_layout_owner_audit.json",
-        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
-        "native_differential_fixture": false,
-        "previous_interfaces": [],
-        "abi_compatible": false,
-        "game_validated": false
-      },
-      {
-        "kind": "function",
-        "address": "00b60770",
-        "name": "delete_native_hardware_layout_00b60770",
-        "cpp_symbol": "delete_native_hardware_layout_00b60770",
-        "source": "src/native_hardware_layout_owner.cpp",
-        "native_end_exclusive": "00b60790",
-        "original_abi": "ECX owner; stackflags; EAX originalowner; RET4",
-        "evidence": "reports/native_hardware_layout_owner_audit.json",
-        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
-        "native_differential_fixture": false,
-        "previous_interfaces": [],
-        "abi_compatible": false,
-        "game_validated": false
-      },
-      {
-        "kind": "function",
-        "address": "00b48960",
-        "name": "destroy_native_hardware_layout_base_00b48960",
-        "cpp_symbol": "destroy_native_hardware_layout_base_00b48960",
-        "source": "src/native_hardware_layout_owner.cpp",
-        "native_end_exclusive": "00b489cf",
-        "original_abi": "ECX actual44h owner; RET",
-        "evidence": "reports/native_hardware_layout_owner_audit.json",
-        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
-        "native_differential_fixture": false,
-        "previous_interfaces": [],
-        "abi_compatible": false,
-        "game_validated": false
-      },
-      {
-        "kind": "function",
-        "address": "00b483f0",
-        "name": "destroy_native_hardware_layout_record_00b483f0",
-        "cpp_symbol": "destroy_native_hardware_layout_record_00b483f0",
-        "source": "src/native_hardware_layout_owner.cpp",
-        "native_end_exclusive": "00b48419",
-        "original_abi": "ECX actual0Ch record; RET",
-        "evidence": "reports/native_hardware_layout_owner_audit.json",
-        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
-        "native_differential_fixture": false,
-        "previous_interfaces": [],
-        "abi_compatible": false,
-        "game_validated": false
-      },
-      {
-        "kind": "function",
-        "address": "00b48950",
-        "name": "destroy_native_hardware_layout_records_00b48950",
-        "cpp_symbol": "destroy_native_hardware_layout_records_00b48950",
-        "source": "src/native_hardware_layout_owner.cpp",
-        "native_end_exclusive": "00b48960",
-        "original_abi": "ECX FOUR_RECORDS_BEGIN, notowner; RET",
-        "evidence": "reports/native_hardware_layout_owner_audit.json",
-        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
-        "native_differential_fixture": false,
-        "previous_interfaces": [],
-        "abi_compatible": false,
-        "game_validated": false
-      },
-      {
-        "kind": "function",
-        "address": "00b60110",
-        "name": "return_native_hardware_layout_slot_00b60110",
-        "cpp_symbol": "return_native_hardware_layout_slot_00b60110",
-        "source": "src/native_hardware_layout_owner.cpp",
-        "native_end_exclusive": "00b60175",
-        "original_abi": "ECX actualpool108FE9C; stackraw48hslot; RET4",
-        "evidence": "reports/native_hardware_layout_owner_audit.json",
-        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
-        "native_differential_fixture": false,
-        "previous_interfaces": [],
-        "abi_compatible": false,
-        "game_validated": false
-      }
-    ],
-    "verified_evidence": {
-      "source_byte_evidence": "evidence",
-      "source_pins": "source_pins"
-    },
-    "primary_source_pins": [
-      {
-        "path": "src/native_hardware_layout_owner.cpp",
-        "sha256": "c423369cdafb07efdcfb5324ab75a36b55283ee4079b9a03e81df6db933b3583"
-      },
-      {
-        "path": "include/bsp/native_hardware_layout_owner.hpp",
-        "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
-      }
-    ],
-    "build": {
-      "path": "reports/native_index_tree_hardware_primary_build.txt",
-      "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
-      "tests": 2,
-      "passed": true
-    },
-    "annotations_applied": true,
-    "native_differential_fixture": false,
-    "new_tracked_tests": 0,
-    "abi_compatible": false,
-    "game_validated": false,
-    "annotation_journal": {
-      "path": "local/ghidra-annotations-20260911T022002Z.json",
-      "sha256": "685df7d2bbac81f1fc05e41cc2efbb832c1ba8b4da1c60c9331ed699cc987107"
-    },
-    "saved_project": true,
-    "exports_force_refreshed": true
-  }
+  ]
 }
