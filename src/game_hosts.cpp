@@ -1,0 +1,767 @@
+// Process bindings for the reconstructed startup spine. See include/bsp/game_hosts.hpp
+// and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
+// reconstructed is routed through GameHostLog::unimplemented with its native call site.
+#include "bsp/game_hosts.hpp"
+
+#include <objbase.h>
+#include <shlobj.h>
+
+#include <cstdarg>
+#include <cstring>
+
+#include "bsp/app_bootstrap.hpp"
+#include "bsp/d3d9_startup.hpp"
+#include "bsp/native_renderer_parameters.hpp"
+#include "bsp/physical_file.hpp"
+#include "bsp/renderer_startup.hpp"
+
+namespace bsp::game {
+namespace {
+
+// 00bed3b0 keeps the platform object in window-extra offset zero. The extra-bytes layout
+// of the native object is not recovered, so the milestone binds one process-wide pointer.
+Win32PlatformState* g_active_platform = nullptr;
+
+// Window title and class name, the temporary string 00becee0 receives as argument 2.
+const char kWindowName[] = "Battlestations Pacific";
+
+// Clear colour of the milestone frame. Not a recovered value: the native renderer frame
+// routine behind renderer virtual +20h is not reconstructed.
+const D3DCOLOR kMilestoneClearColor = D3DCOLOR_ARGB(255, 12, 24, 48);
+
+std::string trim_copy(const std::string& text) {
+    std::size_t begin = 0;
+    std::size_t end = text.size();
+    while (begin < end && (text[begin] == ' ' || text[begin] == '\t' || text[begin] == '\r'
+        || text[begin] == '\n')) {
+        ++begin;
+    }
+    while (end > begin && (text[end - 1] == ' ' || text[end - 1] == '\t'
+        || text[end - 1] == '\r' || text[end - 1] == '\n')) {
+        --end;
+    }
+    return text.substr(begin, end - begin);
+}
+
+// Token split matching the scan at 008f8010..008f808b: whitespace separated words, in
+// file order, so the first "Language" consumes the following token.
+std::vector<std::string> split_option_tokens(const std::string& text) {
+    std::vector<std::string> tokens;
+    std::string current;
+    for (const char character : text) {
+        if (character == ' ' || character == '\t' || character == '\r' || character == '\n') {
+            if (!current.empty()) {
+                tokens.push_back(current);
+                current.clear();
+            }
+        } else {
+            current.push_back(character);
+        }
+    }
+    if (!current.empty()) tokens.push_back(current);
+    return tokens;
+}
+
+}  // namespace
+
+void set_active_platform_state(Win32PlatformState* state) noexcept {
+    g_active_platform = state;
+}
+
+LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
+    LPARAM lparam) {
+    // docs/WINDOW_CLOSE.md step 1: WM_CLOSE records a pending close at platform+180h and
+    // returns zero. It does not set the loop exit byte +181h.
+    if (message == WM_CLOSE) {
+        if (g_active_platform != nullptr) g_active_platform->close_requested = true;
+        return 0;
+    }
+    return DefWindowProcA(window, message, wparam, lparam);
+}
+
+// ---------------------------------------------------------------------------
+// GameHostLog
+// ---------------------------------------------------------------------------
+
+GameHostLog::~GameHostLog() { close(); }
+
+bool GameHostLog::open(const std::string& path) {
+    close();
+    if (path.empty()) return true;
+    file_ = nullptr;
+    const errno_t status = fopen_s(&file_, path.c_str(), "w");
+    if (status != 0 || file_ == nullptr) {
+        file_ = nullptr;
+        return false;
+    }
+    return true;
+}
+
+void GameHostLog::close() {
+    if (file_ != nullptr) {
+        std::fclose(file_);
+        file_ = nullptr;
+    }
+}
+
+void GameHostLog::emit(const char* text) {
+    std::printf("%s\n", text);
+    if (file_ != nullptr) {
+        std::fprintf(file_, "%s\n", text);
+        std::fflush(file_);
+    }
+}
+
+void GameHostLog::note(const char* text) { emit(text); }
+
+void GameHostLog::notef(const char* format, ...) {
+    char buffer[1024];
+    va_list arguments;
+    va_start(arguments, format);
+    vsnprintf_s(buffer, sizeof(buffer), _TRUNCATE, format, arguments);
+    va_end(arguments);
+    emit(buffer);
+}
+
+GameHostMethodRecord& GameHostLog::record(const char* method, const char* native_address,
+    bool implemented) {
+    for (auto& entry : records_) {
+        if (entry.method == method) {
+            ++entry.calls;
+            return entry;
+        }
+    }
+    records_.push_back(GameHostMethodRecord{method, native_address, 1ull, implemented});
+    return records_.back();
+}
+
+void GameHostLog::implemented(const char* method, const char* native_address) {
+    const GameHostMethodRecord& entry = record(method, native_address, true);
+    if (entry.calls == 1ull) notef("host %s [%s] concrete", method, native_address);
+}
+
+void GameHostLog::unimplemented(const char* method, const char* native_address) {
+    const GameHostMethodRecord& entry = record(method, native_address, false);
+    if (entry.calls == 1ull) {
+        notef("host %s [%s] UNIMPLEMENTED, returning a neutral value", method,
+            native_address);
+    }
+}
+
+std::size_t GameHostLog::implemented_count() const noexcept {
+    std::size_t total = 0;
+    for (const auto& entry : records_) {
+        if (entry.implemented) ++total;
+    }
+    return total;
+}
+
+std::size_t GameHostLog::unimplemented_count() const noexcept {
+    return records_.size() - implemented_count();
+}
+
+// ---------------------------------------------------------------------------
+// GameExecutableOptions
+// ---------------------------------------------------------------------------
+
+bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
+    for (int index = 1; index < argc; ++index) {
+        const char* argument = argv[index];
+        if (std::strcmp(argument, "--frames") == 0) {
+            if (index + 1 >= argc) {
+                error = "--frames needs a count";
+                return false;
+            }
+            frame_limit = std::strtol(argv[++index], nullptr, 10);
+            if (frame_limit < 0) {
+                error = "--frames needs a non-negative count";
+                return false;
+            }
+        } else if (std::strcmp(argument, "--log") == 0) {
+            if (index + 1 >= argc) {
+                error = "--log needs a path";
+                return false;
+            }
+            log_path = argv[++index];
+        } else {
+            error = std::string("unknown option ") + argument;
+            return false;
+        }
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+// GameWindowHost, the Win32 calls 00becee0 issues inline
+// ---------------------------------------------------------------------------
+
+void GameWindowHost::stop_existing_window(Win32PlatformState& state) {
+    // Platform vtable +8. The native teardown is not reconstructed; the milestone never
+    // reaches this path because it configures the window once.
+    log_.unimplemented("PlatformWindowHost::stop_existing_window", "00becda0+vtable08");
+    static_cast<void>(state);
+}
+
+HCURSOR GameWindowHost::load_arrow_cursor() {
+    log_.implemented("PlatformWindowHost::load_arrow_cursor", "00becf0f");
+    return LoadCursorA(nullptr, IDC_ARROW);
+}
+
+ATOM GameWindowHost::register_class(const WNDCLASSA& window_class) {
+    log_.implemented("PlatformWindowHost::register_class", "00becf80");
+    registered_class_ = RegisterClassA(&window_class);
+    return registered_class_;
+}
+
+BOOL GameWindowHost::adjust_window_rect(RECT& rectangle, DWORD style, BOOL menu) {
+    log_.implemented("PlatformWindowHost::adjust_window_rect", "00becfd6");
+    return AdjustWindowRect(&rectangle, style, menu);
+}
+
+HWND GameWindowHost::create_window(DWORD extended_style, const char* class_name,
+    const char* title, DWORD style, int x, int y, int width, int height, HINSTANCE instance,
+    void* parameter) {
+    log_.implemented("PlatformWindowHost::create_window", "00bed01d");
+    return CreateWindowExA(extended_style, class_name, title, style, x, y, width, height,
+        nullptr, nullptr, instance, parameter);
+}
+
+void GameWindowHost::set_window_long(HWND window, int index, LONG value) {
+    log_.implemented("PlatformWindowHost::set_window_long", "00bed0a4");
+    SetWindowLongA(window, index, value);
+}
+
+void GameWindowHost::set_window_pos(HWND window, HWND insert_after, int x, int y, int width,
+    int height, UINT flags) {
+    log_.implemented("PlatformWindowHost::set_window_pos", "00bed0c9");
+    SetWindowPos(window, insert_after, x, y, width, height, flags);
+}
+
+BOOL GameWindowHost::desktop_client_rect(RECT& rectangle) {
+    log_.implemented("PlatformWindowHost::desktop_client_rect", "00bed0f3");
+    return GetClientRect(GetDesktopWindow(), &rectangle);
+}
+
+int GameWindowHost::window_color_depth(HWND window) {
+    log_.implemented("PlatformWindowHost::window_color_depth", "00bed16b");
+    const HDC context = GetDC(window);
+    if (context == nullptr) return 0;
+    const int depth = GetDeviceCaps(context, BITSPIXEL);
+    ReleaseDC(window, context);
+    return depth;
+}
+
+void GameWindowHost::show_window(HWND window, int command) {
+    log_.implemented("PlatformWindowHost::show_window", "00bed19c");
+    ShowWindow(window, command);
+    UpdateWindow(window);
+}
+
+// ---------------------------------------------------------------------------
+// GameSaveStorageHost, 00beb2c0
+// ---------------------------------------------------------------------------
+
+bool GameSaveStorageHost::special_folder_path(int folder, std::string& path) {
+    log_.implemented("SaveStorageHost::special_folder_path", "00beb2f3");
+    char buffer[MAX_PATH] = {};
+    if (!SHGetSpecialFolderPathA(nullptr, buffer, folder, TRUE)) return false;
+    path.assign(buffer);
+    return true;
+}
+
+bool GameSaveStorageHost::create_directory(const std::string& path) {
+    log_.implemented("SaveStorageHost::create_directory", "00beb35e");
+    return CreateDirectoryA(path.c_str(), nullptr) != 0
+        || GetLastError() == ERROR_ALREADY_EXISTS;
+}
+
+// ---------------------------------------------------------------------------
+// GameDeviceHost, 00b2aeb0
+// ---------------------------------------------------------------------------
+
+GameDeviceHost::~GameDeviceHost() { release(); }
+
+bool GameDeviceHost::create(const RendererInitRequest& request) {
+    // Direct3DCreate9(20h) inside renderer constructor 00b32410.
+    log_.implemented("RendererHost::direct3d_create", "00b32410");
+    api_ = Direct3DCreate9(D3D_SDK_VERSION);
+    if (api_ == nullptr) {
+        log_.note("Direct3DCreate9 returned null; no device this run");
+        return false;
+    }
+
+    NativeRendererParametersOwner renderer_parameters{};
+    initialize_native_renderer_parameters_00b32410_fragment(renderer_parameters);
+
+    RendererDisplaySettings settings{};
+    settings.width = static_cast<std::uint32_t>(request.width);
+    settings.height = static_cast<std::uint32_t>(request.height);
+    settings.fullscreen = request.fullscreen;
+    const D3D9StartupOptions options = renderer_present_request_00becee0(settings,
+        request.window);
+
+    log_.implemented("RendererHost::create_device", "00b2aeb0");
+    creation_result_ = d3d9_create_device_prefix_00b2aeb0(*api_, options,
+        renderer_parameters, parameters_, behavior_flags_, device_);
+    if (FAILED(creation_result_) || device_ == nullptr) {
+        log_.notef("device creation failed hr=0x%08lx",
+            static_cast<unsigned long>(creation_result_));
+        return false;
+    }
+    log_.notef("device created hr=0x%08lx flags=0x%lx size=%ux%u windowed=%d format=%u "
+        "depth=%u interval=0x%x", static_cast<unsigned long>(creation_result_),
+        behavior_flags_, parameters_.BackBufferWidth, parameters_.BackBufferHeight,
+        parameters_.Windowed, static_cast<unsigned>(parameters_.BackBufferFormat),
+        static_cast<unsigned>(parameters_.AutoDepthStencilFormat),
+        parameters_.PresentationInterval);
+    return true;
+}
+
+bool GameDeviceHost::clear_and_present() {
+    if (device_ == nullptr) {
+        log_.unimplemented("RendererHost::present_frame", "00b32410+vtable20");
+        return false;
+    }
+    // Direct Direct3D 9 calls: the native renderer frame routine is not reconstructed,
+    // so this is the milestone's own clear and present, not a recovered sequence.
+    log_.implemented("RendererHost::clear_and_present", "milestone");
+    HRESULT result = device_->Clear(0, nullptr,
+        D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, kMilestoneClearColor, 1.0f, 0);
+    if (SUCCEEDED(result)) result = device_->BeginScene();
+    if (SUCCEEDED(result)) result = device_->EndScene();
+    if (SUCCEEDED(result)) result = device_->Present(nullptr, nullptr, nullptr, nullptr);
+    if (FAILED(result)) {
+        log_.notef("present failed hr=0x%08lx", static_cast<unsigned long>(result));
+        return false;
+    }
+    ++presented_;
+    return true;
+}
+
+void GameDeviceHost::release() {
+    if (device_ != nullptr) {
+        device_->Release();
+        device_ = nullptr;
+    }
+    if (api_ != nullptr) {
+        api_->Release();
+        api_ = nullptr;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// GameFrameHost, 00737a50
+// ---------------------------------------------------------------------------
+
+void GameFrameHost::profiler_set_frame_slot_color(std::uint32_t argb) {
+    log_.unimplemented("ApplicationFrameHost::profiler_set_frame_slot_color", "004c1dd0");
+    static_cast<void>(argb);
+}
+
+void GameFrameHost::profiler_begin_frame_slot() {
+    log_.unimplemented("ApplicationFrameHost::profiler_begin_frame_slot", "00be3640");
+}
+
+int GameFrameHost::game_state() {
+    // *(00e188a8)+5D4h. The game object does not exist in this milestone.
+    log_.unimplemented("ApplicationFrameHost::game_state", "00e188a8+5d4");
+    return 0;
+}
+
+bool GameFrameHost::input_action_pressed(int action) {
+    log_.unimplemented("ApplicationFrameHost::input_action_pressed", "004c43c0");
+    static_cast<void>(action);
+    return false;
+}
+
+void GameFrameHost::advance_frame_clock() {
+    log_.implemented("ApplicationFrameHost::advance_frame_clock", "00bedc30");
+    update_frame_clock_00bedc30(clock_);
+}
+
+const ClockTimestamp& GameFrameHost::frame_interval() {
+    log_.implemented("ApplicationFrameHost::frame_interval", "00bee070");
+    return clock_.interval;
+}
+
+void GameFrameHost::game_on_move(float seconds) {
+    // 004e4a40 itself is not reconstructed. One of its callees is: the window close
+    // processor at 004ca2f0 (docs/WINDOW_CLOSE.md), whose front-end branch reads and
+    // clears platform+180h and sets global exit 00e1ae75. The confirmation-dialog branch
+    // taken for other game states is not reconstructed.
+    log_.unimplemented("ApplicationFrameHost::game_on_move", "004e4a40");
+    static_cast<void>(seconds);
+    if (platform_.close_requested) {
+        platform_.close_requested = false;
+        log_.implemented("CloseRequestPolicy::front_end_branch", "004ca2f0");
+        global_exit_ = true;
+    }
+}
+
+bool GameFrameHost::exit_requested() {
+    log_.implemented("ApplicationFrameHost::exit_requested", "00e1ae75");
+    return global_exit_;
+}
+
+void GameFrameHost::request_loop_exit() {
+    log_.implemented("ApplicationFrameHost::request_loop_exit", "0109cf04+181");
+    platform_.exit_requested = true;
+    loop_.exit_requested = true;
+}
+
+void GameFrameHost::tick_vfs_providers() {
+    log_.unimplemented("ApplicationFrameHost::tick_vfs_providers", "00bdb0b0");
+}
+
+void GameFrameHost::update_loading_queue() {
+    log_.unimplemented("ApplicationFrameHost::update_loading_queue", "004fde20");
+}
+
+void GameFrameHost::profiler_end_frame_slot() {
+    log_.unimplemented("ApplicationFrameHost::profiler_end_frame_slot", "00be3660");
+}
+
+void GameFrameHost::profiler_end_frame() {
+    log_.unimplemented("ApplicationFrameHost::profiler_end_frame", "00be34d0");
+}
+
+// ---------------------------------------------------------------------------
+// GameLoopCallbacks, 00bec1a0
+// ---------------------------------------------------------------------------
+
+bool GameLoopCallbacks::pretranslate(MSG& message) {
+    // Native pretranslation is XLivePreTranslateMessage. The XLive binding is not
+    // reconstructed, so no message is ever consumed here.
+    log_.unimplemented("PlatformLoopCallbacks::pretranslate", "00bec20a");
+    static_cast<void>(message);
+    return false;
+}
+
+void GameLoopCallbacks::frame() {
+    run_application_frame(frame_state_, color_, frame_host_);
+    device_.clear_and_present();
+    ++frames_;
+    if (frame_limit_ >= 0 && frames_ >= static_cast<unsigned long long>(frame_limit_)) {
+        log_.notef("frame limit %ld reached, requesting loop exit", frame_limit_);
+        frame_host_.request_loop_exit();
+    }
+    static_cast<void>(loop_);
+}
+
+// ---------------------------------------------------------------------------
+// GameStartupHost, 008f81f0
+// ---------------------------------------------------------------------------
+
+GameStartupHost::~GameStartupHost() {
+    delete loop_callbacks_;
+    delete frame_host_;
+    delete device_;
+    delete window_host_;
+    delete random_threads_;
+}
+
+long GameStartupHost::com_initialize() {
+    log_.implemented("StartupHost::com_initialize", "008f81f8");
+    return CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+}
+
+long GameStartupHost::com_initialize_security() {
+    log_.implemented("StartupHost::com_initialize_security", "008f820a");
+    return CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_NONE,
+        RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
+}
+
+void GameStartupHost::com_uninitialize() {
+    log_.implemented("StartupHost::com_uninitialize", "008f82cc");
+    CoUninitialize();
+}
+
+void GameStartupHost::current_directory(char* buffer, unsigned long capacity) {
+    log_.implemented("StartupHost::current_directory", "008f8254");
+    GetCurrentDirectoryA(capacity, buffer);
+}
+
+bool GameStartupHost::game_explorer_create() {
+    // CoCreateInstance(CLSID_GameExplorer, ...). Registering the title with Game Explorer
+    // and its parental-controls check are deliberately skipped: the milestone must not
+    // exit the process on a machine policy it has no reason to consult.
+    log_.unimplemented("StartupHost::game_explorer_create", "008f8245");
+    return false;
+}
+
+bool GameStartupHost::game_explorer_verify_access(const wchar_t* gdf_binary_path) {
+    log_.unimplemented("StartupHost::game_explorer_verify_access", "008f82aa");
+    static_cast<void>(gdf_binary_path);
+    return true;
+}
+
+void GameStartupHost::game_explorer_release() {
+    log_.unimplemented("StartupHost::game_explorer_release", "008f82c4");
+}
+
+void GameStartupHost::exit_process(int code) {
+    log_.implemented("StartupHost::exit_process", "008f82f0");
+    ExitProcess(static_cast<UINT>(code));
+}
+
+void GameStartupHost::random_threads_initialize() {
+    log_.implemented("StartupHost::random_threads_initialize", "00bd2e20");
+    if (random_threads_ == nullptr) random_threads_ = new RandomThreads();
+}
+
+void* GameStartupHost::allocate_thread_slot() {
+    log_.implemented("StartupHost::allocate_thread_slot", "00bf681b");
+    return new char;
+}
+
+void GameStartupHost::random_threads_register_current() {
+    log_.implemented("StartupHost::random_threads_register_current", "00bd2fe0");
+    if (random_threads_ != nullptr) random_threads_->register_current_00bd2fe0();
+}
+
+void GameStartupHost::random_threads_unregister_current() {
+    log_.implemented("StartupHost::random_threads_unregister_current", "00bd3050");
+    if (random_threads_ != nullptr) random_threads_->unregister_current_00bd3050();
+}
+
+void GameStartupHost::release_thread_slot(void* slot) {
+    log_.implemented("StartupHost::release_thread_slot", "00bf65ac");
+    delete static_cast<char*>(slot);
+}
+
+void GameStartupHost::random_threads_shutdown() {
+    log_.implemented("StartupHost::random_threads_shutdown", "00bd30d0");
+    delete random_threads_;
+    random_threads_ = nullptr;
+}
+
+SingleInstanceMutex GameStartupHost::create_single_instance_mutex(const char* name) {
+    log_.implemented("StartupHost::create_single_instance_mutex", "008f8301");
+    SingleInstanceMutex mutex{};
+    mutex.handle = CreateMutexA(nullptr, TRUE, name);
+    mutex.already_exists = GetLastError() == ERROR_ALREADY_EXISTS;
+    return mutex;
+}
+
+void GameStartupHost::close_mutex(void* handle) {
+    log_.implemented("StartupHost::close_mutex", "008f846e");
+    if (handle != nullptr) CloseHandle(handle);
+}
+
+std::string GameStartupHost::resolve_language() {
+    // 008f7db0: the options file under CSIDL_PERSONAL first, the registry LCID only when
+    // the file cannot be opened.
+    log_.implemented("StartupHost::resolve_language", "008f7db0");
+    std::string language = kStartupLanguageEnglish;
+
+    char personal[MAX_PATH] = {};
+    if (SHGetSpecialFolderPathA(nullptr, personal, CSIDL_PERSONAL, TRUE)) {
+        std::string path(personal);
+        path += kOptionsDirectory;
+        path += kOptionsFileName;
+        PhysicalFile file;
+        DWORD error = 0;
+        if (file.open_read_only_00bf52a0_fragment(path.c_str(), error)) {
+            const std::uint64_t size = file.size_00bf4f90();
+            std::string text(static_cast<std::size_t>(size), '\0');
+            std::uint32_t read = 0;
+            if (size != 0 && file.read_00bf5030(text.data(),
+                static_cast<std::uint32_t>(size), read, error)) {
+                text.resize(read);
+                const std::vector<std::string> tokens = split_option_tokens(text);
+                std::vector<const char*> pointers;
+                pointers.reserve(tokens.size());
+                for (const auto& token : tokens) pointers.push_back(token.c_str());
+                startup_language_from_options_tokens(pointers.data(), pointers.size(),
+                    language);
+            }
+            file.close_00bf5090_fragment(error);
+            return language;
+        }
+    }
+
+    HKEY key = nullptr;
+    if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, kRegistryKeyPath, 0, KEY_READ, &key)
+        == ERROR_SUCCESS) {
+        DWORD type = 0;
+        DWORD value = 0;
+        DWORD size = sizeof(value);
+        if (RegQueryValueExA(key, kRegistryLanguageValue, nullptr, &type,
+            reinterpret_cast<LPBYTE>(&value), &size) == ERROR_SUCCESS && type == REG_DWORD) {
+            language = startup_language_from_registry_lcid(value);
+        }
+        RegCloseKey(key);
+    }
+    return language;
+}
+
+void GameStartupHost::error_message_box(const wchar_t* text, const wchar_t* caption) {
+    log_.implemented("StartupHost::error_message_box", "008f83c5");
+    MessageBoxW(nullptr, text, caption, MB_ICONHAND);
+}
+
+void GameStartupHost::set_thread_affinity_to_first_processor() {
+    log_.implemented("StartupHost::set_thread_affinity_to_first_processor", "008f83fc");
+    SetThreadAffinityMask(GetCurrentThread(), 1);
+}
+
+void GameStartupHost::publish_game_resource_factory() {
+    // BSP_GameResourceFactory_GetSingleton into 00f8d31c. The factory is not reconstructed.
+    log_.unimplemented("StartupHost::publish_game_resource_factory", "008f840b");
+}
+
+void GameStartupHost::application_construct() {
+    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's
+    // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.
+    log_.implemented("StartupHost::application_construct", "00737970");
+    frame_state_ = ApplicationFrameState{};
+    constructed_ = true;
+}
+
+void GameStartupHost::application_initialize(int flags, const char* mode) {
+    log_.implemented("StartupHost::application_initialize", "0073d410");
+    log_.notef("initialize flags=%d mode=%s", flags, mode != nullptr ? mode : "(null)");
+    run_initialize_phases();
+}
+
+void GameStartupHost::run_initialize_phases() {
+    // Phase 0, allocator and process identity (0073d43f-0073d4bd).
+    char module_name[MAX_PATH] = {};
+    GetModuleFileNameA(nullptr, module_name, static_cast<DWORD>(sizeof(module_name)));
+    const std::string module_directory = capture_module_directory_00439040(module_name);
+    log_.implemented("Phase 0 capture_module_directory", "00439040");
+    log_.notef("module directory %s", module_directory.c_str());
+
+    AllocationStatsState allocation_stats{};
+    construct_allocation_stats_00be2900(allocation_stats);
+    log_.implemented("Phase 0 construct_allocation_stats", "00be2900");
+
+    construct_frame_clock_singleton_00bedfb0(clock_);
+    log_.implemented("Phase 0 construct_frame_clock_singleton", "00bedfb0");
+
+    ObjectHandleResolverSlots resolvers{};
+    install_object_handle_resolvers_006ad0d0(resolvers, nullptr, nullptr, nullptr);
+    log_.implemented("Phase 0 install_object_handle_resolvers", "006ad0d0");
+
+    // Phase 1, command line switches (0073d4ce-0073d610).
+    const CommandLineOptions command_line =
+        parse_command_line_0073ce20(GetCommandLineA() != nullptr ? GetCommandLineA() : "");
+    log_.implemented("Phase 1 parse_command_line", "0073ce20");
+    log_.notef("command line cached_load=%d", command_line.cached_load ? 1 : 0);
+    log_.unimplemented("Phase 1 probe_hardware", "0073c3b0");
+
+    // Phase 2, VFS, mounts and packages (0073d637-0073d894).
+    log_.unimplemented("Phase 2 vfs_provider_manager", "00beda60");
+    log_.unimplemented("Phase 2 mount_packages", "0073cb10");
+
+    // Phase 3, platform, window and save storage (0073d8c0-0073d988).
+    construct_win32_platform_00becda0(platform_, nullptr);
+    log_.implemented("Phase 3 construct_win32_platform", "00becda0");
+    set_active_platform_state(&platform_);
+
+    GameSaveStorageHost save_storage(log_);
+    if (initialize_save_storage_00beb2c0(save_storage, save_roots_)) {
+        log_.implemented("Phase 3 initialize_save_storage", "00beb2c0");
+        log_.notef("save directory %s", save_roots_.save_directory.c_str());
+    } else {
+        log_.note("save storage initialization failed");
+    }
+
+    // The settings block at 00f88980 is filled by 008d8190 in phase 5, which needs the
+    // registry reader; the milestone uses the documented fallback resolution instead.
+    PlatformWindowRequest request{};
+    window_class_name_ = kWindowName;
+    request.name = window_class_name_.c_str();
+    request.fullscreen = false;
+    request.color_depth_selector = false;
+    request.x = 0;
+    request.y = 0;
+    request.width = kFallbackResolution.width;
+    request.height = kFallbackResolution.height;
+    request.renderer_option = 0;
+    request.application = this;
+    request.instance = instance_;
+    request.procedure = &game_window_procedure;
+    log_.unimplemented("Phase 5 load_game_settings", "008d8190");
+    log_.notef("using fallback resolution %dx%d windowed", request.width, request.height);
+
+    window_host_ = new GameWindowHost(log_, instance_);
+    summary_.window_created = configure_platform_window_00becee0(*window_host_, request,
+        platform_, renderer_request_);
+    if (summary_.window_created) {
+        log_.implemented("Phase 3 configure_platform_window", "00becee0");
+        log_.notef("window created %dx%d at %d,%d color_depth=%d",
+            platform_.present_width, platform_.present_height, platform_.x, platform_.y,
+            platform_.color_depth);
+    } else {
+        log_.note("window creation failed");
+    }
+
+    // Phase 4, renderer (0073d9cc-0073da88): the device creation point.
+    device_ = new GameDeviceHost(log_);
+    if (summary_.window_created && renderer_request_.requested) {
+        summary_.device_created = device_->create(renderer_request_);
+        summary_.device_result = device_->creation_result();
+        summary_.back_buffer_width = device_->parameters().BackBufferWidth;
+        summary_.back_buffer_height = device_->parameters().BackBufferHeight;
+    }
+    log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
+
+    // Phases 5 to 11: everything past the device is out of milestone 1.
+    log_.unimplemented("Phase 5 input_settings", "005547d0");
+    log_.unimplemented("Phase 5 sound_system_initialize", "00a88770");
+    log_.unimplemented("Phase 6 locale_tables", "00aa09d0");
+    log_.unimplemented("Phase 7 gui_startup", "00aa06d0");
+    log_.unimplemented("Phase 8 world_effects_startup", "00af0b10");
+    log_.unimplemented("Phase 9 game_entry", "00740840");
+
+    loop_.frames_enabled = platform_.frames_enabled;
+    frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_);
+    loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
+        *device_, loop_, options_.frame_limit);
+}
+
+void GameStartupHost::platform_run_loop_dispatch() {
+    log_.implemented("StartupHost::platform_run_loop_dispatch", "00bec1a0");
+    if (loop_callbacks_ == nullptr) {
+        log_.note("no loop callbacks; initialize did not complete");
+        return;
+    }
+    if (!loop_.frames_enabled) {
+        log_.note("frames are disabled; the loop would never call the frame callback");
+    }
+    platform_run_loop_00bec1a0(loop_, *loop_callbacks_);
+    summary_.loop_finished = loop_.loop_finished;
+    summary_.frames_presented = device_ != nullptr ? device_->presented() : 0ull;
+    log_.notef("loop finished=%d frames=%llu presented=%llu", summary_.loop_finished ? 1 : 0,
+        loop_callbacks_->frames(), summary_.frames_presented);
+}
+
+void GameStartupHost::application_shutdown() {
+    // 00737f30 tears down 23 singletons, the GUI manager, the game and four datatable
+    // files. None of those subsystems exist in this milestone, so only the two steps the
+    // process actually owns run: the device is released and the window is destroyed.
+    log_.implemented("StartupHost::application_shutdown", "00737f30");
+    log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
+    if (device_ != nullptr) device_->release();
+    set_active_platform_state(nullptr);
+    if (platform_.window != nullptr) {
+        DestroyWindow(platform_.window);
+        platform_.window = nullptr;
+    }
+    if (window_host_ != nullptr && window_host_->registered_class() != 0) {
+        UnregisterClassA(window_class_name_.c_str(), instance_);
+    }
+}
+
+void GameStartupHost::application_destruct() {
+    log_.implemented("StartupHost::application_destruct", "008f8444");
+    constructed_ = false;
+}
+
+void GameStartupHost::destroy_singleton_lifetime_manager() {
+    // 008f8449: only when 01090aa0 is set. No singleton lifetime manager exists here.
+    log_.unimplemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
+}
+
+}  // namespace bsp::game
