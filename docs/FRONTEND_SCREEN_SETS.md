@@ -278,7 +278,14 @@ This packet models it as one function over an injected host and leaves the call 
 
 - **No leaf override of `+4h` or `+8h` was identified.** The occlusion and exemption rules are read
   from the recompute, not from a screen that uses them. Until one is found, "level 5 covers level 4"
-  is a mechanism with no observed instance.
+  is a mechanism with no observed instance. Verified later by packets `cc_main_menu_path` and
+  `cc_frontend_states` (docs/MAIN_MENU_PATH.md): the level-5 setter `004F87B0` has zero
+  references and no paired input-context setter, and `004DA780` skips it, so the vector at
+  `00E18D38` is only ever touched by the setter and the recompute's descent at `004F7647`; the
+  recompute's top level is always empty and the walk effectively starts at level 4. Level 5 is
+  unexercised in this build. Level ownership from the call sites: 1 = in-mission HUD interface
+  (18 sites, the only level with multi-element sets), 2 = in-mission overlays (5), 3 =
+  in-mission transients (17), 4 = the front-end managers (5), 5 = nothing.
 - The five levels have no recovered names. Level 4 is the manager level and level 5 is above it;
   what uses levels 1..3 and 5 was not traced (only `004DA780` clears them).
 - `00E18CDC` is raised by every setter and cleared by the pump at `004F8881`. Nothing was found that

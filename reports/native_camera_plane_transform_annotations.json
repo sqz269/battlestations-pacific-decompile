@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00b62d10",
+    "before": {
+      "address": "00b62d10",
+      "function_name": "BSP_Vector4f_Transform",
+      "comment": "[BSP reconstruction 00b62d10]\n[BSP reconstruction] Snapshot source float4 via x87 stores; native row-vector matrix multiplication with original extended intermediates and final float stores. ECX source, stack destination then matrix. Original ABI: ECX source vector; stack destination,matrix; EAX destination; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b62d10",
+      "old_name": "BSP_Vector4f_Transform",
+      "name": "BSP_Vector4f_Transform",
+      "evidence": "Complete B62D10..B62DC8 184-byte vector transform in src/native_camera_plane_transform.cpp. Sequential x87 Y,X,Z,W source snapshot precedes full row-vector transform with native extended intermediates and ordered four final stores. Current matrix rereads remain visible if destination aliases it; no regrouped dot loops or premature narrowing. Original ECX source/stack destination,matrix/EAX destination/RET8; new explicit raw fastcall ECX source,EDX destination,stack matrix/EAX destination/RET4. Primary verified35 immutable worker pins and both literal current source/header files; unchanged fixture linked only frozen actual main fb144c4f4e87afe14d9c7c783716b54976544b2426d775f61bd86dc3bf94d9ed library. Exact main archive object matches worker full code/directive sections and relocations; debug/checksum differences recorded. Strict main Win32 build/two CTests/eight fresh native seeds pass. Two fresh full live/PE spans313 bytes; both originals execute unchanged in private pages, including original relative child call, no original rewrites/relocations/provider bridge. Six original/main pairs1906 observable bytes with12 full752-byte Results retained and independently projected.169 complete linked COFF sections/all relocations include fixture;13 complete original/linked text postimages. All inner x87 instructions/opcode offsets exact; wrapper19 MOVSS retained with one alpha snapshot stack adjustment, full child reaches distinct result and no caller output before return. Matrix alias inner90/188/295/411 versus wrapper90/100/110/120; matrix+34 AV leaves innerX written but wrapper output untouched. Masked SNaN/source-output overlap covered. Compared full160-byte arena,52-byte readable matrix prefix,result/exception/address,CW/SW/tag,MXCSR/mask,XMM0..3 and live80-bit x87 values; inactive registers, FIP/FDP/faultPC preserved raw but not compared. No unmasked hardware FP dispatch, owner, normalization, inverse/transpose construction, general original caller ABI or gameplay claim. reports/native_camera_plane_transform_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b65ba0",
+    "before": {
+      "address": "00b65ba0",
+      "function_name": "BSP_Plane_Transform",
+      "comment": "[BSP reconstruction 00b65ba0]\n[BSP reconstruction] Copies source float4 bits to temporary, calls00b62d10 with distinct temporary destination, then copies result bits to destination. Aliasing supported. Original ABI: ECX source plane; stack destination,matrix; EAX destination; RET8. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b65ba0",
+      "old_name": "BSP_Plane_Transform",
+      "name": "BSP_Plane_Transform",
+      "evidence": "Complete B65BA0..B65C21 129-byte plane wrapper in src/native_camera_plane_transform.cpp. MOVSS source-bit snapshot, full B62D10 into distinct local destination, reload all four results including original intermediate stores, then MOVSS publish to caller destination. Source/matrix/output overlap and child-fault boundary preserved; no callback or projected matrix. Original ECX source/stack destination,matrix/EAX destination/RET8; new explicit raw fastcall ECX source,EDX destination,stack matrix/EAX destination/RET4. Primary verified35 immutable worker pins and both literal current source/header files; unchanged fixture linked only frozen actual main fb144c4f4e87afe14d9c7c783716b54976544b2426d775f61bd86dc3bf94d9ed library. Exact main archive object matches worker full code/directive sections and relocations; debug/checksum differences recorded. Strict main Win32 build/two CTests/eight fresh native seeds pass. Two fresh full live/PE spans313 bytes; both originals execute unchanged in private pages, including original relative child call, no original rewrites/relocations/provider bridge. Six original/main pairs1906 observable bytes with12 full752-byte Results retained and independently projected.169 complete linked COFF sections/all relocations include fixture;13 complete original/linked text postimages. All inner x87 instructions/opcode offsets exact; wrapper19 MOVSS retained with one alpha snapshot stack adjustment, full child reaches distinct result and no caller output before return. Matrix alias inner90/188/295/411 versus wrapper90/100/110/120; matrix+34 AV leaves innerX written but wrapper output untouched. Masked SNaN/source-output overlap covered. Compared full160-byte arena,52-byte readable matrix prefix,result/exception/address,CW/SW/tag,MXCSR/mask,XMM0..3 and live80-bit x87 values; inactive registers, FIP/FDP/faultPC preserved raw but not compared. No unmasked hardware FP dispatch, owner, normalization, inverse/transpose construction, general original caller ABI or gameplay claim. reports/native_camera_plane_transform_audit.json."
+    },
+    "status": "applied"
+  }
+]

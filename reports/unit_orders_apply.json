@@ -1,0 +1,212 @@
+{
+  "packet": "cc_unit_orders_apply",
+  "owner": "agent/cc-unit-orders-apply",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none; read-only queries only",
+  "docs": [
+    "docs/UNIT_STATE_MESSAGE.md",
+    "docs/BOT_SCHEDULER_OUTPUT.md"
+  ],
+  "sources": [
+    "include/bsp/unit_state_message.hpp",
+    "src/unit_state_message.cpp",
+    "include/bsp/bot_scheduler_output.hpp",
+    "src/bot_scheduler_output.cpp"
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "tests": "reconstructed_math 1/1 passed",
+    "new_test_cases": 1
+  },
+
+  "part_a": {
+    "question": "Find the receive side of the unit state message and settle whether it writes unit+980h/+984h.",
+    "answer": "The apply is 00816C80, unit primary-vtable slot 18Ch. It does NOT write unit+980h/+984h. It routes msg+40h/+44h into the order ring at unit+838h through 00812FA0, which writes ring slots only.",
+    "message": {
+      "type": 140,
+      "type_hex": "0x8C",
+      "name": "MT_SHIP_SYNC",
+      "name_evidence": "table 00E0AB68 indexed by msg+10h; entry 00E0AD98 -> 00D02158",
+      "size_bytes": 76,
+      "vtable": "00D02D94",
+      "vtable_slots": {
+        "0x00": "00762500 scalar deleting destructor",
+        "0x04": "00813DC0 serialize",
+        "0x08": "00813EF0 deserialize",
+        "0x0C": "0075A660 is-category, true for 0x8C, 0x48, 0x46",
+        "0x10": "004499C0 MOV AL,1; RET"
+      },
+      "neighbours": {
+        "0x8A": "MT_SHIP_CREATE",
+        "0x8B": "MT_MOTHERSHIP_CREATE",
+        "0x8D": "MT_SHIP_GUNS_SYNC"
+      }
+    },
+    "receive_pipeline": [
+      {"address": "0076E520", "role": "decode one packet, push onto session+24Ch"},
+      {"address": "00768530", "role": "message factory; operator new(4Ch) and 0075A630 for type 8Ch at 00769380/00769394"},
+      {"address": "0076C600", "role": "drain session+24Ch, status 0 keep / 1 release / 2 destroy"},
+      {"address": "00780670", "role": "gate on game state 0Dh, tick window and category; resolves the sender"},
+      {"address": "00521E30", "role": "16-bit id at msg+18h to entity, two-range 10h-stride handle table"},
+      {"address": "0077C710", "role": "sequence filter then entity->vtable[18Ch](msg) at 0077C79B"},
+      {"address": "00816C80", "role": "the apply"}
+    ],
+    "wire_format": [
+      {"offset": "0x20", "field": "heading", "bits": 16, "range_constant": "00D7A264", "range": 3.14159265},
+      {"offset": "0x24", "field": "yaw_rate", "bits": 10, "range_constant": "00CE380C", "range": 1.5},
+      {"offset": "0x28", "field": "position_x", "bits": 22, "range_constant": "00D02F64", "range": 24000.0},
+      {"offset": "0x2C", "field": "position_y", "bits": 0, "note": "built but never transmitted"},
+      {"offset": "0x30", "field": "position_z", "bits": 22, "range_constant": "00D02F64", "range": 24000.0},
+      {"offset": "0x34", "field": "velocity_x", "bits": 12, "range_constant": "00D09290", "range": 50.0},
+      {"offset": "0x38", "field": "velocity_y", "bits": 0, "note": "built but never transmitted"},
+      {"offset": "0x3C", "field": "velocity_z", "bits": 12, "range_constant": "00D09290", "range": 50.0},
+      {"offset": "0x40", "field": "ordered_throttle", "bits": 10, "range_constant": "00CE3958", "range": 2.0, "source": "unit+980h at 00813D4B"},
+      {"offset": "0x44", "field": "ordered_rudder", "bits": 10, "range_constant": "00CE3958", "range": 2.0, "source": "unit+984h at 00813D54"},
+      {"offset": "0x48", "field": "flooded", "bits": 8, "source": "unit+110Ch below 00CE3800"},
+      {"offset": "0x49", "field": "collision_group", "bits": 8, "source": "[unit+1018h]+64h"},
+      {"offset": "0x4A", "field": "class_byte", "bits": 8, "source": "unit+118Ch when the unit+170h class query returns 2"}
+    ],
+
+    "unit_980_984_writers": {
+      "verdict": "written, at displacement 148h/14Ch from the order ring embedded at unit+838h; no instruction anywhere in .text names displacement 980h or 984h in a store, which is why the earlier scan came back empty",
+      "per_frame": {
+        "store_instructions": ["0042AC9A", "0042ACB0", "0042ACB6"],
+        "store_function": "0042AC60 BSP_Math_StepTowards, MOVSS [ECX],XMM0",
+        "pointer_setup": ["008130D1 LEA ESI,[EBX+148h]", "00813104 LEA EDI,[EBX+14Ch]"],
+        "caller": "00813020, called once a frame from 00825F20",
+        "base": "EBX = unit+838h"
+      },
+      "immediate": [
+        {"store": "0080D9E8", "function": "0080D9B0", "field": "unit+980h", "callers": ["008235D5 in 00822C20", "0081FCEA and 00820161 in 0081F980"]},
+        {"store": "0080DA3A", "function": "0080DA00", "field": "unit+984h", "callers": ["0081FD6E in 0081F980"]},
+        {"store": "00826708", "function": "00825F20 (0080D9B0 inlined)", "field": "unit+980h", "source": "unit+FC4h", "gate": "byte at unit+61h"},
+        {"store": "0082674C", "function": "00825F20 (0080DA00 inlined)", "field": "unit+984h", "source": "unit+FDCh", "gate": "byte at unit+61h"},
+        {"store": "00812F6E", "function": "00812D40", "field": "unit+980h", "note": "construction, 0.0f"},
+        {"store": "00812F66", "function": "00812D40", "field": "unit+984h", "note": "construction, 0.0f"}
+      ],
+      "ruled_out": [
+        {"candidate": "the MT_SHIP_SYNC apply 00816C80", "reason": "reaches only 00812FA0, which writes ring slots +00h/+04h/+08h/+1Ch and never +148h/+14Ch"},
+        {"candidate": "a memcpy over unit+978h..+998h", "reason": "no lea/add/push of 838h..998h exists in any unit or AI function; the only 09xx-band lea sites in .text are 004D74E0, 004DA2A0, 004F1D70, 0057A9C0, 007B9xxx-007CExxx, 00ABE890 and zlib"},
+        {"candidate": "a script binding", "reason": "the only script writers in the band are the four Lua plane bindings at 0089D9D0..0089DEB0, which target +998h..+9A4h"}
+      ]
+    },
+
+    "order_ring": {
+      "base": "unit+838h",
+      "size_bytes": 360,
+      "slot_count": 10,
+      "slot_count_evidence": ["00812FDE", "0080D9CC", "0080DA1C", "008266EC", "0081315E"],
+      "slot_stride": 32,
+      "fields": {
+        "0x140": "read cursor (unit+978h)",
+        "0x144": "write cursor (unit+97Ch), seeded from DAT_00E0B51C = 4",
+        "0x148": "live throttle (unit+980h)",
+        "0x14C": "live rudder (unit+984h)",
+        "0x150": "live kind byte (unit+988h)",
+        "0x154": "throttle slew per second (unit+98Ch), 8.0f from 00CE3918",
+        "0x158": "rudder slew per second (unit+990h), 2.0f from 00CE3958",
+        "0x15C": "confirmed throttle (unit+994h)",
+        "0x160": "confirmed rudder (unit+998h)",
+        "0x164": "confirmed kind (unit+99Ch)"
+      },
+      "slot_fields": {
+        "0x00": "throttle",
+        "0x04": "rudder",
+        "0x08": "predicted flag, 1 = extrapolated copy",
+        "0x0C": "throttle upper bound, +2.0f",
+        "0x10": "throttle lower bound, -2.0f (00CE7D7C)",
+        "0x14": "rudder upper bound, +2.0f",
+        "0x18": "rudder lower bound, -2.0f",
+        "0x1C": "kind byte"
+      },
+      "routines": {
+        "00812D40": "void __thiscall(ring), RET 0, construct",
+        "00812FA0": "void __thiscall(ring, float, float, uint8, int age), RET 10h, back-fill min(age,4) slots",
+        "00813020": "void __thiscall(ring, float dt), RET 4, per-frame tick; writes the live pair",
+        "0080D9B0": "void __thiscall(ring, float), RET 4, immediate throttle",
+        "0080DA00": "void __thiscall(ring, float), RET 4, immediate rudder",
+        "0080DAD0": "void __thiscall(unit, const record*), RET 4, publish at the write cursor and mirror to +994h/+998h/+99Ch"
+      }
+    },
+
+    "apply_routine": {
+      "address": "00816C80",
+      "abi": "void __thiscall(unit, message*), RET 4",
+      "body": "00816C80..00816E23",
+      "vtable_slot": "0x18C",
+      "vtables_carrying_it": ["00CF923C", "00CFA904", "00CFB8C4", "00CFC55C", "00CFFBBC", "00D017BC", "00D09804", "00D0C10C", "00D0C7D4"],
+      "paired_send_slot": {"offset": "0x188", "target": "00816B00"},
+      "steps": [
+        "00816C97 msg->vtable[0Ch](8Dh) -> 00813950 for MT_SHIP_GUNS_SYNC",
+        "00816CB1..00816CC7 mirror msg+49h onto [unit+1018h]+64h through 0092BD70",
+        "00816CCC gate COMISS unit+BCCh against 1.0f (00D7A24C) with JA",
+        "00816CE1..00816DBB dead reckon by ageTicks * 0.05f (00D0DE84) into a 24h-byte record, then 0092F2E0 with ECX = unit+1018h",
+        "00816DC4 00927F30(unit, 1); when false, 00812FA0 with ECX = unit+838h",
+        "00816DEE..00816DF7 msg+48h clears unit+10D0h",
+        "00816DFF..00816E17 [unit+170h]->vtable[0]() == 2 sets unit+118Ch = msg+4Ah"
+      ]
+    }
+  },
+
+  "part_b": {
+    "question": "Follow the bot scheduler to the per-unit AI that issues ship orders and find where its plan leaves the AI object.",
+    "answer": "The bot scheduler at game+21A0h writes no unit and no controller. Its three callees contain zero virtual call sites and store nothing outside the scheduler's own eight per-side records. It is a strategy layer, not an order producer.",
+    "record_array": {
+      "base": "scheduler+4",
+      "base_evidence": "00915026 LEA ESI,[EBX+4]",
+      "stride": 644,
+      "count": 8,
+      "end": "scheduler+1424h, inside the 14B8h allocation"
+    },
+    "exit_points": [
+      {"what": "unit demand list", "where": "record+78h, count record+80h", "written_by": "00911E80"},
+      {"what": "goal request list", "where": "record+88h, count record+8Ch", "written_by": "00912A60"},
+      {"what": "six category totals and their sum", "where": "record+1C8h..+1DCh and record+1E0h", "written_by": "00914390"},
+      {"what": "session message 15h with record+1E0h, literal 12h and the side index", "where": "0076A9F0 with ECX = game+1EF0h", "written_by": "00914EF0 at 00914FD1, only when game+1FE4h == 1"},
+      {"what": "in-mission award counters", "where": "0090EDE0(record+250h, token, 1, 0)", "written_by": "00911E80 and 00912A60 at 009133C9 and 009139C4"}
+    ],
+    "callees": {
+      "00911E80": {"abi": "void __fastcall(record)", "body": "00911E80..00912A1E", "role": "rebuild the unit demand list from BU_/BO_ tokens", "virtual_calls": 0},
+      "00912A60": {"abi": "void __fastcall(record)", "body": "00912A60..00913A0E", "role": "rebuild the goal request list from GA_/RUA_ tokens", "virtual_calls": 0},
+      "00914390": {"abi": "void __fastcall(record)", "body": "00914390..00914EE9", "role": "six list sums into record+1C8h..+1DCh plus the aggregate at record+1E0h", "virtual_calls": 0}
+    },
+    "tokens": {
+      "BU_": ["BU_DM", "BU_PTM", "BU_BM", "BU_CM", "BU_VLB", "BU_VDB", "BU_VTB", "BU_FA", "BU_VR", "BU_SM"],
+      "BO_": ["BO_CV", "BO_DCM", "BO_KSS", "BO_KSP", "BO_SC", "BO_EE"],
+      "GA_": ["GA_SH", "GA_DB", "GA_AO", "GA_PL"],
+      "RUA_": ["RUA_CU", "RUA_FU", "RUA_SU", "RUA_TBU"]
+    },
+    "aggregate_order": ["+1D8h", "+1D0h", "+1C8h", "+1DCh", "+1D4h", "+1CCh"]
+  },
+
+  "corrections": [
+    {"doc": "docs/UNIT_COMMAND_PRODUCERS.md", "was": "+980h and +984h are never written", "now": "written at ring+148h/+14Ch from the object embedded at unit+838h; the scans were right, the conclusion was not"},
+    {"doc": "docs/UNIT_COMMAND_PRODUCERS.md", "was": "The apply side of message 8Ch was not found", "now": "00816C80"},
+    {"doc": "docs/UNIT_COMMAND_PRODUCERS.md", "was": "unit+97Ch is not advanced", "now": "true of 0080DAD0 alone; 00813020 advances both cursors every frame"},
+    {"doc": "docs/UNIT_INSTANCE_UPDATE.md", "was": "00CFC3D0+188h..23Ch unresolved", "now": "slots 188h and 18Ch are the ship sync send and apply pair"},
+    {"doc": "docs/GAME_WORLD_ENTITIES.md", "was": "eight 0x284-stride records at this+0x1E4, which would overrun the 0x14B8 allocation", "now": "the array base is this+4; this+1E4h is record[0]+1E0h, the biased pointer the retarget loop reads the aggregate through"},
+    {"doc": "docs/GAME_WORLD_ENTITIES.md", "was": "the retarget pass broadcasts the record's first dword", "now": "it broadcasts record+1E0h, the aggregate 00914390 computes"},
+    {"file": "include/bsp/unit_orders.hpp", "was": "UnitOrderQueue::kMaxSlots = 8, not a recovered native bound", "now": "the native slot count is 10; not edited, the complete ring is in include/bsp/unit_state_message.hpp as UnitOrderRing"},
+    {"ghidra": "00816B00", "was": "CG_vector_deleting_dtor_00816b00", "now": "the ship sync send virtual; the automated classification is wrong"}
+  ],
+
+  "no_ghidra_function": [
+    {"start": "00813DC0", "end_inclusive": "00813EE6", "proposed": "BSP_UnitStateMessage_Serialize"},
+    {"start": "00813EF0", "end_inclusive": "00813FFE", "proposed": "BSP_UnitStateMessage_Deserialize"},
+    {"start": "0075A660", "end_inclusive": "0075A681", "proposed": "BSP_UnitStateMessage_IsCategory"},
+    {"start": "00762500", "end_inclusive": "0076251E", "proposed": "CG_scalar_deleting_dtor_00762500"},
+    {"start": "004499C0", "end_inclusive": "004499C2", "proposed": "BSP_SessionMessage_AlwaysTrue"}
+  ],
+
+  "follow_up_packets": [
+    "unit_sync_vtable_tail",
+    "session_message_dispatch",
+    "unit_motion_command_source",
+    "bot_side_record_layout",
+    "bot_demand_vocabulary",
+    "bot_side_sync_message"
+  ]
+}

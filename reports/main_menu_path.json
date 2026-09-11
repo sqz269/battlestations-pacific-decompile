@@ -25,7 +25,7 @@
     {"step": 16, "address": "006858ba", "native": "004f8710", "host": "publish_screen_set_level4", "note": "one-element set; 004f7620 runs inside"},
     {"step": 17, "address": "006858e6", "native": "004d8c00", "host": "publish_input_context_set_level4", "note": "one-element set {1}"},
     {"step": 18, "address": "004c4165", "native": "004f8830", "host": "pump_front_end_screens", "note": "reached through 004c40f0 at 004e53b6, not the front-end branch"},
-    {"step": 19, "address": "004f88e8", "native": "004f83b0", "host": "commit_screen_visibility", "note": "commit precedes the enter virtual"},
+    {"step": 19, "address": "004f88e8", "native": "004f83b0", "host": "commit_screen_visibility", "note": "commit precedes the enter virtual; publishes the +5h byte (004F8434) to the children, so the host carries visible=true here and false on the 004F88B3/004F88B7 exit pass"},
     {"step": 20, "address": "004f88f4", "native": "005987f0", "host": "enter_screen", "note": "main-menu screen enter"},
     {"step": 21, "address": "004f8925", "native": "00599db0", "host": "update_screen", "note": "pass C, raw delta"}
   ],

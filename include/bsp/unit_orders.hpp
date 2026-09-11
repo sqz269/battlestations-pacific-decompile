@@ -48,8 +48,9 @@ struct UnitOrderRecord {
 // The part of the unit that 0080DAD0 touches. Only the indexed slot and the
 // mirror are modelled; the rest of the unit is out of scope here.
 struct UnitOrderQueue {
-    static constexpr std::size_t kMaxSlots = 8; // capacity of this projection only,
-                                                // not a recovered native bound
+    static constexpr std::size_t kMaxSlots = 10; // the native order ring at unit+838h has
+                                                 // ten 20h-byte slots (docs/UNIT_STATE_MESSAGE.md,
+                                                 // 00813020 / 00812FA0); was 8 as a projection bound
     UnitOrderRecord slot[kMaxSlots]{};
     bool slot_active[kMaxSlots]{};  // slot +08h
     int slot_index{0};              // unit +97Ch
