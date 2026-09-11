@@ -26,12 +26,18 @@ struct XLivePipeRandomOutput {
 };
 struct XLivePipeFramePreimageHost {
     virtual ~XLivePipeFramePreimageHost() = default;
-    virtual std::array<std::uint8_t, 72> temporary_wide_preimage() = 0;
-    virtual XLivePipeRandomOutput random_output_preimage() = 0;
+    // Actual stack temporary after lock creation/store, before payload writes.
+    // Read its payload only through the machine-storage capture boundary.
+    virtual std::array<std::uint8_t, 72> temporary_wide_preimage(
+        const XLivePipeEncodedWideValue& actual_temporary) = 0;
 };
 struct XLivePipeFrameSystemHost {
     virtual ~XLivePipeFrameSystemHost() = default;
-    virtual std::array<std::uint8_t, 72> temporary_wide_preimage() = 0;
+    virtual std::array<std::uint8_t, 72> temporary_wide_preimage(
+        const XLivePipeEncodedWideValue& actual_temporary) = 0;
+    // Explicit recording-input boundary. The Win32 implementation returns an
+    // unknown carrier here; its real API output/preimage is captured afterward
+    // from the actual uninitialized8-byte buffer passed to CryptGenRandom.
     virtual XLivePipeRandomOutput random_output_preimage() = 0;
     virtual XLivePipeValueLock* create_value_lock() = 0;
     virtual void set_last_error(DWORD) = 0;
@@ -41,7 +47,8 @@ struct XLivePipeFrameSystemHost {
 class Win32XLivePipeFrameSystemHost final : public XLivePipeFrameSystemHost {
 public:
     explicit Win32XLivePipeFrameSystemHost(XLivePipeFramePreimageHost& p) : preimages_(p) {}
-    std::array<std::uint8_t, 72> temporary_wide_preimage() override;
+    std::array<std::uint8_t, 72> temporary_wide_preimage(
+        const XLivePipeEncodedWideValue&) override;
     XLivePipeRandomOutput random_output_preimage() override;
     XLivePipeValueLock* create_value_lock() override;
     void set_last_error(DWORD) override;

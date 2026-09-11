@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <memory>
 #include <new>
 #include <stdexcept>
 
@@ -176,11 +177,12 @@ void initialize_xlive_pipe_key_00a5eecb(XLivePipeEncodedValue& source,
 }
 
 XLivePipeProtocolNativeState* Win32XLivePipeProtocolSystemHost::allocate_context() {
-    auto* context = new XLivePipeProtocolNativeState;
-    // Explicit defined allocation preimage, supplied by the real owner binding.
-    const auto preimage = preimages_.context_allocation_preimage();
-    std::memcpy(context, preimage.data(), preimage.size());
-    return context;
+    // Default initialization is deliberate: value initialization would erase
+    // the actual allocation bytes before the provider can observe them.
+    std::unique_ptr<XLivePipeProtocolNativeState> context(new XLivePipeProtocolNativeState);
+    const auto preimage = preimages_.context_allocation_preimage(*context);
+    std::memcpy(context.get(), preimage.data(), preimage.size());
+    return context.release(); // provider failure frees this still-unpublished allocation
 }
 void Win32XLivePipeProtocolSystemHost::free_context(XLivePipeProtocolNativeState* value) noexcept { delete value; }
 XLivePipeValueLock* Win32XLivePipeProtocolSystemHost::create_value_lock() { return create_xlive_pipe_value_lock_00a5fa5a(); }
