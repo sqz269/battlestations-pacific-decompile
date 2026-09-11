@@ -1,0 +1,245 @@
+{
+  "packet": "orch3_live_effect_insertion_s",
+  "sources": [
+    "src/live_effect_insertion.cpp"
+  ],
+  "headers": [
+    "include/bsp/live_effect_insertion.hpp",
+    "include/bsp/native_render_pointer_arrays.hpp"
+  ],
+  "documentation": "docs/LIVE_EFFECT_INSERTION.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "004c5ce0",
+      "end_exclusive": "004c5dd4",
+      "length": 244,
+      "sha256": "782d0bc1f7e909d069898218fb527a2e9566afe334a57a1460268620d7e44d7a",
+      "live_disk_equal": true,
+      "rebound_iat_operand_offsets": {
+        "00ce221c": [
+          125
+        ],
+        "00ce2220": [
+          169
+        ]
+      }
+    },
+    {
+      "address": "004c9550",
+      "end_exclusive": "004c95ce",
+      "length": 126,
+      "sha256": "a041f5ad5e2e5ffd65193ea4822110d0394bd0003a348998b02fb430f661499d",
+      "live_disk_equal": true,
+      "rebound_iat_operand_offsets": {
+        "00ce2220": [
+          89
+        ]
+      }
+    },
+    {
+      "address": "0074d780",
+      "end_exclusive": "0074d7f3",
+      "length": 115,
+      "sha256": "28b97297eba4ae45d3ef95685c5cbcc10260faf983ec2b9b9988cec9e4954006",
+      "live_disk_equal": true,
+      "rebound_iat_operand_offsets": {
+        "00ce221c": [
+          89
+        ]
+      }
+    },
+    {
+      "address": "00867500",
+      "end_exclusive": "008675ab",
+      "length": 171,
+      "sha256": "ed31e17f591dd27f6813b854d2feb526ee240ec837884841d00fb6e42f9b7c80",
+      "live_disk_equal": true,
+      "rebound_iat_operand_offsets": {
+        "00ce221c": [
+          132
+        ],
+        "00ce2220": [
+          113
+        ],
+        "00ce2218": [
+          56
+        ],
+        "00ce2210": [
+          147
+        ]
+      }
+    }
+  ],
+  "reconstructed": [
+    {
+      "address": "004c5ce0",
+      "cpp_symbol": "reserve_live_effect_references_004c5ce0",
+      "end_exclusive": "004c5dd4",
+      "original_abi": "ECX actual0Ch header; stack signed capacity; RET4",
+      "behavior": "Signed minimum-one grow, DWORD byte product, ascending zero-before-source-read retain, current count/backing reloads, captured-slot clear after release, current backing free then replacement/capacity publication. Main EH state stays -1; no replacement-prefix rollback. Free fall-through at4C5DAF restored."
+    },
+    {
+      "address": "0074d780",
+      "cpp_symbol": "append_live_effect_reference_0074d780",
+      "end_exclusive": "0074d7f3",
+      "original_abi": "ECX actual0Ch header; stack source-cell address; RET4",
+      "behavior": "Count==capacity doubles with DWORD wrap and signed minimum one; reload header after reserve; zero destination before source read, null destination skips source read, current count increment. Main EH state stays -1."
+    },
+    {
+      "address": "004c9550",
+      "cpp_symbol": "resize_live_effect_references_004c9550",
+      "end_exclusive": "004c95ce",
+      "original_abi": "ECX actual0Ch header; stack signed count; RET4",
+      "behavior": "Reserve before growth; zero current backing slots without intermediate count publication; shrink decrements current count before release, clears captured nonnull slot after terminal, reloads backing/count; finally publishes captured request."
+    },
+    {
+      "address": "00867500",
+      "cpp_symbol": "insert_live_effect_00867500",
+      "end_exclusive": "008675ab",
+      "original_abi": "ECX actual28h F8765C manager; stack actual effect; RET4",
+      "behavior": "Uses actual manager+10 array; canonical866440/F87650 lock getter even for null input; captured actual section enter/depth. Append temporary, disable its unwind, release captured incoming then retain same actual04. State1 temporary440A30 before state0 lock411EE0 on append failure."
+    }
+  ],
+  "ownership": "Actual0Ch array header, raw cell identities, actual+04 atomics and canonical zero-only terminal lookup. Separate actual F87650 lock owner; caller lends actual F8765C+10 array.",
+  "flow_repair": "reports/live_effect_insertion_flow_s.json",
+  "handler_definitions": "reports/live_effect_insertion_definitions_s.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/live-effect-insertion-s-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/live-effect-insertion-s-fixture.log",
+    "fixture_source": "local/live_effect_probe_s.cpp",
+    "native_cases": [
+      "All four complete byte spans match installed executable",
+      "Growth, clamp, duplicate ownership, reserve and shrink",
+      "Zero-before-source-read alias and explicit null-destination skip",
+      "Shrink terminal changes backing/count and old slot; captured slot cleared, next current header reloaded",
+      "Null-input lazy real lock creation; nested actual CS depth; owner counts; untouched manager prefix/tail"
+    ],
+    "rebindings": [
+      "Original reserve allocator/free -> canonical allocation/free",
+      "Original append/resize reserve and insert append -> copied original bodies",
+      "Interlocked IAT -> Win32 calling-convention bridges; Enter/Leave -> real Win32",
+      "866440 bridge invokes canonical getter and exposes actual native CS pointer in an8h read view; no independent lock/count"
+    ],
+    "cpp_failure_case": "Only this production module allocation symbol rebound in ignored fixture build; success delegates real allocator, one bad_alloc. Actual incoming owned payload destroyed at depth1 then captured section unlocked to0, array unchanged.",
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Actual28h live manager construction/getter/deferred-list/destruction",
+    "Whole point-effect constructor and actual terminal bindings",
+    "Original exception ABI and gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/live_effect_probe_s.cpp": "7c39659f6796b2512c1c0f22abfd30ad66570d2c75b40f1684e14b7ac34f1aed",
+    "local/run_live_effect_probe_s.cmd": "aea949a23090eb698a1b4f3559d31b23ebf908498a88175cfc2f3febd961ed4d",
+    "local/live_effect_native_bytes_s.hpp": "0009a7ff2fa620daea5b4f1cfe1d18dcf26459c8f96ddb1c8c47111fb26a843b",
+    "local/live-effect-byte-evidence-s.json": "e441a6c3cf4fc5d287f681c5ff19b16274f9030f4ee7c3b8b60d0636b9cf3aa4"
+  },
+  "ghidra_annotation_audit": [
+    {
+      "address": "004c5ce0",
+      "before": {
+        "address": "004c5ce0",
+        "function_name": "FUN_004c5ce0"
+      },
+      "after": {
+        "address": "004c5ce0",
+        "name": "BSP_LiveEffectReferences_Reserve",
+        "evidence": "Hypothesis, not a recovered symbol. Signed minimum-one grow, DWORD byte product, ascending zero-before-source-read retain, current count/backing reloads, captured-slot clear after release, current backing free then replacement/capacity publication. Main EH state stays -1; no replacement-prefix rollback. Free fall-through at4C5DAF restored. Actual raw owners/+04 atomic and required zero-only current terminal binding. Strict Win32 and focused original-byte comparisons passed. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. New C++ ABI; originalEH and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004c9550",
+      "before": {
+        "address": "004c9550",
+        "function_name": "FUN_004c9550"
+      },
+      "after": {
+        "address": "004c9550",
+        "name": "BSP_LiveEffectReferences_Resize",
+        "evidence": "Hypothesis, not a recovered symbol. Reserve before growth; zero current backing slots without intermediate count publication; shrink decrements current count before release, clears captured nonnull slot after terminal, reloads backing/count; finally publishes captured request. Actual raw owners/+04 atomic and required zero-only current terminal binding. Strict Win32 and focused original-byte comparisons passed. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. New C++ ABI; originalEH and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "0074d780",
+      "before": {
+        "address": "0074d780",
+        "function_name": "FUN_0074d780"
+      },
+      "after": {
+        "address": "0074d780",
+        "name": "BSP_LiveEffectReferences_Append",
+        "evidence": "Hypothesis, not a recovered symbol. Count==capacity doubles with DWORD wrap and signed minimum one; reload header after reserve; zero destination before source read, null destination skips source read, current count increment. Main EH state stays -1. Actual raw owners/+04 atomic and required zero-only current terminal binding. Strict Win32 and focused original-byte comparisons passed. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. New C++ ABI; originalEH and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00867500",
+      "before": {
+        "address": "00867500",
+        "function_name": "FUN_00867500"
+      },
+      "after": {
+        "address": "00867500",
+        "name": "BSP_LiveEffectManager_Insert",
+        "evidence": "Hypothesis, not a recovered symbol. Uses actual manager+10 array; canonical866440/F87650 lock getter even for null input; captured actual section enter/depth. Append temporary, disable its unwind, release captured incoming then retain same actual04. State1 temporary440A30 before state0 lock411EE0 on append failure. Actual raw owners/+04 atomic and required zero-only current terminal binding. Strict Win32 and focused original-byte comparisons passed. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. New C++ ABI; originalEH and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c65157",
+      "before": {
+        "address": "00c65157",
+        "function_name": "FUN_00c65157"
+      },
+      "after": {
+        "address": "00c65157",
+        "name": "EH_LiveEffectReferences_Reserve",
+        "evidence": "Descriptive compiler-handler name. Complete10-byte handler selectsD8D8A4; mapD8D89C state0->-1 C65140/401130 range cleanup. Main4C5CE0 never activates state0. Defined from verified bytes and saved. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. Original exception dispatch not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c878ac",
+      "before": {
+        "address": "00c878ac",
+        "function_name": "FUN_00c878ac"
+      },
+      "after": {
+        "address": "00c878ac",
+        "name": "EH_LiveEffectReferences_Append",
+        "evidence": "Descriptive compiler-handler name. Complete10-byte handler selectsDB71D8; mapDB71D0 state0->-1 C87890/401130 range cleanup. Main74D780 never activates state0. Defined from verified bytes and saved. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. Original exception dispatch not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c94e90",
+      "before": {
+        "address": "00c94e90",
+        "function_name": "FUN_00c94e90"
+      },
+      "after": {
+        "address": "00c94e90",
+        "name": "EH_LiveEffectManager_Insert",
+        "evidence": "Descriptive compiler-handler name. Complete10-byte handler selectsDC6CFC; mapDC6CEC state1->0 C94E88/440A30 current temporary release-clear; state0->-1 C94E80/411EE0 captured lock guard. Defined from verified bytes and saved. docs/LIVE_EFFECT_INSERTION.md; reports/live_effect_insertion.json. Original exception dispatch not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All seven names/evidence saved and read back, prior comments preserved; seven affected exports refreshed."
+}

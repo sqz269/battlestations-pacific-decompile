@@ -7,7 +7,9 @@ namespace bsp {
 
 // Actual Win32 header embedded in the native command/group/queue owners. No
 // initialization, implicit destructor, replacement vector, or second count.
-// The four-byte cells contain borrowed raw identities, never owning wrappers.
+// The four-byte cells contain raw identities, never owning wrapper addresses.
+// The operations below borrow them; other specializations using this same
+// physical header can retain/release through an explicit actual-owner domain.
 struct NativeRenderPointerArrayStorage {
     void** data_00;
     std::int32_t count_04;
