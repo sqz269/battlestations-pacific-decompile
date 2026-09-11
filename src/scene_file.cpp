@@ -361,6 +361,15 @@ SceneToken SceneLexer::next()
     return cache_;
 }
 
+bool SceneLexer::recover_after_failed_read()
+{
+    peek();
+    while (pos_ < text_.size() && is_space(peek_char())) {
+        get();
+    }
+    return pos_ >= text_.size();
+}
+
 SceneToken SceneLexer::scan()
 {
     for (;;) {
@@ -383,7 +392,10 @@ SceneToken SceneLexer::scan()
             }
             if (nxt == '*') {
                 get();
-                char prev = '\0';
+                // The native previous/current-byte pair initially contains
+                // '/' and '*', so even the overlapping terminator in /*/ ends
+                // this comment (008d8c60-008d8cba).
+                char prev = '*';
                 while (pos_ < text_.size()) {
                     const char ch = get();
                     if (prev == '*' && ch == '/') {
@@ -421,10 +433,8 @@ SceneToken SceneLexer::scan()
             if (is_space(ch) || is_delim(ch)) {
                 break;
             }
-            if (ch == '/' && pos_ + 1 < text_.size()
-                && (text_[pos_ + 1] == '/' || text_[pos_ + 1] == '*')) {
-                break;
-            }
+            // 008d8dd2-008d8e3a only checks whitespace and delimiters here;
+            // comment openers inside an unquoted token are ordinary text.
             t.text.push_back(get());
         }
         return t;
@@ -435,22 +445,25 @@ SceneToken SceneLexer::scan()
 // Scalar conversions
 // ---------------------------------------------------------------------------
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+// The native reader uses sscanf; the integer-only format has no buffer output.
+#pragma warning(disable : 4996)
+#endif
 bool scene_scan_int(const std::string& text, std::int32_t& out) noexcept
 {
-    std::size_t i = 0;
-    if (i < text.size() && (text[i] == '+' || text[i] == '-')) {
-        ++i;
-    }
-    const std::size_t first_digit = i;
-    while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i])) != 0) {
-        ++i;
-    }
-    if (i == first_digit) {
+    // 008d9ad0 uses %d directly, including CRT whitespace inside a quoted
+    // token. Keep output unchanged when conversion fails.
+    int value = 0;
+    if (std::sscanf(text.c_str(), "%d", &value) != 1) {
         return false;
     }
-    out = static_cast<std::int32_t>(std::strtol(text.substr(0, i).c_str(), nullptr, 10));
+    out = static_cast<std::int32_t>(value);
     return true;
 }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 bool scene_scan_float(const std::string& text, float& out) noexcept
 {

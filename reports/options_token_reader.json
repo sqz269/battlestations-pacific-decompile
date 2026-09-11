@@ -1,0 +1,80 @@
+{
+  "packet": "orch2_options_token_reader",
+  "date": "2026-09-11",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "analysis": "Read-only bsp.py ghidra verified queries; parent performed the recorded destructor flow repair",
+    "game_installation_modified": false
+  },
+  "source": "src/options_token_reader.cpp",
+  "header": "include/bsp/options_token_reader.hpp",
+  "evidence": "docs/OPTIONS_TOKEN_READER.md",
+  "native_contracts": [
+    {"address": "008d99f0", "end_inclusive": "008d9a74", "abi": "ECX tokenizer; stack ok byte pointer; EAX current token char pointer; RET4", "implementation": "OptionsTokenReader::read_string"},
+    {"address": "008d9a80", "end_inclusive": "008d9ac7", "abi": "ECX tokenizer; stack ok byte pointer; AL Boolean; RET4", "implementation": "OptionsTokenReader::read_bool"},
+    {"address": "008d9ad0", "end_inclusive": "008d9b33", "abi": "ECX tokenizer; stack ok byte pointer; EAX signed int32; RET4", "implementation": "OptionsTokenReader::read_int and scene_scan_int"},
+    {"address": "008d8e50", "end_inclusive": "008d8ea2", "abi": "ECX tokenizer; stack ok byte pointer; AL non-consuming Boolean conversion; RET4", "implementation": "Conversion in OptionsTokenReader::read_bool"},
+    {"address": "008d8f70", "end_inclusive": "008d90ed", "abi": "ECX tokenizer; RET0", "implementation": "SceneLexer::recover_after_failed_read plus OptionsTokenReader recovered_end"},
+    {"address": "008d9f20", "end_inclusive": "008da0f2", "abi": "ECX tokenizer; stack retained stream and optional extra delimiter pointer; EAX tokenizer; RET8", "implementation": "Buffered-text constructor boundary only; native stream ownership not represented"},
+    {"address": "008d9c30", "end_inclusive": "008d9ce7", "abi": "ECX tokenizer; RET0", "implementation": "Analysis only; native owned delimiter, retained stream, byte buffer and label lifetime"},
+    {"address": "008d46c0", "end_inclusive": "008d4707", "abi": "ECX data/count pair-vector; stack int32 pair pointer; EAX first match index or -1; RET4", "implementation": "Contract provided to loader owner; unrelated to tokenizer"}
+  ],
+  "shared_fixes": [
+    {"address": "008d8a70", "assembly": "008d8dd2-008d8e38", "change": "Keep comment openers as ordinary text after an unquoted token starts"},
+    {"address": "008d8a70", "assembly": "008d8c60-008d8cba", "change": "Recognize overlapping block-comment terminator in /*/"},
+    {"address": "008d9ad0", "assembly": "008d9ad3-008d9af9", "change": "Use sscanf percent-d conversion including leading CRT whitespace inside quoted tokens"}
+  ],
+  "recovery": {
+    "retains_current_token": true,
+    "skips_following_whitespace": "space tab CR LF comma",
+    "skips_following_comments": false,
+    "eof_can_coexist_with_nonempty_cached_token": true,
+    "repeated_failure_can_stall": true,
+    "native_diagnostic_emission": false,
+    "wrapper_diagnostics": ["last_error", "failed", "failures"]
+  },
+  "loader_findings": {
+    "unknown_token": "008d860a-008d8626 logs and consumes exactly one token",
+    "SoundEnabled": "00467cc0 consumes matching key; 008d85d9 branches directly to 008d82a0 without reading its value",
+    "nonzero_boolean_fields": "Use integer read then !=0 when native calls 008d9ad0",
+    "strict_boolean_fields": "Use read_bool only for native 008d9a80 calls"
+  },
+  "destructor_flow": {
+    "parent_repair_report": "reports/options_token_reader_flow_repair.json",
+    "dropped_free_call_tails": ["008d9c6f", "008d9ca9"],
+    "full_stored_body_repaired": false,
+    "raw_tail_decoder": "Capstone 5.0.7 x86-32",
+    "raw_tail_start": "008d9ca9",
+    "raw_tail_hex": "8b862408000083c40485c0c7442414ffffffff5f74198bb6200800006a0183c6015650e8efffb3ff8bc8e838782f008b4c24085e64890d0000000083c410c3",
+    "final_ret": "008d9ce7"
+  },
+  "validation": {
+    "verified_native_seeds": 8,
+    "focused_fixture": "passed MSVC Win32 /W4 /WX /fp:strict",
+    "full_win32_build": "passed scripts/build.ps1 Release Win32 /W4 /WX /fp:strict",
+    "existing_ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "native_scanner_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "bounded_domain": [
+    "NUL-free text and token text no longer than 1023 bytes",
+    "Decimal conversions representable in int32; original CRT overflow not established",
+    "SceneToken line remains one-based diagnostic metadata rather than native prefetch counter",
+    "Input is supplied already buffered; native stream and string allocator ownership not reproduced"
+  ],
+  "ignored_artifacts": [
+    "local/options_token_reader_fixture.cpp",
+    "local/options_token_reader_fixture/CMakeLists.txt",
+    "local/options_token_reader_fixture_build.log",
+    "local/options_token_reader_build.log",
+    "build/options_token_reader_fixture",
+    "exports/bsp/functions/008d46c0",
+    "exports/bsp/functions/008d99f0",
+    "exports/bsp/functions/008d9a80",
+    "exports/bsp/functions/008d9f20",
+    "exports/bsp/functions/008d8f70",
+    "exports/bsp/functions/008d8e50"
+  ]
+}
