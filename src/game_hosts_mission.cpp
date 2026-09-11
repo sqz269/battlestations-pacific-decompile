@@ -310,6 +310,9 @@ struct GameMissionHost::Impl {
     // and the host that carries the load past the renderer owners, enters the
     // mission state and runs the headless frames.
     long mission_frames{0};
+    // Milestone 2g, --mission-complete-frame N: the in-mission frame on which
+    // the executable makes the call a script's end-movie binding makes.
+    long mission_complete_frame{-1};
     GameFrameProfiler* profiler{nullptr};
     std::string language;
     std::unique_ptr<GameMissionLuaHost> lua;
@@ -1268,10 +1271,14 @@ void GameMissionHost::Impl::consume_load_request() {
 
 GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
     GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
-    long mission_frames, GameFrameProfiler* profiler, std::string language)
+    long mission_frames, GameFrameProfiler* profiler, std::string language,
+    long mission_complete_frame)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
-          std::move(language))) {}
+          std::move(language))) {
+    // Milestone 2g, --mission-complete-frame N.
+    impl_->mission_complete_frame = mission_complete_frame;
+}
 
 GameMissionHost::~GameMissionHost() = default;
 
@@ -1564,6 +1571,10 @@ void GameMissionHost::Impl::finish_scene_load() {
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.
     lua->start_machine_00884be0();
+    // Milestone 2g: game+2198h, the key the record commit writes under, and the
+    // frame the executable makes the script's end-movie call on.
+    frame_host->set_mission_key(summary.selected_id);
+    frame_host->set_mission_complete_frame(mission_complete_frame);
     frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
         record.locale_table_list, record.mission_id);
 
@@ -1587,6 +1598,9 @@ void GameMissionHost::Impl::publish_frame_summary() {
         summary.mission_frames_run = frames.frames;
         summary.mission_frames_simulated = frames.simulated;
         summary.mission_exit_note = frames.exit_note;
+        summary.mission_exit_frames = frames.exit_frames;
+        summary.mission_exit_completed = frames.exit_completed;
+        summary.mission_complete_injected = frames.complete_injected;
         summary.mission_entered = frame_host->entry_summary().entered;
         if (frame_host->entry_summary().state != 0) {
             summary.mission_game_state = static_cast<int>(frame_host->entry_summary().state);
@@ -1677,9 +1691,13 @@ bool GameMissionHost::advance(float seconds) {
         const bool more = host.frame_host->run_mission_frame_004e4a40(seconds);
         host.publish_frame_summary();
         host.step = GameMissionStep::MissionFrames;
-        if (!more
-            || host.summary.mission_frames_run
-                >= static_cast<unsigned long long>(host.mission_frames)) {
+        // The frame budget bounds the in-mission frames only. Once the mission
+        // has left game state 0Dh the remaining frames belong to the exit path,
+        // which runs to its own end (milestone 2g).
+        const bool budget_spent = host.frame_host->in_mission_phase()
+            && host.summary.mission_frames_run
+                >= static_cast<unsigned long long>(host.mission_frames);
+        if (!more || budget_spent) {
             host.frame_host->report(host.mission_frames);
             host.publish_frame_summary();
             host.step = GameMissionStep::Stopped;
