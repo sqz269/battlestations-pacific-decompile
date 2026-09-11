@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_native_wide_string_l",
+  "date": "2026-09-11",
+  "base_revision": "d2351c6",
+  "source": "src/native_wide_string.cpp",
+  "header": "include/bsp/native_wide_string.hpp",
+  "documentation": "docs/NATIVE_WIDE_STRING.md",
+  "registration": "cmake/startup.cmake",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra count/proto/bytes verify project, program, language and image base before each live query"
+  },
+  "native_spans": [
+    {
+      "address": "004c5e60",
+      "length": 89,
+      "end_exclusive": "004c5eb9",
+      "terminal_instruction": "004c5eb6",
+      "terminal_length": 3,
+      "terminal_bytes": "c2 04 00",
+      "original_abi": "ECX actual8h header; stack source C-string; RET4; EAX returns header",
+      "cpp_symbol": "construct_native_wide_string_header_004c5e60",
+      "evidence": "004c5e6a/70 clear before scan; 004c5e90 resize preserve1; 004c5e95 capture pointer; 004c5ea0..004c5eb0 unsigned-byte streaming widening through NUL"
+    },
+    {
+      "address": "004c53e0",
+      "length": 177,
+      "end_exclusive": "004c5491",
+      "terminal_instruction": "004c548e",
+      "terminal_length": 3,
+      "terminal_bytes": "c2 08 00",
+      "early_return": {"address": "004c5420", "length": 3, "instruction": "RET 8"},
+      "original_abi": "ECX actual8h header; stack DWORD length and byte preserve; RET8",
+      "cpp_symbol": "resize_native_wide_string_header_004c53e0",
+      "evidence": "004c53ec equal-length no-op; 004c5411 pointer then length clears after release; 004c5436 allocate; 004c5444 current length; 004c545a memcpy; 004c5462 current pointer; 004c547f pointer then length then WORD terminator"
+    },
+    {
+      "address": "00436430",
+      "length": 30,
+      "end_exclusive": "0043644e",
+      "terminal_instruction": "0043644d",
+      "terminal_length": 1,
+      "terminal_bytes": "c3",
+      "original_abi": "ECX actual8h header; inferred __fastcall; RET",
+      "cpp_symbol": "destroy_native_wide_string_header_00436430",
+      "evidence": "00436430 capture pointer; 00436435 null skips length; 00436437 length; 0043643b wrapped 2*length+2; pool release; no header writes"
+    }
+  ],
+  "missing_starts": [],
+  "instruction_gaps": [],
+  "actual_header": {"size": 8, "length_offset": 0, "data_pointer_offset": 4, "element_bytes": 2},
+  "storage": {
+    "contract": "Existing NativeStringStorage supplied by caller",
+    "pool_adapter": "Existing PooledStringStorage / SizedStoragePool",
+    "native_dependencies": ["00419cc0", "00bd1120", "00bd1510"],
+    "crt_boundary": "00bf7680 _memcpy; zero-byte call omitted as with canonical narrow resize",
+    "new_heap_substitute": false,
+    "shadow_string": false
+  },
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1; /W4 /WX /fp:strict",
+    "existing_ctests": {"reconstructed_math": "passed", "native_math_differential": "passed"},
+    "verify_seeds": "8/8 Ghidra seed byte ranges match disk",
+    "focused_host_fixture": "passed local/native_wide_string_probe.cpp; allocator callback header changes, memcpy into actual header, release order and destructor no-clearing",
+    "fixture_manifest": "/link /MANIFEST:EMBED",
+    "build_log": "local/native_wide_string_build.log",
+    "new_tracked_tests": false,
+    "original_wide_machine_code_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "Descriptive names remain hypotheses; saved Ghidra undefined(void) signatures are incomplete, so original ABI is derived from assembly.",
+    "Storage contract retains existing host pool bounds/failure and process-global binding boundaries.",
+    "No memmove overlap guarantee is claimed for native CRT memcpy; valid input/storage and 32-bit arithmetic remain caller obligations."
+  ],
+  "ghidra_mutations": false,
+  "consumer_edits": false,
+  "installed_game_mutations": false
+}
