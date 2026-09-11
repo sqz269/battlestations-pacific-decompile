@@ -1087,5 +1087,96 @@
     "Actual state-definition manager and B579B0/B567B0 row publication, field-table allocation and complete descriptor reader remain open.",
     "Valid live counts/backing extents/aligned pool slots and the shared heap, allocator-list, pool and string lifetimes are caller contracts.",
     "Original allocation/exception delivery, binary ABI, shader/texture payload consumption, rendering and gameplay remain unvalidated."
-  ]
+  ],
+  "integrated_verification": {
+    "utc": "2026-09-11T20:18:08.913185+00:00",
+    "tested_commit": "7cd7fbaa6833799b42fcc84e0269d78112829168",
+    "source_sha256": {
+      "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+      "src/native_material_pass_copy.cpp": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357",
+      "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+      "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+      "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+      "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+      "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+      "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+      "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "src/native_material_pools.cpp": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317",
+      "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+      "include/bsp/native_material_effect_owner.hpp": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd",
+      "src/native_material_effect_owner.cpp": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0",
+      "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+      "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "include/bsp/native_string.hpp": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+      "src/native_string.cpp": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+      "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+      "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+      "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+      "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+      "cmake/startup.cmake": "38f4de230efe478d24da39d3a7ae9ae2fc8c50d62e7df6b9252c6848109a9535",
+      "CMakeLists.txt": "6169efcfb5ae285f0a68c7e921c5d364452e66c6652a939f0b1683f3df2e876d",
+      "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+      "src/native_shader_descriptor_owner.cpp": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48",
+      "docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md": "a6ad91901dc63708eb0ea751760ca1f15058cfd14f9b5c53570322d6acaf80a9",
+      "include/bsp/native_shader_sampler_owner.hpp": "00a039a21215d3b71784c6e627aac0e803e6980abe114a2101530eb59680efdf",
+      "src/native_shader_sampler_owner.cpp": "30f8402c421e3b1837c9738e0fa493e32d5b019a822881e358aed2f34b58aad2",
+      "docs/NATIVE_SHADER_SAMPLER_OWNER.md": "b16fac607db6431b6c49a810dc3f82aa3afb3380ebc6b1e9b472ae0fc489d353"
+    },
+    "changed_from_original_tested_source": [
+      "include/bsp/native_string.hpp",
+      "src/native_string.cpp",
+      "cmake/startup.cmake",
+      "CMakeLists.txt"
+    ],
+    "artifacts_sha256": {
+      "local/native-shader-sampler-owner-merged-native-string.diff": "c3c6518aac69ed697378ef32a3220148bfd39d3b5bc69323fe406b5b296ca924",
+      "local/native-shader-sampler-owner-merged-probe-result.log": "63df8561fbd2e0f87c1dc868913682d65f6555bddb0ef48577266a7432ab0218",
+      "local/native-shader-sampler-owner-merged-probe.asm": "b5a0de5043734bab297a971f93f1f5aab9867c66589f484c27bab4ffbaf3c4dc",
+      "local/native-shader-sampler-owner-merged-probe.cpp": "c7c740eb2d7d80a935c622daad2de28466b2af29a60c477d14dc1325e256448e",
+      "local/native-shader-sampler-owner-merged-probe.exe": "bfc49517c761c35ca03822eb90a795ce0f0635d798db7509d1df1adc41ad1e66",
+      "local/native-shader-sampler-owner-merged-probe.obj": "b3d394ec2455e8ac24d9f689a81c26a9ad86ad85aef6e80434d7240bd1d43f40",
+      "local/native-shader-sampler-owner-merged-probe_compile.log": "4776b821db7eb5d097eae2886c6dcd8464ba769f162ca71e1436c3db3d99b0b2",
+      "local/run_native_shader_sampler_merged_probe.ps1": "b9f1fa54df116c5649a1e9e8e20e6d0dad67e3d5f5a9eab556911e67ff3ca9ac",
+      "local/record_native_shader_sampler_merged_verification.py": "6e52df40d353e4dc009c3bf1ffe0770d28e6f630213603bf0519681741125008",
+      "local/native-shader-sampler-owner-integration.log": "d5ed49e53581d0f9cc19087abe4163c40f586bf61dc9f72b73a5593633759a19",
+      "local/native-shader-sampler-owner-merged-tested/bsp_core.lib": "d37a580afa12858f6fe9aec079c577d10c2eb40f873f23bef7ec063345ebbf90",
+      "local/native-shader-sampler-owner-merged-tested/bsp_game.exe": "be1dcc9c137909ff2050bf7487387a165edd006c61c3d9788267cd447a4f6782",
+      "local/native-shader-sampler-owner-merged-tested/LastTest.log": "faacc4eeb01a6e1d7b7641a493408e0f34f81716e6ac8039ca66857c43149d6b"
+    },
+    "frozen_build_artifacts": [
+      {
+        "original": "build/win32/Release/bsp_core.lib",
+        "preserved": "local/native-shader-sampler-owner-merged-tested/bsp_core.lib",
+        "sha256": "d37a580afa12858f6fe9aec079c577d10c2eb40f873f23bef7ec063345ebbf90"
+      },
+      {
+        "original": "build/win32/Release/bsp_game.exe",
+        "preserved": "local/native-shader-sampler-owner-merged-tested/bsp_game.exe",
+        "sha256": "be1dcc9c137909ff2050bf7487387a165edd006c61c3d9788267cd447a4f6782"
+      },
+      {
+        "original": "build/win32/Testing/Temporary/LastTest.log",
+        "preserved": "local/native-shader-sampler-owner-merged-tested/LastTest.log",
+        "sha256": "faacc4eeb01a6e1d7b7641a493408e0f34f81716e6ac8039ca66857c43149d6b"
+      }
+    ],
+    "reason": "Concurrent native_string change factors existing copy method into an actual-header helper; descriptor/sampler string construction, resize and destruction paths are unchanged. Reviewed diff preserved; complete focused fixture rerun against merged library.",
+    "original_frozen_artifacts_reverified": 107,
+    "strict_merged_win32_build": true,
+    "existing_ctests_passed": 2,
+    "full_original_packet_functions_executed": 16,
+    "initialization_fragment_executed": true,
+    "paired_pool_and_sampler_results_match": true,
+    "real_process_atexit_verified": true,
+    "final_fixture_exit_code": 0
+  }
 }

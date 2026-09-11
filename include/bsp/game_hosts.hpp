@@ -133,6 +133,11 @@ struct GameExecutableOptions {
     // photograph the title page before the injected press-start as well as the main
     // menu after it. Negative keeps the last-frame default.
     long screenshot_frame{-1};
+    // --menu-select <mission id>: the mission the mission-tree screen's loader asks the
+    // shell for at 00586150. Once the main menu is up the run publishes that selection
+    // through 00580940, builds the mission-detail page 0058c010, takes the page's play
+    // action 005922f0 and stops at the mission load request. Empty selects nothing.
+    std::string menu_select;
     // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.
@@ -379,6 +384,23 @@ struct GameRunSummary {
     bool screenshot_written{};
     std::string screenshot_path;
     long screenshot_frame{-1};
+    // Milestone 2e, the mission path. The whole record is in
+    // reports/game_executable_milestone_2e.json; these are the summary lines.
+    std::string menu_select;
+    bool mission_tree_loaded{};
+    std::size_t mission_tree_groups{};
+    std::size_t mission_tree_missions{};
+    std::string mission_selected_id;
+    int mission_list_page{};
+    bool mission_detail_built{};
+    bool mission_start_requested{};
+    bool mission_scene_record{};
+    std::string mission_scene_path;
+    std::size_t mission_scene_entities{};
+    std::size_t mission_scene_classes{};
+    std::size_t mission_load_host_steps{};
+    std::string mission_load_stopped_at;
+    std::string mission_step;
     // Milestone 2d, the text half of the sprite bridge.
     bool text_bridge_open{};
     std::size_t text_widgets{};

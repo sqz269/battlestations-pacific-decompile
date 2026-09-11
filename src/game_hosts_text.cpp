@@ -280,7 +280,7 @@ GameTextHost::~GameTextHost() = default;
 const GameTextSummary& GameTextHost::summary() const noexcept { return impl_->summary; }
 
 bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& widget,
-    float origin_x, float origin_y, GameTextRun& run) {
+    float origin_x, float origin_y, GameTextRun& run, const std::string* source_override) {
     Impl& host = *impl_;
     ++host.summary.text_widgets;
     run = GameTextRun{};
@@ -292,6 +292,7 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
         return false;
     }
     const std::string* authored = table_string(*widget.source, "DefaultText");
+    if (authored == nullptr && source_override != nullptr) authored = source_override;
     if (authored == nullptr) {
         // 00abb630 only calls 00abaed0 when the key is present, so the native widget has
         // no text either: SubtitlesNormal_Text on FE_main is exactly this case.
@@ -314,6 +315,15 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
 
     GameGuiTextBinding binding(host, run);
     binding.bind(*widget.source, text);
+    if (source_override != nullptr) {
+        // The run-time setter, which is what 0058C010 performs at 0058C82C on
+        // the mission-detail page's briefing text: the page's authored string
+        // was resolved by the loader above, and this replaces it through the
+        // same 00ABAED0 the loader's own tail calls.
+        run.source = *source_override;
+        set_localised_source_00abaed0(text, binding, *source_override, true);
+        host.log.implemented("GuiText::set_localised_source", "00abaed0");
+    }
     run.resolved_ascii = ascii_fold(text.text, 96);
 
     if (!binding.built()) {

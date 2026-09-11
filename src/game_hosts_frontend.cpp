@@ -197,6 +197,9 @@ struct GameFrontendHost::Impl {
     // build_quads then turns the cached glyph quads into bridge quads every rebuild.
     std::unique_ptr<GameTextHost> text_host;
     std::map<const GuiLayoutWidget*, GameTextRun> text_runs;
+    // Milestone 2e: the run-time 00ABAED0 sources a screen pushed into a Text
+    // widget, which replace the page's authored DefaultText on the next build.
+    std::map<const GuiLayoutWidget*, std::string> text_sources;
     unsigned back_buffer_width{};
     unsigned back_buffer_height{};
     bool quads_built{false};
@@ -752,7 +755,9 @@ void GameFrontendHost::Impl::append_text_quads(GameWidgetRecord& record,
         const float origin_x = record.x - record.pivot_x * record.width;
         const float origin_y = record.y - record.pivot_y * record.height;
         GameTextRun run;
-        text_host->build_run(record.page, node, origin_x, origin_y, run);
+        const auto source = text_sources.find(&node);
+        text_host->build_run(record.page, node, origin_x, origin_y, run,
+            source != text_sources.end() ? &source->second : nullptr);
         cached = text_runs.emplace(&node, std::move(run)).first;
         summary.text_widgets = text_host->summary().text_widgets;
         summary.text_runs = text_host->summary().runs_built;
@@ -995,6 +1000,13 @@ void GameFrontendHost::set_widget_color(GuiLayoutWidget& widget, float r, float 
     widget.color[2] = b;
     widget.color[3] = a;
     if (changed) impl_->quads_built = false;
+}
+
+void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::string source) {
+    Impl& host = *impl_;
+    host.text_sources[&widget] = std::move(source);
+    host.text_runs.erase(&widget);
+    host.quads_built = false;
 }
 
 void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
