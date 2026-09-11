@@ -160,3 +160,8 @@ device/display/gamma/game, fault or original-runtime result is claimed. The
 existing tests validate their existing math scope, not gather behavior. Frozen
 evidence and exact static replay instructions are under ignored
 `local/renderer_gather_capabilities/`, with `sealed.json` the immutable manifest.
+
+
+## Primary integration
+
+All 1 complete entries are registered against the same strict main Win32 library `e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf`; two existing CTests and eight original seed spans pass. Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation. Reviewed names and evidence comments are saved with prior comments retained; all affected exports are forcibly refreshed. Immutable evidence: `local/renderer_gather_capabilities_primary/`.
