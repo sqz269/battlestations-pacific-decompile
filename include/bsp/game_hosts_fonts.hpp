@@ -23,7 +23,15 @@ public:
     ~GameFontHost();
     GameFontHost(const GameFontHost&) = delete;
     GameFontHost& operator=(const GameFontHost&) = delete;
+    // The two halves of0073bae0's font work, so bsp::run_gui_startup can drive them in
+    // the recovered order instead of this class choosing one. initialize keeps the
+    // milestone-2a entry point and is the two calls in that order.
     void initialize(const std::string& language_font_path);
+    //00ac3910 with (root, descriptor, language path), the argument order the callee sees.
+    void load_descriptors_00ac3910(const std::string& root, const std::string& descriptor,
+        const std::string& language_font_path);
+    //0073bc0d..bc17, the forced payload preload whose data pointer is discarded.
+    void preload_fingerprint_payload_00be9760();
     FontRegistryStartup& registry() noexcept;
     const FingerprintPayload& fingerprint() const noexcept;
     std::size_t resource_opens() const noexcept;

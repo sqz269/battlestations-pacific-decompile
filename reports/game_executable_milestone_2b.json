@@ -1,0 +1,1557 @@
+{
+  "packet": "cc_exe_2b",
+  "owner": "agent/cc-exe-2b",
+  "title": "bsp_game.exe milestone 2b: fonts and GUI startup, and the title pages loaded",
+  "program": "/battlestationspacific.exe",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_access": "read-only; no rename, comment, prototype or save was applied",
+  "installation": "I:/SteamLibrary/steamapps/common/Battlestations Pacific (not modified)",
+  "addresses": {
+    "0073bae0": "the fonts and GUI bring-up 0073e13c calls; run through bsp::run_gui_startup",
+    "007371d0": "the font registry singleton, no arguments",
+    "00ac3910": "the Lua font descriptor load",
+    "0053bc00/00be9620/00be9760": "the fingerprint payload preload",
+    "004c12b0": "the GUI manager singleton",
+    "00aa5d70": "the GUI manager constructor (layout only, not reconstructed here)",
+    "00aa5e20": "the manager's fixed ten-entry resource list",
+    "00aa5840": "the GUI page loader",
+    "00aa7e00": "the direct-child lookup",
+    "00ac6600": "the per-page Lua evaluation",
+    "00aaa710": "the property binding and child walk",
+    "00aeeaf0": "the texture atlas parser, used by the sprite bridge",
+    "00aa09d0": "BSP_Localization_SetLanguage (phase 6, already concrete in 2a)",
+    "00aa06d0": "BSP_Localization_ReloadTables (NOT GUI startup; see corrections)"
+  },
+  "names_added": [],
+  "evidence_appended": [
+    "0073bae0 BSP_FontSystem_LoadDefinitions",
+    "004c12b0 BSP_GuiManager_GetOrCreate",
+    "00aa5e20 BSP_GuiManager_LoadResources",
+    "00aa5840 BSP_GuiManager_LoadPage",
+    "00aa7e00 BSP_GuiWidget_FindChildByName",
+    "00ac6600 BSP_GuiLayer_ConstructFromScript",
+    "00aeeaf0 BSP_TextureAtlas_ParseBuffer"
+  ],
+  "sources": [
+    "src/game_hosts_frontend.cpp",
+    "include/bsp/game_hosts_frontend.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts_fonts.cpp",
+    "include/bsp/game_hosts_fonts.hpp",
+    "src/game_main.cpp"
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "build": "scripts/build.ps1, Release Win32, /W4 /WX /fp:strict, no warnings",
+    "ctest": "reconstructed_math 1/1 passed; no test cases added",
+    "frames_run": "bsp_game.exe --frames 60 --log local/game_run.log --game-root <install>: exit 0",
+    "vfs_probe_ok": "--vfs-probe fonts/fonts.lua: exit 0",
+    "vfs_probe_missing": "--vfs-probe does/not/exist.lua: exit 3",
+    "close_path": "windowed run closed with CloseMainWindow: exit 0",
+    "screenshot": "local/title_page.png, the client area of the running window"
+  },
+  "drawn": "yes",
+  "bridge_disclaimer": "The Direct3D 9 sprite bridge in src/game_hosts_frontend.cpp is NOT a reconstruction of the native GUI draw path. It draws two textured triangles per widget from authored data, with textures created by D3DXCreateTextureFromFileInMemoryEx over bytes the mounted VFS read and sub-rectangles from the reconstructed atlas parser 00aeeaf0.",
+  "run_log_summary": [
+    "sprite bridge atlases=12 items=678",
+    "sprite bridge quads=6 textures=13/14 atlas_items=678",
+    "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=2560x1440 frames_presented=60 loop_finished=1 exit_code=0",
+    "summary vfs_ready=1 mounts=3/3 package_entries=0 package_mounts=0 cachedload=1 probes=3/3",
+    "summary options_file=1 path=C:\\Users\\sqz269\\Documents\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=2560x1440 fullscreen=0 vsync=1 antialias=0",
+    "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+    "summary fonts_loaded=6 font_resource_opens=19 fingerprint_defined_bytes=240",
+    "summary gui_resources=9 pages=5/5 widgets=29 widgets_with_texture=22",
+    "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=6 frames=60"
+  ],
+  "atlases": [
+    {
+      "descriptor": "interface/textures/allbutingame_dxt1.ats",
+      "items": 4,
+      "texture": "interface/textures/allbutingame_DXT1.dds"
+    },
+    {
+      "descriptor": "interface/textures/allbutingame_dxt5.ats",
+      "items": 9,
+      "texture": "interface/textures/allbutingame_DXT5.dds"
+    },
+    {
+      "descriptor": "interface/textures/common_dxt1.ats",
+      "items": 10,
+      "texture": "interface/textures/common_DXT1.dds"
+    },
+    {
+      "descriptor": "interface/textures/common_dxt5_1.ats",
+      "items": 114,
+      "texture": "interface/textures/common_DXT5_1.dds"
+    },
+    {
+      "descriptor": "interface/textures/common_dxt5_2.ats",
+      "items": 82,
+      "texture": "interface/textures/common_DXT5_2.dds"
+    },
+    {
+      "descriptor": "interface/textures/common_dxt5_3.ats",
+      "items": 21,
+      "texture": "interface/textures/common_DXT5_3.dds"
+    },
+    {
+      "descriptor": "interface/textures/game_dxt1.ats",
+      "items": 32,
+      "texture": "interface/textures/game_DXT1.dds"
+    },
+    {
+      "descriptor": "interface/textures/game_dxt5_1.ats",
+      "items": 173,
+      "texture": "interface/textures/game_DXT5_1.dds"
+    },
+    {
+      "descriptor": "interface/textures/game_dxt5_2.ats",
+      "items": 70,
+      "texture": "interface/textures/game_DXT5_2.dds"
+    },
+    {
+      "descriptor": "interface/textures/menu_dxt5.ats",
+      "items": 86,
+      "texture": "interface/textures/menu_DXT5.dds"
+    },
+    {
+      "descriptor": "interface/textures/menu_dxt1_1.ats",
+      "items": 70,
+      "texture": "interface/textures/menu_DXT1_1.dds"
+    },
+    {
+      "descriptor": "interface/textures/menu_dxt1_2.ats",
+      "items": 7,
+      "texture": "interface/textures/menu_DXT1_2.dds"
+    }
+  ],
+  "gui_resources": [
+    {
+      "name": "data/interface/textures/whiteGui.tga",
+      "kind": "texture",
+      "acquired": false,
+      "stored": true,
+      "detail": "VFS rejected the name"
+    },
+    {
+      "name": "interface/textures/common/transparent.tga",
+      "kind": "texture",
+      "acquired": true,
+      "stored": true,
+      "detail": "loaded by the sprite bridge"
+    },
+    {
+      "name": "_Mouse",
+      "kind": "group",
+      "acquired": true,
+      "stored": true,
+      "detail": "page loaded through 00aa5840"
+    },
+    {
+      "name": "MousePtrFE_Icon",
+      "kind": "child",
+      "acquired": true,
+      "stored": true,
+      "detail": "direct child of the group's root"
+    },
+    {
+      "name": "MousePtrGUI_Icon",
+      "kind": "child",
+      "acquired": true,
+      "stored": true,
+      "detail": "direct child of the group's root"
+    },
+    {
+      "name": "_Highlight",
+      "kind": "group",
+      "acquired": true,
+      "stored": false,
+      "detail": "page loaded through 00aa5840"
+    },
+    {
+      "name": "hl_FrameBox",
+      "kind": "child",
+      "acquired": true,
+      "stored": true,
+      "detail": "direct child of the group's root"
+    },
+    {
+      "name": "hlCircle_FrameBox",
+      "kind": "child",
+      "acquired": true,
+      "stored": true,
+      "detail": "direct child of the group's root"
+    },
+    {
+      "name": "safezone_43_FrameBox",
+      "kind": "child",
+      "acquired": true,
+      "stored": true,
+      "detail": "direct child of the group's root"
+    },
+    {
+      "name": "safezone_169_FrameBox",
+      "kind": "child",
+      "acquired": true,
+      "stored": true,
+      "detail": "direct child of the group's root"
+    }
+  ],
+  "pages": [
+    {
+      "name": "_Mouse",
+      "priority": -1000,
+      "model_backed": false,
+      "script_evaluated": true
+    },
+    {
+      "name": "_Highlight",
+      "priority": -1000,
+      "model_backed": false,
+      "script_evaluated": true
+    },
+    {
+      "name": "FE_frame",
+      "priority": 0,
+      "model_backed": false,
+      "script_evaluated": true
+    },
+    {
+      "name": "FE_frame_title",
+      "priority": 0,
+      "model_backed": false,
+      "script_evaluated": true
+    },
+    {
+      "name": "FE_initial",
+      "priority": 0,
+      "model_backed": false,
+      "script_evaluated": true
+    }
+  ],
+  "widgets": [
+    {
+      "page": "_Mouse",
+      "key": "_Mouse",
+      "type": "Screen",
+      "depth": 0,
+      "pos": [
+        0.0,
+        0.0,
+        -6000.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "MousePtrGUI_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.5,
+        -6000.0
+      ],
+      "size": [
+        0.1052,
+        0.1403
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_center_clear.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "CenterLeft_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_cross.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "ExtendUp_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        1.25,
+        0.0319
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_scale.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "ExtendRight_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        1.25,
+        0.0319
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_scale.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "ExtendLeft_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        1.25,
+        0.0319
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_scale.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "ExtendDown_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        1.25,
+        0.0319
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_scale.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "CenterUp_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_cross.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "CenterRight_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_cross.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "CenterDown_Icon",
+      "type": "Icon",
+      "depth": 2,
+      "pos": [
+        0.4557,
+        0.441,
+        -6000.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor_cross.tga",
+      "material": null
+    },
+    {
+      "page": "_Mouse",
+      "key": "MousePtrFE_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.5,
+        -6000.0
+      ],
+      "size": [
+        0.0365,
+        0.0625
+      ],
+      "visible_authored": false,
+      "texture": "common/mouse/cursor.tga",
+      "material": null
+    },
+    {
+      "page": "_Highlight",
+      "key": "_Highlight",
+      "type": "Screen",
+      "depth": 0,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": null
+    },
+    {
+      "page": "_Highlight",
+      "key": "safezone_169_FrameBox",
+      "type": "FrameBox",
+      "depth": 1,
+      "pos": [
+        -0.1065,
+        0.0405,
+        -1999.0
+      ],
+      "size": [
+        1.2064,
+        0.91
+      ],
+      "visible_authored": false,
+      "texture": "common/framebox/safezone.tga",
+      "material": null
+    },
+    {
+      "page": "_Highlight",
+      "key": "hl_FrameBox",
+      "type": "FrameBox",
+      "depth": 1,
+      "pos": [
+        0.0,
+        0.0,
+        -5.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "common/framebox/framebox_text_select.tga",
+      "material": null
+    },
+    {
+      "page": "_Highlight",
+      "key": "safezone_43_FrameBox",
+      "type": "FrameBox",
+      "depth": 1,
+      "pos": [
+        0.0436,
+        0.0418,
+        -1999.0
+      ],
+      "size": [
+        0.9063,
+        0.908
+      ],
+      "visible_authored": false,
+      "texture": "common/framebox/safezone.tga",
+      "material": null
+    },
+    {
+      "page": "_Highlight",
+      "key": "hlCircle_FrameBox",
+      "type": "FrameBox",
+      "depth": 1,
+      "pos": [
+        0.0,
+        0.0028,
+        -5.0
+      ],
+      "size": [
+        0.0479,
+        0.0778
+      ],
+      "visible_authored": false,
+      "texture": "common\\support_powerup\\frame_highlight_form.tga",
+      "material": null
+    },
+    {
+      "page": "FE_frame",
+      "key": "FE_frame",
+      "type": "Screen",
+      "depth": 0,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": null
+    },
+    {
+      "page": "FE_frame",
+      "key": "frame_top_sh_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.476,
+        0.1667,
+        -598.0
+      ],
+      "size": [
+        1.4,
+        0.0333
+      ],
+      "visible_authored": false,
+      "texture": "fe/frame/frame_shadow.tga",
+      "material": null
+    },
+    {
+      "page": "FE_frame",
+      "key": "frame_flag_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.0542,
+        -600.0
+      ],
+      "size": [
+        1.3333,
+        0.2333
+      ],
+      "visible_authored": false,
+      "texture": "fe\\frame\\frame_usa.tga",
+      "material": null
+    },
+    {
+      "page": "FE_frame",
+      "key": "frame_bottom_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        1.0024,
+        -599.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "fe/frame/frame_topbottom.tga",
+      "material": null
+    },
+    {
+      "page": "FE_frame",
+      "key": "frame_bottom_sh_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.4688,
+        0.8333,
+        -598.0
+      ],
+      "size": [
+        1.4,
+        0.0333
+      ],
+      "visible_authored": false,
+      "texture": "fe/frame/frame_shadow.tga",
+      "material": null
+    },
+    {
+      "page": "FE_frame",
+      "key": "frame_top_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.0,
+        -599.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": "fe/frame/frame_topbottom.tga",
+      "material": null
+    },
+    {
+      "page": "FE_frame_title",
+      "key": "FE_frame_title",
+      "type": "Screen",
+      "depth": 0,
+      "pos": [
+        0.0,
+        0.0,
+        -800.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": null
+    },
+    {
+      "page": "FE_frame_title",
+      "key": "title_Text",
+      "type": "Text",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.364,
+        -807.0
+      ],
+      "size": [
+        0.8,
+        0.0375
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": "Viper19"
+    },
+    {
+      "page": "FE_frame_title",
+      "key": "szarnyas_FrameBox",
+      "type": "FrameBox",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.154,
+        -805.0
+      ],
+      "size": [
+        0.5333,
+        0.1778
+      ],
+      "visible_authored": false,
+      "texture": "common/title.tga",
+      "material": null
+    },
+    {
+      "page": "FE_initial",
+      "key": "FE_initial",
+      "type": "Screen",
+      "depth": 0,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.0,
+        0.0
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": null
+    },
+    {
+      "page": "FE_initial",
+      "key": "New_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.5,
+        5.0
+      ],
+      "size": [
+        1.3333,
+        0.6833
+      ],
+      "visible_authored": false,
+      "texture": "fe/bg/pic_4.tga",
+      "material": null
+    },
+    {
+      "page": "FE_initial",
+      "key": "logo_pacfic_Icon",
+      "type": "Icon",
+      "depth": 1,
+      "pos": [
+        0.5,
+        0.1694,
+        -704.0
+      ],
+      "size": [
+        0.5333,
+        0.1778
+      ],
+      "visible_authored": false,
+      "texture": "fe\\logo_bsp.tga",
+      "material": null
+    },
+    {
+      "page": "FE_initial",
+      "key": "press_start_Text",
+      "type": "Text",
+      "depth": 1,
+      "pos": [
+        0.5969,
+        0.9424,
+        -700.0
+      ],
+      "size": [
+        0.5208,
+        0.0542
+      ],
+      "visible_authored": false,
+      "texture": null,
+      "material": "Viper19"
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "StartupHost::com_initialize",
+      "native_address": "008f81f8",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::com_initialize_security",
+      "native_address": "008f820a",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::game_explorer_create",
+      "native_address": "008f8245",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::current_directory",
+      "native_address": "008f8254",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::game_explorer_verify_access",
+      "native_address": "008f82aa",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::game_explorer_release",
+      "native_address": "008f82c4",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::com_uninitialize",
+      "native_address": "008f82cc",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_initialize",
+      "native_address": "00bd2e20",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::allocate_thread_slot",
+      "native_address": "00bf681b",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_register_current",
+      "native_address": "00bd2fe0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::create_single_instance_mutex",
+      "native_address": "008f8301",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::set_thread_affinity_to_first_processor",
+      "native_address": "008f83fc",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::publish_game_resource_factory",
+      "native_address": "008f840b",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_construct",
+      "native_address": "00737970",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_initialize",
+      "native_address": "0073d410",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 capture_module_directory",
+      "native_address": "00439040",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 construct_allocation_stats",
+      "native_address": "00be2900",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 construct_frame_clock_singleton",
+      "native_address": "00bedfb0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 0 install_object_handle_resolvers",
+      "native_address": "006ad0d0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 probe_hardware",
+      "native_address": "0073c3b0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 construct_provider_manager",
+      "native_address": "00beda60",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 install_manager_handlers",
+      "native_address": "0073d642",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 file_store_factory",
+      "native_address": "004fc150",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 register_provider_factory",
+      "native_address": "00be0660",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "Phase 2 mpkg_factory",
+      "native_address": "00736a90",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 current_directory",
+      "native_address": "0073d697",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 2 mount_system_path",
+      "native_address": "00be1890",
+      "implemented": true,
+      "calls": 3
+    },
+    {
+      "method": "Phase 2 mount_packages",
+      "native_address": "0073cb10",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "Phase 2 register_resource_search_paths",
+      "native_address": "00738360",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 3 construct_win32_platform",
+      "native_address": "00becda0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "SaveStorageHost::special_folder_path",
+      "native_address": "00beb2f3",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "SaveStorageHost::create_directory",
+      "native_address": "00beb35e",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "Phase 3 initialize_save_storage",
+      "native_address": "00beb2c0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 3 parse_command_line",
+      "native_address": "0073ce20",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Factory tail mpak_factory",
+      "native_address": "00736b60",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Factory tail register_provider_factory",
+      "native_address": "00be0660",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Factory tail pak_archive_registry",
+      "native_address": "00736c30",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Factory tail set_manager_pak_registry",
+      "native_address": "00bd9230",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Factory tail set_manager_cached_load",
+      "native_address": "00bd9f90",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Factory tail create_pak_registry_lock",
+      "native_address": "00bb40b0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "RendererHost::direct3d_create",
+      "native_address": "00b32410",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "RendererHost::gather_capabilities",
+      "native_address": "00b2c8e0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 input_script_tables",
+      "native_address": "006ab6b0/006a7be0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GameSettingsHost::build_language_catalog",
+      "native_address": "008d7bc0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GameSettingsHost::rebuild_antialias_levels",
+      "native_address": "00b295c0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 5 load_game_settings",
+      "native_address": "008d8190",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 resource_manager",
+      "native_address": "004c1400",
+      "implemented": false,
+      "calls": 2
+    },
+    {
+      "method": "Phase 6 animation_channels_parser",
+      "native_address": "00736dd0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 register_type_parser",
+      "native_address": "00b80a50",
+      "implemented": false,
+      "calls": 2
+    },
+    {
+      "method": "Phase 6 bone_parser",
+      "native_address": "00736ea0",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::load_arrow_cursor",
+      "native_address": "00becf0f",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::register_class",
+      "native_address": "00becf80",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::adjust_window_rect",
+      "native_address": "00becfd6",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::create_window",
+      "native_address": "00bed01d",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::set_window_long",
+      "native_address": "00bed0a4",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "PlatformWindowHost::set_window_pos",
+      "native_address": "00bed0c9",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::desktop_client_rect",
+      "native_address": "00bed0f3",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::window_color_depth",
+      "native_address": "00bed16b",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformWindowHost::show_window",
+      "native_address": "00bed19c",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 3 configure_platform_window",
+      "native_address": "00becee0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "RendererHost::create_device",
+      "native_address": "00b2aeb0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 4 renderer_resources",
+      "native_address": "00b14a10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 locale_set_language",
+      "native_address": "00aa09d0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 locale_register_globals",
+      "native_address": "00aa0d30",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 locale_load_tables",
+      "native_address": "00aa06d0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 6 locale_lookup",
+      "native_address": "00a9ec70",
+      "implemented": true,
+      "calls": 3
+    },
+    {
+      "method": "Phase 5 sound_system_initialize",
+      "native_address": "00a88770",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "GuiStartupHost::language_font_path",
+      "native_address": "008d4890",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GuiStartupHost::font_registry",
+      "native_address": "007371d0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 7 font registry resources",
+      "native_address": "00ac3910",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GuiStartupHost::load_font_descriptors",
+      "native_address": "00ac3910",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 7 fingerprint payload preload",
+      "native_address": "00be9760",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GuiStartupHost::preload_fallback_glyph_table",
+      "native_address": "0053bc00",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GuiStartupHost::gui_manager_get_or_create",
+      "native_address": "004c12b0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "GuiManagerResources::renderer_load_texture",
+      "native_address": "00aa5e60",
+      "implemented": false,
+      "calls": 2
+    },
+    {
+      "method": "GuiLayoutHost::vfs_name_exists",
+      "native_address": "00aa58c3",
+      "implemented": true,
+      "calls": 5
+    },
+    {
+      "method": "GuiLayoutHost::create_page_root_node",
+      "native_address": "00aa6720",
+      "implemented": false,
+      "calls": 5
+    },
+    {
+      "method": "GuiLayoutHost::widescreen_enabled",
+      "native_address": "00aa8750",
+      "implemented": true,
+      "calls": 29
+    },
+    {
+      "method": "GuiLayoutHost::create_widget_node",
+      "native_address": "00b75030",
+      "implemented": false,
+      "calls": 24
+    },
+    {
+      "method": "GuiLayoutHost::set_node_parent",
+      "native_address": "00b6e680",
+      "implemented": false,
+      "calls": 24
+    },
+    {
+      "method": "GuiLayoutHost::widget_vtable_74",
+      "native_address": "00aaade8",
+      "implemented": false,
+      "calls": 24
+    },
+    {
+      "method": "GuiLayoutHost::derived_property_reader",
+      "native_address": "00aaa710",
+      "implemented": false,
+      "calls": 29
+    },
+    {
+      "method": "GuiLayoutHost::widget_vtable_78",
+      "native_address": "00aaae5b",
+      "implemented": false,
+      "calls": 24
+    },
+    {
+      "method": "GuiLayoutHost::clear_page_root_list",
+      "native_address": "00b6d890",
+      "implemented": false,
+      "calls": 5
+    },
+    {
+      "method": "GuiManagerResources::load_page",
+      "native_address": "00aa5840",
+      "implemented": true,
+      "calls": 2
+    },
+    {
+      "method": "GuiManagerResources::set_visibility",
+      "native_address": "00aa5faf",
+      "implemented": true,
+      "calls": 8
+    },
+    {
+      "method": "GuiManagerResources::find_child",
+      "native_address": "00aa7e00",
+      "implemented": true,
+      "calls": 6
+    },
+    {
+      "method": "GuiManagerResources::clear_ready_flag",
+      "native_address": "00aa6305",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 7 fonts_and_gui_startup",
+      "native_address": "0073bae0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "Phase 8 world_effects_startup",
+      "native_address": "00af0b10",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "Phase 9 game_entry",
+      "native_address": "00740840",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "TitlePages::load_page",
+      "native_address": "00aa5840",
+      "implemented": true,
+      "calls": 3
+    },
+    {
+      "method": "Title bring-up GGame::OnInitTitle",
+      "native_address": "004c9a70",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::platform_run_loop_dispatch",
+      "native_address": "00bec1a0",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "PlatformLoopCallbacks::pretranslate",
+      "native_address": "00bec1d8",
+      "implemented": false,
+      "calls": 3
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_set_frame_slot_color",
+      "native_address": "004c1dd0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_begin_frame_slot",
+      "native_address": "00be3640",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::game_state",
+      "native_address": "00737acc",
+      "implemented": false,
+      "calls": 120
+    },
+    {
+      "method": "ApplicationFrameHost::input_action_pressed",
+      "native_address": "004c43c0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::advance_frame_clock",
+      "native_address": "00bedc30",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::frame_interval",
+      "native_address": "00bee070",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::game_on_move",
+      "native_address": "004e4a40",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::exit_requested",
+      "native_address": "00e1ae75",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::tick_vfs_providers",
+      "native_address": "00bdb0b0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::update_loading_queue",
+      "native_address": "004fde20",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_end_frame_slot",
+      "native_address": "00be3660",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::profiler_end_frame",
+      "native_address": "00be34d0",
+      "implemented": false,
+      "calls": 60
+    },
+    {
+      "method": "RendererHost::clear_and_present",
+      "native_address": "milestone",
+      "implemented": true,
+      "calls": 60
+    },
+    {
+      "method": "ApplicationFrameHost::request_loop_exit",
+      "native_address": "0109cf04+181",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_shutdown",
+      "native_address": "00737f30",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "ApplicationShutdownHost::singleton_teardown",
+      "native_address": "00737f80",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::application_destruct",
+      "native_address": "008f8444",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::destroy_singleton_lifetime_manager",
+      "native_address": "008f8449",
+      "implemented": false,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::close_mutex",
+      "native_address": "008f846e",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_unregister_current",
+      "native_address": "00bd3050",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::release_thread_slot",
+      "native_address": "00bf65ac",
+      "implemented": true,
+      "calls": 1
+    },
+    {
+      "method": "StartupHost::random_threads_shutdown",
+      "native_address": "00bd30d0",
+      "implemented": true,
+      "calls": 1
+    }
+  ],
+  "host_method_counts": {
+    "concrete": 81,
+    "unimplemented": 36,
+    "total": 117
+  },
+  "host_method_counts_before_2b": {
+    "concrete": 67,
+    "unimplemented": 28,
+    "total": 95,
+    "measured_by": "the same tree with this packet's source edits stashed, bsp_game.exe --frames 30 against the same installation"
+  },
+  "host_method_counts_close_run": {
+    "concrete": 82,
+    "unimplemented": 36,
+    "note": "a run ended with CloseMainWindow also reaches CloseRequestPolicy::front_end_branch (004ca2f0)"
+  },
+  "fonts_registered": [
+    {
+      "name": "ViperTitle",
+      "data": "viper19.dat",
+      "gfx": "viper19.tga",
+      "alpha": "white.tga",
+      "scale_ratio": 1.2,
+      "uppercase_only": true
+    },
+    {
+      "name": "Arial16",
+      "data": "arial18.dat",
+      "gfx": "arial18.tga",
+      "alpha": "white.tga",
+      "scale_ratio": 0.8889,
+      "uppercase_only": false
+    },
+    {
+      "name": "Viper19",
+      "data": "viper19.dat",
+      "gfx": "viper19.tga",
+      "alpha": "white.tga",
+      "scale_ratio": 1.0,
+      "uppercase_only": true
+    },
+    {
+      "name": "Arial20",
+      "data": "arial18.dat",
+      "gfx": "arial18.tga",
+      "alpha": "white.tga",
+      "scale_ratio": 1.2,
+      "uppercase_only": false
+    },
+    {
+      "name": "Arial15",
+      "data": "arial18.dat",
+      "gfx": "arial18.tga",
+      "alpha": "white.tga",
+      "scale_ratio": 0.8333,
+      "uppercase_only": false
+    },
+    {
+      "name": "Arial18",
+      "data": "arial18.dat",
+      "gfx": "arial18.tga",
+      "alpha": "white.tga",
+      "scale_ratio": 1.0,
+      "uppercase_only": false
+    }
+  ],
+  "locale": {
+    "language": "englishauthentic",
+    "keys": 6856,
+    "tables": [
+      "lockit/englishauthentic.lan"
+    ],
+    "lookups_00a9ec70": {
+      "FE.init_legal": "",
+      "globals.pleasewait": "Please Wait",
+      "globals.newplayer": "New Player"
+    }
+  },
+  "citation_corrections": [
+    {
+      "method": "PlatformLoopCallbacks::pretranslate",
+      "was": "00bec20a",
+      "now": "00bec1d8",
+      "reported_by": "packet cc_frontend_states",
+      "verified": "00bec20a is MOV byte ptr [ESI+0x43],1 in the 00bec1a0 epilogue at 00bec209-00bec214, once per process; 00bec1d8 is CALL 00c2f1d2 inside the PeekMessageA success arm and 00c2f1d2 is JMP dword ptr [00ce25dc], the XLivePreTranslateMessage (ordinal 5030) import thunk",
+      "behaviour_changed": false
+    },
+    {
+      "method": "ApplicationFrameHost::game_state",
+      "was": "00e188a8+5d4",
+      "now": "00737acc",
+      "reported_by": "packet cc_frontend_states",
+      "verified": "00737acc is MOV ECX,dword ptr [00e188a8] then MOV EAX,dword ptr [ECX+0x5d4], repeated at 00737b33; a field read off the GGame singleton pointer, not a call, so 120 over 60 frames is one field read twice per frame",
+      "behaviour_changed": false
+    }
+  ]
+}

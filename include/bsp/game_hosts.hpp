@@ -29,6 +29,7 @@
 struct IGameExplorer;
 
 #include <cstdio>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -57,6 +58,8 @@ class GameSettingsBinding;
 class GameScriptHost;
 class GameLocaleHost;
 class GameFontHost;
+// Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
+class GameFrontendHost;
 
 // One host method, or one initialize phase, observed during a run.
 struct GameHostMethodRecord {
@@ -173,6 +176,11 @@ public:
     bool create(const RendererInitRequest& request);
     // Clears to the milestone background and presents. Counts one presented frame.
     bool clear_and_present();
+    // Milestone 2b: what the milestone's own present draws between BeginScene and
+    // EndScene. The renderer frame routine behind renderer virtual +20h is still not
+    // reconstructed, so anything installed here is an executable-side bridge, not a
+    // recovered draw path.
+    void set_overlay(std::function<void(IDirect3DDevice9&)> overlay);
     void release();
 
     bool created() const noexcept { return device_ != nullptr; }
@@ -187,6 +195,7 @@ private:
     IDirect3D9& api_;
     NativeRendererParametersOwner& renderer_parameters_;
     IDirect3DDevice9* device_{};
+    std::function<void(IDirect3DDevice9&)> overlay_;
     D3DPRESENT_PARAMETERS parameters_{};
     DWORD behavior_flags_{};
     HRESULT creation_result_{E_FAIL};
@@ -291,6 +300,19 @@ struct GameRunSummary {
     std::size_t fonts_loaded{};
     std::size_t font_resource_opens{};
     std::size_t fingerprint_defined_bytes{};
+    // Milestone 2b. Phase 7 (0073bae0, 00aa5e20) and the title pages (00aa5840).
+    std::size_t gui_resources_acquired{};
+    std::size_t gui_pages_loaded{};
+    std::size_t gui_pages_requested{};
+    std::size_t gui_widgets{};
+    std::size_t gui_widgets_with_texture{};
+    // The sprite bridge, which is not a reconstruction of the native GUI draw path.
+    bool gui_bridge_open{};
+    std::string gui_bridge_atlas;
+    std::size_t gui_bridge_atlas_items{};
+    std::size_t gui_bridge_textures{};
+    std::size_t gui_bridge_quads{};
+    unsigned long long gui_bridge_frames{};
 };
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
@@ -337,6 +359,7 @@ public:
     GameScriptHost* script_host() const noexcept { return scripts_; }
     GameLocaleHost* locale_host() const noexcept { return locale_; }
     GameFontHost* font_host() const noexcept { return fonts_; }
+    GameFrontendHost* frontend_host() const noexcept { return frontend_; }
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
 
@@ -373,6 +396,7 @@ private:
     GameScriptHost* scripts_{};
     GameLocaleHost* locale_{};
     GameFontHost* fonts_{};
+    GameFrontendHost* frontend_{};
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
     SettingsRendererCapabilities renderer_capabilities_;
