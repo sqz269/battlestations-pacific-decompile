@@ -1,0 +1,622 @@
+{
+  "packet": "orch2_native_material_pass_copy_ad",
+  "utc": "2026-09-11T19:31:45.928218+00:00",
+  "tested_source_commit": "764199616270ba7527ffe250799a5a68987aee8f",
+  "source_sha256": {
+    "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+    "src/native_material_pass_copy.cpp": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357",
+    "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+    "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+    "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+    "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+    "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+    "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+    "include/bsp/native_material_pools.hpp": "d2dbf93353178feebd657b3c4713a8db5e4e8bf90edfb1fd9a17f672d4b068e5",
+    "src/native_material_pools.cpp": "9dc0a1193df2bd0adc0d9e0ce140cba863029f0f1cc16dfe8debc361307b102a",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_material_effect_owner.hpp": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd",
+    "src/native_material_effect_owner.cpp": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/native_string.hpp": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+    "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+    "cmake/startup.cmake": "e9c9bd89672c285dfb0d8ae50e079fd2e65759fe83db0a762b29bcfa0083c977",
+    "CMakeLists.txt": "1c99142673930b561d139ad48a1b6f264fe40a7a71a1305181f058298fedc12c"
+  },
+  "artifacts_sha256": {
+    "local/native-material-pass-copy-annotation-addresses.json": "b75c26ff2aac56a17376e74d3e7197e8fff63b69a5e367beb5fd027148e74432",
+    "local/native-material-pass-copy-annotation-verification.json": "76362ab9ead16be1c6a75b488584f7de8907c0d391adc8bf9dbe7d136d489597",
+    "local/native-material-pass-copy-annotations.log": "0b6ea6109ef5041ac60042a0177dc9803e8abc083fe93e5732330446703a6a12",
+    "local/native-material-pass-copy-binding_ctor-assembly.txt": "40937d158c2c03b6d31a18f6df9bdb6bb1f7e60f923c182a60ab406d823b5b91",
+    "local/native-material-pass-copy-binding_ctor-bytes.txt": "6af4c0187c35765d249f916e95d07d3f2cae65acc5eb5abf35ebcf56361161f7",
+    "local/native-material-pass-copy-binding_ctor.bin": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74",
+    "local/native-material-pass-copy-binding_unwind_code-assembly.txt": "97fb5412f10028e7277cef567e1214177126f18f49c28c6a2e33b03d079df20a",
+    "local/native-material-pass-copy-binding_unwind_code-bytes.txt": "e87fb7f29f701c6a4b0ab790123e6e2e2eb8f1e1d216d25521271566b051f8e7",
+    "local/native-material-pass-copy-binding_unwind_code.bin": "56f64c139c622d95389a64a07b3050c48aa5b8c908db7fa1b9973f53cb93d1f9",
+    "local/native-material-pass-copy-binding_unwind_meta_table-bytes.txt": "eaaa807f493f3da2fbbfe4e33a4883a6ddfc2a77428f83c4b3c5d28845358892",
+    "local/native-material-pass-copy-binding_unwind_meta_table.bin": "8b8574a50919f52f8d1373604a20aba0a78ccaa086141056ef0a49eaa6214f95",
+    "local/native-material-pass-copy-build.log": "d08af7a5643462bc1b7b7a13bbaa7ed3110c778f74f885cc6156fc4b20aeaadf",
+    "local/native-material-pass-copy-comments-after.json": "079c7d0d9e336af398c8edcf09d9df45007b2eb059b49fc1f562b8161ee890a3",
+    "local/native-material-pass-copy-comments-after.log": "94ab64ca11f2e82cc9f2828b244271196c45a1c316afc0eace196e65d2210b3b",
+    "local/native-material-pass-copy-comments-before.json": "6f9b6815b3b6228a88c5cc7bb7df51870bb9c745e35b0be1c5afcb6af2c3c55a",
+    "local/native-material-pass-copy-comments-before.log": "4106c546ec38cd4c4fd8e6883454712d0ffa4617fc52abe7124fad32700ddb56",
+    "local/native-material-pass-copy-copy_unwind_code-assembly.txt": "e23645160b52a87213356b49c0b8189d08488b7fe326dfd398c27b1e65651ae2",
+    "local/native-material-pass-copy-copy_unwind_code-bytes.txt": "9a088e369dec4d0f13b2465cdcc71c99950647905843f510e9eb4ed6c46b02f3",
+    "local/native-material-pass-copy-copy_unwind_code.bin": "497af7ec4df63acbe3d1c6301ffccdc356fceb985ca5a902ada2ee01991c8761",
+    "local/native-material-pass-copy-copy_unwind_meta_table-bytes.txt": "76305f90b759782dacdc762ae5452614ef6a775069c82bf82298cf4cbeab8fe5",
+    "local/native-material-pass-copy-copy_unwind_meta_table.bin": "983334ba90802a9c613dcc53e3ce5aa3a40ded925f46e46624dfcc3b64a04383",
+    "local/native-material-pass-copy-export-refresh.log": "f824a3e02d4c9876e45369e41c8fc147d6ed65923782e5ce4f336085a88f7e89",
+    "local/native-material-pass-copy-flow-after.log": "11fc54cf6254ebf74bf5f94ec345d78d70e5e12ca79865bdffbb302f5113a329",
+    "local/native-material-pass-copy-ledger.log": "1aea2f7d1f64b85600d8828b77c037dfc8d4655a90a08ccd8410a70e4c7ef05a",
+    "local/native-material-pass-copy-names-after.txt": "dec5b32bf3ba2ae08db2825f0d7604a17af19e3a1dd7907e74387af92f26636f",
+    "local/native-material-pass-copy-names-before.txt": "616ee5c1426f265c4449f134ad8ea7878650c1b9573e92880d76b258cb1c2f0c",
+    "local/native-material-pass-copy-names-expected.json": "8edb51e41ddd8061d13b0860c637bb85c005e66526d2e7e8f9c0b06a5b624c39",
+    "local/native-material-pass-copy-native.hpp": "c346e1ca4c3956608acec446f46478e4c458e57c633c37b8bbfa3b9bafbbf2ae",
+    "local/native-material-pass-copy-pairs_copy-assembly.txt": "2796f15fe05615e0ec700fabe59b5605b089e25d811809be4ace472704c230c0",
+    "local/native-material-pass-copy-pairs_copy-bytes.txt": "0f190ca3dd61cef6abc8d813521f7e9ac39e534f8d6dc6e8148d1f4631fbda30",
+    "local/native-material-pass-copy-pairs_copy.bin": "c0b99c11c2a5b6756dc579ce9d06dffa59c448b4528db79c8720f3cbb6de0fdc",
+    "local/native-material-pass-copy-pass_copy-assembly.txt": "a45b31aea7a019c11a0c24f066952aca4f72e80348fe29b15168ed8bdd71eb12",
+    "local/native-material-pass-copy-pass_copy-bytes.txt": "3fc1ad7e088758539e42dfe48819e1d851d530a29363f024b4d8a7b0b971689e",
+    "local/native-material-pass-copy-pass_copy.bin": "971ee9b1a918cdcd7859bbd5435af3cd3bd6d870f18794747b1ed41d94cfd143",
+    "local/native-material-pass-copy-probe-result.log": "87365918610adf2a846bd4d06092507ed491b0ae4aa6af817ebea2cf0adbf7a6",
+    "local/native-material-pass-copy-probe.asm": "1a7e4f672f7299b1b61c8fbe93c3f75c16f0937081075da5293fa48caa63de2c",
+    "local/native-material-pass-copy-probe.cpp": "93e3f573f699c1d584bedf80a2f09897c345f67276cd49b01dec773d00afde83",
+    "local/native-material-pass-copy-probe.exe": "3718a4ea29134712c91fee5456200ee8d242a393da36e4a640b8453272c1b237",
+    "local/native-material-pass-copy-probe.obj": "77d57656bd938911eb8d221adf0bcbc0a46b557b9e36a72a4c316256082ba5e0",
+    "local/native-material-pass-copy-probe_compile.log": "7179d119ff29cce379c6ee5da905ec16e0fe18533e88d15db2aeab5cdc32ef30",
+    "local/native-material-pass-copy-render_copy-assembly.txt": "eca1802e737f18588bc403e9075e56f05db0a9ad01713f809b31ee67dfaea9c1",
+    "local/native-material-pass-copy-render_copy-bytes.txt": "aa90c247b1141e8e8bba7b1f21ba34242dcdb6858970ab356228d6a065417ad6",
+    "local/native-material-pass-copy-render_copy.bin": "0f58077bda4aeccc4b2c59e8bcfe563509a113ad3c5b26546942a14ed11ec06b",
+    "local/native-material-pass-copy-sampler_copy-assembly.txt": "3c34fcacc863ae1b536ea36954993ef6d5aff8bc7863427c8229e01d420942bd",
+    "local/native-material-pass-copy-sampler_copy-bytes.txt": "4789ac751060263c0428daad3f4b0ffe41ed92640b4e5918e356befe6c48da95",
+    "local/native-material-pass-copy-sampler_copy.bin": "cc92e78c0684cc3b540d369d9f754750d3ee22a7641e2a6cbf883f26328bdb7e",
+    "local/native-material-pass-copy-secondary-assembly.txt": "20bfc87f90b928b73f24043f4a3e7459f0862643a7a3898c2c2e954660cd3763",
+    "local/native-material-pass-copy-secondary-bytes.txt": "e776f3d5c739c5a18290f7e1691173a07572f318815d95c2ab52dd78cfa71560",
+    "local/native-material-pass-copy-secondary.bin": "9ed00a4c3d16d41d9681d253d47e86723621e0d7d7ef5f3905fd7fb0044e4bb5",
+    "local/native-material-pass-copy-secondary_unwind_code-assembly.txt": "46a607fbfa89ae6ca9bf5cbf7749a023893bbd0387a737fd6d5af658e3091fa2",
+    "local/native-material-pass-copy-secondary_unwind_code-bytes.txt": "5e8c102738b04f00fd8e4774b8c8746e390e7d88f221bf09e18825f96a7e42c8",
+    "local/native-material-pass-copy-secondary_unwind_code.bin": "941a631c09eab110436d181555db7b5828e820a65040e4d31ff295ab904ecf75",
+    "local/native-material-pass-copy-secondary_unwind_meta_table-bytes.txt": "db176b857ba7bb41b9171339d56d20c6e72003d64f8391722947452f96aace31",
+    "local/native-material-pass-copy-secondary_unwind_meta_table.bin": "24b010a7104a39b2e0711854cc036efc68c39142c2e16b16e9c592136f18e9aa",
+    "local/native-material-pass-copy-spans.json": "589f7afba15e78212e3ef5730d12f98279d9c01d6d269267c7c4be4a55e6b7df",
+    "local/native-material-pass-copy-tested-source.txt": "529c7cc322bed42a23ca34c7df13e9523f4ed050f3ef456a07d5249a25cee875",
+    "local/native-material-pass-copy-third_copy-assembly.txt": "42499608f17949337e79b5fc2d2d5b3876e673491a041353cb2cc0f34a5beb5e",
+    "local/native-material-pass-copy-third_copy-bytes.txt": "5d68710a164f63747234c7ba2b9c7a1ad5877ddf0730678e3175c997289667e9",
+    "local/native-material-pass-copy-third_copy.bin": "d19c46d83cff37081c20c8a54cb83b885217e9b6fbda0dc20ee601c880d02af6",
+    "local/native-material-pass-copy-unwind-verification.json": "cc47446491a6a9f9555dc4febd9ee2d7013b689007fb660e4b6890e89320166f",
+    "local/prepare_native_material_pass_copy.py": "84367ff5f005a04a9357be65ef7c4c59d307e69e0e5857415be4cd34a20dbdd9",
+    "local/prepare_native_material_pass_copy_probe.py": "9f02d3972513e01a7aec263c01924a10d0486212ae736ed17199e58fd3da0fca",
+    "local/run_native_material_pass_copy_probe.ps1": "3dcdb1618eaba82ce69de003c26f44c6e056b0d1caae324d086622c98557f847",
+    "local/record_native_material_pass_copy.py": "25fdf0b16ee4fb0e947a85dc64af35450bc5570dd1d308e1aabf3d7333f05483",
+    "local/native_material_pass_copy_annotations.py": "554ede729a4ac65070b276e5f6a94811a262a71c44808f6c9c75a139a7d978ce",
+    "local/check_native_material_pass_copy_unwind.py": "c73fa92ded6eaa2988360d21840b976ef42c30974625fb1d4a9f6485937309c1",
+    "local/finalize_native_material_pass_copy.py": "b5a63bd415ad1447f978f99e54ced7b2ded63da96a0b86274ce6094dbdcb7f47",
+    "local/native-material-pass-owner-base-support.hpp": "daf4d0b8f94bc8d6985e28fcf2eacccaf078e899123150a5fe9bf9373775fffa",
+    "local/native-material-pass-owner-native.hpp": "3c1b6d9c89540d87bfa0855441f7581955df1ca89ae502e549fdcc798535d238",
+    "local/native-material-pass-owner-pool-native.hpp": "d3cfca686c3b607539119f5e132c435fddba96375380a5cfcb27e482ad199082",
+    "local/native-material-pass-base-probe-support.hpp": "a011ecf2ab04fdddf8631deff020df61ce288fbcbbd594e50fef30cc60f7fcee",
+    "local/native-material-pass-base-native.hpp": "028416ceb2af0bdcc5e300f6e6cf5637cf89858111563d899fc32d68c8c7637d",
+    "local/native-material-pass-states-native.hpp": "740f1bab485a50c15e73c371d54f82bd89e94b53cda67f83a185f216a64571cf",
+    "local/ghidra-annotations-20260911T192850Z.json": "ab14311f93a71f1b348b1bda640cd2970e6a3eb3dd82f54f9bb1c8fe61a46013",
+    "local/native-material-pass-copy-tested/bsp_core.lib": "6752088f951d6fa001c842db9df94dd42e6e16f8b1ad8facbe08cadb9a19a2ae",
+    "local/native-material-pass-copy-tested/bsp_game.exe": "49fa7d2e82f23a51063cfffec4b35e80b3cf62b82e719336f8997363d881c354",
+    "local/native-material-pass-copy-tested/LastTest.log": "28e148be0bffac781cb85304a85915e158e0ca3306a8f5d7d4878f34c2c2c6b1"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-material-pass-copy-tested/bsp_core.lib",
+      "sha256": "6752088f951d6fa001c842db9df94dd42e6e16f8b1ad8facbe08cadb9a19a2ae"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-material-pass-copy-tested/bsp_game.exe",
+      "sha256": "49fa7d2e82f23a51063cfffec4b35e80b3cf62b82e719336f8997363d881c354"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-material-pass-copy-tested/LastTest.log",
+      "sha256": "28e148be0bffac781cb85304a85915e158e0ca3306a8f5d7d4878f34c2c2c6b1"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "render_copy",
+      "address": "00b41c10",
+      "end_exclusive": "00b41c9d",
+      "bytes": 141,
+      "sha256": "0f58077bda4aeccc4b2c59e8bcfe563509a113ad3c5b26546942a14ed11ec06b",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 13,
+          "target": 11799232
+        },
+        {
+          "offset": 53,
+          "target": 11799232
+        },
+        {
+          "offset": 92,
+          "target": 11799232
+        }
+      ]
+    },
+    {
+      "label": "third_copy",
+      "address": "00b41ce0",
+      "end_exclusive": "00b41d83",
+      "bytes": 163,
+      "sha256": "d19c46d83cff37081c20c8a54cb83b885217e9b6fbda0dc20ee601c880d02af6",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 13,
+          "target": 11799360
+        },
+        {
+          "offset": 53,
+          "target": 11799360
+        },
+        {
+          "offset": 95,
+          "target": 11799360
+        }
+      ]
+    },
+    {
+      "label": "sampler_copy",
+      "address": "00b41dd0",
+      "end_exclusive": "00b41e73",
+      "bytes": 163,
+      "sha256": "cc92e78c0684cc3b540d369d9f754750d3ee22a7641e2a6cbf883f26328bdb7e",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 13,
+          "target": 11799520
+        },
+        {
+          "offset": 53,
+          "target": 11799520
+        },
+        {
+          "offset": 95,
+          "target": 11799520
+        }
+      ]
+    },
+    {
+      "label": "pairs_copy",
+      "address": "00b41e80",
+      "end_exclusive": "00b41ef0",
+      "bytes": 112,
+      "sha256": "c0b99c11c2a5b6756dc579ce9d06dffa59c448b4528db79c8720f3cbb6de0fdc",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 7,
+          "target": 11800064
+        },
+        {
+          "offset": 22,
+          "target": 11799680
+        },
+        {
+          "offset": 63,
+          "target": 11799680
+        }
+      ]
+    },
+    {
+      "label": "binding_ctor",
+      "address": "00b44690",
+      "end_exclusive": "00b4474c",
+      "bytes": 188,
+      "sha256": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 83,
+          "target": 4316480
+        },
+        {
+          "offset": 104,
+          "target": 12547712
+        }
+      ]
+    },
+    {
+      "label": "pass_copy",
+      "address": "00b455c0",
+      "end_exclusive": "00b45896",
+      "bytes": 726,
+      "sha256": "971ee9b1a918cdcd7859bbd5435af3cd3bd6d870f18794747b1ed41d94cfd143",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 41,
+          "target": 11804288
+        },
+        {
+          "offset": 82,
+          "target": 12544027
+        },
+        {
+          "offset": 145,
+          "target": 11803664
+        },
+        {
+          "offset": 184,
+          "target": 12544027
+        },
+        {
+          "offset": 247,
+          "target": 11804112
+        },
+        {
+          "offset": 286,
+          "target": 12544027
+        },
+        {
+          "offset": 349,
+          "target": 11803872
+        },
+        {
+          "offset": 608,
+          "target": 12544027
+        },
+        {
+          "offset": 641,
+          "target": 11814544
+        },
+        {
+          "offset": 700,
+          "target": 11629232
+        }
+      ]
+    },
+    {
+      "label": "secondary",
+      "address": "00b45e00",
+      "end_exclusive": "00b45ee0",
+      "bytes": 224,
+      "sha256": "9ed00a4c3d16d41d9681d253d47e86723621e0d7d7ef5f3905fd7fb0044e4bb5",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 57,
+          "target": 11801104
+        },
+        {
+          "offset": 76,
+          "target": 11815696
+        },
+        {
+          "offset": 108,
+          "target": 11818432
+        },
+        {
+          "offset": 122,
+          "target": 11922496
+        },
+        {
+          "offset": 137,
+          "target": 11922496
+        },
+        {
+          "offset": 152,
+          "target": 11922496
+        },
+        {
+          "offset": 167,
+          "target": 11922496
+        }
+      ]
+    },
+    {
+      "label": "binding_unwind_code",
+      "address": "00cbf3a0",
+      "end_exclusive": "00cbf3b5",
+      "bytes": 21,
+      "sha256": "56f64c139c622d95389a64a07b3050c48aa5b8c908db7fa1b9973f53cb93d1f9",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 6,
+          "target": 4316448
+        },
+        {
+          "offset": 16,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "binding_unwind_meta_table",
+      "address": "00df7ce8",
+      "end_exclusive": "00df7d14",
+      "bytes": 44,
+      "sha256": "8b8574a50919f52f8d1373604a20aba0a78ccaa086141056ef0a49eaa6214f95",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "copy_unwind_code",
+      "address": "00cbf4a0",
+      "end_exclusive": "00cbf4b5",
+      "bytes": 21,
+      "sha256": "497af7ec4df63acbe3d1c6301ffccdc356fceb985ca5a902ada2ee01991c8761",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 4,
+          "target": 12543404
+        },
+        {
+          "offset": 16,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "copy_unwind_meta_table",
+      "address": "00df7e78",
+      "end_exclusive": "00df7ea4",
+      "bytes": 44,
+      "sha256": "983334ba90802a9c613dcc53e3ce5aa3a40ded925f46e46624dfcc3b64a04383",
+      "matches_disk": true,
+      "external_branches": []
+    },
+    {
+      "label": "secondary_unwind_code",
+      "address": "00cbf580",
+      "end_exclusive": "00cbf592",
+      "bytes": 18,
+      "sha256": "941a631c09eab110436d181555db7b5828e820a65040e4d31ff295ab904ecf75",
+      "matches_disk": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11800640
+        },
+        {
+          "offset": 13,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "secondary_unwind_meta_table",
+      "address": "00df7f30",
+      "end_exclusive": "00df7f5c",
+      "bytes": 44,
+      "sha256": "24b010a7104a39b2e0711854cc036efc68c39142c2e16b16e9c592136f18e9aa",
+      "matches_disk": true,
+      "external_branches": []
+    }
+  ],
+  "reused_verified_native_dependencies": [
+    {
+      "path": "local/native-material-pass-owner-base-support.hpp",
+      "sha256": "daf4d0b8f94bc8d6985e28fcf2eacccaf078e899123150a5fe9bf9373775fffa",
+      "source_report": "reports/native_material_pass_owner.json"
+    },
+    {
+      "path": "local/native-material-pass-owner-native.hpp",
+      "sha256": "3c1b6d9c89540d87bfa0855441f7581955df1ca89ae502e549fdcc798535d238",
+      "source_report": "reports/native_material_pass_owner.json"
+    },
+    {
+      "path": "local/native-material-pass-owner-pool-native.hpp",
+      "sha256": "d3cfca686c3b607539119f5e132c435fddba96375380a5cfcb27e482ad199082",
+      "source_report": "reports/native_material_pass_owner.json"
+    },
+    {
+      "path": "local/native-material-pass-base-probe-support.hpp",
+      "sha256": "a011ecf2ab04fdddf8631deff020df61ce288fbcbbd594e50fef30cc60f7fcee",
+      "source_report": "reports/native_material_pass_base.json"
+    },
+    {
+      "path": "local/native-material-pass-base-native.hpp",
+      "sha256": "028416ceb2af0bdcc5e300f6e6cf5637cf89858111563d899fc32d68c8c7637d",
+      "source_report": "reports/native_material_pass_base.json"
+    },
+    {
+      "path": "local/native-material-pass-states-native.hpp",
+      "sha256": "740f1bab485a50c15e73c371d54f82bd89e94b53cda67f83a185f216a64571cf",
+      "source_report": "reports/native_material_pass_states.json"
+    }
+  ],
+  "implementation": {
+    "actual_pass_bytes": 136,
+    "actual_state_owner_bytes": 20,
+    "actual_binding_bytes": 16,
+    "actual_header_bytes": 12,
+    "row_strides": {
+      "render": 8,
+      "third": 12,
+      "sampler": 12,
+      "pairs": 8
+    },
+    "row_self_assignment_clears_count": true,
+    "source_row_captured_before_growth": true,
+    "live_signed_source_row_end": true,
+    "ordered_dword_row_copy": true,
+    "state_replacement_order": [
+      24,
+      32,
+      28
+    ],
+    "source_owner_read_after_destination_publication": true,
+    "independent_state_allocations": true,
+    "source_actual_counter_plain_copy": true,
+    "normalized_new_counter": false,
+    "canonical_state_metadata_without_ownership": true,
+    "private_child_registry": false,
+    "private_reference_count": false,
+    "retained_assignment_offsets": [
+      84,
+      88,
+      112,
+      116
+    ],
+    "retained_assignment_order": "identity skip or publish/increment/decrement captured old",
+    "binding_append": true,
+    "live_unsigned_source_binding_count": true,
+    "current_destination_append_count": true,
+    "borrowed_effect_last": true,
+    "preserved_fields": [
+      "root words/count/vtable",
+      "fallback84",
+      "byte80",
+      "padding81..83",
+      "embedded30/3c/48"
+    ],
+    "binding_constructor_unwind": "name08 only",
+    "copy_unwind": "current raw binding allocation only; no top-level rollback",
+    "secondary_primary_offset": 200,
+    "secondary_slots_offset": 256,
+    "secondary_slots": 14,
+    "only_mode_zero_created": true,
+    "secondary_rereads_primary_after_construction": true,
+    "secondary_published_before_copy": true,
+    "secondary_render_overrides": [
+      [
+        15,
+        0
+      ],
+      [
+        27,
+        1
+      ],
+      [
+        19,
+        5
+      ],
+      [
+        20,
+        6
+      ]
+    ],
+    "secondary_current_root_word08": 1,
+    "secondary_rereads_slot_for_overrides": true,
+    "secondary_releases_prior_slots": false,
+    "secondary_constructor_failure_returns_raw_slot": true,
+    "secondary_copy_failure_retains_published_pass": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_complete_packet_functions_executed": 7,
+    "original_full_base_state_pass_constructor_pool_allocation_dependencies": true,
+    "normalized_copy_snapshot_bytes": {
+      "source": 1584,
+      "destination": 1624
+    },
+    "normalized_secondary_snapshot_bytes": {
+      "source": 1584,
+      "destination": 1600
+    },
+    "paired_copy_event_sequences_match": true,
+    "paired_secondary_event_sequences_match": true,
+    "pointer_identity_normalized": true,
+    "source_state_count": 2,
+    "new_independent_state_count": 2,
+    "surplus_state_references_after_composed_parent_cleanup": 2,
+    "surplus_references_explicitly_released_only_in_fixture_teardown": true,
+    "bindings_appended_after_existing_entry": true,
+    "binding_name_buffers_distinct": true,
+    "preserved_fallback_root_and_byte": true,
+    "direct_row_copy_pairs": 4,
+    "direct_self_clear_pairs": 4,
+    "secondary_render_overrides_verified": true,
+    "absent_primary_zeroing_verified": true,
+    "actual_effect_owner_cleanup_dispatches_two_canonical_passes": true,
+    "pass_pool_all_slots_returned": true,
+    "rebuilt_constructor_failure_before_publication": true,
+    "rebuilt_binding_copy_failure_after_publication": true,
+    "later_secondary_slots_keep_preimages_on_failure": true,
+    "final_fixture_exit_code": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_boundaries": {
+    "original_imports": "Current shared heap, Win32 atomics/CS and actual string-pool/header adapters.",
+    "metadata_entries": "Thin original row-copy/pass-copy/allocation entry adapters register already-constructed canonical companions or identify construction storage; full original routine bodies still execute.",
+    "terminal_dispatch": "Original old-owner virtual0 adapters restore numeric profiles and dispatch the canonical companion over same zero physical04; composed parent/effect cleanup uses existing rebuilt actual owners.",
+    "counter_surplus": "Original copy and rebuilt copy both produce independent count2 states. Existing rebuilt parent cleanup leaves count1 states, explicitly drained only by fixture teardown.",
+    "payloads": "Generic actual18h contexts exercise retained-owner lifetime; actual shader/texture payload loading is not executed.",
+    "exceptions": "Two controlled rebuilt failure cases only; original exception delivery not executed. Three maps and concrete cleanup thunks independently PE-verified.",
+    "executable_capture": "Original setter dependency is copied into sealed executable Code storage before its relative call is rebound."
+  },
+  "ghidra": {
+    "addresses": [
+      "00b41c10",
+      "00b41ce0",
+      "00b41dd0",
+      "00b41e80",
+      "00b44690",
+      "00b455c0",
+      "00b45e00"
+    ],
+    "names_verified": 7,
+    "prior_comment_fields_preserved": 0,
+    "forced_exports": 7,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [],
+    "flow_repairs": [],
+    "complete_stored_body_ranges": true,
+    "remaining_internal_gaps": 0,
+    "unwind_verification": {
+      "unwind": [
+        {
+          "owner": "binding",
+          "func_info": "00df7cf0",
+          "states": 1,
+          "target": "0041dd20",
+          "verified": true
+        },
+        {
+          "owner": "copy",
+          "func_info": "00df7e80",
+          "states": 1,
+          "target": "00bf65ac",
+          "verified": true
+        },
+        {
+          "owner": "secondary",
+          "func_info": "00df7f38",
+          "states": 1,
+          "target": "00b41040",
+          "verified": true
+        }
+      ],
+      "normalized_third_sampler_equal": true
+    },
+    "saved": true
+  },
+  "limitations": [
+    "Third-row role and binding word meaning remain provisional.",
+    "Canonical metadata callbacks must not throw, mutate actual storage or add ownership; actual owner identities/counts and readable row/binding extents remain caller contracts.",
+    "Copying source state counts above1 can preserve surplus independent references; native behavior is retained rather than normalized.",
+    "Prior secondary owners must already be discharged before their slots are overwritten; no new release or rollback is introduced.",
+    "Original allocation failure/exception ABI, effect descriptor/per-mode loading, shader/texture payloads, drawing and gameplay remain open."
+  ]
+}
