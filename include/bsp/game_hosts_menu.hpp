@@ -31,10 +31,17 @@
 #include "bsp/app_frame_game_state.hpp"
 #include "bsp/main_menu_path.hpp"
 
+namespace bsp {
+class LocaleTables;
+}  // namespace bsp
+
 namespace bsp::game {
 
 class GameHostLog;
 class GameFrontendHost;
+class GameVfsHost;
+class GameScriptHost;
+class GameMissionHost;
 
 // ---------------------------------------------------------------------------
 // The profiler counter pair the application frame brackets itself with
@@ -106,6 +113,10 @@ struct GameMenuSummary {
     std::size_t screens_registered{0};
 };
 
+// Milestone 2e: the scripted mission selection, once the shell has published
+// the main-menu screen. Null when --menu-select named nothing.
+class GameMissionHost;
+
 // The front-end half of the frame: the registry at 00e18b60, the title object
 // at 00e198c8, the press-start screen at registry slot 5Ch, the state-request
 // ring at game+5D8h, the three front-end managers and the level-4 screen set.
@@ -119,8 +130,13 @@ public:
     // press_start_frame is --press-start-frame N: the frame on which the input
     // edge for action 4Eh is injected through
     // bsp::action_pressed_this_frame_004c43c0's rule. Negative injects nothing.
+    //
+    // Milestone 2e: `menu_select` is --menu-select, the mission id the
+    // mission-tree screen's loader asks the shell for at 00586150. An empty id
+    // leaves the run exactly where milestone 2d left it.
     GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
-        long press_start_frame);
+        long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts,
+        LocaleTables& locale, std::string menu_select);
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;
@@ -135,6 +151,8 @@ public:
     bool input_action_pressed(int action);
 
     const GameMenuSummary& summary() const noexcept;
+    // Milestone 2e. Null when --menu-select named nothing.
+    GameMissionHost* mission() const noexcept;
 
     struct Impl;
 

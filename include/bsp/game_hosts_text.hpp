@@ -116,8 +116,15 @@ public:
     // `origin_x` / `origin_y` is the widget's resolved position with its own pivot
     // subtracted, in normalised GUI units: the same corner the bridge draws an Icon from.
     // Returns false when nothing is drawable; `run.error` says why.
+    //
+    // `source_override`, when non-null, replaces the authored "DefaultText" the
+    // page carries. That is the 00ABAED0 call a screen makes at run time: the
+    // mission-detail page builder 0058C010 pushes the selected record's
+    // `background` key into the briefing text widget the same way the loader
+    // pushes an authored one, and everything after the setter is unchanged.
     bool build_run(const std::string& page, const GuiLayoutWidget& widget,
-        float origin_x, float origin_y, GameTextRun& run);
+        float origin_x, float origin_y, GameTextRun& run,
+        const std::string* source_override = nullptr);
 
     const GameTextSummary& summary() const noexcept;
 
