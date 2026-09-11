@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "native_cube_texture_owner3",
   "generated_utc": "2026-09-11T05:41:16.527398+00:00",
-  "status": "complete_actual_storage_frozen_library_original_caller_fixture_and_strict_Win32_checked",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "base_commit": "052dce6dabbd00acaf81a6b8d2891184a70b9962",
   "owned_addresses": [
     "00b3d650",
@@ -1693,5 +1693,669 @@
       "bytes": 13401,
       "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verification": {
+      "matched_words": 6943,
+      "events": 131,
+      "scenarios": 5,
+      "frame_words": 53,
+      "trace_sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c",
+      "runtime_postimage_count": 440,
+      "provider_map": [
+        {
+          "symbol": "construct_native_cube_texture_00b3d650",
+          "map_line": "0001:00007a70       ?construct_native_cube_texture_00b3d650@bsp@@YAPAXPAXPAUIDirect3DCubeTexture9@@IAAUNativeCubeTextureOwnerContext@1@@Z 30008a70 f   bsp_core.linked:native_cube_texture_owner.obj"
+        },
+        {
+          "symbol": "destroy_native_cube_texture_00b3ead0",
+          "map_line": "0001:00007d60       ?destroy_native_cube_texture_00b3ead0@bsp@@YAXPAXAAUNativeCubeTextureOwnerContext@1@@Z 30008d60 f   bsp_core.linked:native_cube_texture_owner.obj"
+        },
+        {
+          "symbol": "delete_native_cube_texture_00b3f410",
+          "map_line": "0001:00007ba0       ?delete_native_cube_texture_00b3f410@bsp@@YAPAXPAXIAAUNativeCubeTextureOwnerContext@1@@Z 30008ba0 f   bsp_core.linked:native_cube_texture_owner.obj"
+        },
+        {
+          "symbol": "construct_native_logical_texture_unnamed_base_00b34020",
+          "map_line": "0001:00008900       ?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z 30009900 f   bsp_core.linked:native_cube_texture_base.obj"
+        },
+        {
+          "symbol": "unwind_native_logical_texture_unnamed_base_00b34090",
+          "map_line": "0001:000089e0       ?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 300099e0 f   bsp_core.linked:native_cube_texture_base.obj"
+        },
+        {
+          "symbol": "destroy_native_logical_texture_named_base_00b33f50",
+          "map_line": "0001:00009ad0       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 3000aad0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "symbol": "native_logical_texture_name_address_00b33e40",
+          "map_line": "0001:00009b00       ?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z 3000ab00 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "symbol": "notify_native_renderer_texture_name_removal_00b32250",
+          "map_line": "0001:00007230       ?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z 30008230 f   bsp_core.linked:native_renderer_texture_name_notification.obj"
+        },
+        {
+          "symbol": "delete_native_memory_backing_008d4470",
+          "map_line": "0001:00007750       ?delete_native_memory_backing_008d4470@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 30008750 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "symbol": "delete_native_memory_stream_00bb8f90",
+          "map_line": "0001:000077e0       ?delete_native_memory_stream_00bb8f90@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 300087e0 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "symbol": "return_native_cube_texture_slot_00b3d940",
+          "map_line": "0001:00008e00       ?return_native_cube_texture_slot_00b3d940@bsp@@YAXPAX0@Z 30009e00 f   bsp_core.linked:native_cube_texture_pool_allocate.obj"
+        },
+        {
+          "symbol": "initialize_native_cube_texture_pool_00b3f090",
+          "map_line": "0001:00009880       ?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 3000a880 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+        },
+        {
+          "symbol": "destroy_native_cube_texture_pool_00b3e5b0",
+          "map_line": "0001:000097d0       ?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 3000a7d0 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+        },
+        {
+          "symbol": "bind_native_cube_texture_pool_trim_00d61944",
+          "map_line": "0001:000099f0       ?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 3000a9f0 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+        }
+      ],
+      "host_handler_trampolines": [
+        {
+          "native_registration_operand": "00b3d653",
+          "host_trampoline": "30003dc0",
+          "bytes_hex": "ff2500300130",
+          "disassembly": "jmp dword ptr [0x30013000]",
+          "host_pointer_cell": "30013000",
+          "unchanged_original_handler": "00cbed68"
+        },
+        {
+          "native_registration_operand": "00b3ead3",
+          "host_trampoline": "30003e00",
+          "bytes_hex": "ff2504300130",
+          "disassembly": "jmp dword ptr [0x30013004]",
+          "host_pointer_cell": "30013004",
+          "unchanged_original_handler": "00cbedc8"
+        }
+      ],
+      "bindings": {
+        "jumps": [
+          {
+            "address": 11747360,
+            "target": 805321872
+          },
+          {
+            "address": 11747152,
+            "target": 805321920
+          },
+          {
+            "address": 11739728,
+            "target": 805326448
+          },
+          {
+            "address": 12291984,
+            "target": 805334768
+          },
+          {
+            "address": 9258096,
+            "target": 805321840
+          },
+          {
+            "address": 11786560,
+            "target": 805330304
+          },
+          {
+            "address": 12544835,
+            "target": 805360070
+          }
+        ],
+        "IAT": {
+          "address": 13509152,
+          "target": 805322192
+        },
+        "owner_operand_relocations": [
+          {
+            "address": 11785811,
+            "original": 13364584,
+            "target": 805322176
+          },
+          {
+            "address": 11791059,
+            "original": 13364680,
+            "target": 805322240
+          }
+        ]
+      },
+      "host_imports": {
+        "bindings": [
+          {
+            "name": "LeaveCriticalSection",
+            "site": 805363748,
+            "original": 2006725728,
+            "postimage": 805326608
+          },
+          {
+            "name": "EnterCriticalSection",
+            "site": 805363752,
+            "original": 2006729696,
+            "postimage": 805326480
+          }
+        ]
+      },
+      "preparation": {
+        "worker": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-20260910",
+        "worker_artifact_pins": 99,
+        "current_primary_source_pins": [
+          {
+            "path": "include/bsp/native_cube_texture_owner.hpp",
+            "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+          },
+          {
+            "path": "src/native_cube_texture_owner.cpp",
+            "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_base.hpp",
+            "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb"
+          },
+          {
+            "path": "src/native_cube_texture_base.cpp",
+            "sha256": "9b0f4adc8b12a058b0e539eacf6fd8d0d8e6ff436596d9757e31412d6add87dc"
+          },
+          {
+            "path": "src/native_logical_texture_named_base.cpp",
+            "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+          },
+          {
+            "path": "include/bsp/native_logical_texture_named_base.hpp",
+            "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+          },
+          {
+            "path": "src/native_retained_memory_owners.cpp",
+            "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+          },
+          {
+            "path": "include/bsp/native_retained_memory_owners.hpp",
+            "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+          },
+          {
+            "path": "src/native_renderer_texture_name_notification.cpp",
+            "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+          },
+          {
+            "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+            "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+          },
+          {
+            "path": "src/native_renderer_synchronization_actual.cpp",
+            "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+          },
+          {
+            "path": "src/native_render_resource_container_removal.cpp",
+            "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+          },
+          {
+            "path": "src/native_render_resource_record.cpp",
+            "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+          },
+          {
+            "path": "src/native_string.cpp",
+            "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+          },
+          {
+            "path": "src/storage_pool.cpp",
+            "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+          },
+          {
+            "path": "src/native_cube_texture_pool_allocate.cpp",
+            "sha256": "8c59a908593c2f2eb4c26182ebff757907f49a91e6d59337ed9e263f39d393f7"
+          },
+          {
+            "path": "src/native_cube_texture_pool_lifetime.cpp",
+            "sha256": "f88ccffb8c4fad9a701b0a2bfb943bc339db8d959320311411d36e739921abc8"
+          },
+          {
+            "path": "src/native_cube_texture_pool_trim.cpp",
+            "sha256": "9e2a1ad2fa45bb8e0302a99d90f005e9682bf766e7c7a4f7cc70fe9aa932b11f"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_pool_allocate.hpp",
+            "sha256": "20916e98d5097ba8f413a67cf603dc7089f69849f09b9db5f8ab11a408957ec8"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_pool_lifetime.hpp",
+            "sha256": "2b31eb5b7bcda28ee9011731d7bd4f6eee6b99243279f61360d8bcb88e7e88af"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_pool_trim.hpp",
+            "sha256": "f1d33446e5f4658bb224fd263c298267dbbfc66868acd5ad881d32aa5433d16a"
+          }
+        ],
+        "fresh_spans": [
+          {
+            "address": "00b34020",
+            "length": 71,
+            "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b34090",
+            "length": 5,
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3d650",
+            "length": 122,
+            "sha256": "86a572fb445ae113c3b466cb6c74eec7a6b04fec9d4240b1cb05dc8ec6f55ec2",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3ead0",
+            "length": 159,
+            "sha256": "7a83246a860603f4ec73a4d467f5fa725b4e2edf02e13b131a60cc0ac81f084d",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3f410",
+            "length": 32,
+            "sha256": "854a0644361726fda417159185e8440fbc537700d7d1f5315545503e6bb3816b",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbed60",
+            "length": 8,
+            "sha256": "e73976e6d636435748331b6f9f91da836239930f8641821edad2bf3b8130e7ae",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbed68",
+            "length": 10,
+            "sha256": "8f1a31cad3bd36a12b956244e83b20b0025f307adf558d6ec5a5b123dd0b23e6",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00df7568",
+            "length": 44,
+            "sha256": "6a7bda0010ac383d6307b2aebc1570ffe29db0adc651ebfb7ba79c9c86848cd1",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbedc0",
+            "length": 8,
+            "sha256": "bb747887ed0805efb714c8ac460e35fe3f6ddddcf63b5855d021fec63ad49651",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbedc8",
+            "length": 10,
+            "sha256": "a27c914e3ed25c15374777f16b45984ee386a0bb51bebd4c1760100adc6948e6",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00df75f4",
+            "length": 44,
+            "sha256": "a0bf6cf5814a864ac72c142de638090df25ff07ca14d7974b9f77f55fe0b2b8b",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b33e40",
+            "length": 4,
+            "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b33f50",
+            "length": 103,
+            "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbe090",
+            "length": 18,
+            "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00df6904",
+            "length": 44,
+            "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00a81880",
+            "length": 5,
+            "sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bd30f0",
+            "length": 7,
+            "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bd30e0",
+            "length": 14,
+            "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b32250",
+            "length": 240,
+            "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "008d4440",
+            "length": 45,
+            "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "008d4470",
+            "length": 66,
+            "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bef9c0",
+            "length": 118,
+            "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bb8f90",
+            "length": 30,
+            "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bf65ac",
+            "length": 5,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "length": 54,
+            "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3d940",
+            "length": 101,
+            "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3dce0",
+            "length": 12,
+            "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d61870",
+            "length": 64,
+            "sha256": "9551267b5b784c47a650abf5e1c854b0c6d7d1298b2ec570b4662e8c76605a10",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d5f280",
+            "length": 64,
+            "sha256": "26ee395f7010c8558fa93180fa2657fa1be2394e869ff9892098452380805dc4",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d5f114",
+            "length": 4,
+            "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d15ad8",
+            "length": 8,
+            "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d642c0",
+            "length": 8,
+            "sha256": "2755848844406d8a6a0e5301377e32c2f3d1aa1b7a87abcb9856164311e22ec8",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0108d6e8",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00f8d394",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0108db70",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00ce2220",
+            "length": 4,
+            "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d5f0a8",
+            "length": 112,
+            "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0108d6dc",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0109db98",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00e188b4",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_and_worker_match": true
+          }
+        ],
+        "worker_audit_sha256": "3452aa1774ab53a49ca490a2f3f2c0bb41ba8b26321adb50985cd4595cc09044"
+      },
+      "actual_primary_library": {
+        "path": "build/cube-owner-primary-check/bsp_core.linked.lib",
+        "bytes": 26998646,
+        "sha256": "350b9bb962bdd5963eb9f0eea1e879d5984c824eaab0024313e7ff68dcb1db7f"
+      },
+      "artifact_pins": [
+        {
+          "path": "build/cube-owner-primary-check/bsp_core.linked.lib",
+          "bytes": 26998646,
+          "sha256": "350b9bb962bdd5963eb9f0eea1e879d5984c824eaab0024313e7ff68dcb1db7f"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_check.exe",
+          "bytes": 76288,
+          "sha256": "df7522438604ea9f272de5ac973cb77b635e6827e608ba1bff255e3787b78ea6"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_check.map",
+          "bytes": 149811,
+          "sha256": "d66abc08281a801168e37232cf2e128a242d48de73c88dcd248bc493189103a0"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_original.bin",
+          "bytes": 27772,
+          "sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_source.bin",
+          "bytes": 27772,
+          "sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_trace.json",
+          "bytes": 68,
+          "sha256": "d21e3ca4f21cacf593aa69c078ff2956444e0c98c622291f5c0af588b4211789"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_runtime_postimages.jsonl",
+          "bytes": 61233,
+          "sha256": "5e46e8d341699e3b344a140c897d4f463d34259b85f7a6ee673e9249577f2f4e"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_bindings.json",
+          "bytes": 488,
+          "sha256": "80f81bee425299b2a032668454289a8776893a14da718d1a9cceaf48cfe89e72"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_host_imports.json",
+          "bytes": 202,
+          "sha256": "d5994e349a77f1a3e6381b9ae5d241144455987facbcf1889f0a2b4203e4417a"
+        },
+        {
+          "path": "build/cube-owner-primary-check/actual_singleton_lifetime.obj",
+          "bytes": 32945,
+          "sha256": "11ef63835bbecf3ac02bbbba856817416d8fd16ccf780a22a1b532445f392d70"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_check.obj",
+          "bytes": 291506,
+          "sha256": "9a76c88fcf99857b0d66bad7e0d4d8b62cc6e989fec0775fd216958bd1b5b3a1"
+        },
+        {
+          "path": "build/cube-owner-primary-check/build_cube_owner.cmd",
+          "bytes": 1182,
+          "sha256": "f7f573de54b09b36d06bb72a9b0cd4dcf4f137c8421d2246a82386bb984dddf1"
+        },
+        {
+          "path": "local/prepare_cube_owner_primary.py",
+          "bytes": 3916,
+          "sha256": "74601e3ecfe1e3cc7ce60b671cfa2aaa1ce6691284e39f953312d260e97fe4de"
+        },
+        {
+          "path": "local/build_cube_owner_primary_check.ps1",
+          "bytes": 2089,
+          "sha256": "9ff13d06bace1b88d726023ec347e36de9e36c02b0b2c1f6b61f30215a086e19"
+        },
+        {
+          "path": "local/verify_cube_owner_primary_run.py",
+          "bytes": 6863,
+          "sha256": "6198f204433e9bf6966704ea475e3a95a707ffd456db4390f1ca1ba24482d091"
+        },
+        {
+          "path": "local/native_cube_texture_owner_primary_build.txt",
+          "bytes": 2912,
+          "sha256": "ec8c03da4e3feabff0e4c37edf7cfa27e6f48507f7228c2b65633de6f0eb10b6"
+        },
+        {
+          "path": "local/native_cube_texture_owner_primary_fixture.txt",
+          "bytes": 263,
+          "sha256": "1000dfbd20468abc0d8808a37a84f0f4bf5c60b271d1c4e25e596cc03c659bf8"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_cube_texture_owner_annotations.json",
+    "bytes": 5526,
+    "sha256": "7c6b48979159b90b6853995a5e707b0df0b4255e28a4ac9c010661364fdfeb88",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b3d650",
+      "path": "exports/bsp/functions/00b3d650/decompiled.c",
+      "bytes": 2501,
+      "sha256": "6d622b377863a66bacd5fb9d90021b2d2ab57ac8e53b2991ab020bc60d4dc375"
+    },
+    {
+      "address": "00b3ead0",
+      "path": "exports/bsp/functions/00b3ead0/decompiled.c",
+      "bytes": 2744,
+      "sha256": "c20a8400b55869467c5a00e9481f6a2972b0c84eb1cef9cd977d3b1b6cf28b8c"
+    },
+    {
+      "address": "00b3f410",
+      "path": "exports/bsp/functions/00b3f410/decompiled.c",
+      "bytes": 1586,
+      "sha256": "9b7c862a4fd23c33b764879b3268a96def7fbfc5b1b7ebcb91b59c3703fb89c4"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:49:34.627144+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b3d650",
+      "name": "construct_native_cube_texture_00b3d650",
+      "cpp_symbol": "construct_native_cube_texture_00b3d650",
+      "source": "src/native_cube_texture_owner.cpp",
+      "native_end_exclusive": "00b3d6ca",
+      "original_abi": "ECXactualowner; stackIDirect3DCubeTexture9*,flags; EAXowner; RET8",
+      "evidence": "reports/native_cube_texture_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3ead0",
+      "name": "destroy_native_cube_texture_00b3ead0",
+      "cpp_symbol": "destroy_native_cube_texture_00b3ead0",
+      "source": "src/native_cube_texture_owner.cpp",
+      "native_end_exclusive": "00b3eb6f",
+      "original_abi": "ECXactualowner; no stackarguments; RET; nosemanticreturn",
+      "evidence": "reports/native_cube_texture_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3f410",
+      "name": "delete_native_cube_texture_00b3f410",
+      "cpp_symbol": "delete_native_cube_texture_00b3f410",
+      "source": "src/native_cube_texture_owner.cpp",
+      "native_end_exclusive": "00b3f430",
+      "original_abi": "ECXactualowner; stackflags; EAXoriginaladdress; RET4",
+      "evidence": "reports/native_cube_texture_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+    "bytes": 10684,
+    "sha256": "74d28a40ae9e137fe0078e03583b1fc689aed8dcb75356bdeb40c547ddd3d98c"
+  }
 }

@@ -4260,8 +4260,8 @@
       "id": "native_cube_texture_owner3",
       "packet": "native_cube_texture_owner3",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress_composing_actual_base",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3d650",
         "00b3ead0",
@@ -4303,7 +4303,8 @@
         ],
         "integration": "primary owns CMake, Ghidra annotation/export and sharedledgers; no overlap with active cube pool lifetime/trim/static packets"
       },
-      "source_ready": false
+      "source_ready": true,
+      "evidence": "reports/native_cube_texture_owner_audit.json"
     },
     {
       "id": "native_cube_texture_owner_array_reserve1",
@@ -4348,7 +4349,7 @@
       "packet": "native_cube_texture_factory1",
       "worker": null,
       "done": false,
-      "state": "blocked_on_actual_cube_owner_and_complete_device_recreation",
+      "state": "blocked_on_complete_actual_device_recreation",
       "function_addresses": [
         "00b2a380",
         "00cbd380",
@@ -4384,7 +4385,6 @@
           "reports/native_cube_texture_factory_audit.json"
         ],
         "blocked_by": [
-          "Complete native cube resource owner integration",
           "Complete actual-storage B29670 device recreation and its open dependencies"
         ],
         "required_contract": "Actual renderer/global/pool providers; exact original HRESULT equality retry, COM invocation, registration and FH3 cleanup order. No empty or semantic substitute recreation/owner/registry callback."
