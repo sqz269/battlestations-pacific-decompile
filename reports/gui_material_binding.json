@@ -1,0 +1,186 @@
+{
+  "packet": "orch2_gui_material_binding_q",
+  "project_verified": "C:/Users/sqz269/bsp.gpr",
+  "program_verified": "/battlestationspacific.exe",
+  "ghidra_mutations": [],
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "00aa9f10",
+      "name": "register_gui_clip_parameters_00aa9f10",
+      "original_name": "BSP_UIContext_RegisterClipParameters",
+      "original_abi": "ECX widget; stack material pointer; RET4 at00aaa0d7. Final instruction is a backward JMP.",
+      "last_instruction": "00aaa0e4",
+      "last_instruction_length": 5,
+      "end_inclusive": "00aaa0e8",
+      "byte_length": 473,
+      "sha256": "4c909a4ebe35613f70e6b82c1199a036c15f88eb178363cdb6d9fc1862e50b71",
+      "saved_matches_installed_pe": true,
+      "ghidra_listing_has_gaps": false,
+      "evidence": "exports/bsp/functions/00aa9f10",
+      "proposed_ghidra_name": "BSP_UIContext_RegisterClipParameters"
+    },
+    {
+      "address": "00b18a40",
+      "name": "set_material_parameter_owner_00b18a40",
+      "original_name": "FUN_00b18a40",
+      "original_abi": "ECX material; stack owner pointer and low byte retain flag; RET8.",
+      "last_instruction": "00b18a98",
+      "last_instruction_length": 3,
+      "end_inclusive": "00b18a9a",
+      "byte_length": 91,
+      "sha256": "1e1d714ac9ca72dc6edcc4d6bc58fce47c9e5be0a9882d8e4d136c30cd169cf0",
+      "saved_matches_installed_pe": true,
+      "ghidra_listing_has_gaps": false,
+      "evidence": "exports/bsp/functions/00b18a40",
+      "proposed_ghidra_name": "BSP_Material_SetParameterOwner"
+    },
+    {
+      "address": "00aa6870",
+      "name": "set_gui_color_00aa6870",
+      "original_name": "FUN_00aa6870",
+      "original_abi": "ECX widget; stack RGBA source pointer; RET4.",
+      "last_instruction": "00aa68e7",
+      "last_instruction_length": 3,
+      "end_inclusive": "00aa68e9",
+      "byte_length": 122,
+      "sha256": "23665e8cb7052229f2e0a69de2b88d95c637bca88f1609b834faa3258d9dacd5",
+      "saved_matches_installed_pe": true,
+      "ghidra_listing_has_gaps": false,
+      "evidence": "exports/bsp/functions/00aa6870",
+      "proposed_ghidra_name": "BSP_GuiWidget_SetColor"
+    },
+    {
+      "address": "00b74650",
+      "name": "gui_model_has_geometry_00b74650",
+      "original_name": "FUN_00b74650",
+      "original_abi": "ECX native node/model; EAX boolean native+180 != null; RET.",
+      "last_instruction": "00b7465b",
+      "last_instruction_length": 1,
+      "end_inclusive": "00b7465b",
+      "byte_length": 12,
+      "sha256": "d1a5253084bebbfd6425b839fabf5086a1f78f173723121f249d5ace727b64bc",
+      "saved_matches_installed_pe": true,
+      "ghidra_listing_has_gaps": false,
+      "evidence": "exports/bsp/functions/00b74650",
+      "proposed_ghidra_name": "BSP_GeneratedModel_HasGeometry"
+    },
+    {
+      "address": "00b72b40",
+      "name": "gui_mesh_element_count_00b72b40",
+      "original_name": "BSP_MeshObject_GetCount58",
+      "original_abi": "ECX actual mesh; EAX DWORD+58; RET.",
+      "last_instruction": "00b72b43",
+      "last_instruction_length": 1,
+      "end_inclusive": "00b72b43",
+      "byte_length": 4,
+      "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8",
+      "saved_matches_installed_pe": true,
+      "ghidra_listing_has_gaps": false,
+      "evidence": "exports/bsp/functions/00b72b40",
+      "proposed_ghidra_name": "BSP_MeshObject_GetCount58"
+    }
+  ],
+  "previous_annotations": {
+    "00aa9f10": "[BSP reconstruction 00aa9f10]\nECX context, material stack RET4. Walk self/parent+70 until virtual+5C returns16; context+E8=1/0 and bind cClip. Active only: ancestor+EC pair cClipCenter, ancestor+F4 float4 cClipBorder, global00e12fc0 cAspectRatio. Source addresses borrowed; no inactive default writes. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json.",
+    "00b18a40": null,
+    "00aa6870": null,
+    "00b74650": null,
+    "00b72b40": "[BSP reconstruction 00b72b40]\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+  },
+  "color_virtual50": [
+    {
+      "type": "base",
+      "table": "00d5c130",
+      "slot": "00d5c180",
+      "value": "00aa6870"
+    },
+    {
+      "type": "Group2",
+      "table": "00d5cb80",
+      "slot": "00d5cbd0",
+      "value": "00aa6870"
+    },
+    {
+      "type": "Icon6",
+      "table": "00d5c4c0",
+      "slot": "00d5c510",
+      "value": "00aa6870"
+    },
+    {
+      "type": "FrameBox18",
+      "table": "00d5d130",
+      "slot": "00d5d180",
+      "value": "00aa6870"
+    },
+    {
+      "type": "Screen1",
+      "table": "00d5be38",
+      "slot": "00d5be88",
+      "value": "00aa6870"
+    }
+  ],
+  "implementation": [
+    "AA9F10 walks the existing layout parent chain and borrows the SAME owner extra field+E8.",
+    "E8 is deliberately uninitialized by construction, matching AA9390; AA9F10 stores it before reading.",
+    "ClipBox source service returns real ancestor+EC pair/+F4 quartet; mutable aspect ratio is borrowed.",
+    "All registrations use MaterialCloneState.parameters, including inactive no-change semantics.",
+    "B18A40 releases the old retained owner before writing and acquiring incoming, even equal pointers.",
+    "AA6870 reads raw node+180, mesh+58, mesh+54 element0 and section+20 material; it writes the SAME material lighting diffuse block.",
+    "Color also synchronizes the pre-existing layout.transform.alpha projection; no new color store.",
+    "Callback installer supplies registration and publication sequences only; no lifetime/resource fallback."
+  ],
+  "validation": {
+    "seed_byte_matches": 8,
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict passed",
+    "ctests_passed": 2,
+    "new_permanent_tests": 0,
+    "new_fixtures": 0,
+    "actual_binding_runtime_exercised": false,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ]
+  },
+  "required_boundaries": [
+    "True retained lifetime for SAME GuiWidgetOwner and its layout; current GuiWidgetOwnerRuntime unique ownership cannot supply this.",
+    "Actual type16 ClipBox field ownership and its center/border update path.",
+    "Canonical raw material to SAME MaterialCloneState projection, including actual ordinary/clone material owner.",
+    "Existing native geometry owner must publish raw mesh sections before nonempty color publication can occur."
+  ],
+  "remaining_addresses": [
+    {
+      "address": "00aa9730",
+      "reason": "Native widget base destruction and reference-driven lifetime; saved body has false free no-return continuation through actual RET00aa99b8."
+    },
+    {
+      "address": "00a9e130",
+      "reason": "Base scalar deleting destructor caller of00aa9730; full retained widget lifetime remains separate."
+    },
+    {
+      "address": "00b18900",
+      "reason": "Native110h ordinary material owner; current source covers semantic/default fragments."
+    },
+    {
+      "address": "00b18b60",
+      "reason": "Native clone material owner; current source covers semantic cloning with shared token fields."
+    },
+    {
+      "address": "00ace0a0",
+      "reason": "ClipBox type16 constructor reached by00aa1920; read-only candidate, not reconstructed here."
+    },
+    {
+      "address": "00ace0f0",
+      "reason": "Verified ClipBox copy constructor: calls00aa9520 and stamps00d5d058; read-only, not reconstructed here."
+    },
+    {
+      "address": "00ace120",
+      "reason": "ClipBox table00d5d058 current+24: x87 center/extent update; reads border inputs+104/+108 and publishes borrowed sources+EC..100. FinalRET00ace226."
+    },
+    {
+      "address": "00ace650",
+      "reason": "ClipBox property reader from table00d5d058+18, not reconstructed here."
+    }
+  ]
+}

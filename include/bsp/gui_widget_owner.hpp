@@ -49,8 +49,8 @@ struct GuiWidgetOwnerEnvironment {
 
 // Reconstructed logical widget owner, not a raw100h ABI replacement. Existing
 // GuiLayoutWidget holds the one tree and material fields. No private tree/map
-// of replacement nodes is constructed. Additional fields are constructor-owned
-// offsets absent from that projection; unwritten bytes are explicitly excluded.
+// of replacement nodes is constructed. Additional fields cover native offsets
+// absent from that projection; constructor-unwritten fields are marked below.
 struct GuiWidgetBaseExtraFields {
     std::int32_t references_04{1};
     float fields_30_44[6]{};
@@ -61,6 +61,9 @@ struct GuiWidgetBaseExtraFields {
     bool byte_d4{};
     void* pointer_d8{};
     void* layout_listener_dc{};
+    // Native00AA9390 leaves+E8 unwritten;00AA9F10 assigns it before borrowing.
+    // Do not read until clip registration has established this SAME field.
+    float clip_enabled_e8;
 };
 class GuiWidgetOwner final {
 public:
