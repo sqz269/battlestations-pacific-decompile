@@ -1,0 +1,530 @@
+{
+  "schema_version": 1,
+  "packet": "native_texture_surface_cache_storage",
+  "status": "three_functions_reconstructed_five_original_byte_comparisons_passed",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b",
+  "branch": "agent/native-texture-surface-cache-storage-20260910b",
+  "base_commit": "2c23bb8",
+  "owned_files": [
+    "include/bsp/native_texture_surface_cache_storage.hpp",
+    "src/native_texture_surface_cache_storage.cpp",
+    "docs/NATIVE_TEXTURE_SURFACE_CACHE_STORAGE.md",
+    "reports/native_texture_surface_cache_storage_audit.json"
+  ],
+  "scope": "Four owned production/documentation files only. No shared CMake, ledger, packet, tag, or Ghidra mutation. Ignored local original-byte fixture and pinned artifacts remain in worker worktree.",
+  "target_verification": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_read": true,
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "seed_count": 8,
+    "all_seed_matches": true,
+    "all_live_PE_spans_match": true,
+    "span_count": 8,
+    "span_bytes": 232,
+    "owned_bytes": 207,
+    "installed_PE_spans_rechecked_at_execution": true
+  },
+  "functions": [
+    {
+      "address": "00b3d9b0",
+      "end_exclusive": "00b3da18",
+      "length": 104,
+      "native_byte_sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+      "old_name": "FUN_00b3d9b0",
+      "old_signature": "undefined FUN_00b3d9b0(void)",
+      "proposed_name": "BSP_TextureSurfaceCache_Reserve",
+      "cpp_function": "reserve_native_texture_surface_cache_00b3d9b0",
+      "native_abi": "ECX actual12-byte header; signed requested capacity stack DWORD; RET4; EAX unspecified.",
+      "interface": "new MSVC Win32 C++ void function taking NativeTextureSurfaceCacheStorage&; not drop-in binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "exception_contract": "No native frame registration, catch, or unwind cleanup; ordinary allocator exceptions propagate before publication.",
+      "annotation_mutation": false
+    },
+    {
+      "address": "00b3da20",
+      "end_exclusive": "00b3da70",
+      "length": 80,
+      "native_byte_sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237",
+      "old_name": "FUN_00b3da20",
+      "old_signature": "undefined FUN_00b3da20(void)",
+      "proposed_name": "BSP_TextureSurfaceCache_Resize",
+      "cpp_function": "resize_native_texture_surface_cache_00b3da20",
+      "native_abi": "ECX actual12-byte header; signed requested count stack DWORD; RET4; EAX unspecified.",
+      "interface": "new MSVC Win32 C++ void function taking NativeTextureSurfaceCacheStorage&; not drop-in binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "exception_contract": "No native frame registration, catch, or unwind cleanup; ordinary allocator exceptions propagate before publication.",
+      "annotation_mutation": false
+    },
+    {
+      "address": "00b3ec40",
+      "end_exclusive": "00b3ec57",
+      "length": 23,
+      "native_byte_sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+      "old_name": "FUN_00b3ec40",
+      "old_signature": "undefined FUN_00b3ec40(void)",
+      "proposed_name": "BSP_TextureSurfaceCache_DestroyStorage",
+      "cpp_function": "destroy_native_texture_surface_cache_00b3ec40",
+      "native_abi": "ECX actual12-byte header; RET; EAX unspecified.",
+      "interface": "new MSVC Win32 C++ void function taking NativeTextureSurfaceCacheStorage&; not drop-in binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "exception_contract": "No native frame registration, catch, or unwind cleanup; ordinary allocator exceptions propagate before publication.",
+      "annotation_mutation": false
+    }
+  ],
+  "spans": [
+    {
+      "address": "00b3d9b0",
+      "length": 104,
+      "kind": "owned",
+      "disk_offset": 7592368,
+      "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+      "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d4c8d04fd000000005350e8e97b0b008bd833c083c4043946047e218bcb5585c9740e8b168b2cc289298b54c20489510483c00183c1083b46047ce35d8b0650e87f8f0b0083c404891e897e085b5f5ec20400",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b3da20",
+      "length": 80,
+      "kind": "owned",
+      "disk_offset": 7592480,
+      "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237",
+      "hex": "56578b7c240c8bf13b7e087e0657e87dffffff8b4e043bcf7d1d8d9b000000008b068d04c885c0740733d2891089500483c1013bcf7ce93b7e047d0c83c8ff900146043b7e047cf8897e045f5ec20400",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b3ec40",
+      "length": 23,
+      "kind": "owned",
+      "disk_offset": 7597120,
+      "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+      "hex": "566a008bf1e8d6edffff8b0650e8377d0b0083c4045ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf55be",
+      "length": 5,
+      "kind": "dependency",
+      "disk_offset": 8345022,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "hex": "e958120000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "kind": "dependency",
+      "disk_offset": 8350089,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "hex": "e91efcffff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "kind": "dependency",
+      "disk_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "hex": "e917380000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf681b",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8349723,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "hex": "558bec83ec",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf9dc8",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8363464,
+      "sha256": "d2ae227e61e9623b5eadea617164ad4d4f13789fbb8758b73cd8402f623f5280",
+      "hex": "6a0c68f02d",
+      "live_PE_match": true
+    }
+  ],
+  "storage": {
+    "header_bytes": 12,
+    "texture_owner_offset": "40h",
+    "header_fields": {
+      "00h": "actual eight-byte-record data pointer",
+      "04h": "signed32 actual count",
+      "08h": "signed32 actual capacity"
+    },
+    "entry_bytes": 8,
+    "entry_fields": {
+      "00h": "mip DWORD",
+      "04h": "borrowed actual surface-owner pointer"
+    },
+    "initialization": "No default field values, constructor, hidden allocator state, or destructor."
+  },
+  "behavioral_contracts": {
+    "reserve": "Clamp signed request >=1; compare current signed capacity; allocate uint32(request)*8 wrapped bytes; current signed count bounds per iteration; capture current data each iteration; first source DWORD -> first destination DWORD -> second source DWORD -> second destination DWORD; null destination skips accesses; free current old data; publish captured new pointer then requested capacity; count unchanged and excess untouched.",
+    "resize": "Signed requested/capacity comparison; complete reserve if needed; reload current count; current data reloaded per zeroed record; ordered two-DWORD zeros except address0; repeated current count decrements for shrink; final requested count store; no entry destruction.",
+    "destroy": "Complete resize0 then free current data through original array-free thunk chain; no later clear of data/capacity or implicit owner lifetime."
+  },
+  "integration_metadata_repairs": [
+    {
+      "address": "00b3d9b0",
+      "current_body": "00b3d9b0..00b3da17",
+      "callsite": "00b3da05",
+      "required": "Clear stale free call-site no-return flow and disassemble missing DA0A..DA12 fallthrough inside current body.",
+      "exact_tail": "DA0A addESP4; DA0D store[ESI]=EBX; DA0F store[ESI+8]=EDI; DA12 popEBX."
+    },
+    {
+      "address": "00b3ec40",
+      "current_body": "00b3ec40..00b3ec51",
+      "callsite": "00b3ec4d",
+      "required": "Extend body through EC56 inclusive and disassemble normal free fallthrough.",
+      "exact_tail": "EC52 addESP4; EC55 popESI; EC56 ret."
+    }
+  ],
+  "native_execution": {
+    "owned_entries_stubbed": false,
+    "all_owned_original_bytes_unchanged": true,
+    "original_thunks_executed": [
+      "BF55BE -> BF681B",
+      "BF6989 -> BF65AC",
+      "BF65AC -> BF9DC8"
+    ],
+    "boundaries": {
+      "00bf681b": "Byte-count adapter calls real unchanged shared singleton_lifetime_allocate; kind pointer_slots, native_bytes==host_bytes.",
+      "00bf9dc8": "Observer then real unchanged shared singleton_lifetime_free; no replacement cache behavior."
+    },
+    "postimages_verified_only_allowed_patches": true,
+    "private_image_base": "00b80000",
+    "patches": [
+      {
+        "address": "00bf681b",
+        "host_target": "allocate",
+        "hex": "e940bbc82e"
+      },
+      {
+        "address": "00bf9dc8",
+        "host_target": "free",
+        "hex": "e98390c82e"
+      }
+    ],
+    "postimage_spans": [
+      {
+        "address": "00b3d9b0",
+        "bytes": 104,
+        "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31"
+      },
+      {
+        "address": "00b3da20",
+        "bytes": 80,
+        "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237"
+      },
+      {
+        "address": "00b3ec40",
+        "bytes": 23,
+        "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e"
+      },
+      {
+        "address": "00bf55be",
+        "bytes": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+      },
+      {
+        "address": "00bf6989",
+        "bytes": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+      },
+      {
+        "address": "00bf65ac",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+      },
+      {
+        "address": "00bf681b",
+        "bytes": 5,
+        "sha256": "8078cd621c6d2f9fb10b168cfb609a12a4a9a1975f97158cb60a8d71b455914e"
+      },
+      {
+        "address": "00bf9dc8",
+        "bytes": 5,
+        "sha256": "a0151c0a7da8607df52a05c87e048142d483d1548b5b57f7bdcca5361d1eb07e"
+      }
+    ]
+  },
+  "allocation_observation": "One real malloc import observed. Selected malloc returns null; actual unchanged helper invokes actual CRT new handler. Failure handler returns0 -> real bad_alloc. Retry handler replaces header data/count/capacity and returns1 -> actual helper retries malloc. No per-cache callback or null-success allocator invented.",
+  "production_providers": {
+    "00b3d9b0": "0001:000041e0       ?reserve_native_texture_surface_cache_00b3d9b0@bsp@@YAXAAUNativeTextureSurfaceCacheStorage@1@H@Z 300051e0 f   native_texture_surface_cache_storage.obj",
+    "00b3da20": "0001:00004310       ?resize_native_texture_surface_cache_00b3da20@bsp@@YAXAAUNativeTextureSurfaceCacheStorage@1@H@Z 30005310 f   native_texture_surface_cache_storage.obj",
+    "00b3ec40": "0001:00003fe0       ?destroy_native_texture_surface_cache_00b3ec40@bsp@@YAXAAUNativeTextureSurfaceCacheStorage@1@@Z 30004fe0 f   native_texture_surface_cache_storage.obj",
+    "fixture_actual_lifetime_allocate": "0001:00003f70       ?fixture_actual_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30004f70 f   actual_lifetime.obj",
+    "fixture_actual_lifetime_free": "0001:00003fd0       ?fixture_actual_lifetime_free@bsp@@YAXPAX@Z 30004fd0 f   actual_lifetime.obj"
+  },
+  "comparisons": [
+    {
+      "name": "reserve_min1_copy_grow_zero_shrink_destroy",
+      "compared_dwords": 467,
+      "snapshot_count": 21,
+      "frames_equal": true,
+      "final_header_words": [
+        "70010000",
+        "00000000",
+        "00000003"
+      ],
+      "free_entry_sequence": [
+        "00000000",
+        "70000000",
+        "70010000"
+      ]
+    },
+    {
+      "name": "reserve_allocator_failure",
+      "compared_dwords": 153,
+      "snapshot_count": 9,
+      "frames_equal": true,
+      "final_header_words": [
+        "70000000",
+        "00000000",
+        "00000002"
+      ],
+      "free_entry_sequence": [
+        "70000000"
+      ]
+    },
+    {
+      "name": "reserve_actual_new_handler_retry_current_data_count",
+      "compared_dwords": 452,
+      "snapshot_count": 13,
+      "frames_equal": true,
+      "final_header_words": [
+        "70020000",
+        "00000000",
+        "00000004"
+      ],
+      "free_entry_sequence": [
+        "70010000",
+        "70020000"
+      ]
+    },
+    {
+      "name": "signed_negative_resize_preserves_records",
+      "compared_dwords": 51,
+      "snapshot_count": 3,
+      "frames_equal": true,
+      "final_header_words": [
+        "70000000",
+        "ffffffff",
+        "00000002"
+      ],
+      "free_entry_sequence": []
+    },
+    {
+      "name": "wrapped_capacity_zero_byte_allocation_zero_count",
+      "compared_dwords": 148,
+      "snapshot_count": 10,
+      "frames_equal": true,
+      "final_header_words": [
+        "70000000",
+        "00000000",
+        "20000000"
+      ],
+      "free_entry_sequence": [
+        "00000000",
+        "70000000"
+      ]
+    }
+  ],
+  "compared_dwords": 1271,
+  "snapshot_contract": "Normalized actual allocation identities and header address only; header/count/capacity, allocation byte sizes, alive/dead flags, and all initialized small record-buffer DWORDs compare exactly. Dead payload is retained before the real free, never read after free. Raw traces contain paired complete vectors.",
+  "validation": {
+    "strict_new_source_and_fixture": "MSVC Win32 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; /OPT:REF /OPT:NOICF /INCREMENTAL:NO /BASE:0x30000000 /DYNAMICBASE:NO /FIXED /SAFESEH:NO",
+    "existing_build": "scripts/build.ps1 passed after verify-seeds; reconstructed_math and native_math_differential both passed.",
+    "registration_boundary": "Worker did not edit shared CMake. New source is separately strict-compiled into its own actual production object and linked by local fixture; integrator registers source in bsp_core.",
+    "new_permanent_tests": 0
+  },
+  "limits": [
+    "Arithmetic boundary cases do not prove real game callers issue negative/wrapped requests. All accessed records must be valid and each freed pointer actual shared allocation.",
+    "Negative resize test ends with count-1; later native destruction would zero record[-1]. That later invalid access is not executed; fixture retains and separately frees its allocation.",
+    "Wrapped capacity test has zero count and actual zero-byte allocation; no claim the nominal capacity grants storage for entries.",
+    "Current-field ordering is preserved by explicit scalar source accesses and verified assembly. Ambient new-handler mutation is exercised; no concurrent mutation or instruction-level write-watch proof.",
+    "Actual shared allocator returns nonnull or throws, so no invented null-success fixture. Record owner values are borrowed identities and no surface release is supplied.",
+    "Native fixture ABI adapters plus new C++ interface comparison; no drop-in ABI, game, COM driver, or visual validation."
+  ],
+  "pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\include\\bsp\\native_texture_surface_cache_storage.hpp",
+      "bytes": 2361,
+      "sha256": "990878139211164b8259ca4ab2b2f6a36d0261051b3be232134f0e43f538363b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\src\\native_texture_surface_cache_storage.cpp",
+      "bytes": 3499,
+      "sha256": "6606f2524de218ba6cd7c28f7cf969fcb50ea532aaccb09c5ce4b408d7392e0b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\docs\\NATIVE_TEXTURE_SURFACE_CACHE_STORAGE.md",
+      "bytes": 7334,
+      "sha256": "a5dea04f642e28c42c22b4429a1e7601dfabc9a010caf74bd68fd2d9fd597ff0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_check.cpp",
+      "bytes": 14335,
+      "sha256": "13aabeeac28cc6396499e7d100557858ef32b21d652dc4632c09a49f3bcf12bc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\build_cache3_check.ps1",
+      "bytes": 2219,
+      "sha256": "739ca3b4d63090a26dbb658c412fbe8d9a5978cddecbf8b414ea7f8ea0740a70"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\audit_cache3_spans.py",
+      "bytes": 3353,
+      "sha256": "5a5303e8202441749c86d49ab76661c738fbee315d77507e8bf1434e06a13273"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\write_cache3_audit.py",
+      "bytes": 11859,
+      "sha256": "1dfd8264188fda99fcb8284d53f2d305c70e1ef77b67fdabd100c322fd1b717b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\native_cache3_spans.hpp",
+      "bytes": 1345,
+      "sha256": "a7022cb56722cae18292c715332894ba27d5899feac393341f95002b0a41d239"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\native_cache3_verified.json",
+      "bytes": 2923,
+      "sha256": "b583c9cc3de6828fcf878a79baadc69091446e29b06c1f4dba527e8bfe4788a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_postimages.json",
+      "bytes": 794,
+      "sha256": "e27238f4bfa6700db5e306518583662187d7170d67a66cfc93427a37dcac30f2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_raw_traces.json",
+      "bytes": 12263,
+      "sha256": "90fffc7840d866ec2eb0b9a4865975a3b332abf253d0a04d49b21909583b4cba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_comparison.log",
+      "bytes": 426,
+      "sha256": "e24ff82f88a8a1d23b6e2c472a20dfd35c26d097a6fe4c074ea3baa46b95bc9e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_fixture_build.log",
+      "bytes": 510,
+      "sha256": "a723b88f9c7e0ef25ccb2ae983b52e70e12abf22f17170ce3a7e75166a0ffb6b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_existing_build.log",
+      "bytes": 12463,
+      "sha256": "b45e909965215ea767fbc40178aadc87b79efe7644ae192e3c18885b1eed98c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\src\\singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\build\\cache3-check\\actual_lifetime.obj",
+      "bytes": 31670,
+      "sha256": "e6b2273b3871472a6534a6137a299b7f14dfc8afbba359c66477a1cf7faedeb9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\build\\cache3-check\\native_texture_surface_cache_storage.obj",
+      "bytes": 3813,
+      "sha256": "ec19a4e6fb2eaf6200ae2b97cbec4a5b2531bdba06aa4a421dc6be34a029018c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\build\\cache3-check\\cache3_check.exe",
+      "bytes": 37376,
+      "sha256": "34fc05fd393eec0a8bb6ae5e92d35cfa7ceccbf3e97273c00a58f7bdc409c482"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\build\\cache3-check\\cache3_check.map",
+      "bytes": 72446,
+      "sha256": "5ef27aab00a4a3ec101735b1193da0f5c5bb21493abc4e879cd224ab1067abbd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_reserve_proto.txt",
+      "bytes": 618,
+      "sha256": "5817ca94402a054d4667415e1917d757676817a6a97a5a69192005a1e3884619"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_resize_proto.txt",
+      "bytes": 611,
+      "sha256": "d68a8494e4b1b0f7976ea50269c868aee54cc485224e6de2689232854c8de6ad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_destroy_proto.txt",
+      "bytes": 636,
+      "sha256": "a4e8d8a76f2b5a5ecc4e27e904631fae7499350deadc69903aa0205accd0bc85"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_reserve_comments.txt",
+      "bytes": 127,
+      "sha256": "80a96455ba9201bd14f5f2fffff4037264135e39f6337ef6580225f16404a345"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_resize_comments.txt",
+      "bytes": 127,
+      "sha256": "aa621744138fe0f163047acc1c55798f7240180bc43e6ac17bf3e3a2c7290b81"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_destroy_comments.txt",
+      "bytes": 127,
+      "sha256": "f94057fe2ad8b7e7df963575c854dc0f1b79a3438e968983319ffee3e8d145de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_reserve.asm.txt",
+      "bytes": 1088,
+      "sha256": "2ca1d4aac4657036e9b51c053904b92114929c0405ecdd65a16a9aa93c1f0bca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_resize.asm.txt",
+      "bytes": 971,
+      "sha256": "4c819a3c3573daae5cd2402d8273179fe19ecdc41a7f9291eb7627dc347b8607"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_reserve_tail.asm.txt",
+      "bytes": 310,
+      "sha256": "b3f7bb82001613d160493c21601cf936f120b8a2463a0a8bc46a42860b26a1ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_destroy_tail.asm.txt",
+      "bytes": 195,
+      "sha256": "aeb8cb1593ff1efdce10b36b2e661fcfc481a93626baf20861e9456bc1b961a2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_reserve_flow.txt",
+      "bytes": 195,
+      "sha256": "c67eba7ef2f54713a495356d824ed152f3711b88d7125c62b5ad62d3e64d6528"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_resize_flow.txt",
+      "bytes": 128,
+      "sha256": "0da83eb74ab2cf1a6e3dfe36c8270b23338b56bac1d6f179259bf0964eb417ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_destroy_flow.txt",
+      "bytes": 127,
+      "sha256": "c05a58c6c8470ae4f3f032ae23f19ab2811b6e20a6cb8d1ceae44878943d0617"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b\\local\\cache3_free_proto.txt",
+      "bytes": 620,
+      "sha256": "de6223ffddd92c49a6c9253befa77a73145f2bc1d8860c58aef912abd90fb289"
+    }
+  ]
+}
