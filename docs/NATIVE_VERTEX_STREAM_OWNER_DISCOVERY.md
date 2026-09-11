@@ -5,7 +5,7 @@ full renderer vertex binding `B24840` and reset unbinding `B24BF0`. It adds
 no source implementation or runtime claim. The report pins complete fresh
 live-Ghidra/installed-PE spans and twelve current provider files. The follow-up
 audit retains all original 24 spans / 2,159 bytes and expands the report to
-49 spans / 6,651 bytes. All spans were compared afresh with the guarded live
+56 spans / 8,331 bytes. All spans were compared afresh with the guarded live
 `bsp` program and installed PE; all twelve provider hashes remain unchanged.
 
 ## Binding and current profiles
@@ -160,12 +160,55 @@ that adoption-oriented set is not ownership-classified. Linear decoding
 can stop at invalid bytes and includes interfunction gaps, so neither this
 inventory nor the retain-near filter proves the field permanently null.
 
-The report names two bounded read-only follow-ups: classify adoption-style
-stores in AE5550/B0B6A0 and apparent gap bodies following B2F630/B2F800;
-then trace escaped constructor outputs through B28A40 registration,
+## Completed adoption-store follow-up
+
+The four nominated adoption candidates are now excluded with seven more
+fresh native spans / 1,680 bytes. All previous 49 span records and twelve
+provider records remain unchanged.
+
+AE5550 constructs a separate recursively allocated 58h-byte object. Its
+first four fields are floats copied from an input rectangle, so the
+destination is not a logical-stream vtable/refcount layout. AE5870 pushes
+58h at AE5C83, allocates at AE5CE2, and passes the returned destination in
+ECX to AE5550 at AE5D0F. Recursive child calls also allocate 58h. Stores
+AE55CC and AE5835 copy the source object's current virtual+38 return to
+this node's +4C. The full 793-byte constructor and root-allocation fragment
+are pinned. The constructor takes ECX destination and stack source/bounds
+pointer, returns the destination in EAX and uses RET8. The descriptive node
+name and exact meaning of its +4C value remain hypotheses; object origin
+alone excludes it from the logical-stream writer set.
+
+B0B990 stores into a fresh 80h-byte allocation, with D0D4A4 installed at
+B0B98A. EDI was cleared at B0B801 and supplies zero to this object's +4C,
++50 and +54. The object is subsequently stored into the caller destination's
++34. Adjacent B0B971 writes a floating-point value into that caller
+destination's +4C, a different address from the fresh allocation's +4C.
+The pinned fragment retains the zero-register origin and allocation path.
+
+The apparent B2F630/B2F800 stores were misattributed by the offline scan's
+nearest snapshot function head. The actual leaf bodies start at B2F670
+and B2F840. Both save ECX in EAX and explicitly clear ECX before storing
+it at EAX+4C. B2F670 is 23 bytes and zeroes six fields; B2F840 is 96 bytes
+and initializes further scalar fields. Both return the original object
+with plain RET. Neither has a current Ghidra function record or reported
+xrefs; no function was created.
+
+Fresh native bytes also show complete 52-byte predecessor destructors at
+B2F630 and B2F800. Their current Ghidra bodies stop at the free calls ending
+B2F654 and B2F824, but execution continues through stack cleanup, zeroing
+object+4/+8, register restoration and RET, ending at B2F664 and B2F834.
+INT3 padding separates them from the two initialization leaves. The guarded
+`ghidra flow` query reports zero gaps for both despite these continuations;
+its result does not establish complete native body coverage. No Ghidra
+annotations or saved analysis were changed.
+
+This closes four nominated function/gap groups containing five MOV +4C
+sites. It does not classify the rest of the 239-store inventory or prove
+that logical-stream+4C stays null. The separate alias investigation starts
+from escaped constructor outputs through B28A40 registration,
 B93800/B93E60 payload loading, B85B80 draw-section append and B73BB0
-geometry assignment. These are discovery candidates, not ready source
-dependencies. Address leases must be coordinated before any mutation.
+geometry assignment. The nonnull owner profile and final-zero terminal
+remain unresolved; whole binding/reset owner closure remains unready.
 
 ## Reset consequence
 
