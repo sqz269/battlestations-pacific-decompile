@@ -272,8 +272,13 @@ struct MainMenuPathHost {
     // --- the pump, 004C4165 ------------------------------------------------
     // 004F8830. Returns the phase the screen was in when the pass reached it.
     virtual FrontEndScreenPhase pump_front_end_screens(float raw_delta) = 0;
-    // 004F83B0, the visibility commit the enter pass runs before the virtual.
-    virtual void commit_screen_visibility(int screen_id) = 0;
+    // 004F83B0 publishes the screen's current visibility byte (+5h) to every non-null child
+    // the +24h collector reports, through the child's vtable +34h (004F8434 is
+    // MOVZX EDX,[EBX+5h]); it does not show anything by itself. The enter pass calls it
+    // after 004F88E4 sets +5h to 1 (so `visible` is true here); the pump's exit pass clears
+    // +5h at 004F88B3 and calls the same routine at 004F88B7 with the cleared byte. The
+    // per-child walk is bsp::commit_front_end_screen_visibility_004f83b0.
+    virtual void commit_screen_visibility(int screen_id, bool visible) = 0;
     // Screen vtable +18h; 005987F0 for the main-menu screen.
     virtual void enter_screen(int screen_id) = 0;
     // Screen vtable +20h; 00599DB0 for the main-menu screen.

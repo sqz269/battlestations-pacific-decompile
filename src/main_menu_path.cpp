@@ -278,7 +278,7 @@ MainMenuPathStep advance_main_menu_path(MainMenuPathStep step, MainMenuPathState
         }
         // 004F88E4 sets +5h, 004F88E8 commits, and only then does 004F88F4
         // call the enter virtual, so the enter body observes itself visible.
-        host.commit_screen_visibility(state.published_screen_id);
+        host.commit_screen_visibility(state.published_screen_id, true);  // +5h was set to 1 at 004F88E4
         host.enter_screen(state.published_screen_id);
         return MainMenuPathStep::ScreenVisible;
     }
