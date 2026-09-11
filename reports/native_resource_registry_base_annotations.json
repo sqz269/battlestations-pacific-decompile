@@ -1,0 +1,28 @@
+[
+  {
+    "address": "00b197e0",
+    "before": {
+      "address": "00b197e0",
+      "function_name": "BSP_ResourceRegistry_ConstructBaseProfile"
+    },
+    "after": {
+      "address": "00b197e0",
+      "name": "BSP_ResourceRegistry_ConstructBaseProfile",
+      "evidence": "Complete9-byte raw ECX/EAX/plainRET baseprofile constructor; write only original D5E550, no publication/tree/allocator. Both bodies/adjacentpadding confirmed; previously missing functions created with returning-free tail and neighboring metadata retained. All50bytes15instructions checked after one publication instruction and exact current singleton_lifetime_free CALL binding;2exactarchiveobjects154wholeCOFFsections. Same14 unchangedprebuildinputs and strictmainWin32/2CTests/8originalseeds passed on 4b1ac037d3b6cf9716dc0938c79ea8c6a0be691c2559cdb6423b716d99654ad2. No runtime/linkedaddress/nativeSEH/general originalcallerABI/gameclaim. Descriptive name hypothesis. reports/native_resource_registry_base_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b197f0",
+    "before": {
+      "address": "00b197f0",
+      "function_name": "BSP_ResourceRegistry_BaseScalarDelete"
+    },
+    "after": {
+      "address": "00b197f0",
+      "name": "BSP_ResourceRegistry_BaseScalarDelete",
+      "evidence": "Complete41-byte base scalar; TEST currentLOWBYTEflags bit0 atentryESP+4 BEFORE writes. SaveESI/captureECX, clear actualF8D41C, write capturedprofileCE3818, branch consumes originalTEST flags unchanged byMOVs; optionallyfree capturedallocation; originalADDESP4, EAX capturedpointerbits, POPESI,RET4. New EDX is direct borrowed publication cell, ten-byte MOV [EDX+disp32(0)],0 retains original length/EFLAGS; no destructor/resetcall or addedEH. Both bodies/adjacentpadding confirmed; previously missing functions created with returning-free tail and neighboring metadata retained. All50bytes15instructions checked after one publication instruction and exact current singleton_lifetime_free CALL binding;2exactarchiveobjects154wholeCOFFsections. Same14 unchangedprebuildinputs and strictmainWin32/2CTests/8originalseeds passed on 4b1ac037d3b6cf9716dc0938c79ea8c6a0be691c2559cdb6423b716d99654ad2. No runtime/linkedaddress/nativeSEH/general originalcallerABI/gameclaim. Descriptive name hypothesis. reports/native_resource_registry_base_audit.json"
+    },
+    "status": "applied"
+  }
+]
