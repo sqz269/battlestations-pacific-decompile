@@ -408,3 +408,7 @@ Nothing here is game-validated.
 7. **004b44f0** is called with ECX = the platform manager, but Ghidra types it as taking no
    arguments and its two callees (00a3e510, 00a3ead0) are manager accessors. The other three callers
    were not checked, so its parameter is inferred from this call site only.
+
+## Correction from docs/XLIVE_NOTIFICATIONS.md
+
+The complete notification loop now lives in src/xlive_notifications.cpp. The UI hook receives parameter != 0 in CL before manager+3E8 is written. Title-update ID15 compares against an empty NativeString, then appends \setup.exe to a nonempty path; it does not compare against that suffix. Each GetNext reloads the listener. The XLive pump and sign-in helpers now share durable overlapped storage and cached username bytes; see docs/XLIVE_SYSTEM_PUMP.md and docs/XLIVE_SIGNIN.md. DLL loader probes remain unsuccessful, so this is no claim of an operational XLive/game runtime.

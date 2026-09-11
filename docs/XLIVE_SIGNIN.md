@@ -112,3 +112,7 @@ bytes, an unterminated comparison escaping the 128-byte region, and unsupported
 indexed offsets fail explicitly instead of using invented contents. Native
 physical layout, arbitrary SEH/allocator behavior, live SDK integration and game
 validation remain unclaimed. See `reports/xlive_signin.json` for exact scope.
+
+## Integration from docs/PLATFORM_SERVICES.md
+
+The parent now composes these routines through PlatformServices and XLiveManagerRuntime, with original-ordinal SDK forwarding and shared canonical state. Input lookup/reset/tick use one published pointer. The combined build and existing tests passed; installed XLive loader probes failed before pretranslation. Required owner construction, game dependencies and runtime validation remain explicit in docs/PLATFORM_SERVICES.md.

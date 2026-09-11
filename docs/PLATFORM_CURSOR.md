@@ -109,3 +109,7 @@ change the user's desktop focus or run XLive. Source/commands/output are in
 These checks establish reconstructed, build-tested and fixture-tested behavior.
 Concrete cross-packet runtime composition, original ABI compatibility, live
 focus/cursor effects and gameplay remain unvalidated by this worker.
+
+## Integration from docs/PLATFORM_SERVICES.md
+
+The parent now composes these routines through PlatformServices and XLiveManagerRuntime, with original-ordinal SDK forwarding and shared canonical state. Input lookup/reset/tick use one published pointer. The combined build and existing tests passed; installed XLive loader probes failed before pretranslation. Required owner construction, game dependencies and runtime validation remain explicit in docs/PLATFORM_SERVICES.md.

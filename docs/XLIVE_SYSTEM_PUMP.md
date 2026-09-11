@@ -1,5 +1,7 @@
 # XLive manager pump and asynchronous helpers
 
+Addresses: 00a409f0, 00a40510, 00a3ed10, 00a3ed60, 00a3ef20, 00a3fa70, 00a3e700.
+
 This packet reconstructs seven complete control-flow bodies through explicit
 host operations. Descriptive names are hypotheses, not recovered symbols.
 The interfaces are typed C++ projections, not binary replacements for the
@@ -116,3 +118,7 @@ completion, duplicate achievement removal after queue growth, UI progression,
 the strict heartbeat boundary and upload-to-download state reload. Such host
 fixtures are not native differential or game validation; the integrator owns
 the actual DLL runtime probe. No installed DLL was loaded or modified here.
+
+## Integration from docs/PLATFORM_SERVICES.md
+
+The parent now composes these routines through PlatformServices and XLiveManagerRuntime, with original-ordinal SDK forwarding and shared canonical state. Input lookup/reset/tick use one published pointer. The combined build and existing tests passed; installed XLive loader probes failed before pretranslation. Required owner construction, game dependencies and runtime validation remain explicit in docs/PLATFORM_SERVICES.md.

@@ -11,7 +11,7 @@
 
 namespace bsp {
 
-// Exactly the 15 DWORDs copied to manager+32h at 00A4034C. Decoding the
+// Exactly the 0x15 DWORDs (84 bytes) copied to manager+32h at 00A4034C. Decoding the
 // consumer's selected fields must not discard the remaining invite payload.
 using XLiveAcceptedInvite = std::array<std::byte, 84>;
 
@@ -31,7 +31,7 @@ struct XLiveNotificationGameHost {
     virtual void poll_signin_debounce_00a3f3e0() = 0;
     virtual void refresh_signin_00a3f440() = 0;
     virtual void profile_setting_changed_00a3e600(std::uint8_t mask) = 0;
-    virtual void service_online_ui_00a3fa70(bool connection_notification) = 0;
+    virtual void pump_achievements_00a3fa70(bool force) = 0;
     virtual void title_update_path_00a3ff20(NativeString& output) = 0;
     virtual void system_update_path_00a3fde0(NativeString& output) = 0;
     virtual std::wstring widen_update_path_004c5e60(const char* path) = 0;

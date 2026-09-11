@@ -1,7 +1,9 @@
 {
   "packet": "orch3_xlive_shared_e",
   "source": "src/xlive_notifications.cpp",
-  "addresses": ["00a40110"],
+  "addresses": [
+    "00a40110"
+  ],
   "abi": "Native ECX manager, no stack arguments; RET00A402F7; disjoint update arms through00A404F3. New typed C++ interface.",
   "evidence": [
     "Saved bsp.gpr /battlestationspacific.exe verified by bsp.py ghidra wrappers before export and listing queries",
@@ -10,14 +12,55 @@
     "00A4033C flag then 00A4034C REP MOVSD21 copies84 bytes",
     "00A4024F..00A40294 compares title-update path to zero-length temporary, 00A40416..00A404A4 appends setup.exe then launches/sleeps/exits"
   ],
-  "library_ordinals": {"XLivePreTranslateMessage":5030,"XNotifyCreateListener":5270,"XNotifyGetNext":651,"XInviteGetAcceptedInfo":5315,"XLiveUpdateSystem":5024},
+  "library_ordinals": {
+    "XLivePreTranslateMessage": 5030,
+    "XNotifyCreateListener": 5270,
+    "XNotifyGetNext": 651,
+    "XInviteGetAcceptedInfo": 5315,
+    "XLiveUpdateSystem": 5024
+  },
   "no_ghidra_function": [],
   "flow_repairs": [],
-  "verification": {"win32_release":true,"existing_ctests_passed":2,"runtime_pretranslation":false,"gameplay":false},
+  "verification": {
+    "win32_release": true,
+    "existing_ctests_passed": 2,
+    "runtime_pretranslation": false,
+    "gameplay": false,
+    "focused_notification_protocol_fixture": true,
+    "independent_listing_review": true
+  },
   "runtime_probes": [
-    {"library":"C:/Windows/SysWOW64/xlive.dll","vendor":"Microsoft Corporation","version":"2.0.0673.0","bytes":14303392,"sha256":"79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385","result":"LoadLibraryExW error182","static_missing_direct_import":"msidcrl40.dll ordinal43"},
-    {"library":"installed Team Wolfpack xlive.dll, copied to ignored local/xlive-installed-copy","bytes":3833856,"sha256":"71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2","result":"exitC0000005 before LoadLibrary returned; separate debugger launch C0000008; cause unresolved"}
+    {
+      "library": "C:/Windows/SysWOW64/xlive.dll",
+      "vendor": "Microsoft Corporation",
+      "version": "2.0.0673.0",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "result": "LoadLibraryExW error182",
+      "static_missing_direct_import": "msidcrl40.dll ordinal43"
+    },
+    {
+      "library": "installed Team Wolfpack xlive.dll, copied to ignored local/xlive-installed-copy",
+      "bytes": 3833856,
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "result": "exitC0000005 before LoadLibrary returned; separate debugger launch C0000008; cause unresolved"
+    }
   ],
-  "local_evidence": ["local/xlive-binary-inspection.json","local/xlive-flow.json","local/xlive-entry-flow.json","local/xlive-microsoft-probe.out","local/xlive-microsoft-probe.err","local/xlive-installed-probe.out","local/xlive-load-debug.txt","local/platform-services-build.log"],
-  "limitations": ["Actual DLL initialization and pretranslation not runtime-validated","Native ignored failed-invite output replaced with explicit unavailable-output exception","Game/update helpers are required dependencies","Typed interfaces are not original ABI replacements"]
+  "local_evidence": [
+    "local/xlive-binary-inspection.json",
+    "local/xlive-flow.json",
+    "local/xlive-entry-flow.json",
+    "local/xlive-microsoft-probe.out",
+    "local/xlive-microsoft-probe.err",
+    "local/xlive-installed-probe.out",
+    "local/xlive-load-debug.txt",
+    "local/platform-services-build.log",
+    "local/platform-services-evidence/notifications"
+  ],
+  "limitations": [
+    "Actual DLL initialization and pretranslation not runtime-validated",
+    "Native ignored failed-invite output replaced with explicit unavailable-output exception",
+    "Game/update helpers are required dependencies",
+    "Typed interfaces are not original ABI replacements"
+  ]
 }

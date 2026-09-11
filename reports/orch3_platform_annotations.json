@@ -1,0 +1,189 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reviewed_and_saved": 29,
+  "readback_matches": [
+    {
+      "address": "004ba6d0",
+      "name": "BSP_InputBackend_GetDeviceByClassAndIndex_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00becb20",
+      "name": "BSP_Win32Platform_UpdateCursorFocusState",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00bece70",
+      "name": "BSP_Win32Platform_RunFrame",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00beca40",
+      "name": "BSP_Platform_ResetMouseFocus_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a9a140",
+      "name": "BSP_MouseInput_SetCooperativeLevel_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a90ee0",
+      "name": "BSP_InputBackend_RemoveActiveDevice_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a91620",
+      "name": "BSP_InputBackend_ActivateDeviceSlot_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a92840",
+      "name": "BSP_InputActions_RetargetMouseBindings_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00bebf30",
+      "name": "BSP_InputBackend_DeleteDeviceClass_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00bec230",
+      "name": "BSP_Platform_GetWindow_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a983c0",
+      "name": "BSP_InputBackend_EnumerateDevices_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a918a0",
+      "name": "BSP_InputBackend_UpdateDevices_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a97390",
+      "name": "BSP_InputBackend_PreTickNoOp_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a90490",
+      "name": "BSP_InputBackend_AtRequestedActiveCount_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a93eb0",
+      "name": "BSP_InputDevice_IdentifierZero_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a9a390",
+      "name": "CG_scalar_deleting_dtor_00a9a390",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a409f0",
+      "name": "BSP_XLiveSystem_Pump",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a40510",
+      "name": "BSP_XLiveSystem_PumpSigninUi",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3ed10",
+      "name": "BSP_XLiveSystem_BuildStoragePath",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3ed60",
+      "name": "BSP_XLiveSystem_DownloadStorage",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3ef20",
+      "name": "BSP_XLiveSystem_UploadStorage",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3fa70",
+      "name": "BSP_XLiveSystem_PumpAchievements",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3e700",
+      "name": "BSP_XLiveSystem_ResetUiSlots",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3ebd0",
+      "name": "BSP_XLiveManager_RefreshCachedLocalUser_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3f3e0",
+      "name": "BSP_XLiveManager_PollSigninDebounce_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3f440",
+      "name": "BSP_XLiveManager_ToggleSigninDebounce_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3e600",
+      "name": "BSP_XLiveManager_RefreshProfileName_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a3e6a0",
+      "name": "BSP_XLiveManager_RestartSignin_Provisional",
+      "name_and_evidence_match": true
+    },
+    {
+      "address": "00a40110",
+      "name": "BSP_XenonSystemManager_DrainNotifications",
+      "name_and_evidence_match": true
+    }
+  ],
+  "before_and_after_logs": [
+    "local/ghidra-annotations-20260911T050143Z.json",
+    "local/ghidra-annotations-20260911T050513Z.json"
+  ],
+  "readback": "local/platform-annotation-readback.json",
+  "exports_refreshed": [
+    "004ba6d0",
+    "00becb20",
+    "00bece70",
+    "00beca40",
+    "00a9a140",
+    "00a90ee0",
+    "00a91620",
+    "00a92840",
+    "00bebf30",
+    "00bec230",
+    "00a983c0",
+    "00a918a0",
+    "00a97390",
+    "00a90490",
+    "00a93eb0",
+    "00a9a390",
+    "00a409f0",
+    "00a40510",
+    "00a3ed10",
+    "00a3ed60",
+    "00a3ef20",
+    "00a3fa70",
+    "00a3e700",
+    "00a3ebd0",
+    "00a3f3e0",
+    "00a3f440",
+    "00a3e600",
+    "00a3e6a0",
+    "00a40110"
+  ],
+  "classification_followup_export": "004ba6d0 refreshed again after classification correction"
+}

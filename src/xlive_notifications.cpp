@@ -84,7 +84,7 @@ void drain_xlive_notifications_00a40110(OnlineSystemState& online,
         }
         case 0x02000001:
             if (parameter == 0x001510f0)
-                game.service_online_ui_00a3fa70(true);
+                game.pump_achievements_00a3fa70(true);
             else if (parameter == 0x80151005)
                 flags.link_failure = true;
             break;
