@@ -540,7 +540,18 @@
       "packet": "effect_component_destruction",
       "addresses": [
         "0086fb00",
-        "0086cf70"
+        "0086bc60",
+        "0086b9a0",
+        "0086d080",
+        "0086d0a0",
+        "0086e870",
+        "0086ff00",
+        "0086d0c0",
+        "0086d0e0",
+        "0086d100",
+        "0086d120",
+        "0086d140",
+        "0086d160"
       ]
     },
     {
@@ -548,6 +559,182 @@
       "addresses": [
         "004d9c00"
       ]
+    },
+    {
+      "packet": "remaining_component_lua_readers",
+      "addresses": [
+        "00871d00",
+        "00858700",
+        "0086d180",
+        "00868de0",
+        "0086c240",
+        "0086f3b0",
+        "0086b2b0",
+        "00868fa0",
+        "00869080",
+        "00869160",
+        "00869fd0",
+        "008694c0"
+      ]
     }
-  ]
+  ],
+  "component_virtual_targets": [
+    {
+      "type": "Sound",
+      "vtable": "00d0da18",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086fb00",
+        "14": "0086ef60"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Particle",
+      "vtable": "00d0d5b4",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086bc60",
+        "14": "00871d00"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Tracer",
+      "vtable": "00d0d590",
+      "component_offset": 128,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086b9a0",
+        "14": "00858700"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "WaterTracer",
+      "vtable": "00d0d5d4",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d080",
+        "14": "0086d180"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Shake",
+      "vtable": "00d0d5f4",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d0a0",
+        "14": "00868de0"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Flare",
+      "vtable": "00d0d614",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086e870",
+        "14": "0086c240"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "ThunderStorm",
+      "vtable": "00d0da38",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086ff00",
+        "14": "0086f3b0"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Waterdrops",
+      "vtable": "00d0d634",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d0c0",
+        "14": "0086b2b0"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "ConstRumble",
+      "vtable": "00d0d76c",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d0e0",
+        "14": "00868fa0"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "SlopeRumble",
+      "vtable": "00d0d78c",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d100",
+        "14": "00869080"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "SquareRumble",
+      "vtable": "00d0d7ac",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d120",
+        "14": "00869160"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Light",
+      "vtable": "00d0d654",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d140",
+        "14": "00869fd0"
+      },
+      "disk_live_bytes_equal": true
+    },
+    {
+      "type": "Splash",
+      "vtable": "00d0d674",
+      "component_offset": 0,
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d160",
+        "14": "008694c0"
+      },
+      "disk_live_bytes_equal": true
+    }
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_tested",
+    "validated_revision": "2117180469fe7af530ecea42de9d5c85f29d81b4",
+    "main_base": "6a6bc662",
+    "log": "local/effect_components_n_integrate.log",
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "library_sha256": "5c49b6d6f63028a3757003e1a6ace99f1c33a96d050fb00cd280965d482af93d",
+    "fixture_provenance": "Both the native-constructor/real-Lua component fixture and existing startup fixture ran on source4851da50 and validation.library_sha256; this combined CTest build is separate.",
+    "ghidra_integration_saved_names": 15,
+    "prior_annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T174958Z.json",
+    "native_abi": false,
+    "game_validated": false
+  }
 }

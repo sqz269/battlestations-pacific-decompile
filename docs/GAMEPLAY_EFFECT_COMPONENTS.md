@@ -139,3 +139,25 @@ virtual behavior and gameplay remain unvalidated.
   preserve Tracer secondary-base adjustment in both dispatch directions.
 - Startup reference-vector append004D9C00 and remaining acquisition consumers.
 - Stored cleanup-body extents remain pending behind the documented script gate.
+
+## Verified virtual targets for follow-up ownership
+
+All13 current slot0 entries resolve to00BD30E0. It invokes the current slot4
+with flags1; these are payload-specific scalar targets, not newly reconstructed
+destructors. The slots below were checked against both disk and live Ghidra.
+
+| Component | Current slot4 | Current Lua slot14 |
+|---|---|---|
+|Sound|0086FB00|0086EF60|
+|Particle|0086BC60|00871D00|
+|Tracer|0086B9A0|00858700|
+|WaterTracer|0086D080|0086D180|
+|Shake|0086D0A0|00868DE0|
+|Flare|0086E870|0086C240|
+|ThunderStorm|0086FF00|0086F3B0|
+|Waterdrops|0086D0C0|0086B2B0|
+|ConstRumble|0086D0E0|00868FA0|
+|SlopeRumble|0086D100|00869080|
+|SquareRumble|0086D120|00869160|
+|Light|0086D140|00869FD0|
+|Splash|0086D160|008694C0|
