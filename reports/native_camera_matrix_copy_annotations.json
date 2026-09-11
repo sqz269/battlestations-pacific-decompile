@@ -1,0 +1,17 @@
+[
+  {
+    "address": "004134f0",
+    "before": {
+      "address": "004134f0",
+      "function_name": "BSP_Matrix_Copy4x4X87",
+      "comment": "[BSP reconstruction 004134f0]\nTyped camera world/view cache slice in src/camera_projection.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported."
+    },
+    "after": {
+      "address": "004134f0",
+      "old_name": "BSP_Matrix_Copy4x4X87",
+      "name": "BSP_Matrix_Copy4x4X87",
+      "evidence": "Complete raw 004134F0..00413557,103-byte entry in src/native_camera_matrix_copy.cpp. ECX destination/stack source/RET4/EAX destination; explicit fastcall raw pointer interface has unused EDX. Sixteen sequential x87 FLD m32/FSTP m32 pairs preserve actual ambient FP state, ordered overlap/unaligned reads and partial exception stores; no array-object cast, memcpy, snapshot, helper, global, owner, or validation. Complete compiled COFF section has zero relocations and is byte-identical to all103 fresh guarded bsp.gpr/installed PE bytes; exact object occurs once in frozen actual main bsp_core.lib. Strict main Win32 build, both existing CTests and eight fresh native seeds pass. No new test case or separate original-body/linked-runtime fixture; original caller integration, companion-backed node hierarchy and gameplay remain separate. reports/native_camera_matrix_copy_audit.json."
+    },
+    "status": "applied"
+  }
+]
