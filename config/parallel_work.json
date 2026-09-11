@@ -6120,6 +6120,31 @@
       "prerequisite_packets": [],
       "scope": "Complete raw 16-coefficient x87 matrix copy entry; full original/COFF identity without new fixture.",
       "evidence": "reports/native_camera_matrix_copy_audit.json"
+    },
+    {
+      "id": "orch4_effect_definition_l",
+      "packet": "orch4_effect_definition_l",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_fixture_tested_pending_integration",
+      "function_addresses": [
+        "0086b870",
+        "0086e770",
+        "0086eb60",
+        "0086edd0",
+        "00870d00",
+        "00871440",
+        "0086b650",
+        "0086e8a0",
+        "00869a20",
+        "008700e0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_definition.hpp",
+        "src/gameplay_effect_definition.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_definition.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_DEFINITION.md"
     }
   ],
   "snapshot_after_analysis": {

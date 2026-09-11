@@ -1,0 +1,46 @@
+{
+  "reason": "0086E8A0 is returning checked map erasure; its invalid-iterator out_of_range branch does not make it a whole-body STL_xlen_throw routine.",
+  "entries": [
+    {
+      "address": "0086e8a0",
+      "prior_ledger": {
+        "address": "0086e8a0",
+        "name": "STL_xlen_throw_0086e8a0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "0086e8a0",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_0086e8a0 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_xlen_throw_0086e8a0 at 0086e8a0\nSignature: undefined STL_xlen_throw_0086e8a0(void)\nEntry: 0086e8a0\nBody: 0086e8a0 - 0086eb10",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "0086e8a0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
