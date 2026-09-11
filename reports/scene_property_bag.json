@@ -1,0 +1,919 @@
+{
+  "packet": "cc2_scene_property_bag",
+  "worktree": "agent/cc2-scene-property-bag",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "names_are_hypotheses": true,
+  "doc": "docs/SCENE_PROPERTY_BAG.md",
+  "routines": [
+    {
+      "address": "008f5a00",
+      "name": "BSP_ScenePropertyBag_Parse",
+      "abi": "__thiscall(bag /*ECX*/, Tokenizer*, char allowUntypedNumbers, void* groupRegistry), RET 0ch",
+      "coverage": "complete",
+      "correction": "the prior ledger evidence put the tokenizer in ECX; 008f5a25 copies ECX to EBX and spills it to [ESP+18h] as the bag, and 008f5a1e loads the tokenizer from the first stack argument. Argument 3 is a registry object, not a flag: 008f5aa9 calls 00469b60 on it."
+    },
+    {
+      "address": "008f2260",
+      "name": "BSP_ScenePropertyBag_Find",
+      "abi": "__thiscall(bag, const char* key), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f33f0",
+      "name": "BSP_ScenePropertyBag_Insert",
+      "abi": "__thiscall(bag, const char* key, record), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f3370",
+      "name": "BSP_SceneProperty_SetValueFromToken",
+      "abi": "__thiscall(record, const char* token), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f38a0",
+      "name": "BSP_ScenePropertyBag_SetString",
+      "abi": "__thiscall(bag, const char* key, const char* value), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f41a0",
+      "name": "BSP_ScenePropertyBag_Construct",
+      "abi": "__thiscall(bag, void* owner), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f41f0",
+      "name": "BSP_ScenePropertyBag_Clone",
+      "abi": "__thiscall(bag), RET (no stack args)",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f54f0",
+      "name": "BSP_ScenePropertyBag_MergeFrom",
+      "abi": "__thiscall(dest, source, char keep_existing)",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f0700",
+      "name": "BSP_SceneProperty_AssignValueFrom",
+      "abi": "__thiscall(record, other), RET 4",
+      "coverage": "read as a contract"
+    },
+    {
+      "address": "008f4f60",
+      "name": "BSP_SceneProperty_Clone",
+      "abi": "__thiscall(record), RET",
+      "coverage": "read as a contract"
+    }
+  ],
+  "bag_layout": {
+    "size": "0x114",
+    "fields": [
+      {
+        "offset": "0x00",
+        "meaning": "vtable 00d16504"
+      },
+      {
+        "offset": "0x04",
+        "meaning": "embedded hash map, vtable 00d162c4; the map this is bag+4"
+      },
+      {
+        "offset": "0x08",
+        "meaning": "map entry count"
+      },
+      {
+        "offset": "0x0c",
+        "meaning": "64 bucket heads, 256 bytes"
+      },
+      {
+        "offset": "0x10c",
+        "meaning": "next insertion ordinal; starts at 0, which is also the unstamped sentinel"
+      },
+      {
+        "offset": "0x110",
+        "meaning": "owner, the 008f41a0 constructor argument; 0 in both inlined copies"
+      }
+    ],
+    "node": [
+      {
+        "offset": "0x00",
+        "meaning": "hash from 0043b760"
+      },
+      {
+        "offset": "0x04",
+        "meaning": "key string"
+      },
+      {
+        "offset": "0x08",
+        "meaning": "property record"
+      },
+      {
+        "offset": "0x0c",
+        "meaning": "next node in the bucket"
+      }
+    ],
+    "key_comparison": "case-insensitive (__stricmp) after a hash hit, 0043b8b0"
+  },
+  "record_layout": {
+    "size": "0x38",
+    "fields": [
+      {
+        "offset": "0x00",
+        "meaning": "vtable, one per type"
+      },
+      {
+        "offset": "0x04",
+        "meaning": "type code 0..0bh"
+      },
+      {
+        "offset": "0x08",
+        "meaning": "not written by any producer read here"
+      },
+      {
+        "offset": "0x0c",
+        "meaning": "scalar value: int, float, char*, bool byte, enum int, sub-bag pointer, V3.x"
+      },
+      {
+        "offset": "0x10",
+        "meaning": "V3.y"
+      },
+      {
+        "offset": "0x14",
+        "meaning": "V3.z"
+      },
+      {
+        "offset": "0x18",
+        "meaning": "reference payload, 8 bytes, copied by 008f0340"
+      },
+      {
+        "offset": "0x20",
+        "meaning": "array data pointer"
+      },
+      {
+        "offset": "0x24",
+        "meaning": "array element count"
+      },
+      {
+        "offset": "0x28",
+        "meaning": "enum/LUA_S declaration; its letter string is at +118h"
+      },
+      {
+        "offset": "0x2c",
+        "meaning": "byte set to 1 by 008f38a0; meaning unestablished"
+      },
+      {
+        "offset": "0x30",
+        "meaning": "owning bag, stamped by 008f33f0"
+      },
+      {
+        "offset": "0x34",
+        "meaning": "insertion ordinal, carried by clone and merge"
+      }
+    ],
+    "uninitialised_by_008f38a0": [
+      "0x08",
+      "0x10",
+      "0x14",
+      "0x28"
+    ]
+  },
+  "type_table": [
+    {
+      "code": 0,
+      "letter": "I",
+      "string": "00d16528",
+      "grammar": "one integer",
+      "storage": "+0ch int",
+      "installed_uses": 197874
+    },
+    {
+      "code": 1,
+      "letter": "F",
+      "string": "00cfad04",
+      "grammar": "one float",
+      "storage": "+0ch float",
+      "installed_uses": 242886
+    },
+    {
+      "code": 2,
+      "letter": "S",
+      "string": "00d16524",
+      "grammar": "one string via 008efb00",
+      "storage": "+0ch char*",
+      "installed_uses": 36166
+    },
+    {
+      "code": 3,
+      "letter": "B",
+      "string": "00ce60e4",
+      "grammar": "true 00ce4378 / false 00ce4370",
+      "storage": "+0ch byte",
+      "installed_uses": 215580
+    },
+    {
+      "code": 4,
+      "letter": "E",
+      "string": "00d162d4",
+      "grammar": "<enum> : <value>, colon 00cf00b0; the first token is discarded",
+      "storage": "+0ch int via 0048e840",
+      "installed_uses": 390133
+    },
+    {
+      "code": 4,
+      "letter": "LUA_S",
+      "string": "00d162d8",
+      "grammar": "<table> : <name>",
+      "storage": "+0ch int via 0048e840",
+      "installed_uses": 11
+    },
+    {
+      "code": 5,
+      "letter": "R and seven typed letters",
+      "string": "00ce60ec, 00d16358..00d1638f",
+      "grammar": "one token",
+      "storage": "+18h reference block",
+      "installed_uses": 116086
+    },
+    {
+      "code": 6,
+      "letter": null,
+      "string": null,
+      "grammar": "Key { ... } nested block",
+      "storage": "+0ch sub-bag pointer",
+      "installed_uses": null
+    },
+    {
+      "code": 7,
+      "letter": "V3",
+      "string": "00d16520",
+      "grammar": "three floats, each guarded by 008d8f40",
+      "storage": "+0ch/+10h/+14h",
+      "installed_uses": 713485
+    },
+    {
+      "code": 8,
+      "letter": "BIN",
+      "string": "00d1651c",
+      "grammar": "<count> then <count> tokens via 008ef6d0",
+      "storage": "+20h/+24h stride 1",
+      "installed_uses": 0
+    },
+    {
+      "code": 9,
+      "letter": "FA",
+      "string": "00d16518",
+      "grammar": "<count> then <count> floats",
+      "storage": "+20h/+24h stride 4",
+      "installed_uses": 0
+    },
+    {
+      "code": 10,
+      "letter": "IA",
+      "string": "00d16514",
+      "grammar": "<count> then <count> integers",
+      "storage": "+20h/+24h stride 4",
+      "installed_uses": 5
+    },
+    {
+      "code": 11,
+      "letter": "V3A",
+      "string": "00d16510",
+      "grammar": "<count> then <count> groups of ( x y z )",
+      "storage": "+20h/+24h stride 12",
+      "installed_uses": 0
+    }
+  ],
+  "reference_kinds": [
+    {
+      "kind": 0,
+      "letter": "R",
+      "string": "00ce60ec",
+      "installed_uses": 117506
+    },
+    {
+      "kind": 1,
+      "letter": "RLand",
+      "string": "00d1637c",
+      "installed_uses": 0
+    },
+    {
+      "kind": 2,
+      "letter": "RFort",
+      "string": "00d16384",
+      "installed_uses": 2140
+    },
+    {
+      "kind": 3,
+      "letter": "RShip",
+      "string": "00d1636c",
+      "installed_uses": 0
+    },
+    {
+      "kind": 4,
+      "letter": "RPlane",
+      "string": "00d16374",
+      "installed_uses": 0
+    },
+    {
+      "kind": 5,
+      "letter": "RPlnShp",
+      "string": "00d16364",
+      "installed_uses": 504
+    },
+    {
+      "kind": 6,
+      "letter": "RLPlnShp",
+      "string": "00d16358",
+      "installed_uses": 0
+    },
+    {
+      "kind": 7,
+      "letter": "RPath",
+      "string": "00d1638c",
+      "installed_uses": 95936
+    }
+  ],
+  "host_table": [
+    {
+      "address": "008f5a2e",
+      "native": "008d8a70",
+      "function": "008f5a00",
+      "host_method": "peek_token",
+      "contract": "ECX=tokenizer; ret char*",
+      "gate": "entry"
+    },
+    {
+      "address": "008f5a59",
+      "native": "008d9930",
+      "function": "008f5a00",
+      "host_method": "expect_token",
+      "contract": "\"(\" 00ce5850",
+      "gate": "peek is ( and arg3 non-null"
+    },
+    {
+      "address": "008f5aa1",
+      "native": "008d9980",
+      "function": "008f5a00",
+      "host_method": "read_token",
+      "contract": "group name",
+      "gate": "group-list element"
+    },
+    {
+      "address": "008f5aa9",
+      "native": "00469b60",
+      "function": "008f5a00",
+      "host_method": "lookup_group_bag",
+      "contract": "ECX=arg3, name; ret bag",
+      "gate": "group-list element"
+    },
+    {
+      "address": "008f5ab3",
+      "native": "008f54f0",
+      "function": "008f5a00",
+      "host_method": "merge",
+      "contract": "ECX=this, source, keep_existing=0",
+      "gate": "group-list element"
+    },
+    {
+      "address": "008f5ac1",
+      "native": "008d9930",
+      "function": "008f5a00",
+      "host_method": "expect_token",
+      "contract": "\")\" 00ce584c",
+      "gate": "group list ends"
+    },
+    {
+      "address": "008f5acd",
+      "native": "008d9930",
+      "function": "008f5a00",
+      "host_method": "expect_token",
+      "contract": "\"{\" 00ce4d38",
+      "gate": "always"
+    },
+    {
+      "address": "008f5af9",
+      "native": "008d9980",
+      "function": "008f5a00",
+      "host_method": "read_token",
+      "contract": "the property key",
+      "gate": "body loop"
+    },
+    {
+      "address": "008f5b1b",
+      "native": "008f2260",
+      "function": "008f5a00",
+      "host_method": "find",
+      "contract": "ECX=this, key; ret record or 0",
+      "gate": "body loop"
+    },
+    {
+      "address": "008f5b9e",
+      "native": "008d8f10",
+      "function": "008f5a00",
+      "host_method": "next_token_is_number",
+      "contract": "ret bool",
+      "gate": "type 0, arg2 clear"
+    },
+    {
+      "address": "008f5bb2",
+      "native": "008d9ad0",
+      "function": "008f5a00",
+      "host_method": "read_int",
+      "contract": "ECX=tokenizer, &ok",
+      "gate": "type 0"
+    },
+    {
+      "address": "008f5c3a",
+      "native": "008d8f40",
+      "function": "008f5a00",
+      "host_method": "next_token_is_number",
+      "contract": "ret bool",
+      "gate": "type 1, arg2 clear"
+    },
+    {
+      "address": "008f5c55",
+      "native": "008d9b40",
+      "function": "008f5a00",
+      "host_method": "read_float",
+      "contract": "ECX=tokenizer, &ok; ret ST0",
+      "gate": "type 1"
+    },
+    {
+      "address": "008f5c8c",
+      "native": "008f3770",
+      "function": "008f5a00",
+      "host_method": "bag_set_float",
+      "contract": "ECX=this, key, float",
+      "gate": "type 1, undeclared"
+    },
+    {
+      "address": "008f5cf6",
+      "native": "008efb00",
+      "function": "008f5a00",
+      "host_method": "read_string_token",
+      "contract": "ECX=this, tokenizer; ret char*; contract unread",
+      "gate": "type 2"
+    },
+    {
+      "address": "008f5d04",
+      "native": "008f3370",
+      "function": "008f5a00",
+      "host_method": "record_set_from_token",
+      "contract": "ECX=record, char*",
+      "gate": "type 2, declared"
+    },
+    {
+      "address": "008f5d1e",
+      "native": "008f38a0",
+      "function": "008f5a00",
+      "host_method": "bag_set_string",
+      "contract": "ECX=this, key, char*",
+      "gate": "type 2, undeclared"
+    },
+    {
+      "address": "008f5d45",
+      "native": "008f38a0",
+      "function": "008f5a00",
+      "host_method": "bag_set_string",
+      "contract": "ECX=this, key, \"\" 00ce3a0c",
+      "gate": "type 2, tokenizer exhausted"
+    },
+    {
+      "address": "008f5dd6",
+      "native": "008f3940",
+      "function": "008f5a00",
+      "host_method": "bag_set_bool",
+      "contract": "ECX=this, key, byte",
+      "gate": "type 3, undeclared"
+    },
+    {
+      "address": "008f5dec",
+      "native": "008f02b0",
+      "function": "008f5a00",
+      "host_method": "decl_letter_is_E",
+      "contract": "ECX=record+28h; ret bool",
+      "gate": "type 4"
+    },
+    {
+      "address": "008f5e6f",
+      "native": "008f3370",
+      "function": "008f5a00",
+      "host_method": "record_set_from_token",
+      "contract": "ECX=record, char*",
+      "gate": "type 4, declared"
+    },
+    {
+      "address": "008f5e85",
+      "native": "008f02e0",
+      "function": "008f5a00",
+      "host_method": "decl_letter_is_LUA_S",
+      "contract": "ECX=record+28h; ret bool",
+      "gate": "type 4"
+    },
+    {
+      "address": "008f5fa2",
+      "native": "0048e960",
+      "function": "008f5a00",
+      "host_method": "lookup_enum_declaration",
+      "contract": "ECX=*00e1867c, name; ret decl",
+      "gate": "type 4, undeclared"
+    },
+    {
+      "address": "008f5fcf",
+      "native": "008f3a20",
+      "function": "008f5a00",
+      "host_method": "bag_set_enum",
+      "contract": "key, decl, value token",
+      "gate": "type 4, undeclared"
+    },
+    {
+      "address": "008f60c1",
+      "native": "008f0420",
+      "function": "008f5a00",
+      "host_method": "record_set_reference",
+      "contract": "ECX=record, token, 0, kind",
+      "gate": "type 5, declared"
+    },
+    {
+      "address": "008f6254",
+      "native": "008f3ac0",
+      "function": "008f5a00",
+      "host_method": "bag_set_reference",
+      "contract": "ECX=this, key, token, 0, kind",
+      "gate": "type 5, undeclared"
+    },
+    {
+      "address": "008f6319",
+      "native": "008f3690",
+      "function": "008f5a00",
+      "host_method": "bag_set_vector3",
+      "contract": "ECX=this, key, float[3]",
+      "gate": "type 7, undeclared"
+    },
+    {
+      "address": "008f638a",
+      "native": "008d9980",
+      "function": "008f5a00",
+      "host_method": "read_token",
+      "contract": "one BIN element",
+      "gate": "type 8, count > 0"
+    },
+    {
+      "address": "008f6391",
+      "native": "008ef6d0",
+      "function": "008f5a00",
+      "host_method": "decode_byte_token",
+      "contract": "ECX=token; ret byte",
+      "gate": "type 8, count > 0"
+    },
+    {
+      "address": "008f6467",
+      "native": "008d9b40",
+      "function": "008f5a00",
+      "host_method": "read_float",
+      "contract": "one FA element",
+      "gate": "type 9, count > 0"
+    },
+    {
+      "address": "008f6617",
+      "native": "008d9930",
+      "function": "008f5a00",
+      "host_method": "expect_token",
+      "contract": "\"(\" 00ce5850",
+      "gate": "type 0bh, per element"
+    },
+    {
+      "address": "008f6653",
+      "native": "008d9930",
+      "function": "008f5a00",
+      "host_method": "expect_token",
+      "contract": "\")\" 00ce584c",
+      "gate": "type 0bh, per element"
+    },
+    {
+      "address": "008f6684",
+      "native": "008f0580",
+      "function": "008f5a00",
+      "host_method": "record_set_array",
+      "contract": "ECX=record, count, data, 0",
+      "gate": "type 0bh, declared"
+    },
+    {
+      "address": "008f669a",
+      "native": "008f3610",
+      "function": "008f5a00",
+      "host_method": "bag_set_vector3_array",
+      "contract": "key, data, count, 0",
+      "gate": "type 0bh, undeclared"
+    },
+    {
+      "address": "008f66a6",
+      "native": "008d9930",
+      "function": "008f5a00",
+      "host_method": "expect_token",
+      "contract": "\";\" 00ce5698",
+      "gate": "after every assignment"
+    },
+    {
+      "address": "008f66e0",
+      "native": "00bf681b",
+      "function": "008f5a00",
+      "host_method": "operator_new",
+      "contract": "0x114; ret bag",
+      "gate": "{ with no declared sub-bag"
+    },
+    {
+      "address": "008f672e",
+      "native": "008f3b60",
+      "function": "008f5a00",
+      "host_method": "bag_insert_sub_bag",
+      "contract": "ECX=this, key, bag",
+      "gate": "{ with no declared sub-bag"
+    },
+    {
+      "address": "008f6740",
+      "native": "008f5a00",
+      "function": "008f5a00",
+      "host_method": "parse_recurse",
+      "contract": "ECX=sub-bag, tokenizer, arg2, 0",
+      "gate": "{"
+    },
+    {
+      "address": "008f22d4",
+      "native": "0043b8b0",
+      "function": "008f2260",
+      "host_method": "map_find",
+      "contract": "ECX=bag+4, key, &bucket",
+      "gate": "always"
+    },
+    {
+      "address": "008f232b",
+      "native": "008f2260",
+      "function": "008f2260",
+      "host_method": "find_recurse",
+      "contract": "ECX=record+0ch, tail",
+      "gate": "dotted key, head is type 6"
+    },
+    {
+      "address": "008f552b",
+      "native": "00480690",
+      "function": "008f54f0",
+      "host_method": "iterator_begin",
+      "contract": "ECX=iterator over source+4",
+      "gate": "always"
+    },
+    {
+      "address": "008f5545",
+      "native": "00484d20",
+      "function": "008f54f0",
+      "host_method": "iterator_key",
+      "contract": "ECX=iterator; ret char*",
+      "gate": "per source entry"
+    },
+    {
+      "address": "008f559d",
+      "native": "0043b8b0",
+      "function": "008f54f0",
+      "host_method": "map_find",
+      "contract": "ECX=dest+4, key",
+      "gate": "per source entry"
+    },
+    {
+      "address": "008f55f6",
+      "native": "008f54f0",
+      "function": "008f54f0",
+      "host_method": "merge_recurse",
+      "contract": "ECX=dest sub-bag, source sub-bag, flag",
+      "gate": "dest record is type 6"
+    },
+    {
+      "address": "008f560d",
+      "native": "008f0700",
+      "function": "008f54f0",
+      "host_method": "assign_value",
+      "contract": "ECX=dest record, source record",
+      "gate": "found, not type 6, flag 0"
+    },
+    {
+      "address": "008f561d",
+      "native": "008f4f60",
+      "function": "008f54f0",
+      "host_method": "clone_record",
+      "contract": "ECX=source record; ret record",
+      "gate": "key absent from dest"
+    },
+    {
+      "address": "008f563b",
+      "native": "008f33f0",
+      "function": "008f54f0",
+      "host_method": "insert",
+      "contract": "ECX=dest, key, clone",
+      "gate": "key absent from dest"
+    },
+    {
+      "address": "008f5642",
+      "native": "0047e480",
+      "function": "008f54f0",
+      "host_method": "iterator_advance",
+      "contract": "ECX=iterator",
+      "gate": "per source entry"
+    },
+    {
+      "address": "008f41fc",
+      "native": "00bf681b",
+      "function": "008f41f0",
+      "host_method": "operator_new",
+      "contract": "0x114; ret bag",
+      "gate": "always"
+    },
+    {
+      "address": "008f4247",
+      "native": "00480690",
+      "function": "008f41f0",
+      "host_method": "iterator_begin",
+      "contract": "ECX=iterator over this+4",
+      "gate": "always"
+    },
+    {
+      "address": "008f4263",
+      "native": "008f4f60",
+      "function": "008f41f0",
+      "host_method": "clone_record",
+      "contract": "ECX=source record",
+      "gate": "per source entry"
+    },
+    {
+      "address": "008f426c",
+      "native": "008f33f0",
+      "function": "008f41f0",
+      "host_method": "insert",
+      "contract": "ECX=clone bag, key, record",
+      "gate": "per source entry"
+    },
+    {
+      "address": "008f4275",
+      "native": "0047e480",
+      "function": "008f41f0",
+      "host_method": "iterator_advance",
+      "contract": "ECX=iterator",
+      "gate": "per source entry"
+    },
+    {
+      "address": "008f38bd",
+      "native": "00bf681b",
+      "function": "008f38a0",
+      "host_method": "operator_new",
+      "contract": "0x38; ret record",
+      "gate": "always"
+    },
+    {
+      "address": "008f38f5",
+      "native": "00438e40",
+      "function": "008f38a0",
+      "host_method": "duplicate_string",
+      "contract": "ECX=value; ret char*",
+      "gate": "allocation succeeded"
+    },
+    {
+      "address": "008f3918",
+      "native": "008f33f0",
+      "function": "008f38a0",
+      "host_method": "insert",
+      "contract": "ECX=bag, key, record",
+      "gate": "always"
+    },
+    {
+      "address": "008f3381",
+      "native": "00bf6989",
+      "function": "008f3370",
+      "host_method": "free",
+      "contract": "old +0ch",
+      "gate": "type 2, +0ch non-null"
+    },
+    {
+      "address": "008f3394",
+      "native": "00438e40",
+      "function": "008f3370",
+      "host_method": "duplicate_string",
+      "contract": "ECX=token",
+      "gate": "type 2"
+    },
+    {
+      "address": "008f33aa",
+      "native": "0048e840",
+      "function": "008f3370",
+      "host_method": "resolve_enum_value",
+      "contract": "ECX=record+28h, name; ret int",
+      "gate": "type != 2"
+    },
+    {
+      "address": "0046c59d",
+      "native": "008f2260",
+      "function": "0046c550",
+      "contract": "MultiType 00ce580c",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    },
+    {
+      "address": "0046c5b1",
+      "native": "008f2260",
+      "function": "0046c550",
+      "contract": "Party 00ce5804",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    },
+    {
+      "address": "0046c623",
+      "native": "008f41f0",
+      "function": "0046c550",
+      "contract": "clone; first of 004693c0 six stack args (RET 18h)",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    },
+    {
+      "address": "0046c69d",
+      "native": "008f2260",
+      "function": "0046c550",
+      "contract": "MultiType on the second pass",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    },
+    {
+      "address": "0046c7dc",
+      "native": "008f2260",
+      "function": "0046c550",
+      "contract": "MultiSiege 00ce57f8",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    },
+    {
+      "address": "0046db5a",
+      "native": "008f41f0",
+      "function": "0046d930",
+      "contract": "clones [EBX+4], EBX=[ESI+14h]; packet cc2-scene-entity-create",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    },
+    {
+      "address": "0046db66",
+      "native": "008f54f0",
+      "function": "0046d930",
+      "contract": "merge into that clone with keep_existing=1",
+      "host_method": "read_back",
+      "gate": "entity creation"
+    }
+  ],
+  "no_ghidra_function": [],
+  "absent_property_reporting": "EAX = 0 from 008f2260; no out-of-band error and no default. Three cases: head key absent, head key present but not type 6 while the path continues past a dot, tail lookup fails.",
+  "installed_game_validation": {
+    "method": "rg over every .scn under I:/SteamLibrary/steamapps/common/Battlestations Pacific, counting ' = <letter> '",
+    "unused_letters": [
+      "RShip",
+      "RPlane",
+      "RLand",
+      "RLPlnShp",
+      "BIN",
+      "FA",
+      "V3A"
+    ],
+    "fixture": "Vehicles = IA 8 17 19 20 21 23 68 73 109 ; -- the leading 8 is the element count"
+  },
+  "uncertainties": [
+    "record+08h is written by no producer and read by no consumer read in this packet.",
+    "record+2ch is set to 1 by 008f38a0 and never inspected on the covered paths; meaning provisional.",
+    "The internal shape of the reference payload at record+18h needs 008f0420 and 008f0340.",
+    "008f5a00 callers 008f67b0 and 009512f0 were not read.",
+    "Which of the two bags at 0046db5a/0046db66 is authored and which is the class default belongs to packet cc2-scene-entity-create."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/scene_property_bag.hpp",
+    "source": "src/scene_property_bag.cpp",
+    "status": "reconstructed and build-tested; not ABI-compatible, not game-validated",
+    "unread_contracts": [
+      "008efb00",
+      "008f0420",
+      "008f3ac0",
+      "008f0580",
+      "008f3610",
+      "008f3590",
+      "008f0340",
+      "008f03b0",
+      "008ef6d0",
+      "008f3770",
+      "008f3940",
+      "008f3a20",
+      "008f3690",
+      "008f3b60",
+      "008f28f0",
+      "0043b760",
+      "00480690",
+      "0047e480",
+      "00484d20"
+    ]
+  }
+}
