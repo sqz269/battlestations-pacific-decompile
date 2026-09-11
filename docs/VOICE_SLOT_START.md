@@ -140,3 +140,12 @@ exists. The projected instance inherits the canonical `SoundLevelEntry` and
 read by channel updates. Native instance+4 lifetime callbacks still require an
 application binding for this C++ projection; slot10 spatial/event factories and
 full voice playback composition remain open. See `reports/sound_instance.json`.
+
+## Follow-up from docs/SOUND_SYSTEM_UPDATE.md
+
+Reserve, append and tracked creation now consume the smaller reference/factory
+interfaces inherited by the existing full voice hosts. Their behavior and native
+ownership remain unchanged, and their original ECX/stack/hidden-return prototypes
+are now saved in Ghidra. A concrete D5ABF8 runtime exercises A7E490 creation,
+manager updates and automatic retirement with real installed FMOD. Complete
+voice UI/bank/alternate services remain separate required application bindings.

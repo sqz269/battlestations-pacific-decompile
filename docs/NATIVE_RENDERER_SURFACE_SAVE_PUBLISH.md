@@ -110,3 +110,10 @@ Frozen proof and the unchanged focused replay harness are under ignored
 actual archive, original spans, complete COFF/link/runtime code and raw outputs.
 No permanent tests, shared CMake/ledger edits, original game changes or Ghidra
 mutations belong to this source-only handoff.
+
+
+## Primary integration
+
+Main now registers all three unchanged owned bodies. The combined strict Win32 build, two existing CTests and eight seeds passed. Primary verified91 worker pins,23 current source/header files and21 fresh spans2187 bytes. The unchanged fixture uses the same frozen main library and seven exact archive members. Full266 mapped COFF sections746 relocations81 imports8 actual COM/D3DX observations and16643 runtime code bytes pass; the three original/compiled instruction comparisons retain their declared transformations. Full capture, actual pooled publication and real worker save yielded64 FF336699 pixels and the matching RGB51,102,153 BMP, with actual Pitch32 and thread exit0. Original bodies remain unexecuted. Shared BE0A30 changes were reviewed and their changed methods are not linked here; other pitch/failure/mutation/lifetime/ABI/gameplay limits remain.
+
+Immutable current proof: `local/surface_save_publish_primary/`. Primary saved reviewed names/comments, retained prior values, registered the raw source entries and refreshed affected exports.

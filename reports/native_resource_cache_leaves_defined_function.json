@@ -1,0 +1,447 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b19e40",
+      "end_exclusive": "00b19e90",
+      "length": 80,
+      "sha256": "fb933a3b6a8981e3bf3b02b3c5a294c94c74b1da6f9c067eba01b68725e27530",
+      "missing_before": true,
+      "function_before": "No function found for 00b19e40",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_ResourceCache_CopyRequestedName at 00b19e40\nSignature: undefined BSP_ResourceCache_CopyRequestedName(void)\nEntry: 00b19e40\nBody: 00b19e40 - 00b19e8f"
+    },
+    {
+      "address": "00cc4b70",
+      "end_exclusive": "00cc4b7b",
+      "length": 11,
+      "sha256": "a4c0b1830dc7e06cb07bdd95621c5e827ec287ef240fd2091d83aaa15c1b5bcd",
+      "function_before": "Function: Unwind@00cc4b70 at 00cc4b70\nSignature: undefined Unwind@00cc4b70(void)\nEntry: 00cc4b70\nBody: 00cc4b70 - 00cc4b78",
+      "documentation_before": {
+        "hash": "be77e5c62609df3e167c809a8220b349e0bc7e4a5be751952a8b2fddd2867ae2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc4b70",
+        "function_name": "Unwind@00cc4b70",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "00cc4b74"
+      ],
+      "function_after": "Function: Unwind@00cc4b70 at 00cc4b70\nSignature: undefined Unwind@00cc4b70(void)\nEntry: 00cc4b70\nBody: 00cc4b70 - 00cc4b7a",
+      "documentation_after": {
+        "hash": "5c9cd88f200a6524c1e9155f5f2323390db18031344564aab6f6375453d4a84f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc4b70",
+        "function_name": "Unwind@00cc4b70",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00cc4bb0",
+      "end_exclusive": "00cc4bbb",
+      "length": 11,
+      "sha256": "2f164ea734b92ba00751ef5275e9482cb93caa8b2eeff914826e24fd777c771e",
+      "function_before": "Function: Unwind@00cc4bb0 at 00cc4bb0\nSignature: undefined Unwind@00cc4bb0(void)\nEntry: 00cc4bb0\nBody: 00cc4bb0 - 00cc4bb8",
+      "documentation_before": {
+        "hash": "be77e5c62609df3e167c809a8220b349e0bc7e4a5be751952a8b2fddd2867ae2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc4bb0",
+        "function_name": "Unwind@00cc4bb0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "00cc4bb4"
+      ],
+      "function_after": "Function: Unwind@00cc4bb0 at 00cc4bb0\nSignature: undefined Unwind@00cc4bb0(void)\nEntry: 00cc4bb0\nBody: 00cc4bb0 - 00cc4bba",
+      "documentation_after": {
+        "hash": "5c9cd88f200a6524c1e9155f5f2323390db18031344564aab6f6375453d4a84f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc4bb0",
+        "function_name": "Unwind@00cc4bb0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b19e40",
+        "end_address": "00b19e90"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b19e40",
+        "end_address": "00b19e8f",
+        "bytes_disassembled": 80,
+        "message": "Successfully disassembled 80 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b19e40",
+        "name": "BSP_ResourceCache_CopyRequestedName",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b19e40",
+        "function_name": "BSP_ResourceCache_CopyRequestedName",
+        "entry_point": "00b19e40",
+        "body_size": 80,
+        "message": "Function created successfully at 00b19e40",
+        "warnings": [
+          "Function name 'BSP_ResourceCache_CopyRequestedName' \u2014 main part 'ResourceCache_CopyRequestedName' is not PascalCase. Expected: ResourcecacheCopyrequestedname",
+          "Function name 'BSP_ResourceCache_CopyRequestedName' \u2014 main part 'ResourceCache_CopyRequestedName' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_ResourceCache_CopyRequestedName' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc4b79",
+        "end_address": "00cc4b7b"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cc4b79",
+        "end_address": "00cc4b7a",
+        "bytes_disassembled": 2,
+        "message": "Successfully disassembled 2 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00cc4b74"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00cc4b74 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cc4b70"
+      },
+      "result": {
+        "success": true,
+        "address": "00cc4b70",
+        "deleted_function": "Unwind@00cc4b70",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cc4b70' deleted at 00cc4b70"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc4b70",
+        "name": "Unwind@00cc4b70",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cc4b70",
+        "function_name": "Unwind@00cc4b70",
+        "entry_point": "00cc4b70",
+        "body_size": 11,
+        "message": "Function created successfully at 00cc4b70",
+        "warnings": [
+          "Function name 'Unwind@00cc4b70' \u2014 main part 'Unwind@00cc4b70' is not PascalCase. Expected: Unwind@00cc4b70",
+          "Function name 'Unwind@00cc4b70' does not start with a recognized verb. First word 'Unwind@00cc4b70' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc4bb9",
+        "end_address": "00cc4bbb"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cc4bb9",
+        "end_address": "00cc4bba",
+        "bytes_disassembled": 2,
+        "message": "Successfully disassembled 2 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00cc4bb4"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00cc4bb4 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cc4bb0"
+      },
+      "result": {
+        "success": true,
+        "address": "00cc4bb0",
+        "deleted_function": "Unwind@00cc4bb0",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cc4bb0' deleted at 00cc4bb0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc4bb0",
+        "name": "Unwind@00cc4bb0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cc4bb0",
+        "function_name": "Unwind@00cc4bb0",
+        "entry_point": "00cc4bb0",
+        "body_size": 11,
+        "message": "Function created successfully at 00cc4bb0",
+        "warnings": [
+          "Function name 'Unwind@00cc4bb0' \u2014 main part 'Unwind@00cc4bb0' is not PascalCase. Expected: Unwind@00cc4bb0",
+          "Function name 'Unwind@00cc4bb0' does not start with a recognized verb. First word 'Unwind@00cc4bb0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "neighbor_documentation_before": {
+    "00b19df0": {
+      "hash": "de0607c73b3361ddfe14ab76cd0c7af3e732533ef0755eab7b74f0668d650a7f",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b19df0",
+      "function_name": "FUN_00b19df0",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [],
+      "completeness_score": 50.0
+    },
+    "00b19e90": {
+      "hash": "5346bb629a19e0c16b675973e15c7646b77e832265b92b01dcd1d309478067fb",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b19e90",
+      "function_name": "FUN_00b19e90",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(unique, 0x17200, 4)"
+        },
+        {
+          "name": "uVar2",
+          "type": "undefined4",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "local_8",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 44,
+          "name": "LAB_00b19ebc"
+        },
+        {
+          "relative_offset": 49,
+          "name": "LAB_00b19ec1"
+        },
+        {
+          "relative_offset": 66,
+          "name": "LAB_00b19ed2"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b19edc"
+        },
+        {
+          "relative_offset": 96,
+          "name": "LAB_00b19ef0"
+        }
+      ],
+      "completeness_score": 50.0
+    }
+  },
+  "neighbor_documentation_after": {
+    "00b19df0": {
+      "hash": "de0607c73b3361ddfe14ab76cd0c7af3e732533ef0755eab7b74f0668d650a7f",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b19df0",
+      "function_name": "FUN_00b19df0",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [],
+      "completeness_score": 50.0
+    },
+    "00b19e90": {
+      "hash": "5346bb629a19e0c16b675973e15c7646b77e832265b92b01dcd1d309478067fb",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b19e90",
+      "function_name": "FUN_00b19e90",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(unique, 0x17200, 4)"
+        },
+        {
+          "name": "uVar2",
+          "type": "undefined4",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "local_8",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 44,
+          "name": "LAB_00b19ebc"
+        },
+        {
+          "relative_offset": 49,
+          "name": "LAB_00b19ec1"
+        },
+        {
+          "relative_offset": 66,
+          "name": "LAB_00b19ed2"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b19edc"
+        },
+        {
+          "relative_offset": 96,
+          "name": "LAB_00b19ef0"
+        }
+      ],
+      "completeness_score": 50.0
+    }
+  },
+  "status": "Defined complete80-byte B19E40 and restored both11-byte returning-free EH actions CC4B70/CC4BB0, with saved names/comments and adjacent B19DF0/B19E90 preserved; project saved."
+}

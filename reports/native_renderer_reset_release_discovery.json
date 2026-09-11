@@ -1748,5 +1748,46 @@
     "original_game_changes": false,
     "shared_metadata_edits": false,
     "limit": "Read-only discovery, original-byte agreement and source-contract review; no build/runtime, original ABI or gameplay proof."
+  },
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-reset-release-discovery\\local\\renderer_reset_release_discovery\\sealed.json",
+      "bytes": 50208,
+      "sha256": "b734f130a35088d112f78c97df48cf1bf21a72b76404d7b33beb8d1fb597f216"
+    },
+    "worker_sealed_pins_verified": 232,
+    "additional_report_pins_verified": 112,
+    "fresh_guarded_spans": 50,
+    "fresh_guarded_bytes": 3994,
+    "current_main_dependency_drift": [
+      {
+        "path": "include/bsp/native_string.hpp",
+        "worker": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+        "current": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+        "review": "Reviewed main111d55be header adds actual BE0A30 copy declaration, outside proposed render/sampler binder paths. Closed default/cache/publish proof records complete current delta."
+      },
+      {
+        "path": "src/native_renderer_resource_restore.cpp",
+        "worker": "05a765b85d3c3ccd7f0d23cb30ecae1679e1f827394048755bcbbdeaf3737c47",
+        "current": "8b839e1a8cf857cb22b9bfac88a5653fdc902a65b102dead5619cb063bfb20a7",
+        "review": "Exact decoded source text equality; byte-hash drift is CRLF/LF only."
+      }
+    ],
+    "source_proposal_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "remaining_blockers": "General clear/reset still lacks actual texture-stage profile provenance and logical-vertex retained4C owner terminal/lifetime. Four reset vertex calls all use(0,0). Shader cells176C/1770 are borrowed zeros. B27A80/B27B90 source work is separate.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\reset_release_discovery_primary\\sealed.json",
+      "bytes": 12955,
+      "sha256": "aabdd2819b852ed3c21e84857e680ef9eaa97ab092575bd53eb08ea22f3aa567"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_RESET_RELEASE_DISCOVERY.md",
+    "bytes": 10450,
+    "sha256": "163128a191786a981d8561764a5b1b5f15363e36983d3c9ed9e618182c6653c0"
   }
 }

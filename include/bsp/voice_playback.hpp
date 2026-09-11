@@ -126,8 +126,17 @@ struct VoiceSlotStartContext;
 
 // Required game services at the named native callsites. They must implement
 // the stated effects; no fallback, fake FMOD or implicit success exists here.
-class VoiceLineHost : public VoiceSlotHost {
+// Small native intrusive-reference boundary shared by tracked sound arrays.
+// Full voice services retain this same interface; no second reference store.
+class VoiceReferenceHost {
 public:
+    virtual ~VoiceReferenceHost() = default;
+    virtual void retain_reference(void*) = 0;
+    virtual void release_reference(void*) noexcept = 0;
+};
+class VoiceLineHost : public VoiceSlotHost, public VoiceReferenceHost {
+public:
+    virtual void release_reference(void*) noexcept override = 0;
     virtual std::int32_t local_side_18cc_18ec() = 0;
     virtual std::int32_t speaker_side_54(void* speaker) = 0;
     virtual bool speaker_kind_vslot_5c(void* speaker, std::uint32_t kind) = 0;

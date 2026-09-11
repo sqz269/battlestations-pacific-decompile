@@ -104,6 +104,8 @@ struct SoundAuxiliaryTreeOwner {
 struct SoundListenerOwnerState {
     std::uint32_t native_vtable_a4{};
     std::uint32_t references_a8{};
+    // Historical name: A7E630 submits this as FMOD listener velocity. Listener
+    // position is transform_c4[12..14]; see docs/SOUND_SYSTEM_UPDATE.md.
     std::array<float, 3> position_b8{};
     CameraMatrix transform_c4{};
 };

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_resource_cache_leaves",
-  "status": "complete_eight_actual_storage_leaves_primary_source_reviewed_strict_win32_and_focused_original_composition_checked",
+  "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
   "utc": "2026-09-11T20:09:53.951099+00:00",
   "base_commit": "11303b259fbbd1b61b820a23508afc707c01f23d",
   "base_commit_role": "reviewed original cache consumer discovery11303b25; source scope separately approved",
@@ -1350,5 +1350,278 @@
     "consumer_scope": "Hold B19E90/B1B810/B1B730 and B1A4F0 until actual profiles, registry ownership/population and raw platform binding are closed."
   },
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "strict_main_Win32": true,
+    "existing_CTests": 2,
+    "fresh_native_seeds": 8,
+    "actual_main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_cache_leaves_primary\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 38023424,
+      "sha256": "52e9417a646b876a2248029394b2918dcd8d045a29c1ca16421162900e4b62bd"
+    },
+    "worker_pins_verified": 77,
+    "fresh_guarded_spans": 25,
+    "fresh_guarded_bytes": 1213,
+    "owned_original_bytes": 503,
+    "fixture_compiles_source_providers": false,
+    "source_owned_entries_unchanged": true,
+    "fixture_body_unchanged": true,
+    "shared_native_string_delta_review": "111d55be BE0A30 actual-header adapter and changed inlining explicitly reviewed; complete raw41DD40 and other initialized object sections/relocations unchanged. No assertion that the entire shared object equals its older worker version.",
+    "abi_compatible": false,
+    "game_validated": false,
+    "current_source_headers": 13,
+    "additional_fixture_headers": 6,
+    "worker_report_pins_verified": 56,
+    "exact_archive_objects": 6,
+    "complete_archive_code_sections": 166,
+    "complete_archive_code_bytes": 10193,
+    "complete_archive_code_relocations": 326,
+    "trace_words": 232,
+    "trace": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_cache_leaves_primary\\build\\resource-cache-leaves\\resource_cache_leaves_trace.txt",
+      "bytes": 2320,
+      "sha256": "1cb3b0078c275482d9efb724f249f9420933f5499944586d36c1af3eca66a7b2"
+    },
+    "linked_objects": [
+      "native_resource_cache_leaves.obj",
+      "native_string.obj",
+      "native_string_pool_owner.obj",
+      "native_string_pool_storage.obj",
+      "native_vfs_date_leaf_providers.obj",
+      "singleton_lifetime.obj"
+    ],
+    "original_owned_bodies_executed": 8,
+    "source_lower_bound_inlined": true,
+    "creator_EH_static_only": true,
+    "original_helpers_or_runtime_code_postimages_checked": false,
+    "changed_BE0A30_methods_not_linked": true,
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_cache_leaves_primary\\local\\resource_cache_leaves_archive_provenance.json",
+      "bytes": 4566,
+      "sha256": "59e13147bdc8cb87a5bab1c097b4851bcc3fb05be6d92ee28201e56697339cfd"
+    },
+    "build_input_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\default_cache_publish_build_frozen\\manifest.json",
+      "bytes": 6682,
+      "sha256": "c14ff96393bd1f39c2237a3a68fbcf9671791b3e0d5cac9e11a36175df9f5075"
+    },
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_cache_leaves_primary\\sealed.json",
+      "bytes": 22222,
+      "sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_default_cache_publish_annotations.json",
+    "bytes": 28006,
+    "sha256": "88a6331cd23dbb1d953f41970b94a6bbc95c147711741e871fd8801198af5ea6"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00bbc6f0",
+      "name": "create_native_caustics_texture_source_00bbc6f0",
+      "cpp_symbol": "create_native_caustics_texture_source_00bbc6f0",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00bbc740",
+      "original_abi": "ECX unused; no stack arguments; EAX nullable resource; RET",
+      "source_abi": "void* create_native_caustics_texture_source_00bbc6f0();",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "00bbc810",
+      "name": "create_native_shore_wave_texture_source_00bbc810",
+      "cpp_symbol": "create_native_shore_wave_texture_source_00bbc810",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00bbc860",
+      "original_abi": "ECX unused; no stack arguments; EAX nullable resource; RET",
+      "source_abi": "void* create_native_shore_wave_texture_source_00bbc810();",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "00c30470",
+      "name": "construct_native_texture_source_00c30470",
+      "cpp_symbol": "construct_native_texture_source_00c30470",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00c30493",
+      "original_abi": "ECX actual storage; no stack arguments; EAX storage; RET",
+      "source_abi": "void* construct_native_texture_source_00c30470(void* actual_storage) noexcept;",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "00b19980",
+      "name": "construct_native_texture_resource_base_00b19980",
+      "cpp_symbol": "construct_native_texture_resource_base_00b19980",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00b19996",
+      "original_abi": "ECX actual storage; no stack arguments; EAX storage; RET",
+      "source_abi": "void* construct_native_texture_resource_base_00b19980(void* actual_storage) noexcept;",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "00b19e40",
+      "name": "copy_native_cache_requested_name_00b19e40",
+      "cpp_symbol": "copy_native_cache_requested_name_00b19e40",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00b19e90",
+      "original_abi": "ECX unused; stack output/requested/options; EAX output; RET0C",
+      "source_abi": "void* copy_native_cache_requested_name_00b19e40(void* actual_output, const void* actual_requested, const void* unused_options, ActualNativeStringPoolStorage& strings);",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "004ddb20",
+      "name": "retain_native_cache_resource_004ddb20",
+      "cpp_symbol": "retain_native_cache_resource_004ddb20",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "004ddb35",
+      "original_abi": "ECX unused; stack resource; EAX original resource; RET4",
+      "source_abi": "void* retain_native_cache_resource_004ddb20(void* actual_resource) noexcept;",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "00b19b90",
+      "name": "lower_bound_native_resource_factory_00b19b90",
+      "cpp_symbol": "lower_bound_native_resource_factory_00b19b90",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00b19be3",
+      "original_abi": "ECX actual tree; stack key-header; EAX node; RET4",
+      "source_abi": "void* lower_bound_native_resource_factory_00b19b90(void* actual_tree, const void* actual_key);",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    },
+    {
+      "kind": "function",
+      "address": "00b19d60",
+      "name": "find_native_resource_factory_00b19d60",
+      "cpp_symbol": "find_native_resource_factory_00b19d60",
+      "source": "src/native_resource_cache_leaves.cpp",
+      "native_end_exclusive": "00b19dc6",
+      "original_abi": "ECX actual tree; stack iterator-output/key; EAX output; RET8",
+      "source_abi": "void* find_native_resource_factory_00b19d60(void* actual_tree, void* actual_iterator_output, const void* actual_key, const SingletonLifetimeCallbacks& invalid_parameters);",
+      "status": "complete_eight_actual_storage_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_cache_leaves_audit.json",
+      "original_owned_body_fixture": true,
+      "original_helper_internal_fixture": false,
+      "creator_EH_static_only": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "primary_seal_sha256": "14823700483971b30fb98ab9a3bb2d80953d351e58cb77c6ffe489f230ebf4f3"
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00bbc6f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bbc6f0\\decompiled.c",
+      "bytes": 1925,
+      "sha256": "ccf33c628daf4cf9b26e8b084afb3c52a6a4752fb49475343abcbd3bdda912f3"
+    },
+    {
+      "address": "00bbc810",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bbc810\\decompiled.c",
+      "bytes": 1691,
+      "sha256": "326b2ea56db52f989ff3186b813043db03bda1d85a56f2c5c9916843d8461c25"
+    },
+    {
+      "address": "00c30470",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30470\\decompiled.c",
+      "bytes": 1497,
+      "sha256": "28123b010be785c4ea2a3641f4d05ac3c5ea70cfc622009c620531e137dd4c14"
+    },
+    {
+      "address": "00b19980",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19980\\decompiled.c",
+      "bytes": 1394,
+      "sha256": "897b4ddfb7cd64e8d82f7a42b8f4631b84141d693d9e542260790e5d2687841a"
+    },
+    {
+      "address": "00b19e40",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19e40\\decompiled.c",
+      "bytes": 1877,
+      "sha256": "01e0d892a06a09657e90f76de8d97ef59082284a04ba4d88224280bac2ba3af7"
+    },
+    {
+      "address": "004ddb20",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004ddb20\\decompiled.c",
+      "bytes": 1310,
+      "sha256": "f701f445877664dd58c839651837b5aecb26a6230cc09fa972bcfffc1897c988"
+    },
+    {
+      "address": "00b19b90",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19b90\\decompiled.c",
+      "bytes": 2222,
+      "sha256": "e59e154363cfb1661d606fbbf5f1387e682a57a96f17210cff06ae40fab63913"
+    },
+    {
+      "address": "00b19d60",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19d60\\decompiled.c",
+      "bytes": 2111,
+      "sha256": "5b6c113f365e9d778132d6d5c3f1f6ec771b6b6a501b31c47fa8dda8f2de6a0d"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_CACHE_LEAVES.md",
+    "bytes": 8087,
+    "sha256": "814033601e1c715d31fdce0d47afbba3ab7a562e0d3935c4fe61c73cbf14d4b6"
+  },
+  "closure_utc": "2026-09-11T20:42:44.114429+00:00",
+  "saved_function_definitions": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_resource_cache_leaves_defined_function.json",
+    "bytes": 14586,
+    "sha256": "cfc81e9260900dcbaa201a35e5648374c8745454139bebbcd823ca5824820154"
+  }
 }

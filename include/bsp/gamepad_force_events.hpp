@@ -52,6 +52,34 @@ public:
     virtual void refresh_target_pose_00414db0(ForceEventTargetPose&) = 0;
 };
 
+// Borrow fields instead of snapshotting a component before allocation/refresh.
+// Request objects remain the established typed request API, not native layouts.
+struct ConstantForceEventFields {
+    const std::uint32_t& channel_20;
+    const float& duration_24;
+    const float& amplitude_2c;
+};
+struct FadingForceEventFields {
+    const std::uint32_t& channel_20;
+    const float& duration_24;
+    const float& radius_28;
+    const float& amplitude_2c;
+};
+struct AlternatingForceEventFields {
+    const std::uint32_t& channel_20;
+    const float& duration_24;
+    const unsigned char& second_first_2c;
+    const float& first_value_30;
+    const float& second_value_34;
+    const float& first_period_38;
+    const float& second_period_3c;
+};
+std::uint32_t submit_constant_force_event_request(ConstantForceEventFields, GamepadForceContext&);
+std::uint32_t submit_fading_force_event_request(FadingForceEventFields, void* subject,
+    GamepadForceContext&, ForceEventSpatialHost&);
+std::uint32_t submit_alternating_force_event_request(AlternatingForceEventFields,
+    GamepadForceContext&);
+
 // Native x87 sum-of-squares ->float, strict double1e-10 threshold, actual CRT
 // sqrt ->float. ECX=three floats, ST0=result, RET; no vector/transform copy host.
 float force_event_vector_length_0042b2f0(const std::array<float, 3>&);

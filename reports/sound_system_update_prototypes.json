@@ -1,0 +1,217 @@
+{
+  "reason": "Restore original ECX/stack inputs, AL versus EAX results and ST0 float return. Fastcall unused_edx models storage only.",
+  "entries": [
+    {
+      "address": "00a7e630",
+      "name": "BSP_SoundSystem_UpdateBase",
+      "proposed": "void __fastcall BSP_SoundSystem_UpdateBase(void* self, void* unused_edx, void* matrix, float velocity_x, float velocity_y, float velocity_z)",
+      "before": "Function: FUN_00a7e630 at 00a7e630\nSignature: undefined FUN_00a7e630(void)\nEntry: 00a7e630\nBody: 00a7e630 - 00a7ea21",
+      "apply": "Successfully set prototype for function at 00a7e630 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_UpdateBase at 00a7e630\nSignature: void __fastcall BSP_SoundSystem_UpdateBase(void * self, void * unused_edx, void * matrix, float velocity_x, float velocity_y, float velocity_z)\nEntry: 00a7e630\nBody: 00a7e630 - 00a7ea21",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_UpdateBase at 00a7e630\nSignature: void __fastcall BSP_SoundSystem_UpdateBase(void * self, void * unused_edx, void * matrix, float velocity_x, float velocity_y, float velocity_z)\nEntry: 00a7e630\nBody: 00a7e630 - 00a7ea21",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a87bf0",
+      "name": "BSP_SoundSystem_Update",
+      "proposed": "void __fastcall BSP_SoundSystem_Update(void* self, void* unused_edx, void* matrix, float velocity_x, float velocity_y, float velocity_z)",
+      "before": "Function: FUN_00a87bf0 at 00a87bf0\nSignature: undefined FUN_00a87bf0(void)\nEntry: 00a87bf0\nBody: 00a87bf0 - 00a87c35",
+      "apply": "Successfully set prototype for function at 00a87bf0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSystem_Update at 00a87bf0\nSignature: void __fastcall BSP_SoundSystem_Update(void * self, void * unused_edx, void * matrix, float velocity_x, float velocity_y, float velocity_z)\nEntry: 00a87bf0\nBody: 00a87bf0 - 00a87c35",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSystem_Update at 00a87bf0\nSignature: void __fastcall BSP_SoundSystem_Update(void * self, void * unused_edx, void * matrix, float velocity_x, float velocity_y, float velocity_z)\nEntry: 00a87bf0\nBody: 00a87bf0 - 00a87c35",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7c1c0",
+      "name": "BSP_SoundEntryArray_Resize",
+      "proposed": "void __fastcall BSP_SoundEntryArray_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7c1c0 at 00a7c1c0\nSignature: undefined FUN_00a7c1c0(void)\nEntry: 00a7c1c0\nBody: 00a7c1c0 - 00a7c23d",
+      "apply": "Successfully set prototype for function at 00a7c1c0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEntryArray_Resize at 00a7c1c0\nSignature: void __fastcall BSP_SoundEntryArray_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a7c1c0\nBody: 00a7c1c0 - 00a7c23d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEntryArray_Resize at 00a7c1c0\nSignature: void __fastcall BSP_SoundEntryArray_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a7c1c0\nBody: 00a7c1c0 - 00a7c23d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7d640",
+      "name": "BSP_SoundEntryArray_Pop",
+      "proposed": "void __fastcall BSP_SoundEntryArray_Pop(void* self)",
+      "before": "Function: FUN_00a7d640 at 00a7d640\nSignature: undefined FUN_00a7d640(void)\nEntry: 00a7d640\nBody: 00a7d640 - 00a7d67d",
+      "apply": "Successfully set prototype for function at 00a7d640 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEntryArray_Pop at 00a7d640\nSignature: void __fastcall BSP_SoundEntryArray_Pop(void * self)\nEntry: 00a7d640\nBody: 00a7d640 - 00a7d67d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEntryArray_Pop at 00a7d640\nSignature: void __fastcall BSP_SoundEntryArray_Pop(void * self)\nEntry: 00a7d640\nBody: 00a7d640 - 00a7d67d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7d680",
+      "name": "BSP_SoundEntryArray_EraseSwapLast",
+      "proposed": "void __fastcall BSP_SoundEntryArray_EraseSwapLast(void* self, void* unused_edx, void* iterator_pointer)",
+      "before": "Function: FUN_00a7d680 at 00a7d680\nSignature: undefined FUN_00a7d680(void)\nEntry: 00a7d680\nBody: 00a7d680 - 00a7d702",
+      "apply": "Successfully set prototype for function at 00a7d680 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEntryArray_EraseSwapLast at 00a7d680\nSignature: void __fastcall BSP_SoundEntryArray_EraseSwapLast(void * self, void * unused_edx, void * iterator_pointer)\nEntry: 00a7d680\nBody: 00a7d680 - 00a7d702",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEntryArray_EraseSwapLast at 00a7d680\nSignature: void __fastcall BSP_SoundEntryArray_EraseSwapLast(void * self, void * unused_edx, void * iterator_pointer)\nEntry: 00a7d680\nBody: 00a7d680 - 00a7d702",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a79990",
+      "name": "BSP_SoundChannel_DidVirtualStateChange",
+      "proposed": "byte __fastcall BSP_SoundChannel_DidVirtualStateChange(void* self)",
+      "before": "Function: FUN_00a79990 at 00a79990\nSignature: undefined FUN_00a79990(void)\nEntry: 00a79990\nBody: 00a79990 - 00a7999d",
+      "apply": "Successfully set prototype for function at 00a79990 with __fastcall calling convention",
+      "after": "Function: BSP_SoundChannel_DidVirtualStateChange at 00a79990\nSignature: byte __fastcall BSP_SoundChannel_DidVirtualStateChange(void * self)\nEntry: 00a79990\nBody: 00a79990 - 00a7999d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundChannel_DidVirtualStateChange at 00a79990\nSignature: byte __fastcall BSP_SoundChannel_DidVirtualStateChange(void * self)\nEntry: 00a79990\nBody: 00a79990 - 00a7999d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00bee050",
+      "name": "BSP_FrameClock_GetCurrent",
+      "proposed": "void* __fastcall BSP_FrameClock_GetCurrent(void* self)",
+      "before": "Function: FUN_00bee050 at 00bee050\nSignature: undefined FUN_00bee050(void)\nEntry: 00bee050\nBody: 00bee050 - 00bee053",
+      "apply": "Successfully set prototype for function at 00bee050 with __fastcall calling convention",
+      "after": "Function: BSP_FrameClock_GetCurrent at 00bee050\nSignature: void * __fastcall BSP_FrameClock_GetCurrent(void * self)\nEntry: 00bee050\nBody: 00bee050 - 00bee053",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_FrameClock_GetCurrent at 00bee050\nSignature: void * __fastcall BSP_FrameClock_GetCurrent(void * self)\nEntry: 00bee050\nBody: 00bee050 - 00bee053",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7c080",
+      "name": "BSP_SoundEntryArray_Reserve",
+      "proposed": "void __fastcall BSP_SoundEntryArray_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: BSP_SoundEntryArray_Reserve at 00a7c080\nSignature: undefined BSP_SoundEntryArray_Reserve(void)\nEntry: 00a7c080\nBody: 00a7c080 - 00a7c173",
+      "apply": "Successfully set prototype for function at 00a7c080 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEntryArray_Reserve at 00a7c080\nSignature: void __fastcall BSP_SoundEntryArray_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a7c080\nBody: 00a7c080 - 00a7c173",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEntryArray_Reserve at 00a7c080\nSignature: void __fastcall BSP_SoundEntryArray_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a7c080\nBody: 00a7c080 - 00a7c173",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7d5c0",
+      "name": "BSP_SoundEntryArray_Append",
+      "proposed": "void __fastcall BSP_SoundEntryArray_Append(void* self, void* unused_edx, void* source_reference)",
+      "before": "Function: BSP_SoundEntryArray_Append at 00a7d5c0\nSignature: undefined BSP_SoundEntryArray_Append(void)\nEntry: 00a7d5c0\nBody: 00a7d5c0 - 00a7d632",
+      "apply": "Successfully set prototype for function at 00a7d5c0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEntryArray_Append at 00a7d5c0\nSignature: void __fastcall BSP_SoundEntryArray_Append(void * self, void * unused_edx, void * source_reference)\nEntry: 00a7d5c0\nBody: 00a7d5c0 - 00a7d632",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEntryArray_Append at 00a7d5c0\nSignature: void __fastcall BSP_SoundEntryArray_Append(void * self, void * unused_edx, void * source_reference)\nEntry: 00a7d5c0\nBody: 00a7d5c0 - 00a7d632",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7e490",
+      "name": "BSP_SoundManager_CreateTrackedSound",
+      "proposed": "void* __fastcall BSP_SoundManager_CreateTrackedSound(void* self, void* unused_edx, void* result_reference, void* sample, int class_index, int type_index, byte flag)",
+      "before": "Function: BSP_SoundManager_CreateTrackedSound at 00a7e490\nSignature: undefined BSP_SoundManager_CreateTrackedSound(void)\nEntry: 00a7e490\nBody: 00a7e490 - 00a7e620",
+      "apply": "Successfully set prototype for function at 00a7e490 with __fastcall calling convention",
+      "after": "Function: BSP_SoundManager_CreateTrackedSound at 00a7e490\nSignature: void * __fastcall BSP_SoundManager_CreateTrackedSound(void * self, void * unused_edx, void * result_reference, void * sample, int class_index, int type_index, byte flag)\nEntry: 00a7e490\nBody: 00a7e490 - 00a7e620",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundManager_CreateTrackedSound at 00a7e490\nSignature: void * __fastcall BSP_SoundManager_CreateTrackedSound(void * self, void * unused_edx, void * result_reference, void * sample, int class_index, int type_index, byte flag)\nEntry: 00a7e490\nBody: 00a7e490 - 00a7e620",
+      "verified_after_annotation": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7e630",
+        "prototype": "void __fastcall BSP_SoundSystem_UpdateBase(void* self, void* unused_edx, void* matrix, float velocity_x, float velocity_y, float velocity_z)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7e630 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a87bf0",
+        "prototype": "void __fastcall BSP_SoundSystem_Update(void* self, void* unused_edx, void* matrix, float velocity_x, float velocity_y, float velocity_z)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a87bf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7c1c0",
+        "prototype": "void __fastcall BSP_SoundEntryArray_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7c1c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7d640",
+        "prototype": "void __fastcall BSP_SoundEntryArray_Pop(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7d640 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7d680",
+        "prototype": "void __fastcall BSP_SoundEntryArray_EraseSwapLast(void* self, void* unused_edx, void* iterator_pointer)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7d680 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a79990",
+        "prototype": "byte __fastcall BSP_SoundChannel_DidVirtualStateChange(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a79990 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bee050",
+        "prototype": "void* __fastcall BSP_FrameClock_GetCurrent(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bee050 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7c080",
+        "prototype": "void __fastcall BSP_SoundEntryArray_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7c080 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7d5c0",
+        "prototype": "void __fastcall BSP_SoundEntryArray_Append(void* self, void* unused_edx, void* source_reference)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7d5c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7e490",
+        "prototype": "void* __fastcall BSP_SoundManager_CreateTrackedSound(void* self, void* unused_edx, void* result_reference, void* sample, int class_index, int type_index, byte flag)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7e490 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

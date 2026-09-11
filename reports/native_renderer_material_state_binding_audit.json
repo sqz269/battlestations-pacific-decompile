@@ -1,0 +1,2066 @@
+{
+  "schema": 1,
+  "packet": "native_renderer_material_state_binding2",
+  "utc": "2026-09-11T20:58:37.371824+00:00",
+  "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+  "base_commit": "9a36781c585545d68dd0967052d0d5c2eb8abd0d",
+  "functions": [
+    {
+      "address": "00b27a80",
+      "end_inclusive": "00b27af9",
+      "bytes": 122,
+      "name": "bind_native_renderer_material_render_states_00b27a80",
+      "cell": "renderer+34",
+      "counter": "renderer+1b94",
+      "compiled_bytes": 133
+    },
+    {
+      "address": "00b27b90",
+      "end_inclusive": "00b27c11",
+      "bytes": 130,
+      "name": "bind_native_renderer_material_sampler_states_00b27b90",
+      "cell": "renderer+3c",
+      "counter": "renderer+1b9c",
+      "compiled_bytes": 141
+    }
+  ],
+  "owned_bytes": 252,
+  "original_ABI": "ECX actual renderer; one actual owner stack argument; RET4; no semantic result; no owned EH registration.",
+  "new_ABI": "MSVC Win32 fastcall, fixed borrowed context in EDX, one added saved context stack cell; original incoming argument and provider bridge stack offsets adjusted. Not original caller/stack/SEH ABI.",
+  "source_files": [
+    {
+      "path": "include\\bsp\\native_renderer_material_state_binding.hpp",
+      "bytes": 2965,
+      "sha256": "68bb8fbe9fd8a6b51fa75ed3f320cfecb34db64309307b5e96025f3b186a91f2"
+    },
+    {
+      "path": "src\\native_renderer_material_state_binding.cpp",
+      "bytes": 6918,
+      "sha256": "ee2031d804b775d333b254768f51d83b17442351db4ed2c4bb5addf9936cf0ff"
+    }
+  ],
+  "native_evidence": {
+    "utc": "2026-09-11T20:40:52.891326+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query verifies bsp.gpr and /battlestationspacific.exe target/language/base; fresh spans compared to untouched original PE. No Ghidra/game mutation.",
+    "spans": [
+      {
+        "address": "00b27a80",
+        "length": 122,
+        "role": "owned_render_binder",
+        "bytes_hex": "53568b74240c8bd93973347468578b7b343bfe742b85f6897334740a8d460450ff151c22ce0085ff74168d4f0451ff152022ce0085c075088b178b028bcfffd085f6742933ff397e0c7e22eb038d49008b4e088b54f9048d04f98b0052508bcbe87bc9ffff83c7013b7e0c7ce38383941b0000015f5e5bc20400",
+        "sha256": "ca64998725df6108a55d56acd777e85ec268579c6dfc45a4821035acf3c86b8a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 50,
+        "section": ".text"
+      },
+      {
+        "address": "00b27b90",
+        "length": 130,
+        "role": "owned_sampler_binder",
+        "bytes_hex": "55568b74240c8be939753c7470578b7d3c3bfe742b85f689753c740a8d460450ff151c22ce0085ff74168d4f0451ff152022ce0085c075088b178b028bcfffd085f6743133ff397e0c7e2a5333db8bff8b4e088b5419088d04198b4804528b1051528bcde817caffff83c70183c30c3b7e0c7cdc5b83859c1b0000015f5e5dc20400",
+        "sha256": "11e0c9871d9c35ef2a25adfe65c970452f8fe02d79b2b7e6cd987fb880558b54",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 55,
+        "section": ".text"
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "role": "current_profile_terminal",
+        "bytes_hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 7,
+        "section": ".text"
+      },
+      {
+        "address": "00d61a2c",
+        "length": 16,
+        "role": "both_actual_terminal_profiles",
+        "bytes_hex": "e030bd00f022b400e030bd001023b400",
+        "sha256": "343fe77378021b02fdbfe50a8a1716059b7a3336b8a7bbbb8dcb7bc33d4ca4d0",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00b422f0",
+        "length": 30,
+        "role": "actual_render_deleting_provider",
+        "bytes_hex": "568bf1e8c8fdfffff644240801740956e8a7420b0083c4048bc65ec20400",
+        "sha256": "c9059e22b05ad1b9c4da16f614c407c65bc94d91cc1b1c6dc1dfb0e42320b9ec",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 11,
+        "section": ".text"
+      },
+      {
+        "address": "00b42310",
+        "length": 30,
+        "role": "actual_sampler_deleting_provider",
+        "bytes_hex": "568bf1e828fefffff644240801740956e887420b0083c4048bc65ec20400",
+        "sha256": "cd8dc2716b6c940da10d62750c94e0f094e52707f8cd64baab67f8fa9ce5d6d4",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 11,
+        "section": ".text"
+      },
+      {
+        "address": "00b420c0",
+        "length": 124,
+        "role": "full_render_destructor_including_returning_tail",
+        "bytes_hex": "6aff68b8f0cb0064a10000000050648925000000005156578bf9897c2408837f10008d7708c7442414000000007d096a008bcee8c8e9ffff837e04007e0c8bff834604ff837e04007ff6c74604000000008b3656e870480b0083c4048bcfc7442414ffffffffe8c50f09008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "6284b0a8868c9feb92eaa0d401f5d271bb44b2922c42b4d66488adf02be7b6e1",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 37,
+        "section": ".text"
+      },
+      {
+        "address": "00b42140",
+        "length": 124,
+        "role": "full_sampler_destructor_including_returning_tail",
+        "bytes_hex": "6aff68d8f0cb0064a10000000050648925000000005156578bf9897c2408837f10008d7708c7442414000000007d096a008bcee868eaffff837e04007e0c8bff834604ff837e04007ff6c74604000000008b3656e8f0470b0083c4048bcfc7442414ffffffffe8450f09008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "e0bdf9b80347baeaf2a1e9125269ea7f71906a99a1c8e4ff49aebaaa6faa119f",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 37,
+        "section": ".text"
+      },
+      {
+        "address": "00b40ac0",
+        "length": 104,
+        "role": "full_render_reserve",
+        "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d4c8d04fd000000005350e8d94a0b008bd833c083c4043946047e218bcb5585c9740e8b168b2cc289298b54c20489510483c00183c1083b46047ce35d8b0650e86f5e0b0083c404891e897e085b5f5ec20400",
+        "sha256": "901a2d383cfc397ad9d9a4714bb375bee9a1bee1200b07f315021e6ceb3d2607",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 42,
+        "section": ".text"
+      },
+      {
+        "address": "00b40be0",
+        "length": 130,
+        "role": "full_sampler_reserve",
+        "bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d668d045b5503c003c05750e8b8490b0033ff83c404397e048be8896c24147e3533d28bcd8d9b0000000085c974158b068b2c1003c289298b68048969048b400889410883c70183c20c83c10c3b7e047cd98b6c24148b0e51e8365d0b0083c4045f892e895e085d5e5bc20400",
+        "sha256": "21fce27bde087286b61353ac480d1d54456327dd1a267f3d2bfb00ad6ad9c88f",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 52,
+        "section": ".text"
+      },
+      {
+        "address": "00b24460",
+        "length": 169,
+        "role": "full_actual_cached_render_setter",
+        "bytes_hex": "64a1000000006aff6898cfcb00506489250000000083ec08803ddcd6080100568bf1740d89742408e843f60000884424048b44241c807c3040008b542420c744241400000000740939948614010000742857c644304001899486140100008b8e101a00008b3952508b87e400000051ffd08386a01b0000015f803ddcd6080100c7442414ffffffff5e740d8b0c24518b4c2408e808f600008b4c240864890d0000000083c414c20800",
+        "sha256": "15d1a0f0eac7219cc3014d3f2d3dca94fad638cd6c5c43f8e6d00ea38775dfea",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 44,
+        "section": ".text"
+      },
+      {
+        "address": "00b24610",
+        "length": 245,
+        "role": "full_actual_cached_sampler_setter",
+        "bytes_hex": "6aff64a10000000068d8cfcb00506489250000000083ec08803ddcd6080100535556578bf174118bde895c2414e88ef4000088442410eb048b5c24148b4424288b54242c8b7c24308d0cc08d0cca80bc31cc110000008d8c31cc110000c74424200000000074278d2cc08d2c6a39bcaedc1100007518803ddcd6080100c7442420ffffffff74598b54241052eb4b83f810c601018d0cc08d0c4a89bc8edc110000720505f10000008b8e101a00008b2957528b95140100005051ffd28386a41b000001803ddcd6080100c7442420ffffffff740c8b442410508bcbe810f400008b4c24185f5e5d5b64890d0000000083c414c20c00",
+        "sha256": "c0b1ab34a1003d412db6fa0b07504ff050b225c94f98fd207f63066adeb36721",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 69,
+        "section": ".text"
+      },
+      {
+        "address": "00b33ad0",
+        "length": 46,
+        "role": "actual_guard_entry",
+        "bytes_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+        "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 18,
+        "section": ".text"
+      },
+      {
+        "address": "00b33b00",
+        "length": 67,
+        "role": "actual_guard_leave",
+        "bytes_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+        "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 17,
+        "section": ".text"
+      },
+      {
+        "address": "00b21110",
+        "length": 22,
+        "role": "actual_guard_cleanup",
+        "bytes_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+        "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 7,
+        "section": ".text"
+      },
+      {
+        "address": "00b43422",
+        "length": 26,
+        "role": "actual_pass_binder_calls",
+        "bytes_hex": "8b4618578b7d04508bcbe84f46feff8b4e20518bcbe85447feff",
+        "sha256": "f1a9416d9610677e3b4abd886f653525dd04d68fffb37d7501e141fb563f5842",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 10,
+        "section": ".text"
+      },
+      {
+        "address": "00b5f793",
+        "length": 130,
+        "role": "actual_owner_producer_profile_publications",
+        "bytes_hex": "c70030b1ce00897804c7002c1ad60089580889580c895810eb0233c06a14894618e86270090083c4043bc3741ac70030b1ce00897804c700341ad60089580889580c895810eb0233c06a14894620e83570090083c4043bc3741ac70030b1ce00897804c7003c1ad60089580889580c895810eb0233c00f57c0f30f1144241089461c",
+        "sha256": "5ea85995aa93240b468ccc756795df45f2dcf2aa2463ea1b834396844fdd054a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 39,
+        "section": ".text"
+      },
+      {
+        "address": "00ce2210",
+        "length": 20,
+        "role": "actual_atomic_and_CS_imports",
+        "bytes_hex": "8856a000a056a000b856a000d056a000e856a000",
+        "sha256": "8faeb74a774cbe713413139978dd30cafdd74520547262284f50db05ec6447b9",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00cbf0b0",
+        "length": 18,
+        "role": "render_destructor_unwind_action_and_FH3",
+        "bytes_hex": "8b4df0e93840f1ffb8087adf00e9817af3ff",
+        "sha256": "816edd8f86396ae0ea516b835c4e21992fae59b7d00dd1f2b7820dcf9dc1698a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 4,
+        "section": ".text"
+      },
+      {
+        "address": "00cbf0d0",
+        "length": 18,
+        "role": "sampler_destructor_unwind_action_and_FH3",
+        "bytes_hex": "8b4df0e91840f1ffb8347adf00e9617af3ff",
+        "sha256": "2db965560b1e40d03c07b334cbab51fab04349fd0f891c18ba2b72a8333d8348",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 4,
+        "section": ".text"
+      },
+      {
+        "address": "00df7a00",
+        "length": 44,
+        "role": "render_destructor_unwind_map_FuncInfo",
+        "bytes_hex": "ffffffffb0f0cb002205931901000000007adf00000000000000000000000000000000000000000001000000",
+        "sha256": "154273c3adc9c649b659f50575cdc84c5a6a0f019308637074b5d1feee672db7",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00df7a2c",
+        "length": 44,
+        "role": "sampler_destructor_unwind_map_FuncInfo",
+        "bytes_hex": "ffffffffd0f0cb0022059319010000002c7adf00000000000000000000000000000000000000000001000000",
+        "sha256": "7f72b5d2b2542d76c6ee95147a10c254bb8a77801675d4e8ad8361f3adfdce62",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "role": "full_actual_base_cleanup_profile_install",
+        "bytes_hex": "c70130b1ce00c3",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 2,
+        "section": ".text"
+      },
+      {
+        "address": "00cbcf90",
+        "length": 18,
+        "role": "render_setter_unwind_action_and_FH3",
+        "bytes_hex": "8d4dece97841e6ffb8e455df00e9a19bf3ff",
+        "sha256": "a140dc32dcd6f3fb7e2fc1ce631e6c573b59407f3391e503ab00d434f24fb05a",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 4,
+        "section": ".text"
+      },
+      {
+        "address": "00df55dc",
+        "length": 44,
+        "role": "render_setter_unwind_map_FuncInfo",
+        "bytes_hex": "ffffffff90cfcb002205931901000000dc55df00000000000000000000000000000000000000000001000000",
+        "sha256": "6d44f523302aa73162cc4dde11cf7c7c54a77b214728d3e9987c15d719fd87c6",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      },
+      {
+        "address": "00cbcfd0",
+        "length": 18,
+        "role": "sampler_setter_unwind_action_and_FH3",
+        "bytes_hex": "8d4dece93841e6ffb83c56df00e9619bf3ff",
+        "sha256": "cadd2ddc74a07d60c15a2a6853edfbd6c14b93991fba51efc1b616bb69f1f6d7",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 4,
+        "section": ".text"
+      },
+      {
+        "address": "00df5634",
+        "length": 44,
+        "role": "sampler_setter_unwind_map_FuncInfo",
+        "bytes_hex": "ffffffffd0cfcb0022059319010000003456df00000000000000000000000000000000000000000001000000",
+        "sha256": "b6c9d54dee7890cf96280679c828781de20bcbf79dc5c623097db3f7d741e8dd",
+        "fresh_guarded_live_PE_match": true,
+        "decoded_instructions": 0,
+        "section": ".rdata"
+      }
+    ],
+    "imports": [
+      {
+        "address": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      {
+        "address": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      },
+      {
+        "address": "00ce221c",
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedIncrement"
+      },
+      {
+        "address": "00ce2220",
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedDecrement"
+      }
+    ],
+    "support_utc": "2026-09-11T20:58:35.679254+00:00"
+  },
+  "profiles": [
+    {
+      "identity": "00d61a2c",
+      "minimum_readable_bytes": 8,
+      "immutable_words": [
+        "00bd30e0",
+        "00b422f0"
+      ],
+      "producer": "B5F79C profile; B5F7B1 material pass+18; B43422 load/B4342C call"
+    },
+    {
+      "identity": "00d61a34",
+      "minimum_readable_bytes": 8,
+      "immutable_words": [
+        "00bd30e0",
+        "00b42310"
+      ],
+      "producer": "B5F7C9 profile; B5F7DE material pass+20; B43431 load/B43437 call"
+    }
+  ],
+  "context": "12-byte fixed borrowed raw synchronization pointer and two immutable original profile views; only reached terminal identities require their views. No incoming profile validation, companion, callback or owner-tail field.",
+  "storage": "Actual aligned14h NativeMaterialStateOwnerStorage with established lifetime, atomic+4 and actual rows+8 within same shared-heap allocation. Render rows8 bytes; sampler rows12. Reached renderer fields through1BA7 and full provider domains remain valid across callbacks.",
+  "order": [
+    "Initial raw identity skip before context/reference/row/counter reads.",
+    "Recapture current old; compare again; publish incoming before real imported atomic retain/release.",
+    "At old final zero, read captured profile slot0 then full BD30E0 fresh owner profile/slot4 reread and direct deleting flags1.",
+    "Retain original incoming identity; signed current rowcount; current base every iteration; render value/state or sampler value/state/slot loads.",
+    "Call full actual cached setter; increment cursor and reread signed current count.",
+    "Increment current final renderer counter with DWORD wrap only after returning changed path, including null incoming."
+  ],
+  "providers": [
+    {
+      "edge": "old render final zero",
+      "actual": "B422F0 + B420C0, reserve B40AC0 when reached, actual shared allocation/free",
+      "source": "native_material_pass_states.cpp",
+      "boundary": "Existing valid-extent, allocation and C++ exception behavior; no noexcept companion terminal"
+    },
+    {
+      "edge": "old sampler final zero",
+      "actual": "B42310 + B42140, reserve B40BE0 when reached, actual shared allocation/free",
+      "source": "native_material_pass_states.cpp",
+      "boundary": "Same actual source contract"
+    },
+    {
+      "edge": "render row",
+      "actual": "Full B24460 + B33AD0/B33B00/B21110, current actual device/table+E4",
+      "source": "native_renderer_cached_states.cpp/native_renderer_synchronization_actual.cpp"
+    },
+    {
+      "edge": "sampler row",
+      "actual": "Full B24610 + same full synchronization providers, current device/table+114",
+      "source": "native_renderer_cached_states.cpp/native_renderer_synchronization_actual.cpp"
+    }
+  ],
+  "supporting_EH": {
+    "owned": "none",
+    "cached_render": {
+      "handler": "00cbcf98",
+      "FuncInfo": "00df55e4",
+      "map": "00df55dc"
+    },
+    "cached_sampler": {
+      "handler": "00cbcfd8",
+      "FuncInfo": "00df563c",
+      "map": "00df5634"
+    },
+    "material_render": {
+      "handler": "00cbf0b8",
+      "FuncInfo": "00df7a08",
+      "map": "00df7a00"
+    },
+    "material_sampler": {
+      "handler": "00cbf0d8",
+      "FuncInfo": "00df7a34",
+      "map": "00df7a2c"
+    },
+    "material_action": "CBF0B0/CBF0D0 read current saved owner and jump full BD30F0 (CEB130 install)",
+    "support_validation": "All four chains verified from full entry handler PUSH through FuncInfo/map/action. CBCFB8/DF5610 belongs to separate B24510; existing sampler audit is correct. No original child EH runtime replay claimed."
+  },
+  "build": {
+    "actual_scripts_build": true,
+    "ignored_extra_hook": "local/extra.cmake",
+    "source_reviewed_by_primary": true,
+    "tests_passed": 2,
+    "fresh_seeds_passed": 8,
+    "library_sha256": "2e7e1ffe5d2bd78f3512311a6ba08a6d9c5bce2990b154778ddfb185d3eda727",
+    "build_log": {
+      "path": "local\\renderer_material_state_binding\\build_final.txt",
+      "bytes": 4920,
+      "sha256": "1b2c55fc7357099f2d59fdac6674bab8c984724a351de3e1559f7a8fd87d15f4"
+    },
+    "seeds": {
+      "path": "local\\renderer_material_state_binding\\verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "freeze_before_fixture_link": true,
+    "archive_membership": [
+      {
+        "object": "native_material_pass_states.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_material_pass_states.obj",
+        "sha256": "3108856e623236c3c5838705cfa1de5acb10c5a011ee478f5e3e365612ce1dfa",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_renderer_cached_states.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_cached_states.obj",
+        "sha256": "be07c1c82850f2d8a9cda4ec63a0f63e39258bc56fed1a8f0023f19ce1fffe14",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_renderer_material_state_binding.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_material_state_binding.obj",
+        "sha256": "b74fd0ee67c175558a6af4865ec2780e6aee8865f20db8d6698d79fca1479a31",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_renderer_synchronization_actual.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_renderer_synchronization_actual.obj",
+        "sha256": "895574037a38d3c15807320ff6215f0561018a4bdafe5531dde197c51422de60",
+        "exact_member_match": true
+      },
+      {
+        "object": "singleton_lifetime.obj",
+        "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "sha256": "14aa1080bb0cd63b063b78d770213c9ad834bf791ce5e0c967f6a178791a62ff",
+        "exact_member_match": true
+      }
+    ],
+    "source_header_count": 29,
+    "frozen_sources": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\d3d9_buffers.hpp",
+        "bytes": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\d3d9_startup.hpp",
+        "bytes": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\d3d9_states.hpp",
+        "bytes": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\d3d9_vertex_layout.hpp",
+        "bytes": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\instance_grouping.hpp",
+        "bytes": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\instance_sort.hpp",
+        "bytes": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\instance_upload.hpp",
+        "bytes": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\material_sort_metadata.hpp",
+        "bytes": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\native_material_pass_states.hpp",
+        "bytes": 5387,
+        "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\native_render_context.hpp",
+        "bytes": 4898,
+        "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\native_renderer_cached_states.hpp",
+        "bytes": 2075,
+        "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\native_renderer_material_state_binding.hpp",
+        "bytes": 2965,
+        "sha256": "68bb8fbe9fd8a6b51fa75ed3f320cfecb34db64309307b5e96025f3b186a91f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+        "bytes": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\random.hpp",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\render_command_queue.hpp",
+        "bytes": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\include\\bsp\\vertex_declaration.hpp",
+        "bytes": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\src\\native_material_pass_states.cpp",
+        "bytes": 9379,
+        "sha256": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\src\\native_renderer_cached_states.cpp",
+        "bytes": 5702,
+        "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\src\\native_renderer_material_state_binding.cpp",
+        "bytes": 6918,
+        "sha256": "ee2031d804b775d333b254768f51d83b17442351db4ed2c4bb5addf9936cf0ff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\src\\native_renderer_synchronization_actual.cpp",
+        "bytes": 3242,
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-material-state-binding\\local\\renderer_material_state_binding\\frozen\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ]
+  },
+  "fixture": {
+    "runtime_executions": "One focused successful comparison, both entries; initial fixed native-page reservations failed during setup before binder execution, then explicit private relocation was used.",
+    "original_executed": [
+      "B27A80 complete122",
+      "B27B90 complete130",
+      "BD30E0 complete14"
+    ],
+    "original_ABI_bridges": "Original direct setter edges call full actual B24460/B24610 through ECX+stack callee adapters; original relocated profile slot4 calls full actual B422F0/B42310 through ECX owner/stack flags adapters. No truncated provider implementations.",
+    "COM_boundary": "Fixture call view in renderer+1A10 forwards actual real HAL call first, then mutates only local rowbase/count/counter. Actual device object and all119 driver table words unchanged; not original complete COM-object execution.",
+    "free_boundary": "Fixture-only free IAT observer snapshots still-live original rows/owner then always calls exact actual CRT free; records successful return. Whole owned/provider code stays immutable.",
+    "original_capsule": {
+      "address": 6094848,
+      "bytes": 4096,
+      "sha256": "630bb4f8aa62e50b825f06e4b70527397f8e679e252d3aeb259ab6f3720ec182",
+      "entire_readonly_code_import_profile_mapping_pre_post_unchanged": true,
+      "full_owned_code_bytes": 252,
+      "full_original_zero_terminal_bytes": 14,
+      "all_changes": [
+        {
+          "original_instruction": 11696800,
+          "original_operand": 13509148,
+          "mapped_operand_address": 6094882,
+          "new_operand": 6095392,
+          "kind": "actual atomic import cell relocation"
+        },
+        {
+          "original_instruction": 11696814,
+          "original_operand": 13509152,
+          "mapped_operand_address": 6094896,
+          "new_operand": 6095396,
+          "kind": "actual atomic import cell relocation"
+        },
+        {
+          "original_instruction": 11696864,
+          "original_operand": 4294953339,
+          "mapped_operand_address": 6094945,
+          "new_operand": 799217755,
+          "kind": "relative full-provider ABI bridge"
+        },
+        {
+          "original_instruction": 11697072,
+          "original_operand": 13509148,
+          "mapped_operand_address": 6095138,
+          "new_operand": 6095392,
+          "kind": "actual atomic import cell relocation"
+        },
+        {
+          "original_instruction": 11697086,
+          "original_operand": 13509152,
+          "mapped_operand_address": 6095152,
+          "new_operand": 6095396,
+          "kind": "actual atomic import cell relocation"
+        },
+        {
+          "original_instruction": 11697140,
+          "original_operand": 4294953495,
+          "mapped_operand_address": 6095205,
+          "new_operand": 799217559,
+          "kind": "relative full-provider ABI bridge"
+        },
+        {
+          "original_profile_cell": 14031404,
+          "original_value": 12398816,
+          "mapped_cell": 6095424,
+          "new_value": 6095360
+        },
+        {
+          "original_profile_cell": 14031408,
+          "original_value": 11805424,
+          "mapped_cell": 6095428,
+          "new_value": 805312672
+        },
+        {
+          "original_profile_cell": 14031412,
+          "original_value": 12398816,
+          "mapped_cell": 6095432,
+          "new_value": 6095360
+        },
+        {
+          "original_profile_cell": 14031416,
+          "original_value": 11805456,
+          "mapped_cell": 6095436,
+          "new_value": 805312736
+        }
+      ],
+      "profile_rule": "Only original execution relocates the actual two profile identities to private read-only cells; compiled source uses original numeric owner tokens and original immutable profile words."
+    },
+    "whole_raw_comparisons": 74,
+    "normalization": "Only explicit renderer binding/lock/call-view fields, owner rows.data fields, and original-run old-owner +0 profile identity. Every field/value listed in verified.json; literal raw originals retained.",
+    "normalization_fields": [
+      {
+        "file": "original_render_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_before_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736960,
+        "identity_index": 0,
+        "normalized": 4026531840
+      },
+      {
+        "file": "actual_render_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_before_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 0,
+        "normalized": 4026531840
+      },
+      {
+        "file": "original_render_before_owner.bin",
+        "offset": 8,
+        "raw_value": 45947216,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "actual_render_before_owner.bin",
+        "offset": 8,
+        "raw_value": 45947456,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "original_render_call0_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_call0_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_call0_before_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_render_call0_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_call0_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_call0_before_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736448,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_render_call0_before_owner.bin",
+        "offset": 8,
+        "raw_value": 45947216,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "actual_render_call0_before_owner.bin",
+        "offset": 8,
+        "raw_value": 45947456,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "original_render_call0_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_call0_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_call0_after_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_render_call0_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_call0_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_call0_after_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736448,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_render_call0_after_owner.bin",
+        "offset": 8,
+        "raw_value": 45947480,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_render_call0_after_owner.bin",
+        "offset": 8,
+        "raw_value": 45947072,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_render_call1_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_call1_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_call1_before_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_render_call1_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_call1_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_call1_before_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736448,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_render_call1_before_owner.bin",
+        "offset": 8,
+        "raw_value": 45947480,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_render_call1_before_owner.bin",
+        "offset": 8,
+        "raw_value": 45947072,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_render_call1_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_call1_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_call1_after_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_render_call1_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_call1_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_call1_after_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736448,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_render_call1_after_owner.bin",
+        "offset": 8,
+        "raw_value": 45947480,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_render_call1_after_owner.bin",
+        "offset": 8,
+        "raw_value": 45947072,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_render_bound_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_bound_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_bound_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_render_bound_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_bound_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_bound_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736448,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_render_bound_owner.bin",
+        "offset": 8,
+        "raw_value": 45947480,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_render_bound_owner.bin",
+        "offset": 8,
+        "raw_value": 45947072,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_render_identity_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_identity_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_identity_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_render_identity_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_identity_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_identity_renderer.bin",
+        "offset": 52,
+        "raw_value": 114736448,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_render_identity_owner.bin",
+        "offset": 8,
+        "raw_value": 45947480,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_render_identity_owner.bin",
+        "offset": 8,
+        "raw_value": 45947072,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_render_null_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_render_null_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_render_null_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_render_null_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_render_null_owner.bin",
+        "offset": 8,
+        "raw_value": 45947480,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_render_null_owner.bin",
+        "offset": 8,
+        "raw_value": 45947072,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_render_old_input.bin",
+        "offset": 8,
+        "raw_value": 45947192,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "original_render_old_input.bin",
+        "offset": 0,
+        "raw_value": 6095424,
+        "original_profile_identity": 14031404,
+        "normalized": 14031404
+      },
+      {
+        "file": "actual_render_old_input.bin",
+        "offset": 8,
+        "raw_value": 45947312,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "original_render_freed_owner.bin",
+        "offset": 8,
+        "raw_value": 45947192,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "actual_render_freed_owner.bin",
+        "offset": 8,
+        "raw_value": 45947312,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "original_sampler_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_before_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736960,
+        "identity_index": 0,
+        "normalized": 4026531840
+      },
+      {
+        "file": "actual_sampler_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_before_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736960,
+        "identity_index": 0,
+        "normalized": 4026531840
+      },
+      {
+        "file": "original_sampler_before_owner.bin",
+        "offset": 8,
+        "raw_value": 114736896,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "actual_sampler_before_owner.bin",
+        "offset": 8,
+        "raw_value": 114736448,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "original_sampler_call0_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_call0_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_call0_before_renderer.bin",
+        "offset": 60,
+        "raw_value": 114737184,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_sampler_call0_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_call0_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_call0_before_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_sampler_call0_before_owner.bin",
+        "offset": 8,
+        "raw_value": 114736896,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "actual_sampler_call0_before_owner.bin",
+        "offset": 8,
+        "raw_value": 114736448,
+        "identity_index": 3,
+        "normalized": 4026532608
+      },
+      {
+        "file": "original_sampler_call0_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_call0_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_call0_after_renderer.bin",
+        "offset": 60,
+        "raw_value": 114737184,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_sampler_call0_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_call0_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_call0_after_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_sampler_call0_after_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_sampler_call0_after_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_sampler_call1_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_call1_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_call1_before_renderer.bin",
+        "offset": 60,
+        "raw_value": 114737184,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_sampler_call1_before_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_call1_before_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_call1_before_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_sampler_call1_before_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_sampler_call1_before_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_sampler_call1_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_call1_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_call1_after_renderer.bin",
+        "offset": 60,
+        "raw_value": 114737184,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_sampler_call1_after_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_call1_after_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_call1_after_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_sampler_call1_after_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_sampler_call1_after_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_sampler_bound_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_bound_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_bound_renderer.bin",
+        "offset": 60,
+        "raw_value": 114737184,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_sampler_bound_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_bound_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_bound_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_sampler_bound_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_sampler_bound_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_sampler_identity_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_identity_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_identity_renderer.bin",
+        "offset": 60,
+        "raw_value": 114737184,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "actual_sampler_identity_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_identity_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_identity_renderer.bin",
+        "offset": 60,
+        "raw_value": 114736896,
+        "identity_index": 2,
+        "normalized": 4026532352
+      },
+      {
+        "file": "original_sampler_identity_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_sampler_identity_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_sampler_null_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "original_sampler_null_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "actual_sampler_null_renderer.bin",
+        "offset": 4,
+        "raw_value": 805342528,
+        "identity_index": 5,
+        "normalized": 4026533120
+      },
+      {
+        "file": "actual_sampler_null_renderer.bin",
+        "offset": 6672,
+        "raw_value": 805335040,
+        "identity_index": 6,
+        "normalized": 4026533376
+      },
+      {
+        "file": "original_sampler_null_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "actual_sampler_null_owner.bin",
+        "offset": 8,
+        "raw_value": 114737152,
+        "identity_index": 4,
+        "normalized": 4026532864
+      },
+      {
+        "file": "original_sampler_old_input.bin",
+        "offset": 8,
+        "raw_value": 114736448,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "original_sampler_old_input.bin",
+        "offset": 0,
+        "raw_value": 6095432,
+        "original_profile_identity": 14031412,
+        "normalized": 14031412
+      },
+      {
+        "file": "actual_sampler_old_input.bin",
+        "offset": 8,
+        "raw_value": 114737184,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "original_sampler_freed_owner.bin",
+        "offset": 8,
+        "raw_value": 114736448,
+        "identity_index": 1,
+        "normalized": 4026532096
+      },
+      {
+        "file": "actual_sampler_freed_owner.bin",
+        "offset": 8,
+        "raw_value": 114737184,
+        "identity_index": 1,
+        "normalized": 4026532096
+      }
+    ],
+    "HAL_calls": [
+      {
+        "run": "original_render",
+        "sequence": 0,
+        "slot": 0,
+        "state": 7,
+        "value": 0,
+        "HRESULT": 0
+      },
+      {
+        "run": "original_render",
+        "sequence": 1,
+        "slot": 0,
+        "state": 27,
+        "value": 1,
+        "HRESULT": 0
+      },
+      {
+        "run": "actual_render",
+        "sequence": 0,
+        "slot": 0,
+        "state": 7,
+        "value": 0,
+        "HRESULT": 0
+      },
+      {
+        "run": "actual_render",
+        "sequence": 1,
+        "slot": 0,
+        "state": 27,
+        "value": 1,
+        "HRESULT": 0
+      },
+      {
+        "run": "original_sampler",
+        "sequence": 0,
+        "slot": 0,
+        "state": 6,
+        "value": 1,
+        "HRESULT": 0
+      },
+      {
+        "run": "original_sampler",
+        "sequence": 1,
+        "slot": 0,
+        "state": 5,
+        "value": 2,
+        "HRESULT": 0
+      },
+      {
+        "run": "actual_sampler",
+        "sequence": 0,
+        "slot": 0,
+        "state": 6,
+        "value": 1,
+        "HRESULT": 0
+      },
+      {
+        "run": "actual_sampler",
+        "sequence": 1,
+        "slot": 0,
+        "state": 5,
+        "value": 2,
+        "HRESULT": 0
+      }
+    ],
+    "asserted_results": [
+      "Nonempty old reference1 decremented0; actual rows free then owner free with final count0/baseCEB130.",
+      "Initial incoming count1 changes to2 and base changes after first real call; second current row reaches HAL.",
+      "Final current counter changed twice and wrapsFFFFFFFF+1 to0.",
+      "Identity skip uses inaccessible source context and all raw traces unchanged.",
+      "Null replacement releases incoming2->1, clears current cell and increments0->1 with no row/context reads.",
+      "Real tracked critical section depth and global nesting return0; current observed mode updated by full provider."
+    ],
+    "exceptions_replayed": false
+  },
+  "provenance": {
+    "mapped_sections": 218,
+    "mapped_scope": "Every mapped section of five exact actual archive members and fixture.obj, including f/i map flags; CRT startup objects are not assigned invented archive ownership.",
+    "mapped_relocations": 690,
+    "owned_complete_COFF_sections": 14,
+    "owned_complete_COFF_relocations": 12,
+    "compiler_inlining": "word/profile helper copies may be discarded; actual destructor bodies inline into full actual deleting providers. All emitted owned sections and exact complete provider objects remain frozen.",
+    "runtime_code_bytes": 13652,
+    "actual_imports": 71,
+    "actual_external_providers": [
+      {
+        "label": "actual_SetRenderState",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615483616,
+        "loaded_base": 1614282752,
+        "rva": 1200864,
+        "first16": "6a10b881014160e8d5f7f5ff8b7d0833",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "actual_SetSamplerState",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615458512,
+        "loaded_base": 1614282752,
+        "rva": 1175760,
+        "first16": "6a10b8ccfb4060e8e559f6ff8b7d0833",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "original_InterlockedIncrement",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973885680,
+        "loaded_base": 1973682176,
+        "rva": 203504,
+        "first16": "8bff558bec8b4d0833c040f00fc10140",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "original_InterlockedDecrement",
+        "path": "C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL",
+        "module_sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "target": 1973885616,
+        "loaded_base": 1973682176,
+        "rva": 203440,
+        "first16": "8bff558bec8b4d0883c8fff00fc10148",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "actual_free",
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "module_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "target": 1970602144,
+        "loaded_base": 1970405376,
+        "rva": 196768,
+        "first16": "8bff558bec51ff7508c745fc00000000",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "actual_SetRenderState_after",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615483616,
+        "loaded_base": 1614282752,
+        "rva": 1200864,
+        "first16": "6a10b881014160e8d5f7f5ff8b7d0833",
+        "loader_relocations_only": true
+      },
+      {
+        "label": "actual_SetSamplerState_after",
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "target": 1615458512,
+        "loaded_base": 1614282752,
+        "rva": 1175760,
+        "first16": "6a10b8ccfb4060e8e559f6ff8b7d0833",
+        "loader_relocations_only": true
+      }
+    ],
+    "owned_instruction_transformations": [
+      {
+        "original_address": 11696768,
+        "original_bytes": 122,
+        "compiled_bytes": 133,
+        "entry_context_push": "52",
+        "changes": [
+          {
+            "original_address": 11696770,
+            "old_bytes": "8b74240c",
+            "replacement": "8b742410"
+          },
+          {
+            "original_address": 11696826,
+            "old_bytes": "8b02",
+            "replacement": "ff74240c"
+          },
+          {
+            "original_address": 11696830,
+            "old_bytes": "ffd0",
+            "replacement": "e800000000"
+          },
+          {
+            "original_address": 11696864,
+            "old_bytes": "e87bc9ffff",
+            "replacement": "8b542414e87bc9ffff"
+          },
+          {
+            "original_address": 11696887,
+            "old_bytes": "c20400",
+            "replacement": "5ac20400"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 35,
+            "symbol": "__imp__InterlockedIncrement@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326908,
+            "resolved": 805326908
+          },
+          {
+            "offset": 49,
+            "symbol": "__imp__InterlockedDecrement@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326912,
+            "resolved": 805326912
+          },
+          {
+            "offset": 66,
+            "symbol": "?release_current_state@?A0xa9531059@bsp@@YIXPAXIPBUNativeRendererMaterialStateBindingContext@2@@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805318624,
+            "resolved": 218
+          },
+          {
+            "offset": 107,
+            "symbol": "?set_render_row@?A0xa9531059@bsp@@YIXPAXPBUNativeRendererMaterialStateBindingContext@2@II@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805318784,
+            "resolved": 337
+          }
+        ],
+        "all_bytes_match_after_only_documented_changes": true
+      },
+      {
+        "original_address": 11697040,
+        "original_bytes": 130,
+        "compiled_bytes": 141,
+        "entry_context_push": "52",
+        "changes": [
+          {
+            "original_address": 11697042,
+            "old_bytes": "8b74240c",
+            "replacement": "8b742410"
+          },
+          {
+            "original_address": 11697098,
+            "old_bytes": "8b02",
+            "replacement": "ff74240c"
+          },
+          {
+            "original_address": 11697102,
+            "old_bytes": "ffd0",
+            "replacement": "e800000000"
+          },
+          {
+            "original_address": 11697140,
+            "old_bytes": "e817caffff",
+            "replacement": "8b54241ce817caffff"
+          },
+          {
+            "original_address": 11697167,
+            "old_bytes": "c20400",
+            "replacement": "5ac20400"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 35,
+            "symbol": "__imp__InterlockedIncrement@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326908,
+            "resolved": 805326908
+          },
+          {
+            "offset": 49,
+            "symbol": "__imp__InterlockedDecrement@4",
+            "type": 6,
+            "addend": 0,
+            "target": 805326912,
+            "resolved": 805326912
+          },
+          {
+            "offset": 66,
+            "symbol": "?release_current_state@?A0xa9531059@bsp@@YIXPAXIPBUNativeRendererMaterialStateBindingContext@2@@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805318624,
+            "resolved": 74
+          },
+          {
+            "offset": 111,
+            "symbol": "?set_sampler_row@?A0xa9531059@bsp@@YIXPAXPBUNativeRendererMaterialStateBindingContext@2@III@Z",
+            "type": 20,
+            "addend": 0,
+            "target": 805318816,
+            "resolved": 221
+          }
+        ],
+        "all_bytes_match_after_only_documented_changes": true
+      }
+    ],
+    "proof": {
+      "path": "local\\renderer_material_state_binding\\verified.json",
+      "bytes": 317864,
+      "sha256": "7bddd7034259577d126aea66ee196851663c62be8fd7dfae2910203feec7c98f"
+    },
+    "complete_owned_object": {
+      "path": "local\\renderer_material_state_binding\\owned_complete_object.json",
+      "bytes": 15015,
+      "sha256": "921ecafaee7155307ade6a35171f5b558e865ec8b7148c9ced804232c898b331"
+    }
+  },
+  "limitations": [
+    "No original provider setter/destructor runtime replay beyond explicit full actual source composition.",
+    "No new original caller/stack/native SEH ABI claim; no full COM object or gameplay claim.",
+    "Normal returning fixture only; existing allocation failure/extent/C++ exception boundaries inherited, not exhaustively replayed.",
+    "No foreign terminal profiles, concurrent races, extra outer guard, null-success policy, rollback or ownership/lifetime substitute.",
+    "B27B00, general B241C0, B24BF0, B262C0 and recreation parent remain outside this packet."
+  ],
+  "shared_changes": "No CMake, ledger, Ghidra or game changes; only four owned source/header/doc/audit files are committed.",
+  "evidence_directory": "local/renderer_material_state_binding",
+  "seal": "local/renderer_material_state_binding/sealed.json; self hash supplied in handoff after commit and immutable seal",
+  "primary_integration": {
+    "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+    "main_library_sha256": "047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 304,
+    "current_inputs": 29,
+    "reviewed_source_newline_only": true,
+    "fresh_spans": 27,
+    "fresh_bytes": 1804,
+    "exact_archive_objects": 5,
+    "mapped_COFF_sections": 218,
+    "mapped_COFF_relocations": 690,
+    "runtime_code_bytes": 13652,
+    "actual_imports": 71,
+    "raw_comparisons": 74,
+    "real_HAL_calls": 8,
+    "original_owned_execution": true,
+    "original_child_or_child_EH_execution": false,
+    "boundary": "CompleteB27A80[122]/B27B90[130] actualrender/samplerblock binders. OriginalECXrenderer/stackincoming/RET4; newEDX borrowed12-byte context andone savedstackcell. Identityskip beforecontext; recaptureold,publishincoming/atomicretain beforeolddecrement. OnlyreachedD61A2C/D61A34 slot0BD30E0 thenfreshownerprofile4 fullB422F0/B42310 flags1; actualsharedheapowners andfullthrowingdeletingproviders. Originalincoming retained acrosscalls; eachrow currentdata thenvalue/state(/slot), signedcount rereadafterfullB24460/B24610; finalwrapping1B94/1B9C increment onlyonreturn inclnull. Noouterguard/EH/rollback. Primary304sealedworkerfiles,29currentinputs withownedCPP CRLF/LF-only reviewedtext equality,27freshspans1804bytes. Fulloriginalbinders+BD30E0 execute in immutable4KBprivatecapsule; only6declaredcodeoperands/4profilecells changed. Samefullmainproviders viaexplicitABIbridges, originalchildren/EH notexecuted.74whole comparisons withonlylistedpointer/profilefieldnormalizations;realoldrows/ownerfree,live row/count/counter mutations,identityskip/null;8realHALcallsS_OK throughfixture COM-callview, actualdevice119tablewordsunchanged. Main5exactobjects218mappedCOFFsections690relocs71imports13652runtimecodebytes;compiled133/141bodyinstructions checked. ActualsamplerEH chainB24610->CBCFD8->DF563C/mapDF5634/actionCBCFD0 correct; adjacentCBCFB8 belongsB24510. NofullCOMobject/originalcaller/SEH/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\material_state_binding_primary\\sealed.json",
+      "bytes": 62699,
+      "sha256": "0c8f054946b8ab1ee0a18ddafa9e60ddb5123a4fce9b83b43f86953d837b333e"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_x87_material_registry_annotations.json",
+    "bytes": 9848,
+    "sha256": "f8b1e90c596c3b726b85c0eddacb78fd98b5267c0e8e5680b7233b436bea51f3"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b27a80",
+      "name": "BSP_D3D9Renderer_BindRenderStateBlock",
+      "cpp_symbol": "bsp::bind_native_renderer_material_render_states_00b27a80",
+      "source": "src/native_renderer_material_state_binding.cpp",
+      "native_end_exclusive": "00b27afa",
+      "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_material_state_binding_audit.json",
+      "original_abi": "ECX actual renderer; one actual owner stack argument; RET4; no semantic result; no owned EH registration.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": true,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "retained_semantic_companion": "src/d3d9_states.cpp; earlier typed shared-ownership interface remains separate."
+    },
+    {
+      "kind": "function",
+      "address": "00b27b90",
+      "name": "BSP_D3D9Renderer_BindSamplerStateBlock",
+      "cpp_symbol": "bsp::bind_native_renderer_material_sampler_states_00b27b90",
+      "source": "src/native_renderer_material_state_binding.cpp",
+      "native_end_exclusive": "00b27c12",
+      "status": "complete_two_actual_state_binders_primary_main_library_original_mutation_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_material_state_binding_audit.json",
+      "original_abi": "ECX actual renderer; one actual owner stack argument; RET4; no semantic result; no owned EH registration.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": true,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "retained_semantic_companion": "src/d3d9_states.cpp; earlier typed shared-ownership interface remains separate."
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b27a80",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b27a80\\decompiled.c",
+      "bytes": 2962,
+      "sha256": "21060003341a71778e8f5e28b5c2c5fc945283e8944c64103cd35f64ac14672b"
+    },
+    {
+      "address": "00b27b90",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b27b90\\decompiled.c",
+      "bytes": 2714,
+      "sha256": "a270591cca25632e151f6bec40ddded9aa19805d1d0772c5cba500aad9a55a7a"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_MATERIAL_STATE_BINDING.md",
+    "bytes": 9938,
+    "sha256": "c0989b26b9b99ae6286c79f78f51070ed1f812fd6133d3255d2dc3e4bbcea056"
+  },
+  "closure_utc": "2026-09-11T21:14:34.652974+00:00"
+}

@@ -1,0 +1,403 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-11T20:51:20.995055+00:00",
+  "status": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
+  "base_commit": "77cef00140afd8721c272ee8b3112a2b7649f501",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_double_load",
+  "ownership": {
+    "packet": "native_crt_x87_double_load1",
+    "addresses": [
+      "00c083d5"
+    ],
+    "range_start": "00c083d5",
+    "range_end_exclusive": "00c08418",
+    "files": [
+      "src/native_crt_x87_double_load.cpp",
+      "include/bsp/native_crt_x87_double_load.hpp",
+      "docs/NATIVE_CRT_X87_DOUBLE_LOAD.md",
+      "reports/native_crt_x87_double_load_audit.json"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original": {
+    "address": "00c083d5",
+    "end_exclusive": "00c08418",
+    "length": 67,
+    "bytes_hex": "8b4204250000f07f3d0000f07f7403dd02c38b420483ec0a0d0000ff7f894424068b42048b0a0fa4c80bc1e10b89442404890c24db2c2483c40aa9000000008b4204c3",
+    "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169",
+    "fresh_guarded_live_equals_installed_PE": true,
+    "instruction_count": 21,
+    "assembly": [
+      "00c083d5: mov eax, dword ptr [edx + 4]",
+      "00c083d8: and eax, 0x7ff00000",
+      "00c083dd: cmp eax, 0x7ff00000",
+      "00c083e2: je 0xc083e7",
+      "00c083e4: fld qword ptr [edx]",
+      "00c083e6: ret ",
+      "00c083e7: mov eax, dword ptr [edx + 4]",
+      "00c083ea: sub esp, 0xa",
+      "00c083ed: or eax, 0x7fff0000",
+      "00c083f2: mov dword ptr [esp + 6], eax",
+      "00c083f6: mov eax, dword ptr [edx + 4]",
+      "00c083f9: mov ecx, dword ptr [edx]",
+      "00c083fb: shld eax, ecx, 0xb",
+      "00c083ff: shl ecx, 0xb",
+      "00c08402: mov dword ptr [esp + 4], eax",
+      "00c08406: mov dword ptr [esp], ecx",
+      "00c08409: fld xword ptr [esp]",
+      "00c0840c: add esp, 0xa",
+      "00c0840f: test eax, 0",
+      "00c08414: mov eax, dword ptr [edx + 4]",
+      "00c08417: ret "
+    ],
+    "library_symbol": "__fload_withFB",
+    "saved_ghidra_prototype": "undefined __fload_withFB(void)",
+    "prototype_uncertainty": "Ghidra prototype does not describe EDX, EAX/EFLAGS or the pushed ST0; complete assembly controls the contract."
+  },
+  "interface": {
+    "name": "bsp::load_native_crt_double_x87_00c083d5",
+    "declaration": "std::uint32_t __fastcall load_native_crt_double_x87_00c083d5(void* unused_ecx, const void* actual_double)",
+    "assembly_callers_only": true,
+    "ordinary_cpp_call_safe": false,
+    "input": "EDX points at eight currently readable bytes; ECX unused as input; no stack arguments",
+    "normal_outputs": "One pushed ST0; EAX classification; path-specific EFLAGS; exceptional path also clobbers ECX",
+    "preserved_registers": [
+      "EDX",
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "stack": "Both RETs; exceptional path subtracts/restores ten bytes with deliberately overlapping DWORD stores",
+    "finite_eax": "First high DWORD masked with 7FF00000h",
+    "finite_eflags": "CMP EAX,7FF00000h",
+    "exceptional_eax": "Final current high DWORD read after TEST EAX,0",
+    "exceptional_eflags": {
+      "ZF": 1,
+      "PF": 1,
+      "CF": 0,
+      "OF": 0,
+      "SF": 0,
+      "AF": "undefined"
+    },
+    "caller_obligations": [
+      "Provide x87 stack capacity and consume pushed ST0",
+      "Consume/preserve needed EFLAGS before other instructions overwrite them",
+      "Supply readable current input storage and accept original accesses/faults",
+      "Current x87 control/status/exception behavior remains operative"
+    ],
+    "no_snapshot": true,
+    "no_fp_environment_reset": true,
+    "no_exception_translation": true,
+    "new_source_name_not_installed_drop_in": true
+  },
+  "dependencies": {
+    "direct_calls": [],
+    "globals": [],
+    "constant_pointers": [],
+    "undefined_providers": [],
+    "object_body_relocations": [],
+    "parent_pow_or_gamma_completed": false
+  },
+  "source_review": "Primary independently read and approved full drafted source/header and original assembly before proof; no runtime fixture required after complete equality.",
+  "validation": {
+    "fresh_guarded_original_capture": true,
+    "complete_original_PE_bytes": 67,
+    "full_actual_archive_member_equals_built_object": true,
+    "complete_function_COFF_equal_original": true,
+    "normalization_count": 0,
+    "function_relocations": 0,
+    "instruction_count": 21,
+    "full_object_section_and_symbol_inventory": "local/x87_double_load/object_proof.json",
+    "strict_release_win32_build": true,
+    "compiler_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "existing_ctests_passed": 2,
+    "fresh_seed_spans_passed": 8,
+    "new_permanent_tests": 0,
+    "focused_runtime_fixture": false,
+    "linked_runtime_postimage_verification": false,
+    "game_or_display_execution": false
+  },
+  "actual_artifacts": {
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 38370276,
+      "sha256": "7e1af5ea99ab73c352dc26f30117e5d7e4835a207e2f9f703992480057078e87"
+    },
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_x87_double_load.obj",
+      "bytes": 794,
+      "sha256": "b6687f11fb3b00327d8beb613e62a9b385bcefcfc24d13a126cbf6bfcf6cd933"
+    },
+    "archive_member": {
+      "name": "bsp_core.dir\\Release\\native_crt_x87_double_load.obj",
+      "offset": 29034474,
+      "bytes": 794,
+      "sha256": "b6687f11fb3b00327d8beb613e62a9b385bcefcfc24d13a126cbf6bfcf6cd933"
+    },
+    "function": {
+      "name": "?load_native_crt_double_x87_00c083d5@bsp@@YIIPAXPBX@Z",
+      "value": 0,
+      "section": 3,
+      "type": 32,
+      "storage": 2,
+      "bytes": 67,
+      "instructions": 21,
+      "bytes_hex": "8b4204250000f07f3d0000f07f7403dd02c38b420483ec0a0d0000ff7f894424068b42048b0a0fa4c80bc1e10b89442404890c24db2c2483c40aa9000000008b4204c3",
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169",
+      "exact_original_equal": true,
+      "normalizations": [],
+      "relocations": [],
+      "all_body_relocations_accounted_for": true,
+      "external_dependencies": []
+    }
+  },
+  "limitations": [
+    "Complete COFF proof does not claim linked-address, runtime or game validation.",
+    "Existing repository tests do not directly execute this assembly-only entry.",
+    "No modern host-pow implementation or complete original pow/gamma claim.",
+    "Current x87 exceptions and undefined AF behavior are preserved, not made into C++ guarantees.",
+    "No shared CMake, source consumer, ledger or Ghidra integration is part of this worker packet."
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/x87_double_load/build.log",
+      "bytes": 21848,
+      "sha256": "82ae78a2c932bfe741496879bd1d1ea80787b07b60f15ac7f27ccfee4b5084f4"
+    },
+    {
+      "path": "local/x87_double_load/build_library.ps1",
+      "bytes": 832,
+      "sha256": "4f357e445b7246b42870907ffb4073c3ffd343fabcb928493a62fd984d0821b0"
+    },
+    {
+      "path": "local/x87_double_load/capture.py",
+      "bytes": 2178,
+      "sha256": "13145352e535d830b608807b20fd31451f560389821c47343314bc739f320b8f"
+    },
+    {
+      "path": "local/x87_double_load/configure.log",
+      "bytes": 964,
+      "sha256": "f40887ea0bda259934631867c77e7057dc48b8630b45bf98a41bcde430f8e698"
+    },
+    {
+      "path": "local/x87_double_load/extra.cmake",
+      "bytes": 126,
+      "sha256": "9c6c347bf9d2630ddb11ea8e75a48bb5670cdc870cf85b2616e3eba90a146fc4"
+    },
+    {
+      "path": "local/x87_double_load/frozen/archive_member.obj",
+      "bytes": 794,
+      "sha256": "b6687f11fb3b00327d8beb613e62a9b385bcefcfc24d13a126cbf6bfcf6cd933"
+    },
+    {
+      "path": "local/x87_double_load/frozen/bsp_core.lib",
+      "bytes": 38370276,
+      "sha256": "7e1af5ea99ab73c352dc26f30117e5d7e4835a207e2f9f703992480057078e87"
+    },
+    {
+      "path": "local/x87_double_load/frozen/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 1047820,
+      "sha256": "5da85f270a8ea4e40a97b8a1ee7866e3ffbf6d0fb14758c37646bc150d348d9f"
+    },
+    {
+      "path": "local/x87_double_load/frozen/build/win32/bsp_core.vcxproj",
+      "bytes": 123574,
+      "sha256": "eabbc3eb868f5b92629aa59317c069a94950c8e06531744e11f7ad9ead9a8f81"
+    },
+    {
+      "path": "local/x87_double_load/frozen/build/win32/CMakeCache.txt",
+      "bytes": 19135,
+      "sha256": "4e07a0de4494429cfadf4841fd562784a6445c0f346c75478c1015187336525f"
+    },
+    {
+      "path": "local/x87_double_load/frozen/build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1761,
+      "sha256": "dc215428e26c71eb8d429b56ea0f9d71ef3b3ee81ddcb9cd69d7ff7ea0c22b32"
+    },
+    {
+      "path": "local/x87_double_load/frozen/cmake/startup.cmake",
+      "bytes": 37055,
+      "sha256": "cdac5f7e376c61725a2f83694a3193b3bb45cf822e679e82287716e45a0ae15f"
+    },
+    {
+      "path": "local/x87_double_load/frozen/CMakeLists.txt",
+      "bytes": 13098,
+      "sha256": "9994069b642a04e03e88aec578200c96ea99f4addeeea1f70ef596bb81ec4ab4"
+    },
+    {
+      "path": "local/x87_double_load/frozen/compiled_function.bin",
+      "bytes": 67,
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169"
+    },
+    {
+      "path": "local/x87_double_load/frozen/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/x87_double_load/frozen/include/bsp/native_crt_x87_double_load.hpp",
+      "bytes": 1486,
+      "sha256": "f9f2aa4cb6f8e6b049679f8b6faad99f45408c05c6fd96f2bf388010ffee4772"
+    },
+    {
+      "path": "local/x87_double_load/frozen/local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/x87_double_load/frozen/native_crt_x87_double_load.obj",
+      "bytes": 794,
+      "sha256": "b6687f11fb3b00327d8beb613e62a9b385bcefcfc24d13a126cbf6bfcf6cd933"
+    },
+    {
+      "path": "local/x87_double_load/frozen/scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/x87_double_load/frozen/src/native_crt_x87_double_load.cpp",
+      "bytes": 1417,
+      "sha256": "b1b9242beb966805207b141169d0d5f210aeeb3730227be31247888c5c6cea05"
+    },
+    {
+      "path": "local/x87_double_load/frozen/tools/bsp.py",
+      "bytes": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975"
+    },
+    {
+      "path": "local/x87_double_load/frozen/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/x87_double_load/guarded_capture.json",
+      "bytes": 1678,
+      "sha256": "0d3db54a8f749ae3e13a4715564728cd4200735715d957e6ebbe21908882b694"
+    },
+    {
+      "path": "local/x87_double_load/object_proof.json",
+      "bytes": 6684,
+      "sha256": "a81429d9386ffef6fc06d14a214499bcfb273d114b2fc7c614a2dfd5e5e684ec"
+    },
+    {
+      "path": "local/x87_double_load/original.bin",
+      "bytes": 67,
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169"
+    },
+    {
+      "path": "local/x87_double_load/original_assembly.txt",
+      "bytes": 625,
+      "sha256": "2d8265b18c622a5bb76e45b0c28408a08551f3bbf445d8382a27b700b0a0b5e6"
+    },
+    {
+      "path": "local/x87_double_load/pins.json",
+      "bytes": 2021,
+      "sha256": "f8d0d0f8161a3fcdfa7040a51aeac789bd8797b338754317a2a4b81caadaa87f"
+    },
+    {
+      "path": "local/x87_double_load/prove.py",
+      "bytes": 6167,
+      "sha256": "042b9aa6987c83b3911ae61d98bb53bf8bc8bcdc6e7492f5f7d18c0d31bff7aa"
+    },
+    {
+      "path": "local/x87_double_load/seal.py",
+      "bytes": 5623,
+      "sha256": "25ce7daac2c0577c5455f49e31c4df98f1996109d0380d242d59d2cd04ae3c05"
+    },
+    {
+      "path": "local/x87_double_load/seeds.json",
+      "bytes": 2976,
+      "sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    {
+      "path": "src/native_crt_x87_double_load.cpp",
+      "bytes": 1417,
+      "sha256": "b1b9242beb966805207b141169d0d5f210aeeb3730227be31247888c5c6cea05"
+    },
+    {
+      "path": "include/bsp/native_crt_x87_double_load.hpp",
+      "bytes": 1486,
+      "sha256": "f9f2aa4cb6f8e6b049679f8b6faad99f45408c05c6fd96f2bf388010ffee4772"
+    },
+    {
+      "path": "docs/NATIVE_CRT_X87_DOUBLE_LOAD.md",
+      "bytes": 5350,
+      "sha256": "18bfc4748c4998fc42839cd262c49c58802b2b177d0288d9f24edd7fd2673a80"
+    }
+  ],
+  "primary_integration": {
+    "status": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
+    "main_library_sha256": "047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 34,
+    "report_pins": 33,
+    "fresh_spans": 1,
+    "fresh_bytes": 67,
+    "whole_object_sections": 4,
+    "function_relocations": 0,
+    "original_owned_execution": false,
+    "boundary": "Complete67-byte original __fload_withFB. OriginalEDX live8-byte input, pushedST0/EAX/EFLAGS result, plainRET. Assembly-only newfastcall declaration uses unusedECX to place inputEDX. Retain original current high/low reloads, overlapping10-byte stack temporary, bothRET paths and current x87 environment. Entire actual main archived67bytes/21instructions exact to fresh original, zero relocations/providers/normalizations.34 sealed worker files+33 report pins,1fresh67-byte span;4wholeCOFFsections. No runtime/linked-address/original-caller/SEH/pow/gamma/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_double_load_primary\\sealed.json",
+      "bytes": 10949,
+      "sha256": "c94b78266adb87477325f933c40bc637e8f24f142e32d4c805418ebeb9166d90"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_x87_material_registry_annotations.json",
+    "bytes": 9848,
+    "sha256": "f8b1e90c596c3b726b85c0eddacb78fd98b5267c0e8e5680b7233b436bea51f3"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c083d5",
+      "name": "__fload_withFB",
+      "cpp_symbol": "bsp::load_native_crt_double_x87_00c083d5",
+      "source": "src/native_crt_x87_double_load.cpp",
+      "native_end_exclusive": "00c08418",
+      "status": "complete_original67_byte_main_archived_COFF_identity_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_double_load_audit.json",
+      "original_abi": "Original register/x87/stack interface documented in public header and audit; assembly controls the contract.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": false,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c083d5",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c083d5\\decompiled.c",
+      "bytes": 1265,
+      "sha256": "76b3f91dc56fb7ed083eacc50eaf2c9e9dd2794182d042cc7902f95d9c86f799"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_X87_DOUBLE_LOAD.md",
+    "bytes": 6179,
+    "sha256": "5325bc15ebbf585489777f36baa6b2948ab2de9e4a97e49cb6129d54f506d7dd"
+  },
+  "closure_utc": "2026-09-11T21:14:34.603022+00:00"
+}

@@ -266,6 +266,14 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             menu_select.assign(argv[++index]);
+        } else if (std::strcmp(argument, "--mission-frames") == 0) {
+            // Milestone 2f: how many in-mission frames of 004e4a40 to run once
+            // the load has finished and 004da6c0 has written game state 0Dh.
+            if (index + 1 >= argc) {
+                error = "--mission-frames needs a count";
+                return false;
+            }
+            mission_frames = std::strtol(argv[++index], nullptr, 10);
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
         } else {
@@ -1083,7 +1091,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // rather than loaded directly as milestone 2b did.
     profiler_ = new GameFrameProfiler(log_, 8);
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, options_.press_start_frame,
-        *vfs_, *scripts_, locale_->tables(), options_.menu_select);
+        *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
+        profiler_, summary_.language);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
@@ -1201,6 +1210,20 @@ void GameStartupHost::application_shutdown() {
             summary_.mission_load_host_steps = path.load_host_steps;
             summary_.mission_load_stopped_at = path.load_stopped_at;
             summary_.mission_step = game_mission_step_name(path.step);
+            // Milestone 2f
+            summary_.mission_load_finished = path.mission_load_finished;
+            summary_.mission_load_concrete = path.mission_load_concrete;
+            summary_.mission_load_records = path.mission_load_records;
+            summary_.mission_game_state = path.mission_game_state;
+            summary_.mission_entered = path.mission_entered;
+            summary_.mission_frames_requested = path.mission_frames_requested;
+            summary_.mission_frames_run = path.mission_frames_run;
+            summary_.mission_frames_simulated = path.mission_frames_simulated;
+            summary_.mission_lua_bindings = path.lua_bindings;
+            summary_.mission_lua_natives = path.lua_natives;
+            summary_.mission_lua_native_calls = path.lua_native_calls;
+            summary_.mission_script_path = path.lua_script_path;
+            summary_.mission_exit_note = path.mission_exit_note;
         }
     }
     if (frontend_ != nullptr) {

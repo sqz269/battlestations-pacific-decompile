@@ -168,6 +168,28 @@ FmodResult FmodConfigurationLibrary::channel_set_paused(void* channel, std::uint
 FmodResult FmodConfigurationLibrary::channel_get_audibility(void* channel, float* value) {
     return impl_->call("FMOD_Channel_GetAudibility", channel, value);
 }
+FmodResult FmodConfigurationLibrary::channel_set_group(void* channel, void* group) {
+    return impl_->call("FMOD_Channel_SetChannelGroup", channel, group);
+}
+FmodResult FmodConfigurationLibrary::channel_set_3d_attributes(void* channel,
+    const std::array<float, 3>& position, const std::array<float, 3>& velocity) {
+    return impl_->call("FMOD_Channel_Set3DAttributes", channel, position.data(), velocity.data());
+}
+FmodResult FmodConfigurationLibrary::dsp_remove(void* dsp) {
+    return impl_->call("FMOD_DSP_Remove", dsp);
+}
+FmodResult FmodConfigurationLibrary::dsp_release(void* dsp) {
+    return impl_->call("FMOD_DSP_Release", dsp);
+}
+FmodResult FmodConfigurationLibrary::system_get_channels_playing(void* system, std::int32_t* count) {
+    return impl_->call("FMOD_System_GetChannelsPlaying", system, count);
+}
+FmodResult FmodConfigurationLibrary::event_system_set_3d_listener_attributes(void* system, std::int32_t index,
+    const std::array<float, 3>& position, const std::array<float, 3>& velocity,
+    const std::array<float, 3>& forward, const std::array<float, 3>& up) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Set3DListenerAttributes@24",
+        system, index, position.data(), velocity.data(), forward.data(), up.data());
+}
 FmodResult FmodConfigurationLibrary::sound_get_num_subsounds(void* sound,
     std::int32_t* count) {
     return impl_->call("FMOD_Sound_GetNumSubSounds", sound, count);
