@@ -41,6 +41,7 @@
 #include "bsp/session_polls.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
+#include "bsp/mission_events.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
@@ -1688,6 +1689,23 @@ int main() {
                   && snapped.target_speed == 10.0f && snapped.velocity.y == 0.0f,
             "the axial speed command steps by accel*dt and snaps only once the step "
             "covers the gap, leaving the vertical velocity alone");
+    }
+
+    {
+        // 00987590's two boundaries are easy to get backwards. The periodic pass
+        // fires on strictly greater than 4.0f and 009875D1 then stores zero rather
+        // than subtracting, so a long frame loses its overshoot; and the retire test
+        // at 00987677 is FCOMIP then JBE, so a warning whose lifetime has exactly
+        // elapsed is already expired. docs/MISSION_EVENTS_UPDATE.md.
+        float accumulator = 0.0f;
+        const bool at_period = bsp::advance_warning_periodic(accumulator, 4.0f);
+        float overshoot = 3.0f;
+        const bool past_period = bsp::advance_warning_periodic(overshoot, 7.5f);
+        check(!at_period && accumulator == 4.0f && past_period && overshoot == 0.0f
+                  && bsp::warning_is_expired(10.0f, 4.0f, 6.0f)
+                  && !bsp::warning_is_expired(10.0f, 4.0f, 6.5f),
+            "the warning period fires above 4.0f and resets to zero instead of "
+            "subtracting, and an exactly elapsed lifetime already retires");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
