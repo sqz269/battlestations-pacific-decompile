@@ -1,0 +1,385 @@
+{
+  "packet": "orch2_movie_decoder",
+  "date": "2026-09-10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_mode": "read_only_verified_bsp_queries_and_configured_disk_PE_disassembly",
+  "source": "src/movie_decoder.cpp",
+  "header": "include/bsp/movie_decoder.hpp",
+  "documentation": "docs/GAME_MOVIE_DECODER.md",
+  "status": "reconstructed_normal_control_flow_strict_win32_build_existing_checks_passed",
+  "abi_compatible": false,
+  "game_validated": false,
+  "visual_validated": false,
+  "native_layout": {
+    "complete_size": "0x38",
+    "shared_state_size": "0x28",
+    "factory_return_offset": "0x10",
+    "vtable": "00d24d98",
+    "vbtable_file": "00d24de8",
+    "vbtable_texture": "00d24de0",
+    "texture_offset": "0x08",
+    "vtordisp_offset": "0x0c",
+    "layout_compile_assertions": true
+  },
+  "functions": [
+    {
+      "address": "00a4c660",
+      "name": "BSP_MovieDecoder_Construct",
+      "cpp_symbol": "construct_movie_decoder_00a4c660",
+      "original_abi": "__thiscall(allocation, int construct_virtual_base); RET4; EAX=allocation",
+      "scope": "complete-object hidden-flag1 path; arbitrary further-derived flag0 layout remains unmodeled",
+      "old_name": "FUN_00a4c660"
+    },
+    {
+      "address": "00a4c700",
+      "name": "BSP_MovieDecoder_Completed",
+      "cpp_symbol": "movie_decoder_completed_00a4c700",
+      "original_abi": "__thiscall(shared state); RET; AL byte",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4c710",
+      "name": "BSP_MovieDecoder_MarkCompleted",
+      "cpp_symbol": "mark_movie_decoder_completed_00a4c710",
+      "original_abi": "__thiscall(shared state, byte); RET4",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4c720",
+      "name": "BSP_MovieDecoder_SetLoop",
+      "cpp_symbol": "set_movie_decoder_loop_00a4c720",
+      "original_abi": "__thiscall(shared state, byte); RET4",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4c860",
+      "name": "BSP_MovieDecoder_Destruct",
+      "cpp_symbol": "destroy_movie_decoder_00a4c860",
+      "original_abi": "__thiscall(allocation); tail JMP shared-base destructor; RET; no delete",
+      "scope": "complete-object destruction chain",
+      "old_name": null
+    },
+    {
+      "address": "00a4c980",
+      "name": "BSP_MovieDecoder_ApplyVolume",
+      "cpp_symbol": "apply_movie_decoder_volume_00a4c980",
+      "original_abi": "__thiscall(allocation+8, float); RET4; called by adjusting thunk00a4c850",
+      "scope": "full normal finite-volume body; NaN integer mode retained; floating exception state unmodeled",
+      "old_name": null
+    },
+    {
+      "address": "00a4ca40",
+      "name": "BSP_MovieDecoder_Open",
+      "cpp_symbol": "open_movie_decoder_00a4ca40",
+      "original_abi": "__thiscall(allocation+8, NativeString const*, byte, int); RET0Ch; AL result; thunk00a4c800",
+      "scope": "full normal body; C++ path cleanup replaces native SEH",
+      "old_name": "FUN_00a4ca40"
+    },
+    {
+      "address": "00a4cb50",
+      "name": "BSP_MovieDecoder_Handle",
+      "cpp_symbol": "movie_decoder_handle_00a4cb50",
+      "original_abi": "__thiscall(shared state); RET; EAX handle",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4cb60",
+      "name": "BSP_MovieDecoder_Pause",
+      "cpp_symbol": "pause_movie_decoder_00a4cb60",
+      "original_abi": "__thiscall(shared state, byte); RET4",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4cb90",
+      "name": "BSP_MovieDecoder_SetRunning",
+      "cpp_symbol": "set_movie_decoder_running_00a4cb90",
+      "original_abi": "__thiscall(shared state, byte); RET4",
+      "scope": "full concrete decoder normal body; direct reconstructed seek replaces native virtual+18h",
+      "old_name": null
+    },
+    {
+      "address": "00a4cbc0",
+      "name": "BSP_MovieDecoder_SetTargetVolume",
+      "cpp_symbol": "set_movie_decoder_target_volume_00a4cbc0",
+      "original_abi": "__thiscall(shared state, float); RET4",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4cbd0",
+      "name": "BSP_MovieDecoder_SetVolumeImmediate",
+      "cpp_symbol": "set_movie_decoder_volume_immediate_00a4cbd0",
+      "original_abi": "__thiscall(shared state, float); RET4",
+      "scope": "full concrete decoder normal body; reconstructed application replaces virtual+4h",
+      "old_name": "FUN_00a4cbd0"
+    },
+    {
+      "address": "00a4cc00",
+      "name": "BSP_MovieDecoder_Volume",
+      "cpp_symbol": "movie_decoder_volume_00a4cc00",
+      "original_abi": "__thiscall(shared state); RET; ST0 float",
+      "scope": "full normal body",
+      "old_name": null
+    },
+    {
+      "address": "00a4cc10",
+      "name": "BSP_MovieDecoder_EnsureFrameSeconds",
+      "cpp_symbol": "ensure_movie_decoder_frame_seconds_00a4cc10",
+      "original_abi": "__thiscall(shared state); RET",
+      "scope": "full normal body; double intermediate followed by native float store, no x87 exception-state equivalence claim",
+      "old_name": "FUN_00a4cc10"
+    },
+    {
+      "address": "00a4cc70",
+      "name": "BSP_MovieDecoder_Seek",
+      "cpp_symbol": "seek_movie_decoder_00a4cc70",
+      "original_abi": "__thiscall(shared state, uint32 frame); RET4",
+      "scope": "full normal body",
+      "old_name": "FUN_00a4cc70"
+    },
+    {
+      "address": "00a4cd30",
+      "name": "BSP_MovieDecoder_Close",
+      "cpp_symbol": "close_movie_decoder_00a4cd30",
+      "original_abi": "__thiscall(shared state); RET",
+      "scope": "full normal body",
+      "old_name": "FUN_00a4cd30"
+    },
+    {
+      "address": "00a4cd70",
+      "name": "BSP_MovieDecoder_Update",
+      "cpp_symbol": "update_movie_decoder_00a4cd70",
+      "original_abi": "__thiscall(shared state); RET; AL boolean",
+      "scope": "full concrete decoder normal body with typed imported and renderer boundaries",
+      "old_name": "FUN_00a4cd70"
+    },
+    {
+      "address": "00a4cee0",
+      "name": "BSP_MovieDecoder_ConstructState",
+      "cpp_symbol": "construct_movie_decoder_state_00a4cee0",
+      "original_abi": "__thiscall(shared state); RET",
+      "scope": "full normal body",
+      "old_name": "FUN_00a4cee0"
+    },
+    {
+      "address": "00a4cf30",
+      "name": "BSP_MovieDecoder_DestructState",
+      "cpp_symbol": "destroy_movie_decoder_state_00a4cf30",
+      "original_abi": "__thiscall(shared state); RET",
+      "scope": "full normal body; no operator delete",
+      "old_name": "FUN_00a4cf30"
+    },
+    {
+      "address": "00a4cfb0",
+      "name": "BSP_MovieDecoder_BeginOpen",
+      "cpp_symbol": "begin_movie_decoder_open_00a4cfb0",
+      "original_abi": "__thiscall(shared state, NativeString const*, byte, int); RET0Ch; AL=0",
+      "scope": "full concrete decoder normal body; reconstructed close replaces native virtual+10h",
+      "old_name": "FUN_00a4cfb0"
+    },
+    {
+      "address": "00a4d140",
+      "name": "BSP_MovieDecoder_PrepareFrame",
+      "cpp_symbol": "prepare_movie_decoder_frame_00a4d140",
+      "original_abi": "__thiscall(shared state after vtordisp adjust); RET; EAX texture; virtual+34h",
+      "scope": "full normal body; host supplies real renderer resource calls",
+      "old_name": "FUN_00a4d140"
+    },
+    {
+      "address": "00a4d1b0",
+      "name": "BSP_MovieDecoder_DecodeFrame",
+      "cpp_symbol": "decode_movie_decoder_frame_00a4d1b0",
+      "original_abi": "__thiscall(shared state after vtordisp adjust); RET; virtual+0h",
+      "scope": "full normal body; native SEH unwind unmodeled; required real texture/surface contracts",
+      "old_name": null
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00a4c700",
+      "final_instruction_address": "00a4c703",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a4c704",
+      "instruction": "RET",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4c710",
+      "final_instruction_address": "00a4c717",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a4c71a",
+      "instruction": "RET4",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4c720",
+      "final_instruction_address": "00a4c727",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a4c72a",
+      "instruction": "RET4",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4c860",
+      "final_instruction_address": "00a4c86e",
+      "final_instruction_length": 5,
+      "end_exclusive": "00a4c873",
+      "instruction": "JMP00a4cf30",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4c980",
+      "final_instruction_address": "00a4c9ea",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a4c9ed",
+      "instruction": "RET4",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4cb50",
+      "final_instruction_address": "00a4cb53",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a4cb54",
+      "instruction": "RET",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4cb60",
+      "final_instruction_address": "00a4cb87",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a4cb8a",
+      "instruction": "RET4",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4cb90",
+      "final_instruction_address": "00a4cbb8",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a4cbbb",
+      "instruction": "RET4",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4cbc0",
+      "final_instruction_address": "00a4cbcb",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a4cbce",
+      "instruction": "RET4",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4cc00",
+      "final_instruction_address": "00a4cc03",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a4cc04",
+      "instruction": "RET",
+      "state": "missing at worker analysis time; primary integrator defines"
+    },
+    {
+      "start": "00a4d1b0",
+      "final_instruction_address": "00a4d29b",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a4d29c",
+      "instruction": "RET",
+      "state": "missing at worker analysis time; primary integrator defines"
+    }
+  ],
+  "imports": [
+    {
+      "iat": "00ce23a4",
+      "name": "_BinkDoFrame@4",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23a8",
+      "name": "_BinkCopyToBuffer@28",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23ac",
+      "name": "_BinkNextFrame@4",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23b0",
+      "name": "_BinkWait@4",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23b4",
+      "name": "_BinkGoto@12",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23b8",
+      "name": "_BinkGetRealtime@12",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23bc",
+      "name": "_BinkPause@8",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23c0",
+      "name": "_BinkSetSoundTrack@8",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23c4",
+      "name": "_BinkOpen@8",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23c8",
+      "name": "_BinkSetVolume@12",
+      "installed_dll_export_verified": true
+    },
+    {
+      "iat": "00ce23cc",
+      "name": "_BinkClose@4",
+      "installed_dll_export_verified": true
+    }
+  ],
+  "import_evidence": {
+    "exe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "dll": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/binkw32.dll",
+    "method": "pefile import/export table; live Ghidra IAT bytes; readonly"
+  },
+  "observed_contracts": {
+    "open": "base reset precedes existing-handle close; resolve copied path; set track0; BinkOpen4000h; retain original filename",
+    "open_omissions": "replacement retains completed set by close; running, volume, loop and cached frame duration are not reset",
+    "running": "only zero-to-nonzero seeks0; no BinkPause call",
+    "pause": "BinkPause byte only if handle; unpause sets0.5 fade delay",
+    "volume": "Bink clamp[0,1] times exact double0.707106769084930419921875 times32768; stored state retains original input",
+    "prepare": "release old texture then renderer+88h(width,height,1,0x16,1); no decoding",
+    "decode": "DoFrame; optional surface+30h/lock+2Ch/copy(flags3)/finish+38h/release; NextFrame only before final frame",
+    "update": "Wait called even stopped; readiness plus running gates realtime/fade/end/decoding; nonloop final frame returnsfalse before DoFrame"
+  },
+  "validation": {
+    "seed_bytes": "verify-seeds passed for existing bounded seed ranges, not whole-image identity",
+    "build": "scripts/build.ps1 passed MSVC Win32 Release with strict floating-point; local/movie_decoder_build.log",
+    "existing_checks": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "new_permanent_tests": 0,
+    "native_decoder_differential": false,
+    "real_bink_playback": false
+  },
+  "boundaries": [
+    "Typed C++ signatures are not native ABI entrypoints; vtable words are evidence IDs.",
+    "Constructor models complete-object flag1; arbitrary derived flag0 layouts and virtual overrides remain unmodeled.",
+    "Native SEH/unwind handlers and floating exception state/extended-rounding parity are not reproduced.",
+    "Host must supply real VFS, native string storage, texture creation/locking and atomic reference release.",
+    "Third-party Bink remains the installed DLL through mandatory stdcall imports; no codec stubs.",
+    "Handle record is only a prefix, never allocate a handle by sizeof; ignored import result widths are not runtime-verified by this worker.",
+    "No game installation changes, game launch, visual playback or renderer validation by this worker."
+  ]
+}
