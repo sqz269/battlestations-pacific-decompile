@@ -1,0 +1,84 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reason": "Complete owned native bodies establish constructors/loaders/copy/destruction or returning size growth, contradicting the old inventory labels.",
+  "entries": [
+    {
+      "address": "0098a020",
+      "prior_ledger": {
+        "address": "0098a020",
+        "name": "CG_array_ctor_helper_0098a020",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "0098a020",
+            "category": "Inventory: cg_array_ctor_helper",
+            "comment": "CG_array_ctor_helper_0098a020 [high] calls vector/eh_vector_constructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: BSP_WarningManager_Construct at 0098a020\nSignature: undefined BSP_WarningManager_Construct(void)\nEntry: 0098a020\nBody: 0098a020 - 0098a295",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "0098a020"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "0096f8c0",
+      "prior_ledger": {
+        "address": "0096f8c0",
+        "name": "STL_xlen_throw_0096f8c0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "0096f8c0",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_0096f8c0 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_xlen_throw_0096f8c0 at 0096f8c0\nSignature: undefined STL_xlen_throw_0096f8c0(void)\nEntry: 0096f8c0\nBody: 0096f8c0 - 0096f952",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "0096f8c0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

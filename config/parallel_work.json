@@ -5775,6 +5775,132 @@
       ],
       "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
       "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst."
+    },
+    {
+      "id": "orch4_traffic_config_h",
+      "packet": "orch4_traffic_config_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "004a43c0",
+        "0049d690",
+        "0049c9c0",
+        "00486070",
+        "00486100",
+        "00486180",
+        "00486210",
+        "00485270",
+        "00485f50",
+        "00485790",
+        "0048e1f0",
+        "0048e500",
+        "00489d50",
+        "00490990",
+        "00499480"
+      ],
+      "code_ownership": [
+        "include/bsp/traffic_config.hpp",
+        "src/traffic_config.cpp",
+        "docs/TRAFFIC_CONFIG.md",
+        "reports/traffic_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/TRAFFIC_CONFIG.md"
+    },
+    {
+      "id": "orch4_powerup_config_h",
+      "packet": "orch4_powerup_config_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "008e5960",
+        "008e5980",
+        "008e5b10",
+        "008e5bb0",
+        "008e5c50",
+        "008e5ca0",
+        "008e5cf0",
+        "008e6130",
+        "008e6170",
+        "008e65a0",
+        "008e65c0",
+        "008e6720",
+        "008e67b0",
+        "008e6850",
+        "008e70b0",
+        "008e7120",
+        "008e7350",
+        "008e79d0",
+        "008e7c80",
+        "008ea750",
+        "008eb4a0",
+        "008ec460",
+        "008ecec0",
+        "008edc60"
+      ],
+      "code_ownership": [
+        "include/bsp/powerup_config.hpp",
+        "src/powerup_config.cpp",
+        "docs/POWERUP_CONFIG.md",
+        "reports/powerup_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/POWERUP_CONFIG.md"
+    },
+    {
+      "id": "orch4_warning_owner_h",
+      "packet": "orch4_warning_owner_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00443e20",
+        "005826b0",
+        "005a0220",
+        "0096b260",
+        "0096b2d0",
+        "0096b4c0",
+        "0096b960",
+        "0096b9b0",
+        "0096baf0",
+        "0096bb80",
+        "0096bbd0",
+        "0096f8c0",
+        "00973f20",
+        "0097bbc0",
+        "00987080",
+        "00987090",
+        "009870a0",
+        "0098a020"
+      ],
+      "code_ownership": [
+        "include/bsp/warning_owner.hpp",
+        "src/warning_owner.cpp",
+        "docs/WARNING_OWNER.md",
+        "reports/warning_owner.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/WARNING_OWNER.md"
+    },
+    {
+      "id": "orch4_owner_integration_h",
+      "packet": "orch4_owner_integration_h",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp",
+        "docs/GLOBAL_SUBSYSTEMS.md",
+        "reports/global_subsystems.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
     }
   ],
   "snapshot_after_analysis": {

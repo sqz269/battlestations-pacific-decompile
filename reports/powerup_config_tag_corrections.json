@@ -1,0 +1,192 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reason": "Complete owned native bodies establish constructors/loaders/copy/destruction or returning size growth, contradicting the old inventory labels.",
+  "entries": [
+    {
+      "address": "008edc60",
+      "prior_ledger": {
+        "address": "008edc60",
+        "name": "CG_array_ctor_helper_008edc60",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008edc60",
+            "category": "Inventory: cg_array_ctor_helper",
+            "comment": "CG_array_ctor_helper_008edc60 [high] calls vector/eh_vector_constructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_array_ctor_helper_008edc60 at 008edc60\nSignature: undefined CG_array_ctor_helper_008edc60(void)\nEntry: 008edc60\nBody: 008edc60 - 008edd9e",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008edc60"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "008ecec0",
+      "prior_ledger": {
+        "address": "008ecec0",
+        "name": "CG_vector_deleting_dtor_008ecec0",
+        "category": "cg_vector_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0011"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008ecec0",
+            "category": "Inventory: cg_vector_deleting_dtor",
+            "comment": "CG_vector_deleting_dtor_008ecec0 [high] calls eh_vector_destructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_vector_deleting_dtor_008ecec0 at 008ecec0\nSignature: undefined CG_vector_deleting_dtor_008ecec0(void)\nEntry: 008ecec0\nBody: 008ecec0 - 008ed4ae",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008ecec0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "008e6720",
+      "prior_ledger": {
+        "address": "008e6720",
+        "name": "CG_array_ctor_helper_008e6720",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008e6720",
+            "category": "Inventory: cg_array_ctor_helper",
+            "comment": "CG_array_ctor_helper_008e6720 [high] calls vector/eh_vector_constructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_array_ctor_helper_008e6720 at 008e6720\nSignature: undefined CG_array_ctor_helper_008e6720(void)\nEntry: 008e6720\nBody: 008e6720 - 008e67af",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008e6720"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "008e67b0",
+      "prior_ledger": {
+        "address": "008e67b0",
+        "name": "CG_vector_deleting_dtor_008e67b0",
+        "category": "cg_vector_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0011"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008e67b0",
+            "category": "Inventory: cg_vector_deleting_dtor",
+            "comment": "CG_vector_deleting_dtor_008e67b0 [high] calls eh_vector_destructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_vector_deleting_dtor_008e67b0 at 008e67b0\nSignature: undefined CG_vector_deleting_dtor_008e67b0(void)\nEntry: 008e67b0\nBody: 008e67b0 - 008e684b",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008e67b0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    },
+    {
+      "address": "008e79d0",
+      "prior_ledger": {
+        "address": "008e79d0",
+        "name": "CG_array_ctor_helper_008e79d0",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "008e79d0",
+            "category": "Inventory: cg_array_ctor_helper",
+            "comment": "CG_array_ctor_helper_008e79d0 [high] calls vector/eh_vector_constructor_iterator",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: CG_array_ctor_helper_008e79d0 at 008e79d0\nSignature: undefined CG_array_ctor_helper_008e79d0(void)\nEntry: 008e79d0\nBody: 008e79d0 - 008e7adb",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "008e79d0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

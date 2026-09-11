@@ -7,9 +7,9 @@
       "address": "004dc6a0",
       "name": "construct_global_subsystems_004dc6a0",
       "source": "src/global_subsystems.cpp",
-      "status": "reconstructed_configuration_integration_build_and_real_lua_fixture_tested",
+      "status": "reconstructed_concrete_owner_integration_build_and_real_lua_fixture_tested",
       "abi": "ECX=game; no stack arguments; RET004DC93F",
-      "evidence": "Hypothesis, not a recovered symbol. Complete normal-flow004DC6A0 through RET004DC93F, ECX=game. Configuration integration replaces00886900,00800160,00901610,00803A40,006DBEB0 callbacks with recovered direct bodies and canonical live contexts. Global folders retain captured mission services; marker borrows current embedded game+1A0C; recon uses current mission host/instance mutable state slot. Race/robot/marker registries preserve publication and native pointer ownership; panel/dialog and weather remain direct. Existing FileBlock, effect/config singleton, traffic/powerup/warning operations remain required services. src/global_subsystems.cpp; docs/GLOBAL_SUBSYSTEMS.md and linked configuration reports. New C++ interfaces, native SEH/STL/ABI/gameplay not established.",
+      "evidence": "Hypothesis, not a recovered symbol. Complete normal-flow004DC6A0 through RET004DC93F. Direct configuration integration now includes traffic004A43C0/0049D690, powerup008EDC60/008ECEC0, warning0098A020/009870A0 with actual constructor order, typed canonical owner slots and publication before loading. Powerup constructor internally publishes00F88C30 before parent repeats publication. Native allocation sizes58h/1C4h/1B0h are separated from host projection sizes, and untouched allocation words are explicit context inputs. All preceding script/race/robot/recon/marker/panel/weather recovered sequences remain direct. Required FileBlock, Lua host, config-singleton and effect primitives remain external. MSVC Win32 Release, existing2/2 tests and four combined-library fixtures passed. See docs/GLOBAL_SUBSYSTEMS.md and reports/global_subsystems.json owner_integration_h. Native SEH/STL/ABI and gameplay unvalidated.",
       "document": "docs/GLOBAL_SUBSYSTEMS.md",
       "last_instruction": "004dc93f",
       "last_instruction_length": 1,
@@ -47,7 +47,13 @@
     "00800160",
     "00901610",
     "00803a40",
-    "006dbeb0"
+    "006dbeb0",
+    "004a43c0",
+    "0049d690",
+    "008edc60",
+    "008ecec0",
+    "0098a020",
+    "009870a0"
   ],
   "required_services": [
     "00be0a30",
@@ -56,13 +62,7 @@
     "00432650",
     "00871ba0",
     "004d9c00",
-    "effect virtual+0",
-    "004a43c0",
-    "0049d690",
-    "008edc60",
-    "008ecec0",
-    "0098a020",
-    "009870a0"
+    "effect virtual+0"
   ],
   "ghidra": {
     "verified_project": "C:/Users/sqz269/bsp.gpr",
@@ -219,5 +219,55 @@
       "ghidra_before_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T090315Z.json",
       "game_validated": false
     }
+  },
+  "owner_integration_h": {
+    "status": "integrated_reviewed_build_and_focused_fixture_tested",
+    "direct_dependencies": [
+      "004a43c0",
+      "0049d690",
+      "008edc60",
+      "008ecec0",
+      "0098a020",
+      "009870a0"
+    ],
+    "reports": [
+      "reports/traffic_config.json",
+      "reports/powerup_config.json",
+      "reports/warning_owner.json"
+    ],
+    "validation": {
+      "build": "MSVC Win32 Release",
+      "existing_tests": "2/2 passed",
+      "build_log": "local/owner_h_build.log",
+      "fixture_count": 4,
+      "fixture_logs": [
+        "local/owner_h_global_fixture.log",
+        "local/owner_h_traffic_fixture.log",
+        "local/owner_h_powerup_fixture.log",
+        "local/owner_h_warning_fixture.log"
+      ],
+      "library_sha256": "454f602f28d8fffc2b2a7dc9836eeab19ebb749f6f0ef8fd240b814dc1037fa6",
+      "code_revision": "record after source commit",
+      "native_abi": false,
+      "game_validated": false
+    },
+    "ghidra_repairs": {
+      "missing_functions_defined": 3,
+      "call_gaps_fixed": 1,
+      "incorrect_inventory_tags_retired": 7
+    },
+    "provenance": {
+      "traffic_worker_commit": "90a0972ae19d48c0a9b8ba6e5d27a11b266df2dc",
+      "powerup_and_warning": "Saved sources adopted in primary worktree after terminal worker usage-limit errors; expired leases re-claimed, evidence completed and combined-library fixtures run by primary."
+    },
+    "remaining_boundaries": [
+      "00432650 config singleton and its full lifetime",
+      "FileBlock and mission Lua service bindings",
+      "00871BA0 effects,004D9C00 pointer vector and actual zero-reference dispatch",
+      "Powerup current GUI/player services",
+      "Warning source iterator adapters and hook targets",
+      "Full runtime owner destruction",
+      "Native ABI/SEH and gameplay"
+    ]
   }
 }
