@@ -1,7 +1,7 @@
-# bsp_game.exe, milestones 1 and 2a
+# bsp_game.exe, milestones 1, 2a and 2b
 
-Milestone 2a is the current state of the executable; milestone 1 below is the spine it was
-built on and is still accurate except where this section corrects it.
+Milestone 2b is the current state of the executable, and its section near the end of this
+file corrects the two earlier ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
 (provider manager), 004fc150 / 00736a90 / 00736b60 (the three provider factory singletons),
@@ -381,6 +381,235 @@ reads real assets out of an installed game and presents; it proves nothing about
 binary compatibility with the original executable. In particular the mounted providers were
 exercised against a loose installation only: no `.mpkg` archive was mounted by either package
 scan, so the MPKG path through the same callbacks is still unexercised here.
+
+## Milestone 2b: fonts, the GUI startup phase and the title pages
+
+Addresses: 0073bae0 (the fonts and GUI bring-up 0073e13c calls), 007371d0, 00ac3910,
+0053bc00 / 00be9620 / 00be9760, 004c12b0, 00aa5d70, 00aa5e20, 00aa5840, 00aa7e00, 00ac6600,
+00aaa710, 00aeeaf0, 00a9ec70, and 00aa09d0 / 00aa06d0 for the correction below. Packet
+`cc_exe_2b`, owner `agent/cc-exe-2b`. Sources: `src/game_hosts_frontend.cpp`,
+`include/bsp/game_hosts_frontend.hpp`, plus edits to `src/game_hosts.cpp`,
+`src/game_hosts_fonts.cpp`, `src/game_main.cpp` and their headers. Report:
+`reports/game_executable_milestone_2b.json`. Ghidra was read-only for this packet.
+
+Milestone 2a ended with a cleared back buffer: the assets could be read but nothing used
+them. Milestone 2b runs the fonts and GUI half of `BSP_Application_Initialize` and loads the
+GUI pages the title bring-up needs, so the process now evaluates real page scripts, builds
+real widget trees, and draws them.
+
+### Phase 7, 0073bae0 at 0073e13c
+
+`GameFrontendHost` implements `bsp::GuiStartupHost`, so the recovered sequence in
+`src/gui_startup.cpp` drives the phase rather than the process re-deriving its order. The
+font work was split out of `GameFontHost::initialize` into
+`load_descriptors_00ac3910` and `preload_fingerprint_payload_00be9760` for exactly that
+reason: `run_gui_startup` calls them at the two points `0073bae0` calls them, with the
+fingerprint preload between the descriptor load and the GUI manager, not merged into it.
+
+What one run performs, in that order:
+
+| Step | Native site | Result on this installation |
+| --- | --- | --- |
+| language font path | 008d4890 | empty, as the shipped English descriptor has no `fontpath` |
+| font registry | 007371d0 | the process's own registry object |
+| descriptor load | 00ac3910 | 6 fonts, 19 VFS resource opens |
+| fingerprint preload | 0053bc00 / 00be9760 | 240 defined bytes out of `fonts/arial19.dat` |
+| GUI manager | 004c12b0 / 00aa5d70 | created once, before the `After InitGui` checkpoint |
+| resource list | 00aa5e20 | 9 of 10 entries acquired, 9 stores, byte +84h cleared |
+
+The six fonts are `ViperTitle`, `Arial16`, `Viper19`, `Arial20`, `Arial15` and `Arial18`,
+each with its data file, glyph sheet and the `white.tga` alpha texture resolved and loaded;
+`Viper19` and `Arial16` are the two the title pages ask for. `Fonts\white.tga` resolves to
+`effects/white.dds` through the VFS search paths, which is what makes the shared alpha
+texture work at all.
+
+The one entry that comes back null is `data/interface/textures/whiteGui.tga`, which the VFS
+rejects on this installation. That is the `+28h` null the native gate at 00aa5e88 allows, so
+the sequence continues. The other nine are real: `interface/textures/common/transparent.tga`
+loads, and the two group entries are GUI **pages**, not widgets built in code.
+
+### The two group entries are pages, and 00aa7e00 finds rather than creates
+
+`_Mouse` loads `interface/_mouse.lua` and `_Highlight` loads `interface/_highlight.lua`,
+both at Priority -1000, through the reconstructed page loader 00aa5840 and the per-page Lua
+evaluation 00ac6600. All six child entries (`MousePtrFE_Icon`, `MousePtrGUI_Icon`,
+`hl_FrameBox`, `hlCircle_FrameBox`, `safezone_43_FrameBox`, `safezone_169_FrameBox`) are then
+found as direct children of those pages' roots. This is the run-time confirmation of the
+correction `docs/GUI_LAYOUT_LOADER.md` added to `docs/APP_INIT_FONTS_GUI.md`: 00aa7e00
+creates nothing.
+
+### The title pages
+
+`docs/GAME_TITLE_INIT.md` establishes what `GGame::OnInitTitle` brings up: `00518250` loads
+`FE_frame` and `FE_frame_title` for frame sets 0 to 2, and the title screen's activate loads
+`FE_initial`. The executable loads those three directly after Init. It does **not**
+reconstruct the front-end state machine that would request them; that is packet
+`cc_frontend_states`, and `Title bring-up GGame::OnInitTitle [004c9a70]` is one unimplemented
+host record standing for the whole of it.
+
+Each page gets a private Lua 5.1 state with base, table, string and math (mask 0x65), runs
+`interface/_Common.lua` and then `interface/<page>.lua`, and its global `GuiScreen` table is
+snapshotted and walked by 00aaa710. Two things make that work on the installed data:
+`_Common.lua` resolves case-insensitively to the shipped `_common.lua`, and
+`scripts/fundamentals.lua` supplies `Platform()`, which the bootstrap's `PC=true` resolves,
+so `["Visible"] = Platform(true,false)` reaches the snapshot as a boolean. No function value
+ever lands in `GuiScreen`, which is what the snapshot would reject.
+
+The five pages produce 29 widgets, 22 of them carrying an authored texture:
+
+| Page | Priority | Widgets | What it is |
+| --- | --- | --- | --- |
+| `_Mouse` | -1000 | 11 | the two cursors and the nine-piece scaling cursor |
+| `_Highlight` | -1000 | 5 | the selection frame boxes and the two safe-zone boxes |
+| `FE_frame` | 0 | 6 | the flag, the top and bottom rails and their shadows |
+| `FE_frame_title` | 0 | 3 | the winged title plate and the menu title text |
+| `FE_initial` | 0 | 4 | the Pacific map background, the logo and the press-start text |
+
+Every widget is logged with its key, its type from the key suffix (00aa2490), its resolved
+position through the parent chain (00aa6750), its size pair, its authored visibility and its
+texture or material. For an `Icon` the texture comes from the reconstructed authored reader
+00ab3310; for the other types it is the first `States` entry's `Texture`, and the material is
+`ShaderName` or, for a `Text`, `Font`.
+
+The scene-graph half has no reconstruction and is recorded as such: `create_widget_node`
+(00b75030) and `set_node_parent` (00b6e680) run 24 times each, `create_page_root_node`
+(00aa6720) and `clear_page_root_list` (00b6d890) five times each, and the two widget vtable
+hooks +74h and +78h 24 times each. They hand back an incrementing diagnostic id, which is
+never zero because 00aa7e00 skips a child whose node pointer is null.
+
+### The locale phase now states a lookup, not just a count
+
+Phase 6 loads `lockit/englishauthentic.lan` and 6856 keys. The run now names the table it
+loaded and resolves three ids through 00a9ec70: `globals.pleasewait` gives "Please Wait" and
+`globals.newplayer` gives "New Player", while `FE.init_legal` (the id `fe_initial.lua` gives
+its copyright text) is present but empty in this installation's table.
+
+### The sprite bridge, which is not a reconstruction
+
+The native GUI draw path belongs to other owners, so the widgets are drawn by an
+executable-side Direct3D 9 bridge in `src/game_hosts_frontend.cpp`, installed as the overlay
+the milestone's own `Clear` / `BeginScene` / `EndScene` / `Present` runs. Two textured
+triangles per widget, `D3DFVF_XYZRHW` with alpha blending, textures created by
+`D3DXCreateTextureFromFileInMemoryEx` over bytes the mounted VFS read, and sub-rectangles
+from the reconstructed atlas parser 00aeeaf0. **It is labelled a bridge in the source and the
+header, and nothing about its drawing is recovered behaviour.** Three of its decisions are
+its own and are not claims about the game:
+
+- It parses all twelve atlas descriptors the installation ships under `interface/textures`
+  and merges their 678 items into one list. `GGame::OnInitTitle` loads exactly one,
+  `interface/textures/allbutingame.ats`, and the native VFS content-suffix list (manager
+  +48h/+4Ch) would turn that one name into the DXT variant a machine ships. The
+  reconstructed startup never populates that list, so `allbutingame.ats` does not resolve and
+  the variants are enumerated instead.
+- It draws a widget whose page authored no `Visible` key. The projected default at +E4h is
+  false and the value a running game would see comes from the screen activate 004f83b0,
+  which is the front-end owner's. A widget the page authored as hidden, or one 00aa5e20's
+  virtual +34h calls hid, stays hidden, and so does its subtree: that is why the cursors and
+  the highlight boxes do not appear.
+- It orders quads back to front by the authored Z alone. The native render order
+  (`RenderOrder`, `geOrder`) is another owner's.
+
+`drawn: yes`. 13 textures and 6 quads, presented on all 60 frames of the frame-limited run.
+Text widgets draw nothing: they carry a font, not a texture, and glyph drawing is the font
+owner's.
+
+### What it looks like on screen
+
+The window opens at the options file's resolution and now shows the title page: the Pacific
+theatre map as the background, the US flag and the top and bottom rails of the front-end
+frame, the winged `BATTLESTATIONS` title plate and, behind it, the red Pacific logo. The
+capture was taken from the client area of a running window, not a mock-up; it is written to
+the ignored `local/title_page.png` and is not committed.
+
+The logo and the title plate overlap because all three pages are loaded at once and nothing
+chooses between them. In the game, the front-end screens decide which page is active and push
+their own visibility byte down through 004f83b0; that is packet `cc_frontend_states`. The
+installed frame texture reads `MIDWAY MODDERS` because this installation is modded.
+
+### Host methods
+
+`bsp_game.exe --frames 60 --log local/game_run.log --game-root "<install>"`, exit 0:
+**81 concrete, 36 unimplemented, 117 distinct methods**. The same tree before this packet ran
+67 concrete and 28 unimplemented over 95, so 2b added 22 methods, 14 of them concrete. A run
+closed with `CloseMainWindow` instead of a frame limit reports 82 concrete, because it also
+reaches `CloseRequestPolicy::front_end_branch` (004ca2f0).
+
+The methods this packet introduced:
+
+| Host method | Native call site | Status | Calls |
+| --- | --- | --- | --- |
+| `Phase 7 fonts_and_gui_startup` | `0073bae0` | concrete | 1 |
+| `GuiStartupHost::language_font_path` | `008d4890` | concrete | 1 |
+| `GuiStartupHost::font_registry` | `007371d0` | concrete | 1 |
+| `GuiStartupHost::load_font_descriptors` | `00ac3910` | concrete | 1 |
+| `GuiStartupHost::preload_fallback_glyph_table` | `0053bc00` | concrete | 1 |
+| `GuiStartupHost::gui_manager_get_or_create` | `004c12b0` | concrete | 1 |
+| `GuiManagerResources::renderer_load_texture` | `00aa5e60` | **unimplemented** | 2 |
+| `GuiManagerResources::load_page` | `00aa5840` | concrete | 2 |
+| `GuiManagerResources::find_child` | `00aa7e00` | concrete | 6 |
+| `GuiManagerResources::set_visibility` | `00aa5faf` | concrete | 8 |
+| `GuiManagerResources::clear_ready_flag` | `00aa6305` | concrete | 1 |
+| `TitlePages::load_page` | `00aa5840` | concrete | 3 |
+| `GuiLayoutHost::vfs_name_exists` | `00aa58c3` | concrete | 5 |
+| `GuiLayoutHost::widescreen_enabled` | `00aa8750` | concrete | 29 |
+| `GuiLayoutHost::create_page_root_node` | `00aa6720` | **unimplemented** | 5 |
+| `GuiLayoutHost::create_widget_node` | `00b75030` | **unimplemented** | 24 |
+| `GuiLayoutHost::set_node_parent` | `00b6e680` | **unimplemented** | 24 |
+| `GuiLayoutHost::widget_vtable_74` | `00aaade8` | **unimplemented** | 24 |
+| `GuiLayoutHost::widget_vtable_78` | `00aaae5b` | **unimplemented** | 24 |
+| `GuiLayoutHost::derived_property_reader` | `00aaa710` | **unimplemented** | 29 |
+| `GuiLayoutHost::clear_page_root_list` | `00b6d890` | **unimplemented** | 5 |
+| `Phase 6 locale_lookup` | `00a9ec70` | concrete | 2 |
+| `Title bring-up GGame::OnInitTitle` | `004c9a70` | **unimplemented** | 1 |
+
+`GuiLayoutHost::instantiate_page_model` (00aa58cc) exists and was not reached: none of the
+five pages has a `<name>.mmod`, so every one took the plain-root branch.
+
+### Corrections
+
+1. **The phase-7 label in the milestone 2a host table is wrong.** That table lists
+   `Phase 6 locale_tables [00aa09d0]` and `Phase 7 gui_startup [00aa06d0]`. 00aa06d0 is
+   `BSP_Localization_ReloadTables`, a localisation routine: both it and 00aa09d0 belong to
+   the locale half of `BSP_Application_Initialize` at 0073e06a-0073e135. The GUI startup is
+   0073bae0 at 0073e13c, which creates the GUI manager (004c12b0) and runs its resource list
+   (00aa5e20). The follow-up note at the end of this file already said the old `gui_startup`
+   label referred to locale reload; this states which address the phase actually is.
+2. **The "54 concrete, 31 unimplemented" figure in the milestone 2a section is stale.** The
+   settings, input-script, locale and font owners that landed between 2a and this packet took
+   the same run to 67 and 28 before 2b began.
+3. **Milestone 2a's next-milestone item 1 ("Title page") is superseded by this section**, in
+   part: the locale tables, the font registry and phase 7 are done and a title page is drawn,
+   but through a bridge rather than the GUI layer draw, and without the front-end state
+   machine that selects the page.
+4. `docs/APP_INIT_FONTS_GUI.md`'s original reading, that `00aa5840` and `00aa7e00` are "two
+   widget factories" creating the ten resources, is confirmed wrong at run time, as its own
+   appended correction from `docs/GUI_LAYOUT_LOADER.md` says: 00aa5840 loads a page from
+   `interface/<name>.lua` and 00aa7e00 finds an existing direct child.
+
+### Code with no Ghidra function
+
+None. Every address this packet touched already has a Ghidra function and a reviewed ledger
+name; the packet appended run-time evidence to 0073bae0, 004c12b0, 00aa5e20, 00aa5840,
+00aa7e00, 00ac6600 and 00aeeaf0 rather than adding names.
+
+### Follow-up packets
+
+1. **The GUI layer draw**, so the sprite bridge can be deleted. The renderer's GUI draw path
+   and the widget geometry writers (`src/gui_native_geometry.cpp`, `src/gui_render_order.cpp`,
+   `src/font_geometry.cpp`) already exist as reconstructions; nothing binds them to a device.
+2. **The front-end screens**, packet `cc_frontend_states`: which page is active, and the
+   visibility push through 004f83b0 that the bridge currently substitutes a rule for.
+3. **Text drawing.** `title_Text` and `press_start_Text` resolve their font and their string
+   id today and draw nothing. The font geometry and the GUI text widget are reconstructed;
+   the missing piece is the same device binding as item 1.
+4. **The renderer texture entry point** `*(00f8d394)` virtual +64h and the atlas registry
+   00aef280, so `whiteGui`, `transparent` and every page texture come from the native path
+   instead of the bridge's D3DX loader.
+5. **The VFS content-suffix list** at manager +48h/+4Ch. It is why `allbutingame.ats` does not
+   resolve to `allbutingame_dxt1.ats`, and it is the same mechanism `00bdef90` uses for Lua
+   script overrides, which the executable already carries as an empty list.
+6. **The scene graph**: 00b74eb0 / 00b75030 / 00b6e680 and the two widget vtable hooks, the
+   largest remaining unimplemented group in the run.
 
 ## Next milestones
 

@@ -18,6 +18,7 @@
 #include "bsp/d3d9_startup.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_fonts.hpp"
+#include "bsp/game_hosts_frontend.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/native_renderer_parameters.hpp"
@@ -358,6 +359,7 @@ bool GameDeviceHost::clear_and_present() {
     HRESULT result = device_->Clear(0, nullptr,
         D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, kMilestoneClearColor, 1.0f, 0);
     if (SUCCEEDED(result)) result = device_->BeginScene();
+    if (SUCCEEDED(result) && overlay_) overlay_(*device_);
     if (SUCCEEDED(result)) result = device_->EndScene();
     if (SUCCEEDED(result)) result = device_->Present(nullptr, nullptr, nullptr, nullptr);
     if (FAILED(result)) {
@@ -368,7 +370,12 @@ bool GameDeviceHost::clear_and_present() {
     return true;
 }
 
+void GameDeviceHost::set_overlay(std::function<void(IDirect3DDevice9&)> overlay) {
+    overlay_ = std::move(overlay);
+}
+
 void GameDeviceHost::release() {
+    overlay_ = nullptr;
     if (device_ != nullptr) {
         device_->Release();
         device_ = nullptr;
@@ -486,6 +493,10 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
 GameStartupHost::~GameStartupHost() {
     delete loop_callbacks_;
     delete frame_host_;
+    // The sprite bridge holds textures created on the device, so it goes before the
+    // device and before the font host whose registry its pages reference.
+    if (device_) device_->set_overlay(nullptr);
+    delete frontend_;
     delete locale_;
     delete fonts_;
     delete scripts_;
@@ -893,6 +904,28 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         settings_host.language_catalog(), static_cast<std::size_t>(settings_.gameplay.language_index_04)));
     summary_.locale_keys = locale_->tables().size();
     summary_.locale_files = locale_->tables().loaded_files().size();
+    // The tables the phase loaded, and one string id resolved out of them, so a run states
+    // that the locale phase produced lookups and not just a key count. 00a9ec70 is the
+    // lookup: hash, then walk the chain comparing length and _stricmp.
+    for (const std::string& file : locale_->tables().loaded_files()) {
+        log_.notef("locale table %s", file.c_str());
+    }
+    // The ids the title pages themselves author: fe_initial.lua's copyright text and
+    // _pleasewait.lua's message, plus the profile reset's globals.newplayer.
+    for (const char* key : {"FE.init_legal", "globals.pleasewait", "globals.newplayer"}) {
+        const std::u16string* text = locale_->tables().find_00a9ec70(key);
+        if (text == nullptr) {
+            log_.notef("locale lookup %s -> miss", key);
+            continue;
+        }
+        std::string ascii;
+        for (char16_t unit : *text) {
+            ascii.push_back(unit >= 0x20 && unit < 0x7F ? static_cast<char>(unit) : '?');
+        }
+        if (ascii.size() > 96) ascii.resize(96);
+        log_.notef("locale lookup %s -> %zu units \"%s\"", key, text->size(), ascii.c_str());
+        log_.implemented("Phase 6 locale_lookup", "00a9ec70");
+    }
 
     // Required later owners remain outside the currently runnable spine.
     log_.unimplemented("Phase 5 sound_system_initialize", "00a88770");
@@ -900,14 +933,45 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     //Constructor00b32769 initializes renderer+1D84 to zero. The later ApplyAll
     //texture-detail setter is not bound by this startup path yet.
     fonts_ = new GameFontHost(log_, *vfs_, *scripts_, *device_->device(), 0);
-    fonts_->initialize(language_font_path_008d4890(settings_host_->language_catalog(),
-        settings_.gameplay.language_index_04));
+
+    // Phase 7, 0073e13c: the whole of 0073bae0 through its reconstruction, which loads the
+    // font descriptors, forces the fingerprint payload, creates the GUI manager and walks
+    // 00aa5e20's fixed resource list. The two resource groups it names, `_Mouse` and
+    // `_Highlight`, are real GUI pages, so this is also the first phase that evaluates
+    // page scripts. Evidence: docs/APP_INIT_FONTS_GUI.md.
+    frontend_ = new GameFrontendHost(log_, *vfs_, *scripts_, *fonts_, *device_->device(),
+        platform_.widescreen);
+    frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
+        settings_host_->language_catalog(), settings_.gameplay.language_index_04));
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
-    log_.unimplemented("Phase 7 GUI resources and scene bindings", "00aa5e20");
+
     log_.unimplemented("Phase 8 world_effects_startup", "00af0b10");
     log_.unimplemented("Phase 9 game_entry", "00740840");
+
+    // The GUI pages GGame::OnInitTitle brings up (docs/GAME_TITLE_INIT.md): the panel and
+    // title layouts 00518250 selects for frame sets 0..2, and the title screen's own
+    // FE_initial. The front-end state machine that would request them is packet
+    // cc_frontend_states and is not reconstructed here; this loads the pages directly.
+    frontend_->load_title_pages({"FE_frame", "FE_frame_title", "FE_initial"});
+    log_.unimplemented("Title bring-up GGame::OnInitTitle", "004c9a70");
+    const GameFrontendSummary& frontend = frontend_->summary();
+    summary_.gui_pages_loaded = frontend.pages_loaded;
+    summary_.gui_pages_requested = frontend.pages_requested;
+    summary_.gui_widgets = frontend.widgets;
+    summary_.gui_widgets_with_texture = frontend.widgets_with_texture;
+    summary_.gui_resources_acquired = frontend.gui_resources_acquired;
+
+    // The sprite bridge, drawn inside the milestone's own present. Not the native GUI
+    // draw path; see include/bsp/game_hosts_frontend.hpp.
+    if (summary_.device_created) {
+        frontend_->open_sprite_bridge(summary_.back_buffer_width, summary_.back_buffer_height);
+        GameFrontendHost* frontend_host = frontend_;
+        device_->set_overlay([frontend_host](IDirect3DDevice9& device) {
+            frontend_host->draw_bridge(device);
+        });
+    }
 
     loop_.frames_enabled = platform_.frames_enabled;
     frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_);
@@ -947,6 +1011,19 @@ void GameStartupHost::application_shutdown() {
     // input/locale/settings owners close later in dependency order at destruction.
     log_.implemented("StartupHost::application_shutdown", "00737f30");
     log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
+    // The sprite bridge owns managed-pool textures created on this device, so it is torn
+    // down before the device is released rather than at destruction.
+    if (frontend_ != nullptr) {
+        const GameFrontendSummary& frontend = frontend_->summary();
+        summary_.gui_bridge_open = frontend.bridge_open;
+        summary_.gui_bridge_atlas = frontend.bridge_atlas;
+        summary_.gui_bridge_atlas_items = frontend.bridge_atlas_items;
+        summary_.gui_bridge_textures = frontend.bridge_textures;
+        summary_.gui_bridge_quads = frontend.bridge_quads;
+        summary_.gui_bridge_frames = frontend.bridge_frames;
+    }
+    delete frontend_;
+    frontend_ = nullptr;
     if (device_ != nullptr) device_->release();
     release_platform_window();
 }
