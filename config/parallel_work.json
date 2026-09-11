@@ -5945,6 +5945,39 @@
       "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
     },
     {
+      "id": "orch4_config_singleton_i",
+      "packet": "orch4_config_singleton_i",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00432650",
+        "004324e0",
+        "004325b0",
+        "00432710",
+        "008dbcd0",
+        "008dbdb0",
+        "004312b0",
+        "00431210",
+        "00432050",
+        "004c3810",
+        "00524180",
+        "004ba0d0",
+        "0054d440",
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_config.hpp",
+        "src/global_config.cpp",
+        "docs/GLOBAL_CONFIG.md",
+        "reports/global_config.json",
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp"
+      ],
+      "integration_report": "reports/global_config.json",
+      "discovery_evidence": "docs/GLOBAL_CONFIG.md"
+    },
+    {
       "id": "native_renderer_clip_planes3",
       "packet": "native_renderer_clip_planes3",
       "worker": "main",
