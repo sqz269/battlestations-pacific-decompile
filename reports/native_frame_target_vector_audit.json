@@ -3,7 +3,7 @@
   "packet": "native_frame_target_vector",
   "generated_utc": "2026-09-11T09:11:48.885110+00:00",
   "base_commit": "f73bdeb3e448227f03778a0e1329f23e960f3465",
-  "status": "complete_reconstructed_strict_Win32_built_and_full_original_actual_CRT_differential_fixture_passed",
+  "status": "complete_actual_raw_storage_primary_library_original_CRT_fixture_and_strict_Win32_checked",
   "owned_addresses": [
     "00b1f970",
     "00b1f9f0",
@@ -1750,5 +1750,2277 @@
     "rebuild": "python tools/ghidra_export.py verify-seeds; ./local/build_frame_vector.ps1",
     "relink": "./local/build_frame_vector_probe.ps1; python local/audit_frame_vector.py",
     "source_fixture_policy": "Probe compiled once separately; all owned code and allocator/free definitions pulled from strict bsp_core.lib, with exact complete COFF relocation proof."
+  },
+  "primary_integration": {
+    "verification": {
+      "schema_version": 1,
+      "packet": "native_frame_target_vector",
+      "generated_utc": "2026-09-11T09:16:38.885909+00:00",
+      "base_commit": "763abdfa934af62389cd2648e6545246716c1555",
+      "status": "complete_reconstructed_strict_Win32_built_and_full_original_actual_CRT_differential_fixture_passed",
+      "owned_addresses": [
+        "00b1f970",
+        "00b1f9f0",
+        "00b1fb90"
+      ],
+      "owned_native_bytes": 239,
+      "API": "NativeFrameTargetVectorStorage at native FrameTargets+1C: DWORD data/count/capacity; 16-byte opaque rows. Three new C++ cdecl reference interfaces; native ECX header and RET4/RET are not supplied as drop-in adapters.",
+      "contract": {
+        "raw_layout": true,
+        "no_implicit_initialization": true,
+        "signed_capacity_minimum_one": true,
+        "wrapped_DWORD_allocation_and_address_arithmetic": true,
+        "ordered_four_DWORD_copy_and_zero": true,
+        "current_count_after_allocator_and_per_copy_iteration": true,
+        "current_data_per_row_and_before_free": true,
+        "reserve_publication_after_returning_free": [
+          "data",
+          "capacity"
+        ],
+        "reserve_preserves_current_count": true,
+        "resize_shrink_preserves_removed_row_bytes": true,
+        "destroy_resize_zero_then_free": true,
+        "destroy_preserves_dangling_data_and_capacity": true,
+        "no_bounds_checks_rollback_or_corrupt_header_repair": true
+      },
+      "native_preparation": {
+        "utc": "2026-09-11T09:16:07.854774+00:00",
+        "target": {
+          "project": "bsp",
+          "program": "battlestationspacific.exe",
+          "program_path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": "00400000",
+          "ghidra_url": "http://127.0.0.1:8089",
+          "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "project_file": "C:/Users/sqz269/bsp.gpr",
+          "coordination_dir": "C:/Users/sqz269/.bsp"
+        },
+        "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "installed_PE_bytes": 12223752,
+        "verification": "Every live read used bsp.py ghidra bytes with Client.verify of bsp project and configured program before query.",
+        "spans": [
+          {
+            "address": "00b1f970",
+            "end_exclusive": "00b1f9f0",
+            "bytes": 128,
+            "role": "owned_reserve",
+            "PE_offset": 7469424,
+            "sha256": "05d60caebbdd985721d54e5f7d9bac0323c03687103d92db6095f0959ba4a1b7",
+            "bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d64558bc3c1e0045750e82a5c0d0033ff83c404397e048be8896c24147e3533d28bcd85c9741b8b068b2c1003c289298b68048969048b68088969088b400c89410c83c70183c21083c1103b7e047cd38b6c24148b0e51e8a86f0d0083c4045f892e895e085d5e5bc20400",
+            "live_equals_PE": true,
+            "assembly": [
+              "00b1f970: push ebx",
+              "00b1f971: mov ebx, dword ptr [esp + 8]",
+              "00b1f975: cmp ebx, 1",
+              "00b1f978: push esi",
+              "00b1f979: mov esi, ecx",
+              "00b1f97b: jge 0xb1f982",
+              "00b1f97d: mov ebx, 1",
+              "00b1f982: cmp dword ptr [esi + 8], ebx",
+              "00b1f985: jge 0xb1f9eb",
+              "00b1f987: push ebp",
+              "00b1f988: mov eax, ebx",
+              "00b1f98a: shl eax, 4",
+              "00b1f98d: push edi",
+              "00b1f98e: push eax",
+              "00b1f98f: call 0xbf55be",
+              "00b1f994: xor edi, edi",
+              "00b1f996: add esp, 4",
+              "00b1f999: cmp dword ptr [esi + 4], edi",
+              "00b1f99c: mov ebp, eax",
+              "00b1f99e: mov dword ptr [esp + 0x14], ebp",
+              "00b1f9a2: jle 0xb1f9d9",
+              "00b1f9a4: xor edx, edx",
+              "00b1f9a6: mov ecx, ebp",
+              "00b1f9a8: test ecx, ecx",
+              "00b1f9aa: je 0xb1f9c7",
+              "00b1f9ac: mov eax, dword ptr [esi]",
+              "00b1f9ae: mov ebp, dword ptr [eax + edx]",
+              "00b1f9b1: add eax, edx",
+              "00b1f9b3: mov dword ptr [ecx], ebp",
+              "00b1f9b5: mov ebp, dword ptr [eax + 4]",
+              "00b1f9b8: mov dword ptr [ecx + 4], ebp",
+              "00b1f9bb: mov ebp, dword ptr [eax + 8]",
+              "00b1f9be: mov dword ptr [ecx + 8], ebp",
+              "00b1f9c1: mov eax, dword ptr [eax + 0xc]",
+              "00b1f9c4: mov dword ptr [ecx + 0xc], eax",
+              "00b1f9c7: add edi, 1",
+              "00b1f9ca: add edx, 0x10",
+              "00b1f9cd: add ecx, 0x10",
+              "00b1f9d0: cmp edi, dword ptr [esi + 4]",
+              "00b1f9d3: jl 0xb1f9a8",
+              "00b1f9d5: mov ebp, dword ptr [esp + 0x14]",
+              "00b1f9d9: mov ecx, dword ptr [esi]",
+              "00b1f9db: push ecx",
+              "00b1f9dc: call 0xbf6989",
+              "00b1f9e1: add esp, 4",
+              "00b1f9e4: pop edi",
+              "00b1f9e5: mov dword ptr [esi], ebp",
+              "00b1f9e7: mov dword ptr [esi + 8], ebx",
+              "00b1f9ea: pop ebp",
+              "00b1f9eb: pop esi",
+              "00b1f9ec: pop ebx",
+              "00b1f9ed: ret 4"
+            ]
+          },
+          {
+            "address": "00b1f9f0",
+            "end_exclusive": "00b1fa48",
+            "bytes": 88,
+            "role": "owned_resize",
+            "PE_offset": 7469552,
+            "sha256": "16c9541a44d68e45f376ab9e6a1c3fc341e8d9f3966e08fedc111081262fcb86",
+            "bytes_hex": "538b5c2408568bf13b5e087e0653e86dffffff8b46043bc37d26578bd08bfbc1e2042bf88b0603c2740d33c9890889480489480889480c83c21083ef0175e55f3b5e047d0b83c8ff0146043b5e047cf8895e045e5bc20400",
+            "live_equals_PE": true,
+            "assembly": [
+              "00b1f9f0: push ebx",
+              "00b1f9f1: mov ebx, dword ptr [esp + 8]",
+              "00b1f9f5: push esi",
+              "00b1f9f6: mov esi, ecx",
+              "00b1f9f8: cmp ebx, dword ptr [esi + 8]",
+              "00b1f9fb: jle 0xb1fa03",
+              "00b1f9fd: push ebx",
+              "00b1f9fe: call 0xb1f970",
+              "00b1fa03: mov eax, dword ptr [esi + 4]",
+              "00b1fa06: cmp eax, ebx",
+              "00b1fa08: jge 0xb1fa30",
+              "00b1fa0a: push edi",
+              "00b1fa0b: mov edx, eax",
+              "00b1fa0d: mov edi, ebx",
+              "00b1fa0f: shl edx, 4",
+              "00b1fa12: sub edi, eax",
+              "00b1fa14: mov eax, dword ptr [esi]",
+              "00b1fa16: add eax, edx",
+              "00b1fa18: je 0xb1fa27",
+              "00b1fa1a: xor ecx, ecx",
+              "00b1fa1c: mov dword ptr [eax], ecx",
+              "00b1fa1e: mov dword ptr [eax + 4], ecx",
+              "00b1fa21: mov dword ptr [eax + 8], ecx",
+              "00b1fa24: mov dword ptr [eax + 0xc], ecx",
+              "00b1fa27: add edx, 0x10",
+              "00b1fa2a: sub edi, 1",
+              "00b1fa2d: jne 0xb1fa14",
+              "00b1fa2f: pop edi",
+              "00b1fa30: cmp ebx, dword ptr [esi + 4]",
+              "00b1fa33: jge 0xb1fa40",
+              "00b1fa35: or eax, 0xffffffff",
+              "00b1fa38: add dword ptr [esi + 4], eax",
+              "00b1fa3b: cmp ebx, dword ptr [esi + 4]",
+              "00b1fa3e: jl 0xb1fa38",
+              "00b1fa40: mov dword ptr [esi + 4], ebx",
+              "00b1fa43: pop esi",
+              "00b1fa44: pop ebx",
+              "00b1fa45: ret 4"
+            ]
+          },
+          {
+            "address": "00b1fb90",
+            "end_exclusive": "00b1fba7",
+            "bytes": 23,
+            "role": "owned_destroy",
+            "PE_offset": 7469968,
+            "sha256": "9b535b0633b17a7247bef521d3288bd2de34a0d7c5f4c6f8017f834138132fc0",
+            "bytes_hex": "566a008bf1e856feffff8b0650e8e76d0d0083c4045ec3",
+            "live_equals_PE": true,
+            "assembly": [
+              "00b1fb90: push esi",
+              "00b1fb91: push 0",
+              "00b1fb93: mov esi, ecx",
+              "00b1fb95: call 0xb1f9f0",
+              "00b1fb9a: mov eax, dword ptr [esi]",
+              "00b1fb9c: push eax",
+              "00b1fb9d: call 0xbf6989",
+              "00b1fba2: add esp, 4",
+              "00b1fba5: pop esi",
+              "00b1fba6: ret "
+            ]
+          },
+          {
+            "address": "00bf55be",
+            "end_exclusive": "00bf55c3",
+            "bytes": 5,
+            "role": "allocator_thunk",
+            "PE_offset": 8345022,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+            "bytes_hex": "e958120000",
+            "live_equals_PE": true,
+            "assembly": [
+              "00bf55be: jmp 0xbf681b"
+            ]
+          },
+          {
+            "address": "00bf681b",
+            "end_exclusive": "00bf6884",
+            "bytes": 105,
+            "role": "allocator",
+            "PE_offset": 8349723,
+            "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+            "bytes_hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+            "live_equals_PE": true,
+            "assembly": [
+              "00bf681b: push ebp",
+              "00bf681c: mov ebp, esp",
+              "00bf681e: sub esp, 0xc",
+              "00bf6821: jmp 0xbf6830",
+              "00bf6823: push dword ptr [ebp + 8]",
+              "00bf6826: call 0xc055b1",
+              "00bf682b: test eax, eax",
+              "00bf682d: pop ecx",
+              "00bf682e: je 0xbf683f",
+              "00bf6830: push dword ptr [ebp + 8]",
+              "00bf6833: call 0xbf9f1a",
+              "00bf6838: test eax, eax",
+              "00bf683a: pop ecx",
+              "00bf683b: je 0xbf6823",
+              "00bf683d: leave ",
+              "00bf683e: ret ",
+              "00bf683f: test byte ptr [0x109dd74], 1",
+              "00bf6846: mov esi, 0x109dd68",
+              "00bf684b: jne 0xbf6866",
+              "00bf684d: or dword ptr [0x109dd74], 1",
+              "00bf6854: mov ecx, esi",
+              "00bf6856: call 0xbf6802",
+              "00bf685b: push 0xce1122",
+              "00bf6860: call 0xbf6ff5",
+              "00bf6865: pop ecx",
+              "00bf6866: push esi",
+              "00bf6867: lea ecx, [ebp - 0xc]",
+              "00bf686a: call 0xbf63a6",
+              "00bf686f: push 0xe03cc0",
+              "00bf6874: lea eax, [ebp - 0xc]",
+              "00bf6877: push eax",
+              "00bf6878: mov dword ptr [ebp - 0xc], 0xd6923c",
+              "00bf687f: call 0xbf6885"
+            ]
+          },
+          {
+            "address": "00bf6989",
+            "end_exclusive": "00bf698e",
+            "bytes": 5,
+            "role": "free_thunk",
+            "PE_offset": 8350089,
+            "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+            "bytes_hex": "e91efcffff",
+            "live_equals_PE": true,
+            "assembly": [
+              "00bf6989: jmp 0xbf65ac"
+            ]
+          },
+          {
+            "address": "00bf65ac",
+            "end_exclusive": "00bf65b1",
+            "bytes": 5,
+            "role": "delete_thunk",
+            "PE_offset": 8349100,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "bytes_hex": "e917380000",
+            "live_equals_PE": true,
+            "assembly": [
+              "00bf65ac: jmp 0xbf9dc8"
+            ]
+          }
+        ]
+      },
+      "integrator_Ghidra_repairs_required": [
+        {
+          "function": "00b1f970",
+          "call_return_site": "00b1f9dc",
+          "missing_begin": "00b1f9e1",
+          "missing_end_exclusive": "00b1f9eb",
+          "reason": "returning free hides stack repair and replacement data/capacity publication"
+        },
+        {
+          "function": "00b1fb90",
+          "call_return_site": "00b1fb9d",
+          "missing_begin": "00b1fba2",
+          "missing_end_exclusive": "00b1fba7",
+          "reason": "returning free hides ADD ESP4 POP ESI RET epilogue"
+        }
+      ],
+      "original_fixture": {
+        "mapped_base": "20000000",
+        "complete_owned_postimages": [
+          {
+            "address": "00b1f970",
+            "bytes": 128,
+            "runtime_address": "20000000",
+            "original_sha256": "05d60caebbdd985721d54e5f7d9bac0323c03687103d92db6095f0959ba4a1b7",
+            "complete_postimage_sha256": "cd6fe1cd276060e60daafed3aa01447618f06ef8107e6c407d3aff95188d0fb1",
+            "complete_postimage_bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d64558bc3c1e0045750e8fc0f001033ff83c404397e048be8896c24147e3533d28bcd85c9741b8b068b2c1003c289298b68048969048b68088969088b400c89410c83c70183c21083c1103b7e047cd38b6c24148b0e51e8ef27001083c4045f892e895e085d5e5bc20400",
+            "all_bytes_verified": true,
+            "unchanged_after_execution": true,
+            "rel32_patches": [
+              {
+                "site": "00b1f98f",
+                "runtime_site": "2000001f",
+                "target": "30001020"
+              },
+              {
+                "site": "00b1f9dc",
+                "runtime_site": "2000006c",
+                "target": "30002860"
+              }
+            ]
+          },
+          {
+            "address": "00b1f9f0",
+            "bytes": 88,
+            "runtime_address": "20000100",
+            "original_sha256": "16c9541a44d68e45f376ab9e6a1c3fc341e8d9f3966e08fedc111081262fcb86",
+            "complete_postimage_sha256": "44b265ecb1bf3f1f2b1bcad68e6ba27de9db7d457b5b2136e1a1e7308b92a189",
+            "complete_postimage_bytes_hex": "538b5c2408568bf13b5e087e0653e8edfeffff8b46043bc37d26578bd08bfbc1e2042bf88b0603c2740d33c9890889480489480889480c83c21083ef0175e55f3b5e047d0b83c8ff0146043b5e047cf8895e045e5bc20400",
+            "all_bytes_verified": true,
+            "unchanged_after_execution": true,
+            "rel32_patches": [
+              {
+                "site": "00b1f9fe",
+                "runtime_site": "2000010e",
+                "target": "20000000"
+              }
+            ]
+          },
+          {
+            "address": "00b1fb90",
+            "bytes": 23,
+            "runtime_address": "20000200",
+            "original_sha256": "9b535b0633b17a7247bef521d3288bd2de34a0d7c5f4c6f8017f834138132fc0",
+            "complete_postimage_sha256": "4bc017bac3aa89937e8a250b228bee707d5d5ace190bbf2456da1af45642599e",
+            "complete_postimage_bytes_hex": "566a008bf1e8f6feffff8b0650e84e26001083c4045ec3",
+            "all_bytes_verified": true,
+            "unchanged_after_execution": true,
+            "rel32_patches": [
+              {
+                "site": "00b1fb95",
+                "runtime_site": "20000205",
+                "target": "20000100"
+              },
+              {
+                "site": "00b1fb9d",
+                "runtime_site": "2000020d",
+                "target": "30002860"
+              }
+            ]
+          }
+        ],
+        "allocator_adapter": "Native BF55BE call relocated to byte-count adapter calling the same complete bsp_core singleton_lifetime_allocate provider as reconstruction; original BF681B exception payload ABI is outside this packet.",
+        "free_adapter": "Native BF6989 call relocated directly to complete bsp_core singleton_lifetime_free provider.",
+        "provider_behavior": "Actual loaded UCRT malloc/free and _callnewh via existing library provider. Read-only event observers forward every malloc/free call to resolved UCRT and restore IAT. No failed allocation, fake free or fake handler result provider substituted.",
+        "original_internal_calls": "resize and destroy call the full relocated owned original reserve/resize bodies",
+        "actual_new_handler": "Registered with _set_new_handler; malloc fffffff0 fails in actual UCRT; handler mutations retained on return0 -> std::bad_alloc and thrown int.",
+        "scenarios": [
+          {
+            "scenario": "grow_copy_zero_shrink_regrow_destroy",
+            "exact_native_source_match": true,
+            "normalized_trace_sha256": "17a87a87c2343cf722badcca0e66d9a197d45de413addb96d692589912e6b7b7",
+            "caught": 0,
+            "events": [
+              {
+                "kind": "malloc_enter",
+                "bytes": 80,
+                "pointer_identity": 0,
+                "count": 2,
+                "capacity": 2,
+                "data_identity": 1
+              },
+              {
+                "kind": "malloc_return",
+                "bytes": 80,
+                "pointer_identity": 2,
+                "count": 2,
+                "capacity": 2,
+                "data_identity": 1
+              },
+              {
+                "kind": "free_enter",
+                "bytes": 0,
+                "pointer_identity": 1,
+                "count": 2,
+                "capacity": 2,
+                "data_identity": 1
+              },
+              {
+                "kind": "free_enter",
+                "bytes": 0,
+                "pointer_identity": 2,
+                "count": 0,
+                "capacity": 5,
+                "data_identity": 2
+              }
+            ],
+            "snapshots": [
+              {
+                "data_identity": 2,
+                "count": 2,
+                "capacity": 5,
+                "row_bytes_hex": "0000c0ab0100c0ab0200c0ab0300c0ab0400c0ab0500c0ab0600c0ab0700c0ab000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 2,
+                "count": 5,
+                "capacity": 5,
+                "row_bytes_hex": "0000c0ab0100c0ab0200c0ab0300c0ab0400c0ab0500c0ab0600c0ab0700c0ab000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 2,
+                "count": 1,
+                "capacity": 5,
+                "row_bytes_hex": "0000c0ab0100c0ab0200c0ab0300c0ab0400c0ab0500c0ab0600c0ab0700c0ab000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 2,
+                "count": 3,
+                "capacity": 5,
+                "row_bytes_hex": "0000c0ab0100c0ab0200c0ab0300c0ab00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 2,
+                "count": 0,
+                "capacity": 5,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          },
+          {
+            "scenario": "clamp_and_no_growth",
+            "exact_native_source_match": true,
+            "normalized_trace_sha256": "309a8c0c099a78a13f8506311c03f5f16bbd8bbd57ab10a59b61fd44133743d0",
+            "caught": 0,
+            "events": [
+              {
+                "kind": "malloc_enter",
+                "bytes": 16,
+                "pointer_identity": 0,
+                "count": 0,
+                "capacity": 0,
+                "data_identity": 0
+              },
+              {
+                "kind": "malloc_return",
+                "bytes": 16,
+                "pointer_identity": 1,
+                "count": 0,
+                "capacity": 0,
+                "data_identity": 0
+              },
+              {
+                "kind": "free_enter",
+                "bytes": 0,
+                "pointer_identity": 0,
+                "count": 0,
+                "capacity": 0,
+                "data_identity": 0
+              },
+              {
+                "kind": "free_enter",
+                "bytes": 0,
+                "pointer_identity": 1,
+                "count": 0,
+                "capacity": 1,
+                "data_identity": 1
+              }
+            ],
+            "snapshots": [
+              {
+                "data_identity": 1,
+                "count": 0,
+                "capacity": 1,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 1,
+                "count": 0,
+                "capacity": 1,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 1,
+                "count": 0,
+                "capacity": 1,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          },
+          {
+            "scenario": "wrapped_zero_bytes",
+            "exact_native_source_match": true,
+            "normalized_trace_sha256": "b2739a417b73de7d584f01b40fbde4f62ae7514438b98bcb6b0bad917fa2ad8e",
+            "caught": 0,
+            "events": [
+              {
+                "kind": "malloc_enter",
+                "bytes": 0,
+                "pointer_identity": 0,
+                "count": 0,
+                "capacity": 0,
+                "data_identity": 0
+              },
+              {
+                "kind": "malloc_return",
+                "bytes": 0,
+                "pointer_identity": 1,
+                "count": 0,
+                "capacity": 0,
+                "data_identity": 0
+              },
+              {
+                "kind": "free_enter",
+                "bytes": 0,
+                "pointer_identity": 0,
+                "count": 0,
+                "capacity": 0,
+                "data_identity": 0
+              },
+              {
+                "kind": "free_enter",
+                "bytes": 0,
+                "pointer_identity": 1,
+                "count": 0,
+                "capacity": 268435456,
+                "data_identity": 1
+              }
+            ],
+            "snapshots": [
+              {
+                "data_identity": 1,
+                "count": 0,
+                "capacity": 268435456,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 1,
+                "count": 0,
+                "capacity": 268435456,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          },
+          {
+            "scenario": "actual_new_handler_returns_zero",
+            "exact_native_source_match": true,
+            "normalized_trace_sha256": "840c9f7e7486c659f0aa1835985a929fdc6a989792d3202dd9872bbafa2deae1",
+            "caught": 1,
+            "events": [
+              {
+                "kind": "malloc_enter",
+                "bytes": 4294967280,
+                "pointer_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "data_identity": 1
+              },
+              {
+                "kind": "malloc_return",
+                "bytes": 4294967280,
+                "pointer_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "data_identity": 1
+              },
+              {
+                "kind": "new_handler",
+                "bytes": 4294967280,
+                "pointer_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "data_identity": 1
+              }
+            ],
+            "snapshots": [
+              {
+                "data_identity": 1,
+                "count": 1,
+                "capacity": 7,
+                "row_bytes_hex": "0000e0ac0100e0acadfbcade0300e0ac00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          },
+          {
+            "scenario": "actual_new_handler_throws",
+            "exact_native_source_match": true,
+            "normalized_trace_sha256": "ac0e37b26569c03fa5513d0426de5f6bdcdd8ec0d65cb9e25a3e2b0fcd3f1392",
+            "caught": 73,
+            "events": [
+              {
+                "kind": "malloc_enter",
+                "bytes": 4294967280,
+                "pointer_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "data_identity": 1
+              },
+              {
+                "kind": "malloc_return",
+                "bytes": 4294967280,
+                "pointer_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "data_identity": 1
+              },
+              {
+                "kind": "new_handler",
+                "bytes": 4294967280,
+                "pointer_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "data_identity": 1
+              }
+            ],
+            "snapshots": [
+              {
+                "data_identity": 1,
+                "count": 1,
+                "capacity": 7,
+                "row_bytes_hex": "0000e0ac0100e0acadfbcade0300e0ac00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          },
+          {
+            "scenario": "null_row_skip_and_signed_shrink",
+            "exact_native_source_match": true,
+            "normalized_trace_sha256": "fcf51805a9d6558f8b0c64510923b958a0acd0706fea3004e9dfe2eac72abf40",
+            "caught": 0,
+            "events": [],
+            "snapshots": [
+              {
+                "data_identity": 0,
+                "count": 1,
+                "capacity": 1,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "data_identity": 0,
+                "count": -1,
+                "capacity": 1,
+                "row_bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          }
+        ],
+        "console_output": "PROVIDER malloc address=75750120 module=75720000 path=C:\\WINDOWS\\System32\\ucrtbase.dll\nPROVIDER free address=757500a0 module=75720000 path=C:\\WINDOWS\\System32\\ucrtbase.dll\nPASS grow_copy_zero_shrink_regrow_destroy events=4 snapshots=5 caught=0\nPASS clamp_and_no_growth events=4 snapshots=3 caught=0\nPASS wrapped_zero_bytes events=4 snapshots=2 caught=0\nPASS actual_new_handler_returns_zero events=3 snapshots=1 caught=1\nPASS actual_new_handler_throws events=3 snapshots=1 caught=73\nPASS null_row_skip_and_signed_shrink events=0 snapshots=2 caught=0\nPASS 6 focused original/source scenarios; original spans 128+88+23; actual CRT malloc/free observers forwarded and restored.\n"
+      },
+      "compiled_code_proof": {
+        "archive": {
+          "path": "local/frame_vector_primary/frozen/bsp_core.lib",
+          "bytes": 34223464,
+          "sha256": "8fa9f1259c25b453b069d7ce36333935b66d11e332b5480a7afbc45144fce926"
+        },
+        "members": [
+          {
+            "object": {
+              "path": "local/frame_vector_primary/frozen/native_frame_target_vector.obj",
+              "bytes": 4324,
+              "sha256": "b90b2adc322b63f629a0d0e86ed6a5f4761373b91b4d692de97138ec88add586"
+            },
+            "archive_member": {
+              "name": "bsp_core.dir\\Release\\native_frame_target_vector.obj",
+              "offset": 27415368,
+              "bytes": 4324,
+              "sha256": "b90b2adc322b63f629a0d0e86ed6a5f4761373b91b4d692de97138ec88add586"
+            }
+          },
+          {
+            "object": {
+              "path": "local/frame_vector_primary/frozen/singleton_lifetime.obj",
+              "bytes": 32943,
+              "sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3"
+            },
+            "archive_member": {
+              "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+              "offset": 28447178,
+              "bytes": 32943,
+              "sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3"
+            }
+          }
+        ],
+        "complete_COFF_linked_runtime_symbols": [
+          {
+            "symbol": "?reserve_native_frame_target_vector_00b1f970@bsp@@YAXAAUNativeFrameTargetVectorStorage@1@H@Z",
+            "address": 805315280,
+            "provider": "bsp_core:native_frame_target_vector.obj",
+            "bytes": 403,
+            "coff_section": 8,
+            "coff_sha256": "659e9bdb5784dd8c625c9ec65377f0a1bdeb412a671749f029f3b26a29ceea80",
+            "linked_sha256": "1f2779b2aa0d3fffacaa6182cf99f1d2ceae14de0e98010b8629885950a3017c",
+            "runtime_sha256": "1f2779b2aa0d3fffacaa6182cf99f1d2ceae14de0e98010b8629885950a3017c",
+            "all_relocations_resolved_and_exact": true,
+            "complete_COFF_bytes_hex": "558bec83ec3ca10000000033c58945fc8b4d0c8b45088945e883f9017d08b901000000894d0c8b45e8ba080000008b04108945ec394dec0f8d480100005356c1e1048d45f05750c745f003000000894df4894df8e80000000083c4048945d88bf033ff33db8b45e8ba040000008b04108945ec395dec0f8ecb0000000f1f400085f60f84a10000008b45e8ba000000008b04108945d48b45d403c38975ec8945e08b45e0ba000000008b04108945d08b45d08945e48b45ecba000000008b4de4890c108b45e0ba040000008b04108945cc8b45cc8945e48b45ecba040000008b4de4890c108b45e0ba080000008b04108945c88b45c88945e48b45ecba080000008b4de4890c108b45e0ba0c0000008b04108945c48b45c48945e48b45ecba0c0000008b4de4890c104783c31083c6108b45e8ba040000008b04108945dc3b7ddc0f8c39ffffff8b45e8ba000000008b04108945dcff75dce8000000008b45d883c4048945d88b45e8ba000000008b4dd8890c108b45e8ba080000008b4d0c890c105f5e5b8b4dfc33cde8000000008be55dc3",
+            "complete_linked_bytes_hex": "558bec83ec3ca10060003033c58945fc8b4d0c8b45088945e883f9017d08b901000000894d0c8b45e8ba080000008b04108945ec394dec0f8d480100005356c1e1048d45f05750c745f003000000894df4894df8e8d704000083c4048945d88bf033ff33db8b45e8ba040000008b04108945ec395dec0f8ecb0000000f1f400085f60f84a10000008b45e8ba000000008b04108945d48b45d403c38975ec8945e08b45e0ba000000008b04108945d08b45d08945e48b45ecba000000008b4de4890c108b45e0ba040000008b04108945cc8b45cc8945e48b45ecba040000008b4de4890c108b45e0ba080000008b04108945c88b45c88945e48b45ecba080000008b4de4890c108b45e0ba0c0000008b04108945c48b45c48945e48b45ecba0c0000008b4de4890c104783c31083c6108b45e8ba040000008b04108945dc3b7ddc0f8c39ffffff8b45e8ba000000008b04108945dcff75dce8330400008b45d883c4048945d88b45e8ba000000008b4dd8890c108b45e8ba080000008b4d0c890c105f5e5b8b4dfc33cde8210400008be55dc3",
+            "relocations": [
+              {
+                "offset": 7,
+                "symbol": "___security_cookie",
+                "type": 6,
+                "target": "30006000",
+                "addend": "00000000",
+                "linked_value": "30006000",
+                "provider": "MSVCRT:gs_cookie.obj"
+              },
+              {
+                "offset": 85,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20,
+                "target": "30002800",
+                "addend": "00000000",
+                "linked_value": "000004d7",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 345,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20,
+                "target": "30002860",
+                "addend": "00000000",
+                "linked_value": "00000433",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 395,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20,
+                "target": "30002880",
+                "addend": "00000000",
+                "linked_value": "00000421",
+                "provider": "MSVCRT:secchk.obj"
+              }
+            ],
+            "assembly": [
+              "300022d0: push ebp",
+              "300022d1: mov ebp, esp",
+              "300022d3: sub esp, 0x3c",
+              "300022d6: mov eax, dword ptr [0x30006000]",
+              "300022db: xor eax, ebp",
+              "300022dd: mov dword ptr [ebp - 4], eax",
+              "300022e0: mov ecx, dword ptr [ebp + 0xc]",
+              "300022e3: mov eax, dword ptr [ebp + 8]",
+              "300022e6: mov dword ptr [ebp - 0x18], eax",
+              "300022e9: cmp ecx, 1",
+              "300022ec: jge 0x300022f6",
+              "300022ee: mov ecx, 1",
+              "300022f3: mov dword ptr [ebp + 0xc], ecx",
+              "300022f6: mov eax, dword ptr [ebp - 0x18]",
+              "300022f9: mov edx, 8",
+              "300022fe: mov eax, dword ptr [eax + edx]",
+              "30002301: mov dword ptr [ebp - 0x14], eax",
+              "30002304: cmp dword ptr [ebp - 0x14], ecx",
+              "30002307: jge 0x30002455",
+              "3000230d: push ebx",
+              "3000230e: push esi",
+              "3000230f: shl ecx, 4",
+              "30002312: lea eax, [ebp - 0x10]",
+              "30002315: push edi",
+              "30002316: push eax",
+              "30002317: mov dword ptr [ebp - 0x10], 3",
+              "3000231e: mov dword ptr [ebp - 0xc], ecx",
+              "30002321: mov dword ptr [ebp - 8], ecx",
+              "30002324: call 0x30002800",
+              "30002329: add esp, 4",
+              "3000232c: mov dword ptr [ebp - 0x28], eax",
+              "3000232f: mov esi, eax",
+              "30002331: xor edi, edi",
+              "30002333: xor ebx, ebx",
+              "30002335: mov eax, dword ptr [ebp - 0x18]",
+              "30002338: mov edx, 4",
+              "3000233d: mov eax, dword ptr [eax + edx]",
+              "30002340: mov dword ptr [ebp - 0x14], eax",
+              "30002343: cmp dword ptr [ebp - 0x14], ebx",
+              "30002346: jle 0x30002417",
+              "3000234c: nop dword ptr [eax]",
+              "30002350: test esi, esi",
+              "30002352: je 0x300023f9",
+              "30002358: mov eax, dword ptr [ebp - 0x18]",
+              "3000235b: mov edx, 0",
+              "30002360: mov eax, dword ptr [eax + edx]",
+              "30002363: mov dword ptr [ebp - 0x2c], eax",
+              "30002366: mov eax, dword ptr [ebp - 0x2c]",
+              "30002369: add eax, ebx",
+              "3000236b: mov dword ptr [ebp - 0x14], esi",
+              "3000236e: mov dword ptr [ebp - 0x20], eax",
+              "30002371: mov eax, dword ptr [ebp - 0x20]",
+              "30002374: mov edx, 0",
+              "30002379: mov eax, dword ptr [eax + edx]",
+              "3000237c: mov dword ptr [ebp - 0x30], eax",
+              "3000237f: mov eax, dword ptr [ebp - 0x30]",
+              "30002382: mov dword ptr [ebp - 0x1c], eax",
+              "30002385: mov eax, dword ptr [ebp - 0x14]",
+              "30002388: mov edx, 0",
+              "3000238d: mov ecx, dword ptr [ebp - 0x1c]",
+              "30002390: mov dword ptr [eax + edx], ecx",
+              "30002393: mov eax, dword ptr [ebp - 0x20]",
+              "30002396: mov edx, 4",
+              "3000239b: mov eax, dword ptr [eax + edx]",
+              "3000239e: mov dword ptr [ebp - 0x34], eax",
+              "300023a1: mov eax, dword ptr [ebp - 0x34]",
+              "300023a4: mov dword ptr [ebp - 0x1c], eax",
+              "300023a7: mov eax, dword ptr [ebp - 0x14]",
+              "300023aa: mov edx, 4",
+              "300023af: mov ecx, dword ptr [ebp - 0x1c]",
+              "300023b2: mov dword ptr [eax + edx], ecx",
+              "300023b5: mov eax, dword ptr [ebp - 0x20]",
+              "300023b8: mov edx, 8",
+              "300023bd: mov eax, dword ptr [eax + edx]",
+              "300023c0: mov dword ptr [ebp - 0x38], eax",
+              "300023c3: mov eax, dword ptr [ebp - 0x38]",
+              "300023c6: mov dword ptr [ebp - 0x1c], eax",
+              "300023c9: mov eax, dword ptr [ebp - 0x14]",
+              "300023cc: mov edx, 8",
+              "300023d1: mov ecx, dword ptr [ebp - 0x1c]",
+              "300023d4: mov dword ptr [eax + edx], ecx",
+              "300023d7: mov eax, dword ptr [ebp - 0x20]",
+              "300023da: mov edx, 0xc",
+              "300023df: mov eax, dword ptr [eax + edx]",
+              "300023e2: mov dword ptr [ebp - 0x3c], eax",
+              "300023e5: mov eax, dword ptr [ebp - 0x3c]",
+              "300023e8: mov dword ptr [ebp - 0x1c], eax",
+              "300023eb: mov eax, dword ptr [ebp - 0x14]",
+              "300023ee: mov edx, 0xc",
+              "300023f3: mov ecx, dword ptr [ebp - 0x1c]",
+              "300023f6: mov dword ptr [eax + edx], ecx",
+              "300023f9: inc edi",
+              "300023fa: add ebx, 0x10",
+              "300023fd: add esi, 0x10",
+              "30002400: mov eax, dword ptr [ebp - 0x18]",
+              "30002403: mov edx, 4",
+              "30002408: mov eax, dword ptr [eax + edx]",
+              "3000240b: mov dword ptr [ebp - 0x24], eax",
+              "3000240e: cmp edi, dword ptr [ebp - 0x24]",
+              "30002411: jl 0x30002350",
+              "30002417: mov eax, dword ptr [ebp - 0x18]",
+              "3000241a: mov edx, 0",
+              "3000241f: mov eax, dword ptr [eax + edx]",
+              "30002422: mov dword ptr [ebp - 0x24], eax",
+              "30002425: push dword ptr [ebp - 0x24]",
+              "30002428: call 0x30002860",
+              "3000242d: mov eax, dword ptr [ebp - 0x28]",
+              "30002430: add esp, 4",
+              "30002433: mov dword ptr [ebp - 0x28], eax",
+              "30002436: mov eax, dword ptr [ebp - 0x18]",
+              "30002439: mov edx, 0",
+              "3000243e: mov ecx, dword ptr [ebp - 0x28]",
+              "30002441: mov dword ptr [eax + edx], ecx",
+              "30002444: mov eax, dword ptr [ebp - 0x18]",
+              "30002447: mov edx, 8",
+              "3000244c: mov ecx, dword ptr [ebp + 0xc]",
+              "3000244f: mov dword ptr [eax + edx], ecx",
+              "30002452: pop edi",
+              "30002453: pop esi",
+              "30002454: pop ebx",
+              "30002455: mov ecx, dword ptr [ebp - 4]",
+              "30002458: xor ecx, ebp",
+              "3000245a: call 0x30002880",
+              "3000245f: mov esp, ebp",
+              "30002461: pop ebp",
+              "30002462: ret "
+            ]
+          },
+          {
+            "symbol": "?resize_native_frame_target_vector_00b1f9f0@bsp@@YAXAAUNativeFrameTargetVectorStorage@1@H@Z",
+            "address": 805315696,
+            "provider": "bsp_core:native_frame_target_vector.obj",
+            "bytes": 631,
+            "coff_section": 9,
+            "coff_sha256": "9de7a448882d25666725e978278b890c454b97d5ed30636ed2b79822c2570e78",
+            "linked_sha256": "327c16eefa153e67991a4e2ab260f044de9711f2ebf785969af2bbb7c96d1afe",
+            "runtime_sha256": "327c16eefa153e67991a4e2ab260f044de9711f2ebf785969af2bbb7c96d1afe",
+            "all_relocations_resolved_and_exact": true,
+            "complete_COFF_bytes_hex": "558bec83ec40a10000000033c58945fc8b45085356578945ec8b45ecba080000008b04108945d48b5d0c3b5dd40f8e6a0100008bcb894dd483fb017d08b901000000894dd48b45ecba080000008b04108945e8394de80f8d41010000c1e1048d45f050c745f003000000894df4894df8e80000000083c4048945e48bf033ff8b45ecba040000008b04108945e8397de80f8ecc00000033db85f60f84a10000008b45ecba000000008b04108945cc8b45cc03c38975e88945d88b45d8ba000000008b04108945c88b45c88945e08b45e8ba000000008b4de0890c108b45d8ba040000008b04108945c48b45c48945e08b45e8ba040000008b4de0890c108b45d8ba080000008b04108945c08b45c08945e08b45e8ba080000008b4de0890c108b45d8ba0c0000008b04108945d08b45d08945e08b45e8ba0c0000008b4de0890c104783c31083c6108b45ecba040000008b04108945dc3b7ddc0f8c39ffffff8b5d0c8b45ecba000000008b04108945dcff75dce8000000008b45e483c4048945e48b45ecba000000008b4de4890c108b45ecba080000008b4dd4890c108b45ecba040000008b04108945e48b45e43bc37d6e8bf08bfbc1e6042bf80f1f4400008b45ecba000000008b04108945e48b45e403c674438945e88b45e8ba00000000b900000000890c108b45e8ba04000000b900000000890c108b45e8ba08000000b900000000890c108b45e8ba0c000000b900000000890c1083c61083ef0175a08b45ecba040000008b04108945e43b5de47d258b45ecba040000008b04108945dc8b45dc488945d08b45ecba040000008b4dd0890c10ebc88b45ecba040000008b4d0c890c108b4dfc5f5e33cd5be8000000008be55dc3",
+            "complete_linked_bytes_hex": "558bec83ec40a10060003033c58945fc8b45085356578945ec8b45ecba080000008b04108945d48b5d0c3b5dd40f8e6a0100008bcb894dd483fb017d08b901000000894dd48b45ecba080000008b04108945e8394de80f8d41010000c1e1048d45f050c745f003000000894df4894df8e81b03000083c4048945e48bf033ff8b45ecba040000008b04108945e8397de80f8ecc00000033db85f60f84a10000008b45ecba000000008b04108945cc8b45cc03c38975e88945d88b45d8ba000000008b04108945c88b45c88945e08b45e8ba000000008b4de0890c108b45d8ba040000008b04108945c48b45c48945e08b45e8ba040000008b4de0890c108b45d8ba080000008b04108945c08b45c08945e08b45e8ba080000008b4de0890c108b45d8ba0c0000008b04108945d08b45d08945e08b45e8ba0c0000008b4de0890c104783c31083c6108b45ecba040000008b04108945dc3b7ddc0f8c39ffffff8b5d0c8b45ecba000000008b04108945dcff75dce8780200008b45e483c4048945e48b45ecba000000008b4de4890c108b45ecba080000008b4dd4890c108b45ecba040000008b04108945e48b45e43bc37d6e8bf08bfbc1e6042bf80f1f4400008b45ecba000000008b04108945e48b45e403c674438945e88b45e8ba00000000b900000000890c108b45e8ba04000000b900000000890c108b45e8ba08000000b900000000890c108b45e8ba0c000000b900000000890c1083c61083ef0175a08b45ecba040000008b04108945e43b5de47d258b45ecba040000008b04108945dc8b45dc488945d08b45ecba040000008b4dd0890c10ebc88b45ecba040000008b4d0c890c108b4dfc5f5e33cd5be89d0100008be55dc3",
+            "relocations": [
+              {
+                "offset": 7,
+                "symbol": "___security_cookie",
+                "type": 6,
+                "target": "30006000",
+                "addend": "00000000",
+                "linked_value": "30006000",
+                "provider": "MSVCRT:gs_cookie.obj"
+              },
+              {
+                "offset": 113,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20,
+                "target": "30002800",
+                "addend": "00000000",
+                "linked_value": "0000031b",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 372,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20,
+                "target": "30002860",
+                "addend": "00000000",
+                "linked_value": "00000278",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 623,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20,
+                "target": "30002880",
+                "addend": "00000000",
+                "linked_value": "0000019d",
+                "provider": "MSVCRT:secchk.obj"
+              }
+            ],
+            "assembly": [
+              "30002470: push ebp",
+              "30002471: mov ebp, esp",
+              "30002473: sub esp, 0x40",
+              "30002476: mov eax, dword ptr [0x30006000]",
+              "3000247b: xor eax, ebp",
+              "3000247d: mov dword ptr [ebp - 4], eax",
+              "30002480: mov eax, dword ptr [ebp + 8]",
+              "30002483: push ebx",
+              "30002484: push esi",
+              "30002485: push edi",
+              "30002486: mov dword ptr [ebp - 0x14], eax",
+              "30002489: mov eax, dword ptr [ebp - 0x14]",
+              "3000248c: mov edx, 8",
+              "30002491: mov eax, dword ptr [eax + edx]",
+              "30002494: mov dword ptr [ebp - 0x2c], eax",
+              "30002497: mov ebx, dword ptr [ebp + 0xc]",
+              "3000249a: cmp ebx, dword ptr [ebp - 0x2c]",
+              "3000249d: jle 0x3000260d",
+              "300024a3: mov ecx, ebx",
+              "300024a5: mov dword ptr [ebp - 0x2c], ecx",
+              "300024a8: cmp ebx, 1",
+              "300024ab: jge 0x300024b5",
+              "300024ad: mov ecx, 1",
+              "300024b2: mov dword ptr [ebp - 0x2c], ecx",
+              "300024b5: mov eax, dword ptr [ebp - 0x14]",
+              "300024b8: mov edx, 8",
+              "300024bd: mov eax, dword ptr [eax + edx]",
+              "300024c0: mov dword ptr [ebp - 0x18], eax",
+              "300024c3: cmp dword ptr [ebp - 0x18], ecx",
+              "300024c6: jge 0x3000260d",
+              "300024cc: shl ecx, 4",
+              "300024cf: lea eax, [ebp - 0x10]",
+              "300024d2: push eax",
+              "300024d3: mov dword ptr [ebp - 0x10], 3",
+              "300024da: mov dword ptr [ebp - 0xc], ecx",
+              "300024dd: mov dword ptr [ebp - 8], ecx",
+              "300024e0: call 0x30002800",
+              "300024e5: add esp, 4",
+              "300024e8: mov dword ptr [ebp - 0x1c], eax",
+              "300024eb: mov esi, eax",
+              "300024ed: xor edi, edi",
+              "300024ef: mov eax, dword ptr [ebp - 0x14]",
+              "300024f2: mov edx, 4",
+              "300024f7: mov eax, dword ptr [eax + edx]",
+              "300024fa: mov dword ptr [ebp - 0x18], eax",
+              "300024fd: cmp dword ptr [ebp - 0x18], edi",
+              "30002500: jle 0x300025d2",
+              "30002506: xor ebx, ebx",
+              "30002508: test esi, esi",
+              "3000250a: je 0x300025b1",
+              "30002510: mov eax, dword ptr [ebp - 0x14]",
+              "30002513: mov edx, 0",
+              "30002518: mov eax, dword ptr [eax + edx]",
+              "3000251b: mov dword ptr [ebp - 0x34], eax",
+              "3000251e: mov eax, dword ptr [ebp - 0x34]",
+              "30002521: add eax, ebx",
+              "30002523: mov dword ptr [ebp - 0x18], esi",
+              "30002526: mov dword ptr [ebp - 0x28], eax",
+              "30002529: mov eax, dword ptr [ebp - 0x28]",
+              "3000252c: mov edx, 0",
+              "30002531: mov eax, dword ptr [eax + edx]",
+              "30002534: mov dword ptr [ebp - 0x38], eax",
+              "30002537: mov eax, dword ptr [ebp - 0x38]",
+              "3000253a: mov dword ptr [ebp - 0x20], eax",
+              "3000253d: mov eax, dword ptr [ebp - 0x18]",
+              "30002540: mov edx, 0",
+              "30002545: mov ecx, dword ptr [ebp - 0x20]",
+              "30002548: mov dword ptr [eax + edx], ecx",
+              "3000254b: mov eax, dword ptr [ebp - 0x28]",
+              "3000254e: mov edx, 4",
+              "30002553: mov eax, dword ptr [eax + edx]",
+              "30002556: mov dword ptr [ebp - 0x3c], eax",
+              "30002559: mov eax, dword ptr [ebp - 0x3c]",
+              "3000255c: mov dword ptr [ebp - 0x20], eax",
+              "3000255f: mov eax, dword ptr [ebp - 0x18]",
+              "30002562: mov edx, 4",
+              "30002567: mov ecx, dword ptr [ebp - 0x20]",
+              "3000256a: mov dword ptr [eax + edx], ecx",
+              "3000256d: mov eax, dword ptr [ebp - 0x28]",
+              "30002570: mov edx, 8",
+              "30002575: mov eax, dword ptr [eax + edx]",
+              "30002578: mov dword ptr [ebp - 0x40], eax",
+              "3000257b: mov eax, dword ptr [ebp - 0x40]",
+              "3000257e: mov dword ptr [ebp - 0x20], eax",
+              "30002581: mov eax, dword ptr [ebp - 0x18]",
+              "30002584: mov edx, 8",
+              "30002589: mov ecx, dword ptr [ebp - 0x20]",
+              "3000258c: mov dword ptr [eax + edx], ecx",
+              "3000258f: mov eax, dword ptr [ebp - 0x28]",
+              "30002592: mov edx, 0xc",
+              "30002597: mov eax, dword ptr [eax + edx]",
+              "3000259a: mov dword ptr [ebp - 0x30], eax",
+              "3000259d: mov eax, dword ptr [ebp - 0x30]",
+              "300025a0: mov dword ptr [ebp - 0x20], eax",
+              "300025a3: mov eax, dword ptr [ebp - 0x18]",
+              "300025a6: mov edx, 0xc",
+              "300025ab: mov ecx, dword ptr [ebp - 0x20]",
+              "300025ae: mov dword ptr [eax + edx], ecx",
+              "300025b1: inc edi",
+              "300025b2: add ebx, 0x10",
+              "300025b5: add esi, 0x10",
+              "300025b8: mov eax, dword ptr [ebp - 0x14]",
+              "300025bb: mov edx, 4",
+              "300025c0: mov eax, dword ptr [eax + edx]",
+              "300025c3: mov dword ptr [ebp - 0x24], eax",
+              "300025c6: cmp edi, dword ptr [ebp - 0x24]",
+              "300025c9: jl 0x30002508",
+              "300025cf: mov ebx, dword ptr [ebp + 0xc]",
+              "300025d2: mov eax, dword ptr [ebp - 0x14]",
+              "300025d5: mov edx, 0",
+              "300025da: mov eax, dword ptr [eax + edx]",
+              "300025dd: mov dword ptr [ebp - 0x24], eax",
+              "300025e0: push dword ptr [ebp - 0x24]",
+              "300025e3: call 0x30002860",
+              "300025e8: mov eax, dword ptr [ebp - 0x1c]",
+              "300025eb: add esp, 4",
+              "300025ee: mov dword ptr [ebp - 0x1c], eax",
+              "300025f1: mov eax, dword ptr [ebp - 0x14]",
+              "300025f4: mov edx, 0",
+              "300025f9: mov ecx, dword ptr [ebp - 0x1c]",
+              "300025fc: mov dword ptr [eax + edx], ecx",
+              "300025ff: mov eax, dword ptr [ebp - 0x14]",
+              "30002602: mov edx, 8",
+              "30002607: mov ecx, dword ptr [ebp - 0x2c]",
+              "3000260a: mov dword ptr [eax + edx], ecx",
+              "3000260d: mov eax, dword ptr [ebp - 0x14]",
+              "30002610: mov edx, 4",
+              "30002615: mov eax, dword ptr [eax + edx]",
+              "30002618: mov dword ptr [ebp - 0x1c], eax",
+              "3000261b: mov eax, dword ptr [ebp - 0x1c]",
+              "3000261e: cmp eax, ebx",
+              "30002620: jge 0x30002690",
+              "30002622: mov esi, eax",
+              "30002624: mov edi, ebx",
+              "30002626: shl esi, 4",
+              "30002629: sub edi, eax",
+              "3000262b: nop dword ptr [eax + eax]",
+              "30002630: mov eax, dword ptr [ebp - 0x14]",
+              "30002633: mov edx, 0",
+              "30002638: mov eax, dword ptr [eax + edx]",
+              "3000263b: mov dword ptr [ebp - 0x1c], eax",
+              "3000263e: mov eax, dword ptr [ebp - 0x1c]",
+              "30002641: add eax, esi",
+              "30002643: je 0x30002688",
+              "30002645: mov dword ptr [ebp - 0x18], eax",
+              "30002648: mov eax, dword ptr [ebp - 0x18]",
+              "3000264b: mov edx, 0",
+              "30002650: mov ecx, 0",
+              "30002655: mov dword ptr [eax + edx], ecx",
+              "30002658: mov eax, dword ptr [ebp - 0x18]",
+              "3000265b: mov edx, 4",
+              "30002660: mov ecx, 0",
+              "30002665: mov dword ptr [eax + edx], ecx",
+              "30002668: mov eax, dword ptr [ebp - 0x18]",
+              "3000266b: mov edx, 8",
+              "30002670: mov ecx, 0",
+              "30002675: mov dword ptr [eax + edx], ecx",
+              "30002678: mov eax, dword ptr [ebp - 0x18]",
+              "3000267b: mov edx, 0xc",
+              "30002680: mov ecx, 0",
+              "30002685: mov dword ptr [eax + edx], ecx",
+              "30002688: add esi, 0x10",
+              "3000268b: sub edi, 1",
+              "3000268e: jne 0x30002630",
+              "30002690: mov eax, dword ptr [ebp - 0x14]",
+              "30002693: mov edx, 4",
+              "30002698: mov eax, dword ptr [eax + edx]",
+              "3000269b: mov dword ptr [ebp - 0x1c], eax",
+              "3000269e: cmp ebx, dword ptr [ebp - 0x1c]",
+              "300026a1: jge 0x300026c8",
+              "300026a3: mov eax, dword ptr [ebp - 0x14]",
+              "300026a6: mov edx, 4",
+              "300026ab: mov eax, dword ptr [eax + edx]",
+              "300026ae: mov dword ptr [ebp - 0x24], eax",
+              "300026b1: mov eax, dword ptr [ebp - 0x24]",
+              "300026b4: dec eax",
+              "300026b5: mov dword ptr [ebp - 0x30], eax",
+              "300026b8: mov eax, dword ptr [ebp - 0x14]",
+              "300026bb: mov edx, 4",
+              "300026c0: mov ecx, dword ptr [ebp - 0x30]",
+              "300026c3: mov dword ptr [eax + edx], ecx",
+              "300026c6: jmp 0x30002690",
+              "300026c8: mov eax, dword ptr [ebp - 0x14]",
+              "300026cb: mov edx, 4",
+              "300026d0: mov ecx, dword ptr [ebp + 0xc]",
+              "300026d3: mov dword ptr [eax + edx], ecx",
+              "300026d6: mov ecx, dword ptr [ebp - 4]",
+              "300026d9: pop edi",
+              "300026da: pop esi",
+              "300026db: xor ecx, ebp",
+              "300026dd: pop ebx",
+              "300026de: call 0x30002880",
+              "300026e3: mov esp, ebp",
+              "300026e5: pop ebp",
+              "300026e6: ret "
+            ]
+          },
+          {
+            "symbol": "?destroy_native_frame_target_vector_00b1fb90@bsp@@YAXAAUNativeFrameTargetVectorStorage@1@@Z",
+            "address": 805314624,
+            "provider": "bsp_core:native_frame_target_vector.obj",
+            "bytes": 642,
+            "coff_section": 5,
+            "coff_sha256": "6fc36328ef396a51d9bd04b9c77dcfe7f633cebcddfdaca3173f936b5db2f20a",
+            "linked_sha256": "31146ae9eaf6685490c6507d7a2f6d65aae44420168ab443ae494b3d14368729",
+            "runtime_sha256": "31146ae9eaf6685490c6507d7a2f6d65aae44420168ab443ae494b3d14368729",
+            "all_relocations_resolved_and_exact": true,
+            "complete_COFF_bytes_hex": "558bec83ec40a10000000033c58945fc8b450856578945ec8b45ecba080000008b04108945e8837de8000f8d64010000c745e4010000008b45ecba080000008b04108945e8837de8010f8d450100008d45f0c745f0030000005350c745f410000000c745f810000000e80000000083c4048945d88bf033ff33db8b45ecba040000008b04108945e8395de80f8ec700000085f60f84a10000008b45ecba000000008b04108945d08b45d003c38975e88945d48b45d4ba000000008b04108945cc8b45cc8945e08b45e8ba000000008b4de0890c108b45d4ba040000008b04108945c88b45c88945e08b45e8ba040000008b4de0890c108b45d4ba080000008b04108945c48b45c48945e08b45e8ba080000008b4de0890c108b45d4ba0c0000008b04108945c08b45c08945e08b45e8ba0c0000008b4de0890c104783c31083c6108b45ecba040000008b04108945dc3b7ddc0f8c39ffffff8b45ecba000000008b04108945dcff75dce8000000008b45d883c4048945d88b45ecba000000008b4dd8890c108b45ecba080000008b4de4890c105b8b45ecba040000008b04108945e48b7de485ff79678bf7c1e604f7df8b45ecba000000008b04108945e48b45e403c674438945e88b45e8ba00000000b900000000890c108b45e8ba04000000b900000000890c108b45e8ba08000000b900000000890c108b45e8ba0c000000b900000000890c1083c61083ef0175a05f5e8b45ecba040000008b04108945e4837de4007e258b45ecba040000008b04108945d88b45d8488945dc8b45ecba040000008b4ddc890c10ebc78b45ecba04000000b900000000890c108b45ecba000000008b04108945e4ff75e4e8000000008b4dfc83c40433cde8000000008be55dc3",
+            "complete_linked_bytes_hex": "558bec83ec40a10060003033c58945fc8b450856578945ec8b45ecba080000008b04108945e8837de8000f8d64010000c745e4010000008b45ecba080000008b04108945e8837de8010f8d450100008d45f0c745f0030000005350c745f410000000c745f810000000e85207000083c4048945d88bf033ff33db8b45ecba040000008b04108945e8395de80f8ec700000085f60f84a10000008b45ecba000000008b04108945d08b45d003c38975e88945d48b45d4ba000000008b04108945cc8b45cc8945e08b45e8ba000000008b4de0890c108b45d4ba040000008b04108945c88b45c88945e08b45e8ba040000008b4de0890c108b45d4ba080000008b04108945c48b45c48945e08b45e8ba080000008b4de0890c108b45d4ba0c0000008b04108945c08b45c08945e08b45e8ba0c0000008b4de0890c104783c31083c6108b45ecba040000008b04108945dc3b7ddc0f8c39ffffff8b45ecba000000008b04108945dcff75dce8b20600008b45d883c4048945d88b45ecba000000008b4dd8890c108b45ecba080000008b4de4890c105b8b45ecba040000008b04108945e48b7de485ff79678bf7c1e604f7df8b45ecba000000008b04108945e48b45e403c674438945e88b45e8ba00000000b900000000890c108b45e8ba04000000b900000000890c108b45e8ba08000000b900000000890c108b45e8ba0c000000b900000000890c1083c61083ef0175a05f5e8b45ecba040000008b04108945e4837de4007e258b45ecba040000008b04108945d88b45d8488945dc8b45ecba040000008b4ddc890c10ebc78b45ecba04000000b900000000890c108b45ecba000000008b04108945e4ff75e4e8af0500008b4dfc83c40433cde8c20500008be55dc3",
+            "relocations": [
+              {
+                "offset": 7,
+                "symbol": "___security_cookie",
+                "type": 6,
+                "target": "30006000",
+                "addend": "00000000",
+                "linked_value": "30006000",
+                "provider": "MSVCRT:gs_cookie.obj"
+              },
+              {
+                "offset": 106,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20,
+                "target": "30002800",
+                "addend": "00000000",
+                "linked_value": "00000752",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 362,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20,
+                "target": "30002860",
+                "addend": "00000000",
+                "linked_value": "000006b2",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 621,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20,
+                "target": "30002860",
+                "addend": "00000000",
+                "linked_value": "000005af",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 634,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20,
+                "target": "30002880",
+                "addend": "00000000",
+                "linked_value": "000005c2",
+                "provider": "MSVCRT:secchk.obj"
+              }
+            ],
+            "assembly": [
+              "30002040: push ebp",
+              "30002041: mov ebp, esp",
+              "30002043: sub esp, 0x40",
+              "30002046: mov eax, dword ptr [0x30006000]",
+              "3000204b: xor eax, ebp",
+              "3000204d: mov dword ptr [ebp - 4], eax",
+              "30002050: mov eax, dword ptr [ebp + 8]",
+              "30002053: push esi",
+              "30002054: push edi",
+              "30002055: mov dword ptr [ebp - 0x14], eax",
+              "30002058: mov eax, dword ptr [ebp - 0x14]",
+              "3000205b: mov edx, 8",
+              "30002060: mov eax, dword ptr [eax + edx]",
+              "30002063: mov dword ptr [ebp - 0x18], eax",
+              "30002066: cmp dword ptr [ebp - 0x18], 0",
+              "3000206a: jge 0x300021d4",
+              "30002070: mov dword ptr [ebp - 0x1c], 1",
+              "30002077: mov eax, dword ptr [ebp - 0x14]",
+              "3000207a: mov edx, 8",
+              "3000207f: mov eax, dword ptr [eax + edx]",
+              "30002082: mov dword ptr [ebp - 0x18], eax",
+              "30002085: cmp dword ptr [ebp - 0x18], 1",
+              "30002089: jge 0x300021d4",
+              "3000208f: lea eax, [ebp - 0x10]",
+              "30002092: mov dword ptr [ebp - 0x10], 3",
+              "30002099: push ebx",
+              "3000209a: push eax",
+              "3000209b: mov dword ptr [ebp - 0xc], 0x10",
+              "300020a2: mov dword ptr [ebp - 8], 0x10",
+              "300020a9: call 0x30002800",
+              "300020ae: add esp, 4",
+              "300020b1: mov dword ptr [ebp - 0x28], eax",
+              "300020b4: mov esi, eax",
+              "300020b6: xor edi, edi",
+              "300020b8: xor ebx, ebx",
+              "300020ba: mov eax, dword ptr [ebp - 0x14]",
+              "300020bd: mov edx, 4",
+              "300020c2: mov eax, dword ptr [eax + edx]",
+              "300020c5: mov dword ptr [ebp - 0x18], eax",
+              "300020c8: cmp dword ptr [ebp - 0x18], ebx",
+              "300020cb: jle 0x30002198",
+              "300020d1: test esi, esi",
+              "300020d3: je 0x3000217a",
+              "300020d9: mov eax, dword ptr [ebp - 0x14]",
+              "300020dc: mov edx, 0",
+              "300020e1: mov eax, dword ptr [eax + edx]",
+              "300020e4: mov dword ptr [ebp - 0x30], eax",
+              "300020e7: mov eax, dword ptr [ebp - 0x30]",
+              "300020ea: add eax, ebx",
+              "300020ec: mov dword ptr [ebp - 0x18], esi",
+              "300020ef: mov dword ptr [ebp - 0x2c], eax",
+              "300020f2: mov eax, dword ptr [ebp - 0x2c]",
+              "300020f5: mov edx, 0",
+              "300020fa: mov eax, dword ptr [eax + edx]",
+              "300020fd: mov dword ptr [ebp - 0x34], eax",
+              "30002100: mov eax, dword ptr [ebp - 0x34]",
+              "30002103: mov dword ptr [ebp - 0x20], eax",
+              "30002106: mov eax, dword ptr [ebp - 0x18]",
+              "30002109: mov edx, 0",
+              "3000210e: mov ecx, dword ptr [ebp - 0x20]",
+              "30002111: mov dword ptr [eax + edx], ecx",
+              "30002114: mov eax, dword ptr [ebp - 0x2c]",
+              "30002117: mov edx, 4",
+              "3000211c: mov eax, dword ptr [eax + edx]",
+              "3000211f: mov dword ptr [ebp - 0x38], eax",
+              "30002122: mov eax, dword ptr [ebp - 0x38]",
+              "30002125: mov dword ptr [ebp - 0x20], eax",
+              "30002128: mov eax, dword ptr [ebp - 0x18]",
+              "3000212b: mov edx, 4",
+              "30002130: mov ecx, dword ptr [ebp - 0x20]",
+              "30002133: mov dword ptr [eax + edx], ecx",
+              "30002136: mov eax, dword ptr [ebp - 0x2c]",
+              "30002139: mov edx, 8",
+              "3000213e: mov eax, dword ptr [eax + edx]",
+              "30002141: mov dword ptr [ebp - 0x3c], eax",
+              "30002144: mov eax, dword ptr [ebp - 0x3c]",
+              "30002147: mov dword ptr [ebp - 0x20], eax",
+              "3000214a: mov eax, dword ptr [ebp - 0x18]",
+              "3000214d: mov edx, 8",
+              "30002152: mov ecx, dword ptr [ebp - 0x20]",
+              "30002155: mov dword ptr [eax + edx], ecx",
+              "30002158: mov eax, dword ptr [ebp - 0x2c]",
+              "3000215b: mov edx, 0xc",
+              "30002160: mov eax, dword ptr [eax + edx]",
+              "30002163: mov dword ptr [ebp - 0x40], eax",
+              "30002166: mov eax, dword ptr [ebp - 0x40]",
+              "30002169: mov dword ptr [ebp - 0x20], eax",
+              "3000216c: mov eax, dword ptr [ebp - 0x18]",
+              "3000216f: mov edx, 0xc",
+              "30002174: mov ecx, dword ptr [ebp - 0x20]",
+              "30002177: mov dword ptr [eax + edx], ecx",
+              "3000217a: inc edi",
+              "3000217b: add ebx, 0x10",
+              "3000217e: add esi, 0x10",
+              "30002181: mov eax, dword ptr [ebp - 0x14]",
+              "30002184: mov edx, 4",
+              "30002189: mov eax, dword ptr [eax + edx]",
+              "3000218c: mov dword ptr [ebp - 0x24], eax",
+              "3000218f: cmp edi, dword ptr [ebp - 0x24]",
+              "30002192: jl 0x300020d1",
+              "30002198: mov eax, dword ptr [ebp - 0x14]",
+              "3000219b: mov edx, 0",
+              "300021a0: mov eax, dword ptr [eax + edx]",
+              "300021a3: mov dword ptr [ebp - 0x24], eax",
+              "300021a6: push dword ptr [ebp - 0x24]",
+              "300021a9: call 0x30002860",
+              "300021ae: mov eax, dword ptr [ebp - 0x28]",
+              "300021b1: add esp, 4",
+              "300021b4: mov dword ptr [ebp - 0x28], eax",
+              "300021b7: mov eax, dword ptr [ebp - 0x14]",
+              "300021ba: mov edx, 0",
+              "300021bf: mov ecx, dword ptr [ebp - 0x28]",
+              "300021c2: mov dword ptr [eax + edx], ecx",
+              "300021c5: mov eax, dword ptr [ebp - 0x14]",
+              "300021c8: mov edx, 8",
+              "300021cd: mov ecx, dword ptr [ebp - 0x1c]",
+              "300021d0: mov dword ptr [eax + edx], ecx",
+              "300021d3: pop ebx",
+              "300021d4: mov eax, dword ptr [ebp - 0x14]",
+              "300021d7: mov edx, 4",
+              "300021dc: mov eax, dword ptr [eax + edx]",
+              "300021df: mov dword ptr [ebp - 0x1c], eax",
+              "300021e2: mov edi, dword ptr [ebp - 0x1c]",
+              "300021e5: test edi, edi",
+              "300021e7: jns 0x30002250",
+              "300021e9: mov esi, edi",
+              "300021eb: shl esi, 4",
+              "300021ee: neg edi",
+              "300021f0: mov eax, dword ptr [ebp - 0x14]",
+              "300021f3: mov edx, 0",
+              "300021f8: mov eax, dword ptr [eax + edx]",
+              "300021fb: mov dword ptr [ebp - 0x1c], eax",
+              "300021fe: mov eax, dword ptr [ebp - 0x1c]",
+              "30002201: add eax, esi",
+              "30002203: je 0x30002248",
+              "30002205: mov dword ptr [ebp - 0x18], eax",
+              "30002208: mov eax, dword ptr [ebp - 0x18]",
+              "3000220b: mov edx, 0",
+              "30002210: mov ecx, 0",
+              "30002215: mov dword ptr [eax + edx], ecx",
+              "30002218: mov eax, dword ptr [ebp - 0x18]",
+              "3000221b: mov edx, 4",
+              "30002220: mov ecx, 0",
+              "30002225: mov dword ptr [eax + edx], ecx",
+              "30002228: mov eax, dword ptr [ebp - 0x18]",
+              "3000222b: mov edx, 8",
+              "30002230: mov ecx, 0",
+              "30002235: mov dword ptr [eax + edx], ecx",
+              "30002238: mov eax, dword ptr [ebp - 0x18]",
+              "3000223b: mov edx, 0xc",
+              "30002240: mov ecx, 0",
+              "30002245: mov dword ptr [eax + edx], ecx",
+              "30002248: add esi, 0x10",
+              "3000224b: sub edi, 1",
+              "3000224e: jne 0x300021f0",
+              "30002250: pop edi",
+              "30002251: pop esi",
+              "30002252: mov eax, dword ptr [ebp - 0x14]",
+              "30002255: mov edx, 4",
+              "3000225a: mov eax, dword ptr [eax + edx]",
+              "3000225d: mov dword ptr [ebp - 0x1c], eax",
+              "30002260: cmp dword ptr [ebp - 0x1c], 0",
+              "30002264: jle 0x3000228b",
+              "30002266: mov eax, dword ptr [ebp - 0x14]",
+              "30002269: mov edx, 4",
+              "3000226e: mov eax, dword ptr [eax + edx]",
+              "30002271: mov dword ptr [ebp - 0x28], eax",
+              "30002274: mov eax, dword ptr [ebp - 0x28]",
+              "30002277: dec eax",
+              "30002278: mov dword ptr [ebp - 0x24], eax",
+              "3000227b: mov eax, dword ptr [ebp - 0x14]",
+              "3000227e: mov edx, 4",
+              "30002283: mov ecx, dword ptr [ebp - 0x24]",
+              "30002286: mov dword ptr [eax + edx], ecx",
+              "30002289: jmp 0x30002252",
+              "3000228b: mov eax, dword ptr [ebp - 0x14]",
+              "3000228e: mov edx, 4",
+              "30002293: mov ecx, 0",
+              "30002298: mov dword ptr [eax + edx], ecx",
+              "3000229b: mov eax, dword ptr [ebp - 0x14]",
+              "3000229e: mov edx, 0",
+              "300022a3: mov eax, dword ptr [eax + edx]",
+              "300022a6: mov dword ptr [ebp - 0x1c], eax",
+              "300022a9: push dword ptr [ebp - 0x1c]",
+              "300022ac: call 0x30002860",
+              "300022b1: mov ecx, dword ptr [ebp - 4]",
+              "300022b4: add esp, 4",
+              "300022b7: xor ecx, ebp",
+              "300022b9: call 0x30002880",
+              "300022be: mov esp, ebp",
+              "300022c0: pop ebp",
+              "300022c1: ret "
+            ]
+          },
+          {
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "address": 805316608,
+            "provider": "bsp_core:singleton_lifetime.obj",
+            "bytes": 90,
+            "coff_section": 76,
+            "coff_sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+            "linked_sha256": "4e892636ac05782e1b7ab0167bb03dd3825cd510e183b9c963d64235df2b18ca",
+            "runtime_sha256": "4e892636ac05782e1b7ab0167bb03dd3825cd510e183b9c963d64235df2b18ca",
+            "all_relocations_resolved_and_exact": true,
+            "complete_COFF_bytes_hex": "558bec83ec0c538b1d00000000568b7508ff7608ffd383c40485c07520578b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+            "complete_linked_bytes_hex": "558bec83ec0c538b1d68400030568b7508ff7608ffd383c40485c07520578b3d70400030ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e8e5feffff68f44d00308d45f450e8630d0000cc",
+            "relocations": [
+              {
+                "offset": 9,
+                "symbol": "__imp__malloc",
+                "type": 6,
+                "target": "30004068",
+                "addend": "00000000",
+                "linked_value": "30004068",
+                "provider": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+              },
+              {
+                "offset": 32,
+                "symbol": "__imp___callnewh",
+                "type": 6,
+                "target": "30004070",
+                "addend": "00000000",
+                "linked_value": "30004070",
+                "provider": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+              },
+              {
+                "offset": 71,
+                "symbol": "??0bad_alloc@std@@QAE@XZ",
+                "type": 20,
+                "target": "30002730",
+                "addend": "00000000",
+                "linked_value": "fffffee5",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 76,
+                "symbol": "__TI2?AVbad_alloc@std@@",
+                "type": 6,
+                "target": "30004df4",
+                "addend": "00000000",
+                "linked_value": "30004df4",
+                "provider": "bsp_core:singleton_lifetime.obj"
+              },
+              {
+                "offset": 85,
+                "symbol": "__CxxThrowException@8",
+                "type": 20,
+                "target": "300035bc",
+                "addend": "00000000",
+                "linked_value": "00000d63",
+                "provider": "vcruntime:VCRUNTIME140.dll"
+              }
+            ],
+            "assembly": [
+              "30002800: push ebp",
+              "30002801: mov ebp, esp",
+              "30002803: sub esp, 0xc",
+              "30002806: push ebx",
+              "30002807: mov ebx, dword ptr [0x30004068]",
+              "3000280d: push esi",
+              "3000280e: mov esi, dword ptr [ebp + 8]",
+              "30002811: push dword ptr [esi + 8]",
+              "30002814: call ebx",
+              "30002816: add esp, 4",
+              "30002819: test eax, eax",
+              "3000281b: jne 0x3000283d",
+              "3000281d: push edi",
+              "3000281e: mov edi, dword ptr [0x30004070]",
+              "30002824: push dword ptr [esi + 8]",
+              "30002827: call edi",
+              "30002829: add esp, 4",
+              "3000282c: test eax, eax",
+              "3000282e: je 0x30002843",
+              "30002830: push dword ptr [esi + 8]",
+              "30002833: call ebx",
+              "30002835: add esp, 4",
+              "30002838: test eax, eax",
+              "3000283a: je 0x30002824",
+              "3000283c: pop edi",
+              "3000283d: pop esi",
+              "3000283e: pop ebx",
+              "3000283f: mov esp, ebp",
+              "30002841: pop ebp",
+              "30002842: ret ",
+              "30002843: lea ecx, [ebp - 0xc]",
+              "30002846: call 0x30002730",
+              "3000284b: push 0x30004df4",
+              "30002850: lea eax, [ebp - 0xc]",
+              "30002853: push eax",
+              "30002854: call 0x300035bc",
+              "30002859: int3 "
+            ]
+          },
+          {
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "address": 805316704,
+            "provider": "bsp_core:singleton_lifetime.obj",
+            "bytes": 6,
+            "coff_section": 77,
+            "coff_sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+            "linked_sha256": "8a5af76776f8c1a8408dda32ec8bf1c96b34d7302188ba689f7fd390d5e95f22",
+            "runtime_sha256": "8a5af76776f8c1a8408dda32ec8bf1c96b34d7302188ba689f7fd390d5e95f22",
+            "all_relocations_resolved_and_exact": true,
+            "complete_COFF_bytes_hex": "ff2500000000",
+            "complete_linked_bytes_hex": "ff2574400030",
+            "relocations": [
+              {
+                "offset": 2,
+                "symbol": "__imp__free",
+                "type": 6,
+                "target": "30004074",
+                "addend": "00000000",
+                "linked_value": "30004074",
+                "provider": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+              }
+            ],
+            "assembly": [
+              "30002860: jmp dword ptr [0x30004074]"
+            ]
+          }
+        ],
+        "entire_runtime_text_matches_linked_PE_before_and_after": true,
+        "text_bytes": 10080,
+        "text_sha256": "eff1a2da217fdeff515c99e1637a0f40784300525721d7a2ff4b5c5b28f34ec1",
+        "resolved_CRT_modules": [
+          {
+            "name": "malloc",
+            "runtime_address": "75750120",
+            "module_base": "75720000",
+            "module_file": {
+              "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+              "bytes": 1377512,
+              "sha256": "5c52e3a303baaac0e0af8bd9b96134993da34bc9d834a31ef37e1d2cdc7fe192"
+            }
+          },
+          {
+            "name": "free",
+            "runtime_address": "757500a0",
+            "module_base": "75720000",
+            "module_file": {
+              "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+              "bytes": 1377512,
+              "sha256": "5c52e3a303baaac0e0af8bd9b96134993da34bc9d834a31ef37e1d2cdc7fe192"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "strict_MSVC_Win32_build": "passed /W4 /WX /fp:strict, scripts/build.ps1",
+        "existing_CTests": "2/2 passed",
+        "native_seed_verification": "8/8 live versus installed PE",
+        "fixture": "6/6 focused original/source scenarios passed",
+        "permanent_tests_added": 0,
+        "game_install_unchanged": true,
+        "Ghidra_writes": false,
+        "original_caller_ABI_compatible": false,
+        "game_validated": false
+      },
+      "limitations": [
+        "New source interfaces use current shared CRT provider, not original CRT binary exception object/RTTI identity.",
+        "Reached nonnull pointers require real backed storage. Wrapped allocation may be too small; no arbitrary invalid-memory recovery is claimed.",
+        "No append, frame-target owner lifetime, renderer integration, or in-game behavior is established by this vector-only packet."
+      ],
+      "source_pins": [
+        {
+          "path": "include/bsp/native_frame_target_vector.hpp",
+          "bytes": 2285,
+          "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e"
+        },
+        {
+          "path": "src/native_frame_target_vector.cpp",
+          "bytes": 3758,
+          "sha256": "4be91f26effbf619545dfc59a624488e8361aca47264d6af67bae33e3932b39d"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        }
+      ],
+      "artifact_pins": [
+        {
+          "path": "local/frame_vector_primary/frozen/bsp_core.lib",
+          "bytes": 34223464,
+          "sha256": "8fa9f1259c25b453b069d7ce36333935b66d11e332b5480a7afbc45144fce926"
+        },
+        {
+          "path": "build/win32/bsp_core.vcxproj",
+          "bytes": 94181,
+          "sha256": "38846cfd9d52072531695360dd17f3a6b1ca73c9de41b4bb110da0da34d38609"
+        },
+        {
+          "path": "local/frame_vector_primary/build_frame_vector_probe.ps1",
+          "bytes": 1741,
+          "sha256": "c023936d915368e8f47ef1fe9df1acca06f1290a2fa72344d6a8808847b6a859"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_probe.cpp",
+          "bytes": 11725,
+          "sha256": "14f842ceda478eab2127d186853eba1cf6461a5ec1ea014193c1e774ef87596d"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_spans.hpp",
+          "bytes": 1356,
+          "sha256": "d0d59e7de217a4d197a675345376d544798d1075ebbdcbfed34c5c995241d725"
+        },
+        {
+          "path": "local/frame_vector_primary/prepare_frame_vector.py",
+          "bytes": 2379,
+          "sha256": "13056b87dca5b85822fdc57c8e3c7c51a380c4f81f4e08db2c1f6479fe94b25d"
+        },
+        {
+          "path": "local/frame_vector_primary/audit_frame_vector.py",
+          "bytes": 14230,
+          "sha256": "275017c64a8335e2f364cf32ba5f8ee10493649c9e4af62503336b0acd11c320"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_preparation.json",
+          "bytes": 8995,
+          "sha256": "fb87733217410843aa966d2bef1be60c03328d3b4891825ad65384c1d982f449"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_fixture_build.log",
+          "bytes": 24,
+          "sha256": "7e47f96a698707e3f45413a0cf59fea9c666f8a5d430fb6e2707dd628412e173"
+        },
+        {
+          "path": "build/frame-vector-primary-check/build_frame_vector_probe.cmd",
+          "bytes": 1785,
+          "sha256": "2a599a828f153efb1883d83a56f025158acf71a9b023f1bd71a5f1a9c93542cc"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_0.bin",
+          "bytes": 2252,
+          "sha256": "17a87a87c2343cf722badcca0e66d9a197d45de413addb96d692589912e6b7b7"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_1.bin",
+          "bytes": 2252,
+          "sha256": "309a8c0c099a78a13f8506311c03f5f16bbd8bbd57ab10a59b61fd44133743d0"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_2.bin",
+          "bytes": 2252,
+          "sha256": "b2739a417b73de7d584f01b40fbde4f62ae7514438b98bcb6b0bad917fa2ad8e"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_3.bin",
+          "bytes": 2252,
+          "sha256": "840c9f7e7486c659f0aa1835985a929fdc6a989792d3202dd9872bbafa2deae1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_4.bin",
+          "bytes": 2252,
+          "sha256": "ac0e37b26569c03fa5513d0426de5f6bdcdd8ec0d65cb9e25a3e2b0fcd3f1392"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_5.bin",
+          "bytes": 2252,
+          "sha256": "fcf51805a9d6558f8b0c64510923b958a0acd0706fea3004e9dfe2eac72abf40"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_original_postimage.bin",
+          "bytes": 4096,
+          "sha256": "70f9f918572982b8ca678f10c00cfd9ba3c92d4dc415cf3e2fba60fbec8ea13d"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_original_postimage_after.bin",
+          "bytes": 4096,
+          "sha256": "70f9f918572982b8ca678f10c00cfd9ba3c92d4dc415cf3e2fba60fbec8ea13d"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.exe",
+          "bytes": 17920,
+          "sha256": "84a96d29136017a98cafb94a2c8245f98f70a199118be0a0abfb3f2a5b51295e"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.map",
+          "bytes": 45608,
+          "sha256": "60e50ee7384065759229bc3c3d94d4c7f557f943c50cbeabfa8b76ed883f70a0"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.obj",
+          "bytes": 73170,
+          "sha256": "0161ed1f8779fe869b95cfd5d85cf206da2c340d4571bb675bd6432905c8d069"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.pdb",
+          "bytes": 667648,
+          "sha256": "05b0807a97a96d0b199e0766f5dfa094698f2683eb97208449bd5b60aab8117a"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_result.txt",
+          "bytes": 683,
+          "sha256": "a81bb7395130bbcddfb117ca8309c831a05185ed3255fda15688092a1664950a"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_runtime_text_after.bin",
+          "bytes": 10080,
+          "sha256": "eff1a2da217fdeff515c99e1637a0f40784300525721d7a2ff4b5c5b28f34ec1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_runtime_text_before.bin",
+          "bytes": 10080,
+          "sha256": "eff1a2da217fdeff515c99e1637a0f40784300525721d7a2ff4b5c5b28f34ec1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_0.bin",
+          "bytes": 2252,
+          "sha256": "17a87a87c2343cf722badcca0e66d9a197d45de413addb96d692589912e6b7b7"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_1.bin",
+          "bytes": 2252,
+          "sha256": "309a8c0c099a78a13f8506311c03f5f16bbd8bbd57ab10a59b61fd44133743d0"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_2.bin",
+          "bytes": 2252,
+          "sha256": "b2739a417b73de7d584f01b40fbde4f62ae7514438b98bcb6b0bad917fa2ad8e"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_3.bin",
+          "bytes": 2252,
+          "sha256": "840c9f7e7486c659f0aa1835985a929fdc6a989792d3202dd9872bbafa2deae1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_4.bin",
+          "bytes": 2252,
+          "sha256": "ac0e37b26569c03fa5513d0426de5f6bdcdd8ec0d65cb9e25a3e2b0fcd3f1392"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_5.bin",
+          "bytes": 2252,
+          "sha256": "fcf51805a9d6558f8b0c64510923b958a0acd0706fea3004e9dfe2eac72abf40"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_symbols.txt",
+          "bytes": 4614,
+          "sha256": "b95aa29b3566ebf61386c39839dee12f83d3f07bd6953b30dab0818eca98f703"
+        },
+        {
+          "path": "build/frame-vector-primary-check/singleton_symbols.txt",
+          "bytes": 49482,
+          "sha256": "a9c55b227cd78c16bfb120f1d874d54676535ffdef0f35f4b3ebdf2a65edc3a4"
+        }
+      ],
+      "handoff": {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile",
+        "build_hook": "local/frame_vector_primary/frame_vector_sources.cmake via CMAKE_PROJECT_INCLUDE_BEFORE; root must register src/native_frame_target_vector.cpp",
+        "rebuild": "python tools/ghidra_export.py verify-seeds; ./local/build_frame_vector.ps1",
+        "relink": "./local/frame_vector_primary/build_frame_vector_probe.ps1; python local/frame_vector_primary/audit_frame_vector.py",
+        "source_fixture_policy": "Probe compiled once separately; all owned code and allocator/free definitions pulled from strict bsp_core.lib, with exact complete COFF relocation proof."
+      },
+      "primary_preparation": {
+        "utc": "2026-09-11T09:16:27.163796+00:00",
+        "worker_report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-frame_target_vector\\reports\\native_frame_target_vector_audit.json",
+          "bytes": 79491,
+          "sha256": "b022320bc1d9036dafa235afd0ab77107f5481b2c8c8adc5be215b11da90afd8"
+        },
+        "verified_worker_pins": 42,
+        "current_source_pins": [
+          {
+            "path": "include/bsp/native_frame_target_vector.hpp",
+            "bytes": 2285,
+            "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e"
+          },
+          {
+            "path": "src/native_frame_target_vector.cpp",
+            "bytes": 3758,
+            "sha256": "4be91f26effbf619545dfc59a624488e8361aca47264d6af67bae33e3932b39d"
+          },
+          {
+            "path": "include/bsp/singleton_lifetime.hpp",
+            "bytes": 4372,
+            "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          }
+        ],
+        "root_artifacts_before": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "bytes": 34223464,
+            "sha256": "8fa9f1259c25b453b069d7ce36333935b66d11e332b5480a7afbc45144fce926"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_frame_target_vector.obj",
+            "bytes": 4324,
+            "sha256": "b90b2adc322b63f629a0d0e86ed6a5f4761373b91b4d692de97138ec88add586"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+            "bytes": 32943,
+            "sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3"
+          }
+        ],
+        "frozen_artifacts": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\bsp_core.lib",
+            "bytes": 34223464,
+            "sha256": "8fa9f1259c25b453b069d7ce36333935b66d11e332b5480a7afbc45144fce926"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\native_frame_target_vector.obj",
+            "bytes": 4324,
+            "sha256": "b90b2adc322b63f629a0d0e86ed6a5f4761373b91b4d692de97138ec88add586"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\singleton_lifetime.obj",
+            "bytes": 32943,
+            "sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\include\\bsp\\native_frame_target_vector.hpp",
+            "bytes": 2285,
+            "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\src\\native_frame_target_vector.cpp",
+            "bytes": 3758,
+            "sha256": "4be91f26effbf619545dfc59a624488e8361aca47264d6af67bae33e3932b39d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\include\\bsp\\singleton_lifetime.hpp",
+            "bytes": 4372,
+            "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frozen\\src\\singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          }
+        ],
+        "copied_or_path_adapted_inputs": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\frame_vector_probe.cpp",
+            "bytes": 11725,
+            "sha256": "14f842ceda478eab2127d186853eba1cf6461a5ec1ea014193c1e774ef87596d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\prepare_frame_vector.py",
+            "bytes": 2379,
+            "sha256": "13056b87dca5b85822fdc57c8e3c7c51a380c4f81f4e08db2c1f6479fe94b25d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\audit_frame_vector.py",
+            "bytes": 14230,
+            "sha256": "275017c64a8335e2f364cf32ba5f8ee10493649c9e4af62503336b0acd11c320"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frame_vector_primary\\build_frame_vector_probe.ps1",
+            "bytes": 1741,
+            "sha256": "c023936d915368e8f47ef1fe9df1acca06f1290a2fa72344d6a8808847b6a859"
+          }
+        ],
+        "fixture_cpp_unchanged": true,
+        "worker_bundle_unchanged": true
+      },
+      "fresh_seeds": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true,
+          "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+          "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true,
+          "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+          "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+          "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true,
+          "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+          "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+          "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true,
+          "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+          "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true,
+          "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+          "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true,
+          "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+          "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+        }
+      ],
+      "primary_artifact_pins": [
+        {
+          "path": "local/frame_vector_primary/audit_frame_vector.py",
+          "bytes": 14230,
+          "sha256": "275017c64a8335e2f364cf32ba5f8ee10493649c9e4af62503336b0acd11c320"
+        },
+        {
+          "path": "local/frame_vector_primary/build_frame_vector_probe.ps1",
+          "bytes": 1741,
+          "sha256": "c023936d915368e8f47ef1fe9df1acca06f1290a2fa72344d6a8808847b6a859"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_fixture_build.log",
+          "bytes": 24,
+          "sha256": "7e47f96a698707e3f45413a0cf59fea9c666f8a5d430fb6e2707dd628412e173"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00b1f970.txt",
+          "bytes": 616,
+          "sha256": "e9cfbd9b924f0142345c152863ee4453ab264d3d5f2bf663308a256d528fc6b1"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00b1f9f0.txt",
+          "bytes": 430,
+          "sha256": "74a1f61780f5745ffd50de673a58c14262e5e7e2ee058438a31df9485cdb5c2b"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00b1fb90.txt",
+          "bytes": 118,
+          "sha256": "4cb6b55f684f258a1b52dd0d5458ad9b6f9f2055a54a064317e3ffd6f8eb6ee6"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00bf55be.txt",
+          "bytes": 33,
+          "sha256": "12e4584cbf26902371286877778079ed8854f2533126f9311a49939026c63245"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00bf65ac.txt",
+          "bytes": 33,
+          "sha256": "3644837c583910bd51d56c2737cdd2ffffa8fbc16c782ca4280e7a7d67977017"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00bf681b.txt",
+          "bytes": 511,
+          "sha256": "bab7d372a9710c85622c87209be8c0af9b01d9d643be310651800c326c2d4693"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_live_00bf6989.txt",
+          "bytes": 33,
+          "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_preparation.json",
+          "bytes": 8995,
+          "sha256": "fb87733217410843aa966d2bef1be60c03328d3b4891825ad65384c1d982f449"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_probe.cpp",
+          "bytes": 11725,
+          "sha256": "14f842ceda478eab2127d186853eba1cf6461a5ec1ea014193c1e774ef87596d"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_spans.hpp",
+          "bytes": 1356,
+          "sha256": "d0d59e7de217a4d197a675345376d544798d1075ebbdcbfed34c5c995241d725"
+        },
+        {
+          "path": "local/frame_vector_primary/frame_vector_verify_seeds.log",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "local/frame_vector_primary/prepare_frame_vector.py",
+          "bytes": 2379,
+          "sha256": "13056b87dca5b85822fdc57c8e3c7c51a380c4f81f4e08db2c1f6479fe94b25d"
+        },
+        {
+          "path": "local/frame_vector_primary/primary_audit.json",
+          "bytes": 79027,
+          "sha256": "77eb2a10a7baa8ca8a17de296d4048e5da7b69d6da9e321bde385f0b2467f128"
+        },
+        {
+          "path": "local/frame_vector_primary/repair_log.txt",
+          "bytes": 71,
+          "sha256": "ee6c84eb67ee60b0a784d2bfde3da15116da76ba75a58382d2109d84539f21dc"
+        },
+        {
+          "path": "local/frame_vector_primary/worker_audit_frame_vector.py",
+          "bytes": 13714,
+          "sha256": "d341df502ffdca87af95bac8c007127309211d93e1d00ef7ea22eede9cc9dd5e"
+        },
+        {
+          "path": "local/frame_vector_primary/worker_build_frame_vector_probe.ps1",
+          "bytes": 1724,
+          "sha256": "37ab2a2ec4416d1ba9f651af51f650ff20e8e7a7ce9422340a12d56d2e209625"
+        },
+        {
+          "path": "local/frame_vector_primary/worker_frame_vector_probe.cpp",
+          "bytes": 11725,
+          "sha256": "14f842ceda478eab2127d186853eba1cf6461a5ec1ea014193c1e774ef87596d"
+        },
+        {
+          "path": "local/frame_vector_primary/worker_prepare_frame_vector.py",
+          "bytes": 2280,
+          "sha256": "b00c93b438de17e8b2368b211047ea74ad3e9288db8edd08bcd55c323768609b"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/bsp_core.lib",
+          "bytes": 34223464,
+          "sha256": "8fa9f1259c25b453b069d7ce36333935b66d11e332b5480a7afbc45144fce926"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/native_frame_target_vector.obj",
+          "bytes": 4324,
+          "sha256": "b90b2adc322b63f629a0d0e86ed6a5f4761373b91b4d692de97138ec88add586"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/singleton_lifetime.obj",
+          "bytes": 32943,
+          "sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/src/native_frame_target_vector.cpp",
+          "bytes": 3758,
+          "sha256": "4be91f26effbf619545dfc59a624488e8361aca47264d6af67bae33e3932b39d"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/include/bsp/native_frame_target_vector.hpp",
+          "bytes": 2285,
+          "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e"
+        },
+        {
+          "path": "local/frame_vector_primary/frozen/include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "build/frame-vector-primary-check/build_frame_vector_probe.cmd",
+          "bytes": 1785,
+          "sha256": "2a599a828f153efb1883d83a56f025158acf71a9b023f1bd71a5f1a9c93542cc"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_0.bin",
+          "bytes": 2252,
+          "sha256": "17a87a87c2343cf722badcca0e66d9a197d45de413addb96d692589912e6b7b7"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_1.bin",
+          "bytes": 2252,
+          "sha256": "309a8c0c099a78a13f8506311c03f5f16bbd8bbd57ab10a59b61fd44133743d0"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_2.bin",
+          "bytes": 2252,
+          "sha256": "b2739a417b73de7d584f01b40fbde4f62ae7514438b98bcb6b0bad917fa2ad8e"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_3.bin",
+          "bytes": 2252,
+          "sha256": "840c9f7e7486c659f0aa1835985a929fdc6a989792d3202dd9872bbafa2deae1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_4.bin",
+          "bytes": 2252,
+          "sha256": "ac0e37b26569c03fa5513d0426de5f6bdcdd8ec0d65cb9e25a3e2b0fcd3f1392"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_native_5.bin",
+          "bytes": 2252,
+          "sha256": "fcf51805a9d6558f8b0c64510923b958a0acd0706fea3004e9dfe2eac72abf40"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_original_postimage.bin",
+          "bytes": 4096,
+          "sha256": "70f9f918572982b8ca678f10c00cfd9ba3c92d4dc415cf3e2fba60fbec8ea13d"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_original_postimage_after.bin",
+          "bytes": 4096,
+          "sha256": "70f9f918572982b8ca678f10c00cfd9ba3c92d4dc415cf3e2fba60fbec8ea13d"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.exe",
+          "bytes": 17920,
+          "sha256": "84a96d29136017a98cafb94a2c8245f98f70a199118be0a0abfb3f2a5b51295e"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.map",
+          "bytes": 45608,
+          "sha256": "60e50ee7384065759229bc3c3d94d4c7f557f943c50cbeabfa8b76ed883f70a0"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.obj",
+          "bytes": 73170,
+          "sha256": "0161ed1f8779fe869b95cfd5d85cf206da2c340d4571bb675bd6432905c8d069"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_probe.pdb",
+          "bytes": 667648,
+          "sha256": "05b0807a97a96d0b199e0766f5dfa094698f2683eb97208449bd5b60aab8117a"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_result.txt",
+          "bytes": 683,
+          "sha256": "a81bb7395130bbcddfb117ca8309c831a05185ed3255fda15688092a1664950a"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_runtime_text_after.bin",
+          "bytes": 10080,
+          "sha256": "eff1a2da217fdeff515c99e1637a0f40784300525721d7a2ff4b5c5b28f34ec1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_runtime_text_before.bin",
+          "bytes": 10080,
+          "sha256": "eff1a2da217fdeff515c99e1637a0f40784300525721d7a2ff4b5c5b28f34ec1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_0.bin",
+          "bytes": 2252,
+          "sha256": "17a87a87c2343cf722badcca0e66d9a197d45de413addb96d692589912e6b7b7"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_1.bin",
+          "bytes": 2252,
+          "sha256": "309a8c0c099a78a13f8506311c03f5f16bbd8bbd57ab10a59b61fd44133743d0"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_2.bin",
+          "bytes": 2252,
+          "sha256": "b2739a417b73de7d584f01b40fbde4f62ae7514438b98bcb6b0bad917fa2ad8e"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_3.bin",
+          "bytes": 2252,
+          "sha256": "840c9f7e7486c659f0aa1835985a929fdc6a989792d3202dd9872bbafa2deae1"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_4.bin",
+          "bytes": 2252,
+          "sha256": "ac0e37b26569c03fa5513d0426de5f6bdcdd8ec0d65cb9e25a3e2b0fcd3f1392"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_source_5.bin",
+          "bytes": 2252,
+          "sha256": "fcf51805a9d6558f8b0c64510923b958a0acd0706fea3004e9dfe2eac72abf40"
+        },
+        {
+          "path": "build/frame-vector-primary-check/frame_vector_symbols.txt",
+          "bytes": 4614,
+          "sha256": "b95aa29b3566ebf61386c39839dee12f83d3f07bd6953b30dab0818eca98f703"
+        },
+        {
+          "path": "build/frame-vector-primary-check/singleton_symbols.txt",
+          "bytes": 49482,
+          "sha256": "a9c55b227cd78c16bfb120f1d874d54676535ffdef0f35f4b3ebdf2a65edc3a4"
+        },
+        {
+          "path": "local/prepare_frame_vector_primary.py",
+          "bytes": 4084,
+          "sha256": "d02af5c2ad76a51753248457834ca759455ecee11d900eddf735982e0fa15b92"
+        },
+        {
+          "path": "local/frame_vector_primary_preparation.json",
+          "bytes": 4673,
+          "sha256": "efcc94026ee3135e206f16e2b8de907e515eef9f1a391e7163efeabcaa44e4f5"
+        },
+        {
+          "path": "local/repair_frame_target_vector_functions.py",
+          "bytes": 4865,
+          "sha256": "867eebb9b27eec9aed1b3ed4f17d4b3c63c5f7243db52434420cd2ddf55940e5"
+        },
+        {
+          "path": "local/native_frame_target_vector_primary_build.txt",
+          "bytes": 2172,
+          "sha256": "7691f07f779555d444a7153d00bb907ef93db6a8e4abbf36093c3157c1875066"
+        }
+      ]
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_frame_target_vector_annotations.json",
+    "bytes": 5632,
+    "sha256": "ee516c138332d9756fff1c7ec96505079ac23d8e482809f157c8e56b71ae8091",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "saved_full_body_repairs": {
+    "path": "reports/native_frame_target_vector_repaired_functions.json",
+    "bytes": 9122,
+    "sha256": "3e612b3ac8d199287f4fb52397b592ce50ef2b160de89de742b585ab02382952"
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b1f970",
+      "path": "exports/bsp/functions/00b1f970/decompiled.c",
+      "bytes": 2564,
+      "sha256": "f5618e8982b910190446227e6ab7af2ca8b408fc7104f66bf899329f2ad9b2da"
+    },
+    {
+      "address": "00b1f9f0",
+      "path": "exports/bsp/functions/00b1f9f0/decompiled.c",
+      "bytes": 2395,
+      "sha256": "f4af92a2c45c6cc6aa589493829a28ac6ea0c0e039305d87df86c5cd266e2ee7"
+    },
+    {
+      "address": "00b1fb90",
+      "path": "exports/bsp/functions/00b1fb90/decompiled.c",
+      "bytes": 1807,
+      "sha256": "122d00fd1ee76d890c3f2ed386a86215e1237cd12b7653e42e2dacab7835d844"
+    }
+  ],
+  "closure_utc": "2026-09-11T15:24:20.351275+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b1f970",
+      "name": "reserve_native_frame_target_vector_00b1f970",
+      "cpp_symbol": "bsp::reserve_native_frame_target_vector_00b1f970",
+      "source": "src/native_frame_target_vector.cpp",
+      "native_end_exclusive": "00b1f9f0",
+      "original_abi": "ECX actual12byteheader; signedstackcapacity; RET4",
+      "host_abi_boundary": "new cdecl actualrawheader reference interface with establishedsharedCRTdomain; not nativecaller ABI",
+      "evidence": "reports/native_frame_target_vector_audit.json",
+      "status": "complete_actual_raw_storage_primary_library_original_CRT_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1f9f0",
+      "name": "resize_native_frame_target_vector_00b1f9f0",
+      "cpp_symbol": "bsp::resize_native_frame_target_vector_00b1f9f0",
+      "source": "src/native_frame_target_vector.cpp",
+      "native_end_exclusive": "00b1fa48",
+      "original_abi": "ECX actual12byteheader; signedstackcount; RET4",
+      "host_abi_boundary": "new cdecl actualrawheader reference interface with establishedsharedCRTdomain; not nativecaller ABI",
+      "evidence": "reports/native_frame_target_vector_audit.json",
+      "status": "complete_actual_raw_storage_primary_library_original_CRT_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1fb90",
+      "name": "destroy_native_frame_target_vector_00b1fb90",
+      "cpp_symbol": "bsp::destroy_native_frame_target_vector_00b1fb90",
+      "source": "src/native_frame_target_vector.cpp",
+      "native_end_exclusive": "00b1fba7",
+      "original_abi": "ECX actual12byteheader; plainRET",
+      "host_abi_boundary": "new cdecl actualrawheader reference interface with establishedsharedCRTdomain; not nativecaller ABI",
+      "evidence": "reports/native_frame_target_vector_audit.json",
+      "status": "complete_actual_raw_storage_primary_library_original_CRT_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_FRAME_TARGET_VECTOR.md",
+    "bytes": 8142,
+    "sha256": "dec63da71a74a3573bb6fd8893d08197a19f96bdca70ad64ca9c5ee5ebb21109"
   }
 }

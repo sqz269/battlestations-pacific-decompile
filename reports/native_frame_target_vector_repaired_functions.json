@@ -1,0 +1,303 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b1f970",
+      "end_exclusive": "00b1f9f0",
+      "length": 128,
+      "sha256": "05d60caebbdd985721d54e5f7d9bac0323c03687103d92db6095f0959ba4a1b7",
+      "function_before": "Function: FUN_00b1f970 at 00b1f970\nSignature: undefined FUN_00b1f970(void)\nEntry: 00b1f970\nBody: 00b1f970 - 00b1f9ef",
+      "documentation_before": {
+        "hash": "6a0876109b630da7888c646eca69d910b155f80e412625b94fc200de0e3fb9fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1f970",
+        "function_name": "FUN_00b1f970",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_00b1f982"
+          },
+          {
+            "relative_offset": 56,
+            "name": "LAB_00b1f9a8"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_00b1f9c7"
+          },
+          {
+            "relative_offset": 105,
+            "name": "LAB_00b1f9d9"
+          },
+          {
+            "relative_offset": 123,
+            "name": "LAB_00b1f9eb"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "00b1f9dc"
+      ],
+      "function_after": "Function: FUN_00b1f970 at 00b1f970\nSignature: undefined FUN_00b1f970(void)\nEntry: 00b1f970\nBody: 00b1f970 - 00b1f9ef",
+      "documentation_after": {
+        "hash": "09d2a5d09c7db0332a455a6c2a941deec52ebc0c2dfb51eb61ccb5f0f030d769",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1f970",
+        "function_name": "FUN_00b1f970",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_00b1f982"
+          },
+          {
+            "relative_offset": 56,
+            "name": "LAB_00b1f9a8"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_00b1f9c7"
+          },
+          {
+            "relative_offset": 105,
+            "name": "LAB_00b1f9d9"
+          },
+          {
+            "relative_offset": 123,
+            "name": "LAB_00b1f9eb"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00b1fb90",
+      "end_exclusive": "00b1fba7",
+      "length": 23,
+      "sha256": "9b535b0633b17a7247bef521d3288bd2de34a0d7c5f4c6f8017f834138132fc0",
+      "function_before": "Function: FUN_00b1fb90 at 00b1fb90\nSignature: undefined FUN_00b1fb90(void)\nEntry: 00b1fb90\nBody: 00b1fb90 - 00b1fba1",
+      "documentation_before": {
+        "hash": "d66c02ce3fbd5d6282313791cafe80a48a09dbbf66dd755d1c4bfd4b2d26e375",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fb90",
+        "function_name": "FUN_00b1fb90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "00b1fb9d"
+      ],
+      "function_after": "Function: FUN_00b1fb90 at 00b1fb90\nSignature: undefined FUN_00b1fb90(void)\nEntry: 00b1fb90\nBody: 00b1fb90 - 00b1fba6",
+      "documentation_after": {
+        "hash": "83d4e6d066dec83d15aa991f19c19b24ace7a1100be9ab352be37961410bbd74",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fb90",
+        "function_name": "FUN_00b1fb90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1f9e1",
+        "end_address": "00b1f9f0"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1f9e1",
+        "end_address": "00b1f9ef",
+        "bytes_disassembled": 15,
+        "message": "Successfully disassembled 15 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1f9dc"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1f9dc (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1f970"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1f970",
+        "deleted_function": "FUN_00b1f970",
+        "body_size": 118,
+        "message": "Function 'FUN_00b1f970' deleted at 00b1f970"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1f970",
+        "name": "FUN_00b1f970",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1f970",
+        "function_name": "FUN_00b1f970",
+        "entry_point": "00b1f970",
+        "body_size": 128,
+        "message": "Function created successfully at 00b1f970"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1fba2",
+        "end_address": "00b1fba7"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1fba2",
+        "end_address": "00b1fba6",
+        "bytes_disassembled": 5,
+        "message": "Successfully disassembled 5 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1fb9d"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1fb9d (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1fb90"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1fb90",
+        "deleted_function": "FUN_00b1fb90",
+        "body_size": 18,
+        "message": "Function 'FUN_00b1fb90' deleted at 00b1fb90"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1fb90",
+        "name": "FUN_00b1fb90",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1fb90",
+        "function_name": "FUN_00b1fb90",
+        "entry_point": "00b1fb90",
+        "body_size": 23,
+        "message": "Function created successfully at 00b1fb90"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Two complete frame target vector bodies repaired with original comments preserved; project saved"
+}

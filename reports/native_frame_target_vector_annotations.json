@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00b1f970",
+    "before": {
+      "address": "00b1f970",
+      "function_name": "FUN_00b1f970"
+    },
+    "after": {
+      "address": "00b1f970",
+      "old_name": "FUN_00b1f970",
+      "name": "BSP_FrameTargets_ReserveRecordStorage",
+      "evidence": "Complete3rawframe-target record-vector functions in src/native_frame_target_vector.cpp: B1F970128bytes, B1F9F088bytes, B1FB9023bytes. Nativeheaderdata/count/capacity12bytes at group1C; opaquerow16bytes/fourDWORDs. Reserve signedclamp>=1, skip sufficientcapacity, allocate DWORD(request<<4) using actualsharedCRT; reloadcountafterallocation/percopyiteration, currentdata eachrow/beforefree, copyfourorderedDWORDs, free thenpublishdata/capacity. Resizezeroesonlygrownrows, nullrowaddressskips, signedshrinkdecrementscurrentcountwithoutrowclear, finalrequestedcountstore. Destroyresize0/currentdatafree, danglingdata/capacitypreserved. Primary42workerpins/fourcurrentfiles/sevenfreshlive-PEspans359bytes, all239owned; strictmain/twoCTests/eightfreshseeds. Soleactualmainfrozenlibrary/twoexactarchiveobjects; fivecompleteCOFF/linked/runtimefunctions allrelocations exact; sixoriginal/librarypairs13512normalizedtracebytes/14snapshots. ActualUCRTmalloc/free forwardedobservers/restoredIAT, actualFFFFFFF0mallocfailure with actualnewhandlerreturn0/bad_alloc andthrownint preservingheadermutations; DWORDoverflowmalloc0. Completeoriginal4096mapping andwholefixturetextbefore/aftermatch. NativeCRTcalls explicitlybridgedtoexistingfullsharedCPPprovider, originalCRTexceptionobjectRTTIidentitynotclaimed. FalseCALL_RETURN atB1F9DC/B1FB9D removed after fullbyteproof; fullreturntails/commentspreservedandprojectsaved. Newcdeclinterfaces, descriptive names hypotheses, nooriginalcallerABI/owner/renderer/gameplayclaim. reports/native_frame_target_vector_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f9f0",
+    "before": {
+      "address": "00b1f9f0",
+      "function_name": "FUN_00b1f9f0"
+    },
+    "after": {
+      "address": "00b1f9f0",
+      "old_name": "FUN_00b1f9f0",
+      "name": "BSP_FrameTargets_ResizeRecords",
+      "evidence": "Complete3rawframe-target record-vector functions in src/native_frame_target_vector.cpp: B1F970128bytes, B1F9F088bytes, B1FB9023bytes. Nativeheaderdata/count/capacity12bytes at group1C; opaquerow16bytes/fourDWORDs. Reserve signedclamp>=1, skip sufficientcapacity, allocate DWORD(request<<4) using actualsharedCRT; reloadcountafterallocation/percopyiteration, currentdata eachrow/beforefree, copyfourorderedDWORDs, free thenpublishdata/capacity. Resizezeroesonlygrownrows, nullrowaddressskips, signedshrinkdecrementscurrentcountwithoutrowclear, finalrequestedcountstore. Destroyresize0/currentdatafree, danglingdata/capacitypreserved. Primary42workerpins/fourcurrentfiles/sevenfreshlive-PEspans359bytes, all239owned; strictmain/twoCTests/eightfreshseeds. Soleactualmainfrozenlibrary/twoexactarchiveobjects; fivecompleteCOFF/linked/runtimefunctions allrelocations exact; sixoriginal/librarypairs13512normalizedtracebytes/14snapshots. ActualUCRTmalloc/free forwardedobservers/restoredIAT, actualFFFFFFF0mallocfailure with actualnewhandlerreturn0/bad_alloc andthrownint preservingheadermutations; DWORDoverflowmalloc0. Completeoriginal4096mapping andwholefixturetextbefore/aftermatch. NativeCRTcalls explicitlybridgedtoexistingfullsharedCPPprovider, originalCRTexceptionobjectRTTIidentitynotclaimed. FalseCALL_RETURN atB1F9DC/B1FB9D removed after fullbyteproof; fullreturntails/commentspreservedandprojectsaved. Newcdeclinterfaces, descriptive names hypotheses, nooriginalcallerABI/owner/renderer/gameplayclaim. reports/native_frame_target_vector_audit.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1fb90",
+    "before": {
+      "address": "00b1fb90",
+      "function_name": "FUN_00b1fb90"
+    },
+    "after": {
+      "address": "00b1fb90",
+      "old_name": "FUN_00b1fb90",
+      "name": "BSP_FrameTargets_DestroyRecordStorage",
+      "evidence": "Complete3rawframe-target record-vector functions in src/native_frame_target_vector.cpp: B1F970128bytes, B1F9F088bytes, B1FB9023bytes. Nativeheaderdata/count/capacity12bytes at group1C; opaquerow16bytes/fourDWORDs. Reserve signedclamp>=1, skip sufficientcapacity, allocate DWORD(request<<4) using actualsharedCRT; reloadcountafterallocation/percopyiteration, currentdata eachrow/beforefree, copyfourorderedDWORDs, free thenpublishdata/capacity. Resizezeroesonlygrownrows, nullrowaddressskips, signedshrinkdecrementscurrentcountwithoutrowclear, finalrequestedcountstore. Destroyresize0/currentdatafree, danglingdata/capacitypreserved. Primary42workerpins/fourcurrentfiles/sevenfreshlive-PEspans359bytes, all239owned; strictmain/twoCTests/eightfreshseeds. Soleactualmainfrozenlibrary/twoexactarchiveobjects; fivecompleteCOFF/linked/runtimefunctions allrelocations exact; sixoriginal/librarypairs13512normalizedtracebytes/14snapshots. ActualUCRTmalloc/free forwardedobservers/restoredIAT, actualFFFFFFF0mallocfailure with actualnewhandlerreturn0/bad_alloc andthrownint preservingheadermutations; DWORDoverflowmalloc0. Completeoriginal4096mapping andwholefixturetextbefore/aftermatch. NativeCRTcalls explicitlybridgedtoexistingfullsharedCPPprovider, originalCRTexceptionobjectRTTIidentitynotclaimed. FalseCALL_RETURN atB1F9DC/B1FB9D removed after fullbyteproof; fullreturntails/commentspreservedandprojectsaved. Newcdeclinterfaces, descriptive names hypotheses, nooriginalcallerABI/owner/renderer/gameplayclaim. reports/native_frame_target_vector_audit.json."
+    },
+    "status": "applied"
+  }
+]

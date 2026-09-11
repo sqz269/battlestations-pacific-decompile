@@ -110,3 +110,30 @@ source and report, and regenerate linked/runtime proof for the new executable.
 This packet establishes vector operations only. Append `00B1FA50`, the
 frame-target owner lifecycle, renderer composition and game execution are
 outside its validation. Descriptive source names are evidence-based hypotheses.
+
+## Primary integration
+
+The primary registered the source in CMake, passed the strict Win32 build
+and both existing CTests, and independently checked 42 worker pins and four
+current source/provider files. Seven fresh live-Ghidra/PE spans (359 bytes)
+include all 239 owned original bytes. The unchanged fixture linked only
+the frozen actual main library
+`8fa9f1259c25b453b069d7ce36333935b66d11e332b5480a7afbc45144fce926`
+and verified exact membership of the two original archive objects.
+
+All six original/source cases and all five complete COFF/linked/runtime
+functions passed, with exact symbol relocations, whole original mapping and
+whole fixture text postimages unchanged. The 13,512 normalized trace bytes
+include fourteen snapshots. Actual UCRT allocation failure, registered
+new-handler return-zero and throwing behavior preserve header mutations;
+wrapped zero-byte allocation, grow/copy/zero/shrink and dangling post-free
+fields match the original. Original CRT calls use explicit bridges to the
+existing full shared C++ provider; original exception-object and RTTI
+identity are outside this interface boundary. Eight fresh native seeds pass.
+
+The false CALL_RETURN overrides at B1F9DC and B1FB9D were removed after
+complete original-byte verification. Their full function tails, old comments
+and labels were preserved, reviewed descriptive names and evidence saved,
+three full reconstruction records registered and exports refreshed. These
+checks establish the vector implementation; original caller ABI, owner or
+renderer composition and gameplay remain separate validation boundaries.
