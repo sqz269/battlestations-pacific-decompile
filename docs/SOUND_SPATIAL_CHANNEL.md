@@ -92,3 +92,11 @@ No native object layout, drop-in ABI, audible output or gameplay validation is c
   profile as a complete game object. Other non-manager virtual slots remain outside this adapter.
 - Compose the application sound/voice hosts with recovered current-manager, time and CRT
   services; validate actual application/gameplay execution separately from this installed fixture.
+
+## Extension from docs/SOUND_EVENT_INSTANCE.md
+
+A7F710 now has a complete bank/event implementation. The earlier bank-only
+compatibility entry remains available, while SoundChannelRuntime::create_spatial
+uses both recovered constructors and dispatches D5B510 or D5B4C8 through their own
+lifetime and update paths. The installed combined fixture covers both branches;
+event playback additionally requires the fixture's sound/muzzle VFS mount.

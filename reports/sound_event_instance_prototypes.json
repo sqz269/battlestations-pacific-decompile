@@ -1,0 +1,417 @@
+{
+  "reason": "Restore original ECX/stack inputs, AL versus EAX results and ST0 float return. Fastcall unused_edx models storage only.",
+  "entries": [
+    {
+      "address": "00a89dc0",
+      "name": "BSP_SpatialSoundEvent_Construct",
+      "proposed": "void* __fastcall BSP_SpatialSoundEvent_Construct(void* self, void* unused_edx, void* sample, void* class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz)",
+      "before": "Function: FUN_00a89dc0 at 00a89dc0\nSignature: undefined FUN_00a89dc0(void)\nEntry: 00a89dc0\nBody: 00a89dc0 - 00a89e7f",
+      "apply": "Successfully set prototype for function at 00a89dc0 with __fastcall calling convention",
+      "after": "Function: BSP_SpatialSoundEvent_Construct at 00a89dc0\nSignature: void * __fastcall BSP_SpatialSoundEvent_Construct(void * self, void * unused_edx, void * sample, void * class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz)\nEntry: 00a89dc0\nBody: 00a89dc0 - 00a89e7f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_Construct at 00a89dc0\nSignature: void * __fastcall BSP_SpatialSoundEvent_Construct(void * self, void * unused_edx, void * sample, void * class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz)\nEntry: 00a89dc0\nBody: 00a89dc0 - 00a89e7f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89c80",
+      "name": "BSP_SoundEvent_Destruct",
+      "proposed": "void __fastcall BSP_SoundEvent_Destruct(void* self)",
+      "before": "Function: FUN_00a89c80 at 00a89c80\nSignature: undefined FUN_00a89c80(void)\nEntry: 00a89c80\nBody: 00a89c80 - 00a89cd3",
+      "apply": "Successfully set prototype for function at 00a89c80 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_Destruct at 00a89c80\nSignature: void __fastcall BSP_SoundEvent_Destruct(void * self)\nEntry: 00a89c80\nBody: 00a89c80 - 00a89cd3",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_Destruct at 00a89c80\nSignature: void __fastcall BSP_SoundEvent_Destruct(void * self)\nEntry: 00a89c80\nBody: 00a89c80 - 00a89cd3",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89ee0",
+      "name": "BSP_SpatialSoundEvent_ScalarDeletingDestructor",
+      "proposed": "void* __fastcall BSP_SpatialSoundEvent_ScalarDeletingDestructor(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a89ee0 at 00a89ee0\nSignature: undefined CG_scalar_deleting_dtor_00a89ee0(void)\nEntry: 00a89ee0\nBody: 00a89ee0 - 00a89efd",
+      "apply": "Successfully set prototype for function at 00a89ee0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a89ee0 at 00a89ee0\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a89ee0(void * self, void * unused_edx, uint flags)\nEntry: 00a89ee0\nBody: 00a89ee0 - 00a89efd",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_ScalarDeletingDestructor at 00a89ee0\nSignature: void * __fastcall BSP_SpatialSoundEvent_ScalarDeletingDestructor(void * self, void * unused_edx, uint flags)\nEntry: 00a89ee0\nBody: 00a89ee0 - 00a89efd",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a894e0",
+      "name": "BSP_SoundEvent_CreateAndStart",
+      "proposed": "void __fastcall BSP_SoundEvent_CreateAndStart(void* self)",
+      "before": "Function: FUN_00a894e0 at 00a894e0\nSignature: undefined FUN_00a894e0(void)\nEntry: 00a894e0\nBody: 00a894e0 - 00a8955b",
+      "apply": "Successfully set prototype for function at 00a894e0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_CreateAndStart at 00a894e0\nSignature: void __fastcall BSP_SoundEvent_CreateAndStart(void * self)\nEntry: 00a894e0\nBody: 00a894e0 - 00a8955b",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_CreateAndStart at 00a894e0\nSignature: void __fastcall BSP_SoundEvent_CreateAndStart(void * self)\nEntry: 00a894e0\nBody: 00a894e0 - 00a8955b",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89560",
+      "name": "BSP_SoundEvent_UpdateParameters",
+      "proposed": "void __fastcall BSP_SoundEvent_UpdateParameters(void* self)",
+      "before": "Function: FUN_00a89560 at 00a89560\nSignature: undefined FUN_00a89560(void)\nEntry: 00a89560\nBody: 00a89560 - 00a895f9",
+      "apply": "Successfully set prototype for function at 00a89560 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_UpdateParameters at 00a89560\nSignature: void __fastcall BSP_SoundEvent_UpdateParameters(void * self)\nEntry: 00a89560\nBody: 00a89560 - 00a895f9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_UpdateParameters at 00a89560\nSignature: void __fastcall BSP_SoundEvent_UpdateParameters(void * self)\nEntry: 00a89560\nBody: 00a89560 - 00a895f9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89170",
+      "name": "BSP_SoundEvent_Stop",
+      "proposed": "void __fastcall BSP_SoundEvent_Stop(void* self, void* unused_edx, byte immediate)",
+      "before": "Function: FUN_00a89170 at 00a89170\nSignature: undefined FUN_00a89170(void)\nEntry: 00a89170\nBody: 00a89170 - 00a891eb",
+      "apply": "Successfully set prototype for function at 00a89170 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_Stop at 00a89170\nSignature: void __fastcall BSP_SoundEvent_Stop(void * self, void * unused_edx, byte immediate)\nEntry: 00a89170\nBody: 00a89170 - 00a891eb",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_Stop at 00a89170\nSignature: void __fastcall BSP_SoundEvent_Stop(void * self, void * unused_edx, byte immediate)\nEntry: 00a89170\nBody: 00a89170 - 00a891eb",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a88ba0",
+      "name": "BSP_SpatialSoundEvent_IsComplete",
+      "proposed": "uint __fastcall BSP_SpatialSoundEvent_IsComplete(void* self)",
+      "before": "Function: FUN_00a88ba0 at 00a88ba0\nSignature: undefined FUN_00a88ba0(void)\nEntry: 00a88ba0\nBody: 00a88ba0 - 00a88bda",
+      "apply": "Successfully set prototype for function at 00a88ba0 with __fastcall calling convention",
+      "after": "Function: BSP_SpatialSoundEvent_IsComplete at 00a88ba0\nSignature: uint __fastcall BSP_SpatialSoundEvent_IsComplete(void * self)\nEntry: 00a88ba0\nBody: 00a88ba0 - 00a88bda",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_IsComplete at 00a88ba0\nSignature: uint __fastcall BSP_SpatialSoundEvent_IsComplete(void * self)\nEntry: 00a88ba0\nBody: 00a88ba0 - 00a88bda",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89340",
+      "name": "BSP_SpatialSoundEvent_RefreshEnded",
+      "proposed": "byte __fastcall BSP_SpatialSoundEvent_RefreshEnded(void* self)",
+      "before": "Function: FUN_00a89340 at 00a89340\nSignature: undefined FUN_00a89340(void)\nEntry: 00a89340\nBody: 00a89340 - 00a8938d",
+      "apply": "Successfully set prototype for function at 00a89340 with __fastcall calling convention",
+      "after": "Function: BSP_SpatialSoundEvent_RefreshEnded at 00a89340\nSignature: byte __fastcall BSP_SpatialSoundEvent_RefreshEnded(void * self)\nEntry: 00a89340\nBody: 00a89340 - 00a8938d",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_RefreshEnded at 00a89340\nSignature: byte __fastcall BSP_SpatialSoundEvent_RefreshEnded(void * self)\nEntry: 00a89340\nBody: 00a89340 - 00a8938d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89c40",
+      "name": "BSP_SoundEvent_IsNonvirtual",
+      "proposed": "byte __fastcall BSP_SoundEvent_IsNonvirtual(void* self)",
+      "before": "Function: FUN_00a89c40 at 00a89c40\nSignature: undefined FUN_00a89c40(void)\nEntry: 00a89c40\nBody: 00a89c40 - 00a89c42",
+      "apply": "Successfully set prototype for function at 00a89c40 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_IsNonvirtual at 00a89c40\nSignature: byte __fastcall BSP_SoundEvent_IsNonvirtual(void * self)\nEntry: 00a89c40\nBody: 00a89c40 - 00a89c42",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_IsNonvirtual at 00a89c40\nSignature: byte __fastcall BSP_SoundEvent_IsNonvirtual(void * self)\nEntry: 00a89c40\nBody: 00a89c40 - 00a89c42",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89c70",
+      "name": "BSP_SoundEvent_DidVirtualStateChange",
+      "proposed": "byte __fastcall BSP_SoundEvent_DidVirtualStateChange(void* self)",
+      "before": "Function: FUN_00a89c70 at 00a89c70\nSignature: undefined FUN_00a89c70(void)\nEntry: 00a89c70\nBody: 00a89c70 - 00a89c72",
+      "apply": "Successfully set prototype for function at 00a89c70 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_DidVirtualStateChange at 00a89c70\nSignature: byte __fastcall BSP_SoundEvent_DidVirtualStateChange(void * self)\nEntry: 00a89c70\nBody: 00a89c70 - 00a89c72",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_DidVirtualStateChange at 00a89c70\nSignature: byte __fastcall BSP_SoundEvent_DidVirtualStateChange(void * self)\nEntry: 00a89c70\nBody: 00a89c70 - 00a89c72",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a88ff0",
+      "name": "BSP_SoundVector_NormalizeVelocity",
+      "proposed": "void* __fastcall BSP_SoundVector_NormalizeVelocity(void* self, void* unused_edx, void* output)",
+      "before": "Function: FUN_00a88ff0 at 00a88ff0\nSignature: undefined FUN_00a88ff0(void)\nEntry: 00a88ff0\nBody: 00a88ff0 - 00a89077",
+      "apply": "Successfully set prototype for function at 00a88ff0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundVector_NormalizeVelocity at 00a88ff0\nSignature: void * __fastcall BSP_SoundVector_NormalizeVelocity(void * self, void * unused_edx, void * output)\nEntry: 00a88ff0\nBody: 00a88ff0 - 00a89077",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundVector_NormalizeVelocity at 00a88ff0\nSignature: void * __fastcall BSP_SoundVector_NormalizeVelocity(void * self, void * unused_edx, void * output)\nEntry: 00a88ff0\nBody: 00a88ff0 - 00a89077",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a893d0",
+      "name": "BSP_SoundEventParameters_Reserve",
+      "proposed": "void __fastcall BSP_SoundEventParameters_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a893d0 at 00a893d0\nSignature: undefined FUN_00a893d0(void)\nEntry: 00a893d0\nBody: 00a893d0 - 00a89451",
+      "apply": "Successfully set prototype for function at 00a893d0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEventParameters_Reserve at 00a893d0\nSignature: void __fastcall BSP_SoundEventParameters_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a893d0\nBody: 00a893d0 - 00a89451",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEventParameters_Reserve at 00a893d0\nSignature: void __fastcall BSP_SoundEventParameters_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a893d0\nBody: 00a893d0 - 00a89451",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a899e0",
+      "name": "BSP_SoundEventParameters_Resize",
+      "proposed": "void __fastcall BSP_SoundEventParameters_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a899e0 at 00a899e0\nSignature: undefined FUN_00a899e0(void)\nEntry: 00a899e0\nBody: 00a899e0 - 00a89a34",
+      "apply": "Successfully set prototype for function at 00a899e0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEventParameters_Resize at 00a899e0\nSignature: void __fastcall BSP_SoundEventParameters_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a899e0\nBody: 00a899e0 - 00a89a34",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEventParameters_Resize at 00a899e0\nSignature: void __fastcall BSP_SoundEventParameters_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a899e0\nBody: 00a899e0 - 00a89a34",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89be0",
+      "name": "BSP_SoundEventParameters_Destruct",
+      "proposed": "void __fastcall BSP_SoundEventParameters_Destruct(void* self)",
+      "before": "Function: FUN_00a89be0 at 00a89be0\nSignature: undefined FUN_00a89be0(void)\nEntry: 00a89be0\nBody: 00a89be0 - 00a89bf1",
+      "apply": "Successfully set prototype for function at 00a89be0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEventParameters_Destruct at 00a89be0\nSignature: void __fastcall BSP_SoundEventParameters_Destruct(void * self)\nEntry: 00a89be0\nBody: 00a89be0 - 00a89bf1",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEventParameters_Destruct at 00a89be0\nSignature: void __fastcall BSP_SoundEventParameters_Destruct(void * self)\nEntry: 00a89be0\nBody: 00a89be0 - 00a89bf1",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a896e0",
+      "name": "BSP_SoundEvent_FindParameter",
+      "proposed": "void* __fastcall BSP_SoundEvent_FindParameter(void* self, void* unused_edx, void* output, char* name)",
+      "before": "Function: FUN_00a896e0 at 00a896e0\nSignature: undefined FUN_00a896e0(void)\nEntry: 00a896e0\nBody: 00a896e0 - 00a8976b",
+      "apply": "Successfully set prototype for function at 00a896e0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_FindParameter at 00a896e0\nSignature: void * __fastcall BSP_SoundEvent_FindParameter(void * self, void * unused_edx, void * output, char * name)\nEntry: 00a896e0\nBody: 00a896e0 - 00a8976b",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_FindParameter at 00a896e0\nSignature: void * __fastcall BSP_SoundEvent_FindParameter(void * self, void * unused_edx, void * output, char * name)\nEntry: 00a896e0\nBody: 00a896e0 - 00a8976b",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89b80",
+      "name": "BSP_SoundEvent_SetParameter",
+      "proposed": "void __fastcall BSP_SoundEvent_SetParameter(void* self, void* unused_edx, int index, float value)",
+      "before": "Function: FUN_00a89b80 at 00a89b80\nSignature: undefined FUN_00a89b80(void)\nEntry: 00a89b80\nBody: 00a89b80 - 00a89bcd",
+      "apply": "Successfully set prototype for function at 00a89b80 with __fastcall calling convention",
+      "after": "Function: BSP_SoundEvent_SetParameter at 00a89b80\nSignature: void __fastcall BSP_SoundEvent_SetParameter(void * self, void * unused_edx, int index, float value)\nEntry: 00a89b80\nBody: 00a89b80 - 00a89bcd",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundEvent_SetParameter at 00a89b80\nSignature: void __fastcall BSP_SoundEvent_SetParameter(void * self, void * unused_edx, int index, float value)\nEntry: 00a89b80\nBody: 00a89b80 - 00a89bcd",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89120",
+      "name": "BSP_SpatialSoundEvent_SetAttributes",
+      "proposed": "void __fastcall BSP_SpatialSoundEvent_SetAttributes(void* self, void* unused_edx, float px, float py, float pz, float vx, float vy, float vz)",
+      "before": "Function: FUN_00a89120 at 00a89120\nSignature: undefined FUN_00a89120(void)\nEntry: 00a89120\nBody: 00a89120 - 00a8916e",
+      "apply": "Successfully set prototype for function at 00a89120 with __fastcall calling convention",
+      "after": "Function: BSP_SpatialSoundEvent_SetAttributes at 00a89120\nSignature: void __fastcall BSP_SpatialSoundEvent_SetAttributes(void * self, void * unused_edx, float px, float py, float pz, float vx, float vy, float vz)\nEntry: 00a89120\nBody: 00a89120 - 00a8916e",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_SetAttributes at 00a89120\nSignature: void __fastcall BSP_SpatialSoundEvent_SetAttributes(void * self, void * unused_edx, float px, float py, float pz, float vx, float vy, float vz)\nEntry: 00a89120\nBody: 00a89120 - 00a8916e",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89e80",
+      "name": "BSP_SpatialSoundEvent_GetPosition",
+      "proposed": "void* __fastcall BSP_SpatialSoundEvent_GetPosition(void* self, void* unused_edx, void* output)",
+      "before": "Function: FUN_00a89e80 at 00a89e80\nSignature: undefined FUN_00a89e80(void)\nEntry: 00a89e80\nBody: 00a89e80 - 00a89ea3",
+      "apply": "Successfully set prototype for function at 00a89e80 with __fastcall calling convention",
+      "after": "Function: BSP_SpatialSoundEvent_GetPosition at 00a89e80\nSignature: void * __fastcall BSP_SpatialSoundEvent_GetPosition(void * self, void * unused_edx, void * output)\nEntry: 00a89e80\nBody: 00a89e80 - 00a89ea3",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_GetPosition at 00a89e80\nSignature: void * __fastcall BSP_SpatialSoundEvent_GetPosition(void * self, void * unused_edx, void * output)\nEntry: 00a89e80\nBody: 00a89e80 - 00a89ea3",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a89770",
+      "name": "BSP_SpatialSoundEvent_Update",
+      "proposed": "void __fastcall BSP_SpatialSoundEvent_Update(void* self, void* unused_edx, float dt, void* listener)",
+      "before": "Function: FUN_00a89770 at 00a89770\nSignature: undefined FUN_00a89770(void)\nEntry: 00a89770\nBody: 00a89770 - 00a899d9",
+      "apply": "Successfully set prototype for function at 00a89770 with __fastcall calling convention",
+      "after": "Function: BSP_SpatialSoundEvent_Update at 00a89770\nSignature: void __fastcall BSP_SpatialSoundEvent_Update(void * self, void * unused_edx, float dt, void * listener)\nEntry: 00a89770\nBody: 00a89770 - 00a899d9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SpatialSoundEvent_Update at 00a89770\nSignature: void __fastcall BSP_SpatialSoundEvent_Update(void * self, void * unused_edx, float dt, void * listener)\nEntry: 00a89770\nBody: 00a89770 - 00a899d9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7f710",
+      "name": "BSP_SoundManager_CreateSpatialSound",
+      "proposed": "void* __fastcall BSP_SoundManager_CreateSpatialSound(void* self, void* unused_edx, void* sample, int class_index, uint type, byte flag)",
+      "before": "Function: BSP_SoundManager_CreateSpatialSound at 00a7f710\nSignature: void * __fastcall BSP_SoundManager_CreateSpatialSound(void * self, void * unused_edx, void * sample, int class_index, uint type, byte flag)\nEntry: 00a7f710\nBody: 00a7f710 - 00a7f88e",
+      "apply": "Successfully set prototype for function at 00a7f710 with __fastcall calling convention",
+      "after": "Function: BSP_SoundManager_CreateSpatialSound at 00a7f710\nSignature: void * __fastcall BSP_SoundManager_CreateSpatialSound(void * self, void * unused_edx, void * sample, int class_index, uint type, byte flag)\nEntry: 00a7f710\nBody: 00a7f710 - 00a7f88e",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundManager_CreateSpatialSound at 00a7f710\nSignature: void * __fastcall BSP_SoundManager_CreateSpatialSound(void * self, void * unused_edx, void * sample, int class_index, uint type, byte flag)\nEntry: 00a7f710\nBody: 00a7f710 - 00a7f88e",
+      "verified_after_annotation": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89dc0",
+        "prototype": "void* __fastcall BSP_SpatialSoundEvent_Construct(void* self, void* unused_edx, void* sample, void* class_slot, uint type, byte flag, float px, float py, float pz, float vx, float vy, float vz)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89dc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89c80",
+        "prototype": "void __fastcall BSP_SoundEvent_Destruct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89c80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89ee0",
+        "prototype": "void* __fastcall BSP_SpatialSoundEvent_ScalarDeletingDestructor(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89ee0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a894e0",
+        "prototype": "void __fastcall BSP_SoundEvent_CreateAndStart(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a894e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89560",
+        "prototype": "void __fastcall BSP_SoundEvent_UpdateParameters(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89560 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89170",
+        "prototype": "void __fastcall BSP_SoundEvent_Stop(void* self, void* unused_edx, byte immediate)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89170 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a88ba0",
+        "prototype": "uint __fastcall BSP_SpatialSoundEvent_IsComplete(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a88ba0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89340",
+        "prototype": "byte __fastcall BSP_SpatialSoundEvent_RefreshEnded(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89340 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89c40",
+        "prototype": "byte __fastcall BSP_SoundEvent_IsNonvirtual(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89c40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89c70",
+        "prototype": "byte __fastcall BSP_SoundEvent_DidVirtualStateChange(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89c70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a88ff0",
+        "prototype": "void* __fastcall BSP_SoundVector_NormalizeVelocity(void* self, void* unused_edx, void* output)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a88ff0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a893d0",
+        "prototype": "void __fastcall BSP_SoundEventParameters_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a893d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a899e0",
+        "prototype": "void __fastcall BSP_SoundEventParameters_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a899e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89be0",
+        "prototype": "void __fastcall BSP_SoundEventParameters_Destruct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89be0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a896e0",
+        "prototype": "void* __fastcall BSP_SoundEvent_FindParameter(void* self, void* unused_edx, void* output, char* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a896e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89b80",
+        "prototype": "void __fastcall BSP_SoundEvent_SetParameter(void* self, void* unused_edx, int index, float value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89b80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89120",
+        "prototype": "void __fastcall BSP_SpatialSoundEvent_SetAttributes(void* self, void* unused_edx, float px, float py, float pz, float vx, float vy, float vz)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89120 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89e80",
+        "prototype": "void* __fastcall BSP_SpatialSoundEvent_GetPosition(void* self, void* unused_edx, void* output)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89e80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a89770",
+        "prototype": "void __fastcall BSP_SpatialSoundEvent_Update(void* self, void* unused_edx, float dt, void* listener)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a89770 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7f710",
+        "prototype": "void* __fastcall BSP_SoundManager_CreateSpatialSound(void* self, void* unused_edx, void* sample, int class_index, uint type, byte flag)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7f710 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

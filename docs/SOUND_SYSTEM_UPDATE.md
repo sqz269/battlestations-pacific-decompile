@@ -136,3 +136,11 @@ SoundSpatialChannelContext and BankSoundChannelVirtuals are bound. The installed
 spatial fixture verifies distance groups, position/velocity and automatic retirement.
 A7F710 remains a bank-branch fragment; the event profile and full application
 composition are still open. See the new report for separate source/build provenance.
+
+## Event extension from docs/SOUND_EVENT_INSTANCE.md
+
+The active-entry runtime now supports D5B4C8 event instances and the complete
+A7F710 bank/event factory. Event slot14 and slot24 are native constant false;
+ended refresh uses FMOD state bit8. The existing protected/unprotected retirement
+policy is preserved, and a protected installed event reaches natural completion.
+Application globals, VFS sound directories and full game validation remain open.

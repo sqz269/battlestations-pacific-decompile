@@ -8,6 +8,7 @@
 #include "bsp/sound_instance.hpp"
 #include "bsp/sound_system_update.hpp"
 #include "bsp/sound_spatial_instance.hpp"
+#include "bsp/sound_event_instance.hpp"
 
 #include <memory>
 #include <string>
@@ -28,7 +29,8 @@ struct FmodConfigurationCall {
 class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
     public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
-    public SoundChannelFmodHost, public SoundSystemUpdateFmodHost, public SoundSpatialChannelFmodHost {
+    public SoundChannelFmodHost, public SoundSystemUpdateFmodHost, public SoundSpatialChannelFmodHost,
+    public SoundEventFmodHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
@@ -96,6 +98,19 @@ public:
         const std::array<float, 3>&) override;
     FmodResult dsp_remove(void*) override;
     FmodResult dsp_release(void*) override;
+    FmodResult event_start(void*) override;
+    FmodResult event_stop(void*, bool) override;
+    FmodResult event_get_state(void*, std::uint32_t*) override;
+    FmodResult event_get_parameter(void*, const char*, void**) override;
+    FmodResult event_parameter_key_off(void*) override;
+    FmodResult event_parameter_set_value(void*, float) override;
+    FmodResult event_get_channel_group(void*, void**) override;
+    FmodResult channel_group_add_group(void*, void*) override;
+    FmodResult event_set_pitch(void*, float, std::uint32_t) override;
+    FmodResult event_set_volume(void*, float) override;
+    FmodResult event_set_3d_attributes(void*, const std::array<float, 3>&,
+        const std::array<float, 3>&, const std::array<float, 3>&) override;
+    FmodResult event_set_paused(void*, std::uint8_t) override;
 
     FmodResult event_system_create(void**) override;
     FmodResult event_system_get_system_object(void*, void**) override;

@@ -59,7 +59,12 @@ SpatialSoundChannelInstance* create_spatial_bank_sound_00a7f710_fragment(
     std::uint8_t flag, SoundInstanceContext& c) {
     ++owner.words_160[0];
     if (!sound_sample_has_fmod_sound_00a818c0(sample))
-        throw std::logic_error("A7F710 event-instance branch is not bound");
+        throw std::logic_error("Bank-only A7F710 fragment does not accept event resources");
+    return allocate_spatial_bank_sound_fragment(owner, sample, cls, type, flag, c);
+}
+SpatialSoundChannelInstance* allocate_spatial_bank_sound_fragment(
+    SoundSystemOwner& owner, void* sample, std::int32_t cls, std::uint32_t type,
+    std::uint8_t flag, SoundInstanceContext& c) {
     auto* s = new(std::nothrow) SpatialSoundChannelInstance;
     if (!s) return nullptr;
     try {
