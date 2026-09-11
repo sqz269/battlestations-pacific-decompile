@@ -49,6 +49,12 @@ struct GuiLua51Host::Impl {
         catch (...) { luaL_unref(state, LUA_REGISTRYINDEX, ref); throw; }
         return {id};
     }
+    Reference reference(GuiLuaRef object) const {
+        const auto found = refs.find(object.id);
+        if (found == refs.end())
+            throw std::invalid_argument("Lua operation requires a bound object");
+        return found->second;
+    }
     void push(const GuiLuaRef& object) {
         const auto found = refs.find(object.id);
         if (found == refs.end())
@@ -177,10 +183,12 @@ GuiLuaRef GuiLua51Host::copy_ref_00b66fa0(GuiLuaRef object) {
 }
 GuiLuaRef GuiLua51Host::get_by_name(const GuiLuaRef& table, const char* key) {
     auto* state = impl_->state;
+    const auto source = impl_->reference(table);
     StackTop restore(state);
-    impl_->push(table);
+    const bool tracked = source.kind == Impl::RefKind::tracked;
+    if (tracked) impl_->push(table);
     lua_pushlstring(state, key, std::strlen(key));
-    lua_gettable(state, -2);
+    lua_gettable(state, tracked ? -2 : source.value);
     return impl_->capture();
 }
 GuiLuaRef GuiLua51Host::get_by_index(const GuiLuaRef& table, std::int32_t key) {
@@ -195,22 +203,31 @@ GuiLuaRef GuiLua51Host::get_by_index(const GuiLuaRef& table, std::int32_t key) {
         return impl_->borrow_index(index);
     }
     auto* state = impl_->state;
+    const auto source = impl_->reference(table);
     StackTop restore(state);
-    impl_->push(table);
+    const bool tracked = source.kind == Impl::RefKind::tracked;
+    if (tracked) impl_->push(table);
     lua_pushnumber(state, static_cast<lua_Number>(key));
-    lua_gettable(state, -2);
+    lua_gettable(state, tracked ? -2 : source.value);
     return impl_->capture();
 }
 bool GuiLua51Host::next(const GuiLuaRef& table, GuiLuaRef& key,
     GuiLuaRef& value, bool restart) {
     auto* state = impl_->state;
+    const auto source = impl_->reference(table);
     StackTop restore(state);
     if (restart) impl_->end_cursor(table.id);
-    impl_->push(table);
+    const bool tracked = source.kind == Impl::RefKind::tracked;
+    if (tracked) impl_->push(table);
     const auto cursor = impl_->cursors.find(table.id);
     if (cursor == impl_->cursors.end()) lua_pushnil(state);
     else lua_rawgeti(state, LUA_REGISTRYINDEX, cursor->second);
-    if (!lua_next(state, -2)) {
+    // Resolve a borrowed relative index AFTER the key push, as native does.
+    //00A683A0 dereferences an unchecked table union; don't report a false end.
+    const int table_index = tracked ? -2 : source.value;
+    if (lua_type(state, table_index) != LUA_TTABLE)
+        throw std::invalid_argument("Lua iteration requires a table");
+    if (!lua_next(state, table_index)) {
         impl_->end_cursor(table.id);
         key = {}; value = {};
         return false;
@@ -225,34 +242,50 @@ bool GuiLua51Host::next(const GuiLuaRef& table, GuiLuaRef& key,
 }
 GuiLuaType GuiLua51Host::type_of(const GuiLuaRef& object) {
     if (impl_->refs.find(object.id) == impl_->refs.end()) return GuiLuaType::None;
+    const auto source = impl_->reference(object);
+    if (source.kind != Impl::RefKind::tracked)
+        return static_cast<GuiLuaType>(lua_type(impl_->state, source.value));
     StackTop restore(impl_->state);
     impl_->push(object);
     return static_cast<GuiLuaType>(lua_type(impl_->state, -1));
 }
 bool GuiLua51Host::to_boolean(const GuiLuaRef& object) {
+    const auto source = impl_->reference(object);
+    if (source.kind != Impl::RefKind::tracked)
+        return lua_toboolean(impl_->state, source.value) != 0;
     StackTop restore(impl_->state);
     impl_->push(object);
     return lua_toboolean(impl_->state, -1) != 0;
 }
 double GuiLua51Host::to_number(const GuiLuaRef& object) {
+    const auto source = impl_->reference(object);
+    if (source.kind != Impl::RefKind::tracked)
+        return lua_tonumber(impl_->state, source.value);
     StackTop restore(impl_->state);
     impl_->push(object);
     return lua_tonumber(impl_->state, -1);
 }
 const char* GuiLua51Host::to_string(const GuiLuaRef& object) {
+    const auto source = impl_->reference(object);
+    if (source.kind != Impl::RefKind::tracked)
+        return lua_tostring(impl_->state, source.value);
     StackTop restore(impl_->state);
     impl_->push(object);
     const char* result = lua_tostring(impl_->state, -1);
     // lua_tolstring may replace a number with a string. Anchor the replacement
     // in the object's registry entry so the returned pointer survives the pop.
     const auto found = impl_->refs.find(object.id);
-    if (result && found != impl_->refs.end() && found->second >= 0) {
+    if (result && found != impl_->refs.end()
+        && found->second.kind == Impl::RefKind::tracked && found->second.value >= 0) {
         lua_pushvalue(impl_->state, -1);
-        lua_rawseti(impl_->state, LUA_REGISTRYINDEX, found->second);
+        lua_rawseti(impl_->state, LUA_REGISTRYINDEX, found->second.value);
     }
     return result;
 }
 void* GuiLua51Host::to_userdata(const GuiLuaRef& object) {
+    const auto source = impl_->reference(object);
+    if (source.kind != Impl::RefKind::tracked)
+        return lua_touserdata(impl_->state, source.value);
     StackTop restore(impl_->state);
     impl_->push(object);
     return lua_touserdata(impl_->state, -1);

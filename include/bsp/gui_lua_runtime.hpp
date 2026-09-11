@@ -33,6 +33,11 @@ public:
     // Semantic reference copy for native00B66FA0: same Lua value, independent
     // lifetime. Uses a registry reference, not the original14h tracking layout.
     GuiLuaRef copy_ref_00b66fa0(GuiLuaRef);
+    // Bound indexing uses lua_gettable, including userdata __index and bound
+    // nil errors. Unbound refs stay distinct from nil. Native non-kind2
+    // globals integer indexing creates a borrowed pseudo/stack-index alias;
+    // such aliases must remain valid until used/released. next requires a
+    // real table; native lua_next has an unchecked table-union precondition.
     GuiLuaRef get_by_name(const GuiLuaRef&, const char*) override;
     GuiLuaRef get_by_index(const GuiLuaRef&, std::int32_t) override;
     bool next(const GuiLuaRef&, GuiLuaRef&, GuiLuaRef&, bool restart) override;

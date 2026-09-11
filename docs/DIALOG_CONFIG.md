@@ -59,6 +59,20 @@ independent registry reference to the same Lua value. The loader preserves the
 seed/copy/release sequence with owned references, but does not reproduce the
 native vector allocation layout or the 14h tracking arrays.
 
+The concrete Lua adapter now distinguishes unbound `None`, tracked values
+(including bound nil), globals, and borrowed indices. Name and tracked-object
+integer lookup call real `lua_gettable`, including userdata `__index`; bound
+nil is not silently replaced by a successful nil lookup. Native non-kind2
+integer lookup produces a borrowed index with wrapping index addition. For
+borrowed operations the key is pushed before resolving that original index;
+type and conversion calls use the original slot, so absent indices remain
+`None` and string coercion changes the correct source slot. Non-table iteration
+violates native `lua_next`'s unchecked table-union precondition; the C++ host
+raises an explicit precondition error instead of reporting table exhaustion.
+Actual Lua errors can still panic/longjmp: no C++ cleanup guarantee is claimed
+for those paths. These corrections were independently reviewed against
+`00B67800`, `00B67720`, `00B67080` and the wrapper constructors/conversions.
+
 All descriptive names are hypotheses. Native `0044FA30` takes ECX=this and
 plain RET; the new C++ views, explicit dependencies, registry handles and
 standard character map are not binary replacements. Existing Lua owner/runtime
@@ -71,3 +85,8 @@ NUL-terminated/case-insensitive character lookup, the float32 integer boundary,
 both CRT modes, palette reference identity and unclamped values, metamethod
 lane order, and state reset before Lua closes. It does not prove game startup,
 screen rendering or gameplay.
+
+The same fixture also checks successful userdata lookup, unbound-versus-nil
+copies, globals+2 registry identity, borrowed -1 resolution after a key push,
+positive-index string coercion, absent-positive-index `None`, and non-table
+iteration rejection. The combined Win32 build and both existing tests passed.

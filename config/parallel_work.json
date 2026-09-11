@@ -5054,6 +5054,99 @@
       "scope": "Full236-byte renderer index binding plus complete B48DC0 current physical getter/tailcall. Actual D61DE0 lifetimes and token-profile dispatch must retain native load/receiver order; no numeric native address is host callable.",
       "packet": "native_renderer_index_binding2",
       "discovery_evidence": "reports/native_renderer_reset_routes_next.json"
+    },
+    {
+      "id": "orch4_dialog_config_e",
+      "packet": "orch4_dialog_config_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "0044fa30",
+        "00b66270",
+        "00b66290",
+        "00b66fa0",
+        "0044da70",
+        "0044ada0"
+      ],
+      "code_ownership": [
+        "include/bsp/dialog_config.hpp",
+        "src/dialog_config.cpp",
+        "docs/DIALOG_CONFIG.md",
+        "reports/dialog_config.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_panel_publish_e",
+      "packet": "orch4_panel_publish_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00451c90",
+        "0044f220",
+        "005b6910"
+      ],
+      "code_ownership": [
+        "include/bsp/panel_publication.hpp",
+        "src/panel_publication.cpp",
+        "docs/PANEL_PUBLICATION.md",
+        "reports/panel_publication.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_message_resolver_e",
+      "packet": "orch4_message_resolver_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00705e00",
+        "00705c50",
+        "00702910",
+        "00702300",
+        "00703ff0",
+        "007042b0",
+        "00704060",
+        "00703170",
+        "007029b0",
+        "00704190",
+        "00703b90",
+        "004261a0",
+        "005b7dc0"
+      ],
+      "code_ownership": [
+        "include/bsp/message_record_resolver.hpp",
+        "src/message_record_resolver.cpp",
+        "docs/MESSAGE_RECORD_RESOLVER.md",
+        "reports/message_record_resolver.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_observer_edges_e",
+      "packet": "orch4_observer_edges_e",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00694850",
+        "00694a60",
+        "00693ca0"
+      ],
+      "code_ownership": [
+        "include/bsp/observer_edges.hpp",
+        "src/observer_edges.cpp",
+        "docs/OBSERVER_EDGES.md",
+        "reports/observer_edges.json"
+      ],
+      "integration_report": "reports/dialog_voice_integration.json",
+      "discovery_evidence": "docs/DIALOG_VOICE_INTEGRATION.md"
     }
   ],
   "snapshot_after_analysis": {
