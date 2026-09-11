@@ -1,0 +1,17 @@
+[
+  {
+    "address": "00b24e70",
+    "before": {
+      "address": "00b24e70",
+      "function_name": "BSP_D3D9Renderer_BindFrameTargets",
+      "comment": "[BSP reconstruction 00b24e70]\nOptional guard before identity comparison. Publish and retain new renderer+1908 target group before releasing old. Null changes no GPU state. Nonnull optionally writes render state194 from exact group+3C byte, unbinds color slots1..3, binds all four color slots from group+8..14, then depth from+18. Application global00F8D398 enables the sRGB state write; it is copied from setting00F88A0C in application initialization, not inferred from device caps. Original ABI: ECX renderer; stack target-group pointer; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX renderer; stack target-group pointer; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b24e70",
+      "old_name": "BSP_D3D9Renderer_BindFrameTargets",
+      "name": "BSP_D3D9Renderer_BindFrameTargets",
+      "evidence": "Complete B24E70..B24FAE318byte actual renderer frame-target binding in src/native_renderer_frame_targets.cpp. ECX renderer, stack group, RET4; new C++ context interface. Optional guard entry before renderer1908 identity comparison; CMP precedes EH arm. Change path rereads old and identity, publishes/retains original incoming before captured old decrement/current profile0 BD30E0/current profile4 B1FCF0 full vector/surface/COM/CRT owner deletion. Concrete two-entry D5E600 profile only. Null incoming does no GPU work. After deletion reload F8D398; exact incoming3C byte becomes stateC2 via full B24460. Unbind colors1..3 then current getter/bind colors0..3 and current getter/depth; retain original incoming across renderer-slot mutations, reload each field at its call. Current mode before disarming cleanup; full guards/FH3 map and original pre-arm/armed exception boundaries, no rollback. Primary verified1447worker pins and37unchanged current provider files;19fresh live/PE spans589bytes including full318parent, strict main Win32 build/two CTests/eight fresh seeds. Same9be949 actual main library,14exact archive objects,497complete COFF sections/all relocations,242linked entries27401unique code bytes including fixture helpers; linkedparent460bytes. Ten original-parent/full-main-library pairs692652comparedDWORDs,692419literal,233differences mapped only in proven temporary allocation pointer fields; every raw trace retained.357frames/21wholepostimage phases44spans, actual HAL D3D9/CS/CRT;262realprovider callsites269loader-relocated moduleprefix proofs; exact5bridge/IAT and clonedtable targets. Private original parent/full guards/getters/invoker/FH3; only declared EH registration operand and full-child ABI bridges. No whole pool arena, foreign profile, original caller ABI or gameplay validation. reports/native_renderer_frame_targets_audit.json."
+    },
+    "status": "applied"
+  }
+]

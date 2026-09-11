@@ -32,6 +32,45 @@ uses FuncInfo `DF5754`, unwind map `DF574C` and guard funclet `CBD0A0`
 passing EBP-14 to full `B21110`. A second C++ cleanup exception terminates.
 The skipped-entry record is uninitialized, with no invented default fields.
 
-The report pins fresh original live/PE instructions. Vector and owner
-integration, strict main build and original-code fixture checks remain
-pending. This source does not establish renderer or gameplay validation.
+The vector and owner prerequisites are integrated. The strict main Win32
+build and both existing CTests passed, followed by an independent original
+parent/full-library comparison. Whole renderer and gameplay validation
+remain separate.
+
+
+## Primary validation
+
+The primary checked 1,447 immutable worker pins and 37 unchanged current
+provider source/header files. Nineteen fresh guarded live/PE spans total
+589 bytes and include the complete 318-byte parent. Eight fresh native
+seed ranges matched. The unchanged fixture linked only the frozen actual
+main library `9be94991d23f1951ad8913d1cc7cc0390f9a3d416cecea12eda78ac7601610db`,
+also independently frozen by the primary during owner validation.
+
+All ten comparisons passed: 692,652 compared DWORDs, including 692,419
+literal matches. The remaining 233 differences are mapped only at proven
+temporary old-group, old-surface-wrapper and vector pointer fields. Every
+raw trace is retained; no other renderer/group/registry/CS/global/device
+words are normalized. The 357 snapshots cover identity and null paths,
+complete old-owner deletion, changed application enable byte, original
+incoming retention across slot mutation, current device/getter changes,
+null surfaces, and entry/owner/nested-child exception paths.
+
+Fourteen exact archive objects, 497 complete COFF sections and all their
+relocations match the linked image. The proof covers 242 linked entries
+and 27,401 unique code bytes including fixture helpers; the linked parent
+is 460 bytes. Twenty-one complete postimage phases verify original code,
+linked text/read-only data, explicit child bridges and observed COM tables.
+All 262 recorded provider calls resolve to proven original/compiled call
+sites and real D3D9, Windows critical-section and CRT providers.
+
+The private original parent executes its complete guards, getters, current
+scalar invoker, FH3 handler and unwind map. One EH registration operand is
+relocated; declared child ABI bridges call the complete established source
+providers. Real operations run before observer mutations or exceptions.
+These cases do not establish untouched pool arenas, arbitrary foreign
+profiles, every possible exception, native caller ABI, or gameplay.
+
+The original Ghidra project retains its previous name and comments with
+new reviewed evidence appended and saved. The export is refreshed and a
+complete function reconstruction record is registered.
