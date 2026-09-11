@@ -109,5 +109,14 @@
     "native string, slot-pool, SEH and binary ABI",
     "operation runtime and gameplay validation"
   ],
-  "integration": "Local combined build passed; integration workflow log records subsequent main merge/build/annotation."
+  "integration": {
+    "commit": "6825816e",
+    "merged_main": "8be28943",
+    "combined_win32_build": "passed",
+    "existing_tests": "2 passed,0 failed",
+    "annotation_entries": 23,
+    "annotation_archive": "reports/orch5_text_builders_annotations.json",
+    "exports": "annotation tool refreshed affected exports; raw thunks and complete base destructor explicitly exported after annotations",
+    "snapshot_index": "refreshed by integration workflow"
+  }
 }

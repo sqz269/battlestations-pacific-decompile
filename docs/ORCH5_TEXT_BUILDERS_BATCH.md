@@ -19,9 +19,9 @@ borrowed d3dx9_40 half-conversion import. Undefined native cases remain pending.
 
 The AA9730 body was truncated after a false no-return free call. Local flow
 repair alone did not extend its stored body; official function recreation then
-restored AA9730..AA99B8 (649 bytes). Final listing has204 instructions and0 gaps.
+restored AA9730..AA99B8 (649 bytes). Final listing has 204 instructions and 0 gaps.
 Before/after documentation archives preserve its name, signature, calling
-convention, parameters, plate/instruction comments,27 old labels and12 local
+convention, parameters, plate/instruction comments, 27 old labels and 12 local
 variable descriptions. Two new labels arise from the newly included tail.
 No global no-return flag changed. Both raw name/loaded thunks are now defined.
 
@@ -36,3 +36,10 @@ Remaining work includes the AB98F0 optional-child factory/callee continuation,
 nonzero native timed-entry ownership, unsupported child deletion, complete Text
 property/current70/factory dispatch, original pool/string/SEH ABI and runtime
 validation. Workers are continuing independent prerequisite packets.
+
+Integration commit `6825816e` merged current main `8be28943` and passed the
+combined normal build and both existing tests. The official annotation tool
+saved 23 reviewed entries; prior values are archived in
+`reports/orch5_text_builders_annotations.json`. Affected exports and the shared
+snapshot/index were refreshed. The two raw thunks and complete base destructor
+were exported again after their final annotations.
