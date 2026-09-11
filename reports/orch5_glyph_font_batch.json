@@ -1,6 +1,6 @@
 {
   "branch": "agent/orch5-20260911",
-  "status": "reviewed_normal_win32_build_passed_ready_for_main",
+  "status": "integrated_main_normal_win32_build_and_existing_tests_passed",
   "worker_commits": {
     "mapping_glyph": "7ae534f3",
     "font_resources": "1445d2a1"
@@ -44,7 +44,8 @@
       "reports/orch5_font_function_recreated.json",
       "reports/orch5_font_documentation_before.json",
       "reports/orch5_glyph_font_annotations.json"
-    ]
+    ],
+    "merge_annotations_unchanged_from_primary_record": true
   },
   "remaining": [
     "review/integrate material and content stages35173c7b",
@@ -52,5 +53,12 @@
     "actual Text child construction/deletion and type dispatch",
     "actual font loading and native resource registration",
     "factory/menu/runtime wiring and gameplay validation"
+  ],
+  "main_integration_commit": "606726c2",
+  "integration_validation": "combined Win32 build and2existing tests passed after merging main",
+  "ready_for_next_review": [
+    "35173c7b",
+    "3a5af118",
+    "575a021e"
   ]
 }
