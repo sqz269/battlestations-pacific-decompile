@@ -131,3 +131,18 @@ remain byte-established rather than runtime-injected. Publication races,
 asynchronous access faults/SEH, and arbitrary second exceptions during unwind
 are outside the fixture claim. Replay scripts, exact hashes and trace artifacts
 are recorded in `reports/native_diagnostic_sink_lifetime_audit.json`.
+
+## Primary integration
+
+The primary added the source to CMake, completed the strict Win32 build and
+passed both existing CTests. It rechecked all 77 worker artifacts, five current
+source/provider files and fifteen fresh live-Ghidra/PE spans (335 bytes). The
+unchanged fixture linked the frozen main library, SHA-256
+`85b7690b5a42ea0828e572c05e054ddf565282bd14f39888062655e3747131cf`. The complete 38,274 DWORD,
+128 snapshot and seven actual-domain shutdown comparisons pass, including all
+114 call PCs, 34 write PCs, full original and provider postimages, thirteen
+relocation preimages and fourteen real loaded-module entry captures.
+The missing 41-byte scalar destructor is now defined in the original Ghidra
+project. Saved annotations preserve prior names/comments; all three complete
+records and refreshed exports are registered. No permanent tests were added.
+The fixture limits above remain unchanged.
