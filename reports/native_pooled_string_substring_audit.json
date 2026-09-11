@@ -638,5 +638,768 @@
       "sha256": "7d58ccd37ebc8c96fa5be5724c5b32dd3bc59bbb0c2adc0dcdc71569130fbaa1",
       "bytes": 53
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "integrated_actual_header_complete_original_caller_fixture_and_strict_win32_build_checked",
+    "worker_commit": "0910658daf28084120d41898872964a969049b96",
+    "discovery_worker_commit": "8c47dfe62210a4fd5ed6df7b1fa9313c56ac2dbe",
+    "new_complete_functions": 2,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00426060",
+        "name": "copy_construct_native_string_header_00426060",
+        "cpp_symbol": "copy_construct_native_string_header_00426060",
+        "source": "src/native_pooled_string_substring.cpp",
+        "native_end_exclusive": "004260a2",
+        "original_abi": "ECX actual destination; stack source; EAX actual destination; RET 4; no local EH",
+        "evidence": "reports/native_pooled_string_substring_audit.json",
+        "status": "actual_header_complete_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "current_integration_scope": "Full actual-header constructor reconstructed; clears both destination fields even on identity; distinct resize captures source length then current source guard/current destination count/source data/destination data. No initial-copy cleanup. docs/NATIVE_POOLED_STRING_SUBSTRING.md and reports/native_pooled_string_substring_audit.json. Source interface, not original ABI/game validation.",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00469840",
+        "name": "construct_native_string_substring_00469840",
+        "cpp_symbol": "construct_native_string_substring_00469840",
+        "source": "src/native_pooled_string_substring.cpp",
+        "native_end_exclusive": "00469950",
+        "original_abi": "ECX actual source; stack output/start/count; EAX actual output; RET 0Ch; two unwind states",
+        "evidence": "reports/native_pooled_string_substring_audit.json",
+        "status": "actual_header_complete_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "current_integration_scope": "Full actual-header substring now reconstructed in native_pooled_string_substring.cpp, including signed-start/DWORD-wrap path, preallocation source capture, real strncpy padding, complete 36-byte FuncInfo D891E0 and current-local/flagged-output cleanup. Normal release uses captured temporary data and current length. NativeStringStorage lookup/noexcept release remain explicit host boundaries; native-only getter-throw fixture does not establish throwing host-release parity. Preserve earlier projection comment as historical scope.",
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "spans": [
+        {
+          "address": "00426060",
+          "length": 66,
+          "sha256": "53d4b41063ce1429d94987c7b752a4f343cca774b21593a10fee3b95e6aa8bb6",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00469840",
+          "length": 272,
+          "sha256": "3d195be7698a4a68e668efb2b4de53eb59f861783950be94acddd6ca3a9cd09f",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00c61b50",
+          "length": 8,
+          "sha256": "ccafd8480b28907c86db2f92e09b6e224f954700f4cdd5bfd5a96940707169e4",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00c61b58",
+          "length": 25,
+          "sha256": "a1bcf85e0a0da8291918a116ae1773c5b28ff81097f613103aefd6d99d9b91af",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00c61b71",
+          "length": 10,
+          "sha256": "d6f79203e4c466864992a47b72e7cfcd41daf8674ef7ef747ac665ed05675e4d",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d891d0",
+          "length": 16,
+          "sha256": "2b4d07452ca16212c430748bf6b8dc7e94b43ca13ed5f014e75499f02e909e8a",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d891e0",
+          "length": 36,
+          "sha256": "32886771305222677a2e388c6639ecbac09e21c430f9a549cad56938b9c8da5f",
+          "live_matches_installed": true
+        },
+        {
+          "address": "0041dd40",
+          "length": 5,
+          "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+          "live_matches_installed": true
+        },
+        {
+          "address": "0041dd20",
+          "length": 5,
+          "sha256": "dca452e0b0521bb6b5ecf5e9c5a46ce8dd446665d1a55f931c87f7635507dce7",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00419cc0",
+          "length": 5,
+          "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bd1510",
+          "length": 5,
+          "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf7680",
+          "length": 5,
+          "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf9280",
+          "length": 5,
+          "sha256": "92d217ed3e1debc348a2388b2b9a46481b279c882b058866a6f13011a1ce2c8a",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf6b43",
+          "length": 5,
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b31dc0",
+          "length": 520,
+          "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bee780",
+          "length": 126,
+          "sha256": "14a34be0c91d9f77cc09d81e87338a40c7d85390709f3c979ce5f33901c818af",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b3ce30",
+          "length": 4,
+          "sha256": "e27121b8816e0aef2ed29676899d26e79f66af7e5ee5aed902be7208122bb635",
+          "live_matches_installed": true
+        },
+        {
+          "address": "004254b0",
+          "length": 1,
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "live_matches_installed": true
+        },
+        {
+          "address": "0041dd20",
+          "length": 29,
+          "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00426060",
+          "length": 66,
+          "sha256": "53d4b41063ce1429d94987c7b752a4f343cca774b21593a10fee3b95e6aa8bb6",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00469840",
+          "length": 272,
+          "sha256": "3d195be7698a4a68e668efb2b4de53eb59f861783950be94acddd6ca3a9cd09f",
+          "live_matches_installed": true
+        },
+        {
+          "address": "004bcc00",
+          "length": 51,
+          "sha256": "cfbd487587a7f330ae49a77ec737749f5f1c5bafbe7e33a8beeab96adb6763f8",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bee690",
+          "length": 240,
+          "sha256": "bf5742cb10c93610823cc99f29b9f29e5a46a15120cc27035826d0b264604ab5",
+          "live_matches_installed": true
+        },
+        {
+          "address": "0041dd40",
+          "length": 164,
+          "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b30510",
+          "length": 162,
+          "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b2f990",
+          "length": 120,
+          "sha256": "1001bf8ce6b71d52fb1ebbf7a0ecb839385119012b325611478775258b59ba4c",
+          "live_matches_installed": true
+        },
+        {
+          "address": "004d05e0",
+          "length": 83,
+          "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf7fbf",
+          "length": 80,
+          "sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf7eb7",
+          "length": 53,
+          "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf7eec",
+          "length": 211,
+          "sha256": "846f58655ba591b316bcbef3a9ef59d239c3f641407575197ffc6dd0326cd46e",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf9280",
+          "length": 8,
+          "sha256": "f7e1713dc26e0120b478048ac1394a156f5006725b17e3b13cd78ac0b46255dd",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf7680",
+          "length": 8,
+          "sha256": "5b13876d6d2c6fc545b2de6379985cc5fe511898b84fbba0e4e06ef6d1e0e28f",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00bf6713",
+          "length": 8,
+          "sha256": "8d1b9891ceda1890b6df2f7f2e8d56a90f95c4fe32d4be57c56bbefe334e2db8",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b316c0",
+          "length": 106,
+          "sha256": "17d649b2d967539174142ded4193989fcbd2cec60c1e0263325604b5a2c32ca5",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b32090",
+          "length": 95,
+          "sha256": "862aabcbdb8afd2673f88f5ec98b89002a0ca904e04c7462525a29d0d3264f7a",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b30340",
+          "length": 204,
+          "sha256": "1d0e882d931606fa14b3d1809cdc531ee79f1c837e68c5e03a2d936d3e467aef",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b2ff00",
+          "length": 221,
+          "sha256": "89407e355f323828c0800e9a4e0686134ae6854a6d7973b8acb7bfb7bc974000",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b32556",
+          "length": 58,
+          "sha256": "71c26717bad5a00f66c728c2a1d483db3d87df0b2d2f94a9cf2d694ffc7f470e",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00b3f968",
+          "length": 9,
+          "sha256": "37cbaf3497376ff839c686c683b10f71cafd74d6601f0a94f26e39d12e86a128",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00cbdc60",
+          "length": 18,
+          "sha256": "b9be19cc2d99a355f30b720150208c243fe6d311290cee0e85ed978a97a8d297",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00cc75b0",
+          "length": 18,
+          "sha256": "8d57d72609bdf99bd75d98c197ddf9f55f9658ffe168f07f3c206b5975768aa2",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00cc75d0",
+          "length": 35,
+          "sha256": "fbb99cf0f6d368d474f32fe9422369ff6ebced3d653b9a2af943731ef675dc7e",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00c61b50",
+          "length": 43,
+          "sha256": "2e41448dd108105e4d143ecdf6f954645126b3b679934ce86c3d33141e01992c",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00df65d4",
+          "length": 44,
+          "sha256": "db531d69f358024e695b6e3edd239873c2f52d27c8064c699a71499749409f86",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00e02160",
+          "length": 44,
+          "sha256": "e6a5ee73b78718c39544ee13220adc5a82345a7c37e2f453a9848570e9e28379",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00e0218c",
+          "length": 44,
+          "sha256": "47618ff1731211e047b3d50bff316f0a27174bb4efa4d37e9e51f5c896875bf2",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d891d0",
+          "length": 52,
+          "sha256": "4c05371f13ec27b4e12ce8b423f2102902fc8b8e1d05018b6806465f61b72f9d",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d61948",
+          "length": 16,
+          "sha256": "542b64bcdeadd2c8bd7811d0a309990b6cfc27c76c23c7444cfdc44bf01ea3a8",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d5f088",
+          "length": 20,
+          "sha256": "744d4f63ee4562f3ec7aaf2fd4fa4495edc15a5f3092e6ad6d52363645069566",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d5f038",
+          "length": 20,
+          "sha256": "0346f0fdc64f1e0b49b9ec403798af631acae5a98fdf66be38ca15a7e8405cb0",
+          "live_matches_installed": true
+        },
+        {
+          "address": "00d0db04",
+          "length": 55,
+          "sha256": "89d95b3a7f32e87165bd3b5062c33b74edc78642e451c35aa2629aabb77d2206",
+          "live_matches_installed": true
+        }
+      ],
+      "archived_artifacts": [
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "include/bsp/native_pooled_string_substring.hpp",
+          "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+          "bytes": 1557
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "src/native_pooled_string_substring.cpp",
+          "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+          "bytes": 5004
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "include/bsp/native_string.hpp",
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+          "bytes": 6001
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "src/native_string.cpp",
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+          "bytes": 6003
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "include/bsp/storage_pool.hpp",
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+          "bytes": 5571
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "src/storage_pool.cpp",
+          "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+          "bytes": 6169
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "docs/NATIVE_POOLED_STRING_SUBSTRING.md",
+          "sha256": "ac7fcc57d1cd8c2d3250e28ac1eee209280bb468cbec848c67cc7df3d478c3d6",
+          "bytes": 8676
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/prepare_native_pooled_string_substring.py",
+          "sha256": "b40a53443556fadd0b6a521e6ec4e2132c644de1786362df3f3906007a1df629",
+          "bytes": 4471
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/write_native_pooled_string_substring_audit.py",
+          "sha256": "eb045c8e923f77591abaa18d1b315b157c43790965dfd317dc3e9413bbb6b7d1",
+          "bytes": 11620
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_preparation.json",
+          "sha256": "4c1ae1a24dfccfa80433ba2793962a46aa021a06403cd7cf2fbb5f5320dbc430",
+          "bytes": 7900
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_spans.hpp",
+          "sha256": "220abb5fc4fa2cac430115ce2a27212a2fd27836ed71d7c773ee0d6fa799a7ef",
+          "bytes": 4170
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_check.cpp",
+          "sha256": "e8983eabdd6c3b43db48e21b71f5058a983f682c39448f5d1f3d60d482bac383",
+          "bytes": 15820
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/build_native_pooled_string_substring_check.ps1",
+          "sha256": "078229643184d04c5d0aebca26bde06510f175579f76b7f3d19f045341519df4",
+          "bytes": 1855
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_sources.cmake",
+          "sha256": "c0fc0ee383ffff9faf1a9abb6c510cbc3639f451e3e9dfe41e003ff0423dca9f",
+          "bytes": 130
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/build_native_pooled_string_substring.ps1",
+          "sha256": "0e906ebe8421be98c0d58d991092d88c47cef624a7aa6544ef154f45e9c173d6",
+          "bytes": 1037
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_build.log",
+          "sha256": "62c1c32203f35ce8d59220c35d950ca785940fc224a13978d6da3561039e92a1",
+          "bytes": 2709
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_check.log",
+          "sha256": "06e532b6bc566aa6a7ab7b8cbda356813e07c79c2e46b1c75d1c51572265e5ed",
+          "bytes": 376
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_final_build.log",
+          "sha256": "8de03228158cf248e4eee71eabab9bbf137cd53a9c905c24f826e311f44fd1c8",
+          "bytes": 2061
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/native_pooled_string_substring_verify_seeds.log",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "bytes": 3034
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "build/pooled-string-substring-check/native_pooled_string_substring_trace.json",
+          "sha256": "a83c8415643e380938a2948fab45adda14a2d6e851b0098ded0d5900d266a65b",
+          "bytes": 9897
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_old_00426060_proto.txt",
+          "sha256": "c03a392b8d8342600799111131f9b110e9d52685aa1de2a28620f558217152a8",
+          "bytes": 909
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_old_00426060_comments.json",
+          "sha256": "02410a74b2dc97ef4e0f3e46696577925f2b0a44a442157b643dbba372abee5e",
+          "bytes": 127
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_old_00469840_proto.txt",
+          "sha256": "a97ae735bd4fd02ae5d11be80a6925c4616ada035fb3282bf21b1c943315567b",
+          "bytes": 1983
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_old_00469840_comments.json",
+          "sha256": "b0371aaff9a23ffc319448bdaaec1a1689a0955dc86ad35272a9c6b4a3a9c143",
+          "bytes": 606
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_00426060.asm",
+          "sha256": "9923e09067cca24d5008ba3c9e8c5917867927b6e2508cbbceff06266da7929e",
+          "bytes": 685
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_00469840.asm",
+          "sha256": "36c1f221431cd77a2e5f35065931586acd37136a87f8e8d70753a61c17291f01",
+          "bytes": 2584
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_00c61b50.asm",
+          "sha256": "547850d290520fea19450cf8fc0e3273c0ad9d3f1407ea52e07053e2d54cba22",
+          "bytes": 57
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_00c61b58.asm",
+          "sha256": "817436e88964077b6a455b923695f5a215325a0e1dbc1385c296c3341b93728c",
+          "bytes": 218
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-string-substring-20260910",
+          "path": "local/substring_00c61b71.asm",
+          "sha256": "7d58ccd37ebc8c96fa5be5724c5b32dd3bc59bbb0c2adc0dcdc71569130fbaa1",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/native_string.hpp",
+          "bytes": 5278,
+          "sha256": "2b0558b64ac4e51f945ff0aff05da2578407f6d6c6a7e7d1fbeaa676c4e1af44"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/native_string.cpp",
+          "bytes": 5042,
+          "sha256": "a134c464efeababaecad987dee6a194df96a5235437f8ac72d4286e9b627641c"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/native_render_resource_record.hpp",
+          "bytes": 3197,
+          "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/native_render_resource_record.cpp",
+          "bytes": 6429,
+          "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/native_render_alias_insertion.hpp",
+          "bytes": 2053,
+          "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/native_render_alias_insertion.cpp",
+          "bytes": 4958,
+          "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/native_render_alias_checked_ops.hpp",
+          "bytes": 2413,
+          "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/native_render_alias_checked_ops.cpp",
+          "bytes": 5090,
+          "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+          "bytes": 1897,
+          "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/native_render_resource_alias_nodes.cpp",
+          "bytes": 3982,
+          "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/native_alias_count_growth.hpp",
+          "bytes": 1379,
+          "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/native_alias_count_growth.cpp",
+          "bytes": 1729,
+          "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/storage_pool.hpp",
+          "bytes": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/storage_pool.cpp",
+          "bytes": 6169,
+          "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 3986,
+          "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 10921,
+          "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "include/bsp/resource_path.hpp",
+          "bytes": 1396,
+          "sha256": "535071af4ef7ade72b4ab405398060b307c69795a76a43b2c342ecaabf8cc3f4"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "src/resource_path.cpp",
+          "bytes": 3684,
+          "sha256": "325e8753947ae02d371d4189340b709369da68f7c8340203854584f9712001e6"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md",
+          "bytes": 8128,
+          "sha256": "0f4156e647f5df9e244dda92c9c4f8dcd37bfe413ed81e65f1d32994c39b9646"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "docs/NATIVE_RENDER_RESOURCE_RECORD_ASSIGNMENT.md",
+          "bytes": 9054,
+          "sha256": "51d5cbec68a715a855e8ec47a5d65fa6977985f5965bd63b361fedfebcae5e7a"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "docs/NATIVE_RENDER_RESOURCE_REMOVAL_NEXT.md",
+          "bytes": 9212,
+          "sha256": "f6f34d01aaea8061489e3e31e7a466ea65d823869267bb335636c67e955958c9"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "local/prepare_resource_container_next.py",
+          "bytes": 6779,
+          "sha256": "cfe18f3286a3d79c6ea7901cfec1a30468f26607b67919e7c7032713f4c2aebd"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "docs/NATIVE_RENDER_RESOURCE_CONTAINER_NEXT.md",
+          "bytes": 12582,
+          "sha256": "836b46674f300b56b3ceb45781ab66e177021c932c44def79f84150356f56a91"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "local/resource_container_next_preparation.json",
+          "bytes": 42588,
+          "sha256": "775d457734d9e5f72dff4eb6380c4f10212b567acedecdaa00f55683c2cc1e5f"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-container-next-20260910",
+          "path": "local/write_resource_container_next_report.py",
+          "bytes": 17827,
+          "sha256": "487e588723027435eee63d5a4612b799acf1f5a1b03b99ccacd967816e4b443e"
+        }
+      ],
+      "pinned_sources": [
+        {
+          "path": "include/bsp/native_string.hpp",
+          "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+          "bytes": 6001,
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+          "source": "git committed blob; separate from earlier checkout artifact"
+        },
+        {
+          "path": "src/native_string.cpp",
+          "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+          "bytes": 6003,
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+          "source": "git committed blob; separate from earlier checkout artifact"
+        }
+      ],
+      "worker_sources_unchanged": true,
+      "uninitialized_image_observations_not_runtime_truth": [
+        {
+          "address": "0108d5a4",
+          "role": "empty_diagnostic_string",
+          "observation": "0108d5a4  00  .\n",
+          "limitation": "No initialized file-backed bytes at this address. Ghidra zero-filled analysis image is not a running process value."
+        },
+        {
+          "address": "0109de1c",
+          "role": "crt_locale_gate_analysis_image_only",
+          "observation": "0109de1c  00 00 00 00  ....\n",
+          "limitation": "No initialized file-backed bytes at this address. Ghidra zero-filled analysis image is not a running process value."
+        }
+      ]
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_pooled_string_substring.hpp",
+        "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+      },
+      {
+        "path": "src/native_pooled_string_substring.cpp",
+        "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+      },
+      {
+        "path": "local/native_pooled_substring_primary_fixture.txt",
+        "sha256": "8fd49d95e7cf57bcb53fc6eb9cb024039b28e56f276fc13d059d99b0e0289493"
+      },
+      {
+        "path": "local/build_native_pooled_string_substring_check.ps1",
+        "sha256": "dbe76b8098fd6a638b9f95368cf6ac9c523f4ed3783796edba1ab505dff0c47c"
+      },
+      {
+        "path": "build/pooled-string-substring-check/native_pooled_string_substring_trace.json",
+        "sha256": "a83c8415643e380938a2948fab45adda14a2d6e851b0098ded0d5900d266a65b"
+      }
+    ],
+    "primary_library_constructors": true,
+    "real_resize_body_instrumentation_retained": true,
+    "native_getter_throw_is_separate_not_host_parity": true,
+    "build": {
+      "passed": true,
+      "tests": 2,
+      "path": "reports/native_pooled_substring_build.txt",
+      "sha256": "6b57eea9d076dfd64a130e4682523b42dd560dfeb435a94d106afd9126456a6a"
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_pooled_substring_annotations.json",
+      "sha256": "d5dfa225652c627a8d3361c3b059cc9538c01dec4b88655419f6509a76e1190f",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00426060",
+        "path": "exports/bsp/functions/00426060/decompiled.c",
+        "sha256": "003177be744dad90048800beefdfb3a1a89d9b0694db37e1e9872fa4d8fb4b0a"
+      },
+      {
+        "address": "00469840",
+        "path": "exports/bsp/functions/00469840/decompiled.c",
+        "sha256": "583a9b512c729894d64e3a0f7b3359e79ec1b5c830596d18d9cac69b535dfbb1"
+      }
+    ],
+    "closure_utc": "2026-09-10T23:59:57.363038+00:00"
+  }
 }

@@ -1,0 +1,46 @@
+[
+  {
+    "address": "00426060",
+    "before": {
+      "address": "00426060",
+      "function_name": "FUN_00426060"
+    },
+    "after": {
+      "address": "00426060",
+      "old_name": "FUN_00426060",
+      "name": "BSP_NativeString_CopyConstruct",
+      "evidence": "Full actual-header constructor reconstructed; clears both destination fields even on identity; distinct resize captures source length then current source guard/current destination count/source data/destination data. No initial-copy cleanup. docs/NATIVE_POOLED_STRING_SUBSTRING.md and reports/native_pooled_string_substring_audit.json. Source interface, not original ABI/game validation. Original ABI: ECX actual destination; stack source; EAX actual destination; RET 4; no local EH. Primary native caller fixture3212words plus separately native-only postconstructed getter exception; strictWin32 primary build/2existing CTests pass. Original caller linked against actual primary constructor source with real resize-body instrumentation. No original pool first-use/native ABI/gameplay claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00469840",
+    "before": {
+      "address": "00469840",
+      "function_name": "BSP_NativeString_Substring",
+      "comment": "[BSP reconstruction 00469840]\nSubstring copy; normal name call uses start0,count=final dot index. No case transformation. General malformed/overflow semantics not reimplemented. Original ABI: ECX source native string; stack output string,start,count; EAX output; RET0C. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00469840",
+      "old_name": "BSP_NativeString_Substring",
+      "name": "BSP_NativeString_Substring",
+      "evidence": "Full actual-header substring now reconstructed in native_pooled_string_substring.cpp, including signed-start/DWORD-wrap path, preallocation source capture, real strncpy padding, complete 36-byte FuncInfo D891E0 and current-local/flagged-output cleanup. Normal release uses captured temporary data and current length. NativeStringStorage lookup/noexcept release remain explicit host boundaries; native-only getter-throw fixture does not establish throwing host-release parity. Preserve earlier projection comment as historical scope. Original ABI: ECX actual source; stack output/start/count; EAX actual output; RET 0Ch; two unwind states. Primary native caller fixture3212words plus separately native-only postconstructed getter exception; strictWin32 primary build/2existing CTests pass. Original caller linked against actual primary constructor source with real resize-body instrumentation. No original pool first-use/native ABI/gameplay claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00469840",
+    "before": {
+      "address": "00469840",
+      "function_name": "BSP_NativeString_Substring",
+      "comment": "[BSP reconstruction 00469840]\nSubstring copy; normal name call uses start0,count=final dot index. No case transformation. General malformed/overflow semantics not reimplemented. Original ABI: ECX source native string; stack output string,start,count; EAX output; RET0C. Evidence: docs/MATERIAL_PASS_COMPILER.md; reports/material_pass_compiler_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00469840] update\nFull actual-header substring now reconstructed in native_pooled_string_substring.cpp, including signed-start/DWORD-wrap path, preallocation source capture, real strncpy padding, complete 36-byte FuncInfo D891E0 and current-local/flagged-output cleanup. Normal release uses captured temporary data and current length. NativeStringStorage lookup/noexcept release remain explicit host boundaries; native-only getter-throw fixture does not establish throwing host-release parity. Preserve earlier projection comment as historical scope. Original ABI: ECX actual source; stack output/start/count; EAX actual output; RET 0Ch; two unwind states. Primary native caller fixture3212words plus separately native-only postconstructed getter exception; strictWin32 primary build/2existing CTests pass. Original caller linked against actual primary constructor source with real resize-body instrumentation. No original pool first-use/native ABI/gameplay claim."
+    },
+    "after": {
+      "address": "00469840",
+      "old_name": "BSP_NativeString_Substring",
+      "name": "BSP_NativeString_Substring",
+      "evidence": "Primary complete actual-header substring evidence: reports/native_pooled_string_substring_audit.json; docs/NATIVE_POOLED_STRING_SUBSTRING.md. Original caller differential and native-only getter exception scope are documented separately."
+    },
+    "status": "applied"
+  }
+]
