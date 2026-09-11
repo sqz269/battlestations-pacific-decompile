@@ -1,0 +1,109 @@
+{
+  "packet": "orch2_gui_resources_owner_j",
+  "utc": "2026-09-11T05:59:04.136931+00:00",
+  "target": {
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra proto/export/bytes and ghidra_export.py verify-seeds",
+    "ghidra_mutated": false
+  },
+  "native_ranges": [
+    {
+      "address": "00aa5e20",
+      "length": 1311,
+      "last_byte": "00aa633e",
+      "matches_disk": true,
+      "sha256": "cd4758165b406c38cc63c0560fb8e44ae8b1c6ed15b2cfd89a71afcecbf1ffdd"
+    },
+    {
+      "address": "00aa7e00",
+      "length": 177,
+      "last_byte": "00aa7eb0",
+      "matches_disk": true,
+      "sha256": "b88000faaf8b4e6a41262b3da171d325d0465b70ed25bff68c508318024dab95"
+    }
+  ],
+  "installed_page_tables": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\interface\\_mouse.lua",
+      "sha256": "76efd18430c43558cccd01c239e6c581c21cc31f3ca35a5051af7947668338e5"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\interface\\_highlight.lua",
+      "sha256": "394a6d568dd8fe82b986cc1d6d6f5bb60b4770d077a20319d220230adfa0d948"
+    }
+  ],
+  "sources": [
+    "include/bsp/gui_resources.hpp",
+    "src/gui_resources.cpp",
+    "include/bsp/gui_startup.hpp",
+    "src/gui_startup.cpp"
+  ],
+  "implementation": {
+    "entry": "GuiResourceOwner::initialize_00aa5e20",
+    "resource_state": "GuiResourceState",
+    "callbacks": [
+      "mutable VFS name resolution",
+      "renderer load(name,0)",
+      "atomic texture ref decrement",
+      "texture virtual +0 destruction",
+      "widget virtual +34 visibility"
+    ],
+    "external_functions": [
+      "load_gui_page_00aa5840",
+      "find_child_by_name_00aa7e00"
+    ],
+    "page_arguments": {
+      "screen_flag": 1,
+      "add_reference": false
+    },
+    "teardown_scope": "transparent replacement release only; no inferred native destructor"
+  },
+  "abi": {
+    "00aa5e20": "ECX=manager, no stack arguments, RET at 00aa633e",
+    "00aa7e00": "__thiscall(ECX=parent, NativeString* name, int unused), EAX=child/null, RET 8; last instruction 00aa7eae..00aa7eb0"
+  },
+  "validation": {
+    "exported": true,
+    "reconstructed": true,
+    "build": "MSVC Win32 Release scripts/build.ps1 passed /W4 /WX",
+    "existing_ctests": [
+      "reconstructed_math: passed",
+      "native_math_differential: passed"
+    ],
+    "seed_byte_ranges_matching": 8,
+    "focused_fixture": {
+      "source": "local/gui_resources_probe.cpp (ignored)",
+      "status": "passed",
+      "inputs": "installed page tables parsed by existing static parser; explicit synthetic fixture node IDs and callback recorders",
+      "checks": [
+        "native reference/visibility order",
+        "same-texture acquire-before-release",
+        "rejected white resolution preserves slot",
+        "accepted null white overwrites slot",
+        "cursor alias slots",
+        "borrowed page refcounts",
+        "ASCII case-insensitive direct-child lookup",
+        "no descendant lookup",
+        "missing node-bearing child prevents completion"
+      ],
+      "manifest_embedded": true
+    },
+    "abi_compatible": false,
+    "game_validated": false,
+    "render_validated": false,
+    "permanent_tests_added": false
+  },
+  "uncertainty": [
+    "descriptive names are hypotheses",
+    "native manager destructor and white texture lifetime beyond this routine are external",
+    "real renderer and derived widget/scene callback binding remains required",
+    "current Ghidra prototypes omit ECX and stack arguments; assembly is ABI authority",
+    "old run_gui_startup callback still cannot distinguish white VFS rejection from accepted null renderer result",
+    "non-ASCII CRT locale name comparison not claimed"
+  ],
+  "documentation": "docs/GUI_RESOURCE_OWNER.md"
+}
