@@ -1,6 +1,6 @@
 {
   "packet": "native_physical_file_date",
-  "status": "complete_actual_storage_source_in_established_physical_profile_strict_Win32_and_scoped_fixtures_checked",
+  "status": "complete_established_physical_profile_primary_main_build_and_scoped_native_actual_pool_fixture_checked",
   "utc": "2026-09-11T17:20:20.358654+00:00",
   "base_main_commit": "4a335c1a",
   "leaf_source_dependency_commit": "d977a0ba",
@@ -1466,12 +1466,410 @@
     ],
     "unsupported_route": "No general VFS/provider profile closure, no index construction/population; explicit source selector rejection only outside established physical slots."
   },
-  "annotations_applied": false,
+  "annotations_applied": true,
   "Ghidra_mutations": false,
-  "ledger_registered": false,
+  "ledger_registered": true,
   "reconstructed": true,
   "build_tested": true,
   "original_body_fixture": true,
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\physical_date_primary\\sealed.json",
+      "bytes": 137966,
+      "sha256": "86b87677943c913d5b2022152a50838f593dfd3b7acef4dc52c424d7438dd334"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\physical_date_primary\\preparation.json",
+      "bytes": 27899,
+      "sha256": "b68c4f172644712fefe5fae0ddd2e7ab5d1410cec8a194ea0b236e0bc08a2aa6"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\physical_date_primary\\bsp_core.lib",
+      "bytes": 36157974,
+      "sha256": "6eb2fce9d811380365d3031d51de8b82a0f98bcf7a997c3695c7c231295d9d7a"
+    },
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "permanent_tests": false,
+    "game_validated": false,
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\physical_date_primary\\verified.json",
+      "bytes": 233295,
+      "sha256": "2e5c7bd582afa7a2a352db6e657923dca9c068fcf24656c01b8fcfdb0f668601"
+    },
+    "worker_pins_verified": 28,
+    "current_source_header_doc_files": 16,
+    "all_current_files_literal": true,
+    "fresh_guarded_spans": 29,
+    "fresh_guarded_bytes": 3104,
+    "owned_original_bytes": 2195,
+    "original_comparisons": 18,
+    "original_bodies": 8,
+    "original_bytes": 667,
+    "owned_differential_bodies": 7,
+    "other_owned_bodies_not_differential": 8,
+    "compared_arena_bytes": 18432,
+    "actual_pool_Win32_index_checks": 13,
+    "exact_main_archive_members": 7,
+    "complete_linked_COFF_sections": 225,
+    "complete_COFF_bytes": 18170,
+    "all_relocations": 797,
+    "retained_owned_entries": 13,
+    "separate_cstring_entries_discarded": true,
+    "whole_main_objects_frozen": true,
+    "fixture_unchanged": true,
+    "source_recompiled_in_fixture": false,
+    "runtime_code_postimages": false,
+    "defined_function": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_physical_date_defined_functions.json",
+      "bytes": 1197,
+      "sha256": "87e7474a938247a6090b3aebc29a8be2088bb55be45e0918adf07c0ec2d9d363"
+    },
+    "stored_Ghidra_split_preserved": [
+      "00bf3a80..00bf3acb",
+      "00bf3acc..00bf3c0e"
+    ]
+  },
+  "main_registered": true,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_physical_file_date_annotations.json",
+    "bytes": 34020,
+    "sha256": "044cd4f56b1dc7ebfacface192dc36ea85535391ef42947dfc747c6a438fd301",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00bf3a80",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bf3a80\\decompiled.c",
+      "bytes": 4969,
+      "sha256": "16c18cc9637720f93f9c94ba3772ae192f1d9b3af0f34df54c20382e836458b1"
+    },
+    {
+      "address": "00bf39c0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bf39c0\\decompiled.c",
+      "bytes": 2584,
+      "sha256": "86e6e6c77fabbf952dcd95d27f2cf502951d7498c059e5321e4a8d314778f83a"
+    },
+    {
+      "address": "00bf3970",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bf3970\\decompiled.c",
+      "bytes": 2041,
+      "sha256": "a53a845b5596a9ebb7c5f1227369415d5b40a9de5f6394b5ffec29a2d3333e8b"
+    },
+    {
+      "address": "00bf3f70",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bf3f70\\decompiled.c",
+      "bytes": 5685,
+      "sha256": "7570de81258956186d12585729694fba2261081e23f10762b803afc108e51202"
+    },
+    {
+      "address": "00bf36d0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bf36d0\\decompiled.c",
+      "bytes": 2060,
+      "sha256": "481fb41da7a84043305cf388f862afe60b687586fff6ac5d6d4f707f5aaf7633"
+    },
+    {
+      "address": "00bda260",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bda260\\decompiled.c",
+      "bytes": 2170,
+      "sha256": "6a7ba8521115132014c4bb7728e03e77cc215cb2f16626b54077618411ecabcd"
+    },
+    {
+      "address": "00bd9860",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd9860\\decompiled.c",
+      "bytes": 2250,
+      "sha256": "55be4baf5441932430a4225395e2e2a23265f5efde38d7a62e33c3b292b53dfe"
+    },
+    {
+      "address": "00bd92c0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd92c0\\decompiled.c",
+      "bytes": 1549,
+      "sha256": "04b2a41d728ce9bdedc39a14a03e1dc7cab1aad27526e706707e5bc1c600bd9d"
+    },
+    {
+      "address": "00435c40",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00435c40\\decompiled.c",
+      "bytes": 1985,
+      "sha256": "753060a0bcff459bb989ca3846f3395072ff57f79a4a92d56c8ae3c0b3fd78f6"
+    },
+    {
+      "address": "00449af0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00449af0\\decompiled.c",
+      "bytes": 2953,
+      "sha256": "9dd58653104df2091a4b2f4df81e09b979d682df4ea00ec637f408e561e4e695"
+    },
+    {
+      "address": "00467cf0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00467cf0\\decompiled.c",
+      "bytes": 1842,
+      "sha256": "5d96c21c98bd5395a8cc4587c42f2739fd70f196b646416c464fdb4b5d93ba09"
+    },
+    {
+      "address": "004261a0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004261a0\\decompiled.c",
+      "bytes": 3451,
+      "sha256": "87d18b4b0af30afb92ea603b464bb33ac8886f22a9f1a032780fdbf43b13ca3c"
+    },
+    {
+      "address": "00425f40",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00425f40\\decompiled.c",
+      "bytes": 1551,
+      "sha256": "56bb505668046c6ff108c40c9a715a39178146c7bf54b72f0ddc8059dfc22763"
+    },
+    {
+      "address": "0041e350",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041e350\\decompiled.c",
+      "bytes": 2961,
+      "sha256": "bbbc1c8b18cbc0945f89d5836bf37d5ee18eda1a7b9ad1bb6ba4edfd251d62e2"
+    },
+    {
+      "address": "0041e870",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041e870\\decompiled.c",
+      "bytes": 3037,
+      "sha256": "644ce3a4e54f2af6e999ac7889bc37bdf4ec04fd3ab4139814b8fb5fece05220"
+    },
+    {
+      "address": "00bf3acc",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bf3acc\\decompiled.c",
+      "bytes": 3798,
+      "sha256": "4143f18d2766b80d7bae9e3096aa157e708f34b9834d434664b54eaf0a16924a"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_PHYSICAL_FILE_DATE.md",
+    "bytes": 12901,
+    "sha256": "b6516b91f83e7281ea7d8e146ea38721bb9f0f5bf62e00e415c441f05204da30"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00bf3a80",
+      "name": "query_native_physical_file_date_00bf3a80",
+      "cpp_symbol": "bsp::query_native_physical_file_date_00bf3a80",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bf3c0f",
+      "original_abi": "ECX physical provider; hidden output/name stack; EAX output; RET8; includes BF3ACC continuation",
+      "status": "complete_established_physical_profile_primary_main_build_and_scoped_native_actual_pool_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": " Established D69168 physical profile only: reached current slots+10 BF3F70,+18 BF39C0,+1C BF3970. Unknown selector raises a documented SOURCE boundary, not recovered native behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bf39c0",
+      "name": "replace_native_physical_path_00bf39c0",
+      "cpp_symbol": "bsp::replace_native_physical_path_00bf39c0",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bf3a7c",
+      "original_abi": "ECX physical provider; mutable native name stack; AL bool; RET4",
+      "status": "complete_established_physical_profile_primary_main_build_and_scoped_native_actual_pool_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": " Established D69168 physical profile only: reached current slots+10 BF3F70,+18 BF39C0,+1C BF3970. Unknown selector raises a documented SOURCE boundary, not recovered native behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bf3970",
+      "name": "build_native_physical_path_00bf3970",
+      "cpp_symbol": "bsp::build_native_physical_path_00bf3970",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bf39b1",
+      "original_abi": "ECX physical provider; hidden output/suffix stack; EAX output; RET8",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bf3f70",
+      "name": "exists_native_physical_path_00bf3f70",
+      "cpp_symbol": "bsp::exists_native_physical_path_00bf3f70",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bf41ba",
+      "original_abi": "ECX physical provider; name stack; AL bool; RET4",
+      "status": "complete_established_physical_profile_primary_main_build_and_scoped_native_actual_pool_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": " Established D69168 physical profile only: reached current slots+10 BF3F70,+18 BF39C0,+1C BF3970. Unknown selector raises a documented SOURCE boundary, not recovered native behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bf36d0",
+      "name": "find_native_physical_index_00bf36d0",
+      "cpp_symbol": "bsp::find_native_physical_index_00bf36d0",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bf3736",
+      "original_abi": "ECX physical index tree; hidden iterator-output/key stack; EAX output; RET8",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bda260",
+      "name": "lower_bound_native_physical_index_00bda260",
+      "cpp_symbol": "bsp::lower_bound_native_physical_index_00bda260",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bda2b3",
+      "original_abi": "ECX physical index tree; key stack; EAX lower-bound node; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bd9860",
+      "name": "advance_native_physical_index_00bd9860",
+      "cpp_symbol": "bsp::advance_native_physical_index_00bd9860",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bd98c3",
+      "original_abi": "ECX physical-index iterator; RET; mutates node pointer",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bd92c0",
+      "name": "equal_native_physical_iterators_00bd92c0",
+      "cpp_symbol": "bsp::equal_native_physical_iterators_00bd92c0",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00bd92e9",
+      "original_abi": "ECX iterator; comparison iterator stack; AL equality; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00435c40",
+      "name": "equal_native_string_headers_00435c40",
+      "cpp_symbol": "bsp::equal_native_string_headers_00435c40",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00435c99",
+      "original_abi": "ECX left header; right header stack; AL bool; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00449af0",
+      "name": "unequal_native_string_headers_00449af0",
+      "cpp_symbol": "bsp::unequal_native_string_headers_00449af0",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00449b3d",
+      "original_abi": "ECX left header; right header stack; AL unequal bool; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00467cf0",
+      "name": "reverse_find_native_string_header_00467cf0",
+      "cpp_symbol": "bsp::reverse_find_native_string_header_00467cf0",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00467d4f",
+      "original_abi": "ECX source header; needle/header and unsigned start limit stack; EAX signed position or -1; RET8",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": true,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "004261a0",
+      "name": "concatenate_native_string_headers_004261a0",
+      "cpp_symbol": "bsp::concatenate_native_string_headers_004261a0",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00426246",
+      "original_abi": "ECX left header; hidden destination/right header stack; EAX destination; RET8",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00425f40",
+      "name": "assign_native_string_header_00425f40",
+      "cpp_symbol": "bsp::assign_native_string_header_00425f40",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "00425f75",
+      "original_abi": "ECX destination header; source header stack; EAX destination; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "0041e350",
+      "name": "assign_native_string_cstring_0041e350",
+      "cpp_symbol": "bsp::assign_native_string_cstring_0041e350",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "0041e395",
+      "original_abi": "ECX destination; nullable C-string stack; EAX destination; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "0041e870",
+      "name": "construct_native_string_cstring_0041e870",
+      "cpp_symbol": "bsp::construct_native_string_cstring_0041e870",
+      "source": "src/native_physical_file_date.cpp",
+      "native_end_exclusive": "0041e8c3",
+      "original_abi": "ECX destination; nonnull C-string stack; EAX destination; RET4",
+      "status": "complete_actual_storage_primary_main_build_and_scoped_fixture_checked",
+      "evidence": "reports/native_physical_file_date_audit.json",
+      "native_differential_fixture": false,
+      "source_domain": "Actual raw storage with documented CRT/pool boundaries.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T17:39:32.769542+00:00"
 }

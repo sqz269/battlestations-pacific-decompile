@@ -89,3 +89,12 @@ with manifest SHA256
 The tangent received a descriptive Ghidra name; existing names/comments were
 preserved, reviewed evidence was appended and saved, and both exports and
 complete function records were refreshed. Runtime and caller limits above remain.
+
+
+A supplemental static audit includes map symbols marked with both `f` and
+`i`. It expands the complete COFF-to-linked check from 171 to 255 sections;
+all three library sections and all previously checked bytes are unchanged.
+The same immutable executable, fixture results and original seal are retained.
+No new test or runtime execution was needed. The supplement is read-only at
+`local/camera_projection_coff_supplement/`, manifest SHA256
+`7bd34343bb6cb59e8f9befd6387a167da881a9c16a66ea6d188c3474b660f741`.
