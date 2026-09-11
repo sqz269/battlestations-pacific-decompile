@@ -287,5 +287,13 @@
     "Create00651800 under Ghidra write lock, annotate five pending names and corrected00816a40 evidence, preserve comments, save and refresh exports/callers metadata.",
     "Retire obsolete compact-record UnitOrderIssueHost/issue_unit_order_00816a40 and correct prior producer docs in integrator-owned edits.",
     "Keep full32-byte constructor and issue interfaces distinct from compact queue projection."
-  ]
+  ],
+  "integration_review": {
+    "native_constructor_comparisons": 121,
+    "mismatches": 0,
+    "signed_zero_correction_reviewed": true,
+    "signaling_nan_issue_parity": false,
+    "reason": "Native 00816a46/65 and 00816a6b/73 FLD/FSTP ingress spills can quiet signaling NaNs before construction. The typed issue API forwards them directly; this domain is excluded.",
+    "report": "reports/warning_voice_order_integration.json"
+  }
 }

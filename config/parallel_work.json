@@ -4034,6 +4034,80 @@
         "native_cube_texture_pool_trim1"
       ],
       "active_lease_packet_id": "native_cube_texture_pool_static2"
+    },
+    {
+      "id": "orch4_warning_message_table",
+      "packet": "orch4_warning_message_table",
+      "worker": "agent/orch4-warnings-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_bounded_fixture_tested",
+      "function_addresses": [
+        "009870a0",
+        "0097f570",
+        "00979990",
+        "00979730",
+        "0096dbb0"
+      ],
+      "code_ownership": [
+        "include/bsp/warning_messages.hpp",
+        "src/warning_messages.cpp",
+        "docs/WARNING_MESSAGE_TABLE.md",
+        "reports/warning_message_table.json"
+      ],
+      "scope": "Three recursive Lua table loaders, known-id lookup, and the table-loading fragment of Init.",
+      "integration_report": "reports/warning_voice_order_integration.json",
+      "prerequisite_packets": [],
+      "discovery_evidence": "docs/MISSION_EVENTS_UPDATE.md"
+    },
+    {
+      "id": "orch4_voice_line_playback",
+      "packet": "orch4_voice_line_playback",
+      "worker": "agent/orch4-voice-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_bounded_fixture_tested",
+      "function_addresses": [
+        "005bbc10",
+        "005bbdc0",
+        "005b71d0",
+        "005babb0",
+        "007027b0",
+        "005b9760",
+        "005b7790"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_playback.hpp",
+        "src/voice_playback.cpp",
+        "docs/VOICE_LINE_PLAYBACK.md",
+        "reports/voice_line_playback.json"
+      ],
+      "scope": "Stateful single-slot readiness, line construction/queueing, speaker classification, positional admission and fade startup.",
+      "integration_report": "reports/warning_voice_order_integration.json",
+      "prerequisite_packets": [],
+      "discovery_evidence": "docs/MISSION_EVENTS_UPDATE.md"
+    },
+    {
+      "id": "orch4_unit_order_record",
+      "packet": "orch4_unit_order_record",
+      "worker": "agent/orch4-orders-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_bounded_fixture_tested",
+      "function_addresses": [
+        "00815440",
+        "00816a40",
+        "0064b870",
+        "00651800",
+        "0067c4f0"
+      ],
+      "code_ownership": [
+        "include/bsp/unit_order_record.hpp",
+        "src/unit_order_record.cpp",
+        "docs/UNIT_ORDER_RECORD.md",
+        "reports/unit_order_record.json"
+      ],
+      "scope": "Full order constructor/message payload and three bounded HUD publication fragments; outer HUD behavior remains analyzed.",
+      "integration_report": "reports/warning_voice_order_integration.json",
+      "prerequisite_packets": [],
+      "discovery_evidence": "docs/UNIT_COMMAND_PRODUCERS.md"
     }
   ],
   "snapshot_after_analysis": {

@@ -155,3 +155,12 @@ shared test was added by this worker. No native HUD,
 network-session or game validation has been claimed. Double intermediates
 with explicit float spills do not promise arbitrary x87 precision-control or
 floating-point status equivalence.
+
+## Integration review
+
+The independent review confirmed message offsets, the complete payload and the
+negative-zero steering correction. Signaling-NaN issuance is explicitly outside
+the verified domain: native 00816A46/65 and 00816A6B/73 spill the arguments
+through x87 before construction, which can quiet them. The typed issue API
+does not reproduce these ingress conversions. The 121 native comparisons
+cover the isolated constructor, including quiet NaNs, rather than this path.
