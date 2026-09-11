@@ -1,0 +1,3961 @@
+{
+  "schema_version": 1,
+  "packet": "native_shader_device_reset5",
+  "status": "complete_actual_storage_five_functions_strict_Win32_and_real_D3D9_original_instruction_fixture_passed",
+  "generated_utc": "2026-09-11T05:51:30.988045+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910",
+  "branch": "agent/native-shader-device-reset-20260910",
+  "base_commit": "ac6492b",
+  "owned_addresses": [
+    "00b1fef0",
+    "00b5e750",
+    "00b5e810",
+    "00b5e890",
+    "00b5e8e0"
+  ],
+  "owned_files": [
+    "include/bsp/native_shader_device_reset.hpp",
+    "src/native_shader_device_reset.cpp",
+    "docs/NATIVE_SHADER_DEVICE_RESET.md",
+    "reports/native_shader_device_reset_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00b1fef0",
+      "end_exclusive": "00b1fef7",
+      "byte_count": 7,
+      "old_name": "BSP_D3D9Renderer_GetDevice",
+      "old_signature": "undefined BSP_D3D9Renderer_GetDevice(void)",
+      "proposed_name": "BSP_D3D9Renderer_GetDevice",
+      "cpp_symbol": "get_native_renderer_device_00b1fef0",
+      "source": "src/native_shader_device_reset.cpp",
+      "original_ABI": "ECX actual renderer, EAX borrowed device, RET",
+      "status": "complete_actual_storage_strict_Win32_and_full_original_body_real_D3D9_HAL_fixture_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b5e750",
+      "end_exclusive": "00b5e7b9",
+      "byte_count": 105,
+      "old_name": "FUN_00b5e750",
+      "old_signature": "undefined FUN_00b5e750(void)",
+      "proposed_name": "BSP_PixelShader_SaveBytecodeAndRelease",
+      "cpp_symbol": "save_release_native_pixel_shader_00b5e750",
+      "source": "src/native_shader_device_reset.cpp",
+      "original_ABI": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "status": "complete_actual_storage_strict_Win32_and_full_original_body_real_D3D9_HAL_fixture_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b5e810",
+      "end_exclusive": "00b5e879",
+      "byte_count": 105,
+      "old_name": "FUN_00b5e810",
+      "old_signature": "undefined FUN_00b5e810(void)",
+      "proposed_name": "BSP_VertexShader_SaveBytecodeAndRelease",
+      "cpp_symbol": "save_release_native_vertex_shader_00b5e810",
+      "source": "src/native_shader_device_reset.cpp",
+      "original_ABI": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "status": "complete_actual_storage_strict_Win32_and_full_original_body_real_D3D9_HAL_fixture_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b5e890",
+      "end_exclusive": "00b5e8d4",
+      "byte_count": 68,
+      "old_name": "FUN_00b5e890",
+      "old_signature": "undefined FUN_00b5e890(void)",
+      "proposed_name": "BSP_PixelShader_RestoreDeviceObject",
+      "cpp_symbol": "restore_native_pixel_shader_00b5e890",
+      "source": "src/native_shader_device_reset.cpp",
+      "original_ABI": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "status": "complete_actual_storage_strict_Win32_and_full_original_body_real_D3D9_HAL_fixture_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b5e8e0",
+      "end_exclusive": "00b5e924",
+      "byte_count": 68,
+      "old_name": "FUN_00b5e8e0",
+      "old_signature": "undefined FUN_00b5e8e0(void)",
+      "proposed_name": "BSP_VertexShader_RestoreDeviceObject",
+      "cpp_symbol": "restore_native_vertex_shader_00b5e8e0",
+      "source": "src/native_shader_device_reset.cpp",
+      "original_ABI": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "status": "complete_actual_storage_strict_Win32_and_full_original_body_real_D3D9_HAL_fixture_passed",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "native_evidence": {
+    "generated_utc": "2026-09-11T05:36:32.358186+00:00",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verification": "Each bsp.py ghidra bytes call verifies project/program/language/image base before reading.",
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_size": 14872576,
+    "spans": [
+      {
+        "address": 11665136,
+        "length": 7,
+        "end_exclusive": 11665143,
+        "disk_offset": 7470832,
+        "hex": "8b81101a0000c3",
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 11921232,
+        "length": 105,
+        "end_exclusive": 11921337,
+        "disk_offset": 7726928,
+        "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8366e09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+        "sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 11921424,
+        "length": 105,
+        "end_exclusive": 11921529,
+        "disk_offset": 7727120,
+        "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8766d09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+        "sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 11921552,
+        "length": 68,
+        "end_exclusive": 11921620,
+        "disk_offset": 7727248,
+        "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e84216fcff8b560c8b085752508b81a8010000ffd08b4e0c51e8c280090083c404c7460c000000005f5ec3",
+        "sha256": "2e7c0d9661ef0754834b4f26b3ef51ebb4de29121df9310e9d9e62d53a3f7b7d",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 11921632,
+        "length": 68,
+        "end_exclusive": 11921700,
+        "disk_offset": 7727328,
+        "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e8f215fcff8b560c8b085752508b816c010000ffd08b4e0c51e87280090083c404c7460c000000005f5ec3",
+        "sha256": "8602129831d448716a42da9c0773dcb804d14f2631c778a39c372da93dea40e4",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 12539326,
+        "length": 5,
+        "end_exclusive": 12539331,
+        "disk_offset": 8345022,
+        "hex": "e958120000",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 12544393,
+        "length": 5,
+        "end_exclusive": 12544398,
+        "disk_offset": 8350089,
+        "hex": "e91efcffff",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      }
+    ],
+    "complete_instruction_decode": [
+      {
+        "address": 11665136,
+        "hex": "8b81101a0000",
+        "instruction": "mov eax, dword ptr [ecx + 0x1a10]"
+      },
+      {
+        "address": 11665142,
+        "hex": "c3",
+        "instruction": "ret "
+      },
+      {
+        "address": 11921232,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921233,
+        "hex": "56",
+        "instruction": "push esi"
+      },
+      {
+        "address": 11921234,
+        "hex": "8bf1",
+        "instruction": "mov esi, ecx"
+      },
+      {
+        "address": 11921236,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921237,
+        "hex": "8b7e08",
+        "instruction": "mov edi, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921240,
+        "hex": "85ff",
+        "instruction": "test edi, edi"
+      },
+      {
+        "address": 11921242,
+        "hex": "7459",
+        "instruction": "je 0xb5e7b5"
+      },
+      {
+        "address": 11921244,
+        "hex": "8b07",
+        "instruction": "mov eax, dword ptr [edi]"
+      },
+      {
+        "address": 11921246,
+        "hex": "8b4804",
+        "instruction": "mov ecx, dword ptr [eax + 4]"
+      },
+      {
+        "address": 11921249,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921250,
+        "hex": "ffd1",
+        "instruction": "call ecx"
+      },
+      {
+        "address": 11921252,
+        "hex": "8b17",
+        "instruction": "mov edx, dword ptr [edi]"
+      },
+      {
+        "address": 11921254,
+        "hex": "8b4208",
+        "instruction": "mov eax, dword ptr [edx + 8]"
+      },
+      {
+        "address": 11921257,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921258,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921260,
+        "hex": "8b4608",
+        "instruction": "mov eax, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921263,
+        "hex": "8b08",
+        "instruction": "mov ecx, dword ptr [eax]"
+      },
+      {
+        "address": 11921265,
+        "hex": "8d542408",
+        "instruction": "lea edx, [esp + 8]"
+      },
+      {
+        "address": 11921269,
+        "hex": "52",
+        "instruction": "push edx"
+      },
+      {
+        "address": 11921270,
+        "hex": "6a00",
+        "instruction": "push 0"
+      },
+      {
+        "address": 11921272,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921273,
+        "hex": "8b4110",
+        "instruction": "mov eax, dword ptr [ecx + 0x10]"
+      },
+      {
+        "address": 11921276,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921278,
+        "hex": "8b4c2408",
+        "instruction": "mov ecx, dword ptr [esp + 8]"
+      },
+      {
+        "address": 11921282,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921283,
+        "hex": "e8366e0900",
+        "instruction": "call 0xbf55be"
+      },
+      {
+        "address": 11921288,
+        "hex": "8b4e08",
+        "instruction": "mov ecx, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921291,
+        "hex": "83c404",
+        "instruction": "add esp, 4"
+      },
+      {
+        "address": 11921294,
+        "hex": "8d7c2408",
+        "instruction": "lea edi, [esp + 8]"
+      },
+      {
+        "address": 11921298,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921299,
+        "hex": "89460c",
+        "instruction": "mov dword ptr [esi + 0xc], eax"
+      },
+      {
+        "address": 11921302,
+        "hex": "8b11",
+        "instruction": "mov edx, dword ptr [ecx]"
+      },
+      {
+        "address": 11921304,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921305,
+        "hex": "8b4210",
+        "instruction": "mov eax, dword ptr [edx + 0x10]"
+      },
+      {
+        "address": 11921308,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921309,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921311,
+        "hex": "8b4608",
+        "instruction": "mov eax, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921314,
+        "hex": "85c0",
+        "instruction": "test eax, eax"
+      },
+      {
+        "address": 11921316,
+        "hex": "740f",
+        "instruction": "je 0xb5e7b5"
+      },
+      {
+        "address": 11921318,
+        "hex": "8b08",
+        "instruction": "mov ecx, dword ptr [eax]"
+      },
+      {
+        "address": 11921320,
+        "hex": "8b5108",
+        "instruction": "mov edx, dword ptr [ecx + 8]"
+      },
+      {
+        "address": 11921323,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921324,
+        "hex": "ffd2",
+        "instruction": "call edx"
+      },
+      {
+        "address": 11921326,
+        "hex": "c7460800000000",
+        "instruction": "mov dword ptr [esi + 8], 0"
+      },
+      {
+        "address": 11921333,
+        "hex": "5f",
+        "instruction": "pop edi"
+      },
+      {
+        "address": 11921334,
+        "hex": "5e",
+        "instruction": "pop esi"
+      },
+      {
+        "address": 11921335,
+        "hex": "59",
+        "instruction": "pop ecx"
+      },
+      {
+        "address": 11921336,
+        "hex": "c3",
+        "instruction": "ret "
+      },
+      {
+        "address": 11921424,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921425,
+        "hex": "56",
+        "instruction": "push esi"
+      },
+      {
+        "address": 11921426,
+        "hex": "8bf1",
+        "instruction": "mov esi, ecx"
+      },
+      {
+        "address": 11921428,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921429,
+        "hex": "8b7e08",
+        "instruction": "mov edi, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921432,
+        "hex": "85ff",
+        "instruction": "test edi, edi"
+      },
+      {
+        "address": 11921434,
+        "hex": "7459",
+        "instruction": "je 0xb5e875"
+      },
+      {
+        "address": 11921436,
+        "hex": "8b07",
+        "instruction": "mov eax, dword ptr [edi]"
+      },
+      {
+        "address": 11921438,
+        "hex": "8b4804",
+        "instruction": "mov ecx, dword ptr [eax + 4]"
+      },
+      {
+        "address": 11921441,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921442,
+        "hex": "ffd1",
+        "instruction": "call ecx"
+      },
+      {
+        "address": 11921444,
+        "hex": "8b17",
+        "instruction": "mov edx, dword ptr [edi]"
+      },
+      {
+        "address": 11921446,
+        "hex": "8b4208",
+        "instruction": "mov eax, dword ptr [edx + 8]"
+      },
+      {
+        "address": 11921449,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921450,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921452,
+        "hex": "8b4608",
+        "instruction": "mov eax, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921455,
+        "hex": "8b08",
+        "instruction": "mov ecx, dword ptr [eax]"
+      },
+      {
+        "address": 11921457,
+        "hex": "8d542408",
+        "instruction": "lea edx, [esp + 8]"
+      },
+      {
+        "address": 11921461,
+        "hex": "52",
+        "instruction": "push edx"
+      },
+      {
+        "address": 11921462,
+        "hex": "6a00",
+        "instruction": "push 0"
+      },
+      {
+        "address": 11921464,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921465,
+        "hex": "8b4110",
+        "instruction": "mov eax, dword ptr [ecx + 0x10]"
+      },
+      {
+        "address": 11921468,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921470,
+        "hex": "8b4c2408",
+        "instruction": "mov ecx, dword ptr [esp + 8]"
+      },
+      {
+        "address": 11921474,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921475,
+        "hex": "e8766d0900",
+        "instruction": "call 0xbf55be"
+      },
+      {
+        "address": 11921480,
+        "hex": "8b4e08",
+        "instruction": "mov ecx, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921483,
+        "hex": "83c404",
+        "instruction": "add esp, 4"
+      },
+      {
+        "address": 11921486,
+        "hex": "8d7c2408",
+        "instruction": "lea edi, [esp + 8]"
+      },
+      {
+        "address": 11921490,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921491,
+        "hex": "89460c",
+        "instruction": "mov dword ptr [esi + 0xc], eax"
+      },
+      {
+        "address": 11921494,
+        "hex": "8b11",
+        "instruction": "mov edx, dword ptr [ecx]"
+      },
+      {
+        "address": 11921496,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921497,
+        "hex": "8b4210",
+        "instruction": "mov eax, dword ptr [edx + 0x10]"
+      },
+      {
+        "address": 11921500,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921501,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921503,
+        "hex": "8b4608",
+        "instruction": "mov eax, dword ptr [esi + 8]"
+      },
+      {
+        "address": 11921506,
+        "hex": "85c0",
+        "instruction": "test eax, eax"
+      },
+      {
+        "address": 11921508,
+        "hex": "740f",
+        "instruction": "je 0xb5e875"
+      },
+      {
+        "address": 11921510,
+        "hex": "8b08",
+        "instruction": "mov ecx, dword ptr [eax]"
+      },
+      {
+        "address": 11921512,
+        "hex": "8b5108",
+        "instruction": "mov edx, dword ptr [ecx + 8]"
+      },
+      {
+        "address": 11921515,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921516,
+        "hex": "ffd2",
+        "instruction": "call edx"
+      },
+      {
+        "address": 11921518,
+        "hex": "c7460800000000",
+        "instruction": "mov dword ptr [esi + 8], 0"
+      },
+      {
+        "address": 11921525,
+        "hex": "5f",
+        "instruction": "pop edi"
+      },
+      {
+        "address": 11921526,
+        "hex": "5e",
+        "instruction": "pop esi"
+      },
+      {
+        "address": 11921527,
+        "hex": "59",
+        "instruction": "pop ecx"
+      },
+      {
+        "address": 11921528,
+        "hex": "c3",
+        "instruction": "ret "
+      },
+      {
+        "address": 11921552,
+        "hex": "56",
+        "instruction": "push esi"
+      },
+      {
+        "address": 11921553,
+        "hex": "8bf1",
+        "instruction": "mov esi, ecx"
+      },
+      {
+        "address": 11921555,
+        "hex": "837e0800",
+        "instruction": "cmp dword ptr [esi + 8], 0"
+      },
+      {
+        "address": 11921559,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921560,
+        "hex": "8d7e08",
+        "instruction": "lea edi, [esi + 8]"
+      },
+      {
+        "address": 11921563,
+        "hex": "7534",
+        "instruction": "jne 0xb5e8d1"
+      },
+      {
+        "address": 11921565,
+        "hex": "837e0c00",
+        "instruction": "cmp dword ptr [esi + 0xc], 0"
+      },
+      {
+        "address": 11921569,
+        "hex": "742e",
+        "instruction": "je 0xb5e8d1"
+      },
+      {
+        "address": 11921571,
+        "hex": "8b0d94d3f800",
+        "instruction": "mov ecx, dword ptr [0xf8d394]"
+      },
+      {
+        "address": 11921577,
+        "hex": "e84216fcff",
+        "instruction": "call 0xb1fef0"
+      },
+      {
+        "address": 11921582,
+        "hex": "8b560c",
+        "instruction": "mov edx, dword ptr [esi + 0xc]"
+      },
+      {
+        "address": 11921585,
+        "hex": "8b08",
+        "instruction": "mov ecx, dword ptr [eax]"
+      },
+      {
+        "address": 11921587,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921588,
+        "hex": "52",
+        "instruction": "push edx"
+      },
+      {
+        "address": 11921589,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921590,
+        "hex": "8b81a8010000",
+        "instruction": "mov eax, dword ptr [ecx + 0x1a8]"
+      },
+      {
+        "address": 11921596,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921598,
+        "hex": "8b4e0c",
+        "instruction": "mov ecx, dword ptr [esi + 0xc]"
+      },
+      {
+        "address": 11921601,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921602,
+        "hex": "e8c2800900",
+        "instruction": "call 0xbf6989"
+      },
+      {
+        "address": 11921607,
+        "hex": "83c404",
+        "instruction": "add esp, 4"
+      },
+      {
+        "address": 11921610,
+        "hex": "c7460c00000000",
+        "instruction": "mov dword ptr [esi + 0xc], 0"
+      },
+      {
+        "address": 11921617,
+        "hex": "5f",
+        "instruction": "pop edi"
+      },
+      {
+        "address": 11921618,
+        "hex": "5e",
+        "instruction": "pop esi"
+      },
+      {
+        "address": 11921619,
+        "hex": "c3",
+        "instruction": "ret "
+      },
+      {
+        "address": 11921632,
+        "hex": "56",
+        "instruction": "push esi"
+      },
+      {
+        "address": 11921633,
+        "hex": "8bf1",
+        "instruction": "mov esi, ecx"
+      },
+      {
+        "address": 11921635,
+        "hex": "837e0800",
+        "instruction": "cmp dword ptr [esi + 8], 0"
+      },
+      {
+        "address": 11921639,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921640,
+        "hex": "8d7e08",
+        "instruction": "lea edi, [esi + 8]"
+      },
+      {
+        "address": 11921643,
+        "hex": "7534",
+        "instruction": "jne 0xb5e921"
+      },
+      {
+        "address": 11921645,
+        "hex": "837e0c00",
+        "instruction": "cmp dword ptr [esi + 0xc], 0"
+      },
+      {
+        "address": 11921649,
+        "hex": "742e",
+        "instruction": "je 0xb5e921"
+      },
+      {
+        "address": 11921651,
+        "hex": "8b0d94d3f800",
+        "instruction": "mov ecx, dword ptr [0xf8d394]"
+      },
+      {
+        "address": 11921657,
+        "hex": "e8f215fcff",
+        "instruction": "call 0xb1fef0"
+      },
+      {
+        "address": 11921662,
+        "hex": "8b560c",
+        "instruction": "mov edx, dword ptr [esi + 0xc]"
+      },
+      {
+        "address": 11921665,
+        "hex": "8b08",
+        "instruction": "mov ecx, dword ptr [eax]"
+      },
+      {
+        "address": 11921667,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 11921668,
+        "hex": "52",
+        "instruction": "push edx"
+      },
+      {
+        "address": 11921669,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 11921670,
+        "hex": "8b816c010000",
+        "instruction": "mov eax, dword ptr [ecx + 0x16c]"
+      },
+      {
+        "address": 11921676,
+        "hex": "ffd0",
+        "instruction": "call eax"
+      },
+      {
+        "address": 11921678,
+        "hex": "8b4e0c",
+        "instruction": "mov ecx, dword ptr [esi + 0xc]"
+      },
+      {
+        "address": 11921681,
+        "hex": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": 11921682,
+        "hex": "e872800900",
+        "instruction": "call 0xbf6989"
+      },
+      {
+        "address": 11921687,
+        "hex": "83c404",
+        "instruction": "add esp, 4"
+      },
+      {
+        "address": 11921690,
+        "hex": "c7460c00000000",
+        "instruction": "mov dword ptr [esi + 0xc], 0"
+      },
+      {
+        "address": 11921697,
+        "hex": "5f",
+        "instruction": "pop edi"
+      },
+      {
+        "address": 11921698,
+        "hex": "5e",
+        "instruction": "pop esi"
+      },
+      {
+        "address": 11921699,
+        "hex": "c3",
+        "instruction": "ret "
+      },
+      {
+        "address": 12539326,
+        "hex": "e958120000",
+        "instruction": "jmp 0xbf681b"
+      },
+      {
+        "address": 12544393,
+        "hex": "e91efcffff",
+        "instruction": "jmp 0xbf65ac"
+      }
+    ],
+    "SDK": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+      "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+      "interfaces": {
+        "IDirect3DDevice9": [
+          {
+            "index": 0,
+            "win32_byte_offset": 0,
+            "name": "QueryInterface"
+          },
+          {
+            "index": 1,
+            "win32_byte_offset": 4,
+            "name": "AddRef"
+          },
+          {
+            "index": 2,
+            "win32_byte_offset": 8,
+            "name": "Release"
+          },
+          {
+            "index": 3,
+            "win32_byte_offset": 12,
+            "name": "TestCooperativeLevel"
+          },
+          {
+            "index": 4,
+            "win32_byte_offset": 16,
+            "name": "GetAvailableTextureMem"
+          },
+          {
+            "index": 5,
+            "win32_byte_offset": 20,
+            "name": "EvictManagedResources"
+          },
+          {
+            "index": 6,
+            "win32_byte_offset": 24,
+            "name": "GetDirect3D"
+          },
+          {
+            "index": 7,
+            "win32_byte_offset": 28,
+            "name": "GetDeviceCaps"
+          },
+          {
+            "index": 8,
+            "win32_byte_offset": 32,
+            "name": "GetDisplayMode"
+          },
+          {
+            "index": 9,
+            "win32_byte_offset": 36,
+            "name": "GetCreationParameters"
+          },
+          {
+            "index": 10,
+            "win32_byte_offset": 40,
+            "name": "SetCursorProperties"
+          },
+          {
+            "index": 11,
+            "win32_byte_offset": 44,
+            "name": "SetCursorPosition"
+          },
+          {
+            "index": 12,
+            "win32_byte_offset": 48,
+            "name": "ShowCursor"
+          },
+          {
+            "index": 13,
+            "win32_byte_offset": 52,
+            "name": "CreateAdditionalSwapChain"
+          },
+          {
+            "index": 14,
+            "win32_byte_offset": 56,
+            "name": "GetSwapChain"
+          },
+          {
+            "index": 15,
+            "win32_byte_offset": 60,
+            "name": "GetNumberOfSwapChains"
+          },
+          {
+            "index": 16,
+            "win32_byte_offset": 64,
+            "name": "Reset"
+          },
+          {
+            "index": 17,
+            "win32_byte_offset": 68,
+            "name": "Present"
+          },
+          {
+            "index": 18,
+            "win32_byte_offset": 72,
+            "name": "GetBackBuffer"
+          },
+          {
+            "index": 19,
+            "win32_byte_offset": 76,
+            "name": "GetRasterStatus"
+          },
+          {
+            "index": 20,
+            "win32_byte_offset": 80,
+            "name": "SetDialogBoxMode"
+          },
+          {
+            "index": 21,
+            "win32_byte_offset": 84,
+            "name": "SetGammaRamp"
+          },
+          {
+            "index": 22,
+            "win32_byte_offset": 88,
+            "name": "GetGammaRamp"
+          },
+          {
+            "index": 23,
+            "win32_byte_offset": 92,
+            "name": "CreateTexture"
+          },
+          {
+            "index": 24,
+            "win32_byte_offset": 96,
+            "name": "CreateVolumeTexture"
+          },
+          {
+            "index": 25,
+            "win32_byte_offset": 100,
+            "name": "CreateCubeTexture"
+          },
+          {
+            "index": 26,
+            "win32_byte_offset": 104,
+            "name": "CreateVertexBuffer"
+          },
+          {
+            "index": 27,
+            "win32_byte_offset": 108,
+            "name": "CreateIndexBuffer"
+          },
+          {
+            "index": 28,
+            "win32_byte_offset": 112,
+            "name": "CreateRenderTarget"
+          },
+          {
+            "index": 29,
+            "win32_byte_offset": 116,
+            "name": "CreateDepthStencilSurface"
+          },
+          {
+            "index": 30,
+            "win32_byte_offset": 120,
+            "name": "UpdateSurface"
+          },
+          {
+            "index": 31,
+            "win32_byte_offset": 124,
+            "name": "UpdateTexture"
+          },
+          {
+            "index": 32,
+            "win32_byte_offset": 128,
+            "name": "GetRenderTargetData"
+          },
+          {
+            "index": 33,
+            "win32_byte_offset": 132,
+            "name": "GetFrontBufferData"
+          },
+          {
+            "index": 34,
+            "win32_byte_offset": 136,
+            "name": "StretchRect"
+          },
+          {
+            "index": 35,
+            "win32_byte_offset": 140,
+            "name": "ColorFill"
+          },
+          {
+            "index": 36,
+            "win32_byte_offset": 144,
+            "name": "CreateOffscreenPlainSurface"
+          },
+          {
+            "index": 37,
+            "win32_byte_offset": 148,
+            "name": "SetRenderTarget"
+          },
+          {
+            "index": 38,
+            "win32_byte_offset": 152,
+            "name": "GetRenderTarget"
+          },
+          {
+            "index": 39,
+            "win32_byte_offset": 156,
+            "name": "SetDepthStencilSurface"
+          },
+          {
+            "index": 40,
+            "win32_byte_offset": 160,
+            "name": "GetDepthStencilSurface"
+          },
+          {
+            "index": 41,
+            "win32_byte_offset": 164,
+            "name": "BeginScene"
+          },
+          {
+            "index": 42,
+            "win32_byte_offset": 168,
+            "name": "EndScene"
+          },
+          {
+            "index": 43,
+            "win32_byte_offset": 172,
+            "name": "Clear"
+          },
+          {
+            "index": 44,
+            "win32_byte_offset": 176,
+            "name": "SetTransform"
+          },
+          {
+            "index": 45,
+            "win32_byte_offset": 180,
+            "name": "GetTransform"
+          },
+          {
+            "index": 46,
+            "win32_byte_offset": 184,
+            "name": "MultiplyTransform"
+          },
+          {
+            "index": 47,
+            "win32_byte_offset": 188,
+            "name": "SetViewport"
+          },
+          {
+            "index": 48,
+            "win32_byte_offset": 192,
+            "name": "GetViewport"
+          },
+          {
+            "index": 49,
+            "win32_byte_offset": 196,
+            "name": "SetMaterial"
+          },
+          {
+            "index": 50,
+            "win32_byte_offset": 200,
+            "name": "GetMaterial"
+          },
+          {
+            "index": 51,
+            "win32_byte_offset": 204,
+            "name": "SetLight"
+          },
+          {
+            "index": 52,
+            "win32_byte_offset": 208,
+            "name": "GetLight"
+          },
+          {
+            "index": 53,
+            "win32_byte_offset": 212,
+            "name": "LightEnable"
+          },
+          {
+            "index": 54,
+            "win32_byte_offset": 216,
+            "name": "GetLightEnable"
+          },
+          {
+            "index": 55,
+            "win32_byte_offset": 220,
+            "name": "SetClipPlane"
+          },
+          {
+            "index": 56,
+            "win32_byte_offset": 224,
+            "name": "GetClipPlane"
+          },
+          {
+            "index": 57,
+            "win32_byte_offset": 228,
+            "name": "SetRenderState"
+          },
+          {
+            "index": 58,
+            "win32_byte_offset": 232,
+            "name": "GetRenderState"
+          },
+          {
+            "index": 59,
+            "win32_byte_offset": 236,
+            "name": "CreateStateBlock"
+          },
+          {
+            "index": 60,
+            "win32_byte_offset": 240,
+            "name": "BeginStateBlock"
+          },
+          {
+            "index": 61,
+            "win32_byte_offset": 244,
+            "name": "EndStateBlock"
+          },
+          {
+            "index": 62,
+            "win32_byte_offset": 248,
+            "name": "SetClipStatus"
+          },
+          {
+            "index": 63,
+            "win32_byte_offset": 252,
+            "name": "GetClipStatus"
+          },
+          {
+            "index": 64,
+            "win32_byte_offset": 256,
+            "name": "GetTexture"
+          },
+          {
+            "index": 65,
+            "win32_byte_offset": 260,
+            "name": "SetTexture"
+          },
+          {
+            "index": 66,
+            "win32_byte_offset": 264,
+            "name": "GetTextureStageState"
+          },
+          {
+            "index": 67,
+            "win32_byte_offset": 268,
+            "name": "SetTextureStageState"
+          },
+          {
+            "index": 68,
+            "win32_byte_offset": 272,
+            "name": "GetSamplerState"
+          },
+          {
+            "index": 69,
+            "win32_byte_offset": 276,
+            "name": "SetSamplerState"
+          },
+          {
+            "index": 70,
+            "win32_byte_offset": 280,
+            "name": "ValidateDevice"
+          },
+          {
+            "index": 71,
+            "win32_byte_offset": 284,
+            "name": "SetPaletteEntries"
+          },
+          {
+            "index": 72,
+            "win32_byte_offset": 288,
+            "name": "GetPaletteEntries"
+          },
+          {
+            "index": 73,
+            "win32_byte_offset": 292,
+            "name": "SetCurrentTexturePalette"
+          },
+          {
+            "index": 74,
+            "win32_byte_offset": 296,
+            "name": "GetCurrentTexturePalette"
+          },
+          {
+            "index": 75,
+            "win32_byte_offset": 300,
+            "name": "SetScissorRect"
+          },
+          {
+            "index": 76,
+            "win32_byte_offset": 304,
+            "name": "GetScissorRect"
+          },
+          {
+            "index": 77,
+            "win32_byte_offset": 308,
+            "name": "SetSoftwareVertexProcessing"
+          },
+          {
+            "index": 78,
+            "win32_byte_offset": 312,
+            "name": "GetSoftwareVertexProcessing"
+          },
+          {
+            "index": 79,
+            "win32_byte_offset": 316,
+            "name": "SetNPatchMode"
+          },
+          {
+            "index": 80,
+            "win32_byte_offset": 320,
+            "name": "GetNPatchMode"
+          },
+          {
+            "index": 81,
+            "win32_byte_offset": 324,
+            "name": "DrawPrimitive"
+          },
+          {
+            "index": 82,
+            "win32_byte_offset": 328,
+            "name": "DrawIndexedPrimitive"
+          },
+          {
+            "index": 83,
+            "win32_byte_offset": 332,
+            "name": "DrawPrimitiveUP"
+          },
+          {
+            "index": 84,
+            "win32_byte_offset": 336,
+            "name": "DrawIndexedPrimitiveUP"
+          },
+          {
+            "index": 85,
+            "win32_byte_offset": 340,
+            "name": "ProcessVertices"
+          },
+          {
+            "index": 86,
+            "win32_byte_offset": 344,
+            "name": "CreateVertexDeclaration"
+          },
+          {
+            "index": 87,
+            "win32_byte_offset": 348,
+            "name": "SetVertexDeclaration"
+          },
+          {
+            "index": 88,
+            "win32_byte_offset": 352,
+            "name": "GetVertexDeclaration"
+          },
+          {
+            "index": 89,
+            "win32_byte_offset": 356,
+            "name": "SetFVF"
+          },
+          {
+            "index": 90,
+            "win32_byte_offset": 360,
+            "name": "GetFVF"
+          },
+          {
+            "index": 91,
+            "win32_byte_offset": 364,
+            "name": "CreateVertexShader"
+          },
+          {
+            "index": 92,
+            "win32_byte_offset": 368,
+            "name": "SetVertexShader"
+          },
+          {
+            "index": 93,
+            "win32_byte_offset": 372,
+            "name": "GetVertexShader"
+          },
+          {
+            "index": 94,
+            "win32_byte_offset": 376,
+            "name": "SetVertexShaderConstantF"
+          },
+          {
+            "index": 95,
+            "win32_byte_offset": 380,
+            "name": "GetVertexShaderConstantF"
+          },
+          {
+            "index": 96,
+            "win32_byte_offset": 384,
+            "name": "SetVertexShaderConstantI"
+          },
+          {
+            "index": 97,
+            "win32_byte_offset": 388,
+            "name": "GetVertexShaderConstantI"
+          },
+          {
+            "index": 98,
+            "win32_byte_offset": 392,
+            "name": "SetVertexShaderConstantB"
+          },
+          {
+            "index": 99,
+            "win32_byte_offset": 396,
+            "name": "GetVertexShaderConstantB"
+          },
+          {
+            "index": 100,
+            "win32_byte_offset": 400,
+            "name": "SetStreamSource"
+          },
+          {
+            "index": 101,
+            "win32_byte_offset": 404,
+            "name": "GetStreamSource"
+          },
+          {
+            "index": 102,
+            "win32_byte_offset": 408,
+            "name": "SetStreamSourceFreq"
+          },
+          {
+            "index": 103,
+            "win32_byte_offset": 412,
+            "name": "GetStreamSourceFreq"
+          },
+          {
+            "index": 104,
+            "win32_byte_offset": 416,
+            "name": "SetIndices"
+          },
+          {
+            "index": 105,
+            "win32_byte_offset": 420,
+            "name": "GetIndices"
+          },
+          {
+            "index": 106,
+            "win32_byte_offset": 424,
+            "name": "CreatePixelShader"
+          },
+          {
+            "index": 107,
+            "win32_byte_offset": 428,
+            "name": "SetPixelShader"
+          },
+          {
+            "index": 108,
+            "win32_byte_offset": 432,
+            "name": "GetPixelShader"
+          },
+          {
+            "index": 109,
+            "win32_byte_offset": 436,
+            "name": "SetPixelShaderConstantF"
+          },
+          {
+            "index": 110,
+            "win32_byte_offset": 440,
+            "name": "GetPixelShaderConstantF"
+          },
+          {
+            "index": 111,
+            "win32_byte_offset": 444,
+            "name": "SetPixelShaderConstantI"
+          },
+          {
+            "index": 112,
+            "win32_byte_offset": 448,
+            "name": "GetPixelShaderConstantI"
+          },
+          {
+            "index": 113,
+            "win32_byte_offset": 452,
+            "name": "SetPixelShaderConstantB"
+          },
+          {
+            "index": 114,
+            "win32_byte_offset": 456,
+            "name": "GetPixelShaderConstantB"
+          },
+          {
+            "index": 115,
+            "win32_byte_offset": 460,
+            "name": "DrawRectPatch"
+          },
+          {
+            "index": 116,
+            "win32_byte_offset": 464,
+            "name": "DrawTriPatch"
+          },
+          {
+            "index": 117,
+            "win32_byte_offset": 468,
+            "name": "DeletePatch"
+          },
+          {
+            "index": 118,
+            "win32_byte_offset": 472,
+            "name": "CreateQuery"
+          }
+        ],
+        "IDirect3DPixelShader9": [
+          {
+            "index": 0,
+            "win32_byte_offset": 0,
+            "name": "QueryInterface"
+          },
+          {
+            "index": 1,
+            "win32_byte_offset": 4,
+            "name": "AddRef"
+          },
+          {
+            "index": 2,
+            "win32_byte_offset": 8,
+            "name": "Release"
+          },
+          {
+            "index": 3,
+            "win32_byte_offset": 12,
+            "name": "GetDevice"
+          },
+          {
+            "index": 4,
+            "win32_byte_offset": 16,
+            "name": "GetFunction"
+          }
+        ],
+        "IDirect3DVertexShader9": [
+          {
+            "index": 0,
+            "win32_byte_offset": 0,
+            "name": "QueryInterface"
+          },
+          {
+            "index": 1,
+            "win32_byte_offset": 4,
+            "name": "AddRef"
+          },
+          {
+            "index": 2,
+            "win32_byte_offset": 8,
+            "name": "Release"
+          },
+          {
+            "index": 3,
+            "win32_byte_offset": 12,
+            "name": "GetDevice"
+          },
+          {
+            "index": 4,
+            "win32_byte_offset": 16,
+            "name": "GetFunction"
+          }
+        ]
+      }
+    }
+  },
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\include\\bsp\\native_shader_device_reset.hpp",
+      "bytes": 1356,
+      "sha256": "347056dafcbfe3a29f6d109c4f79914f583e4976327bf9c61b51e4d88ee01590"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\src\\native_shader_device_reset.cpp",
+      "bytes": 3154,
+      "sha256": "21a2631b1cdecf365bd93bcfdefbb9cd371eec46865921197a6dc6ecfb9cdcce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "field_contract": {
+    "owner_COM": 8,
+    "owner_bytecode": 12,
+    "renderer_device": 6672,
+    "actual_renderer_global": "00f8d394",
+    "restore_global_argument_is_storage_address": true,
+    "no_production_owner_constructor_or_private_renderer_or_callback_provider": true
+  },
+  "save_order": [
+    "Native PUSH ECX initializes the size DWORD to actual owner-pointer bits before the first query; retain it rather than initialize zero.",
+    "Capture initial owner+8; if null skip. AddRef then Release on that captured object even if owner+8 changes during AddRef.",
+    "Reload current owner+8; call actual GetFunction(nullptr,&size); pass actual size to existing CRT allocation with no HRESULT/size policy.",
+    "After allocation capture current owner+8 before publishing owner+C. Call GetFunction with allocated buffer and same size DWORD.",
+    "Reload final current owner+8; if nonnull Release it and then clear owner+8 even if Release changed the field. Leave current bytecode unchanged afterward."
+  ],
+  "restore_order": [
+    "Current owner+8 nonnull skips before bytecode/global reads. Current owner+C null skips before global.",
+    "Load current renderer from actual global storage, call genuine B1FEF0 getter, reload current bytecode, and call real device Create* with actual owner+8 output cell.",
+    "Ignore HRESULT; reload current owner+C for actual free; then clear owner+C after free returns."
+  ],
+  "native_returning_free_gaps": [
+    {
+      "call_site": "00b5e8c2",
+      "start": "00b5e8c7",
+      "end_exclusive": "00b5e8d1",
+      "bytes": 10
+    },
+    {
+      "call_site": "00b5e912",
+      "start": "00b5e917",
+      "end_exclusive": "00b5e921",
+      "bytes": 10
+    }
+  ],
+  "failure_and_ownership_boundary": {
+    "own_EH_or_HRESULT_guard": false,
+    "existing_bytecode_freed_before_save_publication": false,
+    "allocation_rollback": false,
+    "actual_invalid_program_creation_results": [
+      "8876086c",
+      "8876086c"
+    ],
+    "actual_invalid_program_result_name": "D3DERR_INVALIDCALL",
+    "SDK_result_definition": "d3d9.h line1975 _FACD3D=0x876; line2004 D3DERR_INVALIDCALL=MAKE_D3DHRESULT(2156)",
+    "failed_creation_still_frees_and_clears": true,
+    "new_handler_failure_path_executed_in_this_fixture": false
+  },
+  "build": {
+    "script": "./scripts/build.ps1",
+    "passed": true,
+    "existing_CTests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "native_seed_spans_matched": 8,
+    "new_tracked_tests": 0,
+    "actual_owned_source_compiled_into_primary_bsp_core": true,
+    "source_registration": "Ignored CMAKE_PROJECT_INCLUDE_BEFORE DEFER include; permanent shared CMake registration remains integrator-owned.",
+    "fixture_options": [
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/W4",
+      "/WX"
+    ]
+  },
+  "fixture": {
+    "matching_DWORD_trace_entries": 5925,
+    "matching_trace_bytes": 23700,
+    "exact_trace_equality": true,
+    "record_count": 169,
+    "snapshot_count": 104,
+    "actual_service_totals_each": {
+      "malloc": 4,
+      "nonnull_free": 6,
+      "AddRef": 4,
+      "Release": 8,
+      "GetFunction": 8,
+      "CreateShader": 6,
+      "failed_CreateShader": 2
+    },
+    "malloc_byte_counts_each": [
+      128,
+      128,
+      144,
+      144
+    ],
+    "COM_and_CRT_events": [
+      {
+        "tag": "b0000000",
+        "data": [
+          0,
+          1
+        ]
+      },
+      {
+        "tag": "b0000000",
+        "data": [
+          1,
+          2
+        ]
+      },
+      {
+        "tag": "c1010000",
+        "data": [
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "c1020000",
+        "data": [
+          5
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          4
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          0,
+          0,
+          0,
+          3992977409
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          128
+        ]
+      },
+      {
+        "tag": "a0100000",
+        "data": [
+          128
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          0,
+          0,
+          1,
+          128
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          128
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          3
+        ]
+      },
+      {
+        "tag": "c4010000",
+        "data": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "tag": "c4020000",
+        "data": [
+          0,
+          100
+        ]
+      },
+      {
+        "tag": "f0100000",
+        "data": [
+          1
+        ]
+      },
+      {
+        "tag": "c1010000",
+        "data": [
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "c1020000",
+        "data": [
+          4
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          3
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          0,
+          1,
+          0,
+          3992977409
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          128
+        ]
+      },
+      {
+        "tag": "a0100000",
+        "data": [
+          128
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          0,
+          3,
+          3,
+          128
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          128
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          0,
+          4
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          3
+        ]
+      },
+      {
+        "tag": "c4010000",
+        "data": [
+          0,
+          1,
+          3
+        ]
+      },
+      {
+        "tag": "c4020000",
+        "data": [
+          0,
+          100
+        ]
+      },
+      {
+        "tag": "f0100000",
+        "data": [
+          2
+        ]
+      },
+      {
+        "tag": "c4010000",
+        "data": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "tag": "c4020000",
+        "data": [
+          2289436780,
+          0
+        ]
+      },
+      {
+        "tag": "f0100000",
+        "data": [
+          1
+        ]
+      },
+      {
+        "tag": "c1010000",
+        "data": [
+          1,
+          0
+        ]
+      },
+      {
+        "tag": "c1020000",
+        "data": [
+          5
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          1,
+          0
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          4
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          1,
+          0,
+          0,
+          3992977409
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          144
+        ]
+      },
+      {
+        "tag": "a0100000",
+        "data": [
+          144
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          1,
+          0,
+          1,
+          144
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          144
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          1,
+          0
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          3
+        ]
+      },
+      {
+        "tag": "c4010000",
+        "data": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "tag": "c4020000",
+        "data": [
+          0,
+          100
+        ]
+      },
+      {
+        "tag": "f0100000",
+        "data": [
+          1
+        ]
+      },
+      {
+        "tag": "c1010000",
+        "data": [
+          1,
+          0
+        ]
+      },
+      {
+        "tag": "c1020000",
+        "data": [
+          4
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          1,
+          0
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          3
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          1,
+          1,
+          0,
+          3992977409
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          144
+        ]
+      },
+      {
+        "tag": "a0100000",
+        "data": [
+          144
+        ]
+      },
+      {
+        "tag": "c3010000",
+        "data": [
+          1,
+          3,
+          3,
+          144
+        ]
+      },
+      {
+        "tag": "c3020000",
+        "data": [
+          0,
+          144
+        ]
+      },
+      {
+        "tag": "c2010000",
+        "data": [
+          1,
+          4
+        ]
+      },
+      {
+        "tag": "c2020000",
+        "data": [
+          3
+        ]
+      },
+      {
+        "tag": "c4010000",
+        "data": [
+          1,
+          1,
+          3
+        ]
+      },
+      {
+        "tag": "c4020000",
+        "data": [
+          0,
+          100
+        ]
+      },
+      {
+        "tag": "f0100000",
+        "data": [
+          2
+        ]
+      },
+      {
+        "tag": "c4010000",
+        "data": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "tag": "c4020000",
+        "data": [
+          2289436780,
+          0
+        ]
+      },
+      {
+        "tag": "f0100000",
+        "data": [
+          1
+        ]
+      },
+      {
+        "tag": "ff000000",
+        "data": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ]
+      }
+    ],
+    "controlled_snapshot_evidence": [
+      {
+        "tag": "c1030000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 11,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          }
+        ]
+      },
+      {
+        "tag": "c2030000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 11,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          1,
+          1,
+          2,
+          3,
+          2,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          }
+        ]
+      },
+      {
+        "tag": "c3030000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 12,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          1,
+          1,
+          2,
+          3,
+          3,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          }
+        ]
+      },
+      {
+        "tag": "a1000000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 13,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          2,
+          1,
+          2,
+          3,
+          3,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daef7ce9d0e61a8502a8e86810534c4d618e5141a551d06db16788a53c3f8785"
+          }
+        ]
+      },
+      {
+        "tag": "c3030000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 14,
+        "current_bytecode_identity": 3,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          2,
+          1,
+          2,
+          3,
+          4,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+          }
+        ]
+      },
+      {
+        "tag": "c2030000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 11,
+        "current_bytecode_identity": 3,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          2,
+          1,
+          2,
+          4,
+          4,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+          }
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 3,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          2,
+          1,
+          2,
+          4,
+          4,
+          1,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+          }
+        ]
+      },
+      {
+        "tag": "f0000000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 100,
+        "current_bytecode_identity": 2,
+        "current_renderer_identity": 2,
+        "service_totals": [
+          2,
+          1,
+          2,
+          4,
+          4,
+          2,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+          }
+        ]
+      },
+      {
+        "tag": "f1000000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 100,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 2,
+        "service_totals": [
+          2,
+          2,
+          2,
+          4,
+          4,
+          2,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": false,
+            "live_payload_sha256": null
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+          }
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 2,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 100,
+        "current_bytecode_identity": 0,
+        "current_renderer_identity": 2,
+        "service_totals": [
+          2,
+          2,
+          2,
+          4,
+          4,
+          2,
+          0
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": false,
+            "live_payload_sha256": null
+          },
+          {
+            "identity": 3,
+            "bytes": 128,
+            "live": true,
+            "live_payload_sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+          }
+        ]
+      },
+      {
+        "tag": "c1030000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 16,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          3,
+          4,
+          4,
+          6,
+          6,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          }
+        ]
+      },
+      {
+        "tag": "c2030000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 16,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          3,
+          4,
+          4,
+          7,
+          6,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          }
+        ]
+      },
+      {
+        "tag": "c3030000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 17,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          3,
+          4,
+          4,
+          7,
+          7,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          }
+        ]
+      },
+      {
+        "tag": "a1000000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 18,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          4,
+          4,
+          4,
+          7,
+          7,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "0498312c23dcbd6b72a53c8a788e77f32703640332c6961088f4a12ff5464f9c"
+          }
+        ]
+      },
+      {
+        "tag": "c3030000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 19,
+        "current_bytecode_identity": 3,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          4,
+          4,
+          4,
+          7,
+          8,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+          }
+        ]
+      },
+      {
+        "tag": "c2030000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 16,
+        "current_bytecode_identity": 3,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          4,
+          4,
+          4,
+          8,
+          8,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+          }
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 3,
+        "current_renderer_identity": 1,
+        "service_totals": [
+          4,
+          4,
+          4,
+          8,
+          8,
+          4,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+          }
+        ]
+      },
+      {
+        "tag": "f0000000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 100,
+        "current_bytecode_identity": 2,
+        "current_renderer_identity": 2,
+        "service_totals": [
+          4,
+          4,
+          4,
+          8,
+          8,
+          5,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+          }
+        ]
+      },
+      {
+        "tag": "f1000000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 100,
+        "current_bytecode_identity": 1,
+        "current_renderer_identity": 2,
+        "service_totals": [
+          4,
+          5,
+          4,
+          8,
+          8,
+          5,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": false,
+            "live_payload_sha256": null
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+          }
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 5,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 100,
+        "current_bytecode_identity": 0,
+        "current_renderer_identity": 2,
+        "service_totals": [
+          4,
+          5,
+          4,
+          8,
+          8,
+          5,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": [
+          {
+            "identity": 1,
+            "bytes": 32,
+            "live": true,
+            "live_payload_sha256": "377e15efdc9e493f8e1b6ab832acc34ae8f50a4b56e8d0e17bc71cf884848104"
+          },
+          {
+            "identity": 2,
+            "bytes": 32,
+            "live": false,
+            "live_payload_sha256": null
+          },
+          {
+            "identity": 3,
+            "bytes": 144,
+            "live": true,
+            "live_payload_sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+          }
+        ]
+      }
+    ],
+    "gated_snapshot_evidence": [
+      {
+        "tag": "10000000",
+        "phase": 100,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 3735928559,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          2,
+          3,
+          2,
+          4,
+          4,
+          3,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 100,
+        "shader_type": 0,
+        "operation": 1,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 3735928559,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          2,
+          3,
+          2,
+          4,
+          4,
+          3,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "10000000",
+        "phase": 100,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 3735928559,
+        "current_bytecode_identity": 4276993775,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          2,
+          3,
+          2,
+          4,
+          4,
+          3,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 100,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 3735928559,
+        "current_bytecode_identity": 4276993775,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          2,
+          3,
+          2,
+          4,
+          4,
+          3,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "10000000",
+        "phase": 100,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 0,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          2,
+          3,
+          2,
+          4,
+          4,
+          3,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 100,
+        "shader_type": 0,
+        "operation": 2,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 0,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          2,
+          3,
+          2,
+          4,
+          4,
+          3,
+          1
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "10000000",
+        "phase": 101,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 3735928559,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 101,
+        "shader_type": 1,
+        "operation": 1,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 3735928559,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "10000000",
+        "phase": 101,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 3735928559,
+        "current_bytecode_identity": 4276993775,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 101,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 3735928559,
+        "current_bytecode_identity": 4276993775,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "10000000",
+        "phase": 101,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 0,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 101,
+        "shader_type": 1,
+        "operation": 2,
+        "current_shader_identity": 0,
+        "current_bytecode_identity": 0,
+        "current_renderer_identity": 4294967295,
+        "service_totals": [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ],
+        "actual_held_shader_references": [
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          4,
+          4,
+          3
+        ],
+        "buffers": []
+      }
+    ],
+    "real_D3D9": {
+      "adapter_description": "NVIDIA GeForce RTX 5090",
+      "driver": "nvldumd.dll",
+      "PCI_vendor_device_decimal": "4318 11141",
+      "device_type": "HAL",
+      "successful_real_devices_each": 2,
+      "device_creation_flags": [
+        "D3DCREATE_SOFTWARE_VERTEXPROCESSING",
+        "D3DCREATE_FPU_PRESERVE"
+      ],
+      "hidden_window": true,
+      "rendering_or_present_called": false,
+      "compiler": "Actual D3DCompile ps_2_0 / vs_2_0",
+      "compiled_programs": [
+        {
+          "shader_type": 0,
+          "index": 0,
+          "bytes": 128,
+          "sha256": "2f25414e2f3587bfa897af1c6b2e7c34e0c82570bbd50c350595575d903f9115"
+        },
+        {
+          "shader_type": 0,
+          "index": 1,
+          "bytes": 128,
+          "sha256": "7242777cce75c3547481564b33b900052b216cca7d27026cabcbf2774ab1a66b"
+        },
+        {
+          "shader_type": 0,
+          "index": 2,
+          "bytes": 128,
+          "sha256": "7ac89c0a133cdccff81f457fd10717998027ee36609a83c4c5157775dde90698"
+        },
+        {
+          "shader_type": 0,
+          "index": 3,
+          "bytes": 128,
+          "sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+        },
+        {
+          "shader_type": 0,
+          "index": 4,
+          "bytes": 128,
+          "sha256": "7ba9fe7ef58d8e1c0ad7fc58babb87803aaf3229f41d1e1c2727eb545733f247"
+        },
+        {
+          "shader_type": 1,
+          "index": 0,
+          "bytes": 144,
+          "sha256": "3130b0be7ca7b085f7b4adbff87e1afc599eef30a6915963be94eaf0486a132f"
+        },
+        {
+          "shader_type": 1,
+          "index": 1,
+          "bytes": 144,
+          "sha256": "93cb1b4e91e0dfa23b30c04373e2e2e079da19d409db6fe8a92c4f13d8c5e3e7"
+        },
+        {
+          "shader_type": 1,
+          "index": 2,
+          "bytes": 144,
+          "sha256": "b00eda1fff145295e2fc3afccf5762f18066c1ed0bc5dd069b8e1c640e2cd455"
+        },
+        {
+          "shader_type": 1,
+          "index": 3,
+          "bytes": 144,
+          "sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+        },
+        {
+          "shader_type": 1,
+          "index": 4,
+          "bytes": 144,
+          "sha256": "812b55c670d252d791b36e8f21bd24c8b24f5b2f46dbd8d724331fc9b5a17f95"
+        }
+      ],
+      "COM_provider": "Actual runtime devices and shader objects. Per-object vtable observers call original methods before controlled post-call field changes. No fake COM provider.",
+      "fixture_lifetime": "Four initial real shader references per input keep objects alive across observed calls; remaining held references and restored outputs are balanced at teardown."
+    },
+    "actual_provider_modules": [
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "method": "malloc",
+        "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_x86_PE014c_verified": true
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "method": "free",
+        "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_x86_PE014c_verified": true
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "method": "pixel_GetFunction",
+        "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "physical_x86_PE014c_verified": true
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "method": "vertex_GetFunction",
+        "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "physical_x86_PE014c_verified": true
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "method": "CreatePixelShader",
+        "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "physical_x86_PE014c_verified": true
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "method": "CreateVertexShader",
+        "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "physical_x86_PE014c_verified": true
+      }
+    ],
+    "library_providers": [
+      {
+        "symbol": "get_native_renderer_device_00b1fef0",
+        "provider": "bsp_core:native_shader_device_reset.obj",
+        "exact_map_line": " 0001:00006ce0       ?get_native_renderer_device_00b1fef0@bsp@@YAPAXPBX@Z 30007ce0 f   bsp_core:native_shader_device_reset.obj"
+      },
+      {
+        "symbol": "save_release_native_pixel_shader_00b5e750",
+        "provider": "bsp_core:native_shader_device_reset.obj",
+        "exact_map_line": " 0001:00006d90       ?save_release_native_pixel_shader_00b5e750@bsp@@YAXPAX@Z 30007d90 f   bsp_core:native_shader_device_reset.obj"
+      },
+      {
+        "symbol": "save_release_native_vertex_shader_00b5e810",
+        "provider": "bsp_core:native_shader_device_reset.obj",
+        "exact_map_line": " 0001:00006e20       ?save_release_native_vertex_shader_00b5e810@bsp@@YAXPAX@Z 30007e20 f   bsp_core:native_shader_device_reset.obj"
+      },
+      {
+        "symbol": "restore_native_pixel_shader_00b5e890",
+        "provider": "bsp_core:native_shader_device_reset.obj",
+        "exact_map_line": " 0001:00006cf0       ?restore_native_pixel_shader_00b5e890@bsp@@YAXPAXPBX@Z 30007cf0 f   bsp_core:native_shader_device_reset.obj"
+      },
+      {
+        "symbol": "restore_native_vertex_shader_00b5e8e0",
+        "provider": "bsp_core:native_shader_device_reset.obj",
+        "exact_map_line": " 0001:00006d40       ?restore_native_vertex_shader_00b5e8e0@bsp@@YAXPAXPBX@Z 30007d40 f   bsp_core:native_shader_device_reset.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_allocate",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00006ed0       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30007ed0 f   bsp_core:singleton_lifetime.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_free",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00006f30       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30007f30 f   bsp_core:singleton_lifetime.obj"
+      }
+    ],
+    "operator_new_bridge_provider_map_line": " 0001:00002a50       ?bridge_operator_new@@YAPAXI@Z 30003a50 f   fixture.obj",
+    "full_owned353_bytes_executed_with_only_declared_global_relocations": true,
+    "runtime_spans": [
+      {
+        "address": 11665136,
+        "length": 7,
+        "end_exclusive": 11665143,
+        "disk_offset": 7470832,
+        "hex": "8b81101a0000c3",
+        "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "8b81101a0000c3",
+        "postimage_sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+        "only_declared_changes": true
+      },
+      {
+        "address": 11921232,
+        "length": 105,
+        "end_exclusive": 11921337,
+        "disk_offset": 7726928,
+        "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8366e09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+        "sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8366e09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+        "postimage_sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+        "only_declared_changes": true
+      },
+      {
+        "address": 11921424,
+        "length": 105,
+        "end_exclusive": 11921529,
+        "disk_offset": 7727120,
+        "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8766d09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+        "sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8766d09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+        "postimage_sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+        "only_declared_changes": true
+      },
+      {
+        "address": 11921552,
+        "length": 68,
+        "end_exclusive": 11921620,
+        "disk_offset": 7727248,
+        "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e84216fcff8b560c8b085752508b81a8010000ffd08b4e0c51e8c280090083c404c7460c000000005f5ec3",
+        "sha256": "2e7c0d9661ef0754834b4f26b3ef51ebb4de29121df9310e9d9e62d53a3f7b7d",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d30103e84216fcff8b560c8b085752508b81a8010000ffd08b4e0c51e8c280090083c404c7460c000000005f5ec3",
+        "postimage_sha256": "44d8671d525ddf461b699862e54adcf7bc49b95f960ce25772341908a943fc5c",
+        "only_declared_changes": true
+      },
+      {
+        "address": 11921632,
+        "length": 68,
+        "end_exclusive": 11921700,
+        "disk_offset": 7727328,
+        "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e8f215fcff8b560c8b085752508b816c010000ffd08b4e0c51e87280090083c404c7460c000000005f5ec3",
+        "sha256": "8602129831d448716a42da9c0773dcb804d14f2631c778a39c372da93dea40e4",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d30103e8f215fcff8b560c8b085752508b816c010000ffd08b4e0c51e87280090083c404c7460c000000005f5ec3",
+        "postimage_sha256": "9eb7887a575e332f4ce5f18db5ff8c78449d582b1ac6ff921c9771a252ea270e",
+        "only_declared_changes": true
+      },
+      {
+        "address": 12539326,
+        "length": 5,
+        "end_exclusive": 12539331,
+        "disk_offset": 8345022,
+        "hex": "e958120000",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "e98de4372d",
+        "postimage_sha256": "f5b96b62ef59ca3acccc1e016e978ac43a63baccba54058285aa593d118bc44c",
+        "only_declared_changes": true
+      },
+      {
+        "address": 12544393,
+        "length": 5,
+        "end_exclusive": 12544398,
+        "disk_offset": 8350089,
+        "hex": "e91efcffff",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "e922e1372d",
+        "postimage_sha256": "8a9fe793210947afa69fed01ef1e6e7df908ed8721eaa17c251cc68f1f7103c5",
+        "only_declared_changes": true
+      }
+    ],
+    "absolute_global_relocations": [
+      {
+        "operand": 11921573,
+        "original_value": 16307092,
+        "runtime_value": 50451348
+      },
+      {
+        "operand": 11921653,
+        "original_value": 16307092,
+        "runtime_value": 50451348
+      }
+    ],
+    "external_CRT_entry_bridges": [
+      {
+        "entry": 12539326,
+        "target": 805321296
+      },
+      {
+        "entry": 12544393,
+        "target": 805325488
+      }
+    ],
+    "all7_runtime_postimages_verified": true,
+    "all_owned_relative_calls_preserved": true,
+    "native_getter_replaced": false,
+    "global_gate_case": "Native actual global page PAGE_NOACCESS; source global-storage argument null. Nonnull COM and empty bytecode gates reach no external service.",
+    "controlled_perturbations": "Real AddRef/GetFunction/allocation/Release effects deliberately select different live actual shaders. Real Create redirects current bytecode to another live actual buffer; after actual free a further field change tests final clear. These effects are not ordinary COM/CRT behavior.",
+    "normalization": "Only explicit renderer/device/shader/buffer identities and the asserted incoming owner-address size word. Raw unrelated owner fields/canaries, held refcounts, HRESULTs, sizes and all reached live bytecode bytes remain in the comparison.",
+    "no_freed_memory_reads": true,
+    "all_actual_renderer_bytes_preserved_checked": true
+  },
+  "shared_metadata_or_Ghidra_mutation": false,
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\capture.py",
+      "bytes": 3711,
+      "sha256": "a5139e23ef14b6c5e32c60910dfe72e7581d4a0e5b1b76103cc486065b0c3388"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\capture.json",
+      "bytes": 35214,
+      "sha256": "773f63b971555b915323ca37f04874fb8abb2f15d05b8d908821fab30c4dee0e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\reference.hpp",
+      "bytes": 1113,
+      "sha256": "edd9e9d60130b1b97593fda63ff44ca1b1ecb7b9623a9c6e1b511f67689b9b87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\fixture.cpp",
+      "bytes": 24828,
+      "sha256": "1bf47669b44cf3fb41c15cdb236744346acde44d2cc9fd60e34be48c3fc18677"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\real_d3d.hpp",
+      "bytes": 3382,
+      "sha256": "e19fe4fca8cbd4600977fd26c08f4ee36bd391fa0bba6758776ea6d88e238318"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\CMakeLists.txt",
+      "bytes": 745,
+      "sha256": "61060cf07f6617fc9ec51fe657e491a467c70486df3765df99f3f4dd78e1e252"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\finalize.py",
+      "bytes": 16844,
+      "sha256": "686b5db8be579245904621d6745e58ab36b3f4a1d84643ac97f9966dee88b792"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\primary_configure.log",
+      "bytes": 974,
+      "sha256": "82ab88c54315a769af601cbf22f9eacce8b45b687faf3e873ea8a37c36dd7120"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\repository_build.log",
+      "bytes": 14242,
+      "sha256": "f14528c845fddd8126f6e3c06caf94b352cc5bd857aeee0962da211568cde900"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\configure.log",
+      "bytes": 634,
+      "sha256": "3869f73348e56c579c6b079e69c4881b084040cb1839e74347d7ffd614b20011"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_diff\\build.log",
+      "bytes": 540,
+      "sha256": "daea0ac0da9d927433ce0bbef859d4bc551cd4b6b6248dcd21a7dd7eb20cbebd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\Release\\shader_reset_diff.exe",
+      "bytes": 53760,
+      "sha256": "26dbf30c4e7888fc3a2d384b342513d6d08fffcab2e9425d766282fb884e9a77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\Release\\shader_reset_diff.map",
+      "bytes": 85458,
+      "sha256": "aec08d5616a0de1b07b066c39afdeec078e3a1841f77689b39e46c6a2504a671"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\native_trace.bin",
+      "bytes": 23700,
+      "sha256": "e4b91499e8cff573040d35e014004b2ef07b2bdd704149141cc1755013d0bdf0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\host_trace.bin",
+      "bytes": 23700,
+      "sha256": "e4b91499e8cff573040d35e014004b2ef07b2bdd704149141cc1755013d0bdf0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\run.log",
+      "bytes": 174,
+      "sha256": "5ae21de3d5d90c3d883525bcd2c5f71d44d9fc82d784c9dce98b68ef7dcde476"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\native_shader_codes.bin",
+      "bytes": 1400,
+      "sha256": "22bba1a5e4682aef530a41faab821b913623e7e1c17395cde9db51e8106e98c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\host_shader_codes.bin",
+      "bytes": 1400,
+      "sha256": "22bba1a5e4682aef530a41faab821b913623e7e1c17395cde9db51e8106e98c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\native_d3d_device.txt",
+      "bytes": 80,
+      "sha256": "c7a542675743ee27da0bcdbbcc705bfb3bdf647811f6f67cb1fcefd943590d7e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\host_d3d_device.txt",
+      "bytes": 80,
+      "sha256": "c7a542675743ee27da0bcdbbcc705bfb3bdf647811f6f67cb1fcefd943590d7e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\patched_spans.txt",
+      "bytes": 813,
+      "sha256": "3d8d728b11c0980d3b9c9b58c7fcd85387f4aaf5579b2aa1497aa285e53293c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\bridge_targets.txt",
+      "bytes": 40,
+      "sha256": "97b86019550a5d62d1883cfc89c0b17333bb5b19e0169623f134b5762e82ecca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\malloc_module.txt",
+      "bytes": 34,
+      "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\free_module.txt",
+      "bytes": 34,
+      "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\pixel_GetFunction_module.txt",
+      "bytes": 30,
+      "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\vertex_GetFunction_module.txt",
+      "bytes": 30,
+      "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\CreatePixelShader_module.txt",
+      "bytes": 30,
+      "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\shader_reset_diff\\CreateVertexShader_module.txt",
+      "bytes": 30,
+      "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\shader_reset_register.cmake",
+      "bytes": 116,
+      "sha256": "f45a1772dac8cdaf2fb9e32c22023267b16a80df802cabbc43e610695df7ceba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\build_shader_reset_primary.ps1",
+      "bytes": 1019,
+      "sha256": "40d48d3ef0e9dcd3993ff39085a40ffd1d0c4bb3b325844319759d7294b783e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\local\\build_shader_reset_fixture.ps1",
+      "bytes": 1278,
+      "sha256": "7c4ca1cc033ec9362e696e1b632bab03a5ae74d676736c2a65b0bb9f62e6d9d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 26209986,
+      "sha256": "83b722a0a7270746974fe13a3824371986d15a751a7e4f6d494c79cee4d9c19e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910\\build\\win32\\bsp_core.dir\\Release\\native_shader_device_reset.obj",
+      "bytes": 4009,
+      "sha256": "adbd5cdcc2e8d062a2596c402ffa1335b41a998491b874682b97c6787b4571fb"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive shader names are hypotheses; existing reviewed getter naming is preserved.",
+    "Requires valid actual storage, reached COM interfaces and supported lifetime/allocation domain. No added HRESULT policy, catch, rollback, or synchronization.",
+    "Real HAL storage/COM execution and complete original-body agreement do not establish original ABI replacement, full renderer recreation, visual output or game validation."
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}
