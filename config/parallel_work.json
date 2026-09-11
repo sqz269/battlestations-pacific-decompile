@@ -3427,8 +3427,8 @@
       "id": "native_hardware_layout_tree",
       "packet": "native_hardware_layout_tree",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "00b2f4c0",
         "00b2ef00",
@@ -3450,8 +3450,8 @@
       "id": "native_hardware_layout_owner",
       "packet": "native_hardware_layout_owner",
       "worker": "main",
-      "done": false,
-      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "00b60700",
         "00b60770",
@@ -3491,7 +3491,7 @@
       "packet": "native_renderer_texture_name_notification",
       "worker": "material_effect_plane",
       "done": false,
-      "state": "implementing_actual_renderer_name_notification",
+      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
       "function_addresses": [
         "00b32250"
       ],
@@ -3518,7 +3518,7 @@
       "packet": "native_retained_memory_owners",
       "worker": "main",
       "done": false,
-      "state": "primary_implementing_actual_backing_and_stream_owners",
+      "state": "primary_source_build_checked_independent_original_byte_fixture_active",
       "function_addresses": [
         "008d43c0",
         "008d4440",
@@ -3549,9 +3549,9 @@
     {
       "id": "native_logical_texture_named_base",
       "packet": "native_logical_texture_named_base",
-      "worker": "unassigned",
+      "worker": "system_fog_owner_discovery",
       "done": false,
-      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
       "function_addresses": [
         "00b34120",
         "00b34230",
@@ -3584,9 +3584,9 @@
     {
       "id": "native_texture_surface_cache_storage",
       "packet": "native_texture_surface_cache_storage",
-      "worker": "unassigned",
+      "worker": "material_effect_plane",
       "done": false,
-      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "state": "ready_assigned_worker_after_notification_copy_followup",
       "function_addresses": [
         "00b3d9b0",
         "00b3da20",
@@ -4655,13 +4655,13 @@
     {
       "packet": "native_hardware_layout_tree",
       "worker": "system_fog_owner_discovery",
-      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_tree_audit.json"
     },
     {
       "packet": "native_hardware_layout_owner",
       "worker": "main",
-      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_owner_audit.json"
     },
     {
@@ -4673,60 +4673,36 @@
     {
       "packet": "native_renderer_texture_name_notification",
       "worker": "material_effect_plane",
-      "state": "implementing_actual_renderer_name_notification",
+      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
       "validation": null
     },
     {
       "packet": "native_retained_memory_owners",
       "worker": "main",
-      "state": "primary_implementing_actual_backing_and_stream_owners",
+      "state": "primary_source_build_checked_independent_original_byte_fixture_active",
       "validation": null
     },
     {
       "packet": "native_logical_texture_named_base",
-      "worker": "unassigned",
-      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
       "validation": null
     },
     {
       "packet": "native_texture_surface_cache_storage",
-      "worker": "unassigned",
-      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "worker": "material_effect_plane",
+      "state": "ready_assigned_worker_after_notification_copy_followup",
       "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "packet": "native_hardware_layout_tree",
-      "worker": "system_fog_owner_discovery",
-      "function_addresses": [
-        "00b2f4c0",
-        "00b2ef00",
-        "00b20dc0",
-        "00b20860",
-        "00b20880",
-        "00b20910",
-        "00b22bd0"
-      ]
-    },
-    {
-      "packet": "native_hardware_layout_owner",
-      "worker": "main",
-      "function_addresses": [
-        "00b60700",
-        "00b60770",
-        "00b48960",
-        "00b60110",
-        "00b483f0",
-        "00b48950"
-      ]
-    },
-    {
       "packet": "native_renderer_texture_name_notification",
       "worker": "material_effect_plane",
       "function_addresses": [
         "00b32250"
-      ]
+      ],
+      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active"
     },
     {
       "packet": "native_retained_memory_owners",
@@ -4739,27 +4715,30 @@
         "00bef9c0",
         "00bb8f90",
         "00b23640"
-      ]
+      ],
+      "state": "primary_source_build_checked_independent_original_byte_fixture_active"
     },
     {
       "packet": "native_logical_texture_named_base",
-      "worker": "unassigned",
+      "worker": "system_fog_owner_discovery",
       "function_addresses": [
         "00b34120",
         "00b34230",
         "00b33f50",
         "00b34010",
         "00b33e40"
-      ]
+      ],
+      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active"
     },
     {
       "packet": "native_texture_surface_cache_storage",
-      "worker": "unassigned",
+      "worker": "material_effect_plane",
       "function_addresses": [
         "00b3d9b0",
         "00b3da20",
         "00b3ec40"
-      ]
+      ],
+      "state": "ready_assigned_worker_after_notification_copy_followup"
     }
   ],
   "current_partition": {

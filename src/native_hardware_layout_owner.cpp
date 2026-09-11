@@ -8,6 +8,7 @@
 #include <unknwn.h>
 
 #include <cstring>
+#include <exception>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native hardware layout owners require MSVC Win32.
@@ -71,23 +72,59 @@ const volatile std::uint32_t* declaration_table(
     return context.actual_declaration_profile_00d61d1c;
 }
 
-// BF7C10 cleans only the remaining prefix. Its filter terminates on a second
-// C++ exception; noexcept preserves that boundary without suppressing failures.
+// Native BF7C10 and FH3 unwind-action filters terminate during exception
+// SEARCH. A C++ catch/rethrow or noexcept alone can run extra nested cleanup.
+int terminate_cpp_cleanup_exception(unsigned long code) noexcept {
+    if (code == 0xe06d7363u) std::terminate();
+    return EXCEPTION_CONTINUE_SEARCH;
+}
 void unwind_records(void* begin, unsigned remaining,
     NativeHardwareLayoutOwnerContext& context) noexcept {
-    while (remaining != 0) {
-        --remaining;
-        destroy_native_hardware_layout_record_00b483f0(at(begin, remaining * 12u), context);
+    __try {
+        while (remaining != 0) {
+            --remaining;
+            destroy_native_hardware_layout_record_00b483f0(at(begin, remaining * 12u), context);
+        }
+    } __except (terminate_cpp_cleanup_exception(GetExceptionCode())) {
+        __assume(0);
     }
 }
 void unwind_base(void* owner, unsigned state,
     NativeHardwareLayoutOwnerContext& context) noexcept {
-    if (state != 0) destroy_native_hardware_layout_records_00b48950(at(owner, 8), context);
-    put(owner, 0, 0x00ceb130);
+    __try {
+        if (state != 0) destroy_native_hardware_layout_records_00b48950(at(owner, 8), context);
+        put(owner, 0, 0x00ceb130);
+    } __except (terminate_cpp_cleanup_exception(GetExceptionCode())) {
+        __assume(0);
+    }
 }
 void unwind_derived(void* owner, NativeHardwareLayoutOwnerContext& context) noexcept {
-    destroy_native_hardware_layout_base_00b48960(owner, context);
+    __try {
+        destroy_native_hardware_layout_base_00b48960(owner, context);
+    } __except (terminate_cpp_cleanup_exception(GetExceptionCode())) {
+        __assume(0);
+    }
 }
+
+// Cleanup-only native FH3 maps have no catch handlers. Armed local destructors
+// express those maps without adding a catch(...) that wins exception search.
+struct BaseCleanup {
+    void* owner;
+    NativeHardwareLayoutOwnerContext& context;
+    unsigned state = 1;
+    bool armed = true;
+    ~BaseCleanup() noexcept {
+        if (armed) unwind_base(owner, state, context);
+    }
+};
+struct DerivedCleanup {
+    void* owner;
+    NativeHardwareLayoutOwnerContext& context;
+    bool armed = true;
+    ~DerivedCleanup() noexcept {
+        if (armed) unwind_derived(owner, context);
+    }
+};
 } // namespace
 
 void destroy_native_hardware_layout_record_00b483f0(
@@ -109,14 +146,17 @@ void destroy_native_hardware_layout_record_00b483f0(
 void destroy_native_hardware_layout_records_00b48950(
     void* begin, NativeHardwareLayoutOwnerContext& context) {
     unsigned remaining = 4;
-    try {
+    bool completed = false;
+    // BF7C6E is an SEH finally, not a C++ destructor unwind. Matching it here
+    // also avoids adding a C++ ProcessingThrow count while invoking BF7C10.
+    __try {
         while (remaining != 0) {
-            --remaining; // Native BF7C6E decrements before each call.
+            --remaining;
             destroy_native_hardware_layout_record_00b483f0(at(begin, remaining * 12u), context);
         }
-    } catch (...) {
-        unwind_records(begin, remaining, context);
-        throw;
+        completed = true;
+    } __finally {
+        if (!completed) unwind_records(begin, remaining, context);
     }
 }
 
@@ -128,16 +168,12 @@ void destroy_native_hardware_layout_base_00b48960(
     __assume(renderer_profile == 0x00d5f0a8);
     const auto notification = word(context.actual_renderer_profile_00d5f0a8, 0x44);
     __assume(notification == 0x00b2f4c0);
-    unsigned state = 1; // Native loads above precede the armed notification call.
-    try {
-        remove_native_hardware_layout_value_00b2f4c0(
-            context.actual_tree_0108d530, owner, context.invalid_parameters);
-        state = 0;
-        destroy_native_hardware_layout_records_00b48950(at(owner, 8), context);
-    } catch (...) {
-        unwind_base(owner, state, context);
-        throw;
-    }
+    BaseCleanup cleanup{owner, context}; // Native loads precede state1 arming.
+    remove_native_hardware_layout_value_00b2f4c0(
+        context.actual_tree_0108d530, owner, context.invalid_parameters);
+    cleanup.state = 0;
+    destroy_native_hardware_layout_records_00b48950(at(owner, 8), context);
+    cleanup.armed = false;
     put(owner, 0, 0x00ceb130);
 }
 
@@ -145,17 +181,14 @@ void destroy_native_hardware_layout_00b60700(
     void* owner, NativeHardwareLayoutOwnerContext& context) {
     put(owner, 0, 0x00d62af4);
     auto* const captured_com = reinterpret_cast<IUnknown*>(word(owner, 0x40));
-    try { // Native state0 is armed after the capture/test, before Release.
-        if (captured_com) {
-            captured_com->Release();
-            put(owner, 0x40, 0);
-        }
-        resource_support_singleton_00b3e730(
-            context.actual_support_0108fedc, context.actual_lifetime_01090aa0);
-    } catch (...) {
-        unwind_derived(owner, context);
-        throw;
+    DerivedCleanup cleanup{owner, context}; // State0 follows the capture/test.
+    if (captured_com) {
+        captured_com->Release();
+        put(owner, 0x40, 0);
     }
+    resource_support_singleton_00b3e730(
+        context.actual_support_0108fedc, context.actual_lifetime_01090aa0);
+    cleanup.armed = false;
     // Native disarms state0 before this call; a normal base failure is not
     // retried by the derived owner's cleanup action.
     destroy_native_hardware_layout_base_00b48960(owner, context);

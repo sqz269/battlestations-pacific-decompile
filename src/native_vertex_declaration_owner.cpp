@@ -6,6 +6,7 @@
 #include <Windows.h>
 
 #include <cstring>
+#include <exception>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native vertex declaration owners require MSVC Win32.
@@ -66,42 +67,62 @@ void* at(const void* base, std::uint32_t offset) noexcept {
 }
 void* pointer(std::uint32_t bits) noexcept { return reinterpret_cast<void*>(bits); }
 
-// BF7C10 __ArrayUnwind: when C++ cleanup throws during an active unwind the
-// native filter terminates. noexcept supplies that existing C++ boundary.
+int terminate_cpp_cleanup_exception(unsigned long code) noexcept {
+    if (code == 0xe06d7363u) std::terminate();
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+// BF7C10 terminates during second-exception search, before nested unwind.
 void unwind_usage_prefix(void* owner, unsigned count) noexcept {
-    while (count != 0) {
-        --count;
-        destroy_native_vertex_elements_00b48ad0(at(owner, 0x18u + count * 12u));
+    __try {
+        while (count != 0) {
+            --count;
+            destroy_native_vertex_elements_00b48ad0(at(owner, 0x18u + count * 12u));
+        }
+    } __except (terminate_cpp_cleanup_exception(GetExceptionCode())) {
+        __assume(0);
     }
 }
 void initialize_usage_arrays(void* owner) {
     unsigned initialized = 0;
-    try {
+    bool completed = false;
+    __try {
         for (; initialized != 15; ++initialized)
             initialize_native_vertex_elements_00b47910(at(owner, 0x18u + initialized * 12u));
-    } catch (...) {
-        unwind_usage_prefix(owner, initialized);
-        throw;
+        completed = true;
+    } __finally {
+        if (!completed) unwind_usage_prefix(owner, initialized);
     }
 }
 void destroy_usage_arrays(void* owner) {
     unsigned remaining = 15;
-    try {
+    bool completed = false;
+    __try {
         while (remaining != 0) {
             --remaining; // BF7C6E decrements before entering the destructor.
             destroy_native_vertex_elements_00b48ad0(at(owner, 0x18u + remaining * 12u));
         }
-    } catch (...) {
-        // Do not retry the failed element; only the remaining lower prefix.
-        unwind_usage_prefix(owner, remaining);
-        throw;
+        completed = true;
+    } __finally {
+        if (!completed) unwind_usage_prefix(owner, remaining);
     }
 }
 void unwind_owner(void* owner, unsigned state) noexcept {
-    if (state >= 2) destroy_usage_arrays(owner);
-    if (state >= 1) destroy_native_vertex_elements_00b48ad0(at(owner, 0x0c));
-    put(owner, 0, base_profile);
+    __try {
+        if (state >= 2) destroy_usage_arrays(owner);
+        if (state >= 1) destroy_native_vertex_elements_00b48ad0(at(owner, 0x0c));
+        put(owner, 0, base_profile);
+    } __except (terminate_cpp_cleanup_exception(GetExceptionCode())) {
+        __assume(0);
+    }
 }
+struct OwnerCleanup {
+    void* owner;
+    unsigned state = 2;
+    bool armed = true;
+    ~OwnerCleanup() noexcept {
+        if (armed) unwind_owner(owner, state);
+    }
+};
 } // namespace
 
 void* initialize_native_vertex_elements_00b47910(void* header) noexcept {
@@ -172,18 +193,12 @@ void* construct_native_vertex_declaration_00b48af0(void* owner) {
     put(owner, 4, 1);
     put(owner, 0, declaration_profile);
     put(owner, 8, 0);
-    unsigned state = 0;
-    try {
-        initialize_native_vertex_elements_00b47910(at(owner, 0x0c));
-        state = 1;
-        initialize_usage_arrays(owner);
-        put(owner, 0xcc, 0);
-    } catch (...) {
-        // Constructor states1->0 destroy main then restore base. The iterator
-        // itself already destroys the initialized usage prefix in reverse.
-        unwind_owner(owner, state);
-        throw;
-    }
+    OwnerCleanup cleanup{owner, 0};
+    initialize_native_vertex_elements_00b47910(at(owner, 0x0c));
+    cleanup.state = 1;
+    initialize_usage_arrays(owner);
+    put(owner, 0xcc, 0);
+    cleanup.armed = false;
     return owner;
 }
 
@@ -209,17 +224,13 @@ void clear_native_vertex_declaration_00b488e0(
 void destroy_native_vertex_declaration_00b48b70(
     void* owner, const volatile std::uint32_t* type_sizes) {
     put(owner, 0, declaration_profile);
-    unsigned state = 2;
-    try {
-        clear_native_vertex_declaration_00b488e0(owner, type_sizes);
-        state = 1;
-        destroy_usage_arrays(owner);
-        state = 0;
-        destroy_native_vertex_elements_00b48ad0(at(owner, 0x0c));
-    } catch (...) {
-        unwind_owner(owner, state);
-        throw;
-    }
+    OwnerCleanup cleanup{owner};
+    clear_native_vertex_declaration_00b488e0(owner, type_sizes);
+    cleanup.state = 1;
+    destroy_usage_arrays(owner);
+    cleanup.state = 0;
+    destroy_native_vertex_elements_00b48ad0(at(owner, 0x0c));
+    cleanup.armed = false;
     put(owner, 0, base_profile);
 }
 

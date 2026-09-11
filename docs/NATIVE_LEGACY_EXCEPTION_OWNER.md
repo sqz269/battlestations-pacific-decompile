@@ -77,7 +77,7 @@ destructor after a failed copy. Whatever current member state the shared SBO
 helper leaves on failure remains. A throwing secure-copy handler during base
 copying occurs while the owner's state is still -1, so it receives no owner
 cleanup and member initialization has not yet happened. The implementation puts
-base copying outside its member-copy catch scope to preserve that distinction.
+base copying before its member cleanup guard is armed to preserve that distinction.
 Length-error copy publishes its derived table only after the whole logic copy
 returns successfully.
 
@@ -157,3 +157,18 @@ handling and the out-of-range derived operations are not supplied with a fake
 throw bridge here. Ghidra function creation/annotation/export refresh, source
 registration and ledgers remain with the primary integrator; `00411940` had no
 defined Ghidra function when this packet captured its verified body.
+
+## Cleanup-only exception search correction
+
+FuncInfos `D83F74` and `D84024` contain one cleanup state and no catch map.
+`411700` and `4118D0` now arm a base-only guard before the first member byte
+store and disarm it after member assignment succeeds. Removing the synthetic
+catch/rethrow preserves native exception search and eliminates the extra host
+CRT rethrow in the checked-tree caller (seven original/seven rebuilt events).
+The existing five-owner, 11-phase original-byte fixture was rerun against the
+corrected primary library and matches all 463 words, including member failure
+and failure before state 0. Its ignored snapshot normalizer was corrected for
+a stale heap word whose low byte is cleared when malloc happens to return a
+256-byte-aligned pointer; production behavior was unchanged. Exact artifacts
+and the initial normalization failure are pinned in
+[the cleanup audit](../reports/native_cleanup_search_fidelity.json).
