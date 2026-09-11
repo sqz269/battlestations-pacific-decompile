@@ -1,0 +1,244 @@
+{
+  "packet": "orch2_font_registry_startup_j",
+  "project": "bsp",
+  "program_path": "/battlestationspacific.exe",
+  "base_commit": "411d8f8",
+  "source": "src/font_registry_startup.cpp",
+  "documentation": "docs/FONT_REGISTRY_STARTUP.md",
+  "names_are_hypotheses": true,
+  "ghidra_mutation": "none; read-only packet; ledger evidence pending integrator locked annotation batch",
+  "annotation_before": "local/font_registry_startup_comments_before.json",
+  "entries": [
+    {
+      "address": "007371d0",
+      "name": "BSP_FontSystem_GetRegistry",
+      "kind": "fragment",
+      "cpp_symbol": "bsp::get_font_registry_007371d0",
+      "original_abi": "cdecl; no arguments; EAX registry; plain RET0073728c",
+      "evidence": "007371e5 global check; optional lock0073720e/00737215; recheck00737221; allocation10h0073722a; ctor00737243; publish00737251 before register00737264; unlock0073726d/00737272",
+      "remaining": "Manager lookup is an explicit supplied dependency; standard C++ allocation throws on failure instead of native null registration; native ABI/layout omitted.",
+      "native_end_exclusive": "0073728d",
+      "status": "reconstructed_win32_build_and_installed_font_device_fixture_tested"
+    },
+    {
+      "address": "00ac3690",
+      "name": "BSP_FontRegistry_Construct",
+      "kind": "fragment",
+      "cpp_symbol": "bsp::FontRegistryStartup::FontRegistryStartup",
+      "original_abi": "ECX registry; EAX this; plain RET00ac36e2",
+      "evidence": "00ac36bb vtable00d5ca84;00ac36c1 list sentinel allocation00ac3400;00ac36ca sentinel+8;00ac36cd count+Ch zero; helper allocates0Ch and self-links next/previous",
+      "remaining": "Typed empty owner uses vectors and standard allocation, not native vtable/list sentinel/native allocator.",
+      "native_end_exclusive": "00ac36e3",
+      "status": "reconstructed_win32_build_and_installed_font_device_fixture_tested"
+    },
+    {
+      "address": "00ac3910",
+      "name": "BSP_FontRegistry_LoadLuaDescriptors",
+      "kind": "function",
+      "cpp_symbol": "bsp::FontRegistryStartup::load_lua_descriptors_00ac3910",
+      "original_abi": "ECX registry; stack(root,descriptor,language_path); RET0Ch at00ac3edc",
+      "evidence": "00ac3941 mask1 owner open;00ac3956 argument2 run_file;00ac3a13/00ac3a50 FLD1 and float32 spills;00ac3b4d font constructor;00ac3b92..00ac3bcc append;00ac3d74..00ac3d99 argument3 extra and argument1 prefix to resource loader; iteration advances00ac3e60; temporary owner closes00ac3ec1",
+      "remaining": "Required actual per-font resource factory binds existing loader to application device/VFS. Ordinary-table conversion precedes append unlike native malformed inputs; safe partial failure and C++ exceptions are host adaptations; renderer cache identity/native ABI omitted.",
+      "native_end_exclusive": "00ac3edf",
+      "status": "reconstructed_win32_build_and_installed_font_device_fixture_tested"
+    },
+    {
+      "address": "00ac3610",
+      "name": "BSP_FontRegistry_ReloadPaths",
+      "kind": "function",
+      "cpp_symbol": "bsp::FontRegistryStartup::set_language_path_00ac3610",
+      "original_abi": "ECX registry; stack(root,language_path); RET8 at00ac365a",
+      "evidence": "00ac3610/00ac361a list begin;00ac363a arg1 root and00ac363e arg2 language;00ac3640 node+8 font;00ac3643 required per-font00ad51d0;00ac3652 forward advance; no root/language store in registry",
+      "remaining": "Per-font destructive reload00ad51d0 remains a required callback, not supplied by this startup packet; safe error returns stop traversal.",
+      "native_end_exclusive": "00ac365d",
+      "status": "reconstructed_traversal_win32_build_tested_required_reload_callback"
+    },
+    {
+      "address": "00ac36f0",
+      "name": "BSP_FontRegistry_Destroy",
+      "kind": "fragment",
+      "cpp_symbol": "bsp::FontRegistryStartup::~FontRegistryStartup",
+      "original_abi": "ECX registry; plain RET00ac37c0 in raw unassigned tail",
+      "evidence": "00ac374a calls font destructor then00ac3750 free; raw00ac3755 resumes;00ac3762 next font;00ac3783 frees nodes and raw00ac3788..00ac3790 loops;00ac3796 frees sentinel; raw00ac37a6 clears00f8bf44; RET00ac37c0",
+      "remaining": "Native pool/list/native layouts replaced by standard C++ ownership. Ghidra bad free no-return leaves two call fallthrough holes and unassigned tail; read-only packet did not repair analysis.",
+      "native_end_exclusive": "00ac37c1",
+      "status": "reconstructed_win32_build_and_installed_font_device_fixture_tested"
+    }
+  ],
+  "supporting_address": {
+    "address": "00ac3400",
+    "name": "BSP_FontRegistry_AllocateListSentinel_Provisional",
+    "original_abi": "no stack arguments; EAX sentinel; plain RET00ac3419",
+    "evidence": "allocate0Ch; next and previous self-linked; payload not initialized",
+    "reconstructed": false
+  },
+  "native_byte_windows": [
+    {
+      "start": "007371d0",
+      "end_exclusive": "0073728d",
+      "length": 189,
+      "sha256": "ac9c01a13763b515635c492b50258cfec95c5a5c62644a0368ba92a828b434f9",
+      "matches_disk": true
+    },
+    {
+      "start": "00ac3690",
+      "end_exclusive": "00ac36e3",
+      "length": 83,
+      "sha256": "9139ece4b6cb7689a6995680ee535f8189b0856dedd140467c216054ac8c08ff",
+      "matches_disk": true
+    },
+    {
+      "start": "00ac3910",
+      "end_exclusive": "00ac3edf",
+      "length": 1487,
+      "sha256": "2b34b4fc491572ece3d0773cc36a80007ce656a4092c061b5d71783c6647935b",
+      "matches_disk": true
+    },
+    {
+      "start": "00ac3610",
+      "end_exclusive": "00ac365d",
+      "length": 77,
+      "sha256": "fcb01f608978be29c21b70d1309148f48cdc6bb7b5e98872fe542fbe67dbc215",
+      "matches_disk": true
+    },
+    {
+      "start": "00ac36f0",
+      "end_exclusive": "00ac37c1",
+      "length": 209,
+      "sha256": "6f55adb58f8d5718ad9ae17563aa626cee48b3bc6622c751875972bb87114f83",
+      "matches_disk": true
+    },
+    {
+      "start": "00ac3400",
+      "end_exclusive": "00ac341a",
+      "length": 26,
+      "sha256": "aaf3d47726af823b29fc9dc6bff113fd32ddd6944c6b2dcd8a27bb01324702db",
+      "matches_disk": true
+    }
+  ],
+  "raw_continuations": [
+    {
+      "start": "00ac3755",
+      "end_exclusive": "00ac3758",
+      "instructions": [
+        "00ac3755: add esp, 4"
+      ]
+    },
+    {
+      "start": "00ac3788",
+      "end_exclusive": "00ac3792",
+      "instructions": [
+        "00ac3788: add esp, 4",
+        "00ac378b: cmp edi, dword ptr [esi + 4]",
+        "00ac378e: mov eax, edi",
+        "00ac3790: jne 0xac3780"
+      ]
+    },
+    {
+      "start": "00ac379b",
+      "end_exclusive": "00ac37c1",
+      "instructions": [
+        "00ac379b: mov ecx, dword ptr [esp + 0x18]",
+        "00ac379f: add esp, 4",
+        "00ac37a2: mov dword ptr [esi + 4], ebx",
+        "00ac37a5: pop edi",
+        "00ac37a6: mov dword ptr [0xf8bf44], ebx",
+        "00ac37ac: pop esi",
+        "00ac37ad: mov dword ptr [ebp], 0xce3818",
+        "00ac37b4: pop ebp",
+        "00ac37b5: pop ebx",
+        "00ac37b6: mov dword ptr fs:[0], ecx",
+        "00ac37bd: add esp, 0x10",
+        "00ac37c0: ret "
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00ac3755",
+      "end": "00ac3755",
+      "endpoints": "inclusive final instruction address; byte end exclusive00ac3758",
+      "reason": "ADD ESP,4 after incorrectly no-return free00ac3750"
+    },
+    {
+      "start": "00ac3788",
+      "end": "00ac3790",
+      "endpoints": "inclusive final instruction addresses; byte end exclusive00ac3792",
+      "reason": "node-free loop continuation after incorrectly no-return free00ac3783"
+    },
+    {
+      "start": "00ac379b",
+      "end": "00ac37c0",
+      "endpoints": "inclusive final instruction addresses; byte end exclusive00ac37c1",
+      "reason": "tail after incorrectly no-return free00ac3796; existing00ac36f0 body ends00ac379a"
+    }
+  ],
+  "dependencies_reused": [
+    "VfsLuaScriptFiles",
+    "LuaScriptRuntime",
+    "PcStorageLuaOwner",
+    "visit_font_descriptors_lua shared with legacy adapter",
+    "FontResources",
+    "load_font_resources_from_streams_00ad4c30_fragment",
+    "SingletonLifetimeManager"
+  ],
+  "validation": {
+    "verify_seeds": "8of8 match disk bytes",
+    "native_windows": "6of6 live windows match installed bytes",
+    "build": "scripts/build.ps1 MSVC Win32 Release pass",
+    "build_log": "local/font_registry_startup_build.log",
+    "existing_tests": "2of2 pass",
+    "ignored_fixture": "local/font_registry_startup_fixture.cpp",
+    "fixture_runner": "local/run_font_registry_fixture.ps1",
+    "fixture_log": "local/font_registry_startup_fixture.log",
+    "fixture": "PASS six installed fonts,12 actual D3D9/D3DX images; exact empty-language root binding; forward per-entry append; failure ownership; stable lookup; release; real singleton manager teardown",
+    "counts": {
+      "fonts": 6,
+      "image_owners": 12,
+      "arial_glyphs": 207,
+      "viper_glyphs": 116
+    },
+    "alpha_search_resolution": {
+      "requested": "Fonts\\white.tga",
+      "resolved": "effects/white.dds"
+    },
+    "singleton_lifetime_fixture": "real SingletonLifetimeDomain; one registration; one deletion; publication cleared",
+    "installed_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "installed_sources": [
+      {
+        "relative_path": "fonts/fonts.lua",
+        "sha256": "26ebc6c0905f3aff36e95f40195c0fe8693d9f17474d2fcd3e51bcc7091fdd93"
+      },
+      {
+        "relative_path": "scripts/fundamentals.lua",
+        "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+      },
+      {
+        "relative_path": "fonts/arial18.dat",
+        "sha256": "1824a05fd233f289dd810b67116b42b418dd725f5e7d1acf3f657398b60c1787"
+      },
+      {
+        "relative_path": "fonts/viper19.dat",
+        "sha256": "45aab7a09ff71a830254e0beb77b14b7000c44ad57ae27ea3b70ff2e402d4b9c"
+      },
+      {
+        "relative_path": "fonts/arial18.tga",
+        "sha256": "1f88a76ca802aedd1015d5ba7fe0af6d8a700b2501c3c7320f85564cc9a7fba4"
+      },
+      {
+        "relative_path": "fonts/viper19.tga",
+        "sha256": "399995391209e425bffe047bd59d333b55faae8a4c5237748a912fae023f845b"
+      },
+      {
+        "relative_path": "effects/white.dds",
+        "sha256": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95"
+      }
+    ],
+    "installation_modified": false,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "visually_validated": false,
+    "permanent_tests_added": false
+  }
+}
