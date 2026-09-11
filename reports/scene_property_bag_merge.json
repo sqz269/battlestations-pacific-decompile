@@ -1,0 +1,608 @@
+{
+  "packet": "cc2_property_bag_merge",
+  "worktree": "agent/cc2-property-bag-merge",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "names_are_hypotheses": true,
+  "doc": "docs/SCENE_PROPERTY_BAG_MERGE.md",
+  "subject": "how a scene entity's authored properties combine with its class defaults",
+  "routines": [
+    {
+      "address": "008f54f0",
+      "name": "BSP_ScenePropertyBag_MergeFrom",
+      "abi": "__thiscall(bag dest /*ECX*/, bag source, char keepExisting), RET 8",
+      "coverage": "complete",
+      "evidence": "argument count from the stack cleanup: 0046db61/0046db63 push two dwords and no ADD ESP follows 0046db66; same at 00469d23 and 008f5ab3. keepExisting is argument 2 (008f5aae PUSH 0x0 precedes 008f5ab0 PUSH EAX)."
+    },
+    {
+      "address": "008f23e0",
+      "name": "BSP_ScenePropertyBag_AssignExistingFrom",
+      "abi": "__thiscall(bag dest /*ECX*/, bag source), RET 4",
+      "coverage": "complete",
+      "evidence": "008f23fd MOV EDI,ECX saves the destination, 008f243a spills it and 008f2493 MOV ECX,[ESP+0x18] reloads that spill two pushes deeper for the 0043b8b0 lookup; the iterator source is [ESP+0x30], the first stack argument after 0x2c bytes of prologue. No clone-and-insert branch and no flag: a key absent from the destination is dropped (008f24a2 leaves BL zero, 008f24d6 skips the body)."
+    },
+    {
+      "address": "008f4f60",
+      "name": "BSP_SceneProperty_Clone",
+      "abi": "__thiscall(record /*ECX*/), plain RET",
+      "coverage": "complete",
+      "correction": "the prior packet read six of twelve arms. All twelve are now read: 6 clones the sub-bag through 008f41f0 then 008ef780, 7 passes record+0Ch to 008ef270, 8 passes (+20h, +24h, 1) to 008ef2f0, and 9/0Ah/0Bh call 008ef7f0 with ECX = the source record for an element count before 008ef360/008ef3e0/008ef460 with copy = 1. The default arm returns 0."
+    },
+    {
+      "address": "008f0700",
+      "name": "BSP_SceneProperty_AssignValueFrom",
+      "abi": "__thiscall(record dest /*ECX*/, record source), RET 4",
+      "coverage": "complete",
+      "evidence": "switch on the destination's +04h. 0/1/4 copy the +0Ch dword, 2 frees and re-duplicates, 3 copies one byte, 5 runs 008f0340 with ECX = dest+18h, 7 copies +0Ch/+10h/+14h, 8..0Bh share one arm running 008f03b0 with ECX = dest+20h. Code 6 has no arm."
+    },
+    {
+      "address": "008f0340",
+      "name": "BSP_SceneProperty_CopyReferencePayload",
+      "abi": "__thiscall(dword* destPayload /*ECX = record+18h*/, dword* sourcePayload), RET 4",
+      "coverage": "complete",
+      "correction": "the decompiler shows an early return after the free. The bytes at 008f0355 are 50 E8 2E663000 83C404 C746 04 00000000: PUSH EAX / CALL free / ADD ESP,4 / MOV [ESI+4],0, falling through to the JZ target 008f0365. It frees the old name, nulls it and then copies."
+    },
+    {
+      "address": "008f03b0",
+      "name": "BSP_SceneProperty_CopyArrayBlock",
+      "abi": "__thiscall(dword* destBlock /*ECX = record+20h*/, dword* sourceBlock), RET 4",
+      "coverage": "complete",
+      "evidence": "reads source[1] as a byte size and passes it to operator new (008f03d7) and memcpy (008f03e1). Same free-then-fall-through shape as 008f0340 (008f03c4: ... 83C404 C706 00000000, then 008f03d3)."
+    },
+    {
+      "address": "008f03f0",
+      "name": "BSP_SceneProperty_ReleaseArrayBlock",
+      "abi": "__fastcall(dword* block /*ECX = record+20h*/)",
+      "coverage": "complete"
+    },
+    {
+      "address": "008f0640",
+      "name": "BSP_SceneProperty_ReleaseValue",
+      "abi": "__fastcall(record /*ECX*/)",
+      "coverage": "complete",
+      "evidence": "the type switch behind the single vtable slot. 2 frees +0Ch, 5 frees +1Ch, 6 calls the sub-bag's deleting destructor with 1, 8..0Bh call 008f03f0; the tail zeroes +04h, +08h, +0Ch and +28h. +28h is never freed, so the enum declaration is shared."
+    },
+    {
+      "address": "008f0420",
+      "name": "BSP_SceneProperty_SetReference",
+      "abi": "__thiscall(record /*ECX*/, const char* target, dword tag, dword kind), RET 0ch",
+      "coverage": "complete",
+      "evidence": "008f0447 stores the duplicate at +1Ch, 008f044e the second stack argument at +18h and 008f0451 the third at +08h. RET 0Ch is the argument count."
+    },
+    {
+      "address": "008f3ac0",
+      "name": "BSP_ScenePropertyBag_SetReference",
+      "abi": "__thiscall(bag /*ECX*/, const char* key, const char* target, dword tag, dword kind)",
+      "coverage": "complete for the record it builds; the 008f33f0 insert is the existing rule",
+      "evidence": "allocates 38h, writes vtable 00ce89d4, type 5, +08h = kind, +18h = tag, +1Ch = duplicate of target, +20h/+24h/+34h = 0 and the byte 1 at +2Ch, then inserts."
+    },
+    {
+      "address": "008ef2b0",
+      "name": "BSP_SceneProperty_ConstructReference",
+      "abi": "__thiscall(record /*ECX*/, const char* target, dword tag, dword kind)",
+      "coverage": "complete"
+    },
+    {
+      "address": "008ef2f0",
+      "name": "BSP_SceneProperty_ConstructByteArray",
+      "abi": "__thiscall(record /*ECX*/, void* data, size_t byteSize, char copy)",
+      "coverage": "complete",
+      "evidence": "copy != 0 allocates byteSize and memcpys; copy == 0 stores the caller's pointer verbatim. The clone passes 1 (008f518c)."
+    },
+    {
+      "address": "008ef360",
+      "name": "BSP_SceneProperty_ConstructFloatArray",
+      "abi": "__thiscall(record /*ECX*/, int count, void* data, char copy)",
+      "coverage": "complete",
+      "evidence": "stores count * 4 at +24h, so +24h is a byte size for this type too."
+    },
+    {
+      "address": "008ef7f0",
+      "name": "BSP_SceneProperty_ArrayElementCount",
+      "abi": "__fastcall(record /*ECX*/), returns the element count",
+      "coverage": "complete",
+      "evidence": "reads +04h and +24h: >> 2 for codes 9 and 0Ah, / 0Ch for 0Bh, 0 otherwise. ECX is the source record (008f51d4 MOV ECX,ESI)."
+    },
+    {
+      "address": "009512f0",
+      "name": "unnamed",
+      "abi": "__cdecl-ish(bag) per the decompiler; not resolved from the listing",
+      "coverage": "partial: entry through the `properties` branch only; the hand-off 0049cf80 is unread"
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "record+00h",
+      "was": "docs/SCENE_PROPERTY_BAG.md: 'vtable, one per type'",
+      "is": "one vtable for all twelve type codes: 00ce89d4",
+      "evidence": "008ef148 (type 0), 008ef2b0 (type 5), 008ef2f8 (type 8) and 008f38a0 (type 2) all store 00ce89d4. Its single slot 004e6730 forwards through the thunk 008f0de0 to 008f0640, which switches on +04h."
+    },
+    {
+      "subject": "record+24h",
+      "was": "docs/SCENE_PROPERTY_BAG.md: 'array element count'",
+      "is": "array byte size",
+      "evidence": "008ef2f0 stores its size argument at +24h and passes the same value to operator new and memcpy; 008f03b0 does the same on an assign; 008ef360 stores count * 4. 008ef7f0 is the only routine that turns it back into a count."
+    },
+    {
+      "subject": "record+08h",
+      "was": "docs/SCENE_PROPERTY_BAG.md: 'not written by 008F38A0 and not read on any path this packet covers'",
+      "is": "the reference sub-kind, part of the type-5 payload",
+      "evidence": "008f0451 writes it from 008f0420's third stack argument, 008ef2b0 and 008f3ac0 write it from their kind argument, and the type-5 clone arm reads it back and passes it to 008ef2b0."
+    },
+    {
+      "subject": "008f0340 / 008f03b0 / 008f03f0 / 008f0420 / 008f0640",
+      "was": "the decompiler's early return after the free",
+      "is": "free, null the field, then copy",
+      "evidence": "raw bytes 008f0350..008f036d and 008f03c0..008f03d7 decode to PUSH EAX / CALL free / ADD ESP,4 / MOV [reg+disp],0 followed by the JZ target."
+    },
+    {
+      "subject": "0046db5a / 0046db66",
+      "was": "docs/SCENE_ENTITY_CREATE.md open question: which of the two bags is authored",
+      "is": "the clone at 0046db5a is the authored bag (the scene record's own properties); the argument bag merged at 0046db66 only fills gaps",
+      "evidence": "0046db57 MOV ECX,[EBX+4] is record->properties, the same field passed to the class creator at 0046db4b; 0046db61 PUSH 0x1 makes keepExisting non-zero, so the destination clone's values win."
+    },
+    {
+      "subject": "group-list precedence",
+      "was": "a first reading of this packet attributed the entity group list to 008f5ab3 and concluded that a later group overwrites an earlier one",
+      "is": "the entity group list is 0046cf40's loop with keepExisting = 1, so the first group wins; 008f5ab3's flag-0 branch belongs to the registry-driven caller",
+      "evidence": "0046d2f4 PUSH 0x1 survives 008d9980 (no stack argument; its zero-push site is 008f5a9f) and 00469b60 (cleans its own), so it is the flag at 0046d30c. 0046d34e passes 0 as 008f5a00's third argument, the registry 008f5aa9 would dereference."
+    }
+  ],
+  "merge_rule": {
+    "stage_1_parse": "for a scene entity the group list is read by BSP_SceneFile_ReadEntityBlock 0046cf40, not by the bag parser: 0046d2c3 builds the empty bag and the loop 0046d2f4-0046d326 merges each named group with keepExisting = 1 (0046d30c), so the FIRST group named wins a shared key; 0046d34e then parses the body into the same bag and an authored line overwrites whatever the groups left. 008f5a00 has its own group-merge branch at 008f5ab3 with keepExisting = 0 (last group wins), gated on the group registry in argument 3, which 0046d34e passes as 0.",
+    "stage_2_create": "0046d930 clones the entity record's authored bag (0046db5a) and merges the caller's bag with keepExisting = 1 (0046db66), so the argument can only add keys the authored record never mentioned.",
+    "absent_key": "clone with 008f4f60, copy the source ordinal at 008f562e, insert with 008f33f0",
+    "sub_bag": "recursion at 008f55f6 on both sides' +0Ch with the same flag; sub-bags merge key by key and are never replaced wholesale",
+    "ordinal": "only the clone branch moves an ordinal, so an overwritten key keeps the destination's insertion order",
+    "assign_existing": "008f23e0 has no clone branch and no flag: source always wins for a key present in the destination, and a key absent from the destination is dropped"
+  },
+  "reference_payload": [
+    {
+      "offset": "+08h",
+      "field": "SceneReferenceKind, 0..7 (R, RLand, RFort, RShip, RPlane, RPlnShp, RLPlnShp, RPath)",
+      "evidence": "008f0451; 008ef2b0 param_1[2]; read back by the type-5 clone arm"
+    },
+    {
+      "offset": "+18h",
+      "field": "a dword every producer read here passes as 0",
+      "evidence": "008f044e; both parser sites 008f60c1 and 008f6254 push 0; copied by 008f0340"
+    },
+    {
+      "offset": "+1Ch",
+      "field": "the target name, an owned heap duplicate",
+      "evidence": "008f042b frees the old, 008f043e duplicates, 008f0447 stores; 008f0640 case 5 frees it"
+    }
+  ],
+  "per_type_copy": [
+    {
+      "code": 0,
+      "type": "Int",
+      "clone": "008ef140, +0Ch dword",
+      "assign": "008f071a, +0Ch dword",
+      "deep": "none",
+      "shared": "none"
+    },
+    {
+      "code": 1,
+      "type": "Float",
+      "clone": "008ef170, +0Ch dword",
+      "assign": "008f0726, +0Ch dword",
+      "deep": "none",
+      "shared": "none"
+    },
+    {
+      "code": 2,
+      "type": "String",
+      "clone": "008ef1b0, duplicates +0Ch",
+      "assign": "008f074c frees then 008f0758 duplicates",
+      "deep": "the string",
+      "shared": "none"
+    },
+    {
+      "code": 3,
+      "type": "Bool",
+      "clone": "008ef1f0, byte at +0Ch",
+      "assign": "008f0736, one byte",
+      "deep": "none",
+      "shared": "none"
+    },
+    {
+      "code": 4,
+      "type": "Enum",
+      "clone": "008ef230(+28h, +0Ch)",
+      "assign": "008f0790, +0Ch only",
+      "deep": "the value",
+      "shared": "the declaration at +28h; the assign arm leaves the destination's"
+    },
+    {
+      "code": 5,
+      "type": "Reference",
+      "clone": "008ef2b0(+1Ch, +18h, +08h)",
+      "assign": "008f0771 -> 008f0340, +18h and +1Ch only",
+      "deep": "the target name",
+      "shared": "none; the assign arm leaves the destination's kind at +08h"
+    },
+    {
+      "code": 6,
+      "type": "SubBag",
+      "clone": "008f41f0 then 008ef780",
+      "assign": "no arm",
+      "deep": "the whole sub-tree",
+      "shared": "none"
+    },
+    {
+      "code": 7,
+      "type": "Vector3",
+      "clone": "008ef270(&record+0Ch)",
+      "assign": "008f0796..008f07a5, three floats",
+      "deep": "none",
+      "shared": "none"
+    },
+    {
+      "code": 8,
+      "type": "ByteArray",
+      "clone": "008ef2f0(+20h, +24h, 1)",
+      "assign": "008f07b6 -> 008f03b0",
+      "deep": "the block at +20h",
+      "shared": "none"
+    },
+    {
+      "code": 9,
+      "type": "FloatArray",
+      "clone": "008ef360(count, +20h, 1) after 008ef7f0",
+      "assign": "008f07b6 -> 008f03b0",
+      "deep": "the block",
+      "shared": "none"
+    },
+    {
+      "code": 10,
+      "type": "IntArray",
+      "clone": "008ef3e0(count, +20h, 1) after 008ef7f0",
+      "assign": "008f07b6 -> 008f03b0",
+      "deep": "the block",
+      "shared": "none"
+    },
+    {
+      "code": 11,
+      "type": "Vector3Array",
+      "clone": "008ef460(count, +20h, 1) after 008ef7f0",
+      "assign": "008f07b6 -> 008f03b0",
+      "deep": "the block",
+      "shared": "none"
+    }
+  ],
+  "host_table": [
+    {
+      "address": "0046d2c3",
+      "native": "008f41a0",
+      "function": "0046cf40",
+      "host_method": "construct bag (existing)",
+      "contract": "ECX = the 114h allocation from 0046d2a7",
+      "gate": "entity has a property block"
+    },
+    {
+      "address": "0046d2f8",
+      "native": "008d9980",
+      "function": "0046cf40",
+      "host_method": "read group token (existing)",
+      "contract": "ECX = the tokenizer, no stack argument",
+      "gate": "group loop"
+    },
+    {
+      "address": "0046d304",
+      "native": "00469b60",
+      "function": "0046cf40",
+      "host_method": "lookup property group by name (existing)",
+      "contract": "ECX = *(00e18678), arg the group token",
+      "gate": "group loop"
+    },
+    {
+      "address": "0046d30c",
+      "native": "008f54f0",
+      "function": "0046cf40",
+      "host_method": "merge group",
+      "contract": "ECX = the entity's bag, args the group bag, 1; RET 8",
+      "gate": "group loop"
+    },
+    {
+      "address": "0046d34e",
+      "native": "008f5a00",
+      "function": "0046cf40",
+      "host_method": "parse the body (existing)",
+      "contract": "ECX = the entity's bag, args the tokenizer, 1, 0",
+      "gate": "after the group loop"
+    },
+    {
+      "address": "008f23ff",
+      "native": "00bf681b",
+      "function": "008f23e0",
+      "host_method": "operator new (existing)",
+      "contract": "arg 0Ch, __cdecl, ADD ESP,4 at 008f2408",
+      "gate": "-"
+    },
+    {
+      "address": "008f241a",
+      "native": "00480690",
+      "function": "008f23e0",
+      "host_method": "iterator_open",
+      "contract": "ECX = the 0Ch block whose +00h is source+4",
+      "gate": "allocation succeeded"
+    },
+    {
+      "address": "008f2446",
+      "native": "00484d20",
+      "function": "008f23e0",
+      "host_method": "iterator_key",
+      "contract": "ECX = the iterator; returns char*",
+      "gate": "loop"
+    },
+    {
+      "address": "008f2481",
+      "native": "00bf7680",
+      "function": "008f23e0",
+      "host_method": "memcpy (existing)",
+      "contract": "key text into the local string",
+      "gate": "key length non-zero"
+    },
+    {
+      "address": "008f249b",
+      "native": "0043b8b0",
+      "function": "008f23e0",
+      "host_method": "find_in_dest",
+      "contract": "ECX = the destination bag, args key, out-slot",
+      "gate": "loop"
+    },
+    {
+      "address": "008f24ef",
+      "native": "008f23e0",
+      "function": "008f23e0",
+      "host_method": "recurse",
+      "contract": "ECX = dest record's +0Ch, arg source record's +0Ch; RET 4",
+      "gate": "found and destination type 6"
+    },
+    {
+      "address": "008f2503",
+      "native": "008f0700",
+      "function": "008f23e0",
+      "host_method": "assign_value",
+      "contract": "ECX = the destination record, arg the source record; RET 4",
+      "gate": "found, not type 6"
+    },
+    {
+      "address": "008f250e",
+      "native": "0047e480",
+      "function": "008f23e0",
+      "host_method": "iterator_advance",
+      "contract": "ECX = the iterator",
+      "gate": "loop"
+    },
+    {
+      "address": "008f2523",
+      "native": "00bf65ac",
+      "function": "008f23e0",
+      "host_method": "iterator_close",
+      "contract": "arg the iterator",
+      "gate": "after the loop"
+    },
+    {
+      "address": "008f5099",
+      "native": "008ef1b0",
+      "function": "008f4f60",
+      "host_method": "construct string record",
+      "contract": "ECX = the 38h block, arg source+0Ch",
+      "gate": "type 2"
+    },
+    {
+      "address": "008f50d1",
+      "native": "008ef230",
+      "function": "008f4f60",
+      "host_method": "construct enum record",
+      "contract": "ECX = the block, args source+28h, source+0Ch",
+      "gate": "type 4"
+    },
+    {
+      "address": "008f5192",
+      "native": "008ef2f0",
+      "function": "008f4f60",
+      "host_method": "construct byte-array record",
+      "contract": "ECX = the block, args source+20h, source+24h, 1",
+      "gate": "type 8"
+    },
+    {
+      "address": "008f51d6",
+      "native": "008ef7f0",
+      "function": "008f4f60",
+      "host_method": "array_element_count",
+      "contract": "ECX = the source record; returns +24h divided by the stride",
+      "gate": "types 9, 0Ah, 0Bh"
+    },
+    {
+      "address": "008f51de",
+      "native": "008ef360",
+      "function": "008f4f60",
+      "host_method": "construct float-array record",
+      "contract": "ECX = the block, args count, source+20h, 1",
+      "gate": "type 9"
+    },
+    {
+      "address": "008f074c",
+      "native": "004357f0",
+      "function": "008f0700",
+      "host_method": "release string field (existing)",
+      "contract": "ECX = dest+0Ch",
+      "gate": "type 2"
+    },
+    {
+      "address": "008f0758",
+      "native": "00438e40",
+      "function": "008f0700",
+      "host_method": "BSP_NativeString_Duplicate (existing)",
+      "contract": "ECX = source+0Ch",
+      "gate": "type 2"
+    },
+    {
+      "address": "008f0771",
+      "native": "008f0340",
+      "function": "008f0700",
+      "host_method": "copy_reference_payload",
+      "contract": "ECX = dest+18h, arg source+18h; RET 4",
+      "gate": "type 5"
+    },
+    {
+      "address": "008f07b6",
+      "native": "008f03b0",
+      "function": "008f0700",
+      "host_method": "copy_array_block",
+      "contract": "ECX = dest+20h, arg source+20h; RET 4",
+      "gate": "types 8..0Bh"
+    },
+    {
+      "address": "008f0356",
+      "native": "00bf6989",
+      "function": "008f0340",
+      "host_method": "free (existing)",
+      "contract": "arg the old +1Ch; ADD ESP,4 then MOV [ESI+4],0",
+      "gate": "old name non-null"
+    },
+    {
+      "address": "008f0367",
+      "native": "00438e40",
+      "function": "008f0340",
+      "host_method": "BSP_NativeString_Duplicate (existing)",
+      "contract": "ECX = the source name",
+      "gate": "always"
+    },
+    {
+      "address": "008f03c5",
+      "native": "00bf6989",
+      "function": "008f03b0",
+      "host_method": "free (existing)",
+      "contract": "arg the old +20h; then MOV [ESI],0",
+      "gate": "old block non-null"
+    },
+    {
+      "address": "008f03d7",
+      "native": "00bf55be",
+      "function": "008f03b0",
+      "host_method": "operator new (existing)",
+      "contract": "arg the source byte size",
+      "gate": "always"
+    },
+    {
+      "address": "008f03e1",
+      "native": "00bf7680",
+      "function": "008f03b0",
+      "host_method": "memcpy (existing)",
+      "contract": "args new block, source block, byte size; ADD ESP,0x10",
+      "gate": "always"
+    },
+    {
+      "address": "008f042b",
+      "native": "00bf6989",
+      "function": "008f0420",
+      "host_method": "free (existing)",
+      "contract": "arg the old +1Ch",
+      "gate": "old name non-null"
+    },
+    {
+      "address": "008f043e",
+      "native": "00438e40",
+      "function": "008f0420",
+      "host_method": "BSP_NativeString_Duplicate (existing)",
+      "contract": "ECX = the name argument",
+      "gate": "always"
+    },
+    {
+      "address": "008f5aa9",
+      "native": "00469b60",
+      "function": "008f5a00",
+      "host_method": "lookup property group by name (existing)",
+      "contract": "ECX = the library, arg the group token",
+      "gate": "group list"
+    },
+    {
+      "address": "008f5ab3",
+      "native": "008f54f0",
+      "function": "008f5a00",
+      "host_method": "merge group",
+      "contract": "ECX = the block's bag, args the group bag, 0; RET 8",
+      "gate": "group list"
+    },
+    {
+      "address": "00469d09",
+      "native": "008f5a00",
+      "function": "00469bf0",
+      "host_method": "parse header properties",
+      "contract": "ECX = the header bag",
+      "gate": "header has a properties body"
+    },
+    {
+      "address": "00469d1b",
+      "native": "00469b60",
+      "function": "00469bf0",
+      "host_method": "lookup property group by name (existing)",
+      "contract": "ECX = *(00e18678), args 00ce567c, 1",
+      "gate": "same"
+    },
+    {
+      "address": "00469d23",
+      "native": "008f54f0",
+      "function": "00469bf0",
+      "host_method": "merge defaults",
+      "contract": "ECX = the header bag, args that group bag, 1; RET 8",
+      "gate": "same"
+    },
+    {
+      "address": "00469d37",
+      "native": "008f23e0",
+      "function": "00469bf0",
+      "host_method": "apply caller bag",
+      "contract": "ECX = the header bag, arg [ESP+0x28]; RET 4",
+      "gate": "EBP != 0 at 00469d2a"
+    },
+    {
+      "address": "0046db5a",
+      "native": "008f41f0",
+      "function": "0046d930",
+      "host_method": "clone authored bag (existing)",
+      "contract": "ECX = record->properties",
+      "gate": "overrides != 0"
+    },
+    {
+      "address": "0046db66",
+      "native": "008f54f0",
+      "function": "0046d930",
+      "host_method": "merge overrides",
+      "contract": "ECX = the clone, args overrides, 1; RET 8",
+      "gate": "same"
+    }
+  ],
+  "no_ghidra_function": [],
+  "installed_game_validation": {
+    "class_default": "universe/library/ship.props declares the group Ship(Common) with `Skill = E SkillLevels : SPNormal ;`",
+    "authored": "universe/scenes/missions/multi/scene175.scn line 26815 opens `properties (Common, GameUnit, Ship, Command, MotherShipPlanes) {` and line 26845 authors `Skill = E SkillLevels : Elite ;`",
+    "outcome": "the Ship group default is merged in first with keepExisting = 0 and the authored line then sets Elite; the entity-creation merge at 0046db66 cannot undo it because the authored bag is the destination",
+    "method": "read-only rg over the installed game; no run-time evidence, the path was not executed"
+  },
+  "uncertainties": [
+    "record+2Ch is stored as the byte 1 by every constructor read here (008f38a0, 008ef2b0, 008ef2f0, 008ef360, 008f3ac0) and loaded by no routine read here. Provisional: a per-record flag fixed at construction.",
+    "record+18h is copied on both a clone and an assign but every producer read here passes 0.",
+    "0049cf80, the consumer of the bag 009512f0 builds, is unread.",
+    "The argument setups of 0046d930's callers (004c6ba0, 004ba870, 00944fd0, 00944680, 00945450) were not read, so what the fallback bag holds is open.",
+    "Whether any path pairs a type-6 destination with a non-bag source, which would hand 008f55f6 a scalar as a bag."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/scene_property_bag_merge.hpp",
+    "source": "src/scene_property_bag_merge.cpp",
+    "target": "bsp_core, one appended line in cmake/startup.cmake",
+    "status": "reconstructed and build-tested; not ABI-compatible, not game-validated",
+    "divergences": [
+      "scene_property_assign_value_from refuses a type-mismatched pair instead of reinterpreting the source dword the way the native arm does.",
+      "the two native sequences return early on a null iterator; 008f5511 and 008f23ff leave the pointer null and the native code dereferences it anyway."
+    ],
+    "test": "one case in tests/math_tests.cpp over the 008f23e0 precedence and the dropped key"
+  }
+}
