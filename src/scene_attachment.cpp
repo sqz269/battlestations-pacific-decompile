@@ -267,23 +267,38 @@ SceneAttachmentRuntime::SceneAttachmentRuntime(std::uint32_t registry_token,
     std::array<std::uint32_t, 3> object_tokens)
     : registry_type_token(registry_token), object_type_tokens(object_tokens) {}
 void SceneAttachmentRuntime::bind(SceneNodeAttachment& node) {
+    if (node.transform.raw_node_key_) {
+        if (node.transform.raw_node_key_ != node.pointer_key ||
+            (node.transform.hierarchy_runtime_ && node.transform.hierarchy_runtime_ != this))
+            throw std::invalid_argument("raw node binding requires its actual key and one live runtime");
+    }
     for (const auto* binding : bindings_) {
         if (binding == &node) return;
         if (&binding->transform == &node.transform || binding->pointer_key == node.pointer_key)
             throw std::invalid_argument("scene binding transform and pointer key must be unique");
     }
     bindings_.push_back(&node);
+    if (node.transform.raw_node_key_) node.transform.hierarchy_runtime_ = this;
 }
 void SceneAttachmentRuntime::unbind(SceneNodeAttachment& node) {
     if (node.scene) throw std::logic_error("detach the scene node before unbinding it");
     forget_destroyed_binding(node);
 }
 void SceneAttachmentRuntime::forget_destroyed_binding(SceneNodeAttachment& node) noexcept {
+    // Companion identity only: raw backing may already be destroyed or protected.
+    const auto found = std::find(bindings_.begin(), bindings_.end(), &node);
+    if (found == bindings_.end()) return;
+    if ((*found)->transform.hierarchy_runtime_ == this)
+        (*found)->transform.hierarchy_runtime_ = nullptr;
     bindings_.erase(std::remove(bindings_.begin(), bindings_.end(), &node), bindings_.end());
 }
 SceneNodeAttachment& SceneAttachmentRuntime::resolve(CameraTransform& transform) const {
     for (auto* binding : bindings_) if (&binding->transform == &transform) return *binding;
     throw std::logic_error("scene hierarchy child has no live attachment binding");
+}
+SceneNodeAttachment& SceneAttachmentRuntime::resolve_key(std::uint32_t key) const {
+    for (auto* binding : bindings_) if (binding->pointer_key == key) return *binding;
+    throw std::logic_error("native node key has no live attachment binding");
 }
 SystemDirectionalLight* SceneAttachmentRuntime::resolve_light(std::uint32_t key) {
     if (!key) return nullptr;
@@ -330,7 +345,7 @@ void set_node_scene_00b6ed80(SceneAttachmentRuntime& runtime,
         if (node.scene) add_scene_node_if_type_00b83d50(runtime, *node.scene, node);
     }
     if (recurse) {
-        auto* child = node.transform.first_child;
+        auto* child = node.transform.first_child.get();
         while (child) {
             auto& binding = runtime.resolve(*child);
             binding.attach_scene(runtime, binding, requested, true);

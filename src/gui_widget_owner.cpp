@@ -334,7 +334,7 @@ void GuiWidgetOwnerRuntime::loaded78(GuiLayoutWidget& layout) {
 void GuiWidgetOwnerRuntime::stamp_visibility(NativeNodeBinding& binding, float factor, bool recurse) {
     std::memcpy(&binding.storage.scalar_ac, &factor, sizeof(factor));
     if (recurse) {
-        for (auto* child = binding.transform.first_child; child; child = child->next_sibling) {
+        for (auto* child = binding.transform.first_child.get(); child; child = child->next_sibling) {
             //Use the actual node binding even for descendants that aren't widgets.
             float child_factor;
             __asm {

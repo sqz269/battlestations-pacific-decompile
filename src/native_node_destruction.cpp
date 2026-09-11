@@ -70,7 +70,7 @@ void NativeNodeDestructionRuntime::release_retained_owner(void* captured_owner) 
 
 void unlink_native_node_child_00b6d940(CameraTransform& parent, CameraTransform& child) noexcept {
     if (child.parent != &parent) return;
-    auto* previous = child.previous_sibling;
+    auto* previous = child.previous_sibling.get();
     child.parent = nullptr;
     if (previous) previous->next_sibling = child.next_sibling;
     if (child.next_sibling) child.next_sibling->previous_sibling = child.previous_sibling;
@@ -86,7 +86,7 @@ void prepend_native_node_root_00b721f0(RenderNodeRootList& root, CameraTransform
 void unregister_native_node_attachments_00b6d850(NativeNodeDestructionRuntime& runtime,
     CameraTransform& node) {
     unregister_current_attachment(runtime, node);
-    auto* child = node.first_child;
+    auto* child = node.first_child.get();
     while (child) {
         unregister_native_node_attachments_00b6d850(runtime, *child);
         child = child->next_sibling;
@@ -115,14 +115,14 @@ void propagate_native_node_root_00b6d890(NativeNodeDestructionRuntime& runtime,
             }
         }
     }
-    auto* child = node.first_child;
+    auto* child = node.first_child.get();
     while (child) {
         propagate_native_node_root_00b6d890(runtime, *child, requested_root);
         child = child->next_sibling;
     }
 }
 void set_native_node_parent_null_00b6e680(NativeNodeDestructionRuntime& runtime, CameraTransform& node) {
-    auto* parent = node.parent;
+    auto* parent = node.parent.get();
     if (!parent) return;
     unlink_native_node_child_00b6d940(*parent, node);
     unregister_current_attachment(runtime, node);
@@ -164,7 +164,7 @@ void remove_native_node_scene_00b6ee10(SceneAttachmentRuntime& runtime,
         }
     }
     if (recurse) {
-        auto* child = node.transform.first_child;
+        auto* child = node.transform.first_child.get();
         while (child) {
             auto& binding = runtime.resolve(*child);
             const auto invoke = binding.remove_scene;
@@ -194,7 +194,7 @@ void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeN
         if (transform.root_list || !transform.parent) {
             if (transform.root_list && !transform.parent)
                 unlink_render_root_node_00b72220(*transform.root_list, transform);
-            auto* child = transform.first_child;
+            auto* child = transform.first_child.get();
             transform.root_list = nullptr;
             while (child) {
                 propagate_native_node_root_00b6d890(runtime, *child, nullptr);

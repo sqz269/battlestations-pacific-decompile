@@ -130,10 +130,14 @@ public:
     void bind(SceneNodeAttachment&);
     void unbind(SceneNodeAttachment&); // requires explicit prior detach
     // After native cleanup has ended backing lifetime, remove this external
-    // association by identity only. Does not read fields, detach, release or
-    // erase native registry keys left by a destruction callback.
+    // association by identity only and clear its live companion resolver.
+    // Does not read backing fields, detach, release or erase native registry
+    // keys left by a destruction callback. The companion itself remains alive.
     void forget_destroyed_binding(SceneNodeAttachment&) noexcept;
     SceneNodeAttachment& resolve(CameraTransform&) const;
+    // General live key lookup, independent of scene/light registry membership.
+    // Throws for a retired/unbound key; it never casts raw storage to a companion.
+    SceneNodeAttachment& resolve_key(std::uint32_t actual_key) const;
     SystemDirectionalLight* resolve_light(std::uint32_t actual_key) override;
     std::uint32_t registry_type_token;
     std::array<std::uint32_t, 3> object_type_tokens; // c3dObject/c3dNode/cRoot, 01090034/38/3C
