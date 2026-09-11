@@ -96,12 +96,14 @@ and build metadata belongs to the primary integrator.
 `ghidra_export.py verify-seeds` matched all eight existing math/PRNG reference
 spans; the seeded repository rebuild then passed both existing CTest checks,
 `reconstructed_math` and `native_math_differential`. Those checks exercise their
-existing subjects. Since this worker owns four files only, the new tree source
-is built by the private fixture until the integrator registers it in CMake.
+existing subjects. The primary integrator registered the tree source in CMake
+and passed the combined Win32 build and both existing CTest checks. It also
+verified all 17 retained live-PE spans and reran the private composition fixture.
 
-The primary integrator owns Ghidra mutation, names/function ledgers, packet
-metadata and shared CMake integration. The audit provides proposed names and
-the required complete erase extent; this worker made no Ghidra/ledger edits.
+The primary integrator restored the complete erase extent through exclusive
+`B2F1A7`, preserved prior Ghidra comments, saved all seven names/comments and
+complete-function ledger entries, and refreshed the affected exports. An
+independent original-tree differential fixture remains in progress.
 No tree constructor, insertion, general tree destruction, shader/input semantic
 key, complete renderer binding, binary ABI compatibility or game validation is
 claimed.

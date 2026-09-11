@@ -30,6 +30,15 @@ std::int32_t signed_bits(std::uint32_t bits) noexcept {
     std::memcpy(&result, &bits, sizeof(result));
     return result;
 }
+std::uint32_t saved_guard_word(const NativeRendererOptionalGuardStorage& guard) noexcept {
+    std::uint32_t result;
+    __asm {
+        mov eax, guard
+        mov eax, dword ptr [eax]
+        mov result, eax
+    }
+    return result;
+}
 void destroy_base(void* logical) noexcept { word(logical) = 0x00ceb130u; }
 
 const volatile std::uint32_t* profile_view(std::uint32_t profile,
@@ -67,9 +76,9 @@ void leave_guard(const NativeRendererOptionalGuardStorage& guard,
     NativeRendererSynchronizationGlobals& globals, bool entry_enabled) {
     if (globals.mode_00 != 0) {
         __assume(entry_enabled);
-        // Native reads the whole saved DWORD; B33B00 ignores it. Consume the
-        // initialized byte without introducing a C++ indeterminate padding read.
-        const std::uint32_t ignored = guard.entered_00;
+        // Preserve the native whole-DWORD load, including padding, through an
+        // isolated MOV. B33B00 ignores it; no C++ indeterminate scalar is read.
+        const std::uint32_t ignored = saved_guard_word(guard);
         const void* const retained_renderer = guard.renderer_04;
         leave_native_renderer_optional_guard_00b33b00(retained_renderer,
             ignored, globals);
