@@ -152,3 +152,12 @@ uses live headers/libraries without copying reconstructed source. Log:
 required DoFile binding; using the existing LuaScriptRuntime resolved it.
 No source fix was needed. Full resource loading, startup integration, native
 binary ABI and gameplay remain unvalidated.
+
+## Parent integration correction
+
+The parent repaired both reported false CRT no-return gaps under owned leases and
+the Ghidra write lock. Saved listings now have zero remaining call gaps. Prior
+comments were preserved, new names/evidence read back, and exports refreshed.
+See `reports/marker_classes_flow.json` and the `parent_ghidra` record in
+`reports/marker_classes.json`. Worker-side pending-repair notes above describe the
+earlier read-only snapshot. Native ABI and game validation remain unclaimed.

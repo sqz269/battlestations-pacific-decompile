@@ -160,3 +160,12 @@ is deliberately not clamped: negative/overflow results can trigger the native
 length guard or returning invalid-parameter path. Signaling-NaN/unmasked trap
 and exception-status equivalence are not claimed. No game-runtime or native
 differential validation is asserted.
+
+## Parent integration correction
+
+The parent repaired both reported false CRT no-return gaps under owned leases and
+the Ghidra write lock. Saved listings now have zero remaining call gaps. Prior
+comments were preserved, new names/evidence read back, and exports refreshed.
+See `reports/race_config_flow.json` and the `parent_ghidra` record in
+`reports/race_config.json`. Worker-side pending-repair notes above describe the
+earlier read-only snapshot. Native ABI and game validation remain unclaimed.
