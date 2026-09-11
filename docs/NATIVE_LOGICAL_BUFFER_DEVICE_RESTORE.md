@@ -141,3 +141,26 @@ profiles, concurrent mutation between pure leaves, all flag/format/pool/usage
 combinations, failed Lock behavior in this parent routine, allocation failures
 during Attach, a complete game reset, gameplay, or visual correctness. Existing
 provider packets retain their own narrower ABI and validation boundaries.
+
+## Primary integration
+
+The primary registered this source in CMake and passed the strict Win32 build,
+both existing CTests and eight fresh native seeds. It independently verified
+112 worker pins, 22 current source/provider files and 29 fresh live-Ghidra/PE
+spans (3,444 bytes). The actual main library
+`387db51b99a9f2eec2d94ba2dff26ca3552784737ecf28b28cb0576224e6327b`
+and eleven exact archive-member objects passed the unchanged fixture: all
+24 pairs, 172,352 literal DWORDs and 730 event frames match. All 84 complete
+linked COFF functions and 4,900 whole runtime code/profile postimages were
+verified. The required unsupported-pool stack input and real D3D9/CRT failure
+paths remain explicit, including unconditional null-release faults after invalid
+Create calls. All 754 owned native code bytes remain unchanged. Four external
+helper bridges and the four-DWORD branch-table binding are declared.
+
+Ghidra incorrectly ended the two returning-free calls. The primary preserved
+all prior comments and labels, cleared only the evidenced CALL_RETURN overrides,
+recovered the full tails, recreated the two complete functions and saved the
+project. New descriptive names and evidence are saved; full reconstruction
+records and forced exports include the repaired tails. No permanent tests
+were added. Original-caller ABI, complete device reset and gameplay remain
+unclaimed.
