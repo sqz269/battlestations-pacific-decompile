@@ -1,0 +1,28 @@
+{
+  "packet": "orch3_joystick_labels_g",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a99710",
+      "name": "BSP_JoystickInputDevice_ControlName",
+      "source": "src/joystick_labels.cpp",
+      "scope": "full normal body and temporary suffix cleanup; output exception cleanup unresolved",
+      "abi": "ECX device; output pointer/code stack; EAX output; RET8",
+      "end_exclusive": "00a998f2"
+    },
+    {
+      "address": "00425e10",
+      "name": "BSP_NativeString_Append",
+      "source": "src/native_string_append.cpp",
+      "scope": "normal body over existing NativeString storage",
+      "abi": "ECX destination; source pointer stack; RET4; return unspecified on empty source",
+      "end_exclusive": "00425e48"
+    }
+  ],
+  "evidence": "live pseudocode checked against full assembly; suffix literals and empty string verified in saved Ghidra memory",
+  "missing_function_starts": [],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": "Strict MSVC Win32 C++17 /W4 /WX build and both existing CTests passed; local/joystick-labels-g-build.log; no hardware or gameplay calls"
+}
