@@ -137,3 +137,11 @@ results do not establish binary replacement compatibility or game validation.
 The cube static startup/shutdown pair, allocation routines, and logical cube
 owner remain separate packets. Saved Ghidra annotations and shared ledgers are
 integrator-owned.
+
+## Primary integration closure
+
+The integrated strict MSVC Win32 build and both existing CTests passed. A frozen current primary library was compared again with the original complete bodies: 62,337 matching DWORDs. All worker source/artifact pins and fresh live/PE spans were independently checked, and every runtime postimage was checked against only the declared relocations and service bindings. The comparison uses the actual integrated functions and complete current dependencies.
+
+The table-free leaf is emitted in the frozen library and inlined at the compared source lifetime call sites; its unused separate entry is removed by the linker. Original FH3 executes the complete native leaf. Original populated and empty failure cases each record one handler search and one unwind.
+
+Ghidra returning-free boundaries were repaired where needed, prior names/comments were preserved in the annotation journal, the reviewed names and evidence comments were saved, full reconstruction records were added through the sharded ledger CLI, and affected exports were refreshed. The audit `primary_integration` records the exact frozen library, source providers, fixtures, and hashes. Native ABI compatibility, the complete game startup sequence, GPU behavior, and gameplay remain unproved.

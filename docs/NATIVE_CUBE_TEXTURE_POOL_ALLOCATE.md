@@ -126,3 +126,11 @@ the earlier suffix `allocate4` and covers all five addresses.
 Status: complete source reconstruction, strict build tested and focused full
 original-body fixture tested. Names remain descriptive hypotheses; original
 binary ABI, full cube-owner/pool startup, and gameplay are not validated.
+
+## Primary integration closure
+
+The integrated strict MSVC Win32 build and both existing CTests passed. A frozen current primary library was compared again with the original complete bodies: 39,664 matching DWORDs. All worker source/artifact pins and fresh live/PE spans were independently checked, and every runtime postimage was checked against only the declared relocations and service bindings. The comparison uses the actual integrated functions and complete current dependencies.
+
+All five owned functions resolve to `bsp_core.linked:native_cube_texture_pool_allocate.obj`. The existing fixture now observes only the actual primary library Win32 Enter/Leave imports, immediately forwards to the real functions, and restores the import cells. Its CRT observations compile the unchanged shared service under the existing aliases. No owned allocation source is recompiled for this comparison. The original fixture trace, 59 events, and full 1,732-byte slab postimage remain identical.
+
+Ghidra returning-free boundaries were repaired where needed, prior names/comments were preserved in the annotation journal, the reviewed names and evidence comments were saved, full reconstruction records were added through the sharded ledger CLI, and affected exports were refreshed. The audit `primary_integration` records the exact frozen library, source providers, fixtures, and hashes. Native ABI compatibility, the complete game startup sequence, GPU behavior, and gameplay remain unproved.
