@@ -258,10 +258,16 @@ and `Landfort` never carry `MultiType` at all, while `Cloud`, `LandingPoint`, `W
 
 `Wreck`, `CameraPath`, `PeriodicEffect` and `FreeCamPos` are registered but never authored.
 
-These totals sit 2183 above the per-class totals in `reports/scene_file_reader.json` (133655 total,
-131481 across classes), because this scan is lexical and also counts the entity headers inside the
-regions where the earlier packet's recovering parser bailed out in the nine non-conforming files.
-The entity-header total agrees to within nine.
+These totals sat above the per-class totals in `reports/scene_file_reader.json` (133655 total), and
+the note here used to attribute the difference to the lexical scan counting headers inside regions
+the recovering parser bailed out of. Packet `cc_scene_records` settled it the other way: **this
+scan's 133664 is right and the reader's 133655 was low by nine**, because the reconstruction scanned
+property values to the next `;` instead of reading the fixed number of tokens the type letter
+implies, and so swallowed a closing brace after each `;`-less property. With
+`src/scene_file.cpp` corrected, the grammar-driven sweep
+(`bsp_mission_scene_probe.exe --sweep`) reproduces the table above row for row, `MultiType` column
+included, and the delta against this lexical scan is zero in all 259 files. See
+`docs/SCENE_FILE_READER.md` "Corrections".
 
 `MultiType` is always authored as a nested block, `"MultiType" { MultiDuel = B false ; ... }`, never
 as a scalar, which is why a key-level grep for it finds nothing.

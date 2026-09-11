@@ -154,11 +154,13 @@
     "sweep": {
       "files": 259,
       "exit_zero": 259,
-      "entities": 133655,
+      "entities": 133664,
+      "entities_correction": "Was 133655. Corrected by packet cc_scene_records: the reconstruction scanned property values to the next \";\" instead of reading the fixed number of tokens the type letter implies, so a property authored without its terminator swallowed the closing brace of its block. See docs/SCENE_FILE_READER.md \"Corrections\".",
       "distinct_class_tokens": 22,
       "unregistered_class_tokens": 0,
-      "recovered_errors": 21,
-      "files_with_recovered_errors": 9,
+      "recovered_errors": 47,
+      "files_with_recovered_errors": 10,
+      "recovered_errors_correction": "Was 21 over 9 files. The missing-terminator properties that used to be swallowed by the value scan are now reported, as 008d9930 does.",
       "files_with_no_entities": 1,
       "no_entity_file": "universe/scenes/missions/chg/usn_finale.scn",
       "sample_recovered_error": "multi/scene12.scn line 46101: template \"Entities\\SpawnPoint\" is missing its terminating ';'; the reader records the error and resumes, as 008d9930 does"

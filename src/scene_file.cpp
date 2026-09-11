@@ -158,7 +158,18 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         SceneProperty prop;
         prop.key = key;
         prop.type_letter = cur.read_token();
-        while (!cur.at(";") && !cur.at_end() && !cur.exhausted()) {
+        // 008f5a00 reads a fixed number of value tokens for the letter it
+        // dispatched on and then runs ExpectToken(";"), which peeks and
+        // consumes only on a match (008d9930): a property authored without its
+        // terminator costs one reported error and nothing else. This generic
+        // scan stands in for the per-letter reads, so it has to stop at a brace
+        // as well as at ';' - no value of any letter contains one. Without the
+        // brace stop the scan swallows the closing brace of the block it is in
+        // and every later block nests one level too deep; that is what cost the
+        // nine entities in scene175.scn and scene907.scn (packet
+        // cc_scene_records, docs/SCENE_FILE_READER.md "Corrections").
+        while (!cur.at(";") && !cur.at("{") && !cur.at("}") && !cur.at_end()
+            && !cur.exhausted()) {
             prop.values.push_back(cur.read_token());
         }
         cur.expect(";");

@@ -179,6 +179,36 @@
     {"function": "0046cf40", "after_call": "00bf6989", "gap": "0046d8e0..0046d8e3", "bytes": 3, "material": false}
   ],
   "installed_game_validation": {
+    "correction": {
+      "packet": "cc_scene_records",
+      "summary": "entities_total_including_nested was 133655 and every entity_class_counts row below is low. 008f5a00 reads a fixed number of value tokens for the type letter it dispatched on and then runs 008d9930 ExpectToken(\";\"), which peeks and consumes only on a match; both local/scn_ref.py and src/scene_file.cpp scanned values until the next \";\" instead, so a property authored without its terminator swallowed the closing brace of its block and every later block nested one level too deep.",
+      "entities_total_including_nested": 133664,
+      "files_needing_recovery_rules": 10,
+      "files_with_no_recovered_error": 249,
+      "recovered_errors": 47,
+      "entity_class_counts": {
+        "LandFort": 72612, "Path": 25292, "DestroyerGen": 9778, "Cloud": 7231,
+        "LandingPoint": 3582, "NavPoint": 3515, "Stationary": 2233, "PlaneSquadronGen": 2131,
+        "SpawnPoint": 1704, "MotherShipGen": 1089, "WaterMine": 1013, "Landscape": 763,
+        "TBoatGen": 652, "CommandBuilding": 649, "LandingShipGen": 390, "SubmarineGen": 330,
+        "AirField": 256, "Shipyard": 243, "MovieCamPos": 78, "MovieCamLookat": 78,
+        "LandConvoy": 31, "SimpleEffect": 11, "Landfort": 3
+      },
+      "lost_entity_headers": [
+        {"file": "universe/scenes/missions/multi/scene175.scn", "line": 1223, "name": "Secondary Airfield Spawnpoint", "class": "NavPoint"},
+        {"file": "universe/scenes/missions/multi/scene175.scn", "line": 1422, "name": "Main Airfield Spawnpoint", "class": "NavPoint"},
+        {"file": "universe/scenes/missions/multi/scene175.scn", "line": 26884, "name": "SpawnPoint Zuikaku", "class": "SpawnPoint"},
+        {"file": "universe/scenes/missions/multi/scene175.scn", "line": 27114, "name": "LookTo", "class": "NavPoint"},
+        {"file": "universe/scenes/missions/multi/scene175.scn", "line": 27536, "name": "Lexington Spawnpoint", "class": "NavPoint"},
+        {"file": "universe/scenes/missions/multi/scene907.scn", "line": 28981, "name": "SpawnPoint Akagi", "class": "SpawnPoint"},
+        {"file": "universe/scenes/missions/multi/scene907.scn", "line": 29282, "name": "SpawnPoint Kaga", "class": "SpawnPoint"},
+        {"file": "universe/scenes/missions/multi/scene907.scn", "line": 29583, "name": "SpawnPoint Soryu", "class": "SpawnPoint"},
+        {"file": "universe/scenes/missions/multi/scene907.scn", "line": 29884, "name": "SpawnPoint Hiryu", "class": "SpawnPoint"}
+      ],
+      "fix": "src/scene_file.cpp parse_property_body stops the value scan at \"{\" and \"}\" as well as at \";\"",
+      "reproduce": "bsp_mission_scene_probe.exe --sweep",
+      "doc": "docs/SCENE_FILE_READER.md \"Corrections\""
+    },
     "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
     "reference": "local/scn_ref.py, an independent Python implementation of the recovered tokenizer, grammar and recovery rules",
     "files_total": 259,

@@ -522,5 +522,22 @@
         "ThunderStorm"
       ]
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_tested",
+    "validated_revision": "517e934b5fbb578ae45ccc7394445e72f8e0bf5d",
+    "main_base": "359cdba5",
+    "integration_log": "local/sound_sample_q_integrate.log",
+    "build_log": "local/sound_sample_q_combined_build.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "reason_for_separate_build": "Main advanced after the integration helper build; this separate build validated the resulting merged revision.",
+    "library_sha256": "d5c4027fb7971ebf771de69d22e98252dd1a22fa3deb4d7fc31e083abbfad0fe",
+    "fixture_provenance": "Controlled and installed FSB/FEV fixture ran on validation.code_revision and validation.library_sha256. This combined build/CTest result is separate.",
+    "ghidra_integration_saved_names": 16,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T194518Z.json",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }

@@ -6798,7 +6798,7 @@
       "packet": "orch4_sound_sample_q",
       "worker": "agent/orch4-20260910",
       "done": true,
-      "state": "reconstructed_build_controlled_and_installed_sound_fixture_tested_pending_integration",
+      "state": "integrated_reviewed_build_controlled_and_installed_sound_fixture_tested",
       "function_addresses": [
         "00a84d70",
         "00a83850",
@@ -6828,7 +6828,8 @@
         "src/fmod_configuration_library.cpp"
       ],
       "integration_report": "reports/sound_sample.json",
-      "discovery_evidence": "docs/SOUND_SAMPLE.md"
+      "discovery_evidence": "docs/SOUND_SAMPLE.md",
+      "validated_revision": "517e934b5fbb578ae45ccc7394445e72f8e0bf5d"
     },
     {
       "id": "native_renderer_reset_readiness4",
@@ -6954,6 +6955,27 @@
         "reports/native_renderer_surface_save_worker_audit.json"
       ],
       "evidence": "reports/native_renderer_surface_save_worker_audit.json"
+    },
+    {
+      "id": "native_physical_pool_acquire4",
+      "packet": "native_physical_pool_acquire4",
+      "state": "four_complete_raw_pool_entries_main_Win32_original_pool_trace_and_full_COFF_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b4ac60",
+        "00b48df0",
+        "00b4b350",
+        "00b4b360"
+      ],
+      "code_ownership": [
+        "src/native_physical_pool_acquire.cpp",
+        "include/bsp/native_physical_pool_acquire.hpp",
+        "docs/NATIVE_PHYSICAL_POOL_ACQUIRE.md",
+        "reports/native_physical_pool_acquire_audit.json"
+      ],
+      "evidence": "reports/native_physical_pool_acquire_audit.json"
     }
   ],
   "snapshot_after_analysis": {
