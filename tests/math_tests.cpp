@@ -27,6 +27,7 @@
 #include "bsp/simulation_gate.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/unit_forces.hpp"
+#include "bsp/world_deferred_destroy.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/scene_entity_factory.hpp"
@@ -2022,6 +2023,57 @@ int main() {
                   && bsp::entity_id_table_lookup(table, 0) == nullptr,
             "the entity id table reserves its first id, hands out never-used ids in ascending "
             "order and only then reissues a released one");
+    }
+
+    {
+        // 009041B5..009041C2. The drain's membership test decides whether the
+        // header is rewritten at all: a node with no predecessor and no
+        // successor is still on the chain when the count is 1, and is not on it
+        // when the count is higher. Reading that test as a plain "unlink the
+        // head" loses the second case and corrupts the count.
+        struct DrainHost final : bsp::WorldDeferredDestroyHost {
+            std::uint32_t prev[4]{};
+            std::uint32_t next[4]{};
+            std::vector<std::uint32_t> destroyed;
+            bsp::DeferredDestroyChain* chain{nullptr};
+            std::uint32_t detach_on_destroy{0};
+            std::uint32_t prev_sibling(std::uint32_t n) override { return prev[n]; }
+            std::uint32_t next_sibling(std::uint32_t n) override { return next[n]; }
+            void set_prev_sibling(std::uint32_t n, std::uint32_t v) override { prev[n] = v; }
+            void set_next_sibling(std::uint32_t n, std::uint32_t v) override { next[n] = v; }
+            void destroy_node(std::uint32_t n) override
+            {
+                destroyed.push_back(n);
+                // The native destructor removes the node itself when the loop's
+                // membership test declined to.
+                if (n == detach_on_destroy && chain != nullptr) {
+                    chain->head = next[n] != 0 ? next[n] : 2u;
+                    chain->count -= 1;
+                }
+            }
+        };
+
+        bsp::DeferredDestroyChain linked_chain{1, 2, 2};
+        DrainHost linked_host;
+        linked_host.next[1] = 2;
+        linked_host.prev[2] = 1;
+        const bsp::WorldDeferredDestroyResult linked
+            = bsp::drain_entity_chain_009041a0(linked_host, linked_chain);
+
+        bsp::DeferredDestroyChain detached_chain{1, 2, 2};
+        DrainHost detached_host; // node 1 carries neither link while count is 2
+        detached_host.chain = &detached_chain;
+        detached_host.detach_on_destroy = 1;
+        const bsp::WorldDeferredDestroyResult detached
+            = bsp::drain_entity_chain_009041a0(detached_host, detached_chain);
+
+        check(linked.destroyed == 2 && linked.unlinked == 2 && linked.skipped_unlink == 0
+                  && linked_chain.count == 0 && linked_chain.head == 0 && linked_chain.tail == 0
+                  && !linked.stalled && detached.destroyed == 2 && detached.unlinked == 1
+                  && detached.skipped_unlink == 1 && detached_chain.count == 0
+                  && !detached.stalled,
+            "the deferred-destroy drain unlinks a head that is on the chain and destroys an "
+            "unlinked head without touching the header");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

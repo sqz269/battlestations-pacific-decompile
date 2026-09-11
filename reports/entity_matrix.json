@@ -1,0 +1,301 @@
+{
+  "packet": "cc_entity_matrix",
+  "owner": "agent/cc-entity-matrix",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc-entity-matrix",
+  "ghidra": "read-only: no renames, comments, prototypes or saves",
+  "docs": [
+    "docs/ENTITY_LOCAL_MATRIX.md",
+    "docs/ENTITY_REFRESH_VIRTUAL.md",
+    "docs/WORLD_DEFERRED_DESTROY.md"
+  ],
+  "sources": [
+    "include/bsp/entity_local_matrix.hpp",
+    "src/entity_local_matrix.cpp",
+    "include/bsp/world_deferred_destroy.hpp",
+    "src/world_deferred_destroy.cpp"
+  ],
+  "build": "scripts/build.ps1, Win32 MSVC /W4 /WX; ctest reconstructed_math passed with one new case",
+
+  "routines": [
+    {
+      "address": "00431410",
+      "name": "BSP_Entity_SetLocalMatrix",
+      "abi": "void __thiscall(entity, const float* matrix), RET 4 at 00431444",
+      "body": "00431410-00431446",
+      "ghidra_function": false,
+      "coverage": "complete",
+      "reconstruction": "bsp::set_entity_local_matrix_00431410",
+      "note": "vtable slot 88h in seven of the sixteen entity vtables"
+    },
+    {
+      "address": "006e00a0",
+      "name": "BSP_Entity_SetLocalMatrixAndNotify",
+      "abi": "void __thiscall(entity, const float* matrix), RET 4 at 006E00E7",
+      "body": "006e00a0-006e00e9",
+      "ghidra_function": false,
+      "coverage": "complete",
+      "reconstruction": "bsp::set_entity_local_matrix_006e00a0",
+      "note": "00431410's body plus (entity+310h)->vtable[0Ch]() at 006E00E3; vtable slot 88h in nine vtables including MDestroyer's 00CFC3D0"
+    },
+    {
+      "address": "00955970",
+      "name": "BSP_Entity_RefreshSceneNodeMatrix",
+      "abi": "void __thiscall(entity), no stack arguments, RET at 009559B5, 00955A1E and 00955A37",
+      "body": "00955970-00955a37",
+      "ghidra_function": false,
+      "coverage": "complete: all three exits and both root branches",
+      "reconstruction": "bsp::refresh_entity_00955970",
+      "note": "vtable slot 0D8h in all sixteen vtables; the kDerivedLocal branch 009559C4-00955A1E is unreachable because slot 8Ch is 0042B9A0 everywhere"
+    },
+    {
+      "address": "0042b9a0",
+      "name": "BSP_Entity_HasDerivedLocalMatrixStub",
+      "abi": "bool __thiscall(), XOR AL,AL; RET",
+      "body": "0042b9a0-0042b9a2",
+      "ghidra_function": false,
+      "coverage": "complete",
+      "reconstruction": "bsp::entity_has_derived_local_matrix_0042b9a0"
+    },
+    {
+      "address": "0042d700",
+      "name": "BSP_Matrix_ReturnIdentity4x4",
+      "abi": "Matrix4x4 __thiscall(Matrix4x4* returnBuffer), RET 4 at 0042D75E; returns the buffer in EAX",
+      "body": "0042d700-0042d760",
+      "ghidra_function": false,
+      "coverage": "complete",
+      "reconstruction": "bsp::write_identity_matrix_0042d700",
+      "argument_count_evidence": "RET 4 at 0042D75E, which is why the three pushes at 009559DA..009559ED are not three arguments to this slot"
+    },
+    {
+      "address": "009041a0",
+      "name": "BSP_EntityChain_DestroyAll",
+      "abi": "void __thiscall(chainHeader), no stack arguments, RET at 00904203",
+      "body": "009041a0-00904203",
+      "ghidra_function": true,
+      "coverage": "complete",
+      "reconstruction": "bsp::drain_entity_chain_009041a0"
+    },
+    {
+      "address": "00904390",
+      "name": "BSP_World_DestroyAllEntities",
+      "abi": "void __thiscall(world), MOV ECX,[ECX+4]; JMP 009041A0",
+      "body": "00904390-00904397",
+      "ghidra_function": true,
+      "coverage": "complete",
+      "reconstruction": "folded into bsp::drain_entity_chain_009041a0's call contract",
+      "note": "world vtable 00CE7784 slot 4; no static call site dispatches it"
+    },
+    {
+      "address": "00904c40",
+      "name": "BSP_World_Destructor",
+      "abi": "void __thiscall(world), MSVC SEH frame 00CA54CF",
+      "body": "00904c40-00904e10",
+      "ghidra_function": true,
+      "coverage": "partial: 00904C40-00904E0C read for the entity teardown and the two _free calls; 00904E0C onward and the SEH funclet unread",
+      "reconstruction": "none; documented only"
+    },
+    {
+      "address": "00414db0",
+      "name": "BSP_EntityPose_RefreshWorld",
+      "abi": "void __thiscall(entity), no stack arguments, RET at 00414E08",
+      "body": "00414db0-00414e08",
+      "ghidra_function": true,
+      "coverage": "complete; pre-existing reconstruction bsp::refresh_pose_00414db0 in bsp/pose_refresh.hpp, re-read here as the producer that settles the matrix layout",
+      "reconstruction": "bsp::refresh_pose_00414db0 (pre-existing, not redone)"
+    },
+    {
+      "address": "0042d770",
+      "name": null,
+      "abi": "unread",
+      "body": "0042d770-unresolved",
+      "ghidra_function": false,
+      "coverage": "partial: 0042D770-0042D77F only, four instructions, enough to see it is a second identity writer of 0042D700's shape",
+      "reconstruction": "none"
+    }
+  ],
+
+  "host_steps": [
+    {"step": 1, "address": "00904ae3", "native": "006e00a0", "function": "00904600",
+     "method": "entity_set_local_matrix", "owner": "docs/WORLD_TIMED_ATTACHMENTS.md",
+     "note": "entity->vtable[88h](matrix); EBP holds vptr+88h from ADD EBP,88h at 00904ABD, CALL EDX. 006E00A0 is the MDestroyer target"},
+    {"step": 2, "address": "0043141b", "native": "004134f0", "function": "00431410",
+     "method": "copy_local_matrix", "owner": "cc_entity_matrix",
+     "note": "ECX = entity+74h; the containing routine has no Ghidra function"},
+    {"step": 3, "address": "00431437", "native": "0042ed50", "function": "00431410",
+     "method": "invalidate_subtree_pose", "owner": "docs/WORLD_ENTITY_UPDATE.md",
+     "note": "once per child on the +48h/+44h list; the containing routine has no Ghidra function"},
+    {"step": 4, "address": "006e00ac", "native": "004134f0", "function": "006e00a0",
+     "method": "copy_local_matrix", "owner": "cc_entity_matrix",
+     "note": "the containing routine has no Ghidra function"},
+    {"step": 5, "address": "006e00c8", "native": "0042ed50", "function": "006e00a0",
+     "method": "invalidate_subtree_pose", "owner": "docs/WORLD_ENTITY_UPDATE.md",
+     "note": "the containing routine has no Ghidra function"},
+    {"step": 6, "address": "006e00e3", "native": null, "function": "006e00a0",
+     "method": "notify_local_matrix_owner", "owner": "cc_entity_matrix",
+     "note": "(entity+310h)->vtable[0Ch]() with ECX = entity+310h; callee unread, contract unread"},
+    {"step": 7, "address": "00904b2a", "native": "00955970", "function": "00904600",
+     "method": "entity_refresh", "owner": "docs/WORLD_TIMED_ATTACHMENTS.md",
+     "note": "entity->vtable[0D8h](), no argument"},
+    {"step": 8, "address": "00955995", "native": "00414db0", "function": "00955970",
+     "method": "refresh_world_matrix", "owner": "bsp/pose_refresh.hpp",
+     "note": "ECX is still the entity; the containing routine has no Ghidra function"},
+    {"step": 9, "address": "009559ac", "native": null, "function": "00955970",
+     "method": "scene_node_set_pose", "owner": "cc_entity_matrix",
+     "note": "node->vtable[34h](entity+0CCh); callee unread, contract unread"},
+    {"step": 10, "address": "009559be", "native": "0042b9a0", "function": "00955970",
+     "method": "has_derived_local_matrix", "owner": "cc_entity_matrix",
+     "note": "entity->vtable[8Ch](); 0042B9A0 in all sixteen vtables, returns false"},
+    {"step": 11, "address": "009559f0", "native": "0042d700", "function": "00955970",
+     "method": "derived_local_matrix", "owner": "cc_entity_matrix",
+     "note": "entity->vtable[90h](&buffer); unreachable in the shipped image"},
+    {"step": 12, "address": "009559f4", "native": "00413920", "function": "00955970",
+     "method": "multiply_matrices", "owner": "docs/NATIVE_CAMERA_MATRIX_MATH.md",
+     "note": "ECX = left = the slot 90h result; stack (dst, right) was pushed at 009559DA and 009559DF before the slot 90h call"},
+    {"step": 13, "address": "009559fe", "native": "004134f0", "function": "00955970",
+     "method": "folded into the reconstruction's copy loop", "owner": "docs/NATIVE_CAMERA_MATRIX_MATH.md"},
+    {"step": 14, "address": "00955a13", "native": null, "function": "00955970",
+     "method": "scene_node_set_world_matrix", "owner": "cc_entity_matrix",
+     "note": "node->vtable[38h](matrix); the other site is 00955A2E"},
+    {"step": 15, "address": "00904393", "native": null, "function": "00904390",
+     "method": "drain_entity_chain", "owner": "cc_entity_matrix",
+     "tail_jump_target": "009041a0",
+     "note": "JMP 009041A0, not a CALL: a tail call with ECX already re-pointed to [world+4]. native is null because the row is not a call site; the Ghidra call-graph edge 00904390 -> 009041A0 exists"},
+    {"step": 16, "address": "009041f4", "native": null, "function": "009041a0",
+     "method": "destroy_node", "owner": "cc_entity_matrix",
+     "note": "node->vtable[0](1), the scalar deleting destructor; PUSH 1 at 009041F8"},
+    {"step": 17, "address": "00414de0", "native": "00413920", "function": "00414db0",
+     "method": "world = local * parentWorld", "owner": "bsp/pose_refresh.hpp",
+     "note": "the producer that settles the row-vector convention and the translation row"},
+    {"step": 18, "address": "00414df1", "native": "004134f0", "function": "00414db0",
+     "method": "store the cached world matrix at entity+0CCh", "owner": "bsp/pose_refresh.hpp"},
+    {"step": 19, "address": "008267aa", "native": "0042ed50", "function": "00825f20",
+     "method": "the setter's invalidation block, inlined without the +310h notification",
+     "owner": "cc_controlled_unit",
+     "note": "00825F20 never stores into entity+74h..0B3h; it reads the local matrix and invalidates the pose"}
+  ],
+
+  "layout": {
+    "entity": {
+      "0x074": "local 4x4, row-major, 64 bytes (004134F0 at 0043141B; REP MOVSD of 10h dwords at 009559D4)",
+      "0x0a4": "local translation row (74h + 30h, the stride proven by 0CCh -> 0FCh)",
+      "0x0c8": "world matrix valid byte (set 00414DF6, cleared 00431420)",
+      "0x0cc": "cached world 4x4, row-major, 64 bytes (004134F0 at 00414DF1)",
+      "0x0fc": "world translation row (00928D9C, 00928DA4, 00928DB4)",
+      "0x10c": "second cache byte, meaning unresolved (cleared 00431427, 00414DFD, 0042ED64)",
+      "0x03c": "transform parent (00414DBF, 00955986)",
+      "0x044": "next sibling (0043143C)",
+      "0x048": "first child (0042142E)",
+      "0x310": "notified sub-object, embedded, own vptr (006E00D4)",
+      "0x4a4": "scene node (00955979)"
+    },
+    "world_chain_header": {
+      "0x00": "head (009041B0, 009041D3, 00904BF7)",
+      "0x04": "tail (009041E7)",
+      "0x08": "count (009041A6, 009041F0)",
+      "node_links": "node+34h prev (009041B2), node+38h next (009041B9)"
+    },
+    "cell_list_header_00484540": {
+      "0x00": "count (0048456E, 0048457E)",
+      "0x04": "head (00484586)",
+      "0x08": "tail (00484578)",
+      "cell": "0Ch bytes: +0h prev, +4h next, +8h payload (00484554..00484566)",
+      "note": "field order is the exact reverse of world_chain_header; both are 0Ch bytes"
+    }
+  },
+
+  "vtables": {
+    "slot_88h_006e00a0": ["00cf90b0", "00cfa778", "00cfb738", "00cfc3d0", "00cffa30", "00d01630", "00d09678", "00d0bf80", "00d0c648"],
+    "slot_88h_00431410": ["00cf8c08", "00cfb028", "00cfcd60", "00cff3f8", "00cffde0", "00d0b770", "00d1a698"],
+    "slot_0d8h_00955970": ["00cf8c08", "00cf90b0", "00cfa778", "00cfb028", "00cfb738", "00cfc3d0", "00cfcd60", "00cff3f8", "00cffa30", "00cffde0", "00d01630", "00d09678", "00d0b770", "00d0bf80", "00d0c648", "00d1a698"],
+    "slot_8ch_0042b9a0": "all sixteen",
+    "slot_90h_0042d700": "all sixteen",
+    "slot_94h_0042d770": "all sixteen",
+    "world_00ce7784": {"0x00": "004cb0b0", "0x04": "00904390", "0x08": "009035d0", "0x0c": "00904bf0", "0x10": "004cb370", "0x14": "not a code address (48127C00); the interface ends at slot 10h"}
+  },
+
+  "corrections": [
+    {
+      "target": "include/bsp/unit_instance.hpp and docs/UNIT_INSTANCE_LAYOUT.md",
+      "was": "entity+0CCh is a 'pose block' whose +24h is kUnitOffPoseLateral and whose +34h is kUnitOffPoseBase",
+      "is": "entity+0CCh is a 64-byte row-major world matrix, local * parentWorld. 0F0h is row 2 column 1 and 100h is row 3 column 1, the translation's Y; both are matrix elements, not record fields",
+      "evidence": "00414DB0's producer body 00414DD2..00414DF1, plus bsp/mission_entity_lua_attach.hpp's kEntityPoseXOffset 0FCh / Y 100h / Z 104h from 00928D9C, 00928DA4 and 00928DB4"
+    },
+    {
+      "target": "docs/WORLD_TIMED_ATTACHMENTS.md step 7",
+      "was": "00904AEF..00904B13 is the interpolator pass invalidating the pose cache after the setter call",
+      "is": "the same clear-and-child-walk already ran inside the slot 88h call at 00904AE3; the pass performs it twice per applied record",
+      "evidence": "006E00B1..006E00D2 and 00431420..00431441 are byte-for-byte the block at 00904AF7..00904B13"
+    },
+    {
+      "target": "Ghidra tag and name on 00904C40",
+      "was": "CG_vector_deleting_dtor_00904c40, tag cg_vector_deleting_dtor",
+      "is": "BSP_World_Destructor: the plain destructor, called by the scalar deleting destructor 004CB0B0, resetting the vptr to 00CE7784 at 00904C5F, with no count or element-size argument",
+      "evidence": "004CB0B0 is its only caller; a vector deleting destructor is not called by a scalar one"
+    },
+    {
+      "target": "docs/SCENE_UNIT_CREATORS.md",
+      "was": "006FE620 pushes the instance onto five intrusive lists of the world node",
+      "is": "the five lists are not intrusive: 00484540 allocates a 0Ch cell per membership (+0h prev, +4h next, +8h payload) and its header is count/head/tail, the reverse of the world+4h chain header's head/tail/count",
+      "evidence": "00484542 PUSH 0Ch to 00BF681B, 00484566 stores the payload, 0048456E and 0048457E use +0h as the count"
+    },
+    {
+      "target": "this packet's own brief",
+      "was": "00825F20 writes the position and heading the local matrix is built from, so it is the per-frame producer of entity+74h",
+      "is": "00825F20 contains no store into entity+74h..0B3h. It reads the local matrix nine times as 00413920's left operand inside inlined copies of 00414DB0, and invalidates the pose once at 00826798",
+      "evidence": "the full Ghidra listing of 00825F20 filtered for MOVSS/FSTP/MOV stores with displacements 74h..0B3h returns nothing; the ten LEA sites are 008264A8, 00826503, 00826567, 008265C5, 008267E5, 00826838, 008268E5, 00826BB5, 00826C12, 00826CA5"
+    },
+    {
+      "target": "the natural reading of 009559DA..009559F0",
+      "was": "three pushes before one call means slot 90h takes three arguments",
+      "is": "slot 90h takes one stack argument, its by-value return buffer; the other two pushes are the arguments of the 00413920 call that follows",
+      "evidence": "0042D700, the slot 90h body in all sixteen vtables, ends RET 4; 00413920 reads its arguments at [ESP+44h] and [ESP+48h] after SUB ESP,40h"
+    }
+  ],
+
+  "no_ghidra_function": [
+    {"start": "00431410", "end_inclusive": "00431446",
+     "evidence": "start: target of seven vtable +88h dwords, MOV EAX,[ESP+4]. end: RET 4 (C2 04 00) at 00431444, INT3 00431447..0043144F, FUN_00431450 next"},
+    {"start": "006e00a0", "end_inclusive": "006e00e9",
+     "evidence": "start: FUN_006E0060 body ends 006E0095, INT3 006E0096..006E009F. end: RET 4 at 006E00E7, INT3 006E00EA..006E00EF, BSP_BattleshipClass_ReadLuaFields at 006E00F0"},
+    {"start": "00955970", "end_inclusive": "00955a37",
+     "evidence": "start: FUN_00955830 body ends 00955965, INT3 00955966..0095596F. end: RET (C3) at 00955A37 after ADD ESP,0C0h, INT3 00955A38..00955A3F, FUN_00955A40 next"},
+    {"start": "0042b9a0", "end_inclusive": "0042b9a2",
+     "evidence": "start: target of sixteen vtable +8Ch dwords. end: XOR AL,AL (30 C0) then RET (C3), INT3 0042B9A3..0042B9AF, XOR EAX,EAX; RET at 0042B9B0"},
+    {"start": "0042d700", "end_inclusive": "0042d760",
+     "evidence": "start: MOV EAX,[ESP+4] after INT3 0042D6F5..0042D6FF. end: RET 4 at 0042D75E, INT3 from 0042D761"}
+  ],
+
+  "verification": {
+    "tool": "python tools/verify_report_calls.py reports/entity_matrix.json",
+    "state": "11 rows fail against the current Ghidra state, all for one reason: five of this packet's routines have no Ghidra function, so neither a call site inside them nor a call to them can be resolved. Nothing in the report is wrong; the checks are blocked. The packet held Ghidra read-only and could not define them.",
+    "integrator_precondition": [
+      "python tools/ghidra_define_function.py 00431410 00431447 --record reports/entity_matrix.json",
+      "python tools/ghidra_define_function.py 006e00a0 006e00ea --record reports/entity_matrix.json",
+      "python tools/ghidra_define_function.py 00955970 00955a38 --record reports/entity_matrix.json",
+      "python tools/ghidra_define_function.py 0042b9a0 0042b9a3 --record reports/entity_matrix.json",
+      "python tools/ghidra_define_function.py 0042d700 0042d761 --record reports/entity_matrix.json"
+    ],
+    "expected_failures_before_definition": [
+      "host_steps[0]: callee 006e00a0 is not a Ghidra function",
+      "host_steps[1]: call site 0043141b is in no Ghidra function",
+      "host_steps[2]: call site 00431437 is in no Ghidra function",
+      "host_steps[3]: call site 006e00ac is in no Ghidra function",
+      "host_steps[4]: call site 006e00c8 is in no Ghidra function",
+      "host_steps[6]: callee 00955970 is not a Ghidra function",
+      "host_steps[7]: call site 00955995 is in no Ghidra function",
+      "host_steps[9]: callee 0042b9a0 and call site 009559be",
+      "host_steps[10]: callee 0042d700 and call site 009559f0",
+      "host_steps[11]: call site 009559f4 is in no Ghidra function",
+      "host_steps[12]: call site 009559fe is in no Ghidra function"
+    ],
+    "note": "The end addresses above are exclusive, one past the end_inclusive values in no_ghidra_function, which is what ghidra_define_function takes."
+  },
+
+  "unresolved": [
+    "009035D0, the world vtable slot 8h, has no Ghidra function and was not read; no end boundary is claimed",
+    "006E5D03, a slot 88h producer, lies in a region with no Ghidra function; FUN_006E5A80's body is 006E5A80..006E5AAB and does not contain it",
+    "007BB4B8 is a JMP 00955970 with no references; its containing routine was not identified",
+    "no static caller was found for the world vtable slot 4 drain",
+    "no run-time evidence: bsp_game.exe does not reach the refresh or the drain with a live entity"
+  ]
+}
