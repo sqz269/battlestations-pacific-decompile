@@ -313,5 +313,19 @@
         "0086eb47"
       ]
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_focused_fixture_tested",
+    "validated_revision": "4a335c1a7ea3ee84078d99186e235496f9c18148",
+    "main_base": "591ef888",
+    "log": "local/effect_definition_l_integrate.log",
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "library_sha256": "7cc36ba205a6e6e4544c54c191aad5d7cb82c4b286f1747daea1971b4d69ee97",
+    "fixture_provenance": "The focused ownership fixture ran on source38f020f8 and its validation.library_sha256; this combined CTest build is separate.",
+    "ghidra_integration_saved_names": 10,
+    "prior_annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T170101Z.json",
+    "native_abi": false,
+    "game_validated": false
+  }
 }
