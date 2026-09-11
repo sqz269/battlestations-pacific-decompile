@@ -1,0 +1,1106 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_owner_array_reserve1",
+  "status": "complete_actual_header_implementation_strict_Win32_build_and_full_original_instruction_fixture_passed",
+  "generated_utc": "2026-09-11T05:26:28.249628+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910",
+  "branch": "agent/native-cube-texture-owner-array-reserve-20260910",
+  "base_commit": "052dce6",
+  "owned_addresses": [
+    "00735ff0"
+  ],
+  "owned_files": [
+    "include/bsp/native_cube_texture_owner_array_reserve.hpp",
+    "src/native_cube_texture_owner_array_reserve.cpp",
+    "docs/NATIVE_CUBE_TEXTURE_OWNER_ARRAY_RESERVE.md",
+    "reports/native_cube_texture_owner_array_reserve_audit.json"
+  ],
+  "function": {
+    "address": "00735ff0",
+    "native_end_exclusive": "0073604f",
+    "byte_count": 95,
+    "old_name": "FUN_00735ff0",
+    "old_signature": "undefined FUN_00735ff0(void)",
+    "proposed_name": "BSP_PointerArray_ReserveCurrentStorage",
+    "cpp_symbol": "reserve_native_cube_texture_owner_array_00735ff0",
+    "source": "src/native_cube_texture_owner_array_reserve.cpp",
+    "original_ABI": "ECX actual12-byte table/count/capacity header; stack signed requested capacity; RET4; no semantic result",
+    "source_API": "void reserve_native_cube_texture_owner_array_00735ff0(void*, std::int32_t)",
+    "name_is_hypothesis": true,
+    "native_differential_fixture": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "native_evidence": {
+    "generated_utc": "2026-09-11T05:22:44.058151+00:00",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verification": "Every bsp.py ghidra bytes call verifies expected project/program/language/image base before reading.",
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_size": 14872576,
+    "spans": [
+      {
+        "address": 7561200,
+        "length": 95,
+        "offset": 3366896,
+        "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8a9f54b008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e848094c0083c404891e897e085b5f5ec20400",
+        "sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 12539326,
+        "length": 5,
+        "offset": 8345022,
+        "hex": "e958120000",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      },
+      {
+        "address": 12544393,
+        "length": 5,
+        "offset": 8350089,
+        "hex": "e91efcffff",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "fresh_live_Ghidra_matches_installed_PE": true
+      }
+    ],
+    "complete_instruction_decode": [
+      {
+        "address": 7561200,
+        "hex": "56",
+        "instruction": "push esi"
+      },
+      {
+        "address": 7561201,
+        "hex": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": 7561202,
+        "hex": "8b7c240c",
+        "instruction": "mov edi, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": 7561206,
+        "hex": "83ff01",
+        "instruction": "cmp edi, 1"
+      },
+      {
+        "address": 7561209,
+        "hex": "8bf1",
+        "instruction": "mov esi, ecx"
+      },
+      {
+        "address": 7561211,
+        "hex": "7d05",
+        "instruction": "jge 0x736002"
+      },
+      {
+        "address": 7561213,
+        "hex": "bf01000000",
+        "instruction": "mov edi, 1"
+      },
+      {
+        "address": 7561218,
+        "hex": "397e08",
+        "instruction": "cmp dword ptr [esi + 8], edi"
+      },
+      {
+        "address": 7561221,
+        "hex": "7d43",
+        "instruction": "jge 0x73604a"
+      },
+      {
+        "address": 7561223,
+        "hex": "8d04bd00000000",
+        "instruction": "lea eax, [edi*4]"
+      },
+      {
+        "address": 7561230,
+        "hex": "53",
+        "instruction": "push ebx"
+      },
+      {
+        "address": 7561231,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 7561232,
+        "hex": "e8a9f54b00",
+        "instruction": "call 0xbf55be"
+      },
+      {
+        "address": 7561237,
+        "hex": "8bd8",
+        "instruction": "mov ebx, eax"
+      },
+      {
+        "address": 7561239,
+        "hex": "33c0",
+        "instruction": "xor eax, eax"
+      },
+      {
+        "address": 7561241,
+        "hex": "83c404",
+        "instruction": "add esp, 4"
+      },
+      {
+        "address": 7561244,
+        "hex": "394604",
+        "instruction": "cmp dword ptr [esi + 4], eax"
+      },
+      {
+        "address": 7561247,
+        "hex": "7e18",
+        "instruction": "jle 0x736039"
+      },
+      {
+        "address": 7561249,
+        "hex": "8bcb",
+        "instruction": "mov ecx, ebx"
+      },
+      {
+        "address": 7561251,
+        "hex": "85c9",
+        "instruction": "test ecx, ecx"
+      },
+      {
+        "address": 7561253,
+        "hex": "7407",
+        "instruction": "je 0x73602e"
+      },
+      {
+        "address": 7561255,
+        "hex": "8b16",
+        "instruction": "mov edx, dword ptr [esi]"
+      },
+      {
+        "address": 7561257,
+        "hex": "8b1482",
+        "instruction": "mov edx, dword ptr [edx + eax*4]"
+      },
+      {
+        "address": 7561260,
+        "hex": "8911",
+        "instruction": "mov dword ptr [ecx], edx"
+      },
+      {
+        "address": 7561262,
+        "hex": "83c001",
+        "instruction": "add eax, 1"
+      },
+      {
+        "address": 7561265,
+        "hex": "83c104",
+        "instruction": "add ecx, 4"
+      },
+      {
+        "address": 7561268,
+        "hex": "3b4604",
+        "instruction": "cmp eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": 7561271,
+        "hex": "7cea",
+        "instruction": "jl 0x736023"
+      },
+      {
+        "address": 7561273,
+        "hex": "8b06",
+        "instruction": "mov eax, dword ptr [esi]"
+      },
+      {
+        "address": 7561275,
+        "hex": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": 7561276,
+        "hex": "e848094c00",
+        "instruction": "call 0xbf6989"
+      },
+      {
+        "address": 7561281,
+        "hex": "83c404",
+        "instruction": "add esp, 4"
+      },
+      {
+        "address": 7561284,
+        "hex": "891e",
+        "instruction": "mov dword ptr [esi], ebx"
+      },
+      {
+        "address": 7561286,
+        "hex": "897e08",
+        "instruction": "mov dword ptr [esi + 8], edi"
+      },
+      {
+        "address": 7561289,
+        "hex": "5b",
+        "instruction": "pop ebx"
+      },
+      {
+        "address": 7561290,
+        "hex": "5f",
+        "instruction": "pop edi"
+      },
+      {
+        "address": 7561291,
+        "hex": "5e",
+        "instruction": "pop esi"
+      },
+      {
+        "address": 7561292,
+        "hex": "c20400",
+        "instruction": "ret 4"
+      },
+      {
+        "address": 12539326,
+        "hex": "e958120000",
+        "instruction": "jmp 0xbf681b"
+      },
+      {
+        "address": 12544393,
+        "hex": "e91efcffff",
+        "instruction": "jmp 0xbf65ac"
+      }
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\include\\bsp\\native_cube_texture_owner_array_reserve.hpp",
+      "bytes": 578,
+      "sha256": "a5067ec38c18e1844c83ee71a12ab06a7103d9a05258c4c6a5fae83c44a7a319"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\src\\native_cube_texture_owner_array_reserve.cpp",
+      "bytes": 1925,
+      "sha256": "8e66b9c6f0b651a14abaca17a26e7721bf3531a2c31b86dd65a39266a6ebcc56"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "actual_storage": {
+    "header_bytes": 12,
+    "table_offset": 0,
+    "count_offset": 4,
+    "capacity_offset": 8,
+    "entry_bytes": 4,
+    "borrowed_header": true,
+    "substitute_owner_renderer_device_pool": false,
+    "count_written": false
+  },
+  "ordering": [
+    "Signed request clamps to1; signed current capacity>=request returns before table/count access.",
+    "DWORD-wrapped request*4 reaches actual shared CRT allocation. After allocation, current count governs signed copy loop.",
+    "Each reached nonzero destination cursor reloads current table and copies one DWORD. Index/cursor arithmetic wraps DWORD; each later loop compares current signed count.",
+    "After copying capture current table, perform actual free, then publish replacement table before requested capacity. Current count remains unchanged by the routine."
+  ],
+  "returning_free_tail": {
+    "call_site": "0073603c",
+    "start": "00736041",
+    "end_exclusive": "0073604a",
+    "bytes": 9,
+    "native_instructions": [
+      "ADD ESP,4",
+      "MOV [ESI],EBX",
+      "MOV [ESI+8],EDI",
+      "POP EBX"
+    ],
+    "current_saved_listing_missing": true
+  },
+  "allocation_contract": {
+    "native_allocate_entry": "00bf55be",
+    "native_allocate_target": "00bf681b",
+    "source": "singleton_lifetime_allocate",
+    "behavior": "Actual malloc, actual CRT new handler on failure, retry on nonzero, throw bad_alloc on zero; no request overflow guard is added.",
+    "native_free_entry": "00bf6989",
+    "native_free_target": "00bf65ac",
+    "source_free": "singleton_lifetime_free",
+    "cleanup_frame_or_rollback": false,
+    "failure_path_execution_in_this_fixture": false,
+    "shared_failure_contract_reimplemented": false
+  },
+  "build": {
+    "script": "./scripts/build.ps1",
+    "passed": true,
+    "existing_CTests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "native_seed_spans_matched": 8,
+    "new_tracked_tests": 0,
+    "actual_source_in_primary_library": true,
+    "local_registration": "Ignored CMAKE_PROJECT_INCLUDE_BEFORE include adds the owned source to primary bsp_core; permanent shared registration remains integrator-owned.",
+    "fixture_options": [
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/W4",
+      "/WX"
+    ]
+  },
+  "fixture": {
+    "matching_DWORD_trace_entries": 426,
+    "matching_trace_bytes": 1704,
+    "exact_trace_equality": true,
+    "snapshot_records": [
+      {
+        "tag": "10000000",
+        "phase": 1,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "a0000000",
+        "phase": 1,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [],
+        "requested_bytes": 24
+      },
+      {
+        "tag": "a1000000",
+        "phase": 1,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503
+        ]
+      },
+      {
+        "tag": "f0000000",
+        "phase": 1,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          285212672,
+          285212673,
+          285212674,
+          2812782503,
+          2812782503,
+          2812782503
+        ],
+        "freed_pointer_identity": 1
+      },
+      {
+        "tag": "f1000000",
+        "phase": 1,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          285212672,
+          285212673,
+          285212674,
+          2812782503,
+          2812782503,
+          2812782503
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 1,
+        "table_identity": 3,
+        "count": 3,
+        "capacity": 6,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          285212672,
+          285212673,
+          285212674,
+          2812782503,
+          2812782503,
+          2812782503
+        ]
+      },
+      {
+        "tag": "10000000",
+        "phase": 2,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": true,
+        "alternate_table_words": [
+          570425344,
+          570425345,
+          570425346
+        ],
+        "replacement_words": []
+      },
+      {
+        "tag": "a0000000",
+        "phase": 2,
+        "table_identity": 1,
+        "count": 3,
+        "capacity": 3,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": true,
+        "alternate_table_words": [
+          570425344,
+          570425345,
+          570425346
+        ],
+        "replacement_words": [],
+        "requested_bytes": 24
+      },
+      {
+        "tag": "a1000000",
+        "phase": 2,
+        "table_identity": 2,
+        "count": 2,
+        "capacity": 41,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": true,
+        "alternate_table_words": [
+          570425344,
+          570425345,
+          570425346
+        ],
+        "replacement_words": [
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503
+        ]
+      },
+      {
+        "tag": "f0000000",
+        "phase": 2,
+        "table_identity": 2,
+        "count": 2,
+        "capacity": 41,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": true,
+        "alternate_table_words": [
+          570425344,
+          570425345,
+          570425346
+        ],
+        "replacement_words": [
+          570425344,
+          570425345,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503
+        ],
+        "freed_pointer_identity": 2
+      },
+      {
+        "tag": "f1000000",
+        "phase": 2,
+        "table_identity": 1,
+        "count": 4,
+        "capacity": 17,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          570425344,
+          570425345,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 2,
+        "table_identity": 3,
+        "count": 4,
+        "capacity": 6,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          570425344,
+          570425345,
+          2812782503,
+          2812782503,
+          2812782503,
+          2812782503
+        ]
+      },
+      {
+        "tag": "10000000",
+        "phase": 3,
+        "table_identity": 1,
+        "count": 4294967295,
+        "capacity": 4294967295,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "a0000000",
+        "phase": 3,
+        "table_identity": 1,
+        "count": 4294967295,
+        "capacity": 4294967295,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [],
+        "requested_bytes": 4
+      },
+      {
+        "tag": "a1000000",
+        "phase": 3,
+        "table_identity": 1,
+        "count": 4294967295,
+        "capacity": 4294967295,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          2812782503
+        ]
+      },
+      {
+        "tag": "f0000000",
+        "phase": 3,
+        "table_identity": 1,
+        "count": 4294967295,
+        "capacity": 4294967295,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": true,
+        "old_table_words": [
+          285212672,
+          285212673,
+          285212674
+        ],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          2812782503
+        ],
+        "freed_pointer_identity": 1
+      },
+      {
+        "tag": "f1000000",
+        "phase": 3,
+        "table_identity": 1,
+        "count": 4294967295,
+        "capacity": 4294967295,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          2812782503
+        ]
+      },
+      {
+        "tag": "20000000",
+        "phase": 3,
+        "table_identity": 3,
+        "count": 4294967295,
+        "capacity": 1,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [
+          2812782503
+        ]
+      },
+      {
+        "tag": "10000000",
+        "phase": 4,
+        "table_identity": 3735928559,
+        "count": 2147483647,
+        "capacity": 10,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 4,
+        "table_identity": 3735928559,
+        "count": 2147483647,
+        "capacity": 10,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "10000000",
+        "phase": 5,
+        "table_identity": 0,
+        "count": 0,
+        "capacity": 0,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "a0000000",
+        "phase": 5,
+        "table_identity": 0,
+        "count": 0,
+        "capacity": 0,
+        "allocation_calls": 0,
+        "free_calls": 0,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [],
+        "requested_bytes": 0
+      },
+      {
+        "tag": "a1000000",
+        "phase": 5,
+        "table_identity": 0,
+        "count": 0,
+        "capacity": 0,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "f0000000",
+        "phase": 5,
+        "table_identity": 0,
+        "count": 0,
+        "capacity": 0,
+        "allocation_calls": 1,
+        "free_calls": 0,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": [],
+        "freed_pointer_identity": 0
+      },
+      {
+        "tag": "f1000000",
+        "phase": 5,
+        "table_identity": 0,
+        "count": 0,
+        "capacity": 0,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      },
+      {
+        "tag": "20000000",
+        "phase": 5,
+        "table_identity": 3,
+        "count": 0,
+        "capacity": 1073741824,
+        "allocation_calls": 1,
+        "free_calls": 1,
+        "old_live": false,
+        "old_table_words": [],
+        "alternate_live": false,
+        "alternate_table_words": [],
+        "replacement_words": []
+      }
+    ],
+    "actual_malloc_calls_each": 4,
+    "actual_free_calls_each": 4,
+    "nonnull_actual_frees_each": 3,
+    "actual_malloc_request_bytes_each": [
+      24,
+      24,
+      4,
+      0
+    ],
+    "owned95_native_bytes_unpatched": true,
+    "all3_runtime_spans_verified": true,
+    "absolute_relocations": [],
+    "original_relative_call_operands_preserved": true,
+    "runtime_spans": [
+      {
+        "address": 7561200,
+        "length": 95,
+        "offset": 3366896,
+        "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8a9f54b008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e848094c0083c404891e897e085b5f5ec20400",
+        "sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8a9f54b008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e848094c0083c404891e897e085b5f5ec20400",
+        "postimage_sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+        "only_declared_changes": true
+      },
+      {
+        "address": 12539326,
+        "length": 5,
+        "offset": 8345022,
+        "hex": "e958120000",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "e93dcec62e",
+        "postimage_sha256": "02251462969faede64e1541fea4c2b788195a59ef7c8be5e13e706d82ac43c08",
+        "only_declared_changes": true
+      },
+      {
+        "address": 12544393,
+        "length": 5,
+        "offset": 8350089,
+        "hex": "e91efcffff",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "fresh_live_Ghidra_matches_installed_PE": true,
+        "postimage_hex": "e962c5c62e",
+        "postimage_sha256": "93540c1eb6c1775ee225e8af19bc2fb21b292ebc53ce2f4165abed8fb88e51a1",
+        "only_declared_changes": true
+      }
+    ],
+    "external_entry_bridges": [
+      {
+        "address": 12539326,
+        "actual_runtime_target": 805315584
+      },
+      {
+        "address": 12544393,
+        "actual_runtime_target": 805318384
+      }
+    ],
+    "new_bridge_provider": {
+      "map_line": " 0001:00001400       ?bridge_operator_new@@YAPAXI@Z 30002400 f   fixture.obj",
+      "role": "Only external CRT operator-new bridge; calls actual primary singleton_lifetime_allocate. It does not replace the owned reserve body."
+    },
+    "source_library_providers": [
+      {
+        "symbol": "reserve_native_cube_texture_owner_array_00735ff0",
+        "provider": "bsp_core:native_cube_texture_owner_array_reserve.obj",
+        "exact_map_line": " 0001:00003990       ?reserve_native_cube_texture_owner_array_00735ff0@bsp@@YAXPAXH@Z 30004990 f   bsp_core:native_cube_texture_owner_array_reserve.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_allocate",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00003a40       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30004a40 f   bsp_core:singleton_lifetime.obj"
+      },
+      {
+        "symbol": "singleton_lifetime_free",
+        "provider": "bsp_core:singleton_lifetime.obj",
+        "exact_map_line": " 0001:00003aa0       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30004aa0 f   bsp_core:singleton_lifetime.obj"
+      }
+    ],
+    "actual_CRT_modules": [
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "service": "malloc",
+        "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_x86_PE014c_verified": true
+      },
+      {
+        "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "service": "free",
+        "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_x86_PE014c_verified": true
+      }
+    ],
+    "service_boundary_perturbation": "Phase2 observer performs actual malloc, then redirects actual table/count/capacity to alternate real storage. Actual free releases that table; after free it changes actual table/count/capacity again. These controlled perturbations are not ordinary CRT behavior.",
+    "initialized_memory": "Fixture prefills replacement bytes A7 for observation; production does not initialize spare capacity.",
+    "normalization": "Only explicit old/alternate/replacement pointer identities. Raw count/capacity/canaries/all live table and reached replacement words are retained.",
+    "store_order_evidence": "Native full decode and ordered volatile source stores establish individual publication ordering. The fixture observes allocation/free boundaries and complete final state.",
+    "freed_storage_read": false,
+    "zero_size_allocation_result_buffer_access": false
+  },
+  "shared_metadata_or_Ghidra_edits": false,
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\capture.py",
+      "bytes": 2478,
+      "sha256": "10e7dc2098764922fed81411b8b5d25329964c1962396e748935212cca49d40d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\capture.json",
+      "bytes": 5723,
+      "sha256": "fae2cfef7bcbc543bbb2cf1997ff18460eae67071c641a4ff241adf2802e1eab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\reference.hpp",
+      "bytes": 479,
+      "sha256": "be2ae866f479bd1258c5e5b4b9fcf86a719c80968217f204b42c258f2f9c3372"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\fixture.cpp",
+      "bytes": 11877,
+      "sha256": "9445548047463d3a7e36f02a7c825875a4394a1011b0ed4553c91000ac239d06"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\CMakeLists.txt",
+      "bytes": 735,
+      "sha256": "9b4e06ae12def433a2b6b0fea9f583f4ac4c1f8fe413cf820070a49248fadc5e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\finalize.py",
+      "bytes": 11259,
+      "sha256": "ae7038a04d726f5fe7e12d42f792e0eaaa6073d15e013088799e2be761207f21"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\primary_configure.log",
+      "bytes": 987,
+      "sha256": "c3f7583f66c856166b68973e4d1c0056b4440e8f1d27b25033ca3c931656e4ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\configure.log",
+      "bytes": 648,
+      "sha256": "26fe747a4d6a0b6f140ed5653e080780d9a3818640fd993750cd1106800a8024"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\build.log",
+      "bytes": 584,
+      "sha256": "ba7338ce4cabec5cc93ec36224dc3682875096e08d47a4a48616d3330827d285"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\array_reserve_diff\\repository_build.log",
+      "bytes": 14496,
+      "sha256": "88e944f99e3f174d3559464d64e6532eae11dfb15bdb36aac1e9c83b96202f3f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\Release\\array_reserve_diff.exe",
+      "bytes": 35328,
+      "sha256": "0ae81d75077e3a9ae53edd0a4d6dd87764a03e8dd4262edabbf03b8d4bac2560"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\Release\\array_reserve_diff.map",
+      "bytes": 69645,
+      "sha256": "17a20c32addf6f38900609c8bf97676723c2b76ae7b92945a28a499831be0091"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\run.log",
+      "bytes": 175,
+      "sha256": "6d233b12ed1cf89b7880ffb8860ac451ae2b0f2c97b7ed93f08ff2856dd3e4d3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\native_trace.bin",
+      "bytes": 1704,
+      "sha256": "2b251409af24a6b35290af6ce15a245ea3d2ee8cbe82cfb8a425da454d20c92b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\host_trace.bin",
+      "bytes": 1704,
+      "sha256": "2b251409af24a6b35290af6ce15a245ea3d2ee8cbe82cfb8a425da454d20c92b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\patched_spans.txt",
+      "bytes": 253,
+      "sha256": "deb85d3bebb83a7baca55f7545cfede9ab906b5b47ac3646824e23e56a8451c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\bridge_targets.txt",
+      "bytes": 40,
+      "sha256": "4b487316faf723ebbafa91248c6977acf2814ecfeac455118f5dfef6d2c6ec06"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\malloc_module.txt",
+      "bytes": 34,
+      "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\array_reserve_diff\\free_module.txt",
+      "bytes": 34,
+      "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\cube_array_reserve_register.cmake",
+      "bytes": 129,
+      "sha256": "a33cc845a81d683fed33c60de04e25aef34da323e56b320a386d3f26e8c6a7ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\local\\build_cube_array_reserve_checks.ps1",
+      "bytes": 1744,
+      "sha256": "042358a02a33e8fd58af10afe484b8294a8425ec535646afa2b9c665fb3490fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 26209434,
+      "sha256": "f5166c68799355ae77ed837ed6a91c4c014a859ac84fb47daa9796fdac7debe0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910\\build\\win32\\bsp_core.dir\\Release\\native_cube_texture_owner_array_reserve.obj",
+      "bytes": 2011,
+      "sha256": "a99fda4ef5cf5df6fab69451dde92f4f6bc706475ff5fceccacd0da40a9f7c14"
+    }
+  ],
+  "uncertainty": [
+    "Descriptive names are hypotheses, not recovered symbols.",
+    "Requires valid backing for every reached native storage access. No new safety policy for malformed headers, arbitrary concurrency, destination wrap exhaustion or new-handler exceptions.",
+    "Original body executes in a sparse relocated image with two external actual-CRT service bridges; new source API is not original ABI compatibility.",
+    "No cube factory/device recreation completion or game validation follows from this helper."
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}
