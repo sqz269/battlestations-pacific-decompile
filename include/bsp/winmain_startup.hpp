@@ -59,12 +59,24 @@ bool startup_language_from_options_tokens(const char* const* tokens, std::size_t
                                           std::string& language);
 
 // Text and caption of the "already running" message box (008f832b..008f83c5).
-// The native comparison goes through 00425850, which is case-insensitive and treats a null
-// or empty stored language as a non-match, so an unknown language yields the english pair.
 struct StartupMessage {
     const wchar_t* text;
     const wchar_t* caption;
 };
+
+// Bounded 008f832b..008f83bf selection, before MessageBoxW. actual_language_header is
+// the same live eight-byte header initialized by 008f7db0: length +0, data +4.
+// Each comparison calls canonical 00425850 with that unchanged header address and a
+// fixed nonnull language literal, in native order. No copy, allocation, release or
+// null-header guard. The caller retains the owner through the message box; the native
+// inline release at 008f83cb..008f83e9 follows it. This is not the WinMain ABI.
+StartupMessage startup_already_running_message_from_native_header_008f832b(
+    const void* actual_language_header) noexcept;
+
+// C-string projection used by the existing std::string StartupHost. For these five
+// nonnull, nonempty candidates it selects the same message as native 00425850,
+// including null data and any recorded length. It does not preserve native-header
+// identity, allocation/lifetime, or the complete general-purpose 00425850 contract.
 StartupMessage startup_already_running_message(const char* language);
 
 // Widening performed by 004c5e60: every byte is zero-extended into a UTF-16 unit. This is
@@ -133,8 +145,9 @@ struct StartupHost {
     virtual SingleInstanceMutex create_single_instance_mutex(const char* name) = 0;
     virtual void close_mutex(void* handle) = 0;
 
-    // 008f8326 -> 008f7db0. Returns the language name; an empty string reproduces the
-    // native case where the string object holds no data.
+    // Projected value of 008f8326 -> 008f7db0. The original initializes the caller's
+    // actual native header in ECX; this interface returns a separate std::string.
+    // Empty preserves message selection for native null data, not its ownership.
     virtual std::string resolve_language() = 0;
 
     // 008f83c5 MessageBoxW(nullptr, text, caption, MB_ICONHAND).

@@ -4,6 +4,8 @@
 
 #include "bsp/winmain_startup.hpp"
 
+#include "bsp/native_string_compare.hpp"
+
 #include <cstring>
 #include <string>
 
@@ -24,21 +26,6 @@ int compare_insensitive_00438e10(const char* left, const char* right) {
     return _stricmp(left, right);
 }
 
-// 00425850: equality of a stored native string against a C string. A null data pointer only
-// matches a null or empty candidate; otherwise the comparison is _stricmp.
-bool language_equals_00425850(const char* stored, const char* candidate) {
-    if (stored != nullptr) {
-        if (candidate == nullptr) {
-            return *stored == '\0';
-        }
-        return _stricmp(stored, candidate) == 0;
-    }
-    if (candidate == nullptr) {
-        return true;
-    }
-    return *candidate == '\0';
-}
-
 // Message pairs at 00d16a10/00d16a00, 00d16990/00d1697c, 00d16920/00d16910,
 // 00d168c0/00d168b0 and 00d16858. Non-ASCII characters are written as universal-character
 // escapes so the source encoding cannot alter them. Both oddities below are in the image:
@@ -53,6 +40,37 @@ const wchar_t kCaptionItalian[] = L"Errore";
 const wchar_t kTextGerman[] = L"Battlestations: Pacific l\u00e4uft bereits.";
 const wchar_t kCaptionGerman[] = L"Fehler";
 const wchar_t kTextSpanish[] = L"Battlestations: Pacific ya est\u00e1 en marcha.";
+
+// Share only the fixed-candidate dispatch, not a representation of the language owner.
+template<class Equal>
+StartupMessage select_already_running_message(Equal equal) noexcept {
+    // 008f8334: the english pair is loaded before the first comparison and survives
+    // every non-match. Preserve all five calls and their short-circuit order.
+    StartupMessage message{kTextEnglish, kCaptionEnglish};
+    if (equal(kStartupLanguageEnglish)) {
+        return message;
+    }
+    if (equal(kStartupLanguageFrench)) {
+        message.text = kTextFrench;
+        message.caption = kCaptionFrench;
+        return message;
+    }
+    if (equal(kStartupLanguageItalian)) {
+        message.text = kTextItalian;
+        message.caption = kCaptionItalian;
+        return message;
+    }
+    if (equal(kStartupLanguageGerman)) {
+        message.text = kTextGerman;
+        message.caption = kCaptionGerman;
+        return message;
+    }
+    if (equal(kStartupLanguageSpanish)) {
+        // 008f83b5 falls into 008f83ba, which reloads the english caption.
+        message.text = kTextSpanish;
+    }
+    return message;
+}
 
 }  // namespace
 
@@ -114,34 +132,18 @@ bool startup_language_from_options_tokens(const char* const* tokens, std::size_t
     return false;
 }
 
+StartupMessage startup_already_running_message_from_native_header_008f832b(
+    const void* actual_language_header) noexcept {
+    return select_already_running_message([actual_language_header](const char* candidate) {
+        return equal_native_string_header_00425850(actual_language_header, candidate);
+    });
+}
+
 StartupMessage startup_already_running_message(const char* language) {
-    // 008f8334: the english pair is loaded before the first comparison and survives every
-    // non-match.
-    StartupMessage message{kTextEnglish, kCaptionEnglish};
-    if (language_equals_00425850(language, kStartupLanguageEnglish)) {
-        return message;
-    }
-    if (language_equals_00425850(language, kStartupLanguageFrench)) {
-        message.text = kTextFrench;
-        message.caption = kCaptionFrench;
-        return message;
-    }
-    if (language_equals_00425850(language, kStartupLanguageItalian)) {
-        message.text = kTextItalian;
-        message.caption = kCaptionItalian;
-        return message;
-    }
-    if (language_equals_00425850(language, kStartupLanguageGerman)) {
-        message.text = kTextGerman;
-        message.caption = kCaptionGerman;
-        return message;
-    }
-    if (language_equals_00425850(language, kStartupLanguageSpanish)) {
-        // 008f83b5 falls into 008f83ba, which reloads the english caption, so spanish shares
-        // the english caption in the original.
-        message.text = kTextSpanish;
-    }
-    return message;
+    return select_already_running_message([language](const char* candidate) {
+        // Projection only: the internal candidates are always nonnull and nonempty.
+        return language != nullptr && _stricmp(language, candidate) == 0;
+    });
 }
 
 std::wstring startup_widen_path(const char* ansi_path) {
@@ -212,6 +214,8 @@ int run_win_main(const WinMainArguments& arguments, StartupHost& host) {
     if (mutex.handle != nullptr && mutex.already_exists) {
         // 008f8322..008f83f9. This exit closes nothing: the mutex handle stays open, the
         // thread slot is not released, and the random subsystem is not shut down.
+        // resolve_language supplies a projected std::string, not the original header.
+        // Keep this convenience path explicit; do not fabricate a native owner from it.
         const std::string language = host.resolve_language();
         const StartupMessage message = startup_already_running_message(language.c_str());
         host.error_message_box(message.text, message.caption);
