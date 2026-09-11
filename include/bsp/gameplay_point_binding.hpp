@@ -68,7 +68,7 @@ class GameplayPointRemainingComponents {
 public:
     virtual ~GameplayPointRemainingComponents() = default;
     virtual std::uint8_t admit_current(std::uint32_t native_function, void* actual_row,
-        const std::array<float, 3>&, CameraTransform&) = 0;
+        EffectPointView, CameraTransform&) = 0;
     virtual RenderCommandReference* create_current(std::uint32_t native_function,
         void* actual_row, PointEffectInstanceStorage&) = 0;
 };
@@ -77,7 +77,7 @@ public:
 class GameplayPointRumbleComponents final : public GameplayPointRemainingComponents {
 public:
     GameplayPointRumbleComponents(NativeGamepadForceEvents&, GameplayPointRemainingComponents&) noexcept;
-    std::uint8_t admit_current(std::uint32_t, void*, const std::array<float, 3>&,
+    std::uint8_t admit_current(std::uint32_t, void*, EffectPointView,
         CameraTransform&) override;
     RenderCommandReference* create_current(std::uint32_t, void*, PointEffectInstanceStorage&) override;
 private:
@@ -100,7 +100,7 @@ public:
     PointEffectFactoryRowView row_fields(void*) noexcept override;
     EffectAdmissionRowView project_row(void*) noexcept override;
     CameraTransform& reference_e188a8_19fc() noexcept override;
-    std::uint8_t virtual_1c(void*, const std::array<float, 3>&, CameraTransform&) override;
+    std::uint8_t virtual_1c(void*, EffectPointView, CameraTransform&) override;
     RenderCommandReference* create_virtual_18(void*, PointEffectInstanceStorage&) override;
 private:
     friend class GameplayPointConstruction;
@@ -123,7 +123,7 @@ public:
         PointEffectConstructorBindings&);
     PointEffectManagerView manager_00866440() override;
     CameraTransform& reference_transform_e188a8_19fc() override;
-    bool eligible_0086a650(RenderCommandReference&, const std::array<float, 3>&,
+    bool eligible_0086a650(RenderCommandReference&, EffectPointView,
         CameraTransform&) override;
     void* allocate_00bf681b(std::size_t native_bytes) override;
     void free_00bf65ac(void*) noexcept override;

@@ -1,5 +1,6 @@
 #include "bsp/point_effect_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/camera_multiply.hpp"
 
 namespace bsp {
 namespace {
@@ -49,6 +50,31 @@ __declspec(naked) void __fastcall copy_record_xyz_kernel(float*, const float*) {
         fstp dword ptr [ecx + 8]  // 0049C1F1
         ret
     }
+}
+
+// Common successful-admission tail of868420/8685E0/8687C0. Caller still owns
+// the captured lock and consumed input. Callee consumes the extra argument
+// before raw free on failure; no source-matrix snapshot is taken here.
+RenderCommandReference*& construct_admitted_point(RenderCommandReference*& output,
+    RenderCommandReference& definition, CameraTransform* parent, std::uint32_t third_word,
+    const CameraMatrix& matrix, std::uint8_t transform, std::uint8_t option,
+    std::uint32_t tail, PointEffectConstruction& construction) {
+    void* const raw = construction.allocate_00bf681b(0x114);
+    if (!raw) { output = nullptr; return output; }
+    retain_render_command_reference(definition);
+    RenderCommandReference* created;
+    try {
+        created = &construction.construct_008680b0(raw, &definition, parent,
+            third_word, matrix, transform, option, tail);
+    } catch (...) {
+        construction.free_00bf65ac(raw);
+        throw;
+    }
+    output = nullptr;
+    output = created;
+    retain_render_command_reference(*created);
+    release_render_command_reference(*created);
+    return output;
 }
 } // namespace
 
@@ -127,6 +153,62 @@ RenderCommandReference*& create_point_effect_008689c0(
     retain_render_command_reference(*created); // 00868B1D, after publication
     release_render_command_reference(*created); // 00868B3E, still locked
     return output; // lock destructor, THEN input destructor
+}
+
+RenderCommandReference*& create_point_effect_matrix_00868420(
+    RenderCommandReference*& output, std::uint32_t third_word,
+    RenderCommandReference& definition, const CameraMatrix& matrix,
+    std::uint8_t option, std::uint32_t tail, PointEffectConstruction& construction) {
+    ConsumedReference input(&definition);
+    CapturedEffectSection lock(construction.manager_00866440().section_04);
+    auto& reference = construction.reference_transform_e188a8_19fc();
+    if (!construction.eligible_0086a650(definition, EffectPointView(matrix.data() + 12), reference)) {
+        output = nullptr;
+        return output;
+    }
+    return construct_admitted_point(output, definition, nullptr, third_word,
+        matrix, 0, option, tail, construction);
+}
+
+RenderCommandReference*& create_point_effect_position_008685e0(
+    RenderCommandReference*& output, std::uint32_t third_word,
+    RenderCommandReference& definition, EffectPointView point, std::uint8_t option,
+    std::uint32_t tail, CameraMatrix& global_matrix, PointEffectConstruction& construction) {
+    ConsumedReference input(&definition);
+    CapturedEffectSection lock(construction.manager_00866440().section_04);
+    global_matrix[12] = point[0];
+    global_matrix[13] = point[1];
+    global_matrix[14] = point[2];
+    auto& reference = construction.reference_transform_e188a8_19fc();
+    if (!construction.eligible_0086a650(definition, point, reference)) {
+        output = nullptr;
+        return output;
+    }
+    return construct_admitted_point(output, definition, nullptr, third_word,
+        global_matrix, 0, option, tail, construction);
+}
+
+RenderCommandReference*& create_point_effect_parent_matrix_008687c0(
+    RenderCommandReference*& output, CameraTransform* parent,
+    RenderCommandReference& definition, const CameraMatrix& matrix,
+    std::uint8_t transform, std::uint8_t option, std::uint32_t tail,
+    PointEffectConstruction& construction) {
+    ConsumedReference input(&definition);
+    CapturedEffectSection lock(construction.manager_00866440().section_04);
+    CameraMatrix composed;
+    const CameraMatrix* test_matrix = &matrix;
+    if (transform != 0) {
+        if ((parent->valid_flags & 2u) == 0) refresh_camera_world_00b6db70(*parent);
+        multiply_camera_matrices_00413920(composed, matrix, parent->world);
+        test_matrix = &composed;
+    }
+    auto& reference = construction.reference_transform_e188a8_19fc();
+    if (!construction.eligible_0086a650(definition, EffectPointView(test_matrix->data() + 12), reference)) {
+        output = nullptr;
+        return output;
+    }
+    return construct_admitted_point(output, definition, parent, 0,
+        matrix, transform, option, tail, construction);
 }
 
 } // namespace bsp
