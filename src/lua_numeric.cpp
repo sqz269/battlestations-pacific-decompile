@@ -3,7 +3,9 @@
 
 namespace bsp {
 float lua_object_number_00b66270(GuiLuaHost& host, GuiLuaRef object) {
-    const double number = host.to_number(object);
+    return lua_number_float32_00b66270(host.to_number(object));
+}
+float lua_number_float32_00b66270(double number) noexcept {
     float narrowed;
     __asm {
         fld number
@@ -13,7 +15,10 @@ float lua_object_number_00b66270(GuiLuaHost& host, GuiLuaRef object) {
 }
 std::int32_t lua_object_integer_00b66290(GuiLuaHost& host, GuiLuaRef object,
     const bool& crt_sse2_conversion) {
-    const double number = host.to_number(object);
+    return lua_number_integer_00b66290(host.to_number(object), crt_sse2_conversion);
+}
+std::int32_t lua_number_integer_00b66290(double number,
+    const bool& crt_sse2_conversion) noexcept {
     float narrowed;
     double spill;
     std::int32_t result;
@@ -31,6 +36,14 @@ std::int32_t lua_object_integer_00b66290(GuiLuaHost& host, GuiLuaRef object,
     x87_path:
         call native_x87_truncate_st0_00bf7456
     converted:
+        mov result, eax
+    }
+    return result;
+}
+std::int32_t lua_float_index_00bd5790(float number) noexcept {
+    std::int32_t result;
+    __asm {
+        cvttss2si eax, number
         mov result, eax
     }
     return result;

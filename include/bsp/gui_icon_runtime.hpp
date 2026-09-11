@@ -67,6 +67,7 @@ struct GuiIconTextureServices {
     std::function<std::shared_ptr<LogicalTexture>(void*)> logical_texture;
 };
 struct GuiIconRuntimeServices {
+    const bool& crt_sse2_conversion; // required live0109EEA4 alias
     GuiGeometryRuntimeServices geometry;
     GuiIconTextureServices textures;
     std::function<bool()> platform_allows_point_filter;
@@ -97,5 +98,5 @@ private:
 // Non-table scopes and wrong-shaped Vec2 values fail explicitly; missing lanes
 // in an actual Vec2 table follow the native zero conversions.
 GuiIconAuthoredPage read_gui_icon_authored_page_00ab3310(
-    const GuiTable&, const GuiWidgetTransform&);
+    const GuiTable&, const GuiWidgetTransform&, const bool& crt_sse2_conversion);
 }

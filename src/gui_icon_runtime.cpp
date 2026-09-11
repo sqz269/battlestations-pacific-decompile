@@ -13,9 +13,11 @@ const GuiValue* present(const GuiTable& table, const char* key) {
     const auto* value = table.find(key);
     return value && value->kind() != GuiValue::Kind::Nil ? value : nullptr;
 }
-void property(const GuiTable& table, const char* key, GuiLuaFieldType type, void* target) {
+void property(const GuiTable& table, const char* key, GuiLuaFieldType type, void* target,
+    const bool& crt_sse2_conversion) {
     if (const auto* value = present(table, key)) {
-        require(gui_lua_store_value_00bd63b0(*value, gui_lua_field(type, target), nullptr),
+        require(gui_lua_store_value_00bd63b0(*value, gui_lua_field(type, target), nullptr,
+                crt_sse2_conversion),
             "Icon property has an unsupported aggregate shape.");
     }
 }
@@ -73,26 +75,29 @@ VertexOffsets vertex_offsets(const VertexDeclaration& declaration) {
 }
 
 GuiIconAuthoredPage read_gui_icon_authored_page_00ab3310(
-    const GuiTable& table, const GuiWidgetTransform& widget) {
+    const GuiTable& table, const GuiWidgetTransform& widget, const bool& crt_sse2_conversion) {
     GuiIconAuthoredPage result;
-    property(table, "DynamicVB", GuiLuaFieldType::Bool, &result.dynamic_vb);
-    property(table, "HasTexture", GuiLuaFieldType::Bool, &result.has_texture);
-    property(table, "ShaderName", GuiLuaFieldType::String, &result.shader_name);
-    property(table, "PartialDisplayType", GuiLuaFieldType::Int, &result.partial_display_type);
-    property(table, "PartialDisplayRatio", GuiLuaFieldType::Float, &result.partial_display_ratio);
-    property(table, "DelayedTextureLoad", GuiLuaFieldType::Bool, &result.delayed_texture_load);
-    property(table, "AutoRotate", GuiLuaFieldType::Float, &result.auto_rotate);
+    property(table, "DynamicVB", GuiLuaFieldType::Bool, &result.dynamic_vb, crt_sse2_conversion);
+    property(table, "HasTexture", GuiLuaFieldType::Bool, &result.has_texture, crt_sse2_conversion);
+    property(table, "ShaderName", GuiLuaFieldType::String, &result.shader_name, crt_sse2_conversion);
+    property(table, "PartialDisplayType", GuiLuaFieldType::Int, &result.partial_display_type,
+        crt_sse2_conversion);
+    property(table, "PartialDisplayRatio", GuiLuaFieldType::Float, &result.partial_display_ratio,
+        crt_sse2_conversion);
+    property(table, "DelayedTextureLoad", GuiLuaFieldType::Bool, &result.delayed_texture_load,
+        crt_sse2_conversion);
+    property(table, "AutoRotate", GuiLuaFieldType::Float, &result.auto_rotate, crt_sse2_conversion);
     if (const auto* states_value = present(table, "States")) {
         for (const auto& value : scope(*states_value).array) {
             if (value.kind() == GuiValue::Kind::Nil) break;
             const auto& entry = scope(value);
             GuiIconAuthoredState state;
-            property(entry, "Texture", GuiLuaFieldType::String, &state.texture);
+            property(entry, "Texture", GuiLuaFieldType::String, &state.texture, crt_sse2_conversion);
             float size[2]{widget.size.width, widget.size.height};
-            property(entry, "Size", GuiLuaFieldType::Vec2, size);
+            property(entry, "Size", GuiLuaFieldType::Vec2, size, crt_sse2_conversion);
             state.size = {size[0], size[1]};
             float pivot[2]{widget.pivot_x, widget.pivot_y};
-            property(entry, "Pivot", GuiLuaFieldType::Vec2, pivot);
+            property(entry, "Pivot", GuiLuaFieldType::Vec2, pivot, crt_sse2_conversion);
             state.pivot_x = pivot[0]; state.pivot_y = pivot[1];
             if (const auto* uv_value = present(entry, "UV_LURB")) {
                 const auto& uv_table = scope(*uv_value);
@@ -101,7 +106,7 @@ GuiIconAuthoredPage read_gui_icon_authored_page_00ab3310(
                 for (std::size_t lane = 0; lane < 4; ++lane) {
                     const auto& component = lane < uv_table.array.size() ? uv_table.array[lane] : nil;
                     gui_lua_store_value_00bd63b0(component,
-                        gui_lua_field(GuiLuaFieldType::Float, &uv[lane]), nullptr);
+                        gui_lua_field(GuiLuaFieldType::Float, &uv[lane]), nullptr, crt_sse2_conversion);
                 }
                 state.uv = {uv[0], uv[1], uv[2], uv[3]};
             }
@@ -264,7 +269,8 @@ void GuiIconRuntime::constructed74_00ab2540() {
 }
 void GuiIconRuntime::read_properties_00ab3310(const GuiTable& table) {
     auto& self = *impl_;
-    const auto authored = read_gui_icon_authored_page_00ab3310(table, self.widget.transform);
+    const auto authored = read_gui_icon_authored_page_00ab3310(table, self.widget.transform,
+        self.services.crt_sse2_conversion);
     // These properties are recovered, but their per-frame asynchronous/rotation
     // consumer00AB6430 is outside this startup packet. Fail explicitly instead
     // of accepting a page whose later behavior this owner would silently omit.
