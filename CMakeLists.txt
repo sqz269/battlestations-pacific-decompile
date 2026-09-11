@@ -98,11 +98,13 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_physical_buffer_access.cpp
   src/native_physical_buffer_lock.cpp
   src/native_logical_buffer_device_save.cpp
+  src/native_logical_buffer_device_restore.cpp
   src/native_logical_vertex_pool_return.cpp
   src/native_renderer_vertex_layout_binding.cpp
   src/native_renderer_index_binding.cpp
   src/native_texture_device_reset.cpp
   src/native_renderer_resource_restore.cpp
+  src/native_renderer_cached_states.cpp
   src/native_occlusion_query_device_reset.cpp
   src/native_diagnostic_sink_lifetime.cpp
   src/native_hardware_layout_owner.cpp

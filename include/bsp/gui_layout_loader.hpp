@@ -267,7 +267,7 @@ const GuiPropertyDescriptor* gui_base_property_descriptors(
 // came back false; a true MouseBlock forces MouseHit to true without a lookup.
 void bind_widget_properties_00aaa710(
     const GuiTable& table, GuiLayoutWidget& widget, bool is_page_root,
-    bool widescreen_enabled) noexcept;
+    bool widescreen_enabled, const bool& crt_sse2_conversion) noexcept;
 
 // ---------------------------------------------------------------------------
 // Integration boundary
@@ -278,6 +278,8 @@ void bind_widget_properties_00aaa710(
 // unrecovered behaviour.
 struct GuiLayoutHost {
     virtual ~GuiLayoutHost() = default;
+    // Required live0109EEA4 alias, not a snapshot of the current mode.
+    virtual const bool& crt_sse2_conversion() const = 0;
 
     // 00AA58C3: the VFS singleton at 0109CEEC, 00BDF4C0, with "<name>.mmod".
     virtual bool vfs_name_exists(const std::string& path) = 0;

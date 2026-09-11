@@ -76,25 +76,26 @@ const GuiPropertyDescriptor kBaseProperties[] = {
 
 // A Lua number reaching a float field. The script side is a double; the field
 // is a float, so the narrowing here is the one the native store performs.
-float to_float(const GuiValue& value, float fallback) noexcept {
+float to_float(const GuiValue& value, float fallback, const bool& crt_sse2_conversion) noexcept {
     gui_lua_store_value_00bd63b0(value,
-        gui_lua_field(GuiLuaFieldType::Float, &fallback), nullptr);
+        gui_lua_field(GuiLuaFieldType::Float, &fallback), nullptr, crt_sse2_conversion);
     return fallback;
 }
 
 // Lua truth is false only for nil and false; zero and empty strings are true.
-bool to_bool(const GuiValue& value, bool fallback) noexcept {
+bool to_bool(const GuiValue& value, bool fallback, const bool& crt_sse2_conversion) noexcept {
     gui_lua_store_value_00bd63b0(value,
-        gui_lua_field(GuiLuaFieldType::Bool, &fallback), nullptr);
+        gui_lua_field(GuiLuaFieldType::Bool, &fallback), nullptr, crt_sse2_conversion);
     return fallback;
 }
 
 // The vector properties arrive as array-part tables: Pos is three entries,
 // Pivot/Size/Scale two, the colours four. Missing entries become Lua number0.
-void read_lanes(const GuiValue& value, float* out, std::size_t count) noexcept {
+void read_lanes(const GuiValue& value, float* out, std::size_t count,
+    const bool& crt_sse2_conversion) noexcept {
     const auto type = count == 2 ? GuiLuaFieldType::Vec2 :
         count == 3 ? GuiLuaFieldType::Vec3 : GuiLuaFieldType::Vec4;
-    gui_lua_store_value_00bd63b0(value, gui_lua_field(type, out), nullptr);
+    gui_lua_store_value_00bd63b0(value, gui_lua_field(type, out), nullptr, crt_sse2_conversion);
 }
 
 GuiWideScreenAlign align_from_string(const GuiValue* value) noexcept {
@@ -545,7 +546,7 @@ bool parse_gui_page_table(
 
 void bind_widget_properties_00aaa710(
     const GuiTable& table, GuiLayoutWidget& widget, bool is_page_root,
-    bool widescreen_enabled) noexcept {
+    bool widescreen_enabled, const bool& crt_sse2_conversion) noexcept {
     GuiWidgetTransform& xf = widget.transform;
 
     // Every descriptor uses visitor+0Ch, so missing/nil properties restore
@@ -564,44 +565,44 @@ void bind_widget_properties_00aaa710(
 
     if (const GuiValue* value = table.find("Pos")) {
         float lanes[3] = {xf.position.x, xf.position.y, xf.position.z};
-        read_lanes(*value, lanes, 3);
+        read_lanes(*value, lanes, 3, crt_sse2_conversion);
         xf.position.x = lanes[0];
         xf.position.y = lanes[1];
         xf.position.z = lanes[2];
     }
     if (const GuiValue* value = table.find("Size")) {
         float lanes[2] = {xf.size.width, xf.size.height};
-        read_lanes(*value, lanes, 2);
+        read_lanes(*value, lanes, 2, crt_sse2_conversion);
         xf.size.width = lanes[0];
         xf.size.height = lanes[1];
     }
     if (const GuiValue* value = table.find("Pivot")) {
         float lanes[2] = {xf.pivot_x, xf.pivot_y};
-        read_lanes(*value, lanes, 2);
+        read_lanes(*value, lanes, 2, crt_sse2_conversion);
         xf.pivot_x = lanes[0];
         xf.pivot_y = lanes[1];
     }
     if (const GuiValue* value = table.find("Scale")) {
         float lanes[2] = {xf.scale_x, xf.scale_y};
-        read_lanes(*value, lanes, 2);
+        read_lanes(*value, lanes, 2, crt_sse2_conversion);
         xf.scale_x = lanes[0];
         xf.scale_y = lanes[1];
     }
     if (const GuiValue* value = table.find("Rotate")) {
-        xf.rotate = to_float(*value, xf.rotate);
+        xf.rotate = to_float(*value, xf.rotate, crt_sse2_conversion);
     }
     if (const GuiValue* value = table.find("Color")) {
-        read_lanes(*value, widget.color, 4);
+        read_lanes(*value, widget.color, 4, crt_sse2_conversion);
     }
     xf.alpha = widget.color[3];  // +5Ch is the alpha lane of the same property
     if (const GuiValue* value = table.find("LowColor")) {
-        read_lanes(*value, widget.low_color, 4);
+        read_lanes(*value, widget.low_color, 4, crt_sse2_conversion);
     }
     if (const GuiValue* value = table.find("HighColor")) {
-        read_lanes(*value, widget.high_color, 4);
+        read_lanes(*value, widget.high_color, 4, crt_sse2_conversion);
     }
     if (const GuiValue* value = table.find("BlendFactor")) {
-        widget.blend_factor = to_float(*value, widget.blend_factor);
+        widget.blend_factor = to_float(*value, widget.blend_factor, crt_sse2_conversion);
     }
 
     xf.widescreen_align = align_from_string(table.find("WideScreenAlign"));
@@ -616,12 +617,12 @@ void bind_widget_properties_00aaa710(
     // Visible entirely, which leaves it at the constructor's value.
     if (!is_page_root) {
         if (const GuiValue* value = table.find("Visible")) {
-            widget.visible = to_bool(*value, widget.visible);
+            widget.visible = to_bool(*value, widget.visible, crt_sse2_conversion);
         }
     }
 
     if (const GuiValue* value = table.find("MouseBlock")) {
-        xf.mouse_block = to_bool(*value, false);
+        xf.mouse_block = to_bool(*value, false, crt_sse2_conversion);
     } else {
         xf.mouse_block = false;
     }
@@ -629,7 +630,7 @@ void bind_widget_properties_00aaa710(
         // 00AAAC84: a blocking widget is hit-testable without a lookup.
         xf.mouse_hit = true;
     } else if (const GuiValue* value = table.find("MouseHit")) {
-        xf.mouse_hit = to_bool(*value, false);
+        xf.mouse_hit = to_bool(*value, false, crt_sse2_conversion);
     } else {
         xf.mouse_hit = false;
     }
@@ -687,14 +688,15 @@ void build_widget_children_00aaa710(
             stored.source = &body;
             host.on_widget_before_properties(stored, body);
             bind_widget_properties_00aaa710(
-                body, stored, false, host.widescreen_enabled());
+                body, stored, false, host.widescreen_enabled(), host.crt_sse2_conversion());
             host.on_widget_base_properties_bound(stored, body);
             build_widget_children_00aaa710(body, stored, host);
             host.on_widget_properties_bound(stored, body);
         } else {
             const GuiTable empty;
             host.on_widget_before_properties(stored, empty);
-            bind_widget_properties_00aaa710(empty, stored, false, host.widescreen_enabled());
+            bind_widget_properties_00aaa710(empty, stored, false, host.widescreen_enabled(),
+                host.crt_sse2_conversion());
             host.on_widget_base_properties_bound(stored, empty);
             host.on_widget_properties_bound(stored, empty);
         }
@@ -763,10 +765,11 @@ GuiLayoutPage* load_gui_page_00aa5840(
         root->source = table.get();
         host.on_widget_before_properties(*root, *table);
         bind_widget_properties_00aaa710(
-            *table, *root, true, host.widescreen_enabled());
+            *table, *root, true, host.widescreen_enabled(), host.crt_sse2_conversion());
         if (const GuiValue* priority = table->find("Priority")) {
             gui_lua_store_value_00bd63b0(*priority,
-                gui_lua_field(GuiLuaFieldType::Int, &page->priority), nullptr);
+                gui_lua_field(GuiLuaFieldType::Int, &page->priority), nullptr,
+                host.crt_sse2_conversion());
         }
         host.on_widget_base_properties_bound(*root, *table);
         build_widget_children_00aaa710(*table, *root, host);
@@ -774,7 +777,8 @@ GuiLayoutPage* load_gui_page_00aa5840(
     } else {
         const GuiTable empty;
         host.on_widget_before_properties(*root, empty);
-        bind_widget_properties_00aaa710(empty, *root, true, host.widescreen_enabled());
+        bind_widget_properties_00aaa710(empty, *root, true, host.widescreen_enabled(),
+            host.crt_sse2_conversion());
         host.on_widget_base_properties_bound(*root, empty);
         host.on_widget_properties_bound(*root, empty);
     }

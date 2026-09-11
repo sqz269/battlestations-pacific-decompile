@@ -200,6 +200,16 @@ __declspec(naked) void __cdecl crt_sqrt_kernel() {
 
 } // namespace
 
+__declspec(naked) void __fastcall native_crt_sqrt_st0_00bf7030(const CameraAxesCrtAccess*) {
+    __asm {
+        push ebx
+        mov ebx, ecx
+        call crt_sqrt_kernel
+        pop ebx
+        ret
+    }
+}
+
 __declspec(naked) float __fastcall camera_vector_length_00419440(const float*, const CameraAxesCrtAccess*) {
     __asm {
         push ebx

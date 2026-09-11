@@ -28,6 +28,12 @@ struct CameraAxesCrtAccess {
     CameraAxes87Except except_00c27489;
 };
 
+// Shared CRT entry with the operand ALREADY in x87 ST0; replaces it with sqrt.
+// ECX is the same required CRT access used by the vector-length kernel. Call
+// only from an x86 assembly caller. This forwarding entry adds no FP operation
+// or spill; it preserves EBX while binding the existing private CRT kernel.
+void __fastcall native_crt_sqrt_st0_00bf7030(const CameraAxesCrtAccess*);
+
 // Shared recovered kernels. Length keeps the native ECX vector / ST0 result
 // schedule and adds the actual CRT binding in EDX. Both pointers must be valid.
 // Cross retains ECX destination, EDX left, stack right, RET4 and EAX destination;

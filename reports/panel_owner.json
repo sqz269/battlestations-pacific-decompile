@@ -1,0 +1,228 @@
+{
+  "packet": "orch4_panel_owner_f",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra": "http://127.0.0.1:8089"
+  },
+  "functions": [
+    {
+      "address": "00452660",
+      "name": "BSP_PanelOwner_Construct",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=fresh native38h owner; EAX=this; RET",
+      "last_instruction": "00452718",
+      "last_instruction_length": 1,
+      "end_inclusive": "00452718",
+      "evidence": "Complete64 instructions: vtable00CE4BC0; three self-linked nil heads/count0; current28/2C zero; no stores to opaque4/10/1C, pause30 or state34. Actual palette allocator0044AB50 reused directly; existing standard containers provide character/queue construction.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks.",
+      "status": "reconstructed_projection"
+    },
+    {
+      "address": "00452720",
+      "name": "CG_scalar_deleting_dtor_00452720",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=owner; flags stack; EAX=this even after free; RET4",
+      "last_instruction": "0045273b",
+      "last_instruction_length": 3,
+      "end_inclusive": "0045273d",
+      "evidence": "Call00452040 then low-bit test00452728; optional00BF65AC; repaired ADD ESP4 at00452735; original pointer returned at00452738. Existing compiler-generated identity retained.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks.",
+      "status": "reconstructed_projection"
+    },
+    {
+      "address": "00452040",
+      "name": "BSP_PanelOwner_Destroy",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=owner; RET",
+      "last_instruction": "0045212e",
+      "last_instruction_length": 1,
+      "end_inclusive": "0045212e",
+      "evidence": "Full verified bytes00452040..0045212E: current-string release without header clear; queue range/free/zero; palette range/free/zero; character range/free/zero. Complete tail independently decoded despite truncated stored body.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks. Stored Ghidra body still ends004520B3; see panel_owner_flow.json.",
+      "status": "reconstructed_projection"
+    },
+    {
+      "address": "0044ab50",
+      "name": "BSP_PanelPalette_AllocateEmptyNode",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX unused; no stack arguments; EAX=24h node; RET",
+      "last_instruction": "0044ab86",
+      "last_instruction_length": 1,
+      "end_inclusive": "0044ab86",
+      "evidence": "Complete17-instruction body allocates24h through00BF681B, writes only links0/4/8=null, color20=1,isnil21=0; constructor later changes isnil to1 and links to self.",
+      "uncertainty": "Actual Win32 bytes and existing concrete allocation transport; allocation returns or throws. Payload and padding untouched. Descriptive type-specific allocator name, not a recovered symbol.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "0044ac90",
+      "name": "BSP_PanelPalette_DestroySubtree",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=tree (forwarded); node* stack; RET4",
+      "last_instruction": "0044acc2",
+      "last_instruction_length": 3,
+      "end_inclusive": "0044acc4",
+      "evidence": "Complete23-instruction repaired listing: recurse current right, capture left after recursion, free current, continue left until sentinel byte21. No payload callbacks or count writes.",
+      "uncertainty": "Requires actual valid native tree links and24h nodes from the concrete allocation transport. No corrupt-tree recovery.",
+      "status": "reconstructed"
+    }
+  ],
+  "fragments": [
+    {
+      "address": "004517e0",
+      "name": "PanelQueue_FullRangeClear",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=tree; output*, begin(owner,node), end(owner,node) stack; RET14",
+      "last_instruction": "004518a6",
+      "last_instruction_length": 3,
+      "end_inclusive": "004518a8",
+      "evidence": "Owner0045208E..520A6 builds same-owner current begin/end; reached00451821..0045185E branch invokes subtree destruction then resets count at00451838. Standard projection preserves reverse pair ownership and separate field24.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks. Arbitrary-range00451860..A8 and invalid iterators are not implemented.",
+      "status": "fragment",
+      "reconstructed_range": "00451821-0045185e"
+    },
+    {
+      "address": "0044e150",
+      "name": "PanelPalette_FullRangeClear",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=tree; output*, begin(owner,node), end(owner,node) stack; RET14",
+      "last_instruction": "0044e216",
+      "last_instruction_length": 3,
+      "end_inclusive": "0044e218",
+      "evidence": "Owner004520BA..D4 creates current begin/end, proving reached0044E191..1CE branch. Actual subtree destroy then root/count/minimum/maximum writes with current-head reloads.",
+      "uncertainty": "Only reached full-range branch; arbitrary erase0044D540 and invalid iterator branches are not implemented.",
+      "status": "fragment",
+      "reconstructed_range": "0044e191-0044e1ce"
+    },
+    {
+      "address": "0044f0a0",
+      "name": "PanelCharacters_FullRangeClear",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=tree; output*, begin(owner,node), end(owner,node) stack; RET14",
+      "last_instruction": "0044f166",
+      "last_instruction_length": 3,
+      "end_inclusive": "0044f168",
+      "evidence": "Owner004520E8..52106 creates current begin/end, proving reached0044F0E1..11E branch. Reverse owning-key cleanup uses standard-map node release, not earlier unaddressed ascending helper.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks. Arbitrary-range0044F120..168 and native map count/layout are not implemented.",
+      "status": "fragment",
+      "reconstructed_range": "0044f0e1-0044f11e"
+    },
+    {
+      "address": "004512e0",
+      "name": "PanelQueue_FullRootDestruction",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=tree; subtree root* stack; RET4",
+      "last_instruction": "00451372",
+      "last_instruction_length": 3,
+      "end_inclusive": "00451374",
+      "evidence": "Repaired whole assembly proves reverse order: right recursion0045130D, left capture00451312, 0044FFF0 entry then inline key release then node free00451350. Full-root typed drain reuses00450110.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks. Standard-map full-root only; arbitrary native subtree-pointer interface is not reconstructed.",
+      "status": "fragment"
+    },
+    {
+      "address": "0044e4f0",
+      "name": "PanelCharacters_FullRootDestruction",
+      "source": "src/panel_owner.cpp",
+      "header": "include/bsp/panel_owner.hpp",
+      "document": "docs/PANEL_OWNER.md",
+      "original_abi": "ECX=tree; subtree root* stack; RET4",
+      "last_instruction": "0044e53f",
+      "last_instruction_length": 3,
+      "end_inclusive": "0044e541",
+      "evidence": "Repaired whole assembly proves right recursion0044E507, data/left capture, key release, node free0044E52C, then left.",
+      "uncertainty": "Canonical VoicePanelState uses standard character/queue maps, not native38h layout. Native standard-map sentinel allocation/free timing, iterator ABI, allocation-failure/SEH unwind and destruction-time topology mutation are outside the projection. Current pairs/vectors/slots must survive ownership callbacks. Standard-map full-root only; arbitrary native subtree-pointer interface is not reconstructed.",
+      "status": "fragment"
+    }
+  ],
+  "evidence_only_library_allocators": [
+    {
+      "address": "0044ab00",
+      "last_instruction": "0044ab36",
+      "last_instruction_length": 1,
+      "native_bytes": "1c",
+      "writes": "links0/4/8=null; color18=1,isnil19=0; payload/padding untouched"
+    },
+    {
+      "address": "0044ac00",
+      "last_instruction": "0044ac36",
+      "last_instruction_length": 1,
+      "native_bytes": "58",
+      "writes": "links0/4/8=null; color54=1,isnil55=0; payload/padding untouched"
+    }
+  ],
+  "integration": {
+    "canonical_member": "VoicePanelState::owner_native (PanelOwnerNativeStorage)",
+    "palette_alias": "owner.palette_10 = &owner.owner_native.palette_10",
+    "required_allocation_words": [
+      "character_allocator_04",
+      "palette_allocator_10",
+      "queue_allocator_1c",
+      "pause_bits_30",
+      "state_34"
+    ],
+    "preparation": "prepare_panel_owner_allocation(owner, captured_words), unaddressed allocation adapter",
+    "constructor": "construct_panel_owner_00452660(owner) -> same VoicePanelState&",
+    "destructor": "destroy_panel_owner_00452040(owner, strings)",
+    "scalar_delete": "scalar_delete_panel_owner_00452720(owner_pointer, flags, strings) -> original pointer",
+    "caller_pending": "Root owns004DC6A0 allocation/construction/publication/loader integration"
+  },
+  "analysis_changes": {
+    "flow_report": "reports/panel_owner_flow.json",
+    "repaired_internal_call_gaps": [
+      "00452735-00452737",
+      "00451355-0045135f",
+      "0044acb4-0044acbe",
+      "0044e531-0044e53b"
+    ],
+    "explicit_tail": {
+      "function": "00452040",
+      "start": "004520b4",
+      "end_inclusive": "0045212e",
+      "bytes": 123,
+      "verified_last_instruction": "0045212e",
+      "last_instruction_length": 1,
+      "stored_body_end": "004520b3",
+      "stored_body_tail_complete": false,
+      "cleared_crt_free_call_sites": [
+        "004520af",
+        "004520dd",
+        "0045210f"
+      ]
+    },
+    "missing_function_starts": [],
+    "ghidra_scripts": false,
+    "callee_no_return_changes": false,
+    "authorization": "Scoped initial owner packet authorized locked repairs; root later restored worker read-only; no later mutations.",
+    "ledger_mutations": false,
+    "registry_owner": "Root central integration; preserve correct compiler/library identities"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release passed; local/panel-owner-build.log",
+    "existing_tests": "reconstructed_math1/1 passed; native differential test not configured in new worktree",
+    "focused_fixture": "PASS: captured word/NaN bits, real palette insertion/tree teardown, current string release before reverse queue callbacks, linked current pair and unchanged field24 during callbacks, zero count/palette before reverse character cleanup, all pooled strings balanced, scalar deleting flag",
+    "fixture_source": "local/panel-owner-probe.cpp",
+    "fixture_log": "local/panel-owner-probe.log",
+    "fixture_recipe": "./local/run-panel-owner-probe.ps1 -SourceRoot <checkout> [-CoreLibrary <bsp_core.lib>]",
+    "library_sha256": "0E6B600C2CC94A4C9661F5A1A09A3F424F2A02D2865E3E421DD347824180D421",
+    "native_abi_tested": false,
+    "game_validated": false
+  }
+}

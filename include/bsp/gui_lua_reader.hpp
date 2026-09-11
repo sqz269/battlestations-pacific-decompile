@@ -185,7 +185,7 @@ struct GuiLuaHandleResolver {
 // or the value was the wrong shape for an aggregate. The native routine has no
 // such report; it simply leaves the destination as it found it.
 bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& field,
-                                  GuiLuaHandleResolver* resolver) noexcept;
+    GuiLuaHandleResolver* resolver, const bool& crt_sse2_conversion) noexcept;
 
 // 00BD61C0, __thiscall(ECX = the field pair, the default pair), RET 4. Copies
 // the default's word into the destination using the *field's* tag, so a default
@@ -297,7 +297,8 @@ bool gui_lua_is_integer_00b66a60(GuiLuaHost& host, const GuiLuaRef& object);
 // evaluated value, which is what the static page parser produces.
 bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
                                 const GuiLuaVariant& field,
-                                GuiLuaHandleResolver* resolver);
+                                GuiLuaHandleResolver* resolver,
+                                const bool& crt_sse2_conversion);
 
 // ---------------------------------------------------------------------------
 // The reader
@@ -312,7 +313,10 @@ bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
 // depth is the nesting depth of the page script's tables plus one.
 class GuiLuaReader {
 public:
-    GuiLuaReader(GuiLuaHost& host, const GuiLuaRef& root);
+    // Required alias of the live0109EEA4 decision. It must outlive the reader;
+    // conversion reads it after the Lua callback and the float32 spill/reload.
+    GuiLuaReader(GuiLuaHost& host, const GuiLuaRef& root,
+        const bool& crt_sse2_conversion);
     ~GuiLuaReader();
 
     GuiLuaReader(const GuiLuaReader&) = delete;
@@ -357,6 +361,7 @@ public:
 
 private:
     GuiLuaHost* host_;
+    const bool& crt_sse2_conversion_;
     std::vector<GuiLuaRef> stack_;
 };
 
@@ -436,6 +441,6 @@ GuiScreenScriptRun run_gui_screen_scripts_00ac6600(GuiLuaScriptHost& host,
 bool load_gui_screen_table_00ac6600(GuiLuaScriptHost& scripts, GuiLuaHost& lua,
                                     const std::string& page_name,
                                     void (*visit)(GuiLuaReader&, void*),
-                                    void* context);
+                                    void* context, const bool& crt_sse2_conversion);
 
 }  // namespace bsp

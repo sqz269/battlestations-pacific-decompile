@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd8a60",
+    "end_address": "00cd8a76"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd8a60",
+    "end_address": "00cd8a75",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd8a60",
+    "disassemble_first": false,
+    "name": "BSP_WeakHandlePool_InitializeStatic"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd8a60",
+    "function_name": "BSP_WeakHandlePool_InitializeStatic",
+    "entry_point": "00cd8a60",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd8a60",
+    "warnings": [
+     "Function name 'BSP_WeakHandlePool_InitializeStatic' \u2014 main part 'WeakHandlePool_InitializeStatic' is not PascalCase. Expected: WeakhandlepoolInitializestatic",
+     "Function name 'BSP_WeakHandlePool_InitializeStatic' \u2014 main part 'WeakHandlePool_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WeakHandlePool_InitializeStatic' does not start with a recognized verb. First word 'Weak' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cd8a60",
+   "end": "00cd8a76",
+   "name": "BSP_WeakHandlePool_InitializeStatic",
+   "after": "Function: BSP_WeakHandlePool_InitializeStatic at 00cd8a60\nSignature: undefined BSP_WeakHandlePool_InitializeStatic(void)\nEntry: 00cd8a60\nBody: 00cd8a60 - 00cd8a75"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
