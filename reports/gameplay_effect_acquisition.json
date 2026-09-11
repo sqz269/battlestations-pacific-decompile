@@ -1,0 +1,218 @@
+{
+  "packet": "orch4_effect_acquisition_m",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "008700e0",
+      "name": "acquire_gameplay_effect_by_id_008700e0",
+      "proposed_name": "BSP_GameplayEffectManager_AcquireById",
+      "source": "src/gameplay_effect_acquisition.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "reconstructed_normal_sequence_with_required_component_virtual",
+      "abi": "ECX manager; stack out/signedID/flag; EAX out; RETCh.",
+      "meaning": "ID<=0 null; hit atomic retain. Miss current game Lua1A0C Effects[ID], low-byte flag table guard, Name then actual24h allocation/current slot8 load/identity, unique weak insert, ordered temporary cleanup then final cache-value reload.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "FUN_008700e0",
+      "last_instruction": "00870369",
+      "last_instruction_length": 3,
+      "end_exclusive": "0087036c",
+      "byte_span": 652,
+      "sha256": "e69537266de8f37180554b42f76806d71c4ed9e894ad034aa95521c8ad5d3181",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX manager; stack out/signedID/flag; EAX out; RETCh. ID<=0 null; hit atomic retain. Miss current game Lua1A0C Effects[ID], low-byte flag table guard, Name then actual24h allocation/current slot8 load/identity, unique weak insert, ordered temporary cleanup then final cache-value reload. Full-span disk/live bytes match SHA256 e69537266de8f37180554b42f76806d71c4ed9e894ad034aa95521c8ad5d3181. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    {
+      "address": "00871b50",
+      "name": "acquire_gameplay_effect_by_name_00871b50",
+      "proposed_name": "BSP_GameplayEffectManager_AcquireByName",
+      "source": "src/gameplay_effect_acquisition.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "reconstructed_normal_sequence_with_required_component_virtual",
+      "abi": "ECX manager; stack out/NativeString*/flag; EAX out; RETCh.",
+      "meaning": "Length0 stores null without prior-output release; else concrete name-index00871750 and acquisition008700E0.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "FUN_00871b50",
+      "last_instruction": "00871b92",
+      "last_instruction_length": 3,
+      "end_exclusive": "00871b95",
+      "byte_span": 69,
+      "sha256": "a6646d6a23fb8566559ed036e76264283d1ee7c2353f2eb2b19b7debe868392c",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX manager; stack out/NativeString*/flag; EAX out; RETCh. Length0 stores null without prior-output release; else concrete name-index00871750 and acquisition008700E0. Full-span disk/live bytes match SHA256 a6646d6a23fb8566559ed036e76264283d1ee7c2353f2eb2b19b7debe868392c. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    {
+      "address": "00871ba0",
+      "name": "acquire_gameplay_effect_by_name_00871ba0",
+      "proposed_name": "BSP_EffectHandle_AcquireByName",
+      "source": "src/gameplay_effect_acquisition.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "reconstructed_normal_sequence_with_required_component_virtual",
+      "abi": "ECX out; EDX name; stack flag; EAX out; RET4.",
+      "meaning": "Capture output/name addresses before concrete004C1650 manager getter; forward to00871B50. Existing descriptive name preserved.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "BSP_EffectHandle_AcquireByName",
+      "last_instruction": "00871bc7",
+      "last_instruction_length": 3,
+      "end_exclusive": "00871bca",
+      "byte_span": 42,
+      "sha256": "a7cd93fc5deefc7b03c13dd2131745a685977dff35da1540e980a46215454a27",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX out; EDX name; stack flag; EAX out; RET4. Capture output/name addresses before concrete004C1650 manager getter; forward to00871B50. Existing descriptive name preserved. Full-span disk/live bytes match SHA256 a7cd93fc5deefc7b03c13dd2131745a685977dff35da1540e980a46215454a27. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    {
+      "address": "0086f930",
+      "name": "STL_IntPointerTree18_InsertUnique",
+      "proposed_name": "STL_IntPointerTree18_InsertUnique",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "analyzed_reused_STL_contract",
+      "abi": "ECX map; stack output-result/pair; EAX output; RET8.",
+      "meaning": "Signed unique key search; predecessor when needed; duplicate preserves existing value and inserted=false; miss returns inserted node and true. No payload reference operation.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "FUN_0086f930",
+      "last_instruction": "0086f9e6",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086f9e9",
+      "byte_span": 185,
+      "sha256": "807a9e71a9edfe0ac8c6f52b098b8a3820fe06df4c037a6e6723385e91ec31d5",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; stack output-result/pair; EAX output; RET8. Signed unique key search; predecessor when needed; duplicate preserves existing value and inserted=false; miss returns inserted node and true. No payload reference operation. Full-span disk/live bytes match SHA256 807a9e71a9edfe0ac8c6f52b098b8a3820fe06df4c037a6e6723385e91ec31d5. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    {
+      "address": "00869990",
+      "name": "STL_IntPointerTree18_DecrementCheckedIterator",
+      "proposed_name": "STL_IntPointerTree18_DecrementCheckedIterator",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "analyzed_reused_STL_contract",
+      "abi": "ECX mutable owner/node iterator; RET.",
+      "meaning": "Checked predecessor including end-to-maximum. Explicit pointer ECX prototype restored; one-argument fastcall is an analysis storage model, not recovered source convention.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "FUN_00869990",
+      "last_instruction": "00869a18",
+      "last_instruction_length": 1,
+      "end_exclusive": "00869a19",
+      "byte_span": 137,
+      "sha256": "43e49dd8e7fa699689c3c027cba14a065d33e6a7acecd6e8f5b3fa1eec8204f8",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX mutable owner/node iterator; RET. Checked predecessor including end-to-maximum. Explicit pointer ECX prototype restored; one-argument fastcall is an analysis storage model, not recovered source convention. Full-span disk/live bytes match SHA256 43e49dd8e7fa699689c3c027cba14a065d33e6a7acecd6e8f5b3fa1eec8204f8. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    {
+      "address": "0086ebe0",
+      "name": "STL_IntPointerTree18_InsertAndRebalance",
+      "proposed_name": "STL_IntPointerTree18_InsertAndRebalance",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "analyzed_reused_STL_contract",
+      "abi": "ECX map; four stack inputs; EAX output iterator; RET10h.",
+      "meaning": "Count>=1FFFFFFEh throws length_error; normal path allocates node, increments count and rebalances red-black links/colors. Incorrect whole-function throw tag retired.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "STL_xlen_throw_0086ebe0",
+      "last_instruction": "0086edc9",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086edcc",
+      "byte_span": 492,
+      "sha256": "377286b55cf3c98fbf4bb5e2d5a340e334f0c0f845ada3a92877eee0f112f7ad",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; four stack inputs; EAX output iterator; RET10h. Count>=1FFFFFFEh throws length_error; normal path allocates node, increments count and rebalances red-black links/colors. Incorrect whole-function throw tag retired. Full-span disk/live bytes match SHA256 377286b55cf3c98fbf4bb5e2d5a340e334f0c0f845ada3a92877eee0f112f7ad. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    {
+      "address": "0086ab70",
+      "name": "STL_IntPointerTree18_AllocateNode",
+      "proposed_name": "STL_IntPointerTree18_AllocateNode",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "status": "analyzed_reused_STL_contract",
+      "abi": "Five stack inputs left/parent/right/pair/color; EAX node; RET14h.",
+      "meaning": "Allocate18h, links0/4/8, keyC, raw pointer10, color14, nil15=0; no payload retain and padding16/17 untouched.",
+      "name_is_hypothesis": true,
+      "previous_export_name": "FUN_0086ab70",
+      "last_instruction": "0086abac",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086abaf",
+      "byte_span": 63,
+      "sha256": "db4454cc0ca1b1697f659f8fcb2ebc8066732e82c94b942c6c15a1c39bb02d58",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. Five stack inputs left/parent/right/pair/color; EAX node; RET14h. Allocate18h, links0/4/8, keyC, raw pointer10, color14, nil15=0; no payload retain and padding16/17 untouched. Full-span disk/live bytes match SHA256 db4454cc0ca1b1697f659f8fcb2ebc8066732e82c94b942c6c15a1c39bb02d58. See docs/GAMEPLAY_EFFECT_ACQUISITION.md. Win32 checks and focused fixtures passed; component virtual, native SEH/ABI and gameplay remain external/unvalidated."
+    }
+  ],
+  "startup_integration": {
+    "address": "004dc6a0",
+    "name": "global_subsystems_concrete_effect_acquisition",
+    "source": "src/global_subsystems.cpp",
+    "document": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+    "status": "integrated_concrete_effect_acquisition_build_and_fixture_tested",
+    "evidence": "Hypothesis, not a recovered symbol. Existing normal-flow global subsystem reconstruction now calls concrete00871BA0 through GlobalSubsystemContext.effect_acquisition instead of the acquisition host callback. Actual name index/manager cache-hit retains execute in the existing startup fixture;8 Lua loads and publication/refcount checks passed. Component load, vector append and zero-reference dispatch remain required services."
+  },
+  "no_ghidra_function": [],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "build_log": "local/effect_acquisition_m_build.log",
+    "fixtures": [
+      {
+        "source": "local/effect_acquisition_fixture.cpp",
+        "log": "local/effect_acquisition_m_fixture.log",
+        "scope": "Actual Lua and definition bytes; low-byte flag, cleanup-before-output/cache-value reload, duplicate weak insertion, cache retain, name wrappers.",
+        "source_sha256": "314ebc7fd625c22ab67ee884d88eed6e1b4d64a0017a19dda2b7feee07621452"
+      },
+      {
+        "source": "local/global_subsystems_fixture.cpp",
+        "log": "local/effect_acquisition_m_startup_fixture.log",
+        "scope": "Existing startup fixture updated to concrete name-index and manager cache hits; original8 Lua loads/publication/refcounts.",
+        "source_sha256": "b0475a4238e994e75e955116982a487cdc98062e3877ceee24c7ee76bede2f40"
+      }
+    ],
+    "library_sha256": "d8b1990f3db275fabd75d91bcd207f81b99aaef8f3708204d092f26b528cf7c9",
+    "code_revision": "record after source commit",
+    "native_abi": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "prototype": "reports/gameplay_effect_acquisition_prototypes.json",
+    "tags": "reports/gameplay_effect_acquisition_tags.json",
+    "body_or_flow_mutations": 0,
+    "annotations": {
+      "count": 8,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T172149Z.json",
+      "readback": "local/effect_acquisition_m_comments.json",
+      "exports": "local/effect_acquisition_m_final_exports.log",
+      "explicit_iterator_signature_verified_after_annotation": true,
+      "caller_passes_local_iterator_address": true
+    }
+  },
+  "boundaries": [
+    "Actual00870400 current virtual slot8 component construction/loading is required; no fabricated component payloads.",
+    "Canonical standard map; native checked-iterator/huge-container/allocator-failure/SEH/ABI boundaries.",
+    "Fresh losing duplicate allocation is not given invented cleanup; output store reloads captured cache value after temporary cleanup.",
+    "Process static name index must be bound through its existing setup API.",
+    "Warning and other acquisition consumers remain on their prior host binding."
+  ],
+  "followups": [
+    {
+      "packet": "effect_component_load",
+      "addresses": [
+        "00870400",
+        "0086ef60",
+        "00868bf0",
+        "00a83fd0"
+      ]
+    },
+    {
+      "packet": "startup_effect_vector_append",
+      "addresses": [
+        "004d9c00"
+      ]
+    },
+    {
+      "packet": "warning_concrete_acquisition",
+      "addresses": [
+        "009870a0"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "reason": "0086EBE0 is returning node insertion and red-black rebalance. A count-limit length_error branch does not make the whole function STL_xlen_throw.",
+  "entries": [
+    {
+      "address": "0086ebe0",
+      "prior_ledger": {
+        "address": "0086ebe0",
+        "name": "STL_xlen_throw_0086ebe0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "0086ebe0",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_0086ebe0 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "prior_function": "Function: STL_xlen_throw_0086ebe0 at 0086ebe0\nSignature: undefined STL_xlen_throw_0086ebe0(void)\nEntry: 0086ebe0\nBody: 0086ebe0 - 0086edcb",
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "0086ebe0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "delete_bookmark",
+      "body": {
+        "address": "0086ebe0",
+        "category": "Inventory: stl_throw_site"
+      },
+      "result": "{\"success\": true, \"deleted\": 1, \"address\": \"0086ebe0\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

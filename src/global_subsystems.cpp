@@ -94,7 +94,8 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
         // The validation callback may return after repairing this same owner.
         auto* const begin = read<NativeString*>(selected_config, 0x10);
         void* effect;
-        host.acquire_effect_00871ba0(effect, begin + index, 1);
+        acquire_gameplay_effect_by_name_00871ba0(
+            effect, begin[index], 1, context.effect_acquisition);
         EffectCleanup cleanup{effect, host};
         host.append_effect_004d9c00(game.effects_vector_718c, &effect);
     }

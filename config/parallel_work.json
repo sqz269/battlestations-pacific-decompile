@@ -6208,6 +6208,31 @@
       "prerequisite_packets": [],
       "scope": "Complete raw vector4 transform and plane wrapper with original x87/MOVSS schedules and distinct child result.",
       "evidence": "reports/native_camera_plane_transform_audit.json"
+    },
+    {
+      "id": "orch4_effect_acquisition_m",
+      "packet": "orch4_effect_acquisition_m",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_fixtures_tested_pending_integration",
+      "function_addresses": [
+        "008700e0",
+        "00871b50",
+        "00871ba0",
+        "0086f930",
+        "00869990",
+        "0086ebe0",
+        "0086ab70",
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_acquisition.hpp",
+        "src/gameplay_effect_acquisition.cpp",
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_acquisition.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_ACQUISITION.md"
     }
   ],
   "snapshot_after_analysis": {

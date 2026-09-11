@@ -1,0 +1,25 @@
+{
+  "address": "00869990",
+  "reason": "Assembly consumes ECX as mutable owner/node iterator and writes node at+4. The no-input prototype hides the predecessor update in0086F930.",
+  "model": "One explicit ECX pointer with __fastcall; original source-language convention remains uncertain.",
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00869990",
+        "prototype": "void __fastcall STL_IntPointerTree18_DecrementCheckedIterator(void *iterator)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00869990 with __fastcall calling convention"
+    }
+  ],
+  "before": "Function: FUN_00869990 at 00869990\nSignature: undefined FUN_00869990(void)\nEntry: 00869990\nBody: 00869990 - 00869a18",
+  "apply": "Successfully set prototype for function at 00869990 with __fastcall calling convention",
+  "after": "Function: STL_IntPointerTree18_DecrementCheckedIterator at 00869990\nSignature: void __fastcall STL_IntPointerTree18_DecrementCheckedIterator(void * iterator)\nEntry: 00869990\nBody: 00869990 - 00869a18",
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  },
+  "readback_verified": true
+}
