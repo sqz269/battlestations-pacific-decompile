@@ -32,6 +32,7 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
+#include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/input_settings.hpp"
@@ -1868,6 +1869,18 @@ int main() {
                   && without_self.pushed == 1 && with_self.declared == 6 && with_self.pushed == 5,
             "the named call counts a skipped record in nargs but not on the stack, starts at zero "
             "without a self key, and treats stack_first zero as the no-forwarding sentinel");
+    }
+
+    {
+        // 0081F1A2..0081F1C3: the instance keeps the pre-increment value and the
+        // global 00F87151 wraps only once it exceeds 0Bh, so twelve consecutive
+        // instances take 0..11 and the thirteenth takes 0 again.
+        const bsp::UnitSlotCounterStep last = bsp::unit_slot_counter_step(11);
+        const bsp::UnitSlotCounterStep before = bsp::unit_slot_counter_step(10);
+        check(last.stored == 11 && last.next == 0 && before.stored == 10
+                  && before.next == 11,
+            "the unit construction slot counter stores the pre-increment value and "
+            "wraps after 11, not at it");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
