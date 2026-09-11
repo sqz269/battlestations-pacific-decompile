@@ -1,5 +1,6 @@
 #include "bsp/gui_icon_runtime.hpp"
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/gui_widget_owner.hpp"
 #include <cstring>
 #include <stdexcept>
 #include <utility>
@@ -8,6 +9,19 @@ namespace bsp {
 namespace {
 void require(bool condition, const char* message) {
     if (!condition) throw std::runtime_error(message);
+}
+// 00AA7974..00AA797C and 00AB1F33..00AB1F43 use FLD/FSTP, not bit copies.
+void copy_size_pair(GuiWidgetSize& destination, const GuiWidgetSize& source) {
+    const auto* input = &source;
+    auto* output = &destination;
+    __asm {
+        mov eax, input
+        mov edx, output
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+        fld dword ptr [eax + 4]
+        fstp dword ptr [edx + 4]
+    }
 }
 const GuiValue* present(const GuiTable& table, const char* key) {
     const auto* value = table.find(key);
@@ -284,6 +298,22 @@ void GuiIconRuntime::loaded78_00ab10f0() {
 }
 void GuiIconRuntime::select_state_00ab1710(std::int16_t index, std::int32_t mode, float ratio) {
     if (gui_icon_select_state_00ab1710(impl_->icon, index, mode, ratio)) rebuild_00ab3cb0(index);
+}
+void GuiIconRuntime::set_size58_00ab1ef0(GuiWidgetOwner& owner, const GuiWidgetSize& size) {
+    auto& self = *impl_;
+    require(&owner.layout() == &self.widget,
+        "Icon size58 requires this runtime's same retained widget owner.");
+    // 00AB1EF9 ->00AA7970. No base bounds refresh occurs here.
+    copy_size_pair(self.widget.transform.size, size);
+    owner.recompose_00aa7220();
+    // Reload after base publication; -1 alone skips the state update/rebuild.
+    const auto index = self.icon.current_state;
+    if (index == -1) return;
+    require(index >= 0 && static_cast<std::size_t>(index) < self.icon.states.size(),
+        "Icon size58 state index is outside the native signed16 state vector.");
+    copy_size_pair(self.icon.states[static_cast<std::size_t>(index)].size, size);
+    // 00AB1F4E current+8C ->00AB10D0 -> current+80, supported Icon00AB3CB0.
+    rebuild_00ab3cb0(self.icon.current_state);
 }
 void GuiIconRuntime::rebuild_00ab3cb0(std::int16_t index) {
     auto& self = *impl_;

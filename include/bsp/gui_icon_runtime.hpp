@@ -8,6 +8,7 @@
 #include <memory>
 
 namespace bsp {
+class GuiWidgetOwner;
 // Shared ownership projection used by the existing generated-model lifetime
 // owner. GUI meshes have mesh_stream/combined_layout/section only: no instance
 // stream or index buffer. These are actual renderer resources, not fixture IDs.
@@ -88,6 +89,11 @@ public:
     void loaded78_00ab10f0();
     void select_state_00ab1710(std::int16_t, std::int32_t, float);
     void rebuild_00ab3cb0(std::int16_t);
+    // Complete Icon virtual+58, native ECX=this, size-pair pointer stack,
+    // RET4. Base size/recompose, then current-state size/rebuild unless -1.
+    // Requires this runtime's SAME retained owner, not a copied base layout.
+    // The borrowed input remains live across the base recompose callback.
+    void set_size58_00ab1ef0(GuiWidgetOwner&, const GuiWidgetSize&);
     const GuiIconWidget& state() const noexcept;
 private:
     struct Impl;
