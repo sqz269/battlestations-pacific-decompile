@@ -1,0 +1,420 @@
+{
+  "packet": "native_xlive_device_adapter2",
+  "status": "external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim",
+  "functions": [
+    {
+      "address": "00c2f1c0",
+      "end_exclusive": "00c2f1c6",
+      "name": "XLiveOnCreateDevice",
+      "cpp_symbol": "bsp::NativeXLiveDeviceAdapter::on_create_device_00c2f1c0",
+      "ordinal": 5005,
+      "IAT": "00ce25d0",
+      "original_ABI": "Import thunk JMP to Win32 stdcall(device,presentation_parameters); two stack pointer words; SDK EAX forwarded. Caller ignores result."
+    },
+    {
+      "address": "00c2f1c6",
+      "end_exclusive": "00c2f1cc",
+      "name": "XLiveOnDestroyDevice",
+      "cpp_symbol": "bsp::NativeXLiveDeviceAdapter::on_destroy_device_00c2f1c6",
+      "ordinal": 5006,
+      "IAT": "00ce25d4",
+      "original_ABI": "Import thunk JMP to Win32 stdcall(); zero arguments; SDK EAX forwarded. Caller ignores result."
+    }
+  ],
+  "proof": {
+    "passed": true,
+    "utc": "2026-09-11T17:58:57.410307+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "fresh_original_spans": [
+      {
+        "address": "00c2f1c0",
+        "length": 6,
+        "role": "owned_create_import_thunk",
+        "bytes_hex": "ff25d025ce00",
+        "sha256": "0e804a4d8e328f3ff937495cc1f7a28e1b53676b665d76c2fc9eb8e14c08d955",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00c2f1c6",
+        "length": 6,
+        "role": "owned_destroy_import_thunk",
+        "bytes_hex": "ff25d425ce00",
+        "sha256": "debd75079321682761f560073366432488d3aeb6f2cf928262e5df4774bc0b3a",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00ce25d0",
+        "length": 8,
+        "role": "original_import_ordinal_words",
+        "bytes_hex": "8d1300808e130080",
+        "sha256": "fc9b7e4c6a22740006c31df11552c94917335f446c685333d7fdd550044530db",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b29670",
+        "length": 1191,
+        "role": "full_caller_evidence_only",
+        "bytes_hex": "558bec83e4f86aff64a10000000068fbd2cb00506489250000000081ec44010000803ddcd6080100535556578bf1740d8974241ce827a40000884424188bbe9c19000057c784246001000000000000ff151822ce00834718018b068b90980000006a008bcec6868a1d000000ffd28bcee80bb5ffff8bcee8e4a0ffff8bcee8cdcbffffa134d508018b28bf30d50801896c2414897c2410eb078da4240000000085ff8b1d34d50801740881ff30d508017405e8eccf0c003beb742e85ff7505e8dfcf0c003b6f047505e8d5cf0c008b4d20e86a6903008d4c2410e87176ffff8b6c24148b7c2410ebb733ff39beb01a00007626eb0b8da424000000008d6424008b8eac1a00008b0cb9e88205020083c7013bbeb01a000072e733ff39bebc1a00007626eb0b8da424000000008d6424008b96b81a00008b0cbae8d207020083c7013bbebc1a000072e733ff39bec81a00007626eb0b8da424000000008d6424008b86c41a00008b0cb8e83250030083c7013bbec81a000072e733ff39bed41a00007626eb0b8da424000000008d6424008b8ed01a00008b0cb9e8424f030083c7013bbed41a000072e78b967c1a00008bbe781a00006bd22c03d73bfa74228bff8b4f288b018b5028ffd28b867c1a00006bc02c0386781a000083c72c3bf875e0833de8abf800007405e8685910008bae101a000085ed8dbe101a000074128b4d008b510455ffd28b45008b480855ffd18b078b10508b4208ffd08b86901900008d542420526a01c707000000008b086a00508b4138ffd0f744243c0000010074150fb78c24e400000081f901010000b9400000007305b9200000008b86901900008b108b52405783c9048dae281a000055518b8e441a0000516a016a0050ffd233c03986381a00008bce0f95c05068a1000000e858abffff8bcee861c8ffffd9866c1900008b168b82f0000000518bced91c24ffd08bcee8e4a1ffff80be8c1d000000753080be8a1d00000075278b8e741900008b07c6868c1d0000018b118b522050ffd28b8e781900008b018b178b402052ffd0833de8abf8000074098b0f5551e8495810008b1534d508018b2abf30d50801896c2414897c24108d64240085ff8b1d34d50801740881ff30d508017405e86ccd0c003beb742e85ff7505e85fcd0c003b6f047505e855cd0c008b4d20e84a7003008d4c2410e8f173ffff8b6c24148b7c2410ebb733ff39beb01a00007626eb0b8da424000000008d6424008b86ac1a00008b0cb8e8c203020083c7013bbeb01a000072e733ff39bebc1a00007626eb0b8da424000000008d6424008b8eb81a00008b0cb9e81206020083c7013bbebc1a000072e733ff39bec81a00007626eb0b8da424000000008d6424008b96c41a00008b0cbae8824e030083c7013bbec81a000072e733ff39bed41a00007626eb0b8da424000000008d6424008b86d01a00008b0cb8e8024e030083c7013bbed41a000072e78b8e7c1a00008bbe781a00006bc92c03cf3bf974228bff8b4f288b118b422cffd08b8e7c1a00006bc92c038e781a000083c72c3bf975e08bb69c19000083cfff017e1856ff151022ce00803ddcd608010089bc245c010000740e8b5424188b4c241c52e8ff9f00008b8c24540100005f64890d000000005e5d5b8be55dc3",
+        "sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+        "fresh_live_PE_match": true
+      }
+    ],
+    "original_imports": [
+      {
+        "iat": "00ce25d0",
+        "ordinal": 5005,
+        "name": null
+      },
+      {
+        "iat": "00ce25d4",
+        "ordinal": 5006,
+        "name": null
+      }
+    ],
+    "local_DLL_exports": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+        "bytes": 3833856,
+        "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+        "exports": [
+          {
+            "ordinal": 5005,
+            "name": "XLiveOnCreateDevice",
+            "rva": "00154c5c",
+            "forwarder": null,
+            "first32": "e9bff50e00e98a720800e965c30600e9e0e80200e96bc81800e976350f00e971"
+          },
+          {
+            "ordinal": 5006,
+            "name": "XLiveOnDestroyDevice",
+            "rva": "0014f1df",
+            "forwarder": null,
+            "first32": "e9bc500f00e927d11100e912551000e90d941200e9184e1100e9c3300f00e9ae"
+          }
+        ],
+        "not_loaded_or_invoked": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\xlive.dll",
+        "bytes": 14303392,
+        "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "exports": [
+          {
+            "ordinal": 5005,
+            "name": null,
+            "rva": "000b8c52",
+            "forwarder": null,
+            "first32": "8bff558bec83ec445733ff397d08750ab857000780e9c1020000397d0c74f1a1"
+          },
+          {
+            "ordinal": 5006,
+            "name": null,
+            "rva": "000b7a51",
+            "forwarder": null,
+            "first32": "8bff566a03e86378000033f63bc60f8c2e0100003935802ea300750f3935842e"
+          }
+        ],
+        "not_loaded_or_invoked": true
+      }
+    ],
+    "current_source_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_xlive_device_adapter.cpp",
+        "bytes": 1405,
+        "sha256": "634eeb944ec1ef31db0364b8f564711071be93d9acc4dd6b45c7050f0074a703"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_xlive_device_adapter.hpp",
+        "bytes": 1392,
+        "sha256": "b7b65d34a167ee2ea18dddb3c23e4b962c00dbd1e687260d376989d39d1a124b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\xlive_library.cpp",
+        "bytes": 3507,
+        "sha256": "b2478f049a7c73c6099f24a05fb9d494a5706dbdd251c06557f8d23f452fab17"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\xlive_library.hpp",
+        "bytes": 1849,
+        "sha256": "d399cfc4119e83d3770adc026fbe804c995472f5e2801d79890c61b0c2df591a"
+      }
+    ],
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\bsp_core.lib",
+      "bytes": 36330570,
+      "sha256": "2c19b1ed17be0e22e41b393ef6a609de785738f9b4707a492ca2e30bf4e5632b"
+    },
+    "actual_main_objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\native_xlive_device_adapter.obj",
+        "bytes": 48052,
+        "sha256": "238b21e33993f85d4894ca462cf7e41189b12a177c8d29cdc529771db17093ab",
+        "exact_archive_member": "bsp_core.dir\\Release\\native_xlive_device_adapter.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\xlive_library.obj",
+        "bytes": 150002,
+        "sha256": "68da2cf85e414d71508ed741f2c8eee6923a90f9f50279eb5dbc2eafebebaad9",
+        "exact_archive_member": "bsp_core.dir\\Release\\xlive_library.obj"
+      }
+    ],
+    "owned_methods_COFF": [
+      {
+        "name": "?on_create_device_00c2f1c0@NativeXLiveDeviceAdapter@bsp@@QBEIPAX0@Z",
+        "value": 0,
+        "section": 164,
+        "type": 32,
+        "storage_class": 2,
+        "index": 348,
+        "length": 165,
+        "section_length": 165,
+        "bytes_hex": "558bec6aff680000000064a1000000005083ec40a10000000033c58945f05657508d45f464a3000000008b75088b7d0c688d130000ff31ff150000000085c074215756ffd08b4df464890d00000000595f5e8b4df033cde8000000008be55dc208008d45d8688d13000050e800000000508d45c0c745fc00000000680000000050e80000000083c414508d4db4c645fc01e80000000068000000008d45b450e800000000cc",
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__ehhandler$?on_create_device_00c2f1c0@NativeXLiveDeviceAdapter@bsp@@QBEIPAX0@Z",
+            "type": 6
+          },
+          {
+            "offset": 21,
+            "symbol": "___security_cookie",
+            "type": 6
+          },
+          {
+            "offset": 57,
+            "symbol": "__imp__GetProcAddress@8",
+            "type": 6
+          },
+          {
+            "offset": 88,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20
+          },
+          {
+            "offset": 108,
+            "symbol": "?to_string@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@H@Z",
+            "type": 20
+          },
+          {
+            "offset": 124,
+            "symbol": "??_C@_0BO@OMJFGPLH@Missing?5XLive?5device?5ordinal?5@",
+            "type": 6
+          },
+          {
+            "offset": 130,
+            "symbol": "??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QBD$$QAV10@@Z",
+            "type": 20
+          },
+          {
+            "offset": 146,
+            "symbol": "??0runtime_error@std@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 151,
+            "symbol": "__TI2?AVruntime_error@std@@",
+            "type": 6
+          },
+          {
+            "offset": 160,
+            "symbol": "__CxxThrowException@8",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "name": "?on_destroy_device_00c2f1c6@NativeXLiveDeviceAdapter@bsp@@QBEIXZ",
+        "value": 0,
+        "section": 166,
+        "type": 32,
+        "storage_class": 2,
+        "index": 349,
+        "length": 151,
+        "section_length": 151,
+        "bytes_hex": "558bec6aff680000000064a1000000005083ec40a10000000033c58945f0508d45f464a300000000688e130000ff31ff150000000085c0741bffd08b4df464890d00000000598b4df033cde8000000008be55dc38d45d8688e13000050e800000000508d45c0c745fc00000000680000000050e80000000083c414508d4db4c645fc01e80000000068000000008d45b450e800000000cc",
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__ehhandler$?on_destroy_device_00c2f1c6@NativeXLiveDeviceAdapter@bsp@@QBEIXZ",
+            "type": 6
+          },
+          {
+            "offset": 21,
+            "symbol": "___security_cookie",
+            "type": 6
+          },
+          {
+            "offset": 49,
+            "symbol": "__imp__GetProcAddress@8",
+            "type": 6
+          },
+          {
+            "offset": 76,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20
+          },
+          {
+            "offset": 94,
+            "symbol": "?to_string@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@H@Z",
+            "type": 20
+          },
+          {
+            "offset": 110,
+            "symbol": "??_C@_0BO@OMJFGPLH@Missing?5XLive?5device?5ordinal?5@",
+            "type": 6
+          },
+          {
+            "offset": 116,
+            "symbol": "??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QBD$$QAV10@@Z",
+            "type": 20
+          },
+          {
+            "offset": 132,
+            "symbol": "??0runtime_error@std@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 137,
+            "symbol": "__TI2?AVruntime_error@std@@",
+            "type": 6
+          },
+          {
+            "offset": 146,
+            "symbol": "__CxxThrowException@8",
+            "type": 20
+          }
+        ]
+      }
+    ],
+    "source_domain": "Forward ordinal5005/5006 using caller-selected existing XLiveLibrary module. Raw argument pointers and EAX word forwarded. Native F8ABE8 gates and parent order remain caller work. Import binding is a host adapter; original live-IAT mutation is not modeled.",
+    "strict_main_build": true,
+    "existing_CTests": 2,
+    "seeds": 8,
+    "external_DLL_runtime": false,
+    "original_thunk_runtime": false,
+    "game_validated": false
+  },
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\sealed.json",
+    "bytes": 4046,
+    "sha256": "22b01d9f73413d865d497863681a4c7009fba613aff2d5da7c6fb0854d873ff5"
+  },
+  "source": "src/native_xlive_device_adapter.cpp",
+  "header": "include/bsp/native_xlive_device_adapter.hpp",
+  "doc": "docs/NATIVE_XLIVE_DEVICE_ADAPTER.md",
+  "source_is_external_SDK_forwarding": true,
+  "original_thunk_runtime": false,
+  "external_SDK_runtime": false,
+  "new_tests": false,
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\sealed.json",
+      "bytes": 4046,
+      "sha256": "22b01d9f73413d865d497863681a4c7009fba613aff2d5da7c6fb0854d873ff5"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\bsp_core.lib",
+      "bytes": 36330570,
+      "sha256": "2c19b1ed17be0e22e41b393ef6a609de785738f9b4707a492ca2e30bf4e5632b"
+    },
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "new_permanent_tests": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\xlive_device_primary\\verified.json",
+      "bytes": 12457,
+      "sha256": "cbbc143b974e5c363515d905f7bea6a61203d6e36922e2554ae978a51974b9b6"
+    },
+    "fresh_guarded_spans": 4,
+    "fresh_guarded_bytes": 1211,
+    "owned_thunk_bytes": 12,
+    "caller_bytes": 1191,
+    "exact_main_archive_members": 2,
+    "whole_compiled_forwarding_methods": true,
+    "external_SDK_implementation": false,
+    "external_SDK_runtime": false,
+    "linked_runtime_fixture": false
+  },
+  "ledger_registered": true,
+  "main_registered": true,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_xlive_device_adapter_annotations.json",
+    "bytes": 2798,
+    "sha256": "e9d705aa9b2047a3dfa75b5e306d216660e763db8632fbad1aadba668930323a",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00c2f1c0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c2f1c0\\decompiled.c",
+      "bytes": 1361,
+      "sha256": "9a9f4327c74e04d831c4009ca0bb6d0bf6df2edac7e594925710c73ef5637b1c"
+    },
+    {
+      "address": "00c2f1c6",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c2f1c6\\decompiled.c",
+      "bytes": 1330,
+      "sha256": "bf297291472bd7403660d3ccba85dccca09af2d7e419b23c45283a42ab10ae04"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_XLIVE_DEVICE_ADAPTER.md",
+    "bytes": 3096,
+    "sha256": "244e1824ca8023a36b4f720de6beb0af73c1d20d27702401ffac7949d9166986"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c2f1c0",
+      "name": "NativeXLiveDeviceAdapter::on_create_device_00c2f1c0",
+      "cpp_symbol": "bsp::NativeXLiveDeviceAdapter::on_create_device_00c2f1c0",
+      "source": "src/native_xlive_device_adapter.cpp",
+      "native_end_exclusive": "00c2f1c6",
+      "original_abi": "Import thunk JMP to Win32 stdcall(device,presentation_parameters); two stack pointer words; SDK EAX forwarded. Caller ignores result.",
+      "status": "external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim",
+      "evidence": "reports/native_xlive_device_adapter.json",
+      "external_import_forwarding": true,
+      "native_composition_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00c2f1c6",
+      "name": "NativeXLiveDeviceAdapter::on_destroy_device_00c2f1c6",
+      "cpp_symbol": "bsp::NativeXLiveDeviceAdapter::on_destroy_device_00c2f1c6",
+      "source": "src/native_xlive_device_adapter.cpp",
+      "native_end_exclusive": "00c2f1cc",
+      "original_abi": "Import thunk JMP to Win32 stdcall(); zero arguments; SDK EAX forwarded. Caller ignores result.",
+      "status": "external_import_forwarders_main_Win32_complete_COFF_checked_no_SDK_runtime_claim",
+      "evidence": "reports/native_xlive_device_adapter.json",
+      "external_import_forwarding": true,
+      "native_composition_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T18:24:40.840098+00:00"
+}

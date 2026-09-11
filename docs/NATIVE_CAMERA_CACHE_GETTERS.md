@@ -15,9 +15,11 @@ actual math-error word and real errno accessor as documented by that provider.
 These functions consume raw native bytes. Parent+30 is an actual 32-bit node
 address. Every ancestor reached by full B6DB70 must support flags+5C,
 local+B0 and world+F0; the provider captures each parent once and recursively
-refreshes it when its world-valid bit is clear. Companion pointers in
-`NativeCameraOwner` are not this representation. There is no null-parent
-shortcut, callback provider, truncated math kernel or cache-hit-only path.
+refreshes it when its world-valid bit is clear. The canonical hierarchy
+integration now supplies actual node-address words through `NativeNodeBinding`,
+including the prefix used by `NativeCameraOwner`. Pass actual initialized raw
+storage, never the C++ companion address. Full camera owner constructor and
+destructor replay remain separate; see `NATIVE_NODE_RAW_HIERARCHY.md`.
 
 | Getter | Valid bit | Returned cache | Dirty work |
 | --- | --- | --- | --- |

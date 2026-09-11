@@ -78,3 +78,26 @@ The final seal is
 It pins 143 artifacts, 92 provider source/header files, and the actual full
 worker library SHA256
 `0b19e739485c49e4fc6596fb7c24bf072e52d702b6c7f460f864d8b987607a6c`.
+
+
+## Primary main-library integration
+
+The canonical storage and all audited consumers are integrated in main.
+The primary verified 143 worker artifacts and 92 current source/header files:
+84 literal matches and eight with CRLF/LF differences only. Strict Win32
+compilation, both existing CTests and eight seeds passed.
+
+The unchanged single sequence linked the actual main archive and passed all
+50 assertions, with six literal raw snapshots totaling 6,696 bytes. All 24
+exact archive members, 403 complete COFF sections (280 library) and two whole
+41,731-byte runtime text postimages passed. Differences between worktrees are
+compiler private namespace/lambda names, debug metadata and the private RTTI
+scope names in two provider objects; the current linked sections were verified
+exactly. This closes the four hierarchy-word migration, including nonnull
+parents, reentry and exact-identity retirement. It introduces zero recovered
+native bodies. Full camera owner constructor/destructor and other owner ABI
+boundaries stated above remain open.
+
+The primary library SHA256 is `848d569d9eaae6c435e84b62ab3712943a6432989924fe7153cd300122b4e306`. The read-only bundle is
+`local/node_raw_hierarchy_primary/`, seal `c1181d47889f5c6656230ab392f467ea9b5db496dd6881c83fb1bb54e01c0c16`.
+Evidence is recorded in `reports/native_node_raw_hierarchy_audit.json`.

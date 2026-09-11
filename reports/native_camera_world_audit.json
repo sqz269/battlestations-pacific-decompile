@@ -1,6 +1,6 @@
 {
   "packet": "native_camera_world1",
-  "status": "complete_raw_world_primary_main_Win32_full_COFF_provider_proof_companion_integration_pending",
+  "status": "complete_raw_world_main_COFF_verified_canonical_hierarchy_host_integration_verified",
   "utc": "2026-09-11T17:22:58.627178+00:00",
   "base_commit": "04fd928ecdd23f4387ccc57c7e70063dd0cdf59e",
   "dependency_cherry_pick": "04fd928e: exact matrix3 source397c86d7 because initial main95e9396b lacked it",
@@ -549,96 +549,6 @@
     "linked_runtime_postimages": false,
     "fixture_decision": "No new fixture needed for this packet: complete80-byte owned body and every reached442-byte matrix provider match originals after only explicit relocations; no host adapter was implemented"
   },
-  "representation_boundary": {
-    "status": "bounded read-only plan, not implemented or claimed integrated",
-    "actual_evidence": [
-      {
-        "address": "00b6f5e8",
-        "meaning": "constructor zeros +30/+34/+38/+3C/+40"
-      },
-      {
-        "address": "00b6f683",
-        "meaning": "constructor addresses local+B0"
-      },
-      {
-        "address": "00b6f696",
-        "meaning": "constructor clears flags+5C"
-      },
-      {
-        "address": "00b6f70e",
-        "meaning": "constructor addresses world+F0"
-      },
-      {
-        "address": "00b6e01d",
-        "meaning": "actual parent address published to child+30 before callbacks"
-      },
-      {
-        "address": "00b6e049",
-        "meaning": "actual raw sibling/child link stores"
-      },
-      {
-        "address": "00b6d940",
-        "meaning": "full actual raw unlink stores"
-      }
-    ],
-    "current_evidence": [
-      {
-        "file": "include/bsp/native_node_construction.hpp",
-        "lines": "31-35",
-        "meaning": "NativeNodeStorage hierarchy fields are CameraTransform companion pointers"
-      },
-      {
-        "file": "src/native_node_construction.cpp",
-        "lines": "49-53,120-135",
-        "meaning": "binding references same prefix words; scene pointer_key is actual slot address"
-      },
-      {
-        "file": "include/bsp/camera_transform.hpp",
-        "lines": "10-14,50-54",
-        "meaning": "CameraTransformBacking and CameraTransform use companion pointer references"
-      },
-      {
-        "file": "src/native_node_parenting.cpp",
-        "lines": "37-54",
-        "meaning": "prepend publishes companion &parent/&child into backing words"
-      },
-      {
-        "file": "include/bsp/native_camera_owner.hpp",
-        "lines": "38-41,80-88",
-        "meaning": "owner exposes NativeNodeStorage prefix plus external NativeNodeBinding"
-      },
-      {
-        "file": "include/bsp/scene_attachment.hpp",
-        "lines": "94-102,125-139",
-        "meaning": "raw pointer_key exists but general raw-node-key resolver does not"
-      }
-    ],
-    "plan": [
-      "Keep one canonical physical prefix, flag and matrix storage; make hierarchy words actual raw node addresses, not a second graph",
-      "Replace companion pointer-reference link fields with explicit raw-word accessors/proxies; companion-to-raw conversion uses bound storage address",
-      "Add reviewed general raw-node-key to stable-companion lookup using existing SceneNodeAttachment pointer_key and binding lifetime; bind/unbind/forget_destroyed_binding retirement must stay consistent",
-      "Switch hierarchy writers and current child/sibling traversal consumers together; preserve parent publication before callbacks and current link reloads afterwards",
-      "Retain current semantic call path until nonnull reparent/detach/reentry and raw-world integration checks pass; never temporarily swizzle shared hierarchy words"
-    ],
-    "named_but_incomplete_raw_integration": [
-      "NativeNodeStorage/CameraTransformBacking/NativeNodeBinding link representation and accessors",
-      "SceneAttachmentRuntime general raw-node-key resolver and binding retirement",
-      "B6E010 prepend and B6E680 reparent in native_node_parenting",
-      "B6D940 unlink and B6D890 root propagation in native_node_destruction",
-      "B6DA30 descendant invalidation in camera_transform",
-      "existing destruction and scene child walks and NativeCameraOwner consumer boundary"
-    ],
-    "no_companion_cast_or_temporary_swizzle": true,
-    "no_duplicate_graph_or_owner": true,
-    "no_invented_reference_or_callback": true
-  },
-  "limitations": [
-    "Raw source complete does not mean NativeNodeStorage or NativeCameraOwner nonnull companion hierarchy is compatible",
-    "Null-parent/root cases cannot establish general parent-chain compatibility; current owner consumer integration remains blocked by the named representation migration",
-    "Existing tests do not execute or validate the new raw entry under every recursive/alias/exception environment; no runtime or linked proof claimed",
-    "No arbitrary original caller integration, renderer behavior, complete camera lifecycle, rendering parity or game validation",
-    "Names are descriptive hypotheses; ambient x87/SSE and actually reached memory validity remain provider inputs"
-  ],
   "existing_semantic_APIs_unchanged": true,
   "Ghidra_mutations": false,
   "shared_metadata_mutations": false,
@@ -927,7 +837,8 @@
     "original_runtime_fixture": false,
     "new_entry_runtime_fixture": false,
     "linked_runtime_fixture": false,
-    "current_companion_camera_compatible": false
+    "pre_migration_current_companion_camera_compatible": false,
+    "historical_before_canonical_hierarchy_migration": true
   },
   "annotations_applied": true,
   "ledger_registered": true,
@@ -945,14 +856,14 @@
     {
       "address": "00b6db70",
       "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6db70\\decompiled.c",
-      "bytes": 2614,
-      "sha256": "47dc7faef597a6e5b87cb3220e0a1fb879cecabb99fa1316f82834ec8488b27f"
+      "bytes": 4674,
+      "sha256": "000fd448c6fe9ec8849be0f63d961a4f2064be3beea58409be5a8eba48dc1865"
     }
   ],
   "current_document": {
     "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CAMERA_WORLD.md",
-    "bytes": 8479,
-    "sha256": "ba6ba1703761189433b33735f507d13ee6fcbecbf0b4474c12d6b4db85c77ee9"
+    "bytes": 6671,
+    "sha256": "d0fd3a4cef4b6df3eea3ba1b241e8c246d8aab635c33af613e1169ee45a83275"
   },
   "registered_reconstruction_records": [
     {
@@ -963,13 +874,196 @@
       "source": "src/native_camera_world.cpp",
       "native_end_exclusive": "00b6dbc0",
       "original_abi": "ECX actual raw node; no stack args; RET; incidental EAX captured parent+F0 or self+F0",
-      "status": "complete_raw_world_primary_main_Win32_full_COFF_provider_proof_companion_integration_pending",
+      "status": "complete_raw_world_main_COFF_verified_canonical_hierarchy_host_integration_verified",
       "evidence": "reports/native_camera_world_audit.json",
       "whole_original_COFF_provider_proof": true,
       "native_differential_fixture": false,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "canonical_raw_hierarchy_integrated": true,
+      "hierarchy_integration_evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "full_camera_owner_constructor_destructor_replay": false
     }
   ],
-  "closure_utc": "2026-09-11T17:39:32.695827+00:00"
+  "closure_utc": "2026-09-11T17:39:32.695827+00:00",
+  "worker_handoff_representation_boundary": {
+    "status": "bounded read-only plan, not implemented or claimed integrated",
+    "actual_evidence": [
+      {
+        "address": "00b6f5e8",
+        "meaning": "constructor zeros +30/+34/+38/+3C/+40"
+      },
+      {
+        "address": "00b6f683",
+        "meaning": "constructor addresses local+B0"
+      },
+      {
+        "address": "00b6f696",
+        "meaning": "constructor clears flags+5C"
+      },
+      {
+        "address": "00b6f70e",
+        "meaning": "constructor addresses world+F0"
+      },
+      {
+        "address": "00b6e01d",
+        "meaning": "actual parent address published to child+30 before callbacks"
+      },
+      {
+        "address": "00b6e049",
+        "meaning": "actual raw sibling/child link stores"
+      },
+      {
+        "address": "00b6d940",
+        "meaning": "full actual raw unlink stores"
+      }
+    ],
+    "current_evidence": [
+      {
+        "file": "include/bsp/native_node_construction.hpp",
+        "lines": "31-35",
+        "meaning": "NativeNodeStorage hierarchy fields are CameraTransform companion pointers"
+      },
+      {
+        "file": "src/native_node_construction.cpp",
+        "lines": "49-53,120-135",
+        "meaning": "binding references same prefix words; scene pointer_key is actual slot address"
+      },
+      {
+        "file": "include/bsp/camera_transform.hpp",
+        "lines": "10-14,50-54",
+        "meaning": "CameraTransformBacking and CameraTransform use companion pointer references"
+      },
+      {
+        "file": "src/native_node_parenting.cpp",
+        "lines": "37-54",
+        "meaning": "prepend publishes companion &parent/&child into backing words"
+      },
+      {
+        "file": "include/bsp/native_camera_owner.hpp",
+        "lines": "38-41,80-88",
+        "meaning": "owner exposes NativeNodeStorage prefix plus external NativeNodeBinding"
+      },
+      {
+        "file": "include/bsp/scene_attachment.hpp",
+        "lines": "94-102,125-139",
+        "meaning": "raw pointer_key exists but general raw-node-key resolver does not"
+      }
+    ],
+    "plan": [
+      "Keep one canonical physical prefix, flag and matrix storage; make hierarchy words actual raw node addresses, not a second graph",
+      "Replace companion pointer-reference link fields with explicit raw-word accessors/proxies; companion-to-raw conversion uses bound storage address",
+      "Add reviewed general raw-node-key to stable-companion lookup using existing SceneNodeAttachment pointer_key and binding lifetime; bind/unbind/forget_destroyed_binding retirement must stay consistent",
+      "Switch hierarchy writers and current child/sibling traversal consumers together; preserve parent publication before callbacks and current link reloads afterwards",
+      "Retain current semantic call path until nonnull reparent/detach/reentry and raw-world integration checks pass; never temporarily swizzle shared hierarchy words"
+    ],
+    "named_but_incomplete_raw_integration": [
+      "NativeNodeStorage/CameraTransformBacking/NativeNodeBinding link representation and accessors",
+      "SceneAttachmentRuntime general raw-node-key resolver and binding retirement",
+      "B6E010 prepend and B6E680 reparent in native_node_parenting",
+      "B6D940 unlink and B6D890 root propagation in native_node_destruction",
+      "B6DA30 descendant invalidation in camera_transform",
+      "existing destruction and scene child walks and NativeCameraOwner consumer boundary"
+    ],
+    "no_companion_cast_or_temporary_swizzle": true,
+    "no_duplicate_graph_or_owner": true,
+    "no_invented_reference_or_callback": true
+  },
+  "representation_boundary": {
+    "canonical_four_words_integrated": true,
+    "contract": "Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract.",
+    "full_camera_owner_constructor_destructor_replay": false
+  },
+  "worker_handoff_limitations": [
+    "Raw source complete does not mean NativeNodeStorage or NativeCameraOwner nonnull companion hierarchy is compatible",
+    "Null-parent/root cases cannot establish general parent-chain compatibility; current owner consumer integration remains blocked by the named representation migration",
+    "Existing tests do not execute or validate the new raw entry under every recursive/alias/exception environment; no runtime or linked proof claimed",
+    "No arbitrary original caller integration, renderer behavior, complete camera lifecycle, rendering parity or game validation",
+    "Names are descriptive hypotheses; ambient x87/SSE and actually reached memory validity remain provider inputs"
+  ],
+  "limitations": [
+    "The original worker proof and its arena assumptions remain historical snapshots; consult primary_integration and current_hierarchy_integration for current integration evidence.",
+    "Full camera owner constructor/destructor, root-list and unrelated owner object ABI, original caller ABI, asynchronous mutation, unmasked FP and gameplay are unverified."
+  ],
+  "current_hierarchy_integration": {
+    "report": "reports/native_node_raw_hierarchy_audit.json",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\node_raw_hierarchy_primary\\sealed.json",
+      "bytes": 37967,
+      "sha256": "c1181d47889f5c6656230ab392f467ea9b5db496dd6881c83fb1bb54e01c0c16"
+    },
+    "canonical_four_raw_words": true,
+    "fixture": "one unchanged primary host sequence;50assertions;6literal snapshots6696bytes",
+    "native_camera_owner_uses_existing_binding": true,
+    "full_camera_owner_constructor_destructor_replay": false,
+    "full_object_ABI": false
+  },
+  "hierarchy_saved_annotations": [
+    {
+      "address": "00b6db70",
+      "before": {
+        "address": "00b6db70",
+        "function_name": "BSP_Transform_RefreshWorldMatrix",
+        "comment": "[BSP reconstruction 00b6db70]\nTyped camera world/view cache slice in src/camera_transform.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported.\n\n[BSP reconstruction 00b6db70] update\nComplete 80-byte B6DB70 raw world refresh in src/native_camera_world.cpp. Capture actual parent+30 once; test parent low flags byte+5C bit2, recurse if missing, then use captured parent+F0 for full affine composition of own local+B0 into own world+F0. Null parent uses full raw x87 copy. OR current own flags DWORD with2 only after provider returns. No own-cache early return, cycle repair, pointer swizzle or snapshot. Public void fastcall retains original ECX/RET and incidental EAX in machine code. Primary verified48 worker artifacts plus compiler and20 current files (19 literal,one only CRLF/LF), nine fresh guarded spans772 bytes and8 seeds. Strict main Win32/two existing CTests passed. Full actual main COFF body80 plus copy103/affine339 providers equals522 original bytes/181 instructions after only3 direct calls and1 equal read-only constant relocation;3 exact archive members frozen. Original/new-entry runtime, linked/runtime byte fixture and gameplay are not claimed. Current NativeNodeStorage/NativeCameraOwner hierarchy fields contain companion pointers and remain incompatible; documented canonical raw-word/accessor/reverse-identity migration is pending. reports/native_camera_world_audit.json"
+      },
+      "after": {
+        "address": "00b6db70",
+        "evidence": "Host representation integration evidence, zero additional native bodies. Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract. Primary main strict Win32/two existing CTests/eight seeds pass. Verified143 worker pins and92 current source/header files (84literal,8onlyCRLF/LF),24 complete actual main objects. Unchanged coherent sequence passes50assertions with6literal raw snapshots6696bytes: construction, preconstruction binding, nonnull reparent, reentrant prepend/current sibling reload, full raw frustum/inverseVP/cold parent, invalid late host link preserving destination, protected-dead-backing retirement and address reuse. All403complete linked COFF sections (280library),24exact archive members and two41731-byte whole runtime code postimages verified. Private RTTI and anonymous namespace/lambda scope names differ between worktrees; current linked sections checked exactly. Camera tail is explicit fixture input; full camera owner ctor/dtor, other owner/root-list ABI, original-body differential for host adapter, asynchronous mutation, unmasked FP and gameplay are unclaimed. reports/native_node_raw_hierarchy_audit.json",
+        "old_name": "BSP_Transform_RefreshWorldMatrix",
+        "name": "BSP_Transform_RefreshWorldMatrix",
+        "saved_body_end": "00b6dbbf"
+      },
+      "status": "applied"
+    }
+  ],
+  "post_fixture_comment_clarification": {
+    "sources": [
+      {
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_camera_world.hpp",
+          "bytes": 1199,
+          "sha256": "a6279c88e8efc27e2b81476385fd7f4269b444e17c824838a90a512b2fca3755"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\include\\bsp\\native_camera_world.hpp",
+          "bytes": 1211,
+          "sha256": "1229bd01bfc6f2fb43e2673b5ec4e310c172b4dbda65a5c11eafbc50dbbb8a42"
+        },
+        "comments_and_whitespace_only": true
+      },
+      {
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_renderer_camera_prepare.hpp",
+          "bytes": 2239,
+          "sha256": "6d4aaee090a85291a976bd667d3f5dc058775d601229f4198f6ac3b8ae9f88e2"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\include\\bsp\\native_renderer_camera_prepare.hpp",
+          "bytes": 2239,
+          "sha256": "f6d8416218e586498ba8422cff8e70db50d4a1b85288df948214f83c50fa90eb"
+        },
+        "comments_and_whitespace_only": true
+      },
+      {
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_renderer_camera_prepare.cpp",
+          "bytes": 8936,
+          "sha256": "d21c2c05bfa88c181fa882d99f5f0990b56c023690b2ec31ab3872fbbf97c854"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\src\\native_renderer_camera_prepare.cpp",
+          "bytes": 8935,
+          "sha256": "53db364089a2494acce484a0daefaeca0e6bfd9ed6d8cab9881bb992e74b3520"
+        },
+        "comments_and_whitespace_only": true
+      }
+    ],
+    "subsequent_strict_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_vfs_lookup_leaves_primary_build.txt",
+      "bytes": 1949,
+      "sha256": "bda8a4cea18ca9acb02f7b9f56ddde7fb8ee48adc85ed6d2e40761e3329c4339"
+    },
+    "no_executable_source_change": true,
+    "immutable_fixture_bundles_unchanged": true
+  }
 }

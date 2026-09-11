@@ -307,7 +307,7 @@
       "08": "borrowed immutable pointer to actual double CE4B48 scale",
       "0c": "borrowed immutable pointer to current DWORD109EEA4 conversion mode"
     },
-    "raw_parent_requirement": "Every camera/ancestor +30 is actual raw node storage, flags+5C local+B0 world+F0. Current NativeCameraOwner/NativeNodeStorage companion hierarchy is not compatible and is not cast or adapted by this packet.",
+    "raw_parent_requirement": "Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract.",
     "original_instruction_count": 138,
     "built_parent_bytes": 590,
     "added_instructions": 9,
@@ -448,7 +448,8 @@
         "function": "convert_native_float_rgba_to_argb_004fb850",
         "status": "completed actual linked library provider"
       }
-    ]
+    ],
+    "worker_handoff_raw_parent_requirement": "Every camera/ancestor +30 is actual raw node storage, flags+5C local+B0 world+F0. Current NativeCameraOwner/NativeNodeStorage companion hierarchy is not compatible and is not cast or adapted by this packet."
   },
   "validation": {
     "strict_build": "MSVC Win32 Release /O2 /MD /W4 /WX /fp:strict via ignored target_sources hook and scripts/build.ps1",
@@ -3915,5 +3916,160 @@
       "bytes": 55606,
       "sha256": "61af8bf3c2ff60acb6af58494c9d287b8fc6613ecd8cd5de3c0cee668c787486"
     }
-  ]
+  ],
+  "functions": [
+    {
+      "address": "00b285a0",
+      "end_exclusive": "00b287c0",
+      "symbol": "prepare_native_renderer_camera_00b285a0",
+      "original_ABI": "ECX actual renderer; caller stack actual camera; RET4; no semantic return; no outer guard/EH"
+    }
+  ],
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\sealed.json",
+      "bytes": 321352,
+      "sha256": "1f5b5bee04b38cf598eaca1961b2b7e25c085c11cb9eecdda927a8dcb5d6f0d5"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 36364906,
+      "sha256": "848d569d9eaae6c435e84b62ab3712943a6432989924fe7153cd300122b4e306"
+    },
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "new_permanent_tests": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\preparation.json",
+      "bytes": 254103,
+      "sha256": "3bb29a6a09154a5a8bf7597edae04801c3403be175d11e1599fe189c747fd251"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\local\\camera_prepare\\verified.json",
+      "bytes": 2110166,
+      "sha256": "20cdf9d0bc4159cec74a7a4932d13dd7266b2560c9141c8f4eb68f124b199d86"
+    },
+    "worker_artifacts_verified": 623,
+    "worker_owned_pins_verified": 4,
+    "fresh_guarded_spans": 36,
+    "fresh_guarded_bytes": 7430,
+    "original_parent_bytes": 544,
+    "original_parent_instructions": 138,
+    "built_parent_bytes": 590,
+    "original_CALL_relocations": 20,
+    "original_parent_library_pairs": 3,
+    "compared_observable_bytes": 935408,
+    "actual_COM_calls": 22,
+    "complete_COFF_sections": 419,
+    "exact_main_archive_members": 22,
+    "all_relocations": 1591,
+    "full_local_functions": 258,
+    "library_functions": 79,
+    "fixture_functions": 179,
+    "all_map_f_i_flags_handled": true,
+    "runtime_immutable_sections": 399,
+    "runtime_code_constant_postimage_phases": 7,
+    "provider_records": 146,
+    "mutable_CRT_data_imports_identity_value_only": 2,
+    "unlinked_system_camera_axes_section43_difference": true,
+    "fixture_source_unchanged": true,
+    "source_compilation_in_fixture": false
+  },
+  "status": "complete_raw_parent_primary_main_Win32_original_composition_full_COFF_and_runtime_verified",
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "main_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_renderer_camera_prepare_annotations.json",
+    "bytes": 3606,
+    "sha256": "c1d3889489fd640cd2e397e959f606037a799b854e80f790df60ebda8df3a707",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b285a0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b285a0\\decompiled.c",
+      "bytes": 6537,
+      "sha256": "59521888375d1bdff466d28aae710d3be6ea9c351e7c6a5e3249c8f809d679b3"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_CAMERA_PREPARE.md",
+    "bytes": 11442,
+    "sha256": "b2ac6362e56ae4bce255f8c74c26d42831682f99a9c1d6703249882374008b3c"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b285a0",
+      "name": "prepare_native_renderer_camera_00b285a0",
+      "cpp_symbol": "bsp::prepare_native_renderer_camera_00b285a0",
+      "source": "src/native_renderer_camera_prepare.cpp",
+      "native_end_exclusive": "00b287c0",
+      "original_abi": "ECX actual renderer; caller stack actual camera; RET4; no semantic return; no outer guard/EH",
+      "status": "complete_raw_parent_primary_main_Win32_original_composition_full_COFF_and_runtime_verified",
+      "evidence": "reports/native_renderer_camera_prepare_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T18:24:40.756273+00:00",
+  "post_fixture_comment_clarification": {
+    "sources": [
+      {
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_camera_world.hpp",
+          "bytes": 1199,
+          "sha256": "a6279c88e8efc27e2b81476385fd7f4269b444e17c824838a90a512b2fca3755"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\include\\bsp\\native_camera_world.hpp",
+          "bytes": 1211,
+          "sha256": "1229bd01bfc6f2fb43e2673b5ec4e310c172b4dbda65a5c11eafbc50dbbb8a42"
+        },
+        "comments_and_whitespace_only": true
+      },
+      {
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_renderer_camera_prepare.hpp",
+          "bytes": 2239,
+          "sha256": "6d4aaee090a85291a976bd667d3f5dc058775d601229f4198f6ac3b8ae9f88e2"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\include\\bsp\\native_renderer_camera_prepare.hpp",
+          "bytes": 2239,
+          "sha256": "f6d8416218e586498ba8422cff8e70db50d4a1b85288df948214f83c50fa90eb"
+        },
+        "comments_and_whitespace_only": true
+      },
+      {
+        "current": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_renderer_camera_prepare.cpp",
+          "bytes": 8936,
+          "sha256": "d21c2c05bfa88c181fa882d99f5f0990b56c023690b2ec31ab3872fbbf97c854"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_prepare_primary\\src\\native_renderer_camera_prepare.cpp",
+          "bytes": 8935,
+          "sha256": "53db364089a2494acce484a0daefaeca0e6bfd9ed6d8cab9881bb992e74b3520"
+        },
+        "comments_and_whitespace_only": true
+      }
+    ],
+    "subsequent_strict_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_vfs_lookup_leaves_primary_build.txt",
+      "bytes": 1949,
+      "sha256": "bda8a4cea18ca9acb02f7b9f56ddde7fb8ee48adc85ed6d2e40761e3329c4339"
+    },
+    "no_executable_source_change": true,
+    "immutable_fixture_bundles_unchanged": true
+  }
 }

@@ -27,12 +27,13 @@ behavior. This parent adds no outer guard or exception handler.
 The camera and every nonnull ancestor must be actual raw nodes: parent `+30`,
 flags `+5C`, local matrix `+B0`, world matrix `+F0`. The camera additionally uses
 the completed raw getters' cache/projection layout and its actual fog-owner
-pointer at `+184`. `NativeCameraOwner` and `NativeNodeStorage` currently store
-`CameraTransform` companion pointers in hierarchy words; they must not be cast
-or silently passed as a compatible raw hierarchy. This packet does not migrate
-that representation or connect the existing semantic camera-preparation API.
-See `NATIVE_CAMERA_WORLD.md` and `NATIVE_CAMERA_CACHE_GETTERS.md` for the concrete
-provider and migration boundary.
+pointer at `+184`. The canonical hierarchy migration now makes the four
+hierarchy words in `NativeNodeStorage` actual node addresses. A
+`NativeCameraOwner` obtains that prefix through its existing `NativeNodeBinding`.
+Pass the actual prefix address with a complete initialized camera tail;
+the C++ owning companion itself is not the raw object. Full owner construction,
+destruction and the existing semantic camera-preparation route remain separate.
+See `NATIVE_NODE_RAW_HIERARCHY.md` for storage, resolver and lifetime contracts.
 
 The 16-byte `NativeRendererCameraPrepareContext` borrows the completed
 `NativeCameraFrustumContext`, actual renderer synchronization globals, actual
@@ -98,7 +99,8 @@ The strict MSVC Win32 Release build passed `/W4 /WX /fp:strict`, both existing
 CTests passed, and all eight native seed spans matched the installed PE.
 Only an ignored extra-source CMake hook includes this packet and the two
 permitted dependency cherry-picks in the worker build. Shared CMake, ledgers,
-Ghidra metadata and the game installation were not changed.
+At worker handoff, shared Ghidra metadata was unchanged. Primary integration
+subsequently saved the reviewed annotation and refreshed the export.
 
 The ignored fixture runs the **complete original 544-byte parent**, with only
 its 20 external CALL displacement operands rebound, against the actual built
@@ -146,3 +148,31 @@ cases do not establish every malformed count, alias, floating-point trap,
 concurrent mutation, or invalid raw hierarchy. Exact instruction proof retains
 unchecked addressing/order, while invalid inherited skipped-guard cleanup
 domains remain outside the providers' supported runtime contract.
+
+
+## Primary main-library integration
+
+The strict main Win32 build, both existing CTests and eight seeds passed.
+The primary verified 623 worker artifact pins plus four owned inputs, and
+36 fresh guarded original spans totaling 7,430 bytes. The unchanged fixture
+linked the actual main archive and repeated all three original-parent/library
+pairs: 935,408 observable bytes and 22 real successful COM calls, including
+live caller-argument/device/flag/fog mutations and post-clip exception cleanup.
+Only the parent is original machine code in this composition; its descendants
+are the complete rebuilt providers.
+
+Twenty-two exact archive members, 419 complete COFF sections and 1,591
+relocations matched the linked executable. All 258 local functions, including
+map entries with both f/i flags, 399 immutable runtime sections and seven
+postimage phases were checked. The provider ledger contains 146 records;
+two mutable CRT data imports are checked for identity/value only.
+
+Current linked code matches the worker. The canonical hierarchy changes the
+unlinked system_camera_axes refresh_axes section43; that section is absent in
+both fixtures. Compiler private namespace/lambda hashes and debug metadata
+are recorded separately. Subsequent source/header edits only clarify comments
+about the canonical prefix; a later strict main build also passed.
+
+The primary library SHA256 is `848d569d9eaae6c435e84b62ab3712943a6432989924fe7153cd300122b4e306`. The read-only bundle is
+`local/camera_prepare_primary/`, seal `1f5b5bee04b38cf598eaca1961b2b7e25c085c11cb9eecdda927a8dcb5d6f0d5`.
+Evidence is recorded in `reports/native_renderer_camera_prepare_audit.json`.
