@@ -30,6 +30,9 @@ public:
     // value/key kinds and oversized/deep data instead of claiming raw-table parity.
     std::shared_ptr<const GuiTable> snapshot_table(const GuiLuaRef&);
     GuiLuaRef globals() override;
+    // Semantic reference copy for native00B66FA0: same Lua value, independent
+    // lifetime. Uses a registry reference, not the original14h tracking layout.
+    GuiLuaRef copy_ref_00b66fa0(GuiLuaRef);
     GuiLuaRef get_by_name(const GuiLuaRef&, const char*) override;
     GuiLuaRef get_by_index(const GuiLuaRef&, std::int32_t) override;
     bool next(const GuiLuaRef&, GuiLuaRef&, GuiLuaRef&, bool restart) override;

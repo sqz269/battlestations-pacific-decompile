@@ -4,9 +4,12 @@
 #include "bsp/voice_subtitles.hpp"
 
 #include "bsp/panel_sequence_types.hpp"
+#include "bsp/message_record_resolver.hpp"
 
 namespace bsp {
 struct MissionLuaHostServices;
+struct PanelPublicationContext;
+struct MessageRecordResolverContext;
 
 // Alias the SAME native owner at game+21E4. In particular count and state
 // must alias the VoicePanelState gates observed by voice_can_play_005B71D0.
@@ -31,12 +34,11 @@ public:
     virtual ScheduledVoiceContext scheduled_context(VoicePlaybackManager&) = 0;
     virtual MissionLuaHostServices& current_mission_lua_1a08() = 0;
     virtual std::uint8_t& callback_guard_00e17bfa() = 0;
-    // Remaining real game routines.00451C90 publishes entry slot text/palette
-    // and active gates through0044F220/005B6910; it is NOT optional.00705E00
-    // resolves/constructs a borrowed timed record in current game+21DC.
-    virtual void publish_panel_rows_00451c90(PanelSequenceView) = 0;
-    virtual const VoiceClipRecord& resolve_message_00705e00(const NativeString&,
-        std::uint32_t zero) = 0;
+    // Current native owner bindings only. The caller executes the recovered
+    // publication and lookup/create bodies directly.
+    virtual PanelPublicationContext& panel_publication_context() = 0;
+    virtual MessageRecordStore& current_message_record_store_00e188a8_21dc() = 0;
+    virtual MessageRecordResolverContext& message_record_resolver_context() = 0;
 };
 struct PanelSequenceContext {
     PanelSequenceView owner;

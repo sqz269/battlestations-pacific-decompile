@@ -3,6 +3,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/scheduled_voice_types.hpp"
 #include "bsp/panel_sequence_types.hpp"
+#include "bsp/panel_publication_types.hpp"
 
 #include <array>
 #include <cstdint>
@@ -109,9 +110,12 @@ struct VoicePlaybackManager {
     NativeString fade_callback_e0;
 };
 struct VoicePanelState {
+    PanelCharacterMap characters_04;
+    void* palette_10{}; // actual initialized Win32 palette tree; owner-managed
     PanelSequenceQueue queued_1c;
     std::uint32_t field_24{};
     NativeString current_28;
+    float default_pause_30{};
     std::uint32_t field_34{};
 };
 struct VoiceSlotStartContext;
