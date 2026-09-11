@@ -8,7 +8,7 @@
       "name": "BSP_GameSettings_BuildLanguageTable",
       "cpp_symbol": "bsp::build_language_catalog_008d7bc0",
       "source": "src/language_catalog.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. Global count gate, enumerate lockit/.lng flags0, open mode32h before per-file hint-count query, six case-sensitive allowed prefixes, cached-token descriptor parse and append. No args, RET. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -21,7 +21,7 @@
       "name": "BSP_NativeString_HasPrefixAt",
       "cpp_symbol": "bsp::language_descriptor_allowed_008d7bc0",
       "source": "src/language_catalog.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "fragment_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX native string, stack prefix C string and uint32 position, AL result, RET8. Only nonnull bounded strings at position0 are projected for the six descriptor prefix tests; raw high return bits are unmodeled. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -34,7 +34,7 @@
       "name": "BSP_Vfs_EnumerateResourceList",
       "cpp_symbol": "bsp::VfsLocaleRuntime::enumerate_descriptors_00886280",
       "source": "src/vfs_locale_runtime.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "fragment_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX VFS manager, stack output list/directory/extension/flags, RET10h, returns output. Normalize directory copy then existing00bdd990; host vector replaces native list allocator. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -47,7 +47,7 @@
       "name": "BSP_TextScanner_AcceptToken",
       "cpp_symbol": "bsp::NativeTextTokens::accept_00bee800",
       "source": "src/native_text_tokens.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, RET. Copy current token to previous; clear token-valid+801 only. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -60,7 +60,7 @@
       "name": "BSP_TextScanner_PeekByte",
       "cpp_symbol": "bsp::NativeTextTokens::peek_byte_00bee840",
       "source": "src/native_text_tokens.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, AL byte, RET. Cached+804 lookahead+803; read one byte via stream+24, actualcount at00bee869 controls EOF+805, LF increments+818. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -73,7 +73,7 @@
       "name": "BSP_TextScanner_AdvanceByte",
       "cpp_symbol": "bsp::NativeTextTokens::advance_byte_00bee8c0",
       "source": "src/native_text_tokens.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, RET. Move+803 to+802, clear+804 then refill through00bee840. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -86,7 +86,7 @@
       "name": "BSP_TextScanner_PeekToken",
       "cpp_symbol": "bsp::NativeTextTokens::peek_00bee8e0",
       "source": "src/native_text_tokens.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, EAX token+1, RET. Preserve cached token, EOF-before-read flag, quoted flag, exact whitespace/separator sets, token-start comments, lookahead and partial EOF tokens. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -99,7 +99,7 @@
       "name": "BSP_TextScanner_SkipWhitespace",
       "cpp_symbol": "bsp::NativeTextTokens::skip_whitespace_00beedb0",
       "source": "src/native_text_tokens.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, RET. Skip exact whitespace until nonwhitespace/NUL/EOF, publish+806 without clearing cached token. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -112,7 +112,7 @@
       "name": "BSP_TextScanner_ReadString",
       "cpp_symbol": "bsp::NativeTextTokens::read_string_00bef020",
       "source": "src/native_text_tokens.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "reconstructed_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, stack bool-output pointer, EAX token, RET4. Nonempty-only accepted token, including second strlen gate after quoted-empty allowance; failure skips whitespace and retains cached token. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -125,7 +125,7 @@
       "name": "BSP_TextScanner_ConstructForFile",
       "cpp_symbol": "bsp::VfsLocaleRuntime::read_descriptor_00bef2e0",
       "source": "src/vfs_locale_runtime.cpp",
-      "status": "reconstructed_pending_combined_validation",
+      "status": "fragment_build_and_fixture_tested",
       "evidence": "Hypothesis, not a recovered symbol. ECX scanner, by-value8-byte native filename plus additional delimiter pointer, RET0Ch, EAX scanner. Normal-flow zero state/default-semicolon+extra separator setup and VFS mode32h source are projected; native0x828-byte allocation/name/stream lifetime is not an ABI replacement. docs/LOCALE_STARTUP_INTEGRATION.md; new C++ interfaces, guarded malformed tokens, no native object ABI or gameplay claim.",
       "abi_compatible": false,
       "game_validated": false,
@@ -135,10 +135,119 @@
     }
   ],
   "validation": {
-    "native_tokens": "106 states passed; six original body ranges match disk/Ghidra",
-    "combined": "pending"
+    "tested_tree_base_commit": "ef834a33c2dc78007fe2191ccd42ae99fe19817b",
+    "registry_correction": "Restored existing game_hosts_vfs.cpp in bsp_game source registration; no application source edits",
+    "win32_release_build": "passed: local/locale-startup-verified-build.log",
+    "existing_ctest": {
+      "passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_math_seeds_verified": 8,
+    "native_tokens": {
+      "result": "pass",
+      "states": 106,
+      "verified_original_body_ranges": 6,
+      "log": "local/native-tokens-fixture-fixed.log",
+      "bytes": "local/native_tokens_byte_comparison.json",
+      "adapters": [
+        "explicit virtual one-byte stream read",
+        "CRT strchr/strncat",
+        "relocated original calls and data pointers"
+      ]
+    },
+    "combined_installed_fixture": {
+      "result": "pass",
+      "locale_rows": 6864,
+      "source": "local/locale_startup_fixture.cpp",
+      "log": "local/locale-startup-fixture.log",
+      "checks": [
+        "mounted catalog count/filter/token semantics",
+        "variants before original",
+        "numbered lookup and sidecar gates",
+        "required GUI refresh callback",
+        "persistent input state",
+        "live Lua localized substitutions and uppercase",
+        "numeric key fallback and float32 number classification",
+        "Lua stack restoration"
+      ]
+    },
+    "combined_worker_fixtures": {
+      "result": "all three passed against combined headers/libraries",
+      "input_script_startup": {
+        "devices": 4,
+        "input_names": 16,
+        "installed_controller_labels": 12,
+        "fixture_controller_labels": 1,
+        "reads": 12,
+        "closes": 2
+      },
+      "locale_file_loading": {
+        "rows": 6864,
+        "unique_case_insensitive_keys": 6856
+      },
+      "locale_text_lookup": "Resolver, real Lua path/metatable/error cases, x87 NaN/int32 limits and rounding modes",
+      "preserved_manifest": "local/locale-startup-worker-artifacts.json"
+    },
+    "bsp_core_sha256": "8fe77be4da2940eec59b94ab33e99d632f97493331229b51333dfd44812f21e2",
+    "permanent_tests_added": 0,
+    "gui_render_validated": false,
+    "application_startup_fully_bound": false
   },
-  "annotations": "pending",
+  "annotations": {
+    "names_verified": 24,
+    "prior_comment_fields_preserved": 9,
+    "forced_exports": 24,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "stored_body_caveat": "00aa0020 decoded cleanup through00aa0678 remains outside its stored body ending00aa062a",
+    "saved": true,
+    "prior_values": "local/locale-startup-annotation-changes.json",
+    "before_comments": "local/locale_startup_comments_before.json",
+    "after_comments": "local/locale_startup_comments_after.json",
+    "export_log": "local/locale-startup-export-refresh.log"
+  },
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "validated_source_sha256": {
+    "include/bsp/language_catalog.hpp": "a171d71c5bd936fca4369f80b521a2008b075e3588ecab012ad632ba260dd40f",
+    "src/language_catalog.cpp": "c0acff77472f3221ff9627ec8786346fe973020ffa9a80bd401de3602531b914",
+    "include/bsp/native_text_tokens.hpp": "869fe0293a03d0cc3ae16ef677c69d2f88a42eae399492cbb7277dc94859207d",
+    "src/native_text_tokens.cpp": "6e008e55fa7ef27ae4a24c8238a0152f484568cb8054ca8a992015bf0a83a8ff",
+    "include/bsp/vfs_locale_runtime.hpp": "9c58d5dfeb49dca991800f3b180a5f4dd732e388fe9be655e8151136edf81def",
+    "src/vfs_locale_runtime.cpp": "3b1cef25803769c8a50c18403ea0a24dd451c1b31eb45b29c6344310ca2e0f69",
+    "include/bsp/locale_tables.hpp": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf",
+    "src/locale_tables.cpp": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c",
+    "include/bsp/input_script_startup.hpp": "a1c4265f1256c1599a26db08054eb080db5c5d2f1e72828de787cf7dc7af8b64",
+    "src/input_script_startup.cpp": "5496d3d57a360ec98d359915a0a090c1c0bdc959c7ff93f1d07713ee2443fda1",
+    "include/bsp/locale_text_lookup.hpp": "ef2aa1c2aad862c3252c8fc9844eb851d274c91c9e3852bfcce39b9dcc05d1a5",
+    "src/locale_text_lookup.cpp": "d50e71eb706d1bb85a0665d13c5bb29308050c586ac38dc1cd19e59a25a95f27",
+    "include/bsp/locale_lua_context.hpp": "f382eccce79c771f9a7a01af17de410c0af796de084d36045b6692716173a880",
+    "src/locale_lua_context.cpp": "b9167b95514803f2fdd3e0b6ad6549912bb6b07ae8fd95d5e06e0c48a533a711",
+    "include/bsp/gui_lua_reader.hpp": "d32471d0b917cb70436cd376359e67a40536b857c38da4f035aa211ad05b238c",
+    "src/gui_lua_reader.cpp": "034bbb90f5ba5cbc99240410c3b5d76e02cdc36ac20e73f7b57990e25a2e66a2",
+    "cmake/startup.cmake": "80bc61ead2aa1f77b2c30aad75164a7e3d787bb313cb9e68c2a2e1478c0785c4"
+  },
+  "artifact_sha256": {
+    "local/locale-startup-verified-build.log": "50ff416aca76f8fe2e1b8e2efbb77f37c0c03fa4f01b7ceec2f1c092781518b7",
+    "local/locale-startup-fixture.log": "62437fb26f77b969608ed3a38234496c0df9571c7cc9b6db9b115c2478f8e30f",
+    "local/locale_startup_fixture.cpp": "0d8de5aa93f2b87f8de731c80dd06d4532934e246001babbc9c5e13896ad95d0",
+    "local/run_locale_startup_fixture.ps1": "4624d9407c21e34cd6447f053b2163ec128b2ca86139297363df30b730816378",
+    "local/native_tokens_fixture.cpp": "dc3739aeaaeee0fc37d67319ee643f903244186ff6a963c0301f126eb20aa016",
+    "local/native_tokens_reference.hpp": "9b9aaf2507edbe453ec1926b02f1664cee1c963de7750b63823ba1975a6a6fdb",
+    "local/native_tokens_byte_comparison.json": "ecf2c9569bfe08f413c53b551440dbd2a5baa3483ab02f9618acf1886aff1e44",
+    "local/run_native_tokens_fixture.ps1": "b3f6eb2cb078d11e925411d5f6675d54df5a15ab0fc8e62fa8957d149c90ada2",
+    "local/native-tokens-fixture-fixed.log": "6f80e5c0f86ade6976067c041f115cc9f78146a37a1c78ea89ada9754f91d19f",
+    "local/locale-startup-worker-artifacts.json": "e2872507ef19ac89f23033249511074ac0b700f4618c9e4242c5b4d75acb64d3",
+    "local/locale-startup-annotation-changes.json": "8d2c6de43cf99d0548e75cf466e4ecbf77861afbcf4d2febb09813ecd86a51b1",
+    "local/locale-startup-annotation-verification.json": "a57cef66a4b100c8ef5a95c900b4d1fec18e7e5606e2773740b3b1ba696004d6",
+    "local/locale-startup-export-refresh.log": "6d3d32a07d7375a2f1030d67448e849a6e37dff2f50d4783b43104d6b7e579db"
+  },
+  "follow_up": {
+    "settings_owner_binding": "Replace mislabeled apply_detected_defaults no-op at native008d878a with existing008d6170 writer over actual retained GameSettingsBlock and selected catalog, before renderer tail",
+    "renderer_capabilities": "Native008d885d..008d887c requires populated AA table; empty host table is not recovered no-snap behavior",
+    "evidence": "docs/LOCALE_STARTUP_INTEGRATION.md; local/locale-startup-workers/input_script_startup/bootstrap_options_followup_ef834a3.md"
+  }
 }

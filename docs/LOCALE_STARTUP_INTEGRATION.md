@@ -1,5 +1,10 @@
 # Language catalog and locale startup services
 
+Addresses: 008d7bc0, 00553c80, 00886280, 00bee800, 00bee840, 00bee8c0,
+00bee8e0, 00beedb0, 00bef020, 00bef2e0, 006a7be0, 006ab6b0, 00aa0020,
+00aa06d0, 00aa09d0, 00a9fad0, 00a9f4b0, 00a9eba0, 00b692c0, 00b68d70,
+00b69130, 00b68550, 00b68460, 00b66a60.
+
 This batch connects mounted VFS resources to the language catalog, corrected
 locale loading, persistent input-script startup and live Lua text resolution.
 The application/GUI owners remain external consumers of these services. Source,
@@ -92,3 +97,49 @@ See `INPUT_SCRIPT_STARTUP.md`, `LOCALE_FILE_LOADING.md`, `LOCALE_TEXT_LOOKUP.md`
 and `reports/locale_startup_integration.json` for validation, ABI limits and
 saved Ghidra annotation/export evidence. `00aa0020`'s decoded78-byte cleanup
 tail remains outside its stored function body; no full-body repair is claimed.
+
+## Combined validation
+
+The Win32 Release build and both existing CTests pass, including the native math
+differential test with eight verified seeds. The scanner comparison passes 106
+states against six verified original bodies. The combined installed-data fixture
+loads 6,864 locale rows, checks descriptor filtering and the catalog count gate,
+then checks suffix/base/numbered ordering through the actual mounted VFS. It
+resolves localized substitutions through the persistent input Lua state and
+observes the required GUI refresh callback. This verifies the callback contract;
+it does not render a GUI.
+
+All three worker fixtures were recompiled against the combined headers and
+library. Locale loading passes 6,864 rows / 6,856 distinct keys plus its mutation,
+sidecar and failure checks. Input startup observes four devices, sixteen input
+names, twelve installed controller labels plus one fixture label, twelve file
+reads and two state closures. Locale text passes real Lua lookup, substitution,
+stack restoration and x87 numeric classification checks. Original and combined
+fixture sources/runners/logs are retained with hashes under
+`local/locale-startup-workers/`; the root report records their manifest.
+
+The integration restored `src/game_hosts_vfs.cpp` to the existing `bsp_game`
+registration after a mechanical merge retained its older source list. Application
+source behavior was not changed. No new permanent tests were added.
+
+## Follow-up: bind actual settings startup
+
+The next application-owner packet must replace the incorrect
+`GameSettingsHost::apply_detected_defaults` contract. Native `008d878a` calls
+`008d6170` to write current `options.txt` when the initial read-open fails, before
+the common renderer/AA tail at `008d878f`. The existing writer is
+`write_settings_text_008d6170` in `settings_text.cpp`.
+
+`app_bootstrap.hpp`, `app_bootstrap.cpp`, `game_hosts_vfs.hpp/.cpp` and
+`game_hosts.hpp/.cpp` currently carry a partial `GameSettings` object and a no-op
+binding for that call. The writer needs the actual retained `GameSettingsBlock`,
+the selected `LanguageEntry` table and the text host. Reuse the catalog and native
+language selection, preserve fields the loader does not alter, and retain the
+write-before-capability-tail order. These application files require a separate
+lease coordinated with their owner.
+
+The capability contract also remains incomplete. The native AA tail at
+`008d885d..008d887c` has no empty-table guard; an empty host AA list must not be
+described as native no-snap behavior. Recover and populate the actual capability
+table before claiming complete settings startup. These remaining owner bindings
+prevent a gameplay or complete-startup claim for this batch.

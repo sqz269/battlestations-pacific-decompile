@@ -248,4 +248,17 @@ instead of overflowing a stack frame.
 
 ## Cross-reference
 
+### Correction from docs/LOCALE_STARTUP_INTEGRATION.md
+
+The language catalog enumeration, count guard and six case-sensitive prefix
+tests are now reconstructed through the mounted VFS adapter. Descriptor parsing
+uses the native scanner; the earlier permissive whitespace-pair parser is
+superseded. The complete bounded key resolver and live Lua context are described
+in `LOCALE_TEXT_LOOKUP.md`, including stripped-key fallback, recursive `#`
+substitution and `^` uppercase through sidecar pairs plus CRT conversion.
+`00aa09d0` is named `BSP_Localization_SetLanguage`. See
+`LOCALE_FILE_LOADING.md` for suffix/base order, numbered probes and sidecar gates,
+and the integration report for combined validation and saved annotations. The
+earlier status table and open questions above are historical packet evidence.
+
 The 0x4040-byte object constructed by `0073c960` (docs/APP_INIT_FONTS_GUI.md) is the manager that owns the string map described above: `DAT_00f8bc4c`, with the 0x1000-head bucket array that `00a9fc30`, `00a9ec70` and `0073c240` index.
