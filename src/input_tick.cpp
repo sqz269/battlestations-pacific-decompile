@@ -106,10 +106,9 @@ void update_input_manager_00a92c40(InputTickState& state, float seconds, InputTi
         rebind_all_input_actions_00a922a0(state.records,
             host.binding_device_groups());             // 00a92c71
     }
-    // The loop reloads base and count from the singleton on every step
-    // (00a92cef..00a92cfe), so a rebind that resizes the table during the walk is
-    // observed by the next comparison. The reconstruction re-reads size() for the
-    // same reason.
+    // Native reloads base/count to compute the end on each step (00a92cef..fe),
+    // while advancing its record pointer. Rebind has already finished. The
+    // typed projection requires stable record/binding storage across host calls.
     for (std::size_t i = 0; i < state.records.size(); ++i) {
         InputActionRecord& record = state.records[i];
         if (!record.enabled) continue;                  // 00a92c88
