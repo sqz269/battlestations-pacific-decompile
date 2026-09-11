@@ -1,0 +1,35 @@
+{
+  "packet": "orch4_gui_reader_identity_c",
+  "address": "00bd63b0",
+  "retained_name": "BSP_LuaReader_StoreValue",
+  "native_abi": "__fastcall; ECX=looked-up LuaObject; EDX=8-byte field pair; RET",
+  "scope": "correct existing evaluated String and live Handle cases only",
+  "source": "src/gui_lua_reader.cpp",
+  "header": "include/bsp/gui_lua_reader.hpp",
+  "document": "docs/GUI_LUA_READER_IDENTITY.md",
+  "changes": [
+    "Evaluated String assigns from c_str() to match native first-NUL scan; live String path remains unchanged.",
+    "Live Handle forwards GuiLuaHost and actual borrowed GuiLuaRef through required resolve_by_live_table; evaluated GuiTable resolver stays separate."
+  ],
+  "evidence": [
+    "00BD63D7 calls00B662B0;00BD63E5..00BD63EE explicitly scan to first NUL;00BD63F9 resizes;00BD640E copies.",
+    "00B662BA pushes zero length-output argument before calling00A67810.",
+    "00BD64E0 loads ECX=original looked-up object before indirect call[0109CED8] at00BD64E2.",
+    "00BD6830 lookup00BD6891, conversion00BD68A6 and normal object release00BD68B7."
+  ],
+  "validation": {
+    "win32_build": "scripts/build.ps1 Release Win32 MSVC 19.51.36244.0 passed",
+    "existing_checks": "reconstructed_math CTest 1/1 passed",
+    "ignored_real_lua_fixture": "Passed using GuiLua51Host and actual Lua5.1.1: two table markers, distinct live resolver dispatch, normal borrowed-token release, matching first-NUL truncation in both String paths",
+    "fixture_recipe": "cmd /c local\\run_gui_lua_reader_identity_fixture.cmd",
+    "new_repository_tests": 0,
+    "native_differential": false,
+    "game_archive_validation": false
+  },
+  "ghidra_mutations": false,
+  "limits": [
+    "New resolver method preserves canonical host/token identity; it does not implement native gameplay callback0109CED8.",
+    "Tokens are borrowed for the resolver call. Reader exception cleanup and throwing/reentrant callbacks are not changed.",
+    "Existing missing-resolver host boundary remains; no native ABI or native SEH compatibility claim."
+  ]
+}
