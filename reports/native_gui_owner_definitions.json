@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd8460",
+    "end_address": "00cd8476"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd8460",
+    "end_address": "00cd8475",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd8460",
+    "disassemble_first": false,
+    "name": "BSP_GroupPool_InitializeStatic"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd8460",
+    "function_name": "BSP_GroupPool_InitializeStatic",
+    "entry_point": "00cd8460",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd8460",
+    "warnings": [
+     "Function name 'BSP_GroupPool_InitializeStatic' \u2014 main part 'GroupPool_InitializeStatic' is not PascalCase. Expected: GrouppoolInitializestatic",
+     "Function name 'BSP_GroupPool_InitializeStatic' \u2014 main part 'GroupPool_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GroupPool_InitializeStatic' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cd8460",
+   "end": "00cd8476",
+   "name": "BSP_GroupPool_InitializeStatic",
+   "after": "Function: BSP_GroupPool_InitializeStatic at 00cd8460\nSignature: undefined BSP_GroupPool_InitializeStatic(void)\nEntry: 00cd8460\nBody: 00cd8460 - 00cd8475"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
