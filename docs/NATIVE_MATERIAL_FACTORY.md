@@ -51,5 +51,7 @@ constructor and pool dependencies as the host path. This checks the factory's
 ordering; it does not independently prove the constructor, shader identity,
 effect lifetime, native allocator, or original CRT implementation.
 
-Real renderer effect acquisition and
-effect destruction, GUI ownership, drawing, and gameplay remain unvalidated.
+The follow-up `NATIVE_MATERIAL_EFFECT_OWNER.md` now provides actual base/derived
+effect storage and canonical lifetime, with a factory-to-material-to-effect
+final-zero fixture. Real renderer effect acquisition, descriptor/shader loading,
+GUI ownership, drawing, and gameplay remain unvalidated.

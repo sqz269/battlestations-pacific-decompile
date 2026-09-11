@@ -6233,6 +6233,96 @@
       ],
       "integration_report": "reports/gameplay_effect_acquisition.json",
       "discovery_evidence": "docs/GAMEPLAY_EFFECT_ACQUISITION.md"
+    },
+    {
+      "id": "native_camera_frustum3",
+      "packet": "native_camera_frustum3",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00b650b0",
+        "00b653f0",
+        "00b658e0"
+      ],
+      "code_ownership": [
+        "src/native_camera_frustum.cpp",
+        "include/bsp/native_camera_frustum.hpp",
+        "docs/NATIVE_CAMERA_FRUSTUM.md",
+        "reports/native_camera_frustum_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete native frustum storage with shared CRT composition.",
+      "evidence": "reports/native_camera_frustum_audit.json"
+    },
+    {
+      "id": "native_vfs_date_leaf_providers",
+      "packet": "native_vfs_date_leaf_providers",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00443d00",
+        "00bb9d50",
+        "00bbb640",
+        "00be54d0",
+        "00be5a50",
+        "00be5c80"
+      ],
+      "code_ownership": [
+        "src/native_vfs_date_leaf_providers.cpp",
+        "include/bsp/native_vfs_date_leaf_providers.hpp",
+        "docs/NATIVE_VFS_DATE_LEAF_PROVIDERS.md",
+        "reports/native_vfs_date_leaf_providers_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete native FileStore date/find/lower_bound, actual-header comparator and MPKG/MSAR zero leaves.",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json"
+    },
+    {
+      "id": "native_camera_projection2",
+      "packet": "native_camera_projection2",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00412e20",
+        "00b642f0"
+      ],
+      "code_ownership": [
+        "src/native_camera_projection.cpp",
+        "include/bsp/native_camera_projection.hpp",
+        "docs/NATIVE_CAMERA_PROJECTION.md",
+        "reports/native_camera_projection_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Full raw perspective/tangent with callee-slot and readonly-constant contract.",
+      "evidence": "reports/native_camera_projection_audit.json"
+    },
+    {
+      "id": "native_camera_matrix_math3",
+      "packet": "native_camera_matrix_math3",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_full_original_COFF_byte_proof_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00413920",
+        "00b63b30",
+        "00b6d4d0"
+      ],
+      "code_ownership": [
+        "src/native_camera_matrix_math.cpp",
+        "include/bsp/native_camera_matrix_math.hpp",
+        "docs/NATIVE_CAMERA_MATRIX_MATH.md",
+        "reports/native_camera_matrix_math_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Full raw scaled affine inverse, matrix multiply and affine composition with complete original/main-object byte proof.",
+      "evidence": "reports/native_camera_matrix_math_audit.json"
     }
   ],
   "snapshot_after_analysis": {

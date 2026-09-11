@@ -1,0 +1,309 @@
+{
+  "packet": "native_camera_projection2",
+  "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+  "functions": [
+    {
+      "address": "00b642f0",
+      "end_exclusive": "00b643a0",
+      "bytes": 176,
+      "symbol": "bsp::build_native_camera_projection_00b642f0",
+      "original_abi": "ECX destination; four stack floats fov/aspect/near/far; EAX destination; RET10h"
+    },
+    {
+      "address": "00412e20",
+      "end_exclusive": "00412e33",
+      "bytes": 19,
+      "symbol": "bsp::native_projection_tangent_00412e20",
+      "original_abi": "stack float argument; ST0 result after float spill/reload; RET4"
+    }
+  ],
+  "owned_original_bytes": 195,
+  "source": "src/native_camera_projection.cpp",
+  "new_builder_abi": "fastcall ECX raw destination, EDX writable callee argument slots; EAX destination; RET",
+  "scalar_storage_contract": "Writable fov/aspect/near/far copies prepared by the caller, never direct camera-owner fields. Preserve caller argument preparation independently.",
+  "readonly_constants": [
+    {
+      "address": "00d7a280",
+      "type": "double",
+      "bits": "3fe0000000000000",
+      "value": "0.5"
+    },
+    {
+      "address": "00d7a24c",
+      "type": "float",
+      "bits": "3f800000",
+      "value": "1.0"
+    }
+  ],
+  "behavior": [
+    "full FSINCOS/divide/float-spill helper",
+    "ordered fov and far argument-slot overwrites",
+    "native reciprocal and far-minus-near schedule",
+    "eleven positive-zero stores before current far/near reads",
+    "ordered output and scalar-slot alias effects"
+  ],
+  "validation": {
+    "strict_Win32_build": "passed: ignored extra hook followed by scripts/build.ps1",
+    "existing_CTests": "2 passed",
+    "native_seed_checks": "8 passed",
+    "original_body_fixture": "5 paired scenarios passed",
+    "observable_bytes": 1045,
+    "full_COFF_sections": 171,
+    "library_COFF_sections": 3,
+    "exact_archive_objects": 1,
+    "whole_code_constant_postimages": 11,
+    "frozen_worker_library_sha256": "361341491a6fee45f62a780e8d9e90ccefa9dfdf7b6bd3358a0cf6c58a8441bf",
+    "seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-camera-projection\\local\\camera_projection_fixture\\sealed.json",
+    "seal_sha256": "62e3f3590ca1994d9534da12c70bac95b246c7ed99c63b097e5843b424a7fb8e",
+    "sealed_artifacts": 38
+  },
+  "limitations": [
+    "Primary actual main strict build and independent unchanged original-body fixture replay passed; see primary_integration.",
+    "New builder borrows writable CALLEE scalar argument copies, never camera-owner fields. Future getter argument preparation is a separate operation.",
+    "Original adapter only supplies an actual temporary argument stack and restores its caller stack. It does not replace any original arithmetic, helper, scalar load or store. No original caller ABI integration or gameplay claim.",
+    "All floating exceptions are masked. Zero denominators, signalingNaN and FSINCOS out-of-range status/TOP drift are observed; no unmasked exception dispatch or access-fault behavior is claimed.",
+    "Comparable state includes full64byte destination,64byte argument/output-alias region, returned pointer, CW/SW/tag,MXCSR/mask,XMM0..3 and live80bit x87 registers. Ten full656-byte raw FXSAVE/result records are retained and independently projected. Private callee stack scratch, instruction/data pointers, inactive registers and XMM4..7 are not compared.",
+    "Only the two immutable original constant-address operands relocate. Their original/copy bytes, readonly PE sections, runtime readonly pages and unchanged postimages are proved."
+  ],
+  "base_commit": "2d535e0ca3fb46c4e7e3dbe08b65f21589a9be94",
+  "native_evidence": {
+    "utc": "2026-09-11T16:57:12.292175+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Each bsp.py ghidra bytes batch verifies saved bsp project, /battlestationspacific.exe, language and base.",
+    "spans": [
+      {
+        "address": "00b642f0",
+        "length": 176,
+        "role": "full_raw_projection_builder",
+        "bytes_hex": "d944240456dc0d80a2d700518bf1d95c240cd944240cd91c24e812eb8affd9e80f57c0def1f30f114604f30f114608f30f11460cf30f114610f30f114618f30f11461cf30f114620f30f114624f30f114630f30f114634f30f11463c8bc6d95c2408d9442414d9442410d9c0f30f104c2408d8eaf30f114e14defad9c9d95c2414d9442408d874240cf30f104c2414f30f114e28f30f100d4ca2d700f30f114e2cd91ed9e0d84c2414d95e385ec21000",
+        "sha256": "434aa71d29dc916a29e4b8723c612f341b54ab7a7c0c922ab0afee503c2e6bf3",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00412e20",
+        "length": 19,
+        "role": "full_native_tangent",
+        "bytes_hex": "51d9442408d9fbdef9d91c24d9042459c20400",
+        "sha256": "6282a7c6801acc042953893b813184c14e395f5215fa6bd1981b9d159d363ee0",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d7a280",
+        "length": 8,
+        "role": "immutable_double_half",
+        "bytes_hex": "000000000000e03f",
+        "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "role": "immutable_float_one",
+        "bytes_hex": "0000803f",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "fresh_live_PE_match": true
+      }
+    ]
+  },
+  "fixture_cases": [
+    {
+      "case": 0,
+      "observable_bytes": 209,
+      "sha256": "83fcc0ec32614f0529d879fe24f2b67243725a1cd3e1467564503a81660d4d6c",
+      "literal_equal": true,
+      "meaning": "finite projection and native reciprocal/far-ratio argument spills"
+    },
+    {
+      "case": 1,
+      "observable_bytes": 209,
+      "sha256": "6afbec0fe6ed1a5f2b0754b745422e03e76772da58938077c0af04f2e84ca803",
+      "literal_equal": true,
+      "meaning": "zero fov/aspect and equal near/far preserve masked divide-by-zero"
+    },
+    {
+      "case": 2,
+      "observable_bytes": 209,
+      "sha256": "48dcae09547395fef62afd53c82cd9ad2c738843f8532d0ec79a0fbff5c6ba84",
+      "literal_equal": true,
+      "meaning": "masked signalingNaN and negative-zero depth result"
+    },
+    {
+      "case": 3,
+      "observable_bytes": 209,
+      "sha256": "c668f376edb66e951989197c739def635d9d0ee8e0dbea9d911b3d148fc9260d",
+      "literal_equal": true,
+      "meaning": "FSINCOS range failure preserves C2, invalid/stack flags and TOP drift"
+    },
+    {
+      "case": 4,
+      "observable_bytes": 209,
+      "sha256": "42b00ad4df0653fa98e466e6c0594c426bbf18b4d6c923000662c4e8e46fb301",
+      "literal_equal": true,
+      "meaning": "output aliases actual callee argument slots so zero stores change later input reads"
+    }
+  ],
+  "instruction_proof": {
+    "tangent19bytes_exact": true,
+    "complete_builder_schedule_equal_after_declared_operand_and_ABI_mapping": true,
+    "all11_zero_stores_before_current_far_near_reads": true,
+    "readonly_constant_relocations": [
+      {
+        "offset": 5,
+        "symbol": "?projection_half_d7a280@?A0x8d7e330d@bsp@@3_KB",
+        "type": 6,
+        "addend": 0,
+        "target": 805337456,
+        "resolved": 805337456
+      },
+      {
+        "offset": 135,
+        "symbol": "?projection_one_d7a24c@?A0x8d7e330d@bsp@@3IB",
+        "type": 6,
+        "addend": 0,
+        "target": 805337464,
+        "resolved": 805337464
+      }
+    ]
+  },
+  "readonly_constant_proof": [
+    {
+      "original_address": "00d7a280",
+      "source_address": 805337456,
+      "bytes": 8,
+      "bits_hex": "000000000000e03f",
+      "original_section_flags": 1073741888,
+      "source_section_flags": 1073741888,
+      "runtime_PAGE_READONLY_checked": true
+    },
+    {
+      "original_address": "00d7a24c",
+      "source_address": 805337464,
+      "bytes": 4,
+      "bits_hex": "0000803f",
+      "original_section_flags": 1073741888,
+      "source_section_flags": 1073741888,
+      "runtime_PAGE_READONLY_checked": true
+    }
+  ],
+  "integration_boundary": "Main CMake registration, integration build, ledgers and saved-analysis annotations are separate integrator work.",
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\sealed.json",
+      "bytes": 10117,
+      "sha256": "841de92d4c1e7f2ae0c47b6ead9bd0afa83f3321307fce298729034b5d491ade"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\camera_projection_primary_preparation.json",
+      "bytes": 3795,
+      "sha256": "77f383a199778d599349db28868b9a845d705fb51aa4e40410d2964e6de95c69"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\verified.json",
+      "bytes": 199945,
+      "sha256": "36fe607ec0cb18816c5d50d2c592b55d18f4edac48d46896880272e07e97a424"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\frozen\\bsp_core.lib",
+      "bytes": 36016384,
+      "sha256": "c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68"
+    },
+    "verified_worker_pins": 38,
+    "current_source_header_files": 2,
+    "source_header_literal_match": true,
+    "unchanged_fixture": true,
+    "original_bytes": 195,
+    "fresh_guarded_spans": 4,
+    "fresh_guarded_bytes": 207,
+    "paired_cases": 5,
+    "observable_bytes": 1045,
+    "complete_COFF_sections": 171,
+    "library_COFF_sections": 3,
+    "exact_main_archive_members": 1,
+    "postimage_stages": 11,
+    "original_tangent_bytes_equal": 19,
+    "main_member_all_worker_code_and_raw_relocations_equal": true,
+    "anonymous_namespace_and_debug_metadata_differences_recorded": true,
+    "original_runtime_fixture": true,
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "permanent_tests": false,
+    "unmasked_exception_fixture": false,
+    "game_validated": false
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "main_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_camera_projection_annotations.json",
+    "bytes": 4199,
+    "sha256": "6fc9a6ae0866dec2cae56c5d58ee8ffd2122ebe9073b5d39be8a392196dd38aa",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b642f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b642f0\\decompiled.c",
+      "bytes": 3116,
+      "sha256": "ca2da3d0970a3072c53c27e0a7344a951b7f1ce9f57191a525a6f5a24973cfd6"
+    },
+    {
+      "address": "00412e20",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00412e20\\decompiled.c",
+      "bytes": 1616,
+      "sha256": "a73238fcd8909594d50c99517a9ee69f8eb55e9ce67dffd8d4cea95bc1d7f5b3"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CAMERA_PROJECTION.md",
+    "bytes": 5399,
+    "sha256": "7980161b4c7e7d594584be86dbb087e5c8a9c3869e9b403c7d110e6152d36bc2"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b642f0",
+      "name": "build_native_camera_projection_00b642f0",
+      "cpp_symbol": "bsp::build_native_camera_projection_00b642f0",
+      "source": "src/native_camera_projection.cpp",
+      "native_end_exclusive": "00b643a0",
+      "original_abi": "ECX destination; four stack floats fov/aspect/near/far; EAX destination; RET10h",
+      "host_abi_boundary": "fastcall ECX raw destination, EDX writable callee argument slots; EAX destination; RET",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_projection_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00412e20",
+      "name": "native_projection_tangent_00412e20",
+      "cpp_symbol": "bsp::native_projection_tangent_00412e20",
+      "source": "src/native_camera_projection.cpp",
+      "native_end_exclusive": "00412e33",
+      "original_abi": "stack float argument; ST0 result after float spill/reload; RET4",
+      "host_abi_boundary": "Raw uint32 stack argument carrying float bits; native ST0/RET4 sequence.",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_projection_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T17:20:09.804437+00:00"
+}

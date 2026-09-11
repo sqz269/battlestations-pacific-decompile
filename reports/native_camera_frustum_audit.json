@@ -1,6 +1,6 @@
 {
   "packet": "native_camera_frustum3",
-  "status": "complete_raw_storage_strict_build_original_owned_body_full_library_composition_fixture_checked_pending_primary_integration",
+  "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
   "utc": "2026-09-11T16:59:06.308079+00:00",
   "base_commit": "776b2b2eff0397360d44da00118a72c065113ef4",
   "functions": [
@@ -5955,5 +5955,176 @@
       "bytes": 18516,
       "sha256": "266a7ce4983fb21950f04f1805a46aa356f811827df884110bafbf4df6a4eee2"
     }
-  ]
+  ],
+  "worker_evidence_root": "J:/PROG/battlestations-pacific-decompile-native_camera_frustum",
+  "primary_integration": {
+    "worker_evidence_root": "J:/PROG/battlestations-pacific-decompile-native_camera_frustum",
+    "main_evidence_root": "J:\\PROG\\battlestations-pacific-decompile\\local\\frustum_primary",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frustum_primary\\sealed.json",
+      "bytes": 175092,
+      "sha256": "3b9b3f07dee4745814e549bfc2b6950203f6c49cbedcd5b306593289f111cfd2"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frustum_primary\\preparation.json",
+      "bytes": 40174,
+      "sha256": "3da9d75d92225fec490a11a9e8ca73ecba11981f685daba8fc391179237bac0f"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frustum_primary\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 36000728,
+      "sha256": "74d8f91d3e4c526a60efb9d61d45f5b2b9d46803b411766b6c9688d1d36c9895"
+    },
+    "fixture_source_unchanged": true,
+    "strict_main_build_passed": true,
+    "existing_CTests_passed": 2,
+    "verified_native_seeds": 8,
+    "permanent_tests_added": false,
+    "source_recompiled_in_fixture": false,
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\frustum_primary\\reports\\native_camera_frustum_audit.json",
+      "bytes": 227108,
+      "sha256": "d483dcd5ddbcf9fadb7ec1616c43e1a50845e54a39ec0be6fc99d62bab6b174d"
+    },
+    "worker_pins_verified": 205,
+    "worker_module_pins_verified": 4,
+    "unchanged_current_files": 10,
+    "fresh_guarded_spans": 25,
+    "fresh_guarded_bytes": 2737,
+    "paired_cases": 16,
+    "matched_arena_bytes": 32768,
+    "complete_COFF_symbols": 16,
+    "complete_COFF_bytes": 3340,
+    "all_relocations": 62,
+    "exact_actual_main_archive_objects": 3,
+    "original_bytes": 618,
+    "original_instruction_mapping": 208,
+    "postimage_stages": 17,
+    "library_contract": "Original owned body / actual-library provider composition; original CRT machine code is not executed",
+    "runtime_CRT_observations": "QuietNaN type7 sets actual errno33; extraction observes six type8 calls; changed current dispatch bypass removes call and retains errno123. E16BD0 initial mappedPE word2694 and zero both checked.",
+    "runtime_exception_observations": "Unmasked precision faults in shared length beforeC27489; unmasked assignment sNaN faults aftertwo stores; complete partial arenas and exception state agree.",
+    "invalid_original_CRT_comparison_claim": false,
+    "Win32_RaiseException_branch_runtime_covered": false
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "integration": "Main source registration, strict build, independent original-body/full actual main-library replay and saved Ghidra/ledger closure complete.",
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_camera_frustum_annotations.json",
+    "bytes": 7231,
+    "sha256": "e9037abefef852cf37989d1b1f4500d00c4d83f3767f7c7ba2470e756acb19a9",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b650b0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b650b0\\decompiled.c",
+      "bytes": 2366,
+      "sha256": "8859589332a7d37680299419f3c386cb8541f89f0351a14d8b7162387ef2d583"
+    },
+    {
+      "address": "00b653f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b653f0\\decompiled.c",
+      "bytes": 3608,
+      "sha256": "47f946044613ff293058b782aa40861cbb24725f421f90ffeb58706c6c5cea6c"
+    },
+    {
+      "address": "00b658e0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b658e0\\decompiled.c",
+      "bytes": 3471,
+      "sha256": "3aaba1369705c00a6d57b029a5b02e12d6d8623e6c6e6976d09144a007ba04e9"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CAMERA_FRUSTUM.md",
+    "bytes": 9145,
+    "sha256": "f626dc37ac8000a36e8211e43cbd2b49afe3b490a7fa090c4a639b1d755bf1fa"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b650b0",
+      "name": "normalize_native_camera_plane_00b650b0",
+      "cpp_symbol": "bsp::normalize_native_camera_plane_00b650b0",
+      "source": "src/native_camera_frustum.cpp",
+      "native_end_exclusive": "00b65107",
+      "original_abi": "ECX actual float4; no stack argument; RET; EAX same storage",
+      "host_abi_boundary": {
+        "normalize_extract": "ECX actual storage; EDX immutable NativeCameraFrustumContext; original stacked arguments retained",
+        "assignment": "unused EDX explicitly preserves two stacked args",
+        "context_size": 12,
+        "length_access_offset": 0,
+        "negative_zero_pointer_offset": 8,
+        "handler_fixed": "legacy_crt_87except_00c27489",
+        "prerequisites": [
+          "borrow actual current0109DD78 and read-only originalD7A208 negative-zero word",
+          "existing LegacyCrtMathRuntime binds actual currentE16BD0 and actual owning-runtime per-thread errno accessor",
+          "borrowed storage and both immutable bindings outlive all calls"
+        ]
+      },
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_frustum_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b653f0",
+      "name": "extract_native_camera_frustum_00b653f0",
+      "cpp_symbol": "bsp::extract_native_camera_frustum_00b653f0",
+      "source": "src/native_camera_frustum.cpp",
+      "native_end_exclusive": "00b65558",
+      "original_abi": "ECX six packed float4 records; stack matrix; RET4; EAX destination",
+      "host_abi_boundary": {
+        "normalize_extract": "ECX actual storage; EDX immutable NativeCameraFrustumContext; original stacked arguments retained",
+        "assignment": "unused EDX explicitly preserves two stacked args",
+        "context_size": 12,
+        "length_access_offset": 0,
+        "negative_zero_pointer_offset": 8,
+        "handler_fixed": "legacy_crt_87except_00c27489",
+        "prerequisites": [
+          "borrow actual current0109DD78 and read-only originalD7A208 negative-zero word",
+          "existing LegacyCrtMathRuntime binds actual currentE16BD0 and actual owning-runtime per-thread errno accessor",
+          "borrowed storage and both immutable bindings outlive all calls"
+        ]
+      },
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_frustum_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b658e0",
+      "name": "assign_native_camera_frustum_planes_00b658e0",
+      "cpp_symbol": "bsp::assign_native_camera_frustum_planes_00b658e0",
+      "source": "src/native_camera_frustum.cpp",
+      "native_end_exclusive": "00b6598b",
+      "original_abi": "ECX NativePlaneSetStorage raw view; stack packed planes and flags DWORD; RET8; EAX incidental source pointer",
+      "host_abi_boundary": {
+        "normalize_extract": "ECX actual storage; EDX immutable NativeCameraFrustumContext; original stacked arguments retained",
+        "assignment": "unused EDX explicitly preserves two stacked args",
+        "context_size": 12,
+        "length_access_offset": 0,
+        "negative_zero_pointer_offset": 8,
+        "handler_fixed": "legacy_crt_87except_00c27489",
+        "prerequisites": [
+          "borrow actual current0109DD78 and read-only originalD7A208 negative-zero word",
+          "existing LegacyCrtMathRuntime binds actual currentE16BD0 and actual owning-runtime per-thread errno accessor",
+          "borrowed storage and both immutable bindings outlive all calls"
+        ]
+      },
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_frustum_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T17:12:29.624180+00:00"
 }

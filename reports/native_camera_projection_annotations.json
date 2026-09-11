@@ -1,0 +1,31 @@
+[
+  {
+    "address": "00b642f0",
+    "before": {
+      "address": "00b642f0",
+      "function_name": "BSP_Matrix_BuildPerspective",
+      "comment": "[BSP reconstruction 00b642f0]\nCamera projection slice, typed port src/camera_projection.cpp. Builder00b642f0: ECX destination, fov/aspect/near/far stack, RET10h; FSINCOS tangent00412e20 float32 spill, reciprocal scale spill, far/(far-near) ratio spill, positivezero fill. Scalar setters ECX camera/stack float/RET4: AND flags+2F0 withFFFFFF41 then store +1C4/+1C8/+1D4/+1D8. Explicit setter00b6fd60 copies into+1E0 and+2A0, flags=(flags&FFFFFF4B)|8. Getter00b6fcf0 ECX/RET/EAX cache+2A0, refresh if bit8 clear; x87 argument/copy spills retained. New C++ ownership/ABI; original ctor not recovered. Existing perspective draw/cache fixture passes, no native FP differential claim. See reports/camera_projection.json and docs/CAMERA_PROJECTION_EVIDENCE.md."
+    },
+    "after": {
+      "address": "00b642f0",
+      "evidence": "Complete176-byte B642F0 perspective builder implemented as156-byte raw fastcallECXdestination/EDX writableCALLEE fov/aspect/near/far argumentcopies/EAXdestination/RET. Never passcameraowner fields. Fullx87 halfangle/reciprocal/farratio spills and elevenpositivezero outputstores before laterargumentreads preservealias effects;readonlyD7A280double0.5/D7A24Cfloat1. Primary independently reviewed full source/fixture,38 worker pins and both literal current source/header files; strict main Win32/two CTests/eight seeds pass. Frozen actual main c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68 library and exact member preserve all worker code/directive sections/raw relocations; only anonymous-namespace symbol scope and debug metadata differences recorded. Unchanged original/main fixture5pairs1045 observablebytes,171 fullCOFF sections3library sections/everyrelocation,11 readonly code/constant stages;4 fresh guardedspans207bytes195owned. Zero denominators,maskedSNaN,FSINCOS C2/status/TOPdrift and output/callee-slot alias pass. Originalbuilder only2readonly constant operands relocate, helperrelativecall unchanged; no substituted arithmetic. Compare64output+64slotbytes,return,CW/SW/tag,MXCSR/mask,XMM0..3/live80bitx87;10raw656byte results independently projected. No unmasked FP/accessfault, privatecallee scratch/inactive state, actualcameraowner, originalcallerABI or gameplay claim. reports/native_camera_projection_audit.json",
+      "old_name": "BSP_Matrix_BuildPerspective",
+      "name": "BSP_Matrix_BuildPerspective"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00412e20",
+    "before": {
+      "address": "00412e20",
+      "function_name": "FUN_00412e20"
+    },
+    "after": {
+      "address": "00412e20",
+      "evidence": "Complete19-byte412E20 hardwaretangent: originalstackfloatbits,FSINCOS/divide/binary32spill/reload,ST0result,RET4. All19originalbytes identical actualCOFF/linkedruntime. Newuint32 stackargument retainsbits withoutconversion. Primary independently reviewed full source/fixture,38 worker pins and both literal current source/header files; strict main Win32/two CTests/eight seeds pass. Frozen actual main c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68 library and exact member preserve all worker code/directive sections/raw relocations; only anonymous-namespace symbol scope and debug metadata differences recorded. Unchanged original/main fixture5pairs1045 observablebytes,171 fullCOFF sections3library sections/everyrelocation,11 readonly code/constant stages;4 fresh guardedspans207bytes195owned. Zero denominators,maskedSNaN,FSINCOS C2/status/TOPdrift and output/callee-slot alias pass. Originalbuilder only2readonly constant operands relocate, helperrelativecall unchanged; no substituted arithmetic. Compare64output+64slotbytes,return,CW/SW/tag,MXCSR/mask,XMM0..3/live80bitx87;10raw656byte results independently projected. No unmasked FP/accessfault, privatecallee scratch/inactive state, actualcameraowner, originalcallerABI or gameplay claim. reports/native_camera_projection_audit.json",
+      "old_name": "FUN_00412e20",
+      "name": "BSP_Math_TangentX87Float"
+    },
+    "status": "applied"
+  }
+]
