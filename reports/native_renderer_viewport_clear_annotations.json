@@ -1,0 +1,98 @@
+[
+  {
+    "address": "00b26770",
+    "before": {
+      "address": "00b26770",
+      "function_name": "BSP_Renderer_BindViewport",
+      "comment": "[BSP reconstruction 00b26770]\n[BSP reconstruction] Guard precedes viewport reads. SetViewport with XY/WH getters and Z0..1, increment+1BD0, store borrowed viewport+1904. Set state174 from exact+20 byte, reread byte, optional SetScissorRect(+24). Ignores COM failures. Original ABI: ECX renderer; stack viewport; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b26770",
+      "evidence": "Full290-byte viewport bind with new8-byte immutable EDXcontext. Public18-byte nakedadapter passes actual callee viewportargument address into full390-byte privatebody; load argument after optionalguard, arm beforegetters. Four distinct origin/size calls, MOVSSreadonlyD7A24C, currentdeviceSetViewport then count1BD0 and borrowed1904 publication. Raw byte20 -> stateAE withoutboolnormalization, reread enabledbyte, capture scissorvtablebeforegetter then reloadcurrentdevicethis. Current-mode read before volatilecleanupdisarm; fullguard normal/EH. Strict mainWin32/twoCTests/eightseeds;578workerpins+4owned;22freshspans925bytes/477owned. Unchanged5original/fullmainpairs381936statebytes,14realS_OKCOMcalls24actualOSguardcalls; liveviewport/depth/color/stencilcallee-slotmutation, currentdevice/scissorreread, raw80state, flags0unusedinvalidcontext, normalcounter andpost-realClearC++exception covered. Full3exactarchiveobjects355COFFsections1457relocs199functions(22library177fixture allf/i),338immutable runtime sections11whole27spanpostimages153actualproviderrecords. Original2EHmaps/thunks/funclets retained; Clearstate0 unwind executes via hostFH3 and fullreconstructedguardbridge. Scoped translated originalCALL/IAT/FH3/context plumbing recorded; no generalnativeSEH ABI, unmaskedFP/allfaultsites/asyncmutation/game claim. reports/native_renderer_viewport_clear_audit.json",
+      "old_name": "BSP_Renderer_BindViewport",
+      "name": "BSP_Renderer_BindViewport",
+      "saved_body_end": "00b26891"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b21430",
+    "before": {
+      "address": "00b21430",
+      "function_name": "BSP_Renderer_Clear",
+      "comment": "[BSP reconstruction 00b21430]\n[BSP reconstruction] Zero flags skip guard/color dereference/COM/counter. Otherwise guarded device Clear with original six arguments, dereferenced color and x87-spilled depth; increment+1BD4 after attempted call regardless of HRESULT. Original ABI: ECX renderer; stack count,rectangles,flags,color_ptr,depth,stencil; RET18. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b21430",
+      "evidence": "Full171-byte Clear with newEDXcontext and public18-byte actualcallee-slotadapter/full312-byteprivatebody. Captureflags beforeguard; flags0 skipscontext/depth/color/device. Afterguard load actualbyvaluecallee depthslot byx87, currentdevice/stencil/colorDWORDpointer then spilldepth andremainingargs. Capturedflags survivescallee-slotmutation. Seven actualCOMarg pushes BEFOREvolatilecleanuparm directlybeforecurrentCOMClear. IgnoreHRESULT; incrementcurrent1BD4 onlynormalreturn; current-mode read precedesdisarm; exceptionalnormalincrement suppressed/fullguardcleanup. Strict mainWin32/twoCTests/eightseeds;578workerpins+4owned;22freshspans925bytes/477owned. Unchanged5original/fullmainpairs381936statebytes,14realS_OKCOMcalls24actualOSguardcalls; liveviewport/depth/color/stencilcallee-slotmutation, currentdevice/scissorreread, raw80state, flags0unusedinvalidcontext, normalcounter andpost-realClearC++exception covered. Full3exactarchiveobjects355COFFsections1457relocs199functions(22library177fixture allf/i),338immutable runtime sections11whole27spanpostimages153actualproviderrecords. Original2EHmaps/thunks/funclets retained; Clearstate0 unwind executes via hostFH3 and fullreconstructedguardbridge. Scoped translated originalCALL/IAT/FH3/context plumbing recorded; no generalnativeSEH ABI, unmaskedFP/allfaultsites/asyncmutation/game claim. reports/native_renderer_viewport_clear_audit.json",
+      "old_name": "BSP_Renderer_Clear",
+      "name": "BSP_Renderer_Clear",
+      "saved_body_end": "00b214da"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f730",
+    "before": {
+      "address": "00b1f730",
+      "function_name": "BSP_Viewport_GetOrigin",
+      "comment": "[BSP reconstruction 00b1f730]\n[BSP reconstruction] Returns viewport wrapper+08 DWORD XY. Original ABI: ECX viewport; EAX object+08; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f730",
+      "evidence": "Full4-byte original/raw-source LEAEAX[ECX+8]/RET, no dereference. Strict mainWin32/twoCTests/eightseeds;578workerpins+4owned;22freshspans925bytes/477owned. Unchanged5original/fullmainpairs381936statebytes,14realS_OKCOMcalls24actualOSguardcalls; liveviewport/depth/color/stencilcallee-slotmutation, currentdevice/scissorreread, raw80state, flags0unusedinvalidcontext, normalcounter andpost-realClearC++exception covered. Full3exactarchiveobjects355COFFsections1457relocs199functions(22library177fixture allf/i),338immutable runtime sections11whole27spanpostimages153actualproviderrecords. Original2EHmaps/thunks/funclets retained; Clearstate0 unwind executes via hostFH3 and fullreconstructedguardbridge. Scoped translated originalCALL/IAT/FH3/context plumbing recorded; no generalnativeSEH ABI, unmaskedFP/allfaultsites/asyncmutation/game claim. reports/native_renderer_viewport_clear_audit.json",
+      "old_name": "BSP_Viewport_GetOrigin",
+      "name": "BSP_Viewport_GetOrigin",
+      "saved_body_end": "00b1f733"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f740",
+    "before": {
+      "address": "00b1f740",
+      "function_name": "BSP_Viewport_GetSize",
+      "comment": "[BSP reconstruction 00b1f740]\n[BSP reconstruction] Returns viewport wrapper+10 DWORD WH. Original ABI: ECX viewport; EAX object+10; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b1f740] update\nComplete B1F740..B1F744 four bytes, LEA EAX,[ECX+10h]; RET. Raw wrapped address computation, no viewport pointee read. Compiled complete leaf byte-identical to original. Primary independently verified 75 immutable worker pins and seven unchanged current provider files, then replayed unchanged fixture against actual frozen main library 9a9de67d355ddadcfdd957b89d4479c0f057ffc159f327adf2e502ad31d663b9. Strict main Win32 build, two existing CTests and eight fresh original seeds pass. Thirteen fresh guarded live/PE spans total 604 bytes; all three complete originals total339 bytes execute at original addresses in a separate reserved fixture child with full guards/FH3. D61D6C thirteen-slot profile and full four-byte count getter remain byte-identical; no provider bridge or invented getter callback. Sixteen pairs compare249641 literal DWORDs/125 frames, no pointer normalization, including complete renderer/logical/global/CS storage, actual VB/IB getter results and actual HAL red-pixel triangle readback. Two exact main archive objects,317 complete COFF sections/all relocations,121 entries15424 unique code bytes include fixture.33 normal and two each termination postimage phases preserve complete original/linked text/read-only data and actual/cloned tables.68 provider calls resolve to original/full-library call sites and real HAL D3D9/Windows CS; both secondary-cleanup throws terminate73 after real Leave. Exact source access-order audit proves early gates, captured modes, TEST-before-EH-arm, unsigned count/query/current-tag sequence and device/table/base ordering. The actual absent-index draw returned S_OK with blackpixel; ignored HRESULT is code proof, no failing-HRESULT claim. No entry-disabled mode enabling, foreign profiles, full logical ownership/binding, general original caller ABI or gameplay validation. reports/native_renderer_indexed_draw_audit.json."
+    },
+    "after": {
+      "address": "00b1f740",
+      "evidence": "Full4-byte original/raw-source LEAEAX[ECX+10]/RET, no dereference. Strict mainWin32/twoCTests/eightseeds;578workerpins+4owned;22freshspans925bytes/477owned. Unchanged5original/fullmainpairs381936statebytes,14realS_OKCOMcalls24actualOSguardcalls; liveviewport/depth/color/stencilcallee-slotmutation, currentdevice/scissorreread, raw80state, flags0unusedinvalidcontext, normalcounter andpost-realClearC++exception covered. Full3exactarchiveobjects355COFFsections1457relocs199functions(22library177fixture allf/i),338immutable runtime sections11whole27spanpostimages153actualproviderrecords. Original2EHmaps/thunks/funclets retained; Clearstate0 unwind executes via hostFH3 and fullreconstructedguardbridge. Scoped translated originalCALL/IAT/FH3/context plumbing recorded; no generalnativeSEH ABI, unmaskedFP/allfaultsites/asyncmutation/game claim. reports/native_renderer_viewport_clear_audit.json",
+      "old_name": "BSP_Viewport_GetSize",
+      "name": "BSP_Viewport_GetSize",
+      "saved_body_end": "00b1f743"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f7b0",
+    "before": {
+      "address": "00b1f7b0",
+      "function_name": "BSP_Viewport_GetScissorRect",
+      "comment": "[BSP reconstruction 00b1f7b0]\n[BSP reconstruction] Returns viewport wrapper+24 RECT. Original ABI: ECX viewport; EAX object+24; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f7b0",
+      "evidence": "Full4-byte original/raw-source LEAEAX[ECX+24]/RET, no dereference. Strict mainWin32/twoCTests/eightseeds;578workerpins+4owned;22freshspans925bytes/477owned. Unchanged5original/fullmainpairs381936statebytes,14realS_OKCOMcalls24actualOSguardcalls; liveviewport/depth/color/stencilcallee-slotmutation, currentdevice/scissorreread, raw80state, flags0unusedinvalidcontext, normalcounter andpost-realClearC++exception covered. Full3exactarchiveobjects355COFFsections1457relocs199functions(22library177fixture allf/i),338immutable runtime sections11whole27spanpostimages153actualproviderrecords. Original2EHmaps/thunks/funclets retained; Clearstate0 unwind executes via hostFH3 and fullreconstructedguardbridge. Scoped translated originalCALL/IAT/FH3/context plumbing recorded; no generalnativeSEH ABI, unmaskedFP/allfaultsites/asyncmutation/game claim. reports/native_renderer_viewport_clear_audit.json",
+      "old_name": "BSP_Viewport_GetScissorRect",
+      "name": "BSP_Viewport_GetScissorRect",
+      "saved_body_end": "00b1f7b3"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f7d0",
+    "before": {
+      "address": "00b1f7d0",
+      "function_name": "BSP_Viewport_GetScissorEnabled",
+      "comment": "[BSP reconstruction 00b1f7d0]\n[BSP reconstruction] Returns exact byte at viewport wrapper+20 in AL. Original ABI: ECX viewport; AL object+20 byte; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f7d0",
+      "evidence": "Full4-byte original/raw-source MOVALbyte[ECX+20]/RET; retain upperEAX, no boolnormalization. Strict mainWin32/twoCTests/eightseeds;578workerpins+4owned;22freshspans925bytes/477owned. Unchanged5original/fullmainpairs381936statebytes,14realS_OKCOMcalls24actualOSguardcalls; liveviewport/depth/color/stencilcallee-slotmutation, currentdevice/scissorreread, raw80state, flags0unusedinvalidcontext, normalcounter andpost-realClearC++exception covered. Full3exactarchiveobjects355COFFsections1457relocs199functions(22library177fixture allf/i),338immutable runtime sections11whole27spanpostimages153actualproviderrecords. Original2EHmaps/thunks/funclets retained; Clearstate0 unwind executes via hostFH3 and fullreconstructedguardbridge. Scoped translated originalCALL/IAT/FH3/context plumbing recorded; no generalnativeSEH ABI, unmaskedFP/allfaultsites/asyncmutation/game claim. reports/native_renderer_viewport_clear_audit.json",
+      "old_name": "BSP_Viewport_GetScissorEnabled",
+      "name": "BSP_Viewport_GetScissorEnabled",
+      "saved_body_end": "00b1f7d3"
+    },
+    "status": "applied"
+  }
+]
