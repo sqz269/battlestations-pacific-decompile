@@ -1,0 +1,705 @@
+{
+  "packet": "orch5_command_owner",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/main_menu_command_owner.cpp",
+  "documentation": "docs/MAIN_MENU_COMMAND_OWNER.md",
+  "reconstructed": [
+    {
+      "address": "0054c050",
+      "name": "bind_main_menu_command_owner_0054c050",
+      "end": "0054d3bd",
+      "coverage": "complete",
+      "abi": "ECX owner; RET at0054D3BD length1",
+      "evidence": "Complete normal path; native string/SEH allocation failures excluded"
+    },
+    {
+      "address": "00549620",
+      "name": "set_main_menu_help_variant_00549620",
+      "end": "0054964a",
+      "coverage": "complete",
+      "abi": "ECX owner; stack variant dword; RET4 at00549648 length3",
+      "evidence": "Complete low-byte behavior, incidental upper stack bytes excluded"
+    },
+    {
+      "address": "00549fc0",
+      "name": "enter_main_menu_command_owner_00549fc0",
+      "end": "0054a0be",
+      "coverage": "complete",
+      "abi": "ECX owner; RET at0054A0BE length1",
+      "evidence": "Complete normal path; retains style-byte reads across callbacks"
+    },
+    {
+      "address": "0054b500",
+      "name": "collect_main_menu_command_pages_0054b500",
+      "end": "0054b522",
+      "coverage": "complete",
+      "abi": "ECX owner; stack vector pointer; RET4 at0054B520 length3",
+      "evidence": "Complete two append behavior; standard vector storage"
+    },
+    {
+      "address": "0054a990",
+      "name": "destroy_main_menu_command_owner_0054a990",
+      "end": "0054aa30",
+      "coverage": "complete",
+      "abi": "ECX owner; RET at0054AA30 length1",
+      "evidence": "Complete normal path; native vtable/SEH/pool representation excluded"
+    },
+    {
+      "address": "0054a960",
+      "name": "main_menu_command_screen_id_0054a960",
+      "end": "0054a965",
+      "coverage": "complete",
+      "abi": "ECX owner; EAX=58h; RET at0054A965 length1",
+      "evidence": "Complete"
+    },
+    {
+      "address": "0054a970",
+      "name": "main_menu_command_virtual04_0054a970",
+      "end": "0054a972",
+      "coverage": "complete",
+      "abi": "ECX owner; AL=0; RET at0054A972 length1; upper EAX unspecified",
+      "evidence": "Complete low-byte return"
+    },
+    {
+      "address": "00549570",
+      "name": "exit_main_menu_command_owner_00549570",
+      "end": "00549570",
+      "coverage": "complete",
+      "abi": "ECX owner; RET at00549570 length1",
+      "evidence": "Complete evidenced no-op"
+    },
+    {
+      "address": "00549580",
+      "name": "update_main_menu_command_owner_00549580",
+      "end": "00549582",
+      "coverage": "complete",
+      "abi": "ECX owner; one stack dword; RET4 at00549580 length3",
+      "evidence": "Complete evidenced no-op"
+    }
+  ],
+  "analyzed": [
+    {
+      "address": "0054a8d0",
+      "coverage": "complete",
+      "status": "analysis_only",
+      "end": "0054a953",
+      "abi": "ECX owner; EAX owner; RET at0054A953 length1",
+      "evidence": "Game_OnInit allocatesACh; constructor sets screen/callback vtables and empties five cached strings; no +20/page/widget initialization. Existing CG_array_ctor_helper name is a categorization, not the full owner behavior."
+    }
+  ],
+  "ownership": [
+    {
+      "address": "004e3e27",
+      "native": "0054a8d0",
+      "function": "004e3aa0",
+      "contract": "0xAC allocation then owner construction"
+    },
+    {
+      "address": "004e3e40",
+      "native": "owner+vtable10",
+      "function": "004e3aa0",
+      "contract": "after 004E3E30 writes00E1930C, call binder0054C050"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0054c0b8",
+      "native": "004c12b0",
+      "function": "0054c050",
+      "contract": "Acquire GUI manager immediately before page load"
+    },
+    {
+      "address": "0054c136",
+      "native": "004c12b0",
+      "function": "0054c050",
+      "contract": "Acquire GUI manager immediately before page load"
+    },
+    {
+      "address": "0054c077",
+      "native": "004f71d0",
+      "function": "0054c050",
+      "contract": "Register screen using own virtual0 id58h"
+    },
+    {
+      "address": "0054c0c7",
+      "native": "00aa5840",
+      "function": "0054c050",
+      "contract": "Load FE_helpline, screen flag1, retain existing0; publish +24"
+    },
+    {
+      "address": "0054c145",
+      "native": "00aa5840",
+      "function": "0054c050",
+      "contract": "Load _Buttonhelp, screen flag1, retain existing0; publish +28"
+    },
+    {
+      "address": "0054c17c",
+      "native": "widget+vtable34",
+      "function": "0054c050",
+      "contract": "Hide +24 root, +28 root, then button_FrameBox"
+    },
+    {
+      "address": "0054c187",
+      "native": "widget+vtable34",
+      "function": "0054c050",
+      "contract": "Hide +24 root, +28 root, then button_FrameBox"
+    },
+    {
+      "address": "0054c1de",
+      "native": "widget+vtable34",
+      "function": "0054c050",
+      "contract": "Hide +24 root, +28 root, then button_FrameBox"
+    },
+    {
+      "address": "0054c1d1",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find button_FrameBox under+28; unused argument1"
+    },
+    {
+      "address": "0054c24e",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find content_helpline_Text under+24; store+2c; unused argument1"
+    },
+    {
+      "address": "0054c2c4",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find content_helpline2_Text under+24; store+30; unused argument1"
+    },
+    {
+      "address": "0054c33a",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find CenterText_Text under+28; store+34; unused argument1"
+    },
+    {
+      "address": "0054c3b0",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find CenterIcon_Text under+28; store+48; unused argument1"
+    },
+    {
+      "address": "0054c426",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left1Text_Text under+28; store+38; unused argument1"
+    },
+    {
+      "address": "0054c49c",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left1Icon_Text under+28; store+4c; unused argument1"
+    },
+    {
+      "address": "0054c512",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right1Text_Text under+28; store+3c; unused argument1"
+    },
+    {
+      "address": "0054c588",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right1Icon_Text under+28; store+50; unused argument1"
+    },
+    {
+      "address": "0054c5fe",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left2Text_Text under+28; store+40; unused argument1"
+    },
+    {
+      "address": "0054c674",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left2Icon_Text under+28; store+54; unused argument1"
+    },
+    {
+      "address": "0054c6ea",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right2Text_Text under+28; store+44; unused argument1"
+    },
+    {
+      "address": "0054c760",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right2Icon_Text under+28; store+58; unused argument1"
+    },
+    {
+      "address": "0054c7dc",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find CenterText_pc_Text under+28; store+84; unused argument1"
+    },
+    {
+      "address": "0054c851",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left1Text_pc_Text under+28; store+88; unused argument1"
+    },
+    {
+      "address": "0054c8ca",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right1Text_pc_Text under+28; store+8c; unused argument1"
+    },
+    {
+      "address": "0054c943",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left2Text_pc_Text under+28; store+90; unused argument1"
+    },
+    {
+      "address": "0054c9bc",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right2Text_pc_Text under+28; store+94; unused argument1"
+    },
+    {
+      "address": "0054ca35",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Center_pc_FrameBox under+28; store+98; unused argument1"
+    },
+    {
+      "address": "0054caae",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left1_pc_FrameBox under+28; store+9c; unused argument1"
+    },
+    {
+      "address": "0054cb27",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right1_pc_FrameBox under+28; store+a0; unused argument1"
+    },
+    {
+      "address": "0054cba0",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Left2_pc_FrameBox under+28; store+a4; unused argument1"
+    },
+    {
+      "address": "0054cc19",
+      "native": "00aa7e00",
+      "function": "0054c050",
+      "contract": "Find Right2_pc_FrameBox under+28; store+a8; unused argument1"
+    },
+    {
+      "address": "0054cc73",
+      "native": "00abbe50",
+      "function": "0054c050",
+      "contract": "Five+34 labels: multiline0/fontscale0.75 then source single space,localize1"
+    },
+    {
+      "address": "0054cc9a",
+      "native": "00abbe50",
+      "function": "0054c050",
+      "contract": "Five+84 labels: multiline0/fontscale0.75 then source single space,localize1"
+    },
+    {
+      "address": "0054d13d",
+      "native": "00531130",
+      "function": "0054c050",
+      "contract": "Each glyph: copied wide codes A2 A3 A5 A7 B4 B6 B7 B8 B1; callback owner+1C; argument glyph"
+    },
+    {
+      "address": "0054d148",
+      "native": "00aa6bc0",
+      "function": "0054c050",
+      "contract": "Each glyph+48: callback null,flag0"
+    },
+    {
+      "address": "0054d153",
+      "native": "00aa6bc0",
+      "function": "0054c050",
+      "contract": "Each framebox+98: callback owner+1C,flag0"
+    },
+    {
+      "address": "0054d15e",
+      "native": "00aa6bc0",
+      "function": "0054c050",
+      "contract": "Each PC text+84: callback owner+1C,flag0"
+    },
+    {
+      "address": "0054d2b9",
+      "native": "0054b530",
+      "function": "0054c050",
+      "contract": "Five(0,empty,1) triples; native RET3Ch at0054C045; +20=0 only afterwards"
+    },
+    {
+      "address": "00549636",
+      "native": "widget+vtable34",
+      "function": "00549620",
+      "contract": "Show+2C if variant low byte zero"
+    },
+    {
+      "address": "00549641",
+      "native": "widget+vtable34",
+      "function": "00549620",
+      "contract": "Show+30 if variant low byte nonzero; store original low byte afterwards"
+    },
+    {
+      "address": "00549fd2",
+      "native": "00abbe50",
+      "function": "00549fc0",
+      "contract": "Clear+2C using empty C string,localize0"
+    },
+    {
+      "address": "00549fe1",
+      "native": "00abbe50",
+      "function": "00549fc0",
+      "contract": "Clear+30 using empty C string,localize0"
+    },
+    {
+      "address": "0054a04c",
+      "native": "widget+vtable50",
+      "function": "00549fc0",
+      "contract": "Each+34 label color: RGB0 or1 from current game+61F, alpha1"
+    },
+    {
+      "address": "0054a09a",
+      "native": "00ab6c30",
+      "function": "00549fc0",
+      "contract": "Reload game+61F: raw enable byte,position0,offset0.05,black shadow alpha(style!=0)"
+    },
+    {
+      "address": "0054a0a4",
+      "native": "00abaed0",
+      "function": "00549fc0",
+      "contract": "Each+34 label source from corresponding+5C cached label,localize1"
+    },
+    {
+      "address": "0054b50e",
+      "native": "004d6790",
+      "function": "0054b500",
+      "contract": "Append owner+24 pointer to supplied vector"
+    },
+    {
+      "address": "0054b519",
+      "native": "004d6790",
+      "function": "0054b500",
+      "contract": "Append owner+28 pointer, without clearing existing output"
+    },
+    {
+      "address": "0054a9ce",
+      "native": "004c12b0",
+      "function": "0054a990",
+      "contract": "Acquire manager before destroying the next page"
+    },
+    {
+      "address": "0054a9de",
+      "native": "004c12b0",
+      "function": "0054a990",
+      "contract": "Acquire manager before destroying the next page"
+    },
+    {
+      "address": "0054a9d9",
+      "native": "00aa31f0",
+      "function": "0054a990",
+      "contract": "Remove and directly destroy+24 page; not reference decrement"
+    },
+    {
+      "address": "0054a9e9",
+      "native": "00aa31f0",
+      "function": "0054a990",
+      "contract": "Remove and directly destroy+28 page"
+    },
+    {
+      "address": "0054aa0c",
+      "native": "00695870",
+      "function": "0054a990",
+      "contract": "Destroy callback owner subobject+08 after cached-label destruction"
+    },
+    {
+      "address": "0054aa1b",
+      "native": "004f71a0",
+      "function": "0054a990",
+      "contract": "Remove every registry slot pointing to screen"
+    }
+  ],
+  "variant_call_sites": [
+    {
+      "address": "004dafd9",
+      "native": "00549620",
+      "function": "004da780",
+      "variant": "0; EBX initialized004DA7C2, complete EBX listing reviewed"
+    },
+    {
+      "address": "00598b29",
+      "native": "00549620",
+      "function": "005987f0",
+      "variant": "0 immediate"
+    },
+    {
+      "address": "005e5950",
+      "native": "00549620",
+      "function": "005e51d0",
+      "variant": "0; EBX initialized005E51F6, complete EBX listing reviewed"
+    },
+    {
+      "address": "005f2535",
+      "native": "00549620",
+      "function": "005f24d0",
+      "variant": "1 immediate"
+    },
+    {
+      "address": "005f3bb6",
+      "native": "00549620",
+      "function": "005f3b50",
+      "variant": "1 immediate"
+    },
+    {
+      "address": "005f5535",
+      "native": "00549620",
+      "function": "005f54f0",
+      "variant": "game00E188A8+61F low byte; EDI push is saved register, not a second argument"
+    },
+    {
+      "address": "005f7039",
+      "native": "00549620",
+      "function": "005f7020",
+      "variant": "0, only when game+61F is zero"
+    }
+  ],
+  "bindings": [
+    {
+      "call_site": "0054c24e",
+      "field_offset": "2c",
+      "page_offset": "24",
+      "name": "content_helpline_Text"
+    },
+    {
+      "call_site": "0054c2c4",
+      "field_offset": "30",
+      "page_offset": "24",
+      "name": "content_helpline2_Text"
+    },
+    {
+      "call_site": "0054c33a",
+      "field_offset": "34",
+      "page_offset": "28",
+      "name": "CenterText_Text"
+    },
+    {
+      "call_site": "0054c3b0",
+      "field_offset": "48",
+      "page_offset": "28",
+      "name": "CenterIcon_Text"
+    },
+    {
+      "call_site": "0054c426",
+      "field_offset": "38",
+      "page_offset": "28",
+      "name": "Left1Text_Text"
+    },
+    {
+      "call_site": "0054c49c",
+      "field_offset": "4c",
+      "page_offset": "28",
+      "name": "Left1Icon_Text"
+    },
+    {
+      "call_site": "0054c512",
+      "field_offset": "3c",
+      "page_offset": "28",
+      "name": "Right1Text_Text"
+    },
+    {
+      "call_site": "0054c588",
+      "field_offset": "50",
+      "page_offset": "28",
+      "name": "Right1Icon_Text"
+    },
+    {
+      "call_site": "0054c5fe",
+      "field_offset": "40",
+      "page_offset": "28",
+      "name": "Left2Text_Text"
+    },
+    {
+      "call_site": "0054c674",
+      "field_offset": "54",
+      "page_offset": "28",
+      "name": "Left2Icon_Text"
+    },
+    {
+      "call_site": "0054c6ea",
+      "field_offset": "44",
+      "page_offset": "28",
+      "name": "Right2Text_Text"
+    },
+    {
+      "call_site": "0054c760",
+      "field_offset": "58",
+      "page_offset": "28",
+      "name": "Right2Icon_Text"
+    },
+    {
+      "call_site": "0054c7dc",
+      "field_offset": "84",
+      "page_offset": "28",
+      "name": "CenterText_pc_Text"
+    },
+    {
+      "call_site": "0054c851",
+      "field_offset": "88",
+      "page_offset": "28",
+      "name": "Left1Text_pc_Text"
+    },
+    {
+      "call_site": "0054c8ca",
+      "field_offset": "8c",
+      "page_offset": "28",
+      "name": "Right1Text_pc_Text"
+    },
+    {
+      "call_site": "0054c943",
+      "field_offset": "90",
+      "page_offset": "28",
+      "name": "Left2Text_pc_Text"
+    },
+    {
+      "call_site": "0054c9bc",
+      "field_offset": "94",
+      "page_offset": "28",
+      "name": "Right2Text_pc_Text"
+    },
+    {
+      "call_site": "0054ca35",
+      "field_offset": "98",
+      "page_offset": "28",
+      "name": "Center_pc_FrameBox"
+    },
+    {
+      "call_site": "0054caae",
+      "field_offset": "9c",
+      "page_offset": "28",
+      "name": "Left1_pc_FrameBox"
+    },
+    {
+      "call_site": "0054cb27",
+      "field_offset": "a0",
+      "page_offset": "28",
+      "name": "Right1_pc_FrameBox"
+    },
+    {
+      "call_site": "0054cba0",
+      "field_offset": "a4",
+      "page_offset": "28",
+      "name": "Left2_pc_FrameBox"
+    },
+    {
+      "call_site": "0054cc19",
+      "field_offset": "a8",
+      "page_offset": "28",
+      "name": "Right2_pc_FrameBox"
+    }
+  ],
+  "slot_names": [
+    "Center",
+    "Left1",
+    "Right1",
+    "Left2",
+    "Right2"
+  ],
+  "vtable": "00cedfdc",
+  "callback_vtable_1c": "00cedfa4",
+  "screen_id": 88,
+  "native_constants": {
+    "00cee07c": 0.75,
+    "00ce3a90": "single ASCII space",
+    "00ce7638": 0.05000000074505806,
+    "00d7a24c": 1
+  },
+  "corrections": [
+    {
+      "was": "Command owner and placement slot geometry unnamed",
+      "is": "Screen id58h owns FE_helpline/_Buttonhelp; slots0..4 named Center,Left1,Right1,Left2,Right2",
+      "evidence": "0054A960;0054C050 table;00CEDFDC"
+    },
+    {
+      "was": "Existing function label CG_array_ctor_helper_0054a8d0",
+      "is": "Constructor of the 0xAC command/help screen, includes but is not limited to array construction",
+      "evidence": "004E3E27/30/40 allocation/publication/init;0054A8D0 writes00CEDFDC/00CEDFC4/00CEDFA4 and constructs strings"
+    }
+  ],
+  "verification": {
+    "source_registered": true,
+    "build_tested": true,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": 0,
+    "report_calls_verified": true,
+    "direct_call_rows_checked": 55,
+    "call_verification_failures": 0,
+    "verifier": "Parent strengthened tools/verify_report_calls.py checks actual instruction CALL addresses and the target project",
+    "note": "Normal source registration and combined build passed; executable owner host remains unbound"
+  },
+  "uncertainty": [
+    "Native pooled strings, vector allocation, SEH, vtable/callback ABI and allocation failures are outside new C++ projection.",
+    "GUI manager, widget callbacks, text companion and shadow scene-node operations require real host implementations.",
+    "Event forwarding through callback subobject+1C and scalar deleting destructor remain external.",
+    "Global00F88A30 device-level meaning and game+61F broader policy are not newly named.",
+    "Missing page/widget behavior is a new diagnostic exception, not a reconstructed native failure path.",
+    "Constructor0054A8D0 is analyzed only; C++ member defaults are not a native constructor reconstruction."
+  ],
+  "primary_integration": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "passed": true,
+    "log": "local/orch5_owner_layout_build.log",
+    "source_registration": "cmake/startup.cmake",
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tests": 0,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "status": "reviewed_standard_win32_build_and_existing_tests_passed",
+  "ghidra_worker_phase": "Read only; primary later applied locked annotations and saved/refreshed exports",
+  "undefined_at_worker_analysis": [
+    {
+      "address": "0054a960",
+      "end_inclusive": "0054a965",
+      "final_instruction": "0054a965",
+      "instruction_length": 1,
+      "status": "no_ghidra_function",
+      "evidence": "ECX owner; EAX=58h; RET at0054A965 length1"
+    },
+    {
+      "address": "0054a970",
+      "end_inclusive": "0054a972",
+      "final_instruction": "0054a972",
+      "instruction_length": 1,
+      "status": "no_ghidra_function",
+      "evidence": "ECX owner; AL=0; RET at0054A972 length1; upper EAX unspecified"
+    },
+    {
+      "address": "00549570",
+      "end_inclusive": "00549570",
+      "final_instruction": "00549570",
+      "instruction_length": 1,
+      "status": "no_ghidra_function",
+      "evidence": "ECX owner; RET at00549570 length1"
+    },
+    {
+      "address": "00549580",
+      "end_inclusive": "00549582",
+      "final_instruction": "00549580",
+      "instruction_length": 3,
+      "status": "no_ghidra_function",
+      "evidence": "ECX owner; one stack dword; RET4 at00549580 length3"
+    }
+  ],
+  "no_ghidra_function": [],
+  "defined_by_primary": "reports/orch5_menu_owner_definitions.json"
+}

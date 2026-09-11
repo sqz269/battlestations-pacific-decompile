@@ -8,6 +8,11 @@ identity assignment, component-reference array and full normal destruction. Thes
 are concrete dependencies of acquisition/loading; acquisition `008700E0` and its
 13 component-loader families are not claimed complete. Names are hypotheses.
 
+Current follow-up: `orch3_gameplay_definition_unwind_ac` adds the recovered
+three-state definition cleanup and complete `0086FC30` array destructor. See
+`GAMEPLAY_DEFINITION_UNWIND.md` for the map, partial-state behavior and validation.
+The original native exception-dispatch ABI remains unvalidated.
+
 ## Actual storage
 
 The allocation at `00870240..00870279` requests 24h bytes. The inline constructor
@@ -74,6 +79,13 @@ ID and word14 are not reset. `00871440` calls this destructor, frees the owner o
 when flags bit0 is set, and returns the original address even after freeing it.
 The manager map remains non-owning; definitions remove their entry themselves.
 
+On manager/map failure, the recovered cleanup destroys name, component array,
+then base. Normal name destruction first disarms name cleanup; normal array
+destruction first disarms array cleanup. A component callback that throws during
+the normal array stage therefore runs only base cleanup: partial count/slot state
+and the backing allocation remain. There is no retry, missing-ID suppression or
+cache rollback. The scalar never frees raw owner storage after a throwing destructor.
+
 The exact24h owner, component buffers, existing shared lifetime domain and
 NativeStringStorage are used directly. Actual component virtual dispatch is a
 required runtime binding until the component classes are reconstructed.
@@ -87,7 +99,8 @@ required runtime binding until the component classes are reconstructed.
 | 0086E770 | ECX array header; capacity stack; RET4 | reconstructed reference-array reserve |
 | 0086EB60 | ECX array header; source pointer-slot address stack; RET4 | reconstructed reference-array append |
 | 0086EDD0 | ECX array header; size stack; RET4 | reconstructed reference-array resize |
-| 00870D00 | ECX definition; RET at00870DC1 | reconstructed full normal destructor |
+| 00870D00 | ECX definition; RET at00870DC1 | normal destructor and three-state C++ unwind |
+| 0086FC30 | ECX actual12h array; RET at0086FC46 | resize0, reload/free buffer; no internal EH |
 | 00871440 | ECX definition; flags stack; EAX original address; RET4 | reconstructed scalar deletion |
 | 0086B650 | ECX map; output iterator and signed-ID pointer stack; EAX output; RET8 | analyzed stock find contract |
 | 0086E8A0 | ECX map; output iterator plus owner/node iterator stack; EAX output; RETCh | analyzed stock checked erase contract |

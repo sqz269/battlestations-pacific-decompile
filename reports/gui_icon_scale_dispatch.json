@@ -1,0 +1,134 @@
+{
+  "packet": "orch5_icon_scale48",
+  "status": "reviewed_standard_win32_build_and_existing_tests_passed",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00ab2820",
+      "name": "BSP_GuiIcon_SetScale",
+      "coverage": "complete for supported concrete Icon virtuals",
+      "source": "src/gui_icon_runtime.cpp",
+      "original_abi": "ECX Icon; scale-pair pointer stack; RET4",
+      "last_instruction": "00ab2849",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab284b",
+      "length": 44,
+      "instruction_count": 15,
+      "uncertainty": "Semantic retained-owner API; other derived current8C profiles, native ABI/SEH and exceptional FP timing not claimed."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ab2820",
+      "address": "00ab2828",
+      "native": "00aa7950",
+      "binding": "same scale fields FLD/FSTP then actual owner recomposition; no bounds refresh"
+    },
+    {
+      "function": "00ab2820",
+      "address": "00ab282f",
+      "native": "00ab2600",
+      "binding": "live filter query with short-circuit platform and texture reads"
+    },
+    {
+      "function": "00ab2820",
+      "address": "00ab2846",
+      "native": "00ab10d0",
+      "dispatch": "current virtual8C when returned bool differs from live cached134",
+      "vtable_evidence": "00D5C54C D0 10 AB 00; current Icon implementation required"
+    },
+    {
+      "function": "00aa7950",
+      "address": "00aa795f",
+      "native": "00aa7220",
+      "binding": "actual retained owner model matrix"
+    },
+    {
+      "function": "00ab2600",
+      "address": "00ab2661",
+      "native": "00ab1230",
+      "binding": "existing current signed16 state lookup, only native-size eligibility path"
+    },
+    {
+      "function": "00ab2600",
+      "address": "00ab2668",
+      "native": "00ab24b0",
+      "binding": "existing native-size predicate"
+    },
+    {
+      "function": "00ab24b0",
+      "address": "00ab24c0",
+      "native": "00ab17b0",
+      "binding": "captured texture dimensions, width then height, and live resolved UV"
+    }
+  ],
+  "vtable_cells": [
+    {
+      "cell": "00d5c508",
+      "value": "00ab2820",
+      "role": "Icon+48"
+    },
+    {
+      "cell": "00d5c54c",
+      "value": "00ab10d0",
+      "role": "Icon+8C"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Backdrop Icon scale could be bound to base00AA7950 or another abstract callback",
+      "is": "Actual GuiIconRuntime scale48 includes filter-change comparison and conditional existing current-state rebuild",
+      "evidence": "Raw00AB2828/282F/2834/2846 and verified vtable00D5C508"
+    }
+  ],
+  "producer_evidence": {
+    "scale": "canonical GuiWidgetTransform fields; Scale descriptor00AAAED0 and base constructor00AA9390",
+    "cached134": "00AB3DEF query,00AB3DFF compare,00AB3E22 cache store; existing GuiIconWidget::cached_prefers_bilinear"
+  },
+  "validation": {
+    "strict_win32_compile": "PASS /W4 /WX /O2 /fp:strict for modified runtime and existing map adapter",
+    "existing_owner_probe": "PASS; scale/filter/rebuild not executed",
+    "layout_direct_call_compile": "menu_layout worker reports PASS against this header",
+    "report_call_verifier": "After locked definition:7 numeric rows,0 failed;6 direct CALLs mechanically checked,1 indirect target separately grounded in vtable bytes",
+    "new_test_targets": 0,
+    "native_differential": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "standard_combined_build": "PASS; local/orch5_owner_layout_build.log"
+  },
+  "numeric_lifetime_limits": "Explicit x87 scale stores and existing native-size numeric kernel. Actual texture callbacks must preserve FP environment and borrowed state storage. No exceptional FP/SEH/ABI or reentrant destruction claim.",
+  "tool_issues": [
+    "Initial lease correctly rejected address owned by menu_layout; worker released it before claim/edit.",
+    "Ghidra reports no function at00AB2820; used full44-byte disk listing plus live byte comparison and retained exact raw bounds."
+  ],
+  "primary_integration": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "passed": true,
+    "log": "local/orch5_owner_layout_build.log",
+    "source_registration": "cmake/startup.cmake",
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tests": 0,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "ghidra_worker_phase": "Read only; primary later applied locked annotations and saved/refreshed exports",
+  "undefined_at_worker_analysis": [
+    {
+      "address": "00ab2820",
+      "last_instruction": "00ab2849",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab284b",
+      "length": 44,
+      "machine_code_hex": "8b44240456508bf1e82351ffff8bcee8ccfdffff3a8634010000740c8b168b828c0000008bceffd05ec20400",
+      "evidence": "Whole disk disassembly compared to verified live bytes. Parent will define through official locked annotation tool; worker does not mutate Ghidra."
+    }
+  ],
+  "no_ghidra_function": [],
+  "defined_by_primary": "reports/orch5_icon_scale_definition.json"
+}
