@@ -40,6 +40,15 @@ the new modules is still pending: `cmake/startup.cmake` is leased by
 This existing-target build does not claim that the three new sources were
 compiled by the normal CMake build. No new persistent test targets were added.
 
+## Registration follow-up
+
+The registry lease was subsequently released. In
+`docs/ORCH5_NATIVE_TEXT_BATCH.md`, all three sources are registered together
+with actual Text buffers, content, lifetime and native clip binding. The normal
+Win32 build and both existing tests now pass with all seven sources included;
+the focused actual-owner detach probe also passes against that rebuilt library.
+The prior pending-registration statement records the earlier batch only.
+
 The content prefix/glyph clear (`c79cb75b`) depends on the next actual buffer
 initializer. Workers are closing buffer/section/material creation, canonical
 Text lifetime and the nonempty content continuation. The canonical factory

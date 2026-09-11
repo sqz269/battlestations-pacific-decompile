@@ -45,5 +45,19 @@
   ],
   "validation":{"strict_compile":"PASS MSVC Win32 W4 WX O2 fp:strict src/gui_text_lifetime.cpp with current command-runtime/menu-layout owner and content headers","report_call_verifier":"RUN:14 numeric rows checked;13 passed,1 failed solely because raw callee AB83D0 is not yet a Ghidra function. Three symbolic indirect rows reported unverified; parent definition required before passing rerun.","new_tests":0,"new_test_targets":0,"executed_new_operations":false,"native_differential":false,"abi_compatible":false,"game_validated":false,"standard_combined_build":"parent integration","factory_enabled":false},
   "remaining_prerequisites":["Text implementation uses secondary hook with live descriptor table and derived teardown before base","complete Text current virtual behaviors before factory enable","actual recursive Text child scalar deletion implementation","actual cached shader producer uses owned raw slot and legacy flag projection","nonempty content and material/font continuation","native pool/SEH and native container-header ABI intentionally not claimed"],
-  "tool_issues":["Raw AB83D0 absent from Ghidra; read-only worker retained exact boundaries for parent definition","Initial strict compile included stale local gui_native_geometry header before worker extension; corrected include order and compilation passed","Windows rg path globs corrected to explicit paths or -g filters"]
+  "tool_issues":["Raw AB83D0 absent from Ghidra; read-only worker retained exact boundaries for parent definition","Initial strict compile included stale local gui_native_geometry header before worker extension; corrected include order and compilation passed","Windows rg path globs corrected to explicit paths or -g filters"],
+  "parent_validation": {
+    "raw_function_defined": "00ab83d0..00ab83f7;40 bytes;live image match",
+    "record": "reports/orch5_text_lifetime_definitions.json",
+    "normal_win32_build": "passed",
+    "existing_tests": "2/2 passed",
+    "numeric_rows": 14,
+    "direct_rows": 13,
+    "resolved_indirect_rows": 1,
+    "symbolic_indirect_rows": 3,
+    "failed_rows": 0,
+    "game_validated": false,
+    "new_operations_executed": false,
+    "factory_enabled": false
+  }
 }

@@ -1,5 +1,12 @@
 # Native Text draw sections and glyph buffers
 
+Parent integration follow-up: this source and both shared owner modules now
+compile in the normal Win32 target; both existing tests pass. The exact call
+verifier passes 43 numeric rows (40 direct, three resolved renderer calls),
+with 18 additional symbolic indirect rows explicitly outside that check.
+The existing actual-owner detach probe passes against the rebuilt library.
+No buffer creation execution or complete renderer/Text factory is claimed.
+
 Addresses reconstructed: `00AB8400`, `00AB8530`. Names are descriptive hypotheses.
 Ghidra project `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe` was
 verified by the read-only wrappers before each live query. No saved analysis,

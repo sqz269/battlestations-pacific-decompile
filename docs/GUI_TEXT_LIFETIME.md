@@ -1,5 +1,13 @@
 # Canonical Text construction and derived lifetime
 
+Parent integration follow-up: the raw type query at `00AB83D0..00AB83F7`
+has now been defined after checking live bytes, named and saved. The call
+verifier passes all 14 numeric rows (13 direct, one resolved indirect), with
+three symbolic indirect rows still explicit. This source now compiles in the
+normal Win32 target and both existing tests pass. Original worker inspection
+notes below retain their historical raw-function and standalone-compile state.
+No new lifetime operation execution or factory enablement is claimed.
+
 Addresses: `00AB9650`, `00AB8250`, `00AB8EE0`, `00AB73B0`, `00AB83D0`, `00AA8320`.
 
 `GuiTextLifetime` owns one existing `GuiTextWidget`, one live shadow pointer,

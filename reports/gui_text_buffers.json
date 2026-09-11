@@ -440,5 +440,17 @@
     "game_validated": false,
     "runtime_evidence": "Not reachable through current ordinary Text factory; no bsp_game runtime/visual claim. Parent runs standard combined Win32 build."
   },
-  "lease": "Only reconstructed AB8400/AB8530 plus eight owned output/source files; all other addresses consumed read-only, AA8320 owned by lifetime packet."
+  "lease": "Only reconstructed AB8400/AB8530 plus eight owned output/source files; all other addresses consumed read-only, AA8320 owned by lifetime packet.",
+  "parent_validation": {
+    "normal_win32_build": "passed including both shared owner modules",
+    "existing_tests": "2/2 passed",
+    "numeric_rows": 43,
+    "direct_rows": 40,
+    "resolved_indirect_rows": 3,
+    "symbolic_indirect_rows": 18,
+    "failed_rows": 0,
+    "existing_detach_probe": "passed against rebuilt actual owner library",
+    "buffer_operations_executed": false,
+    "game_validated": false
+  }
 }
