@@ -84,6 +84,10 @@ bool load_inputs(lua_State* state, DeviceSettings& device, std::string& error) {
             push_index(state, -1, 1);
             entry.name = read_string(state, -1);
             lua_pop(state, 1);
+            // 006a8067..006a80b1: resize, preserving existing elements when a
+            // case-insensitive input name repeats. Bare labels create no rows.
+            device.runtime_bindings[entry.name].resize(2);
+            device.runtime_reverse[entry.name].resize(2, false);
             if (push_index(state, -1, 2)) {
                 for (lua_Integer code = 1;; ++code) {
                     if (!push_index(state, -1, code)) {
@@ -137,6 +141,9 @@ bool load_sensitivities(lua_State* state, DeviceSettings& device, std::string& e
         }
         lua_pop(state, 1);
         device.sensitivities.push_back(entry);
+        // 006a8448: the saved runtime multiplier is initially 1.0f, independent
+        // of the integer in the Lua sensitivity description.
+        device.runtime_sensitivities[entry.name] = 1.0f;
         lua_pop(state, 1);
     }
     return true;
