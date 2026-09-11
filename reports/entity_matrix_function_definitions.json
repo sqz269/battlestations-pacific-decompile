@@ -1,0 +1,259 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00431410",
+    "end_address": "00431447"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00431410",
+    "end_address": "00431446",
+    "bytes_disassembled": 55,
+    "message": "Successfully disassembled 55 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00431410",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00431410",
+    "function_name": "FUN_00431410",
+    "entry_point": "00431410",
+    "body_size": 55,
+    "message": "Function created successfully at 00431410"
+   }
+  },
+  {
+   "defined": "00431410",
+   "end": "00431447",
+   "name": null,
+   "after": "Function: FUN_00431410 at 00431410\nSignature: undefined FUN_00431410(void)\nEntry: 00431410\nBody: 00431410 - 00431446"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e00a0",
+    "end_address": "006e00ea"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e00a0",
+    "end_address": "006e00e9",
+    "bytes_disassembled": 74,
+    "message": "Successfully disassembled 74 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e00a0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006e00a0",
+    "function_name": "FUN_006e00a0",
+    "entry_point": "006e00a0",
+    "body_size": 74,
+    "message": "Function created successfully at 006e00a0"
+   }
+  },
+  {
+   "defined": "006e00a0",
+   "end": "006e00ea",
+   "name": null,
+   "after": "Function: FUN_006e00a0 at 006e00a0\nSignature: undefined FUN_006e00a0(void)\nEntry: 006e00a0\nBody: 006e00a0 - 006e00e9"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0042b9a0",
+    "end_address": "0042b9a3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0042b9a0",
+    "end_address": "0042b9a2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0042b9a0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0042b9a0",
+    "function_name": "FUN_0042b9a0",
+    "entry_point": "0042b9a0",
+    "body_size": 3,
+    "message": "Function created successfully at 0042b9a0"
+   }
+  },
+  {
+   "defined": "0042b9a0",
+   "end": "0042b9a3",
+   "name": null,
+   "after": "Function: FUN_0042b9a0 at 0042b9a0\nSignature: undefined FUN_0042b9a0(void)\nEntry: 0042b9a0\nBody: 0042b9a0 - 0042b9a2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0042d700",
+    "end_address": "0042d761"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0042d700",
+    "end_address": "0042d760",
+    "bytes_disassembled": 97,
+    "message": "Successfully disassembled 97 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0042d700",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0042d700",
+    "function_name": "FUN_0042d700",
+    "entry_point": "0042d700",
+    "body_size": 97,
+    "message": "Function created successfully at 0042d700"
+   }
+  },
+  {
+   "defined": "0042d700",
+   "end": "0042d761",
+   "name": null,
+   "after": "Function: FUN_0042d700 at 0042d700\nSignature: undefined FUN_0042d700(void)\nEntry: 0042d700\nBody: 0042d700 - 0042d760"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00955970",
+    "end_address": "00955a38"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00955970",
+    "end_address": "00955a37",
+    "bytes_disassembled": 200,
+    "message": "Successfully disassembled 200 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00955970",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00955970",
+    "function_name": "FUN_00955970",
+    "entry_point": "00955970",
+    "body_size": 200,
+    "message": "Function created successfully at 00955970"
+   }
+  },
+  {
+   "defined": "00955970",
+   "end": "00955a38",
+   "name": null,
+   "after": "Function: FUN_00955970 at 00955970\nSignature: undefined FUN_00955970(void)\nEntry: 00955970\nBody: 00955970 - 00955a37"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
