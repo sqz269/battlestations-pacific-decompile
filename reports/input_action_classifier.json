@@ -1,0 +1,99 @@
+{
+  "packet": "orch3_input_action_classifier",
+  "date": "2026-09-10",
+  "worktree": "agent/orch3-input-classifier-20260910",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read_only; bsp.py ghidra verifies target each batch",
+  "functions": [
+    {
+      "address": "00a91a50",
+      "name": "BSP_InputAction_UpdateListenerState",
+      "source": "src/input_action_classifier.cpp",
+      "status": "reconstructed_build_tested_native_differential_tested",
+      "abi": "ECX listener; stack float delta, low-byte previous/current in dword slots; RET 0Ch",
+      "evidence": "Provisional. Hypothesis, not a recovered symbol. Correction superseding the earlier game_frame_input_tick partial analysis: docs/INPUT_ACTION_CLASSIFIER.md recovers all branches from the x87 listing. Native ECX=listener, stack float delta then low-byte previous/current state, RET 0Ch. Binary32 clocks +14h and +18h mean time since release and since press respectively. +09h is +08h AND NOT +0Ah, and +0Ch is +0Bh AND NOT +0Dh (JNZ at 00a91b97/00a91baa). Ordered strict quick-edge/expiry/repeat comparisons and inclusive held threshold use image defaults 0.25f/0.5f/0.1f. Only one repeat subtraction per continuing-down call. Current callers 00a92a20, 00a92c40, 00a92d40. Reconstructed explicit-state C++ passed Win32 build and 25088 local native differential state comparisons; NaN payloads/FPU exceptions and game behavior are not established. No native ABI compatibility claim.",
+      "implementation": "update_input_action_listener_00a91a50",
+      "final_instruction_address": "00a91bbb",
+      "final_instruction_length": 3
+    },
+    {
+      "address": "00a91e80",
+      "name": "BSP_InputAction_RebindDeviceReferences",
+      "source": "src/input_action_classifier.cpp",
+      "status": "reconstructed_build_tested",
+      "abi": "ECX action record; no stack arguments; RET",
+      "evidence": "Provisional. Hypothesis, not a recovered symbol. docs/INPUT_ACTION_CLASSIFIER.md. ECX=30h action record, no stack arguments, RET. Walk +10h/count+14h with 34h binding stride; clear valid byte, skip primary class -1 without clearing cached pointer, resolve device from backend 00f8bbf4 +6Ch+class*24h vector (begin+4/end+8), write cache +0Ch, then sequentially resolve required (binding+18h/count+1Ch) and forbidden (+24h/count+28h) 14h modifier arrays whose cached device is +8. Stop each binding at first missing pointer, preserving later caches; mark valid only after both arrays finish. Unsigned device index bounds checked; class validity and stable valid vectors are preconditions. Redundant library bounds diagnostics remain external and unreachable under that contract. Reconstructed and Win32 build-tested, not native-differential or game-validated.",
+      "implementation": "rebind_input_action_00a91e80",
+      "final_instruction_address": "00a9204b",
+      "final_instruction_length": 1
+    }
+  ],
+  "threshold_defaults": [
+    {
+      "address": "00e12f20",
+      "bytes": "0000803e",
+      "float": 0.25,
+      "field": "quick_edge_and_hold"
+    },
+    {
+      "address": "00e12f24",
+      "bytes": "0000003f",
+      "float": 0.5,
+      "field": "repeat_delay"
+    },
+    {
+      "address": "00e12f28",
+      "bytes": "cdcccc3d",
+      "float": 0.10000000149011612,
+      "field": "repeat_step"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_repairs": [],
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 Release, passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "verified_existing_seeds": 8,
+    "classifier_native_differential": {
+      "state_comparisons": 25088,
+      "result": "all_passed",
+      "native_bytes": {
+        "address": "00a91a50",
+        "length": 366,
+        "final_instruction": "00a91bbb",
+        "final_instruction_length": 3,
+        "sha256": "78e0df2eae9a7252372c28150caa1687b50c609e98b5af2627962b4d0ccc006f",
+        "matches_ghidra": true,
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "modifications": "six absolute threshold operands relocated; branches unchanged",
+      "comparison": "12 flags exact; 4 float outputs bitwise except NaN payloads",
+      "coverage": "all 4 edges, all 8 latch combinations, boundary/adjacent floats, signed zero, negative delta, infinity, NaN clocks/delta/thresholds",
+      "local_probe": "local/input_classifier_probe.cpp",
+      "local_log": "local/input-classifier-probe.log",
+      "tracked_tests_added": 0
+    },
+    "rebind": "assembly reviewed and build tested; no native differential run",
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "corrections": [
+    "+09h = +08h && !+0Ah; +0Ch = +0Bh && !+0Dh",
+    "legacy since_press (+14h) measures time since release; legacy since_release (+18h) measures time since press",
+    "classifier has 3 current callers, not only 00a92c40",
+    "classifier host boundary can be replaced by recovered explicit-state C++"
+  ],
+  "remaining_contracts": [
+    "rebind class indices must be valid (except skipped primary -1)",
+    "rebind vectors are valid stable non-aliased inputs; corrupt/native-overflow states excluded",
+    "library 00bf6713 diagnostics left external; unreachable for stable valid vectors",
+    "native NaN payloads, signaling NaN exceptions and non-default FPU modes not established",
+    "backend construction, input-settings linkage, binding polling and live device changes outside packet"
+  ],
+  "integration": "parent owns existing input_tick files and Ghidra annotations; worker only records ledger evidence",
+  "documentation": "docs/INPUT_ACTION_CLASSIFIER.md"
+}
