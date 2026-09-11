@@ -28,7 +28,14 @@
     "final_merged_fixtures": "All three fixtures and native file equality passed again",
     "final_build_log": "local/storage-backend-final-build.log",
     "final_fixture_log": "local/storage-backend-final-fixtures.log",
-    "final_native_file_log": "local/archive-compression-final-probe.log"
+    "final_native_file_log": "local/archive-compression-final-probe.log",
+    "additional_source_merge": {
+      "head": "8652982",
+      "build": "Win32 Release and both existing CTests passed",
+      "fixtures": "All three focused fixtures passed",
+      "build_log": "local/storage-backend-8652982-build.log",
+      "fixture_log": "local/storage-backend-8652982-fixtures.log"
+    }
   },
   "annotations": {
     "count": 42,
