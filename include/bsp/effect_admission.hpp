@@ -4,9 +4,23 @@
 #include "bsp/singleton_lifetime.hpp"
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 
 namespace bsp {
+
+// Three live native floats, also valid as a slice of a16-float matrix. Borrow
+// their address through reference refresh and every admission callback; never
+// construct an overlapping std::array object or snapshot the translation.
+class EffectPointView final {
+public:
+    EffectPointView(const std::array<float, 3>& point) noexcept : data_(point.data()) {}
+    explicit EffectPointView(const float* actual_xyz) noexcept : data_(actual_xyz) {}
+    const float* data() const noexcept { return data_; }
+    const float& operator[](std::size_t index) const noexcept { return data_[index]; }
+private:
+    const float* data_;
+};
 
 // Borrow the actual template's native pointer-slot storage. The array owner and
 // count references are live fields, not a copied list of mapped row objects.
@@ -30,7 +44,7 @@ public:
     // Dispatch this owner's CURRENT virtual+1C with the original input objects.
     // The low byte is significant; every nonzero byte means admission.
     virtual std::uint8_t virtual_1c(void* actual_owner,
-        const std::array<float, 3>& point, CameraTransform& reference) = 0;
+        EffectPointView point, CameraTransform& reference) = 0;
 };
 
 // Complete 0086A650 behavior: native ECX template; stack XYZ, reference;
@@ -41,7 +55,7 @@ public:
 // A zero gate admits without writing +1C; other rows write normalized 0/1 to
 // the CURRENT pointer in the captured slot after any virtual callback.
 bool admit_point_effect_0086a650(EffectAdmissionTemplateView,
-    const std::array<float, 3>& point, CameraTransform& reference,
+    EffectPointView point, CameraTransform& reference,
     EffectAdmissionDispatch&);
 
 // New C++ owner, NOT an executable native vtable or binary replacement.
