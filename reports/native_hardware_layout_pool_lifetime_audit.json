@@ -1,0 +1,721 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_pool_lifetime3",
+  "status": "complete_native_primary_library_and_original_fixture_checked_pending_saved_annotations",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-lifetime-20260910",
+  "branch": "agent/native-hardware-layout-pool-lifetime-20260910",
+  "base_commit": "26d98cb",
+  "owned_files": [
+    "include/bsp/native_hardware_layout_pool_lifetime.hpp",
+    "src/native_hardware_layout_pool_lifetime.cpp",
+    "docs/NATIVE_HARDWARE_LAYOUT_POOL_LIFETIME.md",
+    "reports/native_hardware_layout_pool_lifetime_audit.json"
+  ],
+  "scope": "Three complete functions, four owned files only. No shared CMake/ledger/packet/Ghidra changes; one focused ignored original-body fixture, no permanent tests.",
+  "target_verification": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_read": true,
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "seed_count": 8,
+    "all_seed_matches": true,
+    "all_live_PE_spans_match": true,
+    "span_count": 12,
+    "span_bytes": 577,
+    "owned_bytes": 363,
+    "installed_PE_spans_rechecked_at_execution": true
+  },
+  "functions": [
+    {
+      "address": "00b604d0",
+      "end_exclusive": "00b605a3",
+      "length": 211,
+      "native_sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+      "old_name": "FUN_00b604d0",
+      "old_signature": "undefined FUN_00b604d0(void)",
+      "proposed_name": "BSP_HardwareVertexLayoutPool_Initialize",
+      "cpp_function": "initialize_native_hardware_layout_pool_00b604d0",
+      "interface": "new MSVC Win32 actual-pointer C++ interface; not original calling convention",
+      "native_abi": "ECX actual 38h pool; EAX same pool; RET; FH3 state2->1->0 cleanup.",
+      "status": "reconstructed_strict_compiled_original_body_fixture_passed",
+      "ghidra_mutation": false
+    },
+    {
+      "address": "00b60270",
+      "end_exclusive": "00b602fa",
+      "length": 138,
+      "native_sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+      "old_name": "FUN_00b60270",
+      "old_signature": "undefined FUN_00b60270(void)",
+      "proposed_name": "BSP_HardwareVertexLayoutPool_Destroy",
+      "cpp_function": "destroy_native_hardware_layout_pool_00b60270",
+      "interface": "new MSVC Win32 actual-pointer C++ interface; not original calling convention",
+      "native_abi": "ECX actual initialized pool; RET; no own EH frame.",
+      "status": "reconstructed_strict_compiled_original_body_fixture_passed",
+      "ghidra_mutation": false
+    },
+    {
+      "address": "00b60020",
+      "end_exclusive": "00b6002e",
+      "length": 14,
+      "native_sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+      "old_name": "FUN_00b60020",
+      "old_signature": "undefined FUN_00b60020(void)",
+      "proposed_name": "BSP_HardwareVertexLayoutPool_FreeTableUnwind",
+      "cpp_function": "free_native_hardware_layout_pool_table_00b60020",
+      "interface": "new MSVC Win32 actual-pointer C++ interface; not original calling convention",
+      "native_abi": "ECX actual table header (pool+28), not pool; RET; first DWORD only; no clears.",
+      "status": "reconstructed_strict_compiled_original_body_fixture_passed",
+      "ghidra_mutation": false
+    }
+  ],
+  "actual_storage": {
+    "bytes": 56,
+    "borrowed": true,
+    "fields": {
+      "00": "actual 12-byte AllocatorListElement",
+      "0c": "actual 24-byte Win32 CRITICAL_SECTION",
+      "24": "signed recursion depth",
+      "28": "actual table pointer",
+      "2c": "current unsigned slab count",
+      "30": "current unsigned table capacity",
+      "34": "earliest free slab index or FFFFFFFF"
+    },
+    "native_profile": "00d62af0",
+    "base_profile": "00d7a0c0",
+    "shared_head": "00e188b4",
+    "private_head_or_pool_companion": false,
+    "static_global_binding_included": false
+  },
+  "composition": {
+    "list_provider": "existing AllocatorListDomain borrowing actual shared head",
+    "real_trim_required_before_publication": true,
+    "trim_bind_api": "bind_native_hardware_layout_pool_trim_00d62af0(void*, AllocatorListDomain&)",
+    "trim_profile": "00d62af0",
+    "trim_entry": "00b60350",
+    "trim_commit": "dd67627",
+    "trim_header_sha256": "2c2c01acf016071125cddf5b4d24fa879e9ae9bbbc638f19201c4bd0357ec3ef",
+    "trim_source_sha256": "bcc55c5a25dc67c8a607de8aa7c010b76d18df1ec822d34450cdaf16c5cf8e83",
+    "allocation": "singleton_lifetime_allocate({pointer_slots, 128, 128}); actual host malloc/_callnewh/retry/bad_alloc, corresponding BF55BE->BF681B",
+    "free": "singleton_lifetime_free; actual host CRT free corresponding BF6989->BF65AC->BF9DC8",
+    "critical_section": "actual Win32 Initialize/Leave/DeleteCriticalSection at pool+0C",
+    "shared_section_cleanup": "local raw helper composing proven 402F70 semantics, not another counted reconstruction",
+    "base_unlink": "existing actual-list unlink_base_element_00403970; native shared complete body used by original unwind",
+    "foreign_pool_instances": false,
+    "placeholder_operation_callbacks": false
+  },
+  "constructor_order": [
+    "Prepend base-profile node into existing current list; do not reset global head.",
+    "Arm state0; install D62AF0; initialize actual pool+0C section; write depth/table/count/capacity=0 and earliest=FFFFFFFF; arm state2.",
+    "Unsigned capacity test; publish capacity32 before actual allocation128.",
+    "Capture successful replacement; copy current count from current old table, reloading each reached iteration.",
+    "Free current nonnull table, then publish only captured replacement; preserve new-handler count/capacity changes and untouched excess words."
+  ],
+  "unwind": {
+    "handler": "00cc12de",
+    "funcinfo": "00dfa058",
+    "map": "00dfa040",
+    "state_chain": [
+      2,
+      1,
+      0,
+      -1
+    ],
+    "actions": [
+      {
+        "state": 2,
+        "funclet": "00cc12d3",
+        "call": "00b60020",
+        "receiver": "captured actual pool+28 current table header"
+      },
+      {
+        "state": 1,
+        "funclet": "00cc12c8",
+        "call": "00402f70",
+        "receiver": "captured actual pool+0C current section"
+      },
+      {
+        "state": 0,
+        "funclet": "00cc12c0",
+        "call": "00403970",
+        "receiver": "captured actual pool"
+      }
+    ],
+    "source_mechanism": "Win32 __try/__finally with matching armed-state cleanup, no catch/rethrow",
+    "section_initialization_fault_injected": false,
+    "failure_destroys_slab_owners": false,
+    "failure_frees_surviving_slab": false
+  },
+  "destructor_order": [
+    "Capture initial nonempty count before D62AF0 profile store.",
+    "Read current table/cell, actual free, increment index and compare current unsigned count.",
+    "Free current nonnull table; decrement positive signed depth before each real leave; delete actual section.",
+    "Existing actual unlink captures previous before base profile, repairs predecessor or head, reloads next and repairs its previous.",
+    "Preserve own links and table/count/capacity/earliest fields; free neither raw pool storage nor logical slot owners; retain caller-owned binding metadata."
+  ],
+  "validation": {
+    "repository_build_command": "./scripts/build.ps1",
+    "primary_library": "build/win32/Release/bsp_core.lib",
+    "primary_library_contains_owned_source": true,
+    "source_registration": "ignored local/hardware_lifetime_register.cmake through CMAKE_PROJECT_INCLUDE_BEFORE; no shared CMake edit",
+    "configuration": "MSVC Win32 Release",
+    "compiler_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "existing_ctests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true
+      }
+    ],
+    "fixture_command": "./local/build_hardware_lifetime_check.ps1",
+    "fixture_strict_compile": true,
+    "fixture_owned_body_replacement": false,
+    "postimage_audit": {
+      "all_12_postimages_match_declared_edits": true,
+      "owned_bodies_not_replaced": true,
+      "ordinary_relocations": 16,
+      "dependency_jump_adapters": 4,
+      "actual_import_bindings": 3,
+      "matched_trace_words": 52094,
+      "trace_lengths": [
+        30443,
+        21281,
+        370
+      ],
+      "spans": [
+        {
+          "address": "00b604d0",
+          "length": 211,
+          "kind": "owned",
+          "postimage_sha256": "7fb96a88612a1a8e7fe48dc16fa83a93b0433981a918731fb121a72f3a045a7d",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00b604d3",
+              "kind": "relocation",
+              "before": "00cc12de",
+              "after": "30004320"
+            },
+            {
+              "address": "00b604f6",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015988b4"
+            },
+            {
+              "address": "00b604fe",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015988b4"
+            },
+            {
+              "address": "00b60510",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015988b4"
+            },
+            {
+              "address": "00b60524",
+              "kind": "relocation",
+              "before": "00ce220c",
+              "after": "0146220c"
+            }
+          ]
+        },
+        {
+          "address": "00b60270",
+          "length": 138,
+          "kind": "owned",
+          "postimage_sha256": "f5e878568a7114eb4a8c43886b48ec4f986828f3cd88a7c8f3ea09fa530b47e5",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00b602b4",
+              "kind": "relocation",
+              "before": "00ce2210",
+              "after": "01462210"
+            },
+            {
+              "address": "00b602c9",
+              "kind": "relocation",
+              "before": "00ce2214",
+              "after": "01462214"
+            },
+            {
+              "address": "00b602e6",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015988b4"
+            }
+          ]
+        },
+        {
+          "address": "00b60020",
+          "length": 14,
+          "kind": "owned",
+          "postimage_sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+          "all_edits_declared": true,
+          "edits": []
+        },
+        {
+          "address": "00cc12c0",
+          "length": 40,
+          "kind": "eh_code",
+          "postimage_sha256": "2394e0e415d785bc8c1d2a0da87d70dae84087978912b909e3de8771c2759fe0",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00cc12df",
+              "kind": "relocation",
+              "before": "00dfa058",
+              "after": "0157a058"
+            }
+          ]
+        },
+        {
+          "address": "00dfa040",
+          "length": 60,
+          "kind": "eh_data",
+          "postimage_sha256": "0f21165c16b41ebc964d881f8a9cc311af51e3a43f052296612f1ea442826888",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00dfa044",
+              "kind": "relocation",
+              "before": "00cc12c0",
+              "after": "014412c0"
+            },
+            {
+              "address": "00dfa04c",
+              "kind": "relocation",
+              "before": "00cc12c8",
+              "after": "014412c8"
+            },
+            {
+              "address": "00dfa054",
+              "kind": "relocation",
+              "before": "00cc12d3",
+              "after": "014412d3"
+            },
+            {
+              "address": "00dfa060",
+              "kind": "relocation",
+              "before": "00dfa040",
+              "after": "0157a040"
+            }
+          ]
+        },
+        {
+          "address": "00402f70",
+          "length": 39,
+          "kind": "shared",
+          "postimage_sha256": "103120aaa850ff1b131568ba2fa51ea969359c429a175505f98cd7bb4ade1c8a",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00402f7c",
+              "kind": "relocation",
+              "before": "00ce2210",
+              "after": "01462210"
+            },
+            {
+              "address": "00402f91",
+              "kind": "relocation",
+              "before": "00ce2214",
+              "after": "01462214"
+            }
+          ]
+        },
+        {
+          "address": "00403970",
+          "length": 43,
+          "kind": "shared",
+          "postimage_sha256": "517f33344544f976057e374a839996973ec3e49ce60a5d661b788d3b5b241fba",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00403989",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015988b4"
+            }
+          ]
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "a85d26bb247185725ece9bd011d8f507c494e726b5d194752399ac97a15a0bfb",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf55be",
+              "kind": "dependency_jump",
+              "target": "allocation_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf65ac",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "d097202f49a8586b0dfc6102692f5739d62eba83acefedd98010845dadc1a479",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf65ac",
+              "kind": "dependency_jump",
+              "target": "free_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "c54f2937d2b4c1d5ed9b6360bfb03b29280896c0d1bf3de0ba83a1d7e195248b",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf6989",
+              "kind": "dependency_jump",
+              "target": "free_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf6b43",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "9fc270f193998e7ca477875ef8000c87f3291db7c846ea396053dbe79d54d5ac",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf6b43",
+              "kind": "dependency_jump",
+              "target": "cxx_bridge"
+            }
+          ]
+        },
+        {
+          "address": "00ce220c",
+          "length": 12,
+          "kind": "iat",
+          "postimage_sha256": "f9d82414995b02bec68a648568a7d7bbaea95898b4fc2f05f467cf1fa18bc3a1",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00ce220c",
+              "kind": "actual_import_binding",
+              "target": "observed_initialize"
+            },
+            {
+              "address": "00ce2210",
+              "kind": "actual_import_binding",
+              "target": "observed_leave"
+            },
+            {
+              "address": "00ce2214",
+              "kind": "actual_import_binding",
+              "target": "observed_delete"
+            }
+          ]
+        }
+      ]
+    },
+    "cases": [
+      {
+        "case": "real_new_handler_trim_current_table_retry_then_destroy",
+        "events": 32,
+        "matched_words": 30443,
+        "actual_frees": 4,
+        "actual_leaves": 2,
+        "actual_deletes": 1,
+        "original_FH3_searches": 0,
+        "original_FH3_unwinds": 0
+      },
+      {
+        "case": "real_bad_alloc_populated_current_table_unwind",
+        "events": 25,
+        "matched_words": 21281,
+        "actual_frees": 2,
+        "actual_leaves": 2,
+        "actual_deletes": 1,
+        "original_FH3_searches": 1,
+        "original_FH3_unwinds": 1
+      },
+      {
+        "case": "real_bad_alloc_empty_current_table_unwind",
+        "events": 10,
+        "matched_words": 370,
+        "actual_frees": 0,
+        "actual_leaves": 0,
+        "actual_deletes": 1,
+        "original_FH3_searches": 1,
+        "original_FH3_unwinds": 1
+      }
+    ],
+    "matched_words": 52094,
+    "observed_imports": [
+      "malloc",
+      "free",
+      "InitializeCriticalSection",
+      "LeaveCriticalSection",
+      "DeleteCriticalSection"
+    ],
+    "service_behavior": "Observed imports delegate actual operations; selected first128-byte malloc returns null, causing actual production _callnewh path. Registered real new-handler allocates actual slabs/capacity7 table, publishes fields, enters section twice and invokes genuine bound global-list trim.",
+    "snapshot_boundary": "Actual pool/neighbor fields and all table/slab DWORDs, captured before free; identities normalized, OS-private section pointer words compared by nullness; no freed-memory reads.",
+    "native_shared_bodies_execute": [
+      "00402f70",
+      "00403970"
+    ],
+    "local_checks": [
+      "local/lifetime_full_build.log",
+      "local/lifetime_verify_seeds.json",
+      "local/lifetime_byte_audit.log",
+      "local/hardware_lifetime_comparison.log",
+      "local/hardware_lifetime_postimage_audit.json"
+    ],
+    "game_validation": false,
+    "original_binary_ABI_compatible": false,
+    "static_global_startup_validated": false
+  },
+  "source_evidence_spans": [
+    {
+      "address": "00b604d0",
+      "length": 211,
+      "kind": "owned",
+      "disk_offset": 7734480,
+      "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+      "hex": "6aff68de12cc0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706f02ad600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8675009008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e80064090083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b60270",
+      "length": 138,
+      "kind": "owned",
+      "disk_offset": 7733872,
+      "sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+      "hex": "56578bf933f639772cc707f02ad60076178b47288b0cb051e81f63090083c60183c4043b772c72e98b472885c0740950e8e466090083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b60020",
+      "length": 14,
+      "kind": "owned",
+      "disk_offset": 7733280,
+      "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+      "hex": "8b0185c0740750e85d69090059c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00cc12c0",
+      "length": 40,
+      "kind": "eh_code",
+      "disk_offset": 9179840,
+      "sha256": "bd28c99b85f8be1e198ce96da0cab1df3737b6dfe0faab11d082147dc674a349",
+      "hex": "8b4df0e9a82674ff8b4df083c10ce99d1c74ff8b4df083c128e942ede9ffb858a0df00e95b58f3ff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00dfa040",
+      "length": 60,
+      "kind": "eh_data",
+      "disk_offset": 10461248,
+      "sha256": "fcbe9156f44b7a2c3f871544e9fa11dd2570a0a807202a21cd91bdd36bf924dc",
+      "hex": "ffffffffc012cc0000000000c812cc0001000000d312cc00220593190300000040a0df00000000000000000000000000000000000000000001000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00402f70",
+      "length": 39,
+      "kind": "shared",
+      "disk_offset": 12144,
+      "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00403970",
+      "length": 43,
+      "kind": "shared",
+      "disk_offset": 14704,
+      "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf55be",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8345022,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "hex": "e958120000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "hex": "e917380000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8350089,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "hex": "e91efcffff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6b43",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8350531,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "hex": "558bec83ec",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 12,
+      "kind": "iat",
+      "disk_offset": 9314828,
+      "sha256": "0f8ae4c205c3c2d5b650b9aa4303048fb6e4fbc16e8be72c1d9d7ac15a5f0551",
+      "hex": "6c56a0008856a000a056a000",
+      "live_PE_match": true
+    }
+  ],
+  "declared_relocations": [
+    {
+      "address": "00b604d3",
+      "expected": "00cc12de",
+      "kind": "owned"
+    },
+    {
+      "address": "00b604f6",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00b604fe",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00b60510",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00b60524",
+      "expected": "00ce220c",
+      "kind": "owned"
+    },
+    {
+      "address": "00b602b4",
+      "expected": "00ce2210",
+      "kind": "owned"
+    },
+    {
+      "address": "00b602c9",
+      "expected": "00ce2214",
+      "kind": "owned"
+    },
+    {
+      "address": "00b602e6",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00cc12df",
+      "expected": "00dfa058",
+      "kind": "eh_code"
+    },
+    {
+      "address": "00dfa044",
+      "expected": "00cc12c0",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00dfa04c",
+      "expected": "00cc12c8",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00dfa054",
+      "expected": "00cc12d3",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00dfa060",
+      "expected": "00dfa040",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00402f7c",
+      "expected": "00ce2210",
+      "kind": "shared"
+    },
+    {
+      "address": "00402f91",
+      "expected": "00ce2214",
+      "kind": "shared"
+    },
+    {
+      "address": "00403989",
+      "expected": "00e188b4",
+      "kind": "shared"
+    }
+  ],
+  "saved_analysis_repairs_pending": [
+    {
+      "site": "00b60584",
+      "normal_continuation": "00b60589..00b6058b",
+      "repair": "clear incorrect CALL_RETURN call-site override and decode proven continuation under shared write lock; refresh export"
+    },
+    {
+      "site": "00b60288",
+      "normal_continuation": "00b6028d..00b60297",
+      "repair": "clear incorrect CALL_RETURN call-site override and decode proven continuation under shared write lock; refresh export"
+    },
+    {
+      "site": "00b602a0",
+      "normal_continuation": "00b602a5..00b602a7",
+      "repair": "clear incorrect CALL_RETURN call-site override and decode proven continuation under shared write lock; refresh export"
+    },
+    {
+      "site": "00b60027",
+      "normal_continuation": "00b6002c",
+      "repair": "clear incorrect CALL_RETURN call-site override and decode proven continuation under shared write lock; refresh export"
+    }
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_hardware_layout_pool_lifetime.hpp": "c2afcf0b47f4caf3e54efccb5b83f57cf35e460deff0987acbbeb3fa2f2b502b",
+    "src/native_hardware_layout_pool_lifetime.cpp": "3af5f5536fef679ccc86410dd6efbe442ea512d5dbc4749c56c9d66d4ab42f11",
+    "docs/NATIVE_HARDWARE_LAYOUT_POOL_LIFETIME.md": "51aa8edb96b62b5030ad95b6eb74eaf6c3edb418637a784f8812b442f919368d",
+    "local/hardware_lifetime_check.cpp": "88a326ac37796571839d82b138f80bc7f336680ed3a08866b5dce6bcbf13fbc7",
+    "local/audit_hardware_lifetime.py": "6a9bb72341880d4b898cc4414a3d8e3e009b3cf1d9dd4e46fef8cc962bb36742",
+    "local/verify_lifetime_postimages.py": "20d9ed44a34b438f59ccab8097324deae93e906c6424bc0c3aa74bfae9597893",
+    "local/hardware_lifetime_raw_traces.json": "1d1c9004c301f6ee9fd88b9b505427296d72c0457391d5c226c73c6384bf679d",
+    "local/hardware_lifetime_postimages.json": "c79ba995d4f6b402bbee32fdcc352e5fd049f4f9f612ddde607cbba845b7a5ba",
+    "build/win32/Release/bsp_core.lib": "af8038410eba1fe81885cc2ce7f164b70b9db2b1dc95bffafdf8cc242510e577",
+    "build/hardware_lifetime-check/hardware_lifetime_check.exe": "f8f8ea0b6f00be5d87ad843692784e82363d003dec32c1834f55d1ea3d648e62"
+  },
+  "integration_remaining": [
+    "Integrator shared build registration, reviewed names/ledger/packet updates, saved Ghidra annotations and affected export refresh.",
+    "Dependent static2 binds actual global pool/list and registers actual shutdown via std::atexit."
+  ]
+}

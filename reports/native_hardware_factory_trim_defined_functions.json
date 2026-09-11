@@ -1,0 +1,271 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b60350",
+      "end_exclusive": "00b603f0",
+      "length": 160,
+      "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+      "function_before": "Function: FUN_00b60350 at 00b60350\nSignature: undefined FUN_00b60350(void)\nEntry: 00b60350\nBody: 00b60350 - 00b603ef",
+      "documentation_before": {
+        "hash": "a507d8ea2d5837588d4e1924795af686bfabfd89869460be4e26aec68a0fd8f4",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b60350",
+        "function_name": "FUN_00b60350",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "_Memory",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b60360"
+          },
+          {
+            "relative_offset": 93,
+            "name": "LAB_00b603ad"
+          },
+          {
+            "relative_offset": 101,
+            "name": "LAB_00b603b5"
+          },
+          {
+            "relative_offset": 128,
+            "name": "LAB_00b603d0"
+          },
+          {
+            "relative_offset": 154,
+            "name": "LAB_00b603ea"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b603ed"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "00b60371"
+      ],
+      "function_after": "Function: FUN_00b60350 at 00b60350\nSignature: undefined FUN_00b60350(void)\nEntry: 00b60350\nBody: 00b60350 - 00b603ef",
+      "documentation_after": {
+        "hash": "e74ad61f7e9c4e953366df86007d2cb2fcf1a605ef48209f9d6762e046a48c93",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b60350",
+        "function_name": "FUN_00b60350",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Memory",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "uint",
+            "storage": "(register, 0x1c, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b60360"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00b603a0"
+          },
+          {
+            "relative_offset": 90,
+            "name": "LAB_00b603aa"
+          },
+          {
+            "relative_offset": 93,
+            "name": "LAB_00b603ad"
+          },
+          {
+            "relative_offset": 101,
+            "name": "LAB_00b603b5"
+          },
+          {
+            "relative_offset": 128,
+            "name": "LAB_00b603d0"
+          },
+          {
+            "relative_offset": 154,
+            "name": "LAB_00b603ea"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00b603ed"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00b2f710",
+      "end_exclusive": "00b2f7f7",
+      "length": 231,
+      "sha256": "18b6e1a4f3f4d8097d1ebb069cc640206dbd30d38f645bf843b66973733e3e46",
+      "missing_before": true,
+      "function_before": "No function found for 00b2f710",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_Renderer_GetOrCreateHardwareLayout at 00b2f710\nSignature: undefined BSP_Renderer_GetOrCreateHardwareLayout(void)\nEntry: 00b2f710\nBody: 00b2f710 - 00b2f7f6"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b60376",
+        "end_address": "00b603f0"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b60376",
+        "end_address": "00b603ef",
+        "bytes_disassembled": 122,
+        "message": "Successfully disassembled 122 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b60371"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b60371 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b60350"
+      },
+      "result": {
+        "success": true,
+        "address": "00b60350",
+        "deleted_function": "FUN_00b60350",
+        "body_size": 94,
+        "message": "Function 'FUN_00b60350' deleted at 00b60350"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b60350",
+        "name": "FUN_00b60350",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b60350",
+        "function_name": "FUN_00b60350",
+        "entry_point": "00b60350",
+        "body_size": 149,
+        "message": "Function created successfully at 00b60350"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b2f710",
+        "end_address": "00b2f7f7"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b2f710",
+        "end_address": "00b2f7f6",
+        "bytes_disassembled": 231,
+        "message": "Successfully disassembled 231 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b2f710",
+        "name": "BSP_Renderer_GetOrCreateHardwareLayout",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b2f710",
+        "function_name": "BSP_Renderer_GetOrCreateHardwareLayout",
+        "entry_point": "00b2f710",
+        "body_size": 231,
+        "message": "Function created successfully at 00b2f710",
+        "warnings": [
+          "Function name 'BSP_Renderer_GetOrCreateHardwareLayout' \u2014 main part 'Renderer_GetOrCreateHardwareLayout' is not PascalCase. Expected: RendererGetorcreatehardwarelayout",
+          "Function name 'BSP_Renderer_GetOrCreateHardwareLayout' \u2014 main part 'Renderer_GetOrCreateHardwareLayout' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_Renderer_GetOrCreateHardwareLayout' does not start with a recognized verb. First word 'Renderer_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Native pool trim full body restored and hardware layout factory created and saved; existing code and comments preserved"
+}
