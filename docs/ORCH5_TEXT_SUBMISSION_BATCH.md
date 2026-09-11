@@ -1,6 +1,6 @@
 # Canonical Text submissions and remaining prerequisites
 
-This batch registers seven sources in the normal Win32 bsp_core build. Source
+This batch registers eight sources in the normal Win32 bsp_core build. Source
 submission now uses the existing canonical content, font and material owners,
 retains outer strings across pending glyph work, and runs the final current
 color operation only after the inner content completes. Size-triggered rebuild
@@ -27,16 +27,17 @@ delete profile and pool startup initializer are now defined in Ghidra. Seven
 false-free continuation gaps were repaired locally: one in timed reserve and
 six across five pool functions. All report zero remaining gaps after calls;
 alignment gaps after jumps were left alone. No global no-return flag changed.
-Thirty-one reviewed names/comments were saved, with old values archived in
-reports/orch5_text_submission_annotations.json; affected exports were refreshed.
+Thirty-six reviewed names/comments were saved. Old values are archived in
+reports/orch5_text_submission_annotations.json and
+reports/orch5_text_model_clone_annotations.json; affected exports were refreshed.
 
-The normal Release MSVC Win32 build and both existing math tests pass. Eight
-reports contain 526 numeric call rows with zero failures; the JSON separates
+The normal Release MSVC Win32 build and both existing math tests pass. Nine
+reports contain 564 numeric call rows with zero failures; the JSON separates
 direct calls from resolved indirect targets and symbolic visitor/profile rows.
 The source-submission caller audit includes 313 function-attributed call sites
 and separately records two raw unassigned calls. These are evidence checks,
 not claims that the callers are reconstructed. Independent cross-reviews of
-the property and reference packets found no actionable issues in their stated
+the property, reference and Model packets found no actionable issues in their stated
 domains. No permanent test suite was added.
 
 The complete Text factory, remaining type/current70 wiring, earlier optional
@@ -45,3 +46,10 @@ string/Lua/SEH ABI and game execution remain unfinished. Existing actual
 material-clone behavior is available; composing the full mesh clone and its
 canonical owner registration is still required. Build and pool-probe results
 do not establish rendered Text or gameplay correctness.
+
+The Model packet adds the actual no-positive-light base-copy branch for Text
+flags26h/parent0 and the post-geometry association, retained-owner and x87 pose
+tail. It preserves both callback-separated retained130 assignments and late
+source reads. Full allocation, canonical Model adoption and mesh clone remain
+explicit prerequisites. The final eight-source build also includes main
+commit d5e85f87, merged through 4a00cc65, and passes both existing tests.

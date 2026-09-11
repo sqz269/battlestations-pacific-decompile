@@ -7,7 +7,8 @@
     "07d3e108",
     "a31145f1",
     "2444f105",
-    "416aab9f"
+    "416aab9f",
+    "8399c807"
   ],
   "integrator_implementation_commit": "7a0133f7",
   "registered_sources": [
@@ -17,7 +18,8 @@
     "src/gui_text_glyph_child.cpp",
     "src/gui_text_factory.cpp",
     "src/gui_text_properties.cpp",
-    "src/gui_text_glyph_reference.cpp"
+    "src/gui_text_glyph_reference.cpp",
+    "src/native_gui_text_model_clone.cpp"
   ],
   "verification": [
     {
@@ -83,11 +85,19 @@
       "reported_indirect_targets": 4,
       "symbolic_indirect_rows": 0,
       "failed": 0
+    },
+    {
+      "report": "reports/native_gui_text_model_clone.json",
+      "numeric_rows": 38,
+      "direct_rows": 34,
+      "reported_indirect_targets": 4,
+      "symbolic_indirect_rows": 23,
+      "failed": 0
     }
   ],
-  "numeric_rows": 526,
+  "numeric_rows": 564,
   "failed": 0,
-  "build": "scripts/build.ps1 Release MSVC Win32 passed with all seven sources registered",
+  "build": "scripts/build.ps1 Release MSVC Win32 passed with all eight sources and merged main d5e85f87",
   "existing_tests": [
     "reconstructed_math passed",
     "native_math_differential passed"
@@ -96,10 +106,11 @@
   "new_permanent_tests": 0,
   "independent_reviews": {
     "2444f105": "command worker found no actionable findings in documented domain",
-    "416aab9f": "menu worker found no concrete findings in requested scope"
+    "416aab9f": "menu worker found no concrete findings in requested scope",
+    "8399c807": "command worker found no actionable findings in reviewed clone fragments"
   },
   "ghidra": {
-    "annotated_entries": 31,
+    "annotated_entries": 36,
     "annotation_archive": "reports/orch5_text_submission_annotations.json",
     "raw_functions_defined": [
       "00ad3a40..00ad3a5e",
@@ -108,7 +119,15 @@
     "pool_call_gaps_repaired": 6,
     "timed_reserve_call_gaps_repaired": 1,
     "global_no_return_changed": false,
-    "affected_exports_refreshed": true
+    "affected_exports_refreshed": true,
+    "additional_annotation_archive": "reports/orch5_text_model_clone_annotations.json",
+    "additional_affected_exports": [
+      "00b752b0",
+      "00b6f150",
+      "00b742a0",
+      "00b73f50",
+      "00b7be40"
+    ]
   },
   "remaining": [
     "Canonical Text factory and remaining type/current70 dispatch wiring",
