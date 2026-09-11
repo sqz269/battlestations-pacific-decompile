@@ -5,7 +5,8 @@ Packet `orch3_point_effect_release_y` reconstructs complete
 frame pool, live manager, pending deletion queue, scalar destructor and node
 terminal path. `PointEffectReleaseRuntime` keeps canonical borrowed host
 associations; it creates no substitute effect, reference count or native queue.
-Whole `008680B0` construction remains incomplete.
+Complete `008680B0` orchestration is now in `POINT_EFFECT_CONSTRUCTOR.md`;
+application row factories and canonical node-association bindings remain required.
 
 Evidence comes from `C:/Users/sqz269/bsp.gpr`, program
 `/battlestationspacific.exe`, and the installed executable with SHA256

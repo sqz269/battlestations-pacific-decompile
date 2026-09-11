@@ -52,6 +52,16 @@ void PointEffectReleaseRuntime::scalar_delete_current_04(void* raw, std::uint32_
 void PointEffectReleaseRuntime::invalid_parameter_00bf6713() {
     _invalid_parameter_noinfo();
 }
+void PointEffectReleaseRuntime::retire_failed_constructor_binding(void* raw) noexcept {
+    for (auto* reference : references_) {
+        if (&reference->storage() != raw) continue;
+        if (reference->phase_ != NativePointEffectReference::Phase::bound ||
+            reference->storage().original_vtable_identity_00 != 0x00ceb130u)
+            std::terminate();
+        reference->retire(false);
+        return;
+    }
+}
 
 void release_point_effect_instance_008683e0(void* raw, PointEffectReleaseRuntime& runtime) {
     auto* const frame = runtime.frame_pool_004c1130();
