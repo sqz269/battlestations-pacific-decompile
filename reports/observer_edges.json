@@ -1,0 +1,181 @@
+{
+  "packet": "orch4_observer_edges_e",
+  "base_commit": "a6bdc33",
+  "state": "concrete_native_edge_registration_and_deleting_dispatch_integrated",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "loopback8089"
+  },
+  "functions": [
+    {
+      "address": "00694850",
+      "proposed_name": "BSP_ObserverEdge_Create",
+      "implementation": "create_observer_edge_00694850",
+      "native_abi": "ECX=first actual endpoint; EDX=actual callback owner; EAX=new edge; RET",
+      "last_instruction": "006949c0",
+      "last_instruction_length": 1,
+      "evidence": "Allocate16; inline constructor006948A9..006948B5 writes CF7E64,first,owner,refs1; append same pointer first thenowner; equality growth2*capacity+2 beforealloc; count/data reloads; captured recursive section. EH00C7E970 only unlocks; no partial-progress rollback.",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "state": "reconstructed_concrete_storage_integrated_build_and_fixture_tested",
+      "inclusive_last_byte": "006949c0",
+      "byte_length": 369
+    },
+    {
+      "address": "00694a60",
+      "proposed_name": "BSP_Observer_RegisterPair",
+      "implementation": "register_observer_pair_00694a60",
+      "native_abi": "ECX=first actual endpoint; EDX=actual callback owner; RET; no promised EAX result",
+      "last_instruction": "00694ae6",
+      "last_instruction_length": 1,
+      "evidence": "Captured outer section; separately locked006949D0 lookup; separately locked00694850 create whenabsent, otherwise ADD DWORD[edge+C],1 modulo32; no duplicate append for repeatedpair. EH00C7E990 unlocks.",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "state": "reconstructed_concrete_storage_integrated_build_and_fixture_tested",
+      "inclusive_last_byte": "00694ae6",
+      "byte_length": 135
+    },
+    {
+      "address": "00693ca0",
+      "proposed_name": "CG_scalar_deleting_dtor_00693ca0",
+      "implementation": "delete_observer_edge_00693ca0",
+      "native_abi": "ECX=edge; DWORD flags stack; EAX=original address even afterfree; RET4",
+      "last_instruction": "00693cbc",
+      "last_instruction_length": 3,
+      "evidence": "Recognized compiler scalar-deleting wrapper, not an invented game destructor. Table00CF7E64 slot0 points here. WriteCF7E64, free iff flags&1, return sameaddress; no edge refcount or unregister operations. Previously missingstart defined underlock; decoded CALL_RETURN at00693CB1 cleared separately.",
+      "name_status": "recognized_compiler_scalar_deleting_wrapper",
+      "state": "reconstructed_concrete_storage_integrated_build_and_fixture_tested",
+      "inclusive_last_byte": "00693cbe",
+      "byte_length": 31
+    }
+  ],
+  "integration_sites": [
+    {
+      "caller": "006952a0",
+      "virtual_callsite": "00695399",
+      "source": "src/observer_lifetime.cpp"
+    },
+    {
+      "caller": "00695530",
+      "virtual_callsite": "00695654",
+      "source": "src/observer_lifetime.cpp"
+    }
+  ],
+  "sources": [
+    "include/bsp/observer_edges.hpp",
+    "src/observer_edges.cpp",
+    "src/observer_lifetime.cpp"
+  ],
+  "documentation": "docs/OBSERVER_EDGES.md",
+  "canonical_edge": {
+    "bytes": 16,
+    "vtable": "00cf7e64",
+    "deleting_entry": "00693ca0",
+    "first_endpoint_offset": 4,
+    "callback_owner_offset": 8,
+    "references_offset": 12,
+    "initial_references": 1,
+    "array_growth": "old_capacity*2+2 when count==capacity"
+  },
+  "canonical_services": [
+    "NativeObserverLifetime::lock_owner_00694280",
+    "NativeObserverLifetime::find_pair_006949d0",
+    "TrackedCriticalSection",
+    "SingletonLifetimeDomain",
+    "singleton_lifetime_allocate/free"
+  ],
+  "remaining_engine_contracts": [
+    "actual endpoint construction/aliases",
+    "live dispatch-vector publication/population",
+    "noncanonical edge deletingvirtual",
+    "actual CRT invalid-parameter policy"
+  ],
+  "ghidra_writes": {
+    "authorized": true,
+    "lock_and_lease_checked": true,
+    "saved": true,
+    "definition_record": "reports/observer_edge_definitions.json",
+    "flow_gap_record": "reports/observer_edges_flow_repair.json",
+    "new_function": {
+      "start": "00693ca0",
+      "end_exclusive": "00693cbf",
+      "bytes_disassembled": 31,
+      "created_body_size_reported": 28,
+      "listed_instructions": 11,
+      "stored_bounds_before_and_after": "00693ca0..00693cbe",
+      "prototype_metric_instruction_count_before_and_after": 10
+    },
+    "missing_instruction_repairs": [
+      {
+        "address": "00694914",
+        "instruction": "ADD ESP,4",
+        "length": 3
+      },
+      {
+        "address": "00694984",
+        "instruction": "ADD ESP,4",
+        "length": 3
+      }
+    ],
+    "already_decoded_flow_repair": {
+      "address": "00693cb1",
+      "before": "CALL_RETURN",
+      "after": "NONE",
+      "pseudocode_result": "returns original pointer afterfree"
+    },
+    "all_affected_exports_refreshed": true,
+    "name_comment_or_prototype_changes": false,
+    "callee_noreturn_changes": false,
+    "ghidra_script_execution": false,
+    "function_deletion_or_recreation": false,
+    "body_extension_operation": false
+  },
+  "pending_ghidra": [
+    "Root applies proposed names/comments/prototypes; retain correct scalar-deleting compiler identity.",
+    "00693CA0 has complete31-byte listing and corrected returned-pointer pseudocode, but initial body membership28 and unchanged10-instruction metric remain distinct from11 listed instructions; no full stored-membership repair claim."
+  ],
+  "missing_starts_in_reconstructed_closure": [],
+  "incidental_out_of_scope_missing_starts": [
+    {
+      "address": "00694250",
+      "inclusive_last_byte": "00694278",
+      "last_instruction": "00694276",
+      "last_instruction_length": 3,
+      "state": "identified_only_unleased_unchanged"
+    },
+    {
+      "address": "00693e10",
+      "inclusive_last_byte": "00693e38",
+      "last_instruction": "00693e36",
+      "last_instruction_length": 3,
+      "state": "identified_only_unleased_unchanged"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed",
+    "existing_checks": "CTest reconstructed_math1/1 passed",
+    "ignored_fixture": "local/observer_edges_check.cpp",
+    "recipe": "cmd /c local\\run_observer_edges_check.cmd",
+    "fixture_compilation": "MSVC /std:c++17 /EHsc /MD /W4 /WX, links built bsp_core.lib",
+    "fixture_result": "passed; noncanonical delete service throws and is never used for canonical edges",
+    "coverage": [
+      "actual16-byte edge creation",
+      "repeated registration",
+      "array capacity2-to6 growth",
+      "edge pointer identity",
+      "dispatch holes",
+      "reference modulo32 wrap",
+      "owner destruction ignores retained references",
+      "same endpoint alias duplicate append/remove",
+      "scalar deleting flags2/3 and returnpointer",
+      "concrete singleton shutdown"
+    ],
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "game_runtime": false
+  },
+  "limits": [
+    "Allocation failure/new-handler mutation and malformed storage were assembly-inspected but not injected.",
+    "No original calling-convention/SEH, concurrent teardown, or game-runtime compatibility is established by the build/fixture.",
+    "Endpoint construction, callback invocation, and dispatch-vector population are outside this packet."
+  ]
+}
