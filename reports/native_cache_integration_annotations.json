@@ -1,0 +1,45 @@
+[
+  {
+    "address": "00b27e80",
+    "before": {
+      "address": "00b27e80",
+      "function_name": "FUN_00b27e80"
+    },
+    "after": {
+      "address": "00b27e80",
+      "old_name": "FUN_00b27e80",
+      "name": "BSP_RenderCache_ConstructBanks",
+      "evidence": "Full constructor behavior in ordinary unpublished storage; not a live-reference cleanup entry. 20banks strideAC, ownerA8 zero first then DWORD00..1C and BYTE20; subsequent owner reload proven null with disjoint writes/no call. Original ABI: ECX actual first bank, EAX same address, RET. Evidence reports/native_render_cache_construction_audit.json and docs/NATIVE_RENDER_CACHE_CONSTRUCTION.md. Primary-library fixture4checkpoints6508snapshotwords1866ordered stores, real original finite CRT sqrt and x87/SSE states match; strictWin32+2CTest. General nonnull reset, full pipeline and game validation remain incomplete."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b29430",
+    "before": {
+      "address": "00b29430",
+      "function_name": "FUN_00b29430"
+    },
+    "after": {
+      "address": "00b29430",
+      "old_name": "FUN_00b29430",
+      "name": "BSP_RenderCache_Construct",
+      "evidence": "Full cache constructor conditional on ordinary unpublished storage and existing B659D0 finite-CRT contract. Initializes30 owner cells; private final B241C0 all-null slice visits26. Embedded actual144h CameraPlaneSet at178C uses same live D7A24C and established C++ lifetime. Inherits finite-CRT helper contract; exceptional diagnostic CRT callbacks not reconstructed. Original ABI: ECX actual cache, EAX same address, RET. Evidence reports/native_render_cache_construction_audit.json and docs/NATIVE_RENDER_CACHE_CONSTRUCTION.md. Primary-library fixture4checkpoints6508snapshotwords1866ordered stores, real original finite CRT sqrt and x87/SSE states match; strictWin32+2CTest. General nonnull reset, full pipeline and game validation remain incomplete."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b241c0",
+    "before": {
+      "address": "00b241c0",
+      "function_name": "BSP_D3D9Renderer_ClearBindingCache",
+      "comment": "[BSP reconstruction 00b241c0]\nReceives cache subobject at renderer+34h, not renderer base. Releases intrusive references, clears 210 render-valid bytes, twenty sampler-valid banks and other binding caches. Full cache layout and port remain incomplete."
+    },
+    "after": {
+      "address": "00b241c0",
+      "old_name": "BSP_D3D9Renderer_ClearBindingCache",
+      "name": "BSP_D3D9Renderer_ClearBindingCache",
+      "evidence": "Correction to earlier twenty-sampler wording: general reset visits16 banks; constructor initializes20. Only private all-null control-flow slice reconstructed: all26 ownercells null, no external mutation, actual field-write schedule and preservation. Gamma1938 and extra4bankowner fields preserved. The sole production caller B29430 establishes null proof. General nonnull release remains incomplete. Evidence reports/native_render_cache_construction_audit.json. Primary originalcaller fixture tests nullslice with poisonedgaps/extraowners/gamma; no full-function/ABI/game completion claim."
+    },
+    "status": "applied"
+  }
+]

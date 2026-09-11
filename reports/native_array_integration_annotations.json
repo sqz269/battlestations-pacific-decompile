@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00b2ff00",
+    "before": {
+      "address": "00b2ff00",
+      "function_name": "FUN_00b2ff00"
+    },
+    "after": {
+      "address": "00b2ff00",
+      "old_name": "FUN_00b2ff00",
+      "name": "BSP_NativeRenderResourceRecordArray_Reserve",
+      "evidence": "Actual12-byte header reserve: signed minimum64/signedcapacity comparisons; DWORD wrapped2Ch allocation. Reload currentbegin/count per copy/destroy; actual BF6989free returns; publish captured replacement then capacity, preserving currentcount. CBD970 no-op00401130 means copyfailure does NOT roll back replacement/priorcopies. Original ABI: ECX actual 12-byte array header, one stack DWORD, RET4; no semantic result. Evidence reports/native_render_resource_record_array_audit.json and docs/NATIVE_RENDER_RESOURCE_RECORD_ARRAY.md. Primary-library originalcaller fixture10900words/9cases/100events includes complete selected native parent spans and current-name unwind with actual dependency composition; strictWin32+2CTest. New C++interface, hostallocator/CRTexception limits explicit, no fullcontainer/ABI/game completion claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b30340",
+    "before": {
+      "address": "00b30340",
+      "function_name": "FUN_00b30340"
+    },
+    "after": {
+      "address": "00b30340",
+      "old_name": "FUN_00b30340",
+      "name": "BSP_NativeRenderResourceRecordArray_Resize",
+      "evidence": "Actual12-byte header resize: signed reserve/growth/shrink tests; currentbegin per defaultrecord; zeroname before sentinel allocation then sentinel/count and descending fivepayloadstores. Preserve unknown08/resource28. Current partialname only on failure; state0 currentbegin read before no-op00401130, earliercompleted records remain. Shrink decrements currentcount before currentrecord destruction; finalcount=request. Original ABI: ECX actual 12-byte array header, one stack DWORD, RET4; no semantic result. Evidence reports/native_render_resource_record_array_audit.json and docs/NATIVE_RENDER_RESOURCE_RECORD_ARRAY.md. Primary-library originalcaller fixture10900words/9cases/100events includes complete selected native parent spans and current-name unwind with actual dependency composition; strictWin32+2CTest. New C++interface, hostallocator/CRTexception limits explicit, no fullcontainer/ABI/game completion claim."
+    },
+    "status": "applied"
+  }
+]
