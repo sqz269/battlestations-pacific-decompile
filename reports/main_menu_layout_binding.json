@@ -1,0 +1,1045 @@
+{
+  "packet": "orch5_menu_layout",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/main_menu_layout_binding.cpp",
+  "routines": [
+    {
+      "address": "005861b0",
+      "end_inclusive": "0058827b",
+      "last_instruction_length": 1,
+      "native_abi": "__thiscall ECX=main-menu screen, no stack arguments, RET",
+      "coverage": "complete",
+      "scope": "Normal-path caller sequence; existing library bodies reused; explicit actual derived-widget runtime boundaries; native allocation and SEH represented by C++ ownership."
+    },
+    {
+      "address": "00541b80",
+      "end_inclusive": "00541cac",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall RET30h; group, NativeString*, count, spacing, two by-value float4 colors",
+      "coverage": "complete",
+      "scope": "Normal-path initialization over existing clone_subtree/owner APIs, borrowed clone pointers; not native allocation ABI."
+    },
+    {
+      "address": "00543710",
+      "end_inclusive": "005437f8",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall RET3Ch; group, char*, int, three by-value float4 colors",
+      "coverage": "complete",
+      "scope": "Normal-path initialization; NativeString/SEH replaced by C++ ownership."
+    },
+    {
+      "address": "00aa6bc0",
+      "end_inclusive": "00aa6bd3",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall RET8; pointer, byte",
+      "coverage": "complete",
+      "scope": "Binder-specific use of both leaf stores in existing GuiWidgetOwner.extra_fields."
+    },
+    {
+      "address": "00a9ac40",
+      "end_inclusive": "00a9ac4c",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall RET4; pointer",
+      "coverage": "complete",
+      "scope": "Analyzed leaf body; actual Listbox+114h access remains required runtime boundary."
+    },
+    {
+      "address": "005861a0",
+      "end_inclusive": "005861ac",
+      "last_instruction_length": 5,
+      "no_ghidra_function": true,
+      "native_abi": "load00E198AC, load manager+58h intoECX, JMP005845D0",
+      "coverage": "complete",
+      "scope": "Analyzed raw thunk, callback target005845D0 not reconstructed or read here."
+    },
+    {
+      "address": "00aa68f0",
+      "end_inclusive": "00aa6971",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX=widget, output float4*, RET4",
+      "coverage": "complete",
+      "scope": "Analysis only; actual material diffuse getter required."
+    },
+    {
+      "address": "00ab7200",
+      "end_inclusive": "00ab7283",
+      "last_instruction_length": 3,
+      "no_ghidra_function": true,
+      "native_abi": "__thiscall ECX=Text, state int, RET4",
+      "coverage": "complete",
+      "scope": "Analysis only; actual Text state dispatch required."
+    },
+    {
+      "address": "00ab2820",
+      "end_inclusive": "00ab284b",
+      "last_instruction_length": 3,
+      "no_ghidra_function": true,
+      "native_abi": "__thiscall ECX=Icon, float2*, RET4",
+      "coverage": "complete",
+      "scope": "Analysis only; base scale/recompose then00AB2600 compare+134 and optional current+8C. Required actual Icon dispatch."
+    }
+  ],
+  "lookups": [
+    {
+      "address": "0058621c",
+      "native": "00aa5840",
+      "function": "005861b0",
+      "name": "FE_main_listbox",
+      "root": "GUI page registry",
+      "screen_flag": 1,
+      "add_reference": false,
+      "result": "470",
+      "type": "Screen",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586297",
+      "native": "00aa5840",
+      "function": "005861b0",
+      "name": "FE_worldmap_historical",
+      "root": "GUI page registry",
+      "screen_flag": 1,
+      "add_reference": false,
+      "result": "2f0",
+      "type": "Screen",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058631d",
+      "native": "00aa5840",
+      "function": "005861b0",
+      "name": "FE_main",
+      "root": "GUI page registry",
+      "screen_flag": 1,
+      "add_reference": false,
+      "result": "temporary",
+      "type": "Screen",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058638b",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "bg_01_anim_Movie",
+      "root": "FE_main",
+      "unused_argument": 1,
+      "result": "340",
+      "type": "Movie",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586415",
+      "native": "00aa5840",
+      "function": "005861b0",
+      "name": "FE_briefing_grid",
+      "root": "GUI page registry",
+      "screen_flag": 1,
+      "add_reference": false,
+      "result": "244",
+      "type": "Screen",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058649b",
+      "native": "00aa5840",
+      "function": "005861b0",
+      "name": "FE_briefing",
+      "root": "GUI page registry",
+      "screen_flag": 1,
+      "add_reference": false,
+      "result": "248",
+      "type": "Screen",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058651f",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "New_Group",
+      "root": "248",
+      "unused_argument": 1,
+      "result": "temporary",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058658d",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "Primary_Text",
+      "root": "New_Group",
+      "unused_argument": 1,
+      "result": "24c",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058660d",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "num_Text",
+      "root": "New_Group",
+      "unused_argument": 1,
+      "result": "250",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058668d",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "num_2_Text",
+      "root": "New_Group",
+      "unused_argument": 1,
+      "result": "254",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058670d",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "dest_Text",
+      "root": "New_Group",
+      "unused_argument": 1,
+      "result": "258",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "005867c2",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "dest_2_Text",
+      "root": "New_Group",
+      "unused_argument": 1,
+      "result": "25c",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586877",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "hl_bg_FrameBox",
+      "root": "New_Group",
+      "unused_argument": 1,
+      "result": "294",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "005868ed",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "historical_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "344",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586963",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "video_Movie",
+      "root": "344",
+      "unused_argument": 1,
+      "result": "33c",
+      "type": "Movie",
+      "coverage": "complete"
+    },
+    {
+      "address": "005869d9",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "bigtextbg_FrameBox",
+      "root": "344",
+      "unused_argument": 1,
+      "result": "568",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586a4f",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "test_Clipbox",
+      "root": "568",
+      "unused_argument": 1,
+      "result": "3b0",
+      "type": "Clipbox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586ac5",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "textbox_Group",
+      "root": "3b0",
+      "unused_argument": 1,
+      "result": "350",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586b4f",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "content_main_Text",
+      "root": "350",
+      "unused_argument": 1,
+      "result": "3b8",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586bc9",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "slider_Group",
+      "root": "568",
+      "unused_argument": 1,
+      "result": "temporary",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586c3b",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_top_scroll_Icon",
+      "root": "slider_Group",
+      "unused_argument": 1,
+      "result": "348",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586cc1",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_botton_scroll_Icon",
+      "root": "slider_Group",
+      "unused_argument": 1,
+      "result": "34c",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586d47",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "textx_scroll_FrameBox",
+      "root": "slider_Group",
+      "unused_argument": 1,
+      "result": "3b4",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586dcd",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "textx_scroll_bg_Icon",
+      "root": "slider_Group",
+      "unused_argument": 1,
+      "result": "temporary",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586e8b",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "mission_pic_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "324",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586f04",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "textbackground_FrameBox",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "568",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00586f8a",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "selector_Icon",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "338",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587000",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "mission_mappoint_template_Icon",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "114",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587084",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "mission_mapflag_template_Icon",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "118",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587108",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "missionpicture_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "2f4",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058717e",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "mission_name_Text",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "304",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "005871f4",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "mission_name_backg_FrameBox",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "334",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587278",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "test_Clipbox",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "230",
+      "type": "Clipbox",
+      "coverage": "complete"
+    },
+    {
+      "address": "005872ee",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "textbox_Group",
+      "root": "230",
+      "unused_argument": 1,
+      "result": "1d0",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587378",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_top_scroll_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "1c8",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "005873ee",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_botton_scroll_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "1cc",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587464",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "textx_scroll_FrameBox",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "234",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587510",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "content_main_Text",
+      "root": "1d0",
+      "unused_argument": 1,
+      "result": "30c",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587586",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "mission_date_Text",
+      "root": "1d0",
+      "unused_argument": 1,
+      "result": "308",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "005875fc",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "checkpoint_Text",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "300",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587672",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "checkpoint_FrameBox",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "2fc",
+      "type": "FrameBox",
+      "coverage": "complete"
+    },
+    {
+      "address": "005876e8",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "medal1_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "2f8",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058775e",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "missions_US_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "310",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "005877d4",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "missions_JP_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "314",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "0058784a",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "missions_US_DLC_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "318",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "005878c0",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "missions_JP_DLC_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "31c",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587936",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "training_Group",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "320",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "005879ac",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "bg_01_Icon",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "328",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587a48",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "background_Icon",
+      "root": "2f0",
+      "unused_argument": 1,
+      "result": "32c",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587b0a",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "ListBox_Group",
+      "root": "470",
+      "unused_argument": 1,
+      "result": "3bc",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587b80",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "SmallListBox_Group",
+      "root": "470",
+      "unused_argument": 1,
+      "result": "3c0",
+      "type": "Group",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587bf6",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "Sub_Listbox",
+      "root": "470",
+      "unused_argument": 1,
+      "result": "23c",
+      "type": "Listbox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587c7b",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "MainListbox_Text",
+      "root": "23c",
+      "unused_argument": 1,
+      "result": "240",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587d3b",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "Main_Listbox",
+      "root": "470",
+      "unused_argument": 1,
+      "result": "1b8",
+      "type": "Listbox",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587de7",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "MainListbox_Text",
+      "root": "1b8",
+      "unused_argument": 1,
+      "result": "238",
+      "type": "Text",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587e5d",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_top_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "1bc",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587ee3",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_botton_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "1c0",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587f68",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_botton_scroll_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "discarded",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00587fe1",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "arrow_top_scroll_Icon",
+      "root": "324",
+      "unused_argument": 1,
+      "result": "discarded",
+      "type": "Icon",
+      "coverage": "complete"
+    },
+    {
+      "address": "00588235",
+      "native": "00aa7e00",
+      "function": "005861b0",
+      "name": "TextBox_Group",
+      "root": "470",
+      "unused_argument": 1,
+      "result": "argument to00543710",
+      "type": "Group",
+      "coverage": "complete"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "005862d1",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "005863c9",
+      "native": "005861b0+vtable7c",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058644f",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "005864d5",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "005865c7",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586647",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "005866c7",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586747",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586759",
+      "native": "005861b0+vtable54",
+      "function": "005861b0"
+    },
+    {
+      "address": "005867fc",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058680e",
+      "native": "005861b0+vtable54",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586b02",
+      "native": "00683790",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586c78",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586cfe",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586d84",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586dfd",
+      "native": "00aa6740",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586e1d",
+      "native": "00aa6740",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586e3e",
+      "native": "00683380",
+      "function": "005861b0"
+    },
+    {
+      "address": "00586f3d",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058703a",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "005870be",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058722e",
+      "native": "005861b0+vtable34",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058732b",
+      "native": "00683790",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058749d",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "005874c3",
+      "native": "00683380",
+      "function": "005861b0"
+    },
+    {
+      "address": "005879fe",
+      "native": "005861b0+vtable48",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587a7c",
+      "native": "00aa6740",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587a9d",
+      "native": "00aa6750",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587c2e",
+      "native": "00a9ac40",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587cf1",
+      "native": "005861b0+vtable50",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587d70",
+      "native": "00a9ac40",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587d80",
+      "native": "00aa6750",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587e96",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587f19",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587f6f",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "00587fe8",
+      "native": "00aa6bc0",
+      "function": "005861b0"
+    },
+    {
+      "address": "0058801f",
+      "native": "005861b0+vtable80",
+      "function": "005861b0"
+    },
+    {
+      "address": "005880f5",
+      "native": "00541b80",
+      "function": "005861b0"
+    },
+    {
+      "address": "00588241",
+      "native": "00543710",
+      "function": "005861b0"
+    },
+    {
+      "address": "00541b95",
+      "native": "00aa7e00",
+      "function": "00541b80"
+    },
+    {
+      "address": "00541bd7",
+      "native": "00aab4c0",
+      "function": "00541b80"
+    },
+    {
+      "address": "00541bfd",
+      "native": "00aa67f0",
+      "function": "00541b80"
+    },
+    {
+      "address": "00541c3b",
+      "native": "00aa7dc0",
+      "function": "00541b80"
+    },
+    {
+      "address": "00541c4d",
+      "native": "00541b80+vtable34",
+      "function": "00541b80"
+    },
+    {
+      "address": "00543759",
+      "native": "00aa7e00",
+      "function": "00543710"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "MAIN_MENU_MISSION_DETAIL.md says every005861B0 AA7E00 lookup uses+2F0",
+      "is": "55 direct-child lookups use FE_main, FE_briefing/New_Group, world-map subgroups and FE_main_listbox plus nested groups.",
+      "evidence": "Every lookup row records ECX provenance;00586381 uses FE_main inEBX,0058650A uses+248,0058694E uses+344,00587AF5 uses+470."
+    },
+    {
+      "was": "+568 treated as one unnamed background handle throughout layout setup",
+      "is": "First historical_Group/bigtextbg_FrameBox, then overwritten with mission_pic_Group/textbackground_FrameBox.",
+      "evidence": "Stores005869DE and00586F09, with briefing scroller setup complete by00586E3E."
+    },
+    {
+      "was": "Map companion+338 remained unbound",
+      "is": "FE_worldmap_historical direct child selector_Icon",
+      "evidence": "00586F75 ECX=[ESI+2F0],00586F8A AA7E00,00586F8F store+338."
+    },
+    {
+      "was": "Register/constructor boundary could be conflated",
+      "is": "00582F30 is register virtual+10; it invokes this binder through+14. The actual constructor is005902E0.",
+      "evidence": "Existing screen schema and read00582F30 body; no implementation expansion."
+    },
+    {
+      "was": "Treating backdrop+48 as inherited base00AA7950 would omit derived behavior",
+      "is": "Icon vtable00D5C4C0+48 points to raw00AB2820, which also checks00AB2600 againstIcon+134 and conditionally calls+8C",
+      "evidence": "Live vtable word00D5C508=00AB2820; raw body00AB2820..00AB284B. Binder directly invokes canonical GuiIconTypeImplementation.runtime().set_scale48_00ab2820 supplied by map-runtime worker."
+    }
+  ],
+  "constants": {
+    "005874c3_track": {
+      "bits": "3dd27d28",
+      "value": 0.10277777910232544
+    },
+    "005879fe_scale": {
+      "bits": "3f800054",
+      "value": 1.0000100135803223
+    },
+    "00587cf1_color": [
+      "3f4dcdd5",
+      "3f15959a",
+      "3ea8a8b1",
+      "3f800000"
+    ],
+    "00541bf3_divisor_double": 768.0
+  },
+  "verification": {
+    "callee_before_contract": "Read page/find/owner/scroller/clone bodies, leaf setters, helper full assembly, virtual target bodies. No invented fallback contracts.",
+    "boundary_before_attribution": "Main body005861B0..0058827B and two helper bodies verified live; report records containing functions.",
+    "all_call_sites": "00541B80/00543710 each have exactly one caller005861B0; binder DATA xref00CEFC70. Leaf setter global callers are not reinterpreted: native address-named call carries pointer unchanged; inline listener use scoped to this binder.",
+    "register_provenance": "Complete2483-instruction export filtered for allEBX/EBP/EDI/ESI writes; ESI=screen at005861D4, EDI=0 throughout, EBX roots change at00586322,00586524,00586BCE,00586DD2.",
+    "unread_ranges_in_reconstructed_routines": [],
+    "runtime": "Not connected to bsp_game; no runtime/frame/render claim. Missing actual Movie/Listbox/Text/copy-owner services must fail explicitly.",
+    "build": "MSVC Win32 /std:c++17 /W4 /WX /EHsc /permissive- compile-only passed with map-runtime worker include directory first. Combined CMake registration/build delegated to primary.",
+    "tests_added": 0,
+    "report_calls": "Stronger primary verifier final run:87 direct rows checked,0 failed;18 indirect rows separately inspected from exact listings and class vtable words."
+  },
+  "remaining_boundaries": [
+    "Actual derived Movie/Listbox/Text state services and main-menu movie-completion target005845D0",
+    "Clone host must return canonical retained GUI owner instances; no replacement tree or pointer map",
+    "Register00582F30, constructor005902E0, game entry wiring and visual validation"
+  ],
+  "integration_dependency": {
+    "worktree": "J:/PROG/battlestations-pacific-decompile-orch5-map-runtime",
+    "method": "GuiIconRuntime::set_scale48_00ab2820(GuiWidgetOwner&,const GuiWidgetSize&)",
+    "reason": "Binder directly consumes actual derived Icon+48, no forwarding/native-host fallback."
+  }
+}
