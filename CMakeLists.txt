@@ -79,6 +79,9 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_hardware_layout_construct.cpp
   src/native_hardware_layout_factory.cpp
   src/native_hardware_layout_pool_trim.cpp
+  src/native_hardware_layout_pool_lifetime.cpp
+  src/native_hardware_layout_tree_lifetime.cpp
+  src/native_hardware_layout_tree_static.cpp
   src/native_hardware_layout_owner.cpp
   src/native_logical_index_owner.cpp
   src/native_retained_memory_owners.cpp
