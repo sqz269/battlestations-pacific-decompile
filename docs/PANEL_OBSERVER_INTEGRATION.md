@@ -93,3 +93,11 @@ construction/insertion, actual world handle-table owners and edge virtual
 deleting destructors remain explicit boundaries. Existing real GUI, sound,
 script and singleton services remain required. These are separate from the
 stored-body metadata limitation and leave useful reconstruction work available.
+
+Final integration used the repository helper after a structured packet-ID merge
+preserved four new packets here, three new main packets, and main's updated
+occlusion-query evidence. Combined Win32 build and both existing CTests passed
+at `5361e3f3c78aea1edc77a5abc289d4d2faebcc40`; main fast-forwarded to that same
+tested revision. The helper saved all45 scoped annotations again and refreshed
+the shared snapshot/index. The final documentation commit follows this tested
+source revision; the full game goal remains active.

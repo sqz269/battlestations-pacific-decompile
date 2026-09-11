@@ -116,5 +116,15 @@
     "Actual world handle-table owners",
     "Palette and panel queue construction/loading",
     "Actual edge virtual deletion"
-  ]
+  ],
+  "integration": {
+    "helper_log": "local/panel_observer_integrate_final.log",
+    "tested_commit": "5361e3f3c78aea1edc77a5abc289d4d2faebcc40",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "main_fast_forward": "5361e3f3c78aea1edc77a5abc289d4d2faebcc40",
+    "packet_merge": "Structured three-way merge preserved4 own additions,3 main additions and existing main evidence update; no conflicting packet edits",
+    "annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T065818Z.json",
+    "snapshot_internal_functions": 62629
+  }
 }
