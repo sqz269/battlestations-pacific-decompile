@@ -1,0 +1,128 @@
+{
+  "packet": "voice_line_playback",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "document": "docs/VOICE_LINE_PLAYBACK.md",
+  "source": "src/voice_playback.cpp",
+  "header": "include/bsp/voice_playback.hpp",
+  "routines": [
+    {
+      "address": "005bbc10",
+      "proposed_name": "BSP_VoiceManager_PlayLine",
+      "cpp_name": "play_voice_line_005bbc10",
+      "abi": "ECX=manager; vector*, target dword, speaker* stack; RET0C",
+      "final_instruction": "005bbdb6",
+      "final_instruction_length": 3,
+      "finding": "Five short-circuit vslot+5C kinds 8/1A/1B/19/6 choose categories 1/2/3; mismatch 4; default0. Null speaker selects null reference, not table[0]. Allocates 38h, constructs, appends nullable line.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005bbdc0",
+      "proposed_name": "BSP_VoiceManager_PlayPositionalLine",
+      "cpp_name": "play_positional_voice_line_005bbdc0",
+      "abi": "ECX=manager; Clip12 by value then entity* stack; RET10",
+      "final_instruction": "005bbf05",
+      "final_instruction_length": 3,
+      "finding": "Record+8 signed ID gate; entity-camera float stores; x87 attenuation admission only, NaN accepted by JA/JNC with masked exceptions. Original clip word preserved; play(vector,0,0). Double host distance is not exact x87.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b71d0",
+      "proposed_name": "BSP_VoiceManager_CanPlay",
+      "cpp_name": "voice_can_play_005b71d0",
+      "abi": "ECX=manager; vector* stack; RET4",
+      "final_instruction": "005b7283",
+      "final_instruction_length": 3,
+      "finding": "Correction superseding older evidence: CMP ESI,1/JL at 005B7251/54 scans only manager+8, not two slots. 007027B0 has side effects and is repeated per clip; manager+6C reread for return.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005babb0",
+      "proposed_name": "BSP_VoiceLine_Construct",
+      "cpp_name": "construct_voice_line_005babb0",
+      "abi": "ECX=fresh38h line; vector*, target dword, owned ref value stack; RET0C; EAX=this",
+      "final_instruction": "005baf1f",
+      "final_instruction_length": 3,
+      "finding": "Copies clips; validates target using ECX/DL=1 call00645160; joins NativeString texts with pipe; first nonnegative record+8 ID selects clip; polls one slot and passes 0/-1 unchanged to005B9050; consumes ref argument.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "007027b0",
+      "proposed_name": "BSP_VoiceSlot_PollState",
+      "cpp_name": "poll_voice_slot_007027b0",
+      "abi": "ECX=slot; no stack args; RET",
+      "final_instruction": "0070289f",
+      "final_instruction_length": 1,
+      "finding": "State1 completion or strict now-start > float(duration+2) retires sound with virtual8(1), reference release, auxiliary virtual8(0)/reset, sound flag0. Captures clock before completion call and reloads fields after callbacks. State2 calls00A77730.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b9760",
+      "proposed_name": "BSP_VoiceManager_BeginSoundFade",
+      "cpp_name": "begin_voice_sound_fade_005b9760",
+      "abi": "ECX=manager; target float, duration float, NativeString* stack; RET0C",
+      "final_instruction": "005b97fb",
+      "final_instruction_length": 3,
+      "finding": "Copies sound singleton+6C to+D4, target+D8, reciprocal(max-ordered(duration,0.0001f)) to+DC, native string callback+E0; calls005B8C30 with0.0001f. NaN duration takes minimum.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b7790",
+      "proposed_name": "BSP_VoiceLineQueue_Append",
+      "cpp_name": "append_voice_line_005b7790",
+      "abi": "ECX=queue at manager+54; nullable line* stack; RET4",
+      "final_instruction": "005b77e4",
+      "final_instruction_length": 3,
+      "finding": "Allocates0Ch previous/next/line node, appends to last, initializes first when empty, increments count. Null line remains valid list payload; native null node would fault.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    }
+  ],
+  "analyzed_external_helpers": [
+    "005ba4b0",
+    "005bb020",
+    "005b8510",
+    "005b9050",
+    "005b8c30"
+  ],
+  "flow_gaps": [
+    {
+      "function": "005bbdc0",
+      "first": "005bbef2",
+      "last_inclusive": "005bbef4",
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4",
+      "final_instruction": "005bbf05",
+      "final_instruction_length": 3
+    },
+    {
+      "function": "005ba4b0",
+      "first": "005ba5cc",
+      "last_inclusive": "005ba5ce",
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4",
+      "final_instruction": "005ba5fe",
+      "final_instruction_length": 3
+    }
+  ],
+  "missing_functions": [],
+  "unresolved": [
+    "Concrete class/initialization and semantic category labels of five intrusive handles at manager+A0.",
+    "005B8510 GUI subtitle creation/layout and005B9050 sound/FMOD playback are required explicit host services.",
+    "005B8C30 fade evolution/Lua callback;005A2650 notification;00645160 validation; actual transform/vector-length services.",
+    "Line/node destruction, allocator/debug-vector/exception ABI and native invalid-range behavior are not reproduced.",
+    "Double host distance and arithmetic do not claim x87 extended-precision or exception equivalence."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "existing_tests": "reconstructed_math passed, 1/1",
+    "focused_probe": "Local uncommitted slot cleanup and callback reentry probe passed; verifies current sound release, auxiliary reset, final current state and callback order.",
+    "build_log": "local/voice-build.log",
+    "probe_log": "local/voice-probe.log",
+    "permanent_tests_added": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
