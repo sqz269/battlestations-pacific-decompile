@@ -1,0 +1,1142 @@
+{
+  "schema_version": 1,
+  "packet": "native_hardware_layout_fields",
+  "status": "four_functions_reconstructed_original_byte_fixture_passed",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910",
+  "branch": "agent/native-hardware-layout-fields-20260910",
+  "base_commit": "1db46e7",
+  "owned_files": [
+    "include/bsp/native_hardware_layout_fields.hpp",
+    "src/native_hardware_layout_fields.cpp",
+    "docs/NATIVE_HARDWARE_LAYOUT_FIELDS.md",
+    "reports/native_hardware_layout_fields_audit.json"
+  ],
+  "scope": "Four owned source/documentation/report files only. No shared CMake, ledger, packet or Ghidra writes. Original-byte fixture remains ignored local evidence.",
+  "target_verification": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_read": true,
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "seed_count": 8,
+    "all_seed_matches": true,
+    "all_live_PE_spans_match": true,
+    "span_count": 23,
+    "span_bytes": 1147,
+    "owned_bytes": 383,
+    "installed_PE_spans_rechecked_at_execution": true
+  },
+  "functions": [
+    {
+      "address": "00b47640",
+      "end_exclusive": "00b47657",
+      "length": 23,
+      "native_sha256": "e2f5e92ee09c46a5c284f5452ec3569ccd92dc2db6793a1acc555c442f3dea49",
+      "old_name": null,
+      "old_signature": null,
+      "proposed_name": "BSP_HardwareLayoutRecord_Initialize",
+      "cpp_function": "initialize_native_hardware_layout_record_00b47640",
+      "native_abi": "ECX actual 0Ch record; EAX same address; RET.",
+      "interface": "new MSVC Win32 C++ actual-storage pointer API; not original binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "ghidra_mutation": false
+    },
+    {
+      "address": "00b48c00",
+      "end_exclusive": "00b48c71",
+      "length": 113,
+      "native_sha256": "fc764386c36a6d5cb3bf7f047ada3bc1f5fd67762f3dd98d0bdba041dd55f725",
+      "old_name": "CG_array_ctor_helper_00b48c00",
+      "old_signature": "undefined CG_array_ctor_helper_00b48c00(void)",
+      "proposed_name": "BSP_HardwareLayout_InitializeBase",
+      "cpp_function": "initialize_native_hardware_layout_base_00b48c00",
+      "native_abi": "ECX actual 44h owner; EAX same address; RET.",
+      "interface": "new MSVC Win32 C++ actual-storage pointer API; not original binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "ghidra_mutation": false
+    },
+    {
+      "address": "00b48a00",
+      "end_exclusive": "00b48acf",
+      "length": 207,
+      "native_sha256": "d5ea9c388da2fa6599b88c1e2f6f3f0869192e0dad09fbb33376dc23f549f9d2",
+      "old_name": "BSP_VertexLayout_AppendStream",
+      "old_signature": "undefined BSP_VertexLayout_AppendStream(void)",
+      "proposed_name": "BSP_VertexLayout_AppendStream",
+      "cpp_function": "append_native_hardware_layout_stream_00b48a00",
+      "native_abi": "ECX actual owner; stack actual declaration; RET4; EAX unspecified.",
+      "interface": "new MSVC Win32 C++ actual-storage pointer API; not original binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "ghidra_mutation": false
+    },
+    {
+      "address": "00b47d60",
+      "end_exclusive": "00b47d88",
+      "length": 40,
+      "native_sha256": "5be5f862119a33437b5443efc9585ff62f411cd34a0d0940f3ac87879254aa54",
+      "old_name": "BSP_VertexLayout_RecomputeStride",
+      "old_signature": "undefined BSP_VertexLayout_RecomputeStride(void)",
+      "proposed_name": "BSP_VertexLayout_RecomputeStride",
+      "cpp_function": "recompute_native_hardware_layout_stride_00b47d60",
+      "native_abi": "ECX actual owner; RET; EAX unspecified.",
+      "interface": "new MSVC Win32 C++ actual-storage pointer API; not original binary ABI",
+      "status": "reconstructed_strict_compiled_original_byte_fixture_passed",
+      "ghidra_mutation": false
+    }
+  ],
+  "spans": [
+    {
+      "address": "00b47640",
+      "length": 23,
+      "kind": "owned",
+      "disk_offset": 7632448,
+      "sha256": "e2f5e92ee09c46a5c284f5452ec3569ccd92dc2db6793a1acc555c442f3dea49",
+      "hex": "8bc1c70000000000c7400401000000c7400800000000c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b48c00",
+      "length": 113,
+      "kind": "owned",
+      "disk_offset": 7638016,
+      "sha256": "fc764386c36a6d5cb3bf7f047ada3bc1f5fd67762f3dd98d0bdba041dd55f725",
+      "hex": "6aff6878f7cb0064a100000000506489250000000051568bf1c70630b1ce005789742408c746040100000068f083b400684076b4006a046a0c8d7e0857c744242800000000c706101dd600e881f00a008b4c240cc7473000000000c7463c000000005f8bc65e64890d0000000083c410c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b48a00",
+      "length": 207,
+      "kind": "owned",
+      "disk_offset": 7637504,
+      "sha256": "d5ea9c388da2fa6599b88c1e2f6f3f0869192e0dad09fbb33376dc23f549f9d2",
+      "hex": "6aff68f8f6cb0064a100000000506489250000000083ec0c5633f6578bf989742408c744240c01000000897424108b44242485c08974241c74108bf083c004508974240cff151c22ce008b47388d0c4083c001538d5c8f088947388b3b3bfe742a85f68933740a8d560452ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd085f6c7430401000000c7430800000000c7442420ffffffff5b74168d4e0451ff152022ce0085c075088b168b028bceffd08b4c24145f5e64890d0000000083c418c20400",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b47d60",
+      "length": 40,
+      "kind": "owned",
+      "disk_offset": 7634272,
+      "sha256": "5be5f862119a33437b5443efc9585ff62f411cd34a0d0940f3ac87879254aa54",
+      "hex": "33c039413889413c7e1d8d5108568bff8b328bb6cc00000001713c83c00183c20c3b41387cea5ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b483f0",
+      "length": 41,
+      "kind": "dependency",
+      "disk_offset": 7635952,
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bd30e0",
+      "length": 14,
+      "kind": "dependency",
+      "disk_offset": 8204512,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "hex": "85c974098b018b50046a01ffd2c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bd30f0",
+      "length": 7,
+      "kind": "dependency",
+      "disk_offset": 8204528,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "hex": "c70130b1ce00c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf7cd1",
+      "length": 101,
+      "kind": "crt_iterator",
+      "disk_offset": 8355025,
+      "sha256": "59c2be3ff12f229d848c9362618a9d657211d5a911493e211e0076c5cc126b37",
+      "hex": "6a1068502de000e823ff000033c08945e08945fc8945e48b45e43b45107d138b75088bceff551403750c897508ff45e4ebe5c745e001000000c745fcfeffffffe808000000e82aff0000c21400837de0007511ff7518ff75e4ff750cff7508e8dbfeffffc3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf7c10",
+      "length": 193,
+      "kind": "crt_iterator",
+      "disk_offset": 8354832,
+      "sha256": "54cdea427212dda0ce67615393855d4f650a3d73c569e758d7d7158b10821bad",
+      "hex": "6a1468102de000e8e4ff00008365fc00ff4d10783a8b4d082b4d0c894d08ff5514ebed8b45ec8945e48b45e48b008945e08b45e0813863736de0740bc745dc000000008b45dcc3e819fe00008b65e8c745fcfeffffffe8daff0000c210006a0c68302de000e886ff00008365e4008b750c8bc60faf45100145088365fc00ff4d10780b2975088b4d08ff5514ebf0c745e401000000c745fcfeffffffe808000000e88fff0000c21000837de4007511ff7514ff7510ff750cff7508e840ffffffc3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00c07c00",
+      "length": 89,
+      "kind": "crt_prolog_epilog",
+      "disk_offset": 8420352,
+      "sha256": "12c26798f39922a22230ff201b6c6ec8fdea406f9b65f0e6fe6934a69cf6def2",
+      "hex": "68907cc00064ff35000000008b442410896c24108d6c24102be0535657a19055e1003145fc33c5508965e8ff75f88b45fcc745fcfeffffff8945f88d45f064a300000000c38b4df064890d00000000595f5f5e5b8be55d51c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00cbf6f0",
+      "length": 18,
+      "kind": "eh_code",
+      "disk_offset": 9172720,
+      "sha256": "887772a315d7893d543478e6868ec75cfe557ae45f8eb6a4d5ba17b4fbe8330d",
+      "hex": "8d4de8e9f88ce8ffb8f880df00e94174f3ff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00cbf770",
+      "length": 18,
+      "kind": "eh_code",
+      "disk_offset": 9172848,
+      "sha256": "169857b793e5c0eb19004e4c7864a12019796a1776425923a983cda8c08a6efc",
+      "hex": "8b4df0e97839f1ffb89481df00e9c173f3ff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00df80f0",
+      "length": 44,
+      "kind": "eh_data",
+      "disk_offset": 10453232,
+      "sha256": "b06a0c68296b6c21d634356d437f978f3f2b01ffc3cac26df2980b52b0be02ee",
+      "hex": "fffffffff0f6cb002205931901000000f080df00000000000000000000000000000000000000000001000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00df818c",
+      "length": 44,
+      "kind": "eh_data",
+      "disk_offset": 10453388,
+      "sha256": "07543e77be89a1e2a80ba7946ac825c46df898ae4e645768441b34e9645d6054",
+      "hex": "ffffffff70f7cb0022059319010000008c81df00000000000000000000000000000000000000000001000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00e02d10",
+      "length": 64,
+      "kind": "seh4_data",
+      "disk_offset": 10497296,
+      "sha256": "c51fbc77c6ec66fe15f40f27e3f3819d1c3ea06944e657062f1b2a5abe8bc689",
+      "hex": "feffffff00000000ccffffff00000000feffffff337cbf005c7cbf0000000000feffffff00000000d4ffffff00000000feffffff00000000b97cbf0000000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00e02d50",
+      "length": 28,
+      "kind": "seh4_data",
+      "disk_offset": 10497360,
+      "sha256": "a4a60b64175cea98b956adfdac873af174743ae70f8b8b27a084670a2b305126",
+      "hex": "feffffff00000000d0ffffff00000000feffffff000000001e7dbf00",
+      "live_PE_match": true
+    },
+    {
+      "address": "00d61d1c",
+      "length": 8,
+      "kind": "profile",
+      "disk_offset": 9837852,
+      "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78",
+      "hex": "e030bd00a08cb400",
+      "live_PE_match": true
+    },
+    {
+      "address": "00d61cc0",
+      "length": 72,
+      "kind": "type_sizes",
+      "disk_offset": 9837760,
+      "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e",
+      "hex": "04000000080000000c000000100000000400000004000000040000000800000004000000040000000800000004000000080000000400000004000000040000000800000004000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b48ca0",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 7638176,
+      "sha256": "9c5a504e426218ea9b5ab5a51c252aec3432b158af94d0e61c9393f9171eac32",
+      "hex": "568bf1e8c8",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6b43",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8350531,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "hex": "558bec83ec",
+      "live_PE_match": true
+    },
+    {
+      "address": "00c07a75",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8419957,
+      "sha256": "a06f4aadf82978470bd0523d9c48f988edfd28ea7d78a7cb6854c8701278c419",
+      "hex": "6a08685835",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce221c",
+      "length": 4,
+      "kind": "iat",
+      "disk_offset": 9314844,
+      "sha256": "1dd5f9d7c8651bec3c86f5d6bd80b95d5822e70e3e21d07076a378beaaac9327",
+      "hex": "d056a000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce2220",
+      "length": 4,
+      "kind": "iat",
+      "disk_offset": 9314848,
+      "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+      "hex": "e856a000",
+      "live_PE_match": true
+    }
+  ],
+  "field_contracts": {
+    "record": {
+      "00h": "actual declaration pointer",
+      "04h": "frequency DWORD",
+      "08h": "extra DWORD"
+    },
+    "owner": {
+      "00h": "native profile",
+      "04h": "reference count",
+      "08h..37h": "four 0Ch records",
+      "38h": "signed stream count",
+      "3Ch": "wrapping stride",
+      "40h": "derived COM field; untouched by initialization",
+      "44h": "separate pool-slot token; untouched"
+    },
+    "initialize_record": "Ordered null/1/0; no release of preexisting declaration; original same-address return.",
+    "initialize_base": "CEB130,ref1,D61D10; four fixed B47640 leaves in forward order; then count0,stride0; original same-address return.",
+    "append": "Arm local null/1/0 before initial retain; initial source retain; capture current count, compute target and publish count+1 before reading old; identity skips replacement; otherwise publish new, retain new, release captured old; metadata1/0; disarm; release source temporary.",
+    "stride": "Capture initial signed count before stride0; if positive read record pointer then declaration+CC, add with DWORD wrap to current stride, advance12, reload signed count per iteration."
+  },
+  "actual_ownership": {
+    "atomic_operations": "Win32 InterlockedIncrement/InterlockedDecrement at actual declaration+04.",
+    "supported_current_profile": "D61D1C slot0 BD30E0 rereads current profile then deleting slot1 B48CA0 flags1.",
+    "source_composition": "Actual native_vertex_declaration_owner B48CA0 with actual shared free/type table/initialized CPU pool; B483F0 for temporary guard.",
+    "callback_or_shadow_replacement": false
+  },
+  "exception_maps": {
+    "append": {
+      "handler": "00cbf6f8",
+      "func_info": "00df80f8",
+      "unwind_map": "00df80f0",
+      "state0_action": "00cbf6f0 -> local EBP-18 -> original B483F0",
+      "armed_order": "Before initial source retain; disarm after metadata and before final temporary release.",
+      "failure": "Old-release failure preserves incremented count/published source and old metadata; temporary cleanup runs once; second cleanup C++ exception terminates in search."
+    },
+    "base": {
+      "handler": "00cbf778",
+      "func_info": "00df8194",
+      "unwind_map": "00df818c",
+      "state0_action": "00cbf770 -> owner [EBP-10] -> BD30F0 -> CEB130",
+      "iterator": "BF7CD1..BF7D35, C07C00/C07C45 SEH4 prolog/epilog, E02D50 map, BF7D1E finally -> BF7C10 already-constructed prefix.",
+      "limit": "Fixed B47640 is nonthrowing on valid storage. Normal original iterator executed; constructor-failure cleanup audited only, no invented callback throw."
+    }
+  },
+  "native_execution": {
+    "owned_entries_stubbed": false,
+    "original_owned_instructions_preserved": true,
+    "private_image_base": "00b60000",
+    "original_dependencies_executed": [
+      "B483F0",
+      "BD30E0",
+      "BF7CD1",
+      "C07C00",
+      "C07C45",
+      "CBF6F8/FH3 map DF80F8",
+      "CBF6F0 temporary unwind"
+    ],
+    "audited_but_not_reached": [
+      "BD30F0 constructor failure",
+      "CBF770 constructor failure",
+      "BF7D1E failed-prefix branch",
+      "BF7C10 constructed-prefix unwind"
+    ],
+    "boundaries": {
+      "00b48ca0": "Native receiver/flags adapter into actual production CPU declaration deleting implementation; translates relocated D61D1C pointer to source native profile token.",
+      "00bf6b43": "Native FH3 map forwarded to actual host __CxxFrameHandler3, with search/unwind observation.",
+      "00c07c01": "Registered SEH4 adapter forwards original encoded map to _except_handler4_common using host security cookie.",
+      "00c07a75": "Actual std::terminate boundary for native CRT unwind filters.",
+      "00ce221c/00ce2220": "Actual Win32 atomic increment/decrement."
+    },
+    "observation": "Real Win32 EnterCriticalSection/LeaveCriticalSection imports observed in actual CPU pool implementation. Successful boundaries forward actual calls; selected entry throws are fixture failure injection. No production operation callback added.",
+    "all_postimages_only_declared_patches": true,
+    "patch_count": 31,
+    "patches": [
+      {
+        "address": "00b48c03",
+        "preimage": "00cbf778",
+        "kind": "registered_constructor_handler",
+        "value": "30004790"
+      },
+      {
+        "address": "00b48c2c",
+        "preimage": "00b483f0",
+        "kind": "relocated_original",
+        "value": "012a83f0"
+      },
+      {
+        "address": "00b48c31",
+        "preimage": "00b47640",
+        "kind": "relocated_original",
+        "value": "012a7640"
+      },
+      {
+        "address": "00b48a03",
+        "preimage": "00cbf6f8",
+        "kind": "registered_append_handler",
+        "value": "30004780"
+      },
+      {
+        "address": "00b48a46",
+        "preimage": "00ce221c",
+        "kind": "relocated_original",
+        "value": "0144221c"
+      },
+      {
+        "address": "00b48a6d",
+        "preimage": "00ce221c",
+        "kind": "relocated_original",
+        "value": "0144221c"
+      },
+      {
+        "address": "00b48a7b",
+        "preimage": "00ce2220",
+        "kind": "relocated_original",
+        "value": "01442220"
+      },
+      {
+        "address": "00b48aac",
+        "preimage": "00ce2220",
+        "kind": "relocated_original",
+        "value": "01442220"
+      },
+      {
+        "address": "00b48400",
+        "preimage": "00ce2220",
+        "kind": "relocated_original",
+        "value": "01442220"
+      },
+      {
+        "address": "00bf7cd4",
+        "preimage": "00e02d50",
+        "kind": "relocated_original",
+        "value": "01562d50"
+      },
+      {
+        "address": "00bf7c13",
+        "preimage": "00e02d10",
+        "kind": "relocated_original",
+        "value": "01562d10"
+      },
+      {
+        "address": "00bf7c71",
+        "preimage": "00e02d30",
+        "kind": "relocated_original",
+        "value": "01562d30"
+      },
+      {
+        "address": "00cbf6f9",
+        "preimage": "00df80f8",
+        "kind": "relocated_original",
+        "value": "015580f8"
+      },
+      {
+        "address": "00cbf779",
+        "preimage": "00df8194",
+        "kind": "relocated_original",
+        "value": "01558194"
+      },
+      {
+        "address": "00df80f4",
+        "preimage": "00cbf6f0",
+        "kind": "relocated_original",
+        "value": "0141f6f0"
+      },
+      {
+        "address": "00df8100",
+        "preimage": "00df80f0",
+        "kind": "relocated_original",
+        "value": "015580f0"
+      },
+      {
+        "address": "00df8190",
+        "preimage": "00cbf770",
+        "kind": "relocated_original",
+        "value": "0141f770"
+      },
+      {
+        "address": "00df819c",
+        "preimage": "00df818c",
+        "kind": "relocated_original",
+        "value": "0155818c"
+      },
+      {
+        "address": "00e02d24",
+        "preimage": "00bf7c33",
+        "kind": "relocated_original",
+        "value": "01357c33"
+      },
+      {
+        "address": "00e02d28",
+        "preimage": "00bf7c5c",
+        "kind": "relocated_original",
+        "value": "01357c5c"
+      },
+      {
+        "address": "00e02d48",
+        "preimage": "00bf7cb9",
+        "kind": "relocated_original",
+        "value": "01357cb9"
+      },
+      {
+        "address": "00e02d68",
+        "preimage": "00bf7d1e",
+        "kind": "relocated_original",
+        "value": "01357d1e"
+      },
+      {
+        "address": "00d61d1c",
+        "preimage": "00bd30e0",
+        "kind": "relocated_original",
+        "value": "013330e0"
+      },
+      {
+        "address": "00d61d20",
+        "preimage": "00b48ca0",
+        "kind": "relocated_original",
+        "value": "012a8ca0"
+      },
+      {
+        "address": "00c07c01",
+        "kind": "seh4_handler",
+        "value": "300047a0"
+      },
+      {
+        "address": "00c07c1e",
+        "kind": "security_cookie",
+        "value": "3000d000"
+      },
+      {
+        "address": "00ce221c",
+        "kind": "increment",
+        "value": "300034b0"
+      },
+      {
+        "address": "00ce2220",
+        "kind": "decrement",
+        "value": "30002c40"
+      },
+      {
+        "address": "00bf6b43",
+        "kind": "cxx",
+        "hex": "e968c0ca2e"
+      },
+      {
+        "address": "00c07a75",
+        "kind": "terminate",
+        "hex": "e906c7c92e"
+      },
+      {
+        "address": "00b48ca0",
+        "kind": "declaration",
+        "hex": "e92b9fd52e"
+      }
+    ],
+    "postimage_spans": [
+      {
+        "address": "00b47640",
+        "length": 23,
+        "sha256": "e2f5e92ee09c46a5c284f5452ec3569ccd92dc2db6793a1acc555c442f3dea49"
+      },
+      {
+        "address": "00b48c00",
+        "length": 113,
+        "sha256": "e4f1371e733d42985609fcf1469bde9acb6fde517ef90be40d1bb96ea3060599"
+      },
+      {
+        "address": "00b48a00",
+        "length": 207,
+        "sha256": "d2b512054abcae3f81810ee9a27baa19dc3a0965af0f8f00aaf0f858044106cb"
+      },
+      {
+        "address": "00b47d60",
+        "length": 40,
+        "sha256": "5be5f862119a33437b5443efc9585ff62f411cd34a0d0940f3ac87879254aa54"
+      },
+      {
+        "address": "00b483f0",
+        "length": 41,
+        "sha256": "c98c45168391326a3eca9a87660150f984038c9d89a5a63b4569b2d42b1f1084"
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      {
+        "address": "00bf7cd1",
+        "length": 101,
+        "sha256": "ad1a56bcfb1d9611a3ce39664391c1643b648c3df6baebcfd2a50fbcc0cec135"
+      },
+      {
+        "address": "00bf7c10",
+        "length": 193,
+        "sha256": "479090cb8f5ad166dd2421e5437440ced012e7dbcc65afea6a3acd770454e797"
+      },
+      {
+        "address": "00c07c00",
+        "length": 89,
+        "sha256": "4636b9031f7282216130d687ed3ec78b5d0f00652cb5365731ec015faa37439c"
+      },
+      {
+        "address": "00cbf6f0",
+        "length": 18,
+        "sha256": "d5f55d09d80791682a7f9e5393383032661769546fe2863524108c129758de22"
+      },
+      {
+        "address": "00cbf770",
+        "length": 18,
+        "sha256": "bf7ff6a38207e8e8c77dd23b45ae0fb69610a491da155c8df7fe66bf93148389"
+      },
+      {
+        "address": "00df80f0",
+        "length": 44,
+        "sha256": "6e15af9d81f1ccd0246e46fcf9cfcf6ad3a7683eca28bab7f41c20537deabc52"
+      },
+      {
+        "address": "00df818c",
+        "length": 44,
+        "sha256": "4417e2583a5b546a7877fd50bb754350bca6688ff4c3dd104333cc3c5a333ca1"
+      },
+      {
+        "address": "00e02d10",
+        "length": 64,
+        "sha256": "d624c1912407537eedb9ac1b6a47b11757a050bb50d12db5721c449384eaa341"
+      },
+      {
+        "address": "00e02d50",
+        "length": 28,
+        "sha256": "bca423f2410aa4c6ab7df14e5beddb893c78d9168fb16666f3e77bc0a0ad2743"
+      },
+      {
+        "address": "00d61d1c",
+        "length": 8,
+        "sha256": "b2ed7930f995435ec8649478834e177836d50a2187d93c64bc16ab471b31ce00"
+      },
+      {
+        "address": "00d61cc0",
+        "length": 72,
+        "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e"
+      },
+      {
+        "address": "00b48ca0",
+        "length": 5,
+        "sha256": "5af6d4055e5b04a7119d4379f20ecb68ea874cdd31d47522b5270d80cde2dcce"
+      },
+      {
+        "address": "00bf6b43",
+        "length": 5,
+        "sha256": "4cf3fc366c45ee4188bb76bce23ff003272df980bc95f5f530604d61003890bc"
+      },
+      {
+        "address": "00c07a75",
+        "length": 5,
+        "sha256": "d24841eb58b07ce371ef2fd403c9510f6bea7b11859c38a0ec62d88fc53898c1"
+      },
+      {
+        "address": "00ce221c",
+        "length": 4,
+        "sha256": "e1b17a8b77cbe7c71a51ce3432b5a9471f2c06596670136bc1782e915de7ada1"
+      },
+      {
+        "address": "00ce2220",
+        "length": 4,
+        "sha256": "5fcad7920c70cdfbf6388e408a1752b7798939b12583d4ee6b228f5b810bfd42"
+      }
+    ],
+    "protection": "Code pages executable/read-only; maps/tables read-only; native globals writable only as required; installed PE read-only."
+  },
+  "production_providers": {
+    "00b47640": "0001:00004ef0       ?initialize_native_hardware_layout_record_00b47640@bsp@@YAPAXPAX@Z 30005ef0 f   native_hardware_layout_fields.obj",
+    "00b48c00": "0001:00004e40       ?initialize_native_hardware_layout_base_00b48c00@bsp@@YAPAXPAX@Z 30005e40 f   native_hardware_layout_fields.obj",
+    "00b48a00": "0001:00004c40       ?append_native_hardware_layout_stream_00b48a00@bsp@@YAXPAX0AAUNativeHardwareLayoutOwnerContext@1@@Z 30005c40 f   native_hardware_layout_fields.obj",
+    "00b47d60": "0001:00004f30       ?recompute_native_hardware_layout_stride_00b47d60@bsp@@YAXPAX@Z 30005f30 f   native_hardware_layout_fields.obj",
+    "destroy_native_hardware_layout_record_00b483f0": "0001:000061b0       ?destroy_native_hardware_layout_record_00b483f0@bsp@@YAXPAXAAUNativeHardwareLayoutOwnerContext@1@@Z 300071b0 f   bsp_core:native_hardware_layout_owner.obj",
+    "delete_native_vertex_declaration_00b48ca0": "0001:00005970       ?delete_native_vertex_declaration_00b48ca0@bsp@@YAPAXPAXI0PDI@Z 30006970 f   bsp_core:native_vertex_declaration_owner.obj",
+    "singleton_lifetime_free": "0001:00005880       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30006880 f   bsp_core:singleton_lifetime.obj"
+  },
+  "comparisons": [
+    {
+      "name": "initialize",
+      "compared_dwords": 654,
+      "snapshot_count": 3,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        2,
+        99
+      ],
+      "final_owner_words": [
+        "00d61d10",
+        "00000001",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "changed-current-fields",
+      "compared_dwords": 1308,
+      "snapshot_count": 6,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        10,
+        11,
+        12,
+        13,
+        99
+      ],
+      "final_owner_words": [
+        "00d61d10",
+        "00000001",
+        "0000000c",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000003",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "name": "identity",
+      "compared_dwords": 436,
+      "snapshot_count": 2,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        99
+      ],
+      "final_owner_words": [
+        "00d61d10",
+        "00000001",
+        "0000000a",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000001",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "null",
+      "compared_dwords": 1308,
+      "snapshot_count": 6,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        10,
+        11,
+        12,
+        13,
+        99
+      ],
+      "final_owner_words": [
+        "00d61d10",
+        "00000001",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000001",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "negative-count-alias",
+      "compared_dwords": 436,
+      "snapshot_count": 2,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        99
+      ],
+      "final_owner_words": [
+        "00000001",
+        "ffffffff",
+        "0000000a",
+        "0000e100",
+        "0000e200",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "old-release-throw",
+      "compared_dwords": 1744,
+      "snapshot_count": 8,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        10,
+        10,
+        11,
+        12,
+        13,
+        90,
+        99
+      ],
+      "final_owner_words": [
+        "00d61d10",
+        "00000001",
+        "0000000b",
+        "0000e100",
+        "0000e200",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "00000001",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "stride-wrap-alias-signed",
+      "compared_dwords": 654,
+      "snapshot_count": 3,
+      "all_snapshots_equal": true,
+      "event_sequence": [
+        1,
+        3,
+        99
+      ],
+      "final_owner_words": [
+        "00d61d10",
+        "00000001",
+        "0000000a",
+        "0000e100",
+        "0000e200",
+        "0000000b",
+        "00000001",
+        "00000000",
+        "00000014",
+        "00000001",
+        "00000000",
+        "00000000",
+        "00000001",
+        "00000000",
+        "80000000",
+        "00000000",
+        "b6b6b6b6",
+        "b6b6b6b6"
+      ],
+      "final_declaration_refs": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "compared_dwords": 6540,
+  "snapshot_contract": "218 DWORDs per event: event/extra, owner preceding word and 48h actual owner, three complete D4h CPU declarations, actual pool depth/earliest index/critical-section recursion, lock-call counters, 33 WORD free-list/count values. Only pointer identities and relocated profile pointers normalized.",
+  "exception_fixture": {
+    "native_append_fh3_search": 1,
+    "native_append_fh3_unwind": 1,
+    "native_source_second_failure_exit_code": 91,
+    "second_failure_state_equal": true,
+    "terminal_state": "TERMINAL: count=1 target=11 metadata=57600/57856 refs=0/0 profiles=00ceb130/00ceb130 enters=2 leaves=0 uncaught=1"
+  },
+  "integration": [
+    {
+      "address": "00b47640",
+      "required": "Create missing Ghidra function over exactly B47640..B47656 inclusive, preserve neighboring bodies; add native name/evidence; refresh export."
+    },
+    {
+      "address": "00b48c00",
+      "required": "Replace generic CG_array_ctor_helper name with evidence-backed native base initialization name; preserve old name/comments and refresh export."
+    },
+    {
+      "addresses": [
+        "00b48a00",
+        "00b47d60"
+      ],
+      "required": "Upgrade native ledgers to the new actual-storage contracts; preserve separate existing shared_ptr/bounded source interfaces and evidence."
+    },
+    {
+      "file": "CMakeLists.txt",
+      "required": "Integrator registers src/native_hardware_layout_fields.cpp in bsp_core and runs primary build/tests."
+    }
+  ],
+  "validation": {
+    "strict_new_source_and_fixture": "MSVC Win32 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; /OPT:REF /OPT:NOICF /INCREMENTAL:NO /BASE:0x30000000 /DYNAMICBASE:NO /FIXED /SAFESEH:NO",
+    "existing_build": "scripts/build.ps1 after verify-seeds passed; reconstructed_math and native_math_differential both passed.",
+    "registration_boundary": "New source separately strict-compiled into production object and linked with pinned locally built bsp_core.lib. Worker does not edit shared CMake.",
+    "new_permanent_tests": 0
+  },
+  "limits": [
+    "Bounded valid actual storage and current supported D61D1C declaration profile only; no arbitrary profile dispatch or invalid-address fault recovery.",
+    "No four-stream bound; arithmetic/alias cases do not establish real game caller usage.",
+    "Fixed base constructor has no valid-storage C++ failure; native constructor/iterator failure maps are evidence-only, not injected source execution.",
+    "Critical-section throws are controlled fixture failure boundaries; they do not prove that real game Win32 calls raise C++ exceptions.",
+    "No concurrent storage mutation, instruction-level write-watch, full hardware layout allocation/derived constructor, COM driver, game or visual proof.",
+    "New C++ interfaces plus fixture calling-convention adapters are not drop-in binary ABI compatibility."
+  ],
+  "pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\include\\bsp\\native_hardware_layout_fields.hpp",
+      "bytes": 1855,
+      "sha256": "11a8ce32277f04e322d95d12e5b047dfd783be33d47769136b7a339635534472"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\src\\native_hardware_layout_fields.cpp",
+      "bytes": 4823,
+      "sha256": "3c2542faa86ed60c2d0ec84f313cd7680ae079afddc77598eab9c99a7d02bdbc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\docs\\NATIVE_HARDWARE_LAYOUT_FIELDS.md",
+      "bytes": 8069,
+      "sha256": "d64872f5f0fb26a3944f3375f43f4e9be1eafc73237e6ba114b45c484c872a36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\src\\native_hardware_layout_owner.cpp",
+      "bytes": 8337,
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\src\\native_vertex_declaration_owner.cpp",
+      "bytes": 9604,
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\src\\singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\include\\bsp\\native_hardware_layout_owner.hpp",
+      "bytes": 3673,
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_check.cpp",
+      "bytes": 21905,
+      "sha256": "4582d66fe3b1c52e6aab7a6b99705fe0a6a337c6250aa5fc3659746e4a0f2556"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\build_hardware_fields_check.ps1",
+      "bytes": 2972,
+      "sha256": "083d005d311d974a018d8e4d9b9ae1dfe2bb80236bc39772c34bc50911e96ef4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\audit_hardware_fields.py",
+      "bytes": 4508,
+      "sha256": "fcd48aa1d56155249d09a52e0e22276dae2c9029150bf6a1627075b2953cb3bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\write_hardware_fields_audit.py",
+      "bytes": 15524,
+      "sha256": "91441c3db279087ec266cbcfd0471d19e522f7d8ad3bb249b706c8710022e4f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_spans.hpp",
+      "bytes": 6274,
+      "sha256": "7d6cc257d57effe9395b4ebe684819d90d9b9afc85d387b5015c5b2cd6c9d93c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_verified.json",
+      "bytes": 11276,
+      "sha256": "e493609c76513f742447054cce60d019cacf6abde640bd918a839aa95101965a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_postimages.json",
+      "bytes": 3284,
+      "sha256": "353d5ef82c7b49ed1d82c923d489258d80c8f15cabdfdc17c5a94834625a1846"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_raw_traces.json",
+      "bytes": 38718,
+      "sha256": "bc311a945139d2961d424dfb9f5e45c83c4cc84417ebed8ce8b597383d73556f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_comparison.log",
+      "bytes": 384,
+      "sha256": "97cdebc04f7795dafd64f5ee9575fdb5a4c77e3a5506df3e07663f7b358d7ac2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_double_native.log",
+      "bytes": 190,
+      "sha256": "7d52e56407c6637e814ed7bf6a47f71a9861b80705c6e7494d4552aff78e9817"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_double_source.log",
+      "bytes": 190,
+      "sha256": "1d48de6408d50b8047dc90aecf786c5c0953d8eb5a32f59041a30e725634dd41"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_fixture_build.log",
+      "bytes": 891,
+      "sha256": "992f766141aa8313fcd9f9e5ee38ad5fc86a2a104c6296756a14778ffb74ce60"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\fields_full_build.log",
+      "bytes": 12801,
+      "sha256": "f48f62da760bb411087480806c526c7d75e08ad795cec1a045d499ec2792bfd6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_prototypes.txt",
+      "bytes": 2145,
+      "sha256": "b0fdf12818eb1ab876264eff222ede6e2cd00f3ae637a22c6127283e42df7093"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_record.asm.txt",
+      "bytes": 207,
+      "sha256": "54e718d68dd3d9cc1ec2d2324a6b7c30ee5536d583e9366d0408a54ecfaed18a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_append.asm.txt",
+      "bytes": 2088,
+      "sha256": "e59fb7b16de27ca6e88896477d76ddf8833fdb8de592e1d2647af626f0168921"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_base.asm.txt",
+      "bytes": 880,
+      "sha256": "37d5fcb586c1096d58afd84899e7158d41290cdf0892bf2cffdc27b37d65a5d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\hardware_fields_stride.asm.txt",
+      "bytes": 489,
+      "sha256": "c1549269ba287ebe297b5ce4e62ce7a95438220496b4427aea0534a044cd2e51"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\local\\seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\build\\hardware_fields-check\\native_hardware_layout_fields.obj",
+      "bytes": 6377,
+      "sha256": "3f30f7351a9d50d08b01431f228fcbcc4206e892574ed25c4fa146f9845db43e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\build\\hardware_fields-check\\hardware_fields_check.exe",
+      "bytes": 48640,
+      "sha256": "1458bb1a95e5d1bf59ee2abcc12ede34c623e3aba0f2d79daeef52cf75e1a073"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\build\\hardware_fields-check\\hardware_fields_check.map",
+      "bytes": 97190,
+      "sha256": "19a3960e9297d7346a2a3f708df853c6da3aecd06934797c0f36f0988793b456"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 22176288,
+      "sha256": "fe4e6fbc7ad6be2d92d3fb780cf4cda2fe4d20084717040489b85c43f40830e9"
+    }
+  ]
+}
