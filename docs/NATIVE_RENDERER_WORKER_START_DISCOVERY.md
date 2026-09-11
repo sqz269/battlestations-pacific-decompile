@@ -157,3 +157,10 @@ This is a source-ready native graph conditional on that explicit host binding,
 not an implemented worker or a complete producer/lifetime integration. No real
 surface-save worker was launched and no surface files were written. Private raw evidence is sealed under ignored
 `local/renderer_worker_start_discovery/`; the audit records exact pins.
+
+
+Primary verified all 57 sealed worker pins and reread all fifteen guarded
+spans, 774 bytes. The exact raw-owner Win32 entry, concrete D3DX import and
+mutable byte-address contract agree with the proposal. The application binding
+contract is reviewed for the separate source packet. This discovery adds no
+source or runtime claim. Immutable evidence: `local/worker_start_discovery_primary/`.

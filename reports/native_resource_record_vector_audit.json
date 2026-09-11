@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_resource_record_vector",
-  "status": "two_full_entries_actual_record_pool_composition_strict_Win32_and_original_append_reserve_ownership_checked",
+  "status": "two_complete_actual_vector_entries_main_Win32_original_append_reserve_ownership_verified",
   "utc": "2026-09-11T19:23:31.912491+00:00",
   "base_commit": "9d5800ba",
   "base_commit_role": "Completed record-copy/destructor on actual owning-pool alias prerequisite; primary integrates independently",
@@ -3542,5 +3542,129 @@
     "Native failure orphan preservation is deliberate; fixture cleanup must not be integrated into the algorithm"
   ],
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_record_vector_primary\\sealed.json",
+      "bytes": 155842,
+      "sha256": "a525a0c061a30da85ead41852feef4cf67836062bb168efa20d90820c7114232"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_record_vector_primary\\preparation.json",
+      "bytes": 197555,
+      "sha256": "3d108d1ff84fbff8c84e5ff9410e78f37254eb1e8963b197e28d41dc427abd9f"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_record_vector_primary\\bsp_core.lib",
+      "bytes": 37113208,
+      "sha256": "b5e5abb2c759c23cb9c56eaa29cb228e92463d1a6f329a62423fd166db246faa"
+    },
+    "strict_main_Win32": true,
+    "existing_CTests": 2,
+    "fresh_native_seeds": 8,
+    "source_unchanged": true,
+    "fixture_source_unchanged": true,
+    "fixture_compiles_no_source_providers": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "passed": true,
+    "worker_pins_verified": 69,
+    "current_files": 31,
+    "fresh_guarded_spans": 14,
+    "fresh_guarded_bytes": 789,
+    "owned_original_code_bytes": 332,
+    "EH_evidence_bytes": 51,
+    "exact_main_archive_objects": 14,
+    "complete_non_debug_sections": 577,
+    "worker_code_sections": 276,
+    "worker_code_bytes": 18609,
+    "worker_code_relocations": 676,
+    "compared_trace_words": 172,
+    "worker_trace_exact": true,
+    "original_append_and_reserve_executed": true,
+    "original_reserve_EH_selected": true,
+    "separate_reserve_EH_action_counter": false,
+    "original_append_EH_executed": false,
+    "successful_nonempty_old_destroy_loop_executed": false,
+    "original_helper_internals": false,
+    "runtime_code_postimages": false,
+    "native_SEH_ABI": false,
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_record_vector_primary\\verified.json",
+      "bytes": 898,
+      "sha256": "2244a9002122d9bebf9080fe36614c124507743ea6fd8a69c59dc112b5d27501"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_vector_private_profiles_annotations.json",
+    "bytes": 14516,
+    "sha256": "968aca0e250895c275f3b7f92cbf8ece7bb8e7525993e01a6a8015b83a12969c"
+  },
+  "saved_function_definitions": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_record_vector_repaired_function.json",
+    "bytes": 6806,
+    "sha256": "6165cb079533e14265b4a04b3699582bcd44a619eac9a54db43736661f2a56e2"
+  },
+  "annotations_applied": true,
+  "refreshed_exports": [
+    {
+      "address": "004da180",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004da180\\decompiled.c",
+      "bytes": 2553,
+      "sha256": "c9f7a114df3b8b1c4b238bc94470627cdb070eadb3e8815c5ddb78f7bef89fa2"
+    },
+    {
+      "address": "00b1a3c0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1a3c0\\decompiled.c",
+      "bytes": 1918,
+      "sha256": "c4adb5e681cfdd629a42573f010fcbd1252028010e9dd2ad082196b499e643b8"
+    },
+    {
+      "address": "00c66680",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c66680\\decompiled.c",
+      "bytes": 1305,
+      "sha256": "916d0bfb6a98d8f30b35cb1a193f929517f98999f67572b04017a62fdee3944a"
+    },
+    {
+      "address": "00cbc640",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00cbc640\\decompiled.c",
+      "bytes": 1285,
+      "sha256": "bd2081c9a56cada5f69f045bd02f075126b35dcdd7b9d8dcdb1b305d13031a2f"
+    }
+  ],
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "004da180",
+      "name": "reserve_native_resource_record_vector_004da180",
+      "cpp_symbol": "reserve_native_resource_record_vector_004da180",
+      "source": "src/native_resource_record_vector.cpp",
+      "native_end_exclusive": "004da25d",
+      "original_abi": "ECX actual12-byte header; stack requested capacity DWORD; RET4; no specified result",
+      "status": "two_complete_actual_vector_entries_main_Win32_original_append_reserve_ownership_verified",
+      "evidence": "reports/native_resource_record_vector_audit.json",
+      "primary_seal_sha256": "a525a0c061a30da85ead41852feef4cf67836062bb168efa20d90820c7114232",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1a3c0",
+      "name": "append_native_resource_record_00b1a3c0",
+      "cpp_symbol": "append_native_resource_record_00b1a3c0",
+      "source": "src/native_resource_record_vector.cpp",
+      "native_end_exclusive": "00b1a42f",
+      "original_abi": "ECX actual12-byte header; stack source record pointer; RET4; no specified result",
+      "status": "two_complete_actual_vector_entries_main_Win32_original_append_reserve_ownership_verified",
+      "evidence": "reports/native_resource_record_vector_audit.json",
+      "primary_seal_sha256": "a525a0c061a30da85ead41852feef4cf67836062bb168efa20d90820c7114232",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_RECORD_VECTOR.md",
+    "bytes": 8964,
+    "sha256": "f4179dc55e403f6610d72b7cfca6071ea9ad4b3135baa2859a94376a5c61cb67"
+  }
 }

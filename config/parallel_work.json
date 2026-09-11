@@ -6855,6 +6855,48 @@
         "reports/native_resource_record_copy_audit.json"
       ],
       "evidence": "reports/native_resource_record_copy_audit.json"
+    },
+    {
+      "id": "native_resource_record_vector2",
+      "packet": "native_resource_record_vector2",
+      "state": "two_complete_actual_vector_entries_main_Win32_original_append_reserve_ownership_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "004da180",
+        "00b1a3c0"
+      ],
+      "code_ownership": [
+        "src/native_resource_record_vector.cpp",
+        "include/bsp/native_resource_record_vector.hpp",
+        "docs/NATIVE_RESOURCE_RECORD_VECTOR.md",
+        "reports/native_resource_record_vector_audit.json"
+      ],
+      "evidence": "reports/native_resource_record_vector_audit.json",
+      "new_native_body_count": 2
+    },
+    {
+      "id": "native_renderer_private_reset_profiles3",
+      "packet": "native_renderer_private_reset_profiles3",
+      "state": "four_profile_parent_and_two_exact_private_leaves_main_Win32_original_COM_and_COFF_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b1fd90",
+        "00b4b810",
+        "00b4b9c0"
+      ],
+      "code_ownership": [
+        "src/native_renderer_reset_readiness.cpp",
+        "include/bsp/native_renderer_reset_readiness.hpp",
+        "docs/NATIVE_RENDERER_RESET_READINESS.md",
+        "docs/NATIVE_RENDERER_PRIVATE_RESET_PROFILES.md",
+        "reports/native_renderer_private_reset_profiles_audit.json"
+      ],
+      "evidence": "reports/native_renderer_private_reset_profiles_audit.json",
+      "new_native_body_count": 2
     }
   ],
   "snapshot_after_analysis": {

@@ -116,3 +116,22 @@ bundle carry the new source and five-case proof. Evidence establishes this
 explicit four-profile interface, not arbitrary profiles, every exception or
 race, a general binary replacement, a full device-reset parent, or game runtime
 validation.
+
+
+## Primary integration
+
+The unchanged extension passed the main strict Win32 build, both existing
+CTests and eight fresh seeds. Primary checked84 worker sealed pins, four owned
+inputs,18 current files and all22 fresh spans,1,392 bytes. Four exact main
+archive objects preserve the whole reviewed code/data/relocation contents.
+The unchanged five-pair fixture linked the frozen actual main library and
+matched301,484 bytes,106 real COM calls,36 terminal-zero releases and ten
+private-entry observations. All347 full COFF sections,1,800 relocations,189
+functions and eleven runtime postimages passed. Immutable evidence is in
+`local/private_reset_profiles_primary/`; previous bundles remain historical.
+
+Primary defined both complete three-byte leaves, updated the existing raw
+parent record with the four-profile domain while retaining its prior proof,
+and saved/refreshed three reviewed annotations. This adds two new bodies and
+expands one existing source interface. The wider lifetime/reset/game limits
+above still apply.
