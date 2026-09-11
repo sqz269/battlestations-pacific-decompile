@@ -23,9 +23,11 @@ struct VoiceAttachedNode;
 struct VoiceClipRecord {
     NativeString text_00;
     std::int32_t sound_id_08{};
+    NativeString auxiliary_0c; // initialized/copied/destroyed by00703FF0/42B0/4060
     std::uint8_t alternate_14{};
     NativeString alternate_name_18;
     std::vector<void*> resources_20; // resource wrappers, not SoundOwnedResource
+    VoiceTimedKeys timed_keys_34; // canonical record+30 vector, native begin+34
 };
 struct VoiceClip {
     std::uint32_t native_vtable_00{0x00cf0dd0};
