@@ -46,6 +46,7 @@ struct InputActionRecord {
     std::size_t listener{0};    // index into InputTickState::listeners, 0 = none
     bool has_listener{false};   // +2Ch != 0
     std::vector<InputActionBinding> bindings; // +10h/count+14h, native 34h stride
+    bool registered{false};     // +00h, independent of enabled; 00a92260
 };
 
 // The listener object at record+2Ch. 00a91e20 clears bytes +8h..+13h and floats
