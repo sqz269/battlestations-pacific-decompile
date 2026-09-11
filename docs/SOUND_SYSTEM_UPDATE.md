@@ -128,3 +128,11 @@ evidence, not native object ABI, audible-device or gameplay validation.
   packet does not claim full application composition.
 - Recover alternate-engine slot4 and the remaining manager teardown paths.
 - Audible output and gameplay validation remain open.
+
+## Extension from docs/SOUND_SPATIAL_CHANNEL.md
+
+The manager runtime now also accepts the D5B510 spatial bank profile when a
+SoundSpatialChannelContext and BankSoundChannelVirtuals are bound. The installed
+spatial fixture verifies distance groups, position/velocity and automatic retirement.
+A7F710 remains a bank-branch fragment; the event profile and full application
+composition are still open. See the new report for separate source/build provenance.

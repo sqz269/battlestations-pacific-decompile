@@ -7107,6 +7107,38 @@
         "src/native_renderer_surface_save_publish.cpp"
       ],
       "evidence": "reports/native_renderer_surface_save_publish_audit.json"
+    },
+    {
+      "id": "orch4_sound_spatial_channel_t",
+      "packet": "orch4_sound_spatial_channel_t",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_spatial_manager_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a7d560",
+        "00a8a2e0",
+        "00a8a3d0",
+        "00a8a460",
+        "00a8a290",
+        "00a8a3a0",
+        "00a79a40",
+        "00a7ec60",
+        "00a7ba40",
+        "00a8a480",
+        "00a7f710"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_spatial_instance.hpp",
+        "src/sound_spatial_instance.cpp",
+        "include/bsp/sound_channel_runtime.hpp",
+        "src/sound_channel_runtime.cpp",
+        "include/bsp/sound_instance.hpp",
+        "src/sound_instance.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_spatial_channel.json",
+      "discovery_evidence": "docs/SOUND_SPATIAL_CHANNEL.md"
     }
   ],
   "snapshot_after_analysis": {

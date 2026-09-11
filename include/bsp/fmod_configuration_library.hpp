@@ -7,6 +7,7 @@
 #include "bsp/sound_sample.hpp"
 #include "bsp/sound_instance.hpp"
 #include "bsp/sound_system_update.hpp"
+#include "bsp/sound_spatial_instance.hpp"
 
 #include <memory>
 #include <string>
@@ -27,7 +28,7 @@ struct FmodConfigurationCall {
 class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
     public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
-    public SoundChannelFmodHost, public SoundSystemUpdateFmodHost {
+    public SoundChannelFmodHost, public SoundSystemUpdateFmodHost, public SoundSpatialChannelFmodHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
     FmodConfigurationLibrary(const std::wstring& dll_path,
@@ -90,6 +91,11 @@ public:
     FmodResult channel_set_3d_pan_level(void*, float) override;
     FmodResult channel_set_paused(void*, std::uint8_t) override;
     FmodResult channel_get_audibility(void*, float*) override;
+    FmodResult channel_set_group(void*, void*) override;
+    FmodResult channel_set_3d_attributes(void*, const std::array<float, 3>&,
+        const std::array<float, 3>&) override;
+    FmodResult dsp_remove(void*) override;
+    FmodResult dsp_release(void*) override;
 
     FmodResult event_system_create(void**) override;
     FmodResult event_system_get_system_object(void*, void**) override;

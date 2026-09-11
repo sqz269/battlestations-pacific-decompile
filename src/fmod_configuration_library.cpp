@@ -168,6 +168,19 @@ FmodResult FmodConfigurationLibrary::channel_set_paused(void* channel, std::uint
 FmodResult FmodConfigurationLibrary::channel_get_audibility(void* channel, float* value) {
     return impl_->call("FMOD_Channel_GetAudibility", channel, value);
 }
+FmodResult FmodConfigurationLibrary::channel_set_group(void* channel, void* group) {
+    return impl_->call("FMOD_Channel_SetChannelGroup", channel, group);
+}
+FmodResult FmodConfigurationLibrary::channel_set_3d_attributes(void* channel,
+    const std::array<float, 3>& position, const std::array<float, 3>& velocity) {
+    return impl_->call("FMOD_Channel_Set3DAttributes", channel, position.data(), velocity.data());
+}
+FmodResult FmodConfigurationLibrary::dsp_remove(void* dsp) {
+    return impl_->call("FMOD_DSP_Remove", dsp);
+}
+FmodResult FmodConfigurationLibrary::dsp_release(void* dsp) {
+    return impl_->call("FMOD_DSP_Release", dsp);
+}
 FmodResult FmodConfigurationLibrary::system_get_channels_playing(void* system, std::int32_t* count) {
     return impl_->call("FMOD_System_GetChannelsPlaying", system, count);
 }

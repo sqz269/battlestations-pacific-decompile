@@ -76,6 +76,8 @@ void* sound_sample_fmod_sound_00a818e0(void*) noexcept;
 SoundInstance& construct_sound_instance_00a7c480(SoundInstance&, void*,
     SoundClassLevel* const* class_slot, std::uint32_t type, std::uint8_t flag, SoundInstanceContext&);
 void destroy_sound_instance_00a7bd90(SoundInstance&, SoundInstanceContext&);
+SoundChannelInstance& construct_sound_channel_00a7d560(SoundChannelInstance&, void*,
+    SoundClassLevel* const*, std::uint32_t, std::uint8_t, SoundInstanceContext&);
 SoundInstance* scalar_delete_sound_instance_00a7c5d0(SoundInstance*, std::uint32_t, SoundInstanceContext&);
 // F640 manager slot0C: increment +160 even on rejected resource/allocation.
 SoundChannelInstance* create_nonspatial_sound_00a7f640(SoundSystemOwner&, void*,
