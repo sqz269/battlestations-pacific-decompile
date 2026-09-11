@@ -2389,7 +2389,11 @@ Every earlier switch was rechecked on the same binary: a 120 frame run with
 unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
 exits 0 and `--vfs-probe does/not/exist.lua` exits 3, and a `--mission-frames 60` run without
 `--mission-complete-frame` still ends on the frame count with
-`summary mission exit reachable=0`. The first three match milestone 2d exactly.
+`summary mission exit reachable=0`. The first three match milestone 2d exactly. The close path
+was validated the same way as before, by sending WM_CLOSE to a running process with
+`--press-start-frame 30 --menu-select USN02 --mission-frames 60` and no frame limit: it
+presented 28722 frames, ran all 60 mission frames, recorded
+`CloseRequestPolicy::front_end_branch [004ca2f0]` once, reported 248 concrete and exited 0.
 
 This is a runtime-validated process, not a game-validated one. It proves that the recovered
 fixed-step body runs with its real gates, and that the recovered end-of-mission path carries a
