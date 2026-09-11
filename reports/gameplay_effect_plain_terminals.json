@@ -1,0 +1,528 @@
+{
+  "packet": "orch3_plain_component_terminals_ae",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "reconstructed_normal_flow_actual_component_storage_original_byte_and_full_lifetime_fixture_passed",
+  "functions": [
+    {
+      "name": "component_base",
+      "address": "0086b7e0",
+      "end_exclusive": "0086b847",
+      "length": 103,
+      "sha256": "defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086b81c",
+          "target": "0x419cc0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086b823",
+          "target": "0xbd1510",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086b832",
+          "target": "0xbd30f0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086b846",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "cpp_symbol": "destroy_effect_component_base_0086b7e0",
+      "ghidra_name": "BSP_EffectComponent_Destruct",
+      "original_abi": "ECX actual component; RET; normal destructor changes primary table and releases current captured name only",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    },
+    {
+      "name": "shake",
+      "address": "0086d0a0",
+      "end_exclusive": "0086d0be",
+      "length": 30,
+      "sha256": "1f74df273aefc4c1eebe02b2a57f67630b8425976779bcfbbdc73b1278270fa6",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086d0a3",
+          "target": "0x86b7e0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086d0b0",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086d0bb",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "scalar_delete_effect_shake_0086d0a0",
+      "ghidra_name": "CG_scalar_deleting_dtor_0086d0a0",
+      "original_abi": "thiscall ECX actual component; stack flags; EAX original pointer even after free; RET4; bit0 only frees",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    },
+    {
+      "name": "constant",
+      "address": "0086d0e0",
+      "end_exclusive": "0086d0fe",
+      "length": 30,
+      "sha256": "e6449cd791059b7dc6dbaa1fd533812608d21bcf74d24ba64df400200f413edc",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086d0e3",
+          "target": "0x86b7e0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086d0f0",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086d0fb",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "scalar_delete_effect_const_rumble_0086d0e0",
+      "ghidra_name": "CG_scalar_deleting_dtor_0086d0e0",
+      "original_abi": "thiscall ECX actual component; stack flags; EAX original pointer even after free; RET4; bit0 only frees",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    },
+    {
+      "name": "slope",
+      "address": "0086d100",
+      "end_exclusive": "0086d11e",
+      "length": 30,
+      "sha256": "f1debbd5617fc289a550772c726f203f44674d2355253162281b8b0f2c58641b",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086d103",
+          "target": "0x86b7e0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086d110",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086d11b",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "scalar_delete_effect_slope_rumble_0086d100",
+      "ghidra_name": "CG_scalar_deleting_dtor_0086d100",
+      "original_abi": "thiscall ECX actual component; stack flags; EAX original pointer even after free; RET4; bit0 only frees",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    },
+    {
+      "name": "square",
+      "address": "0086d120",
+      "end_exclusive": "0086d13e",
+      "length": 30,
+      "sha256": "b23edc75190bb899725eed0c772d2fd889f4e2bf2c8091798dae2d303c00eb80",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086d123",
+          "target": "0x86b7e0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086d130",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086d13b",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "scalar_delete_effect_square_rumble_0086d120",
+      "ghidra_name": "CG_scalar_deleting_dtor_0086d120",
+      "original_abi": "thiscall ECX actual component; stack flags; EAX original pointer even after free; RET4; bit0 only frees",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    },
+    {
+      "name": "light",
+      "address": "0086d140",
+      "end_exclusive": "0086d15e",
+      "length": 30,
+      "sha256": "5d967bdecca0986cf8a14028aa95f93cd406c9b4561df73e4dde1c4017decf23",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086d143",
+          "target": "0x86b7e0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086d150",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086d15b",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "scalar_delete_effect_light_0086d140",
+      "ghidra_name": "CG_scalar_deleting_dtor_0086d140",
+      "original_abi": "thiscall ECX actual component; stack flags; EAX original pointer even after free; RET4; bit0 only frees",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    },
+    {
+      "name": "splash",
+      "address": "0086d160",
+      "end_exclusive": "0086d17e",
+      "length": 30,
+      "sha256": "8cbc55a80121a1cb6329cf97fa4f257f2a9dab587573781779a5bd64f486d665",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086d163",
+          "target": "0x86b7e0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086d170",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086d17b",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "cpp_symbol": "scalar_delete_effect_splash_0086d160",
+      "ghidra_name": "CG_scalar_deleting_dtor_0086d160",
+      "original_abi": "thiscall ECX actual component; stack flags; EAX original pointer even after free; RET4; bit0 only frees",
+      "source": "src/gameplay_effect_scalar_components.cpp"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "0086b81c",
+      "native": "00419cc0",
+      "function": "0086b7e0"
+    },
+    {
+      "address": "0086b823",
+      "native": "00bd1510",
+      "function": "0086b7e0"
+    },
+    {
+      "address": "0086b832",
+      "native": "00bd30f0",
+      "function": "0086b7e0"
+    },
+    {
+      "address": "0086d0a3",
+      "native": "0086b7e0",
+      "function": "0086d0a0"
+    },
+    {
+      "address": "0086d0b0",
+      "native": "00bf65ac",
+      "function": "0086d0a0"
+    },
+    {
+      "address": "0086d0e3",
+      "native": "0086b7e0",
+      "function": "0086d0e0"
+    },
+    {
+      "address": "0086d0f0",
+      "native": "00bf65ac",
+      "function": "0086d0e0"
+    },
+    {
+      "address": "0086d103",
+      "native": "0086b7e0",
+      "function": "0086d100"
+    },
+    {
+      "address": "0086d110",
+      "native": "00bf65ac",
+      "function": "0086d100"
+    },
+    {
+      "address": "0086d123",
+      "native": "0086b7e0",
+      "function": "0086d120"
+    },
+    {
+      "address": "0086d130",
+      "native": "00bf65ac",
+      "function": "0086d120"
+    },
+    {
+      "address": "0086d143",
+      "native": "0086b7e0",
+      "function": "0086d140"
+    },
+    {
+      "address": "0086d150",
+      "native": "00bf65ac",
+      "function": "0086d140"
+    },
+    {
+      "address": "0086d163",
+      "native": "0086b7e0",
+      "function": "0086d160"
+    },
+    {
+      "address": "0086d170",
+      "native": "00bf65ac",
+      "function": "0086d160"
+    }
+  ],
+  "no_ghidra_function": [],
+  "supporting_byte_spans": [
+    {
+      "name": "refbase",
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [
+        {
+          "address": "00bd30f6",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "zero",
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [
+        {
+          "address": "00bd30ed",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "tables",
+      "address": "00d0d5f4",
+      "end_exclusive": "00d0d67c",
+      "length": 136,
+      "sha256": "4b756945c6ce4c09d2859926215fce5ad050b067f82590cbedec9bbc5f2206ae",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "component_tables",
+      "address": "00d0d76c",
+      "end_exclusive": "00d0d7cc",
+      "length": 96,
+      "sha256": "125703450aa64a521c5fb55a471b0d8b996a5666f8d187a8557d03940fe859ae",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "map",
+      "address": "00dc7508",
+      "end_exclusive": "00dc7530",
+      "length": 40,
+      "sha256": "5d0dc9e92918b7507c87ce5f223fc5c3d083638b2f2edd4bb5c33589e56da4d4",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    }
+  ],
+  "composition": {
+    "class": "GameplayEffectPlainComponentLifetime",
+    "source": "src/gameplay_effect_scalar_components.cpp",
+    "dependencies": [
+      "actual NativeStringStorage",
+      "borrowed current native primary table words0/1",
+      "required remaining component lifetime"
+    ],
+    "order": [
+      "original caller decrements actual raw component+04",
+      "dispatch current slot0, bound profile must be BD30E0",
+      "reload current component table",
+      "dispatch current scalar+04 with flags1",
+      "common name cleanup followed by base table and scalar free"
+    ],
+    "new_owner_or_counter": false,
+    "default_unknown_success": false
+  },
+  "exception_boundary": {
+    "funcinfo": "00dc7510",
+    "map": "00dc7508",
+    "state0_to": -1,
+    "funclet": "00c95530",
+    "saved_owner": "EBP-10",
+    "target": "00bd30f0",
+    "original_exception_dispatch_executed": false,
+    "nonthrowing_string_release_limit": "Normal-flow reconstruction with new C++ composition. Original exception dispatcher not executed; nonthrowing NativeStringStorage release cannot propagate original lazy pool-creation failure. No native vtable/SEH ABI, Light/Splash factory, remaining component family, hardware or gameplay validation."
+  },
+  "validation": {
+    "build": "local/plain-component-ae-build.log: strict Win32 and both CTests passed",
+    "native_probe": "local/plain-component-probe-ae.log: original103-byte base, six30-byte scalar wrappers and14-byte generic zero; real native string pool; balanced ESP, full normalized owners, name/count callback mutations, null names and flags0/2/1 behavior; current-table rejection and explicit unbound fallback passed",
+    "full_lifetime": "local/plain-component-chain-ae.log: existing AD point chain transfers4 actual constructor refs to real definition array; pooled component names released at count0 in reverse order; no manual component destructor/free; all three event owners then retired while requests remain alive; existing reentry/constructor failure passed",
+    "probe_sources": [
+      "local/plain_component_probe_ae.cpp",
+      "local/generate_plain_component_chain_ae.py",
+      "local/extract_plain_component_ae.py"
+    ],
+    "dangling_name_address_normalized_in_comparison": true,
+    "original_exception_dispatch_executed": false,
+    "physical_output_or_gameplay_tested": false,
+    "call_verification": "15 direct native call rows checked, zero failures; local/plain-component-ae-call-verification.log"
+  },
+  "remaining": [
+    "Remaining component families and their event factories.",
+    "Connect plain lifetime to application compositions with matching actual table/string bindings.",
+    "Event update/cancel consumers and native request storage.",
+    "Original exception/vtable ABI and gameplay."
+  ],
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T211827Z.json",
+    "readback": "local/plain-component-ae-comments.json",
+    "project_saved": true,
+    "all7_names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "0086b7e0",
+        "before": {
+          "address": "0086b7e0",
+          "function_name": "BSP_EffectComponent_Destruct",
+          "comment": "[BSP reconstruction 0086b7e0]\nHypothesis, not a recovered symbol. ECX actual component; RET. Write D0D570, destroy actual name8/C through pool, preserve dangling header and callback mutations, then base00BD30F0 writes CEB130. Full-span disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086b7e0",
+          "name": "BSP_EffectComponent_Destruct",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; RET. Write D0D570, destroy actual name8/C through pool, preserve dangling header and callback mutations, then base00BD30F0 writes CEB130. Full-span disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 103-byte range 0086b7e0..0086b846; disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086d0a0",
+        "before": {
+          "address": "0086d0a0",
+          "function_name": "CG_scalar_deleting_dtor_0086d0a0",
+          "comment": "[BSP reconstruction 0086d0a0]\nHypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Shake: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 1f74df273aefc4c1eebe02b2a57f67630b8425976779bcfbbdc73b1278270fa6. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086d0a0",
+          "name": "CG_scalar_deleting_dtor_0086d0a0",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Shake: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 1f74df273aefc4c1eebe02b2a57f67630b8425976779bcfbbdc73b1278270fa6. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 30-byte range 0086d0a0..0086d0bd; disk/live SHA256 1f74df273aefc4c1eebe02b2a57f67630b8425976779bcfbbdc73b1278270fa6."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086d0e0",
+        "before": {
+          "address": "0086d0e0",
+          "function_name": "CG_scalar_deleting_dtor_0086d0e0",
+          "comment": "[BSP reconstruction 0086d0e0]\nHypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. ConstRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 e6449cd791059b7dc6dbaa1fd533812608d21bcf74d24ba64df400200f413edc. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086d0e0",
+          "name": "CG_scalar_deleting_dtor_0086d0e0",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. ConstRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 e6449cd791059b7dc6dbaa1fd533812608d21bcf74d24ba64df400200f413edc. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 30-byte range 0086d0e0..0086d0fd; disk/live SHA256 e6449cd791059b7dc6dbaa1fd533812608d21bcf74d24ba64df400200f413edc."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086d100",
+        "before": {
+          "address": "0086d100",
+          "function_name": "CG_scalar_deleting_dtor_0086d100",
+          "comment": "[BSP reconstruction 0086d100]\nHypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. SlopeRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 f1debbd5617fc289a550772c726f203f44674d2355253162281b8b0f2c58641b. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086d100",
+          "name": "CG_scalar_deleting_dtor_0086d100",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. SlopeRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 f1debbd5617fc289a550772c726f203f44674d2355253162281b8b0f2c58641b. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 30-byte range 0086d100..0086d11d; disk/live SHA256 f1debbd5617fc289a550772c726f203f44674d2355253162281b8b0f2c58641b."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086d120",
+        "before": {
+          "address": "0086d120",
+          "function_name": "CG_scalar_deleting_dtor_0086d120",
+          "comment": "[BSP reconstruction 0086d120]\nHypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. SquareRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 b23edc75190bb899725eed0c772d2fd889f4e2bf2c8091798dae2d303c00eb80. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086d120",
+          "name": "CG_scalar_deleting_dtor_0086d120",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. SquareRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 b23edc75190bb899725eed0c772d2fd889f4e2bf2c8091798dae2d303c00eb80. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 30-byte range 0086d120..0086d13d; disk/live SHA256 b23edc75190bb899725eed0c772d2fd889f4e2bf2c8091798dae2d303c00eb80."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086d140",
+        "before": {
+          "address": "0086d140",
+          "function_name": "CG_scalar_deleting_dtor_0086d140",
+          "comment": "[BSP reconstruction 0086d140]\nHypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Light: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 5d967bdecca0986cf8a14028aa95f93cd406c9b4561df73e4dde1c4017decf23. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086d140",
+          "name": "CG_scalar_deleting_dtor_0086d140",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Light: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 5d967bdecca0986cf8a14028aa95f93cd406c9b4561df73e4dde1c4017decf23. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 30-byte range 0086d140..0086d15d; disk/live SHA256 5d967bdecca0986cf8a14028aa95f93cd406c9b4561df73e4dde1c4017decf23."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0086d160",
+        "before": {
+          "address": "0086d160",
+          "function_name": "CG_scalar_deleting_dtor_0086d160",
+          "comment": "[BSP reconstruction 0086d160]\nHypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Splash: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 8cbc55a80121a1cb6329cf97fa4f257f2a9dab587573781779a5bd64f486d665. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "0086d160",
+          "name": "CG_scalar_deleting_dtor_0086d160",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Splash: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 8cbc55a80121a1cb6329cf97fa4f257f2a9dab587573781779a5bd64f486d665. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 30-byte range 0086d160..0086d17d; disk/live SHA256 8cbc55a80121a1cb6329cf97fa4f257f2a9dab587573781779a5bd64f486d665."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

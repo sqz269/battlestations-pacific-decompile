@@ -1,0 +1,1241 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b19f90",
+      "end_exclusive": "00b1a25c",
+      "length": 716,
+      "sha256": "2e2f59a85a169ba7298d8c3cca51dc669be35538620e46505df99e8364b6d3e3",
+      "function_before": "Function: STL_xlen_throw_00b19f90 at 00b19f90\nSignature: undefined STL_xlen_throw_00b19f90(void)\nEntry: 00b19f90\nBody: 00b19f90 - 00b1a221",
+      "documentation_before": {
+        "hash": "3456f4bc49eef0605b7142963ea41e47bfe423655e26dece0654a6473549a998",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b19f90",
+        "function_name": "STL_xlen_throw_00b19f90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b1a006"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b1a021"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b1a02e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_00b1a039"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b1a045"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00b1a052"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_00b1a05a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00b1a05d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00b1a06e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b1a075"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00b1a077"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_00b1a090"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00b1a09c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_00b1a0ad"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00b1a0b9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_00b1a0c7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_00b1a0d4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_00b1a0df"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_00b1a0e2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00b1a0f4"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b1a112"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_00b1a13e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_00b1a153"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_00b1a171"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_00b1a188"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_00b1a1a1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b1a1b6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_00b1a1ba"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_00b1a1cd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00b1a1ea"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b1a1fe"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_00b1a201"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00b1a21c"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "repair": {
+        "entry": "00b19f90",
+        "call_site": "00b1a21d",
+        "old_saved_end_inclusive": "00b1a221",
+        "needed_extent_end_exclusive": "00b1a25c",
+        "extent_already_complete": false,
+        "tail_start": "00b1a222",
+        "tail_end_exclusive": "00b1a25c",
+        "tail_bytes": 58,
+        "tail_hex": "8b4c24148b410883c40485c05f5d760683c0ff8941088b4c24648b4424608b54246889088b4c24505e8950045b64890d0000000083c454c20c00",
+        "repair": "Returning call-site flow, complete extent, normal erase name/comment and reassess throw-only tag; preserve old values and correct free global/library annotation."
+      },
+      "function_after": "Function: STL_xlen_throw_00b19f90 at 00b19f90\nSignature: undefined STL_xlen_throw_00b19f90(void)\nEntry: 00b19f90\nBody: 00b19f90 - 00b1a25b",
+      "documentation_after_repair": {
+        "hash": "de0c77ea238408904f315c2bdeb42a38debaffc4df2d467bc379b98ae715c76c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b19f90",
+        "function_name": "STL_xlen_throw_00b19f90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "auStack_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "appuStack_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "uStack_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "uStack_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b1a006"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b1a021"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b1a02e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_00b1a039"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b1a045"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00b1a052"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_00b1a05a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00b1a05d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00b1a06e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b1a075"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00b1a077"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_00b1a090"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00b1a09c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_00b1a0ad"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00b1a0b9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_00b1a0c7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_00b1a0d4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_00b1a0df"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_00b1a0e2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00b1a0f4"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b1a112"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_00b1a13e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_00b1a153"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_00b1a171"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_00b1a188"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_00b1a1a1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b1a1b6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_00b1a1ba"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_00b1a1cd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00b1a1ea"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b1a1fe"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_00b1a201"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00b1a21c"
+          },
+          {
+            "relative_offset": 680,
+            "name": "LAB_00b1a238"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "documentation_after_annotation": {
+        "hash": "3a20fb16a42a1c67190e0f05e137f0d520fdc453f56e8687097083211899a540",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b19f90",
+        "function_name": "BSP_ResourceRegistryTree_EraseIterator",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b19f90]\nComplete 716-byte actual resource-registry tree erase at B19F90..B1A25C. Original ECX tree; stack hidden output iterator and input iterator owner/node; RET0C. This is a full red-black-tree erase with invalid-iterator exception branch, not a throw-only helper. Preserve two-child successor transplant, actual links/color/nil, direct complete rotations and iterator advance. Invalid iterator constructs the native owning out_of_range payload through complete 411700/408720 and D6926C profile; ThrowInfo D863A8 uses full 441760 copy and 4412B0 destructor. Normal disposal captures key data/length and uses actual 419CC0/BD1510, then returning BF65AC. Restored 58-byte tail B1A222..B1A25C reads current unsigned count after free, decrements only when nonzero, captures advanced owner/output/node before potentially aliasing output stores. Full original spans and concrete dependencies reviewed; source erase and native exception carrier composition remain pending. Prior STL_xlen_throw identification superseded by complete control flow. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff90, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b1a006"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b1a021"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b1a02e"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_00b1a039"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b1a045"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00b1a052"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_00b1a05a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00b1a05d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00b1a06e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b1a075"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00b1a077"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_00b1a090"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00b1a09c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_00b1a0ad"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00b1a0b9"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_00b1a0c7"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_00b1a0d4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_00b1a0df"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_00b1a0e2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00b1a0f4"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b1a112"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_00b1a13e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_00b1a153"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_00b1a171"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_00b1a188"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_00b1a1a1"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b1a1b6"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_00b1a1ba"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_00b1a1cd"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00b1a1ea"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b1a1fe"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_00b1a201"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00b1a21c"
+          },
+          {
+            "relative_offset": 680,
+            "name": "LAB_00b1a238"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "refreshed_export": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19f90\\decompiled.c",
+        "bytes": 6681,
+        "sha256": "6b5f76579884a69483e9c11f7cf8da344b1df929fe25c0403eb5754d2b3298da"
+      }
+    },
+    {
+      "address": "00b1b5f0",
+      "end_exclusive": "00b1b65f",
+      "length": 111,
+      "sha256": "44c986351309923c65c90fd41664b392745b7cd2570a328e886fb042bfe93b4c",
+      "function_before": "Function: FUN_00b1b5f0 at 00b1b5f0\nSignature: undefined FUN_00b1b5f0(void)\nEntry: 00b1b5f0\nBody: 00b1b5f0 - 00b1b637",
+      "documentation_before": {
+        "hash": "24aa99f372440e2a78edf94e0624b15096921901e9dab5b479a56e06c4416802",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1b5f0",
+        "function_name": "FUN_00b1b5f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "repair": {
+        "entry": "00b1b5f0",
+        "call_site": "00b1b633",
+        "old_saved_end_inclusive": "00b1b637",
+        "needed_extent_end_exclusive": "00b1b65f",
+        "extent_already_complete": false,
+        "tail_start": "00b1b638",
+        "tail_end_exclusive": "00b1b65f",
+        "tail_bytes": 39,
+        "tail_hex": "8b4c241c895e04895e0883c404891d1cd4f800c7071838ce005f5e5b64890d0000000083c418c3",
+        "repair": "Returning call-site flow and complete destructor tail extent only."
+      },
+      "function_after": "Function: FUN_00b1b5f0 at 00b1b5f0\nSignature: undefined FUN_00b1b5f0(void)\nEntry: 00b1b5f0\nBody: 00b1b5f0 - 00b1b65e",
+      "documentation_after_repair": {
+        "hash": "712bb1723cff2eebda877ecd0119518e25304fa759602fa11f6542367fea918a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1b5f0",
+        "function_name": "FUN_00b1b5f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "auStack_14",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "documentation_after_annotation": {
+        "hash": "ea693b407c7f0601bc6cb3faa38be94fcd6a5e656c2426ca4b403f60fd9b4764",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1b5f0",
+        "function_name": "BSP_ResourceRegistry_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b1b5f0]\nComplete 111-byte actual resource-registry destructor B1B5F0..B1B65F. Original ECX registry, plain RET. Full B1A2F0 range destruction followed by current head free; restored 39-byte returning-free tail B1B638..B1B65F zeros current head/count, clears actual F8D41C singleton publication and writes CE3818 base profile. Native EH only calls B19760 publication/profile reset; no rollback or invented resource ownership. Full original spans and dependencies reviewed; full source destructor/range erase remain pending. Adjacent B1B660 scalar deleting destructor is preserved. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "refreshed_export": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1b5f0\\decompiled.c",
+        "bytes": 1382,
+        "sha256": "58d5e882cdcaa02bbcbfd7c6e46d2fe27e7b8dcecd932e4cebe735552131ea3e"
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1a222",
+        "end_address": "00b1a25c"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1a222",
+        "end_address": "00b1a25b",
+        "bytes_disassembled": 58,
+        "message": "Successfully disassembled 58 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1a21d"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1a21d (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b19f90"
+      },
+      "result": {
+        "success": true,
+        "address": "00b19f90",
+        "deleted_function": "STL_xlen_throw_00b19f90",
+        "body_size": 658,
+        "message": "Function 'STL_xlen_throw_00b19f90' deleted at 00b19f90"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b19f90",
+        "name": "STL_xlen_throw_00b19f90",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b19f90",
+        "function_name": "STL_xlen_throw_00b19f90",
+        "entry_point": "00b19f90",
+        "body_size": 716,
+        "message": "Function created successfully at 00b19f90",
+        "warnings": [
+          "Function name 'STL_xlen_throw_00b19f90' \u2014 main part 'STL_xlen_throw_00b19f90' is not PascalCase. Expected: StlXlenThrow00b19f90",
+          "Function name 'STL_xlen_throw_00b19f90' \u2014 main part 'STL_xlen_throw_00b19f90' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1b638",
+        "end_address": "00b1b65f"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b1b638",
+        "end_address": "00b1b65e",
+        "bytes_disassembled": 39,
+        "message": "Successfully disassembled 39 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1b633"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 00b1b633 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1b5f0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b1b5f0",
+        "deleted_function": "FUN_00b1b5f0",
+        "body_size": 72,
+        "message": "Function 'FUN_00b1b5f0' deleted at 00b1b5f0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1b5f0",
+        "name": "FUN_00b1b5f0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b1b5f0",
+        "function_name": "FUN_00b1b5f0",
+        "entry_point": "00b1b5f0",
+        "body_size": 111,
+        "message": "Function created successfully at 00b1b5f0"
+      }
+    }
+  ],
+  "source_reconstructed": false,
+  "original_runtime_executed": false,
+  "game_validated": false,
+  "neighbor_documentation_before": {
+    "00b19e90": {
+      "hash": "5346bb629a19e0c16b675973e15c7646b77e832265b92b01dcd1d309478067fb",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b19e90",
+      "function_name": "BSP_ResourceRegistry_CreateResource",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00b19e90]\nComplete 108-byte actual registry lookup for four established read-only eight-byte factory views D64470/AC/E8/F0 and current BBC6F0/BBC810 selectors. Original ECX registry, stack raw name, EAX resource or zero, RET4; new explicit C++ context. Full B19D60 executes first; capture owner then current head before returning validation, read node afterward, compare captured head, then validate against fresh owner head. Read current node+14/factory+0/profile+4 and forward the full creator result. No name copy, retain, cleanup or registry-vtable access. Unknown profiles/selectors are explicit source-only boundaries. Primary verified 98 sealed files, 59 report pins, 18 current inputs and 21 fresh spans/959 bytes. Seven original-parent/main-provider pairs match 327 words; returning invalid calls occur in stricmp, while owner-invalid branches remain static. Four exact objects contain 110 code sections/6985 bytes/244 relocations; 15 linked sections/1132 bytes pass nonrelocation-byte checks. All 32 literal profile bytes remain unchanged/read-only. Original helpers are bridged, not executed. No registry lifetime, resource deletion, original caller/SEH or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_resource_registry_lookup_audit.json",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(unique, 0x17200, 4)"
+        },
+        {
+          "name": "uVar2",
+          "type": "undefined4",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "local_8",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 44,
+          "name": "LAB_00b19ebc"
+        },
+        {
+          "relative_offset": 49,
+          "name": "LAB_00b19ec1"
+        },
+        {
+          "relative_offset": 66,
+          "name": "LAB_00b19ed2"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b19edc"
+        },
+        {
+          "relative_offset": 96,
+          "name": "LAB_00b19ef0"
+        }
+      ],
+      "completeness_score": 100.0
+    },
+    "00b1a260": {
+      "hash": "7755a08a8cdc438db7359c409c26b422858562fde74a6c77facd4885fdf2c7ab",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b1a260",
+      "function_name": "FUN_00b1a260",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar2",
+          "type": "int",
+          "storage": "(stack, 0xffffffffffffffe8, 4)"
+        },
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "uVar3",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffff0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 59,
+          "name": "LAB_00b1a29b"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b1a2ac"
+        }
+      ],
+      "completeness_score": 50.0
+    },
+    "00b1b660": {
+      "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b1b660",
+      "function_name": "CG_scalar_deleting_dtor_00b1b660",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "extraout_EAX",
+          "type": "void *",
+          "storage": "(register, 0x0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 24,
+          "name": "LAB_00b1b678"
+        }
+      ],
+      "completeness_score": 80.0
+    }
+  },
+  "neighbor_documentation_after": {
+    "00b19e90": {
+      "hash": "5346bb629a19e0c16b675973e15c7646b77e832265b92b01dcd1d309478067fb",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b19e90",
+      "function_name": "BSP_ResourceRegistry_CreateResource",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00b19e90]\nComplete 108-byte actual registry lookup for four established read-only eight-byte factory views D64470/AC/E8/F0 and current BBC6F0/BBC810 selectors. Original ECX registry, stack raw name, EAX resource or zero, RET4; new explicit C++ context. Full B19D60 executes first; capture owner then current head before returning validation, read node afterward, compare captured head, then validate against fresh owner head. Read current node+14/factory+0/profile+4 and forward the full creator result. No name copy, retain, cleanup or registry-vtable access. Unknown profiles/selectors are explicit source-only boundaries. Primary verified 98 sealed files, 59 report pins, 18 current inputs and 21 fresh spans/959 bytes. Seven original-parent/main-provider pairs match 327 words; returning invalid calls occur in stricmp, while owner-invalid branches remain static. Four exact objects contain 110 code sections/6985 bytes/244 relocations; 15 linked sections/1132 bytes pass nonrelocation-byte checks. All 32 literal profile bytes remain unchanged/read-only. Original helpers are bridged, not executed. No registry lifetime, resource deletion, original caller/SEH or gameplay claim. Same frozen main library 047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f; strict Win32, two existing CTests and eight seeds passed. reports/native_resource_registry_lookup_audit.json",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(unique, 0x17200, 4)"
+        },
+        {
+          "name": "uVar2",
+          "type": "undefined4",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "local_8",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 44,
+          "name": "LAB_00b19ebc"
+        },
+        {
+          "relative_offset": 49,
+          "name": "LAB_00b19ec1"
+        },
+        {
+          "relative_offset": 66,
+          "name": "LAB_00b19ed2"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b19edc"
+        },
+        {
+          "relative_offset": 96,
+          "name": "LAB_00b19ef0"
+        }
+      ],
+      "completeness_score": 100.0
+    },
+    "00b1a260": {
+      "hash": "7755a08a8cdc438db7359c409c26b422858562fde74a6c77facd4885fdf2c7ab",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b1a260",
+      "function_name": "FUN_00b1a260",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "iVar2",
+          "type": "int",
+          "storage": "(stack, 0xffffffffffffffe8, 4)"
+        },
+        {
+          "name": "iVar1",
+          "type": "int",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "uVar3",
+          "type": "undefined4",
+          "storage": "(stack, 0xfffffffffffffff0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 59,
+          "name": "LAB_00b1a29b"
+        },
+        {
+          "relative_offset": 76,
+          "name": "LAB_00b1a2ac"
+        }
+      ],
+      "completeness_score": 50.0
+    },
+    "00b1b660": {
+      "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00b1b660",
+      "function_name": "CG_scalar_deleting_dtor_00b1b660",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "extraout_EAX",
+          "type": "void *",
+          "storage": "(register, 0x0, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 24,
+          "name": "LAB_00b1b678"
+        }
+      ],
+      "completeness_score": 80.0
+    }
+  },
+  "tag_before": {
+    "address": "00b19f90",
+    "name": "STL_xlen_throw_00b19f90",
+    "category": "stl_throw_site",
+    "confidence": "high",
+    "action": "rename",
+    "create": false,
+    "source": "reports/library_inventory/templates_and_generated.json",
+    "evidence_id": "e0030"
+  },
+  "tag_after": {
+    "address": "00b19f90",
+    "name": "BSP_ResourceRegistryTree_EraseIterator",
+    "category": "resource_registry_tree_erase",
+    "confidence": "high",
+    "action": "reviewed",
+    "create": false,
+    "source": "reports/native_resource_registry_lifetime_defined_functions.json",
+    "evidence_id": "complete_716_byte_erase_and_returning_free_tail"
+  },
+  "status": "Complete 716-byte erase and 111-byte registry destructor tails decoded and saved; prior names/comments/tag retained in report; adjacent functions preserved. Full source remains pending.",
+  "saved_annotation_journal": [
+    {
+      "address": "00b19f90",
+      "before": {
+        "address": "00b19f90",
+        "function_name": "STL_xlen_throw_00b19f90"
+      },
+      "after": {
+        "address": "00b19f90",
+        "name": "BSP_ResourceRegistryTree_EraseIterator",
+        "evidence": "Complete 716-byte actual resource-registry tree erase at B19F90..B1A25C. Original ECX tree; stack hidden output iterator and input iterator owner/node; RET0C. This is a full red-black-tree erase with invalid-iterator exception branch, not a throw-only helper. Preserve two-child successor transplant, actual links/color/nil, direct complete rotations and iterator advance. Invalid iterator constructs the native owning out_of_range payload through complete 411700/408720 and D6926C profile; ThrowInfo D863A8 uses full 441760 copy and 4412B0 destructor. Normal disposal captures key data/length and uses actual 419CC0/BD1510, then returning BF65AC. Restored 58-byte tail B1A222..B1A25C reads current unsigned count after free, decrements only when nonzero, captures advanced owner/output/node before potentially aliasing output stores. Full original spans and concrete dependencies reviewed; source erase and native exception carrier composition remain pending. Prior STL_xlen_throw identification superseded by complete control flow. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b1b5f0",
+      "before": {
+        "address": "00b1b5f0",
+        "function_name": "FUN_00b1b5f0"
+      },
+      "after": {
+        "address": "00b1b5f0",
+        "name": "BSP_ResourceRegistry_Destroy",
+        "evidence": "Complete 111-byte actual resource-registry destructor B1B5F0..B1B65F. Original ECX registry, plain RET. Full B1A2F0 range destruction followed by current head free; restored 39-byte returning-free tail B1B638..B1B65F zeros current head/count, clears actual F8D41C singleton publication and writes CE3818 base profile. Native EH only calls B19760 publication/profile reset; no rollback or invented resource ownership. Full original spans and dependencies reviewed; full source destructor/range erase remain pending. Adjacent B1B660 scalar deleting destructor is preserved. No original execution, source ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_resource_registry_lifetime_discovery.json; reports/native_resource_registry_lifetime_defined_functions.json"
+      },
+      "status": "applied"
+    }
+  ]
+}

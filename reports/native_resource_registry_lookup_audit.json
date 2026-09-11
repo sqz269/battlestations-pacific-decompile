@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_resource_registry_lookup1",
-  "status": "one_complete_body_in_established_factory_domain_primary_source_reviewed_build_and_original_composition_checked",
+  "status": "complete_qualified_actual_registry_lookup_primary_main_library_original_composition_and_strict_Win32_checked",
   "utc": "2026-09-11T20:52:30.951326+00:00",
   "base_commit": "9a36781c585545d68dd0967052d0d5c2eb8abd0d",
   "branch": "agent/native-resource-registry-lookup1",
@@ -1040,5 +1040,73 @@
   "Ghidra_mutated": false,
   "shared_metadata_or_CMake_mutated": false,
   "original_installation_mutated": false,
-  "immutable_handoff": "local/registry_lookup_handoff/manifest.json; external handoff manifest hashes report and all pins without a self-reference"
+  "immutable_handoff": "local/registry_lookup_handoff/manifest.json; external handoff manifest hashes report and all pins without a self-reference",
+  "primary_integration": {
+    "status": "complete_qualified_actual_registry_lookup_primary_main_library_original_composition_and_strict_Win32_checked",
+    "main_library_sha256": "047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 98,
+    "report_pins": 59,
+    "current_inputs": 18,
+    "fresh_spans": 21,
+    "fresh_bytes": 959,
+    "exact_archive_objects": 4,
+    "whole_COFF_code_sections": 110,
+    "whole_COFF_code_bytes": 6985,
+    "whole_COFF_relocations": 244,
+    "linked_sections": 15,
+    "linked_code_bytes": 1132,
+    "comparisons": 7,
+    "trace_words": 327,
+    "original_owned_execution": true,
+    "original_helper_execution": false,
+    "invalid_owner_paths_static_only": true,
+    "boundary": "Complete108-byte B19E90 actualregistry lookup for four proven readonly8-byte factoryprofileviews D64470/AC/E8/F0, currentBBC6F0/BBC810 selectors. OriginalECX registry/rawname stack/EAXresourceorzero/RET4; newC++context. FullB19D60 provider; captureowner then currenttreehead BEFORE returninginvalidcallback, nodeAFTER, misscapturedhead; capturedowner/currenthead secondcheck. Readcurrentnode14/factory0/profile4, directfullcreator/EAXforward, no retain/namecopy/cleanup or registryvtable. Unknownprofile/selector raises source-onlyinvalid_argument outsidequalifieddomain. Primary98sealedworkerfiles+59reportpins,18identicalcurrentinputs,21freshspans959bytes. Seven original-parent/full-main-provider comparisons327words, five realcreatorallocations andfourstricmp returninginvalidcalls perside; zero B19E90 owner-invalid executions, these branchesstatic only. Actual4archiveobjects110completeCOFFcodeSections6985bytes244relocs,15linkedsections1132bytes with nonrelocation-byte proof. All32literalprofilesunchangedreadonly; separate.orig arena/staticsectiondisjointness. Originalhelpers bridged, notexecuted. No registrylifetime/resource-delete/originalcaller/SEH/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\registry_lookup_primary\\sealed.json",
+      "bytes": 15764,
+      "sha256": "82738e3235e9dbb63812e6d8c8147d9004f2d5902bee534681862b781eb71631"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_x87_material_registry_annotations.json",
+    "bytes": 9848,
+    "sha256": "f8b1e90c596c3b726b85c0eddacb78fd98b5267c0e8e5680b7233b436bea51f3"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b19e90",
+      "name": "BSP_ResourceRegistry_CreateResource",
+      "cpp_symbol": "bsp::create_native_registered_resource_00b19e90",
+      "source": "src/native_resource_registry_lookup.cpp",
+      "native_end_exclusive": "00b19efc",
+      "status": "complete_qualified_actual_registry_lookup_primary_main_library_original_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_lookup_audit.json",
+      "original_abi": "ECX actual registry; stack requested raw name header; EAX created resource or zero on miss; RET4. No local native EH.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": true,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b19e90",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19e90\\decompiled.c",
+      "bytes": 2062,
+      "sha256": "4339ccc6762c565fd7a18a721c1a0dce268ca6c1dec4be0866d2ed794f299ca5"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_LOOKUP.md",
+    "bytes": 11883,
+    "sha256": "07dda9ab5f64b8c5b16ee110a31138a8e7db1f7577291e1aeb587b0b26464477"
+  },
+  "closure_utc": "2026-09-11T21:14:34.634706+00:00"
 }

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T21:01:09.362126+00:00",
-  "status": "two complete source bodies reconstructed; strict build and full actual COFF proof passed with one explicit FMUL addressing adaptation",
+  "status": "complete_two_original_main_archived_COFF_bodies_single_half_operand_adaptation_and_strict_Win32_checked",
   "base_commit": "f7c8503f6eac43e4f38083226711f105878124d4",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_power_leaves",
   "ownership": {
@@ -527,5 +527,86 @@
       "bytes": 6958,
       "sha256": "daa93ee9c2273902940ccdcc5c8ae60f5127d4cc38cfe7103b5d7dca65227c17"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_two_original_main_archived_COFF_bodies_single_half_operand_adaptation_and_strict_Win32_checked",
+    "main_library_sha256": "047eefa1b510fe1f4d93a994ac700b5609a33efd85aa90b600909185e98fa93f",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 39,
+    "report_pins": 38,
+    "fresh_spans": 3,
+    "fresh_bytes": 69,
+    "whole_object_sections": 5,
+    "function_relocations": 0,
+    "original_owned_execution": false,
+    "boundary": "Complete two original x87 leaves C08390[21] and BFED32[40], assembly callers only. Exp2 sequence replacesST0 via originalFRNDINT/F2XM1/FSCALE, requires2free slots, no GPR/flags change. Classifier consumesST0, usesCL comparison outcomes and last waitingFSTSW AX, preserving upperECX24/EAX16; current FP precision/rounding applies. Only adapted instruction BFED40 FMUL absoluteE15850 to liveborrowedEDX+disp32(0), sixbytes DC0D5058E100->DC8A00000000; allotherbytes/branches and waiting9BDFE0 at8/28 unchanged. Original immutable half0.5 binding, no entry snapshot. Reducedprecision may round odd-half classification; no universalfinite parity promise. The two bodies total61bytes, zero bodyrelocations/providers,5wholeCOFFsections.39sealedworkerfiles,3freshspans69bytes. No runtime/original-caller/pow/gamma/game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_power_leaves_primary\\sealed.json",
+      "bytes": 11778,
+      "sha256": "a362e41c349a9bd1650c70fe709c296acec191727795a5c24a27736d8e51767d"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_x87_material_registry_annotations.json",
+    "bytes": 9848,
+    "sha256": "f8b1e90c596c3b726b85c0eddacb78fd98b5267c0e8e5680b7233b436bea51f3"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c08390",
+      "name": "BSP_CRT_X87_Exp2Sequence",
+      "cpp_symbol": "bsp::exp2_native_crt_x87_00c08390",
+      "source": "src/native_crt_x87_power_leaves.cpp",
+      "native_end_exclusive": "00c083a5",
+      "status": "complete_two_original_main_archived_COFF_bodies_single_half_operand_adaptation_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_power_leaves_audit.json",
+      "original_abi": "Original register/x87/stack interface documented in public header and audit; assembly controls the contract.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": false,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bfed32",
+      "name": "BSP_CRT_X87_ClassifyPowerExponent",
+      "cpp_symbol": "bsp::classify_native_crt_power_exponent_00bfed32",
+      "source": "src/native_crt_x87_power_leaves.cpp",
+      "native_end_exclusive": "00bfed5a",
+      "status": "complete_two_original_main_archived_COFF_bodies_single_half_operand_adaptation_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_power_leaves_audit.json",
+      "original_abi": "Original register/x87/stack interface documented in public header and audit; assembly controls the contract.",
+      "source_abi": "New explicit source interface; see public header and audit.",
+      "original_owned_body_executed": false,
+      "original_child_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c08390",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c08390\\decompiled.c",
+      "bytes": 1322,
+      "sha256": "157efcc72a2a033c39dda574c94c93dfd06bca63bc2213e771f80587905b1aa3"
+    },
+    {
+      "address": "00bfed32",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfed32\\decompiled.c",
+      "bytes": 1465,
+      "sha256": "f713b26270d89f6997a2cc834750cacb7e7ae6e7a9f456ddef1f0c4e67b3081c"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_X87_POWER_LEAVES.md",
+    "bytes": 7864,
+    "sha256": "6ac62981262a6d48799c2f63fb814d4d8d86ab8d6df7fe69aab3638068502817"
+  },
+  "closure_utc": "2026-09-11T21:14:34.622505+00:00"
 }

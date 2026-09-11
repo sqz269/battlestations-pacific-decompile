@@ -127,3 +127,10 @@ the recovered two-pass order and retires entries through swap-last removal.
 canonical active array. Installed FMOD testing covers tracked creation through
 automatic manager retirement and final sample/cache cleanup. Spatial/event
 profiles, complete application/voice composition and audible output remain open.
+
+## Extension from docs/SOUND_SPATIAL_CHANNEL.md
+
+A7D560 is now reconstructed as the shared channel constructor. The spatial D5B510
+profile reuses its base fields and channel stop/completion rules through a separate
+context and virtual adapter. Its destructor calls A7BF40 after an additional channel
+stop; both calls are preserved. The existing nonspatial factory remains unchanged.

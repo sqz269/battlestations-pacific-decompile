@@ -1,0 +1,84 @@
+[
+  {
+    "address": "00aa83a0",
+    "before": {
+      "address": "00aa83a0",
+      "function_name": "BSP_GuiWidget_DetachChild",
+      "comment": "[BSP reconstruction 00aa83a0]\nHypothesis, not a recovered symbol. __thiscall(parent, child), RET 4. A null child is a no-op. Otherwise, when the child's scene node at child+4Ch is non-null it gets 00b6e680(0) and 00b6d890(0); when the parent's node is non-null it gets 00b6d940(child node); the child is erased from the parent's std::list at parent+64h through 00a9bd50; and child+70h, the parent back-pointer, is cleared. Callers 00AAA5A0, 00AAA650, 00AAA710 and BSP_TextContext_ClearGlyphChildren. docs/GUI_WIDGET_TRANSFORM.md."
+    },
+    "after": {
+      "address": "00aa83a0",
+      "name": "BSP_GuiWidget_DetachChild",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(parent, child), RET 4. A null child is a no-op. Otherwise, when the child's scene node at child+4Ch is non-null it gets 00b6e680(0) and 00b6d890(0); when the parent's node is non-null it gets 00b6d940(child node); the child is erased from the parent's std::list at parent+64h through 00a9bd50; and child+70h, the parent back-pointer, is cleared. Callers 00AAA5A0, 00AAA650, 00AAA710 and BSP_TextContext_ClearGlyphChildren. docs/GUI_WIDGET_TRANSFORM.md. | Concrete same-owner C++ implementation in src/gui_widget_detach.cpp. Native list helper removes all matches;00A9BDC0 false CALL_RETURN repaired and saved. Ownership transfer avoids implicit widget destruction. docs/GUI_WIDGET_DETACH.md; reports/gui_widget_detach.json. Actual-owner focused probe passed; no ABI/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6b50",
+    "before": {
+      "address": "00ab6b50",
+      "function_name": "BSP_GuiText_SetColor",
+      "comment": "[BSP reconstruction 00ab6b50]\nHypothesis, not a recovered symbol. GUI Text widget vtable +50h. __thiscall(this, const float rgba[4]), RET 4, established from the listing 00AB6B50..00AB6BC1 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base colour setter 00AA6870, then scales the shadow alpha +174h by the incoming colour w lane at [arg+0Ch] into the shadow material parameter +0Ch. This is the target 00ABAED0 invokes with this+50h, which is the base widget four-float Color property, resolving the virtual +50 with context+50 note in docs/FONT_CONTEXT_OWNERSHIP.md. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json."
+    },
+    "after": {
+      "address": "00ab6b50",
+      "name": "BSP_GuiText_SetColor",
+      "evidence": "Hypothesis, not a recovered symbol. GUI Text widget vtable +50h. __thiscall(this, const float rgba[4]), RET 4, established from the listing 00AB6B50..00AB6BC1 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base colour setter 00AA6870, then scales the shadow alpha +174h by the incoming colour w lane at [arg+0Ch] into the shadow material parameter +0Ch. This is the target 00ABAED0 invokes with this+50h, which is the base widget four-float Color property, resolving the virtual +50 with context+50 note in docs/FONT_CONTEXT_OWNERSHIP.md. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Concrete same-owner Text style binding now implemented: existing base00AA6870 then live shadow+188 geometry/count/element/material chain, only diffuse alpha = current shadow alpha times borrowed incoming alpha. Same canonical node/model/material identity validated through existing lifetime domains; no fake material or secondary owner. Existing Text color projection mirrors base stores. Current Ghidra function00AB6B50..00AB6BC3 exists, final00AB6BC1 RET4/3. Strict Win32 compile passed; operation not runtime-tested. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6c30",
+    "before": {
+      "address": "00ab6c30",
+      "function_name": "FUN_00ab6c30"
+    },
+    "after": {
+      "address": "00ab6c30",
+      "name": "BSP_GuiText_ConfigureShadow",
+      "evidence": "Hypothesis, not a recovered symbol. Full00AB6C30..00AB6CAC, final00AB6CAA RET10h length3; ECX Text, stack raw enable byte, position DWORD, offset float, color pointer. Store position/raw byte/offset/RGBA then actual shadow+188 parent call; reread enable/slot before optional root clear. Same GuiTextWidget fields and actual NodeBinding/model lifetime; canonical shadowed now uint8_t. All4 direct sites checked, raw+61Fh caller retained. Strict Win32 compile; not executed. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab7200",
+    "before": {
+      "address": "00ab7200",
+      "function_name": "BSP_GuiText_ApplyStateColor"
+    },
+    "after": {
+      "address": "00ab7200",
+      "name": "BSP_GuiText_ApplyStateColor",
+      "evidence": "Hypothesis, not a recovered symbol. Raw132-byte00AB7200..00AB7283; final00AB7281 RET4/3; ECX Text,state DWORD stack. Current+80 fromText vtable00D5C748. Existing owner.hidden+77 selects disabled color; otherwise state*10h+11Ch. State1 adds exactdouble00D5C5D0 RGB and+0 alpha, including hidden case, then current50 ->00AB6B50. Partial input-domain projection supports hidden any state or non-hidden0..3; unrelated native storage access00AB7215..7220 for other indices explicitly unsupported. Strict Win32 compile only. Worker Ghidra readonly; raw definition needed for call verifier. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8f00",
+    "before": {
+      "address": "00ab8f00",
+      "function_name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+      "comment": "[BSP reconstruction 00ab8f00]\nProvisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE."
+    },
+    "after": {
+      "address": "00ab8f00",
+      "name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+      "evidence": "Provisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE. | Concrete supported scalar/string normal path in src/gui_text_ellipsis.cpp: existing locale uppercase and glyph selector, exact x87 signed32 truncation then low16 for target/add/dot reserve/subtract; finite and null-free domain. No geometry/font owner or native string-pool ABI. MSVC Win32 translation unit compiled; combined build pending integrator. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Ghidra left read-only. | Primary assembly review removed invented finite/range checks: direct FISTP at00AB8F51/8FF4/9062/90E4 preserves masked invalid/overflow integer-indefinite then low16 zero. Focused public ellipsis NaN/dot-wrap/control-word probe passed. docs/GUI_TEXT_ELLIPSIS.md; exact unmasked trap timing and native pool/SEH not claimed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00abb000",
+    "before": {
+      "address": "00abb000",
+      "function_name": "FUN_00abb000",
+      "comment": "[BSP reconstruction 00abb000]\nECX context; narrow wrapper, float width, byte flag; RET0Ch. Same narrow conversion flag, then00ab8f00 ellipsis and00aba8d0. Ordered zero width uses context+20. Equal narrow input skips width/flag reconsideration. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+    },
+    "after": {
+      "address": "00abb000",
+      "name": "FUN_00abb000",
+      "evidence": "ECX Text; narrow wrapper, float width, low-byte localize; RET0Ch. Corrected sentinel: live00D7A260 bytes00 00 80 BF are -1.0f; ordered equality selects context+20, zero stays zero and NaN does not fallback. Source equality skips changed width/flag. Concrete preparation fragment preserves cache, conversion and ellipsis; actual00ABA8D0 plus virtual50 remain excluded. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Read-only Ghidra; existing name retained."
+    },
+    "status": "applied"
+  }
+]

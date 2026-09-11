@@ -1,0 +1,63 @@
+{
+  "packet":"orch5_gui_text_lifetime",
+  "status":"canonical_companion_partial_native_lifetime_strict_compile_passed",
+  "ghidra_project":"C:/Users/sqz269/bsp.gpr",
+  "ghidra_program":"/battlestationspacific.exe",
+  "ghidra_mutations":false,
+  "functions":[
+    {"address":"00ab9650","name":"BSP_GuiText_Construct","coverage":"partial: derived typed construction and actual AB8530; base call9671 already supplied; native vtable/SEH and container header ABI excluded","status":"partial_projection","last_instruction":"00ab98ee","last_instruction_length":1,"end_inclusive":"00ab98ee","original_abi":"ECX Text, no stack args, EAX this, RET","source":"src/gui_text_lifetime.cpp"},
+    {"address":"00ab8250","name":"BSP_TextContext_Destroy","coverage":"partial: actual shader/shadow/children, typed five-string/vector cleanup; native pool/header identity not represented; base/SEH tail00AB83AF..00AB83CF external","status":"partial_projection","last_instruction":"00ab83cf","last_instruction_length":1,"end_inclusive":"00ab83cf","original_abi":"ECX Text, no stack args, RET","source":"src/gui_text_lifetime.cpp"},
+    {"address":"00ab73b0","name":"BSP_GuiTextWidget_ReleaseGlyphNode","coverage":"complete for same live actual model owners","last_instruction":"00ab73cd","last_instruction_length":1,"end_inclusive":"00ab73cd","original_abi":"ECX Text, no stack args, RET","source":"src/gui_text_lifetime.cpp"},
+    {"address":"00ab83d0","name":"BSP_GuiText_MatchesTypeDescriptor","coverage":"complete","last_instruction":"00ab83f5","last_instruction_length":3,"end_inclusive":"00ab83f7","length":40,"original_abi":"ECX ignored, descriptor DWORD stack, AL result, RET4","source":"src/gui_text_lifetime.cpp"},
+    {"address":"00ab8ee0","name":"BSP_GuiText_ScalarDeletingDestructor","coverage":"analyzed_only: no native scalar deleting or Text-pool implementation","last_instruction":"00ab8efd","last_instruction_length":3,"end_inclusive":"00ab8eff","original_abi":"ECX Text, flags DWORD stack, EAX original Text, RET4"},
+    {"address":"00aa8320","name":"BSP_GuiWidget_ReleaseSceneNodes","coverage":"partial extension00AA8362..00AA837F only: same Text secondary hook; existing child/main phases consumed","status":"partial_projection","source":"src/gui_text_lifetime.cpp"}
+  ],
+  "host_steps":[
+    {"function":"00ab9650","address":"00ab9671","native":"00aa9390","binding":"same owner already base-constructed with type3; callee RET4"},
+    {"function":"00ab9650","address":"00ab98d8","native":"00ab8530","binding":"actual worker buffer/model/material owners, same live shadow slot"},
+    {"function":"00ab8250","address":"00ab828d","native":"InterlockedDecrement via IAT [00CE2220]","binding":"existing release_native_render_actual_owner decrements captured raw shader+04"},
+    {"function":"00ab8250","address":"00ab829d","native":"current shader virtual00","binding":"same actual owner zero-reference dispatch"},
+    {"function":"00ab8250","address":"00ab82af","native":"00b6dfa0","binding":"same actual shadow model lifetime then clear live slot"},
+    {"function":"00ab8250","address":"00ab82bc","native":"00ab80c0","binding":"same glyph vector, actual detach and required actual Text deletion"},
+    {"function":"00ab8250","address":"00ab83b9","native":"00aa9730","binding":"external base tail; not replaced with manager retire_tree"},
+    {"function":"00ab73b0","address":"00ab73bd","native":"00b6dfa0","binding":"capture shadow, real unlink/release, clear after callback"},
+    {"function":"00aa8320","address":"00aa8352","native":"current child virtual20","binding":"existing owner child phase before secondary hook"},
+    {"function":"00aa8320","address":"00aa8368","native":"00ab6a30","binding":"read live lineage[0] descriptor"},
+    {"function":"00aa8320","address":"00aa8372","native":"00ab83d0","dispatch":"current Text virtual0C","binding":"three live descriptor comparisons, same Text subclass; vtableD5C6D4"},
+    {"function":"00aa8320","address":"00aa837b","native":"00ab73b0","binding":"conditional secondary hook"},
+    {"function":"00aa8320","address":"00aa8387","native":"00b6dfa0","binding":"existing owner primary release after secondary hook"},
+    {"function":"00ab8ee0","address":"00ab8ee3","native":"00ab8250","binding":"analyzed scalar-delete first step, not implemented as full native delete"},
+    {"function":"00ab8ee0","address":"00ab8ef5","native":"00ab75a0","binding":"external Text pool return ECX F8BDF0, original object stack, RET4, only flags bit0"}
+  ],
+  "constructor_callers":[
+    {"function":"00aa1380","address":"00aa13dd","native":"00ab9650","arguments":"ECX allocated destination, no stack; copy-source-null branch only"},
+    {"function":"00ab98f0","address":"00ab9d4f","native":"00ab9650","arguments":"ECX allocation from AB78A0; no stack; node binding and second AB8530 follow"}
+  ],
+  "no_ghidra_function":[
+    {"address":"00ab83d0","last_instruction":"00ab83f5","last_instruction_length":3,"end_inclusive":"00ab83f7","length":40,"evidence":"disk decode; both RET4 exits83F0/83F5; padding INT3 begins83F8; exact live byte check before commit"}
+  ],
+  "canonical_owned_fields":["one GuiTextWidget and its existing strings","one live NativeNodeBinding* shadow188 creator reference","one glyph vector198","optional u16string1A4","one actual cached shader raw identity1EC","constructor-verified numeric/pointer fields178/17C/180/184/18C/190/1AC/1B0/1B4/1F0","uninitialized material pair1DC/1E0 produced by ABAA03/ABAA15"],
+  "constructor_unwritten":["194","1B8","1BC","1D4","1DC","1E0","1E4","1E8"],
+  "corrections":[
+    {"was":"Text required a separate virtual20 override","is":"Text vtable+20 is baseAA8320; type0C conditional calls shadow helper between child20 and primary release","evidence":"D5C6E8 bytes2083AA00; AA8352,AA8372,AA837B,AA8387; rawAB83D0 reads live lineage"},
+    {"was":"all existing GuiTextWidget defaults implied native constructor stores","is":"alpha_texture_scale+1D4 is not written by AB9650; material pair1DC/1E0 also unwritten","evidence":"complete constructor listing9650..98EE; next producer for1DC/1E0 ABAA03/ABAA15"},
+    {"was":"child virtual20 callsite described in preliminary message as AA8343","is":"AA8352 is CALL EAX; AA8343 is JNZ bounds check","evidence":"complete AA8320 listing reviewed and corrected before implementation/report"}
+  ],
+  "validation":{"strict_compile":"PASS MSVC Win32 W4 WX O2 fp:strict src/gui_text_lifetime.cpp with current command-runtime/menu-layout owner and content headers","report_call_verifier":"RUN:14 numeric rows checked;13 passed,1 failed solely because raw callee AB83D0 is not yet a Ghidra function. Three symbolic indirect rows reported unverified; parent definition required before passing rerun.","new_tests":0,"new_test_targets":0,"executed_new_operations":false,"native_differential":false,"abi_compatible":false,"game_validated":false,"standard_combined_build":"parent integration","factory_enabled":false},
+  "remaining_prerequisites":["Text implementation uses secondary hook with live descriptor table and derived teardown before base","complete Text current virtual behaviors before factory enable","actual recursive Text child scalar deletion implementation","actual cached shader producer uses owned raw slot and legacy flag projection","nonempty content and material/font continuation","native pool/SEH and native container-header ABI intentionally not claimed"],
+  "tool_issues":["Raw AB83D0 absent from Ghidra; read-only worker retained exact boundaries for parent definition","Initial strict compile included stale local gui_native_geometry header before worker extension; corrected include order and compilation passed","Windows rg path globs corrected to explicit paths or -g filters"],
+  "parent_validation": {
+    "raw_function_defined": "00ab83d0..00ab83f7;40 bytes;live image match",
+    "record": "reports/orch5_text_lifetime_definitions.json",
+    "normal_win32_build": "passed",
+    "existing_tests": "2/2 passed",
+    "numeric_rows": 14,
+    "direct_rows": 13,
+    "resolved_indirect_rows": 1,
+    "symbolic_indirect_rows": 3,
+    "failed_rows": 0,
+    "game_validated": false,
+    "new_operations_executed": false,
+    "factory_enabled": false
+  }
+}

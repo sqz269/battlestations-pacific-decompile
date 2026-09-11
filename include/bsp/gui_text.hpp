@@ -35,7 +35,7 @@ namespace bsp {
 // gui_layout_loader.hpp carries the same figure.
 inline constexpr std::uint32_t kGuiTextInstanceSize = 0x1F4;
 
-// Installed by 00AB9650. 32 slots, +00h..+7Ch.
+// Installed by 00AB9650; the state-color override at +80h is 00AB7200.
 inline constexpr std::uint32_t kGuiTextVtable = 0x00D5C6C8;
 
 // 00ABA055 and 00ABA5FC multiply the widget's normalised Size.x by this double
@@ -116,8 +116,9 @@ struct GuiTextColor {
     float a{0.0f};
 };
 
-// +11Ch..+158h, the four colours under the "MISColors" sub-table. Their
-// consumer was not found; the defaults are the constructor's stores.
+// +11Ch..+158h, the four colours under the "MISColors" sub-table.
+// 00AB7200 selects these rows, with owner+77h forcing the disabled row.
+// The defaults are the constructor's stores.
 struct GuiTextStateColors {
     GuiTextColor normal{0.7f, 0.7f, 0.7f, 1.0f};    // +11Ch, 00CE3E18 x3
     GuiTextColor focus{1.0f, 1.0f, 1.0f, 1.0f};     // +12Ch
@@ -167,7 +168,8 @@ struct GuiTextWidget {
     bool has_state_colors{false};  // +118h, set to 1 by the MISColors descend
     GuiTextStateColors state_colors{};
 
-    bool shadowed{false};                                       // +15Ch
+    // 00AB6C30 stores the caller's raw low byte, including noncanonical true.
+    std::uint8_t shadowed{0};                                   // +15Ch
     GuiTextShadowPos shadow_pos{GuiTextShadowPos::Behind};      // +160h
     float shadow_offset{kGuiTextDefaultShadowOffset};           // +164h
     GuiTextColor shadow_color{0.0f, 0.0f, 0.0f, 0.75f};         // +168h

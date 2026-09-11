@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab7200",
+    "end_address": "00ab7284"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab7200",
+    "end_address": "00ab7283",
+    "bytes_disassembled": 132,
+    "message": "Successfully disassembled 132 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab7200",
+    "disassemble_first": false,
+    "name": "BSP_GuiText_ApplyStateColor"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab7200",
+    "function_name": "BSP_GuiText_ApplyStateColor",
+    "entry_point": "00ab7200",
+    "body_size": 132,
+    "message": "Function created successfully at 00ab7200",
+    "warnings": [
+     "Function name 'BSP_GuiText_ApplyStateColor' \u2014 main part 'GuiText_ApplyStateColor' is not PascalCase. Expected: GuitextApplystatecolor",
+     "Function name 'BSP_GuiText_ApplyStateColor' \u2014 main part 'GuiText_ApplyStateColor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiText_ApplyStateColor' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab7200",
+   "end": "00ab7284",
+   "name": "BSP_GuiText_ApplyStateColor",
+   "after": "Function: BSP_GuiText_ApplyStateColor at 00ab7200\nSignature: undefined BSP_GuiText_ApplyStateColor(void)\nEntry: 00ab7200\nBody: 00ab7200 - 00ab7283"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
