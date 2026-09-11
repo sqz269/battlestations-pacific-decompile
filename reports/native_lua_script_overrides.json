@@ -312,5 +312,809 @@
     "Actual VFS manager/provider/stream ownership must be bound for complete startup composition.",
     "Malformed extents, growth overflow and arbitrary callback mutation remain unvalidated.",
     "No game rendering or gameplay validation."
-  ]
+  ],
+  "utc": "2026-09-11T23:29:43.688128+00:00",
+  "tested_source_commit": "df02807de21f893cea50a155bb7978a2ff83a84d",
+  "source_sha256": {
+    "CMakeLists.txt": "0e1bd5ea6c9c5609d75db05d65d653bed848b17ff2df3de354ccba510a103c28",
+    "cmake/lua.cmake": "50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060",
+    "cmake/startup.cmake": "90fd209708de981b82a0eb89049b3475307ba8af7a8c97f1eae6372849540071",
+    "docs/LUA_OBJECT_API.md": "db0bfa628f191bb6fb807761150a5358ea6a25d88efe2c589667a1abb84612f7",
+    "docs/LUA_STATE_OWNER.md": "788fbaeb46218ea7b463a30c2032a379581d89f20923650fa85f1b1d44543c46",
+    "docs/NATIVE_LUA_FILE_LOADING.md": "965f81a79f47b43722acfd055c1528a11d8541827026628def5830296fcc9526",
+    "docs/NATIVE_LUA_SCRIPT_OVERRIDES.md": "c5c67dc2a7a058ad2b73df4432d642712a3eef99267fbaf2e73e778e9c3fa43b",
+    "docs/NATIVE_SHADER_DESCRIPTOR_DEPENDENCIES.md": "f9c60aa9e603e53e5c4574d4cfd467b622cffd246c89a2deeab14084b2e7783b",
+    "docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md": "a6ad91901dc63708eb0ea751760ca1f15058cfd14f9b5c53570322d6acaf80a9",
+    "docs/NATIVE_SHADER_FIELD_READER.md": "52e5f7035cfbf2a78081400433c2728bb333506e4b393353dc157349322525ff",
+    "docs/NATIVE_SHADER_SAMPLER_OWNER.md": "bc14f1d07cef7c76d4637cf3f7f28d93c923b1e02322b0b581dd49d2441eb57f",
+    "docs/NATIVE_SHADER_SAMPLER_READER.md": "b6adc45260a0e3d53e727029ceb435ecae16d21f0b562f6224f1a63795f94ada",
+    "docs/NATIVE_SHADER_STATE_DEFINITIONS.md": "8c561e136215888a1042be89f407b6b2c8e314ab64afddaa3899e08a7dc1e604",
+    "docs/NATIVE_SHADER_STATE_READER.md": "08c9959bd0b279593829f4d4c05ef10a1cb4b9dc799d3a43f95e38967f911387",
+    "docs/SHADER_COMBINERS.md": "130b834ee843b05f872dcd4f59bcbbe116b03bba968e29ece24be72c37153957",
+    "docs/SHADER_FIELD_TABLES.md": "de6d0aa1cd8677a403d02def78531ed0f90d5ff81b7b089fcdf4d171d77f0879",
+    "docs/SHADER_SAMPLER_TABLES.md": "2e7d350962bf69c03d3917e45a5d90b56d6a4055a5399e8886879190bc3f4c64",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "include/bsp/gui_lua_reader.hpp": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+    "include/bsp/lua_numeric.hpp": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+    "include/bsp/lua_object.hpp": "37a2646655d6a821cf35999db5784bc64ebd70151e54383cdcd2754007469e01",
+    "include/bsp/native_lua_bootstrap.hpp": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c",
+    "include/bsp/native_lua_file_loading.hpp": "79a2f0571886228230313de9968ca2f423670ba6456a3a1eaa8ffd5f0fa6f0c4",
+    "include/bsp/native_lua_objects.hpp": "067f4943d13c86cd34a0c019b8bd644129d3aad6b49488360bfab786d55f86dc",
+    "include/bsp/native_lua_script_overrides.hpp": "a24ee6a08c439294604d51635fb81d6c679b3960e058144806825b9d9e6951d8",
+    "include/bsp/native_material_effect_owner.hpp": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+    "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+    "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+    "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+    "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+    "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+    "include/bsp/native_physical_file_date.hpp": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939",
+    "include/bsp/native_pooled_string_substring.hpp": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+    "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "include/bsp/native_shader_combiner_reader.hpp": "63033b46f4483dc5231552a259d82d7ba112ffd05ac4fdefde632715d2d4e2bd",
+    "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+    "include/bsp/native_shader_field_reader.hpp": "98322ab1c82d2735ffcbbf3c8540e8cd61de69f98b96a62af7f596a2b178bb19",
+    "include/bsp/native_shader_sampler_owner.hpp": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93",
+    "include/bsp/native_shader_sampler_reader.hpp": "a38669e5e48d733097b98c4974e97f842ca6a732dfa772b28e5ae17151afe6aa",
+    "include/bsp/native_shader_state_definitions.hpp": "68c3717cbe070ed5a4dd4e6c58550bd0cefea1ddf00cb5ef4f04c13aefcd8be8",
+    "include/bsp/native_shader_state_reader.hpp": "dee7e101ed0b3cadeaee3a86488c1cdd1cd1237a36a93a82f32cac5f45d56562",
+    "include/bsp/native_string.hpp": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "include/bsp/native_string_vector.hpp": "50103278e30ffed29738b02acf97008c16c6efd0ac66669ff25ed177694ce7d2",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "src/gui_lua_reader.cpp": "d7bd22187f235cd436005f676dcc2eca13492661a9e67ed89c157fb6267f0293",
+    "src/lua_numeric.cpp": "4c19ba962c8964626d224a273a416794d1330efcca1ef953ca359f28f28f585c",
+    "src/native_lua_bootstrap.cpp": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a",
+    "src/native_lua_file_loading.cpp": "4850647af20d78ea58b068ce0392825f0983cb539058a19eb22cc203b6334766",
+    "src/native_lua_objects.cpp": "640b3e9923ae41a0acf7ff8a068a1968c69bf1895e2fdac127514a5031ce4f9e",
+    "src/native_lua_script_overrides.cpp": "4b9dcc10b2d11523f9244c9ce47d40f1f34c7d2f40c22e3ddded0edcfcecb0af",
+    "src/native_material_effect_owner.cpp": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+    "src/native_material_pass_copy.cpp": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357",
+    "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+    "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+    "src/native_material_pools.cpp": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317",
+    "src/native_physical_file_date.cpp": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f",
+    "src/native_pooled_string_substring.cpp": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+    "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "src/native_shader_combiner_reader.cpp": "4c603a11d1e0ee0d235368c330d3881ae78eea951ad748b43d9b144e958dcd1d",
+    "src/native_shader_descriptor_owner.cpp": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48",
+    "src/native_shader_field_reader.cpp": "51e974194f69fa45f4f8fda06e71dad204d19699d14ad1828d35d2e28af16cd9",
+    "src/native_shader_sampler_owner.cpp": "48ad13bb14a996c24be81bbcbd755cc21f06b494f8dcb1a0ccf9ca32b374b96f",
+    "src/native_shader_sampler_reader.cpp": "ad93db3d23715481fbacea527003b1fdb309a652af5d530f97edfd627ddcbe64",
+    "src/native_shader_state_definitions.cpp": "d5fd2d4f756031a6c791157b85082219cb5be788e2cdc4df24f3c117930fdff6",
+    "src/native_shader_state_reader.cpp": "df4dda941913a51bd27dad189e980244bac39a40302dcefa1550ea508d93ede5",
+    "src/native_string.cpp": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "src/native_string_vector.cpp": "1075734174ec56a36ff118d9e7d6e6371288f1c5260d6df8a07f262aa2326f9e",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "src/shader_render_state_registry.inc": "b3e35dedd1bb2c87388d16f1779f042e1491cc6b3a2dc653658bf53f7f3b849c",
+    "src/shader_sampler_state_registry.inc": "d47454be250d020f82567023239e054c5f05f4a4864640a852410fb7a8125ca2",
+    "src/shader_texture_stage_state_registry.inc": "62183f8aca8bfc3ef2803efc8d3db0cf9c235460e94de587618a81e3648af557",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+  },
+  "artifacts_sha256": {
+    "local/native-lua-script-overrides-annotation-addresses.json": "7d215575a860a79586d3e4bf08ed9c01ee263c0557f6b45ecef0bd94e8f9761a",
+    "local/native-lua-script-overrides-annotation-verification.json": "0b573062e5c80e8a2d3db2e2da1c8c32e961d1047c9017a34e19766e64d1f156",
+    "local/native-lua-script-overrides-annotations.log": "870a4ca3ce042de871372685ce22ab142db23d8af124b5970565e39bc9ef4a13",
+    "local/native-lua-script-overrides-append_unwind_code-assembly.txt": "5e5f2827588ab0d0a5e7f28b34559128f5d1f80f0cc4484dd5c13f92cf337765",
+    "local/native-lua-script-overrides-append_unwind_code-bytes.txt": "38afa8d90405194cdea34957a87d14d00407736f34ff014afb95cad1fdf5ccf6",
+    "local/native-lua-script-overrides-append_unwind_code.bin": "84e9655fc8e4740dd176bda593bb3f83ae388bcae7f2cac817965c4e1fd7d464",
+    "local/native-lua-script-overrides-append_unwind_meta_table-bytes.txt": "db8dafeea875eedd8f62fbb320a99c8568edb1790bfab0131d73c7744cbb4dba",
+    "local/native-lua-script-overrides-append_unwind_meta_table.bin": "f9fc92776fde0d2fbce7c6132eae028b40c9421f19d5568ddf9595620498a306",
+    "local/native-lua-script-overrides-body-ranges.log": "6b64c79ef5fd948a9d7c9e4d605e7560f3512490c058867beb5a5ef86c3a74dc",
+    "local/native-lua-script-overrides-build.log": "bd5598295df7f27935404ece9226bc1caf8a2e0c07ae3d92118902ee401a8bf3",
+    "local/native-lua-script-overrides-call-verification.log": "61a6210b23a0ae4d033c153212d25901e46670d38e594f2023ee463b28765f0f",
+    "local/native-lua-script-overrides-comments-after.json": "76f64bec737f00364e8cc059797a812741a200df10628c12289d7a9d04ef8765",
+    "local/native-lua-script-overrides-comments-after.log": "905927516790804daa7627654d4455053b72e43b0d8b135bb052be52adff23bc",
+    "local/native-lua-script-overrides-comments-before.json": "18fa0859396dd7c0c908393b5b5a7f98b994d857b16b93ca7b9022d19eb3e7be",
+    "local/native-lua-script-overrides-comments-before.log": "9c9b1114d2ea360b95bc69efa4840f1d60d6f2a84adf2946124d74ff9e767d32",
+    "local/native-lua-script-overrides-data_or-assembly.txt": "633a2ac4f2d85c16297abbfa2ba714509efce72c0285f9d43bef5076280a31da",
+    "local/native-lua-script-overrides-data_or-bytes.txt": "518e0ffae14bcb446e84fa745cd7a9b6d4dbc5b03066321833b7c599e0d19d65",
+    "local/native-lua-script-overrides-data_or.bin": "b340afb96657d7d2eb26b0b5d7908d66a16a68c6b20d44b0df250b68e0a9058f",
+    "local/native-lua-script-overrides-dot_table-bytes.txt": "4fd2958f9272e176f92cb6f75187329d0965db596e277ba48939f402d8a17fa8",
+    "local/native-lua-script-overrides-dot_table.bin": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce",
+    "local/native-lua-script-overrides-empty_table-bytes.txt": "e0ca3d1604d54d4f9322e9790229ef02922aa16198e984126670aadb22ee78e1",
+    "local/native-lua-script-overrides-empty_table.bin": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+    "local/native-lua-script-overrides-evidence-verification.json": "c0cac928a6d6ad29c210b5c76ae69a9b14417a95bacef648cc6c1a2bb5358cfa",
+    "local/native-lua-script-overrides-export-refresh.log": "8a446ab2d9de2e5c633583a240b877987d8bedef74be5900c56601b257d28bd7",
+    "local/native-lua-script-overrides-fallback_table-bytes.txt": "d51c93eb6aa378007e9637a2d9393d1b9ca4cd0235de62a9eab5264daf2c4173",
+    "local/native-lua-script-overrides-fallback_table.bin": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+    "local/native-lua-script-overrides-flow.log": "bf1e71c99b616d69d66a611f2bef777fec797cdc7fc8ddce25f15e85ff90c688",
+    "local/native-lua-script-overrides-ledger.log": "3f591cc820060a1b8b04f05e65f5edcb07b073bb278e069e30d684d30f88915c",
+    "local/native-lua-script-overrides-log_each_table-bytes.txt": "15a172fff17ba0d24adddc29ee5e943084b370a0e0c020bac2c7d46d7cbc154e",
+    "local/native-lua-script-overrides-log_each_table.bin": "defc0f08b1e9627094e69642aeb36e8294f049fc51b5d81835f8d9b56a89c069",
+    "local/native-lua-script-overrides-log_first_table-bytes.txt": "7bf8ade44d636df114758eff492942218821ad6c39e7aa4c24bef36498f82af4",
+    "local/native-lua-script-overrides-log_first_table.bin": "c460f7b7b4c3d6b1fa8c0f25d6968a2d2abafa909601de83b8043a60229bbb99",
+    "local/native-lua-script-overrides-manager-producer.txt": "fe17451b87724b618f66378c17cb84036528151cb568c45a13aa030758283deb",
+    "local/native-lua-script-overrides-names-after.txt": "32e35f4875306799047cbab786887d6b0e79025a9390e4d2a3b3756b9cc66a51",
+    "local/native-lua-script-overrides-names-before.txt": "90adaf137ee394ebbcaad817c97f00fdd39de6f945bcd69d0f09b11c581b3f98",
+    "local/native-lua-script-overrides-names-expected.json": "2c8e0fa505afd93cc6af8d76ca63ef8abe8d33e23c38bed77b823f9a184baab8",
+    "local/native-lua-script-overrides-native.hpp": "bb25daf1601c0e3d19a67c9371b67cd60187179330aaf62df5a3b2a968564c94",
+    "local/native-lua-script-overrides-noop-assembly.txt": "b435ca5958259f913263c9ec22adfa7f52d58a0b1e4808beb44c2d68bc5d0bb9",
+    "local/native-lua-script-overrides-noop-bytes.txt": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57",
+    "local/native-lua-script-overrides-noop.bin": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+    "local/native-lua-script-overrides-overrides-assembly.txt": "1b94f1ef1d161f019022f5c99af918e875da58e778062b23deacb09048e7aea2",
+    "local/native-lua-script-overrides-overrides-bytes.txt": "e6db85dd7d7491fc4cf8700410e9f95e84660cb45c137a7969e18822679a1017",
+    "local/native-lua-script-overrides-overrides.bin": "e9443900bcdbaf2465d2f064e24593f5c09248de20bf68c281ec78ba085733cd",
+    "local/native-lua-script-overrides-overrides_unwind_code-assembly.txt": "79cf1f4f5c90b377e2a8be44fea7397ff094f625eb6a9a80152f21a36427943c",
+    "local/native-lua-script-overrides-overrides_unwind_code-bytes.txt": "62cf38f67ec487e95b4301cf47f737ad62d7875f1080bc2be4b8aa7fac620f8e",
+    "local/native-lua-script-overrides-overrides_unwind_code.bin": "9853835ed7aac8af8596ccc625dd119d26de854be185d0246bd092b362882e3e",
+    "local/native-lua-script-overrides-overrides_unwind_meta_table-bytes.txt": "f966c4340cb3a6495ceabec5ed6c62c0fdf0f80bec84700e21e1540647a3a0b6",
+    "local/native-lua-script-overrides-overrides_unwind_meta_table.bin": "700064c89edf06978e0f65fbb4580079d52fc1bfd1b10f3ac15a0f653ad67a5d",
+    "local/native-lua-script-overrides-probe-code.hpp": "b3910baa0c615c59c4516ccfda38ed0bb41398ca2e2adfecb4b337da467c86be",
+    "local/native-lua-script-overrides-probe-result.log": "e6919d269ae3a9f5ee15645a2034d3abebd991767f21488d6859e9ff033658e5",
+    "local/native-lua-script-overrides-probe.asm": "cc33fd0b7bf087c1957de4f6abfbcb18da0794b943d5afef194b080193c255d3",
+    "local/native-lua-script-overrides-probe.cpp": "0fb4ede6c907490db366502cccc7a0e45126a3b5ae51c97b0d225b70417d379c",
+    "local/native-lua-script-overrides-probe.exe": "d709997f3d76bde763c7b8a50a27beb9a0a0ea2544fe4d192771ba5fded225da",
+    "local/native-lua-script-overrides-probe.obj": "60370671c51a9a6bc847395288f7e4fe7bf4957c775e03b7957ae004ec0d0510",
+    "local/native-lua-script-overrides-probe_compile.log": "b5638d75677a1002b2c9b7c5b1c7191abe8775627ad91b89840aaa6361a8838e",
+    "local/native-lua-script-overrides-register_suffix-assembly.txt": "d15e9c56aa475ae9fa2d4b637066909143789b144a2457428244aba053183245",
+    "local/native-lua-script-overrides-register_suffix-bytes.txt": "a3efa19ddd9fd92316eea0c1797cba0d238fe1d83d5b666cf42dc7f19f805da0",
+    "local/native-lua-script-overrides-register_suffix.bin": "1751f942520074e19e896c831948a01b86164c1b842fbec5583471312326791e",
+    "local/native-lua-script-overrides-reverse_find-assembly.txt": "854f7573784c450933b7ed1beb4edc406c7c7b954974ecdddfdcae87e1a142bc",
+    "local/native-lua-script-overrides-reverse_find-bytes.txt": "54a6f3e9bffa49fc13bf34d7176e5ef1a6e10e73ad56581e6792a010c1849987",
+    "local/native-lua-script-overrides-reverse_find.bin": "67a509a06f321bdd3896ea560fb586f490904711b06c890f219bf30f80b098c4",
+    "local/native-lua-script-overrides-slash_table-bytes.txt": "b5e7a74a6d15b67529b0b6630af32a79595610873858986bf68e723b3375b447",
+    "local/native-lua-script-overrides-slash_table.bin": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+    "local/native-lua-script-overrides-source-commit.txt": "e7cbac6d40481bafb737db5cd2141c143b0e5775102d634bc5ebc7f432a3d7db",
+    "local/native-lua-script-overrides-spans.json": "a9f8cf417cc5891aee4759a66d15c61ee260be7784508e6b2c27cb4fbbe1a178",
+    "local/native-lua-script-overrides-tested-source.txt": "aa8a7a6107e3f58bc9c60f7085622bdb59201c208923ef2a37c281a8bb580cd7",
+    "local/native-lua-script-overrides-underscore_table-bytes.txt": "9c3bc7a7dacaa82f6270c96fe7d9ff2f9e83f29165d5b8d62198bd37947dc2f2",
+    "local/native-lua-script-overrides-underscore_table.bin": "090c554bb6a344300e5690ce6f80c4ef6ee6cf5bd0fef3fde87a079dee2fa70c",
+    "local/native-lua-script-overrides-unwind_noop-assembly.txt": "b3b400a3b9fd7287503d63ed5e86219983aa5c2d5fe81c344f00740a615ed6c0",
+    "local/native-lua-script-overrides-unwind_noop-bytes.txt": "e2047fc967fda44e95c2166da84c09f7e2cbd6a9d36b76d38e29235712de5fe8",
+    "local/native-lua-script-overrides-unwind_noop.bin": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+    "local/native-lua-script-overrides-vector_append-assembly.txt": "a872cec67413eb1b16e4c44a337eb1ef4656ae4f11c1ac19d9bd247217568d0d",
+    "local/native-lua-script-overrides-vector_append-bytes.txt": "155cf38dddce86720297ecf137c3dae903b13b7ab539f89ea3e27db3fc01ec1f",
+    "local/native-lua-script-overrides-vector_append.bin": "7963c3cf78bd2f0735a1fda00175b43ab3babc772d0c61842c77e28f524d3604",
+    "local/prepare_native_lua_script_overrides.py": "615d606162cca56b953cf275c9837606a59c2f36411cd8196dd2a1ea5d25f34d",
+    "local/prepare_native_lua_script_overrides_probe.py": "858e4a60e03ac87e1878a96659e4faa7b4f811edceb1dcc9e7fbe6bc5274c997",
+    "local/write_native_lua_script_overrides_fixture.py": "b5a88e5c0578bbfb93a7f1e5f5544fd64d63bc27f6d8da5f22ebee24d2e9cb5b",
+    "local/run_native_lua_script_overrides_probe.ps1": "25c9795bb783d525ee4b050962e05853d039f398649e7dc94a9dc7efb5d1f465",
+    "local/check_native_lua_script_overrides_evidence.py": "32f2f960c8145d42724a7c365bf0f5f2f677fde86b1cb21e36760843176d08f8",
+    "local/record_native_lua_script_overrides.py": "d651df79b0b7de90d9ee4c2be9b256095fad3abda88969053d10d4936e6014a0",
+    "local/native_lua_script_overrides_annotations.py": "e8a59df38b705cc9e778d8f9aedced88dddfdf14eab281086996ecfff0e0be0e",
+    "local/finalize_native_lua_script_overrides.py": "e58ff5d749a3fe63915721807e78ea538fd8c13bcb9f785c85cc38ddfa0f6416",
+    "local/native-shader-state-reader-native.hpp": "aba1f93b9bfcec80206d90f25fdc05ee6db193c15ec1b0d83b9a841adc98c177",
+    "local/native-shader-state-reader-spans.json": "35fc64a0a1a0eb6bccbbad7c4bffb475930ac23d5bf980cd67d7ae1bb32a545f",
+    "local/native-shader-sampler-reader-native.hpp": "eedb02b692a9ec37bd97acc607c8fd1feb308dfecdafdaf59fe6164b245801b5",
+    "local/native-shader-sampler-reader-spans.json": "fa1e5a09be6a9f27a5944b9b3fc05a6e588f541f4e033c747933bc0082ccc7c1",
+    "local/native-shader-sampler-reader-probe.cpp": "4df0c632cf3f97d9a25d2f05234e709f75ea075ece371c8178048e1b76fd12f2",
+    "local/native-shader-field-reader-native.hpp": "89687d429cbbb56690c103a70ea072cf209656ee78719b25ecb1a8a7a77fa97b",
+    "local/native-shader-field-reader-spans.json": "c7f2ea27ce7e7a8baa6cc5f231f9df66a7d7f2d2f4258f8d4894fa60afbd4dc7",
+    "local/native-shader-field-reader-probe.cpp": "dc31640cca04f0881b5e71793ded334e089251c3510892776f8742a37d8fe5f3",
+    "local/prepare_native_lua_script_overrides_finalizer.py": "8034f600d16bbd7bdd06aa2f0e0824f84572bcc0e3f62e5eebc461f12288eaa1",
+    "local/native-lua-file-loading-probe.cpp": "f690ef9c9b2d70956276c7884c07d1e95f49ed7a4acc4696bf98221d829da5af",
+    "local/native-lua-file-loading-native.hpp": "e297ed28da01e059ff4f66c5ad778c75d2cfc5a7e08680952e4fed4c9c9c2e6c",
+    "local/native-lua-file-loading-spans.json": "a770b4678f5745e877b5dd10e590d23087cebde2eceed5ff63d16ad7d1347507",
+    "local/ghidra-annotations-20260911T232532Z.json": "1af3f4c132c9d8be87a2edf2a9b34b3520fc4dd5ab9184db01bd519f6719b016",
+    "local/native-lua-script-overrides-tested/bsp_core.lib": "eba96403f60035ee8c5bcce0ce15b079f1fffeb0a2d78be02ed35581da9842be",
+    "local/native-lua-script-overrides-tested/bsp_lua511.lib": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24",
+    "local/native-lua-script-overrides-tested/bsp_game.exe": "668b3ea22333fa71ac19f693e414341969148093cca2ac07d84177aa718a77d6",
+    "local/native-lua-script-overrides-tested/LastTest.log": "8df171b9664b332edb077609b6970e87f882674ca0d27645257e1450e15ece56"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-lua-script-overrides-tested/bsp_core.lib",
+      "sha256": "eba96403f60035ee8c5bcce0ce15b079f1fffeb0a2d78be02ed35581da9842be"
+    },
+    {
+      "original": "build/win32/Release/bsp_lua511.lib",
+      "preserved": "local/native-lua-script-overrides-tested/bsp_lua511.lib",
+      "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-lua-script-overrides-tested/bsp_game.exe",
+      "sha256": "668b3ea22333fa71ac19f693e414341969148093cca2ac07d84177aa718a77d6"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-lua-script-overrides-tested/LastTest.log",
+      "sha256": "8df171b9664b332edb077609b6970e87f882674ca0d27645257e1450e15ece56"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "overrides",
+      "address": "00bdef90",
+      "end_exclusive": "00bdf307",
+      "bytes": 887,
+      "sha256": "e9443900bcdbaf2465d2f064e24593f5c09248de20bf68c281ec78ba085733cd",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 57,
+          "target": 4967296
+        },
+        {
+          "offset": 108,
+          "target": 12556880
+        },
+        {
+          "offset": 181,
+          "target": 4626496
+        },
+        {
+          "offset": 206,
+          "target": 4316480
+        },
+        {
+          "offset": 230,
+          "target": 12547712
+        },
+        {
+          "offset": 262,
+          "target": 4299968
+        },
+        {
+          "offset": 269,
+          "target": 12391696
+        },
+        {
+          "offset": 326,
+          "target": 4316480
+        },
+        {
+          "offset": 364,
+          "target": 4316480
+        },
+        {
+          "offset": 388,
+          "target": 12547712
+        },
+        {
+          "offset": 450,
+          "target": 4316480
+        },
+        {
+          "offset": 477,
+          "target": 12547712
+        },
+        {
+          "offset": 504,
+          "target": 4350368
+        },
+        {
+          "offset": 522,
+          "target": 4350368
+        },
+        {
+          "offset": 544,
+          "target": 4350368
+        },
+        {
+          "offset": 573,
+          "target": 4299968
+        },
+        {
+          "offset": 580,
+          "target": 12391696
+        },
+        {
+          "offset": 609,
+          "target": 4299968
+        },
+        {
+          "offset": 616,
+          "target": 12391696
+        },
+        {
+          "offset": 637,
+          "target": 4299968
+        },
+        {
+          "offset": 644,
+          "target": 12391696
+        },
+        {
+          "offset": 677,
+          "target": 5037088
+        },
+        {
+          "offset": 692,
+          "target": 4299936
+        },
+        {
+          "offset": 703,
+          "target": 4347056
+        },
+        {
+          "offset": 735,
+          "target": 4347056
+        },
+        {
+          "offset": 767,
+          "target": 4299968
+        },
+        {
+          "offset": 774,
+          "target": 12391696
+        },
+        {
+          "offset": 816,
+          "target": 4299968
+        },
+        {
+          "offset": 823,
+          "target": 12391696
+        },
+        {
+          "offset": 855,
+          "target": 4299968
+        },
+        {
+          "offset": 862,
+          "target": 12391696
+        }
+      ]
+    },
+    {
+      "label": "register_suffix",
+      "address": "00bdef80",
+      "end_exclusive": "00bdef88",
+      "bytes": 8,
+      "sha256": "1751f942520074e19e896c831948a01b86164c1b842fbec5583471312326791e",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 5037088
+        }
+      ]
+    },
+    {
+      "label": "reverse_find",
+      "address": "004bcb80",
+      "end_exclusive": "004bcbf8",
+      "bytes": 120,
+      "sha256": "67a509a06f321bdd3896ea560fb586f490904711b06c890f219bf30f80b098c4",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "vector_append",
+      "address": "004cdc20",
+      "end_exclusive": "004cdcdb",
+      "bytes": 187,
+      "sha256": "7963c3cf78bd2f0735a1fda00175b43ab3babc772d0c61842c77e28f524d3604",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 53,
+          "target": 4351264
+        },
+        {
+          "offset": 111,
+          "target": 4316480
+        },
+        {
+          "offset": 132,
+          "target": 12547712
+        }
+      ]
+    },
+    {
+      "label": "data_or",
+      "address": "00419ca0",
+      "end_exclusive": "00419cad",
+      "bytes": 13,
+      "sha256": "b340afb96657d7d2eb26b0b5d7908d66a16a68c6b20d44b0df250b68e0a9058f",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "overrides_unwind_code",
+      "address": "00cc6550",
+      "end_exclusive": "00cc6592",
+      "bytes": 66,
+      "sha256": "9853835ed7aac8af8596ccc625dd119d26de854be185d0246bd092b362882e3e",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 4316448
+        },
+        {
+          "offset": 11,
+          "target": 4316448
+        },
+        {
+          "offset": 19,
+          "target": 4316448
+        },
+        {
+          "offset": 27,
+          "target": 4316448
+        },
+        {
+          "offset": 35,
+          "target": 4316448
+        },
+        {
+          "offset": 43,
+          "target": 4316448
+        },
+        {
+          "offset": 51,
+          "target": 4316448
+        },
+        {
+          "offset": 61,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "overrides_unwind_meta_table",
+      "address": "00e00a90",
+      "end_exclusive": "00e00b04",
+      "bytes": 116,
+      "sha256": "700064c89edf06978e0f65fbb4580079d52fc1bfd1b10f3ac15a0f653ad67a5d",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "append_unwind_code",
+      "address": "00c659e0",
+      "end_exclusive": "00c65a06",
+      "bytes": 38,
+      "sha256": "84e9655fc8e4740dd176bda593bb3f83ae388bcae7f2cac817965c4e1fd7d464",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 19,
+          "target": 4198704
+        },
+        {
+          "offset": 33,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "append_unwind_meta_table",
+      "address": "00d8e2c0",
+      "end_exclusive": "00d8e2ec",
+      "bytes": 44,
+      "sha256": "f9fc92776fde0d2fbce7c6132eae028b40c9421f19d5568ddf9595620498a306",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "noop",
+      "address": "004254b0",
+      "end_exclusive": "004254b1",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "unwind_noop",
+      "address": "00401130",
+      "end_exclusive": "00401131",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "underscore_table",
+      "address": "00ce7890",
+      "end_exclusive": "00ce7892",
+      "bytes": 2,
+      "sha256": "090c554bb6a344300e5690ce6f80c4ef6ee6cf5bd0fef3fde87a079dee2fa70c",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "slash_table",
+      "address": "00ce7898",
+      "end_exclusive": "00ce789a",
+      "bytes": 2,
+      "sha256": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "dot_table",
+      "address": "00ce3a70",
+      "end_exclusive": "00ce3a72",
+      "bytes": 2,
+      "sha256": "075d3ddf5a3a826e13a92288e853bc4b2cb17fb05367ae865f401a4bb11f05ce",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "empty_table",
+      "address": "0109cef0",
+      "end_exclusive": "0109cef4",
+      "bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "matches_disk": false,
+      "matches_zero_filled_virtual_tail": true,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "fallback_table",
+      "address": "00e17654",
+      "end_exclusive": "00e17658",
+      "bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "log_first_table",
+      "address": "00d684e8",
+      "end_exclusive": "00d68501",
+      "bytes": 25,
+      "sha256": "c460f7b7b4c3d6b1fa8c0f25d6968a2d2abafa909601de83b8043a60229bbb99",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "log_each_table",
+      "address": "00d684d4",
+      "end_exclusive": "00d684e5",
+      "bytes": 17,
+      "sha256": "defc0f08b1e9627094e69642aeb36e8294f049fc51b5d81835f8d9b56a89c069",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    }
+  ],
+  "installed_assets": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx",
+      "bytes": 806,
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphablend.shfx",
+      "bytes": 1196,
+      "sha256": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc",
+      "bytes": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    }
+  ],
+  "lua_dependency": {
+    "version": "5.1.1",
+    "source_sha256": {
+      "build/win32/_deps/lua511-src/src/lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "build/win32/_deps/lua511-src/src/lapi.h": "6688518e24ad909e5c190bc3c258157e35b30feeb2b6c189f44d949abebe487e",
+      "build/win32/_deps/lua511-src/src/lauxlib.c": "1a0c5a19655b4f7a5c760ec5481cc035a3d34a76ed5abd470f25b444d2bc13e4",
+      "build/win32/_deps/lua511-src/src/lauxlib.h": "5a56da312e412dc849fc66a867ce6925fb6ebf4c1744bb594953e0efccfafbef",
+      "build/win32/_deps/lua511-src/src/lbaselib.c": "95973fad29bb11d8588cdf883a3d1ac4b20aa39cffd55b22eee843dee6844c8c",
+      "build/win32/_deps/lua511-src/src/lcode.c": "de2220c65a8da1c411ba68620cb6204148651e5bb644e58c91be4e823fd99525",
+      "build/win32/_deps/lua511-src/src/lcode.h": "700f07ca580f05bb43b8d976214b66b65a430f97811bafa7d0e3607d2144d2bb",
+      "build/win32/_deps/lua511-src/src/ldblib.c": "71b05a330d9a36d59ce0a56339ef012e9b0bd741d21df9df50eb2e3894bd6c55",
+      "build/win32/_deps/lua511-src/src/ldebug.c": "5e4cae0e2b7fc313bd7673f01a246232e1218d225eb150422dccac094460aaa6",
+      "build/win32/_deps/lua511-src/src/ldebug.h": "5b38c315184dc618817af9c293a295a358ad3f7341e9fb4030419fe5d4ed9fab",
+      "build/win32/_deps/lua511-src/src/ldo.c": "a568a93a20ef4e5f0606f0d435f682ec12145e2cf05b07266b1e195b57684112",
+      "build/win32/_deps/lua511-src/src/ldo.h": "feb30909ce8631acd3e1602c405df7749db58d9268098f1f9ee2727fd87a59e2",
+      "build/win32/_deps/lua511-src/src/ldump.c": "070505eeeefecae657df573dc4fcfe92e1afff460294932f88a9216bbd80dbc6",
+      "build/win32/_deps/lua511-src/src/lfunc.c": "b662d0e1a606962c7ca537c6bcaddafa5ea78355b19057b80ff6a7a9f52723d4",
+      "build/win32/_deps/lua511-src/src/lfunc.h": "f88ccbf492059a7cdf631411908ae0cefa79471326e09cfa801cbc39fb236118",
+      "build/win32/_deps/lua511-src/src/lgc.c": "bf6f8e6f61c00bc172c38bd1013de03635e96756b35e6f27aa0f09f26d97922b",
+      "build/win32/_deps/lua511-src/src/lgc.h": "2dafce43793b9f5d1f1d90962cdd6566b7fda063584719fa24308da700c58a87",
+      "build/win32/_deps/lua511-src/src/linit.c": "f4250214a5a9d5c593c16b4bfdfc9591f0694d8ef9e149b80983f36e70013fcd",
+      "build/win32/_deps/lua511-src/src/liolib.c": "e172b34553ed5e06c0af949b2d3819a236f73404f368653283f4cde5f58e584b",
+      "build/win32/_deps/lua511-src/src/llex.c": "8be5ca7b195cf324d32d8eb9c726c253e50ff843143523da0da56c046ff6f868",
+      "build/win32/_deps/lua511-src/src/llex.h": "b539458f231097525e1bd99a7cb5257ae61525633d66a7820260da178cd28331",
+      "build/win32/_deps/lua511-src/src/llimits.h": "076aaabf0c79176f8d6047905dcf05bd9c2d770085f3adc591f95be294538b9d",
+      "build/win32/_deps/lua511-src/src/lmathlib.c": "2cd6c4b10b57d095aa8e9e3849fb0112dd0d935504d528e096892dffbc43c003",
+      "build/win32/_deps/lua511-src/src/lmem.c": "5ecde617f802289d895808b71faa9ea00981f931ed86fa78b993fa65d2c4936c",
+      "build/win32/_deps/lua511-src/src/lmem.h": "dff6727df44d568eb3e3bab65069841644bbc751f6c63c805a295d6f8396a624",
+      "build/win32/_deps/lua511-src/src/loadlib.c": "6af60ffd081d1146c0fbae219f2a1b3177105019515096c6d56622ce0b2afcb8",
+      "build/win32/_deps/lua511-src/src/lobject.c": "6cf53a367bc0dee08f3da62f8a4d5cfe9f9b29a35da04194f892701de7e573d0",
+      "build/win32/_deps/lua511-src/src/lobject.h": "3b6043b75be899d9b204dbdf9eb291639cb9a5062e9a1dd38b85e8fffdd54337",
+      "build/win32/_deps/lua511-src/src/lopcodes.c": "5155f19c87c6c3dfc4a82db42559c7efd130071bb21998a8eab50c1d61a8d5eb",
+      "build/win32/_deps/lua511-src/src/lopcodes.h": "b73e4b4687584047fa4963203cba39e764815ca9197e2ea7945e82a5295d12fc",
+      "build/win32/_deps/lua511-src/src/loslib.c": "a3da5b29679a5660e5abaa3c665e00c94aa1418316b0082980622c5aac5613b0",
+      "build/win32/_deps/lua511-src/src/lparser.c": "ecef694e8b37ec393903feb3327a2ed8dc9ddad3a7d253e674b6fd80b1a30377",
+      "build/win32/_deps/lua511-src/src/lparser.h": "6b98608a63940317e3c8cf293c2aab71184a0445984800fa4141b03ccd201816",
+      "build/win32/_deps/lua511-src/src/lstate.c": "19667a7e7c20d5c148c57ed668b3fcf32560911d2a9bfe0a20831c5238a7f1ba",
+      "build/win32/_deps/lua511-src/src/lstate.h": "ed9260f52d710316e9eab00bb1e271e1b06689f63cad55988a48a4361df93927",
+      "build/win32/_deps/lua511-src/src/lstring.c": "0ea54549fcde9de985e24bd70e52e6458ec0d1b02c1ca3e2a16924fbc01ddb89",
+      "build/win32/_deps/lua511-src/src/lstring.h": "7cbca1d29c81dd2609b5279804cb94850bed1e428b3918d114ec88f0509e0b74",
+      "build/win32/_deps/lua511-src/src/lstrlib.c": "d1b4d12b3f8d13d5daf3c7ec469fd19c169e8444a59e50928625a1f6f12cecda",
+      "build/win32/_deps/lua511-src/src/ltable.c": "ffbf34308d1c963821c44f85b5341a80a70e74d92d85f29503c532b8c69743b5",
+      "build/win32/_deps/lua511-src/src/ltable.h": "0ef1b0b625bf7727f30af79c4be27fd9395d77762bce7f74f93b2309f6d083c1",
+      "build/win32/_deps/lua511-src/src/ltablib.c": "c7daf4ff755c0728e8ce97677353622dc0ce32babd189ed3275e0618ba101b78",
+      "build/win32/_deps/lua511-src/src/ltm.c": "0efd7909add114f3644258112ac4acacc2b3b0ae3bbcdcf938e7bc05b19b50ad",
+      "build/win32/_deps/lua511-src/src/ltm.h": "75d8256cdf62596a1d1eeb5acf0975b74cea2f411561172bc9a428d89fef8b20",
+      "build/win32/_deps/lua511-src/src/lua.c": "6c13c0c0a37fe090ee8588ab0239ece3b67aeb3023cb4eb8727a9761fe2118d4",
+      "build/win32/_deps/lua511-src/src/lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "build/win32/_deps/lua511-src/src/luac.c": "b22ad97edb37c2a4b117ef81489bfc6eee15d58d4476ea149abbef7aabf8773d",
+      "build/win32/_deps/lua511-src/src/luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "build/win32/_deps/lua511-src/src/lualib.h": "b00e231750624e31235b0b639933de85bc936a89dd780abc8f20e2725e11ddd0",
+      "build/win32/_deps/lua511-src/src/lundump.c": "c12e557353064ead5c84e962d36a64cb338e6fd7d3b537152884f035d8f9b2fe",
+      "build/win32/_deps/lua511-src/src/lundump.h": "3adfb4c5e479d95d2e391cc2aab60f5ac5c8c24d73228e4edab056246bcca5cb",
+      "build/win32/_deps/lua511-src/src/lvm.c": "03ee8d2e2a9a2eda683bdfc90cd0859acfe9eb039eba703990face2cd4168aa1",
+      "build/win32/_deps/lua511-src/src/lvm.h": "8cb5d847a005230936702b1e393385e4ee1e3b98a5396abb11722a6872bde1cd",
+      "build/win32/_deps/lua511-src/src/lzio.c": "147b5f0445e9fbdb35a3c9032322f57c8678ed06cdf8dd0d2f9b55ca9aec92b2",
+      "build/win32/_deps/lua511-src/src/lzio.h": "4de2db22bfce2762056b62e3efe75fad52a8c4fccf768fca6e0f04e341b7f7bd",
+      "build/win32/_deps/lua511-src/src/print.c": "88c7ead32349d9c5257b75bea9a9a291ba6e2487214b0c1441f15e862ef04ad3"
+    },
+    "library": "local/native-lua-script-overrides-tested/bsp_lua511.lib",
+    "native_library_abi": false
+  },
+  "ghidra": {
+    "addresses": [
+      "00bdef90",
+      "00bdef80",
+      "004bcb80",
+      "004cdc20",
+      "00419ca0"
+    ],
+    "names_verified": 5,
+    "prior_comment_fields_preserved": 3,
+    "forced_exports": 5,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "complete_stored_body_ranges": true,
+    "unwind_verification": [
+      {
+        "function": "00bdef90",
+        "func_info": "00e00a90",
+        "states": 10,
+        "entries": [
+          {
+            "state": 0,
+            "previous": -1,
+            "thunk": "00cc6550",
+            "stack_offset": 64,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 1,
+            "previous": 0,
+            "thunk": "00cc6558",
+            "stack_offset": 56,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 2,
+            "previous": 1,
+            "thunk": "00cc6560",
+            "stack_offset": 40,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 3,
+            "previous": 1,
+            "thunk": "00cc6568",
+            "stack_offset": 48,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 4,
+            "previous": 3,
+            "thunk": "00cc6570",
+            "stack_offset": 24,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 5,
+            "previous": 4,
+            "thunk": "00cc6578",
+            "stack_offset": 32,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 6,
+            "previous": 5,
+            "thunk": "00cc6580",
+            "stack_offset": 40,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 7,
+            "previous": 4,
+            "thunk": "00cc6580",
+            "stack_offset": 40,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 8,
+            "previous": 3,
+            "thunk": "00cc6580",
+            "stack_offset": 40,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 9,
+            "previous": 1,
+            "thunk": "00cc6580",
+            "stack_offset": 40,
+            "cleanup": "0041dd20"
+          }
+        ],
+        "verified": true
+      },
+      {
+        "function": "004cdc20",
+        "func_info": "00d8e2c8",
+        "states": 1,
+        "entries": [
+          {
+            "state": 0,
+            "previous": -1,
+            "thunk": "00c659e0",
+            "cleanup": "00401130 bare RET",
+            "rollback": false
+          }
+        ],
+        "verified": true
+      }
+    ],
+    "live_call_rows_verified": 34
+  },
+  "suffix_layout_producer": {
+    "address": "00be1dc0",
+    "receiver": "00be1dd8 ESI=ECX",
+    "zero": "00be1de4 EBX=0",
+    "writes": [
+      "00be1e54",
+      "00be1e57",
+      "00be1e5a"
+    ],
+    "fields": [
+      "48 data",
+      "4C count",
+      "50 capacity"
+    ]
+  }
 }
