@@ -41,6 +41,22 @@ options text order/format and the installed codec check when completed.
 Exact combined-build, runtime-probe and annotation outcomes live in
 `reports/startup_backend_integration.json`.
 
+The combined code at9b07840 passed MSVC Win32 Release and both existing
+CTests. All34 reviewed names/evidence comments were saved and read back with
+earlier comments preserved; all34 affected exports were refreshed.
+
+The installed binkw32.dll and movies/fe_eidos.bik passed an isolated real
+decoder check linked first against the worker and then against the combined
+library. The wrapper opened the1280x720,90-frame movie, sought frame45,
+decoded/copied it to a CPU surface, advanced to46, reopened with the observed
+completed=1 behavior, closed and released all texture resources. The two
+decoded BMP hashes match, and visual inspection shows the Eidos logo.
+`local/native_bink_frame.bmp` and `local/native-bink-integrated-probe.log`
+hold the evidence. DLL, movie and frame SHA256 hashes are in the report.
+This proves the exercised codec/import/control path, not D3D rendering,
+audio playback or gameplay. The original game files were used as inputs;
+the probe wrote only local evidence.
+
 Remaining services include native renderer/GUI ownership and notifications,
 VFS/subtitles, mission-score archives, the profile manager and storage task
 scheduler. Bink is not reimplemented. These modules and adapters do not yet

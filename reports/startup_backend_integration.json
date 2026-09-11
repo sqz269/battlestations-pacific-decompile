@@ -22,10 +22,54 @@
     "settings_text_build": "Win32 Release and2CTest passed",
     "options_text_file": "227 bytes,15 fields andCRLF verified in local/options-text-probe",
     "independent_reviews": "no concrete blockers found",
-    "combined_build": "pending",
-    "installed_bink_probe": "pending"
+    "combined_build": "MSVC Win32 Release passed",
+    "installed_bink_probe": {
+      "result": "passed against combined Win32 library at9b07840",
+      "source": "local/native_bink_probe.cpp",
+      "log": "local/native-bink-integrated-probe.log",
+      "dll": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+      "dll_sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+      "movie": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\fe_eidos.bik",
+      "movie_sha256": "a4fb60063d18dc97ce6e8867ddbdaee3505cd70a5ff9394162e7be528e21f6ee",
+      "width": 1280,
+      "height": 720,
+      "frames": 90,
+      "requested_frame": 45,
+      "frame_after_decode": 46,
+      "pixel_fnv32": 2026897601,
+      "texture_allocations": 1,
+      "texture_releases": 1,
+      "native_reopen_completed": 1,
+      "frame_artifact": "local/native_bink_frame.bmp",
+      "frame_sha256": "279b9e5a7eb18a89ab688ead7b58b781a44705445a62ce150d0a22481da39b58",
+      "visually_inspected": "Eidos logo frame decoded",
+      "scope": "Real DLL imports, open/seek/decode/copy/advance/reopen/close. CPU memory surfaces; no game renderer or audio validation."
+    },
+    "combined_ctest": "2/2 passed",
+    "validated_code_head": "9b07840",
+    "combined_build_log": "local/backend-integrate.log",
+    "callback_branches": "native assembly and independent review; no native differential"
   },
-  "annotations": "pending",
+  "annotations": {
+    "count": 34,
+    "saved": true,
+    "names_and_comments_readback": "all matched",
+    "prior_comments": "preserved",
+    "exports_refreshed": 34,
+    "mutation_log": "local/ghidra-annotations-20260911T011846Z.json",
+    "before": "local/backend_comments_before.json",
+    "after": "local/backend_comments_after.json"
+  },
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "definitions": {
+    "report": "reports/startup_backend_definitions.json",
+    "formerly_absent_entries": 13,
+    "note": "00a4d1b0 existed between disassembly and create attempt; full body verified and project saved on resumed batch. No recreation performed."
+  },
+  "profile_read_flow_repair": {
+    "restored_bytes": 39,
+    "call_gaps_remaining": 0,
+    "report": "reports/profile_archive_flow_repair.json"
+  }
 }
