@@ -1,0 +1,1960 @@
+{
+  "packet": "orch2_native_shader_state_definitions_ag",
+  "functions": [
+    {
+      "address": "00b56610",
+      "name": "BSP_ShaderStateDefinitionsBase_Construct",
+      "cpp": "construct_native_shader_state_definition_base_00b56610",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual fresh owner; EAX same; RET",
+      "evidence": "PublishD621EC and current0108FE90 before derived initialization; capture shared manager section, enter/increment, second getter/register CURRENT global, release captured section."
+    },
+    {
+      "address": "00b566b0",
+      "name": "BSP_ShaderStateDefinitionsBase_Destroy",
+      "cpp": "destroy_native_shader_state_definition_base_00b566b0",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; RET",
+      "evidence": "PublishD621EC, capture shared section, second getter/unregister CURRENT0108FE90, clear publication unconditionally, unlock captured section, publishCE3818."
+    },
+    {
+      "address": "00b56750",
+      "name": "BSP_ShaderStateDefinitionsBase_ScalarDelete",
+      "cpp": "delete_native_shader_state_definition_base_00b56750",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX owner, stack flags; EAX old pointer; RET4",
+      "evidence": "Full30-byte base destruction then shared heap free only on flags bit0; missing3-byte free continuation repaired."
+    },
+    {
+      "address": "00b567b0",
+      "name": "BSP_ShaderStatePairs_AppendUnique",
+      "cpp": "append_unique_native_shader_state_pair_00b567b0",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX0Ch eight-byte-row header, stack state/payload; RET8",
+      "evidence": "Capture unsigned count for first-match search; duplicates retain first payload. Grow max(cap+5,10) throughB40CF0, append at current end then increment."
+    },
+    {
+      "address": "00b57630",
+      "name": "BSP_ShaderStateDefinition_CopyConstruct",
+      "cpp": "copy_native_shader_state_definition_00b57630",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX fresh16-byte record, stack source; EAX same; RET4",
+      "evidence": "Zero actual8h name; resize/copy with current reads after callbacks, then copy ID08/tag0C. Self alias clears its same name; no rollback."
+    },
+    {
+      "address": "00b57800",
+      "name": "BSP_ShaderStateDefinitionArray_Reserve",
+      "cpp": "reserve_native_shader_state_definitions_00b57800",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX12-byte header, stack signed request; RET4",
+      "evidence": "Minimum1, request*16 shared allocation, forward live-count/data copy and forward old-name cleanup, free old array then publish pointer/capacity. Only no-op401130 placement-delete unwind; no prior-copy cleanup. Fifteen-byte publication continuation repaired."
+    },
+    {
+      "address": "00b57930",
+      "name": "BSP_ShaderStateDefinitionArray_Resize",
+      "cpp": "resize_native_shader_state_definitions_00b57930",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX12-byte header, stack signed count; RET4",
+      "evidence": "Grow initializes only8-byte names, leaves state/tag preimage; shrink decrements count before reverse name release; finalcount=request. Reserve if capacity smaller."
+    },
+    {
+      "address": "00b58050",
+      "name": "BSP_ShaderStateDefinitionArray_Append",
+      "cpp": "append_native_shader_state_definition_00b58050",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX12-byte header, stack record pointer; RET4",
+      "evidence": "Full capacity grows2x/min1; copy record at current end then increment current count. Only no-op placement-delete unwind; source alias across reallocation may dangle."
+    },
+    {
+      "address": "00b58200",
+      "name": "BSP_ShaderStateDefinitions_Register",
+      "cpp": "register_native_shader_state_definition_00b58200",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX12-byte header, stack actual name/state/tag; RET0C",
+      "evidence": "Construct temporary16-byte entry, append, then release captured name pointer with current local length. Unwind uses CURRENT temporary header B56C10, unlike normal captured pointer."
+    },
+    {
+      "address": "00b58300",
+      "name": "BSP_ShaderStateDefinitionArray_Destroy",
+      "cpp": "destroy_native_shader_state_definition_array_00b58300",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX12-byte header; RET",
+      "evidence": "Full23-byte resize0 then free current data, leaving stale pointer/capacity. Stored Ghidra body endsB58311; verified disk tail B58312..B58316 fixture-executed."
+    },
+    {
+      "address": "00b58320",
+      "name": "BSP_ShaderStateDefinitions_Destroy",
+      "cpp": "destroy_native_shader_state_definitions_00b58320",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual40-byte manager; RET",
+      "evidence": "Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed."
+    },
+    {
+      "address": "00b585a0",
+      "name": "BSP_ShaderStateDefinitions_Initialize",
+      "cpp": "construct_native_shader_state_definitions_00b585a0",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX fresh40-byte owner; EAX same; RET",
+      "evidence": "Full6313-byte ctor: base publication, D62260, three12-byte headers, all31/13/18 ordered definitions with actual strings. Finalcaps32/16/32. Normal outer temporary release uses captured pointer AND length;66 unwind states preserve current-temp and reverse member cleanup."
+    },
+    {
+      "address": "00b59e50",
+      "name": "BSP_ShaderStateDefinitions_ScalarDelete",
+      "cpp": "delete_native_shader_state_definitions_00b59e50",
+      "source": "src/native_shader_state_definitions.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual40-byte owner, stack flags; EAX old pointer; RET4",
+      "evidence": "Full30-byte actual owner destructor then shared heap free iff flags bit0; missing3-byte continuation repaired. Shared numeric-profile lifetime binding uses same published slot/domain."
+    }
+  ],
+  "actual_storage": {
+    "manager_bytes": 40,
+    "definition_bytes": 16,
+    "registry_header_bytes": 12,
+    "global_slot": "0108fe90",
+    "lifetime_domain": "01090aa0",
+    "base_profile": "00d621ec",
+    "derived_profile": "00d62260",
+    "registry_offsets": [
+      4,
+      16,
+      28
+    ],
+    "definition_counts": [
+      31,
+      13,
+      18
+    ],
+    "final_capacities": [
+      32,
+      16,
+      32
+    ],
+    "intrusive_reference_count": false,
+    "private_owner_registry": false
+  },
+  "call_sites": [
+    {
+      "address": "00b5663e",
+      "native": "00415350",
+      "function": "00b56610"
+    },
+    {
+      "address": "00b5666c",
+      "native": "00415350",
+      "function": "00b56610"
+    },
+    {
+      "address": "00b5667a",
+      "native": "00bd0c30",
+      "function": "00b56610"
+    },
+    {
+      "address": "00b566de",
+      "native": "00415350",
+      "function": "00b566b0"
+    },
+    {
+      "address": "00b56706",
+      "native": "00415350",
+      "function": "00b566b0"
+    },
+    {
+      "address": "00b56714",
+      "native": "00bcfca0",
+      "function": "00b566b0"
+    },
+    {
+      "address": "00b56753",
+      "native": "00b566b0",
+      "function": "00b56750"
+    },
+    {
+      "address": "00b56760",
+      "native": "00bf65ac",
+      "function": "00b56750"
+    },
+    {
+      "address": "00b567ed",
+      "native": "00b40cf0",
+      "function": "00b567b0"
+    },
+    {
+      "address": "00b5764e",
+      "native": "0041dd40",
+      "function": "00b57630"
+    },
+    {
+      "address": "00b57663",
+      "native": "00bf7680",
+      "function": "00b57630"
+    },
+    {
+      "address": "00b5783e",
+      "native": "00bf55be",
+      "function": "00b57800"
+    },
+    {
+      "address": "00b57881",
+      "native": "0041dd40",
+      "function": "00b57800"
+    },
+    {
+      "address": "00b57896",
+      "native": "00bf7680",
+      "function": "00b57800"
+    },
+    {
+      "address": "00b578e5",
+      "native": "00419cc0",
+      "function": "00b57800"
+    },
+    {
+      "address": "00b578ec",
+      "native": "00bd1510",
+      "function": "00b57800"
+    },
+    {
+      "address": "00b578ff",
+      "native": "00bf6989",
+      "function": "00b57800"
+    },
+    {
+      "address": "00b5793e",
+      "native": "00b57800",
+      "function": "00b57930"
+    },
+    {
+      "address": "00b5798f",
+      "native": "00419cc0",
+      "function": "00b57930"
+    },
+    {
+      "address": "00b57996",
+      "native": "00bd1510",
+      "function": "00b57930"
+    },
+    {
+      "address": "00b58084",
+      "native": "00b57800",
+      "function": "00b58050"
+    },
+    {
+      "address": "00b580a4",
+      "native": "00b57630",
+      "function": "00b58050"
+    },
+    {
+      "address": "00b58240",
+      "native": "0041dd40",
+      "function": "00b58200"
+    },
+    {
+      "address": "00b58257",
+      "native": "00bf7680",
+      "function": "00b58200"
+    },
+    {
+      "address": "00b5827e",
+      "native": "00b58050",
+      "function": "00b58200"
+    },
+    {
+      "address": "00b5829a",
+      "native": "00419cc0",
+      "function": "00b58200"
+    },
+    {
+      "address": "00b582a1",
+      "native": "00bd1510",
+      "function": "00b58200"
+    },
+    {
+      "address": "00b58305",
+      "native": "00b57930",
+      "function": "00b58300"
+    },
+    {
+      "address": "00b5830d",
+      "native": "00bf6989",
+      "function": "00b58300"
+    },
+    {
+      "address": "00b58353",
+      "native": "00b57930",
+      "function": "00b58320"
+    },
+    {
+      "address": "00b5835b",
+      "native": "00bf6989",
+      "function": "00b58320"
+    },
+    {
+      "address": "00b585c8",
+      "native": "00b56610",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5860d",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58628",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5863f",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58654",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5865b",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58670",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5868b",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b586a2",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b586b7",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b586be",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b586d3",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b586ee",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58705",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5871a",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58721",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58736",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58751",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58768",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5877d",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58784",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58799",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b587b4",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b587cb",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b587e0",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b587e7",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b587fc",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58817",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5882e",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58843",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5884a",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5885f",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5887a",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58891",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b588a6",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b588ad",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b588c2",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b588dd",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b588f4",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58909",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58910",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58925",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58940",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5895a",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5896f",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58976",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5898b",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b589a6",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b589bd",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b589d2",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b589d9",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b589ee",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a09",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a20",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a35",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a3c",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a51",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a6c",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a86",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58a9b",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58aa2",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ab7",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ad2",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58aec",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b01",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b08",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b1d",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b38",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b52",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b67",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b6e",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b83",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58b9e",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58bb8",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58bcd",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58bd4",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58be9",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c04",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c1e",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c33",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c3a",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c4f",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c6a",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c84",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58c99",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ca0",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58cb5",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58cd0",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58cea",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58cff",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d06",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d1b",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d36",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d50",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d65",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d6c",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d81",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58d9c",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58db6",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58dcb",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58dd2",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58de7",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e02",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e19",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e2e",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e35",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e4a",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e65",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e7c",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e91",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58e98",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ead",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ec8",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58edf",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ef4",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58efb",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f10",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f2b",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f42",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f57",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f5e",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f73",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58f8e",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58fa5",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58fba",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58fc1",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58fd6",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b58ff1",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59008",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5901d",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59024",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59039",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59054",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5906b",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59080",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59087",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5909c",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b590b7",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b590ce",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b590e3",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b590ea",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b590ff",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5911a",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59131",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59146",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5914d",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59162",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5917d",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59198",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b591ad",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b591b4",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b591c9",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b591e4",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b591ff",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59214",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5921b",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59230",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5924b",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59269",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5927e",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59285",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5929a",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b592b5",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b592cc",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b592e1",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b592e8",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b592fd",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59318",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5932f",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59344",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5934b",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59360",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5937b",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59392",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b593a7",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b593ae",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b593c3",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b593de",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b593f5",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5940a",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59411",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59426",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59441",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59458",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5946d",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59474",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59489",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b594a4",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b594bb",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b594d0",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b594d7",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b594ec",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59507",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5951f",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59534",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5953b",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59550",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5956b",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59582",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59597",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5959e",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b595b3",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b595ce",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b595e5",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b595fa",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59601",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59616",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59631",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59648",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5965d",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59664",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59679",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59694",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b596ab",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b596c0",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b596c7",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b596dc",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b596f7",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5970e",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59723",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5972a",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5973f",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5975a",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59778",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5978d",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59794",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b597a9",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b597c4",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b597db",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b597f0",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b597f7",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5980c",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59827",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5983e",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59853",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5985a",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5986f",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5988a",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b598a1",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b598b6",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b598bd",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b598d2",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b598ed",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59904",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59919",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59920",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59935",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59950",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59967",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b5997c",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59983",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59998",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b599b3",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b599cb",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b599e0",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b599e7",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b599fc",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a17",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a2f",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a44",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a4b",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a60",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a7b",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59a93",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59aa8",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59aaf",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59ac4",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59adf",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59af7",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b0c",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b13",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b28",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b43",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b5a",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b6f",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b76",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59b8b",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59ba6",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59bbe",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59bd3",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59bda",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59bef",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c0a",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c22",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c37",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c3e",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c53",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c6e",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c85",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59c9a",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59ca1",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59cb6",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59cd1",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59ce8",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59cfd",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d04",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d19",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d34",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d4b",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d60",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d67",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d7c",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59d97",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59dae",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59dc3",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59dca",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59ddf",
+      "native": "0041dd40",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59dfa",
+      "native": "00bf7680",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59e11",
+      "native": "00b58200",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59e26",
+      "native": "00419cc0",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59e2d",
+      "native": "00bd1510",
+      "function": "00b585a0"
+    },
+    {
+      "address": "00b59e53",
+      "native": "00b58320",
+      "function": "00b59e50"
+    },
+    {
+      "address": "00b59e60",
+      "native": "00bf65ac",
+      "function": "00b59e50"
+    }
+  ],
+  "disk_tail_calls": [
+    {
+      "disk_call_site": "00b5836f",
+      "callee": "00b57930",
+      "containing_disk_extent": "00b58320",
+      "evidence": "Full installed-PE extent and fixture; outside incomplete stored Ghidra body."
+    },
+    {
+      "disk_call_site": "00b58377",
+      "callee": "00bf6989",
+      "containing_disk_extent": "00b58320",
+      "evidence": "Full installed-PE extent and fixture; outside incomplete stored Ghidra body."
+    },
+    {
+      "disk_call_site": "00b5838b",
+      "callee": "00b57930",
+      "containing_disk_extent": "00b58320",
+      "evidence": "Full installed-PE extent and fixture; outside incomplete stored Ghidra body."
+    },
+    {
+      "disk_call_site": "00b58393",
+      "callee": "00bf6989",
+      "containing_disk_extent": "00b58320",
+      "evidence": "Full installed-PE extent and fixture; outside incomplete stored Ghidra body."
+    },
+    {
+      "disk_call_site": "00b583a5",
+      "callee": "00b566b0",
+      "containing_disk_extent": "00b58320",
+      "evidence": "Full installed-PE extent and fixture; outside incomplete stored Ghidra body."
+    }
+  ],
+  "no_ghidra_function": [],
+  "incomplete_stored_bodies": [
+    {
+      "address": "00b58300",
+      "stored_end": "00b58311",
+      "verified_disk_end": "00b58316",
+      "missing_bytes": 5
+    },
+    {
+      "address": "00b58320",
+      "stored_end": "00b5835f",
+      "verified_disk_end": "00b583ba",
+      "missing_bytes": 91
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B585A0 had only semantic table projections and analyzed registration.",
+      "evidence": "Full6313-byte ctor,62 original literal spans,13-function native fixture.",
+      "is": "Full actual40-byte owner and62 entries/lifetime now reconstructed; semantic adapters remain separate."
+    }
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_full_functions_executed": 13,
+    "paired_all62_names_ids_tags": true,
+    "paired_string_allocation_release_sequence": true,
+    "growth_metadata_preimage_checked": true,
+    "unique_state_rows": 17,
+    "duplicate_payloads_preserved": true,
+    "base_untouched_bytes": 36,
+    "scalar_flags": [
+      1,
+      2
+    ],
+    "production_canonical_shutdown": true,
+    "rebuilt_constructor_allocation_failure": true,
+    "original_exception_execution": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "fixture_boundaries": {
+    "heap": "Current shared CRT heap",
+    "strings": "Actual string pool and existing actual-header resize; same NativeStringStorage callback boundary.",
+    "singleton": "Native-layout fixture facade and real28-byte CS/depth for original base calls; registration forwards to the same canonical rebuilt singleton manager. Production uses explicit binding on the actual40-byte owner.",
+    "state_rows": "Original B567B0 calls existing reconstructed B40CF0 reserve, independently original-instruction tested in prior sampler-owner packet.",
+    "exceptions": "Original SEH handler addresses are not executed; all seven maps/76 cleanup states PE-verified. Rebuilt allocation failure exercises the first registration temporary-copy path only."
+  },
+  "limitations": [
+    "B579B0 state conversion and full actual B57B50/B41830/B43B00 Lua parsing remain open.",
+    "Valid aligned allocations/counts/extents, input lifetime across growth, actual shared heap/string pool/domain are caller contracts.",
+    "Reserve/append original unwind contains no array rollback; NativeStringStorage release remains noexcept.",
+    "Stored Ghidra tails forB58300/B58320 are incomplete; full disk extents and executed fixture are separately recorded.",
+    "New C++ interfaces are not original binary or exception ABI replacements; shader creation, rendering and gameplay remain unvalidated."
+  ]
+}
