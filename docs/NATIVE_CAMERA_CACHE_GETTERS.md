@@ -79,5 +79,28 @@ unmasked hardware FP and asynchronous mutation are not claimed. Private stack
 scratch, return addresses, instruction/data pointers, inactive x87 state and
 XMM4..7 are outside the runtime comparison; raw frames remain available.
 No permanent test suite, original caller integration or gameplay validation
-is claimed. Main registration, integration build and saved-analysis metadata
-remain separate integrator work.
+is claimed. The primary subsequently completed main registration, integration build,
+replay and saved-analysis metadata, as recorded below.
+
+
+## Primary main-library integration
+
+All five getters are registered in main. Strict MSVC Win32 compilation and
+both existing CTests passed; all eight fresh native seeds matched. The primary
+verified 100 worker artifact pins and 36 current provider files: 33 literal
+matches and three with CRLF/LF differences only. Nineteen fresh guarded spans
+matched all 5,308 bytes.
+
+The unchanged probe linked actual main library
+`90f6e12be9a855a4abcd0f5f7c04ba8518868fee030f3660bc25a25c10a9a265`.
+Four paired scenarios and sixteen paired calls again matched 133,072 literal
+observable bytes. All eleven exact archive objects, 145 complete COFF sections
+(77 library), fifty-six actual import providers and nine immutable code and
+constant postimages passed. All five complete getter instruction schedules
+matched their originals after only the declared provider and ABI mappings.
+
+The read-only primary bundle is `local/camera_cache_getters_primary/`, seal
+`05b29c9a71ba20c254249e318e70a3d830f3313eef3339706cf0b0aed5a2150c`.
+Existing Ghidra names/comments were preserved, reviewed evidence appended and
+saved, affected exports refreshed and complete source records registered.
+The raw-parent contract and all runtime/ABI limitations above still apply.
