@@ -21,7 +21,8 @@ B25040 takes ECX renderer and stack float4, RET4. It calls full B23E50 with
 current active+19EC, increments the current field only after return, rereads
 it and calls full B24460(state98, DWORD((1<<(active&31))-1)). The x86 shift
 count wraps to five bits. Callbacks can change active before the increment.
-Pending+19F0 is untouched by this parent.
+The parent adds no direct pending+19F0 store. Unchecked child cache aliasing
+and callback changes remain visible, including changes to neighboring fields.
 
 B25080 takes ECX renderer, plain RET. It derives the same mask from current
 pending+19F0, calls full B24460, then reloads pending and publishes it to
