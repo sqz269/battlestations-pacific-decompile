@@ -135,14 +135,10 @@ bool logo_skip_allowed(float elapsed_seconds, float entry_delay, bool skip_actio
 LogoAdvanceOutcome logo_advance_or_finish(LogoSequenceState& state, LogoSequenceHost& host)
 {
     const std::uint32_t index = state.next_index;
-    // 0068508d: the finish test is an unsigned compare against the entry count.
-    const bool exhausted = index >= state.entry_count;
-    // The two _SECURE_SCL assertions at 006850d7 and 00685154 stand where these
-    // checks are. They abort; the reconstruction treats an absent or short
-    // vector as an exhausted sequence instead of reproducing that abort.
-    const bool unusable
-        = state.entries == nullptr || state.delays == nullptr || index >= state.delay_count;
-    if (exhausted || unusable) {
+    // 00685077..0068508f: a null entry vector has count zero; the finish test
+    // does not inspect the separate delay vector.
+    const std::size_t entry_count = state.entries ? state.entry_count : 0;
+    if (index >= entry_count) {
         // 00685091: virtual +0h with 1, then BSP_Game_OnInitOnce(game, 0).
         host.destroy_self();
         host.reenter_title();
@@ -151,9 +147,15 @@ LogoAdvanceOutcome logo_advance_or_finish(LogoSequenceState& state, LogoSequence
 
     state.next_index = index + 1;
     host.install_movie_completion_callback();
+    // The callback registration can mutate state. Preserve native re-reads
+    // and permit the CRT handler to repair storage before returning.
+    if (state.entries == nullptr || index >= state.entry_count)
+        host.invalid_parameter_noinfo_00bf6713();
     host.movie_play(state.entries[index], 1, 0.0F, 0);
     host.movie_screen_enter();
     state.entry_started = host.now();
+    if (state.delays == nullptr || index >= state.delay_count)
+        host.invalid_parameter_noinfo_00bf6713();
     state.entry_delay = state.delays[index];
     return LogoAdvanceOutcome::EntryStarted;
 }

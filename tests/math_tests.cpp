@@ -233,6 +233,39 @@ int main() {
         check(!table.attach(&extra, -1, error), "a full row reports no free slot");
     }
     {
+        // A short delay vector is checked after movie entry and timer storage.
+        // A returning CRT handler repairs it; it must not finish the sequence.
+        struct RepairLogoDelay final : LogoSequenceHost {
+            LogoSequenceState& state;
+            const float repaired_delay = 3.0f;
+            std::string calls;
+            bool failure_saw_progress = false;
+            explicit RepairLogoDelay(LogoSequenceState& value) : state(value) {}
+            void install_movie_completion_callback() override { calls += 'c'; }
+            void movie_play(const char*, int, float, int) override { calls += 'p'; }
+            void movie_screen_enter() override { calls += 'e'; }
+            ClockTimestamp now() override { calls += 'n'; return {42, 100}; }
+            void destroy_self() override { calls += 'd'; }
+            void reenter_title() override { calls += 't'; }
+            void invalid_parameter_noinfo_00bf6713() override {
+                calls += 'f';
+                failure_saw_progress = state.next_index == 1
+                    && state.entry_started.ticks == 42 && state.delays == nullptr;
+                state.delays = &repaired_delay;
+                state.delay_count = 1;
+            }
+        };
+        const char* entry = "logo";
+        LogoSequenceState logo;
+        logo.entries = &entry;
+        logo.entry_count = 1;
+        RepairLogoDelay repair(logo);
+        const auto outcome = logo_advance_or_finish(logo, repair);
+        check(outcome == LogoAdvanceOutcome::EntryStarted && repair.calls == "cpenf"
+                && repair.failure_saw_progress && logo.entry_delay == 3.0f,
+            "logo delay validation preserves prior effects and a returning CRT handler");
+    }
+    {
         GameStartupFlags flags{};
         StartupSystems plain("game.exe");
         check(game_on_init(plain, flags) == GameStartupState::kLogoSequence
@@ -1610,4 +1643,3 @@ int main() {
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }
-

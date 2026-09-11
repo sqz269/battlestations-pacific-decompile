@@ -192,17 +192,26 @@ in the screen registry can tick it.
 
 `BSP_LogoSequence_AdvanceOrFinish` (`00685070`), read from the listing:
 
-1. `count = ([this+48h] - [this+44h]) / 8`, `index = [this+60h]`.
+1. `count = ([this+48h] - [this+44h]) / 8`, or zero for a null base; `index = [this+60h]`.
 2. `index >= count` (unsigned): virtual `+0h` with 1, then `BSP_Game_OnInitOnce(game, 0)`, which
    re-runs `GGame::OnInitTitle` and leaves `game+5D4h = 2`. Return.
 3. `[this+60h] = index + 1`.
 4. `006850ba` `004f8970([00E18D48], 00685060)` — **installs the end-of-movie callback**.
-5. `006850f4` `004f8a20([00E18D48], &entries[index], 1, 0.0f, 0)` starts the movie.
+5. `006850d7` calls `00bf6713` if the entry vector is now null/out of bounds, then reloads
+   the base without repeating the check. `006850f4` calls
+   `004f8a20([00E18D48], &entries[index], 1, 0.0f, 0)` to start the movie.
 6. `00685101` sets movie-screen bytes `+4h` and `+5h` to 1, `004f83b0`, then its virtual `+18h`
    (the front-end screen enter).
 7. `00685117` samples the clock `[01090AB0]` virtual `+20h` and copies all four dwords of the
    returned 16-byte timestamp into `this+68h..+77h`.
-8. `0068515c` `this+78h = ((float *)[this+54h])[index]`, the per-entry delay.
+8. `00685154` calls `00bf6713` if the delay vector is null/out of bounds, then reloads the
+   base. `0068515c` stores `this+78h = ((float *)[this+54h])[index]`, the per-entry delay.
+
+Integration correction, 2026-09-10: a short or missing delay table is not a normal end of
+sequence. Its error-handler call follows movie entry and the timestamp stores. `00bf6713`
+is a returning CRT wrapper (`RET` at `00bf6722`); a returning handler must leave valid
+storage for the unchecked access that follows. The C++ host now preserves both calls and
+their positions. One focused regression case covers delay repair after movie entry.
 
 `00685060` is a four-instruction static trampoline that Ghidra has **no function for**; from the
 disk bytes it is `MOV ECX,[00E198A4]; TEST ECX,ECX; JE ret; JMP 00685070`. That closes the loop:
@@ -216,9 +225,10 @@ are required. `004d92b0` reaches `BSP_InputManager_GetSingleton` and
 `BSP_SoundRequestQueue_GetSingleton` and has 26 callers, so it is the shared front-end action query
 with its UI click; action 0x4A is not identified.
 
-`004f8a20`'s last two arguments are `0.0f, 0` here and `1.0f, 1` in `BSP_AttractScreen_Activate`
-with `movies/PacificTheme.bik`. Reading them as volume and loop is a hypothesis; a fade time would
-fit the observed values equally well.
+`004f8a20`'s last two arguments are GUI local Z and loop: `0.0f, 0` here and `1.0f, 1`
+in `BSP_AttractScreen_Activate` with `movies/PacificTheme.bik`. The 2026-09-10 movie packet
+traced Z through widget positioning (black backdrop uses Z + 1) and the loop byte through
+widget+105h into the decoder setter and last-frame branch. See `docs/GAME_MOVIE_PLAYER.md`.
 
 This supersedes the **Uncertain** paragraph under "State 1 to state 2" in
 `docs/GAME_FRONTEND_STATES.md`. Its reading of `00685170` is correct; the missing automatic advance
@@ -269,7 +279,6 @@ that `BSP_AttractScreen_Deactivate` calls next to it; not analysed.
   Not resolved; `00BF681B` was not read.
 - `00518250`'s `RET 8` is inferred from the call site, not read from its epilogue.
 - What the eight 0x284-byte records inside `game+21A0h` hold.
-- The last two arguments of `004f8a20`.
 - Input action 0x4A.
 - Whether the 9-entry list `007fdb20` rebuilds at `+18h` is the campaign mission list.
 

@@ -1,0 +1,32 @@
+{
+  "packet": "orch2_startup_frontend_integration",
+  "date": "2026-09-10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "integration_branch": "agent/orch2-20260910",
+  "base": "4973646",
+  "documentation": "docs/STARTUP_FRONTEND_INTEGRATION.md",
+  "worker_reports": [
+    "reports/game_movie_player.json",
+    "reports/frontend_prompt_screen.json",
+    "reports/game_profile_reset.json"
+  ],
+  "changes": [
+    "logo bounds-handler ordering",
+    "recovered movie and profile startup adapters",
+    "press-start read/write hook correction",
+    "explicit-tail flow audit"
+  ],
+  "validation": {
+    "worker_builds": "passed",
+    "worker_ctest": "2/2 each",
+    "seed_parity": "8/8",
+    "logo_regression": "passed",
+    "combined_build": "pending integration"
+  },
+  "definitions_report": "reports/startup_frontend_definitions.json",
+  "partial_flow_repair": "reports/profile_tail_flow_repair.json",
+  "ghidra_annotation": "pending integration",
+  "abi_compatible": false,
+  "game_validated": false
+}

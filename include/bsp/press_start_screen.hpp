@@ -214,14 +214,14 @@ struct PressStartScreenHost {
     // --- the save/storage manager at 0109CECC -------------------------------
     virtual bool storage_device_required() = 0;   // manager+21h
     virtual bool storage_busy() = 0;              // manager+8h != 0
-    // Manager vtable +1Ch with (save name, 1). True means the save cannot start.
-    virtual bool begin_save_blocked(const char* save_name) = 0;
-    // Manager vtable +14h with (save name). True means a load can start.
-    virtual bool begin_load(const char* save_name) = 0;
-    // 007ff100(profile, save name, 0067ca40).
-    virtual void queue_save_with_callback(const char* save_name) = 0;
-    // 007fa710(profile, save name, 0067ca40, 0).
-    virtual void queue_load_with_callback(const char* save_name) = 0;
+    // Manager vtable +1Ch with (save name, 1); exact predicate remains external.
+    virtual bool storage_query_1c(const char* save_name) = 0;
+    // Manager vtable +14h with (save name); exact predicate remains external.
+    virtual bool storage_query_14(const char* save_name) = 0;
+    // 007ff100(profile, save name, 0067ca40): read/restore route.
+    virtual void request_read_007ff100(const char* save_name) = 0;
+    // 007fa710(profile, save name, 0067ca40, 0): conditional write route.
+    virtual void request_write_007fa710(const char* save_name) = 0;
 
     // --- the offline bring-up in the phase-2 arm ---------------------------
     // 00425c20/004374f0, then the four 00F88980 calls 008d4820, 008d41c0,

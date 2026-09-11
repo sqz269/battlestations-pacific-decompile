@@ -1,0 +1,142 @@
+{
+ "repairs": [
+  {
+   "function": "007fd780",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T00:28:57Z",
+   "decompile_lines_before": 19,
+   "gaps": [
+    {
+     "site": "007fd7c5",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "007fd7ca",
+     "gap_end_exclusive": "007fd844",
+     "bytes": 122,
+     "after_call": true,
+     "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "007fd7c5",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "007fd7ca",
+      "gap_end_exclusive": "007fd844",
+      "bytes": 122,
+      "after_call": true,
+      "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+     },
+     "clear": "Success: Cleared flow override at 007fd7c5 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 122 byte(s)"
+    }
+   ],
+   "explicit_tail_end_exclusive": "007fd844",
+   "decompile_lines_after": 34,
+   "gaps_remaining": 1
+  },
+  {
+   "function": "007fd780",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T00:31:12Z",
+   "decompile_lines_before": 34,
+   "gaps": [
+    {
+     "site": "007fd7c5",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "007fd7ca",
+     "gap_end_exclusive": "007fd844",
+     "bytes": 122,
+     "after_call": true,
+     "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "007fd7c5",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "007fd7ca",
+      "gap_end_exclusive": "007fd844",
+      "bytes": 122,
+      "after_call": true,
+      "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+     },
+     "clear": "Success: Cleared flow override at 007fd7c5 (was: NONE, now: NONE)",
+     "disassemble": "Successfully disassembled 122 byte(s)"
+    }
+   ],
+   "explicit_tail_end_exclusive": "007fd844",
+   "body_before": "Function: FUN_007fd780 at 007fd780\nSignature: undefined FUN_007fd780(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd7c9",
+   "body_extension_failure": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+   "stored_body_tail_complete": false
+  },
+  {
+   "function": "007fd780",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T00:34:02Z",
+   "decompile_lines_before": 34,
+   "gaps": [
+    {
+     "site": "007fd7c5",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "007fd7ca",
+     "gap_end_exclusive": "007fd844",
+     "bytes": 122,
+     "after_call": true,
+     "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "007fd7c5",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "007fd7ca",
+      "gap_end_exclusive": "007fd844",
+      "bytes": 122,
+      "after_call": true,
+      "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+     },
+     "clear": "Success: Cleared flow override at 007fd7c5 (was: NONE, now: NONE)",
+     "disassemble": "Successfully disassembled 122 byte(s)"
+    },
+    {
+     "explicit_tail_call": "007fd7c5",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 007fd7c5 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "007fd7f5",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 007fd7f5 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "007fd824",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 007fd824 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "007fd844",
+   "explicit_body_sha256": "fd7cdefcb5e6b175d92f9b1b7597b6abc6ccf401029c96cc8ef6c4565d523fcf",
+   "body_before": "Function: FUN_007fd780 at 007fd780\nSignature: undefined FUN_007fd780(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd7c9",
+   "decompile_lines_after": 34,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_007fd780 at 007fd780\nSignature: undefined FUN_007fd780(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd7c9",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail instructions and CRT overrides are repaired; this endpoint cannot extend stored function-body metadata. Script execution is disabled on the configured bridge."
+  }
+ ]
+}

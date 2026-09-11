@@ -12,6 +12,13 @@ re-trigger the discovery, and never creates or deletes functions.
 Usage:
   python tools/ghidra_flow_repair.py <function> [<function> ...]            # report only
   python tools/ghidra_flow_repair.py <function> --apply [--record reports/x.json]
+  python tools/ghidra_flow_repair.py <function> --tail-end <end_exclusive> [--apply]
+
+The optional tail bound is explicit evidence from the native listing, not an
+inferred function boundary. It detects a final CALL_RETURN that truncated the
+stored body and otherwise has no following instruction against which to find a gap.
+Decoding the tail does not necessarily extend Ghidra's stored function body;
+the report records that distinction and warns when its listing remains truncated.
 """
 import hashlib
 import json
@@ -50,12 +57,15 @@ def listing(client, function):
     return rows
 
 
-def find_gaps(rows, text_lo, code):
+def find_gaps(rows, text_lo, code, tail_end=None):
     """Gaps between consecutive listed instructions where the earlier one is a CALL."""
     from capstone import CS_ARCH_X86, CS_MODE_32, Cs
     md = Cs(CS_ARCH_X86, CS_MODE_32)
     gaps = []
-    for (a, mnemonic, operands), (b, _, _) in zip(rows, rows[1:]):
+    following = rows[1:]
+    if rows and tail_end is not None:
+        following = following + [(tail_end, 'EXPLICIT_END', '')]
+    for (a, mnemonic, operands), (b, _, _) in zip(rows, following):
         ins = next(md.disasm_lite(code[a - text_lo:a - text_lo + 16], a), None)
         end = a + (ins[1] if ins else 1)
         if b > end:
@@ -73,6 +83,11 @@ def main(argv):
         i = argv.index('--record')
         record_path = ROOT / argv[i + 1]
         del argv[i:i + 2]
+    tail_end = None
+    if '--tail-end' in argv:
+        i = argv.index('--tail-end')
+        tail_end = int(argv[i + 1], 16)
+        del argv[i:i + 2]
     functions = [a.lower().replace('0x', '').zfill(8) for a in argv if not a.startswith('--')]
     if not functions:
         sys.exit(__doc__)
@@ -80,6 +95,12 @@ def main(argv):
     client = Client(cfg)
     client.verify()
     pe, base, text_lo, code = load_pe(cfg)
+    if tail_end is not None:
+        if len(functions) != 1:
+            sys.exit('--tail-end requires exactly one function')
+        start = int(functions[0], 16)
+        if not (text_lo <= start < tail_end <= text_lo + len(code)) or tail_end - start >= 0x4000:
+            sys.exit('Explicit tail range must be a bounded interval inside .text')
     record = json.loads(record_path.read_text(encoding='utf-8')) if record_path.exists() else {'repairs': []}
 
     def post(endpoint, body):
@@ -94,7 +115,9 @@ def main(argv):
     plan = {}
     for function in functions:
         rows = listing(client, function)
-        gaps = find_gaps(rows, text_lo, code)
+        if tail_end is not None and rows and rows[-1][0] >= tail_end:
+            sys.exit(f'{function}: explicit tail end precedes stored instructions')
+        gaps = find_gaps(rows, text_lo, code, tail_end)
         plan[function] = gaps
         print(f'{function}: {len(rows)} listed instructions, {len(gaps)} gap(s)')
         for g in gaps:
@@ -113,6 +136,18 @@ def main(argv):
             before = str(client.get('decompile_function', address=function, timeout=300))
             entry = {'function': function, 'owner': owner, 'when': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                      'decompile_lines_before': len(before.splitlines()), 'gaps': [], 'events': []}
+            if tail_end is not None:
+                entry['explicit_tail_end_exclusive'] = f'{tail_end:08x}'
+                start = int(function, 16)
+                native_body = pe.get_data(start - base, tail_end - start)
+                live_body = client.get('read_memory', address=function, length=tail_end - start)
+                if not isinstance(live_body, dict) or bytes.fromhex(live_body['hex']) != native_body:
+                    raise RuntimeError(f'{function}: explicit body bytes differ from disk')
+                from capstone import CS_ARCH_X86, CS_MODE_32, Cs
+                decoded_body = list(Cs(CS_ARCH_X86, CS_MODE_32).disasm_lite(native_body, start))
+                if not decoded_body or decoded_body[-1][0] + decoded_body[-1][1] != tail_end or decoded_body[-1][2] != 'ret':
+                    raise RuntimeError(f'{function}: explicit tail must follow a fully decoded RET')
+                entry['explicit_body_sha256'] = hashlib.sha256(native_body).hexdigest()
             for g in todo:
                 lo, hi = int(g['gap_start'], 16), int(g['gap_end_exclusive'], 16)
                 disk = pe.get_data(lo - base, hi - lo)
@@ -127,15 +162,36 @@ def main(argv):
                 disassembled = post('disassemble_bytes', {'start_address': g['gap_start'], 'end_address': g['gap_end_exclusive']})
                 entry['events'].append({'gap': g, 'clear': cleared.get('message', cleared), 'disassemble': disassembled.get('message', disassembled)})
                 entry['gaps'].append(g)
+            if tail_end is not None:
+                entry['body_before'] = client.get('get_function_by_address', address=function)
+                record['repairs'].append(entry)
+                record_path.parent.mkdir(parents=True, exist_ok=True)
+                record_path.write_text(json.dumps(record, indent=1) + '\n', encoding='utf-8', newline='\n')
+                # A stored body can stop at the first CALL_RETURN. Clear the
+                # same erroneous override on later verified CRT free calls,
+                # which the stored listing therefore cannot expose yet.
+                for address, _, mnemonic, operand in decoded_body:
+                    if mnemonic != 'call' or operand not in ('0xbf65ac', '0xbf6989', '0xbf9dc8'):
+                        continue
+                    cleared = post('clear_instruction_flow_override', {'address': f'{address:08x}'})
+                    entry['events'].append({'explicit_tail_call': f'{address:08x}', 'clear': cleared})
             after = str(client.get('decompile_function', address=function, timeout=300))
-            remaining = find_gaps(listing(client, function), text_lo, code)
+            remaining = find_gaps(listing(client, function), text_lo, code, tail_end)
             entry['decompile_lines_after'] = len(after.splitlines())
             entry['gaps_remaining'] = len([g for g in remaining if g['after_call']])
-            record['repairs'].append(entry)
+            if tail_end is not None:
+                entry['body_after'] = client.get('get_function_by_address', address=function)
+                entry['stored_body_tail_complete'] = not any(g['gap_end_exclusive'] == f'{tail_end:08x}' for g in remaining)
+                if not entry['stored_body_tail_complete']:
+                    entry['body_extension_limit'] = 'Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair.'
+            if tail_end is None:
+                record['repairs'].append(entry)
             record_path.parent.mkdir(parents=True, exist_ok=True)
             record_path.write_text(json.dumps(record, indent=1) + '\n', encoding='utf-8', newline='\n')
             print(f"{function}: repaired {len(entry['gaps'])} gap(s); decompile {entry['decompile_lines_before']} -> "
                   f"{entry['decompile_lines_after']} lines; {entry['gaps_remaining']} call gap(s) remain")
+            if tail_end is not None and not entry['stored_body_tail_complete']:
+                print(f'{function}: WARNING: stored function-body tail is still incomplete; do not claim full flow repair')
         for attempt in range(12):
             try:
                 post('save_program', {})

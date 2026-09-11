@@ -12,9 +12,9 @@
 //
 // Reconstructed here: the ordered bring-up 004c9a70, the front-end frame layout
 // set selector 00518250, the logo skip rule inside 00685170 and the logo
-// advance 00685070. Everything reached through a host interface is a native
-// call site that is not reconstructed. Nothing here has a default
-// implementation: none of it stands in for unrecovered game behaviour.
+// advance 00685070. Host methods identify native call sites; recovered movie
+// and profile-reset bindings live in startup_frontend.hpp. Remaining services
+// require explicit implementations.
 namespace bsp {
 
 // ---------------------------------------------------------------------------
@@ -126,10 +126,11 @@ struct LogoSequenceHost {
     // this same advance with ECX = 00E198A4 when the movie ends. Re-armed on
     // every entry, before the movie is started.
     virtual void install_movie_completion_callback() = 0;
-    // 004f8a20 with ECX = 00E18D48: (pooled name, 1, volume, loop). The logo
-    // sequence passes volume 0.0f and loop 0; the attract screen at 00689e80
-    // passes 1.0f and 1 for the same two slots.
-    virtual void movie_play(const char* name, int mode, float volume, int loop) = 0;
+    // 004f8a20 with ECX = 00E18D48: (pooled name, prefer shrink-wide,
+    // local GUI Z, loop byte). The logo passes 1, 0.0f, 0; the attract
+    // screen passes 1.0f and 1 in the last two slots. Z is not audio volume.
+    virtual void movie_play(const char* name, int prefer_shrink_wide,
+        float local_z, int loop) = 0;
     // 00E18D48 bytes +4h and +5h = 1, then 004f83b0, then its virtual +18h.
     // Marks the movie screen wanted and active, commits it and enters it.
     virtual void movie_screen_enter() = 0;
@@ -140,14 +141,18 @@ struct LogoSequenceHost {
     // 004dd5b0 BSP_Game_OnInitOnce(game, 0), the soft re-entry that runs
     // GGame::OnInitTitle and leaves game+5D4h at 2.
     virtual void reenter_title() = 0;
+    // Calls at 006850D7 and 00685154. The CRT helper can return; a returning
+    // binding must leave the relevant state vector valid for the following
+    // access. Native reloads the pointer without repeating the bounds check.
+    virtual void invalid_parameter_noinfo_00bf6713() = 0;
 };
 
 // 00685070. __thiscall, ECX = the logo object, no stack arguments, RET 0. The
 // index at +60h is post-incremented: the entry played is the value on entry and
 // +60h is left pointing at the next one. Both bounds checks the native code
-// makes against the entry and delay vectors are _SECURE_SCL assertions; they
-// are reproduced as the caller-visible precondition that the two vectors are at
-// least as long as the index.
+// makes against the entry and delay vectors call the CRT handler at their
+// original positions. The delay check follows movie entry and the timer store;
+// it is not a sequence-finished condition. A null entry vector has count zero.
 LogoAdvanceOutcome logo_advance_or_finish(LogoSequenceState& state, LogoSequenceHost& host);
 
 // 00685170. __thiscall, ECX = the logo object, no stack arguments, RET 0; it

@@ -126,13 +126,13 @@ PressStartOutcome apply_sign_in_0067cc60(PressStartScreen& screen, PressStartScr
         return PressStartOutcome::SignInApplied;
     }
 
-    if (host.begin_save_blocked(save_name)) { // manager vtable +1Ch(save_name, 1)
+    if (host.storage_query_1c(save_name)) { // manager vtable +1Ch(save_name, 1)
         raise_screen_prompt(host, 0, kSavingDeviceMessageKey, 3);
-        host.queue_save_with_callback(save_name); // 007ff100 with 0067ca40
-    } else if (host.begin_load(save_name)) { // manager vtable +14h(save_name)
+        host.request_read_007ff100(save_name); // 007ff100 with 0067ca40
+    } else if (host.storage_query_14(save_name)) { // manager vtable +14h(save_name)
         host.apply_input_settings();   // 005547d0 then 006ac030
         host.refresh_input_bindings(); // [00F8BBF4] +0Ch, +8h, then 008d44c0
-        host.queue_load_with_callback(save_name); // 007fa710 with 0067ca40
+        host.request_write_007fa710(save_name); // 007fa710 with 0067ca40
     }
     host.commit_profile_007fae70(); // 007fae70
     host.commit_input_manager();    // 00698a10 on the input manager + 3Ch

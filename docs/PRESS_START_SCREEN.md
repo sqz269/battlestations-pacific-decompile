@@ -294,8 +294,11 @@ on it while `ghidra decompile` succeeds; see the tool problems below.
   element vtable was not enumerated.
 - `004b43b0` caches `00a91020()` into `[00F8BBF4]+DDh` and returns 1 only on a rising edge. What
   `00a91020` reports is unknown, so "the press is still latched" is provisional.
-- The save-manager virtuals `+1Ch` and `+14h` are read as "starting a save is blocked" and "a load
-  can start" from the branch shapes, not from their bodies.
+- The save-manager virtuals `+1Ch` and `+14h` remain raw predicates. The 2026-09-10 profile
+  packet established `0067ce4c -> 007ff100` as read/restore and `0067cea4 -> 007fa710` as
+  conditional write; the earlier save/load host labels were inverted. The host now uses
+  the two request addresses and predicate offsets explicitly. The `globals.saving_xbox`
+  prompt key and original branch ordering remain as observed. See `docs/GAME_PROFILE_RESET.md`.
 - `00E08CC0` re-requesting a sign-in on an idle frame is what the code does; why the flow needs it
   was not established.
 - `0067cfb0`'s x87 `fsin` is not bit-identical to a C `sin` on the rounded float.
