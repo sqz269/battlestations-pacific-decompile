@@ -1,0 +1,300 @@
+{
+  "packet": "orch2_gui_screen_fixture_q",
+  "date": "2026-09-11",
+  "status": "fixture-tested",
+  "base": "74e23223cf3736c68e5e674635a68639119badb4",
+  "group_bounds_dependency": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+  "tested_source_merge": "886171f399400213cf274a6a274d1d287121c783",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q",
+  "documentation": "docs/GUI_SCREEN_OWNERSHIP_FIXTURE.md",
+  "production_changes": false,
+  "permanent_tests_added": 0,
+  "focused_ignored_fixtures": 1,
+  "ghidra_access": "read-only bsp.py ghidra bytes; verifies project/program per query",
+  "native_tables_and_constants": {
+    "spans": 20,
+    "bytes": 596,
+    "all_match_installed": true,
+    "spans_evidence": [
+      {
+        "label": "node_table",
+        "address": "00d62c88",
+        "bytes": 88,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+        "matches_installed": true
+      },
+      {
+        "label": "camera_table",
+        "address": "00d62cf0",
+        "bytes": 88,
+        "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+        "matches_installed": true
+      },
+      {
+        "label": "scene_table",
+        "address": "00d62d48",
+        "bytes": 8,
+        "sha256": "3d16fb44034f1d35ea45fc3f38bb8093bbcf2648379d9570b3502568a2a99f16",
+        "matches_installed": true
+      },
+      {
+        "label": "light_table",
+        "address": "00d62f58",
+        "bytes": 88,
+        "sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+        "matches_installed": true
+      },
+      {
+        "label": "directional_table",
+        "address": "00d62fb0",
+        "bytes": 88,
+        "sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+        "matches_installed": true
+      },
+      {
+        "label": "model_table",
+        "address": "00d62de8",
+        "bytes": 92,
+        "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed",
+        "matches_installed": true
+      },
+      {
+        "label": "group_table",
+        "address": "00d634f8",
+        "bytes": 88,
+        "sha256": "f59b0caec65eb336d74bd451a0fce1696b1e4a0c2d1ffd1db44dbb2e39ba2721",
+        "matches_installed": true
+      },
+      {
+        "label": "half",
+        "address": "00ce3800",
+        "bytes": 4,
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "matches_installed": true
+      },
+      {
+        "label": "one",
+        "address": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "matches_installed": true
+      },
+      {
+        "label": "minimum",
+        "address": "00ce4adc",
+        "bytes": 4,
+        "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+        "matches_installed": true
+      },
+      {
+        "label": "maximum",
+        "address": "00ce4970",
+        "bytes": 4,
+        "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+        "matches_installed": true
+      },
+      {
+        "label": "negzero",
+        "address": "00d7a208",
+        "bytes": 4,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+        "matches_installed": true
+      },
+      {
+        "label": "unchanged",
+        "address": "00d7a260",
+        "bytes": 4,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "matches_installed": true
+      },
+      {
+        "label": "hundred",
+        "address": "00ce3d08",
+        "bytes": 4,
+        "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
+        "matches_installed": true
+      },
+      {
+        "label": "fov",
+        "address": "00ce7d20",
+        "bytes": 4,
+        "sha256": "c5bc52f5111b4a95d57edccb121dec6b28befe5580e5fe479e04910e0a344dd3",
+        "matches_installed": true
+      },
+      {
+        "label": "far_plane",
+        "address": "00d0c5f8",
+        "bytes": 4,
+        "sha256": "52066a26a37a31badc03cd3a0c8daffc3fe522911c050c84957aecc2e49543ea",
+        "matches_installed": true
+      },
+      {
+        "label": "aspect",
+        "address": "00d5bd98",
+        "bytes": 4,
+        "sha256": "6f4cd532e8c154c45c348ae70bd34e9a5dffdb04411785cb9aa4d5f2ff1ce765",
+        "matches_installed": true
+      },
+      {
+        "label": "scalar_a",
+        "address": "00ce77fc",
+        "bytes": 4,
+        "sha256": "c36c2606ae26dfb7a6c61b3b7dd29931582302a8d695f198455710a61847fcb5",
+        "matches_installed": true
+      },
+      {
+        "label": "scalar_b",
+        "address": "00ce3c88",
+        "bytes": 4,
+        "sha256": "03a88c8867b3fbcfeefc3270af46afbeb74a27e12cad758e188154cb4aa923dc",
+        "matches_installed": true
+      },
+      {
+        "label": "squared_radius",
+        "address": "00d7a308",
+        "bytes": 8,
+        "sha256": "3f710ac088db33363087de2b9a657541fe5447821debaa9fe5cbd538eb1a5f29",
+        "matches_installed": true
+      }
+    ]
+  },
+  "validation": {
+    "msvc": "Win32 /W4 /WX",
+    "build_passed": true,
+    "ctests_passed": 2,
+    "verified_seed_spans": 8,
+    "fixture_compile": "/std:c++20 /EHsc /O2 /W4 /WX /MD /MANIFEST:EMBED",
+    "fixture_exit_code": 0,
+    "fixture_passed": true
+  },
+  "observed": {
+    "screen_layers": 2,
+    "share_byte": 129,
+    "flags": 16,
+    "priorities": [
+      7,
+      99
+    ],
+    "render_order": 2,
+    "canonical_store_count": 1,
+    "same_actual_store": true,
+    "same_actual_outer_scene": true,
+    "outer_scene_references_before_final": [
+      1,
+      2,
+      1
+    ],
+    "camera_initial_references": 1,
+    "directional_initial_references": 1,
+    "additional_node_or_scene_retains": 0,
+    "retained_weak_handle_references_before_final": 2,
+    "final_weak_target": null,
+    "final_weak_handle_references": 1,
+    "camera_clear_flags": 22,
+    "camera_clear_color": 0,
+    "viewport_dimensions": [
+      800,
+      600
+    ],
+    "viewport_references": 1,
+    "renderer_parameter_calls": 6,
+    "directional_allocations": 1,
+    "radius_calls": 1,
+    "bounds_calls": 1,
+    "priority_registration_calls": 0,
+    "visibility_hook_calls": 2,
+    "visible_count_before_store_removal": 2,
+    "gui_trees_null_before_real_derived_release": true,
+    "prederived_observations": 2,
+    "prederived_remaining_root_counts": [
+      3,
+      2
+    ],
+    "all_node_companions_removed": true,
+    "final_store_count": 0,
+    "all_five_native_pools_zero_slabs_after_trim": true,
+    "weak_mutex_and_type_counter_publications_cleared": true
+  },
+  "controlled_boundaries": [
+    "real D3D9 NULLREF device; fixture renderer parameter references 800x600",
+    "evaluated GuiTable and plain page-root fragment, without Lua or complete manager page list",
+    "priority registration observer asserted unused; real prepass seeds applied priority",
+    "visibility hook observer; no game script callback",
+    "sqrt bypass=1, conversion selector=1, matherr bypass=0 in supplied runtime globals",
+    "default masked x87, MXCSR=0x1f80; shared reconstructed CRT sqrt and actual recovered exception handler",
+    "nonnull geometry and shadow services rejected and not reached",
+    "viewport view binds actual current owner but no renderer consumes it"
+  ],
+  "limits": [
+    "bounded host ownership composition only",
+    "no original whole-function differential execution",
+    "no independent original CRT or unmasked exception equivalence",
+    "no queue submission, rendering, pixels, or gameplay validation",
+    "no failure-unwind coverage",
+    "shared-first then owned teardown only; creator-first dangling borrowed store scenario not exercised",
+    "new C++ owner interfaces are not original binary ABI"
+  ],
+  "missing_production_boundary_blocking_this_fixture": null,
+  "artifacts": [
+    {
+      "path": "local/gui_screen_ownership_probe.cpp",
+      "bytes": 19923,
+      "sha256": "fff862f0627b4f51f9e83efe58928719da2c09a7003c6aa5c142e9a9c7906fd0"
+    },
+    {
+      "path": "local/build_gui_screen_ownership_probe.ps1",
+      "bytes": 1341,
+      "sha256": "05fcaa2c2e40783a0fd3f21e6b7d20a3e74a27d7081ad733833fa1755378565e"
+    },
+    {
+      "path": "local/gui_screen_ownership_probe.exe",
+      "bytes": 225280,
+      "sha256": "26dfe1bcff78ae3194dfbf99223a0833158916cd1cada1b61a32d355ec66cdf6"
+    },
+    {
+      "path": "local/gui_screen_ownership_probe.log",
+      "bytes": 869,
+      "sha256": "e3db36e35b889fadc6de5bd7bf69036cf4ce709afea58c6b0547d1d9056e57f5"
+    },
+    {
+      "path": "local/prepare_gui_screen_ownership.py",
+      "bytes": 2515,
+      "sha256": "057ac369d7b31fdca4ef9f2b0fe69ccacab5efb6af7a2184ec1057254ebbeda9"
+    },
+    {
+      "path": "local/gui_screen_native_values.hpp",
+      "bytes": 2715,
+      "sha256": "254548ecbd9d5a8ba7a9a062acb5b8daeb925d1dd6ca7a533dd3631e2cea26f2"
+    },
+    {
+      "path": "local/gui_screen_ownership_evidence.json",
+      "bytes": 4694,
+      "sha256": "2258a9eed068d9d9ec53df8a52fbf05645851606d7e74a87175710ad0bb97af4"
+    },
+    {
+      "path": "local/gui_screen_ownership_prepare.log",
+      "bytes": 38,
+      "sha256": "9d8495a985ca76d5e8f625bb3d8429ecd9fe953ade5bcca1ff4de3fd32def45b"
+    },
+    {
+      "path": "local/gui_screen_ownership_build.log",
+      "bytes": 17486,
+      "sha256": "cb329538fdbb9b5a048f8e084009b95d09b0f674d7bfb5861d62e4e92817dcf8"
+    },
+    {
+      "path": "local/gui_screen_ownership_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/record_gui_screen_ownership.py",
+      "bytes": 4711,
+      "sha256": "c8aaf1e7b4fdcc68fbfbfdd791ec00507e2c05c06b7fb138a8d75eaeafa30c8e"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 32892612,
+      "sha256": "0f993d5b8d92446696e2b1dabd4c8fb37c58565fda78e2b634e170c102d28b5c"
+    }
+  ]
+}

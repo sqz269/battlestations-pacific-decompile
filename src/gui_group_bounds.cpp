@@ -30,25 +30,6 @@ __declspec(naked) void __fastcall write_group_bounds_kernel(void*, void*, const 
         ret 4
     }
 }
-// Existing CRT library identity BF7420: only expose the native EAX low word.
-// ECX supplies the ACTUAL global address; ST0 is input. The zero branch reuses
-// the already recovered BF7456 body, including its x87 status effects.
-__declspec(naked) std::int32_t __fastcall truncate_st0_kernel(const volatile std::uint32_t*) {
-    __asm {
-        cmp dword ptr [ecx], 0
-        jz x87_fallback
-        push ebp
-        mov ebp, esp
-        sub esp, 8
-        and esp, 0fffffff8h
-        fstp qword ptr [esp]
-        cvttsd2si eax, qword ptr [esp]
-        leave
-        ret
-    x87_fallback:
-        jmp native_x87_truncate_st0_00bf7456
-    }
-}
 __declspec(naked) float __fastcall radius_kernel(const volatile double*, const GuiGroupBoundsCrtAccess*) {
     __asm {
         push esi
@@ -60,7 +41,7 @@ __declspec(naked) float __fastcall radius_kernel(const volatile double*, const G
         fstp dword ptr [esp] // AC5F20
         fld dword ptr [esp] // AC5F24
         mov ecx, dword ptr [esi + 4] // fresh actual runtime global AFTER sqrt
-        call truncate_st0_kernel
+        call native_crt_truncate_st0_00bf7420
         cvtsi2ss xmm0, eax // AC5F34
         movss dword ptr [esp], xmm0 // AC5F39 (native after PUSH destination)
         fld dword ptr [esp] // host float return only; finite, exact binary32

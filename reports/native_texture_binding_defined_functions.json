@@ -1,0 +1,121 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b3cf90",
+      "end_exclusive": "00b3cf94",
+      "length": 4,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "missing_before": true,
+      "function_before": "No function found for 00b3cf90",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_CubeTexture_GetCom at 00b3cf90\nSignature: undefined BSP_CubeTexture_GetCom(void)\nEntry: 00b3cf90\nBody: 00b3cf90 - 00b3cf93"
+    },
+    {
+      "address": "00b3d0c0",
+      "end_exclusive": "00b3d0c4",
+      "length": 4,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "missing_before": true,
+      "function_before": "No function found for 00b3d0c0",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_VolumeTexture_GetCom at 00b3d0c0\nSignature: undefined BSP_VolumeTexture_GetCom(void)\nEntry: 00b3d0c0\nBody: 00b3d0c0 - 00b3d0c3"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b3cf90",
+        "end_address": "00b3cf94"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b3cf90",
+        "end_address": "00b3cf93",
+        "bytes_disassembled": 4,
+        "message": "Successfully disassembled 4 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b3cf90",
+        "name": "BSP_CubeTexture_GetCom",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b3cf90",
+        "function_name": "BSP_CubeTexture_GetCom",
+        "entry_point": "00b3cf90",
+        "body_size": 4,
+        "message": "Function created successfully at 00b3cf90",
+        "warnings": [
+          "Function name 'BSP_CubeTexture_GetCom' \u2014 main part 'CubeTexture_GetCom' is not PascalCase. Expected: CubetextureGetcom",
+          "Function name 'BSP_CubeTexture_GetCom' \u2014 main part 'CubeTexture_GetCom' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_CubeTexture_GetCom' does not start with a recognized verb. First word 'Cube' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b3d0c0",
+        "end_address": "00b3d0c4"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b3d0c0",
+        "end_address": "00b3d0c3",
+        "bytes_disassembled": 4,
+        "message": "Successfully disassembled 4 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b3d0c0",
+        "name": "BSP_VolumeTexture_GetCom",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b3d0c0",
+        "function_name": "BSP_VolumeTexture_GetCom",
+        "entry_point": "00b3d0c0",
+        "body_size": 4,
+        "message": "Function created successfully at 00b3d0c0",
+        "warnings": [
+          "Function name 'BSP_VolumeTexture_GetCom' \u2014 main part 'VolumeTexture_GetCom' is not PascalCase. Expected: VolumetextureGetcom",
+          "Function name 'BSP_VolumeTexture_GetCom' \u2014 main part 'VolumeTexture_GetCom' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_VolumeTexture_GetCom' does not start with a recognized verb. First word 'Volume' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Two actual texture getter definitions restored with comments preserved; project saved"
+}

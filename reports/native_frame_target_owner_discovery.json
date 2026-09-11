@@ -1,0 +1,366 @@
+{
+  "schema_version": 1,
+  "kind": "read_only_native_frame_target_owner_discovery",
+  "generated_utc": "2026-09-11T08:54:11.087506+00:00",
+  "source_commit": "1085a30c28970d7256c579040d2d15a6b9e7774a",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_size": 12223752,
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "pe_image_base": "00400000",
+  "target_config": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "language": "x86:LE:32:default"
+  },
+  "verification": "Every live read used tools/bsp.py ghidra bytes, which calls Client.verify before reading. All complete listed spans equal the unchanged installed PE. No Ghidra writes, exports, code implementation, build, tests, or game validation performed.",
+  "spans": [
+    {
+      "label": "frame_target_construct",
+      "start": "00b1fbb0",
+      "end_exclusive": "00b1fbf2",
+      "length": 66,
+      "file_offset": 7470000,
+      "sha256": "37475c5525bd39ede8ac9ea8883767cb0cf900abb14c6a0f39e1863d3708bd0a",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "8bc133c9c70030b1ce00c7400401000000c70000e6d50089481889481c89482089482489483888483c89480889482889480c89482c894810894830894814894834c3"
+    },
+    {
+      "label": "frame_target_destroy_full",
+      "start": "00b1fc00",
+      "end_exclusive": "00b1fcef",
+      "length": 239,
+      "file_offset": 7470080,
+      "sha256": "64be080eac78cd962e9480b0f1200cc99dd00ea5086d644596c6903af753d168",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "6aff68e3cccb0064a10000000050648925000000005153558be95657896c2410c7450000e6d500c744241c010000008d7528bb040000008b7ee085ff741d8d470450ff152022ce0085c075088b178b028bcfffd0c746e0000000008b0685c0740e8b088b510850ffd2c7060000000083c60483eb0175c08b751885f6741d8d460450ff152022ce0085c075088b168b028bceffd0c74518000000008b453885c0740f8b088b510850ffd2c74538000000008d751c6a008bcec644242000e82efdffff8b3656e8bf6c0d0083c4048bcdc744241cffffffffe814340b008b4c24145f5e5d5b64890d0000000083c410c3"
+    },
+    {
+      "label": "frame_target_scalar_delete",
+      "start": "00b1fcf0",
+      "end_exclusive": "00b1fd0e",
+      "length": 30,
+      "file_offset": 7470320,
+      "sha256": "4e7470a32ffbfe8ddbf79d518924119d75acc1d13a6b987d9da1401f0bd70c0b",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "568bf1e808fffffff644240801740956e8a7680d0083c4048bc65ec20400"
+    },
+    {
+      "label": "vector_reserve_full",
+      "start": "00b1f970",
+      "end_exclusive": "00b1f9f0",
+      "length": 128,
+      "file_offset": 7469424,
+      "sha256": "05d60caebbdd985721d54e5f7d9bac0323c03687103d92db6095f0959ba4a1b7",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "538b5c240883fb01568bf17d05bb01000000395e087d64558bc3c1e0045750e82a5c0d0033ff83c404397e048be8896c24147e3533d28bcd85c9741b8b068b2c1003c289298b68048969048b68088969088b400c89410c83c70183c21083c1103b7e047cd38b6c24148b0e51e8a86f0d0083c4045f892e895e085d5e5bc20400"
+    },
+    {
+      "label": "vector_resize",
+      "start": "00b1f9f0",
+      "end_exclusive": "00b1fa48",
+      "length": 88,
+      "file_offset": 7469552,
+      "sha256": "16c9541a44d68e45f376ab9e6a1c3fc341e8d9f3966e08fedc111081262fcb86",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "538b5c2408568bf13b5e087e0653e86dffffff8b46043bc37d26578bd08bfbc1e2042bf88b0603c2740d33c9890889480489480889480c83c21083ef0175e55f3b5e047d0b83c8ff0146043b5e047cf8895e045e5bc20400"
+    },
+    {
+      "label": "vector_destroy_full",
+      "start": "00b1fb90",
+      "end_exclusive": "00b1fba7",
+      "length": 23,
+      "file_offset": 7469968,
+      "sha256": "9b535b0633b17a7247bef521d3288bd2de34a0d7c5f4c6f8017f834138132fc0",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "566a008bf1e856feffff8b0650e8e76d0d0083c4045ec3"
+    },
+    {
+      "label": "color_assignment",
+      "start": "00b1fab0",
+      "end_exclusive": "00b1faf1",
+      "length": 65,
+      "file_offset": 7469744,
+      "sha256": "2cafc7914b74198e7829503188d196549ffd1630462a850f2353eebff15be5af",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "8b5424048b442408568b7491083bf0742c85c089449108740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20800"
+    },
+    {
+      "label": "depth_assignment",
+      "start": "00b1fb00",
+      "end_exclusive": "00b1fb3b",
+      "length": 59,
+      "file_offset": 7469824,
+      "sha256": "c79728eed9b19cff226a057760ae14063e4d2ff4c1be835b693e2ef12e8c9de3",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "8b442404568b71183bf0742b85c0894118740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400"
+    },
+    {
+      "label": "srgb_assignment",
+      "start": "00b1f700",
+      "end_exclusive": "00b1f70a",
+      "length": 10,
+      "file_offset": 7468800,
+      "sha256": "20951c5094a9e446c6a42f84a79a19e1baa8545bf677dd8584a8ca368daa3801",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "8a44240488413cc20400"
+    },
+    {
+      "label": "frame_target_profile",
+      "start": "00d5e600",
+      "end_exclusive": "00d5e608",
+      "length": 8,
+      "file_offset": 9823744,
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "e030bd00f0fcb100"
+    },
+    {
+      "label": "adjacent_separate_profile_constructor",
+      "start": "00b21400",
+      "end_exclusive": "00b21409",
+      "length": 9,
+      "file_offset": 7476224,
+      "sha256": "b1b9487dd0ced55d215a4107e304541174583785736130eccbbbb6051cafe238",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "8bc1c70008e6d500c3"
+    },
+    {
+      "label": "adjacent_separate_profiles",
+      "start": "00d5e608",
+      "end_exclusive": "00d5e610",
+      "length": 8,
+      "file_offset": 9823752,
+      "sha256": "0fe9844804b628d4ddfd1448393bb1bc3517cad7cb981a2ae55fa9cc06e90026",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "a037b2003061b200"
+    },
+    {
+      "label": "surface_terminal_profile_prefix",
+      "start": "00d619a0",
+      "end_exclusive": "00d619a8",
+      "length": 8,
+      "file_offset": 9836960,
+      "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "e030bd00b0f5b300"
+    },
+    {
+      "label": "base_terminal_invoker",
+      "start": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "file_offset": 8204512,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "85c974098b018b50046a01ffd2c3"
+    },
+    {
+      "label": "base_destroy",
+      "start": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "file_offset": 8204528,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "c70130b1ce00c3"
+    },
+    {
+      "label": "unwind_funclets_and_handler",
+      "start": "00cbccd0",
+      "end_exclusive": "00cbcced",
+      "length": 29,
+      "file_offset": 9161936,
+      "sha256": "0b32935d93a2ece4a9d8da3364cea0232c0cbbb54f912f23a0d1d24d17968bd9",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "8b4df0e91864f1ff8b4df083c11ce9ad2ee6ffb81452df00e9569ef3ff"
+    },
+    {
+      "label": "unwind_map_and_funcinfo",
+      "start": "00df5204",
+      "end_exclusive": "00df5238",
+      "length": 52,
+      "file_offset": 10441220,
+      "sha256": "26373b6a9859ee25c9afb4c23292b097b6525f53ca96855ec2e8161485d63b80",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "ffffffffd0cccb0000000000d8cccb0022059319020000000452df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "label": "creator_allocate_and_construct",
+      "start": "00b4e4a9",
+      "end_exclusive": "00b4e4e1",
+      "length": 56,
+      "file_offset": 7660713,
+      "sha256": "dcae1ae68d350fc691cebd120eeda2b9fbb782496641c61c543689473f5a6834",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "6a40895c2448c706c01ed600895e0c895e10895e1489461ce855830a0083c404894424143bc3c64424440174098bc8e8d316fdffeb0233c0"
+    },
+    {
+      "label": "vector_operator_new_thunk",
+      "start": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "file_offset": 8345022,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "e958120000"
+    },
+    {
+      "label": "operator_new_body",
+      "start": "00bf681b",
+      "end_exclusive": "00bf6884",
+      "length": 105,
+      "file_offset": 8349723,
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000"
+    },
+    {
+      "label": "vector_free_thunk",
+      "start": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "file_offset": 8350089,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "e91efcffff"
+    },
+    {
+      "label": "object_free_thunk",
+      "start": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "file_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_equals_installed_pe": true,
+      "bytes_hex": "e917380000"
+    }
+  ],
+  "owner": {
+    "constructor": "00b1fbb0",
+    "destroy_full": "00b1fc00",
+    "deleting_destructor": "00b1fcf0",
+    "native_allocation_bytes": 64,
+    "concrete_profile": "00d5e600",
+    "profile_entries": [
+      "00bd30e0",
+      "00b1fcf0"
+    ],
+    "profile_boundary_evidence": "00b21400 writes the independent 00d5e608 profile; binary scan of 00d5e600 immediate finds only constructor 00b1fbc3 and destructor 00b1fc23",
+    "refcount_offset": 4,
+    "color_owner_offsets": [
+      8,
+      12,
+      16,
+      20
+    ],
+    "depth_owner_offset": 24,
+    "vector_header_offset": 28,
+    "color_com_offsets": [
+      40,
+      44,
+      48,
+      52
+    ],
+    "depth_com_offset": 56,
+    "srgb_byte_offset": 60,
+    "constructor_unwritten_offsets": [
+      61,
+      62,
+      63
+    ],
+    "terminal": [
+      "00bd30e0 current virtual4 flag1",
+      "00b1fcf0",
+      "00b1fc00",
+      "00bf65ac iff flags bit0"
+    ],
+    "destroy_interleaving": "For each color slot, intrusive decrement/terminal then clear, then current COM Release then clear. Depth intrusive then depth COM. Full vector resize0/free, base profile restore, SEH epilogue.",
+    "exception_state_1": "00cbccd8 -> 00b1fb90(this+1c), then 00cbccd0 -> 00bd30f0(this). No synthesized release of remaining surface fields.",
+    "exception_state_0": "00cbccd0 -> 00bd30f0(this) only",
+    "unwind_funcinfo": "00df5214",
+    "unwind_map": "00df5204",
+    "unrelated_rejected_owner": [
+      "00b1f6b0",
+      "00b1f330"
+    ]
+  },
+  "packets": [
+    {
+      "id": "native-frame-target-vector",
+      "addresses": [
+        "00b1f970",
+        "00b1f9f0",
+        "00b1fb90"
+      ],
+      "implementation_files": [
+        "include/bsp/native_frame_target_vector.hpp",
+        "src/native_frame_target_vector.cpp"
+      ],
+      "ready": true,
+      "needs": [
+        "existing complete shared CRT allocation/free service"
+      ],
+      "abi": {
+        "00b1f970": "ECX header; signed stack capacity; RET4",
+        "00b1f9f0": "ECX header; signed stack count; RET4",
+        "00b1fb90": "ECX header; RET"
+      },
+      "current_status": "named-but-incomplete in 1085a30; assigned separate worker by primary after discovery",
+      "approved_api": {
+        "row": "NativeFrameTargetVectorRow { uint32_t words[4]; }",
+        "storage": "NativeFrameTargetVectorStorage { Row* data_00; int32_t count_04; int32_t capacity_08; }",
+        "functions": [
+          "reserve_native_frame_target_vector_00b1f970(Storage&, int32_t)",
+          "resize_native_frame_target_vector_00b1f9f0(Storage&, int32_t)",
+          "destroy_native_frame_target_vector_00b1fb90(Storage&)"
+        ],
+        "extra_context": false,
+        "approval": "Primary approved worker proposal during finalization; implementation not independently reviewed or asserted integrated by this discovery."
+      }
+    },
+    {
+      "id": "native-frame-target-owner",
+      "addresses": [
+        "00b1fbb0",
+        "00b1fc00",
+        "00b1fcf0"
+      ],
+      "optional_assignment_addresses": [
+        "00b1fab0",
+        "00b1fb00",
+        "00b1f700"
+      ],
+      "implementation_files": [
+        "include/bsp/native_frame_target_owner.hpp",
+        "src/native_frame_target_owner.cpp"
+      ],
+      "ready_after": [
+        "native-frame-target-vector"
+      ],
+      "needs": [
+        "actual D619A0 surface owners and NativeSurfaceOwnerContext with complete B3F5B0 terminal",
+        "actual IUnknown Release",
+        "existing shared CRT allocation/free",
+        "concrete complete BD30E0 and BD30F0 semantics"
+      ],
+      "abi": {
+        "00b1fbb0": "ECX storage; EAX original storage; RET",
+        "00b1fc00": "ECX owner; RET",
+        "00b1fcf0": "ECX owner; stack flags; EAX original address including freed; RET4",
+        "00b1fab0": "ECX group; stack slot and incoming pointer; RET8",
+        "00b1fb00": "ECX group; stack incoming pointer; RET4",
+        "00b1f700": "ECX group; stack low byte; RET4"
+      },
+      "current_status": "named-but-incomplete; discovery recommends full implementation after vector API review"
+    }
+  ],
+  "limits": [
+    "Read-only discovery only; no reconstructed C++, tests, Ghidra edits, build or runtime validation.",
+    "No generic foreign-profile support or whole renderer lifecycle closure.",
+    "Root owns getter leaves and future parent 00b24e70; these files do not edit those implementations.",
+    "B1FA50 append is not reached by this owner lifetime and is not a prerequisite.",
+    "Source providers and statuses are checked at 1085a30; primary later reported getter closure 4bc114a without independent revalidation here."
+  ]
+}

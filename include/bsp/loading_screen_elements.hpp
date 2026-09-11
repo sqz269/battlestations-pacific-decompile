@@ -112,8 +112,8 @@ struct LoadingHintList {
 
 // Fields of the same 0x58-byte singleton, all owned by the rotation.
 struct LoadingHintRotation {
-    std::int32_t last_tick{-1}; // +2Ch, also the ceiling report_loading_progress raises
-    float progress{0.0f}; // +30h, the monotonic maximum reported progress
+    std::int32_t progress_units{-1}; // +2Ch, signed max of converted incoming*128
+    float progress{0.0f}; // +30h, comparison-selected progress; see0057BEC0
     ClockTimestamp shown_at{}; // +38h..+47h, when the current hint went up
     float hold_seconds{0.0f}; // +48h, its minimum time on screen
     float progress_step{0.0f}; // +4Ch, the progress each hint is worth

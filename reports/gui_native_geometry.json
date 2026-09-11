@@ -1,0 +1,153 @@
+{
+  "packet": "orch2_gui_native_geometry_q",
+  "date": "2026-09-11",
+  "source": "src/gui_native_geometry.cpp",
+  "header": "include/bsp/gui_native_geometry.hpp",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_before_each_query": true,
+    "mutations": false
+  },
+  "scope": "Concrete canonical mesh and section allocation, actual model+180 association and required-resource raw section publication fragments; no GuiGeometryRuntimeServices adapter",
+  "functions": [
+    {
+      "address": "00ab2540",
+      "inclusive_body_end": "00ab25f7",
+      "final_ret_instruction": "00ab25f7",
+      "primary_fragment_inclusive_bytes": [
+        "00ab2563",
+        "00ab25c4"
+      ],
+      "original_abi": "ECX widget; no stack arguments; RET",
+      "old_function_name": "BSP_GuiIcon_CreateGeometryAndResetPosition_Provisional",
+      "old_plate_comment": "[BSP reconstruction 00ab2540]\nProvisional name, not recovered. No Ghidra function. Actual vtable00D5C4C0+74=00AB2540; ECX=this, RET at00AB25F7. If widget+74 clear constructs BCh mesh00B73D70 and associates geometry0 via00B75170 with(-1,-1), constant00D7A260=BF800000 verified. Always calls00AA7DC0(zero float3). CLI disk disassembly and live byte dump; Ghidra read-only. See docs/GUI_ICON_RUNTIME.md.",
+      "current_function_exists": true,
+      "listed_instruction_count": 57,
+      "flow_gaps": 0,
+      "no_free_gap_repair_needed": true
+    },
+    {
+      "address": "00acf8f0",
+      "inclusive_body_end": "00acf9a7",
+      "final_ret_instruction": "00acf9a7",
+      "primary_fragment_inclusive_bytes": [
+        "00acf913",
+        "00acf974"
+      ],
+      "original_abi": "ECX widget; no stack arguments; RET",
+      "old_function_name": "BSP_GuiFrameBox_ConstructedHook",
+      "old_plate_comment": "[BSP reconstruction 00acf8f0]\ndocs/GUI_FRAMEBOX_WIDGET.md; inclusive final-instruction range00acf8f0..00acf9a7; original ABI ECX widget; RET; virtual+74; semantic name hypothesis; Ghidra read-only, annotation pending.",
+      "current_function_exists": true,
+      "listed_instruction_count": 57,
+      "flow_gaps": 0,
+      "no_free_gap_repair_needed": true
+    },
+    {
+      "address": "00ab3cb0",
+      "inclusive_body_end": "00ab44ab",
+      "final_ret_instruction": "00ab44a9",
+      "primary_fragment_inclusive_bytes": [
+        "00ab443d",
+        "00ab4489"
+      ],
+      "original_abi": "ECX widget; stack low16 state; RET4",
+      "old_function_name": "BSP_GUIStatefulImage_RebuildStateGeometry",
+      "old_plate_comment": "[BSP reconstruction 00ab3cb0]\nThiscallRET4 state. Creates/reuses fourvertex stream using SimpleColor.mvfm, GUI material, section type5/fourvertices/twoprimitives. Callsvtable+7Ch writer, setswhitecolors/unlocks andretainsgeometry. No immediate D3D draw. See docs/GUI_GEOMETRY_DISPATCH.md.",
+      "current_function_exists": true,
+      "listed_instruction_count": 614,
+      "flow_gaps": 0,
+      "no_free_gap_repair_needed": true
+    },
+    {
+      "address": "00ad0d80",
+      "inclusive_body_end": "00ad1580",
+      "final_ret_instruction": "00ad157e",
+      "primary_fragment_inclusive_bytes": [
+        "00ad150d",
+        "00ad155d"
+      ],
+      "original_abi": "ECX widget; stack low16 state; RET4",
+      "old_function_name": "BSP_GuiFrameBox_RebuildGeometry",
+      "old_plate_comment": "[BSP reconstruction 00ad0d80]\ndocs/GUI_FRAMEBOX_WIDGET.md; inclusive final-instruction range00ad0d80..00ad157e; original ABI ECX widget; stack signed16 state; RET4; virtual+80; semantic name hypothesis; Ghidra read-only, annotation pending.",
+      "current_function_exists": true,
+      "listed_instruction_count": 630,
+      "flow_gaps": 0,
+      "no_free_gap_repair_needed": true
+    }
+  ],
+  "actual_ownership": {
+    "mesh_payload": 188,
+    "mesh_pool_slot": 192,
+    "mesh_pool_word_offset": 188,
+    "section_payload": 96,
+    "section_pool_slot": 100,
+    "section_pool_word_offset": 96,
+    "canonical_registry": "same NativeRenderActualOwners for model, mesh, section and every supplied resource",
+    "count": "one actual +04 atomic borrowed by the canonical companion; no initialized mirror",
+    "model_geometry_offset": 384,
+    "typed_shadow_geometry": false,
+    "factory_creator_references": 1,
+    "association_reference_sequence": [
+      1,
+      2,
+      1
+    ]
+  },
+  "sentinel": {
+    "address": "00d7a260",
+    "hex": "000080bf",
+    "float": -1.0,
+    "native_reads": 1,
+    "meaning": "B75170 unchanged scalar sentinel; model+178/+17C preserved, not assigned new LOD limits"
+  },
+  "publication_order": [
+    "caller actual stream unlock",
+    "caller AA7220",
+    "B864C0 actual material retained assignment",
+    "release temporary actual material",
+    "B865A0 actual stream descriptors/current renderer+40",
+    "B73C60 append only for new section",
+    "release acquired actual section",
+    "caller widget current virtual+50"
+  ],
+  "next_packet": {
+    "stream": "Current renderer+38 SimpleColor.mvfm and +5C create4/54 flags1; raw +04 owner must share LogicalVertexStream/physical buffer/cache identity; stream+24 B48CE0 reads declaration+68; publish mesh0 B73BB0 and release factory temporaries",
+    "material": "00535320 manager+48 effect, B18780 allocation and B18900 actual110h material; real canonical terminal owner with SAME MaterialCloneState lighting/textures/effect/parameters. B18B60 semantic clone is not native storage.",
+    "layout": "B865A0 current renderer+40/B2F710 factory-tree-pool actual layout identity and current canonical companion must share D3D9VertexLayout; no independent make_shared layout.",
+    "rebuild": [
+      "00ab3cb0",
+      "00ad0d80"
+    ],
+    "separate_clip_owner_packet": [
+      "00aa9f10",
+      "00b18a40"
+    ],
+    "existing_typed_runtime": "Unchanged and not connected; typed fields alone never populate raw mesh+54/+64 or section+20/+50. Native bounds and draw remain unavailable through typed callbacks."
+  },
+  "host_policy": [
+    "bad_alloc on null allocation; registration throws transactionally with no binding",
+    "host allocation cleanup through existing native destructor/pool path",
+    "association exception releases creator without rolling back actual setter publication",
+    "raw publication pointer arguments become null before consuming references; no callback retry or rollback",
+    "required actual nonnull stream0/material/section/layout; no fallback resources",
+    "environments and domain outlive all explicit native releases"
+  ],
+  "validation": {
+    "verify_seeds": "8 of8 byte matches",
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict scripts/build.ps1 passed",
+    "ctests": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "ignored_fixture": "local/gui_native_geometry_probe.cpp /MANIFEST:EMBED PASS: canonical mesh/section+04, model+180 sentinel preservation, retained replacement, terminal retirement, real pool return",
+    "raw_publication_fixture": false,
+    "permanent_tests_added": 0,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "render_validated": false
+  }
+}

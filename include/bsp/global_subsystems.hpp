@@ -1,7 +1,12 @@
 #pragma once
 
 #include "bsp/dialog_config.hpp"
+#include "bsp/global_script_folders.hpp"
+#include "bsp/marker_classes.hpp"
 #include "bsp/panel_owner.hpp"
+#include "bsp/race_config.hpp"
+#include "bsp/recon_values.hpp"
+#include "bsp/robot_config.hpp"
 #include "bsp/weather_config.hpp"
 
 namespace bsp {
@@ -26,11 +31,9 @@ struct GlobalSubsystemHost {
     // Opens a distinct stack FileBlock and returns its retained host identity.
     virtual void* construct_file_block_00be0a30(const NativeString&, int flag) = 0;
     virtual void destroy_file_block_00bdcb30(void*) = 0;
-    virtual void load_global_scripts_00886900(void* mission_lua) = 0;
-    virtual void load_races_00800160() = 0;
-    virtual void load_robots_00901610() = 0;
-    virtual void install_recon_values_00803a40() = 0;
-    virtual void load_marker_classes_006dbeb0() = 0;
+    // Binding only: return the real service adapter for this captured mission
+    // owner. The recovered folder/file/chunk sequences execute directly.
+    virtual MissionLuaHostServices& mission_lua_services_1a08(void* captured_owner) = 0;
     virtual void run_string_006b8ad0(void* lua_instance, const char*,
         int capture_results, int capture_error, int result_mode) = 0;
 
@@ -63,10 +66,19 @@ struct GlobalSubsystemContext {
     const PanelOwnerAllocationWords& panel_allocation;
     const WeatherConfigAllocationWords& weather_allocation;
     const SingletonLifetimeCallbacks& validation;
+    GlobalScriptFolderContext& global_script_folders;
+    RaceRecordTable& races_00f87464;
+    RaceConfigContext& race_config;
+    RobotConfigRegistry& robots_00f89994;
+    RobotConfigAliases robot_aliases;
+    RobotConfigContext& robot_config;
+    // Resolves current embedded game+1A0C independently of mission+1A08.
+    MarkerClassContext& marker_classes;
+    ReconValuesContext& recon_values;
 };
 
 // Complete normal-flow004DC6A0, ECX=game, RET at004DC93F. Allocation and
-// refcount operations are concrete; the two recovered owners/loaders execute
+// refcount operations and recovered script/configuration loaders execute
 // directly. Other callees above still require real game implementations.
 // C++ exception cleanup is an adaptation, not recovered native SEH/ABI proof.
 void construct_global_subsystems_004dc6a0(GlobalSubsystemState,

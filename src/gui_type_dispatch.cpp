@@ -1,4 +1,5 @@
 #include "bsp/gui_type_dispatch.hpp"
+#include "bsp/gui_clip_box.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include <cstring>
 #include <stdexcept>
@@ -164,6 +165,8 @@ struct GuiTypeDispatchFactory::Shared {
         switch (owner.layout().type) {
         case GuiWidgetType::Group:
             return std::make_unique<GuiGroupTypeImplementation>();
+        case GuiWidgetType::ClipBox:
+            return std::make_unique<GuiClipBoxTypeImplementation>(owner, services.crt_sse2_conversion);
         case GuiWidgetType::Icon:
             require(services.icon, "Icon type factory has no actual resource services");
             return std::make_unique<GuiIconTypeImplementation>(owner, services.icon(owner));
@@ -181,7 +184,7 @@ struct GuiTypeDispatchFactory::Shared {
                 services.crt_sse2_conversion);
         }
         default:
-            throw std::invalid_argument("GUI type factory supports only Screen1, Group2, Icon6 and FrameBox18");
+            throw std::invalid_argument("GUI type factory supports only Screen1, Group2, Icon6, ClipBox16 and FrameBox18");
         }
     }
 };

@@ -1,0 +1,186 @@
+{
+  "packet": "orch4_recon_values_g",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra": "http://127.0.0.1:8089"
+  },
+  "functions": [
+    {
+      "address": "00803a40",
+      "name": "BSP_ReconTables_Install",
+      "source": "src/recon_values.cpp",
+      "header": "include/bsp/recon_values.hpp",
+      "document": "docs/RECON_VALUES.md",
+      "original_abi": "No native arguments; RET; incidental EAX is not a result contract",
+      "last_instruction": "00803b4d",
+      "last_instruction_length": 1,
+      "end_inclusive": "00803b4d",
+      "instruction_count": 76,
+      "evidence": "Complete listing.00803A46/A4B/A56 captures current game+1A08 mission host -> host+04 Lua instance. Ensure global recon, integer children0..2, relations enemy/neutral/unknown/own in order, then008039E0. Each relation/index pop retains captured instance and reloads its state+04; final006B8210 pop. Installs only tables, no numbers.",
+      "uncertainty": "New C++ context with borrowed actual instance slot; requires live valid Lua table/stack inputs. Direct stock Lua5.1.1 calls preserve API behavior, not native allocator/GC timing, binary fastcall ABI, or error/panic transport. No game validation.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "006b8190",
+      "name": "BSP_LuaInstance_PushGlobalTableIfNil",
+      "source": "src/recon_values.cpp",
+      "header": "include/bsp/recon_values.hpp",
+      "document": "docs/RECON_VALUES.md",
+      "original_abi": "ECX=Lua instance; const char* key stack; RET4",
+      "last_instruction": "006b8205",
+      "last_instruction_length": 3,
+      "end_inclusive": "006b8207",
+      "instruction_count": 37,
+      "evidence": "Each Lua primitive reloads captured instance+04. Ordinary globals gettable(-10002); only type0 nil executes pop/key/createtable(0,0)/settable/globals gettable. Preserves nonnil values and metamethod callback behavior.",
+      "uncertainty": "Name is a descriptive hypothesis; native result is only the stack value. Current malformed void prototype hides ECX and key. Binding must expose the real mutable state slot; unprotected Lua failure behavior is not translated.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "006b8210",
+      "name": "BSP_LuaInstance_PopTable",
+      "source": "src/recon_values.cpp",
+      "header": "include/bsp/recon_values.hpp",
+      "document": "docs/RECON_VALUES.md",
+      "original_abi": "ECX=Lua instance; no stack arguments; tail JMP to lua_settop",
+      "last_instruction": "006b8218",
+      "last_instruction_length": 5,
+      "end_inclusive": "006b821c",
+      "instruction_count": 3,
+      "evidence": "MOV ECX,[ECX+4]; MOV EDX,-2; JMP00A673E0. Reads the retained instance's current state slot rather than a captured Lua state.",
+      "uncertainty": "New C++ interface, not the native register tail-call ABI; valid stack remains a native precondition.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "00803750",
+      "name": "BSP_ReconTableScope_ConstructIndexed",
+      "source": "src/recon_values.cpp",
+      "header": "include/bsp/recon_values.hpp",
+      "document": "docs/RECON_VALUES.md",
+      "original_abi": "ECX=fresh8h scope; stack(instance*,int32 key); EAX=this; RET8",
+      "last_instruction": "008037c0",
+      "last_instruction_length": 3,
+      "end_inclusive": "008037c2",
+      "instruction_count": 41,
+      "evidence": "Write vtable00D08E5C and borrowed instance+04; capture state once; lua_checkstack(2) ignored; rawgeti(-1,key), nil-only pop/createtable/rawseti(-2,key)/rawgeti(-1,key).",
+      "uncertainty": "C++ scope returns a state-slot projection by value, not native EAX or callable native vtable. No automatic destructor, registry reference or added overflow handler.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "008037d0",
+      "name": "BSP_ReconTableScope_ConstructNamed",
+      "source": "src/recon_values.cpp",
+      "header": "include/bsp/recon_values.hpp",
+      "document": "docs/RECON_VALUES.md",
+      "original_abi": "ECX=fresh8h scope; stack(instance*,const char* key); EAX=this; RET8",
+      "last_instruction": "0080385c",
+      "last_instruction_length": 3,
+      "end_inclusive": "0080385e",
+      "instruction_count": 47,
+      "evidence": "Write vtable00D08E5C and borrowed instance+04; capture state once; lua_checkstack(2) ignored; key/rawget(-2), nil-only pop/key/createtable/rawset(-3)/key/rawget(-2).",
+      "uncertainty": "C++ scope returns a state-slot projection by value, not native EAX or callable native vtable. Native raw-table and valid-key preconditions retained; no metamethod-based substitute.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "008039e0",
+      "name": "BSP_ReconTables_InstallCategories",
+      "source": "src/recon_values.cpp",
+      "header": "include/bsp/recon_values.hpp",
+      "document": "docs/RECON_VALUES.md",
+      "original_abi": "No native arguments; RET; borrowed current Lua stack table is an implicit input",
+      "last_instruction": "00803a34",
+      "last_instruction_length": 1,
+      "end_inclusive": "00803a34",
+      "instruction_count": 23,
+      "evidence": "008039F0 reloads current game every iteration; F6 reads category pointer, F8/FF follow mission host+1A08/instance+04.008037D0 pushes raw named child; inlined destruction restores vtable and pops through captured instance's current state+04. Pointer iteration00E0B590..00E0B5DC exclusive gives19 categories.",
+      "uncertainty": "Required live19-pointer view plus owner resolver replaces absolute globals. Resolver is a projection of the real owner, not a whole-body operation. Native memory layout and reentrant invalidation remain host preconditions.",
+      "status": "reconstructed"
+    }
+  ],
+  "native_layout": {
+    "mission_host_path": "[00E188A8]+1A08 -> pointer; host+04 -> Lua instance pointer; instance+04 -> lua_State pointer",
+    "scope_size": 8,
+    "scope_fields": {
+      "00": "vtable00D08E5C",
+      "04": "borrowed Lua instance pointer"
+    },
+    "scope_lifetime": "Explicit inlined reset-vtable/pop only; no object allocation, registry reference, retain/release or baseline stack restoration"
+  },
+  "category_table": {
+    "address": "00e0b590",
+    "end_inclusive": "00e0b5db",
+    "entry_count": 19,
+    "names": [
+      "mothership",
+      "destroyer",
+      "torpedoboat",
+      "battleship",
+      "cruiser",
+      "cargo",
+      "landingship",
+      "levelbomber",
+      "divebomber",
+      "torpedobomber",
+      "fighter",
+      "reconplane",
+      "kamikaze",
+      "submarine",
+      "landvehicle",
+      "landfort",
+      "airfield",
+      "shipyard",
+      "path"
+    ],
+    "evidence": "Pointer-table and all literal bytes verified live; xrefs show reads/data references. Context nevertheless accepts the live pointer table rather than copying its contents."
+  },
+  "library_identity_observations": [
+    {
+      "address": "00a672f0",
+      "current_name": "FUN_00a672f0",
+      "proposed_name": "lua_checkstack",
+      "existing_provenance": "Current function remains unnamed; no library tag reported by lookup",
+      "scope": "Reused existing library, analyzed only; leased under orch4_recon_lua_g for parent naming after release",
+      "evidence": "Complete native listing matches vendored Lua5.1.1 lapi.c:95: (top-base+size)>2048 false path; stack growth; ci->top enlargement; return1. ECX=L, EDX=size; RET00A6733A length1."
+    },
+    {
+      "address": "00a67ea0",
+      "current_name": "lua_rawset__prov",
+      "proposed_name": "lua_rawset",
+      "existing_provenance": "Existing lua511 tag, medium confidence, rename disposition; library identity retained and confirmed against full stock source",
+      "scope": "Preserve existing library identity",
+      "evidence": "Complete body matches lapi.c:667: index2adr, luaH_set of top-2, copy top-1, GC table barrier, top-=2. RET00A67EFA length1."
+    }
+  ],
+  "flow": {
+    "read_only_audit": "Six owned bodies, all zero gaps",
+    "missing_starts": [],
+    "pending_repairs": [],
+    "ghidra_mutations": [],
+    "annotation_owner": "Parent after lease release; names and prototype corrections above are proposals"
+  },
+  "validation": {
+    "build": "PASS: standalone scripts/build.ps1, MSVC Win32 Release",
+    "existing_tests": "PASS: reconstructed_math,1/1 tests configured in isolated worktree",
+    "focused_fixture": "PASS: one real Lua5.1.1 callback-switch case;229 owner resolutions; captured outer versus live category instance; raw-child metamethod bypass; nonnil false and table identity; indices0..2; both stacks balanced",
+    "fixture_compilation": "MSVC x86 C++17 /W4 /WX /MD; linked built bsp_core.lib and bsp_lua511.lib",
+    "core_library_sha256": "137975C3D7984DB02788AECA1E25D7B0027E7A0DEBFB4264E5C50A16BB9323FA",
+    "fixture_source": "local/recon-values-probe.cpp",
+    "fixture_recipe": "local/run-recon-values-probe.ps1 -SourceRoot <checkout> [-CoreLibrary <lib>] [-LuaLibrary <lib>]",
+    "fixture_log": "local/recon-values-probe.log",
+    "build_log": "local/recon-values-build.log",
+    "game_validated": false,
+    "binary_abi_validated": false,
+    "unverified": "Native heap/GC scheduling, invalid stack or non-table child access, panic/failure transport, and callbacks replacing a captured instance's state slot are assembly-reviewed boundaries, not separately fixture-tested"
+  },
+  "parent_ghidra": {
+    "count": 8,
+    "saved": true,
+    "readback_verified": true,
+    "prior_comments_preserved": true,
+    "before_log": "local/ghidra-annotations-20260911T085445Z.json",
+    "readback": "local/recon_values_comments.json",
+    "exports": "local/recon_values_exports.log",
+    "library_names": "Named verified lua_checkstack; preserved existing lua_rawset__prov identity and appended complete stock-source confirmation."
+  },
+  "independent_parent_review": "Parent checked all complete outer/global/child/category listings against direct API and slot reloads; no must-fix in documented domain."
+}

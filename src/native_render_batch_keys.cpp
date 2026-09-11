@@ -55,6 +55,26 @@ __declspec(naked) std::uint64_t __cdecl native_x87_truncate_st0_00bf7456() noexc
     }
 }
 
+// Moved without floating-instruction changes from gui_group_bounds.cpp so
+// GUI radius and frontend progress share one actual mode-dependent converter.
+__declspec(naked) std::int32_t __fastcall native_crt_truncate_st0_00bf7420(
+    const volatile std::uint32_t*) noexcept {
+    __asm {
+        cmp dword ptr [ecx], 0
+        jz x87_fallback
+        push ebp
+        mov ebp, esp
+        sub esp, 8
+        and esp, 0fffffff8h
+        fstp qword ptr [esp]
+        cvttsd2si eax, qword ptr [esp]
+        leave
+        ret
+    x87_fallback:
+        jmp native_x87_truncate_st0_00bf7456
+    }
+}
+
 __declspec(naked) std::uint32_t __fastcall
 native_render_entry_material_depth_less_00b51ab0(const void*, const void*) noexcept {
     __asm {

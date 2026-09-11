@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00b24460",
+    "before": {
+      "address": "00b24460",
+      "function_name": "BSP_D3D9Renderer_SetRenderStateCached",
+      "comment": "[BSP reconstruction 00b24460]\nthiscall RET 8h. Valid byte at this+40h+state, value at this+114h+4*state. Writes cache before device virtual E4h SetRenderState, increments +1ba0h even on API failure; skips unchanged valid entries. Optional renderer guard."
+    },
+    "after": {
+      "address": "00b24460",
+      "old_name": "BSP_D3D9Renderer_SetRenderStateCached",
+      "name": "BSP_D3D9Renderer_SetRenderStateCached",
+      "evidence": "Full169byte render setter. Rawvalidbyte renderer40+state read BEFORE cleanup arm; shortcircuit currentvalue114+4state onlyifvalid. Changed/invalid writesvalid1 thenvalue before currentdevice1A10/tableE4 SetRenderState. Returning currentcounter1BA0 increments even failedHRESULT; throwncallback skips it. src/native_renderer_cached_states.cpp. Actual optional guard enters before cache access; normal currentmode read before disarm/savedfields; full B21110/FH3 unwind and secondary C++ termination, skippedentryrecord uninitialized. Primary84sealedworkerpins,15fresh live-PE spans1024bytes(749owned; earlier1124summary corrected), strict main build/two CTests/eightfreshseeds. Actualmainlibrary andtwo exact archive members/14sourcehelper ranges; full original threebodies plusallnativeguards/FH3 with28declaredbindings. 11pairedscenarios/91920byte literal normalized trace/11complete8192byterendererpostimages; each186realCOMcalls,189Enter/186Leave,556writes,188prearmvalidityprobes,1331snapshots. All1122COM/OScallPCs and1488accessPCs resolved; whole runtime.text before/after and actualx86moduleentrybytes verified. Default159complete and22callstoppedsequence; nativeFH3 armed/unarmedsearch/unwind. Real returningHRESULTs allS_OK; failedHRESULT behavior instruction-audited only. New explicitactualcontext notoriginalcallerABI; no full reset/gameplay/visualproof. reports/native_renderer_cached_states_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b24610",
+    "before": {
+      "address": "00b24610",
+      "function_name": "BSP_D3D9Renderer_SetSamplerStateCached",
+      "comment": "[BSP reconstruction 00b24610]\nthiscall RET Ch. Twenty internal sampler banks; samplers >=16 map to API sampler+F1h (vertex samplers 257..260). Cache validity at +11cch+72*sampler+state, DWORD value at +11dch+72*sampler+4*state. Device virtual 114h SetSamplerState; counter +1ba4h; cache updated even on failure."
+    },
+    "after": {
+      "address": "00b24610",
+      "old_name": "BSP_D3D9Renderer_SetSamplerStateCached",
+      "name": "BSP_D3D9Renderer_SetSamplerStateCached",
+      "evidence": "Full245byte sampler setter. Rawvalidbyte renderer11CC+72sampler+state read BEFORE cleanup arm; shortcircuit currentvalue11DC+72sampler+4state. Changed/invalid writesvalid1 thenvalue before currentdevice1A10/table114 SetSamplerState. Unsignedsampler>=16 maps+F1 onlyCOM; rawcache arithmetic wraps. Returning currentcounter1BA4 increments even failedHRESULT; throwncallback skips it. src/native_renderer_cached_states.cpp. Actual optional guard enters before cache access; normal currentmode read before disarm/savedfields; full B21110/FH3 unwind and secondary C++ termination, skippedentryrecord uninitialized. Primary84sealedworkerpins,15fresh live-PE spans1024bytes(749owned; earlier1124summary corrected), strict main build/two CTests/eightfreshseeds. Actualmainlibrary andtwo exact archive members/14sourcehelper ranges; full original threebodies plusallnativeguards/FH3 with28declaredbindings. 11pairedscenarios/91920byte literal normalized trace/11complete8192byterendererpostimages; each186realCOMcalls,189Enter/186Leave,556writes,188prearmvalidityprobes,1331snapshots. All1122COM/OScallPCs and1488accessPCs resolved; whole runtime.text before/after and actualx86moduleentrybytes verified. Default159complete and22callstoppedsequence; nativeFH3 armed/unarmedsearch/unwind. Real returningHRESULTs allS_OK; failedHRESULT behavior instruction-audited only. New explicitactualcontext notoriginalcallerABI; no full reset/gameplay/visualproof. reports/native_renderer_cached_states_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b26170",
+    "before": {
+      "address": "00b26170",
+      "function_name": "BSP_D3D9Renderer_InitializeDefaultStates",
+      "comment": "[BSP reconstruction 00b26170]\nthiscall no stack args. Calls cached setter for 19 ordered render states, then seven sampler defaults on each of twenty banks. Defaults include ZFUNC LESS, CULL CCW, linear min/mag, point mip and wrap UVW. Invoked at startup and after successful device reset."
+    },
+    "after": {
+      "address": "00b26170",
+      "old_name": "BSP_D3D9Renderer_InitializeDefaultStates",
+      "name": "BSP_D3D9Renderer_InitializeDefaultStates",
+      "evidence": "Full335byte default initializer. Exactly19 ordered render defaults, then7 ordered sampler states across20 banks (159 total calls) through complete actual cached setters. Device/cache/globals observed between eachcall; no independent guard, no rollback and stop onexception. src/native_renderer_cached_states.cpp. Actual optional guard enters before cache access; normal currentmode read before disarm/savedfields; full B21110/FH3 unwind and secondary C++ termination, skippedentryrecord uninitialized. Primary84sealedworkerpins,15fresh live-PE spans1024bytes(749owned; earlier1124summary corrected), strict main build/two CTests/eightfreshseeds. Actualmainlibrary andtwo exact archive members/14sourcehelper ranges; full original threebodies plusallnativeguards/FH3 with28declaredbindings. 11pairedscenarios/91920byte literal normalized trace/11complete8192byterendererpostimages; each186realCOMcalls,189Enter/186Leave,556writes,188prearmvalidityprobes,1331snapshots. All1122COM/OScallPCs and1488accessPCs resolved; whole runtime.text before/after and actualx86moduleentrybytes verified. Default159complete and22callstoppedsequence; nativeFH3 armed/unarmedsearch/unwind. Real returningHRESULTs allS_OK; failedHRESULT behavior instruction-audited only. New explicitactualcontext notoriginalcallerABI; no full reset/gameplay/visualproof. reports/native_renderer_cached_states_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  }
+]

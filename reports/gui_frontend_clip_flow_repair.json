@@ -1,0 +1,110 @@
+{
+ "repairs": [
+  {
+   "function": "00aa9730",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T08:58:44Z",
+   "decompile_lines_before": 161,
+   "gaps": [
+    {
+     "site": "00aa994c",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00aa9951",
+     "gap_end_exclusive": "00aa99b9",
+     "bytes": 104,
+     "after_call": true,
+     "sha256": "3fb2506a23f345a79e2f700516c40c82efc392fae5cd98bed495c2238e2a979a"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00aa994c",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00aa9951",
+      "gap_end_exclusive": "00aa99b9",
+      "bytes": 104,
+      "after_call": true,
+      "sha256": "3fb2506a23f345a79e2f700516c40c82efc392fae5cd98bed495c2238e2a979a"
+     },
+     "clear": "Success: Cleared flow override at 00aa994c (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 104 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00aa98e4",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa98e4 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00aa994c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa994c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00aa9973",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa9973 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00aa9986",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa9986 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00aa99b9",
+   "explicit_body_sha256": "1c898155d152bf421f0a0890a6db8ae9191a6c96387bded7a20c552f75caec49",
+   "body_before": "Function: BSP_GuiWidget_DestroyBase at 00aa9730\nSignature: undefined BSP_GuiWidget_DestroyBase(void)\nEntry: 00aa9730\nBody: 00aa9730 - 00aa9950",
+   "decompile_lines_after": 180,
+   "gaps_remaining": 1,
+   "body_after": "Function: BSP_GuiWidget_DestroyBase at 00aa9730\nSignature: undefined BSP_GuiWidget_DestroyBase(void)\nEntry: 00aa9730\nBody: 00aa9730 - 00aa9950",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00a9e130",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T08:59:00Z",
+   "decompile_lines_before": 29,
+   "gaps": [
+    {
+     "site": "00a9e17e",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00a9e183",
+     "gap_end_exclusive": "00a9e186",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00a9e17e",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00a9e183",
+      "gap_end_exclusive": "00a9e186",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00a9e17e (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 28,
+   "gaps_remaining": 0
+  }
+ ]
+}

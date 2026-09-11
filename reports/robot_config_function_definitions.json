@@ -1,0 +1,380 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fc930",
+    "end_address": "008fc9ba"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fc930",
+    "end_address": "008fc9b9",
+    "bytes_disassembled": 138,
+    "message": "Successfully disassembled 138 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fc930",
+    "disassemble_first": false,
+    "name": "validate_AAFlakBot_parameters_008fc930"
+   },
+   "result": {
+    "success": true,
+    "address": "008fc930",
+    "function_name": "validate_AAFlakBot_parameters_008fc930",
+    "entry_point": "008fc930",
+    "body_size": 138,
+    "message": "Function created successfully at 008fc930",
+    "warnings": [
+     "Function name 'validate_AAFlakBot_parameters_008fc930' \u2014 main part 'validate_AAFlakBot_parameters_008fc930' is not PascalCase. Expected: ValidateAaflakbotParameters008fc930",
+     "Function name 'validate_AAFlakBot_parameters_008fc930' \u2014 main part 'validate_AAFlakBot_parameters_008fc930' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fc930",
+   "end": "008fc9ba",
+   "name": "validate_AAFlakBot_parameters_008fc930",
+   "after": "Function: validate_AAFlakBot_parameters_008fc930 at 008fc930\nSignature: undefined validate_AAFlakBot_parameters_008fc930(void)\nEntry: 008fc930\nBody: 008fc930 - 008fc9b9"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fcca0",
+    "end_address": "008fcd08"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fcca0",
+    "end_address": "008fcd07",
+    "bytes_disassembled": 104,
+    "message": "Successfully disassembled 104 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fcca0",
+    "disassemble_first": false,
+    "name": "validate_TailGunnerBot_parameters_008fcca0"
+   },
+   "result": {
+    "success": true,
+    "address": "008fcca0",
+    "function_name": "validate_TailGunnerBot_parameters_008fcca0",
+    "entry_point": "008fcca0",
+    "body_size": 104,
+    "message": "Function created successfully at 008fcca0",
+    "warnings": [
+     "Function name 'validate_TailGunnerBot_parameters_008fcca0' \u2014 main part 'validate_TailGunnerBot_parameters_008fcca0' is not PascalCase. Expected: ValidateTailgunnerbotParameters008fcca0",
+     "Function name 'validate_TailGunnerBot_parameters_008fcca0' \u2014 main part 'validate_TailGunnerBot_parameters_008fcca0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fcca0",
+   "end": "008fcd08",
+   "name": "validate_TailGunnerBot_parameters_008fcca0",
+   "after": "Function: validate_TailGunnerBot_parameters_008fcca0 at 008fcca0\nSignature: undefined validate_TailGunnerBot_parameters_008fcca0(void)\nEntry: 008fcca0\nBody: 008fcca0 - 008fcd07"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fcea0",
+    "end_address": "008fcede"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fcea0",
+    "end_address": "008fcedd",
+    "bytes_disassembled": 62,
+    "message": "Successfully disassembled 62 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fcea0",
+    "disassemble_first": false,
+    "name": "validate_AAGunnerBot_parameters_008fcea0"
+   },
+   "result": {
+    "success": true,
+    "address": "008fcea0",
+    "function_name": "validate_AAGunnerBot_parameters_008fcea0",
+    "entry_point": "008fcea0",
+    "body_size": 56,
+    "message": "Function created successfully at 008fcea0",
+    "warnings": [
+     "Function name 'validate_AAGunnerBot_parameters_008fcea0' \u2014 main part 'validate_AAGunnerBot_parameters_008fcea0' is not PascalCase. Expected: ValidateAagunnerbotParameters008fcea0",
+     "Function name 'validate_AAGunnerBot_parameters_008fcea0' \u2014 main part 'validate_AAGunnerBot_parameters_008fcea0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fcea0",
+   "end": "008fcede",
+   "name": "validate_AAGunnerBot_parameters_008fcea0",
+   "after": "Function: validate_AAGunnerBot_parameters_008fcea0 at 008fcea0\nSignature: undefined validate_AAGunnerBot_parameters_008fcea0(void)\nEntry: 008fcea0\nBody: 008fcea0 - 008fcedd"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fd230",
+    "end_address": "008fd315"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fd230",
+    "end_address": "008fd314",
+    "bytes_disassembled": 229,
+    "message": "Successfully disassembled 229 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fd230",
+    "disassemble_first": false,
+    "name": "validate_ArtillerySubDirectorBot_parameters_008fd230"
+   },
+   "result": {
+    "success": true,
+    "address": "008fd230",
+    "function_name": "validate_ArtillerySubDirectorBot_parameters_008fd230",
+    "entry_point": "008fd230",
+    "body_size": 229,
+    "message": "Function created successfully at 008fd230",
+    "warnings": [
+     "Function name 'validate_ArtillerySubDirectorBot_parameters_008fd230' \u2014 main part 'validate_ArtillerySubDirectorBot_parameters_008fd230' is not PascalCase. Expected: ValidateArtillerysubdirectorbotParameters008fd230",
+     "Function name 'validate_ArtillerySubDirectorBot_parameters_008fd230' \u2014 main part 'validate_ArtillerySubDirectorBot_parameters_008fd230' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fd230",
+   "end": "008fd315",
+   "name": "validate_ArtillerySubDirectorBot_parameters_008fd230",
+   "after": "Function: validate_ArtillerySubDirectorBot_parameters_008fd230 at 008fd230\nSignature: undefined validate_ArtillerySubDirectorBot_parameters_008fd230(void)\nEntry: 008fd230\nBody: 008fd230 - 008fd314"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fd580",
+    "end_address": "008fd5eb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fd580",
+    "end_address": "008fd5ea",
+    "bytes_disassembled": 107,
+    "message": "Successfully disassembled 107 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fd580",
+    "disassemble_first": false,
+    "name": "validate_ArtilleryGunnerBot_parameters_008fd580"
+   },
+   "result": {
+    "success": true,
+    "address": "008fd580",
+    "function_name": "validate_ArtilleryGunnerBot_parameters_008fd580",
+    "entry_point": "008fd580",
+    "body_size": 107,
+    "message": "Function created successfully at 008fd580",
+    "warnings": [
+     "Function name 'validate_ArtilleryGunnerBot_parameters_008fd580' \u2014 main part 'validate_ArtilleryGunnerBot_parameters_008fd580' is not PascalCase. Expected: ValidateArtillerygunnerbotParameters008fd580",
+     "Function name 'validate_ArtilleryGunnerBot_parameters_008fd580' \u2014 main part 'validate_ArtilleryGunnerBot_parameters_008fd580' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fd580",
+   "end": "008fd5eb",
+   "name": "validate_ArtilleryGunnerBot_parameters_008fd580",
+   "after": "Function: validate_ArtilleryGunnerBot_parameters_008fd580 at 008fd580\nSignature: undefined validate_ArtilleryGunnerBot_parameters_008fd580(void)\nEntry: 008fd580\nBody: 008fd580 - 008fd5ea"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fd7d0",
+    "end_address": "008fd821"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fd7d0",
+    "end_address": "008fd820",
+    "bytes_disassembled": 81,
+    "message": "Successfully disassembled 81 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fd7d0",
+    "disassemble_first": false,
+    "name": "validate_TorpedoBot_parameters_008fd7d0"
+   },
+   "result": {
+    "success": true,
+    "address": "008fd7d0",
+    "function_name": "validate_TorpedoBot_parameters_008fd7d0",
+    "entry_point": "008fd7d0",
+    "body_size": 81,
+    "message": "Function created successfully at 008fd7d0",
+    "warnings": [
+     "Function name 'validate_TorpedoBot_parameters_008fd7d0' \u2014 main part 'validate_TorpedoBot_parameters_008fd7d0' is not PascalCase. Expected: ValidateTorpedobotParameters008fd7d0",
+     "Function name 'validate_TorpedoBot_parameters_008fd7d0' \u2014 main part 'validate_TorpedoBot_parameters_008fd7d0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fd7d0",
+   "end": "008fd821",
+   "name": "validate_TorpedoBot_parameters_008fd7d0",
+   "after": "Function: validate_TorpedoBot_parameters_008fd7d0 at 008fd7d0\nSignature: undefined validate_TorpedoBot_parameters_008fd7d0(void)\nEntry: 008fd7d0\nBody: 008fd7d0 - 008fd820"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "008fda60",
+    "end_address": "008fdab1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "008fda60",
+    "end_address": "008fdab0",
+    "bytes_disassembled": 81,
+    "message": "Successfully disassembled 81 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "008fda60",
+    "disassemble_first": false,
+    "name": "validate_DepthChargeBot_parameters_008fda60"
+   },
+   "result": {
+    "success": true,
+    "address": "008fda60",
+    "function_name": "validate_DepthChargeBot_parameters_008fda60",
+    "entry_point": "008fda60",
+    "body_size": 81,
+    "message": "Function created successfully at 008fda60",
+    "warnings": [
+     "Function name 'validate_DepthChargeBot_parameters_008fda60' \u2014 main part 'validate_DepthChargeBot_parameters_008fda60' is not PascalCase. Expected: ValidateDepthchargebotParameters008fda60",
+     "Function name 'validate_DepthChargeBot_parameters_008fda60' \u2014 main part 'validate_DepthChargeBot_parameters_008fda60' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "008fda60",
+   "end": "008fdab1",
+   "name": "validate_DepthChargeBot_parameters_008fda60",
+   "after": "Function: validate_DepthChargeBot_parameters_008fda60 at 008fda60\nSignature: undefined validate_DepthChargeBot_parameters_008fda60(void)\nEntry: 008fda60\nBody: 008fda60 - 008fdab0"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009999f0",
+    "end_address": "009999f3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009999f0",
+    "end_address": "009999f2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009999f0",
+    "disassemble_first": false,
+    "name": "validate_PilotBot_parameters_009999f0"
+   },
+   "result": {
+    "success": true,
+    "address": "009999f0",
+    "function_name": "validate_PilotBot_parameters_009999f0",
+    "entry_point": "009999f0",
+    "body_size": 3,
+    "message": "Function created successfully at 009999f0",
+    "warnings": [
+     "Function name 'validate_PilotBot_parameters_009999f0' \u2014 main part 'validate_PilotBot_parameters_009999f0' is not PascalCase. Expected: ValidatePilotbotParameters009999f0",
+     "Function name 'validate_PilotBot_parameters_009999f0' \u2014 main part 'validate_PilotBot_parameters_009999f0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "009999f0",
+   "end": "009999f3",
+   "name": "validate_PilotBot_parameters_009999f0",
+   "after": "Function: validate_PilotBot_parameters_009999f0 at 009999f0\nSignature: undefined validate_PilotBot_parameters_009999f0(void)\nEntry: 009999f0\nBody: 009999f0 - 009999f2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009d56a0",
+    "end_address": "009d56a3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009d56a0",
+    "end_address": "009d56a2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009d56a0",
+    "disassemble_first": false,
+    "name": "validate_NavigatorBot_parameters_009d56a0"
+   },
+   "result": {
+    "success": true,
+    "address": "009d56a0",
+    "function_name": "validate_NavigatorBot_parameters_009d56a0",
+    "entry_point": "009d56a0",
+    "body_size": 3,
+    "message": "Function created successfully at 009d56a0",
+    "warnings": [
+     "Function name 'validate_NavigatorBot_parameters_009d56a0' \u2014 main part 'validate_NavigatorBot_parameters_009d56a0' is not PascalCase. Expected: ValidateNavigatorbotParameters009d56a0",
+     "Function name 'validate_NavigatorBot_parameters_009d56a0' \u2014 main part 'validate_NavigatorBot_parameters_009d56a0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "009d56a0",
+   "end": "009d56a3",
+   "name": "validate_NavigatorBot_parameters_009d56a0",
+   "after": "Function: validate_NavigatorBot_parameters_009d56a0 at 009d56a0\nSignature: undefined validate_NavigatorBot_parameters_009d56a0(void)\nEntry: 009d56a0\nBody: 009d56a0 - 009d56a2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

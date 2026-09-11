@@ -1,0 +1,427 @@
+{
+  "packet": "orch2_gui_geometry_material_r",
+  "utc": "2026-09-11T08:38:52.904506+00:00",
+  "tested_source_commit": "4f2fccced6299a825ebec8021bb4c9fb3960a3c9",
+  "integrated_head_at_record": "4f2fccced6299a825ebec8021bb4c9fb3960a3c9",
+  "source_sha256": {
+    "include/bsp/gui_native_geometry.hpp": "9063b23b29cdc36867350b3762c000d5db9b8fa60e7213fefa0d05fc56895645",
+    "include/bsp/gui_material_binding.hpp": "d5b6f2360f84a2e523a1abafde945092719a72ac405ce4aee52fb84fa7c43aa1",
+    "include/bsp/gui_widget_owner.hpp": "e68daa73f1c7dc4246fe51516daa66afa2a410849868990a500c14d01bfd654e",
+    "include/bsp/gui_screen_scene_runtime.hpp": "2c6516faa5dbd119f139aa48e07d3ff3f8f628addca59dbee10a8e3c3b4e5bb8",
+    "include/bsp/gui_type_dispatch.hpp": "2bbca138aaa91502711c124e0bba7352517722a3ade58699dc39f021021b8c9d",
+    "include/bsp/gui_group_bounds.hpp": "807ff4b177ed5caff2f83ffe36517a022620dcd230fa50d0bb1a027b2217516b",
+    "include/bsp/native_weak_owner.hpp": "9d30358b5db990b99fda94e53d814cef5e063ca40b22a9dd75a876f7ac0b4b46",
+    "include/bsp/directional_light_reference.hpp": "09bf93d580f9e4a3afac0c3c637b9bbc8fb8c82635ae7099ac49727f59b6b82e",
+    "include/bsp/gui_camera_store_owner.hpp": "775330f5ac7ef0c04af5a885be037c9ecb64346e91ed8e8daf0a423582280ec5",
+    "src/gui_native_geometry.cpp": "ac7c4770b506fcf8e90a4c63d295113f1012b65be5aa11d20a8a75ec55b93de4",
+    "src/gui_material_binding.cpp": "886b66d97e4a2723abcdb3d734543919f429c2e60d5d2e39ff47ad1bae07d509",
+    "src/gui_widget_owner.cpp": "5985e5feac69ef2fdba38ad7e486c196d6d33f71b6f570e720f1a804425c7902",
+    "src/gui_screen_scene_runtime.cpp": "759b4b45a9c91270d73080fef1415effe77b06c78777954b7669b61d3474e5d5",
+    "src/gui_type_dispatch.cpp": "8b64f801f62be84f28f0ed17a8bea6117a7bdb8a10677041d7fc8302b6a533f5",
+    "src/gui_group_bounds.cpp": "44336697fe140f7282e8fe14b398eea774217e13127cb273fb75f8b206ab27d4",
+    "src/native_weak_owner.cpp": "7cfdb7cba481205e8517320f24b902f37b5d314acb62efbc5f0aecf9024c2739",
+    "src/directional_light_reference.cpp": "7fc493c0cba3b63cd3d9a774aede7be50df8f99a6eece41e870ba897b095c369",
+    "src/gui_camera_store_owner.cpp": "939c3f4ba9ec304e3a9976522bcb6f84e57fc5405e663e7e08c22eaae89cc427",
+    "cmake/startup.cmake": "14d94aa37b79d7850053eab8a15b10fcc39b2d980e1383d101f25f2f442c1229",
+    "CMakeLists.txt": "7374079548ec13602ea9f2d0f87d3498dcb63388e34f57540d871a1e171ea33d"
+  },
+  "artifacts_sha256": {
+    "local/gui-geometry-material-final-build.log": "bfef5f5976a221227dbdca803f0fc6ee8e3dbdb04ac07213a68e62497cf8754a",
+    "local/gui-geometry-material-workers/manifest.json": "2b931d419e4385b19a33f4fe7b8f599cdb7d07301c2c95b7b9c1e71db325a58d",
+    "local/gui-geometry-material-workers/screen-manifest.json": "45adc631e1707a6186de779fcda2e7d4d4294cd19e393d7c0b829046f624280d",
+    "local/gui-scene-retirement.json": "fbacc2aff7a8945d7d3bdc2cf47f83ec76e53b3ba9d87ad5d904b19a63ca50c6",
+    "local/gui-geometry-material-names-before.txt": "261e79f3054325aa9c109d8e0c641321de565c50f7ea09129dcac48b0a81365b",
+    "local/gui-geometry-material-names-after.txt": "5f41e258615bf44b248c9016817ab511149a17b8523d4fea376816de942316ab",
+    "local/gui-geometry-material-comments-before.json": "e227ac0817094294ec0f245cf9525135e20fca2b5022dd02e85b2675303806b4",
+    "local/gui-geometry-material-comments-after.json": "c5690fcf2390a7aaae1d651ff29316a1f9a7dd74185531e3386e1636a75c9dc6",
+    "local/gui-geometry-material-names-expected.json": "d450ca1028d6b1dc9ff447155e2dd3d3003c861f17841784e3d4fc2521b0d013",
+    "local/gui-geometry-material-annotations.log": "a8d89035afd4306ed7d7477b0d11696d16ae99d0245eb1e11c32c621d8da2df2",
+    "local/gui-geometry-material-guard-annotations.log": "0a5cce89855d623fc989c8f563b14135d79f94e09ad920d75411d3f3cc2f44d9",
+    "local/gui-geometry-material-export-refresh.log": "64b0a4ff6798dfc180f6973bef9afc3a7d276813b1b55373de4ab1d15d0fc815",
+    "local/gui-geometry-material-annotation-verification.json": "8264906e1b70b3c2ebf2181fd702bbed0fa19513ee9782c84095f224cbc15477",
+    "local/gui_geometry_material_annotations.py": "11bbb984342856b61a4862350bc8f626c22b48552fe610a2524a282484fff530",
+    "local/annotate_gui_model_guard.py": "d569f3c8ba4db162704cb27572c887a3e135cc6aa50253ff9060407fd3c09afe",
+    "local/run_gui_geometry_material_probes.ps1": "36bdbd0b95c1633c761e4091f22eac74931fba7e3da50c0c99ab571532c1a4c1",
+    "local/prepare_gui_geometry_material_validation.py": "d96e90d1152f3214f646d6205d0e2776f812b7942e0197340d0ac22e279468ee",
+    "local/prepare_gui_color_guard_probe.py": "38fe6b42b457076a31ae9455d8bed67c1dd36dfa6aee0eb6ab7c9c4f0d5ccdfd",
+    "local/preserve_gui_screen_fixture.py": "0ce3b0d46bf6a330bb2e54ec39cbd9f173c7e09a55d4352caed8d5ce75128c80",
+    "local/gui-material-color-guard-probe.cpp": "068046ceb2e1a40478e8b7180f891bb9703f235ccf12191f3673a5a917ec55df",
+    "local/gui-geometry-material-screen-probe.cpp": "d550f564589cde1c704ce48ebfe7fe941eb7c1ac45732892cab023257cb2823d",
+    "local/gui-geometry-material-native-geometry.exe": "ecf808eb79985bd0968a4b13c39c7c321efc5f15ba11ccb70ff05d872e956cb6",
+    "local/gui-geometry-material-native-geometry-compile.log": "2b4be076a5406e068f419a4299058eb2976ed7ab68d9f08fad52a50d4404a7ea",
+    "local/gui-geometry-material-native-geometry-result.log": "afcfa3451942f0fd0d0462f539ea0de8bf9cf6295320cc7a37f9520d84995282",
+    "local/gui-geometry-material-color-guard.exe": "d96f9ec7f36bdf3155abba32ddfe9636bdcae9fa6f369025298bd8a49ffe8e53",
+    "local/gui-geometry-material-color-guard-compile.log": "fac59b37f8a32d3eef41489b14903e2676529b547af5aeff15024a0d66db6add",
+    "local/gui-geometry-material-color-guard-result.log": "acf0096ab000788098bac4e392b42e4e510d9564d450ec645ec7f2338b5e1962",
+    "local/gui-geometry-material-screen.exe": "d2f12cea1054b9cec402dd9447bcf7e82b23a4b1e35878c7c39513cadd28bbd1",
+    "local/gui-geometry-material-screen-compile.log": "85969c7286059c05a7f40300f82f3f6e2a21f22fede2fc7111c4dbe16f2ec051",
+    "local/gui-geometry-material-screen-result.log": "9e88abc3a2022a1a64902703daa218a181ff3baa307d410d998d7e193aad77ee",
+    "local/gui-geometry-material-tested/bsp_core.lib": "03e7b4152fe89dfad1d1d224cdb8f600bcbac160b123acb41ecc4ad7da3a51ef",
+    "local/gui-geometry-material-tested/bsp_game.exe": "5cab75d2291e242e2b78d19da55be8eee09796589fff7706bd82c9ad16b09573",
+    "local/gui-geometry-material-tested/LastTest.log": "e91aaf2eeb415454e9c2c4ba1f32bfbfaa76d6cd42fa3a289cbaca0d0edfa83d"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/gui-geometry-material-tested/bsp_core.lib",
+      "sha256": "03e7b4152fe89dfad1d1d224cdb8f600bcbac160b123acb41ecc4ad7da3a51ef"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/gui-geometry-material-tested/bsp_game.exe",
+      "sha256": "5cab75d2291e242e2b78d19da55be8eee09796589fff7706bd82c9ad16b09573"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/gui-geometry-material-tested/LastTest.log",
+      "sha256": "e91aaf2eeb415454e9c2c4ba1f32bfbfaa76d6cd42fa3a289cbaca0d0edfa83d"
+    }
+  ],
+  "preserved_worker_artifacts": [
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-geometry-material-workers/geometry/bsp_index.sqlite",
+      "sha256": "3cca1baf10d4596b5a119f0e411301ca098b679ef599b13e2d39c861b8d2413d"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_build.log",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_build.log",
+      "sha256": "2651c9621b75e5cd749946c0d91704ed5ba256b1b7c48d86c85d929d9c9b365c"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_comments.json",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_comments.json",
+      "sha256": "13bac8188ed7f48e0561ef1ea2fc728bad744abf44483bab9142d80a63162a4f"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_commit.txt",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_commit.txt",
+      "sha256": "a7939dd2e10f9e3d1e80f9e860a744c5be293905617d9ebcd30f97c5d53ad832"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_probe.cpp",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_probe.cpp",
+      "sha256": "687a9357ec13bdc4d55f91d4d51d6edfa337733393720c5870e37b1222fdd31d"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_probe.exe",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_probe.exe",
+      "sha256": "ef1d319139d0a933c1ed490828698d226fb9c7ae12838118e8160a9dd7cfda08"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_probe.obj",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_probe.obj",
+      "sha256": "478cb934d601195cfda5aef5006252d1f967e50fd1dcbf5df072f60216fbd051"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\gui_native_geometry_probe_build.log",
+      "preserved": "local/gui-geometry-material-workers/geometry/gui_native_geometry_probe_build.log",
+      "sha256": "2b4be076a5406e068f419a4299058eb2976ed7ab68d9f08fad52a50d4404a7ea"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\seed_reference.hpp",
+      "preserved": "local/gui-geometry-material-workers/geometry/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "gui-native-geometry-20260911q",
+      "commit": "5ba2b900f0b1ad27be1507da967c8ea15835d5f2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-native-geometry-20260911q\\local\\write_gui_native_geometry_report.py",
+      "preserved": "local/gui-geometry-material-workers/geometry/write_gui_native_geometry_report.py",
+      "sha256": "29d99149ade536ea09df3b1eef0f4aa83478e7d5062eea0fa35442e2d9d5386a"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-geometry-material-workers/material/bsp_index.sqlite",
+      "sha256": "26fc7d5f0a093bc37b112035981be3d96b828aad6c2b7bb351e3b383ae33f638"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_00aa6870.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_00aa6870.bytes",
+      "sha256": "d52318ad7c949495494ab47f5ece53a9bbb03298df6af5f5751a2323c71d9f8d"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_00aa9f10.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_00aa9f10.bytes",
+      "sha256": "dae5a6329a4221feb0f058e58a328ff1c10ad8536c15fbfd8a91e66dd740ceea"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_00b18a40.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_00b18a40.bytes",
+      "sha256": "cda1c26bfcd28330fccbfd0e73fc2c22eeee8bff8fc86f0ba1120dfb9750c708"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_00b72b40.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_00b72b40.bytes",
+      "sha256": "400423ca75e717b71b7db8bed5669e4815766173adf7ae59202e7912c0c6a701"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_00b74650.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_00b74650.bytes",
+      "sha256": "9ce7c846d393ac3b3798715d53516d2676e9372d515de1365e5b167bb6152aa3"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_base_table.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_base_table.bytes",
+      "sha256": "5319c94e312496cd2432dd386a65aaf4f3019628eb91bd5294244878f2e0a982"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_build.log",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_build.log",
+      "sha256": "303863edca7c4597d3eaf7d2bb4dbeba83eb63d4c41e751186dd2e647a179c9a"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_clipbox_table.bytes",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_clipbox_table.bytes",
+      "sha256": "0eb2216317ee3e2091beb81872e12622ea06087f7692daab992a657cb1611f3c"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_commit.txt",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_commit.txt",
+      "sha256": "0bd496e73ca236b9b69278d87a4e4aee3977daecfbe23922d3197d3985b94a85"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_ledger.log",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_ledger.log",
+      "sha256": "bac0980778e3bccbc85c88f3498815d958ff4da17d7c88970d9b0f83a3cce2a7"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_ledger.py",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_ledger.py",
+      "sha256": "b8d3904b3de421cbf930869bc8a6086a1414c6a240f8c46788a06ddfb7f1b84b"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\gui_material_binding_report.py",
+      "preserved": "local/gui-geometry-material-workers/material/gui_material_binding_report.py",
+      "sha256": "a29ec52c861e806987b78d970876e164821b84b91ae1cbb3b2123d5ccf9a5d8d"
+    },
+    {
+      "worker": "gui-material-binding-20260911q",
+      "commit": "b57f439d887834865ce4c9e4881e0434b454110d",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-material-binding-20260911q\\local\\seed_reference.hpp",
+      "preserved": "local/gui-geometry-material-workers/material/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\build_gui_screen_ownership_probe.ps1",
+      "preserved": "local/gui-geometry-material-workers/screen/build_gui_screen_ownership_probe.ps1",
+      "sha256": "05fcaa2c2e40783a0fd3f21e6b7d20a3e74a27d7081ad733833fa1755378565e"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_native_values.hpp",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_native_values.hpp",
+      "sha256": "254548ecbd9d5a8ba7a9a062acb5b8daeb925d1dd6ca7a533dd3631e2cea26f2"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_build.log",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_build.log",
+      "sha256": "cb329538fdbb9b5a048f8e084009b95d09b0f674d7bfb5861d62e4e92817dcf8"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_commit.txt",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_commit.txt",
+      "sha256": "daa2a4132e03c7d74ab70d9f1010bb3ef9b125f4fa01e21f720f17b3ec241a35"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_evidence.json",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_evidence.json",
+      "sha256": "2258a9eed068d9d9ec53df8a52fbf05645851606d7e74a87175710ad0bb97af4"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_prepare.log",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_prepare.log",
+      "sha256": "9d8495a985ca76d5e8f625bb3d8429ecd9fe953ade5bcca1ff4de3fd32def45b"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_probe.cpp",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_probe.cpp",
+      "sha256": "fff862f0627b4f51f9e83efe58928719da2c09a7003c6aa5c142e9a9c7906fd0"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_probe.exe",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_probe.exe",
+      "sha256": "26dfe1bcff78ae3194dfbf99223a0833158916cd1cada1b61a32d355ec66cdf6"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_probe.log",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_probe.log",
+      "sha256": "e3db36e35b889fadc6de5bd7bf69036cf4ce709afea58c6b0547d1d9056e57f5"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_probe.obj",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_probe.obj",
+      "sha256": "23883e19354ee5bf16cc538d91a5c61d9e6f6e533de23e05f43496390b0b8b1c"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_probe_driver.cmd",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_probe_driver.cmd",
+      "sha256": "8712e21863854483b3c009c017ee8349a1671cb9b1106f481b395db3745788af"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_report_checked.json",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_report_checked.json",
+      "sha256": "f8b8d9888d6315943954382794d6fcb13935109f067c77bb254e6524581103de"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\gui_screen_ownership_seeds.json",
+      "preserved": "local/gui-geometry-material-workers/screen/gui_screen_ownership_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\merge_bounds.txt",
+      "preserved": "local/gui-geometry-material-workers/screen/merge_bounds.txt",
+      "sha256": "a4170930d3e666adb07bb4b27a4a9ffbf5eb737e3f4511e3d7e755cb0c35c82d"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\prepare_gui_screen_ownership.py",
+      "preserved": "local/gui-geometry-material-workers/screen/prepare_gui_screen_ownership.py",
+      "sha256": "057ac369d7b31fdca4ef9f2b0fe69ccacab5efb6af7a2184ec1057254ebbeda9"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\record_gui_screen_ownership.py",
+      "preserved": "local/gui-geometry-material-workers/screen/record_gui_screen_ownership.py",
+      "sha256": "c8aaf1e7b4fdcc68fbfbfdd791ec00507e2c05c06b7fb138a8d75eaeafa30c8e"
+    },
+    {
+      "worker": "gui-screen-fixture-20260911q",
+      "commit": "46c2b319d9518056579151cfaccbc4cfa638e5e2",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-fixture-20260911q\\local\\seed_reference.hpp",
+      "preserved": "local/gui-geometry-material-workers/screen/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    }
+  ],
+  "worker_commits": [
+    "5ba2b90",
+    "b57f439",
+    "46c2b31"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "focused_ignored_probes_passed": [
+      "native-geometry",
+      "color-guard",
+      "screen"
+    ],
+    "actual_screen_shared_scene_reference_counts": [
+      1,
+      2,
+      1,
+      0
+    ],
+    "protective_node_retains": false,
+    "final_retained_weak_target_null": true,
+    "final_empty_native_pools": 5,
+    "controlled_renderer": "D3D9 NULLREF; no draw",
+    "raw_material_publication_fixture": false,
+    "original_screen_instruction_execution": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "addresses": [
+      "00ab2540",
+      "00acf8f0",
+      "00ab3cb0",
+      "00ad0d80",
+      "00aa9f10",
+      "00b18a40",
+      "00aa6870",
+      "00b74650",
+      "00b72b40"
+    ],
+    "names_verified": 9,
+    "prior_comment_fields_preserved": 6,
+    "forced_exports": 9,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "functions_already_defined": 9,
+    "read_only_call_gaps": 0,
+    "flow_mutations": 0,
+    "defined_functions": [],
+    "saved": true
+  },
+  "limitations": [
+    "Actual renderer stream/layout/material projection remains required.",
+    "Real widget/page retention remains unresolved; no synthesized ownership token.",
+    "Color host precondition rejects roots without canonical live model companion.",
+    "Screen fixture uses controlled renderer/callback/CRT boundaries and executes reconstructed owners.",
+    "No full GUI draw, native SEH, binary replacement or gameplay validation."
+  ]
+}
