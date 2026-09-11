@@ -1,0 +1,38 @@
+{
+  "packet": "orch5_map_runtime",
+  "status": "concrete_adapter_focused_owner_probe_passed_pending_combined_build",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {"address": "00ab1ef0", "name": "BSP_GuiIcon_SetSize", "coverage": "complete for supported concrete Icon virtuals", "original_abi": "ECX Icon; size-pair pointer stack; RET4", "last_instruction": "00ab1f53", "last_instruction_length": 3, "end_inclusive": "00ab1f55", "source": "src/gui_icon_runtime.cpp", "evidence": "Icon vtable00D5C4C0+58 at00D5C518 ->00AB1EF0. Complete body; base size/recompose then signed16 current state -1 gate, bounds check, same state size write, virtual8C rebuild. EBX argument pointer survives base call; ESI owner preserved.", "uncertainty": "Semantic C++ owner ABI; other derived vtable overrides, native SEH and exact exceptional x87 trap/status equivalence not claimed."},
+    {"address": "00588c70", "coverage": "existing complete typed sequence reused", "status": "concrete live-owner adapter; original reconstruction unchanged", "uncertainty": "Still needs caller-supplied installed layouts, mission tables and generated-by-mission-detail point lists."}
+  ],
+  "host_steps": [
+    {"function":"00588c70", "address":"00588f9c", "native":"00aa7e00", "binding":"canonical direct-child point lookup"},
+    {"function":"00588c70", "address":"005890fe", "native":"00aa7e00", "binding":"canonical direct-child flag lookup"},
+    {"function":"00588c70", "address":"005892f0", "native":"00aa8240", "binding":"same owner inverse-parent/local write/recompose/bounds"},
+    {"function":"00588c70", "address":"00589326", "native":"00aa8240", "binding":"same flag owner position update"},
+    {"function":"00588c70", "address":"00589378", "native":"00aa8240", "binding":"reload backdrop slot and move same owner"},
+    {"function":"00588c70", "address":"005893b5", "native":"00ab1ef0", "dispatch":"current virtual58", "vtable_evidence":"00D5C518 F0 1E AB 00; actual GuiIconTypeImplementation required"},
+    {"function":"00588c70", "address":"005893c5", "native":"00aa6750", "binding":"live selected-point resolved position"},
+    {"function":"00588c70", "address":"0058940b", "native":"00aa8240", "binding":"reload selector slot and move same owner"},
+    {"function":"00ab1ef0", "address":"00ab1ef9", "native":"00aa7970", "binding":"base pair FLD/FSTP then owner recompose, no bounds refresh"},
+    {"function":"00ab1ef0", "address":"00ab1f4e", "native":"00ab10d0", "dispatch":"current virtual8C", "binding":"existing runtime current-state geometry rebuild", "vtable_evidence":"supported Icon00D5C4C0+8C"}
+  ],
+  "correctness_boundaries": {
+    "live_references": ["canonical MissionTreeTables", "published MainMenuMissionSelection", "five caller-owned vector objects", "three stable widget-pointer slots", "original GuiLayoutWidget and GuiWidgetOwner instances"],
+    "numeric": "Existing binary32 map and parent-position kernels; explicit x87 FLD/FSTP size copies. Exceptional FP status/trap equivalence not established.",
+    "bounds": "No fabricated entries: vector.at and explicit signed16 Icon range checks throw instead of00BF6713.",
+    "lifetime": "Borrowed storage and resource owners must outlive adapter and every call; no reentrant destruction allowed.",
+    "partial_coverage": "No new partial native projection. Actual installed-layout execution and other derived size58 profiles remain external."
+  },
+  "corrections": [
+    {"was":"Map sequence stopped at semantic GUI host operations", "is":"Concrete retained-owner adapter with borrowed live mission and pointer-slot state", "evidence":"src/main_menu_map_runtime.cpp reuses canonical lookup/transform/runtime objects"},
+    {"was":"Generic size-only backdrop binding could miss derived state updates", "is":"Icon58 changes base size/recomposes, writes selected state.size, then rebuilds current geometry", "evidence":"00AB1EF9,00AB1EFE,00AB1F33..43,00AB1F4E;00AA7970 contains no bounds refresh"}
+  ],
+  "no_ghidra_function": [],
+  "validation": {"report_call_verifier":"strengthened integrator tools/verify_report_calls.py: 10 rows checked, 0 failed; 2 indirect calls separately grounded in vtable bytes", "focused_probe":"local/run_main_menu_map_probe.ps1: MSVC Win32 W4 WX O2 fp:strict; changed sources compiled and linked against existing bsp_core.lib; PASS", "focused_probe_checks":["actual retained model local matrices and identities", "live backdrop/selected slot rebinding", "live mission indices/count and point-vector contents", "missing point rejected", "null actual selected slot still applies zoom despite stale input gate"], "focused_probe_limits":"Supplied fixture state, existing actual owner construction. Icon resize/rebuild compiled and body-reviewed but not executed; no fake size/rebuild callbacks.", "source_registration":"primary integration", "standard_win32_build":"primary integration pending", "new_test_targets":0, "native_differential":false, "abi_compatible":false, "game_validated":false},
+  "remaining_external": ["005861B0 layout binding and initial captured map state", "mission-detail populated point lists", "menu-update dispatch and avoiding duplicate zoom delta", "existing actual GUI renderer/resource/lifetime services"],
+  "tool_issues": ["PowerShell wildcard path arguments require rg -g filters; corrected after failed searches.", "A broad capped ledger search still truncated output; discarded and used address lookup/capped native bodies.", "ghidra bytes accepts --length, not --count; corrected."]
+}
