@@ -1,0 +1,1095 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f2590",
+    "end_address": "004f25ac"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f2590",
+    "end_address": "004f25ab",
+    "bytes_disassembled": 28,
+    "message": "Successfully disassembled 28 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f2590",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004f2590",
+    "function_name": "FUN_004f2590",
+    "entry_point": "004f2590",
+    "body_size": 28,
+    "message": "Function created successfully at 004f2590"
+   }
+  },
+  {
+   "defined": "004f2590",
+   "end": "004f25ac",
+   "name": null,
+   "after": "Function: FUN_004f2590 at 004f2590\nSignature: undefined FUN_004f2590(void)\nEntry: 004f2590\nBody: 004f2590 - 004f25ab"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f25b0",
+    "end_address": "004f25cc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f25b0",
+    "end_address": "004f25cb",
+    "bytes_disassembled": 28,
+    "message": "Successfully disassembled 28 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f25b0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004f25b0",
+    "function_name": "FUN_004f25b0",
+    "entry_point": "004f25b0",
+    "body_size": 28,
+    "message": "Function created successfully at 004f25b0"
+   }
+  },
+  {
+   "defined": "004f25b0",
+   "end": "004f25cc",
+   "name": null,
+   "after": "Function: FUN_004f25b0 at 004f25b0\nSignature: undefined FUN_004f25b0(void)\nEntry: 004f25b0\nBody: 004f25b0 - 004f25cb"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e2790",
+    "end_address": "006e27bc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e2790",
+    "end_address": "006e27bb",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e2790",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006e2790",
+    "function_name": "FUN_006e2790",
+    "entry_point": "006e2790",
+    "body_size": 44,
+    "message": "Function created successfully at 006e2790"
+   }
+  },
+  {
+   "defined": "006e2790",
+   "end": "006e27bc",
+   "name": null,
+   "after": "Function: FUN_006e2790 at 006e2790\nSignature: undefined FUN_006e2790(void)\nEntry: 006e2790\nBody: 006e2790 - 006e27bb"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e8400",
+    "end_address": "006e840d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e8400",
+    "end_address": "006e840c",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e8400",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006e8400",
+    "function_name": "FUN_006e8400",
+    "entry_point": "006e8400",
+    "body_size": 13,
+    "message": "Function created successfully at 006e8400"
+   }
+  },
+  {
+   "defined": "006e8400",
+   "end": "006e840d",
+   "name": null,
+   "after": "Function: FUN_006e8400 at 006e8400\nSignature: undefined FUN_006e8400(void)\nEntry: 006e8400\nBody: 006e8400 - 006e840c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e8410",
+    "end_address": "006e8416"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e8410",
+    "end_address": "006e8415",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e8410",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006e8410",
+    "function_name": "FUN_006e8410",
+    "entry_point": "006e8410",
+    "body_size": 6,
+    "message": "Function created successfully at 006e8410"
+   }
+  },
+  {
+   "defined": "006e8410",
+   "end": "006e8416",
+   "name": null,
+   "after": "Function: FUN_006e8410 at 006e8410\nSignature: undefined FUN_006e8410(void)\nEntry: 006e8410\nBody: 006e8410 - 006e8415"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006ea290",
+    "end_address": "006ea296"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006ea290",
+    "end_address": "006ea295",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006ea290",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006ea290",
+    "function_name": "FUN_006ea290",
+    "entry_point": "006ea290",
+    "body_size": 6,
+    "message": "Function created successfully at 006ea290"
+   }
+  },
+  {
+   "defined": "006ea290",
+   "end": "006ea296",
+   "name": null,
+   "after": "Function: FUN_006ea290 at 006ea290\nSignature: undefined FUN_006ea290(void)\nEntry: 006ea290\nBody: 006ea290 - 006ea295"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006ea2a0",
+    "end_address": "006ea2bb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006ea2a0",
+    "end_address": "006ea2ba",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006ea2a0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006ea2a0",
+    "function_name": "FUN_006ea2a0",
+    "entry_point": "006ea2a0",
+    "body_size": 27,
+    "message": "Function created successfully at 006ea2a0"
+   }
+  },
+  {
+   "defined": "006ea2a0",
+   "end": "006ea2bb",
+   "name": null,
+   "after": "Function: FUN_006ea2a0 at 006ea2a0\nSignature: undefined FUN_006ea2a0(void)\nEntry: 006ea2a0\nBody: 006ea2a0 - 006ea2ba"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006d20e0",
+    "end_address": "006d2116"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006d20e0",
+    "end_address": "006d2115",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006d20e0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006d20e0",
+    "function_name": "FUN_006d20e0",
+    "entry_point": "006d20e0",
+    "body_size": 54,
+    "message": "Function created successfully at 006d20e0"
+   }
+  },
+  {
+   "defined": "006d20e0",
+   "end": "006d2116",
+   "name": null,
+   "after": "Function: FUN_006d20e0 at 006d20e0\nSignature: undefined FUN_006d20e0(void)\nEntry: 006d20e0\nBody: 006d20e0 - 006d2115"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006f5890",
+    "end_address": "006f58c6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006f5890",
+    "end_address": "006f58c5",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006f5890",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006f5890",
+    "function_name": "FUN_006f5890",
+    "entry_point": "006f5890",
+    "body_size": 54,
+    "message": "Function created successfully at 006f5890"
+   }
+  },
+  {
+   "defined": "006f5890",
+   "end": "006f58c6",
+   "name": null,
+   "after": "Function: FUN_006f5890 at 006f5890\nSignature: undefined FUN_006f5890(void)\nEntry: 006f5890\nBody: 006f5890 - 006f58c5"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007004b0",
+    "end_address": "007004e6"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007004b0",
+    "end_address": "007004e5",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007004b0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "007004b0",
+    "function_name": "FUN_007004b0",
+    "entry_point": "007004b0",
+    "body_size": 54,
+    "message": "Function created successfully at 007004b0"
+   }
+  },
+  {
+   "defined": "007004b0",
+   "end": "007004e6",
+   "name": null,
+   "after": "Function: FUN_007004b0 at 007004b0\nSignature: undefined FUN_007004b0(void)\nEntry: 007004b0\nBody: 007004b0 - 007004e5"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00803b80",
+    "end_address": "00803b91"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00803b80",
+    "end_address": "00803b90",
+    "bytes_disassembled": 17,
+    "message": "Successfully disassembled 17 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00803b80",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00803b80",
+    "function_name": "FUN_00803b80",
+    "entry_point": "00803b80",
+    "body_size": 17,
+    "message": "Function created successfully at 00803b80"
+   }
+  },
+  {
+   "defined": "00803b80",
+   "end": "00803b91",
+   "name": null,
+   "after": "Function: FUN_00803b80 at 00803b80\nSignature: undefined FUN_00803b80(void)\nEntry: 00803b80\nBody: 00803b80 - 00803b90"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006f23c0",
+    "end_address": "006f23cc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006f23c0",
+    "end_address": "006f23cb",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006f23c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006f23c0",
+    "function_name": "FUN_006f23c0",
+    "entry_point": "006f23c0",
+    "body_size": 12,
+    "message": "Function created successfully at 006f23c0"
+   }
+  },
+  {
+   "defined": "006f23c0",
+   "end": "006f23cc",
+   "name": null,
+   "after": "Function: FUN_006f23c0 at 006f23c0\nSignature: undefined FUN_006f23c0(void)\nEntry: 006f23c0\nBody: 006f23c0 - 006f23cb"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074e400",
+    "end_address": "0074e436"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074e400",
+    "end_address": "0074e435",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074e400",
+    "disassemble_first": false,
+    "name": "BSP_PlaneInstance_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0074e400",
+    "function_name": "BSP_PlaneInstance_IsKindOf",
+    "entry_point": "0074e400",
+    "body_size": 54,
+    "message": "Function created successfully at 0074e400",
+    "warnings": [
+     "Function name 'BSP_PlaneInstance_IsKindOf' \u2014 main part 'PlaneInstance_IsKindOf' is not PascalCase. Expected: PlaneinstanceIskindof",
+     "Function name 'BSP_PlaneInstance_IsKindOf' \u2014 main part 'PlaneInstance_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneInstance_IsKindOf' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0074e400",
+   "end": "0074e436",
+   "name": "BSP_PlaneInstance_IsKindOf",
+   "after": "Function: BSP_PlaneInstance_IsKindOf at 0074e400\nSignature: undefined BSP_PlaneInstance_IsKindOf(void)\nEntry: 0074e400\nBody: 0074e400 - 0074e435"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007cfd00",
+    "end_address": "007cfd20"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007cfd00",
+    "end_address": "007cfd1f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007cfd00",
+    "disassemble_first": false,
+    "name": "BSP_PlaneClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007cfd00",
+    "function_name": "BSP_PlaneClass_IsKindOf",
+    "entry_point": "007cfd00",
+    "body_size": 32,
+    "message": "Function created successfully at 007cfd00",
+    "warnings": [
+     "Function name 'BSP_PlaneClass_IsKindOf' \u2014 main part 'PlaneClass_IsKindOf' is not PascalCase. Expected: PlaneclassIskindof",
+     "Function name 'BSP_PlaneClass_IsKindOf' \u2014 main part 'PlaneClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneClass_IsKindOf' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007cfd00",
+   "end": "007cfd20",
+   "name": "BSP_PlaneClass_IsKindOf",
+   "after": "Function: BSP_PlaneClass_IsKindOf at 007cfd00\nSignature: undefined BSP_PlaneClass_IsKindOf(void)\nEntry: 007cfd00\nBody: 007cfd00 - 007cfd1f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007efb00",
+    "end_address": "007efb2c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007efb00",
+    "end_address": "007efb2b",
+    "bytes_disassembled": 44,
+    "message": "Successfully disassembled 44 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007efb00",
+    "disassemble_first": false,
+    "name": "BSP_PlaneSquadron_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "007efb00",
+    "function_name": "BSP_PlaneSquadron_IsKindOf",
+    "entry_point": "007efb00",
+    "body_size": 44,
+    "message": "Function created successfully at 007efb00",
+    "warnings": [
+     "Function name 'BSP_PlaneSquadron_IsKindOf' \u2014 main part 'PlaneSquadron_IsKindOf' is not PascalCase. Expected: PlanesquadronIskindof",
+     "Function name 'BSP_PlaneSquadron_IsKindOf' \u2014 main part 'PlaneSquadron_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneSquadron_IsKindOf' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007efb00",
+   "end": "007efb2c",
+   "name": "BSP_PlaneSquadron_IsKindOf",
+   "after": "Function: BSP_PlaneSquadron_IsKindOf at 007efb00\nSignature: undefined BSP_PlaneSquadron_IsKindOf(void)\nEntry: 007efb00\nBody: 007efb00 - 007efb2b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00846c00",
+    "end_address": "00846c36"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00846c00",
+    "end_address": "00846c35",
+    "bytes_disassembled": 54,
+    "message": "Successfully disassembled 54 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00846c00",
+    "disassemble_first": false,
+    "name": "BSP_ShipyardInstance_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00846c00",
+    "function_name": "BSP_ShipyardInstance_IsKindOf",
+    "entry_point": "00846c00",
+    "body_size": 54,
+    "message": "Function created successfully at 00846c00",
+    "warnings": [
+     "Function name 'BSP_ShipyardInstance_IsKindOf' \u2014 main part 'ShipyardInstance_IsKindOf' is not PascalCase. Expected: ShipyardinstanceIskindof",
+     "Function name 'BSP_ShipyardInstance_IsKindOf' \u2014 main part 'ShipyardInstance_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShipyardInstance_IsKindOf' does not start with a recognized verb. First word 'Shipyard' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00846c00",
+   "end": "00846c36",
+   "name": "BSP_ShipyardInstance_IsKindOf",
+   "after": "Function: BSP_ShipyardInstance_IsKindOf at 00846c00\nSignature: undefined BSP_ShipyardInstance_IsKindOf(void)\nEntry: 00846c00\nBody: 00846c00 - 00846c35"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00749030",
+    "end_address": "00749050"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00749030",
+    "end_address": "0074904f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00749030",
+    "disassemble_first": false,
+    "name": "BSP_LandFortClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00749030",
+    "function_name": "BSP_LandFortClass_IsKindOf",
+    "entry_point": "00749030",
+    "body_size": 32,
+    "message": "Function created successfully at 00749030",
+    "warnings": [
+     "Function name 'BSP_LandFortClass_IsKindOf' \u2014 main part 'LandFortClass_IsKindOf' is not PascalCase. Expected: LandfortclassIskindof",
+     "Function name 'BSP_LandFortClass_IsKindOf' \u2014 main part 'LandFortClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LandFortClass_IsKindOf' does not start with a recognized verb. First word 'Land' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00749030",
+   "end": "00749050",
+   "name": "BSP_LandFortClass_IsKindOf",
+   "after": "Function: BSP_LandFortClass_IsKindOf at 00749030\nSignature: undefined BSP_LandFortClass_IsKindOf(void)\nEntry: 00749030\nBody: 00749030 - 0074904f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009635e0",
+    "end_address": "00963600"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009635e0",
+    "end_address": "009635ff",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009635e0",
+    "disassemble_first": false,
+    "name": "BSP_ShipClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "009635e0",
+    "function_name": "BSP_ShipClass_IsKindOf",
+    "entry_point": "009635e0",
+    "body_size": 32,
+    "message": "Function created successfully at 009635e0",
+    "warnings": [
+     "Function name 'BSP_ShipClass_IsKindOf' \u2014 main part 'ShipClass_IsKindOf' is not PascalCase. Expected: ShipclassIskindof",
+     "Function name 'BSP_ShipClass_IsKindOf' \u2014 main part 'ShipClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShipClass_IsKindOf' does not start with a recognized verb. First word 'Ship' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "009635e0",
+   "end": "00963600",
+   "name": "BSP_ShipClass_IsKindOf",
+   "after": "Function: BSP_ShipClass_IsKindOf at 009635e0\nSignature: undefined BSP_ShipClass_IsKindOf(void)\nEntry: 009635e0\nBody: 009635e0 - 009635ff"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00960030",
+    "end_address": "00960050"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00960030",
+    "end_address": "0096004f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00960030",
+    "disassemble_first": false,
+    "name": "BSP_LandVehicleClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "00960030",
+    "function_name": "BSP_LandVehicleClass_IsKindOf",
+    "entry_point": "00960030",
+    "body_size": 32,
+    "message": "Function created successfully at 00960030",
+    "warnings": [
+     "Function name 'BSP_LandVehicleClass_IsKindOf' \u2014 main part 'LandVehicleClass_IsKindOf' is not PascalCase. Expected: LandvehicleclassIskindof",
+     "Function name 'BSP_LandVehicleClass_IsKindOf' \u2014 main part 'LandVehicleClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LandVehicleClass_IsKindOf' does not start with a recognized verb. First word 'Land' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00960030",
+   "end": "00960050",
+   "name": "BSP_LandVehicleClass_IsKindOf",
+   "after": "Function: BSP_LandVehicleClass_IsKindOf at 00960030\nSignature: undefined BSP_LandVehicleClass_IsKindOf(void)\nEntry: 00960030\nBody: 00960030 - 0096004f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009600a0",
+    "end_address": "009600c0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009600a0",
+    "end_address": "009600bf",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009600a0",
+    "disassemble_first": false,
+    "name": "BSP_DummyTargetClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "009600a0",
+    "function_name": "BSP_DummyTargetClass_IsKindOf",
+    "entry_point": "009600a0",
+    "body_size": 32,
+    "message": "Function created successfully at 009600a0",
+    "warnings": [
+     "Function name 'BSP_DummyTargetClass_IsKindOf' \u2014 main part 'DummyTargetClass_IsKindOf' is not PascalCase. Expected: DummytargetclassIskindof",
+     "Function name 'BSP_DummyTargetClass_IsKindOf' \u2014 main part 'DummyTargetClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_DummyTargetClass_IsKindOf' does not start with a recognized verb. First word 'Dummy' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "009600a0",
+   "end": "009600c0",
+   "name": "BSP_DummyTargetClass_IsKindOf",
+   "after": "Function: BSP_DummyTargetClass_IsKindOf at 009600a0\nSignature: undefined BSP_DummyTargetClass_IsKindOf(void)\nEntry: 009600a0\nBody: 009600a0 - 009600bf"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0095ff30",
+    "end_address": "0095ff50"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0095ff30",
+    "end_address": "0095ff4f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0095ff30",
+    "disassemble_first": false,
+    "name": "BSP_AirfieldClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0095ff30",
+    "function_name": "BSP_AirfieldClass_IsKindOf",
+    "entry_point": "0095ff30",
+    "body_size": 32,
+    "message": "Function created successfully at 0095ff30",
+    "warnings": [
+     "Function name 'BSP_AirfieldClass_IsKindOf' \u2014 main part 'AirfieldClass_IsKindOf' is not PascalCase. Expected: AirfieldclassIskindof",
+     "Function name 'BSP_AirfieldClass_IsKindOf' \u2014 main part 'AirfieldClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_AirfieldClass_IsKindOf' does not start with a recognized verb. First word 'Airfield' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0095ff30",
+   "end": "0095ff50",
+   "name": "BSP_AirfieldClass_IsKindOf",
+   "after": "Function: BSP_AirfieldClass_IsKindOf at 0095ff30\nSignature: undefined BSP_AirfieldClass_IsKindOf(void)\nEntry: 0095ff30\nBody: 0095ff30 - 0095ff4f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0095ffa0",
+    "end_address": "0095ffc0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0095ffa0",
+    "end_address": "0095ffbf",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0095ffa0",
+    "disassemble_first": false,
+    "name": "BSP_ShipyardClass_IsKindOf"
+   },
+   "result": {
+    "success": true,
+    "address": "0095ffa0",
+    "function_name": "BSP_ShipyardClass_IsKindOf",
+    "entry_point": "0095ffa0",
+    "body_size": 32,
+    "message": "Function created successfully at 0095ffa0",
+    "warnings": [
+     "Function name 'BSP_ShipyardClass_IsKindOf' \u2014 main part 'ShipyardClass_IsKindOf' is not PascalCase. Expected: ShipyardclassIskindof",
+     "Function name 'BSP_ShipyardClass_IsKindOf' \u2014 main part 'ShipyardClass_IsKindOf' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShipyardClass_IsKindOf' does not start with a recognized verb. First word 'Shipyard' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0095ffa0",
+   "end": "0095ffc0",
+   "name": "BSP_ShipyardClass_IsKindOf",
+   "after": "Function: BSP_ShipyardClass_IsKindOf at 0095ffa0\nSignature: undefined BSP_ShipyardClass_IsKindOf(void)\nEntry: 0095ffa0\nBody: 0095ffa0 - 0095ffbf"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
