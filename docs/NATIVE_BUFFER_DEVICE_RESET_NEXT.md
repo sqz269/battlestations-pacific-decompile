@@ -225,3 +225,18 @@ resource support and lifetime source files, alongside the partial semantic
 providers used to establish blockers. It contains explicit files and APIs for
 each packet. This is source/disassembly readiness evidence only, not a build,
 fixture, ABI-replacement, device-reset, GPU or game-validation claim.
+
+## Primary review and current packet routing
+
+The primary independently verified all 113 worker source/SDK/artifact pins,
+21 current provider sources and all 40 fresh live/PE spans (4,101 bytes).
+The shared getter is already complete in `native_shader_device_reset5`; use
+`get_native_renderer_device_00b1fef0` from `native_shader_device_reset.hpp`.
+The source/release helpers are combined as `native_physical_buffer_access6`.
+The diagnostic owner/guard packet is `native_diagnostic_sink_lifetime3`, with
+corresponding `native_diagnostic_sink_lifetime` files. The flags worker froze
+an explicit C++ interface using two raw output pointers and by-value flags/kind,
+retaining the original register ABI only as evidence. Shared packet dependencies
+now use these actual assignments; the original proposed partition remains
+above as the discovery record. None of these routing updates proves the blocked
+Lock or full logical save/restore bodies complete.

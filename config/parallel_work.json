@@ -4522,8 +4522,8 @@
       "id": "native_buffer_device_reset_next",
       "packet": "native_buffer_device_reset_next",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_bounded_native_dependency_discovery_in_progress",
+      "done": true,
+      "state": "bounded_read_only_native_dependency_discovery_complete",
       "function_addresses": [
         "00b49d00",
         "00b49f80",
@@ -4539,7 +4539,8 @@
       "source_ready": false,
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
-      "scope": "Read-only full native save/restore/release contracts and named-but-incomplete actual physical wrapper/flags/diagnostic dependencies; explicit disjoint ready packets. No semantic substitutes for open native providers."
+      "scope": "Read-only full native save/restore/release contracts and named-but-incomplete actual physical wrapper/flags/diagnostic dependencies; explicit disjoint ready packets. No semantic substitutes for open native providers.",
+      "evidence": "reports/native_buffer_device_reset_next.json"
     },
     {
       "id": "native_resource_creation_flags1",
@@ -4560,6 +4561,126 @@
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_buffer_device_reset_next.json",
       "scope": "Full245byte raw register-ABI flags helper. Preserve early optional pool output and final usage output, including unsupported nibble leaves pool untouched and raw overlap semantics. No actual renderer or semantic fallback needed."
+    },
+    {
+      "id": "native_physical_buffer_access6",
+      "packet": "native_physical_buffer_access6",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b23270",
+        "00b23180",
+        "00b4b800",
+        "00b4b9b0",
+        "00b4b820",
+        "00b4b9d0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_buffer_access.hpp",
+        "src/native_physical_buffer_access.cpp",
+        "docs/NATIVE_PHYSICAL_BUFFER_ACCESS.md",
+        "reports/native_physical_buffer_access_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "Full160bytes: two actual COM releases, two raw capacity getters, two current COM unlock/current depth decrement leaves. No own cleanup, semantic buffer adapter or extra lifecycle actions."
+    },
+    {
+      "id": "native_diagnostic_sink_lifetime3",
+      "packet": "native_diagnostic_sink_lifetime3",
+      "worker": "main",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "004c14c0",
+        "004bbca0",
+        "00411ee0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "src/native_diagnostic_sink_lifetime.cpp",
+        "docs/NATIVE_DIAGNOSTIC_SINK_LIFETIME.md",
+        "reports/native_diagnostic_sink_lifetime_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "236 native bytes plus original FH3 records. Four-byte owner; raw8-byte guard points to actual lifetime section.native_section (counter physically+18). Real lifetime/CRT/Win32 providers already available; no GUI semantic singleton or invented registration callbacks."
+    },
+    {
+      "id": "native_physical_buffer_lock2",
+      "packet": "native_physical_buffer_lock2",
+      "worker": null,
+      "done": false,
+      "state": "blocked_on_named_actual_storage_dependencies",
+      "function_addresses": [
+        "00b4b850",
+        "00b4ba00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_buffer_lock.hpp",
+        "src/native_physical_buffer_lock.cpp",
+        "docs/NATIVE_PHYSICAL_BUFFER_LOCK.md",
+        "reports/native_physical_buffer_lock_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [
+        "native_diagnostic_sink_lifetime3"
+      ],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "344 native bytes. Context borrows actual diagnostic publication/lifetime and actual F8D4B8 sentinel address. Required side effects include null, diagnostics, wrapped signed capacity check, caller-output aliasing, current metadata after COM callback."
+    },
+    {
+      "id": "native_logical_buffer_device_save2",
+      "packet": "native_logical_buffer_device_save2",
+      "worker": null,
+      "done": false,
+      "state": "blocked_on_named_actual_storage_dependencies",
+      "function_addresses": [
+        "00b49d00",
+        "00b49f80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_buffer_device_save.hpp",
+        "src/native_logical_buffer_device_save.cpp",
+        "docs/NATIVE_LOGICAL_BUFFER_DEVICE_SAVE.md",
+        "reports/native_logical_buffer_device_save_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [
+        "native_physical_buffer_access6",
+        "native_physical_buffer_lock2"
+      ],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "380 native bytes; existing complete actual B4B840/B4B9F0 COM getters. Bind concrete callable engine table routes, actual CRT-backed shadow allocation/copy, never semantic D3D9BufferBinding or arbitrary callbacks."
+    },
+    {
+      "id": "native_logical_buffer_device_restore2",
+      "packet": "native_logical_buffer_device_restore2",
+      "worker": null,
+      "done": false,
+      "state": "blocked_on_named_actual_storage_dependencies",
+      "function_addresses": [
+        "00b49dc0",
+        "00b4a040"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_buffer_device_restore.hpp",
+        "src/native_logical_buffer_device_restore.cpp",
+        "docs/NATIVE_LOGICAL_BUFFER_DEVICE_RESTORE.md",
+        "reports/native_logical_buffer_device_restore_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [
+        "native_physical_buffer_access6",
+        "native_physical_buffer_lock2",
+        "native_shader_device_reset5",
+        "native_resource_creation_flags1"
+      ],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "754 native bytes including24 bytes of returning-free gaps. Existing actual Attach/string/resource-support/lifetime providers required in context. Current actual renderer publication, COM endpoints, allocation and callable engine tables; explicit unsupported-pool stack-state domain remains a complete-entry requirement."
     }
   ],
   "snapshot_after_analysis": {
