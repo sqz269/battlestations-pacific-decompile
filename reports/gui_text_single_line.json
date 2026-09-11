@@ -78,7 +78,7 @@
       "address": "00aba1f8",
       "native": "00ab98f0",
       "function": "00ab9fd0",
-      "operation": "actual mappedwriter ten native slots/RET28h; optional child suspends before native postcallABA1FD"
+      "operation": "actual mappedwriter ten native slots/RET28h; optional child suspends before native postcallABA1FD; caller arguments2/5/6 now retained as one stable native_position->data() alias, distinct from pen"
     },
     {
       "address": "00aba241",
@@ -155,6 +155,36 @@
       "address": "00aba1fd",
       "function": "00ab9fd0",
       "operation": "postwriter current selectedglyphadvance then cursor4/12/1 and nextcodeunit; current Textscale beforepen floatspill"
+    },
+    {
+      "address": "00aba168",
+      "function": "00ab9fd0",
+      "operation": "initialize stable native-position y=0 once before glyph loop"
+    },
+    {
+      "address": "00aba16e",
+      "function": "00ab9fd0",
+      "operation": "initialize stable native-position z=0 once before glyph loop"
+    },
+    {
+      "address": "00aba1de",
+      "function": "00ab9fd0",
+      "operation": "after four pushes S-10h: LEA+4Ch is S+3Ch, native arg6"
+    },
+    {
+      "address": "00aba1e3",
+      "function": "00ab9fd0",
+      "operation": "after five pushes S-14h: LEA+50h is S+3Ch, native arg5"
+    },
+    {
+      "address": "00aba1ea",
+      "function": "00ab9fd0",
+      "operation": "after eight pushes S-20h: LEA+5Ch is S+3Ch, native arg2"
+    },
+    {
+      "address": "00aba1f2",
+      "function": "00ab9fd0",
+      "operation": "after ten pushes S-28h: MOVSS+64h copies pen x to same S+3Ch float3; does not reinitialize y/z"
     }
   ],
   "producer_fields": [
@@ -163,7 +193,7 @@
     "NativeMeshStorage constructorB73D70 establishes raw index60/vertex64; actual sectionB857F0 establishes range0C[4] and material20. Existing B189F0 actual setter owns texture references."
   ],
   "continuation": {
-    "kind": "borrowed native call-frame locals, no secondary Text/resource owner",
+    "kind": "borrowed native/resource locals plus one owned stable float3 call argument allocation; move-only, no secondary Text/resource owner",
     "contains": [
       "same lifetime/services",
       "captured mesh/section",
@@ -173,17 +203,19 @@
       "active textcursor",
       "pen/codeunit",
       "quad/firstvertex",
-      "captured unsignedheight"
+      "captured unsignedheight",
+      "stable native float3 argument2/5/6 alias, distinct from pen; y/z retained after child"
     ],
     "pending": "AB98F0 matched-substitution branch has already writtengeometry and blankedUV; actual Text child allocation/setup/attach/position remains required atAB9D33.",
-    "completion": "Consume frame once after actual child tail, then ABA1FD advance/nextglyph. Only final nullopt permits post-buildercolor/shadow; no automatic unlock or default child handler."
+    "completion": "Consume frame once after actual child tail, then ABA1FD advance/nextglyph. Only final nullopt permits post-buildercolor/shadow; no automatic unlock or default child handler. Consume by move; caller supplies SAME native_position data() for all three pointer arguments."
   },
   "provenance": [
     "Complete body and allcalls inspected before implementation. Ghidraproto provesAB9FD0..ABA263; sole xrefABAB78 setup inspected inABA8D0.",
     "Full EBX/EBP/ESI/EDI filter: ESI Text,EBX vertexstream,EDI mesh thenindex thenselectedglyph restoredfromESP+34 beforeunlock;EBP zero thenstoredtextcursor.",
     "Actual logical virtual tables and physical mapping contracts inheritedfrom7ae534f3; live state read after callbacks, no cached mappingfrombeforeindexLock.",
     "Existing vector/finite-domain scalar helpers inspected; their predicates and16384cap intentionally not imported. Exact arithmetic sequences read fromABA02E..ABA0A9,ABA0CF..ABA0EA,ABA100..ABA148,ABA1FD..ABA22C.",
-    "All consumed callee bodies/actual contracts were read; onlyAB9FD0 leased and annotated, no mapping/lifetime/material/font/sharedheader edits."
+    "All consumed callee bodies/actual contracts were read; onlyAB9FD0 leased and annotated, no mapping/lifetime/material/font/sharedheader edits.",
+    "Correction read full AB9FD0 listing195instructions and all stack-pointer/pen/register writes; current live function bounds AB9FD0..ABA263. Full AB98F0 listing read-only; ordinary position x/y input atAB991E/22/2B and zero vertexz atAB998F; native RET28h checked. Wrapped575a021e stable allocation contract consumed read-only."
   ],
   "remaining_dependencies": [
     "Actual optional Text child lifecycle tailAB9D33..AB9FAD. Pending builder/content frames must remain active until it finishes.",
@@ -199,6 +231,30 @@
     "native_differential": false,
     "abi_compatible": false,
     "game_validated": false,
-    "runtime_evidence": "New path not registered/reachable through current ordinary Textfactory; no runtime/visual claim. Parent standardcombinedbuild pendingintegration."
+    "runtime_evidence": "New path not registered/reachable through current ordinary Textfactory; no runtime/visual claim. Parent standardcombinedbuild pendingintegration.",
+    "position_correction_compile": "PASS strict Win32 /std:c++17 /EHsc /W4 /WX /O2 /fp:strict source with exact existing font overlay and coordinated headers; no new tests",
+    "position_correction_verifier": "Stronger exact-call verifier:13 numeric rows,0 failed;9 direct and4 profile-resolved mapping virtual calls; no Ghidra writes"
+  },
+  "correction_packet": "orch5_text_single_line_position",
+  "corrections": [
+    {
+      "was": "3a5af118 retained only FontGlyphPlacement pen/codeunit; native AB98F0 float3 arguments2/5/6 were absent from pending single-line frames",
+      "is": "One move-only stable unique_ptr<array<float,3>> native_position is retained across optional/outer frame moves; all three pointer arguments use its SAME data() pointer, separate from pen x",
+      "evidence": "ABA168/16E initialize y/z once; at steady ESP S, LEAs ABA1DE=(S-10h)+4Ch, ABA1E3=(S-14h)+50h, ABA1EA=(S-20h)+5Ch all resolve S+3Ch. ABA1F2=(S-28h)+64h copies pen x there. Pen remains S+18h and advances atABA228/22C."
+    }
+  ],
+  "native_float3_arguments": {
+    "argument_numbers": [
+      2,
+      5,
+      6
+    ],
+    "same_pointer": "frame.native_position->data()",
+    "storage": "one stable owned call-frame allocation; actual Text/resource owners remain borrowed",
+    "initialization": "y/z=0 once at emission-loop entry ABA168/16E; x overwritten from independent pen immediately before each call atABA1F2",
+    "ordinary_writer": "placement.x supplies pen copied into native-position x; placement.y reloads native-position y each call; ordinary AB98F0 writes vertex z=0 independently of input z",
+    "pending": "retain xyz and address across frame moves; missing actual child tail must consume this same storage for args2/5/6; no new callee continuation implemented",
+    "resume": "advance independent pen only; next call overwrites native-position x, preserves y/z including any callee-visible changes",
+    "original_call": "10 DWORD arguments; AB98F0 RET28h atAB9CD8 orAB9FC0; AB9FD0 RET8 atABA261"
   }
 }

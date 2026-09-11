@@ -2,6 +2,8 @@
 #include "bsp/gui_text_geometry.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_font_resources.hpp"
+#include <array>
+#include <memory>
 #include <optional>
 #include <string_view>
 
@@ -14,8 +16,9 @@ struct GuiTextSingleLineServices {
     const volatile float& vertical_scale_00e12fd4;
 };
 
-// Borrowed native call-frame locals at ABA1F8, not additional Text state or
-// resource ownership. Both original streams remain mapped. The current glyph
+// Native call-frame locals at ABA1F8, not additional Text state or resource
+// ownership. Only the stable float3 argument allocation is owned by this
+// move-only frame. Both original streams remain mapped. The current glyph
 // and string backing, all owners/services and the section must remain live.
 // No destructor silently unlocks or advances an unfinished child operation.
 struct GuiTextSingleLineContinuation {
@@ -29,6 +32,11 @@ struct GuiTextSingleLineContinuation {
     const FontGlyphData* glyph;
     const char16_t* text_cursor;
     FontGlyphPlacement placement;
+    // AB98F0 arguments2/5/6 ALL use native_position->data(). This one float3
+    // keeps its address across frame/optional moves and is separate from pen x
+    // in placement. Native initializes y/z once, then overwrites only x before
+    // each glyph call. Possible callee writes must not alias the pen accumulator.
+    std::unique_ptr<std::array<float, 3>> native_position;
     std::uint32_t quad_index;
     std::uint32_t first_vertex;
     std::uint16_t height;
@@ -54,7 +62,9 @@ std::optional<GuiTextSingleLineContinuation> build_gui_text_single_line_00ab9fd0
 // has completed using the saved call arguments; this entry does not perform
 // or assume that operation by default. Returns the next pending child or
 // nullopt after native stream unlock/layout completion. Consume each frame
-// once. Active Text string storage must not relocate, as in the native call.
+// once by moving it. The child continuation must use the SAME stable float3
+// for all three pointer arguments. Active Text string storage must not relocate,
+// as in the native call. This entry does not implement that missing child tail.
 std::optional<GuiTextSingleLineContinuation>
 resume_gui_text_single_line_after_child_00ab9fd0(GuiTextSingleLineContinuation);
 } // namespace bsp

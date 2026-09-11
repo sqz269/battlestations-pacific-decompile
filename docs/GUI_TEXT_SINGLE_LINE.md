@@ -61,12 +61,29 @@ iteration resolves the current font again.
 An optional child returns a `GuiTextSingleLineContinuation` containing borrowed
 native call-frame locals: current glyph/string cursor/pen, height, counters,
 actual mesh/section/streams/index address and the same lifetime/services.
+It also owns one stable float3 argument allocation. Native `ABA168/ABA16E`
+initialize y/z once. With steady ESP `S`, the three LEAs at `ABA1DE`, `ABA1E3`
+and `ABA1EA` evaluate respectively to `(S-10h)+4Ch`, `(S-14h)+50h` and
+`(S-20h)+5Ch`: all are `S+3Ch`, supplied as glyph-writer arguments2/5/6.
+`ABA1F2` stores pen x at `(S-28h)+64h`, the same float3's first word. Pen x
+itself remains at `S+18h` and advances at `ABA228/ABA22C`.
+
+The move-only frame's `native_position->data()` is the SAME pointer for all
+three arguments and remains stable across moves into optional/outer frames.
+Before each glyph call only native-position x is overwritten from the separate
+pen; current native-position y is projected into the ordinary writer, while z
+is retained for the full call contract (the ordinary writer stores vertex z=0).
+The full child continuation must use this allocation, not `&placement.x` or a
+temporary float3. Possible changes to it must survive suspension; they never
+change the independent pen accumulator. This correction preserves caller
+storage without implementing or declaring completion of the missing child tail.
+
 Both mappings remain active at the suspension point. The caller must retain
 this frame and its enclosing content continuation; it must execute the real
 glyph-child tail before calling `resume_gui_text_single_line_after_child_00ab9fd0`.
 That entry starts at native `00ABA1FD`, and can suspend for another child.
 Neither entry invokes a fake child handler or automatically treats the child as
-completed. Frames must be consumed once, and active string backing/selected
+completed. Frames must be consumed once by moving them, and active string backing/selected
 glyphs must stay alive as the original native pointers require.
 
 Only full completion unlocks the originally captured index stream, then vertex

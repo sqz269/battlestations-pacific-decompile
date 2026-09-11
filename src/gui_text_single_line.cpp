@@ -1,6 +1,7 @@
 #include "bsp/gui_text_single_line.hpp"
 #include <cstring>
 #include <stdexcept>
+#include <utility>
 
 namespace bsp {
 namespace {
@@ -95,11 +96,16 @@ std::optional<GuiTextSingleLineContinuation> emit(
             lifetime.fields().field_18c = frame.placement.x;
         }
         frame.placement.code_unit = *frame.text_cursor; // Reload after bindings.
+        // ABA1DE/E3/EA use one float3; ABA1F2 copies the separate pen x into
+        // it each time. Y/Z were initialized once at ABA168/16E. Preserve any
+        // child-tail writes across suspension and subsequent glyph calls.
+        (*frame.native_position)[0] = frame.placement.x;
+        frame.placement.y = (*frame.native_position)[1];
         const auto result = write_gui_text_quad_00ab98f0_fragment(lifetime,
             *frame.glyph, frame.placement, frame.quad_index, frame.height,
             frame.first_vertex, frame.vertex_stream, frame.indices,
             services.vertical_scale_00e12fd4);
-        if (result == GuiTextGlyphWriteResult::needs_glyph_child) return frame;
+        if (result == GuiTextGlyphWriteResult::needs_glyph_child) return std::move(frame);
         advance_after_glyph(frame);
     }
     unlock_native_logical_index_stream_00b49c70(frame.index_stream, services.mapping);
@@ -143,13 +149,16 @@ std::optional<GuiTextSingleLineContinuation> build_gui_text_single_line_00ab9fd0
     aligned_origin(width, text.measured_width, text.align, origin);
     GuiTextSingleLineContinuation frame{&lifetime, &services, mesh, &section,
         vertices, index_stream, indices, nullptr, text.text.c_str(),
-        FontGlyphPlacement{0, origin, 0.0f}, 0, 0, height};
-    return emit(frame, true);
+        FontGlyphPlacement{0, origin, 0.0f},
+        std::make_unique<std::array<float, 3>>(), 0, 0, height};
+    return emit(std::move(frame), true);
 }
 
 std::optional<GuiTextSingleLineContinuation>
 resume_gui_text_single_line_after_child_00ab9fd0(GuiTextSingleLineContinuation frame) {
+    if (!frame.native_position)
+        throw std::invalid_argument("single-line child continuation requires its original float3 allocation");
     advance_after_glyph(frame);
-    return emit(frame, false);
+    return emit(std::move(frame), false);
 }
 } // namespace bsp
