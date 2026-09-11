@@ -436,3 +436,31 @@ the fields this packet establishes.
 ## Correction from docs/MISSION_RESULT_DECISION.md
 
 The five addresses proposed above as the mission failure decision are not one: two are a component-failure hazard roll, one a unit message handler, and two are unit destruction reporting the kill warning. Nothing in the image decides a win or loss natively; the mission script writes objectives (0x2C records in eight per-slot sets at `game+21A4h`, kind at +18h, state at +1Ch) and calls `Scoring_SetMissionCompleted`, and `BSP_Game_CheckMissionCompletion` enqueues request 0Fh once the `PlayBinkMovie` object at `game+7188h` has +21h set; 0Fh runs `GGame::EndScene` (`004d7970`), which commits the score record into `game+6B4h` keyed by the mission id at `game+2198h` and enqueues the teardown request 10h. A player death raises interface 34h (`GUI_limbo`, the respawn screen) after a 1.0f grace period.
+
+## Correction from docs/WARNING_MESSAGE_TABLE.md and docs/VOICE_LINE_PLAYBACK.md
+
+The warning table packet establishes that entity and playerunit_section are
+children of Warnings.escapecharacters; messages is directly under Warnings.
+The +108h map holds vectors of alternative strings. The +11Ch/+130h escape
+sections each hold a prefix string and a replacement map; +114h accumulates
+both sections' prefixes. The installed-data fixture found 122 message IDs,
+36 entity replacements and 5 section replacements. Full Init is still an
+external sequence around the reconstructed table-loading fragment.
+
+The voice loop uses CMP ESI,1/JL at 005B7251/54: only the slot at manager+8 is
+polled. 007027B0 can stop/release/reset that slot, and readiness repeats it for
+each clip before reading manager+6Ch. The old two-slot static readiness helper
+and standalone attenuation helpers have been retired in favor of the complete
+sequences in voice_playback.hpp/.cpp.
+
+Speaker classification performs five virtual probes (8, 1Ah, 1Bh, 19h, 6).
+005BBDC0 accepts a Clip12 by value plus an entity pointer. The clip holds a
+record pointer whose +8 signed sound ID is tested, and an opaque word copied
+unchanged. Positional attenuation is an admission gate only: it is not passed
+as volume. The native JA/JNC pair also permits unordered values with masked
+FP exceptions. The double-distance host interface does not promise bit-exact
+x87 intermediates. No audible playback or original-game validation is claimed.
+
+The older counts, static-readiness assertion, four-probe description and
+broader source-level implications above are superseded by these findings.
+Combined verification is recorded in reports/warning_voice_order_integration.json.

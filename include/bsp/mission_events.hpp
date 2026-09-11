@@ -35,8 +35,9 @@ inline constexpr float kWarningProximityHoldSeconds = 2.0f;
 inline constexpr float kWarningProximityRadiusSquared = 4.0e6f;
 
 // 00cf0dd8, the double 2000.0, and 00ce3868, 0.25f. 005bbdc0 forms
-// (kVoiceAudibleRange - distance) / kVoiceAudibleRange and plays only when the
-// result is at least kVoiceMinimumAttenuation and above zero, i.e. inside 1500 m.
+// (kVoiceAudibleRange - distance) / kVoiceAudibleRange. For finite inputs the
+// admission gate includes 1500 m. The exact branch ordering, including masked
+// NaN admission, lives in voice_playback.cpp; this value is not playback volume.
 inline constexpr float kVoiceAudibleRange = 2000.0f;
 inline constexpr float kVoiceMinimumAttenuation = 0.25f;
 
@@ -46,9 +47,6 @@ inline constexpr int kWarningPromptInputAction = 3;
 
 // [game+1ED4h]->vtable[5Ch] takes this before [game+1ED4h]+390h is set (0096d540).
 inline constexpr int kWarningPromptHudSlot = 0x54;
-
-// 005b71d0 walks exactly two playback slots at voice+8h, stride 18h.
-inline constexpr std::size_t kVoicePlaybackSlotCount = 2;
 
 // The Warning record is operator_new(0x84) in 00977050 and its siblings, and the
 // WarningManager is operator_new(0x1B0) at 004dc8b3.
@@ -169,19 +167,9 @@ WarningDeadlineResult update_warning_deadlines(WarningManagerState& state, float
 // is warning+14h; the decompiler prints the call with one argument and loses the
 // ECX, so the order here follows the listing. Every clause is a gate: a false
 // from any of them is the return value.
-struct VoiceReadinessInputs {
-    bool panel_sequence_active{false}; // [[00e188a8]+21E4h]+34h or +24h non-zero
-    bool voice_disabled{false}; // voice+74h
-    bool voice_blocked{false}; // voice+6Ch, the value SETZ actually returns
-    std::size_t busy_slots{0}; // how many of the two 18h-byte slots 007027b0 reports busy
-    std::size_t clip_count{0}; // (+1Ch - +18h) / 0Ch on warning+14h
-};
-bool voice_can_play_005b71d0(const VoiceReadinessInputs& inputs) noexcept;
-
-// 005bbdc0. Returns the attenuation, which is negative beyond the range. The
-// caller plays the line only when voice_line_audible agrees.
-float voice_line_attenuation_005bbdc0(float distance) noexcept;
-bool voice_line_audible(float attenuation) noexcept;
+// The stateful readiness and positional playback sequences are declared in
+// voice_playback.hpp. 005B7251/54 checks ONE slot, and 007027B0 can mutate it;
+// a precomputed busy-slot count cannot represent the native per-clip calls.
 
 // 00977990's distance test, which compares the squared separation against the
 // squared radius without a square root.
