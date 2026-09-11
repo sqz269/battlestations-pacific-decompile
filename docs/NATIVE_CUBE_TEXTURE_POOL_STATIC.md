@@ -38,9 +38,25 @@ The integrated strict MSVC Win32 build and both existing CTests passed. The
 primary library containing all four cube pool translation units is frozen at
 `build/cube-pool-primary-check/bsp_core.linked.lib`, SHA256
 `c8ac226e4373d04226066e0a7205893292ff442719a50c4a609e2c117d8d1d12`.
-Independent real-process-exit verification is in progress; this document does
-not yet assert that the original static pair and rebuilt callbacks have been
-compared through exit.
+Independent verification now matches the original static pair and actual
+primary library through real process exit: 18,931 DWORDs and 33 events.
+The complete original 32 static bytes and 33 global-list dispatcher bytes are
+unchanged; four explicit dependency bridges compose the actual production
+lifetime/trim and real CRT. All runtime postimages, linker providers, original
+service imports, current source snapshots, and artifact hashes were rechecked.
+See `NATIVE_CUBE_TEXTURE_POOL_STATIC_FIXTURE.md` and the paired audit.
+
+The single deliberately failed 128-byte malloc observation invokes the real CRT
+new-handler and both genuine cube pool bindings before a successful retry.
+The scenario then performs 33 canonical allocations and 32 returns, global trimming
+with 32 moved token rewrites, real CRT callback registration and exit invocation,
+and destruction with two held critical-section entries. No production source
+is recompiled or replaced by observation aliases. Registration exhaustion and
+construction failure before registration remain source-order findings.
+
+Both functions now have complete sharded reconstruction records and saved
+Ghidra evidence comments. Prior names/comments were preserved, the missing
+initializer was defined, and both affected exports were refreshed.
 
 The interfaces are new C++ host APIs. The original no-argument register ABI,
 arbitrary rebinding, repeated initialization/destruction, the game's complete

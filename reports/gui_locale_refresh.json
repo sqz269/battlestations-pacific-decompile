@@ -1,0 +1,156 @@
+{
+  "packet": "orch2_gui_locale_refresh",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "bsp.py ghidra Client.verify before each live batch; original installation unchanged"
+  },
+  "source": [
+    "include/bsp/gui_locale_refresh.hpp",
+    "src/gui_locale_refresh.cpp"
+  ],
+  "documentation": "docs/GUI_LOCALE_REFRESH.md",
+  "status": "reconstructed_win32_build_existing_native_differential_checks_and_focused_gui_fixture_passed",
+  "reconstructed": [
+    "00aa4650 root-page walk over persistent existing GuiPageRegistry",
+    "00aa40a0 pre-order widget refresh with period then saved localized source",
+    "00abbe50 C-string wrapper through existing text setter",
+    "00aa5d70 empty page-vector state only"
+  ],
+  "analyzed_only": [
+    "004c12b0 native singleton lock/publication/lifetime",
+    "00aa5d70 other fields and resource initialization boundary",
+    "00aa2920 tree-node allocation",
+    "00aa2820 list-sentinel allocation",
+    "00aa5840 uses existing page loader/registration"
+  ],
+  "literal_evidence": {
+    "00ce3a70": {
+      "bytes": "2e000000",
+      "value": "."
+    },
+    "00ce3800": {
+      "bytes": "0000003f",
+      "value": 0.5
+    }
+  },
+  "native_bodies_inclusive": {
+    "00aa4650": "00aa46a7",
+    "00aa40a0": "00aa41aa",
+    "00abbe50": "00abbf20",
+    "00aa5d70": "00aa5e18",
+    "004c12b0": "004c136f",
+    "00aa2920": "00aa2956",
+    "00aa2820": "00aa2839"
+  },
+  "original_abi": {
+    "00aa4650": "ECX manager; no stack args; RET",
+    "00aa40a0": "ECX manager; widget pointer stack+4; RET4",
+    "00abbe50": "ECX text widget; C-string stack+4 and localise flag stack+8; RET8",
+    "00aa5d70": "ECX allocation; returns EAX=this; RET",
+    "004c12b0": "__cdecl, no args; returns EAX singleton; RET",
+    "00aa2920": "no consumed args; returns EAX allocated node; RET",
+    "00aa2820": "no consumed args; returns EAX allocated sentinel; RET"
+  },
+  "annotation_requests": [
+    {
+      "address": "00aa4650",
+      "old_name": "STL_inst_00aa4650",
+      "proposed_name": "BSP_GuiManager_RefreshLocale",
+      "evidence": "ECX manager, no stack arguments, RET at 00aa46a7. Walks the actual page vector at +18h/+1Ch in existing order and calls 00aa40a0 per page. Sole indexed caller is locale setter 00aa09d0 after GUI singleton getter. Application locale invalidation, not an STL-only instantiation; old stl_instantiation tag must be corrected by integrator.",
+      "preserve_existing_comments": true
+    },
+    {
+      "address": "00aa40a0",
+      "old_name": "FUN_00aa40a0",
+      "proposed_name": "BSP_GuiManager_RefreshWidgetLocale",
+      "evidence": "ECX manager, stack widget pointer, RET4 at 00aa41a8 inclusive end 00aa41aa. Tests widget virtual+5Ch ==3, copies source+F4h/+F8h, calls 00abbe50 with period literal 00ce3a70 and true, then 00abaed0 with saved source and true; recurses child list+68h in order without visibility gate. Live literal bytes are 2e00; empty substitution is incorrect.",
+      "preserve_existing_comments": true
+    },
+    {
+      "address": "00abbe50",
+      "old_name": "FUN_00abbe50",
+      "proposed_name": "BSP_GuiText_SetLocalisedCString",
+      "evidence": "ECX text widget, stack const char* and localise flag, RET8 at 00abbf1e inclusive end 00abbf20. Case-insensitive cached source gate; null C-string has empty content. Builds temporary NativeString and calls 00abaed0 before freeing temporary storage. Reconstructed through existing GuiTextWidget/GuiTextHost setter.",
+      "preserve_existing_comments": true
+    },
+    {
+      "address": "00aa5d70",
+      "old_name": "BSP_GuiManager_Construct",
+      "proposed_name": "BSP_GuiManager_Construct",
+      "evidence": "Locale refresh ownership audit: the only ctor calls are STL allocator wrappers 00aa2920(new18h tree node) and 00aa2820(new14h list sentinel), with no engine/UI/font/renderer calls. It writes an empty page vector at +18h/+1Ch/+20h, used directly by 00aa4650 and existing GuiPageRegistry. Float00ce3800 is verified0.5. New GuiLocaleRefreshManager retains only locale-relevant page state and required live text bindings; full88h constructor/resource loader not reconstructed here.",
+      "preserve_existing_comments": true
+    },
+    {
+      "address": "004c12b0",
+      "old_name": "BSP_GuiManager_GetOrCreate",
+      "proposed_name": "BSP_GuiManager_GetOrCreate",
+      "evidence": "Locale refresh audit: 00aa09d0 can call this getter before font/GUI resource startup when a changed language has registered table names. Fresh localization construction has no registered names and skips that tail. This packet supplies retained C++ locale/page state, not the native lock/publication/lifetime registration or whole88h GUI manager.",
+      "preserve_existing_comments": true
+    },
+    {
+      "address": "00aa2920",
+      "old_name": "FUN_00aa2920",
+      "proposed_name": "STL_GuiManagerTree_AllocateNode",
+      "evidence": "Provisional template role, not a recovered library symbol. No consumed arguments; EAX allocated pointer despite old void prototype, RET at 00aa2956. Calls operator_new(18h), zeroes links+0/+4/+8, sets byte+14h=1,+15h=0. GUI ctor00aa5d70 replaces the links with self and +15h=1. Exact key/value types unresolved; standard-library role retained.",
+      "preserve_existing_comments": true
+    },
+    {
+      "address": "00aa2820",
+      "old_name": "FUN_00aa2820",
+      "proposed_name": "STL_GuiManagerList_AllocateSentinel",
+      "evidence": "Provisional template role, not a recovered library symbol. No consumed arguments; EAX allocated pointer despite old void prototype, RET at 00aa2839. Calls operator_new(14h), writes self links+0/+4, leaves payload untouched. GUI ctor installs pointer at manager+38h. Exact payload type unresolved; standard-library role retained.",
+      "preserve_existing_comments": true
+    }
+  ],
+  "annotation_status": "worker Ghidra read-only; primary integrator to apply names/comments, correct tag, save and refresh exports",
+  "tag_correction_required": {
+    "address": "00aa4650",
+    "old_category": "stl_instantiation",
+    "old_confidence": "high",
+    "reason": "domain-specific locale refresh walk"
+  },
+  "no_return_or_body_gap_repairs": [],
+  "validation": {
+    "seed_verification": "tools/ghidra_export.py verify-seeds passed: all8 original byte ranges match installed executable",
+    "win32_build": "scripts/build.ps1 passed after seed verification",
+    "existing_ctest": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "focused_fixture": {
+      "source": "local/gui_locale_refresh_fixture.cpp",
+      "runner": "local/gui_locale_refresh_fixture.cmd",
+      "log": "local/gui_locale_refresh_fixture.log",
+      "status": "passed MSVC Win32 /W4 /WX /MD /O2",
+      "scope": "empty registry; later page registration; priority/pre-order traversal; period, empty and same-period source gates; intermediate/final color; missing binding failure"
+    },
+    "build_logs": [
+      "local/gui_locale_refresh_build.log",
+      "local/gui_locale_refresh_verified_build.log"
+    ],
+    "gui_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "visual_validated": false
+  },
+  "required_bindings": [
+    "Application retains and lazily creates the locale/page owner at004c12b0 boundary",
+    "Existing GuiPageRegistry must be the one populated by later GUI page loading",
+    "Every Text GuiLayoutWidget requires live GuiTextWidget and GuiTextHost via bind_text",
+    "Real GuiTextHost localization, glyph builders, color/material state remain required",
+    "Full GUI resource loading, scene-node creation, Lua evaluation, fonts/textures and native singleton lifetime remain separate startup requirements"
+  ],
+  "uncertainty": [
+    "new C++ interfaces are not native ABI/layout replacements",
+    "exact constructor tree key/value and list payload types unresolved",
+    "native allocator/SEH/invalid-iterator crash semantics not reproduced",
+    "graph and borrowed text/host lifetimes must be honored; structural mutation during refresh unsupported",
+    "native GUI behavior is assembly-grounded and C++ fixture checked, not game or GUI native-differential validated"
+  ]
+}

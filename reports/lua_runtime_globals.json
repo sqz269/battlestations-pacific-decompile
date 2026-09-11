@@ -1,0 +1,49 @@
+{
+  "packet": "orch2_lua_runtime_globals",
+  "date_utc": "2026-09-11",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every bsp.py ghidra query/export invokes Client.verify against config/target.json. Ghidra read-only."
+  },
+  "initial_state": {
+    "byte": "0108ff20",
+    "string_length": "0108ff24",
+    "string_pointer": "0108ff28",
+    "values": {"x360comp": false, "region_pointer": null},
+    "cpp_projection": {"x360comp": false, "region": ""},
+    "image_section": {"name": ".data", "rva": "00a08000", "raw_size": 65536, "virtual_size": 2719452, "global_section_offset": 2653984, "zero_fill": true},
+    "crt_registration": "00ce3544 points to00cd7ce0; its only side effect is atexit(00ce0d60)",
+    "first_input_call": "0073da94",
+    "later_settings_load": "0073daa5",
+    "later_game_startup": "0073e477",
+    "later_settings_apply": "0073e485"
+  },
+  "writers": {
+    "compatibility": {"function": "008d44c0", "store": "008d44cc", "call_sites": ["004dd6a3", "005f661e", "0067ce92", "0067d501", "008d7253"], "configuration_key": "XboxCompatibilityMode", "key_address": "00d15c38", "startup_command_line_source_found": false},
+    "region": {"function": "008d5b50", "source_call": "008d6112", "assign": "008d6132..008d6153", "source": "00439100 Windows user geography", "old_interpretation_corrected": "module directory"},
+    "cross_reference_check": "Complete .text little-endian absolute-address scans agree with live xrefs for0108ff20/24/28; no additional direct writers found."
+  },
+  "reconstructed": [
+    {"address": "00439100", "end_exclusive": "00439180", "symbol": "bsp::user_geography_region_00439100", "scope": "whole function", "original_abi": "cdecl(void), EAX static string pointer, RET", "source": "src/lua_runtime_globals.cpp", "branches": "United States/Canada -> USA; Japan -> JAP; other/API failure -> EU", "calls": "GetUserGeoID(0x10); GetGeoInfoA(id,8,buffer,100,0)", "assembly_flow_gaps": 0},
+    {"address": "0108ff20", "symbol": "bsp::make_initial_lua_runtime_globals_0108ff20", "scope": "PE initial data projection, not native code", "original_abi": "none: global byte and two-word NativeString"},
+    {"address": "008d44c0", "end_exclusive": "008d4519", "symbol": "bsp::publish_lua_xbox_compatibility_008d44c0", "scope": "existing settings setter plus global mirror; returns command for required caller delivery", "original_abi": "thiscall, ECX=settings, stack char enabled, RET4", "assembly_flow_gaps": 0},
+    {"address": "008d5b50", "range": "008d612f..008d6153", "symbol": "bsp::publish_lua_region_008d6132", "scope": "C-string publication fragment", "original_abi": "parent thiscall ECX=settings, no stack args, RET"}
+  ],
+  "analyzed_only": [
+    {"address": "00cd7ce0", "end_inclusive": "00cd7ceb", "end_exclusive": "00cd7cec", "original_name": null, "reviewed_name": "BSP_Static_RegisterLuaRegionCleanup", "original_abi": "cdecl(void), RET", "ghidra_function_missing_at_analysis": true, "repair_sent_to_primary": true},
+    {"address": "00ce0d60", "end_exclusive": "00ce0d83", "original_name": "CG_static_init_00ce0d60", "reviewed_name": "BSP_Static_DestroyLuaRegion", "original_abi": "cdecl(void), RET", "assembly_flow_gaps": 0}
+  ],
+  "annotation": {"new_name_old_value": {"00439100": "FUN_00439100", "00ce0d60": "CG_static_init_00ce0d60", "00cd7ce0": null}, "appended_existing_evidence": ["008d44c0", "008d5b50", "00b6a020"], "worker_applied_to_ghidra": false, "primary_must_define_annotate_save_refresh": true, "fresh_preannotation_exports": ["00439100", "008d44c0", "00ce0d60"]},
+  "validation": {
+    "build": {"command": "./scripts/build.ps1", "status": "passed", "configuration": "MSVC Win32 Release", "log": "local/lua_runtime_globals_build_verified_seeds.log"},
+    "existing_native_seeds": {"command": "python tools/ghidra_export.py verify-seeds", "matching": 8, "total": 8},
+    "existing_tests": {"passed": 2, "total": 2, "names": ["reconstructed_math", "native_math_differential"]},
+    "fixture": {"source": "local/lua_runtime_globals_fixture.cpp", "build_script": "local/build_lua_runtime_globals_fixture.ps1", "log": "local/lua_runtime_globals_fixture.log", "status": "passed", "checks": ["initial PC=true/X360COMP=false/REGION=nil in real Lua", "initial globals independent of settings byte", "settings and global compatibility publication", "later owner gets published globals", "existing owner keeps earlier snapshot", "no-sink publication updates retained state without command", "actual Win32 geography call returns USA"], "vfs": "existing physical provider mounting installed game root read-only", "fundamentals_bytes": 657, "native_differential": false}
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": ["Caller supplies current Windows-derived user_region when composing complete settings ApplyAll", "Caller delivers returned compatibility command only through actual live006b8ad0 sink", "No native globals differential or full geography failure-branch fixture", "Native global allocator/atexit mechanics not reproduced", "Primary integration applies reviewed names, saves project and refreshes exports"]
+}

@@ -432,7 +432,7 @@ bool apply_all_settings_008d5b50(const GameSettingsBlock& settings,
         host.gui_manager_reload();
     }
     host.renderer_set_old_film_effect(settings.presentation.old_film_effect_90); // 008d610d
-    host.publish_module_directory(env.module_directory); // 008d6112 then 008d6137
+    host.publish_lua_region(env.user_region); // 008d6112 then 008d6137
     return subsystem_changed;
 }
 }

@@ -51,6 +51,11 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         summary.settings_width, summary.settings_height,
         summary.settings_fullscreen ? 1 : 0, summary.settings_vsync ? 1 : 0,
         summary.settings_antialias);
+    log.notef("summary input_scripts_ready=%d devices=%zu input_names=%zu controller_names=%zu "
+        "renderer_api_shared=%d locale_keys=%zu locale_files=%zu",
+        summary.input_scripts_ready ? 1 : 0, summary.input_devices, summary.input_names,
+        summary.controller_names, summary.renderer_api_shared ? 1 : 0,
+        summary.locale_keys, summary.locale_files);
     log.notef("host methods %zu concrete, %zu unimplemented",
         log.implemented_count(), log.unimplemented_count());
     for (const auto& record : log.records()) {

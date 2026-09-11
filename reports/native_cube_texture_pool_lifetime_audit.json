@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_cube_texture_pool_lifetime3",
-  "status": "complete_reconstructed_build_and_original_body_fixture_passed_pending_integrator_saved_annotations",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-lifetime3-20260910",
   "branch": "agent/native-cube-texture-pool-lifetime3-20260910",
   "base_commit": "180749f9f2c8961cf241e7203b8274c131a6612b",
@@ -733,11 +733,6 @@
       "evidence_comment": "Complete14byte native leaf: read first DWORD of actual table header, call BF6989 only if nonnull, clear nothing, return. Raw B3D3FC POP ECX restores omitted returning-free continuation. Reached by original CBEE73 state2 funclet. New C++ interface in native_cube_texture_pool_lifetime.cpp; strict Win32 primary-library/native-body fixture passed. Descriptive name hypothesis; not binary ABI or game validation."
     }
   ],
-  "remaining_integrator_work": [
-    "review and register owned source in shared build metadata",
-    "add saved evidence annotations and address/name/function ledgers under root ownership",
-    "compose separate cube allocation, trim and static startup packets as appropriate"
-  ],
   "limitations": [
     "No original CRT heap or process-wide initializer reconstruction.",
     "No independent native closure for shared host allocation/free/Win32 boundaries or cube trim in this packet.",
@@ -775,5 +770,884 @@
   "external_dependency_sha256": {
     "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-trim-20260910\\include\\bsp\\native_cube_texture_pool_trim.hpp": "f1d33446e5f4658bb224fd263c298267dbbfc66868acd5ad881d32aa5433d16a",
     "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-trim-20260910\\src\\native_cube_texture_pool_trim.cpp": "9e2a1ad2fa45bb8e0302a99d90f005e9682bf766e7c7a4f7cc70fe9aa932b11f"
-  }
+  },
+  "primary_integration": {
+    "verification": {
+      "all_12_postimages_match_declared_edits": true,
+      "owned_bodies_not_replaced": true,
+      "ordinary_relocations": 16,
+      "dependency_jump_adapters": 4,
+      "actual_import_bindings": 3,
+      "matched_trace_words": 62337,
+      "trace_lengths": [
+        37352,
+        24615,
+        370
+      ],
+      "spans": [
+        {
+          "address": "00b3f090",
+          "length": 211,
+          "kind": "owned",
+          "postimage_sha256": "337a1318d9750443541bb0d5b718af68feea04f4f6f7e36b51e0b664c201a271",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00b3f093",
+              "kind": "relocation",
+              "before": "00cbee7e",
+              "after": "30004350"
+            },
+            {
+              "address": "00b3f0b6",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015a88b4"
+            },
+            {
+              "address": "00b3f0be",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015a88b4"
+            },
+            {
+              "address": "00b3f0d0",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015a88b4"
+            },
+            {
+              "address": "00b3f0e4",
+              "kind": "relocation",
+              "before": "00ce220c",
+              "after": "0147220c"
+            }
+          ]
+        },
+        {
+          "address": "00b3e5b0",
+          "length": 138,
+          "kind": "owned",
+          "postimage_sha256": "c7d913917844ae072b35db61278d2d7556db78a8c0bc52ad1662bd04e787ff75",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00b3e5f4",
+              "kind": "relocation",
+              "before": "00ce2210",
+              "after": "01472210"
+            },
+            {
+              "address": "00b3e609",
+              "kind": "relocation",
+              "before": "00ce2214",
+              "after": "01472214"
+            },
+            {
+              "address": "00b3e626",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015a88b4"
+            }
+          ]
+        },
+        {
+          "address": "00b3d3f0",
+          "length": 14,
+          "kind": "owned",
+          "postimage_sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+          "all_edits_declared": true,
+          "edits": []
+        },
+        {
+          "address": "00cbee60",
+          "length": 40,
+          "kind": "eh_code",
+          "postimage_sha256": "d9c27cbef8493a53e2a447299743b22be9271d5364205994762737fcc66b3318",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00cbee7f",
+              "kind": "relocation",
+              "before": "00df76dc",
+              "after": "015876dc"
+            }
+          ]
+        },
+        {
+          "address": "00df76c4",
+          "length": 60,
+          "kind": "eh_data",
+          "postimage_sha256": "c918be3cefe5382be09e13b976ae42e4f2549a029d4ad0624215a96f61e09197",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00df76c8",
+              "kind": "relocation",
+              "before": "00cbee60",
+              "after": "0144ee60"
+            },
+            {
+              "address": "00df76d0",
+              "kind": "relocation",
+              "before": "00cbee68",
+              "after": "0144ee68"
+            },
+            {
+              "address": "00df76d8",
+              "kind": "relocation",
+              "before": "00cbee73",
+              "after": "0144ee73"
+            },
+            {
+              "address": "00df76e4",
+              "kind": "relocation",
+              "before": "00df76c4",
+              "after": "015876c4"
+            }
+          ]
+        },
+        {
+          "address": "00402f70",
+          "length": 39,
+          "kind": "shared",
+          "postimage_sha256": "dd7d1361fecb1404ff2f04381610a811d7abc644b7d1c0249657dc21b9295e79",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00402f7c",
+              "kind": "relocation",
+              "before": "00ce2210",
+              "after": "01472210"
+            },
+            {
+              "address": "00402f91",
+              "kind": "relocation",
+              "before": "00ce2214",
+              "after": "01472214"
+            }
+          ]
+        },
+        {
+          "address": "00403970",
+          "length": 43,
+          "kind": "shared",
+          "postimage_sha256": "b4ffcb411ddaffa4e8eb68446dc2d8915afa4a78661940e8274e35752b1a41ad",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00403989",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015a88b4"
+            }
+          ]
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "ad36806df8e12051bbb91519be58a1adcc7cd200d00d882f9bff0f20f60bcfa2",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf55be",
+              "kind": "dependency_jump",
+              "target": "allocation_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf65ac",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "711593631dc291fdf5cbd4089b33a3a3144b372a0112c3dec132b0ccea64b1df",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf65ac",
+              "kind": "dependency_jump",
+              "target": "free_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "4a0a0b541eabc0cb05baca403a9446d883043ef9e2fe34179bec16e1a7a344bd",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf6989",
+              "kind": "dependency_jump",
+              "target": "free_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf6b43",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "415d5c5637fc7ac6120203c2d08cbc0e4bab3a6483c697894ba95b3c92355a63",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf6b43",
+              "kind": "dependency_jump",
+              "target": "cxx_bridge"
+            }
+          ]
+        },
+        {
+          "address": "00ce220c",
+          "length": 12,
+          "kind": "iat",
+          "postimage_sha256": "a6a1b1a43c88e815cf94fb0987f74e829061ca4869429d65136e0f1d96b46aa4",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00ce220c",
+              "kind": "actual_import_binding",
+              "target": "observed_initialize"
+            },
+            {
+              "address": "00ce2210",
+              "kind": "actual_import_binding",
+              "target": "observed_leave"
+            },
+            {
+              "address": "00ce2214",
+              "kind": "actual_import_binding",
+              "target": "observed_delete"
+            }
+          ]
+        }
+      ],
+      "table_free_provider": {
+        "symbol": "?free_native_cube_texture_pool_table_00b3d3f0@bsp@@YAXPAX@Z",
+        "emitted_in_frozen_library": true,
+        "separate_linked_entry": false,
+        "reason": "Leaf is inlined at compared lifetime call sites; the unused separately emitted entry is linker-discarded. Original FH3 executes its complete native leaf."
+      },
+      "original_FH3_search_and_unwind": {
+        "populated": [
+          1,
+          1
+        ],
+        "empty": [
+          1,
+          1
+        ]
+      },
+      "providers": [
+        {
+          "symbol": "initialize_native_cube_texture_pool_00b3f090",
+          "provider": "bsp_core.linked:native_cube_texture_pool_lifetime.obj",
+          "line": " 0001:00005fb0       ?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 30006fb0 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+        },
+        {
+          "symbol": "destroy_native_cube_texture_pool_00b3e5b0",
+          "provider": "bsp_core.linked:native_cube_texture_pool_lifetime.obj",
+          "line": " 0001:00005f00       ?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30006f00 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+        },
+        {
+          "symbol": "trim_native_cube_texture_pool_00b3e690",
+          "provider": "bsp_core.linked:native_cube_texture_pool_trim.obj",
+          "line": " 0001:00006160       ?trim_native_cube_texture_pool_00b3e690@bsp@@YAXPAX@Z 30007160 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+        },
+        {
+          "symbol": "bind_native_cube_texture_pool_trim_00d61944",
+          "provider": "bsp_core.linked:native_cube_texture_pool_trim.obj",
+          "line": " 0001:00006120       ?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30007120 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_allocate",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "line": " 0001:00006220       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30007220 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_free",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "line": " 0001:00006280       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30007280 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "prepend_base_element",
+          "provider": "bsp_core.linked:allocator_list.obj",
+          "line": " 0001:00005dd0       ?prepend_base_element@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z 30006dd0 f   bsp_core.linked:allocator_list.obj"
+        },
+        {
+          "symbol": "unlink_base_element_00403970",
+          "provider": "bsp_core.linked:allocator_list.obj",
+          "line": " 0001:00005ec0       ?unlink_base_element_00403970@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z 30006ec0 f   bsp_core.linked:allocator_list.obj"
+        }
+      ],
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-lifetime3-20260910",
+        "worker_pins_verified": 25,
+        "source_pins": 6,
+        "current_source_differences": [],
+        "fresh_spans": [
+          {
+            "address": "00b3f090",
+            "length": 211,
+            "sha256": "6eb70fb8e1f244b28bf1d8525a9f0e274f7a8bdaea39f07861d5cfdbb38da0e3",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b3e5b0",
+            "length": 138,
+            "sha256": "9aea00ac56b7bbd0422348e26d29c7e2757a0e7ad174b7a6cbee1cc4b2e20514",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b3d3f0",
+            "length": 14,
+            "sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00cbee60",
+            "length": 40,
+            "sha256": "198c54ac1ecb9adb8a6d66c9e61359ebe3dd4f86868b392be00501bfcf4cc0a3",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00df76c4",
+            "length": 60,
+            "sha256": "0938d32cb65f8dba3439cf33fb74ae09c8d05fa8782f84e1d29d18d86ef8f002",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00402f70",
+            "length": 39,
+            "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00403970",
+            "length": 43,
+            "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf55be",
+            "length": 5,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf65ac",
+            "length": 5,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6989",
+            "length": 5,
+            "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce220c",
+            "length": 12,
+            "sha256": "0f8ae4c205c3c2d5b650b9aa4303048fb6e4fbc16e8be72c1d9d7ac15a5f0551",
+            "live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\build_cube_lifetime_check.cmd",
+          "bytes": 864,
+          "sha256": "9fc7673014264da415022369d747a074bc3d40a6014fe292afd205cc228391c2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\cube_lifetime_check.exe",
+          "bytes": 46592,
+          "sha256": "d83848d3934b4d97e5356553f4a9f2c2a9e13a35708bd5a24c4907d51f6cdfbf"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\cube_lifetime_check.map",
+          "bytes": 93355,
+          "sha256": "4b21d3b372983a9a6bb94238ddc06b264682508bf751e39ed949c0a246170fcc"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\cube_lifetime_check.obj",
+          "bytes": 196461,
+          "sha256": "eb5353d6363c84217df16e909c11de5a34a0445bad8b48cd1d5517ad907f8507"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\local\\cube_lifetime_comparison.log",
+          "bytes": 487,
+          "sha256": "e3b157cdcc8a8577c0fd8e3e44f19545eeb675758eb86677e922d2cdcf112c35"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\local\\cube_lifetime_postimages.json",
+          "bytes": 1775,
+          "sha256": "6f801ad9e048f2bebbea1df11987b419d3a3c87987f9059d10de21734bf43ea7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\local\\cube_lifetime_postimage_audit.json",
+          "bytes": 6681,
+          "sha256": "c73cc5c7350feb8cdc8b4332d425caf62e84fba3a8e241a8b64b9c766da9c87c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\local\\cube_lifetime_raw_traces.json",
+          "bytes": 1316830,
+          "sha256": "5df7e75cf2fb180877481c2b39f87f59de19dfac56d5dbcd8e7abf947ceb0ce0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\local\\cube_lifetime_verified.json",
+          "bytes": 5847,
+          "sha256": "39d1e2fd4f259179de7381677f3c1dd77cffb67d34e4252219360bafecd94f99"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-lifetime-primary-check\\local\\verify_lifetime_postimages.py",
+          "bytes": 2880,
+          "sha256": "cd9aacd10f6efcaab62cfa06829eafd96635ae0a06c931274a7d1425ed333e07"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-pool-primary-check\\bsp_core.linked.lib",
+          "bytes": 25344270,
+          "sha256": "c8ac226e4373d04226066e0a7205893292ff442719a50c4a609e2c117d8d1d12"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_cube_pool_lifetime_primary_check.ps1",
+          "bytes": 2090,
+          "sha256": "e49b8e6507202757b6850c8d959d023ce5a1f07695c6f0cba6d14cf6d4d3398d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_cube_pool_lifetime_primary_fixture.txt",
+          "bytes": 512,
+          "sha256": "76cf532aa1b44525cd740186135382af1d6febc21266ff50e9d5e516185f2ef7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_cube_texture_pool_primary_build.txt",
+          "bytes": 2746,
+          "sha256": "c5ed3f169d6d58cb5f2acc175dd7f3ecf0821afc628b0c925d239962cce16e73"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "body_repairs_and_creation": [
+      {
+        "address": "00b3f090",
+        "end_exclusive": "00b3f163",
+        "length": 211,
+        "sha256": "6eb70fb8e1f244b28bf1d8525a9f0e274f7a8bdaea39f07861d5cfdbb38da0e3",
+        "function_before": "Function: FUN_00b3f090 at 00b3f090\nSignature: undefined FUN_00b3f090(void)\nEntry: 00b3f090\nBody: 00b3f090 - 00b3f162",
+        "documentation_before": {
+          "hash": "a934666ff422fd2dfb7a8105ce1cf9e88c43ba76bf1dd29ab35832fa3c73b9e6",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b3f090",
+          "function_name": "FUN_00b3f090",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "extraout_EAX",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            },
+            {
+              "name": "local_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "uVar2",
+              "type": "uint",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b3f0ce"
+            },
+            {
+              "relative_offset": 149,
+              "name": "LAB_00b3f125"
+            },
+            {
+              "relative_offset": 161,
+              "name": "LAB_00b3f131"
+            },
+            {
+              "relative_offset": 172,
+              "name": "LAB_00b3f13c"
+            },
+            {
+              "relative_offset": 188,
+              "name": "LAB_00b3f14c"
+            },
+            {
+              "relative_offset": 191,
+              "name": "LAB_00b3f14f"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "returning_free_call_sites": [
+          "00b3f144"
+        ],
+        "function_after": "Function: FUN_00b3f090 at 00b3f090\nSignature: undefined FUN_00b3f090(void)\nEntry: 00b3f090\nBody: 00b3f090 - 00b3f162",
+        "documentation_after": {
+          "hash": "4421bdbb332a9e5111b63d0b4732c0d3a102f10c84fa954b6dd8f907363bb183",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b3f090",
+          "function_name": "FUN_00b3f090",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "pvStack_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "uStack_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            },
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "uVar2",
+              "type": "uint",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b3f0ce"
+            },
+            {
+              "relative_offset": 149,
+              "name": "LAB_00b3f125"
+            },
+            {
+              "relative_offset": 161,
+              "name": "LAB_00b3f131"
+            },
+            {
+              "relative_offset": 172,
+              "name": "LAB_00b3f13c"
+            },
+            {
+              "relative_offset": 188,
+              "name": "LAB_00b3f14c"
+            },
+            {
+              "relative_offset": 191,
+              "name": "LAB_00b3f14f"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      },
+      {
+        "address": "00b3e5b0",
+        "end_exclusive": "00b3e63a",
+        "length": 138,
+        "sha256": "9aea00ac56b7bbd0422348e26d29c7e2757a0e7ad174b7a6cbee1cc4b2e20514",
+        "function_before": "Function: FUN_00b3e5b0 at 00b3e5b0\nSignature: undefined FUN_00b3e5b0(void)\nEntry: 00b3e5b0\nBody: 00b3e5b0 - 00b3e639",
+        "documentation_before": {
+          "hash": "6a8fbad7d845d76b8ce6e8efa1f381c3efe7fca03347f7ec4c17169b052c5a7e",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b3e5b0",
+          "function_name": "FUN_00b3e5b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(unique, 0x17200, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 40,
+              "name": "LAB_00b3e5d8"
+            },
+            {
+              "relative_offset": 56,
+              "name": "LAB_00b3e5e8"
+            },
+            {
+              "relative_offset": 72,
+              "name": "LAB_00b3e5f8"
+            },
+            {
+              "relative_offset": 86,
+              "name": "LAB_00b3e606"
+            },
+            {
+              "relative_offset": 114,
+              "name": "LAB_00b3e622"
+            },
+            {
+              "relative_offset": 122,
+              "name": "LAB_00b3e62a"
+            },
+            {
+              "relative_offset": 135,
+              "name": "LAB_00b3e637"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "returning_free_call_sites": [
+          "00b3e5c8",
+          "00b3e5e0"
+        ],
+        "function_after": "Function: FUN_00b3e5b0 at 00b3e5b0\nSignature: undefined FUN_00b3e5b0(void)\nEntry: 00b3e5b0\nBody: 00b3e5b0 - 00b3e639",
+        "documentation_after": {
+          "hash": "de79e5fe8d24417394e8e9cc4946a0e56ffc19c2835f03f6ca8a9afb485ca454",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b3e5b0",
+          "function_name": "FUN_00b3e5b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "uVar2",
+              "type": "uint",
+              "storage": "(register, 0x18, 4)"
+            },
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(unique, 0x17200, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 17,
+              "name": "LAB_00b3e5c1"
+            },
+            {
+              "relative_offset": 40,
+              "name": "LAB_00b3e5d8"
+            },
+            {
+              "relative_offset": 56,
+              "name": "LAB_00b3e5e8"
+            },
+            {
+              "relative_offset": 72,
+              "name": "LAB_00b3e5f8"
+            },
+            {
+              "relative_offset": 86,
+              "name": "LAB_00b3e606"
+            },
+            {
+              "relative_offset": 114,
+              "name": "LAB_00b3e622"
+            },
+            {
+              "relative_offset": 122,
+              "name": "LAB_00b3e62a"
+            },
+            {
+              "relative_offset": 135,
+              "name": "LAB_00b3e637"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      },
+      {
+        "address": "00b3d3f0",
+        "end_exclusive": "00b3d3fe",
+        "length": 14,
+        "sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+        "function_before": "Function: FUN_00b3d3f0 at 00b3d3f0\nSignature: undefined FUN_00b3d3f0(void)\nEntry: 00b3d3f0\nBody: 00b3d3f0 - 00b3d3fd",
+        "documentation_before": {
+          "hash": "fe3044cf2ea763be2728df58cd06e03af5a6335b7c30ae01e2aa090f57afb3b4",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b3d3f0",
+          "function_name": "FUN_00b3d3f0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 13,
+              "name": "LAB_00b3d3fd"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "returning_free_call_sites": [
+          "00b3d3f7"
+        ],
+        "function_after": "Function: FUN_00b3d3f0 at 00b3d3f0\nSignature: undefined FUN_00b3d3f0(void)\nEntry: 00b3d3f0\nBody: 00b3d3f0 - 00b3d3fd",
+        "documentation_after": {
+          "hash": "935127f3c26d620fe0e02e35ef3bc7960ef9570dbcd1ccb1990e1fe98fcfe4b8",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b3d3f0",
+          "function_name": "FUN_00b3d3f0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 13,
+              "name": "LAB_00b3d3fd"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      }
+    ],
+    "definition_and_save_report": {
+      "path": "reports/native_cube_pool_defined_functions.json",
+      "bytes": 31043,
+      "sha256": "fba3466443d132744f426f90a41c7d2afa559104b30ff188f83cc016743eb095"
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_cube_texture_pool_lifetime_annotations.json",
+    "bytes": 3927,
+    "sha256": "267b5f159ee8f0e9710c33513a8ead3a980ea0c4f18f16a7b181ce6b1a7c09b8",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b3f090",
+      "path": "exports/bsp/functions/00b3f090/decompiled.c",
+      "bytes": 2549,
+      "sha256": "278b3cdd32e367c4c79102f3c20f1b231ca63ffd83c1a6f82b9913f300b28b83"
+    },
+    {
+      "address": "00b3e5b0",
+      "path": "exports/bsp/functions/00b3e5b0/decompiled.c",
+      "bytes": 1932,
+      "sha256": "dea30a83494884e1de77793594d5c39580ab515dbac39d95ff11c7236d03167d"
+    },
+    {
+      "address": "00b3d3f0",
+      "path": "exports/bsp/functions/00b3d3f0/decompiled.c",
+      "bytes": 1131,
+      "sha256": "b6f7a5acc57c1a1955d01375e1352a77854ce067061ee74b25b7d3d2c04eaaaa"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:12:04.519222+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b3f090",
+      "name": "initialize_native_cube_texture_pool_00b3f090",
+      "cpp_symbol": "initialize_native_cube_texture_pool_00b3f090",
+      "source": "src/native_cube_texture_pool_lifetime.cpp",
+      "native_end_exclusive": "00b3f163",
+      "original_abi": "ECX actual writable 38h pool; EAX same pool; RET; original FH3 state2->1->0->-1.",
+      "evidence": "reports/native_cube_texture_pool_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3e5b0",
+      "name": "destroy_native_cube_texture_pool_00b3e5b0",
+      "cpp_symbol": "destroy_native_cube_texture_pool_00b3e5b0",
+      "source": "src/native_cube_texture_pool_lifetime.cpp",
+      "native_end_exclusive": "00b3e63a",
+      "original_abi": "ECX actual initialized 38h pool; RET; no own EH frame.",
+      "evidence": "reports/native_cube_texture_pool_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3d3f0",
+      "name": "free_native_cube_texture_pool_table_00b3d3f0",
+      "cpp_symbol": "free_native_cube_texture_pool_table_00b3d3f0",
+      "source": "src/native_cube_texture_pool_lifetime.cpp",
+      "native_end_exclusive": "00b3d3fe",
+      "original_abi": "ECX actual table header (pool+28), not pool; RET; no semantic return claimed.",
+      "evidence": "reports/native_cube_texture_pool_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_CUBE_TEXTURE_POOL_LIFETIME.md",
+    "bytes": 9502,
+    "sha256": "cf1c47658519c609f071839c67d7f3cf4ea77fd42bb84aff5485ad9fb25d126c"
+  },
+  "worker_remaining_integrator_work_before_closure": [
+    "review and register owned source in shared build metadata",
+    "add saved evidence annotations and address/name/function ledgers under root ownership",
+    "compose separate cube allocation, trim and static startup packets as appropriate"
+  ],
+  "remaining_integrator_work": []
 }

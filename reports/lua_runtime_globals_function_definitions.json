@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd7ce0",
+    "end_address": "00cd7cec"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd7ce0",
+    "end_address": "00cd7ceb",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd7ce0",
+    "disassemble_first": false,
+    "name": "BSP_Static_RegisterLuaRegionCleanup"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd7ce0",
+    "function_name": "BSP_Static_RegisterLuaRegionCleanup",
+    "entry_point": "00cd7ce0",
+    "body_size": 12,
+    "message": "Function created successfully at 00cd7ce0",
+    "warnings": [
+     "Function name 'BSP_Static_RegisterLuaRegionCleanup' \u2014 main part 'Static_RegisterLuaRegionCleanup' is not PascalCase. Expected: StaticRegisterluaregioncleanup",
+     "Function name 'BSP_Static_RegisterLuaRegionCleanup' \u2014 main part 'Static_RegisterLuaRegionCleanup' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Static_RegisterLuaRegionCleanup' does not start with a recognized verb. First word 'Static_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cd7ce0",
+   "end": "00cd7cec",
+   "name": "BSP_Static_RegisterLuaRegionCleanup",
+   "after": "Function: BSP_Static_RegisterLuaRegionCleanup at 00cd7ce0\nSignature: undefined BSP_Static_RegisterLuaRegionCleanup(void)\nEntry: 00cd7ce0\nBody: 00cd7ce0 - 00cd7ceb"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+{
+  "packet": "orch2_runtime_startup_owners",
+  "status": "reconstructed_build_fixture_and_startup_process_tested_annotations_saved",
+  "addresses": [
+    "00439100",
+    "004c12b0",
+    "005547d0",
+    "006a7be0",
+    "006ab6b0",
+    "0073c960",
+    "0073d410",
+    "008d44c0",
+    "008d5b50",
+    "00aa06d0",
+    "00aa09d0",
+    "00aa0d30",
+    "00aa2820",
+    "00aa2920",
+    "00aa40a0",
+    "00aa4650",
+    "00aa5d70",
+    "00abbe50",
+    "00b2c8e0",
+    "00b32410",
+    "00b6a020",
+    "00cd7ce0",
+    "00ce0d60"
+  ],
+  "source": [
+    "include/bsp/game_hosts.hpp",
+    "include/bsp/game_hosts_vfs.hpp",
+    "src/game_hosts.cpp",
+    "src/game_hosts_vfs.cpp",
+    "src/game_main.cpp"
+  ],
+  "evidence": "docs/RUNTIME_STARTUP_OWNERS.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": {
+    "tested_source_commit": "9d2593bcccf0fde4a7fa6c0e50567b47cecf1664",
+    "win32_release_build": "passed; local/runtime-startup-final-build.log",
+    "existing_ctest": {
+      "passed": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_math_seeds_verified": 8,
+    "permanent_tests_added": 0,
+    "combined_owner_fixture": {
+      "result": "passed",
+      "source": "local/runtime_startup_owner_fixture.cpp",
+      "log": "local/runtime-startup-owner-fixture.log",
+      "checks": [
+        "installed input tables and initial Lua PC/X360COMP/REGION",
+        "persistent interpreter and repeated guard preserve runtime state",
+        "settings/device borrow same API and device release does not release it",
+        "installed locale setter/register/reload ordering",
+        "initial GUI stays lazy; later actual empty registry traversal",
+        "device updates retained renderer dimensions",
+        "forced application unwind destroys HWND and unregisters class"
+      ]
+    },
+    "worker_fixtures": {
+      "gui_locale_refresh": "passed; real text-host fixture, not native differential",
+      "renderer_capabilities": "passed; assembly-derived query trace and real D3D9, not native differential",
+      "lua_runtime_globals": "passed; installed VFS fundamentals and two real Lua owners",
+      "preserved_manifest": "local/runtime-startup-worker-artifacts.json",
+      "preserved_files": 19
+    },
+    "startup_process": {
+      "pid": 73736,
+      "exit_code": 0,
+      "executable_sha256": "01937601180EE30C8602D48A0872585E84D7FE3264F174806EF46FF545184C6B",
+      "original_files_unchanged": true,
+      "original_file_count": 2,
+      "isolated_settings_root": "local/runtime-startup-personal-i3",
+      "log": "local/runtime-startup-runtime.log",
+      "window_created": true,
+      "device_created": true,
+      "back_buffer": [
+        640,
+        480
+      ],
+      "frames_presented": 60,
+      "vfs_probes_passed": 3,
+      "input_devices": 4,
+      "input_names": 16,
+      "controller_names": 12,
+      "renderer_api_shared": true,
+      "texture_formats": 34,
+      "declaration_types": 10,
+      "locale_keys": 6856,
+      "locale_files": 1,
+      "concrete_host_methods": 61,
+      "unimplemented_host_methods": 29,
+      "render_scope": "Existing clear/present path; no GUI/world rendering or gameplay proof"
+    },
+    "runtime_relative_order": [
+      "Phase 3 construct_win32_platform",
+      "Phase 1 parse_command_line",
+      "RendererHost::direct3d_create",
+      "Phase 5 input_script_tables",
+      "Phase 5 load_game_settings",
+      "Phase 6 resource_manager",
+      "Phase 3 configure_platform_window",
+      "Phase 6 locale_set_language"
+    ],
+    "bsp_core_sha256": "487a3ddc1459f8285bd8e4f6a69ef7d59b21ce8f219b361080c63ce55f8058e3"
+  },
+  "worker_commits": {
+    "gui_locale_refresh": "ee9da1e",
+    "renderer_capabilities": "5fd2edd",
+    "lua_runtime_globals": "d33a4b9"
+  },
+  "follow_up": [
+    "Bind actual input device construction, polling and profile/preset application to retained InputSettings",
+    "Load fonts and GUI resources through the retained page registry and live text services",
+    "Apply settings/profile state at the original post-game-entry call sites, including Lua region and compatibility publication",
+    "Complete renderer resource ownership and world/scene/gameplay bindings; validate gameplay before completion"
+  ],
+  "root_records": [
+    {
+      "address": "0073d410",
+      "name": "runtime_startup_owner_integration",
+      "cpp_symbol": "bsp::game::GameStartupHost::run_initialize_phases",
+      "source": "src/game_hosts.cpp",
+      "status": "fragment_build_fixture_and_startup_process_tested",
+      "evidence": "Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete.",
+      "documentation": "docs/RUNTIME_STARTUP_OWNERS.md",
+      "validation_report": "reports/runtime_startup_owners.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0073c960",
+      "name": "locale_table_owner_initial_state",
+      "cpp_symbol": "bsp::game::GameLocaleHost::GameLocaleHost",
+      "source": "include/bsp/game_hosts_vfs.hpp",
+      "status": "fragment_build_fixture_and_startup_process_tested",
+      "evidence": "ECX=this EAX=this RET0073c9ec. Constructor writes empty registered-name vector,4096 zero bucket heads/count, empty language and two sidecar vectors. GameLocaleHost retains the existing LocaleTables value model initialized to those values. Native vtable/singleton publication and unmodeled padding are excluded.",
+      "documentation": "docs/RUNTIME_STARTUP_OWNERS.md",
+      "validation_report": "reports/runtime_startup_owners.json",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "annotations": {
+    "names_verified": 23,
+    "prior_comment_fields_preserved": 16,
+    "forced_exports": 23,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_initializer": "00cd7ce0..00cd7ceb; exclusive00cd7cec",
+    "saved": true,
+    "prior_values": "local/runtime-startup-annotation-changes.json",
+    "definition_record": "reports/lua_runtime_globals_function_definitions.json",
+    "classification_corrections": "reports/runtime_startup_tag_corrections.json",
+    "classification_corrections_count": 2
+  },
+  "validated_source_sha256": {
+    "include/bsp/game_hosts.hpp": "1212a14c5b7c5f366618c8cec147b848d8df670df75e139219af83f5b121cdfb",
+    "include/bsp/game_hosts_vfs.hpp": "31af18940f146d11ca625cc9b20b241750443e9cf4162968623f62b508a647db",
+    "src/game_hosts.cpp": "f49f4eaf31ce5431f7dba89818353eb604c600a8cee194ae2545127c10203e18",
+    "src/game_hosts_vfs.cpp": "7c4698b8d8d31ae8a974bc1ac5ff91a91a31431d732f49afcd4cc89b4702b2d0",
+    "src/game_main.cpp": "bf6feeaaf3cebb951f5e34d788b815a31d7904b84d7455be247af543198fcf4f",
+    "include/bsp/lua_runtime_globals.hpp": "ccfd16eaa80d1959191fe1d7d2a01349311c0678c7d0896edca0505558d8c495",
+    "src/lua_runtime_globals.cpp": "3f570fcb637a5eed6adb893c5297d7a63bb88fda6ff604bae54c75b56c3ac8e1",
+    "include/bsp/renderer_capabilities.hpp": "bf8a2533b35ffa45f8d6d36aa446549765786f8902eb0413b882d44ff5503863",
+    "src/renderer_capabilities.cpp": "0d244716448101d023d79861fd155cf1a859fefe926db69022c95e16f29088da",
+    "include/bsp/gui_locale_refresh.hpp": "1ea3d5f3f7646103d41637989dba39d2f128e7ab4abd33ab0d8d71e0d8d1ef28",
+    "src/gui_locale_refresh.cpp": "ec9d6b0bfafa55231c02891767064533a8e2730d5236f9d208733279bf4a2054",
+    "include/bsp/game_settings.hpp": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+    "src/game_settings.cpp": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+    "include/bsp/input_settings.hpp": "092f792b714e90becf2c2338ef1868153b9a1cd507d3edd1fbc21941485de0f7",
+    "src/input_settings.cpp": "7304402ca90f6f1917130dd2b178ca85ae65bddd07961545466b7ae2cb120053",
+    "include/bsp/input_script_startup.hpp": "a1c4265f1256c1599a26db08054eb080db5c5d2f1e72828de787cf7dc7af8b64",
+    "src/input_script_startup.cpp": "5496d3d57a360ec98d359915a0a090c1c0bdc959c7ff93f1d07713ee2443fda1",
+    "include/bsp/locale_tables.hpp": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf",
+    "src/locale_tables.cpp": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c",
+    "include/bsp/vfs_lua_scripts.hpp": "13253d1b26a54b0b31c3cdaffabe024213175d0ab87dc2ddb212ea1d5af821fc",
+    "src/vfs_lua_scripts.cpp": "2555cc62b5c983c5ab197dc3bc67a98fd88e2d8dd10ed26c30b83b202c0e13a2",
+    "include/bsp/native_renderer_parameters.hpp": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605",
+    "src/native_renderer_parameters.cpp": "7f5a2439342111b7a1f03d6992e88893c704497638f17f74e858e7fd91ba72c3",
+    "include/bsp/d3d9_startup.hpp": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+    "src/d3d9_startup.cpp": "59363f8139e450a298564a1be6ad3a89b3609645090741b3ddfce4295c1377ed",
+    "CMakeLists.txt": "f944dae0d327788fc41b3549ee5d577ffb8dc1f251b18cdfaa01d708c28d5bb1",
+    "cmake/startup.cmake": "3e9d707dda3f9732e22070fa76bc6001ab7d99b114cef72335da823d9c436827"
+  },
+  "artifact_sha256": {
+    "local/runtime-startup-final-build.log": "735f38547455a762a1331d3d85f10a12bddedbe6aaa253a88e43774fb037a7dc",
+    "local/runtime-startup-owner-fixture.log": "a86f61925c6ee8e1063382f339a26ae70b4f5d9d6795ea4d67714adcdf2bf85a",
+    "local/runtime_startup_owner_fixture.cpp": "0a6d1c491e15ec77ec9c6ba44e5ccbc5b509e11e87ebc0e645333418ae0976f5",
+    "local/run_runtime_startup_owner_fixture.ps1": "e2bb28916a71f08d3b0fc02d7c620b160ca52f936b9577c4119076129638ce39",
+    "local/run_runtime_startup_game.ps1": "1c4d636391188f30de3b9f60950a92469bd42184df2e186fea10f29b611e2e0c",
+    "local/runtime-startup-runtime.log": "09dd71b79350bdc1df11aebd64be22c6d5407f31ab039224af1382b765cba611",
+    "local/runtime-startup-runtime-result.json": "14ba3acf9c2f9cfeb0081eb4afe0bd8b5da20b39f3dd74cb89b1cec6a521ebdb",
+    "local/runtime-startup-original-files-before.json": "55ce2f91e55f2cf96a8063388d79258b34401fd39b6c3c9cd3948f4b3cb94cf1",
+    "local/runtime-startup-worker-artifacts.json": "bdd0ebc432c58295b49c29cfeae0632f50d70ef48767356777c7e9847fa73bb5",
+    "local/runtime-startup-verified-seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/runtime-startup-annotation-changes.json": "7cb8197fc5a5825d896d52deaf41a851752b7332037931c3610d9f7e0e2c8f10",
+    "local/runtime-startup-annotation-verification.json": "56ff2e9e4fcde2be310c9f5a62e7dba6d53bafdde88ac75037a013cfee75453b",
+    "local/runtime-startup-export-refresh.log": "0aed31928a165bcdf319030bc77be333ec1f02de57bbb629e61064e4da53db82",
+    "local/runtime-startup-cleanup-export.log": "e06227c4b0517dd6ee68e0e60651e43f79438c027ca0608c8149997e25a6e381"
+  }
+}

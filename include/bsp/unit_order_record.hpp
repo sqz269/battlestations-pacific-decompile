@@ -33,6 +33,8 @@ struct UnitOrderRecordIssueHost {
 // 00816A40: void __thiscall(unit*, float a, float b, byte kind), RET 0Ch.
 // Explicit scratch bytes replace the original uninitialized stack record.
 // Uses the existing publish projection, including its documented slot bound.
+// Signaling-NaN inputs are outside this issue path's verified domain: native
+// x87 ingress spills can quiet them before construction; these are not modeled.
 void issue_unit_order_record_00816a40(
     UnitOrderRecordIssueHost& host, UnitOrderQueue& queue,
     UnitOrderRecordStorage& scratch, float param_a, float param_b,
