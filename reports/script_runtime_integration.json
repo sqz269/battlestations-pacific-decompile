@@ -6,23 +6,99 @@
     {
       "address": "00bdef90",
       "end_exclusive": "00bdf307",
-      "sha256": "e9443900bcdbaf2465d2f064e24593f5c09248de20bf68c281ec78ba085733cd"
+      "sha256": "e9443900bcdbaf2465d2f064e24593f5c09248de20bf68c281ec78ba085733cd",
+      "validation": "assembly_reviewed; combined Win32 build and VFS/Lua fixture passed"
     },
     {
       "address": "00884770",
       "end_exclusive": "0088482d",
-      "sha256": "87c0b25c289f74e8f3b6b4700268b923ea528c9467e9ea468d11e46886ebc913"
+      "sha256": "87c0b25c289f74e8f3b6b4700268b923ea528c9467e9ea468d11e46886ebc913",
+      "validation": "assembly_reviewed; combined Win32 build and VFS/Lua fixture passed"
     },
     {
       "address": "00b68340",
       "end_exclusive": "00b68459",
-      "sha256": "7a9579485fa41a033d4a6c009b7e7dce11d1df96f36344e1d553fb3abc194180"
+      "sha256": "7a9579485fa41a033d4a6c009b7e7dce11d1df96f36344e1d553fb3abc194180",
+      "validation": "assembly_reviewed; combined Win32 build and VFS/Lua fixture passed"
     }
   ],
   "validation": {
-    "combined": "pending"
+    "tested_source_commit": "4f2aa6dbdbfad6cbc2d784a637af9d6b5d111629",
+    "build": {
+      "platform": "MSVC Win32",
+      "configuration": "Release",
+      "passed": true,
+      "log": "local/script-runtime-latest-build.log"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "seed_byte_comparisons": {
+      "passed": 8,
+      "failed": 0
+    },
+    "combined_fixture": {
+      "passed": true,
+      "source": "local/script_runtime_fixture.cpp",
+      "log": "local/script-runtime-latest-fixture.log",
+      "isolated_root": "local/script-runtime-files-20260910-203637-412",
+      "scope": [
+        "Actual mounted physical directory and FileStore providers, installed fundamentals and fonts",
+        "Real Lua DoFile, ordered duplicate overrides, retained MULTRET, first-read fundamentals cache and successful empty cache",
+        "Copied native player/quick files, nested checkpoint Lua-close path, real two-file profile roundtrip and options output",
+        "DLC profile commit reads actual base plus mounted synthetic variants and reconstructs64-bit mask",
+        "Keyboard archive restore feeds actual typed action installation, device rebinding and existing poll",
+        "Explicit nonzero native cached-pointer translation; original save bytes unchanged"
+      ],
+      "required_fixture_hosts": "Controlled UI, game, renderer, platform DLC, scene selection and device-query hosts. No gameplay/visible application proof."
+    },
+    "worker_fixtures": {
+      "passed": 3,
+      "log": "local/script-runtime-latest-worker-fixtures.log",
+      "scope": [
+        "Lua5.1.1 installed scripts, DoFile, missing/empty, obfuscation, stack and failure boundaries; no native differential execution",
+        "193 axis checks, original integer equality bodies and original axis predicate with typed map/import adapters",
+        "Original installer/predicate/rebind/preallocated growth; host-only reserve/shrink/bounds/x87-copy"
+      ],
+      "artifacts": "local/worker-validation/script-runtime-20260910f/manifest.json"
+    },
+    "permanent_tests_added": 0
   },
-  "annotations": "pending",
+  "annotations": {
+    "names_verified": 14,
+    "prior_comment_fields_preserved": 5,
+    "forced_exports": 14,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "stored_body_caveat": "00b69d40 remains short at00b69dcc; decoded fall-through through00b69de4 inspected, see worker tail repair report",
+    "before": "local/script_runtime_comments_before.json",
+    "after": "local/script_runtime_comments_after.json",
+    "mutation_log": "local/script-runtime-annotations-retry.log",
+    "saved": true
+  },
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "worker_commits": {
+    "lua_script_runtime": "dcefae6",
+    "axis_pairs": "61d4568",
+    "binding_install": "22612a9"
+  },
+  "limitations": [
+    "Native C++ object/allocator/exception layouts are not ABI-compatible replacements.",
+    "Fundamentals cache is application-owned/serialized; native global singleton locking/lifetime registry remain outside this adapter.",
+    "VFS content suffix list is required input; native package/XLive population paths are identified but not integrated.",
+    "Incomplete settings traversal after axis-description insertion is not established.",
+    "00b69d40 stored Ghidra body remains short despite decoded/inspected return tail; repaired loader and binding copy/free gaps have separate reports.",
+    "Platform DLC/localization/scene selection and native device pointer translation require real application hosts.",
+    "A runnable/game-validated reconstruction is not established by this batch."
+  ],
+  "artifacts": {
+    "local/script_runtime_fixture.cpp": "b8cf8967983fb860eaa8c301ed081aec19de74fb648c2207d62a48c7ccac0154",
+    "local/script-runtime-latest-build.log": "599f868248af81dded71ecc3a576f4949335b185784ed381ac968b65c2140eee",
+    "local/script-runtime-latest-fixture.log": "a1e6b16b2fddbf1109edfb86c4e7667494af0e484aca3caa264faa28d50f5394",
+    "local/script-runtime-latest-worker-fixtures.log": "365f5c67f8d24eb9879e5c8a109b81828b6cc09f352e57afd52042aa6ceb1265",
+    "local/script_runtime_comments_before.json": "7fb969e36910d0a6983b1ca4cfb720fbf265e42981498e912c05d6bfaec33786",
+    "local/script_runtime_comments_after.json": "98935f9e36ae11ecac037dac88604ffed24e7a3bdcde39761f219530c074b853"
+  }
 }
