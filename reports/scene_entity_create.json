@@ -1,0 +1,175 @@
+{
+  "packet": "cc2_scene_entity_create",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc2-scene-entity-create",
+  "branch": "agent/cc2-scene-entity-create",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only: no renames, comments, prototypes, function creation or saves"
+  },
+  "names_are_hypotheses": true,
+  "doc": "docs/SCENE_ENTITY_CREATE.md",
+  "subject": "How a mission entity instance comes to exist on the by-name path: 0046D930, its spawn wrapper 004C6BA0, and the property-bag reference holder 00922E20.",
+
+  "routines": [
+    {
+      "address": "0046d930",
+      "name": "BSP_SceneDatabase_CreateEntityByName",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(SceneDatabase*), RET 0Ch, 3 stack dwords",
+      "body": "0046d930 - 0046dc03",
+      "args": [
+        "a1 const char* classKey   (+4h)  key into the record map at this+18h",
+        "a2 const char* instanceName (+8h) the created entity's name",
+        "a3 PropertyBag* overrides (+Ch) optional per-instance overrides, may be 0"
+      ],
+      "returns": "Entity*, or 0 when the record is missing (0046D9AB) or the gate rejects (0046DB2E)",
+      "coverage": "complete",
+      "this_evidence": "004C6BB2 and 004BAAFC both load *(00E18680) into ECX; 0046DB22 hands the saved this (0046D957 -> entry-60h) to 0046C550 as ECX, whose ECX is the scene database per docs/SCENE_ENTITY_FACTORY.md",
+      "arg_slot_reuse": "entry+4h (the classKey slot) is reused as a local after 0046D95B: the resolved parent (0046DA33, 0046DA5A, read at 0046DA69 and 0046DB37) and then the operator new(0Ch) result (0046DB75, 0046DBB9). Frame anchors: entry-04h is the SEH try level (0046D9F6 = 0, 0046DA0C and 0046DB93 = -1) and entry-0Ch the saved ExceptionList (0046D9B1, 0046DBED)."
+    },
+    {
+      "address": "004c6ba0",
+      "name": "BSP_Game_SpawnEntityByName",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(Game*), RET 0Ch, 3 stack dwords",
+      "body": "004c6ba0 - 004c6bd6",
+      "args": ["a1 const char* classKey", "a2 const char* instanceName", "a3 PropertyBag* overrides"],
+      "returns": "the entity 0046D930 returned, on both paths (held in EDI at 004C6BC5, restored at 004C6BD2)",
+      "coverage": "complete",
+      "adds": "nothing on the entity; one BSP_Game_AssignPartyPlayerSlots(this, 0) on the game object, gated on *(this+1FE4h) != 0"
+    },
+    {
+      "address": "00922e20",
+      "name": "BSP_ScenePropertyBagRef_Construct",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(void*), RET 4, 1 stack dword",
+      "body": "00922e20 - 00922e41",
+      "returns": "this",
+      "coverage": "complete",
+      "writes": [
+        "+0 vtable = 00D03D94 (00922E27)",
+        "+4 refs = 1 (00922E35)",
+        "+8 bag = 008F41F0(src), a private clone, not the argument (00922E2D)"
+      ],
+      "callers": "nine; only the two inside 0046D930 are attributed here"
+    },
+    {
+      "address": "008f41f0",
+      "name": "BSP_ScenePropertyBag_Clone",
+      "name_status": "hypothesis; NOT entered in the ledger by this packet",
+      "lease": "external contract: leased by agent/cc2-scene-property-bag:cc2_scene_property_bag, so this packet reads it and names nothing",
+      "abi": "__thiscall(PropertyBag*), no stack args, RET",
+      "body": "008f41f0 - 008f4289",
+      "coverage": "analyzed, not reconstructed: allocation shape read, entry insert treated as a contract",
+      "detail": "operator new(114h); vtable 00D16504, +4 = 00D162C4, +8 = 0, 100h bytes zeroed from +0Ch, +10Ch and +110h cleared; then a walk of src+4 via 00480690 / 0047E480 inserting through 008F33F0 with 008F4F60 applied to the value and 00F89450 substituted for a null name"
+    }
+  ],
+
+  "host_steps": [
+    {"step": 1, "address": "0046d95b", "native": "0041e870", "function": "0046d930", "name": "assign_native_string", "role": "build a NativeString from classKey", "ecx": "&key (entry-5Ch)", "args": ["classKey"], "ret": "RET 4"},
+    {"step": 2, "address": "0046d96f", "native": "00468cd0", "function": "0046d930", "name": "find_scene_record", "role": "std::map find on SceneDatabase+18h", "ecx": "this+18h", "args": ["&it (entry-54h)", "&key"], "ret": "RET 8; it = {container, node}"},
+    {"step": 3, "address": "0046d987", "native": "00419cc0", "function": "0046d930", "name": "sized_pool_for", "role": "pool for the temporary string buffer", "args": ["key.data", "key.length+1", "1"], "gate": "key.data != 0 (0046D97A)", "ret": "__cdecl, args left on the stack for step 4"},
+    {"step": 4, "address": "0046d98e", "native": "00bd1510", "function": "0046d930", "name": "sized_pool_return_block", "role": "release the temporary string buffer", "ecx": "the pool", "gate": "key.data != 0 (0046D97A)", "ret": "consumes step 3's three args"},
+    {"step": 5, "address": "0046d9e4", "native": "0041e870", "function": "0046d930", "name": "assign_native_string", "role": "build a NativeString from record->className (record+0Ch)", "ecx": "&key2", "args": ["record+0Ch"], "ret": "RET 4"},
+    {"step": 6, "address": "0046d9fe", "native": "00468fb0", "function": "0046d930", "name": "find_class_row", "role": "class map find on SceneDatabase+34h; classRow = *(ret+8) at 0046DA03", "ecx": "this+34h", "args": ["&key2", "&entry+4h"], "ret": "RET 8"},
+    {"step": 7, "address": "0046da21", "native": "00419cc0", "function": "0046d930", "name": "sized_pool_for", "role": "pool for key2's buffer", "gate": "key2.data != 0 (0046DA14)"},
+    {"step": 8, "address": "0046da28", "native": "00bd1510", "function": "0046d930", "name": "sized_pool_return_block", "role": "release key2's buffer", "gate": "key2.data != 0 (0046DA14)"},
+    {"step": 9, "address": "0046da55", "native": "00925a90", "function": "0046d930", "name": "find_parent_entity", "role": "resolve the record's parent by name", "ecx": "*(*(00E188A8)+19CCh)", "args": ["record+58h, or 00E18560 when null"], "gate": "record+54h (parentName.length) != 0 (0046DA2D); else parent = 0 at 0046DA33", "ret": "RET 4"},
+    {"step": 10, "address": "0046db1d", "native": "00468660", "function": "0046d930", "name": "class_id_to_name", "role": "classRow->id -> class name for the gate", "ecx": "*(00E18680)", "args": ["*classRow"], "ret": "RET 4"},
+    {"step": 11, "address": "0046db27", "native": "0046c550", "function": "0046d930", "name": "should_generate", "role": "the generation gate", "ecx": "this (reloaded from entry-60h)", "args": ["className", "instanceName", "parent", "&record->localFrame (record+14h)", "record->properties (record+4)", "0", "identity float[16] by value", "0"], "ret": "RET 5Ch; AL", "gate": "AL == 0 jumps to the return-null tail at 0046D9AF (0046DB2E)"},
+    {"step": 12, "address": "0046db4b", "native": "0046db45+04", "function": "0046d930", "name": "run_class_creator", "role": "indirect CALL EAX with EAX = *(classRow+4), the same descriptor+4 creator the scene file calls at 0046D5A4", "ecx": "classRow->id", "edx": "instanceName", "args": ["parent", "&record->localFrame", "record->properties", "0"], "ret": "the entity, into EBP"},
+    {"step": 13, "address": "0046db5a", "native": "008f41f0", "function": "0046d930", "name": "clone_property_bag", "role": "clone the record's bag before merging overrides", "ecx": "record->properties", "gate": "overrides != 0 (0046DB55)"},
+    {"step": 14, "address": "0046db66", "native": "008f54f0", "function": "0046d930", "name": "apply_property_overrides", "role": "merge the override bag into the clone", "ecx": "the clone", "args": ["overrides", "1"], "gate": "overrides != 0 (0046DB55)"},
+    {"step": 15, "address": "0046db6d", "native": "00bf681b", "function": "0046d930", "name": "operator_new", "role": "allocate the 0Ch holder", "args": ["0Ch"], "gate": "overrides != 0"},
+    {"step": 16, "address": "0046db88", "native": "00922e20", "function": "0046d930", "name": "make_property_bag_ref", "role": "construct the holder over the merged clone", "ecx": "the 0Ch block", "args": ["the clone"], "ret": "RET 4", "gate": "the allocation succeeded (0046DB83)"},
+    {"step": 17, "address": "0046dbab", "native": "0046dba5+00", "function": "0046d930", "name": "destroy_property_bag", "role": "indirect CALL EAX through the clone's vtable slot 0: the deleting destructor of the temporary", "ecx": "the clone", "args": ["1"], "gate": "clone != 0 (0046DBA1)"},
+    {"step": 18, "address": "0046dbb1", "native": "00bf681b", "function": "0046d930", "name": "operator_new", "role": "allocate the 0Ch holder", "args": ["0Ch"], "gate": "overrides == 0 (0046DB55)"},
+    {"step": 19, "address": "0046dbcf", "native": "00922e20", "function": "0046d930", "name": "make_property_bag_ref", "role": "construct the holder over the record's own bag", "ecx": "the 0Ch block", "args": ["record->properties"], "ret": "RET 4", "gate": "the allocation succeeded (0046DBC7)"},
+    {"step": 20, "address": "0046dbe8", "native": "00925f20", "function": "0046d930", "name": "init_all_entities", "role": "BSP_SEntity_InitAll on both arms", "ecx": "CL = 0", "args": [], "ret": "no stack args"},
+    {"step": 21, "address": "004c6bb9", "native": "0046d930", "function": "004c6ba0", "name": "create_entity_by_name", "role": "the wrapper forwards its three arguments unchanged", "ecx": "*(00E18680) (004C6BB2)", "args": ["classKey", "instanceName", "overrides"], "ret": "RET 0Ch"},
+    {"step": 22, "address": "004c6bcd", "native": "004c3840", "function": "004c6ba0", "name": "assign_party_player_slots", "role": "the only thing the spawn wrapper adds", "ecx": "this (the game)", "args": ["0"], "gate": "*(this+1FE4h) != 0 (004C6BBE)"},
+    {"step": 23, "address": "00922e2d", "native": "008f41f0", "function": "00922e20", "name": "clone_property_bag", "role": "the holder always takes a private clone", "ecx": "the src argument", "args": [], "ret": "stored at this+8"},
+    {"step": 24, "address": "004bab12", "native": "0046d930", "function": "004ba870", "name": "create_entity_by_name", "role": "the cloud scatter site", "ecx": "*(00E18680) (004BAAFC)", "args": ["&kindTableRow at 00E081C8 + EDI", "\"Cloud\" (00CE7524)", "0"], "ret": "RET 0Ch"}
+  ],
+
+  "entity_fields_written": [
+    {"offset": "+C0h", "value": "the 0Ch property-bag reference holder, or 0 when operator new(0Ch) failed", "address": "0046db9b", "also": "0046dbe0", "note": "the only entity field 0046D930 writes"}
+  ],
+  "entity_fields_not_written_here": {
+    "fields": ["name", "class", "party", "the u16 at +174h that keys the Lua self table"],
+    "written_by": "the class creator at classRow+4, invoked at 0046DB4B; it receives instanceName in EDX and the record's property bag as its third stack argument",
+    "coverage": "partial: this packet establishes only that 0046D930 is not the writer. The 26 creator bodies are out of scope (docs/SCENE_ENTITY_FACTORY.md records 23 of 26 unopened)."
+  },
+
+  "record_layout": {
+    "container": "std::map<NativeString, Record*> at SceneDatabase+18h; MSVC node _Left/_Parent/_Right at 0/4/8, the 8-byte key at 0Ch, the mapped pointer at 14h (0046D9D9)",
+    "end_check": "node == *(this+18h+4) (_Myhead) at 0046D9AB",
+    "fields": [
+      {"offset": "+4", "field": "PropertyBag* properties", "evidence": "ECX of 008F41F0 at 0046DB57, a5 of 0046C550, argument of 00922E20 at 0046DBCC"},
+      {"offset": "+8", "field": "NativeString className length", "status": "provisional, not read here"},
+      {"offset": "+0Ch", "field": "NativeString className data", "evidence": "0046D9DC feeds it to BSP_NativeString_Assign and the result keys the class map"},
+      {"offset": "+14h..+53h", "field": "float localFrame[16]", "evidence": "a4 of 0046C550, which reads a4[+30h] and a4[+38h] as X and Z; the 40h span ends exactly where +54h begins"},
+      {"offset": "+54h", "field": "NativeString parentName length", "evidence": "tested at 0046DA2D"},
+      {"offset": "+58h", "field": "NativeString parentName data", "evidence": "taken at 0046DA3D with 00E18560 substituted when null"}
+    ]
+  },
+
+  "gate_argument_block_0046c550": {
+    "site": "0046db27",
+    "abi": "__thiscall, RET 5Ch; the cleanup closes the frame from entry-CCh back to entry-70h, which is what fixes every other offset in this function",
+    "slots": {
+      "a1 className": "00468660(*(00E18680), classRow->id), pushed at 0046DB26",
+      "a2 entityName": "instanceName, pushed at 0046DB1B",
+      "a3 parent": "the resolved parent or 0, pushed at 0046DB1A",
+      "a4 localFrame[16]": "&record->localFrame, pushed at 0046DB16",
+      "a5 properties": "record->properties, pushed at 0046DB0C",
+      "a6": "0, pushed at 0046DA74",
+      "a7..a22 parentFrame[16]": "the identity matrix by value: 1.0f from 00D7A24C at +0/+14h/+28h/+3Ch, built at 0046DA5E..0046DAEE and REP MOVSD'd at 0046DB00",
+      "a23 outDeferredRecord": "0, pushed at 0046DA6D"
+    }
+  },
+
+  "instantiate_pass_question": {
+    "question": "Does the scene-file Instantiate pass reach 0046D930 directly or through the class-id table dispatch?",
+    "answer": "Neither: it does not reach 0046D930 at all.",
+    "evidence": "0046D930 has exactly two callers, 004BAB12 in BSP_SceneRecord_ScatterClouds and 004C6BB9 in 004C6BA0 (ghidra xrefs 0046d930). 0046D930 is absent from the callee sets of both 0046DF00 BSP_SceneFile_Read and 0046CF40 BSP_SceneFile_ReadEntityBlock.",
+    "convergence": "The two paths meet one level lower at the class descriptor's creator: 0046D5A4 CALL EAX with EAX = *(descriptor+4) (loaded at 0046D599) on the scene-file side, 0046DB4B CALL EAX with EAX = *(classRow+4) (loaded at 0046DB45) on the by-name side. 0046C550 gates both."
+  },
+
+  "corrections": [
+    {
+      "target": "docs/SCENE_ENTITY_FACTORY.md line 204 (owned by another packet; not edited)",
+      "was": "The creator's ABI, read at the 0046D59D call site: ECX = the class id, EDX = a pointer to the frame block, then four stack arguments of which the first is the property bag.",
+      "is": "ECX = the class id (unchanged). EDX = the entity name. The frame block is the second stack argument and the property bag the third; the first stack argument is the parent.",
+      "evidence": "0046DB49 MOV EDX,ESI with ESI loaded from the instanceName argument at 0046DB05 and preserved across 00468660 and 0046C550, both of which save ESI; the frame block &record->localFrame is pushed separately at 0046DB44. The push order at 0046DB3B is 0, properties, localFrame, parent, so ascending: parent, localFrame, properties, 0. At the other site LEA EDX,[ESP+0B0h] (0046D59D) resolves to the same frame slot as LEA EDX,[ESP+0A0h] (0046CF97), the destination of the byte-copy loop that copies the tokenizer's name string, and the frame block there is LEA ECX,[ESP+50h] pushed at 0046D596 as the second stack argument.",
+      "caveat": "The 0046D5A4 half rests on ESP being unchanged between 0046CF97 and 0046D57E, taken from the fixed 190h frame and the accounted-for argument pushes rather than verified instruction by instruction. The 0046DB4B half is exact. EBX at 0046D591 inside 0046CF40 was not identified, so the property-bag position is asserted from 0046DB4B alone."
+    }
+  ],
+
+  "no_ghidra_function": [],
+  "ghidra_flow_gaps": [],
+
+  "uncertainties": [
+    "Whether 0046D930's this is always *(00E18680): both call sites pass it, but the routine reloads the global at 0046DB1D instead of reusing this. Provisional.",
+    "record+8 (the class-name length) is inferred from the {length, data} shape of the other two strings, not read.",
+    "008F54F0's merge rule and the meaning of its 1 argument were not decoded; the override arm is modelled as apply-and-win only because the clone is the destination.",
+    "Which creator instruction writes the entity name, class, party and the u16 at +174h is unread.",
+    "00922E20's other seven callers were not read.",
+    "00925A90 is described as a find-child-by-name walk from its own body (it iterates *(this+8) and returns the first non-zero result of 009251F0(this, child, name)), but 009251F0 was not opened, so the name is not entered in the ledger.",
+    "008F54F0 was read only through its first 25 instructions of 124; the merge is a contract and the routine is not named."
+  ],
+
+  "follow_up_packets": [
+    {"packet": "scene_entity_creator_fields", "addresses": ["004e9e40", "004e9920"], "contract": "Which creator instruction writes the entity name, class, party and the u16 at +174h, for the Cloud exemplar (class id 3Dh)"},
+    {"packet": "scene_property_bag_merge", "addresses": ["008f54f0", "008f33f0", "008f4f60"], "contract": "The merge rule and the meaning of the 1 argument"},
+    {"packet": "scene_record_map", "addresses": ["00468cd0"], "contract": "What fills the record map at SceneDatabase+18h and the full record layout"}
+  ],
+
+  "reconstruction": {
+    "header": "include/bsp/scene_entity_create.hpp",
+    "source": "src/scene_entity_create.cpp",
+    "state": "exported, analyzed, reconstructed, build-tested",
+    "not": "not ABI-compatible and not game-validated: the native records stay opaque pointers because their layouts are not reconstructed, and Lua, the STL, the CRT and the scene-file reader are contracts, not ports."
+  }
+}
