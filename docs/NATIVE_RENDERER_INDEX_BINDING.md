@@ -80,3 +80,19 @@ recorded in `reports/native_renderer_index_binding_audit.json`.
 These results establish the bounded C++ contract and private native comparison;
 they do not establish original game ABI compatibility, native CRT TLS identity,
 or gameplay behavior.
+
+## Primary integration
+
+The primary registered the source in CMake and passed the strict Win32 build
+and both existing CTests. It independently verified 107 worker artifact/source
+pins, 18 current source/provider files and 26 fresh live-Ghidra/PE spans
+(1,165 bytes). The unchanged fixture linked frozen actual main library
+`5b3db94b2c1be9df32ff956fc81372e0f58a5c260678269a58714d1b218d9603`.
+All 17 scenarios matched 17,184 DWORDs, 30 getter/COM/catch records and
+59 writes per implementation. Isolated double-fault processes also matched
+exit 91 and terminal state. Real HAL buffers and complete owner/registry/pool
+lifetimes participated. All 16 named providers, 35 mapped closure fragments,
+48 actual module-entry/disk checks, four native postimages and observed
+instruction PCs passed. Both saved names received appended evidence; complete
+records and forced exports retain the distinct existing naked getter contract.
+No permanent tests, original-caller ABI, draw or full-reset validation is claimed.
