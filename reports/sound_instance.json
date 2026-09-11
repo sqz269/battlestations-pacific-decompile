@@ -372,7 +372,7 @@
       "document": "docs/SOUND_INSTANCE.md",
       "status": "reconstructed_build_and_installed_channel_fixture_tested",
       "abi": "ECX=self; stack float dt, unsigned int unused; RET 8.",
-      "meaning": "RET8 with unused secondword. Skip stopped15; advancefade; positive3C countdown and clear38 including unordered result; createpaused ifnull; increment18; dirtyfrequency/volume/pan/mix; clear14. Pause bitwise38 OR (1C or class0C), get discarded audibility, copy59to58, virtual14 then negateinto59. This does not refresh ended5A.",
+      "meaning": "RET8 with unused secondword. Skip stopped15; advancefade; positive3C countdown and clear38 only when remaining<=0, preserving38 on unordered; createpaused ifnull; increment18; dirtyfrequency/volume/pan/mix; clear14. Pause bitwise38 OR (1C or class0C), get discarded audibility, copy59to58, virtual14 then negateinto59. This does not refresh ended5A.",
       "name_is_hypothesis": true,
       "last_instruction": "00a7b09d",
       "last_instruction_length": 3,
@@ -382,7 +382,7 @@
       "disk_analysis_bytes_equal": true,
       "abi_compatible": false,
       "game_validated": false,
-      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack float dt, unsigned int unused; RET 8. RET8 with unused secondword. Skip stopped15; advancefade; positive3C countdown and clear38 including unordered result; createpaused ifnull; increment18; dirtyfrequency/volume/pan/mix; clear14. Pause bitwise38 OR (1C or class0C), get discarded audibility, copy59to58, virtual14 then negateinto59. This does not refresh ended5A. Full span SHA256 092777fd6a4f07f79d444bda8f785016dfa9a2a0b214b48a14ae3d4f352def92. docs/SOUND_INSTANCE.md. Win32 and installed FMOD channel fixture passed using explicit no-sound output. Projection, not native layout/ABI; audible and gameplay validation remain open."
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack float dt, unsigned int unused; RET 8. RET8 with unused secondword. Skip stopped15; advancefade; positive3C countdown and clear38 only when remaining<=0, preserving38 on unordered; createpaused ifnull; increment18; dirtyfrequency/volume/pan/mix; clear14. Pause bitwise38 OR (1C or class0C), get discarded audibility, copy59to58, virtual14 then negateinto59. This does not refresh ended5A. Full span SHA256 092777fd6a4f07f79d444bda8f785016dfa9a2a0b214b48a14ae3d4f352def92. docs/SOUND_INSTANCE.md. Win32 and installed FMOD channel fixture passed using explicit no-sound output. Projection, not native layout/ABI; audible and gameplay validation remain open."
     }
   ],
   "no_ghidra_function": [],
@@ -487,6 +487,139 @@
   "validation": {
     "build": "MSVC Win32 Release passed",
     "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_instance_r_final_source_build.log",
+    "fixture": "local/sound_instance_fixture.cpp",
+    "fixture_sha256": "55ceadf50fa0b846a9c3f9ed505c63ef4791e0b9204b8fc2af1cd9ba5b81ef87",
+    "fixture_log": "local/sound_instance_r_final_fixture.log",
+    "runner": "local/run_sound_instance_fixture.ps1",
+    "runner_sha256": "1d5e1cdf56e200d8dab517b13483140f87eb6c296e3723f161a5a1d317f1d823",
+    "library_sha256": "cde4e386bc517e279006edd9d38983c0f62e6d214b5083f8a722331d0a6a438d",
+    "code_revision": "b79690e52a48211e1b11a79c618a5634ffd10815",
+    "seed_log": "local/sound_instance_r_verify_seeds.log",
+    "installed": {
+      "bank": "sound/splash/splash_medium.fsb",
+      "pcm_frames": 154624,
+      "channel_frequency": 176400,
+      "mixed_volume": 0.1485,
+      "paused_position": 0,
+      "natural_completion": true,
+      "deferred_pcm_loop": [
+        0,
+        154623
+      ],
+      "immediate_stop": true,
+      "canonical_manager_and_voice_fields": true,
+      "constructor_unwind_raw_sample_retain_preserved": true,
+      "all_owned_resources_released": true,
+      "device": "explicit FMOD no-sound",
+      "result": "Actual VFS sample and FMOD channel playback/update/stop/lifetime passed; C API independently verified pause, frequency, volume, position and loop points.",
+      "assets": [
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+          "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+          "bytes": 350544
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll",
+          "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+          "bytes": 238936
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/splash/splash_medium.fsb",
+          "sha256": "7ea3fec9910d5f995824aa56719d86f17058f91436d22f0122816b6eb963e068",
+          "bytes": 261216
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/events/planes.fev",
+          "sha256": "b239cda305e3574d44a7e483111e6b71225591591f0df8cb9b34e62c1d44d458",
+          "bytes": 118753
+        }
+      ],
+      "exports": [
+        "FMOD_System_PlaySound",
+        "FMOD_Channel_SetLoopCount",
+        "FMOD_Channel_SetLoopPoints",
+        "FMOD_Channel_SetSpeakerMix",
+        "FMOD_Channel_Stop",
+        "FMOD_Channel_IsVirtual",
+        "FMOD_Channel_IsPlaying",
+        "FMOD_Channel_SetFrequency",
+        "FMOD_Channel_SetVolume",
+        "FMOD_Channel_Set3DPanLevel",
+        "FMOD_Channel_SetPaused",
+        "FMOD_Channel_GetAudibility"
+      ],
+      "unordered_countdown_preserves_delay_flag": true
+    },
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false,
+    "seed_functions_verified": 8,
+    "fixture_scope": "Eighteen routines executed through the installed-bank fixture; base-only scalar destructor A7C5D0 was build/assembly checked but not executed. Branch coverage is focused, not exhaustive."
+  },
+  "ghidra": {
+    "prototypes": "reports/sound_instance_prototypes.json",
+    "prototype_count": 19,
+    "flow": "reports/sound_instance_flow.json",
+    "internal_gaps_repaired": 2,
+    "function_definitions": "reports/sound_instance_function_definitions.json",
+    "functions_defined": [
+      "00a7f640",
+      "00a7a630",
+      "00a7a660"
+    ],
+    "no_return_flags_changed": false,
+    "annotations": {
+      "count": 19,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T201246Z.json",
+      "readback": "local/sound_instance_r_comments.json",
+      "exports": "local/sound_instance_r_final_exports.log",
+      "all19_prototypes_verified_after_annotation": true
+    },
+    "countdown_correction": {
+      "saved": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260911T201921Z.json",
+      "readback": "local/sound_instance_r_correction_comment.json",
+      "export": "local/sound_instance_r_correction_export.log"
+    }
+  },
+  "boundaries": [
+    "SoundInstance/SoundChannelInstance are canonical C++ projections, not native52h/5Ch storage; sample remains actual7Ch, class/resource remain existing projections. Raw intrusive instance+4 callbacks cannot accept these projections.",
+    "Factory0C does not append active entries. Application voice/effect lifetime host composition and manager completion refresh remain open.",
+    "D5ABF8 virtual10/14 bind concrete recovered routines. Other derived profiles, spatial/event constructors and active list removal remain unimplemented here.",
+    "Defined serialized-pointer/class-index/FMOD-output domain; invalid uninitialized output is rejected. Constructor raw sample retention on failure matches EH map; native SEH/allocator ABI is unvalidated.",
+    "Existing0042AC60 math and pooled strings/class-table/FMOD/CRT operations are reused contracts, not newly reconstructed libraries."
+  ],
+  "followups": [
+    {
+      "packet": "sound_spatial_event_instances",
+      "addresses": [
+        "00a7f710",
+        "00a89dc0",
+        "00a8a2e0"
+      ]
+    },
+    {
+      "packet": "sound_active_instance_composition",
+      "scope": "Manager ended refresh, active entries, canonical projected lifetime, voice/effect binding."
+    },
+    {
+      "packet": "sound_derived_volume_updates",
+      "addresses": [
+        "00a7b520",
+        "00a7b5d0"
+      ]
+    }
+  ],
+  "superseded_initial_validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
     "build_log": "local/sound_instance_r_build.log",
     "fixture": "local/sound_instance_fixture.cpp",
     "fixture_sha256": "27ac77e2cb96844bb7112720019d608025e44e06b1dd49e9dc34a3713eb40f5b",
@@ -548,7 +681,8 @@
         "FMOD_Channel_Set3DPanLevel",
         "FMOD_Channel_SetPaused",
         "FMOD_Channel_GetAudibility"
-      ]
+      ],
+      "unordered_countdown_preserves_delay_flag": true
     },
     "new_permanent_tests": 0,
     "native_differential": false,
@@ -558,55 +692,38 @@
     "seed_functions_verified": 8,
     "fixture_scope": "Eighteen routines executed through the installed-bank fixture; base-only scalar destructor A7C5D0 was build/assembly checked but not executed. Branch coverage is focused, not exhaustive."
   },
-  "ghidra": {
-    "prototypes": "reports/sound_instance_prototypes.json",
-    "prototype_count": 19,
-    "flow": "reports/sound_instance_flow.json",
-    "internal_gaps_repaired": 2,
-    "function_definitions": "reports/sound_instance_function_definitions.json",
-    "functions_defined": [
-      "00a7f640",
-      "00a7a630",
-      "00a7a660"
-    ],
-    "no_return_flags_changed": false,
-    "annotations": {
-      "count": 19,
-      "saved": true,
-      "readback_verified": true,
-      "prior_comments_preserved": true,
-      "before_log": "local/ghidra-annotations-20260911T201246Z.json",
-      "readback": "local/sound_instance_r_comments.json",
-      "exports": "local/sound_instance_r_final_exports.log",
-      "all19_prototypes_verified_after_annotation": true
+  "corrections": [
+    {
+      "function": "00a7af10",
+      "native_instructions": [
+        "00a7af56",
+        "00a7af5a"
+      ],
+      "reason": "Correction to the earlier countdown summary: 00A7AF56 FCOMIP(0,remaining) and 00A7AF5A JC skip the clear for both positive and unordered remaining values. Clear delay38 only for remaining<=0; NaN preserves38. The local installed-channel fixture now exercises a quiet-NaN dt and verifies the retained delay flag. docs/SOUND_INSTANCE.md.",
+      "initial_source": "1cef0db54c77a9ccebdc6a5cea0c9559092e87a1",
+      "corrected_fixture": "local/sound_instance_r_final_fixture.log"
     }
-  },
-  "boundaries": [
-    "SoundInstance/SoundChannelInstance are canonical C++ projections, not native52h/5Ch storage; sample remains actual7Ch, class/resource remain existing projections. Raw intrusive instance+4 callbacks cannot accept these projections.",
-    "Factory0C does not append active entries. Application voice/effect lifetime host composition and manager completion refresh remain open.",
-    "D5ABF8 virtual10/14 bind concrete recovered routines. Other derived profiles, spatial/event constructors and active list removal remain unimplemented here.",
-    "Defined serialized-pointer/class-index/FMOD-output domain; invalid uninitialized output is rejected. Constructor raw sample retention on failure matches EH map; native SEH/allocator ABI is unvalidated.",
-    "Existing0042AC60 math and pooled strings/class-table/FMOD/CRT operations are reused contracts, not newly reconstructed libraries."
   ],
-  "followups": [
-    {
-      "packet": "sound_spatial_event_instances",
-      "addresses": [
-        "00a7f710",
-        "00a89dc0",
-        "00a8a2e0"
-      ]
-    },
-    {
-      "packet": "sound_active_instance_composition",
-      "scope": "Manager ended refresh, active entries, canonical projected lifetime, voice/effect binding."
-    },
-    {
-      "packet": "sound_derived_volume_updates",
-      "addresses": [
-        "00a7b520",
-        "00a7b5d0"
-      ]
-    }
-  ]
+  "initial_integration": {
+    "log": "local/sound_instance_r_integrate.log",
+    "merged_revision": "c11d84692a647bbb0bfc086f63683b4e82acac43",
+    "helper_main_moved_after_build": true,
+    "final_source_rebuilt_after_merge": "local/sound_instance_r_final_source_build.log"
+  },
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_channel_fixture_tested",
+    "validated_revision": "1546fe38f317a3b3029f5dbc5f80f7fd76e26aef",
+    "main_base": "c41114ee",
+    "integration_log": "local/sound_instance_r_corrected_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "library_sha256": "cde4e386bc517e279006edd9d38983c0f62e6d214b5083f8a722331d0a6a438d",
+    "fixture_provenance": "Installed-channel fixture ran on validation.code_revision with validation.library_sha256. The combined integration build/CTest result is separate.",
+    "correction_annotation_saved": true,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T202031Z.json",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }

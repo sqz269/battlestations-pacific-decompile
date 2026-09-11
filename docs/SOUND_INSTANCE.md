@@ -44,6 +44,8 @@ and speaker mix, then clears dirty14. It updates paused state from the bitwise O
 of delay38 and `(instance1C != 0 || class0C != 0)`, queries discarded audibility,
 and updates virtual-channel history. The volume path preserves native x87
 grouping and three explicit float stores rather than flattening the factors.
+The countdown's FCOMIP/JC skips clearing delay38 for an unordered result, so a
+NaN remaining duration preserves the flag. The local fixture checks that branch.
 
 Virtual slot14 (A7A630) returns **not FMOD isVirtual**. It does not call isPlaying.
 Slot10 (A7A660) updates ended5A using initialized-false isPlaying output, with

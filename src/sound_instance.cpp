@@ -226,8 +226,9 @@ void update_sound_channel_00a7af10(SoundChannelInstance& s, float dt, std::uint3
     advance_sound_instance_fade_00a7a2e0(s, dt);
     if (s.duration_3c > 0) {
         s.duration_3c = difference(s.duration_3c, dt);
-        // FCOMIP's unordered flags also take the clear arm.
-        if (!(s.duration_3c > 0)) s.enabled_38 = 0;
+        // FCOMIP(0,remaining) sets CF for positive OR unordered; JC skips
+        // the clear on both. NaN therefore preserves the delay flag.
+        if (s.duration_3c <= 0) s.enabled_38 = 0;
     }
     if (!s.channel_54) create_sound_channel_paused_00a7a4c0(s, c);
     ++s.updates_18;
