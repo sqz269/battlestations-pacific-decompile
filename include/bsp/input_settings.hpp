@@ -126,6 +126,9 @@ struct ConflictPair {
 // Host mirror of the 0x540 settings object built by 006ab6b0 and filled by
 // 006a7be0. Only the members this packet proved are modelled.
 struct InputSettings {
+    // Native settings+5: set by archive reader006aba50 and tested by runtime
+    // apply006aa640. Apply does not clear it; it is not a transient dirty bit.
+    bool runtime_settings_loaded{};
     // settings+0x08, case-insensitive map keyed by device name.
     std::map<std::string, DeviceSettings, CaseInsensitiveLess> devices;
     // settings+0x14, the device names in KeyboardSetup order.
