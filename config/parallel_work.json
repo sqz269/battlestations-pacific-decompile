@@ -7311,6 +7311,43 @@
         "src/native_resource_registry_tree_leaves.cpp"
       ],
       "evidence": "reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    {
+      "id": "orch4_sound_gameplay_methods_v",
+      "packet": "orch4_sound_gameplay_methods_v",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_sound_methods_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a8a700",
+        "0093fd00",
+        "0093fdf0",
+        "0093fdb0",
+        "00a88b90",
+        "00a79a30",
+        "00a89c60",
+        "00a7a6b0",
+        "00a7a710",
+        "00a89250",
+        "00a89d00",
+        "00a7be90",
+        "00a891f0",
+        "00a799a0",
+        "00a89460",
+        "00a89390",
+        "00a89a40",
+        "00a89b40"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_gameplay_methods.hpp",
+        "src/sound_gameplay_methods.cpp",
+        "include/bsp/sound_channel_runtime.hpp",
+        "src/sound_channel_runtime.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_gameplay_methods.json",
+      "discovery_evidence": "docs/SOUND_GAMEPLAY_METHODS.md"
     }
   ],
   "snapshot_after_analysis": {

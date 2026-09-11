@@ -1,0 +1,851 @@
+{
+  "packet": "orch4_sound_gameplay_methods_v",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a8a700",
+      "name": "configure_spatial_sound_channel_00a8a700",
+      "proposed_name": "BSP_SpatialSoundChannel_Configure",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; RET.",
+      "meaning": "Copy actual48h sample options including owned descriptor array; set channel min/max; get uninitialized mode output; switch rolloff bits100000/200000 from options20 and bits100/200 from options14; reload channel54 at each FMOD call; memory2B statistics; destroy temporary after successful copy. Stored body endsA8A806; decoded tail807..815 separately verified.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a8a815",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a8a816",
+      "byte_span": 278,
+      "sha256": "e1583998f10ac11f2206a7190f6401e3b3cbccdb68af6ec2791b22e9b59f3388",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "ghidra_stored_body_end_inclusive": "00a8a806",
+      "decoded_tail_in_report": true,
+      "full_stored_body_repair": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; RET. Copy actual48h sample options including owned descriptor array; set channel min/max; get uninitialized mode output; switch rolloff bits100000/200000 from options20 and bits100/200 from options14; reload channel54 at each FMOD call; memory2B statistics; destroy temporary after successful copy. Stored body endsA8A806; decoded tail807..815 separately verified. Byte-span SHA256 e1583998f10ac11f2206a7190f6401e3b3cbccdb68af6ec2791b22e9b59f3388. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "0093fd00",
+      "name": "assign_sound_sample_parameters_0093fd00",
+      "proposed_name": "BSP_SoundSampleParameters_Assign",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; stack void* source; EAX result; RET 4.",
+      "meaning": "Actual12h destination header,16h records. Resize0 before reading source count, reserve source count including minimum1, reload source record pointer per iteration and capture before growth, append four dwords then increment count. Self-assignment clears. Borrowed descriptor name pointers copied without retain.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0093fd83",
+      "last_instruction_length": 3,
+      "end_exclusive": "0093fd86",
+      "byte_span": 134,
+      "sha256": "b51382703ad8768121fb0bbe3280b2e67610a5fb668f35bab1f482a1d02b0c9d",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; stack void* source; EAX result; RET 4. Actual12h destination header,16h records. Resize0 before reading source count, reserve source count including minimum1, reload source record pointer per iteration and capture before growth, append four dwords then increment count. Self-assignment clears. Borrowed descriptor name pointers copied without retain. Byte-span SHA256 b51382703ad8768121fb0bbe3280b2e67610a5fb668f35bab1f482a1d02b0c9d. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "0093fdf0",
+      "name": "copy_construct_sound_sample_options_0093fdf0",
+      "proposed_name": "BSP_SoundSampleOptions_CopyConstruct",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; stack void* source; EAX result; RET 4.",
+      "meaning": "Copy actual48h options fields in native order. Float fields use FLD/FSTP including2C; preserve padding17,23,39..3B; zero destination descriptor header3C/40/44 then call93FD00. No constructor EH guard; existing destination ownership must not be live.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0093fe87",
+      "last_instruction_length": 3,
+      "end_exclusive": "0093fe8a",
+      "byte_span": 154,
+      "sha256": "6566abf7987353364483678a6b44ab77c5380ee563da8017e539965f9589cb7e",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; stack void* source; EAX result; RET 4. Copy actual48h options fields in native order. Float fields use FLD/FSTP including2C; preserve padding17,23,39..3B; zero destination descriptor header3C/40/44 then call93FD00. No constructor EH guard; existing destination ownership must not be live. Byte-span SHA256 6566abf7987353364483678a6b44ab77c5380ee563da8017e539965f9589cb7e. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "0093fdb0",
+      "name": "destroy_sound_sample_options_0093fdb0",
+      "proposed_name": "BSP_SoundSampleOptions_Destruct",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; RET.",
+      "meaning": "Resize descriptor array atself3C tozero then free current buffer; leave dead pointer/capacity values. Storedbodyends93FDC4; decoded tailC5..C9 separately verified.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0093fdc9",
+      "last_instruction_length": 1,
+      "end_exclusive": "0093fdca",
+      "byte_span": 26,
+      "sha256": "d66340b993585a9b156318353d15f46205f6b8abaa8028575a7c3144c5f15f18",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "ghidra_stored_body_end_inclusive": "0093fdc4",
+      "decoded_tail_in_report": true,
+      "full_stored_body_repair": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; RET. Resize descriptor array atself3C tozero then free current buffer; leave dead pointer/capacity values. Storedbodyends93FDC4; decoded tailC5..C9 separately verified. Byte-span SHA256 d66340b993585a9b156318353d15f46205f6b8abaa8028575a7c3144c5f15f18. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a88b90",
+      "name": "sound_event_handle_00a88b90",
+      "proposed_name": "BSP_SoundEvent_GetHandle",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; EAX result; RET.",
+      "meaning": "Return borrowed event54 without retaining or querying FMOD; shared D5B480/D5B4C8 slot18.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a88b93",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a88b94",
+      "byte_span": 4,
+      "sha256": "9c8eb3adab3133652cdccbd58b010e59bcef792f39806367b4a21f5a9815fbf5",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; EAX result; RET. Return borrowed event54 without retaining or querying FMOD; shared D5B480/D5B4C8 slot18. Byte-span SHA256 9c8eb3adab3133652cdccbd58b010e59bcef792f39806367b4a21f5a9815fbf5. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a79a30",
+      "name": "sound_channel_handle_00a79a30",
+      "proposed_name": "BSP_SoundChannel_GetHandle",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; EAX result; RET.",
+      "meaning": "Return borrowed channel54 without retaining; D5ABF8/D5B510 slot18.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a79a33",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a79a34",
+      "byte_span": 4,
+      "sha256": "9c8eb3adab3133652cdccbd58b010e59bcef792f39806367b4a21f5a9815fbf5",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; EAX result; RET. Return borrowed channel54 without retaining; D5ABF8/D5B510 slot18. Byte-span SHA256 9c8eb3adab3133652cdccbd58b010e59bcef792f39806367b4a21f5a9815fbf5. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89c60",
+      "name": "sound_event_progress_00a89c60",
+      "proposed_name": "BSP_SoundEvent_GetProgressConstant",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; ST0 float; RET.",
+      "meaning": "Literal FLD D5B4C4; RET. Read-only float bits3EAA7EFA, no duration/position query; slot20. Progress name inferred from matching bank slot.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89c66",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89c67",
+      "byte_span": 7,
+      "sha256": "39e729cbbd3f9f56c7fdd22780497dc7d73d422e0c11030f562437e4162da2eb",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; ST0 float; RET. Literal FLD D5B4C4; RET. Read-only float bits3EAA7EFA, no duration/position query; slot20. Progress name inferred from matching bank slot. Byte-span SHA256 39e729cbbd3f9f56c7fdd22780497dc7d73d422e0c11030f562437e4162da2eb. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7a6b0",
+      "name": "sound_channel_progress_00a7a6b0",
+      "proposed_name": "BSP_SoundChannel_GetPcmProgress",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; ST0 float; RET.",
+      "meaning": "Null channel returnspositivezero. Initialize position0; GetPosition unit2; unsigned numerator conversion uses signedFILD plusCE3978float2^32 then doublespill before current samplePCM getter. Denominator is signedFILD with NO unsigned correction; divide and floatspill. Preserve zero division and negative denominator, no clamp.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7a70d",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7a70e",
+      "byte_span": 94,
+      "sha256": "74b2d30ac30f8d9f9bef88e6619ede0da1182cc4ee06cdb11203c3d091d7d122",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; ST0 float; RET. Null channel returnspositivezero. Initialize position0; GetPosition unit2; unsigned numerator conversion uses signedFILD plusCE3978float2^32 then doublespill before current samplePCM getter. Denominator is signedFILD with NO unsigned correction; divide and floatspill. Preserve zero division and negative denominator, no clamp. Byte-span SHA256 74b2d30ac30f8d9f9bef88e6619ede0da1182cc4ee06cdb11203c3d091d7d122. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7a710",
+      "name": "sound_channel_audibility_00a7a710",
+      "proposed_name": "BSP_SoundChannel_GetAudibility",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; ST0 float; RET.",
+      "meaning": "Initialize audibility1, call FMOD even for null channel, ignore result, return current output throughST0.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7a727",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7a728",
+      "byte_span": 24,
+      "sha256": "a3b815ac88f69daccec95bf11146c64307760be49fb232cf54fca83245d3a7e3",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; ST0 float; RET. Initialize audibility1, call FMOD even for null channel, ignore result, return current output throughST0. Byte-span SHA256 a3b815ac88f69daccec95bf11146c64307760be49fb232cf54fca83245d3a7e3. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89250",
+      "name": "sound_group_max_audibility_00a89250",
+      "proposed_name": "BSP_SoundEvent_MaxGroupAudibility",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; stack void* group; ST0 float; RET 4.",
+      "meaning": "Maximum initialized0. Zero count then traverse child groups reverse index recursively, zero count then channels reverse index. Same uninitialized pointer output word reused across both loops; channel audibility initialized0 each time. Ignore FMOD results; replace maximum unless ordered greater (unordered replaces). Recursive result floats spill before compare; RET4.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89333",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89336",
+      "byte_span": 230,
+      "sha256": "58c5510b74038b447610c262514e13f7482d8d4fe69fde07e06b421e4d86d06d",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; stack void* group; ST0 float; RET 4. Maximum initialized0. Zero count then traverse child groups reverse index recursively, zero count then channels reverse index. Same uninitialized pointer output word reused across both loops; channel audibility initialized0 each time. Ignore FMOD results; replace maximum unless ordered greater (unordered replaces). Recursive result floats spill before compare; RET4. Byte-span SHA256 58c5510b74038b447610c262514e13f7482d8d4fe69fde07e06b421e4d86d06d. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89d00",
+      "name": "sound_event_audibility_00a89d00",
+      "proposed_name": "BSP_SoundEvent_GetAudibility",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; ST0 float; RET.",
+      "meaning": "Null event returnszero without singleton access. Acquire A89A40 singleton, capture section4, enter OS lock and incrementdepth18; reload event54; GetChannelGroup outputnull; recursively query group ifnonnull elsezero; floatspill then decrementdepth/unlock capturedsection; DEC538 unwind guardA411EE0.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89db7",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89db8",
+      "byte_span": 184,
+      "sha256": "071101f47742b9a9bfbc24bc43f1e44a835f9982449c881c50a3a8e9f0ff0cc3",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; ST0 float; RET. Null event returnszero without singleton access. Acquire A89A40 singleton, capture section4, enter OS lock and incrementdepth18; reload event54; GetChannelGroup outputnull; recursively query group ifnonnull elsezero; floatspill then decrementdepth/unlock capturedsection; DEC538 unwind guardA411EE0. Byte-span SHA256 071101f47742b9a9bfbc24bc43f1e44a835f9982449c881c50a3a8e9f0ff0cc3. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7be90",
+      "name": "sound_instance_noop_00a7be90",
+      "proposed_name": "BSP_SoundInstance_NoOpConfigure",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; RET.",
+      "meaning": "Literal RET, no inputs/stateeffects. Shared event and ordinary channel slot3C; complete no-op, not an unresolved stub.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7be90",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7be91",
+      "byte_span": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; RET. Literal RET, no inputs/stateeffects. Shared event and ordinary channel slot3C; complete no-op, not an unresolved stub. Byte-span SHA256 ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a891f0",
+      "name": "set_sound_event_paused_00a891f0",
+      "proposed_name": "BSP_SoundEvent_SetPaused",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; stack byte paused; RET 4.",
+      "meaning": "Capture event54; nonnull calls EventSetPaused with original argument; no paused1C store and no deferred state change when handle absent; ignores result. RET4.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89202",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89205",
+      "byte_span": 21,
+      "sha256": "c9a73a812d34a59d0e2b6383edbdd8614730ef60cb2c631fa0182a782cd259b4",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; stack byte paused; RET 4. Capture event54; nonnull calls EventSetPaused with original argument; no paused1C store and no deferred state change when handle absent; ignores result. RET4. Byte-span SHA256 c9a73a812d34a59d0e2b6383edbdd8614730ef60cb2c631fa0182a782cd259b4. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a799a0",
+      "name": "set_sound_channel_paused_00a799a0",
+      "proposed_name": "BSP_SoundChannel_SetPaused",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; stack byte paused; RET 4.",
+      "meaning": "Store low input byte atpaused1C only, no FMOD call; later channel update submits it. RET4.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a799a7",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a799aa",
+      "byte_span": 10,
+      "sha256": "5651b8a5d468db27b28df7c9a932a4469ec1db3d135bd9424074befcb7f87232",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; stack byte paused; RET 4. Store low input byte atpaused1C only, no FMOD call; later channel update submits it. RET4. Byte-span SHA256 5651b8a5d468db27b28df7c9a932a4469ec1db3d135bd9424074befcb7f87232. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89460",
+      "name": "construct_sound_event_query_lock_00a89460",
+      "proposed_name": "BSP_SoundEventQueryLock_Construct",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; EAX result; RET.",
+      "meaning": "Native8h object installsD5B478 then creates trackedcriticalsection viaBD1860 into4. DEC4A4 state0 unwind callsA89390 clears globalF8BBDC and installsCE3818.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a894a4",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a894a5",
+      "byte_span": 69,
+      "sha256": "08782a6b1b911007befedd73b051007cdef6ab91a2e43f1ddc5c29a2d8474a6f",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; EAX result; RET. Native8h object installsD5B478 then creates trackedcriticalsection viaBD1860 into4. DEC4A4 state0 unwind callsA89390 clears globalF8BBDC and installsCE3818. Byte-span SHA256 08782a6b1b911007befedd73b051007cdef6ab91a2e43f1ddc5c29a2d8474a6f. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89390",
+      "name": "destroy_sound_event_query_lock_base_00a89390",
+      "proposed_name": "BSP_SoundEventQueryLock_DestructBase",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; RET.",
+      "meaning": "Unconditionally clear globalF8BBDC, then installCE3818; no unregister, no section release.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a893a0",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a893a1",
+      "byte_span": 17,
+      "sha256": "8288bfc581798d3397d18e96ea71be28bf4495657ce14d306d290cc26a49d354",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; RET. Unconditionally clear globalF8BBDC, then installCE3818; no unregister, no section release. Byte-span SHA256 8288bfc581798d3397d18e96ea71be28bf4495657ce14d306d290cc26a49d354. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89a40",
+      "name": "get_sound_event_query_lock_00a89a40",
+      "proposed_name": "BSP_SoundEventQueryLock_Get",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "No register inputs; EAX result; RET.",
+      "meaning": "Unlocked globalreadfastpath; get lifetime manager/capturesection10; OSenter thenincrementdepth18; recheck global; allocate8 and construct ornull; publish; get managerAGAIN and register currentglobal; decrement/unlock capturedsection; return currentglobal. DEC4D8 unwind freesfailedallocation before lockguard.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89afc",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a89afd",
+      "byte_span": 189,
+      "sha256": "f2093666803e0e7c152001c220a338bf040162e39e19e27333e24c29064f6d08",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. No register inputs; EAX result; RET. Unlocked globalreadfastpath; get lifetime manager/capturesection10; OSenter thenincrementdepth18; recheck global; allocate8 and construct ornull; publish; get managerAGAIN and register currentglobal; decrement/unlock capturedsection; return currentglobal. DEC4D8 unwind freesfailedallocation before lockguard. Byte-span SHA256 f2093666803e0e7c152001c220a338bf040162e39e19e27333e24c29064f6d08. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a89b40",
+      "name": "scalar_delete_sound_event_query_lock_00a89b40",
+      "proposed_name": "BSP_SoundEventQueryLock_ScalarDeletingDestructor",
+      "source": "src/sound_gameplay_methods.cpp",
+      "document": "docs/SOUND_GAMEPLAY_METHODS.md",
+      "status": "reconstructed_build_and_installed_sound_methods_fixture_tested",
+      "coverage": "complete for documented valid-storage domain",
+      "abi": "ECX self/source/header; stack uint flags; EAX result; RET 4.",
+      "meaning": "InstallD5B478; destroy ownedsection4 through0041CC80; clearF8BBDC andinstallCE3818; freeifflagsbit0; return oldobject. Doesnot unregister; lifetime manager drain alreadyowns registration.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a89b74",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a89b77",
+      "byte_span": 55,
+      "sha256": "8bf6c3002e1cbce96402e010a92c9a87ba68304b83aa65c1000c78242ee0cc9d",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self/source/header; stack uint flags; EAX result; RET 4. InstallD5B478; destroy ownedsection4 through0041CC80; clearF8BBDC andinstallCE3818; freeifflagsbit0; return oldobject. Doesnot unregister; lifetime manager drain alreadyowns registration. Byte-span SHA256 8bf6c3002e1cbce96402e010a92c9a87ba68304b83aa65c1000c78242ee0cc9d. docs/SOUND_GAMEPLAY_METHODS.md. Win32 and installed no-sound bank/event fixture passed, including independent playing-event audibility0.5 and singleton cleanup. Canonical object interfaces; native ABI, full exceptional behavior, audible output and gameplay remain open."
+    }
+  ],
+  "new_routines": 18,
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00a8a71e",
+      "native": "00a81860",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a728",
+      "native": "0093fdf0",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a74b",
+      "native": "00c2df5c",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a760",
+      "native": "00a7a460",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a76e",
+      "native": "00c2df56",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a783",
+      "native": "00a7a460",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a7cf",
+      "native": "00c2df50",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a7e5",
+      "native": "00a7a460",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a7f8",
+      "native": "0093f950",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "00a8a802",
+      "native": "00bf6989",
+      "caller": "00a8a700"
+    },
+    {
+      "address": "0093fd08",
+      "native": "0093f950",
+      "caller": "0093fd00"
+    },
+    {
+      "address": "0093fd17",
+      "native": "0093f6e0",
+      "caller": "0093fd00"
+    },
+    {
+      "address": "0093fd41",
+      "native": "0093f6e0",
+      "caller": "0093fd00"
+    },
+    {
+      "address": "0093fe7f",
+      "native": "0093fd00",
+      "caller": "0093fdf0"
+    },
+    {
+      "address": "0093fdb8",
+      "native": "0093f950",
+      "caller": "0093fdb0"
+    },
+    {
+      "address": "0093fdc0",
+      "native": "00bf6989",
+      "caller": "0093fdb0"
+    },
+    {
+      "address": "00a7a6d4",
+      "native": "00c2de18",
+      "caller": "00a7a6b0"
+    },
+    {
+      "address": "00a7a6f2",
+      "native": "00a81870",
+      "caller": "00a7a6b0"
+    },
+    {
+      "address": "00a7a71e",
+      "native": "00c2de1e",
+      "caller": "00a7a710"
+    },
+    {
+      "address": "00a89272",
+      "native": "00c2df38",
+      "caller": "00a89250"
+    },
+    {
+      "address": "00a8928e",
+      "native": "00c2df32",
+      "caller": "00a89250"
+    },
+    {
+      "address": "00a8929a",
+      "native": "00a89250",
+      "caller": "00a89250"
+    },
+    {
+      "address": "00a892d3",
+      "native": "00c2df2c",
+      "caller": "00a89250"
+    },
+    {
+      "address": "00a892f4",
+      "native": "00c2df26",
+      "caller": "00a89250"
+    },
+    {
+      "address": "00a89303",
+      "native": "00c2de1e",
+      "caller": "00a89250"
+    },
+    {
+      "address": "00a89d34",
+      "native": "00a89a40",
+      "caller": "00a89d00"
+    },
+    {
+      "address": "00a89d70",
+      "native": "00c2dfc2",
+      "caller": "00a89d00"
+    },
+    {
+      "address": "00a89d80",
+      "native": "00a89250",
+      "caller": "00a89d00"
+    },
+    {
+      "address": "00a891fd",
+      "native": "00c2df98",
+      "caller": "00a891f0"
+    },
+    {
+      "address": "00a8948b",
+      "native": "00bd1860",
+      "caller": "00a89460"
+    },
+    {
+      "address": "00a89a66",
+      "native": "00415350",
+      "caller": "00a89a40"
+    },
+    {
+      "address": "00a89a9c",
+      "native": "00bf681b",
+      "caller": "00a89a40"
+    },
+    {
+      "address": "00a89ab3",
+      "native": "00a89460",
+      "caller": "00a89a40"
+    },
+    {
+      "address": "00a89ac6",
+      "native": "00415350",
+      "caller": "00a89a40"
+    },
+    {
+      "address": "00a89ad4",
+      "native": "00bd0c30",
+      "caller": "00a89a40"
+    },
+    {
+      "address": "00a89b4c",
+      "native": "0041cc80",
+      "caller": "00a89b40"
+    },
+    {
+      "address": "00a89b69",
+      "native": "00bf65ac",
+      "caller": "00a89b40"
+    }
+  ],
+  "decoded_tails": [
+    {
+      "function": "00a8a700",
+      "stored_body_end_inclusive": "00a8a806",
+      "decoded_tail_start": "00a8a807",
+      "decoded_end_exclusive": "00a8a816",
+      "disk_analysis_equal": true,
+      "full_stored_body_repair": false,
+      "instructions": [
+        {
+          "address": "00a8a807",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x50]",
+          "bytes_hex": "8b4c2450"
+        },
+        {
+          "address": "00a8a80b",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "bytes_hex": "64890d00000000"
+        },
+        {
+          "address": "00a8a812",
+          "mnemonic": "add",
+          "operands": "esp, 0x5c",
+          "bytes_hex": "83c45c"
+        },
+        {
+          "address": "00a8a815",
+          "mnemonic": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    },
+    {
+      "function": "0093fdb0",
+      "stored_body_end_inclusive": "0093fdc4",
+      "decoded_tail_start": "0093fdc5",
+      "decoded_end_exclusive": "0093fdca",
+      "disk_analysis_equal": true,
+      "full_stored_body_repair": false,
+      "instructions": [
+        {
+          "address": "0093fdc5",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "bytes_hex": "83c404"
+        },
+        {
+          "address": "0093fdc8",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "bytes_hex": "5e"
+        },
+        {
+          "address": "0093fdc9",
+          "mnemonic": "ret",
+          "operands": "",
+          "bytes_hex": "c3"
+        }
+      ]
+    }
+  ],
+  "read_only_evidence": [
+    {
+      "address": "00d5abf8",
+      "size": 68,
+      "bytes_hex": "e030bd00a0d5a70070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70010afa70080bea700d0bea70090bea700a099a700",
+      "sha256": "b7de4b94b9614320ef5f33f5e15d2d0822f1465035d34d10cff277d03bf02730",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00d5b480",
+      "size": 216,
+      "bytes_hex": "e030bd00c09ea8007091a8001092a800509ca800409ca800908ba800009da800609ca800709ca800e096a800809ba8000096a80080bea700d0bea70090bea700f091a800fa7eaa3ee030bd00e09ea8007091a800a08ba8004093a800409ca800908ba800009da800609ca800709ca800e096a800809ba8007097a8002091a800809ea80090bea700f091a80000000000e030bd0060a4a80070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70080a4a80090a2a800a0a3a80000a7a800a099a70060a9a800",
+      "sha256": "35ad6e3de1a3bfbc5e4262e284549af3a308ed6639b46e6b47429540fae74ca0",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00ce3978",
+      "size": 4,
+      "bytes_hex": "0000804f",
+      "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00dec49c",
+      "size": 72,
+      "bytes_hex": "ffffffffd062cb0022059319010000009cc4de00000000000000000000000000000000000000000001000000fffffffff062cb0000000000f862cb002205931902000000c8c4de00",
+      "sha256": "8e76d305fb988d3e11cfa289ce2fc9ed2f60ec776aae40cca338261bc2304a82",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00dec530",
+      "size": 44,
+      "bytes_hex": "ffffffff3063cb00220593190100000030c5de00000000000000000000000000000000000000000001000000",
+      "sha256": "371e4b139daf3d42ce8d761ea49e8a85326cdb2525599e99cc9b6c54f5e85ece",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00dec588",
+      "size": 44,
+      "bytes_hex": "ffffffff7063cb00220593190100000088c5de00000000000000000000000000000000000000000001000000",
+      "sha256": "af1fdb0745d0e404271b61b39db21cd73deb9af7109254c194ef19e806adb9be",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb62d0",
+      "size": 8,
+      "bytes_hex": "8b4df0e9b830ddff",
+      "sha256": "1678df75af9ed6b1cb2b7d8f0f5e44535019306d70b2f396777de22157d646d6",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb62f0",
+      "size": 19,
+      "bytes_hex": "8d4dece9e8bb75ff8b45e850e8ab02f4ff59c3",
+      "sha256": "338d848937e9e0a277b3f3b652a4c9b1a6080072bb2fd607f368fc22b95d0992",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb6330",
+      "size": 8,
+      "bytes_hex": "8d4dece9a8bb75ff",
+      "sha256": "a9f672d47248c0243346a07f5203088db5c01e8bf6babeb4159fddfc87e6bff7",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb6370",
+      "size": 8,
+      "bytes_hex": "8d4dace9389ac8ff",
+      "sha256": "197db97669b285324b64f7007e8ed1e2e155e6b3862af43f59a234d400859082",
+      "disk_analysis_equal": true
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_methods_v_build.log",
+    "fixture": "local/sound_methods_fixture.cpp",
+    "fixture_sha256": "ac0099acb9b590778cc555832ef6a19f3daf38116a4ddf4d786ff84367dce46a",
+    "fixture_log": "local/sound_methods_v_fixture.log",
+    "runner": "local/run_sound_methods_fixture.ps1",
+    "runner_sha256": "fe01d55b398870d92b4ac573389f864717d439accdf18d77d318303666aceb47",
+    "library_sha256": "a783c52d6c7615a83715a5c878b7fd8e585cf54706baf0ad199d0bd189f6d4a4",
+    "code_revision": "record after source commit",
+    "code_sha256": {
+      "include/bsp/sound_gameplay_methods.hpp": "072aba5c7b766eb33f4c36010f4620f1bcdc6852746f98bd48ba87ab38a9934d",
+      "src/sound_gameplay_methods.cpp": "a410ae85213ccc0264c101cfc555bada2525d05d96db3480f36aa8c551e93036",
+      "include/bsp/sound_channel_runtime.hpp": "8cedbe19600c40375696bece80bd097ea083517cac584ac8fe0cfa80446df289",
+      "src/sound_channel_runtime.cpp": "6cedd26bfb14b260db23720dadf5cd47e534503d7a1c5f4cf7af0f919c034b5a",
+      "include/bsp/fmod_configuration_library.hpp": "af25db70f837c5622a97a4babf64f8b029444d342ddaec9d1919b1b78eadc993",
+      "src/fmod_configuration_library.cpp": "c532944b214e64b93c490762209f08d33230d9465c261951e528c8bef9041afe"
+    },
+    "libraries": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+        "verified_exports": [
+          "FMOD_Channel_Set3DMinMaxDistance",
+          "FMOD_Channel_Get3DMinMaxDistance",
+          "FMOD_Channel_GetMode",
+          "FMOD_Channel_SetMode",
+          "FMOD_Channel_GetPosition",
+          "FMOD_ChannelGroup_GetNumGroups",
+          "FMOD_ChannelGroup_GetGroup",
+          "FMOD_ChannelGroup_GetNumChannels",
+          "FMOD_ChannelGroup_GetChannel",
+          "FMOD_Channel_GetAudibility"
+        ]
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+        "verified_exports": [
+          "_FMOD_Event_GetPaused@8",
+          "_FMOD_Event_SetPaused@8",
+          "_FMOD_Event_GetChannelGroup@8"
+        ]
+      }
+    ],
+    "seed_log": "local/sound_methods_v_verify_seeds.log",
+    "focused": "Actual options copy/padding/self-assignment; installed min/max and rolloff branches, handles, initial PCM progress, pause distinctions, recursive group queries and playing-event audibility0.5 independently checked; singleton registration reuse and shutdown; prior bank/event regressions pass.",
+    "native_error_observed": "Independent no-sound master-group channel audibility returned0x24 with initialized0 unchanged; native ignores result. Event playing query returned0.5.",
+    "unexercised_branches": [
+      "Full allocation/SEH failures, NaN payload/exception behavior and signed high-bit PCM lengths were not broadly runtime tested.",
+      "Concrete optional output adapters reserve all-ones as a sentinel, outside valid FMOD modes/pointers."
+    ],
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false,
+    "seed_functions_verified": 8,
+    "call_site_check": "37 rows checked, 0 failed; local/sound_methods_v_call_check.log"
+  },
+  "ghidra": {
+    "prototypes": "reports/sound_gameplay_methods_prototypes.json",
+    "prototype_count": 18,
+    "function_definitions": "reports/sound_gameplay_methods_function_definitions.json",
+    "functions_defined": [
+      "00a88b90",
+      "00a89d00",
+      "00a89c60",
+      "00a891f0",
+      "00a7be90",
+      "00a7a710",
+      "00a79a30",
+      "00a799a0"
+    ],
+    "flow_repairs": "reports/sound_gameplay_methods_flow.json",
+    "callsite_flow_repairs": 2,
+    "stored_body_tails_still_short": [
+      "00a8a700",
+      "0093fdb0"
+    ],
+    "no_return_flags_changed": false,
+    "xrefs": "local/sound_methods_v_xrefs.log",
+    "annotations": {
+      "count": 18,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260911T222010Z.json",
+      "readback": "local/sound_methods_v_comments.json",
+      "exports": "local/sound_methods_v_final_exports.log",
+      "all18_prototypes_verified_after_annotation": true
+    }
+  },
+  "corrections": [
+    {
+      "was": "Spatial slot3C and event slots18/1C/20/3C/40 unresolved.",
+      "evidence": "docs/SOUND_GAMEPLAY_METHODS.md; actual vtables and18 byte spans recorded.",
+      "is": "Complete reconstructed dispatch plus additional ordinary bank methods."
+    },
+    {
+      "was": "Uncorrected pseudocode conflated stack locals and displayed mode bits under misleading SDK labels.",
+      "evidence": "00A8A788..00A8A7C6; installed mode/minmax readback.",
+      "is": "Use actual options14/20 and exact masks100/200 and100000/200000."
+    },
+    {
+      "was": "Event recursive pseudocode showed unaff registers and a false zero result.",
+      "evidence": "00A89250..00A89333; RET4; installed event query0.5.",
+      "is": "ECX receiver plus stack group; reverse traversal and maximum with unordered replacement."
+    }
+  ],
+  "boundaries": [
+    "Actual option/descriptor storage with canonical sound and query-lock projections; no native ABI claim.",
+    "Initialized source scalar bytes, nonnegative counts and nonoverflowing extents required; no invented initialization or clamping.",
+    "Two verified decoded tails remain outside stored Ghidra bodies.",
+    "Application initialization, shared services/VFS directories and voice callers remain uncomposed; game_hosts.cpp phase5 A88770 still unimplemented.",
+    "No audible output or gameplay proof."
+  ],
+  "followups": [
+    {
+      "packet": "sound_application_voice_composition",
+      "scope": "Shared lifetime/global/clock/CRT, VFS directories and production sound/voice ownership."
+    },
+    {
+      "packet": "sound_gameplay_caller_bindings",
+      "scope": "Connect real callers to full factory and gameplay methods; do not infer application use from runtime interfaces."
+    },
+    {
+      "packet": "sound_gameplay_stored_body_bounds",
+      "addresses": [
+        "00a8a700",
+        "0093fdb0"
+      ]
+    }
+  ]
+}

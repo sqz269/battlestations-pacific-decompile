@@ -126,3 +126,10 @@ ABI replacement, full allocator/SEH equivalence, audible output and game validat
   VFS directory registration so the startup path can own and update these real instances.
 - Extend stored Ghidra body bounds for 00A89C80/00A89BE0 when a supported locked operation is
   available; preserve the verified tail distinction until then.
+
+## Correction from docs/SOUND_GAMEPLAY_METHODS.md
+
+The remaining event slots18/1C/20/3C/40 and spatial bank slot3C are now reconstructed
+and exposed through the runtime. Installed fixtures cover their FMOD behavior, including
+playing-event audibility0.5 and query-singleton cleanup. Application sound/voice
+composition, native ABI and audible/gameplay validation remain open.

@@ -181,6 +181,41 @@ FmodResult FmodConfigurationLibrary::dsp_remove(void* dsp) {
 FmodResult FmodConfigurationLibrary::dsp_release(void* dsp) {
     return impl_->call("FMOD_DSP_Release", dsp);
 }
+FmodResult FmodConfigurationLibrary::channel_set_3d_minmax_distance(void* channel, float minimum, float maximum) {
+    return impl_->call("FMOD_Channel_Set3DMinMaxDistance", channel, minimum, maximum);
+}
+FmodResult FmodConfigurationLibrary::channel_get_mode(void* channel, std::optional<std::uint32_t>& mode) {
+    std::uint32_t native = mode.value_or(UINT32_MAX);
+    const auto result = impl_->call("FMOD_Channel_GetMode", channel, &native);
+    if (native != UINT32_MAX) mode = native; // All-ones is not a supported FMOD mode.
+    return result;
+}
+FmodResult FmodConfigurationLibrary::channel_set_mode(void* channel, std::uint32_t mode) {
+    return impl_->call("FMOD_Channel_SetMode", channel, mode);
+}
+FmodResult FmodConfigurationLibrary::channel_get_position(void* channel, std::uint32_t* position, std::uint32_t unit) {
+    return impl_->call("FMOD_Channel_GetPosition", channel, position, unit);
+}
+FmodResult FmodConfigurationLibrary::channel_group_get_num_groups(void* group, std::int32_t* count) {
+    return impl_->call("FMOD_ChannelGroup_GetNumGroups", group, count);
+}
+FmodResult FmodConfigurationLibrary::channel_group_get_group(void* group, std::int32_t index, std::optional<void*>& value) {
+    void* const unwritten = reinterpret_cast<void*>(UINTPTR_MAX);
+    void* native = value.value_or(unwritten);
+    const auto result = impl_->call("FMOD_ChannelGroup_GetGroup", group, index, &native);
+    if (native != unwritten) value = native;
+    return result;
+}
+FmodResult FmodConfigurationLibrary::channel_group_get_num_channels(void* group, std::int32_t* count) {
+    return impl_->call("FMOD_ChannelGroup_GetNumChannels", group, count);
+}
+FmodResult FmodConfigurationLibrary::channel_group_get_channel(void* group, std::int32_t index, std::optional<void*>& value) {
+    void* const unwritten = reinterpret_cast<void*>(UINTPTR_MAX);
+    void* native = value.value_or(unwritten);
+    const auto result = impl_->call("FMOD_ChannelGroup_GetChannel", group, index, &native);
+    if (native != unwritten) value = native;
+    return result;
+}
 FmodResult FmodConfigurationLibrary::event_start(void* event) {
     return impl_->call_from(impl_->event_library(), "_FMOD_Event_Start@4", event);
 }
