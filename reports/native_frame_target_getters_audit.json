@@ -1,0 +1,690 @@
+{
+  "schema": 1,
+  "packet": "native_frame_target_getters3",
+  "status": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
+  "functions": [
+    {
+      "address": "00b1f6d0",
+      "end_exclusive": "00b1f6db",
+      "bytes": 11,
+      "cpp_symbol": "bsp::native_frame_targets_get_color_surface_00b1f6d0",
+      "original_abi": "ECX actual targets, stack slot, EAX borrowed surface; RET4",
+      "source": "src/native_frame_target_getters.cpp"
+    },
+    {
+      "address": "00b1f6e0",
+      "end_exclusive": "00b1f6e4",
+      "bytes": 4,
+      "cpp_symbol": "bsp::native_frame_targets_get_depth_surface_00b1f6e0",
+      "original_abi": "ECX actual targets; EAX borrowed depth surface; RET",
+      "source": "src/native_frame_target_getters.cpp"
+    },
+    {
+      "address": "00b1f710",
+      "end_exclusive": "00b1f714",
+      "bytes": 4,
+      "cpp_symbol": "bsp::native_frame_targets_get_srgb_write_byte_00b1f710",
+      "original_abi": "ECX actual targets; AL exact byte; RET",
+      "source": "src/native_frame_target_getters.cpp"
+    }
+  ],
+  "primary_integration": {
+    "verification": {
+      "passed": true,
+      "actual_main_library": {
+        "path": "build/frame-target-getters-check/bsp_core.linked.lib",
+        "bytes": 33647642,
+        "sha256": "159f76f75a31b18fe79eb59c6a816bf52d53b361440a25873ee0bb62484a17d0"
+      },
+      "frozen": {
+        "artifacts": [
+          {
+            "path": "build/frame-target-getters-check/bsp_core.linked.lib",
+            "bytes": 33647642,
+            "sha256": "159f76f75a31b18fe79eb59c6a816bf52d53b361440a25873ee0bb62484a17d0"
+          },
+          {
+            "path": "build/frame-target-getters-check/native_frame_target_getters.obj",
+            "bytes": 1062,
+            "sha256": "567d176d33e8a231ac3373132233556f58639ba31412ef8f856fde31b916f6e0"
+          },
+          {
+            "path": "src/native_frame_target_getters.cpp",
+            "bytes": 651,
+            "sha256": "4494c579dcd46fb84b9db45ddab479d9d20e732114dd318735d4da3ebb2f392e"
+          },
+          {
+            "path": "include/bsp/native_frame_target_getters.hpp",
+            "bytes": 916,
+            "sha256": "c1a1db7c1693baa64d1440b8b054537ca5bfcad4d444648bd087a8aa5623e77a"
+          },
+          {
+            "path": "local/native_frame_target_getters_build.txt",
+            "bytes": 1855,
+            "sha256": "cb607ad7c7c9e7c622387a2ad19905f79516c7f96003deb922b0f484ead448fd"
+          }
+        ],
+        "archive_member": "bsp_core.dir\\Release\\native_frame_target_getters.obj",
+        "exact_archive_member_match": true
+      },
+      "capture": {
+        "utc": "2026-09-11T08:42:20.826316+00:00",
+        "target": {
+          "project": "bsp",
+          "program": "battlestationspacific.exe",
+          "program_path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": "00400000",
+          "ghidra_url": "http://127.0.0.1:8089",
+          "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "project_file": "C:/Users/sqz269/bsp.gpr",
+          "coordination_dir": "C:/Users/sqz269/.bsp"
+        },
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "spans": [
+          {
+            "address": "00b1f6d0",
+            "end_exclusive": "00b1f6db",
+            "length": 11,
+            "role": "full_color_getter",
+            "bytes_hex": "8b4424048b448108c20400",
+            "sha256": "b14a7b09c3199f06b3507c37d04715f477b72ec61c3f4e8a40a213ac6413f7bd",
+            "fresh_live_PE_match": true,
+            "instructions": [
+              {
+                "address": "00b1f6d0",
+                "bytes_hex": "8b442404",
+                "mnemonic": "mov",
+                "operands": "eax, dword ptr [esp + 4]"
+              },
+              {
+                "address": "00b1f6d4",
+                "bytes_hex": "8b448108",
+                "mnemonic": "mov",
+                "operands": "eax, dword ptr [ecx + eax*4 + 8]"
+              },
+              {
+                "address": "00b1f6d8",
+                "bytes_hex": "c20400",
+                "mnemonic": "ret",
+                "operands": "4"
+              }
+            ]
+          },
+          {
+            "address": "00b1f6e0",
+            "end_exclusive": "00b1f6e4",
+            "length": 4,
+            "role": "full_depth_getter",
+            "bytes_hex": "8b4118c3",
+            "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+            "fresh_live_PE_match": true,
+            "instructions": [
+              {
+                "address": "00b1f6e0",
+                "bytes_hex": "8b4118",
+                "mnemonic": "mov",
+                "operands": "eax, dword ptr [ecx + 0x18]"
+              },
+              {
+                "address": "00b1f6e3",
+                "bytes_hex": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              }
+            ]
+          },
+          {
+            "address": "00b1f710",
+            "end_exclusive": "00b1f714",
+            "length": 4,
+            "role": "full_srgb_getter",
+            "bytes_hex": "8a413cc3",
+            "sha256": "f0796b52ef91eb1efe247aaf211420318d599b2ce1e74a3c2781b8f4b568072e",
+            "fresh_live_PE_match": true,
+            "instructions": [
+              {
+                "address": "00b1f710",
+                "bytes_hex": "8a413c",
+                "mnemonic": "mov",
+                "operands": "al, byte ptr [ecx + 0x3c]"
+              },
+              {
+                "address": "00b1f713",
+                "bytes_hex": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              }
+            ]
+          }
+        ],
+        "owned_bytes": 19,
+        "guard": "Each guarded live request verifies the original saved project/program/language/image base."
+      },
+      "compiled_entries": [
+        {
+          "coff": {
+            "name": "?native_frame_targets_get_color_surface_00b1f6d0@bsp@@YIPAXPBXI@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage_class": 2,
+            "index": 12,
+            "length": 5,
+            "section_length": 5,
+            "bytes_hex": "8b449108c3",
+            "relocations": []
+          },
+          "linked": {
+            "name": "?native_frame_targets_get_color_surface_00b1f6d0@bsp@@YIPAXPBXI@Z",
+            "address": 822095056,
+            "member": "bsp_core.linked:native_frame_target_getters.obj",
+            "map_line": "0001:00001cd0       ?native_frame_targets_get_color_surface_00b1f6d0@bsp@@YIPAXPBXI@Z 31002cd0 f   bsp_core.linked:native_frame_target_getters.obj"
+          },
+          "whole_linked_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_frame_targets_get_depth_surface_00b1f6e0@bsp@@YIPAXPBX@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage_class": 2,
+            "index": 13,
+            "length": 4,
+            "section_length": 4,
+            "bytes_hex": "8b4118c3",
+            "relocations": []
+          },
+          "linked": {
+            "name": "?native_frame_targets_get_depth_surface_00b1f6e0@bsp@@YIPAXPBX@Z",
+            "address": 822095072,
+            "member": "bsp_core.linked:native_frame_target_getters.obj",
+            "map_line": "0001:00001ce0       ?native_frame_targets_get_depth_surface_00b1f6e0@bsp@@YIPAXPBX@Z 31002ce0 f   bsp_core.linked:native_frame_target_getters.obj"
+          },
+          "whole_linked_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_frame_targets_get_srgb_write_byte_00b1f710@bsp@@YIEPBX@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 2,
+            "index": 14,
+            "length": 4,
+            "section_length": 4,
+            "bytes_hex": "8a413cc3",
+            "relocations": []
+          },
+          "linked": {
+            "name": "?native_frame_targets_get_srgb_write_byte_00b1f710@bsp@@YIEPBX@Z",
+            "address": 822095088,
+            "member": "bsp_core.linked:native_frame_target_getters.obj",
+            "map_line": "0001:00001cf0       ?native_frame_targets_get_srgb_write_byte_00b1f710@bsp@@YIEPBX@Z 31002cf0 f   bsp_core.linked:native_frame_target_getters.obj"
+          },
+          "whole_linked_bytes_equal": true
+        }
+      ],
+      "paired_calls": 12,
+      "matching_literal_trace_bytes": 288,
+      "trace_sha256": "444f02ec6424685cface7f4d2e36bb20e3335573fc74ad81a28a8ecd22af305b",
+      "whole_original_code_postimages_bytes": 4096,
+      "whole_fixture_text_bytes": 11931,
+      "whole_postimages_verified": true,
+      "raw_storage_unchanged_bytes": 128,
+      "rows": [
+        {
+          "alignment": 0,
+          "kind": 0,
+          "slot": 0,
+          "native": 3534588003,
+          "source": 3534588003,
+          "expected": 3534588003
+        },
+        {
+          "alignment": 0,
+          "kind": 0,
+          "slot": 3,
+          "native": 2389263391,
+          "source": 2389263391,
+          "expected": 2389263391
+        },
+        {
+          "alignment": 0,
+          "kind": 0,
+          "slot": 4294967295,
+          "native": 1041888463,
+          "source": 1041888463,
+          "expected": 1041888463
+        },
+        {
+          "alignment": 0,
+          "kind": 0,
+          "slot": 1073741824,
+          "native": 3534588003,
+          "source": 3534588003,
+          "expected": 3534588003
+        },
+        {
+          "alignment": 0,
+          "kind": 1,
+          "slot": 0,
+          "native": 587061427,
+          "source": 587061427,
+          "expected": 587061427
+        },
+        {
+          "alignment": 0,
+          "kind": 2,
+          "slot": 0,
+          "native": 2776511463,
+          "source": 2776511463,
+          "expected": 2776511463
+        },
+        {
+          "alignment": 1,
+          "kind": 0,
+          "slot": 0,
+          "native": 4157779336,
+          "source": 4157779336,
+          "expected": 4157779336
+        },
+        {
+          "alignment": 1,
+          "kind": 0,
+          "slot": 3,
+          "native": 3012454724,
+          "source": 3012454724,
+          "expected": 3012454724
+        },
+        {
+          "alignment": 1,
+          "kind": 0,
+          "slot": 4294967295,
+          "native": 1665014260,
+          "source": 1665014260,
+          "expected": 1665014260
+        },
+        {
+          "alignment": 1,
+          "kind": 0,
+          "slot": 1073741824,
+          "native": 4157779336,
+          "source": 4157779336,
+          "expected": 4157779336
+        },
+        {
+          "alignment": 1,
+          "kind": 1,
+          "slot": 0,
+          "native": 1193475544,
+          "source": 1193475544,
+          "expected": 1193475544
+        },
+        {
+          "alignment": 1,
+          "kind": 2,
+          "slot": 0,
+          "native": 2776511244,
+          "source": 2776511244,
+          "expected": 2776511244
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "build/frame-target-getters-check/bsp_core.linked.lib",
+          "bytes": 33647642,
+          "sha256": "159f76f75a31b18fe79eb59c6a816bf52d53b361440a25873ee0bb62484a17d0"
+        },
+        {
+          "path": "build/frame-target-getters-check/build.cmd",
+          "bytes": 676,
+          "sha256": "7c2e3bf1507b46e1097764e4cbd98b5ef24e71e5a647eaf27438fde32e9b5ee4"
+        },
+        {
+          "path": "build/frame-target-getters-check/fixture.obj",
+          "bytes": 72365,
+          "sha256": "65d5d354a794a7e1cd441bfb1adea8eae2647c3afadfc248899dfd7538c0a86b"
+        },
+        {
+          "path": "build/frame-target-getters-check/frame_target_getters_check.exe",
+          "bytes": 23040,
+          "sha256": "71469c4e354cb0757e48f2dd160028db0e94daa6987ddc14e956279223668b6f"
+        },
+        {
+          "path": "build/frame-target-getters-check/frame_target_getters_check.map",
+          "bytes": 50797,
+          "sha256": "3c3d8b1e84d3142dd057900a26995f3712cbb0c5d568f9c5642e1b5887d774cd"
+        },
+        {
+          "path": "build/frame-target-getters-check/native_frame_target_getters.obj",
+          "bytes": 1062,
+          "sha256": "567d176d33e8a231ac3373132233556f58639ba31412ef8f856fde31b916f6e0"
+        },
+        {
+          "path": "build/frame-target-getters-check/original_after.bin",
+          "bytes": 4096,
+          "sha256": "301d74e20d719a9cb9b1e107b8a2466da9761fc6486c77b8366a1e5740a90ecb"
+        },
+        {
+          "path": "build/frame-target-getters-check/original_before.bin",
+          "bytes": 4096,
+          "sha256": "301d74e20d719a9cb9b1e107b8a2466da9761fc6486c77b8366a1e5740a90ecb"
+        },
+        {
+          "path": "build/frame-target-getters-check/storage_after.bin",
+          "bytes": 128,
+          "sha256": "74015877433cbb69a22e3b28fbd79d9517cc841ffdff02b0e7aa817dcb516c27"
+        },
+        {
+          "path": "build/frame-target-getters-check/storage_before.bin",
+          "bytes": 128,
+          "sha256": "74015877433cbb69a22e3b28fbd79d9517cc841ffdff02b0e7aa817dcb516c27"
+        },
+        {
+          "path": "build/frame-target-getters-check/text_after.bin",
+          "bytes": 11931,
+          "sha256": "78a03628db3356fdfb25f935d92c64247a3c09ff5220e07e6b9cc59342af9bdd"
+        },
+        {
+          "path": "build/frame-target-getters-check/text_before.bin",
+          "bytes": 11931,
+          "sha256": "78a03628db3356fdfb25f935d92c64247a3c09ff5220e07e6b9cc59342af9bdd"
+        },
+        {
+          "path": "build/frame-target-getters-check/trace.bin",
+          "bytes": 288,
+          "sha256": "444f02ec6424685cface7f4d2e36bb20e3335573fc74ad81a28a8ecd22af305b"
+        },
+        {
+          "path": "local/frame_target_getters/fixture.cpp",
+          "bytes": 4178,
+          "sha256": "715fe8f72327e2e689b5cfd2a1b903ae03edb8f3cd9b0e4fde50320d9c9872bb"
+        },
+        {
+          "path": "local/frame_target_getters/spans.hpp",
+          "bytes": 259,
+          "sha256": "51e8ab54dd1d1f49ee8a64b15417e136c46690115d431294c1de7d5f75415891"
+        },
+        {
+          "path": "local/frame_target_getters/capture.json",
+          "bytes": 2852,
+          "sha256": "f7dece395a175164f89b4f27a8fd7a6b4d0d50f0f39603ab607f97b21b69350c"
+        },
+        {
+          "path": "local/frame_target_getters/frozen.json",
+          "bytes": 1085,
+          "sha256": "7307b63fd9c61b4ec04ff1a25884132fe4669f821e15ea3207949f7883693582"
+        },
+        {
+          "path": "local/frame_target_getters/fixture.log",
+          "bytes": 155,
+          "sha256": "0184681aa1493f043760f7129faddfd431518ad0974f4c3dac1b3fb51683805a"
+        },
+        {
+          "path": "local/prepare_frame_getters_fixture.py",
+          "bytes": 2095,
+          "sha256": "473a7b347855b210f1315f092733aef589682673d250c52c6b92040e5b875240"
+        },
+        {
+          "path": "local/build_frame_getters_fixture.ps1",
+          "bytes": 1201,
+          "sha256": "2bdd96a03a3565525d0d082ca16502058450f5de56ac7a682f86b77454edde58"
+        },
+        {
+          "path": "local/verify_frame_getters_fixture.py",
+          "bytes": 4623,
+          "sha256": "04720dd0c286834ff88f7f3f0cf1cf1c90586e00ce79fdf274f06a49f82759b9"
+        }
+      ],
+      "limitations": [
+        "Color source slot uses EDX/plain RET instead of native stack slot/RET4",
+        "Borrowed raw owner field reads only, no actual surface lifetime or whole frame-target construction",
+        "No full frame-target binding or gameplay proof"
+      ],
+      "fresh_seeds": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true,
+          "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+          "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true,
+          "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+          "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+          "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true,
+          "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+          "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+          "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true,
+          "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+          "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true,
+          "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+          "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true,
+          "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+          "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+        }
+      ]
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "native_evidence": {
+    "utc": "2026-09-11T08:42:20.826316+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b1f6d0",
+        "end_exclusive": "00b1f6db",
+        "length": 11,
+        "role": "full_color_getter",
+        "bytes_hex": "8b4424048b448108c20400",
+        "sha256": "b14a7b09c3199f06b3507c37d04715f477b72ec61c3f4e8a40a213ac6413f7bd",
+        "fresh_live_PE_match": true,
+        "instructions": [
+          {
+            "address": "00b1f6d0",
+            "bytes_hex": "8b442404",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00b1f6d4",
+            "bytes_hex": "8b448108",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + eax*4 + 8]"
+          },
+          {
+            "address": "00b1f6d8",
+            "bytes_hex": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      {
+        "address": "00b1f6e0",
+        "end_exclusive": "00b1f6e4",
+        "length": 4,
+        "role": "full_depth_getter",
+        "bytes_hex": "8b4118c3",
+        "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+        "fresh_live_PE_match": true,
+        "instructions": [
+          {
+            "address": "00b1f6e0",
+            "bytes_hex": "8b4118",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ecx + 0x18]"
+          },
+          {
+            "address": "00b1f6e3",
+            "bytes_hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "address": "00b1f710",
+        "end_exclusive": "00b1f714",
+        "length": 4,
+        "role": "full_srgb_getter",
+        "bytes_hex": "8a413cc3",
+        "sha256": "f0796b52ef91eb1efe247aaf211420318d599b2ce1e74a3c2781b8f4b568072e",
+        "fresh_live_PE_match": true,
+        "instructions": [
+          {
+            "address": "00b1f710",
+            "bytes_hex": "8a413c",
+            "mnemonic": "mov",
+            "operands": "al, byte ptr [ecx + 0x3c]"
+          },
+          {
+            "address": "00b1f713",
+            "bytes_hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    ],
+    "owned_bytes": 19,
+    "guard": "Each guarded live request verifies the original saved project/program/language/image base."
+  },
+  "strict_Win32_build": true,
+  "existing_CTests_passed": 2,
+  "original_differential_fixture": true,
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_frame_target_getters_annotations.json",
+    "bytes": 5172,
+    "sha256": "635342248abd922b303bf821c43bbc5a7920ee2f0e53f86968a79edaadcc91d9",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b1f6d0",
+      "path": "exports/bsp/functions/00b1f6d0/decompiled.c",
+      "bytes": 1685,
+      "sha256": "8aada1f02c03cd562da6498ebefa7361f0ef02839b23e6a471628aaca0ddf6e7"
+    },
+    {
+      "address": "00b1f6e0",
+      "path": "exports/bsp/functions/00b1f6e0/decompiled.c",
+      "bytes": 1466,
+      "sha256": "729c13aab84c710bcda035315c722a73950744ea66e7c5e8e850bf78d5842beb"
+    },
+    {
+      "address": "00b1f710",
+      "path": "exports/bsp/functions/00b1f710/decompiled.c",
+      "bytes": 1545,
+      "sha256": "ffe2e6907dad27e2c38fa6c714835e462e36a22f888f9b447db17505a658074b"
+    }
+  ],
+  "closure_utc": "2026-09-11T08:51:21.014299+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b1f6d0",
+      "name": "native_frame_targets_get_color_surface_00b1f6d0",
+      "cpp_symbol": "bsp::native_frame_targets_get_color_surface_00b1f6d0",
+      "source": "src/native_frame_target_getters.cpp",
+      "native_end_exclusive": "00b1f6db",
+      "original_abi": "ECX actual targets, stack slot, EAX borrowed surface; RET4",
+      "host_abi_boundary": "New source interfaces; cached setters borrow actual synchronization, color getter uses EDX slot",
+      "evidence": "reports/native_frame_target_getters_audit.json",
+      "status": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1f6e0",
+      "name": "native_frame_targets_get_depth_surface_00b1f6e0",
+      "cpp_symbol": "bsp::native_frame_targets_get_depth_surface_00b1f6e0",
+      "source": "src/native_frame_target_getters.cpp",
+      "native_end_exclusive": "00b1f6e4",
+      "original_abi": "ECX actual targets; EAX borrowed depth surface; RET",
+      "host_abi_boundary": "New source interfaces; cached setters borrow actual synchronization, color getter uses EDX slot",
+      "evidence": "reports/native_frame_target_getters_audit.json",
+      "status": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1f710",
+      "name": "native_frame_targets_get_srgb_write_byte_00b1f710",
+      "cpp_symbol": "bsp::native_frame_targets_get_srgb_write_byte_00b1f710",
+      "source": "src/native_frame_target_getters.cpp",
+      "native_end_exclusive": "00b1f714",
+      "original_abi": "ECX actual targets; AL exact byte; RET",
+      "host_abi_boundary": "New source interfaces; cached setters borrow actual synchronization, color getter uses EDX slot",
+      "evidence": "reports/native_frame_target_getters_audit.json",
+      "status": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_FRAME_TARGET_GETTERS.md",
+    "bytes": 1715,
+    "sha256": "c240b5c1247ab6277326c93f9386e9be3a82e9b74fbd7982beaf2419603684bf"
+  }
+}

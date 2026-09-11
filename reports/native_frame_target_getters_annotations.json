@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00b1f6d0",
+    "before": {
+      "address": "00b1f6d0",
+      "function_name": "BSP_FrameTargets_GetColorSurface",
+      "comment": "[BSP reconstruction 00b1f6d0]\nReturns DWORD target+8+4*slot; no bounds check or retention. Binding caller supplies slots0..3. Original ABI: ECX target group; stack slot; EAX borrowed wrapper; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX target group; stack slot; EAX borrowed wrapper; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f6d0",
+      "old_name": "BSP_FrameTargets_GetColorSurface",
+      "name": "BSP_FrameTargets_GetColorSurface",
+      "evidence": "Full11byte native color getter loads actualDWORDowner+8+4slot withwrappedx86arithmetic. NativeECXowner/stackslot/RET4; newfastcallECXowner/EDXslot/plainRET changescallerABI. Completehost5byte8b449108c3 verified. src/native_frame_target_getters.cpp. No ref/validation/creation/ownerlifetime. MainstrictWin32/twoCTests/eightfreshseeds; all3freshlive-PEspans19bytes; actualmainfrozenlibrary/exactarchiveobj/threecompleteCOFFandlinkedleaves. Onefocusedignoredfixture12pairedcalls, alignedandunalignedrawstorage, slots0/3/FFFFFFFF/40000000, rawDWORDaddresswrap and exactnonBooleanAL/seededupperEAX. All12literalreturns equal; whole128byteinputunchanged; full4096byteoriginalmappingandwholefixture.textpostimages match. ColorABInew; wholeframeowner/binding/gameplaynotclaimed. reports/native_frame_target_getters_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f6e0",
+    "before": {
+      "address": "00b1f6e0",
+      "function_name": "BSP_FrameTargets_GetDepthSurface",
+      "comment": "[BSP reconstruction 00b1f6e0]\nReturns DWORD target+18; no retention. Original ABI: ECX target group; EAX borrowed wrapper; RET. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX target group; EAX borrowed wrapper; RET. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f6e0",
+      "old_name": "BSP_FrameTargets_GetDepthSurface",
+      "name": "BSP_FrameTargets_GetDepthSurface",
+      "evidence": "Full4byte depth getter8b4118c3:ECXowner/EAXborrowedowner+18/plainRET. Completehostmachineleafbyteidentical. src/native_frame_target_getters.cpp. No ref/validation/creation/ownerlifetime. MainstrictWin32/twoCTests/eightfreshseeds; all3freshlive-PEspans19bytes; actualmainfrozenlibrary/exactarchiveobj/threecompleteCOFFandlinkedleaves. Onefocusedignoredfixture12pairedcalls, alignedandunalignedrawstorage, slots0/3/FFFFFFFF/40000000, rawDWORDaddresswrap and exactnonBooleanAL/seededupperEAX. All12literalreturns equal; whole128byteinputunchanged; full4096byteoriginalmappingandwholefixture.textpostimages match. ColorABInew; wholeframeowner/binding/gameplaynotclaimed. reports/native_frame_target_getters_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b1f710",
+    "before": {
+      "address": "00b1f710",
+      "function_name": "BSP_FrameTargets_GetSrgbWriteByte",
+      "comment": "[BSP reconstruction 00b1f710]\nReturns exact byte+3C. Frame-target binding zero-extends it for render state194. Original ABI: ECX target group; AL byte result; RET. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX target group; AL byte result; RET. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1f710",
+      "old_name": "BSP_FrameTargets_GetSrgbWriteByte",
+      "name": "BSP_FrameTargets_GetSrgbWriteByte",
+      "evidence": "Full4byte sRGB getter8a413cc3:ECXowner/ALexactowner+3C/plainRET. Preserve nonBooleanbyteandunclaimedupperEAX bits; completehostmachineleafbyteidentical. src/native_frame_target_getters.cpp. No ref/validation/creation/ownerlifetime. MainstrictWin32/twoCTests/eightfreshseeds; all3freshlive-PEspans19bytes; actualmainfrozenlibrary/exactarchiveobj/threecompleteCOFFandlinkedleaves. Onefocusedignoredfixture12pairedcalls, alignedandunalignedrawstorage, slots0/3/FFFFFFFF/40000000, rawDWORDaddresswrap and exactnonBooleanAL/seededupperEAX. All12literalreturns equal; whole128byteinputunchanged; full4096byteoriginalmappingandwholefixture.textpostimages match. ColorABInew; wholeframeowner/binding/gameplaynotclaimed. reports/native_frame_target_getters_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  }
+]
