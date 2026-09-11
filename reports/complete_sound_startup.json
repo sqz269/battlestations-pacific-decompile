@@ -1,6 +1,10 @@
 {
   "packet": "orch3_complete_sound_startup",
-  "addresses": ["00a88770", "00bd0d70", "00a7a460"],
+  "addresses": [
+    "00a88770",
+    "00bd0d70",
+    "00a7a460"
+  ],
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "documentation": "docs/COMPLETE_SOUND_STARTUP.md",
@@ -19,7 +23,10 @@
   },
   "validation": {
     "win32_release_build": "passed",
-    "existing_ctests": {"passed": 2, "failed": 0},
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
     "build_log": "local/complete-sound-startup-final-build.log",
     "singleton_order_fixture": "Middle, end and after-hole movement passed; registration count and capacity retained.",
     "device_native_query_comparisons": 6272,
@@ -88,5 +95,58 @@
     "Native VFS resolution and unprotected Lua owner loading.",
     "Enabled hardware-audio branch, hardware input, audible playback and gameplay.",
     "Original native object layouts and exception ABI are not supplied by typed projections."
-  ]
+  ],
+  "integration": {
+    "validated_source_commit": "3d04e83",
+    "main_integration_commit": "c33924f",
+    "subsequent_change": "Only docs/COORDINATION.md changed between the validated build and main integration.",
+    "win32_release_build": "passed, including concurrent bsp_game target",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "log": "local/orch3-complete-sound-integration.log",
+    "ghidra_annotations": {
+      "saved": true,
+      "readback_verified": 31,
+      "prior_comments_preserved": true,
+      "exports_refreshed": 31,
+      "change_log": "local/ghidra-annotations-20260911T034008Z.json",
+      "readback_log": "local/complete-sound-annotation-readback.json",
+      "export_log": "local/complete-sound-export-refresh.log",
+      "addresses": [
+        "004ba0d0",
+        "0054d440",
+        "00a79930",
+        "00a79970",
+        "00a7a460",
+        "00a7b190",
+        "00a7b230",
+        "00a7b750",
+        "00a7d410",
+        "00a7fd40",
+        "00a81480",
+        "00a84740",
+        "00a858f0",
+        "00a880e0",
+        "00a88180",
+        "00a88270",
+        "00a88650",
+        "00a88770",
+        "00a93e80",
+        "00a93ea0",
+        "00a95e70",
+        "00a95e90",
+        "00a96350",
+        "00a99e90",
+        "00a99f70",
+        "00a99fe0",
+        "00a9a0f0",
+        "00a9a180",
+        "00a9a4a0",
+        "00bd0d70",
+        "00be41a0"
+      ]
+    }
+  }
 }
