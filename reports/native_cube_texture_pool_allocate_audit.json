@@ -1,0 +1,1268 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_pool_allocate5",
+  "lease_identifier": "native_cube_texture_pool_allocate4",
+  "status": "complete_source_build_and_full_original_body_fixture_tested",
+  "generated_utc": "2026-09-11T05:00:40.825981+00:00",
+  "checkout_head_before_packet_commit": "7ed261e9b82f0fd9ca01ce7a73f9ec312e09189d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "guard": "Every bsp.py ghidra query verifies configured project, program, language and image base.",
+  "captured_utc": "2026-09-11T04:47:48.067617+00:00",
+  "installed_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "x86",
+    "timestamp": 1245831434,
+    "image_base": "00400000",
+    "entry_point": "00bfd2bd",
+    "sections": [
+      {
+        "name": ".text",
+        "rva": "00001000",
+        "virtual_size": 9306422,
+        "raw_size": 9310208,
+        "raw_offset": 4096,
+        "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+      },
+      {
+        "name": ".rdata",
+        "rva": "008e2000",
+        "virtual_size": 1202980,
+        "raw_size": 1204224,
+        "raw_offset": 9314304,
+        "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+      },
+      {
+        "name": ".data",
+        "rva": "00a08000",
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "raw_offset": 10518528,
+        "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+      },
+      {
+        "name": ".rsrc",
+        "rva": "00ca0000",
+        "virtual_size": 1630400,
+        "raw_size": 1634304,
+        "raw_offset": 10584064,
+        "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+      }
+    ],
+    "imported_dlls": [
+      "fmodex.dll",
+      "DSOUND.dll",
+      "d3d9.dll",
+      "d3dx9_40.dll",
+      "binkw32.dll",
+      "USER32.dll",
+      "ole32.dll",
+      "SHELL32.dll",
+      "xlive.dll",
+      "KERNEL32.dll",
+      "ADVAPI32.dll",
+      "WS2_32.dll",
+      "POWRPROF.dll",
+      "fmod_event.dll",
+      "WINMM.dll",
+      "DINPUT8.dll",
+      "GDI32.dll",
+      "XINPUT1_3.dll"
+    ],
+    "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+  },
+  "functions": [
+    {
+      "address": "00b3d2a0",
+      "end_exclusive": "00b3d2e0",
+      "length": 64,
+      "name_hypothesis": "BSP_CubeTexturePool_InitializeSlab",
+      "native_abi": "ECX actual slab; stack index; EAX same slab; RET4",
+      "previous_name": "FUN_00b3d2a0",
+      "previous_plate_comment": null,
+      "source": "src/native_cube_texture_pool_allocate.cpp",
+      "header": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "complete": true,
+      "original_body_executed": true,
+      "owned_instruction_bytes_modified": false
+    },
+    {
+      "address": "00b3f170",
+      "end_exclusive": "00b3f2a0",
+      "length": 304,
+      "name_hypothesis": "BSP_CubeTexturePool_AllocateSlot",
+      "native_abi": "ECX actual pool; EAX raw slot; RET",
+      "previous_name": "FUN_00b3f170",
+      "previous_plate_comment": null,
+      "source": "src/native_cube_texture_pool_allocate.cpp",
+      "header": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "complete": true,
+      "original_body_executed": true,
+      "owned_instruction_bytes_modified": false
+    },
+    {
+      "address": "00b3d940",
+      "end_exclusive": "00b3d9a5",
+      "length": 101,
+      "name_hypothesis": "BSP_CubeTexturePool_ReturnSlot",
+      "native_abi": "ECX actual pool; stack slot; RET4",
+      "previous_name": "FUN_00b3d940",
+      "previous_plate_comment": null,
+      "source": "src/native_cube_texture_pool_allocate.cpp",
+      "header": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "complete": true,
+      "original_body_executed": true,
+      "owned_instruction_bytes_modified": false
+    },
+    {
+      "address": "00b3f2c0",
+      "end_exclusive": "00b3f2ca",
+      "length": 10,
+      "name_hypothesis": "BSP_CubeTexturePool_Allocate",
+      "native_abi": "ECX replaced by canonical108DB70; tailcall B3F170",
+      "previous_name": "CG_static_dtor_stub_00b3f2c0",
+      "previous_plate_comment": null,
+      "source": "src/native_cube_texture_pool_allocate.cpp",
+      "header": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "complete": true,
+      "original_body_executed": true,
+      "owned_instruction_bytes_modified": false
+    },
+    {
+      "address": "00b3dce0",
+      "end_exclusive": "00b3dcec",
+      "length": 12,
+      "name_hypothesis": "BSP_CubeTexturePool_Return",
+      "native_abi": "ECX raw slot; canonical108DB70 call B3D940; RET",
+      "previous_name": "FUN_00b3dce0",
+      "previous_plate_comment": null,
+      "source": "src/native_cube_texture_pool_allocate.cpp",
+      "header": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "complete": true,
+      "original_body_executed": true,
+      "owned_instruction_bytes_modified": false
+    }
+  ],
+  "fresh_live_and_PE_spans": [
+    {
+      "address": "00b3d2a0",
+      "end_exclusive": "00b3d2e0",
+      "length": 64,
+      "kind": "code",
+      "role": "slab_initializer",
+      "raw_offset": 7590560,
+      "bytes_hex": "538b5c2408568bc15766c780c0060000200033d28d78308db0800600008d4900b91f0000002bca66890e891f83c20183c60283c73483fa207ce65f5e5bc20400",
+      "sha256": "f0b65cf9775191385c4c3dbdb04121573fc09048c1d3d546094020bbaa94f85b",
+      "live_matches_disk": true,
+      "instructions": 23,
+      "returns": [
+        {
+          "address": "00b3d2dd",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3f170",
+      "end_exclusive": "00b3f2a0",
+      "length": 304,
+      "kind": "code",
+      "role": "raw_allocator",
+      "raw_offset": 7598448,
+      "bytes_hex": "5355568bf1578d5e0c53ff151822ce008343180183caff3956340f85920000008b462c68c4060000894634e87b760b0083c40485c0740f8b4e34518bc8e8eee0ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e8ea630b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e883770b0083c404897e288b462c8b4e288d048185c07402892883462c0183caff8b4e288b46348b0481668180c0060000ffff0fb788c00600000fb7f90fb7bc78800600006bff3403f86685c9753f8b463483c0013b462c89563473318b4e288d0c818b296683bdc006000000751c83c00183c1043b462c72e901531853ff151022ce008bc75f5e5d5bc389463401531853ff151022ce008bc75f5e5d5bc3",
+      "sha256": "6adcc84a9786c3ebcee78041195915fa3ee99ba4d171608401051b47237dcc43",
+      "live_matches_disk": true,
+      "instructions": 108,
+      "returns": [
+        {
+          "address": "00b3f28b",
+          "operand": ""
+        },
+        {
+          "address": "00b3f29f",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3d940",
+      "end_exclusive": "00b3d9a5",
+      "length": 101,
+      "kind": "code",
+      "role": "raw_return",
+      "raw_offset": 7592256,
+      "bytes_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58308b4e288b0c992bc18bd0b84fecc44ef7eac1fa048bc2c1e81f03c20fb791c00600006689845180060000668381c0060000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+      "live_matches_disk": true,
+      "instructions": 33,
+      "returns": [
+        {
+          "address": "00b3d9a2",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3f2c0",
+      "end_exclusive": "00b3f2ca",
+      "length": 10,
+      "kind": "code",
+      "role": "canonical_allocation",
+      "raw_offset": 7598784,
+      "bytes_hex": "b970db0801e9a6feffff",
+      "sha256": "07d782fa13a440d10aec08addec48a644bb72ee0a755d7072b3643c505768250",
+      "live_matches_disk": true,
+      "instructions": 2,
+      "returns": []
+    },
+    {
+      "address": "00b3dce0",
+      "end_exclusive": "00b3dcec",
+      "length": 12,
+      "kind": "code",
+      "role": "canonical_raw_return",
+      "raw_offset": 7593184,
+      "bytes_hex": "51b970db0801e855fcffffc3",
+      "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+      "live_matches_disk": true,
+      "instructions": 4,
+      "returns": [
+        {
+          "address": "00b3dceb",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_object_allocation",
+      "raw_offset": 8349723,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_table_allocation",
+      "raw_offset": 8345022,
+      "bytes_hex": "e958120000",
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "kind": "bridge_prefix",
+      "role": "actual_CRT_free",
+      "raw_offset": 8350089,
+      "bytes_hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce2210",
+      "end_exclusive": "00ce221c",
+      "length": 12,
+      "kind": "data",
+      "role": "actual_Leave_Delete_Enter_IAT",
+      "raw_offset": 9314832,
+      "bytes_hex": "8856a000a056a000b856a000",
+      "sha256": "15704746f565ce18ac9cbc9983feba827b291c035f2e82ed4225814ce8ffc704",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d61944",
+      "end_exclusive": "00d61948",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_cube_pool_profile",
+      "raw_offset": 9836868,
+      "bytes_hex": "90e6b300",
+      "sha256": "5e3611c536eb72597819def05f1aeb41d016ccce509f347d01a4aa2b8f32e320",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108db70",
+      "end_exclusive": "0108dba8",
+      "length": 56,
+      "kind": "data",
+      "role": "actual_cube_pool_global",
+      "raw_offset": null,
+      "bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "live_matches_disk": true
+    }
+  ],
+  "storage": {
+    "pool_bytes": 56,
+    "actual_canonical_pool": "0108db70",
+    "profile": "00d61944",
+    "actual_trim_entry": "00b3e690",
+    "pool_offsets": {
+      "Win32_CRITICAL_SECTION": 12,
+      "depth": 36,
+      "table": 40,
+      "count": 44,
+      "capacity": 48,
+      "earliest": 52
+    },
+    "slab_bytes": 1732,
+    "slots": 32,
+    "slot_bytes": 52,
+    "owner_payload_bytes": 48,
+    "slot_index_DWORD_offset": 48,
+    "free_index_WORD_array_offset": 1664,
+    "free_count_WORD_offset": 1728,
+    "untouched_padding_WORD_offset": 1730
+  },
+  "behavior": {
+    "slab": "freecount32 first; each WORD31-index before slot DWORD slab-index; preserve payload and padding; return original slab",
+    "allocation": "real Enter then currentdepth++; publish earliest before real slab allocation; conditional slab init; wrapped capacity growth before table allocation; reread current count/table for copies and free; publish captured replacement only after free returns; append then increment current count",
+    "selection": "capture current table/earliest; decrement and reload WORD freecount; use WORD index*52; capture later-count test before no-free marker and scan current count from captured table cursor",
+    "raw_return": "signed low32 displacement/52 towardzero; truncatedWORD write through oldcount; increment reloadedcurrentcount after possibly aliasing store; unsigned earliest minimum; currentdepth-- before realLeave",
+    "failure": "no own native/source EH; actual allocation exception retains actual lock/depth and preceding fields and unpublished slab",
+    "canonical": "explicit borrowed canonical pool arguments; actual allocation or raw return only; no owner construction/destruction/private global",
+    "input_domain": "valid backed reached fields/cells, real initialized section; actual shared-list traversal requires genuine cube trim binding; no range/count repair or clamping"
+  },
+  "saved_analysis": {
+    "incorrect_no_return_site": "00b3f201",
+    "proven_return_continuation": "00b3f206 ADD ESP,4; 00b3f209 publish current replacement",
+    "wrong_prior_static_name": "00b3f2c0 is allocation, not destructor",
+    "canonical_return_callers": [
+      "00cbd388",
+      "00cbd530"
+    ],
+    "annotations_and_exports_owner": "primary integrator after lease release"
+  },
+  "original_runtime_postimages": {
+    "artifact": {
+      "path": "build/cube-allocate-check/cube_allocate_postimages.json",
+      "bytes": 1767,
+      "sha256": "9dcf0858c1daab55e8b9f600d3351264282aac5ff59f7d36a6a1c0c77d8f55dd"
+    },
+    "bindings": [
+      {
+        "site": 12544027,
+        "target": 805323632,
+        "kind": "jump"
+      },
+      {
+        "site": 12539326,
+        "target": 805330320,
+        "kind": "jump"
+      },
+      {
+        "site": 12544393,
+        "target": 805320960,
+        "kind": "jump"
+      },
+      {
+        "site": 13509144,
+        "target": 805319792,
+        "kind": "word"
+      },
+      {
+        "site": 13509136,
+        "target": 805319888,
+        "kind": "word"
+      }
+    ],
+    "spans": [
+      {
+        "address": "00b3d2a0",
+        "sha256": "f0b65cf9775191385c4c3dbdb04121573fc09048c1d3d546094020bbaa94f85b",
+        "binding_sites": [],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00b3f170",
+        "sha256": "6adcc84a9786c3ebcee78041195915fa3ee99ba4d171608401051b47237dcc43",
+        "binding_sites": [],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00b3d940",
+        "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+        "binding_sites": [],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00b3f2c0",
+        "sha256": "07d782fa13a440d10aec08addec48a644bb72ee0a755d7072b3643c505768250",
+        "binding_sites": [],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00b3dce0",
+        "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+        "binding_sites": [],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00bf681b",
+        "sha256": "2a6a0ea22d15b388ef0778bdb154fe1b9b3c0b6728cf3642231ab66ffe3a5a03",
+        "binding_sites": [
+          "00bf681b"
+        ],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00bf55be",
+        "sha256": "9f87e3202d4105e84cc7e8edc7181463082a039b0bacb87228152647a6db9201",
+        "binding_sites": [
+          "00bf55be"
+        ],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00bf6989",
+        "sha256": "d103c22af8649083234e162e071307da29cc0765a17f32b7409b0552e1f90ec6",
+        "binding_sites": [
+          "00bf6989"
+        ],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00ce2210",
+        "sha256": "d1db0a14265e747a04b8669ac2106e48e542298cb6a47910f2af84a84f230cb3",
+        "binding_sites": [
+          "00ce2218",
+          "00ce2210"
+        ],
+        "only_declared_changes": true
+      },
+      {
+        "address": "00d61944",
+        "sha256": "5e3611c536eb72597819def05f1aeb41d016ccce509f347d01a4aa2b8f32e320",
+        "binding_sites": [],
+        "only_declared_changes": true
+      },
+      {
+        "address": "0108db70",
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+        "binding_sites": [],
+        "only_declared_changes": true
+      }
+    ],
+    "owned_bytes_491_unchanged": true,
+    "relocated_owned_operands": 0
+  },
+  "differential": {
+    "scope": "all five complete original bodies at original addresses; three explicit real CRT service entry bridges and two real Win32 observation IAT cells",
+    "loader": "new own suspended child reserves original range before loader heaps; installed PE read only; only sparse copied pages mutated",
+    "metrics": {
+      "cases": [
+        {
+          "case": 0,
+          "words": 30786,
+          "events": 30
+        },
+        {
+          "case": 1,
+          "words": 2872,
+          "events": 10
+        },
+        {
+          "case": 2,
+          "words": 5796,
+          "events": 12
+        },
+        {
+          "case": 3,
+          "words": 210,
+          "events": 7
+        }
+      ],
+      "words": 39664,
+      "events": 59,
+      "slab_bytes": 1732
+    },
+    "native_trace": {
+      "path": "build/cube-allocate-check/cube_allocate_native.bin",
+      "bytes": 158656,
+      "sha256": "4aaccfc94dcf06b3e9710e552a700470fa9fb93814cbbcf5a5fd94ae34466392"
+    },
+    "source_trace": {
+      "path": "build/cube-allocate-check/cube_allocate_current.bin",
+      "bytes": 158656,
+      "sha256": "4aaccfc94dcf06b3e9710e552a700470fa9fb93814cbbcf5a5fd94ae34466392"
+    },
+    "byte_equal": true,
+    "frames": [
+      {
+        "offset_words": 0,
+        "length": 467,
+        "event": 1,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 467,
+        "length": 467,
+        "event": 60,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 934,
+        "length": 467,
+        "event": 61,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 1401,
+        "length": 467,
+        "event": 20,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 1868,
+        "length": 904,
+        "event": 21,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 2772,
+        "length": 904,
+        "event": 20,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 3676,
+        "length": 912,
+        "event": 21,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 4588,
+        "length": 912,
+        "event": 22,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 5500,
+        "length": 911,
+        "event": 23,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 6411,
+        "length": 911,
+        "event": 70,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 7322,
+        "length": 911,
+        "event": 71,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 8233,
+        "length": 911,
+        "event": 2,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 9144,
+        "length": 911,
+        "event": 60,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 10055,
+        "length": 911,
+        "event": 61,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 10966,
+        "length": 911,
+        "event": 70,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 11877,
+        "length": 911,
+        "event": 71,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 12788,
+        "length": 911,
+        "event": 3,
+        "case": 0,
+        "phase": 1
+      },
+      {
+        "offset_words": 13699,
+        "length": 911,
+        "event": 20,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 14610,
+        "length": 1348,
+        "event": 21,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 15958,
+        "length": 1348,
+        "event": 60,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 17306,
+        "length": 1348,
+        "event": 61,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 18654,
+        "length": 1348,
+        "event": 70,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 20002,
+        "length": 1348,
+        "event": 71,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 21350,
+        "length": 1348,
+        "event": 4,
+        "case": 0,
+        "phase": 2
+      },
+      {
+        "offset_words": 22698,
+        "length": 1348,
+        "event": 60,
+        "case": 0,
+        "phase": 3
+      },
+      {
+        "offset_words": 24046,
+        "length": 1348,
+        "event": 61,
+        "case": 0,
+        "phase": 3
+      },
+      {
+        "offset_words": 25394,
+        "length": 1348,
+        "event": 70,
+        "case": 0,
+        "phase": 3
+      },
+      {
+        "offset_words": 26742,
+        "length": 1348,
+        "event": 71,
+        "case": 0,
+        "phase": 3
+      },
+      {
+        "offset_words": 28090,
+        "length": 1348,
+        "event": 5,
+        "case": 0,
+        "phase": 3
+      },
+      {
+        "offset_words": 29438,
+        "length": 1348,
+        "event": 99,
+        "case": 0,
+        "phase": 3
+      },
+      {
+        "offset_words": 30786,
+        "length": 25,
+        "event": 1,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 30811,
+        "length": 25,
+        "event": 60,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 30836,
+        "length": 25,
+        "event": 61,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 30861,
+        "length": 25,
+        "event": 20,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 30886,
+        "length": 462,
+        "event": 21,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 31348,
+        "length": 462,
+        "event": 20,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 31810,
+        "length": 462,
+        "event": 80,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 32272,
+        "length": 462,
+        "event": 90,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 32734,
+        "length": 462,
+        "event": 91,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 33196,
+        "length": 462,
+        "event": 99,
+        "case": 1,
+        "phase": 1
+      },
+      {
+        "offset_words": 33658,
+        "length": 483,
+        "event": 1,
+        "case": 2,
+        "phase": 1
+      },
+      {
+        "offset_words": 34141,
+        "length": 483,
+        "event": 60,
+        "case": 2,
+        "phase": 1
+      },
+      {
+        "offset_words": 34624,
+        "length": 483,
+        "event": 61,
+        "case": 2,
+        "phase": 1
+      },
+      {
+        "offset_words": 35107,
+        "length": 483,
+        "event": 70,
+        "case": 2,
+        "phase": 1
+      },
+      {
+        "offset_words": 35590,
+        "length": 483,
+        "event": 71,
+        "case": 2,
+        "phase": 1
+      },
+      {
+        "offset_words": 36073,
+        "length": 483,
+        "event": 6,
+        "case": 2,
+        "phase": 1
+      },
+      {
+        "offset_words": 36556,
+        "length": 483,
+        "event": 60,
+        "case": 2,
+        "phase": 2
+      },
+      {
+        "offset_words": 37039,
+        "length": 483,
+        "event": 61,
+        "case": 2,
+        "phase": 2
+      },
+      {
+        "offset_words": 37522,
+        "length": 483,
+        "event": 70,
+        "case": 2,
+        "phase": 2
+      },
+      {
+        "offset_words": 38005,
+        "length": 483,
+        "event": 71,
+        "case": 2,
+        "phase": 2
+      },
+      {
+        "offset_words": 38488,
+        "length": 483,
+        "event": 7,
+        "case": 2,
+        "phase": 2
+      },
+      {
+        "offset_words": 38971,
+        "length": 483,
+        "event": 99,
+        "case": 2,
+        "phase": 2
+      },
+      {
+        "offset_words": 39454,
+        "length": 30,
+        "event": 1,
+        "case": 3,
+        "phase": 1
+      },
+      {
+        "offset_words": 39484,
+        "length": 30,
+        "event": 60,
+        "case": 3,
+        "phase": 1
+      },
+      {
+        "offset_words": 39514,
+        "length": 30,
+        "event": 61,
+        "case": 3,
+        "phase": 1
+      },
+      {
+        "offset_words": 39544,
+        "length": 30,
+        "event": 70,
+        "case": 3,
+        "phase": 1
+      },
+      {
+        "offset_words": 39574,
+        "length": 30,
+        "event": 71,
+        "case": 3,
+        "phase": 1
+      },
+      {
+        "offset_words": 39604,
+        "length": 30,
+        "event": 8,
+        "case": 3,
+        "phase": 1
+      },
+      {
+        "offset_words": 39634,
+        "length": 30,
+        "event": 99,
+        "case": 3,
+        "phase": 1
+      }
+    ],
+    "slab_comparison": {
+      "bytes": 1732,
+      "native_and_source_directly_compared": true,
+      "full_expected_postimage_verified": true,
+      "artifact": {
+        "path": "build/cube-allocate-check/cube_slab_bytes.bin",
+        "bytes": 1732,
+        "sha256": "d665debd8f2d872136914b0b726e7ec03f1d240347f94cd27fea6715a4fa4676"
+      }
+    },
+    "observation_aliases": "unchanged current singleton_lifetime allocate/free source and actual real Enter/Leave are forwarded; no substitute allocator or lock",
+    "allocation_failure": {
+      "requested_bytes": 4294967288,
+      "mechanism": "actual malloc failure -> actual _callnewh -> registered real handler returns0 -> actual service bad_alloc",
+      "handler_count": 1,
+      "depth": 1,
+      "OS_recursion": 1,
+      "current_count": 536870910,
+      "current_capacity": 1073741822,
+      "earliest": 536870910,
+      "unpublished_slabs_alive": 1,
+      "pool_table": 0,
+      "second_thread_TryEnter_inside_handler": false,
+      "second_thread_TryEnter_after_catch": false,
+      "post_observation_fixture_cleanup": "explicitly drain retained lock/free retained raw storage after native failure-state comparison",
+      "shared_list_trim_invoked": false,
+      "fake_trim_provider": false
+    },
+    "backed_edge_inputs": [
+      "negative53-byte slot displacement truncates to indexFFFF",
+      "freecount32 store aliases owncount; write7 then reloadincrement8",
+      "allocation WORDfreecount aliases poolDWORDdepth; finaldepth0 with balanced real lock"
+    ],
+    "limitations": "raw field postimages and real sections supplied by fixture; no separate actual cube initializer, owner lifecycle, arbitrary malformed unbacked memory or game execution"
+  },
+  "validation": {
+    "strict_MSVC_Win32_build": "passed",
+    "existing_tests": "2/2 passed",
+    "native_math_seeds": "8/8 live/PE match",
+    "full_original5_fixture": "passed",
+    "compiled_no_EH": "verified",
+    "signed_division_IMUL_SAR4_SHR31": "verified",
+    "new_repository_tests": 0,
+    "ABI_compatible": false,
+    "game_validated": false
+  },
+  "reproduction": [
+    "python local/prepare_cube_allocate.py",
+    "./local/build_cube_allocate.ps1",
+    "./local/build_cube_allocate_check.ps1",
+    "python local/write_cube_allocate_audit.py"
+  ],
+  "pins": {
+    "source": [
+      {
+        "path": "include/bsp/native_cube_texture_pool_allocate.hpp",
+        "bytes": 2175,
+        "sha256": "20916e98d5097ba8f413a67cf603dc7089f69849f09b9db5f8ab11a408957ec8"
+      },
+      {
+        "path": "src/native_cube_texture_pool_allocate.cpp",
+        "bytes": 6526,
+        "sha256": "8c59a908593c2f2eb4c26182ebff757907f49a91e6d59337ed9e263f39d393f7"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "build/cube-allocate-check/actual_singleton_lifetime.obj",
+        "bytes": 32969,
+        "sha256": "9c8a15b3b93cda0f64e93f22664ca5ec2756b8c5fe8cc1a2b8a3d0636767bcf6"
+      },
+      {
+        "path": "build/cube-allocate-check/build_cube_allocate.cmd",
+        "bytes": 1992,
+        "sha256": "2b6de70f3806011c752d8b499618c255610b4b732b7c7c45df01dbdf1f4af90c"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_check.exe",
+        "bytes": 47104,
+        "sha256": "b228c62c68a1928b2987e9c4831cf675497fea18cc3a172e4f5563f1c2355188"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_check.map",
+        "bytes": 85126,
+        "sha256": "2ab7c4e93095f2245dffa024879e330aa6484b927140c5e107f4e624a3e73456"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_check.obj",
+        "bytes": 225478,
+        "sha256": "358713846fa515f79804af29ab896c9a4563cfc5c0b981f9d15fd38d55dbfbb0"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_current.bin",
+        "bytes": 158656,
+        "sha256": "4aaccfc94dcf06b3e9710e552a700470fa9fb93814cbbcf5a5fd94ae34466392"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_final.asm",
+        "bytes": 40323,
+        "sha256": "718e434743cebd1077de7917514c7e966b2b972575db61c950e416d5cf1ee94b"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_final.obj",
+        "bytes": 5083,
+        "sha256": "615ba88d481b3c3fe496ed0f16b0c5b5fe342ac46a5f2899c08e5ae57649849f"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_native.bin",
+        "bytes": 158656,
+        "sha256": "4aaccfc94dcf06b3e9710e552a700470fa9fb93814cbbcf5a5fd94ae34466392"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_postimages.json",
+        "bytes": 1767,
+        "sha256": "9dcf0858c1daab55e8b9f600d3351264282aac5ff59f7d36a6a1c0c77d8f55dd"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_allocate_trace.json",
+        "bytes": 200,
+        "sha256": "2985aff6af21dc6f4dd8411496128be1ae0a8179302a6378b5a4971a53ea3e26"
+      },
+      {
+        "path": "build/cube-allocate-check/cube_slab_bytes.bin",
+        "bytes": 1732,
+        "sha256": "d665debd8f2d872136914b0b726e7ec03f1d240347f94cd27fea6715a4fa4676"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 25211656,
+        "sha256": "30cf31aa5cb73c69b1ec3200a672f2249934c9b67fa5acbb8d50ae84201b045f"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 10429,
+        "sha256": "e9675463098c9b0aea04392551ab36bdd93c6ae7a842a754688ec0506634923e"
+      },
+      {
+        "path": "docs/NATIVE_CUBE_TEXTURE_POOL_ALLOCATE.md",
+        "bytes": 7735,
+        "sha256": "ea1740c1bd2ed78a38d06c2675611195cddbc8b168ddf125dd025c187cfbb9b0"
+      },
+      {
+        "path": "local/build_cube_allocate.ps1",
+        "bytes": 877,
+        "sha256": "095252539c9ff0692cce074acfb2d5e741bf253c40d9de9f7db9a991b7e74cbc"
+      },
+      {
+        "path": "local/build_cube_allocate_check.ps1",
+        "bytes": 2215,
+        "sha256": "1926f4d413d905ed4b0384d123a4ff695a5241f4df659abb2413c67e3581b79e"
+      },
+      {
+        "path": "local/cube_allocate_00b3d2a0.asm",
+        "bytes": 595,
+        "sha256": "cea127a9b521ee94e94777af6d0a7546f1a932e9d106a451ed5ec0c13f7863a7"
+      },
+      {
+        "path": "local/cube_allocate_00b3d940.asm",
+        "bytes": 1000,
+        "sha256": "304da8d2a1d2108bf3bd5ffd6d488e80e55c4fdd401e69294de3d5f3e1ade7f5"
+      },
+      {
+        "path": "local/cube_allocate_00b3dce0.asm",
+        "bytes": 91,
+        "sha256": "f28b394850c34810f84e75d3ed3f3aba7d48f563831528410796443e73a73ef4"
+      },
+      {
+        "path": "local/cube_allocate_00b3f170.asm",
+        "bytes": 3237,
+        "sha256": "b52bbc9c3fb838e29bdf45eb529cfc14be4934dcac3d8c8ef0f23a2d87f14df4"
+      },
+      {
+        "path": "local/cube_allocate_00b3f2c0.asm",
+        "bytes": 54,
+        "sha256": "105bdeeb701e14513dfeb91b79f5d7aabe0629adcfcc9492457c426c6fcb519e"
+      },
+      {
+        "path": "local/cube_allocate_build.log",
+        "bytes": 13181,
+        "sha256": "f61918f99dcd30623bc42d5189e8cf5c14e3647a3d0edd830bc9b638dd65b9ff"
+      },
+      {
+        "path": "local/cube_allocate_build_final.log",
+        "bytes": 3785,
+        "sha256": "1da762361e5487878813c17421c506013ce35f251c46bfca6f13497be451d089"
+      },
+      {
+        "path": "local/cube_allocate_check.cpp",
+        "bytes": 20160,
+        "sha256": "f73af948a64fa658087a9bb270d0ce29b8e8fc548aaf72ae963e8c606835671e"
+      },
+      {
+        "path": "local/cube_allocate_decompile.txt",
+        "bytes": 2665,
+        "sha256": "938605b6c8bd278f0c7487df9c64281df3d5e9c3915d559ef717ab8753bb6427"
+      },
+      {
+        "path": "local/cube_allocate_fixture.log",
+        "bytes": 339,
+        "sha256": "3bfdf5df26ab820850744a4c8db63601d3fcdd6c74e6bd65ac0c15621a92011f"
+      },
+      {
+        "path": "local/cube_allocate_live_00b3d2a0.txt",
+        "bytes": 308,
+        "sha256": "ebcae50bea2334cbbad7a61e4f648f865ce441f4e5f17742f0134cb97c931c30"
+      },
+      {
+        "path": "local/cube_allocate_live_00b3d940.txt",
+        "bytes": 495,
+        "sha256": "b071c3d342a20c94ab6174526380ea7995d59271bc2854425e81b3317971655c"
+      },
+      {
+        "path": "local/cube_allocate_live_00b3dce0.txt",
+        "bytes": 61,
+        "sha256": "11de0121f9a5e8e22d719fff2350bbd337bc0d6e16a547c2b137ce8105515c28"
+      },
+      {
+        "path": "local/cube_allocate_live_00b3f170.txt",
+        "bytes": 1463,
+        "sha256": "f8ed66151e6b953f64b47a649108eb0ab78015397ad4dfaa2a5e03a401dfa5f4"
+      },
+      {
+        "path": "local/cube_allocate_live_00b3f2c0.txt",
+        "bytes": 53,
+        "sha256": "85f10c763f195b57b32091027cfe0d75975585c91e47ea5d04be461700a39ea1"
+      },
+      {
+        "path": "local/cube_allocate_live_00bf55be.txt",
+        "bytes": 33,
+        "sha256": "12e4584cbf26902371286877778079ed8854f2533126f9311a49939026c63245"
+      },
+      {
+        "path": "local/cube_allocate_live_00bf681b.txt",
+        "bytes": 33,
+        "sha256": "ca146872dceb616cb7924a2000172ff109813339785fb9d31c52103c2b471c79"
+      },
+      {
+        "path": "local/cube_allocate_live_00bf6989.txt",
+        "bytes": 33,
+        "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0"
+      },
+      {
+        "path": "local/cube_allocate_live_00ce2210.txt",
+        "bytes": 61,
+        "sha256": "520a965b79beef0c840d112c484154f660eb3d9c54a40f1c60ef5d4c69555a02"
+      },
+      {
+        "path": "local/cube_allocate_live_00d61944.txt",
+        "bytes": 29,
+        "sha256": "bdef3308e0c5b4f8a332df801386bb062664671a37467730af06bffed466c0d4"
+      },
+      {
+        "path": "local/cube_allocate_live_0108db70.txt",
+        "bytes": 276,
+        "sha256": "7f283b170ed0c38b3a931c68df61cd6b0fae1ee86bdeeada1918cb1734dd3888"
+      },
+      {
+        "path": "local/cube_allocate_live_disasm.txt",
+        "bytes": 3337,
+        "sha256": "57c3b2039107de443dce3ac44deef84bac67755a6ad1016fc0ccf048456b4767"
+      },
+      {
+        "path": "local/cube_allocate_observation.hpp",
+        "bytes": 247,
+        "sha256": "e9effb89f6b2a5c6cafa557a82e298fa1f69a8cb7f4b12308a8f57731a629f1f"
+      },
+      {
+        "path": "local/cube_allocate_old_comments.txt",
+        "bytes": 631,
+        "sha256": "d699d35b9ee3ef0c11b265ab489845b8f226019ef51ecfed5e25f62466e96378"
+      },
+      {
+        "path": "local/cube_allocate_old_proto.txt",
+        "bytes": 5315,
+        "sha256": "bf76b17be864009b1e39b5de8933b3d525e35193cc980b499e6ca50056fde1e6"
+      },
+      {
+        "path": "local/cube_allocate_preparation.json",
+        "bytes": 7809,
+        "sha256": "6852d9f825704b15c34f32cd56ec7e389b7691afdc4e1deedf69f326cb79a8d6"
+      },
+      {
+        "path": "local/cube_allocate_preparation.log",
+        "bytes": 96,
+        "sha256": "ecf8c7fc9a6582c36bb954ee737e2b0956424d56bbfa7441d75d5e8df85655dc"
+      },
+      {
+        "path": "local/cube_allocate_sources.cmake",
+        "bytes": 386,
+        "sha256": "33ad659425d8ca97cdc30c95ef5dc238ed55f38e44de632b47c204ab819f09a9"
+      },
+      {
+        "path": "local/cube_allocate_spans.hpp",
+        "bytes": 4190,
+        "sha256": "52fc8938090ed8e9147deb43639d275ad5b094c0f338580f3ea03c2827c3939e"
+      },
+      {
+        "path": "local/cube_allocate_verify_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/cube_canonical_return_live_disasm.txt",
+        "bytes": 95,
+        "sha256": "2eec6de5dc29e5ad89ef18c77b2ce9ddfb55076fdc303d18c707573d906ad534"
+      },
+      {
+        "path": "local/cube_return_decompile.txt",
+        "bytes": 824,
+        "sha256": "c6677c458c937b6dd563532c14355e97a42683ea99cb74c0ac0f07baec401e66"
+      },
+      {
+        "path": "local/cube_return_live_disasm.txt",
+        "bytes": 1033,
+        "sha256": "9e9e28b14d6945888e0c9de18b4bc4d085fc405824aa17d4d4041a25c88fa0e2"
+      },
+      {
+        "path": "local/cube_slab_decompile.txt",
+        "bytes": 459,
+        "sha256": "89406bbc8c979d889235f20c84e306ed37b1c910b3f7ef8d13c5bb8a7090a3b0"
+      },
+      {
+        "path": "local/cube_slab_live_disasm.txt",
+        "bytes": 613,
+        "sha256": "783549c024eedb719cdcaf156ba37af54a046cdc3e5408de1e50140d8b2050d1"
+      },
+      {
+        "path": "local/prepare_cube_allocate.py",
+        "bytes": 4150,
+        "sha256": "70b189b8a70143c55faf062930eecd4f30b40dfc59ced84b7f74c6adb0e0ee63"
+      },
+      {
+        "path": "local/write_cube_allocate_audit.py",
+        "bytes": 10961,
+        "sha256": "c88bebd69a9a3199dfccf5f2dc3d082ca508bedf9dbb11e7ebfd6b017968e6b7"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ]
+  }
+}
