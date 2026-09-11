@@ -3,6 +3,13 @@
 // Addresses: 00b65f50, 00b660a0, 00b66420, 00b669a0, 00b66bd0, 00b67080,
 //            00b67190, 00b67700, 00b67800, 00b67980, 00b69d40, 00b6a020.
 //
+// Correction from docs/NATIVE_SHADER_STATE_READER.md: this is the older host
+// projection. Actual native word00 points to a4C8h owner, kind2/index08 denotes
+// a tracked Lua STACK position, and the owner shifts later object indices on
+// removal. NativeLuaObjectStorage/NativeLuaStateStorage preserve that storage;
+// GuiLuaRef remains the separate registry-handle host interface. The historical
+// field names/comments below do not establish original registry ownership.
+//
 // Every name below is a hypothesis, not a recovered symbol. The live reference
 // side of the API is already reconstructed as bsp::GuiLuaHost in
 // include/bsp/gui_lua_reader.hpp and is reused here rather than duplicated;

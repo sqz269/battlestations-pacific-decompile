@@ -112,3 +112,14 @@ is the stride. `00735450 BSP_LocalizedMessage_Format` then formats the selected 
   key is unbound at the end as well as the value.
 - `lua_state_owner_callbacks`: the fifty 18h-byte slots 00b66bd0 clears at owner+28h, and the
   override contract 00b69d40 applies over them.
+
+## Correction from docs/NATIVE_SHADER_STATE_READER.md
+
+Full native storage and instruction comparisons establish that LuaObject word00 points to
+its 4C8h owner, and kind2/index08 is a tracked Lua STACK position. It is not a registry
+reference. The owner's fifty24-byte slots begin at14; their counts are at28+18*i. Native
+release removes a stack value when its last tracked pointer disappears, shifts subsequent
+slots and decrements those objects' indices, leaving the high-water bound and stale pointer
+cells intact. The new NativeLuaObjectStorage/NativeLuaStateStorage preserve this behavior;
+the existing LuaObject and GuiLuaRef interfaces remain separate host projections. See the
+new document and reports/native_shader_state_reader.json for full code, ABI and validation.
