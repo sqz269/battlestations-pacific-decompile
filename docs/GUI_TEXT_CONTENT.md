@@ -1,23 +1,27 @@
-# Text content prefix and glyph-child clearing
+# Text content stages and glyph-child clearing
 
-Addresses: `00ABA8D0`, `00AB80C0`, `00AB8EE0`, `00AB75A0`.
+Addresses: `00ABA8D0`, `00AB80C0`, `00AB8EE0`, `00AB75A0`, `00B73260`, `00B6DAB0`.
 
 `gui_text_content.cpp` reconstructs the content comparison/assignment prefix and
 changed-empty branch over the existing `GuiTextWidget`, retained GUI owner and
 actual mesh/section storage. It also reconstructs the glyph-child clear loop,
 using the actual `00AA83A0` detach implementation. It does **not** provide a full
-Text owner or complete nonempty text rendering.
+Text factory or complete nonempty text rendering. The nonempty stages now do
+the supported work before and after the selected geometry builder, using the
+canonical `GuiTextLifetime`, actual material/storage owners and font association.
 
 | Routine | Native ABI and inclusive body | Coverage |
 | --- | --- | --- |
-| `00ABA8D0` | ECX Text; one UTF16 wrapper pointer; `RET 4` at `00ABAEC4`, length 3; body through `00ABAEC6` | Partial projection: entry through the jump at `00ABA9BA..00ABA9BE`, plus temporary cleanup `00ABAE8A..00ABAEC6`. Nonempty `00ABA9BF..00ABAE89` remains unimplemented. |
+| `00ABA8D0` | ECX Text; one UTF16 wrapper pointer; `RET 4` at `00ABAEC4`, length 3; body through `00ABAEC6` | Partial projection: prefix, nonempty preparation through `00ABAB69/77`, and post-builder `00ABAB7D..00ABAE89` plus cleanup. The selected `00ABAB6A -> 00ABA270` or `00ABAB78 -> 00AB9FD0` builder must complete externally before the post stage. |
 | `00AB80C0` | ECX Text; no stack arguments; `RET` at `00AB81B6`, length 1 | Complete valid-collection control flow; actual Text deleting dispatch remains a required binding. Native corrupt-vector termination is replaced by explicit C++ failure. |
 | `00AB8EE0` | ECX Text; stack deletion flags; returns original Text pointer; `RET 4` at `00AB8EFD`, length 3; end `00AB8EFF` | Complete body analyzed, not reconstructed. Calls Text destructor, then pool return iff bit 0 is set. |
 | `00AB75A0` | ECX pool, stack object; `RET 4` at `00AB7609`, length 3; end `00AB760B` | Complete body analyzed, not reconstructed. Critical-section protected return to the pool block/free-slot bookkeeping; no native pool is invented here. |
+| `00B73260` | ECX actual mesh; stack stream index; `RET 4` at `00B73268`, length 3; end `00B7326A` | Complete valid-array leaf, indices 0..5. Does not test current stream count. |
+| `00B6DAB0` | ECX node; stack XYZ pointer replaced with local-matrix pointer; final `JMP EAX` at `00B6DADD`, length 2; end `00B6DADE` | Complete body read; Model-profile fragment implemented, current `D62DE8+38 -> B6DB10`. Other derived dispatch profiles remain outside the implementation. |
 
 All names are descriptive hypotheses. The C++ interfaces use new ownership and
 string representations, not native ABI replacements. The complete listings of
-the first two routines were read. No bytes in their bodies remain unread; the
+the four reconstructed entries were read. No bytes in their bodies remain unread; the
 nonempty tail's helper closure is deliberately not claimed complete. The
 project/program were checked through the repository Ghidra wrappers for each
 batch. Ghidra remained read-only.
@@ -52,7 +56,9 @@ and clear `before_destroy` before destroying its C++ wrapper. Dropping the
 wrapper or calling `GuiWidgetOwnerRuntime::retire_tree` is not equivalent:
 page retirement performs a separate virtual20/node-release pass first. There
 is no default delete implementation or fallback in this packet. The full Text
-destructor/lifetime owner remains a dependency.
+scalar-deleting pool and detached-instance transport remain prerequisites.
+The peer `GuiTextLifetime` supplies the same canonical Text state and derived
+teardown, without enabling a Text factory or substituting page retirement.
 
 The raw main/shadow mesh and section are resolved through the canonical
 `NativeModelReference`, `NativeMeshReference`, `NativeMeshSectionReference`
@@ -98,12 +104,76 @@ For changed-nonempty input the return value is
 `GuiTextContentBranch::needs_nonempty_geometry`, with the separate transformed
 temporary and captured actual main mesh/section. It represents suspension at
 `00ABA9BF`, **not successful native completion**. Those borrowed objects must
-remain alive until the actual continuation resumes. That tail still allocates
-buffers, establishes material/shader parameters, chooses/builds layout, copies
-streams/counts into the shadow, applies color and updates shadow placement and
-parent/root registration. The existing fixed-font `FontGeometryOwner` fragment
-cannot substitute for that live Text-owner continuation. No caller-level final
-virtual50 color call is done here.
+remain alive until the actual continuation resumes. The following stages retain
+this boundary and do not turn a partial builder into success. No caller-level
+final virtual50 color call is done here; the post-builder stage performs the
+distinct virtual50 call that is inside `00ABA8D0` at `00ABAB88`.
+
+## Nonempty stages
+
+`prepare_gui_text_nonempty_00aba8d0_fragment` starts at `00ABA9BF`. It invokes
+actual `00AB8400` buffer construction, captures main section material `+20`
+after that call, then writes primitive 4 and range words `+0C,+14,+10,+18=0`
+in that order. `00AB8CE0` selects a shader only when the canonical `+1EC` is
+null. Its AL result means selection was attempted, including a null result.
+That saved result controls both main and shadow parameter initialization.
+
+On that arm, actual `00B19210` sets the captured main material's shader and
+clears its parameter records. x87 loads/stores copy the live base `+94` and
+Text `+1D4` into the lifetime's sole `overbright_alphatex_1dc[2]`. These fields
+are intentionally unwritten by the native constructor; this is their producer.
+Actual native string allocation, registration and name cleanup occur separately
+for `cOverbrightAlphatex` (2), `cLowColor` (4), `cHighColor` (4), then
+`cBlendFactor` (1). Sources borrow the existing pair and canonical layout fields.
+The actual-storage `00AA9F10` registers clipping next. No clone-state material
+or parameter snapshot is used. Main `00B865A0` rebuild runs even when shader
+selection was skipped, then the live multiline byte selects the next builder.
+
+The returned `GuiTextNonemptyContinuation` holds the separate transformed
+temporary, captured mesh/section/material, AL flag, selected builder and same
+Text lifetime identity. It stops **before** `00ABAB6A` or `00ABAB78`. The
+native call supplies two stack arguments (temporary wrapper, section; `RET 8`).
+The single-line builder's first argument is unused by its native body, while
+the wrapped builder assigns it to stored text. The caller must run the chosen
+actual builder and preserve this continuation through any unfinished glyph-child
+operation. There is no callback standing in for a completed builder.
+
+`finish_gui_text_content_after_geometry_00aba8d0_fragment` may start only after
+that builder has returned. It calls actual Text color50 with the **live** base
+color alias, resolves the current shadow, shares main stream0, then re-reads and
+shares main index `+60` after vertex-release callbacks. It copies primitive and
+range words in native order and rebuilds the shadow layout. It still uses the
+previously captured main material; shadow section material is captured only
+after the shadow layout callbacks. Texture slot0 is set from the main material
+only when its signed count is positive, otherwise from null.
+
+When the saved AL flag is set, it re-reads the captured main material's current
+shader after the texture setter, sets that shader on the captured shadow
+material, registers clipping, then registers `cBlendFactor` from live global
+`00F8BE54`, the overbright/alpha pair, low color, high color, and **again**
+`cBlendFactor` from the base widget. The last call replaces the matching
+record's borrowed source; deleting the earlier registration changes native
+allocation/callback behavior.
+
+The final tail re-resolves the current shadow model/mesh/section/material and
+copies the raw shadow RGBA words to its actual diffuse fields. This overwrites
+the alpha multiplication performed by the earlier color50. It then reads the
+**current** font at `00ABADDE`. Null yields zero; a nonnull descriptor resolves
+through `NativeFontResourceOwners` to the same owned `FontData`, reads its live
+lowword height and sign-extends it. Unknown associations fail explicitly.
+Position selection is captured before x87 `(signed_height / double(720)) *
+live_shadow_offset`; Z is +0.5 for position0, otherwise -0.5. Current Model
+virtual2C is validated as `00B6DAB0`; that leaf writes the same native local
+translation and captures current virtual38 between the final z load/store,
+then calls existing `00B6DB10` on the same local matrix to invalidate/notify.
+The raw shadow-enable byte and shadow slot are re-read before parenting and
+again before the optional root-registration clear.
+
+All actual resources, borrowed sources and service domains must survive the
+native callback intervals. Neither stage adds a retain or constructs another
+glyph tree, font map, shader cache, transform or material. Valid serialized
+ownership/profile behavior is implemented; corrupt native addresses, SEH
+failure paths and native string/container ABI are not C++ binary equivalents.
 
 The input domain is null-free UTF16 with lengths fitting native signed32 and
 the existing live font/locale resources. Native string allocation/SEH and
@@ -148,14 +218,38 @@ the covered prefix, EBX captures the main mesh at `00ABA972`, and EDI captures
 the section at `00ABA98B`. Clear's ESI is entry ECX, EBP starts at zero and
 increments at `00AB8159`, EBX is the byte offset computed at `00AB810E`, and
 EDI becomes the post-detach slot at `00AB8144`. Later EBP/EBX reuse in the
-unimplemented content tail is not projected backward into the prefix.
+later content tail is not projected backward into the prefix. In the nonempty
+tail EBX becomes main material at `00ABA9C8`, EBP addresses the borrowed pair at
+`00ABAA0F` then becomes zero at `00ABAB4B`; after the builder EBX becomes the
+shadow mesh (`00ABAB96`), EBP the shadow section (`00ABABA6`), EDI the captured
+main material (`00ABABEC`) and EBP its captured shadow material (`00ABABF5`).
+`00ABAC16` then changes EDI to the main shader. The saved AL byte is at stack
+`+3C` from `00ABA9EB` until it is reused for signed height/displacement late.
+
+All 58 known direct `00B73260` sites across 37 live functions were inspected;
+callers include fixed indices0/1 and register indices, so the leaf is not
+specialized to Text's index0. The full three-instruction leaf proves no count
+check and `RET 4`. The xref inventory also contains eleven sites without live
+Ghidra containing functions. Their contiguous raw instruction windows were
+inspected; each supplies index0. These are recorded separately in the report
+without caller-body attribution or invented full-body bounds: `0070818C`,
+`00AB10C4`, `00ABE664`, `00ABF8D1`, `00ACEB24`, `00AF2719`, `00B2B404`,
+`00B2B44E`, `00BABCFB`, `00BABD51`, `00BC2357`. Their enclosing routines are
+not reconstructed or claimed fully read. `00B6DAB0` has 28 data references, including Model vtable
+`00D62E14`, and one direct orphan call at `00B713E2`. Raw `00B713D0..00B713F1`
+ends with `RET 4` at `00B713EF`, length3; it is a separate camera routine, not
+the older candidate at `00B71360`. It forwards the incoming XYZ pointer but
+uses derived camera dispatch, outside this Model-only reconstruction. No
+Ghidra function is invented or attributed to the preceding routine.
 
 ## Verification and limits
 
 The source was compiled as MSVC Win32 C++17 with `/W4 /WX /EHsc /permissive-`,
-using the integrator's actual detach header and peer buffer/section header. The stronger integrator
+using the integrator's actual detach/clip headers and peer buffer, lifetime,
+style and canonical font-resource headers. The stronger integrator
 `verify_report_calls.py` checks each reported direct instruction and containing
-function: 39 direct rows passed with no failures. The Text virtual04 resolution is additionally supported by the
+function: both integrator and worker checks passed 154 direct rows with zero
+failures. Three indirect calls have separate table/assembly evidence. The Text virtual04 resolution is additionally supported by the
 vtable bytes and its complete scalar-deleting body. No new tests were added.
 Combined build/registration is the integrator's responsibility.
 
