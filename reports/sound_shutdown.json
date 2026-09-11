@@ -1435,5 +1435,25 @@
       "packet": "sound_application_composition",
       "scope": "Bind A88770 and shutdown to application shared services and lifetime callbacks; current phase5 remains unimplemented."
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_shutdown_fixture_tested",
+    "validated_revision": "4931b360a9b92905335ebb8cfc14756588fc8db4",
+    "main_base": "8d115caf",
+    "integration_log": "local/sound_shutdown_w_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_shutdown_w_integrate.log",
+    "library_sha256": "58d3fc152fc1480e3e60cd7aa2f8781c60a45a762f5f5f10a5ff7d4ce16be46d",
+    "installed_fixture_log": "local/sound_shutdown_w_combined_fixture.log",
+    "fixture_revision": "4931b360a9b92905335ebb8cfc14756588fc8db4",
+    "fixture_sha256": "426637f99b00980a6ff8844ffe486332420139f7d1174153dd26991116f7a122",
+    "saved_annotations": 25,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T233916Z.json",
+    "refreshed_exports": "local/sound_shutdown_w_all_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }

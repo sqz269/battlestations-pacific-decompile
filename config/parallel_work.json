@@ -7525,7 +7525,7 @@
       "id": "orch4_sound_shutdown_w",
       "worker": "agent/orch4-20260910",
       "done": true,
-      "state": "reconstructed_build_and_installed_shutdown_fixture_tested_pending_integration",
+      "state": "integrated_reviewed_build_and_installed_shutdown_fixture_tested",
       "function_addresses": [
         "00a883b0",
         "00a882c0",
@@ -7570,7 +7570,8 @@
         "src/sound_sample_cache_shutdown.cpp"
       ],
       "integration_report": "reports/sound_shutdown.json",
-      "discovery_evidence": "docs/SOUND_SHUTDOWN.md"
+      "discovery_evidence": "docs/SOUND_SHUTDOWN.md",
+      "validated_revision": "4931b360a9b92905335ebb8cfc14756588fc8db4"
     },
     {
       "id": "native_crt_pow_fallback1",
