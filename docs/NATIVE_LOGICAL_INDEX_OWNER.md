@@ -23,7 +23,7 @@ Only a zero result invokes the physical profile's slot 0. Both observed index pr
 
 The C++ context borrows the first two DWORDs of these actual immutable tables, preserving the original code-address tokens. It reads both the initial invoker table and the reloaded terminal table. There is no arbitrary virtual callback or default terminal. Other profiles or table contents are outside the recovered domain.
 
-Normal guard cleanup uses the captured entry renderer, its current `+04h` lock, and the current synchronization mode. This differs from the current global renderer used for removal. The entry-disabled/exit-enabled path would consume an uninitialized native guard; it remains outside the valid execution domain. The C++ interface does not repair it or initialize a replacement guard.
+Normal guard cleanup uses the captured entry renderer, its current `+04h` lock, and the current synchronization mode. This differs from the current global renderer used for removal. It reads the complete saved DWORD through an isolated MOV, including padding; the leave helper ignores the argument. The entry-disabled/exit-enabled path would consume an uninitialized native guard; it remains outside the valid execution domain. The C++ interface does not repair it or initialize a replacement guard.
 
 ## Native exception states
 
@@ -54,4 +54,4 @@ The fixture verified 23 Ghidra/installed-PE spans totaling 926 bytes and checked
 
 The new fixture's physical terminal stage is production-source composition. The separate physical-buffer proof establishes its original-byte behavior, including double faults. The new fixture does not execute the full native physical destructor again. Its COM object supplies only an observed IUnknown Release boundary; this is not D3D driver, game-runtime, or binary-ABI validation. The game installation and Ghidra program were read only for this worker packet.
 
-Reproduction and SHA-256 pins are recorded in [the audit](../reports/native_logical_index_owner_audit.json), including the private proof and build/fixture sources. Shared CMake registration, ledgers, Ghidra annotations and project saving remain integrator work.
+Primary integration registered this source in CMake, preserved the native whole-DWORD guard load, and passed the combined Win32 build and both existing CTest checks. The same 17 comparisons and both double-fault children passed again against the corrected primary library; its link map identifies all three logical entries and the exact production dependencies. The three Ghidra names/comments and complete-function ledger entries are saved, with refreshed exports. Reproduction and SHA-256 pins are recorded in [the audit](../reports/native_logical_index_owner_audit.json).

@@ -1,0 +1,60 @@
+{
+ "repairs": [
+  {
+   "function": "00bd4a70",
+   "owner": "agent/orch2-20260910",
+   "when": "2026-09-11T02:00:00Z",
+   "decompile_lines_before": 11,
+   "gaps": [
+    {
+     "site": "00bd4a8e",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00bd4a93",
+     "gap_end_exclusive": "00bd4be5",
+     "bytes": 338,
+     "after_call": true,
+     "sha256": "8bbc9e4c8819ec1e94e807331bfeda24123d554d0e27d18b4e62b83f2326fb4f"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00bd4a8e",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00bd4a93",
+      "gap_end_exclusive": "00bd4be5",
+      "bytes": 338,
+      "after_call": true,
+      "sha256": "8bbc9e4c8819ec1e94e807331bfeda24123d554d0e27d18b4e62b83f2326fb4f"
+     },
+     "clear": "Success: Cleared flow override at 00bd4a8e (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 338 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00bd4a8e",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00bd4a8e (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00bd4b94",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00bd4b94 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00bd4be5",
+   "explicit_body_sha256": "84f3f7012ae40d725d245bc75276d91f4ea1dd9177aa514c642f2222db7d78de",
+   "body_before": "Function: FUN_00bd4a70 at 00bd4a70\nSignature: undefined FUN_00bd4a70(void)\nEntry: 00bd4a70\nBody: 00bd4a70 - 00bd4a92",
+   "decompile_lines_after": 78,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00bd4a70 at 00bd4a70\nSignature: undefined FUN_00bd4a70(void)\nEntry: 00bd4a70\nBody: 00bd4a70 - 00bd4a92",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

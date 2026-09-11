@@ -1007,6 +1007,10 @@ int main() {
                 if (!saw_section) first_section_after_text = text_written;
                 saw_section = true;
             }
+            void begin_section(const bsp::GuiLuaVariant&) override
+            {
+                begin_section(static_cast<const char*>(nullptr));
+            }
             void end_section() override {}
             void write_field(const char* key, const bsp::SettingsValue&) override
             {

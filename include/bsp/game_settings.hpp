@@ -17,6 +17,8 @@
 // mirroring the object.
 namespace bsp {
 
+struct GuiLuaVariant;
+
 // Variant tag written into the first dword of the 8-byte value pairs the
 // serializer at 008d64a0 pushes (008d6a8e writes 0 for a string, 008d6aa8 1
 // for an int, 008d662d 2 for a float, 008d64eb 3 for a bool).
@@ -184,10 +186,13 @@ public:
     // Required first call008d64a9: persist options.txt before archive fields.
     virtual void write_options_text_008d6170() = 0;
     virtual void begin_section(const char* name) = 0;   // virtual +4h
+    // The keyboard binding slots at 006a533d use integer variant keys 0 and 1.
+    // A string-only implementation cannot preserve their archive meaning.
+    virtual void begin_section(const GuiLuaVariant& key) = 0;
     virtual void end_section() = 0;                     // virtual +8h
     virtual void write_field(const char* key, const SettingsValue& value) = 0; // virtual +0Ch
-    // 006a51c0 on the input-settings singleton, the keyboardSetup body. Not
-    // part of this packet; a host supplies it.
+    // 006a51c0 on the input-settings singleton, the keyboardSetup body.
+    // write_keyboard_setup_006a51c0 implements this traversal over InputSettings.
     virtual void write_keyboard_setup() = 0;
 };
 

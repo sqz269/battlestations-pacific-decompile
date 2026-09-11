@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_hardware_layout_tree_core",
-  "status": "reconstructed_private_win32_fixture_and_existing_repository_checks_passed_pending_primary_integration",
+  "status": "integrated_complete_actual_storage_build_checked_native_fixture_active",
   "generated_utc": "2026-09-11T02:07:27.315715+00:00",
   "base_commit": "c77199e1ecd399bb3f9ea77f115e6c5e22f00713",
   "owned_files": [
@@ -1147,5 +1147,307 @@
     "native RTTI/throw ABI",
     "binary drop-in compatibility",
     "game execution"
-  ]
+  ],
+  "primary_integration": {
+    "status": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+    "new_complete_functions": 7,
+    "upgraded_complete_functions": 0,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b2f4c0",
+        "name": "remove_native_hardware_layout_value_00b2f4c0",
+        "cpp_symbol": "remove_native_hardware_layout_value_00b2f4c0",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b2f53e",
+        "original_abi": "Renderer ECX unused; stack target value; RET4; no semantic result",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b2ef00",
+        "name": "erase_native_hardware_layout_iterator_00b2ef00",
+        "cpp_symbol": "erase_native_hardware_layout_iterator_00b2ef00",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b2f1a7",
+        "original_abi": "ECX destination tree; stack output pointer/input owner/input node; EAX output pointer; RET0Ch",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b20dc0",
+        "name": "increment_native_hardware_layout_iterator_00b20dc0",
+        "cpp_symbol": "increment_native_hardware_layout_iterator_00b20dc0",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b20e23",
+        "original_abi": "ECX actual eight-byte iterator; RET or BF6713 tail; no semantic result",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b20860",
+        "name": "maximum_native_hardware_layout_node_00b20860",
+        "cpp_symbol": "maximum_native_hardware_layout_node_00b20860",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b2087c",
+        "original_abi": "ECX node; EAX selected maximum; RET",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b20880",
+        "name": "minimum_native_hardware_layout_node_00b20880",
+        "cpp_symbol": "minimum_native_hardware_layout_node_00b20880",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b2089b",
+        "original_abi": "ECX node; EAX selected minimum; RET",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b20910",
+        "name": "rotate_native_hardware_layout_right_00b20910",
+        "cpp_symbol": "rotate_native_hardware_layout_right_00b20910",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b20962",
+        "original_abi": "ECX actual tree; stack node; RET4; no semantic result",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b22bd0",
+        "name": "rotate_native_hardware_layout_left_00b22bd0",
+        "cpp_symbol": "rotate_native_hardware_layout_left_00b22bd0",
+        "source": "src/native_hardware_layout_tree.cpp",
+        "native_end_exclusive": "00b22c1e",
+        "original_abi": "ECX actual tree; stack node; RET4; no semantic result",
+        "evidence": "reports/native_hardware_layout_tree_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "worker_composition_fixture_primary_rerun": true,
+      "native_tree_differential_fixture_pending": true,
+      "saved_extent_repair": "reports/native_hardware_layout_tree_defined_functions.json",
+      "complete_erase_end_exclusive": "00b2f1a7",
+      "worker_commit": "0843f2103e5f4ea5c2d0ba1ce2fe0091e1feb214",
+      "worker_report_sha256": "ce7cc99b21ec4da27867eeed512e7a0a2dc7ba4d30e7207bfb8a2574ae7cf613",
+      "verified_live_PE_spans": [
+        {
+          "address": "00b2f4c0",
+          "length": 126,
+          "sha256": "56ed03e5e9f71e813f4df848443dafd905e13fe7c5be6b9813dae7c1542a0e80"
+        },
+        {
+          "address": "00b2ef00",
+          "length": 679,
+          "sha256": "9fe114e6cdaee7ef2d25d62c7c2362d7fa21256a788208a8b51de4f0ecd0d6ef"
+        },
+        {
+          "address": "00b20dc0",
+          "length": 99,
+          "sha256": "275d6599a785a2bbcf8b952e72b2c211d130871cab4217819c9a3a19388883bf"
+        },
+        {
+          "address": "00b20860",
+          "length": 28,
+          "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49"
+        },
+        {
+          "address": "00b20880",
+          "length": 27,
+          "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e"
+        },
+        {
+          "address": "00b20910",
+          "length": 82,
+          "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb"
+        },
+        {
+          "address": "00b22bd0",
+          "length": 78,
+          "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564"
+        },
+        {
+          "address": "004412b0",
+          "length": 50,
+          "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162"
+        },
+        {
+          "address": "00441760",
+          "length": 25,
+          "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b"
+        },
+        {
+          "address": "00cbd7a0",
+          "length": 8,
+          "sha256": "07790eaa1a53cb32b30631bab27977e24ba9fe9de9e91d3730d2d5a9cb8e122a"
+        },
+        {
+          "address": "00cbd7a8",
+          "length": 10,
+          "sha256": "1550efbddb4b68fa29dd9e6e7e6b8e41cb5c00fb30c361e511f137ebd520e7a6"
+        },
+        {
+          "address": "00bf65ac",
+          "length": 5,
+          "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979"
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9"
+        },
+        {
+          "address": "00df601c",
+          "length": 44,
+          "sha256": "05b72cd9bba082f459a2d40c1bad5e06c7a5495afd28b28577ab4ba9a64e234c"
+        },
+        {
+          "address": "00d863a8",
+          "length": 16,
+          "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814"
+        },
+        {
+          "address": "00d863e4",
+          "length": 44,
+          "sha256": "803c823bf8f2098853c79d808ee520bb609ce65a63e51b0961d182e1fc08d361"
+        },
+        {
+          "address": "00ce44e0",
+          "length": 28,
+          "sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39"
+        }
+      ],
+      "current_source_pins": [
+        {
+          "path": "include/bsp/native_hardware_layout_tree.hpp",
+          "bytes": 3491,
+          "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+        },
+        {
+          "path": "src/native_hardware_layout_tree.cpp",
+          "bytes": 13258,
+          "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+        },
+        {
+          "path": "include/bsp/native_tree_out_of_range_exception.hpp",
+          "bytes": 966,
+          "sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf"
+        },
+        {
+          "path": "src/native_tree_out_of_range_exception.cpp",
+          "bytes": 709,
+          "sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844"
+        },
+        {
+          "path": "include/bsp/native_legacy_exception_owner.hpp",
+          "bytes": 3232,
+          "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+        },
+        {
+          "path": "src/native_legacy_exception_owner.cpp",
+          "bytes": 4990,
+          "sha256": "1738ea975779ec203f1ff639ea7407754462b174b783141ffb523174d6e34452"
+        },
+        {
+          "path": "include/bsp/native_legacy_sbo_string.hpp",
+          "bytes": 2115,
+          "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+        },
+        {
+          "path": "src/native_legacy_sbo_string.cpp",
+          "bytes": 7772,
+          "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 3986,
+          "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 10921,
+          "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+        }
+      ],
+      "verified_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-core-20260910\\local\\hardware_tree_fixture\\fixture.cpp",
+          "sha256": "af77102142aa26227b92ac8fe4c48a4e5218a78b154aac4ba3a8489ad9899ced"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-core-20260910\\local\\hardware_tree_fixture\\CMakeLists.txt",
+          "sha256": "c5a4e9a61eb9e3aa33e5caa4be17c6ae02658878c1cd3cc40b9e12e85b0e5300"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-core-20260910\\build\\hardware_tree_fixture\\Release\\hardware_tree_fixture.exe",
+          "sha256": "3d581e9f8d1f587a3348f72392e9a4359e7154ae8db33cfd1157a9d0a1515f30"
+        }
+      ],
+      "utc": "2026-09-11T02:17:21.662195+00:00",
+      "game_validated": false
+    },
+    "primary_source_pins": [
+      {
+        "path": "src/native_hardware_layout_tree.cpp",
+        "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_tree.hpp",
+        "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+      }
+    ],
+    "build": {
+      "path": "reports/native_index_tree_hardware_primary_build.txt",
+      "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
+      "tests": 2,
+      "passed": true
+    },
+    "annotations_applied": true,
+    "native_differential_fixture": false,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "annotation_journal": {
+      "path": "local/ghidra-annotations-20260911T022002Z.json",
+      "sha256": "685df7d2bbac81f1fc05e41cc2efbb832c1ba8b4da1c60c9331ed699cc987107"
+    },
+    "saved_project": true,
+    "exports_force_refreshed": true
+  }
 }

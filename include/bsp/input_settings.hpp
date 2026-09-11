@@ -54,6 +54,25 @@ struct AxisPair {
     std::string second;
 };
 
+// Native string maps use the same case-insensitive comparison, including the
+// runtime maps serialized by 006a51c0. This is declared before DeviceSettings
+// because its runtime containers share the existing device-map ordering.
+struct CaseInsensitiveLess {
+    bool operator()(const std::string& left, const std::string& right) const;
+};
+
+// 20-byte element of devRec+0x0c's vector. 006a8067 initializes table-form
+// inputs with two copies of {-1, 0, 0, 0, false}; 006a51c0 serializes offsets
+// +0, +4, +0xc and the byte at +0x10. The +8 dword has no established role.
+// Host representation only; see docs/KEYBOARD_SETTINGS_ARCHIVE.md.
+struct KeyboardInputBinding {
+    std::int32_t device_type{-1};
+    std::int32_t device_index{};
+    std::int32_t unknown_08{};
+    std::int32_t key{};
+    bool slider{};
+};
+
 // Native device record: a 132-byte mapped value in the case-insensitive
 // std::map at settings+0x08 (node _Isnil at +0x99, so sizeof(value_type)==0x8c
 // over an 8-byte pooled-string key).
@@ -68,6 +87,15 @@ struct DeviceSettings {
     std::map<std::int32_t, std::map<std::int32_t, float>> base_sensitivities;
     std::vector<AxisPair> axis_pairs;                   // entry.AxisPairs
     std::set<std::int32_t> min1_sens_hacks;             // entry.Min1SensHacks
+    // These are live runtime maps, not the Lua descriptions above. The loader
+    // initializes only table-form inputs and named sensitivities. Runtime
+    // rebinding and archive loading update these same containers.
+    std::map<std::string, std::vector<KeyboardInputBinding>, CaseInsensitiveLess>
+        runtime_bindings;                             // native devRec+0x0c
+    std::map<std::string, float, CaseInsensitiveLess>
+        runtime_sensitivities;                        // native devRec+0x24
+    std::map<std::string, std::vector<bool>, CaseInsensitiveLess>
+        runtime_reverse;                              // native devRec+0x6c
 };
 
 // Mapped value of the case-insensitive InputNames map at settings+0x24 (N2C in
@@ -93,13 +121,6 @@ struct ConflictGroupEntry {
 struct ConflictPair {
     std::int32_t first{};
     std::int32_t second{};
-};
-
-// Case-insensitive ordering used by the three string-keyed native maps
-// (BSP_NativeString_LessCaseInsensitive, reached from 0055c110 for the device
-// map and from the N2C/N24 _Lbound bodies for the other two).
-struct CaseInsensitiveLess {
-    bool operator()(const std::string& left, const std::string& right) const;
 };
 
 // Host mirror of the 0x540 settings object built by 006ab6b0 and filled by

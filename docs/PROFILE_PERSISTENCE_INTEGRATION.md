@@ -68,3 +68,11 @@ After the other orchestrator advanced main, merged code `0fff66d` passed the
 build, both CTests and the same Lua fixture again. All29 reviewed Ghidra names
 and evidence comments were saved, read back and exported; prior comments were
 retained. The mutation record is preserved under `local/`.
+
+Follow-up: `STORAGE_BACKEND_INTEGRATION.md` records concrete PC storage progress,
+compressed native containers, keyboard writing and profile-manager services.
+Those prior service boundaries now have implementations. The application Lua
+owner/environment, remaining settings restore/apply and full game bindings are
+still required. In particular, the profile read callback closes the storage
+archive before destroying its reader; a future reader binding must establish
+the native Lua-owner/reference lifetime rather than borrowing a freed state.

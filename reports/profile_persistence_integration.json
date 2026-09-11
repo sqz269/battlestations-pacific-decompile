@@ -58,11 +58,10 @@
   "game_validated": false,
   "container_compatible": false,
   "remaining_boundaries": [
-    "compressed storage container",
-    "storage virtual44 implementation",
-    "keyboard serialization service",
-    "hints and profile manager effects",
-    "complete Win32 application binding"
+    "actual game Lua owner/environment bootstrap and reference lifetime",
+    "remaining settings restore/apply and profile commit services",
+    "complete application bindings and singleton owners",
+    "native ABI and gameplay validation"
   ],
   "reviewed_names": {
     "007fa220": "BSP_PlayerProfile_OnSettingsWriteComplete",
@@ -94,5 +93,6 @@
     "0090cb40": "BSP_MissionProgress_WriteArchive",
     "00916a00": "BSP_MissionScoreRecord_ReadArchive",
     "00920000": "BSP_MissionProgress_ReadArchive"
-  }
+  },
+  "followup_storage_backend_report": "reports/storage_backend_integration.json"
 }

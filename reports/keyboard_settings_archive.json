@@ -1,0 +1,66 @@
+{
+  "packet": "orch2_keyboard_archive",
+  "status": "reconstructed_build_and_host_fixture_tested",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "verification": "tools/bsp.py ghidra client verifies configured project, program, language and image base before each live batch"
+  },
+  "writer": {
+    "address": "006a51c0",
+    "body_end": "006a563d",
+    "proposed_name": "BSP_InputSettings_WriteKeyboardArchive",
+    "old_name": "FUN_006a51c0",
+    "old_comments": "No comments returned by tools/bsp.py ghidra comments 006a51c0",
+    "cpp_symbol": "bsp::write_keyboard_setup_006a51c0",
+    "source": "src/keyboard_archive.cpp",
+    "native_abi": "__thiscall; ECX input-settings object, stack writer pointer, RET 4",
+    "host_signature": "void(const InputSettings&, SettingsWriter&)",
+    "exported": true,
+    "reconstructed": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "native_differential_tested": false
+  },
+  "runtime_storage": [
+    {"native_offset": "device+0x0c", "host_member": "DeviceSettings::runtime_bindings", "type": "case-insensitive string map to vector of 20-byte-native binding projections", "evidence": "006a525e..006a531b;006a45c0"},
+    {"native_offset": "device+0x24", "host_member": "DeviceSettings::runtime_sensitivities", "type": "case-insensitive string map to float", "evidence": "006a5566..006a55ed;00444be0"},
+    {"native_offset": "device+0x6c", "host_member": "DeviceSettings::runtime_reverse", "type": "case-insensitive string map to vector<bool>", "evidence": "006a5400..006a54ce;006a4ca0"}
+  ],
+  "loader_fragments": [
+    {"address": "006a8067", "end": "006a80b5", "owner": "006a7be0", "behavior": "table-form input vectors resize to two bindings {-1,0,0,0,false}; reverse vectors resize to two false bits; preserve existing entries"},
+    {"address": "006a8448", "end": "006a845c", "owner": "006a7be0", "behavior": "runtime sensitivity named slot receives float1.0 from00d7a24c (00 00 80 3f)"}
+  ],
+  "resolved_decompiler_hazards": [
+    "Register-spoiled pseudocode was resolved against371 native writer instructions.",
+    "String00cf8070 is key, despite PTR_LAB label.",
+    "Reverse state is separate devRec+0x6c map indexed by input name and slot, not unknown binding+8 or always bit0.",
+    "Exactly two slots are emitted using integer key tags1 with payload0/1. False slider/reverse flags are omitted; all sensitivity floats are emitted."
+  ],
+  "validation": {
+    "seed_byte_comparisons": {"passed": 8, "failed": 0, "command": "python tools/ghidra_export.py verify-seeds"},
+    "build": {"configuration": "Release", "platform": "MSVC Win32", "command": "./scripts/build.ps1", "passed": true, "log": "local/keyboard_archive_build.log"},
+    "existing_ctests": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "native_math_differential"]},
+    "host_fixture": {
+      "passed": true,
+      "source": "local/keyboard_archive_fixture.cpp",
+      "command": "local/run_keyboard_archive_fixture.cmd",
+      "log": "local/keyboard_archive_fixture.log",
+      "permanent_tests_added": 0,
+      "checks": ["Lua loader creates only table-form runtime rows", "case-insensitive runtime keys merge", "two native default bindings and reverse flags", "sensitivity multiplier initially1.0 independent of description", "generated text executes in Lua5.1.1", "integer slot1 distinct from string1", "disabled slot0 absent", "slot1 reverse bit and slider", "both active numeric slots and ignored vector tail", "false flag omission", "invalid missing reverse storage rejected"]
+    }
+  },
+  "uncertainty_and_remaining_work": [
+    "Names are hypotheses; host objects and visitor interface are not original ABI replacements.",
+    "The binding+8 dword meaning is unknown and is preserved but not serialized.",
+    "Host checked failures throw after possible partial output; native reverse map[] first inserts empty storage before checked failure.",
+    "Paired reader006aba50..006ac025 and terminal runtime apply006aa640 remain unreconstructed in this packet.",
+    "Adjacent006a5640..006a5a93 is the Preset writer, not the paired reader.",
+    "Concrete ArchiveSettingsServices/options.txt binding belongs to integrator; no native game execution or gameplay validation was performed."
+  ],
+  "ghidra_mutation": {
+    "worker_mutated": false,
+    "integrator_annotation_request": "Rename006a51c0 to BSP_InputSettings_WriteKeyboardArchive, preserve prior comments, add evidence/ABI/uncertainty from docs/KEYBOARD_SETTINGS_ARCHIVE.md, save project and refresh export.",
+    "missing_function_definitions": []
+  }
+}

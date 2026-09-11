@@ -1,0 +1,77 @@
+{
+  "packet": "orch2_archive_compression",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00bd48f0",
+      "name": "BSP_SaveStorage_CompressPendingBlock",
+      "end_exclusive": "00bd49a9",
+      "sha256": "40ced85f99b76c6b154706043cf9a8c7ebc3d6cb9d26f763c12f270abe17871c",
+      "cpp_symbol": "bsp::flush_archive_block_00bd48f0"
+    },
+    {
+      "address": "00bd49b0",
+      "name": "BSP_SaveStorage_AppendArchiveBytes",
+      "end_exclusive": "00bd4a68",
+      "sha256": "eb639a7cbc9521b9cc70513b79bc9bbcc788e31580f8a3624978bd3a16885f94",
+      "cpp_symbol": "bsp::write_compressed_archive_00bd49b0"
+    },
+    {
+      "address": "00bd4a70",
+      "name": "BSP_SaveStorage_FinalizeCompressedArchive",
+      "end_exclusive": "00bd4be5",
+      "sha256": "84f3f7012ae40d725d245bc75276d91f4ea1dd9177aa514c642f2222db7d78de",
+      "cpp_symbol": "bsp::finalize_compressed_archive_00bd4a70"
+    }
+  ],
+  "fragment": "00bd4860",
+  "validation": {
+    "build": "Win32 Release and both existing CTests passed",
+    "native_container_bytes": "player1689 and quick1772 exactly match original native files",
+    "native_files": [
+      {
+        "name": "player",
+        "path": "C:\\Users\\sqz269\\Documents\\Battlestations-Pacific\\save\\0\\player",
+        "original_bytes": 1689,
+        "plain_bytes": 42163,
+        "blocks": [
+          {
+            "compressed": 1685,
+            "plain": 42163
+          }
+        ],
+        "source_sha256": "a3ea2cbdeab70fa3a1fd96a9e2891367628f00675ab6984cfae1926ba4619faf",
+        "payload_sha256": "e151a5f63821f29fa46f5da2abeaaf4d9a2b7174d25c736de027181f5fd42372"
+      },
+      {
+        "name": "quick",
+        "path": "C:\\Users\\sqz269\\Documents\\Battlestations-Pacific\\save\\0\\quick",
+        "original_bytes": 1772,
+        "plain_bytes": 16212,
+        "blocks": [
+          {
+            "compressed": 1768,
+            "plain": 16212
+          }
+        ],
+        "source_sha256": "585435f3964f45b797b2ec15d8d0384dd7c9a9aa8398d7a245bc8ad2df9c42e2",
+        "payload_sha256": "f56e0a0b8ee92b1e53707ddba7a88660451de7b8d4f55b76939d828d33f4813a"
+      }
+    ],
+    "original_hashes_unchanged": true,
+    "multi_block_plain_lengths": [
+      65536,
+      65536,
+      65536,
+      17
+    ],
+    "multi_block_container_bytes": 196728,
+    "independent_review": "Native x87 capacity, single-flush boundary, XOR framing and ownership order match assembly",
+    "fixture": "local/archive_compression_probe.cpp",
+    "log": "local/archive-compression-probe.log"
+  },
+  "annotations": "pending",
+  "abi_compatible": false,
+  "game_validated": false
+}

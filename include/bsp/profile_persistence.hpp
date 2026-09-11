@@ -4,9 +4,26 @@
 #include "bsp/mission_progress.hpp"
 #include "bsp/profile_write.hpp"
 #include "bsp/storage_operation.hpp"
+#include "bsp/settings_text.hpp"
 #include <memory>
 
 namespace bsp {
+
+struct InputSettings;
+// Concrete effects required by the settings archive writer. The chosen text
+// host determines the Documents path; an isolated host can use a local folder.
+class GameArchiveSettingsServices final : public ArchiveSettingsServices {
+public:
+    GameArchiveSettingsServices(const GameSettingsBlock&, const std::vector<LanguageEntry>&,
+        SettingsTextHost&, const InputSettings&) noexcept;
+    void write_options_text_008d6170() override;
+    void write_keyboard_setup(SettingsWriter&) override;
+private:
+    const GameSettingsBlock& settings_;
+    const std::vector<LanguageEntry>& languages_;
+    SettingsTextHost& text_host_;
+    const InputSettings& input_;
+};
 
 // Host composition of recovered routines; no new native addresses or ABI.
 // Keep this storage shared between profile-reset and archive-reader hosts.
