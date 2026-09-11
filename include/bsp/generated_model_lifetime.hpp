@@ -16,11 +16,20 @@ struct GeneratedModelPointLightLinks {
     BuildingInstancePointLight values;
     std::vector<CameraTransform*> models;
 };
+// Optional dispatch to an actual +178/+17C/+180 descriptor. Both callbacks and
+// context are required together. A null view selects the existing diagnostic
+// vector; an actual view never mirrors its backing into that vector.
+struct NativeAttachmentArrayView {
+    void* context{};
+    void (*append)(void*, CameraTransform&){};
+    bool (*erase)(void*, CameraTransform*) noexcept{};
+};
 // Native attached object+178 is another borrowed node array. identity is the
 // same actual +A0 value projected by CameraTransform.notification_context.
 struct GeneratedModelAttachmentLinks {
     void* identity;
     std::vector<CameraTransform*> models;
+    NativeAttachmentArrayView native_array{};
 };
 
 class GeneratedModelNodeLifetime : public RenderCommandModelLifetime {
@@ -141,6 +150,9 @@ public:
 // count. Does not release/delete nodes, preserve order, or reduce capacity.
 bool erase_generated_model_pointer_00b7bed0(std::vector<CameraTransform*>&,
     CameraTransform*) noexcept;
+// Capacity policy belongs to the selected backing implementation. Native
+// groups use their actual descriptor; legacy diagnostic bindings use models.
+void append_generated_model_attachment(GeneratedModelAttachmentLinks&, CameraTransform&);
 // Native ECX point-light, stack model, RET4: applies erase to point-light+1E0.
 void remove_point_light_model_link_00b7c1a0(GeneratedModelPointLightLinks&,
     CameraTransform&) noexcept;

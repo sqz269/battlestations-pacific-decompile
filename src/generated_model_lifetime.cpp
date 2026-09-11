@@ -58,6 +58,10 @@ GeneratedModelNodeLifetime& GeneratedModelLifetimeRuntime::resolve(CameraTransfo
 }
 void GeneratedModelLifetimeRuntime::bind_attachment(GeneratedModelAttachmentLinks& attachment) {
     if (!attachment.identity) throw std::invalid_argument("Null generated model attachment identity");
+    const auto& view = attachment.native_array;
+    if ((view.context || view.append || view.erase) &&
+        (!view.context || !view.append || !view.erase || !attachment.models.empty()))
+        throw std::invalid_argument("Actual attachment array requires complete callbacks and no copied vector");
     for (auto* existing : attachments_)
         if (existing->identity == attachment.identity)
             throw std::invalid_argument("Duplicate generated model attachment binding");
@@ -117,10 +121,21 @@ void remove_point_light_model_link_00b7c1a0(GeneratedModelPointLightLinks& light
 void unregister_generated_model_attachment_00b8f4c0(GeneratedModelAttachmentLinks& owner,
     CameraTransform& node) noexcept {
     if (node.notification_context == owner.identity) {
-        erase_generated_model_pointer_00b7bed0(owner.models, &node);
+        if (owner.native_array.context)
+            owner.native_array.erase(owner.native_array.context, &node);
+        else erase_generated_model_pointer_00b7bed0(owner.models, &node);
         node.notification_context = nullptr;
         node.notify_changed = nullptr;
     }
+}
+void append_generated_model_attachment(GeneratedModelAttachmentLinks& owner, CameraTransform& node) {
+    if (owner.native_array.context) {
+        owner.native_array.append(owner.native_array.context, node);
+        return;
+    }
+    if (owner.models.size() == owner.models.capacity())
+        owner.models.reserve((std::max)(std::size_t{1}, owner.models.capacity() * 2));
+    owner.models.push_back(&node);
 }
 void reserve_generated_model_point_lights_00b6e500(
     std::vector<GeneratedModelPointLightLinks*>& links, std::int32_t capacity) {
