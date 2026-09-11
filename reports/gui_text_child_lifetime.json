@@ -1,0 +1,433 @@
+{
+  "packet": "orch5_text_child_lifetime",
+  "status": "partial_projection_strict_compile_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_child_lifetime.cpp",
+  "documentation": "docs/GUI_TEXT_CHILD_LIFETIME.md",
+  "functions": [
+    {
+      "address": "00ab8ee0",
+      "name": "GuiTextChildDeletion::delete_text_child_virtual4",
+      "coverage": "partial_projection: ordinary canonical Text derived/base effects and C++ wrapper disposition; native pool/SEH/vtable/return ABI excluded for both flags",
+      "original_abi": "ECX Text; flags DWORD stack; EAX original object;RET4",
+      "last_instruction": "00ab8efd",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab8eff"
+    },
+    {
+      "address": "00ab8250",
+      "name": "GuiTextLifetime::destroy_derived_00ab8250_fragment",
+      "coverage": "partial_projection: consume existing actual derived effects/typed containers, now compose bounded base tail; canonical association retained across callbacks",
+      "original_abi": "ECX Text; no stack args;RET",
+      "last_instruction": "00ab83cf",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab83cf"
+    },
+    {
+      "address": "00aa9730",
+      "name": "GuiTextChildDeletion base tail",
+      "coverage": "partial_projection: child scene release/main release, all-Text child drain, self detach/final main release, zero timed-entry header, typed base-list destruction; nonzero AA97F6..AA9950 and unbound/nonText AA9797 remain required",
+      "original_abi": "ECX base widget; no stack args;RET",
+      "last_instruction": "00aa99b8",
+      "last_instruction_length": 1,
+      "end_inclusive": "00aa99b8",
+      "saved_ghidra_end": "00aa9950"
+    },
+    {
+      "address": "00ab9650",
+      "name": "GuiTextLifetime constructor association",
+      "coverage": "partial_projection: publish same borrowed companion after derived defaults before actual AB8530 callback; clear failed publication; existing native construction limitations unchanged",
+      "original_abi": "ECX destination; no stack args;EAX this;RET",
+      "last_instruction": "00ab98ee",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab98ee"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab8ee3",
+      "native": "00ab8250",
+      "function": "00ab8ee0",
+      "operation": "derived destructor first; no manager virtual20 prepass"
+    },
+    {
+      "address": "00ab8ef5",
+      "native": "00ab75a0",
+      "function": "00ab8ee0",
+      "operation": "EXCLUDED native pool return: ECX F8BDF0, original Text stack;RET4; only flags&1; C++ transport applies storage flag after same semantic effects"
+    },
+    {
+      "address": "00ab828d",
+      "native": "IAT InterlockedDecrement [00CE2220]",
+      "function": "00ab8250",
+      "operation": "existing actual shader owner decrement at captured shader+04"
+    },
+    {
+      "address": "00ab829d",
+      "native": "current shader virtual00",
+      "function": "00ab8250",
+      "operation": "existing actual zero-reference terminal dispatch, then clear live shader slot"
+    },
+    {
+      "address": "00ab82af",
+      "native": "00b6dfa0",
+      "function": "00ab8250",
+      "operation": "existing actual shadow unlink/release then clear"
+    },
+    {
+      "address": "00ab82bc",
+      "native": "00ab80c0",
+      "function": "00ab8250",
+      "operation": "same glyph vector uses concrete deletion transport; pending exception prevents completion"
+    },
+    {
+      "address": "00ab83b9",
+      "native": "00aa9730",
+      "function": "00ab8250",
+      "operation": "new direct bounded base tail after all derived strings/vector cleanup"
+    },
+    {
+      "address": "00aa9760",
+      "native": "00aa8320",
+      "function": "00aa9730",
+      "operation": "base dispatch: existing child20 traversal then current primary release; no Text secondary hook on current base"
+    },
+    {
+      "address": "00aa9797",
+      "native": "00ab8ee0",
+      "function": "00aa9730",
+      "operation": "current canonical Text child virtual04(1); nonText/unbound child outside domain; reload current list head after actual self-detach"
+    },
+    {
+      "address": "00aa97b9",
+      "native": "00b6e680",
+      "function": "00aa9730",
+      "operation": "self detach current native node ECX, null parent stack;RET4; existing concrete detach sequence"
+    },
+    {
+      "address": "00aa97c2",
+      "native": "00b6d890",
+      "function": "00aa9730",
+      "operation": "reload self node after parent callback; null root stack;RET4"
+    },
+    {
+      "address": "00aa97d2",
+      "native": "00b6d940",
+      "function": "00aa9730",
+      "operation": "current parent node ECX and reloaded self node stack;RET4"
+    },
+    {
+      "address": "00aa97df",
+      "native": "00a9bd50",
+      "function": "00aa9730",
+      "operation": "current captured parent child list removes self; same vector unique_ptr transported; then clear parent fields"
+    },
+    {
+      "address": "00aa97ee",
+      "native": "00b6dfa0",
+      "function": "00aa9730",
+      "operation": "reload remaining main node after detach; clear actual associations after callback"
+    },
+    {
+      "address": "00aa9825",
+      "native": "00aa6f30",
+      "function": "00aa9730",
+      "operation": "EXCLUDED nonzero timed-entry array growth; one size stack arg RET4"
+    },
+    {
+      "address": "00aa986e",
+      "native": "current timed entry virtual00",
+      "function": "00aa9730",
+      "operation": "EXCLUDED native timed-entry deleting call(1), captured slot cleared only after actual return"
+    },
+    {
+      "address": "00aa98a3",
+      "native": "00bf55be",
+      "function": "00aa9730",
+      "operation": "EXCLUDED negative-capacity path allocation4; ADD ESP4 atAA98AA"
+    },
+    {
+      "address": "00aa98e4",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "operation": "EXCLUDED replaced timed-entry backing free; ADD ESP4 atAA98E9"
+    },
+    {
+      "address": "00aa994c",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "operation": "zero-header path free(null) has no allocation effect; nonzero backing retained atAA97F6; ADD ESP4 atAA995E"
+    },
+    {
+      "address": "00aa9973",
+      "native": "00bf65ac",
+      "function": "00aa9730",
+      "operation": "raw tail: remaining native list-node free, ADD ESP4 atAA9978; ordinary valid list already empty"
+    },
+    {
+      "address": "00aa9986",
+      "native": "00bf65ac",
+      "function": "00aa9730",
+      "operation": "raw tail: native list sentinel free, ADD ESP4 atAA998E; C++ child-list allocations destroyed now even flags0"
+    },
+    {
+      "address": "00aa99a1",
+      "native": "00bd30f0",
+      "function": "00aa9730",
+      "operation": "raw tail: base destructor only vtable store; no reference decrement; remove canonical association/owner after semantic containers"
+    },
+    {
+      "address": "00ab9671",
+      "native": "00aa9390",
+      "function": "00ab9650",
+      "operation": "existing owner already base-constructed with type3 stack; calleeRET4"
+    },
+    {
+      "address": "00ab98d8",
+      "native": "00ab8530",
+      "function": "00ab9650",
+      "operation": "existing actual buffers; association published immediately before this callback-bearing call"
+    },
+    {
+      "address": "00ab8118",
+      "native": "00aa83a0",
+      "function": "00ab80c0",
+      "operation": "existing actual glyph detach transports exact removed unique_ptr before later glyph-slot reload"
+    },
+    {
+      "address": "00ab8151",
+      "native": "00ab8ee0",
+      "function": "00ab80c0",
+      "operation": "current actual Text virtual04(1); RET4; only successful return permits slot zero atAB8153"
+    },
+    {
+      "address": "00ab82dd",
+      "native": "00419cc0",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: font_name length+1, pointer, flag1; pool singleton register/stack service; singleton takes NO arguments, RET; the three pushed words belong to following BD1510 RET0Ch"
+    },
+    {
+      "address": "00ab82e4",
+      "native": "00bd1510",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: font_name pool return after singleton, RET0Ch"
+    },
+    {
+      "address": "00ab8305",
+      "native": "00419cc0",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: shader_name length+1, pointer,flag1; singleton takes NO arguments, RET; the three pushed words belong to following BD1510 RET0Ch"
+    },
+    {
+      "address": "00ab830c",
+      "native": "00bd1510",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: shader_name pool return RET0Ch"
+    },
+    {
+      "address": "00ab832e",
+      "native": "00419cc0",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: optional UTF16 bytes2*(length+1),pointer,flag1; singleton takes NO arguments, RET; the three pushed words belong to following BD1510 RET0Ch"
+    },
+    {
+      "address": "00ab8335",
+      "native": "00bd1510",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: optional UTF16 pool return RET0Ch"
+    },
+    {
+      "address": "00ab8345",
+      "native": "00bf65ac",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: glyph vector backing free, ADD ESP4 atAB834A"
+    },
+    {
+      "address": "00ab837b",
+      "native": "00419cc0",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: source length+1,pointer,flag1; singleton takes NO arguments, RET; the three pushed words belong to following BD1510 RET0Ch"
+    },
+    {
+      "address": "00ab8382",
+      "native": "00bd1510",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: source pool return RET0Ch"
+    },
+    {
+      "address": "00ab83a3",
+      "native": "00419cc0",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: stored UTF16 bytes2*(length+1),pointer,flag1; singleton takes NO arguments, RET; the three pushed words belong to following BD1510 RET0Ch"
+    },
+    {
+      "address": "00ab83aa",
+      "native": "00bd1510",
+      "function": "00ab8250",
+      "operation": "Existing typed container analogue in native order; native allocation/header ABI excluded: stored UTF16 pool return RET0Ch"
+    }
+  ],
+  "read_only_producer_and_callers": [
+    {
+      "address": "00aa8b20",
+      "native": "00aa77b0",
+      "function": "00aa8b00",
+      "operation": "grow to index+1 before initial slot read;RET4"
+    },
+    {
+      "address": "00aa8b3f",
+      "native": "00aa77b0",
+      "function": "00aa8b00",
+      "operation": "reload growth if needed before producer;RET4"
+    },
+    {
+      "address": "00aa8b4f",
+      "native": "00ad3a80",
+      "function": "00aa8b00",
+      "operation": "ECX=index, EDX=widget; EDI index retained, EDX restored fromsavedthis atAA8B44; RET"
+    },
+    {
+      "address": "00aa8b62",
+      "native": "00aa77b0",
+      "function": "00aa8b00",
+      "operation": "postproducer slot access regrows if needed;RET4"
+    },
+    {
+      "address": "00aa77be",
+      "native": "00aa6f30",
+      "function": "00aa77b0",
+      "operation": "size stackRET4; complete resize stores examined"
+    },
+    {
+      "address": "00aa6f50",
+      "native": "00bf55be",
+      "function": "00aa6f30",
+      "operation": "actual pointer-array allocation count*4; ADD ESP4 atAA6F59"
+    },
+    {
+      "address": "00aa6f7c",
+      "native": "00bf6989",
+      "function": "00aa6f30",
+      "operation": "actual previous backing free; allocator header publication continues after false noreturn"
+    },
+    {
+      "address": "00ad3aae",
+      "native": "00bf681b",
+      "function": "00ad3a80",
+      "operation": "index2 actual14h allocation;ADD ESP4 atAD3AB3"
+    },
+    {
+      "address": "00ad3ae7",
+      "native": "00bf681b",
+      "function": "00ad3a80",
+      "operation": "index1 actual14h allocation;ADD ESP4 atAD3AEC"
+    },
+    {
+      "address": "00ad3aff",
+      "native": "00bf681b",
+      "function": "00ad3a80",
+      "operation": "index0 actual14h allocation;ADD ESP4 atAD3B04"
+    },
+    {
+      "address": "00ad3b1a",
+      "native": "00ac2ed0",
+      "function": "00ad3a80",
+      "operation": "indices0/1 actualentry ECX, captured widget stack;RET4"
+    },
+    {
+      "address": "00ac2fe3",
+      "native": "00ad3990",
+      "function": "00ac2fe0",
+      "operation": "actual D5CA74 timed-entry destructor before flagtest"
+    },
+    {
+      "address": "00ac2ff0",
+      "native": "00bf65ac",
+      "function": "00ac2fe0",
+      "operation": "native timed-entry storage free only flags&1; false noreturn ends savedbody before stackcleanup"
+    },
+    {
+      "address": "00ab76f6",
+      "native": "00ab75a0",
+      "function": "00ab76f0",
+      "operation": "other native pool caller: capture ECX object onstack then set poolF8BDF0;calleeRET4"
+    },
+    {
+      "address": "00aa13dd",
+      "native": "00ab9650",
+      "function": "00aa1380",
+      "operation": "no source-copy constructor branch; ECX allocated Text; no stack args"
+    },
+    {
+      "address": "00ab9d4f",
+      "native": "00ab9650",
+      "function": "00ab98f0",
+      "operation": "optional glyph child constructor; ECX actualTextallocation; no stack args"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00aa9951",
+      "containing_native_function": "00aa9730",
+      "last_instruction": "00aa99b8",
+      "last_instruction_length": 1,
+      "end_inclusive": "00aa99b8",
+      "length": 104,
+      "evidence": "exact raw disk tail after saved false-noreturn free; three late call rows intentionally retained for verifier"
+    },
+    {
+      "address": "00ad3a40",
+      "last_instruction": "00ad3a5c",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ad3a5e",
+      "length": 31,
+      "evidence": "raw timed-entry deleting leaf: typeD5D204, flagsbit0 conditional nativefree; analyzed-only no new implementation/annotation"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Preliminary investigation called +88 header a callback array",
+      "evidence": "AA8B00/AA87B0 and AD3A80 fullbody; D5CA74->AC2FE0 and D5D210->rawAD3A40",
+      "is": "Pointer/count/capacity for producer AD3A80 timed entries; no canonical typed allocation owner currently exists"
+    },
+    {
+      "was": "retire_tree could stand in for Text child scalar delete",
+      "evidence": "AB8EE3->AB8250, AB83B9->AA9730, AA9760->AA8320",
+      "is": "retire_tree is a distinct manager prepass; direct Text derived then base deletion is required"
+    },
+    {
+      "was": "flags0 could merely leave before_destroy empty while retaining semantic containers",
+      "evidence": "AB8EE8 flagtest occurs only after AB8EE3 returns from allderivedandbase effects",
+      "is": "both flags execute typed derived/base container destruction and owner removal; only wrapper storage disposition differs"
+    }
+  ],
+  "ownership": [
+    "one GuiWidgetOwner borrowed Text association, no companion map",
+    "one original GuiTextLifetime and one original tree; list holds only transferred existing unique_ptr allocations",
+    "association published after defaults before AB8530 callbacks; failed publication always cleared",
+    "pending deletion throws from void childcall; no slot clear/completion, owner/flags/handle retained; no automatic native cleanup on scope exit",
+    "scalar stage is diagnostic only; no resumable parent AB80C0/derived frame claimed",
+    "flags0 full supported semantic effects/base list allocations removed; wrapper storage retained; native pool/header/SEH ABI still excluded"
+  ],
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 /W4 /WX /O2 /fp:strict: gui_text_child_lifetime.cpp,gui_text_lifetime.cpp,gui_widget_owner.cpp",
+    "current_text_header_overlay_sha256": "0BAE8F4BB3F2593CD4EC286EB96219E6075E4825893542BBA3C6BE69DA69EB88",
+    "report_verifier": "Stronger live verifier:50 numeric rows checked,3 expected failures solely AA9973/AA9986/AA99A1 outside savedAA9730 body;45 exact direct rows and2 resolved Text virtual rows pass;3 symbolic indirect rows separately recorded. Parent will repair body after lease release; worker remains read-only.",
+    "new_tests": 0,
+    "executed_new_operations": false,
+    "native_differential": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "factory_enabled": false,
+    "standard_combined_build": "parent integration"
+  },
+  "remaining_dependencies": [
+    "canonical timed-entry and pointer-array allocation/destruction owners for nonzero +88 header",
+    "current scalar-deleting methods for nonText or unbound remaining children",
+    "actual recursive Text factory and all current virtual methods before enabling reachable child allocation",
+    "native Text pool AB75A0 storage metadata/CRT/native container header/SEH ABI",
+    "parent and nested clear-loop/derived cleanup frames before any resumable unsupported deletion is claimed"
+  ]
+}
