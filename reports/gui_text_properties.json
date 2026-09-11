@@ -1,0 +1,434 @@
+{
+  "packet": "orch5_gui_text_properties",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/gui_text_properties.cpp",
+  "routines": [
+    {
+      "address": "00abb630",
+      "end_inclusive": "00abbe44",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX=Text; visitor pointer on stack; RET 4",
+      "coverage": "derived_continuation_after_existing_base_and_children",
+      "implemented_ranges": [
+        "00abb658..00abbe44"
+      ],
+      "prerequisites": "NativeABB653->AAA710 base fields/child enumeration must already have completed; existing loader supplies same boundary. Nested pending content must actually finish before tail/loaded78.",
+      "unread_ranges": [],
+      "instruction_count": 586
+    },
+    {
+      "address": "00ab72d0",
+      "end_inclusive": "00ab73a8",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX=Text; preset DWORD on stack; RET 4",
+      "coverage": "complete_supported_same_lifetime_field_operation",
+      "unread_ranges": [],
+      "scope": "Equal preset performs no stores. Changed -1 only disables the shadow byte. Other presets enable shadow and install the live default color, position 0 and offset; preset 1 replaces RGB from the live one and alpha from CEE07C. No native calls."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00abb653",
+      "native": "00aaa710",
+      "function": "00abb630",
+      "contract": "PREREQUISITE before new derived entry: existing base fields AND child traversal; not called again by new continuation."
+    },
+    {
+      "address": "00abb69a",
+      "native": "00ab8c30",
+      "function": "00abb630",
+      "contract": "Unconditional actual Font setter after visitor10 into initially empty temporary; one header/RET4."
+    },
+    {
+      "address": "00abb85e",
+      "native": "00bf7fbf",
+      "function": "00abb630",
+      "contract": "Native direct CRT comparison for Left/Top; current host CRT consumed in typed-string domain."
+    },
+    {
+      "address": "00abb880",
+      "native": "00425850",
+      "function": "00abb630",
+      "contract": "Existing actual header/C-string equality in native candidate order; RET4."
+    },
+    {
+      "address": "00abb89e",
+      "native": "00425850",
+      "function": "00abb630",
+      "contract": "Existing actual header/C-string equality in native candidate order; RET4."
+    },
+    {
+      "address": "00abb8bc",
+      "native": "00425850",
+      "function": "00abb630",
+      "contract": "Existing actual header/C-string equality in native candidate order; RET4."
+    },
+    {
+      "address": "00abb924",
+      "native": "00bf7fbf",
+      "function": "00abb630",
+      "contract": "Native direct CRT comparison for Left/Top; current host CRT consumed in typed-string domain."
+    },
+    {
+      "address": "00abb946",
+      "native": "00425850",
+      "function": "00abb630",
+      "contract": "Existing actual header/C-string equality in native candidate order; RET4."
+    },
+    {
+      "address": "00abb964",
+      "native": "00425850",
+      "function": "00abb630",
+      "contract": "Existing actual header/C-string equality in native candidate order; RET4."
+    },
+    {
+      "address": "00abbc0a",
+      "native": "00ab72d0",
+      "function": "00abb630",
+      "contract": "Non--1 DefaultShadow selected; same canonical lifetime/live constants; preset DWORD/RET4."
+    },
+    {
+      "address": "00abbd06",
+      "native": "00425850",
+      "function": "00abb630",
+      "contract": "Existing actual header/C-string equality in native candidate order; RET4."
+    },
+    {
+      "address": "00abbd7e",
+      "native": "00419cc0",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name pool selection; typed string lifetime/order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbd85",
+      "native": "00bd1510",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name block return; typed string cleanup order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbd99",
+      "native": "00abaed0",
+      "function": "00abb630",
+      "contract": "Captured DefaultText length nonzero only; localize1; actual runtime submission can remain pending. Native RET8."
+    },
+    {
+      "address": "00abbdb6",
+      "native": "00419cc0",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name pool selection; typed string lifetime/order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbdbd",
+      "native": "00bd1510",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name block return; typed string cleanup order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbdda",
+      "native": "00419cc0",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name pool selection; typed string lifetime/order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbde1",
+      "native": "00bd1510",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name block return; typed string cleanup order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbdfd",
+      "native": "00419cc0",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name pool selection; typed string lifetime/order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbe04",
+      "native": "00bd1510",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name block return; typed string cleanup order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbe24",
+      "native": "00419cc0",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name pool selection; typed string lifetime/order implemented, original pool callback/ABI excluded."
+    },
+    {
+      "address": "00abbe2b",
+      "native": "00bd1510",
+      "function": "00abb630",
+      "contract": "Observed native temporary-name block return; typed string cleanup order implemented, original pool callback/ABI excluded."
+    }
+  ],
+  "visitor_steps": [
+    {
+      "address": "00abb691",
+      "native": "reader+vtable10",
+      "function": "00abb630",
+      "supported_target": "00bd6830",
+      "key": "Font",
+      "field_type": "String",
+      "default": "none: initially empty temporary, nil passes value conversion; unconditional setter",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb6ec",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "FontScale",
+      "field_type": "Float",
+      "default": "liveD7A24C",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb732",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Multiline",
+      "field_type": "Bool",
+      "default": "true",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb77c",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "DistanceBetweenLines",
+      "field_type": "Float",
+      "default": "zero",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb7c9",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "DefaultText",
+      "field_type": "String",
+      "default": "empty",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb806",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "ShaderName",
+      "field_type": "String",
+      "default": "empty; direct member write, noAB8E70",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb84e",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Align",
+      "field_type": "String",
+      "default": "empty; Left0,Right2,Center1,Justified3",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb914",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "VerticalAlign",
+      "field_type": "String",
+      "default": "empty;Top0,Bottom2,Center1",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb98f",
+      "native": "reader+vtable14",
+      "function": "00abb630",
+      "supported_target": "00bd5eb0",
+      "key": "MISColors",
+      "field_type": "HasKey",
+      "default": "nonnil gate",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abb9ae",
+      "native": "reader+vtable04",
+      "function": "00abb630",
+      "supported_target": "00bd8e20",
+      "key": "MISColors",
+      "field_type": "Enter",
+      "default": "must be actual table scope",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abba30",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Normal",
+      "field_type": "Vec4",
+      "default": "same lazyF8BE38",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbaad",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Focus",
+      "field_type": "Vec4",
+      "default": "same lazyF8BE38",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbb2a",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Selected",
+      "field_type": "Vec4",
+      "default": "same lazyF8BE38",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbba7",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Disabled",
+      "field_type": "Vec4",
+      "default": "same lazyF8BE38;thenflag118=true",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbbb7",
+      "native": "reader+vtable08",
+      "function": "00abb630",
+      "supported_target": "00bd7a20",
+      "key": "MISColors",
+      "field_type": "Leave",
+      "default": "afterflag",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbbfd",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "DefaultShadow",
+      "field_type": "Int",
+      "default": "-1",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbc5d",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "Shadowed",
+      "field_type": "Bool",
+      "default": "false,onlypreset-1",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbcaf",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "ShadowColor",
+      "field_type": "Vec4",
+      "default": "sameborrowedE12FD8,onlyshadowbyte!=0",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbcfb",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "ShadowPos",
+      "field_type": "String",
+      "default": "empty;Front1 else0",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    },
+    {
+      "address": "00abbd64",
+      "native": "reader+vtable0c",
+      "function": "00abb630",
+      "supported_target": "00bd68d0",
+      "key": "ShadowOffset",
+      "field_type": "Float",
+      "default": "liveD5C5C0",
+      "contract": "Existing ordinary evaluated-table value/default helpers; native live Lua ref-stack/metamethod callbacks excluded."
+    }
+  ],
+  "callers": {
+    "properties": {
+      "direct": [],
+      "data": [
+        {
+          "site": "00d5c6e0",
+          "table": "00d5c6c8",
+          "slot": "18",
+          "target": "00abb630",
+          "bytes": "30 b6 ab 00"
+        }
+      ]
+    },
+    "preset": [
+      {
+        "address": "00abbc0a",
+        "native": "00ab72d0",
+        "function": "00abb630",
+        "contract": "All preset callers: sole native direct site after Int default-1; EDIText, EAXdecodedpreset pushed."
+      }
+    ]
+  },
+  "visitor_table": {
+    "address": "00ce44fc",
+    "slots": {
+      "04": "00bd8e20",
+      "08": "00bd7a20",
+      "0c": "00bd68d0",
+      "10": "00bd6830",
+      "14": "00bd5eb0"
+    },
+    "evidence": "Constructor004425C0 and byteschecked;calleebodiesread. Actual RET10 atBD68CC and RET18 atBD6989 establish4/6stackDWORDs, not decompiler inferred parameter counts."
+  },
+  "register_provenance": {
+    "properties": "ESI=visitor fromnative stack atABB64B;EDI=entryText atABB651 and retained throughout. EBXzero atABB658;EBP emptyliteralB794, MISColorskeyB97C, samewhiteF8BE38B9FA, -1BBCB, shadowbyteaddressBC3E. Native field pairs/currentvtable reloads inspected across full586instructionlisting.",
+    "locals": "Font ESP34/38,DefaultTextESP24/28,AlignESP14/18,VerticalESP1C/20 after callee cleanup. ShadowPosESP2C/30 onlyexplicit-shadowbranch. BD99 passescapturedDefaultText+localize1; cleanupVerticalBD9E,AlignBDC2,DefaultBDE6,FontBE09.",
+    "preset": "EAX=inputDWORD72D0;ECXText retained. Compare+1D0 beforestores; offsetXMM0 loaded72F5 beforebyte/colorstores; RGBone loaded7348 once; alphaCEE07C read736E; final RET4."
+  },
+  "producer_evidence": {
+    "lazy_color": "Bit0F8BE48 checkedbeforeeachrow; D7A24C readbeforeORmask thenF8BE38/3C/40/44 stores. Initialmapped20byteszero. Same supplied mask/quartet references, no localwhitecache.",
+    "shadow": "E12FD8 quartet bytes0000000000000000000000000000403F;D5C5C0CDCC4C3D;CEE07C0000403F. Runtime readsborrowedglobals.",
+    "enums": "DirectbytesCE92C8 Front/Bottom/Top/Right/Left;D5C670 Justified,D5C67C Center. Nativeassignmentnumericorderpreserved."
+  },
+  "ownership": {
+    "state": "One GuiTextLifetime and its existing font, shader, source, shadow and color fields; Shadowed retains its raw byte representation.",
+    "resource_names": "The actual font setter is unconditional. ShaderName is a direct property store with no extra shader-name-setter side effect.",
+    "defaults": "The same live F8BE48/F8BE38 storage and borrowed E12FD8 default pointer; no independent default cache.",
+    "pending": "Outer Font, DefaultText, Align and VerticalAlign strings remain alive until the actual source submission and its final current50 complete. Resume follows the actual child tail, then performs ordered outer cleanup.",
+    "base": "Existingloaderbasefields+childtraversal prerequisite; not repeated."
+  },
+  "limitations": [
+    "ABB630 entry/baseprefix not reconstructed again; new API beginsABB658 after actualAAA710 completion.",
+    "Ordinary evaluatedLua table projection excludes liveLua metamethod/ref-stack callbacks and native visitor/string/pool/SEH ABI; invalid aggregate/scopeshapes fail atfield.",
+    "Nested actual content can stay pending; no completion/factoryenable/loaded78 until actualmissingdependencyfinishes.",
+    "Typedstring cleanup preserves scope/order but not nativeallocation callbacks; no executable/game/originalABIclaim."
+  ],
+  "verification": {
+    "strict_compile": "passed MSVC Win32 C++17 /W4 /WX /EHsc /permissive- with newheaderoverlay/currentrootsubmitheader",
+    "exact_call_verifier": "Passed integrator verifier: 23 direct call rows checked, 0 failed. The 20 indirect visitor rows were checked against table bytes and callee bodies.",
+    "worker_call_verifier": "Passed worker verifier: 23 direct call rows checked, 0 failed.",
+    "new_tests": 0,
+    "runtime": "No executable or factory wiring. The integrator owns the combined build."
+  },
+  "tool_issues": [],
+  "descriptive_names_are_hypotheses": true
+}
