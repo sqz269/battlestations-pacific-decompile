@@ -35,6 +35,16 @@ void destroy_base(NativeLegacyExceptionStorage& owner) noexcept {
     }
 }
 
+struct BaseUnwindCleanup {
+    NativeLegacyExceptionStorage& owner;
+    bool armed = true;
+    ~BaseUnwindCleanup() noexcept {
+        if (armed) {
+            destroy_base(owner);
+        }
+    }
+};
+
 void copy_base(NativeLegacyExceptionStorage& owner,
     const NativeLegacyExceptionStorage& source) {
     // Complete library copy body 00BF63A6..00BF63FE. Preserve its nullable
@@ -68,16 +78,13 @@ NativeLegacyExceptionStorage& construct_native_legacy_logic_error_00411700(
     owner.native_vtable_00 = logic_error_vtable;
     owner.message_0c.length_14 = 0;
     owner.message_0c.capacity_18 = 15;
-    try {
-        // Native state 0 is armed before the first-byte store at 0041173E.
-        owner.message_0c.buffer_04.inline_bytes[0] = '\0';
-        native_legacy_sbo_string_assign_substring_00408120(
-            owner.message_0c, source, 0, 0xffffffffu);
-    } catch (...) {
-        // State 0, FuncInfo 00D83F74 -> 00C5E010 -> base destructor only.
-        destroy_base(owner);
-        throw;
-    }
+    // Native state 0 is armed before the first-byte store at 0041173E.
+    // FuncInfo D83F74 has no catch map: C5E010 unwinds the base only.
+    BaseUnwindCleanup cleanup{owner};
+    owner.message_0c.buffer_04.inline_bytes[0] = '\0';
+    native_legacy_sbo_string_assign_substring_00408120(
+        owner.message_0c, source, 0, 0xffffffffu);
+    cleanup.armed = false;
     return owner;
 }
 
@@ -104,16 +111,13 @@ NativeLegacyExceptionStorage& copy_native_legacy_logic_error_004118d0(
     owner.native_vtable_00 = logic_error_vtable;
     owner.message_0c.capacity_18 = 15;
     owner.message_0c.length_14 = 0;
-    try {
-        // Native state 0 is armed before the first-byte store at 00411918.
-        owner.message_0c.buffer_04.inline_bytes[0] = '\0';
-        native_legacy_sbo_string_assign_substring_00408120(
-            owner.message_0c, source.message_0c, 0, 0xffffffffu);
-    } catch (...) {
-        // State 0, FuncInfo 00D84024 -> 00C5E050 -> base destructor only.
-        destroy_base(owner);
-        throw;
-    }
+    // Native state 0 is armed before the first-byte store at 00411918.
+    // FuncInfo D84024 has no catch map: C5E050 unwinds the base only.
+    BaseUnwindCleanup cleanup{owner};
+    owner.message_0c.buffer_04.inline_bytes[0] = '\0';
+    native_legacy_sbo_string_assign_substring_00408120(
+        owner.message_0c, source.message_0c, 0, 0xffffffffu);
+    cleanup.armed = false;
     return owner;
 }
 
