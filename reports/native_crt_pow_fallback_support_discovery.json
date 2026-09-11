@@ -1,0 +1,1957 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-11T21:17:02.622075+00:00",
+  "status": "read-only bounded discovery; fallback public support not complete; smallest independent control2 packet ready",
+  "base_commit": "ddc0bb66986ecf60394b5be0f464c3aa1109d421",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery",
+  "ownership": {
+    "packet": "native_crt_pow_fallback_support_discovery",
+    "addresses": [
+      "00bfeb10",
+      "00bfeb6d",
+      "00c08330",
+      "00c08347",
+      "00c08479",
+      "00c19dc0",
+      "00c19e24"
+    ],
+    "files": [
+      "docs/NATIVE_CRT_POW_FALLBACK_SUPPORT_DISCOVERY.md",
+      "reports/native_crt_pow_fallback_support_discovery.json"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "spans": [
+    {
+      "address": "00bfeb10",
+      "length": 84,
+      "role": "complete_original_pow_dispatch",
+      "bytes_hex": "833da0ee090100743283ec080fae5c24048b44240425801f00003d801f0000750fd93c24668b04246683e07f6683f87f8d6424087505e915a7010083ec14d9c9dd1c24dd5424088b44240ce80d00000083c414c3",
+      "sha256": "b3beb57cc454f176724b8b08a07f64930e11c1f4cc2178a697a31fa3aeb67b1c",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 23,
+      "assembly": [
+        "00bfeb10: cmp dword ptr [0x109eea0], 0",
+        "00bfeb17: je 0xbfeb4b",
+        "00bfeb19: sub esp, 8",
+        "00bfeb1c: stmxcsr dword ptr [esp + 4]",
+        "00bfeb21: mov eax, dword ptr [esp + 4]",
+        "00bfeb25: and eax, 0x1f80",
+        "00bfeb2a: cmp eax, 0x1f80",
+        "00bfeb2f: jne 0xbfeb40",
+        "00bfeb31: fnstcw word ptr [esp]",
+        "00bfeb34: mov ax, word ptr [esp]",
+        "00bfeb38: and ax, 0x7f",
+        "00bfeb3c: cmp ax, 0x7f",
+        "00bfeb40: lea esp, [esp + 8]",
+        "00bfeb44: jne 0xbfeb4b",
+        "00bfeb46: jmp 0xc19260",
+        "00bfeb4b: sub esp, 0x14",
+        "00bfeb4e: fxch st(1)",
+        "00bfeb50: fstp qword ptr [esp]",
+        "00bfeb53: fst qword ptr [esp + 8]",
+        "00bfeb57: mov eax, dword ptr [esp + 0xc]",
+        "00bfeb5b: call 0xbfeb6d",
+        "00bfeb60: add esp, 0x14",
+        "00bfeb63: ret "
+      ],
+      "direct_control": [
+        {
+          "site": "00bfeb46",
+          "instruction": "jmp",
+          "target": "0xc19260"
+        },
+        {
+          "site": "00bfeb5b",
+          "instruction": "call",
+          "target": "0xbfeb6d"
+        }
+      ],
+      "returns": [
+        "00bfeb63"
+      ]
+    },
+    {
+      "address": "00bfeb6d",
+      "length": 453,
+      "role": "complete_original_fallback",
+      "bytes_hex": "8bc8509bd93c2466813c247f027405e82498000081e10000f07f8d54240881f90000f07f0f849d000000e8399800000f848e000000a90000f07f0f84f60000008a4c240f80e1800f8553010000d9f1e8cf97000080f9017502d9e0833d78dd0901000f85599800008d0d5858e100ba1d000000e994980000833d78dd0901000f853c9800008d0d5858e100ba1d000000e82e9700005ac38d542408e8c8970000f644241608750341eb33dec1b801000000ebc5f644240e0875f0dec1b807000000ebb533c9eb1633c925ffff0f000b44241075c38d542408e88b9700008b44240c8bd0250000f07f81e2ffff0f003d0000f07f75060b54240875b885c975bb83ec748bcc5183ec10dd1c24dd5c24089bdd7108e89fb1010083c41059dd6108dd0183c47485c00f8495970000b801000000e942ffffff8b44240c25ffff0f000b4424080f85f7feffffddd88b44241425ffffff7f0b442410743de8660000008a6c240fc0ed07f7442417800000007416db2dd066e10084cd7402d9e0b802000000e9f2feffffd9ee84cd0f8431970000d9e0e92a970000ddd8d9e8e921970000d9c1e81e000000d9e084c90f859cfeffffddd8ddd8db2d705ce100b801000000e9b3feffff",
+      "sha256": "ae19f7cb6cf7dd3a9b92571af200a59255b12bf08189887f696833197e4f8596",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 123,
+      "assembly": [
+        "00bfeb6d: mov ecx, eax",
+        "00bfeb6f: push eax",
+        "00bfeb70: wait ",
+        "00bfeb71: fnstcw word ptr [esp]",
+        "00bfeb74: cmp word ptr [esp], 0x27f",
+        "00bfeb7a: je 0xbfeb81",
+        "00bfeb7c: call 0xc083a5",
+        "00bfeb81: and ecx, 0x7ff00000",
+        "00bfeb87: lea edx, [esp + 8]",
+        "00bfeb8b: cmp ecx, 0x7ff00000",
+        "00bfeb91: je 0xbfec34",
+        "00bfeb97: call 0xc083d5",
+        "00bfeb9c: je 0xbfec30",
+        "00bfeba2: test eax, 0x7ff00000",
+        "00bfeba7: je 0xbfeca3",
+        "00bfebad: mov cl, byte ptr [esp + 0xf]",
+        "00bfebb1: and cl, 0x80",
+        "00bfebb4: jne 0xbfed0d",
+        "00bfebba: fyl2x ",
+        "00bfebbc: call 0xc08390",
+        "00bfebc1: cmp cl, 1",
+        "00bfebc4: jne 0xbfebc8",
+        "00bfebc6: fchs ",
+        "00bfebc8: cmp dword ptr [0x109dd78], 0",
+        "00bfebcf: jne 0xc0842e",
+        "00bfebd5: lea ecx, [0xe15858]",
+        "00bfebdb: mov edx, 0x1d",
+        "00bfebe0: jmp 0xc08479",
+        "00bfebe5: cmp dword ptr [0x109dd78], 0",
+        "00bfebec: jne 0xc0842e",
+        "00bfebf2: lea ecx, [0xe15858]",
+        "00bfebf8: mov edx, 0x1d",
+        "00bfebfd: call 0xc08330",
+        "00bfec02: pop edx",
+        "00bfec03: ret ",
+        "00bfec04: lea edx, [esp + 8]",
+        "00bfec08: call 0xc083d5",
+        "00bfec0d: test byte ptr [esp + 0x16], 8",
+        "00bfec12: jne 0xbfec17",
+        "00bfec14: inc ecx",
+        "00bfec15: jmp 0xbfec4a",
+        "00bfec17: faddp st(1)",
+        "00bfec19: mov eax, 1",
+        "00bfec1e: jmp 0xbfebe5",
+        "00bfec20: test byte ptr [esp + 0xe], 8",
+        "00bfec25: jne 0xbfec17",
+        "00bfec27: faddp st(1)",
+        "00bfec29: mov eax, 7",
+        "00bfec2e: jmp 0xbfebe5",
+        "00bfec30: xor ecx, ecx",
+        "00bfec32: jmp 0xbfec4a",
+        "00bfec34: xor ecx, ecx",
+        "00bfec36: and eax, 0xfffff",
+        "00bfec3b: or eax, dword ptr [esp + 0x10]",
+        "00bfec3f: jne 0xbfec04",
+        "00bfec41: lea edx, [esp + 8]",
+        "00bfec45: call 0xc083d5",
+        "00bfec4a: mov eax, dword ptr [esp + 0xc]",
+        "00bfec4e: mov edx, eax",
+        "00bfec50: and eax, 0x7ff00000",
+        "00bfec55: and edx, 0xfffff",
+        "00bfec5b: cmp eax, 0x7ff00000",
+        "00bfec60: jne 0xbfec68",
+        "00bfec62: or edx, dword ptr [esp + 8]",
+        "00bfec66: jne 0xbfec20",
+        "00bfec68: test ecx, ecx",
+        "00bfec6a: jne 0xbfec27",
+        "00bfec6c: sub esp, 0x74",
+        "00bfec6f: mov ecx, esp",
+        "00bfec71: push ecx",
+        "00bfec72: sub esp, 0x10",
+        "00bfec75: fstp qword ptr [esp]",
+        "00bfec78: fstp qword ptr [esp + 8]",
+        "00bfec7c: wait ",
+        "00bfec7d: fnsave dword ptr [ecx + 8]",
+        "00bfec80: call 0xc19e24",
+        "00bfec85: add esp, 0x10",
+        "00bfec88: pop ecx",
+        "00bfec89: frstor dword ptr [ecx + 8]",
+        "00bfec8c: fld qword ptr [ecx]",
+        "00bfec8e: add esp, 0x74",
+        "00bfec91: test eax, eax",
+        "00bfec93: je 0xc0842e",
+        "00bfec99: mov eax, 1",
+        "00bfec9e: jmp 0xbfebe5",
+        "00bfeca3: mov eax, dword ptr [esp + 0xc]",
+        "00bfeca7: and eax, 0xfffff",
+        "00bfecac: or eax, dword ptr [esp + 8]",
+        "00bfecb0: jne 0xbfebad",
+        "00bfecb6: fstp st(0)",
+        "00bfecb8: mov eax, dword ptr [esp + 0x14]",
+        "00bfecbc: and eax, 0x7fffffff",
+        "00bfecc1: or eax, dword ptr [esp + 0x10]",
+        "00bfecc5: je 0xbfed04",
+        "00bfecc7: call 0xbfed32",
+        "00bfeccc: mov ch, byte ptr [esp + 0xf]",
+        "00bfecd0: shr ch, 7",
+        "00bfecd3: test dword ptr [esp + 0x17], 0x80",
+        "00bfecdb: je 0xbfecf3",
+        "00bfecdd: fld xword ptr [0xe166d0]",
+        "00bfece3: test ch, cl",
+        "00bfece5: je 0xbfece9",
+        "00bfece7: fchs ",
+        "00bfece9: mov eax, 2",
+        "00bfecee: jmp 0xbfebe5",
+        "00bfecf3: fldz ",
+        "00bfecf5: test ch, cl",
+        "00bfecf7: je 0xc0842e",
+        "00bfecfd: fchs ",
+        "00bfecff: jmp 0xc0842e",
+        "00bfed04: fstp st(0)",
+        "00bfed06: fld1 ",
+        "00bfed08: jmp 0xc0842e",
+        "00bfed0d: fld st(1)",
+        "00bfed0f: call 0xbfed32",
+        "00bfed14: fchs ",
+        "00bfed16: test cl, cl",
+        "00bfed18: jne 0xbfebba",
+        "00bfed1e: fstp st(0)",
+        "00bfed20: fstp st(0)",
+        "00bfed22: fld xword ptr [0xe15c70]",
+        "00bfed28: mov eax, 1",
+        "00bfed2d: jmp 0xbfebe5"
+      ],
+      "direct_control": [
+        {
+          "site": "00bfeb7c",
+          "instruction": "call",
+          "target": "0xc083a5"
+        },
+        {
+          "site": "00bfeb97",
+          "instruction": "call",
+          "target": "0xc083d5"
+        },
+        {
+          "site": "00bfebbc",
+          "instruction": "call",
+          "target": "0xc08390"
+        },
+        {
+          "site": "00bfebe0",
+          "instruction": "jmp",
+          "target": "0xc08479"
+        },
+        {
+          "site": "00bfebfd",
+          "instruction": "call",
+          "target": "0xc08330"
+        },
+        {
+          "site": "00bfec08",
+          "instruction": "call",
+          "target": "0xc083d5"
+        },
+        {
+          "site": "00bfec15",
+          "instruction": "jmp",
+          "target": "0xbfec4a"
+        },
+        {
+          "site": "00bfec1e",
+          "instruction": "jmp",
+          "target": "0xbfebe5"
+        },
+        {
+          "site": "00bfec2e",
+          "instruction": "jmp",
+          "target": "0xbfebe5"
+        },
+        {
+          "site": "00bfec32",
+          "instruction": "jmp",
+          "target": "0xbfec4a"
+        },
+        {
+          "site": "00bfec45",
+          "instruction": "call",
+          "target": "0xc083d5"
+        },
+        {
+          "site": "00bfec80",
+          "instruction": "call",
+          "target": "0xc19e24"
+        },
+        {
+          "site": "00bfec9e",
+          "instruction": "jmp",
+          "target": "0xbfebe5"
+        },
+        {
+          "site": "00bfecc7",
+          "instruction": "call",
+          "target": "0xbfed32"
+        },
+        {
+          "site": "00bfecee",
+          "instruction": "jmp",
+          "target": "0xbfebe5"
+        },
+        {
+          "site": "00bfecff",
+          "instruction": "jmp",
+          "target": "0xc0842e"
+        },
+        {
+          "site": "00bfed08",
+          "instruction": "jmp",
+          "target": "0xc0842e"
+        },
+        {
+          "site": "00bfed0f",
+          "instruction": "call",
+          "target": "0xbfed32"
+        },
+        {
+          "site": "00bfed2d",
+          "instruction": "jmp",
+          "target": "0xbfebe5"
+        }
+      ],
+      "returns": [
+        "00bfec03"
+      ]
+    },
+    {
+      "address": "00c08330",
+      "length": 83,
+      "role": "physical_union_prefix23_unary_entry9_shared_tail51",
+      "bytes_hex": "558bec83c4e08945e08b45188945f08b451c8945f4eb09558bec83c4e08945e0dd5df8894de48b45108b4d148945e8894dec8d45088d4de0505152e819f1010083c40cdd45f866817d087f027403d96d08c9c3",
+      "sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 32,
+      "assembly": [
+        "00c08330: push ebp",
+        "00c08331: mov ebp, esp",
+        "00c08333: add esp, -0x20",
+        "00c08336: mov dword ptr [ebp - 0x20], eax",
+        "00c08339: mov eax, dword ptr [ebp + 0x18]",
+        "00c0833c: mov dword ptr [ebp - 0x10], eax",
+        "00c0833f: mov eax, dword ptr [ebp + 0x1c]",
+        "00c08342: mov dword ptr [ebp - 0xc], eax",
+        "00c08345: jmp 0xc08350",
+        "00c08347: push ebp",
+        "00c08348: mov ebp, esp",
+        "00c0834a: add esp, -0x20",
+        "00c0834d: mov dword ptr [ebp - 0x20], eax",
+        "00c08350: fstp qword ptr [ebp - 8]",
+        "00c08353: mov dword ptr [ebp - 0x1c], ecx",
+        "00c08356: mov eax, dword ptr [ebp + 0x10]",
+        "00c08359: mov ecx, dword ptr [ebp + 0x14]",
+        "00c0835c: mov dword ptr [ebp - 0x18], eax",
+        "00c0835f: mov dword ptr [ebp - 0x14], ecx",
+        "00c08362: lea eax, [ebp + 8]",
+        "00c08365: lea ecx, [ebp - 0x20]",
+        "00c08368: push eax",
+        "00c08369: push ecx",
+        "00c0836a: push edx",
+        "00c0836b: call 0xc27489",
+        "00c08370: add esp, 0xc",
+        "00c08373: fld qword ptr [ebp - 8]",
+        "00c08376: cmp word ptr [ebp + 8], 0x27f",
+        "00c0837c: je 0xc08381",
+        "00c0837e: fldcw word ptr [ebp + 8]",
+        "00c08381: leave ",
+        "00c08382: ret "
+      ],
+      "direct_control": [
+        {
+          "site": "00c08345",
+          "instruction": "jmp",
+          "target": "0xc08350"
+        },
+        {
+          "site": "00c0836b",
+          "instruction": "call",
+          "target": "0xc27489"
+        }
+      ],
+      "returns": [
+        "00c08382"
+      ]
+    },
+    {
+      "address": "00c08479",
+      "length": 163,
+      "role": "complete_result_status_tail",
+      "bytes_hex": "83ec08dd14248b44240483c408250000f07f743d3d0000f07f745f668b0424663d7f02742a6683e02075219bdfe06683e0207418b80800000083fa1d7407e88bfeffff5ac3e86dfeffff5ac3d92c245ac3dd059ca6d600d9c9d9fdddd9d9c0d9e1dc1d8ca6d6009bdfe09eb80400000073c7dc0daca6d600ebbfdd0594a6d600d9c9d9fdddd9d9c0d9e1dc1d84a6d6009bdfe09eb803000000769edc0da4a6d600eb96",
+      "sha256": "78a64b0bd08a6d69aa9cc724b569fdb3da3929e6dd8e6886a87e2d40326a3ead",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 57,
+      "assembly": [
+        "00c08479: sub esp, 8",
+        "00c0847c: fst qword ptr [esp]",
+        "00c0847f: mov eax, dword ptr [esp + 4]",
+        "00c08483: add esp, 8",
+        "00c08486: and eax, 0x7ff00000",
+        "00c0848b: je 0xc084ca",
+        "00c0848d: cmp eax, 0x7ff00000",
+        "00c08492: je 0xc084f3",
+        "00c08494: mov ax, word ptr [esp]",
+        "00c08498: cmp ax, 0x27f",
+        "00c0849c: je 0xc084c8",
+        "00c0849e: and ax, 0x20",
+        "00c084a2: jne 0xc084c5",
+        "00c084a4: wait ",
+        "00c084a5: fnstsw ax",
+        "00c084a7: and ax, 0x20",
+        "00c084ab: je 0xc084c5",
+        "00c084ad: mov eax, 8",
+        "00c084b2: cmp edx, 0x1d",
+        "00c084b5: je 0xc084be",
+        "00c084b7: call 0xc08347",
+        "00c084bc: pop edx",
+        "00c084bd: ret ",
+        "00c084be: call 0xc08330",
+        "00c084c3: pop edx",
+        "00c084c4: ret ",
+        "00c084c5: fldcw word ptr [esp]",
+        "00c084c8: pop edx",
+        "00c084c9: ret ",
+        "00c084ca: fld qword ptr [0xd6a69c]",
+        "00c084d0: fxch st(1)",
+        "00c084d2: fscale ",
+        "00c084d4: fstp st(1)",
+        "00c084d6: fld st(0)",
+        "00c084d8: fabs ",
+        "00c084da: fcomp qword ptr [0xd6a68c]",
+        "00c084e0: wait ",
+        "00c084e1: fnstsw ax",
+        "00c084e3: sahf ",
+        "00c084e4: mov eax, 4",
+        "00c084e9: jae 0xc084b2",
+        "00c084eb: fmul qword ptr [0xd6a6ac]",
+        "00c084f1: jmp 0xc084b2",
+        "00c084f3: fld qword ptr [0xd6a694]",
+        "00c084f9: fxch st(1)",
+        "00c084fb: fscale ",
+        "00c084fd: fstp st(1)",
+        "00c084ff: fld st(0)",
+        "00c08501: fabs ",
+        "00c08503: fcomp qword ptr [0xd6a684]",
+        "00c08509: wait ",
+        "00c0850a: fnstsw ax",
+        "00c0850c: sahf ",
+        "00c0850d: mov eax, 3",
+        "00c08512: jbe 0xc084b2",
+        "00c08514: fmul qword ptr [0xd6a6a4]",
+        "00c0851a: jmp 0xc084b2"
+      ],
+      "direct_control": [
+        {
+          "site": "00c084b7",
+          "instruction": "call",
+          "target": "0xc08347"
+        },
+        {
+          "site": "00c084be",
+          "instruction": "call",
+          "target": "0xc08330"
+        },
+        {
+          "site": "00c084f1",
+          "instruction": "jmp",
+          "target": "0xc084b2"
+        },
+        {
+          "site": "00c0851a",
+          "instruction": "jmp",
+          "target": "0xc084b2"
+        }
+      ],
+      "returns": [
+        "00c084bd",
+        "00c084c4",
+        "00c084c9"
+      ]
+    },
+    {
+      "address": "00c19dc0",
+      "length": 100,
+      "role": "complete_d_inttype",
+      "bytes_hex": "558bec5151dd45085151dd1c24e85d07feffa89059597548dd45085151dd1c24e863e70000dc5d085959dfe0f6c4447a2fdd450851dc0d80a2d70051dd5df8dd45f8dd1c24e83ee70000dc5df85959dfe0f6c4447a056a0258c9c333c040c9c333c0c9c3",
+      "sha256": "5d1cd56beacef97036b0e601692f067ca7866513d859c094856c8df773d2053b",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 49,
+      "assembly": [
+        "00c19dc0: push ebp",
+        "00c19dc1: mov ebp, esp",
+        "00c19dc3: push ecx",
+        "00c19dc4: push ecx",
+        "00c19dc5: fld qword ptr [ebp + 8]",
+        "00c19dc8: push ecx",
+        "00c19dc9: push ecx",
+        "00c19dca: fstp qword ptr [esp]",
+        "00c19dcd: call 0xbfa52f",
+        "00c19dd2: test al, 0x90",
+        "00c19dd4: pop ecx",
+        "00c19dd5: pop ecx",
+        "00c19dd6: jne 0xc19e20",
+        "00c19dd8: fld qword ptr [ebp + 8]",
+        "00c19ddb: push ecx",
+        "00c19ddc: push ecx",
+        "00c19ddd: fstp qword ptr [esp]",
+        "00c19de0: call 0xc28548",
+        "00c19de5: fcomp qword ptr [ebp + 8]",
+        "00c19de8: pop ecx",
+        "00c19de9: pop ecx",
+        "00c19dea: fnstsw ax",
+        "00c19dec: test ah, 0x44",
+        "00c19def: jp 0xc19e20",
+        "00c19df1: fld qword ptr [ebp + 8]",
+        "00c19df4: push ecx",
+        "00c19df5: fmul qword ptr [0xd7a280]",
+        "00c19dfb: push ecx",
+        "00c19dfc: fstp qword ptr [ebp - 8]",
+        "00c19dff: fld qword ptr [ebp - 8]",
+        "00c19e02: fstp qword ptr [esp]",
+        "00c19e05: call 0xc28548",
+        "00c19e0a: fcomp qword ptr [ebp - 8]",
+        "00c19e0d: pop ecx",
+        "00c19e0e: pop ecx",
+        "00c19e0f: fnstsw ax",
+        "00c19e11: test ah, 0x44",
+        "00c19e14: jp 0xc19e1b",
+        "00c19e16: push 2",
+        "00c19e18: pop eax",
+        "00c19e19: leave ",
+        "00c19e1a: ret ",
+        "00c19e1b: xor eax, eax",
+        "00c19e1d: inc eax",
+        "00c19e1e: leave ",
+        "00c19e1f: ret ",
+        "00c19e20: xor eax, eax",
+        "00c19e22: leave ",
+        "00c19e23: ret "
+      ],
+      "direct_control": [
+        {
+          "site": "00c19dcd",
+          "instruction": "call",
+          "target": "0xbfa52f"
+        },
+        {
+          "site": "00c19de0",
+          "instruction": "call",
+          "target": "0xc28548"
+        },
+        {
+          "site": "00c19e05",
+          "instruction": "call",
+          "target": "0xc28548"
+        }
+      ],
+      "returns": [
+        "00c19e1a",
+        "00c19e1f",
+        "00c19e23"
+      ]
+    },
+    {
+      "address": "00c19e24",
+      "length": 318,
+      "role": "complete_special_operand_handler",
+      "bytes_hex": "558becd9ee56dc550833d233f6dfe0dd4508f6c4417502d9e0b80000f07f394514b90000f0ff753d395510757fd9e8d8d1dfe0f6c4057a11dddaddd9ddd8dd05a065e100e9e1000000d8d1dfe0ddd9f6c4418b45187507ddd8e9cf000000ddd9e9c8000000394d147542395510753dd9e8d8d1dfe0f6c4057a09ddd8ddd8e9a7000000dddaded9dfe0f6c4058b45187a0bdd05a065e100e991000000dd05a865e10033f6dd1846e98d00000039450cddd87526395508757fdc5510dfe0f6c4050f8b76ffffffdc5510dfe0f6c4418b4518745addd8d9e8eb54394d0cddd875593955087554dd45105151dd1c24e8aafeffffd9ee59dc5510598bc8dfe0f6c4057a1183f901ddd8dd05a065e100751bd9e0eb17dc5510dfe0f6c441751483f9017508ddd8dd05c065e1008b4518dd18eb08ddd8d9e8ebf3ddd88bc65e5dc3",
+      "sha256": "bb908989912e1763ace71e1577482c3166c8854f6ef32640ba7ff6e4c0978e70",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 123,
+      "assembly": [
+        "00c19e24: push ebp",
+        "00c19e25: mov ebp, esp",
+        "00c19e27: fldz ",
+        "00c19e29: push esi",
+        "00c19e2a: fcom qword ptr [ebp + 8]",
+        "00c19e2d: xor edx, edx",
+        "00c19e2f: xor esi, esi",
+        "00c19e31: fnstsw ax",
+        "00c19e33: fld qword ptr [ebp + 8]",
+        "00c19e36: test ah, 0x41",
+        "00c19e39: jne 0xc19e3d",
+        "00c19e3b: fchs ",
+        "00c19e3d: mov eax, 0x7ff00000",
+        "00c19e42: cmp dword ptr [ebp + 0x14], eax",
+        "00c19e45: mov ecx, 0xfff00000",
+        "00c19e4a: jne 0xc19e89",
+        "00c19e4c: cmp dword ptr [ebp + 0x10], edx",
+        "00c19e4f: jne 0xc19ed0",
+        "00c19e51: fld1 ",
+        "00c19e53: fcom st(1)",
+        "00c19e55: fnstsw ax",
+        "00c19e57: test ah, 5",
+        "00c19e5a: jp 0xc19e6d",
+        "00c19e5c: fstp st(2)",
+        "00c19e5e: fstp st(1)",
+        "00c19e60: fstp st(0)",
+        "00c19e62: fld qword ptr [0xe165a0]",
+        "00c19e68: jmp 0xc19f4e",
+        "00c19e6d: fcom st(1)",
+        "00c19e6f: fnstsw ax",
+        "00c19e71: fstp st(1)",
+        "00c19e73: test ah, 0x41",
+        "00c19e76: mov eax, dword ptr [ebp + 0x18]",
+        "00c19e79: jne 0xc19e82",
+        "00c19e7b: fstp st(0)",
+        "00c19e7d: jmp 0xc19f51",
+        "00c19e82: fstp st(1)",
+        "00c19e84: jmp 0xc19f51",
+        "00c19e89: cmp dword ptr [ebp + 0x14], ecx",
+        "00c19e8c: jne 0xc19ed0",
+        "00c19e8e: cmp dword ptr [ebp + 0x10], edx",
+        "00c19e91: jne 0xc19ed0",
+        "00c19e93: fld1 ",
+        "00c19e95: fcom st(1)",
+        "00c19e97: fnstsw ax",
+        "00c19e99: test ah, 5",
+        "00c19e9c: jp 0xc19ea7",
+        "00c19e9e: fstp st(0)",
+        "00c19ea0: fstp st(0)",
+        "00c19ea2: jmp 0xc19f4e",
+        "00c19ea7: fstp st(2)",
+        "00c19ea9: fcompp ",
+        "00c19eab: fnstsw ax",
+        "00c19ead: test ah, 5",
+        "00c19eb0: mov eax, dword ptr [ebp + 0x18]",
+        "00c19eb3: jp 0xc19ec0",
+        "00c19eb5: fld qword ptr [0xe165a0]",
+        "00c19ebb: jmp 0xc19f51",
+        "00c19ec0: fld qword ptr [0xe165a8]",
+        "00c19ec6: xor esi, esi",
+        "00c19ec8: fstp qword ptr [eax]",
+        "00c19eca: inc esi",
+        "00c19ecb: jmp 0xc19f5d",
+        "00c19ed0: cmp dword ptr [ebp + 0xc], eax",
+        "00c19ed3: fstp st(0)",
+        "00c19ed5: jne 0xc19efd",
+        "00c19ed7: cmp dword ptr [ebp + 8], edx",
+        "00c19eda: jne 0xc19f5b",
+        "00c19edc: fcom qword ptr [ebp + 0x10]",
+        "00c19edf: fnstsw ax",
+        "00c19ee1: test ah, 5",
+        "00c19ee4: jnp 0xc19e60",
+        "00c19eea: fcom qword ptr [ebp + 0x10]",
+        "00c19eed: fnstsw ax",
+        "00c19eef: test ah, 0x41",
+        "00c19ef2: mov eax, dword ptr [ebp + 0x18]",
+        "00c19ef5: je 0xc19f51",
+        "00c19ef7: fstp st(0)",
+        "00c19ef9: fld1 ",
+        "00c19efb: jmp 0xc19f51",
+        "00c19efd: cmp dword ptr [ebp + 0xc], ecx",
+        "00c19f00: fstp st(0)",
+        "00c19f02: jne 0xc19f5d",
+        "00c19f04: cmp dword ptr [ebp + 8], edx",
+        "00c19f07: jne 0xc19f5d",
+        "00c19f09: fld qword ptr [ebp + 0x10]",
+        "00c19f0c: push ecx",
+        "00c19f0d: push ecx",
+        "00c19f0e: fstp qword ptr [esp]",
+        "00c19f11: call 0xc19dc0",
+        "00c19f16: fldz ",
+        "00c19f18: pop ecx",
+        "00c19f19: fcom qword ptr [ebp + 0x10]",
+        "00c19f1c: pop ecx",
+        "00c19f1d: mov ecx, eax",
+        "00c19f1f: fnstsw ax",
+        "00c19f21: test ah, 5",
+        "00c19f24: jp 0xc19f37",
+        "00c19f26: cmp ecx, 1",
+        "00c19f29: fstp st(0)",
+        "00c19f2b: fld qword ptr [0xe165a0]",
+        "00c19f31: jne 0xc19f4e",
+        "00c19f33: fchs ",
+        "00c19f35: jmp 0xc19f4e",
+        "00c19f37: fcom qword ptr [ebp + 0x10]",
+        "00c19f3a: fnstsw ax",
+        "00c19f3c: test ah, 0x41",
+        "00c19f3f: jne 0xc19f55",
+        "00c19f41: cmp ecx, 1",
+        "00c19f44: jne 0xc19f4e",
+        "00c19f46: fstp st(0)",
+        "00c19f48: fld qword ptr [0xe165c0]",
+        "00c19f4e: mov eax, dword ptr [ebp + 0x18]",
+        "00c19f51: fstp qword ptr [eax]",
+        "00c19f53: jmp 0xc19f5d",
+        "00c19f55: fstp st(0)",
+        "00c19f57: fld1 ",
+        "00c19f59: jmp 0xc19f4e",
+        "00c19f5b: fstp st(0)",
+        "00c19f5d: mov eax, esi",
+        "00c19f5f: pop esi",
+        "00c19f60: pop ebp",
+        "00c19f61: ret "
+      ],
+      "direct_control": [
+        {
+          "site": "00c19e68",
+          "instruction": "jmp",
+          "target": "0xc19f4e"
+        },
+        {
+          "site": "00c19e7d",
+          "instruction": "jmp",
+          "target": "0xc19f51"
+        },
+        {
+          "site": "00c19e84",
+          "instruction": "jmp",
+          "target": "0xc19f51"
+        },
+        {
+          "site": "00c19ea2",
+          "instruction": "jmp",
+          "target": "0xc19f4e"
+        },
+        {
+          "site": "00c19ebb",
+          "instruction": "jmp",
+          "target": "0xc19f51"
+        },
+        {
+          "site": "00c19ecb",
+          "instruction": "jmp",
+          "target": "0xc19f5d"
+        },
+        {
+          "site": "00c19efb",
+          "instruction": "jmp",
+          "target": "0xc19f51"
+        },
+        {
+          "site": "00c19f11",
+          "instruction": "call",
+          "target": "0xc19dc0"
+        },
+        {
+          "site": "00c19f35",
+          "instruction": "jmp",
+          "target": "0xc19f4e"
+        },
+        {
+          "site": "00c19f53",
+          "instruction": "jmp",
+          "target": "0xc19f5d"
+        },
+        {
+          "site": "00c19f59",
+          "instruction": "jmp",
+          "target": "0xc19f4e"
+        }
+      ],
+      "returns": [
+        "00c19f61"
+      ]
+    },
+    {
+      "address": "00c083a5",
+      "length": 23,
+      "role": "complete_control_word_call_helper",
+      "bytes_hex": "8b54240481e20003000083ca7f6689542406d96c2406c3",
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 6,
+      "assembly": [
+        "00c083a5: mov edx, dword ptr [esp + 4]",
+        "00c083a9: and edx, 0x300",
+        "00c083af: or edx, 0x7f",
+        "00c083b2: mov word ptr [esp + 6], dx",
+        "00c083b7: fldcw word ptr [esp + 6]",
+        "00c083bb: ret "
+      ],
+      "direct_control": [],
+      "returns": [
+        "00c083bb"
+      ]
+    },
+    {
+      "address": "00c0842e",
+      "length": 13,
+      "role": "complete_control_word_tail",
+      "bytes_hex": "66813c247f027403d92c245ac3",
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 5,
+      "assembly": [
+        "00c0842e: cmp word ptr [esp], 0x27f",
+        "00c08434: je 0xc08439",
+        "00c08436: fldcw word ptr [esp]",
+        "00c08439: pop edx",
+        "00c0843a: ret "
+      ],
+      "direct_control": [],
+      "returns": [
+        "00c0843a"
+      ]
+    },
+    {
+      "address": "00c27489",
+      "length": 252,
+      "role": "complete_existing_87except_provider",
+      "bytes_hex": "558bec83e4f081ec84000000a19055e10033c4898424800000008b45100fb70853568b750c8b064857894c240c742b48742448741d48741648741f484874074875746a10eb16c70601000000eb686a12eb0a6a11eb066a04eb026a085b518d7e185753e873befeff83c40c85c075478b450883f810741183f816740c83f81d740783642450feeb158b4c2450dd461083e1e3dd5c244083c903894c2450578d4e085150538d44241c508d44242450e8e6bdfeff83c41868ffff0000ff742410e85ac3feff833e0859597414833dd06be10000750b56e8e20f000085c0597508ff36e8d6bffeff598b8c248c0000005f5e5b33cce89f6bfdff8be55dc3",
+      "sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 102,
+      "assembly": [
+        "00c27489: push ebp",
+        "00c2748a: mov ebp, esp",
+        "00c2748c: and esp, 0xfffffff0",
+        "00c2748f: sub esp, 0x84",
+        "00c27495: mov eax, dword ptr [0xe15590]",
+        "00c2749a: xor eax, esp",
+        "00c2749c: mov dword ptr [esp + 0x80], eax",
+        "00c274a3: mov eax, dword ptr [ebp + 0x10]",
+        "00c274a6: movzx ecx, word ptr [eax]",
+        "00c274a9: push ebx",
+        "00c274aa: push esi",
+        "00c274ab: mov esi, dword ptr [ebp + 0xc]",
+        "00c274ae: mov eax, dword ptr [esi]",
+        "00c274b0: dec eax",
+        "00c274b1: push edi",
+        "00c274b2: mov dword ptr [esp + 0xc], ecx",
+        "00c274b6: je 0xc274e3",
+        "00c274b8: dec eax",
+        "00c274b9: je 0xc274df",
+        "00c274bb: dec eax",
+        "00c274bc: je 0xc274db",
+        "00c274be: dec eax",
+        "00c274bf: je 0xc274d7",
+        "00c274c1: dec eax",
+        "00c274c2: je 0xc274e3",
+        "00c274c4: dec eax",
+        "00c274c5: dec eax",
+        "00c274c6: je 0xc274cf",
+        "00c274c8: dec eax",
+        "00c274c9: jne 0xc2753f",
+        "00c274cb: push 0x10",
+        "00c274cd: jmp 0xc274e5",
+        "00c274cf: mov dword ptr [esi], 1",
+        "00c274d5: jmp 0xc2753f",
+        "00c274d7: push 0x12",
+        "00c274d9: jmp 0xc274e5",
+        "00c274db: push 0x11",
+        "00c274dd: jmp 0xc274e5",
+        "00c274df: push 4",
+        "00c274e1: jmp 0xc274e5",
+        "00c274e3: push 8",
+        "00c274e5: pop ebx",
+        "00c274e6: push ecx",
+        "00c274e7: lea edi, [esi + 0x18]",
+        "00c274ea: push edi",
+        "00c274eb: push ebx",
+        "00c274ec: call 0xc13364",
+        "00c274f1: add esp, 0xc",
+        "00c274f4: test eax, eax",
+        "00c274f6: jne 0xc2753f",
+        "00c274f8: mov eax, dword ptr [ebp + 8]",
+        "00c274fb: cmp eax, 0x10",
+        "00c274fe: je 0xc27511",
+        "00c27500: cmp eax, 0x16",
+        "00c27503: je 0xc27511",
+        "00c27505: cmp eax, 0x1d",
+        "00c27508: je 0xc27511",
+        "00c2750a: and dword ptr [esp + 0x50], 0xfffffffe",
+        "00c2750f: jmp 0xc27526",
+        "00c27511: mov ecx, dword ptr [esp + 0x50]",
+        "00c27515: fld qword ptr [esi + 0x10]",
+        "00c27518: and ecx, 0xffffffe3",
+        "00c2751b: fstp qword ptr [esp + 0x40]",
+        "00c2751f: or ecx, 3",
+        "00c27522: mov dword ptr [esp + 0x50], ecx",
+        "00c27526: push edi",
+        "00c27527: lea ecx, [esi + 8]",
+        "00c2752a: push ecx",
+        "00c2752b: push eax",
+        "00c2752c: push ebx",
+        "00c2752d: lea eax, [esp + 0x1c]",
+        "00c27531: push eax",
+        "00c27532: lea eax, [esp + 0x24]",
+        "00c27536: push eax",
+        "00c27537: call 0xc13322",
+        "00c2753c: add esp, 0x18",
+        "00c2753f: push 0xffff",
+        "00c27544: push dword ptr [esp + 0x10]",
+        "00c27548: call 0xc138a7",
+        "00c2754d: cmp dword ptr [esi], 8",
+        "00c27550: pop ecx",
+        "00c27551: pop ecx",
+        "00c27552: je 0xc27568",
+        "00c27554: cmp dword ptr [0xe16bd0], 0",
+        "00c2755b: jne 0xc27568",
+        "00c2755d: push esi",
+        "00c2755e: call 0xc28545",
+        "00c27563: test eax, eax",
+        "00c27565: pop ecx",
+        "00c27566: jne 0xc27570",
+        "00c27568: push dword ptr [esi]",
+        "00c2756a: call 0xc13545",
+        "00c2756f: pop ecx",
+        "00c27570: mov ecx, dword ptr [esp + 0x8c]",
+        "00c27577: pop edi",
+        "00c27578: pop esi",
+        "00c27579: pop ebx",
+        "00c2757a: xor ecx, esp",
+        "00c2757c: call 0xbfe120",
+        "00c27581: mov esp, ebp",
+        "00c27583: pop ebp",
+        "00c27584: ret "
+      ],
+      "direct_control": [
+        {
+          "site": "00c274cd",
+          "instruction": "jmp",
+          "target": "0xc274e5"
+        },
+        {
+          "site": "00c274d5",
+          "instruction": "jmp",
+          "target": "0xc2753f"
+        },
+        {
+          "site": "00c274d9",
+          "instruction": "jmp",
+          "target": "0xc274e5"
+        },
+        {
+          "site": "00c274dd",
+          "instruction": "jmp",
+          "target": "0xc274e5"
+        },
+        {
+          "site": "00c274e1",
+          "instruction": "jmp",
+          "target": "0xc274e5"
+        },
+        {
+          "site": "00c274ec",
+          "instruction": "call",
+          "target": "0xc13364"
+        },
+        {
+          "site": "00c2750f",
+          "instruction": "jmp",
+          "target": "0xc27526"
+        },
+        {
+          "site": "00c27537",
+          "instruction": "call",
+          "target": "0xc13322"
+        },
+        {
+          "site": "00c27548",
+          "instruction": "call",
+          "target": "0xc138a7"
+        },
+        {
+          "site": "00c2755e",
+          "instruction": "call",
+          "target": "0xc28545"
+        },
+        {
+          "site": "00c2756a",
+          "instruction": "call",
+          "target": "0xc13545"
+        },
+        {
+          "site": "00c2757c",
+          "instruction": "call",
+          "target": "0xbfe120"
+        }
+      ],
+      "returns": [
+        "00c27584"
+      ]
+    },
+    {
+      "address": "00c19260",
+      "length": 25,
+      "role": "complete_SSE2_route_ABI_wrapper_only",
+      "bytes_hex": "558bec83ec1083e4f0d9c9dd1c24dd5c2408e802000000c9c3",
+      "sha256": "e4a6378ddfeae050ac73aedab430795bad2103d132257fa2e3c6477c01f71a4d",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 10,
+      "assembly": [
+        "00c19260: push ebp",
+        "00c19261: mov ebp, esp",
+        "00c19263: sub esp, 0x10",
+        "00c19266: and esp, 0xfffffff0",
+        "00c19269: fxch st(1)",
+        "00c1926b: fstp qword ptr [esp]",
+        "00c1926e: fstp qword ptr [esp + 8]",
+        "00c19272: call 0xc19279",
+        "00c19277: leave ",
+        "00c19278: ret "
+      ],
+      "direct_control": [
+        {
+          "site": "00c19272",
+          "instruction": "call",
+          "target": "0xc19279"
+        }
+      ],
+      "returns": [
+        "00c19278"
+      ]
+    },
+    {
+      "address": "00d6a684",
+      "length": 48,
+      "role": "six_result_status_literals",
+      "bytes_hex": "ffffffffffffef7f000000000000100000000000000098c00000000000009840000000000000f07f0000000000000000",
+      "sha256": "f3bdc6621362bc6a44394cef3193941e482d8d3188d2bee69ee40fd3077a8d9a",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00d7a280",
+      "length": 8,
+      "role": "d_inttype_half",
+      "bytes_hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e165a0",
+      "length": 16,
+      "role": "special_positive_infinity_and_negative_NaN",
+      "bytes_hex": "000000000000f07f000000000000f8ff",
+      "sha256": "6ace709b080bed5f6d0e73b22b686aa04fb22ea2b2acf571962c5d87b9f12ffb",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e165c0",
+      "length": 8,
+      "role": "special_negative_zero",
+      "bytes_hex": "0000000000000080",
+      "sha256": "e6ad6c9a3a3b7658c35bacf6553fcb8ffe34387534a648fe18f875b8f7a86ddb",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e166d0",
+      "length": 10,
+      "role": "fallback_infinity80",
+      "bytes_hex": "0000000000000080ff7f",
+      "sha256": "f6114c7deeaa5c86e80b9e90dec3848f245b02f9a1030de801abe67377428fec",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e15c70",
+      "length": 10,
+      "role": "fallback_negative_NaN80",
+      "bytes_hex": "00000000000000c0ffff",
+      "sha256": "0fcc362376c4ddd013c8ccedf9bea0af6d50faf7ea7df49e0ec0b37cab6a9c30",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e15858",
+      "length": 4,
+      "role": "actual_pow_name_string",
+      "bytes_hex": "706f7700",
+      "sha256": "7dd2720d66f19802f4900bf81bea03552039d5deef989f52869f9eb6902b15e1",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "0109dd78",
+      "length": 4,
+      "role": "actual_error_dispatch_bypass_initial",
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "0109eea0",
+      "length": 4,
+      "role": "actual_SSE2_dispatch_initial",
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e16bd0",
+      "length": 4,
+      "role": "actual_matherr_bypass_initial",
+      "bytes_hex": "94260000",
+      "sha256": "ee668c09cd59ec598c72c344113e4dc44d6a14a89da2358cf8a8fb2f47c3c865",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e15850",
+      "length": 8,
+      "role": "power_leaf_half_binding",
+      "bytes_hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00c0ac8f",
+      "length": 7,
+      "role": "actual_SSE2_global_zero_writer",
+      "bytes_hex": "8325a0ee090100",
+      "sha256": "b969b765bc957f87dfe71fa3411a75248fd11316ff14b1e1c9c35734c2089b21",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 1,
+      "assembly": [
+        "00c0ac8f: and dword ptr [0x109eea0], 0"
+      ],
+      "direct_control": [],
+      "returns": []
+    },
+    {
+      "address": "00c0ac9b",
+      "length": 5,
+      "role": "actual_SSE2_global_EAX_writer",
+      "bytes_hex": "a3a0ee0901",
+      "sha256": "fabceb28030a125ea6c5c50ada83be6e9c979f3a3fbd8f9364cf4ea8da7f24c1",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 1,
+      "assembly": [
+        "00c0ac9b: mov dword ptr [0x109eea0], eax"
+      ],
+      "direct_control": [],
+      "returns": []
+    }
+  ],
+  "constants": [
+    {
+      "address": "00d6a684",
+      "bytes_hex": "ffffffffffffef7f",
+      "double_repr": "1.7976931348623157e+308"
+    },
+    {
+      "address": "00d6a68c",
+      "bytes_hex": "0000000000001000",
+      "double_repr": "2.2250738585072014e-308"
+    },
+    {
+      "address": "00d6a694",
+      "bytes_hex": "00000000000098c0",
+      "double_repr": "-1536.0"
+    },
+    {
+      "address": "00d6a69c",
+      "bytes_hex": "0000000000009840",
+      "double_repr": "1536.0"
+    },
+    {
+      "address": "00d6a6a4",
+      "bytes_hex": "000000000000f07f",
+      "double_repr": "inf"
+    },
+    {
+      "address": "00d6a6ac",
+      "bytes_hex": "0000000000000000",
+      "double_repr": "0.0"
+    },
+    {
+      "address": "00d7a280",
+      "bytes_hex": "000000000000e03f",
+      "double_repr": "0.5"
+    },
+    {
+      "address": "00e165a0",
+      "bytes_hex": "000000000000f07f",
+      "double_repr": "inf"
+    },
+    {
+      "address": "00e165a8",
+      "bytes_hex": "000000000000f8ff",
+      "double_repr": "nan"
+    },
+    {
+      "address": "00e165c0",
+      "bytes_hex": "0000000000000080",
+      "double_repr": "-0.0"
+    },
+    {
+      "address": "00e15850",
+      "bytes_hex": "000000000000e03f",
+      "double_repr": "0.5"
+    }
+  ],
+  "external_control_graph": [
+    {
+      "owner": "00bfeb10",
+      "site": "00bfeb46",
+      "instruction": "jmp",
+      "target": "00c19260"
+    },
+    {
+      "owner": "00bfeb10",
+      "site": "00bfeb5b",
+      "instruction": "call",
+      "target": "00bfeb6d"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfeb7c",
+      "instruction": "call",
+      "target": "00c083a5"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfeb97",
+      "instruction": "call",
+      "target": "00c083d5"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfebbc",
+      "instruction": "call",
+      "target": "00c08390"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfebcf",
+      "instruction": "jne",
+      "target": "00c0842e"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfebe0",
+      "instruction": "jmp",
+      "target": "00c08479"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfebec",
+      "instruction": "jne",
+      "target": "00c0842e"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfebfd",
+      "instruction": "call",
+      "target": "00c08330"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfec08",
+      "instruction": "call",
+      "target": "00c083d5"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfec45",
+      "instruction": "call",
+      "target": "00c083d5"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfec80",
+      "instruction": "call",
+      "target": "00c19e24"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfec93",
+      "instruction": "je",
+      "target": "00c0842e"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfecc7",
+      "instruction": "call",
+      "target": "00bfed32"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfecf7",
+      "instruction": "je",
+      "target": "00c0842e"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfecff",
+      "instruction": "jmp",
+      "target": "00c0842e"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfed08",
+      "instruction": "jmp",
+      "target": "00c0842e"
+    },
+    {
+      "owner": "00bfeb6d",
+      "site": "00bfed0f",
+      "instruction": "call",
+      "target": "00bfed32"
+    },
+    {
+      "owner": "00c08330",
+      "site": "00c0836b",
+      "instruction": "call",
+      "target": "00c27489"
+    },
+    {
+      "owner": "00c08479",
+      "site": "00c084b7",
+      "instruction": "call",
+      "target": "00c08347"
+    },
+    {
+      "owner": "00c08479",
+      "site": "00c084be",
+      "instruction": "call",
+      "target": "00c08330"
+    },
+    {
+      "owner": "00c19dc0",
+      "site": "00c19dcd",
+      "instruction": "call",
+      "target": "00bfa52f"
+    },
+    {
+      "owner": "00c19dc0",
+      "site": "00c19de0",
+      "instruction": "call",
+      "target": "00c28548"
+    },
+    {
+      "owner": "00c19dc0",
+      "site": "00c19e05",
+      "instruction": "call",
+      "target": "00c28548"
+    },
+    {
+      "owner": "00c19e24",
+      "site": "00c19f11",
+      "instruction": "call",
+      "target": "00c19dc0"
+    },
+    {
+      "owner": "00c27489",
+      "site": "00c274ec",
+      "instruction": "call",
+      "target": "00c13364"
+    },
+    {
+      "owner": "00c27489",
+      "site": "00c27537",
+      "instruction": "call",
+      "target": "00c13322"
+    },
+    {
+      "owner": "00c27489",
+      "site": "00c27548",
+      "instruction": "call",
+      "target": "00c138a7"
+    },
+    {
+      "owner": "00c27489",
+      "site": "00c2755e",
+      "instruction": "call",
+      "target": "00c28545"
+    },
+    {
+      "owner": "00c27489",
+      "site": "00c2756a",
+      "instruction": "call",
+      "target": "00c13545"
+    },
+    {
+      "owner": "00c27489",
+      "site": "00c2757c",
+      "instruction": "call",
+      "target": "00bfe120"
+    },
+    {
+      "owner": "00c19260",
+      "site": "00c19272",
+      "instruction": "call",
+      "target": "00c19279"
+    }
+  ],
+  "shared_entries": {
+    "C08330_prefix_bytes": 23,
+    "C08330_shared_tail_start": "00c08350",
+    "shared_tail_bytes": 51,
+    "C08330_reachable_stream_bytes": 74,
+    "C08347_complete_bytes": 60,
+    "physical_union_bytes": 83,
+    "original_jump": {
+      "site": "00c08345",
+      "bytes_hex": "eb09",
+      "target": "00c08350"
+    },
+    "warning": "Saved23-byte prefix is not complete; own both public entry streams and shared tail coherently"
+  },
+  "abi": {
+    "BFEB10": "Assembly-only ST1=x, ST0=y; current109EEA0/MXCSR/CW select full fast or fallback; one ST0 result on normal return",
+    "BFEB6D": {
+      "input": "EAX=y high DWORD, ST0=y, BFEB10 actual raw stack",
+      "T_definition": "ESP after PUSH EAX at BFEB6F",
+      "T_hex_offsets": {
+        "00": "packed savedCW low16 and scratch/workCW high16",
+        "04": "BFEB10 internal return",
+        "08": "x qword",
+        "10": "y qword",
+        "18": "scratch DWORD"
+      },
+      "input_rereads": "Current actual double slots and exact byte/word/dword reads; C083D5 EAX/EFLAGS consumed at original sites",
+      "wide_sign_test": {
+        "site": "00bfecd3",
+        "operand": "dword ptr [T+17h]",
+        "mask": "00000080",
+        "bytes_hex": "f744241780000000"
+      },
+      "restoration": "Tail helpers consume packedCW DWORD via POP EDX before RET; no ordinary cdecl pow signature"
+    },
+    "C083A5": "Call-only raw helper: packedCW at entryESP+4, workingCW written entryESP+6; EDX=(packed&0300h)|007Fh; RET; current flags/FP effects",
+    "C0842E": "JMP/tail entry: entryESP is packedCW, real return at ESP+4; conditional FLDCW, POP EDX, RET",
+    "error_dispatch": "EAX=type, ECX=name pointer, EDX=operation, ST0=result; caller savedCW and x/y qwords at special stack offsets; no ordinary safe C++ call",
+    "C08479": "Same CW-top tail stack plus ST0 result/ECX name/EDX operation; temporary FST double retains ST0; exact x87 result/status/literal branches",
+    "C19DC0": "cdecl actual8-byte input slot; EAX0/1/2 classification; two raw frnd calls return ST0; no returned x87 value",
+    "C19E24": "cdecl actual x,y double slots and current output pointer; EAX=ESI0/1; writes output only on selected paths; preserves ESI and balances own x87 temporaries"
+  },
+  "special_save": {
+    "site": "00bfec7c",
+    "bytes_hex": "9bdd7108",
+    "instruction": "waiting FSAVE [ECX+8]",
+    "buffer_bytes": 116,
+    "result_prefix_bytes": 8,
+    "x87_save_bytes": 108,
+    "input_store_order": [
+      "FSTP x outgoing qword",
+      "FSTP y outgoing qword",
+      "FSAVE remaining x87 environment, resetting it"
+    ],
+    "normal_return_order": [
+      "remove outgoing args",
+      "recover output/save buffer pointer",
+      "FRSTOR environment",
+      "FLD current output qword",
+      "release116 bytes"
+    ],
+    "automatic_exception_restore": false,
+    "native_FH3_guard": false,
+    "MXCSR_saved": false
+  },
+  "error_record": {
+    "bytes": 32,
+    "offsets": {
+      "type": 0,
+      "name": 4,
+      "argument1": 8,
+      "argument2": 16,
+      "result": 24
+    },
+    "owner": "wrapper stack frame, live through direct C27489 call",
+    "argument2": "initialized by C08330 before shared tail; C08347 leaves it unwritten",
+    "callee": "bsp::legacy_crt_87except_00c27489(operation, record, savedCW)",
+    "operation_1d_supported_by_existing_source": true,
+    "result_reloaded_after_normal_return": true,
+    "savedCW_reloaded_after_normal_return": true,
+    "no_heap_owner_or_generic_callback": true,
+    "provider_writes_savedCW_pointer": false,
+    "required_runtime": "persistent actual matherr_bypass_00e16bd0 + owning errno accessor; existing bound LegacyCrtMathRuntime",
+    "inherited_boundaries": [
+      "Integrator CMake registration, Ghidra annotation application/save/refresh and ledger metadata",
+      "Actual installed owner provides persistent runtime global and errno accessor binding",
+      "Original CRT TLS/startup initialization is borrowed service boundary; not reconstructed",
+      "Reserved FPIEEE stack bytes initialized tozero and reserved x87 precision encoding01 not contracted",
+      "Unused binary32 __raise_exc_ex variant not exposed",
+      "Native differential checks x87 exceptionflags, not complete instruction/data pointer or condition-code state",
+      "No gameplay validation"
+    ],
+    "new_operation_1d_runtime_test": false
+  },
+  "source_contracts": [
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/src/legacy_crt_math.cpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/src/legacy_crt_math.cpp",
+      "bytes": 11469,
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/include/bsp/legacy_crt_math.hpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/include/bsp/legacy_crt_math.hpp",
+      "bytes": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/src/system_camera_axes.cpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/src/system_camera_axes.cpp",
+      "bytes": 15696,
+      "sha256": "6a54b1464f8d5d28e36ac602f46fe493e927d83257c7e9a434fcf13010d7f3e6",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/include/bsp/system_camera_axes.hpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/include/bsp/system_camera_axes.hpp",
+      "bytes": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/docs/LEGACY_CRT_MATH.md",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/docs/LEGACY_CRT_MATH.md",
+      "bytes": 5953,
+      "sha256": "4b19307fd3088714af624429e6d85b9d9bf9515b9800d7d2d83f999450cbbe4d",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/reports/legacy_crt_math_audit.json",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/reports/legacy_crt_math_audit.json",
+      "bytes": 25570,
+      "sha256": "e5172c26e634b5138da1815242caed1a02bdb6f5115ff59eb6b991ba7a061b19",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/docs/NATIVE_RENDERER_GAMMA_DISCOVERY.md",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/docs/NATIVE_RENDERER_GAMMA_DISCOVERY.md",
+      "bytes": 13773,
+      "sha256": "5c53ab66d3bfd5c8d5a6eb75b1e4fa67db19faa0a59d158efd30f4389a6f4ceb",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/reports/native_renderer_gamma_discovery.json",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/reports/native_renderer_gamma_discovery.json",
+      "bytes": 49358,
+      "sha256": "08a2c237c5a1e8e473bd68ae96c96b3fa1f02ad4ef4eaa1b678ad81aa86c9b87",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/src/native_crt_x87_double_load.cpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/src/native_crt_x87_double_load.cpp",
+      "bytes": 1417,
+      "sha256": "b1b9242beb966805207b141169d0d5f210aeeb3730227be31247888c5c6cea05",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/include/bsp/native_crt_x87_double_load.hpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/include/bsp/native_crt_x87_double_load.hpp",
+      "bytes": 1486,
+      "sha256": "f9f2aa4cb6f8e6b049679f8b6faad99f45408c05c6fd96f2bf388010ffee4772",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/config/target.json",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/tools/bsp.py",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/tools/bsp.py",
+      "bytes": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback_support_discovery/tools/ghidra_export.py",
+      "snapshot": "local/pow_fallback_support/source_snapshot/base/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee",
+      "role": "current source/evidence contract",
+      "commit": null
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_power_leaves/src/native_crt_x87_power_leaves.cpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/completed_power_leaves/src/native_crt_x87_power_leaves.cpp",
+      "bytes": 1998,
+      "sha256": "4a8e6757a76c63b23b5d5609222a5018eb608dc080d2e1dea6b4b25948499990",
+      "role": "source-complete provider; primary integration separate",
+      "commit": "199f8fdbde650fab9c5c7cde2f5b015aaaaf460b"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_power_leaves/include/bsp/native_crt_x87_power_leaves.hpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/completed_power_leaves/include/bsp/native_crt_x87_power_leaves.hpp",
+      "bytes": 2640,
+      "sha256": "0ce10e42e6280c08f71b0e581249dbebdfb22cebe2b3c62c5b98996aaced4fb5",
+      "role": "source-complete provider; primary integration separate",
+      "commit": "199f8fdbde650fab9c5c7cde2f5b015aaaaf460b"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_power_leaves/reports/native_crt_x87_power_leaves_audit.json",
+      "snapshot": "local/pow_fallback_support/source_snapshot/completed_power_leaves/reports/native_crt_x87_power_leaves_audit.json",
+      "bytes": 19890,
+      "sha256": "8ea705ebd3b919eae38a936e034eb014920ed16d78356f980e76e9d521f147f7",
+      "role": "source-complete provider; primary integration separate",
+      "commit": "199f8fdbde650fab9c5c7cde2f5b015aaaaf460b"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native-crt-double-classification/include/bsp/native_crt_double_classification.hpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/classification_source_sealed/include/bsp/native_crt_double_classification.hpp",
+      "bytes": 2939,
+      "sha256": "73991ffa5379b7804dafe2c91f0d33cc6a2cda2f5762e288e628e701459c848e",
+      "role": "sealed worker provider; primary review/integration pending",
+      "commit": "b9743c31f3cd0c8f46478c4c4ba2d74d8e53258b"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native-crt-double-classification/src/native_crt_double_classification.cpp",
+      "snapshot": "local/pow_fallback_support/source_snapshot/classification_source_sealed/src/native_crt_double_classification.cpp",
+      "bytes": 3554,
+      "sha256": "8efd8cc1340f94e50e6a5bb5a127bc48cc27ab0692cf2db0bfebe61f04402cdb",
+      "role": "sealed worker provider; primary review/integration pending",
+      "commit": "b9743c31f3cd0c8f46478c4c4ba2d74d8e53258b"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile-native-crt-double-classification/reports/native_crt_double_classification_audit.json",
+      "snapshot": "local/pow_fallback_support/source_snapshot/classification_source_sealed/reports/native_crt_double_classification_audit.json",
+      "bytes": 27283,
+      "sha256": "b1511c7d57890d39ad8d451888347da7bd0dab8ec8fb2b3ec1a698bc084d5ffd",
+      "role": "sealed worker provider; primary review/integration pending",
+      "commit": "b9743c31f3cd0c8f46478c4c4ba2d74d8e53258b"
+    }
+  ],
+  "pending_provider_contract": "Worker sealed b9743c31; primary review/integration pending. Approved naked native_crt_sptype_00c12f3e and native_crt_fpclass_00bfa52f use three uint32 public words to cover ten-byte readable span; original internal fpclass->sptype remains two-word call. native_crt_frnd_st0_00c28548 has two uint32 stack words and assembly-only pushed ST0. Separate worker owns all three; no implementation lease or reconstruction here.",
+  "special_body": {
+    "C19E24_contains_SSE": false,
+    "direct_provider": "00c19dc0",
+    "output_default_synthesized": false,
+    "concrete_path": "Exact y=-infinity and |x|=1 reaches E165A8 negative-NaN store and ESI=1; caller takes type1 error route",
+    "numerical_runtime_claim": false
+  },
+  "SSE2_route": {
+    "status": "blocked/unimplemented",
+    "wrapper": "00c19260[25]",
+    "core": "00c19279",
+    "error_provider": "00c0f0e4",
+    "full_core_or_coefficient_investigation_repeated": false,
+    "initial109EEA0_is_policy": false,
+    "actual_current_writers": [
+      "00c0ac8f",
+      "00c0ac9b"
+    ],
+    "host_pow_substitution": false
+  },
+  "proposed_packets": [
+    {
+      "id": "native_crt_x87_control2",
+      "file_stem": "native_crt_x87_control",
+      "addresses": [
+        "00c083a5",
+        "00c0842e"
+      ],
+      "physical_bytes": 36,
+      "status": "independently source-ready",
+      "prerequisites": [],
+      "contract": "Assembly-only packed-CW call helper and CW-top JMP tail; exact complete bodies, no new context",
+      "proposed_files": [
+        "src/native_crt_x87_control.cpp",
+        "include/bsp/native_crt_x87_control.hpp",
+        "docs/NATIVE_CRT_X87_CONTROL.md",
+        "reports/native_crt_x87_control_audit.json"
+      ]
+    },
+    {
+      "id": "native_crt_x87_error_dispatch2",
+      "file_stem": "native_crt_x87_error_dispatch",
+      "addresses": [
+        "00c08330",
+        "00c08347"
+      ],
+      "physical_bytes": 83,
+      "status": "source-ready under current concrete 87except contract",
+      "prerequisites": [
+        "legacy_crt_87except_00c27489",
+        "persistent actual LegacyCrtMathRuntime"
+      ],
+      "contract": "Own shared tail with both raw entries; binary argument2 initialized only by C08330; direct fixed provider and current-result/current-CW reloads",
+      "proposed_files": [
+        "src/native_crt_x87_error_dispatch.cpp",
+        "include/bsp/native_crt_x87_error_dispatch.hpp",
+        "docs/NATIVE_CRT_X87_ERROR_DISPATCH.md",
+        "reports/native_crt_x87_error_dispatch_audit.json"
+      ]
+    },
+    {
+      "id": "native_crt_pow_special2",
+      "file_stem": "native_crt_pow_special",
+      "addresses": [
+        "00c19dc0",
+        "00c19e24"
+      ],
+      "physical_bytes": 418,
+      "status": "concrete after primary acceptance of separately sealed classification3",
+      "prerequisites": [
+        "b9743c31 classification3 primary review/integration"
+      ],
+      "contract": "Raw double slots, internal two-word calls with readable tail bytes, ST0 frnd outputs, four borrowed literals and native output nonwrites",
+      "proposed_files": [
+        "src/native_crt_pow_special.cpp",
+        "include/bsp/native_crt_pow_special.hpp",
+        "docs/NATIVE_CRT_POW_SPECIAL.md",
+        "reports/native_crt_pow_special_audit.json"
+      ]
+    },
+    {
+      "id": "native_crt_x87_result_status1",
+      "file_stem": "native_crt_x87_result_status",
+      "addresses": [
+        "00c08479"
+      ],
+      "physical_bytes": 163,
+      "status": "blocked on proposed error_dispatch2",
+      "prerequisites": [
+        "complete C08330/C08347",
+        "six literal-cell bindings"
+      ],
+      "contract": "CW-top JMP tail, retained ST0, literal x87 scale/compare/multiply, operation1D selects binary dispatcher",
+      "proposed_files": [
+        "src/native_crt_x87_result_status.cpp",
+        "include/bsp/native_crt_x87_result_status.hpp",
+        "docs/NATIVE_CRT_X87_RESULT_STATUS.md",
+        "reports/native_crt_x87_result_status_audit.json"
+      ]
+    },
+    {
+      "id": "native_crt_pow_fallback1",
+      "file_stem": "native_crt_pow_fallback",
+      "addresses": [
+        "00bfeb6d"
+      ],
+      "physical_bytes": 453,
+      "status": "blocked on missing public support packets",
+      "prerequisites": [
+        "control2",
+        "error_dispatch2",
+        "pow_special2",
+        "result_status1",
+        "complete C083D5/C08390/BFED32"
+      ],
+      "contract": "Fixed actual globals/name/literal context; custom raw caller stack/EAX/ST0; preserve waits, current reads and FSAVE/FRSTOR with no invented cleanup",
+      "proposed_files": [
+        "src/native_crt_pow_fallback.cpp",
+        "include/bsp/native_crt_pow_fallback.hpp",
+        "docs/NATIVE_CRT_POW_FALLBACK.md",
+        "reports/native_crt_pow_fallback_audit.json"
+      ]
+    }
+  ],
+  "validation": {
+    "fresh_live_PE_spans": 23,
+    "fresh_live_PE_bytes": 1650,
+    "full_binary_SHA_checked": true,
+    "all_complete_spans_decoded": true,
+    "source_contract_snapshots": 19,
+    "source_changes": false,
+    "Ghidra_mutations": false,
+    "shared_metadata_changes": false,
+    "build": false,
+    "tests": false,
+    "runtime": false,
+    "display_or_gamma_calls": false
+  },
+  "limitations": [
+    "Read-only source readiness is not compiled, linked, runtime or gameplay validation.",
+    "Existing C27489 bounded FP/SEH compatibility remains visible; no new original full-FP-state or native-SEH ABI claim.",
+    "Separately sealed leaf provider proofs are referenced, not independently replayed here.",
+    "Raw stack/register/x87 adapters and their concrete data bindings require explicit source review before implementation.",
+    "BFEB10 remains blocked by the full SSE2/error route even after future fallback completion."
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/pow_fallback_support/00bfeb10_assembly.txt",
+      "bytes": 634,
+      "sha256": "9bc564d038ceb21b87dae3b1eef34744842fc5f44704ef847689cc8db4e9ca82"
+    },
+    {
+      "path": "local/pow_fallback_support/00bfeb6d_assembly.txt",
+      "bytes": 3139,
+      "sha256": "f25df4684fb8ea0c4727dd74f4d6c973ece9bb806dccbbb9951bd6fbcc44ca65"
+    },
+    {
+      "path": "local/pow_fallback_support/00c08330_assembly.txt",
+      "bytes": 981,
+      "sha256": "f2fae71613d2005876deecdf9fc7c628f711f9b63800ba51e39a21eecdb5825a"
+    },
+    {
+      "path": "local/pow_fallback_support/00c083a5_assembly.txt",
+      "bytes": 174,
+      "sha256": "9fc7105d632abdf027e28704edd247f86276f8c17313d3a6364db85aea45ad7b"
+    },
+    {
+      "path": "local/pow_fallback_support/00c0842e_assembly.txt",
+      "bytes": 122,
+      "sha256": "d4d1e0d9024bd7800d77ba8047dff68f1154d858bb0fe097f7bc348095c3bba3"
+    },
+    {
+      "path": "local/pow_fallback_support/00c08479_assembly.txt",
+      "bytes": 1312,
+      "sha256": "c9dd13542b8bde4a9f32766e3b59db38dad9ae7ba8bcea9af7ce5ae34cb45a1f"
+    },
+    {
+      "path": "local/pow_fallback_support/00c0ac8f_assembly.txt",
+      "bytes": 39,
+      "sha256": "6f2a2724782bfc6d347e2c619806753294e0b8ce307fb656dce8ceb7f6fdee68"
+    },
+    {
+      "path": "local/pow_fallback_support/00c0ac9b_assembly.txt",
+      "bytes": 41,
+      "sha256": "ec8f15193056c7209cfac8ce3dba38f3b086cc366728590c9ae06f99fedfeaa6"
+    },
+    {
+      "path": "local/pow_fallback_support/00c19260_assembly.txt",
+      "bytes": 239,
+      "sha256": "a1187fa79d74243cfd44f4499d1d416ba3478c0438ffc508a2d0096943c1a30c"
+    },
+    {
+      "path": "local/pow_fallback_support/00c19dc0_assembly.txt",
+      "bytes": 1120,
+      "sha256": "13b744f512e7a19e469d1551dd0cf90b79923e4ae2e67be12376feca68cfa87f"
+    },
+    {
+      "path": "local/pow_fallback_support/00c19e24_assembly.txt",
+      "bytes": 3055,
+      "sha256": "5428e343a663da055dee2a60ff7784ce170c1f78efc9bb8b57034c282cdfab45"
+    },
+    {
+      "path": "local/pow_fallback_support/00c27489_assembly.txt",
+      "bytes": 2524,
+      "sha256": "9d145e638f65b53156d278a01c6f02bae46690b538fd3b512d2db3a80bfda5d2"
+    },
+    {
+      "path": "local/pow_fallback_support/capture.py",
+      "bytes": 3946,
+      "sha256": "6d8981dae27d1b4aa63ee77a4804465f6092634f31bf7bf2d016aa24b49d0a9e"
+    },
+    {
+      "path": "local/pow_fallback_support/guarded_capture.json",
+      "bytes": 14954,
+      "sha256": "a088466ffa9dd89d79cbc6e3bb03569a328488a316d177e0faa3b71604bf1c9f"
+    },
+    {
+      "path": "local/pow_fallback_support/pins.json",
+      "bytes": 38546,
+      "sha256": "add01eb7535868f574e21d29cdfc04101ff9c062c5b11a6e4368793714258931"
+    },
+    {
+      "path": "local/pow_fallback_support/seal.py",
+      "bytes": 11062,
+      "sha256": "c6f060a6440bc00db87c73f82e0f8deea757b50a9c0cfe0cec9fad7f9804e67b"
+    },
+    {
+      "path": "local/pow_fallback_support/source_context.json",
+      "bytes": 18479,
+      "sha256": "111efe358d25228e18806f88e2563ce64290b8dd99603c22a04c025b8c47f96e"
+    },
+    {
+      "path": "local/pow_fallback_support/source_context.py",
+      "bytes": 3108,
+      "sha256": "9de7f9c3d329eb2eb233bfa3afb3a3244076ea2f0739d88752572026f0e948c8"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/docs/LEGACY_CRT_MATH.md",
+      "bytes": 5953,
+      "sha256": "4b19307fd3088714af624429e6d85b9d9bf9515b9800d7d2d83f999450cbbe4d"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/docs/NATIVE_RENDERER_GAMMA_DISCOVERY.md",
+      "bytes": 13773,
+      "sha256": "5c53ab66d3bfd5c8d5a6eb75b1e4fa67db19faa0a59d158efd30f4389a6f4ceb"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/include/bsp/legacy_crt_math.hpp",
+      "bytes": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/include/bsp/native_crt_x87_double_load.hpp",
+      "bytes": 1486,
+      "sha256": "f9f2aa4cb6f8e6b049679f8b6faad99f45408c05c6fd96f2bf388010ffee4772"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/include/bsp/system_camera_axes.hpp",
+      "bytes": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/reports/legacy_crt_math_audit.json",
+      "bytes": 25570,
+      "sha256": "e5172c26e634b5138da1815242caed1a02bdb6f5115ff59eb6b991ba7a061b19"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/reports/native_renderer_gamma_discovery.json",
+      "bytes": 49358,
+      "sha256": "08a2c237c5a1e8e473bd68ae96c96b3fa1f02ad4ef4eaa1b678ad81aa86c9b87"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/src/legacy_crt_math.cpp",
+      "bytes": 11469,
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/src/native_crt_x87_double_load.cpp",
+      "bytes": 1417,
+      "sha256": "b1b9242beb966805207b141169d0d5f210aeeb3730227be31247888c5c6cea05"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/src/system_camera_axes.cpp",
+      "bytes": 15696,
+      "sha256": "6a54b1464f8d5d28e36ac602f46fe493e927d83257c7e9a434fcf13010d7f3e6"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/tools/bsp.py",
+      "bytes": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/base/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/classification_source_sealed/include/bsp/native_crt_double_classification.hpp",
+      "bytes": 2939,
+      "sha256": "73991ffa5379b7804dafe2c91f0d33cc6a2cda2f5762e288e628e701459c848e"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/classification_source_sealed/reports/native_crt_double_classification_audit.json",
+      "bytes": 27283,
+      "sha256": "b1511c7d57890d39ad8d451888347da7bd0dab8ec8fb2b3ec1a698bc084d5ffd"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/classification_source_sealed/src/native_crt_double_classification.cpp",
+      "bytes": 3554,
+      "sha256": "8efd8cc1340f94e50e6a5bb5a127bc48cc27ab0692cf2db0bfebe61f04402cdb"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/completed_power_leaves/include/bsp/native_crt_x87_power_leaves.hpp",
+      "bytes": 2640,
+      "sha256": "0ce10e42e6280c08f71b0e581249dbebdfb22cebe2b3c62c5b98996aaced4fb5"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/completed_power_leaves/reports/native_crt_x87_power_leaves_audit.json",
+      "bytes": 19890,
+      "sha256": "8ea705ebd3b919eae38a936e034eb014920ed16d78356f980e76e9d521f147f7"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/completed_power_leaves/src/native_crt_x87_power_leaves.cpp",
+      "bytes": 1998,
+      "sha256": "4a8e6757a76c63b23b5d5609222a5018eb608dc080d2e1dea6b4b25948499990"
+    },
+    {
+      "path": "local/pow_fallback_support/source_snapshot/pending_classification/native_crt_double_classification.hpp",
+      "bytes": 2939,
+      "sha256": "73991ffa5379b7804dafe2c91f0d33cc6a2cda2f5762e288e628e701459c848e"
+    },
+    {
+      "path": "docs/NATIVE_CRT_POW_FALLBACK_SUPPORT_DISCOVERY.md",
+      "bytes": 15476,
+      "sha256": "54618cc4f408c4b4a70337b453f4c4c57cac2c8011f510a63f1c9cbafc52a705"
+    }
+  ]
+}
