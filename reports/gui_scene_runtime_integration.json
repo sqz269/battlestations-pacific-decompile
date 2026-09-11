@@ -1,0 +1,467 @@
+{
+  "packet": "orch2_gui_scene_runtime_q",
+  "utc": "2026-09-11T08:20:33.744065+00:00",
+  "tested_source_commit": "ffec6c0cf8f2bce14851b3bd261203dd70948722",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_sha256": {
+    "include/bsp/native_weak_owner.hpp": "9d30358b5db990b99fda94e53d814cef5e063ca40b22a9dd75a876f7ac0b4b46",
+    "include/bsp/directional_light_reference.hpp": "09bf93d580f9e4a3afac0c3c637b9bbc8fb8c82635ae7099ac49727f59b6b82e",
+    "include/bsp/gui_screen_scene_runtime.hpp": "2c6516faa5dbd119f139aa48e07d3ff3f8f628addca59dbee10a8e3c3b4e5bb8",
+    "include/bsp/gui_group_bounds.hpp": "807ff4b177ed5caff2f83ffe36517a022620dcd230fa50d0bb1a027b2217516b",
+    "include/bsp/gui_camera_store_owner.hpp": "775330f5ac7ef0c04af5a885be037c9ecb64346e91ed8e8daf0a423582280ec5",
+    "include/bsp/system_camera_axes.hpp": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594",
+    "src/native_weak_owner.cpp": "7cfdb7cba481205e8517320f24b902f37b5d314acb62efbc5f0aecf9024c2739",
+    "src/directional_light_reference.cpp": "7fc493c0cba3b63cd3d9a774aede7be50df8f99a6eece41e870ba897b095c369",
+    "src/gui_screen_scene_runtime.cpp": "759b4b45a9c91270d73080fef1415effe77b06c78777954b7669b61d3474e5d5",
+    "src/gui_group_bounds.cpp": "44336697fe140f7282e8fe14b398eea774217e13127cb273fb75f8b206ab27d4",
+    "src/gui_camera_store_owner.cpp": "939c3f4ba9ec304e3a9976522bcb6f84e57fc5405e663e7e08c22eaae89cc427",
+    "src/system_camera_axes.cpp": "6a54b1464f8d5d28e36ac602f46fe493e927d83257c7e9a434fcf13010d7f3e6",
+    "cmake/startup.cmake": "fb9191aecaae17c3ff81c3ecccbbd6ec915173882917763418d4e1da2126eaf8"
+  },
+  "artifacts_sha256": {
+    "build/win32/Release/bsp_core.lib": "078f691f046861ad229d726be10f4d5eb4ef044556bec1849e306069e19fee44",
+    "build/win32/Release/bsp_game.exe": "2cc19edae365358b94dad0deb0b795e02c7e35a6c7734423876d49ee2e9a7400",
+    "build/win32/Testing/Temporary/LastTest.log": "9f8a15b47b612e707ffa2f123c51089c28d163783b0dd72130cd352028164796",
+    "local/gui-scene-runtime-bounds-build.log": "1ed57c255adc747916987fbb3178fa8b7bd86a6490a57c48ed97befdc701029c",
+    "local/gui-scene-workers/manifest.json": "5965ef96e355954c4ccf464c07f9dbca726c765630ea0124d87a61a81fb59ee3",
+    "local/gui-scene-names-before.txt": "da1f5fe7736e26013d4a30a83470db5b00a1a4f49fcafd28a91cd24e26d2d143",
+    "local/gui-scene-names-after.txt": "665f81d0455d9fc0b0b7add3fc99e70b45034a2b495527ab4a95072322b06380",
+    "local/gui-scene-comments-before.json": "8f100490f9b1ff1f7fc94c5e08f569fdda61072df9944b2c7edbf9a79335fa7c",
+    "local/gui-scene-comments-after.json": "d111c965910875f4ea23187ee2a33e1c591ae934ee8bbcbe78106a99933f7273",
+    "local/gui-scene-names-expected.json": "a137fb17640f1489a445ac4bb4868c184805306d3da266a5ef651b6777469594",
+    "local/gui-scene-annotations.log": "d909297b20f86959274d35395375a722f734558f5f9911950bab7dbcdee07bd6",
+    "local/gui-scene-export-refresh.log": "8cccc679e228027d3c2f712686aa6c860dd5c97456fe7db3e5a50356d50f881d",
+    "local/gui-scene-annotation-verification.json": "c79f1ff3ac9198e623b76407ebc08e5f521477f2203661f14a84d7be8a5460d3",
+    "local/gui_scene_annotations.py": "1b62b172bffc6a1b59d0cc1f4bacc674a2b108165e5b0342be7f4e6b8bf7dfde",
+    "local/prepare_gui_scene_annotations.py": "bedb3fc999456f726c25961017f447eb8a458f055e0fbf6d7b82dd817b7b5f94",
+    "local/preserve_gui_scene_workers.py": "ca3d164e19bb49ed0a59ec6150c28d8989a459a9ca6147caefbb6f155c27bc5e",
+    "local/run_gui_scene_probes.ps1": "404e0209c8cf0674b042f6d8aef5493965225502a29b266bbd01f499b25c8bda",
+    "local/gui-scene-group-bounds-probe.cpp": "1797c07302d79665730ca78378154dac0d83bc934009a0086ce21cc914a35cf5",
+    "reports/gui_scene_runtime_definitions.json": "398fb36312259b378e2a353d5fcb13add149577bbdd123733c3b640f64266dc0",
+    "reports/gui_scene_runtime_flow_repair.json": "e10d54443e816832207261c24cce9ef5cfbdcec79f0583fd83ed483737da61e7",
+    "local/gui-scene-weak.exe": "ea9065fbbb2f7dd5a606755265b9bbb0762d42c3c7829ab12031f529261593f6",
+    "local/gui-scene-weak-compile.log": "5911031fb081e845b5bd1a3a14abd3995f164c232dfead19c9470304bd0d4de3",
+    "local/gui-scene-weak-result.log": "f098b3328fa2f50b4dd0a43317f8f88d68c636899b3858ab43c51f261eec4bf9",
+    "local/gui-scene-directional.exe": "b56519307a01379c979403ee864aadb70cf2665b8a48c2205a7f9e1a6ff50c2d",
+    "local/gui-scene-directional-compile.log": "9ee438a4c94ad6be9d1af2178efe879434ecedd6198ffd9848f2525c85383c34",
+    "local/gui-scene-directional-result.log": "4d74a4cca66b090b932966c11308d2e2aed7c1cc519dff3ffd7f5e889bb6ee75",
+    "local/gui-scene-bounds.exe": "521a9b624d684a62e2a025e8d2083098ad203283fb1578be76ffe79b9c486674",
+    "local/gui-scene-bounds-compile.log": "9f62a53a81f83cd47005d874744c4168492837f52ba79585a65df19a8cc5e4d1",
+    "local/gui-scene-bounds-result.log": "0d4d725d35ab50ffb03d1ff1096c99d32b6b107153536ee328e032537ad85e50"
+  },
+  "worker_reports": [
+    "reports/native_weak_owner.json",
+    "reports/directional_light_reference.json",
+    "reports/gui_screen_scene_runtime.json",
+    "reports/gui_group_bounds.json"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_matched": 8,
+    "focused_ignored_probes_passed": [
+      "weak",
+      "directional",
+      "bounds"
+    ],
+    "bounds_original_writer_cases": 3,
+    "bounds_radius_shared_sqrt_cases": 8,
+    "combined_screen_ownership_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "addresses": [
+      "00925490",
+      "00925540",
+      "00924480",
+      "00924050",
+      "00925430",
+      "009242f0",
+      "009236a0",
+      "00924420",
+      "00925470",
+      "00cd8a60",
+      "00ce1040",
+      "00b004b0",
+      "00b003a0",
+      "00b002c0",
+      "00ac59a0",
+      "00ac5480",
+      "00b7c820",
+      "00b8e6c0",
+      "00bf7420"
+    ],
+    "names_verified": 19,
+    "prior_comment_fields_preserved": 5,
+    "forced_exports": 19,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "defined_functions": [
+      "00cd8a60"
+    ],
+    "returning_free_events": 6,
+    "remaining_call_gaps": 0,
+    "global_no_return_changed": false,
+    "saved": true
+  },
+  "preserved_worker_artifacts": [
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-scene-workers/weak/bsp_index.sqlite",
+      "sha256": "86e09d96bae299c48b31bd6328c38891725db5f334a0d4a9815fdc53d603873b"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\build_native_weak_owner_probe.cmd",
+      "preserved": "local/gui-scene-workers/weak/build_native_weak_owner_probe.cmd",
+      "sha256": "0b6f6e71d6e6ada9b1c174083d3f1091397ce65a64a884c85ed63e5dfaf91ae9"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\native_weak_owner_build.log",
+      "preserved": "local/gui-scene-workers/weak/native_weak_owner_build.log",
+      "sha256": "e5fdbc6f66847b017cb3dc2cd75d121e11c382ceaa5082e66911fe1eff03b16c"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\native_weak_owner_commit.txt",
+      "preserved": "local/gui-scene-workers/weak/native_weak_owner_commit.txt",
+      "sha256": "ee0edfa32976fbe94e3e135ee6ecb473cbb06edd713970247bd37d44391beeea"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\native_weak_owner_probe.cpp",
+      "preserved": "local/gui-scene-workers/weak/native_weak_owner_probe.cpp",
+      "sha256": "acad7f7533c4499d96be8be2b288d88b121638d072122f16d229d50231f2030b"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\native_weak_owner_probe.exe",
+      "preserved": "local/gui-scene-workers/weak/native_weak_owner_probe.exe",
+      "sha256": "817971045a7f8db8549a571b7331097cbd30c80066ead78b2395b75bf00c1847"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\native_weak_owner_probe.obj",
+      "preserved": "local/gui-scene-workers/weak/native_weak_owner_probe.obj",
+      "sha256": "149ea456bc0742115a22dd3f74d4ac8720bf7409753c9921951c672081587b86"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\record_native_weak_owner.py",
+      "preserved": "local/gui-scene-workers/weak/record_native_weak_owner.py",
+      "sha256": "b170911c2e22ab88b03bbe3dcfe994c154be9c2cc24649bb9200a6accb6bceb8"
+    },
+    {
+      "worker": "native-weak-owner-20260911o",
+      "commit": "3e361bc59973b5c945261cca70724e0a5999b519",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-weak-owner-20260911o\\local\\seed_reference.hpp",
+      "preserved": "local/gui-scene-workers/weak/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-scene-workers/directional/bsp_index.sqlite",
+      "sha256": "c2bff4537a42d753a52218883cb8cdd215b7cc828365c447c53fe9d60b1534b7"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\build_directional_reference_probe.ps1",
+      "preserved": "local/gui-scene-workers/directional/build_directional_reference_probe.ps1",
+      "sha256": "0c8eee7f934a8539342965e04d0ab3bafaac34463b0b915e32c08a6f0e9afd8f"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_light_reference_build.log",
+      "preserved": "local/gui-scene-workers/directional/directional_light_reference_build.log",
+      "sha256": "cbf7aa1f58364542ae71d965fed5b78c12d4e0ef6d6c7b389ecbe3be7a61220a"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_commit.txt",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_commit.txt",
+      "sha256": "0068d825240919e73fb98acf6d9412dfc53993b78be79bcff9e939ae556d203a"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_probe.cpp",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_probe.cpp",
+      "sha256": "5b60154064fb628639722a66962175645ed1acc0564f265a95bb0e5abb41228c"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_probe.exe",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_probe.exe",
+      "sha256": "beedac490a6aee8665b6f06f007b182ef2db8fd5b90e13f9729612b76b8e9a81"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_probe.log",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_probe.log",
+      "sha256": "6218e7567be0d4f9dace59595168c25f9f1915da94118371307ee81832975f5d"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_probe.obj",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_probe.obj",
+      "sha256": "a0952d33d7f3367dcdd3d2b0b07bdf398f71c9e77260ccd3da5ab6da64d1793a"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_table_evidence.json",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_table_evidence.json",
+      "sha256": "603cc9d27f2e393b2aa29da91e2449980ee033fa8157c6f57239a2714864718a"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_tables.hpp",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_tables.hpp",
+      "sha256": "5a601f2c87714380b67c5887bcff4be3c103b7866ea3808b15ae573430c1cce8"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\directional_reference_tables.py",
+      "preserved": "local/gui-scene-workers/directional/directional_reference_tables.py",
+      "sha256": "5e1c614d8532e025b200fe951044c89fa9f445a5537080f0a95b8a9f667df6a3"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\record_directional_reference.py",
+      "preserved": "local/gui-scene-workers/directional/record_directional_reference.py",
+      "sha256": "d15a6dd853b178f9dc9f43ece32e65d6057b4d5a15ff4bf0348c6b4fb657387a"
+    },
+    {
+      "worker": "directional-reference-20260911o",
+      "commit": "eca67fd45930911b161c2e2ef165cf760b4f0620",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-directional-reference-20260911o\\local\\seed_reference.hpp",
+      "preserved": "local/gui-scene-workers/directional/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-scene-workers/screen/bsp_index.sqlite",
+      "sha256": "70b78880d44ba9bac9d13a09af90be6b3028c5bfbdf38f23a907feeb53173ee3"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\gui_screen_scene_build.log",
+      "preserved": "local/gui-scene-workers/screen/gui_screen_scene_build.log",
+      "sha256": "a5c3d7ca05c4d26c09c5239b654e15972abebdf1e93a10ff9828bcad0cfe8222"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\gui_screen_scene_commit.txt",
+      "preserved": "local/gui-scene-workers/screen/gui_screen_scene_commit.txt",
+      "sha256": "0886089060ad16a40047d9eef4b454ae8f223138c14c3773364d760a024dc6cb"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\gui_screen_scene_ledger.txt",
+      "preserved": "local/gui-scene-workers/screen/gui_screen_scene_ledger.txt",
+      "sha256": "b6d633fb26e70846f6c6ee022c98c96200e9b65883d6b10e8c93b735fbb1024f"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\gui_screen_scene_native_proto.txt",
+      "preserved": "local/gui-scene-workers/screen/gui_screen_scene_native_proto.txt",
+      "sha256": "c5dd790eab1b4b287f4301b858f92292907772cbac8574685b8a2c8163479d0d"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\gui_screen_scene_old_annotations.json",
+      "preserved": "local/gui-scene-workers/screen/gui_screen_scene_old_annotations.json",
+      "sha256": "608306e8b9f0056e4541fbe0559e22b0ec23ad16362d1f70556353f6a6f61077"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\record_gui_screen_scene.py",
+      "preserved": "local/gui-scene-workers/screen/record_gui_screen_scene.py",
+      "sha256": "7e2c13d243eba6464743760d8be5813dda998977cb7d902bd00fafaf83b47a21"
+    },
+    {
+      "worker": "gui-screen-scene-20260911o",
+      "commit": "991b51c8065e9e3a6adc94ca72aecb79997467e6",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-screen-scene-20260911o\\local\\seed_reference.hpp",
+      "preserved": "local/gui-scene-workers/screen/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-scene-workers/bounds/bsp_index.sqlite",
+      "sha256": "160752ee8e40478eb0dfd84597636a52a6d1a1b227aaf7541e3b0dd1a720ecfd"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\build_gui_group_bounds_probe.ps1",
+      "preserved": "local/gui-scene-workers/bounds/build_gui_group_bounds_probe.ps1",
+      "sha256": "fb201175ac1ad60bd1c7b1e497a51c2ad1b72cd4c90d57dfb5e2ea2840a56bf1"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_bounds_conversion.bin",
+      "preserved": "local/gui-scene-workers/bounds/gui_bounds_conversion.bin",
+      "sha256": "72aa0b237c99ff7b906a75855a4c90cd305475d7859f66c64a43a2b20471cd5b"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_bounds_group_table.bin",
+      "preserved": "local/gui-scene-workers/bounds/gui_bounds_group_table.bin",
+      "sha256": "f59b0caec65eb336d74bd451a0fce1696b1e4a0c2d1ffd1db44dbb2e39ba2721"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_bounds_node_table.bin",
+      "preserved": "local/gui-scene-workers/bounds/gui_bounds_node_table.bin",
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_bounds_radius.bin",
+      "preserved": "local/gui-scene-workers/bounds/gui_bounds_radius.bin",
+      "sha256": "6e1cdffb76fdeb586d8e100ab834e50191cbe9ded45f4c16ec1b6ab01336e0a2"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_bounds_writer.bin",
+      "preserved": "local/gui-scene-workers/bounds/gui_bounds_writer.bin",
+      "sha256": "3bb56c6b14df31456875b5daa3acbafff934cde0cc7429f5df8275dbbbfcbecf"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_build.log",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_build.log",
+      "sha256": "8f022875f2aa1d317a80d0fc370278c024c3325e4603e1be97cdadf5e7a8ac15"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_commit.txt",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_commit.txt",
+      "sha256": "97e065ec69692a0aafd19399c36c9bc199c18ebfdf51e686b9ba4e36bb4f67cb"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_evidence.json",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_evidence.json",
+      "sha256": "2a04373bb79907991b03276ce8937d3429eccab7c3efcc42a7e578b840cc78bb"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_ledger.txt",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_ledger.txt",
+      "sha256": "44c2c6f64c6c65a378cf6c98e66ac49f7ff1116c7bd02baa4f6c12a6a84ab3b9"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_probe.cpp",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_probe.cpp",
+      "sha256": "a38b675c3ed5484ecef9768d3ef0dcb0be259d51d0ed529af37765ddd68731d0"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_probe.exe",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_probe.exe",
+      "sha256": "d233e932b245c3db9f96c813f3bcf1617bd278e3fabd62935ef60f16b1c72b2f"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_probe.log",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_probe.log",
+      "sha256": "333d49c05e555da244171c7592efeadd8493fb7e730fb8d66bca41836d2fa281"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_probe.obj",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_probe.obj",
+      "sha256": "f976d003749deb7c4fd8da1cb7b2e7f3bea05fdf8f628d8da2c1129b18aca38b"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_probe_driver.cmd",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_probe_driver.cmd",
+      "sha256": "27d9a9fce520a6e4d4b6e2c7b3fc0d899ac11f4a0c3791cf2c2496e4251cc970"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\gui_group_bounds_seeds.json",
+      "preserved": "local/gui-scene-workers/bounds/gui_group_bounds_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\prepare_gui_group_bounds.py",
+      "preserved": "local/gui-scene-workers/bounds/prepare_gui_group_bounds.py",
+      "sha256": "090512a42d34a866808ae1127137a6977e308dee403330a3fd0ee272312ab017"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\record_gui_group_bounds.py",
+      "preserved": "local/gui-scene-workers/bounds/record_gui_group_bounds.py",
+      "sha256": "18046f6c31b737fdc12b3e92a76e1c60df3a9a478a021c6c384f3910c3dc2930"
+    },
+    {
+      "worker": "gui-group-bounds-20260911p",
+      "commit": "356ce9da1ee8bd6dcfedd178015b42224120ed51",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-group-bounds-20260911p\\local\\seed_reference.hpp",
+      "preserved": "local/gui-scene-workers/bounds/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    }
+  ],
+  "limitations": [
+    "Combined Screen ownership fixture still pending.",
+    "Native radius comparisons share the reconstructed CRT sqrt dependency.",
+    "Raw GUI stream/material/layout projections and real widget retention remain incomplete.",
+    "New C++ interfaces; no native SEH, complete GUI render or gameplay proof."
+  ]
+}
