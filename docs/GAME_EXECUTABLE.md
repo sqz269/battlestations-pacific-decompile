@@ -2306,6 +2306,27 @@ queued request 10h, which is the run-time evidence for correction 1.
    of `BSP_Game_OnMove` is now 004e4a40-004e5537, so `tools/verify_report_calls.py` checks
    call sites inside it: this packet's report passes 42 of 42 rows with no known-defect
    exemption, where milestone 2f needed one for 51 rows.
+8. **`PlayBinkMovie`'s debrief flag is its third argument and defaults to false.**
+   `docs/MISSION_RESULT_DECISION.md` reads the binding as `PlayBinkMovie(name,
+   goToDebrief)`. 0089a480 zeroes the byte at 0089a5a2 (`XOR BL,BL`), asks for the argument
+   count at 0089a5a4 and only reads a boolean when there are **three or more** (`CMP EAX,3`
+   at 0089a5a9), taking argument index **2** at 0089a5ae; `MOV DL,BL` at 0089a5e0 is what
+   0089a390 receives. The installed scripts match: `Scripts/global/commandhelpers.lua`, one
+   of the 21 global scripts this run loads, calls `PlayBinkMovie(Mission.MissionComplParams
+   .Movie, "", true)` in `luaMissionCompleted_ComplMovie` and the same three-argument form
+   with `MissionFailParams` in `luaMissionFailed_FailMovie`, while a mid-mission movie such
+   as `PlayBinkMovie("campaigns/BSM/m0102.bik")` passes one argument and therefore never
+   ends a mission. Win and loss reach the same native call, which is what that doc's summary
+   already says.
+9. **A mission with no completion movie ends through a different binding, and that binding
+   is gated on the scoring record.** The same helper's other arm is `luaDelay(EndScene, 12)`,
+   and `EndScene` is binding row 008b01b0. Its body reads the commit slot's record,
+   `[game+21A0h] + 4 + [[game+21A0h]+1424h]*284h`, and when that record's `+0h` is clear in a
+   single-player session it raises a menu prompt through `BSP_MenuPromptScreen_Raise` and
+   returns **without** calling 004d7970; only a completed record, or a multiplayer session,
+   reaches `BSP_Game_EndScene`. A script therefore has to call `Scoring_SetMissionCompleted`
+   before it ends a mission this way. The executable's own record is zeroed, so this packet
+   injects the movie arm rather than this one.
 
 ### Code with no Ghidra function
 
@@ -2398,9 +2419,13 @@ no job was ever queued, and no movie was played.
 6. **The movie player as the executable can own it**, which would let 004f8a20 play the
    result's clip, hold game+7184h and make the completion 004f89d0 the thing that lowers the
    drain suspension, as it is in the game.
-7. **The poll's own 0Fh arm** is still unexercised, and correction 1 says why. Establishing
-   which call order produces it is a short reading of the mission scripts that call
-   `PlayBinkMovie` outside state 0Dh.
+7. **The poll's own 0Fh arm** is still unexercised, and corrections 1 and 8 say why: a
+   three-argument `PlayBinkMovie` in state 0Dh reaches EndScene synchronously, and a
+   one-argument one leaves +21h clear. The arm needs a result object with +21h set that
+   survives into a frame with an empty queue, which means a call made outside states 0Dh and
+   0Fh; finding a script that makes one is the next step.
+8. **The `EndScene` binding 008b01b0** and its menu prompt arm (correction 9), which is the
+   other way a mission ends and the reason `Scoring_SetMissionCompleted` has to run first.
 
 
 ## Next milestones
