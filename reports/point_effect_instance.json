@@ -1,0 +1,115 @@
+{
+  "packet": "orch3_point_effect_instance_m",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/point_effect_instance.cpp",
+  "header": "include/bsp/point_effect_instance.hpp",
+  "evidence": "docs/POINT_EFFECT_INSTANCE.md",
+  "status": "three_constructor_fragments_strict_win32_compiled_and_focused_fixture_tested_full_constructor_required",
+  "constructor": {
+    "address": "008680b0",
+    "saved_name": "FUN_008680b0",
+    "proposed_name": "BSP_PointEffect_Construct_Provisional",
+    "saved_entry_comments": null,
+    "annotation_status": "proposed_only_integrator_handles_Ghidra_name_ledger_and_refresh",
+    "name_is_hypothesis": true,
+    "native_abi": "ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C",
+    "native_last_instruction": "008683d4",
+    "native_last_instruction_length": 3,
+    "native_inclusive_end": "008683d6",
+    "instructions": 232,
+    "gaps": [],
+    "fully_reconstructed": false,
+    "exception_handler_start": "00c95022",
+    "exception_handler_last_instruction": "00c95027",
+    "exception_handler_inclusive_end": "00c9502b",
+    "exception_descriptor": "00dc6e94",
+    "exception_map": "00dc6eb8",
+    "exception_funclets": [
+      {"state": 0, "next": -1, "start": "00c94fd0", "inclusive_end": "00c94fd7", "callee": "0041de40", "object": "consumed template argument"},
+      {"state": 1, "next": 0, "start": "00c94fd8", "inclusive_end": "00c94fdf", "callee": "00bd30f0", "object": "reference base"},
+      {"state": 2, "next": 1, "start": "00c94fe0", "inclusive_end": "00c94fea", "callee": "008675b0", "object": "array+0c"},
+      {"state": 3, "next": 2, "start": "00c94feb", "inclusive_end": "00c94ff5", "callee": "008675b0", "object": "array+18"},
+      {"state": 4, "next": 3, "start": "00c94ff6", "inclusive_end": "00c95003", "callee": "0041de40", "object": "template member+84"},
+      {"state": 5, "next": 4, "start": "00c95004", "inclusive_end": "00c95011", "callee": "00605fd0", "object": "parent member+8c"},
+      {"state": 6, "next": 5, "start": "00c95012", "inclusive_end": "00c95019", "callee": "00b6e670", "object": "raw node allocation"},
+      {"state": 7, "next": 5, "start": "00c9501a", "inclusive_end": "00c95021", "callee": "006cf070", "object": "temporary entry result"}
+    ]
+  },
+  "fragments": [
+    {
+      "address": "008680b0",
+      "name": "initialize_point_effect_instance_008680d9",
+      "native_start": "008680d9",
+      "native_inclusive_end": "00868192",
+      "native_last_instruction": "0086818d",
+      "native_last_instruction_length": 6,
+      "scope": "Actual114h member initialization, separate template+84 retain, F87604 then F87600 increments; excludes node allocation onward"
+    },
+    {
+      "address": "008680b0",
+      "name": "register_point_effect_node_and_parent_008681be",
+      "native_start": "008681be",
+      "native_inclusive_end": "0086824c",
+      "native_last_instruction": "0086824b",
+      "native_last_instruction_length": 2,
+      "scope": "Install actually constructed canonical node and retain actual count; canonical root propagation before live parent release-clear-publish-retain"
+    },
+    {
+      "address": "008680b0",
+      "name": "cache_point_effect_initial_world_0086826e",
+      "native_start": "0086826e",
+      "native_inclusive_end": "008682d4",
+      "native_last_instruction": "008682d0",
+      "native_last_instruction_length": 5,
+      "scope": "After actual matrix setter, capture+110, conditional world refresh, bit-copy snapshot then canonical x87 copy+90, exact scalar initialization before8672A0"
+    }
+  ],
+  "reused": [
+    "RenderCommandReference borrowing actual owner+04",
+    "retain_render_command_reference",
+    "release_render_command_reference",
+    "NativeNodeBinding borrowing actual native node fields",
+    "NativeNodeDestructionRuntime",
+    "propagate_native_node_root_00b6d890",
+    "refresh_camera_world_00b6db70",
+    "copy_camera_matrix_004134f0"
+  ],
+  "required_remaining_boundaries": [
+    "Actual B6ED70(174h) pool allocation and B6F5A0(template+1C) construction integration; raw return on state6 exception",
+    "53D9C0/72AA80 matrix setters including current node virtual34 and parent-world/inverse inputs",
+    "8672A0 pointer-array resize with8670A0 reserve and8675B0 unwind; not a base constructor",
+    "Current template row virtual18 factories and callback-sensitive output-slot assignment",
+    "4D1100 real instance manager and867500 insertion through74D780 under866440 lock",
+    "Exact eight-state constructor member unwind and physical allocation ownership"
+  ],
+  "findings": [
+    "Incoming template reference is consumed at normal tail or state0 unwind; template member+84 independently retains",
+    "Root registration precedes parent+8C reload and may install the parent that must be released",
+    "Parent field clears after terminal release, overwriting any terminal callback replacement before requested-parent assignment",
+    "Effect parent+8C is distinct from node hierarchy parent+30",
+    "No constructor-wide zero fill; preimages at+0B,+74..7F and not-yet-written matrices/node/scalars are preserved",
+    "D7A24C=3F800000; D7A238=3C23D70A",
+    "EH map has no separate constructed node+110 cleanup or global-counter rollback; neither was invented",
+    "Registration manager4D1100 is distinct from eight-byte lock-owner singleton866440"
+  ],
+  "validation": {
+    "direct_source_compilation": "MSVC Win32 /std:c++17 /O2 /W4 /WX /fp:strict /MD passed",
+    "ignored_fixture": "local/point_effect_instance_fixture.cpp",
+    "fixture_link": "/MANIFEST:EMBED",
+    "fixture_result": "PASS point-effect preimage, actual counts, callback parent reload/order, world cache, argument unwind",
+    "fixture_log": "local/point-effect-instance-fixture.log",
+    "existing_build": "scripts/build.ps1 passed",
+    "existing_ctest": "2/2 reconstructed_math and native_math_differential passed",
+    "build_log": "local/point-effect-instance-build.log",
+    "source_registry": "Integrator must add src/point_effect_instance.cpp to owned cmake/startup.cmake",
+    "permanent_tests_added": 0,
+    "full_native_constructor_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "game_executed": false,
+    "original_installation_modified": false
+  }
+}
