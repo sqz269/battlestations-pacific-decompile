@@ -1,0 +1,191 @@
+{
+  "packet": "orch3_live_effect_manager_constructor_t",
+  "sources": [
+    "src/native_live_effect_manager.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_live_effect_manager.hpp"
+  ],
+  "documentation": "docs/NATIVE_LIVE_EFFECT_MANAGER.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "004c3200",
+      "end_exclusive": "004c321a",
+      "length": 26,
+      "sha256": "10669f8973e5f5fe4155f7e3673554d547d1113721c015a54fb0ce6ace31c978",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004c5940",
+      "end_exclusive": "004c5988",
+      "length": 72,
+      "sha256": "3a405487faef79bf6a501042db1890e5c27fc04f35ff451431be66f73b172442",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004cf700",
+      "end_exclusive": "004cf761",
+      "length": 97,
+      "sha256": "130030f570dfac398781997cdf04373854e0d886ac9c43537339b5f35aa39947",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004b7f50",
+      "end_exclusive": "004b7f61",
+      "length": 17,
+      "sha256": "f853276656c828005c80dda6ca0e1c14c400efd96b90789a940902185c066e4d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00c65c68",
+      "end_exclusive": "00c65c72",
+      "length": 10,
+      "sha256": "b118df70fc09782d20869516afe720095ddf080701c3a1e31d351414a5de2e9d",
+      "live_disk_equal": true
+    }
+  ],
+  "reconstructed": [
+    {
+      "address": "004c3200",
+      "cpp_symbol": "create_native_effect_deletion_sentinel_004c3200",
+      "end_exclusive": "004c321a",
+      "original_abi": "No consumed inputs; EAX actual0Ch sentinel; RET",
+      "behavior": "Canonical12-byte allocation, independent raw/raw+4 address tests, self links; payload+08 untouched. ECX unused; null allocation is not successful empty sentinel."
+    },
+    {
+      "address": "004c5940",
+      "cpp_symbol": "destroy_native_effect_deletion_list_004c5940",
+      "end_exclusive": "004c5988",
+      "original_abi": "ECX actual0Ch list header; RET",
+      "behavior": "Capture first node, detach ring/self-link current head and zero count before freeing; capture next before each ascending free and compare current head; free current sentinel then clear head. Preserve allocator word; never destroy payload. Restored interior free continuation; stored body still ends4C597B, verified complete tail4C597C..4C5988 includes head clear/RET."
+    },
+    {
+      "address": "004b7f50",
+      "cpp_symbol": "unwind_native_live_effect_manager_base_004b7f50",
+      "end_exclusive": "004b7f61",
+      "original_abi": "ECX actual manager; RET",
+      "behavior": "Unconditionally clear actualF8765C, then publish baseCE3818; preserve all other bytes. Used by constructor state0 and destructor base cleanup."
+    },
+    {
+      "address": "004cf700",
+      "cpp_symbol": "construct_native_live_effect_manager_004cf700",
+      "end_exclusive": "004cf761",
+      "original_abi": "ECX actual28h manager; EAX same owner; RET",
+      "behavior": "Actual storage: identity00=CE789C, untouched allocator04, listhead08/count0C, owning raw-pointer arrays10/1C. Publish identity before sentinel allocation, then sentinel/count and six zero array fields. HandlerC65C68 selectsD8E698/mapD8E690 state0->-1 C65C60/4B7F50: allocation failure clears global and base identity only, no list unwind. No global publication in constructor."
+    }
+  ],
+  "ownership": "Actual28h F8765C storage; actual0Ch ring/header. No replacement container, registry, count, lock or payload disposal.",
+  "flow_repair": "reports/native_live_effect_manager_flow_t.json",
+  "stored_body_limit": "4C5940 remains stored through4C597B; complete native tail4C597C..4C5988 verified live/disk and included in source/fixture, not affected export body.",
+  "handler_definitions": "reports/native_live_effect_manager_definitions_t.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/live-manager-t-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/live-manager-t-fixture.log",
+    "fixture_source": "local/live_manager_probe_t.cpp",
+    "native_cases": [
+      "Full28h constructor compare, sentinel pointer normalized; payload and allocator preimages preserved",
+      "Empty/three-node ring teardown: exact free order, detached sentinel/count0 before each free, null head, payload unchanged",
+      "Original base routine clears actual publication even when it points to another owner"
+    ],
+    "rebindings": [
+      "Native allocator/free -> bridges that fill/inspect then delegate canonical allocation/free",
+      "Constructor -> copied original sentinel routine",
+      "4B7F50 absoluteF8765C operand -> fixture actual publication cell",
+      "Only production module allocation/free symbols rebound in ignored fixture build to same bridges"
+    ],
+    "cpp_failure_case": "One bad_alloc at sentinel allocation: cleared actualglobal and baseCE3818; every other owner byte unchanged. Native handler immediate unchanged/unexecuted.",
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Whole28h owner destructor/scalar and lazy lifetime registration",
+    "Pending enqueue/flush actual scalar-dispatch bindings",
+    "Whole point-effect construction, originalEH/gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/live_manager_probe_t.cpp": "d9ac86bd06c4736b1917dbcaf5f19d4a3bacbf6f00e4f4cc094d8cb46bf5f731",
+    "local/run_live_manager_probe_t.cmd": "3afd03e87f4ae9c2010eeda0860e0dd454938a6794c9027fb9ca8f51faa848d0",
+    "local/live_manager_native_bytes_t.hpp": "f66e7196b12150fcd1736bae97cbc5654059156f57ac13a40edabcfc9cfd0570",
+    "local/live-manager-byte-evidence-t.json": "36555b432a02a94c7c09b4baea07f1d29fcb36eb27844ec22607b0e8e27227bf"
+  },
+  "ghidra_annotation_audit": [
+    {
+      "address": "004b7f50",
+      "before": {
+        "address": "004b7f50",
+        "function_name": "FUN_004b7f50"
+      },
+      "after": {
+        "address": "004b7f50",
+        "name": "BSP_LiveEffectManager_UnwindBase",
+        "evidence": "Hypothesis, not a recovered symbol. Unconditionally clear actualF8765C, then publish baseCE3818; preserve all other bytes. Used by constructor state0 and destructor base cleanup. Strict Win32 and original-byte normal-path comparisons passed; one C++ allocation failure verifies base unwind. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004c3200",
+      "before": {
+        "address": "004c3200",
+        "function_name": "FUN_004c3200"
+      },
+      "after": {
+        "address": "004c3200",
+        "name": "BSP_EffectDeletionList_CreateSentinel",
+        "evidence": "Hypothesis, not a recovered symbol. Canonical12-byte allocation, independent raw/raw+4 address tests, self links; payload+08 untouched. ECX unused; null allocation is not successful empty sentinel. Strict Win32 and original-byte normal-path comparisons passed; one C++ allocation failure verifies base unwind. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004c5940",
+      "before": {
+        "address": "004c5940",
+        "function_name": "FUN_004c5940"
+      },
+      "after": {
+        "address": "004c5940",
+        "name": "BSP_EffectDeletionList_DestroyStorage",
+        "evidence": "Hypothesis, not a recovered symbol. Capture first node, detach ring/self-link current head and zero count before freeing; capture next before each ascending free and compare current head; free current sentinel then clear head. Preserve allocator word; never destroy payload. Restored interior free continuation; stored body still ends4C597B, verified complete tail4C597C..4C5988 includes head clear/RET. Strict Win32 and original-byte normal-path comparisons passed; one C++ allocation failure verifies base unwind. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004cf700",
+      "before": {
+        "address": "004cf700",
+        "function_name": "BSP_EffectManager_Construct",
+        "comment": "[BSP reconstruction 004cf700]\nHypothesis, not a recovered symbol. __fastcall(this) constructor for the 0x28-byte effect manager allocated by 004D1100. Writes the vtable at 00CE789C, sets +08h from 004C3200 (the deferred-destroy list head) and zeroes +0Ch..+24h, which are the list size and two {data, size, capacity} arrays at +10h and +1Ch. docs/GAME_WORLD_OCEAN.md."
+      },
+      "after": {
+        "address": "004cf700",
+        "name": "BSP_EffectManager_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall(this) constructor for the 0x28-byte effect manager allocated by 004D1100. Writes the vtable at 00CE789C, sets +08h from 004C3200 (the deferred-destroy list head) and zeroes +0Ch..+24h, which are the list size and two {data, size, capacity} arrays at +10h and +1Ch. docs/GAME_WORLD_OCEAN.md. | Packet orch3_live_effect_manager_constructor_t. Actual storage: identity00=CE789C, untouched allocator04, listhead08/count0C, owning raw-pointer arrays10/1C. Publish identity before sentinel allocation, then sentinel/count and six zero array fields. HandlerC65C68 selectsD8E698/mapD8E690 state0->-1 C65C60/4B7F50: allocation failure clears global and base identity only, no list unwind. No global publication in constructor. Strict Win32 and original-byte normal-path comparisons passed; one C++ allocation failure verifies base unwind. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c65c68",
+      "before": {
+        "address": "00c65c68",
+        "function_name": "FUN_00c65c68"
+      },
+      "after": {
+        "address": "00c65c68",
+        "name": "EH_LiveEffectManager_Construct",
+        "evidence": "Descriptive compiler-handler name. Complete10 bytes selectsD8E698; mapD8E690 state0->-1 C65C60 loads savedowner and jumps4B7F50 globalclear/baseidentity. No list cleanup state. Verified live/disk, defined and saved. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. Original exception dispatch not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All five names/evidence saved and read back, prior comments preserved; five affected exports refreshed, with documented4C5940 stored tail limit."
+}
