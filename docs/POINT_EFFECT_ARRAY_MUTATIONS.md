@@ -12,7 +12,7 @@ Evidence is from saved project `C:/Users/sqz269/bsp.gpr`, program
 `/battlestationspacific.exe`, and the installed executable with SHA256
 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
 `reports/point_effect_array_mutations.json` records byte hashes, original calls,
-the fixture's scope, and proposed descriptive names.
+the fixture's scope, and descriptive names saved in Ghidra.
 
 ## Unordered erase: `00867210`
 

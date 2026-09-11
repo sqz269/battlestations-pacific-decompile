@@ -27,7 +27,7 @@ static_assert(offsetof(PointEffectInstanceStorage, fields_5c) == 0x5c);
 static_assert(offsetof(PointEffectInstanceStorage, untouched_74) == 0x74);
 static_assert(offsetof(PointEffectInstanceStorage, field_80) == 0x80);
 static_assert(offsetof(PointEffectInstanceStorage, template_84) == 0x84);
-static_assert(offsetof(PointEffectInstanceStorage, owner_88) == 0x88);
+static_assert(offsetof(PointEffectInstanceStorage, sample_count_88) == 0x88);
 static_assert(offsetof(PointEffectInstanceStorage, parent_8c) == 0x8c);
 static_assert(offsetof(PointEffectInstanceStorage, cached_world_90) == 0x90);
 static_assert(offsetof(PointEffectInstanceStorage, relative_d0) == 0xd0);
@@ -70,7 +70,7 @@ PointEffectInstanceStorage& initialize_point_effect_instance_008680d9(
         effect.template_84 = argument.get();
         retain_render_command_reference(*argument.get());
     }
-    effect.owner_88 = nullptr;
+    effect.sample_count_88 = 0;
     effect.parent_8c = nullptr;
     ++counters.actual_00f87604;
     ++counters.actual_00f87600;

@@ -3,7 +3,7 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "status": "complete_cpp_bodies_strict_win32_compiled_full_original_byte_fixture_passed_combined_build_pending_integrator",
+  "status": "complete_cpp_bodies_strict_win32_build_full_original_byte_and_actual_child_chain_fixture_passed",
   "functions": [
     {
       "name": "erase",
@@ -156,7 +156,7 @@
     "byte_extraction": "local/point-array-extraction-ag.log: full131/115 bytes and EH spans equal live Ghidra/installed PE, exact complete instruction coverage and RET4",
     "probe": "local/point-array-probe-ag.log: PASS; original complete wrappers vs C++ normalized slot/header/count/callback observations, explicit ESP balance",
     "compile": "MSVC Win32 /O2 /W4 /WX /fp:strict /MD; changed source compiled directly, probe linked /MANIFEST:EMBED",
-    "combined_build": "pending integrating orchestrator scripts/build.ps1",
+    "combined_build": "local/point-children-ag-build.log: scripts/build.ps1 strict MSVC Win32 and both CTests passed",
     "cases": [
       "erase: replaced-target terminal changes backing/count; new-tail terminal changes count and captured slot; clear captured slot then decrement current count",
       "erase: duplicate reference identity and direct tail",
@@ -167,7 +167,10 @@
       "Original Interlocked imports route to real Win32 operations.",
       "Native diagnostic owners have raw virtual0 terminal observations/mutations; C++ companions borrow their same actual atomic+04 word.",
       "Native append reserve call converts native slot identities to companions, invokes existing actual C++ reserve and its real allocation/free boundary, then converts back. Original reserve bytes are not executed here."
-    ]
+    ],
+    "actual_lifetime": "local/point-children-chain-ag.log: real867790 primary->auxiliary->event-terminal flow through actual point/definition/component/node/string domains passed",
+    "native_child_caller": "local/point-children-native-ag-probe.log: original full561-byte867790 calls original array bodies with controlled actualcount owners, captured/live traversal parity passed",
+    "call_verification": "local/point-children-ag-call-verification.log: child2 plus array1 direct call rows verified; zero failures"
   },
   "contracts": [
     "Existing actual PointEffectReferenceArray, canonical borrowed owner references, no secondary count or registry.",
@@ -177,5 +180,40 @@
     "DWORD arithmetic wraps as native; no overflow/corrupt-header recovery added."
   ],
   "uncertainty": "New C++ API, not physical native vtable ABI. Focused diagnostic terminal fixture, not production physical event destruction. Native EH, application-loop and gameplay validation unproven.",
-  "documentation": "docs/POINT_EFFECT_ARRAY_MUTATIONS.md"
+  "documentation": "docs/POINT_EFFECT_ARRAY_MUTATIONS.md",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T232415Z.json",
+    "readback": "local/point-children-ag-comments.json",
+    "project_saved": true,
+    "names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00867210",
+        "before": {
+          "address": "00867210",
+          "function_name": "BSP_PointEffectReferenceArray_EraseUnordered"
+        },
+        "after": {
+          "address": "00867210",
+          "name": "BSP_PointEffectReferenceArray_EraseUnordered",
+          "evidence": "Capture iterator, assign current tail with publish/retain/release; reload header after terminal reentry, release then clear newly current captured tail, decrement live count last. Complete131 bytes incl RET4, disk/live SHA256 2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5. docs/POINT_EFFECT_ARRAY_MUTATIONS.md; reports/point_effect_array_mutations.json. Complete original-body/ESP/callback-sensitive array fixtures and actual child-event lifetime passed; strict Win32 and both CTests passed. Names are hypotheses. Parameters: ECX actual array header; one stack argument points to iterator slot; RET4; no established result."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00867320",
+        "before": {
+          "address": "00867320",
+          "function_name": "BSP_PointEffectReferenceArray_Append"
+        },
+        "after": {
+          "address": "00867320",
+          "name": "BSP_PointEffectReferenceArray_Append",
+          "evidence": "Grow only count==capacity with signed max(1, wrapped capacity*2); reload destination, write null before reading source, publish/retain, increment live count last. Complete115 bytes incl RET4, disk/live SHA256 cb87acca77a37855791589bd65eedc628376a1d7dcf9601a3d84d8d4a041ff6e. docs/POINT_EFFECT_ARRAY_MUTATIONS.md; reports/point_effect_array_mutations.json. Complete original-body/ESP/callback-sensitive array fixtures and actual child-event lifetime passed; strict Win32 and both CTests passed. Names are hypotheses. Parameters: ECX actual array header; one stack argument points to borrowed source reference slot; RET4; no established result."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
