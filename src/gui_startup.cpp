@@ -1,6 +1,7 @@
 // Fonts and GUI bring-up of BSP_Application_Initialize.
 // Evidence: docs/APP_INIT_FONTS_GUI.md. See the header for the address list.
 #include "bsp/gui_startup.hpp"
+#include <stdexcept>
 
 #include <cstring>
 
@@ -87,6 +88,11 @@ GuiStartupResult run_gui_startup(GuiStartupHost& host)
         }
         if (created != nullptr) {
             ++result.resources_created;
+        }
+        // +2Ch is assigned even when the renderer returns null. The whiteGui
+        // legacy null result represents VFS rejection; see GuiResourceOwner
+        // for the separate resolve and load contracts.
+        if (created != nullptr || entry.offset != 0x28) {
             if (entry.offset != kGuiResourceNotStored) {
                 host.store_gui_resource(manager, entry.offset, created);
                 ++result.stores;
@@ -96,20 +102,24 @@ GuiStartupResult run_gui_startup(GuiStartupHost& host)
                 ++result.stores;
             }
             if (entry.sets_visibility && !entry.visibility_deferred) {
+                if (created == nullptr) {
+                    throw std::runtime_error("00aa5e20 requires GUI resource: " +
+                        std::string(entry.name));
+                }
                 host.set_gui_resource_visibility(created, entry.visibility);
             }
         }
-        // Only the whiteGui texture has an observed null path, when
-        // BSP_VFS_ResolveExistingName rejects the name at 00aa5e88.
-
         // 00aa60a3: MousePtrFE_Icon's flag call trails MousePtrGUI_Icon's.
         if (deferred_visibility) {
+            if (deferred_visibility_target == nullptr) {
+                throw std::runtime_error("00aa5e20 requires MousePtrFE_Icon");
+            }
             host.set_gui_resource_visibility(deferred_visibility_target,
                 deferred_visibility_value);
             deferred_visibility = false;
             deferred_visibility_target = nullptr;
         }
-        if (entry.sets_visibility && entry.visibility_deferred && created != nullptr) {
+        if (entry.sets_visibility && entry.visibility_deferred) {
             deferred_visibility_target = created;
             deferred_visibility_value = entry.visibility;
             deferred_visibility = true;
