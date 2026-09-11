@@ -1,0 +1,56 @@
+{
+  "packet": "orch4_voice_update_integration",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "scheduled": "66c85082ccf42b95618e554b59a4be01f8c9fd4c",
+    "lifetime": "5f988b2",
+    "manager": "94ebe6e7434ceebef3f7dc199963ff1fc4e337a9",
+    "reader": "pending"
+  },
+  "implemented_new_functions": 13,
+  "corrected_existing": [
+    "005b71d0",
+    "00bd63b0"
+  ],
+  "required_panel_services": [
+    "004527f0",
+    "0044ec00"
+  ],
+  "review": [
+    "Two independent complete-listing reviews of005BBF10/005B6710.",
+    "Pending record and attached list count field identities replace provisional flag names.",
+    "Canonical line destructor direct binding; real virtual dispatch for other vtables.",
+    "Native String NUL-scan verified; real Lua table identity must reach resolver."
+  ],
+  "flow_repairs": [
+    "reports/voice_update_lifetime_flow_repair.json",
+    "reports/voice_update_manager_flow_repair.json"
+  ],
+  "retired_tags": "reports/voice_inventory_tag_retirement.json",
+  "validation": {
+    "win32_build": "passed initial integrated build",
+    "ctest": "reconstructed_math and native_math_differential passed2/2",
+    "final_build": "pending reader integration",
+    "manager_fixture": "passed canonical and noncanonical destructor routes against parent library",
+    "scheduled_fixture": "worker passed",
+    "lifetime_fixture": "worker passed",
+    "sequence_fixture": "pending",
+    "reader_fixture": "pending",
+    "new_permanent_tests": 0,
+    "gameplay": false,
+    "audio": false,
+    "rendered_ui": false,
+    "native_abi": false
+  },
+  "ghidra": {
+    "annotation": "pending scoped annotation and readback"
+  },
+  "next_candidates": [
+    "004527f0 panel state machine",
+    "0044ec00 signed-key palette map insertion",
+    "006952a0/00695870 actual attached observer lifetime",
+    "game Lua Handle resolver00BD64E0 callback0109CED8"
+  ]
+}

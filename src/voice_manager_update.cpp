@@ -2,6 +2,7 @@
 
 #include "bsp/gui_widget.hpp"
 #include "bsp/voice_line_advance.hpp"
+#include "bsp/voice_line_lifetime.hpp"
 #include "bsp/voice_slot_start.hpp"
 #include "bsp/voice_subtitles.hpp"
 
@@ -131,7 +132,12 @@ bool update_voice_manager_005bc640(VoicePlaybackManager& manager, float delta,
                 }
                 --manager.lines_54.count_00;
                 // Reload payload after preceding calls and list edits.
-                if (auto* deleted = node->line_08) calls.scalar_delete_line_005bc70e(deleted, 1);
+                if (auto* deleted = node->line_08) {
+                    if (deleted->native_vtable_00 == 0x00cf0ed4)
+                        scalar_delete_voice_line_005b9b80(deleted, 1, context.lifetime);
+                    else
+                        calls.scalar_delete_line_005bc70e(deleted, 1);
+                }
                 calls.free_line_node_005bc711(node);
                 node = next; // recovered005BC719; never dereference freed node
                 manager.dirty_60 = 1; // recovered005BC71B, AFTER destruction/free

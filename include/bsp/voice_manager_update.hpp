@@ -5,6 +5,8 @@
 
 namespace bsp {
 
+class VoiceLineLifetimeHost;
+
 // Semantic projection of the two bases proved by 005B7290/005BC87C:
 // slot at native+0; callback-owner base at+18, attached entity at+2C.
 // Other callback-owner storage remains with its required native host adapter.
@@ -63,7 +65,12 @@ struct VoiceManagerUpdateContext {
     VoiceManagerUpdateHost& calls;
     NativeStringStorage& strings;
     VoiceAttachedQueueView attached;
+    VoiceLineLifetimeHost& lifetime;
 };
+
+inline VoiceAttachedQueueView voice_attached_queue(VoicePlaybackManager& manager) noexcept {
+    return {manager.attached_sentinel_68, manager.attached_count_6c};
+}
 
 // ECX=alternate engine, name*/float stack, RET8; two channel loads/calls.
 void set_named_voice_volume_00701870(VoiceAlternateChannelsView,

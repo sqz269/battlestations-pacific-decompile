@@ -15,6 +15,11 @@ struct ScheduledVoiceBindings {
     VoiceScheduledRows& rows_94;
 };
 
+inline ScheduledVoiceBindings scheduled_voice_bindings(VoicePlaybackManager& manager) noexcept {
+    return {manager.slot_index_70, manager.pending_record_74,
+        manager.selected_row_84, manager.rows_94};
+}
+
 class ScheduledVoiceHost {
 public:
     virtual ~ScheduledVoiceHost() = default;

@@ -62,7 +62,7 @@
   "limits": [
     "Typed projections and C++ cleanup are not original binary layouts, calling conventions or native SEH.",
     "Preserved shortcut fallback is this reconstruction's stack field-pair address, not an original-image address.",
-    "Canonical GuiLuaReader::read_00bd6830 at src/gui_lua_reader.cpp:551 uses String projection at419 that does not preserve embedded-NUL text length.",
-    "src/gui_lua_reader.cpp:450 passes nullptr to its table Handle resolver; this is not faithful native table identity forwarding."
+    "Follow-up confirms native00BD63E5..00BD63EE scans to NUL; existing live String conversion is faithful here and evaluated conversion is corrected by the reader packet.",
+    "Reader follow-up forwards the actual borrowed GuiLuaRef through resolve_by_live_table; actual game Handle resolver behavior remains required and archive construction remains without fixture validation."
   ]
 }

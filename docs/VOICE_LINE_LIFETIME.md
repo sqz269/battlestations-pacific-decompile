@@ -86,16 +86,19 @@ the destructor and deleting wrapper. Final instructions are 005B91DA `RET`
 The archive constructor has 77 instructions and no gaps. The parent owns
 Ghidra repair; this worker performed no mutations or project saves.
 
-Canonical GUI and serializer limitations remain explicit. `GuiLuaReader`
-currently converts its narrow String through `std::string(char*)`, so it does
-not retain an embedded-NUL Lua length; table Handle resolution currently uses
-`resolve_by_table(nullptr)` because its interface does not expose the live
-table reference. The caller must supply compatible real services. This packet
-does not replace either API with a divergent serializer or assume success.
-Exact inherited API/source sites are `GuiLuaReader::read_00bd6830` at
-`src/gui_lua_reader.cpp:551`, the String projection at line 419, and the
-null-identity Handle table resolver call at line 450. Null table identity is
-an unresolved canonical-reader limitation, not faithful native table forwarding.
+Follow-up native-reader inspection corrects the initial String concern:
+`00BD6830` calls `00BD63B0`, whose String arm scans the returned char pointer
+to NUL at `00BD63E5..00BD63EE`, then resizes/copies that length. The existing
+`std::string(char*)` projection at `src/gui_lua_reader.cpp:419` matches this
+native embedded-NUL truncation; it is not an inherited fidelity defect.
+
+The follow-up reader packet corrects an actual Handle identity defect. Native
+`00BD64E0` passes the looked-up LuaObject as ECX to callback `[0109CED8]`.
+`resolve_by_live_table(host, object)` now forwards that actual borrowed token;
+the evaluated table resolver stays separate. See `GUI_LUA_READER_IDENTITY.md`
+for real-Lua identity checks and the evaluated String correction. Compatible
+game resolver services remain required. The archive constructor as a whole
+still has build and assembly evidence, without an archive-construction fixture.
 
 These are host-projection reconstructions, not native ABI entry points or
 original SEH registrations. Validation details are in

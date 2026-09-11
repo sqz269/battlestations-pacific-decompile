@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/native_string.hpp"
+#include "bsp/scheduled_voice_types.hpp"
 
 #include <array>
 #include <cstdint>
@@ -13,6 +14,7 @@ struct GuiWidgetTransform;
 struct GuiTextWidget;
 struct VoiceSubtitleContext;
 struct VoiceFadeBindings;
+struct VoiceAttachedNode;
 
 // Typed projections, not native binary layouts. Clip12 is {vtable, record*,
 // resource index}; record begins {NativeString, signed sound id}. Records and
@@ -76,19 +78,27 @@ struct VoiceLineQueue {
 };
 struct VoicePlaybackManager {
     VoicePlaybackSlot slot_08;
+    GuiWidgetTransform* panel_28{};
     GuiWidgetTransform* template_2c{};
     GuiWidgetTransform* group_30{};
     GuiTextWidget* text_34{};
     GuiTextWidget* text_38{};
     GuiWidgetTransform* background_3c{};
     GuiWidgetTransform* decoration_40{};
+    std::array<float, 4> base_color_44{};
     VoiceLineQueue lines_54;
     std::uint8_t dirty_60{};
-    std::uint32_t blocked_6c{};
-    std::uint32_t disabled_74{};
+    VoiceAttachedNode* attached_sentinel_68{};
+    std::uint32_t attached_count_6c{};
+    std::int32_t slot_index_70{-1};
+    const VoiceClipRecord* pending_record_74{};
     float initial_78{};
     float per_character_7c{};
     float base_80{};
+    std::uint32_t selected_row_84{0xffffffffu};
+    float delay_88{};
+    float hold_8c{};
+    VoiceScheduledRows rows_94;
     std::array<void*, 5> speaker_table_a0{}; // borrowed intrusive references
     float fade_value_d4{};
     float fade_target_d8{};
