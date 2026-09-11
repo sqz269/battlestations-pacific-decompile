@@ -359,6 +359,12 @@ def show(args):
             print(f"callees ({len(callees)}): " + ', '.join(fn_label(db, c) for c in callees[:12]) + (' ...' if len(callees) > 12 else ''))
 
 
+def reconstruction_summary(row):
+    if row['recon_kind']:
+        return f"{row['recon_kind']}:{row['recon_status'] or 'status_unspecified'}"
+    return f"tag:{row['tag_category']}" if row['tag_category'] else ''
+
+
 def range_query(args):
     db = connect()
     lo, hi = int(args.start, 16), int(args.end, 16)
@@ -369,7 +375,7 @@ def range_query(args):
         params.append(args.only + '%')
     total = db.execute(query.replace('SELECT *', 'SELECT COUNT(*)'), params).fetchone()[0]
     for f in db.execute(query + 'ORDER BY address LIMIT ?', params + [args.limit]):
-        extra = f['tag_category'] or f['recon_status'] or ''
+        extra = reconstruction_summary(f)
         print(f"{f['hex']} {f['name']:<44} seg={f['segment'] if f['segment'] is not None else '-':<4} {extra}")
     if total > args.limit:
         print(f'... {total - args.limit} more (raise --limit)')
@@ -383,7 +389,7 @@ def calls_query(args, direction):
     print(f'{direction} of {fn_label(db, a)} ({len(rows)}):')
     for r in rows[:args.limit]:
         f = db.execute('SELECT * FROM functions WHERE address=?', (r,)).fetchone()
-        print(f"  {h(r)} {f['name'] if f else '?':<44} seg={f['segment'] if f and f['segment'] is not None else '-'} {(f['tag_category'] or f['recon_status'] or '') if f else ''}")
+        print(f"  {h(r)} {f['name'] if f else '?':<44} seg={f['segment'] if f and f['segment'] is not None else '-'} {reconstruction_summary(f) if f else ''}")
     if len(rows) > args.limit:
         print(f'  ... {len(rows) - args.limit} more')
 
