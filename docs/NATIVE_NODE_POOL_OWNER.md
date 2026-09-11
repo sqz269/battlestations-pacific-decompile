@@ -107,12 +107,16 @@ real CRT atexit. A later-running marker verifies the pool has been destroyed.
 Binding the rebuilt static pool preserves all 38h input bytes and the list head.
 
 These are new C++ interfaces, not binary or original exception-ABI replacements.
-The actual 174h node constructor B6F5A0 and its retained terminal/scene binding
-remain required. Full point-effect construction and gameplay are unvalidated.
+The shared checkout already supplies the 174h B6F5A0 constructor in
+`native_node_construction.cpp`. It accepts a physical slot and currently wraps
+`SizedStoragePool` in the semantic `PooledStringStorage`; composing it with this
+pool and the actual native string-pool bridge remains work. The retained terminal
+binding, full point-effect construction and gameplay are unvalidated here.
 
 ## Follow-up packet
 
-Review B6F5A0's physical node writes, consumed arguments and unwind first, then
-connect its actual owner to the existing NativeNodeBinding and terminal dispatch.
-Claim its address and direct callees before editing; the allocator now has a
-reconstructed construction, compaction and exit lifetime to use.
+Reuse the existing B6F5A0 implementation and connect its string operations to
+the existing actual NativeStringStorage bridge, retaining its current semantic
+adapter for callers that still use it. Compose allocation/construction with
+the same NativeNodeBinding and real terminal dispatch. Claim the relevant
+addresses and files first; do not reconstruct a second node-storage type.
