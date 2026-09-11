@@ -952,8 +952,8 @@ public:
         run_start_selected_mission_0058bdf0(record_, start_);
         owner_.log.implemented("MissionPlay::start_selected_mission", "0058bdf0");
     }
-    void clear_help_line() override {
-        owner_.log.unimplemented("MissionPlay::clear_help_line", "0054b530");
+    void clear_command_bar() override {
+        owner_.log.unimplemented("MissionPlay::clear_command_bar", "0054b530");
     }
 
 private:
