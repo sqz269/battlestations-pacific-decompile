@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bsp/pose_refresh.hpp"
+#include "bsp/camera_path_sampler.hpp"
 #include "bsp/system_camera_axes.hpp"
 
 namespace bsp {
@@ -28,21 +28,15 @@ struct CameraPositionView {
     void*& configuration_4d0;
 };
 
-class CameraPositionHost : public PoseRefreshResolver {
+class CameraPositionHost : public CameraPathHost {
 public:
     // Pure lookup of the actual object/field; no copies, replacement identities,
     // allocation, side effects or unsupported-owner defaults are permitted.
     virtual CameraPositionRecordView& resolve_position_record(void* actual_record) = 0;
     virtual float& resolve_configuration_scale_54(void* actual_configuration) = 0;
 
-    // Required unreconstructed native operations. The sampler receives the
-    // actual path +464 owner and actual writable camera +394 vector, then a
-    // disjoint uninitialized output vector, exactly as at 007954F7.
-    virtual void sample_path_007b04c0(void* actual_path, float parameter,
-        std::array<float, 3>& position, std::array<float, 3>& output,
-        std::uint32_t flags) = 0;
-    // Bind the genuine CRT range-failure operation; it does not return.
-    [[noreturn]] virtual void range_error_00bf6713() = 0;
+    // Path lookup and the returning CRT invalid-parameter callback are inherited
+    // from CameraPathHost. Mode0 calls the canonical recovered sampler directly.
 };
 
 // Native stack float / RET4 / ST0 float. Staged sqrt/atan identity with ordered

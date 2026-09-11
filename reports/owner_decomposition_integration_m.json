@@ -209,5 +209,28 @@
   ],
   "new_permanent_tests": 0,
   "game_validated": false,
-  "abi_compatible": false
+  "abi_compatible": false,
+  "constructor_abi_correction": {
+    "address": "008680b0",
+    "reason": "Initial parent annotation confused outer helper ABI; corrected against worker native-ABI report and actual008683D4 RET1C. Earlier changes array retained as mutation audit.",
+    "correct_abi": "ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper.",
+    "prior_wrong_abi": "ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14.",
+    "saved_changes": [
+      {
+        "address": "008680b0",
+        "before": {
+          "address": "008680b0",
+          "function_name": "BSP_PointEffect_Construct_Provisional",
+          "comment": "[BSP reconstruction 008680b0]\nHypothesis, not recovered symbol. Actual114h constructor; ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json."
+        },
+        "after": {
+          "address": "008680b0",
+          "name": "BSP_PointEffect_Construct_Provisional",
+          "evidence": "Hypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "verification": "Corrected annotation saved/read back and export refreshed; prior comment retained as audit trail."
+  }
 }

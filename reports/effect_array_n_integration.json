@@ -1,0 +1,57 @@
+{
+  "packet": "orch3_effect_array_n_integration",
+  "changes": [
+    {
+      "address": "008670a0",
+      "before": {
+        "address": "008670a0",
+        "function_name": "FUN_008670a0"
+      },
+      "after": {
+        "address": "008670a0",
+        "name": "BSP_PointEffectReferenceArray_Reserve_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. Complete actual pointer/count/capacity body; ECX actual0Ch pointer/count/capacity header; one signed stack DWORD; RET4; no established EAX result. 8670BC..D3 signed min1 and grow-only branch. 8670DB..E1 wrapping DWORD times4 allocation. 867100..12E ascending null-init, publish, actual-count retain with live bounds. 867130..165 ascending release, terminal callback, captured-slot clear. 867167..16A reload current backing and ordinary free. 86717C pointer publication before86717E capacity; count untouched. Shared canonical allocator/free and borrowed-count terminal callbacks, no shadow vector. Strict combined Win32 and focused lifetime/reentry evidence; native ABI/gameplay not established. docs/POINT_EFFECT_ENTRY_ARRAY.md; reports/point_effect_entry_array.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008672a0",
+      "before": {
+        "address": "008672a0",
+        "function_name": "FUN_008672a0"
+      },
+      "after": {
+        "address": "008672a0",
+        "name": "BSP_PointEffectReferenceArray_Resize_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. Complete actual pointer/count/capacity body; ECX actual0Ch pointer/count/capacity header; one signed stack DWORD; RET4; no established EAX result. 8672A8..AE reserve only when request exceeds live capacity. 8672B3..D4 null-initialize newly exposed slots before count publication. 8672E0 count decrement before slot capture. 8672F3..309 release actual count then terminal then clear captured slot. 86730F reload count after callback;867316 final requested-count store. Shared canonical allocator/free and borrowed-count terminal callbacks, no shadow vector. Strict combined Win32 and focused lifetime/reentry evidence; native ABI/gameplay not established. docs/POINT_EFFECT_ENTRY_ARRAY.md; reports/point_effect_entry_array.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c94e17",
+      "before": {
+        "address": "00c94e17",
+        "function_name": "FUN_00c94e17"
+      },
+      "after": {
+        "address": "00c94e17",
+        "name": "BSP_PointEffectReferenceArray_Reserve_ExceptionHandler",
+        "evidence": "Hypothesis, not recovered symbol. Compiler10-byte MOV EAX,DC6C70; JMP BF6B43 handler for8670A0. MapDC6C68 has one state[-1,C94E00] to trivial401130 RET; reserve body state remains -1. No allocated-prefix cleanup invented. Verified bytes, define/flow reports and docs/POINT_EFFECT_ENTRY_ARRAY.md; original SEH ABI not claimed."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_readback": "All3 names/evidence and prior comments verified in local/effect-array-n-comments.json",
+  "exports": "All3 refreshed after annotations",
+  "source_registration": "Registered in cmake/startup.cmake; pending fields of worker report superseded",
+  "validation": {
+    "combined_build": "PASS scripts/build.ps1; local/effect-array-setters-n-build.log",
+    "existing_ctests": "2/2 pass",
+    "combined_fixture": "PASS local/effect-array-n-combined-fixture.log; linked combined bsp_core.lib without duplicate standalone module objects"
+  },
+  "new_permanent_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "flow_repair": "reports/effect_array_n_flow.json: all19 missing returning-free bytes restored; zero remaining call gaps",
+  "compiler_handler_definition": "reports/effect_array_n_definitions.json: C94E17 ten-byte handler defined"
+}

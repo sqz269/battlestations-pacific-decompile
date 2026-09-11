@@ -265,8 +265,8 @@ void apply_camera_position_mode_007954a0(CameraPositionView& camera,
         std::array<float, 3> sampled;
         float parameter;
         copy_float(parameter, camera.parameter_468);
-        host.sample_path_007b04c0(camera.path_464, parameter,
-            camera.position_394, sampled, 0);
+        sample_camera_path_world_007b04c0(host.resolve_path(camera.path_464), parameter,
+            camera.position_394, &sampled, 0, host);
         std::array<float, 3> point;
         // Native captures Y, then Z, then X after the path call.
         add_float(point[1], camera.position_394[1], sampled[1]);
