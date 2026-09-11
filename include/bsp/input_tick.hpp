@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "bsp/input_action_classifier.hpp"
+#include "bsp/input_binding_poll.hpp"
 
 namespace bsp {
 
@@ -81,7 +82,7 @@ void begin_action_frame_00a92370(InputActionRecord& record) noexcept;
 bool action_pressed_this_frame_004c43c0(const InputActionRecord& record) noexcept;
 
 // The two booleans 00a92c40 hands to the listener at 00a92ca6..00a92ce0. They
-// are the same "down and held for a positive time" predicate applied to the
+// are the same "down with a positive input value" predicate applied to the
 // previous pair and to the current pair.
 bool action_down_previous(const InputActionRecord& record) noexcept;
 bool action_down_current(const InputActionRecord& record) noexcept;
@@ -160,7 +161,7 @@ struct InputTickState {
 // One method per native call this packet cannot reconstruct, in frame order.
 // There are no default implementations: none of these stands in for recovered
 // behaviour.
-struct InputTickHost {
+struct InputTickHost : InputBindingPollHost {
     virtual ~InputTickHost() = default;
     // 00f8bbf4 vtable +4h, called with the raw frame delta before any record is
     // touched (00a92c57). ECX is the backend, the delta is the only stack argument.
@@ -168,11 +169,9 @@ struct InputTickHost {
     // Byte 00f8bbf4+D4h, read and cleared at 00a92c5e..00a92c66. When it was set,
     // 00a922a0 re-resolves every record's bindings through 00a91e80.
     virtual bool take_backend_bindings_dirty() = 0;
-    // 00a922a0: 00a91e80 on every record. Rebinding is an input-settings concern.
-    virtual void rebind_all_actions(InputTickState& state) = 0;
-    // 00a92370 after its prologue: evaluate the record's binding array and write
-    // current_hold/current_down. The prologue itself is reconstructed here.
-    virtual void poll_action_bindings(InputActionRecord& record, std::size_t index) = 0;
+    // Backend+6Ch+class*24h device vectors read by the recovered rebind walk.
+    // Their ownership/attachment remains with the input backend.
+    virtual const InputBindingDeviceGroups& binding_device_groups() const = 0;
     // 00f8bbfc, an optional plain function pointer invoked with no arguments
     // after the whole walk (00a92d02..00a92d0d).
     virtual void post_update_hook() = 0;

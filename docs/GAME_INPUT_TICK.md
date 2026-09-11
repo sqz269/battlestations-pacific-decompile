@@ -233,3 +233,25 @@ ASCII-folding code; cross-CRT locale equivalence is not claimed.
 The null-listener guard and projected record ownership remain intentional host
 differences. This update does not establish the native ABI or game validation.
 Combined checks are recorded in `reports/orch3_input_audio_session_integration.json`.
+
+## Correction from docs/INPUT_BINDING_POLL.md (2026-09-10)
+
+The frame update now calls the recovered full `00a92370` poll and `00a922a0`
+rebind walk directly. `InputTickHost` exposes the backend device vectors and
+inherits the three device-query slots plus CRT square-root boundary from
+`InputBindingPollHost`; the former rebind and poll callbacks are removed.
+Each enabled record shifts previous/current state exactly once, inside the full
+poll, before listener classification. Disabled records are still rebound when
+backend+D4 is dirty, but are not polled. Backend update and the optional final
+hook retain their original order.
+
+Record floats +1C/+24 are accumulated input values, not hold durations. The
+legacy C++ member names remain for existing callers. Polling can produce
+negative values; listener down predicates require a positive value and a true
+latch. Binding ownership at +10/+14 is now represented by each record's vector.
+Device groups and all referenced records/bindings must remain valid and stable
+across device host calls; native pointer invalidation is not reproduced.
+
+See `reports/input_binding_poll.json` for the 6000 native poll and 400 paired
+helper comparisons. This integrates the recovered algorithm; concrete device
+virtuals, original object layouts and gameplay input remain outside that proof.
