@@ -145,11 +145,28 @@ enum class MainMenuPage : int {
                             // exit virtual, so leaving the screen resets it
     SinglePlayer = 0x02,    // 00584FE7 in 00584F50 (FE.main_singleplayer_title)
     Multiplayer = 0x03,     // 00585458 in 005853C0 (FE.main_multiplayer_title)
-    CampaignUsn = 0x04,     // 005978A7 in 00597870, parameter; FE.main_checkpoint
-    CampaignUsnDlc = 0x05,  // same site; the DLC arm, 00598B60 sets the flag
-    CampaignIjn = 0x06,     // same site; FE.main_ijn_dlc_title neighbours it
-    CampaignIjnDlc = 0x07,  // same site; the second DLC arm
-    Page08 = 0x08,          // 0058099A in 00580940; content unidentified
+    // Pages 04h..08h are the five mission lists. Each one is settled by three
+    // independent facts that agree, not by a neighbouring string: the title
+    // 00597870 assigns, the mission-group widget handle it copies into +110h,
+    // and the group index it publishes to 00E194D8. See the Corrections section
+    // of docs/MAIN_MENU_MISSION_DETAIL.md; the earlier USN/IJN spelling here was
+    // inferred from adjacent literals and had both sides reversed.
+    CampaignJapan = 0x04,   // 005978FE pushes FE.ijn_campaign (00CEFE5C);
+                            // 00597957 publishes group 1; 00597961 copies
+                            // +314h missions_JP_Group
+    CampaignUs = 0x05,      // 00597987 pushes FE.usn_campaign (00CEFE4C);
+                            // 005979E0 publishes group 2; 005979EA copies
+                            // +310h missions_US_Group
+    CampaignJapanDlc = 0x06,  // 00597A75 pushes FE.main_ijn_dlc_title
+                              // (00CEFE20); 00597AD3 publishes group 3;
+                              // 00597AD9 copies +31Ch missions_JP_DLC_Group
+    CampaignUsDlc = 0x07,   // 00597AFC pushes FE.main_usn_dlc_title (00CEFE08);
+                            // 00597B3C publishes group 4; 00597B42 copies
+                            // +318h missions_US_DLC_Group
+    Page08 = 0x08,          // 0058099A in 00580940. Retained spelling.
+    TrainingGrounds = 0x08, // 00597A05 pushes FE.training_grounds (00CEFE38);
+                            // 00597A55 publishes group 0; 00597A5B copies
+                            // +320h training_Group
     MissionDetail = 0x09,   // 0058CAC3 in 0058C010 (globals.continue)
     TacticalLibrary = 0x0B, // 0058877C in 005886F0 (FE.main_tacticallibrary);
                             // 005629B6 in the leaderboard screen writes it too
@@ -158,8 +175,20 @@ enum class MainMenuPage : int {
 
 // True for the four pages 00598B60 treats as a mission list at 00598B7B..
 bool is_campaign_mission_list_page(MainMenuPage page) noexcept;
-// True for the two of those four that 00598B60 marks as downloadable content
-// by storing 1 into screen+55Ch at 00598BA6.
+
+// True for the two of those four that carry the United States campaign.
+// 00598FB3 stores that predicate into the screen byte the decompiler renders as
+// `+55Ch`; the routine runs on `this = screen + 8` (00598FBF recovers the
+// screen with `LEA ESI,[EDI-8]`), so the real field is screen+564h, the same
+// byte 00597870 and 0058C010 set to 1 on pages 5 and 7. It is a side flag, not
+// a content flag; the earlier `is_downloadable_content_page` reading of this
+// site is recorded under Corrections in docs/MAIN_MENU_MISSION_DETAIL.md.
+bool is_us_campaign_page(MainMenuPage page) noexcept;
+
+// True for the two of those four that are downloadable content. The evidence is
+// screen+565h, which 00597870 sets to 1 on pages 6 and 7 (00597AEE, 00597B4A)
+// and to 0 on pages 4 and 5 (00597976, 005979F0), and which 0058C010 reproduces
+// from the group index at 0058C0E8 and 0058C103.
 bool is_downloadable_content_page(MainMenuPage page) noexcept;
 
 // ---------------------------------------------------------------------------

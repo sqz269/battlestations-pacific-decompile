@@ -24,19 +24,27 @@ bool is_campaign_mission_list_page(MainMenuPage page) noexcept {
     // 00598B7B..00598B9C tests 4, 5, 6 and 7 in that order before doing
     // anything else, so the four form one group.
     switch (page) {
-    case MainMenuPage::CampaignUsn:
-    case MainMenuPage::CampaignUsnDlc:
-    case MainMenuPage::CampaignIjn:
-    case MainMenuPage::CampaignIjnDlc:
+    case MainMenuPage::CampaignJapan:
+    case MainMenuPage::CampaignUs:
+    case MainMenuPage::CampaignJapanDlc:
+    case MainMenuPage::CampaignUsDlc:
         return true;
     default:
         return false;
     }
 }
 
+bool is_us_campaign_page(MainMenuPage page) noexcept {
+    // 00598FA1..00598FB3: only 5 and 7 store 1 into the byte the decompiler
+    // calls +55Ch, which is screen+564h once the +8 `this` adjustment of
+    // 00598B60 is undone (00598FBF: LEA ESI,[EDI-8]).
+    return page == MainMenuPage::CampaignUs || page == MainMenuPage::CampaignUsDlc;
+}
+
 bool is_downloadable_content_page(MainMenuPage page) noexcept {
-    // 00598B9E: only 5 and 7 store 1 into screen+55Ch.
-    return page == MainMenuPage::CampaignUsnDlc || page == MainMenuPage::CampaignIjnDlc;
+    // 00597AEE and 00597B4A set screen+565h on pages 6 and 7; 00597976 and
+    // 005979F0 clear it on pages 4 and 5.
+    return page == MainMenuPage::CampaignJapanDlc || page == MainMenuPage::CampaignUsDlc;
 }
 
 TacticalLibraryRequest open_tactical_library_005885d0(
