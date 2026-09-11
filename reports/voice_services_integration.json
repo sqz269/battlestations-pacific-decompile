@@ -1,0 +1,62 @@
+{
+  "packet": "orch4_voice_services_integration",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "slot": "1b71dc579d698cae6440b19cff410659f7bbb0a6",
+    "subtitle": "17c0684",
+    "fade": "65ca755"
+  },
+  "implemented_new_functions": 13,
+  "analyzed_only": [
+    "00449af0"
+  ],
+  "connected_existing_functions": [
+    "005babb0",
+    "005b9760"
+  ],
+  "source_documents": [
+    "docs/VOICE_SLOT_START.md",
+    "docs/VOICE_SUBTITLES.md",
+    "docs/VOICE_FADE_UPDATE.md",
+    "docs/VOICE_LINE_ADVANCE.md"
+  ],
+  "review_corrections": [
+    "Constructor global manager reloads005BAE1C/21 and005BAE85/8B.",
+    "Remove duplicate bank-release guard around consuming005B9050.",
+    "Alias subtitle GUI state and lines_54.last_08 in canonical manager."
+  ],
+  "review_qualifications": [
+    "Fresh empty slot string required; no reuse of destroyed stale header.",
+    "Slot timestamp copy excludes signaling-NaN and x87 status equivalence.",
+    "Sound entry container stable during releases; retain is nonthrowing and has no callback."
+  ],
+  "validation": {
+    "win32_build": "passed",
+    "ctest": "reconstructed_math and native_math_differential passed 2/2",
+    "log": "local/voice_services_build.log",
+    "slot_fixture": "local/voice_services_slot_probe.log passed",
+    "fade_fixture": "local/voice_services_fade_probe.log passed",
+    "advance": "independent complete-assembly review",
+    "new_permanent_tests": 0,
+    "native_audio": false,
+    "subtitle_visual": false,
+    "gameplay": false,
+    "native_abi": false
+  },
+  "ghidra": {
+    "flow_repair": "reports/voice_services_flow_repair.json",
+    "gap": "00a7c14f..00a7c161",
+    "annotation": "pending final scoped annotation/readback"
+  },
+  "next_candidates": {
+    "line_owner_update": "005bc640",
+    "script_line_constructor": "005baf30",
+    "scheduled_record_start": "005b9300",
+    "scheduled_record_callers": [
+      "005b93d0",
+      "005b9420"
+    ]
+  }
+}

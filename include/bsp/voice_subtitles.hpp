@@ -24,6 +24,16 @@ struct VoiceSubtitleManagerView {
     float& base_80;
 };
 
+// Bind one current canonical manager without duplicating its queue or GUI
+// state. The host resolves the global manager at each native reload site.
+inline VoiceSubtitleManagerView voice_subtitle_manager_view(
+    VoicePlaybackManager& manager) noexcept {
+    return {manager.template_2c, manager.group_30, manager.text_34,
+        manager.text_38, manager.background_3c, manager.decoration_40,
+        manager.lines_54.last_08, manager.dirty_60, manager.initial_78,
+        manager.per_character_7c, manager.base_80};
+}
+
 class VoiceSubtitleHost {
 public:
     virtual ~VoiceSubtitleHost() = default;

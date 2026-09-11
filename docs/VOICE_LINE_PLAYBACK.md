@@ -154,3 +154,18 @@ and rereads, not native FMOD behavior. Results are recorded in
 `reports/voice_line_playback.json`. This packet does not add a permanent test
 suite. Native audio/GUI runtime, installed-game playback and binary ABI
 compatibility have not been validated.
+
+## Follow-up service integration
+
+`VOICE_SERVICES_INTEGRATION.md` supersedes the earlier unresolved-call scope
+above: `005B8510`, `005B9050` and `005B8C30` now have concrete reconstructed
+bodies and are called directly. Clip `+8` is the record's resource-array index;
+slot `+0C` is an owned string. The corresponding whole-routine host callbacks
+were removed. `005B91E0` now reconstructs subsequent-clip advancement.
+
+Constructor `005BABB0` reloads `[[00E198C4]+A4]` separately at `005BAE1C/21`
+after subtitle work and `005BAE85/8B` after slot polling and bank retain. Its
+former explicit manager argument was removed from the C++ projection. The
+start callee consumes its retained bank argument, so no additional caller-side
+release guard surrounds it. Build and service-fixture validation passed;
+native audio, rendered subtitles and gameplay remain unvalidated.
