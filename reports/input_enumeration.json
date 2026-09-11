@@ -1,0 +1,38 @@
+{
+  "packet": "orch3_input_enumeration_f",
+  "source": "src/input_enumeration.cpp",
+  "header": "include/bsp/input_enumeration.hpp",
+  "functions": ["00a98030", "00a982b0", "00a972e0", "00a9a3e0", "00a9a290"],
+  "fragments_or_library_boundaries": ["00a962f0", "00a97fa0"],
+  "reused_contracts": ["InputDeviceTable::attach at 00a904e0", "InputFocusBackendState", "InputBindingDeviceGroups", "DirectInputHost", "KeyboardInputDevice", "MouseInputDevice", "NativeStringStorage", "SDK IDirectInput8A and IDirectInputDevice8A"],
+  "evidence": [
+    "bsp.py ghidra commands verified saved bsp.gpr /battlestationspacific.exe; decompile plus assembly used for register/stack/x87 inputs",
+    "00a98049 masks DIDEVICEINSTANCEA+24 with FF; guards backend+04 keyboard and +24 mouse",
+    "00a9819b..a981a1 sets Xbox flag before GUID search",
+    "00a981ec compares all16 GUID bytes; 00a9821e appends before 00a98223 Xbox skip and 00a9822e indexed slot read",
+    "00a9a42a CreateDevice SysKeyboard, 00a9a439 SetDataFormat, 00a9a447 current HWND, 00a9a453 SetCooperativeLevel flags6",
+    "00a9a31b CreateDevice SysMouse, 00a9a32a SetDataFormat, then GetSystemMetrics and GetDoubleClickTime; no cooperative call",
+    "SDK-linked data formats compared against all native descriptor fields and resolved GUID bytes in the installed EXE"
+  ],
+  "sdk_format_comparisons": [
+    {"symbol":"c_dfDIMouse2","native_address":"00d795fc","header":[24,16,2,20,11],"objects_compared":11,"equal":true},
+    {"symbol":"c_dfDIKeyboard","native_address":"00d79804","header":[24,16,2,256,256],"objects_compared":256,"equal":true}
+  ],
+  "no_ghidra_function": [
+    {"address":"00a982b0","end":"00a982c1","length":18,"instructions":6,"last_instruction":"00a982bf","last_length":3,"last_mnemonic":"ret 8","enclosing_function":null}
+  ],
+  "observed_external_flow_gap": [
+    {"function":"00a9a470","address":"00a9a48b","length":3,"bytes":"83c404","mnemonic":"add esp,4","cause":"false no-return annotation on 00bf65ac","end":"00a9a493","last_instruction":"00a9a491","last_length":3,"reported_to_integrator":true,"ghidra_modified":false}
+  ],
+  "verification": {"win32_release":true,"existing_ctests_passed":2,"native_seed_ranges_matched":8,"local_ordering_fixture":true,"real_hardware_enumeration":false,"cooperative_or_focus_runtime_probe":false,"gameplay":false},
+  "local_evidence": ["local/input-enumeration-build.log", "local/input_enumeration_fixture.cpp", "local/run_input_enumeration_fixture.cmd", "local/input-enumeration-fixture.log", "local/sdk-input-formats.bin", "local/compare_input_formats.py", "local/input-format-comparison.json"],
+  "limitations": [
+    "Joystick 00a99940 construction remains a required actual polymorphic factory; no fabricated production device",
+    "Returned typed keyboard/mouse wrappers borrow COM pointers; application separately tracks the reference from CreateDevice and native deletion does not Release it",
+    "Native allocation-null A980D5/A98260 reaches unchecked A904E5 vtable dereference; canonical table.attach rejects null and the adapter reports host error",
+    "Missing COM output, missing callback arguments, failed canonical attachment and GUID index>=8 have explicit host error behavior",
+    "Callback host exceptions stop enumeration and rethrow outside the DLL; original normal callback always continued",
+    "Native vector allocator/growth/iterator code uses a standard-container boundary",
+    "Native object vtables/refcounts and uninitialized mouse sample bytes are not ABI-compatible typed storage"
+  ]
+}
