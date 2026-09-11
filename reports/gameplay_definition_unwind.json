@@ -1,0 +1,408 @@
+{
+  "packet": "orch3_gameplay_definition_unwind_ac",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/gameplay_effect_definition.cpp",
+  "header": "include/bsp/gameplay_effect_definition.hpp",
+  "documentation": "docs/GAMEPLAY_DEFINITION_UNWIND.md",
+  "native_spans": [
+    {
+      "name": "definition",
+      "address": "00870d00",
+      "end_exclusive": "00870dc2",
+      "length": 194,
+      "sha256": "25d9e543e999103e6e37facda0ca227e96420b6cc32830355cbe44f045e5fb2f",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00870d2e",
+          "target": "0x4c1650",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870d49",
+          "target": "0x86b650",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870d5f",
+          "target": "0x86e8a0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870d7a",
+          "target": "0x419cc0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870d81",
+          "target": "0xbd1510",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870d92",
+          "target": "0x86edd0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870d9a",
+          "target": "0xbf6989",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00870dac",
+          "target": "0xbd30f0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00870dc1",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "array",
+      "address": "0086fc30",
+      "end_exclusive": "0086fc47",
+      "length": 23,
+      "sha256": "3a425754613ce74166a4a02ca26a29041a9d3ffa0103c41c9d1c54a5f0d22658",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086fc35",
+          "target": "0x86edd0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086fc3d",
+          "target": "0xbf6989",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086fc46",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "scalar",
+      "address": "00871440",
+      "end_exclusive": "0087145e",
+      "length": 30,
+      "sha256": "61b4c28da16fc3aa6923e88a1c995d05d87bc35452c7a6164f1c3b0f35186242",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00871443",
+          "target": "0x870d00",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00871450",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0087145b",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "name": "base",
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [
+        {
+          "address": "00bd30f6",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "string",
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0041dd30",
+          "target": "0x419cc0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0041dd37",
+          "target": "0xbd1510",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0041dd3c",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "funclets",
+      "address": "00c95fc0",
+      "end_exclusive": "00c95fe8",
+      "length": 40,
+      "sha256": "3d8b92200d0d932f0f3394fb972c50b11ec5e00f386e98300f328855a0ccb600",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00c95fc3",
+          "target": "0xbd30f0",
+          "mnemonic": "jmp"
+        },
+        {
+          "address": "00c95fce",
+          "target": "0x86fc30",
+          "mnemonic": "jmp"
+        },
+        {
+          "address": "00c95fd9",
+          "target": "0x41dd20",
+          "mnemonic": "jmp"
+        },
+        {
+          "address": "00c95fe3",
+          "target": "0xbf6b43",
+          "mnemonic": "jmp"
+        }
+      ],
+      "returns": []
+    },
+    {
+      "name": "map",
+      "address": "00dc7f64",
+      "end_exclusive": "00dc7fa0",
+      "length": 60,
+      "sha256": "f3e246597bd310949b3a080418222b6cce618131e8f0a68af8cdc3c05e987372",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    }
+  ],
+  "unwind": {
+    "handler": "00c95fde",
+    "funcinfo": "00dc7f7c",
+    "magic": "19930522",
+    "map": "00dc7f64",
+    "saved_owner": "[EBP-18]",
+    "entries": [
+      {
+        "state": 2,
+        "next": 1,
+        "funclet": "00c95fd3",
+        "target": "0041dd20",
+        "owner_offset": "1c"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00c95fc8",
+        "target": "0086fc30",
+        "owner_offset": "08"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00c95fc0",
+        "target": "00bd30f0",
+        "owner_offset": "00"
+      }
+    ],
+    "normal_state_stores": {
+      "00870d26": 2,
+      "00870d69": 1,
+      "00870d8d": 0,
+      "00870da4": -1
+    }
+  },
+  "behavior": {
+    "early_failure": "Name, current component array, base, then propagate. No ID suppression/rollback or raw-owner free.",
+    "normal_array_failure": "Only base. Keep decremented count, uncleared throwing slot, remaining references and array allocation; no retry.",
+    "array_destructor": "Resize0 then reload/free current data; no internal cleanup after throw.",
+    "cleanup_failure": "C++ noexcept guard terminates on second exception; fatal behavior not executed in fixture."
+  },
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/gameplay-definition-unwind-ac-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS exit0; local/gameplay-definition-unwind-ac-fixture.log",
+    "fixture_source": "local/gameplay_definition_unwind_ac.cpp",
+    "native_cases": [
+      "Complete194-byte destructor and30-byte scalar flags0 normal path, explicit ESP balance and normalized24h owner image",
+      "Original7-byte base and29-byte string bodies; actual shared singleton/name pool",
+      "All three original funclets selected from verified native map and invoked with a synthetic[EBP-18] frame",
+      "Complete23-byte array destructor with callback replacement of remaining backing; captured old slot cleared, current backing freed"
+    ],
+    "cpp_failure_cases": [
+      "Missing ID through scalar flags1 rethrows exact out_of_range after name/array/base cleanup, matching direct original funclets",
+      "Normal component throw leaves count1, throwing second slot uncleared/count0, first component alive, raw array retained, weak ID erased and base restored; no retry"
+    ],
+    "regression": "PASS recompiled AB actual definition->point->shake->teardown and name-allocation failure fixture; local/gameplay-definition-unwind-ac-ab-regression.log",
+    "rebindings": [
+      "Original manager/STL calls use same actual canonical manager and map through ABI/iterator projection bridges",
+      "Original string getter/return use actual singleton and native string pool",
+      "Original array resize calls existing C++86EDD0, controlled fixture component callbacks",
+      "Original free CALLs use real singleton_lifetime_free plus recording; original base/string/array funclets execute copied bodies"
+    ],
+    "coverage_limits": [
+      "Native exception handler/dispatcher not executed; direct funclet invocation only",
+      "Native scalar normal comparison uses flags0; C++ flags1 exercised only on destructor failures in this fixture",
+      "Cleanup double throw and NativeStringStorage noexcept getter-failure domain not executed",
+      "Controlled component terminal callbacks are fixture inputs, not game component implementations",
+      "Retained partial array/raw owner explicitly cleaned by fixture after assertions",
+      "No concurrency, SEH, invalid-span or binary exception-object ABI validation"
+    ],
+    "native_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "ghidra_extent": {
+    "flow_report": "reports/gameplay_definition_unwind_flow_ac.json",
+    "array": "86FC3D CALL_RETURN cleared,5 tail bytes decoded; stored extent still ends at free call",
+    "definition": "Stored extent omits35 bytes after870D9A; read-only explicit-tail inspection and live/disk full-span verification",
+    "function_deleted_or_recreated": false,
+    "complete_extent_repair_claimed": false
+  },
+  "remaining": [
+    "Native exception-dispatch/exception-object ABI",
+    "Remaining application component routes/terminal implementations",
+    "Concurrency and gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/gameplay_definition_unwind_ac.cpp": "71061736c0448102dedfcfe1affa350ba6a249d4e07cf5caa16f2685c35bc4a0",
+    "local/run_gameplay_definition_unwind_ac.cmd": "2556fef91f92a600fbeea4f63cc74907b96b1fbf88de13b74b4d08063b31ac57",
+    "local/gameplay_definition_native_bytes_ac.hpp": "b466d2127425b101a2ef758b56eb16dba266a38e51c0d0c488a039490987f3c4",
+    "local/gameplay-definition-byte-evidence-ac.json": "fb84e7a3faff1ddd2a4ad97d3e45ca4d6064b19ed5555c1fc69b2962ec74d4e6",
+    "local/extract_gameplay_definition_ac.py": "884790009b1c2eae56932762e5259295d6b2f52a5fbcd13b75f2d7a6a8056ad3",
+    "local/gameplay_point_binding_ab.cpp": "7ade18005a974f34f1c009052648741d16b2915eb018b3716a96a626e91b5fd8",
+    "local/run_gameplay_point_binding_ab.cmd": "1f466351ac4e0fcd16a19dd9db940c1277d71616ba940b11101aaebaa96d3240"
+  },
+  "ghidra_annotations": {
+    "saved": true,
+    "audit_path": "local/ghidra-annotations-20260911T203152Z.json",
+    "readback_path": "local/gameplay-definition-ac-comments.json",
+    "all_seven_names_and_evidence_verified": true,
+    "previous_comments_preserved": true,
+    "old_and_new_values": [
+      {
+        "address": "0086fc30",
+        "before": {
+          "address": "0086fc30",
+          "function_name": "FUN_0086fc30"
+        },
+        "after": {
+          "address": "0086fc30",
+          "name": "BSP_EffectComponentReferenceArray_Destroy",
+          "evidence": "Hypothesis, not a recovered symbol. Complete23-byte body86FC30..86FC46. ECX actual12h header, RET; call86EDD0 resize0, reload CURRENT data after callbacks, free viaBF6989; pointer/capacity stale. No internal EH, free or retry after a throwing resize. C95FC8 uses this on definition+08. False CALL_RETURN at86FC3D cleared and5 tail bytes decoded; stored function extent remains truncated, not claimed repaired. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00870d00",
+        "before": {
+          "address": "00870d00",
+          "function_name": "BSP_GameplayEffectDefinition_Destroy",
+          "comment": "[BSP reconstruction 00870d00]\nHypothesis, not a recovered symbol. ECX actual24h definition; RET00870DC1. Derived vtable; current manager then current ID find/erase without value identity; pooled name; resize components0; reload/free data; base vtableCEB130. Freed headers/capacity/refs/ID remain. Verified tail beyond stored body. Full-span disk/live bytes match SHA256 25d9e543e999103e6e37facda0ca227e96420b6cc32830355cbe44f045e5fb2f. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated.\n\n[BSP reconstruction 00870d00] update\nHypothesis, not a recovered symbol. ECX actual24h definition; RET00870DC1. Derived vtable; current manager then current ID find/erase without value identity; pooled name; resize components0; reload/free data; base vtableCEB130. Freed headers/capacity/refs/ID remain. Verified tail beyond stored body. Full-span disk/live bytes match SHA256 25d9e543e999103e6e37facda0ca227e96420b6cc32830355cbe44f045e5fb2f. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated. | Canonical gameplay-definition companion now reaches this existing normal destructor through actual D0DA58 BD30E0/871440 after real+04 reaches0. Verified actual weak-ID erase, name release and component-array decrement during point teardown; host companion retired only after raw scalar free. Existing native EH coverage is not expanded. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00870d00",
+          "name": "BSP_GameplayEffectDefinition_Destroy",
+          "evidence": "Hypothesis, not a recovered symbol. ECX actual24h definition; RET00870DC1. Derived vtable; current manager then current ID find/erase without value identity; pooled name; resize components0; reload/free data; base vtableCEB130. Freed headers/capacity/refs/ID remain. Verified tail beyond stored body. Full-span disk/live bytes match SHA256 25d9e543e999103e6e37facda0ca227e96420b6cc32830355cbe44f045e5fb2f. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated. | Canonical gameplay-definition companion now reaches this existing normal destructor through actual D0DA58 BD30E0/871440 after real+04 reaches0. Verified actual weak-ID erase, name release and component-array decrement during point teardown; host companion retired only after raw scalar free. Existing native EH coverage is not expanded. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated. | Hypothesis, not a recovered symbol. Complete194-byte destructor normal sequence plus recovered three-state C++ cleanup. HandlerC95FDE selects FuncInfoDC7F7C/mapDC7F64. State2 before manager/find/erase; state1 before name release; state0 before array resize/free; state-1 before base. Getter/map failure cleans name->array->base and rethrows. A component throw during normal array stage runs ONLY base, preserving decremented count/uncleared captured slot/current allocation. No retry, cache rollback or raw-owner free. Stored Ghidra body still omits35 tail bytes, independently verified and executed. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00871440",
+        "before": {
+          "address": "00871440",
+          "function_name": "CG_scalar_deleting_dtor_00871440",
+          "comment": "[BSP reconstruction 00871440]\nHypothesis, not a recovered symbol. ECX definition; stack flags; EAX original address; RET4. Full normal destruction; flags&1 frees storage. Correct compiler scalar-destructor name retained. Full-span disk/live bytes match SHA256 61b4c28da16fc3aa6923e88a1c995d05d87bc35452c7a6164f1c3b0f35186242. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated.\n\n[BSP reconstruction 00871440] update\nHypothesis, not a recovered symbol. ECX definition; stack flags; EAX original address; RET4. Full normal destruction; flags&1 frees storage. Correct compiler scalar-destructor name retained. Full-span disk/live bytes match SHA256 61b4c28da16fc3aa6923e88a1c995d05d87bc35452c7a6164f1c3b0f35186242. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated. | Correct compiler scalar-destructor name preserved. Canonical actual-definition zero-reference binding validates CURRENT D0DA58 virtual0 BD30E0 and current virtual4 871440, invokes this existing flags1 scalar, then retires only host metadata. No extra decrement, retain, copied cache or count; native destructor exception paths remain unvalidated. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00871440",
+          "name": "CG_scalar_deleting_dtor_00871440",
+          "evidence": "Hypothesis, not a recovered symbol. ECX definition; stack flags; EAX original address; RET4. Full normal destruction; flags&1 frees storage. Correct compiler scalar-destructor name retained. Full-span disk/live bytes match SHA256 61b4c28da16fc3aa6923e88a1c995d05d87bc35452c7a6164f1c3b0f35186242. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated. | Correct compiler scalar-destructor name preserved. Canonical actual-definition zero-reference binding validates CURRENT D0DA58 virtual0 BD30E0 and current virtual4 871440, invokes this existing flags1 scalar, then retires only host metadata. No extra decrement, retain, copied cache or count; native destructor exception paths remain unvalidated. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated. | Hypothesis, not a recovered symbol. Correct compiler scalar name preserved. Complete30 bytes; ECX actual24h, flags stack, EAX original pointer, RET4. Existing raw free executes only after the now three-state destructor returns and flags&1. Missing-ID and normal array-stage failure propagate with base restored and caller-owned raw allocation; scalar adds no recovery. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c95fc0",
+        "before": {
+          "address": "00c95fc0",
+          "function_name": "Unwind@00c95fc0"
+        },
+        "after": {
+          "address": "00c95fc0",
+          "name": "BSP_GameplayEffectDefinition_UnwindBase",
+          "evidence": "Hypothesis, not a recovered symbol. 8-byte state0->-1 cleanup funclet: saved complete definition at[EBP-18] ->ECX, tail-JMP BD30F0. One base CEB130 store, no member/free action. MapDC7F64 selects this even after a normal array-stage throw. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c95fc8",
+        "before": {
+          "address": "00c95fc8",
+          "function_name": "Unwind@00c95fc8"
+        },
+        "after": {
+          "address": "00c95fc8",
+          "name": "BSP_GameplayEffectDefinition_UnwindComponents",
+          "evidence": "Hypothesis, not a recovered symbol. 11-byte state1->0 cleanup funclet: saved definition[EBP-18]+08 ->ECX, tail-JMP86FC30. Resize current component array0 then reload/free backing. Native state0 is installed before normal array destruction, so a throw there does not select this funclet. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c95fd3",
+        "before": {
+          "address": "00c95fd3",
+          "function_name": "Unwind@00c95fd3"
+        },
+        "after": {
+          "address": "00c95fd3",
+          "name": "BSP_GameplayEffectDefinition_UnwindName",
+          "evidence": "Hypothesis, not a recovered symbol. 11-byte state2->1 cleanup funclet: saved definition[EBP-18]+1C ->ECX, tail-JMP41DD20. Release current pooled name without header clearing. Native manager/map failures enter state2. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c95fde",
+        "before": {
+          "address": "00c95fde",
+          "function_name": "FUN_00c95fde"
+        },
+        "after": {
+          "address": "00c95fde",
+          "name": "BSP_GameplayEffectDefinition_Destroy_ExceptionHandler",
+          "evidence": "Hypothesis, not a recovered symbol. 10-byte compiler EH handler: EAX=FuncInfoDC7F7C then JMP BF6B43. Magic19930522,3 states,mapDC7F64:2->1 C95FD3 name,1->0 C95FC8 array,0->-1 C95FC0 base. Original handler/dispatcher not executed; direct funclet operations and C++ cleanup were checked. Packet orch3_gameplay_definition_unwind_ac. Strict Win32/2 existing CTests, complete original194/23/30-byte normal bodies and direct map-selected funclets, focused C++ missing-ID/array-throw/current-backing checks, and AB composition regression passed. docs/GAMEPLAY_DEFINITION_UNWIND.md; reports/gameplay_definition_unwind.json. New C++ ABI; original exception dispatcher, cleanup double throw, native SEH and gameplay unexecuted."
+        },
+        "status": "applied"
+      }
+    ],
+    "exports_refreshed": true
+  }
+}

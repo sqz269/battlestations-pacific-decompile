@@ -41,6 +41,31 @@ void release_slot(void* captured_slot, GameplayEffectComponentLifetime& lifetime
         write<void*>(captured_slot, 0, nullptr); // Captured address, after callback.
     }
 }
+class DefinitionMemberUnwind final {
+public:
+    DefinitionMemberUnwind(GameplayEffectDefinition& owner,
+        GameplayEffectDefinitionContext& context) noexcept : owner_(owner), context_(context) {}
+    ~DefinitionMemberUnwind() noexcept {
+        // Actual mapDC7F64 transitions before each funclet. A second exception
+        // from a cleanup function terminates; no remaining cleanup is invented.
+        if (state >= 2) {
+            state = 1; // C95FD3 ->41DD20 on current owner+1C
+            destroy_native_string_header_0041dd20(owner_.native.data() + 0x1c, context_.strings);
+        }
+        if (state >= 1) {
+            state = 0; // C95FC8 ->86FC30 on current owner+08
+            destroy_gameplay_effect_components_0086fc30(owner_.native.data() + 8, context_.components);
+        }
+        if (state >= 0) {
+            state = -1; // C95FC0 ->BD30F0 on owner
+            write<std::uint32_t>(owner_.native.data(), 0, 0x00ceb130);
+        }
+    }
+    int state{2};
+private:
+    GameplayEffectDefinition& owner_;
+    GameplayEffectDefinitionContext& context_;
+};
 } // namespace
 
 GameplayEffectDefinition& construct_gameplay_effect_definition_00870256_fragment(
@@ -138,19 +163,27 @@ void resize_gameplay_effect_components_0086edd0(void* header,
     }
     write<std::int32_t>(header, 4, requested);
 }
+void destroy_gameplay_effect_components_0086fc30(void* header,
+    GameplayEffectComponentLifetime& lifetime) {
+    resize_gameplay_effect_components_0086edd0(header, 0, lifetime);
+    singleton_lifetime_free(read<void*>(header, 0)); // Current buffer after callbacks.
+}
 void destroy_gameplay_effect_definition_00870d00(GameplayEffectDefinition& owner,
     GameplayEffectDefinitionContext& context) {
     auto* const data = owner.native.data();
     write<std::uint32_t>(data, 0, 0x00d0da58);
+    DefinitionMemberUnwind unwind(owner, context); // State2 BEFORE manager/map calls.
     auto* const manager = get_gameplay_effect_manager_004c1650(context.manager);
     const auto id = read<std::int32_t>(data, 0x18); // After current getter.
     auto& definitions = *manager->definitions;
     const auto found = definitions.find(id); //0086B650, signed ID comparison.
     if (found == definitions.end()) throw std::out_of_range("invalid map/set<T> iterator");
     definitions.erase(found); //0086E8A0: erase by ID without inspecting its value.
+    unwind.state = 1; //00870D69: the name is no longer an armed cleanup.
     destroy_native_string_header_0041dd20(data + 0x1c, context.strings);
-    resize_gameplay_effect_components_0086edd0(data + 8, 0, context.components);
-    singleton_lifetime_free(read<void*>(data, 8)); // Reload after component callbacks.
+    unwind.state = 0; //00870D8D: array-stage throws must NOT retry the array.
+    destroy_gameplay_effect_components_0086fc30(data + 8, context.components);
+    unwind.state = -1; //00870DA4, before normal base destruction.
     write<std::uint32_t>(data, 0, 0x00ceb130); // Existing00BD30F0 base primitive.
 }
 GameplayEffectDefinition* scalar_delete_gameplay_effect_definition_00871440(

@@ -64,10 +64,23 @@ void append_gameplay_effect_component_0086eb60(void* actual_header,
 void resize_gameplay_effect_components_0086edd0(void* actual_header,
     std::int32_t size, GameplayEffectComponentLifetime&);
 
+// Complete0086FC30..0086FC46. ECX actual12h header; RET. Resize to0,
+// reload/free CURRENT buffer. Leave pointer/capacity stale; no internal EH,
+// retry or buffer free if resize throws. Used by definition state1 unwind.
+void destroy_gameplay_effect_components_0086fc30(void* actual_header,
+    GameplayEffectComponentLifetime&);
+
 //00870D00: ECX=owner; RET. Get current manager, erase current ID even when its
 // cache value is another pointer; destroy name, resize components0, reload/free
 // buffer, write base vtable. Freed buffer/name headers are left unchanged.
 // Missing ID reaches the native STL out_of_range path; it is not ignored.
+// C95FDE/FuncInfoDC7F7C/mapDC7F64: state2 name, state1 component array,
+// state0 base. Getter/map failure runs all three; normal name destruction
+// starts in state1, normal array destruction in state0. A component throw
+// during the normal array stage runs ONLY base cleanup, leaving partial
+// array/count/slot state and its allocation intact. No array retry or ID undo.
+// A second exception from cleanup terminates in this C++ unwind domain.
+// Original native EH dispatcher/exception ABI remains unvalidated.
 void destroy_gameplay_effect_definition_00870d00(GameplayEffectDefinition&,
     GameplayEffectDefinitionContext&);
 //D0DA58[4] ->00871440: ECX=owner, stack flags; EAX original address; RET4.
