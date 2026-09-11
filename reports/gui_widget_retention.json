@@ -1,0 +1,359 @@
+{
+  "packet": "orch2_gui_widget_retention_s",
+  "date": "2026-09-11",
+  "base_commit": "4f2fccc",
+  "status": "analysis_only_no_coherent_isolated_retention_api",
+  "cpp_changes": false,
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_before_each_query": true,
+    "read_only": true,
+    "annotations_applied": false
+  },
+  "claimed_addresses": [
+    "00aa9730",
+    "00a9e130",
+    "00aa9390",
+    "00aa9a90",
+    "00a9e210",
+    "00ab6100",
+    "00ad29b0",
+    "00ab5e70",
+    "00ad2880"
+  ],
+  "old_name_records": [
+    {
+      "address": "00aa9390",
+      "name": "BSP_UIContext_Construct",
+      "evidence": "ECX destination, type DWORD stack RET4, EAX context. Relevant defaults: overbright+94=0, low+A4=(0,0,0,1), high+B4=(1,1,1,1), blend+C4=0. Text00ab9650 passes type3. Full scene lifetime is outside host binding table. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+    },
+    {
+      "address": "00aa9730",
+      "name": "BSP_GuiWidget_DestroyBase",
+      "evidence": "ECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json."
+    }
+  ],
+  "old_saved_annotations": [
+    {
+      "address": "00aa9730",
+      "annotation": {
+        "address": "00aa9730",
+        "function_name": "BSP_GuiWidget_DestroyBase",
+        "comment": "[BSP reconstruction 00aa9730]\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json."
+      }
+    },
+    {
+      "address": "00a9e130",
+      "annotation": {
+        "address": "00a9e130",
+        "function_name": "FUN_00a9e130"
+      }
+    },
+    {
+      "address": "00aa9390",
+      "annotation": {
+        "address": "00aa9390",
+        "function_name": "BSP_UIContext_Construct",
+        "comment": "[BSP reconstruction 00aa9390]\nECX destination, type DWORD stack RET4, EAX context. Relevant defaults: overbright+94=0, low+A4=(0,0,0,1), high+B4=(1,1,1,1), blend+C4=0. Text00ab9650 passes type3. Full scene lifetime is outside host binding table. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json."
+      }
+    },
+    {
+      "address": "00aa9a90",
+      "annotation": {
+        "address": "00aa9a90",
+        "function_name": "FUN_00aa9a90"
+      }
+    },
+    {
+      "address": "00a9e210",
+      "annotation": {
+        "address": "00a9e210",
+        "function_name": "FUN_00a9e210"
+      }
+    },
+    {
+      "address": "00ab6100",
+      "annotation": {
+        "address": "00ab6100",
+        "function_name": "FUN_00ab6100"
+      }
+    },
+    {
+      "address": "00ad29b0",
+      "annotation": {
+        "address": "00ad29b0",
+        "function_name": "FUN_00ad29b0"
+      }
+    },
+    {
+      "address": "00b194b0",
+      "annotation": {
+        "address": "00b194b0",
+        "function_name": "FUN_00b194b0"
+      }
+    },
+    {
+      "address": "00ab5e70",
+      "annotation": {
+        "address": "00ab5e70",
+        "function_name": "FUN_00ab5e70"
+      }
+    },
+    {
+      "address": "00ad2880",
+      "annotation": {
+        "address": "00ad2880",
+        "function_name": "FUN_00ad2880"
+      }
+    }
+  ],
+  "new_name_status": "repository hypotheses only; saved Ghidra names/comments unchanged by read-only instruction",
+  "profiles": [
+    {
+      "table": "00d5c130",
+      "class": "base widget",
+      "virtual0": "00bd30e0",
+      "deleting04": "00aa9a90",
+      "destructor": "00aa9730",
+      "return": "00aa75f0",
+      "pool": "00f8bc94"
+    },
+    {
+      "table": "00d5bbf8",
+      "class": "unidentified derived widget",
+      "virtual0": "00bd30e0",
+      "deleting04": "00a9e210",
+      "destructor": "00a9e130",
+      "return": "00a9b150",
+      "pool": "00f8bc10"
+    },
+    {
+      "table": "00d5c4c0",
+      "class": "Icon",
+      "virtual0": "00bd30e0",
+      "deleting04": "00ab6100",
+      "destructor": "00ab5e70",
+      "return": "00ab2150",
+      "pool": "00f8bda0"
+    },
+    {
+      "table": "00d5d130",
+      "class": "FrameBox",
+      "virtual0": "00bd30e0",
+      "deleting04": "00ad29b0",
+      "destructor": "00ad2880",
+      "return": "00acf610",
+      "pool": "00f8c188"
+    }
+  ],
+  "constructor": {
+    "address": "00aa9390",
+    "inclusive_end": "00aa9513",
+    "abi": "ECX destination, stack type DWORD, EAX same, RET4 at9511",
+    "reference_count_store": "AA93B5 actual+04=1 after baseCEB130; D5C130 atAA93CB",
+    "instructions": 83,
+    "gaps": 0
+  },
+  "base_destructor": {
+    "address": "00aa9730",
+    "saved_body_end": "00aa9950",
+    "actual_inclusive_end": "00aa99b8",
+    "abi": "ECX widget, no stack args, RET",
+    "listed_instructions": 169,
+    "body_hazards": [
+      {
+        "start": "00aa984a",
+        "end_exclusive": "00aa9850",
+        "bytes": 6,
+        "meaning": "unreachable alignment LEA afterJMP9850"
+      },
+      {
+        "start": "00aa9951",
+        "end_inclusive": "00aa99b8",
+        "meaning": "free CALL_RETURN truncation hides child-list frees and base destructor/RET"
+      }
+    ],
+    "ordered_actions": [
+      "publishD5C130",
+      "directAA8320 recursive logical scene release",
+      "live child-list current+04(1) no count check",
+      "detach from parent+70",
+      "remaining node+4C release/clear",
+      "dispose+88 vector objects",
+      "free vector and child-list storage",
+      "publishD5C104 and BD30F0",
+      "RET"
+    ],
+    "does_not_decrement_widget04": true
+  },
+  "wrong_start_hypothesis": {
+    "address": "00a9e130",
+    "actual_role": "D5BBF8 derived destructor, not deleting wrapper",
+    "actual_wrapper": "00a9e210",
+    "inclusive_end": "00a9e1d0",
+    "abi": "ECX widget, no stack args, RET",
+    "gap": "A9E183..A9E185 ADD ESP,4 after freeA9E17E",
+    "listed_instructions": 40,
+    "derived_helpers": [
+      "00432050",
+      "00a9b740"
+    ],
+    "base_call": "00a9e1bb"
+  },
+  "deleting_wrapper_contract": {
+    "length_each": 32,
+    "abi": "ECX object, stack flags DWORD, EAX original address, RET4",
+    "order": [
+      "destructor",
+      "iff flags&1 class-specific pool return",
+      "return original address"
+    ],
+    "count_read_or_decrement": false
+  },
+  "derived_destructors": [
+    {
+      "address": "00ab5e70",
+      "inclusive_end": "00ab5efe",
+      "abi": "ECX Icon, RET",
+      "required_helpers": [
+        "00ab5700",
+        "00ab50e0",
+        "00ab5850"
+      ],
+      "base": "00aa9730"
+    },
+    {
+      "address": "00ad2880",
+      "inclusive_end": "00ad28fc",
+      "abi": "ECX FrameBox, RET",
+      "required_helpers": [
+        "00ad21b0"
+      ],
+      "base": "00aa9730"
+    }
+  ],
+  "material_external": {
+    "addresses": [
+      "00b18a40",
+      "00aa9f10",
+      "00b192f0",
+      "00b194b0"
+    ],
+    "lease_conflict": "B194B0 leased by agent/orch2-native-material-owner-20260911s:orch2_native_material_owner_helpers_s; excluded from claimed set",
+    "read_only_contract": "B18A40 old retain releases before incoming publication/increment, even equal pointers. B192F0 effect then live textures then retained+0C then parameter records; source+0C cleared only AFTER owner currentvirtual0 callback. Independent material worker confirmed.",
+    "protective_retain": false,
+    "deferred_release": false
+  },
+  "direct_deletion": {
+    "manager": "00aa31f0",
+    "calls": [
+      "00aa326a currentvirtual20",
+      "00aa3276 currentvirtual04(1)"
+    ],
+    "parent": "00aa9797 childcurrentvirtual04(1)",
+    "widget_count_check": false,
+    "conclusion": "native reference count cannot postpone direct manager/tree destruction; externally retained material/queue safety needs actual drain/lifetime contract"
+  },
+  "host_gap": {
+    "widget_count": "GuiWidgetBaseExtraFields.references_04 is independent int32, initialized1",
+    "root_count": "GuiLayoutPage.reference_count separately models page+04, existing-page increment atgui_layout_loader.cpp:734",
+    "layout_owner": "unique root and unique child tree; before_destroy calls retire_tree",
+    "companion_owner": "GuiWidgetOwnerRuntime unique_ptr map; erase_tree ignores both semantic counts",
+    "material_binding": "retain_widget must alias SAME GuiWidgetOwner and preserve borrowed fields; currently no coherent actual count/layout provider"
+  },
+  "next_packet": {
+    "shared_files": [
+      "include/bsp/gui_widget_owner.hpp",
+      "src/gui_widget_owner.cpp",
+      "include/bsp/gui_layout_loader.hpp",
+      "src/gui_layout_loader.cpp",
+      "include/bsp/gui_material_binding.hpp",
+      "src/gui_material_binding.cpp"
+    ],
+    "required_contracts": [
+      "one actual widget+04/root count and canonical identity; no third count",
+      "current-profile zero-reference and explicit deleting04 routes, complete class destructor/pool return",
+      "same existing layout/tree fields remain valid through allowed material reads",
+      "prove render/material drain before native direct deletion; no invented deferral or early clear",
+      "B18A40 release-before-acquire and B192F0 clear-after-reentrant-release retained exactly"
+    ],
+    "base_pool_helpers": [
+      "00aa75f0",
+      "00a9b150",
+      "00ab2150",
+      "00acf610"
+    ],
+    "derived_helpers_not_reconstructed": [
+      "00a9b740",
+      "00ab5700",
+      "00ab50e0",
+      "00ab5850",
+      "00ad21b0"
+    ]
+  },
+  "byte_parity": [
+    {
+      "address": "00aa9730",
+      "length": 649,
+      "saved_equals_disk": true,
+      "sha256": "1c898155d152bf421f0a0890a6db8ae9191a6c96387bded7a20c552f75caec49"
+    },
+    {
+      "address": "00a9e130",
+      "length": 161,
+      "saved_equals_disk": true,
+      "sha256": "403fe12424b1543ba1997faba16ddc25a5bdc6eb27455cd2674294ec0aaa3d9a"
+    },
+    {
+      "address": "00aa9390",
+      "length": 388,
+      "saved_equals_disk": true,
+      "sha256": "42d9ee1432699517267e0978fed8b44f28dcdb1faac4e3be12d3f127ae06bbbc"
+    },
+    {
+      "address": "00aa9a90",
+      "length": 32,
+      "saved_equals_disk": true,
+      "sha256": "0384c5c27fac020208b7b81196060468ea901017beb08a7de6130d8935b73744"
+    },
+    {
+      "address": "00a9e210",
+      "length": 32,
+      "saved_equals_disk": true,
+      "sha256": "ce8faf0f36c3b76e970976c297942618c0fe49107c0797e8eb55ee3b3d9612e7"
+    },
+    {
+      "address": "00ab6100",
+      "length": 32,
+      "saved_equals_disk": true,
+      "sha256": "1df1831729fcd212da68909fc81545b6a48f4132273a34db837a65cd904d7669"
+    },
+    {
+      "address": "00ad29b0",
+      "length": 32,
+      "saved_equals_disk": true,
+      "sha256": "a0ad4a34f91b609499e16e1db4161e3337fe15d091e0512bc3cc8cd357fc3874"
+    }
+  ],
+  "validation": {
+    "kind": "read-only source and assembly analysis",
+    "full_spans_disk_equal": 7,
+    "build_run": false,
+    "tests_added": 0,
+    "tests_run": false,
+    "runtime_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "D5BBF8 concrete class type not established",
+    "Class pool allocation extents not reconstructed",
+    "Derived state helper bodies and exact unwind details remain dependencies",
+    "Complete queue/frame contract excluding late material reads not established",
+    "No coherent isolated new API under existing shared-file ownership"
+  ]
+}
