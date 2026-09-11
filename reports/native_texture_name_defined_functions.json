@@ -1,0 +1,74 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "missing_before": true,
+      "function_before": "No function found for 00b32250",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_D3D9Renderer_NotifyTextureNameRemoval at 00b32250\nSignature: undefined BSP_D3D9Renderer_NotifyTextureNameRemoval(void)\nEntry: 00b32250\nBody: 00b32250 - 00b3233f"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b32250",
+        "end_address": "00b32340"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b32250",
+        "end_address": "00b3233f",
+        "bytes_disassembled": 240,
+        "message": "Successfully disassembled 240 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b32250",
+        "name": "BSP_D3D9Renderer_NotifyTextureNameRemoval",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b32250",
+        "function_name": "BSP_D3D9Renderer_NotifyTextureNameRemoval",
+        "entry_point": "00b32250",
+        "body_size": 240,
+        "message": "Function created successfully at 00b32250",
+        "warnings": [
+          "Function name 'BSP_D3D9Renderer_NotifyTextureNameRemoval' \u2014 main part 'D3D9Renderer_NotifyTextureNameRemoval' is not PascalCase. Expected: D3d9rendererNotifytexturenameremoval",
+          "Function name 'BSP_D3D9Renderer_NotifyTextureNameRemoval' \u2014 main part 'D3D9Renderer_NotifyTextureNameRemoval' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_D3D9Renderer_NotifyTextureNameRemoval' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Native renderer notification definition saved; existing code and comments preserved"
+}

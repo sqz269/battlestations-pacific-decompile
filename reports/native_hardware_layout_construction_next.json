@@ -1,0 +1,992 @@
+{
+  "packet": "native_hardware_layout_construction_next",
+  "status": "discovery_complete_full_constructor_factory_and_native_dependencies_identified",
+  "base_commit": "8a5ad85",
+  "documentation": "docs/NATIVE_HARDWARE_LAYOUT_CONSTRUCTION_NEXT.md",
+  "scope": "Two evidence files only; no C++ implementation, shared metadata edits, Ghidra writes, build, fixture, or runtime claim.",
+  "names_are_hypotheses": true,
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_pins": [
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "src/d3d9_vertex_layout.cpp",
+      "sha256": "018b8ebc46702a6c7b005c899ccdeea066065b3661d64c5a6c9fdad7c8335718"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "reports/native_hardware_layout_owner_audit.json",
+      "sha256": "a2b0da1cb86aabcde2dedcc46abc784e324f4f998f8adefae989d16efb6ded31"
+    }
+  ],
+  "checked_ranges": [
+    {
+      "role": "factory",
+      "start": "00b2f710",
+      "end_exclusive": "00b2f7f7",
+      "byte_count": 231,
+      "sha256": "18b6e1a4f3f4d8097d1ebb069cc640206dbd30d38f645bf843b66973733e3e46",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b2f710 --length 231",
+      "instruction_count": 73,
+      "last_instruction": "00b2f7f4: ret 4"
+    },
+    {
+      "role": "record_init",
+      "start": "00b47640",
+      "end_exclusive": "00b47657",
+      "byte_count": 23,
+      "sha256": "e2f5e92ee09c46a5c284f5452ec3569ccd92dc2db6793a1acc555c442f3dea49",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b47640 --length 23",
+      "instruction_count": 5,
+      "last_instruction": "00b47656: ret"
+    },
+    {
+      "role": "base_constructor",
+      "start": "00b48c00",
+      "end_exclusive": "00b48c71",
+      "byte_count": 113,
+      "sha256": "fc764386c36a6d5cb3bf7f047ada3bc1f5fd67762f3dd98d0bdba041dd55f725",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b48c00 --length 113",
+      "instruction_count": 30,
+      "last_instruction": "00b48c70: ret"
+    },
+    {
+      "role": "append_stream",
+      "start": "00b48a00",
+      "end_exclusive": "00b48acf",
+      "byte_count": 207,
+      "sha256": "d5ea9c388da2fa6599b88c1e2f6f3f0869192e0dad09fbb33376dc23f549f9d2",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b48a00 --length 207",
+      "instruction_count": 69,
+      "last_instruction": "00b48acc: ret 4"
+    },
+    {
+      "role": "stride",
+      "start": "00b47d60",
+      "end_exclusive": "00b47d88",
+      "byte_count": 40,
+      "sha256": "5be5f862119a33437b5443efc9585ff62f411cd34a0d0940f3ac87879254aa54",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b47d60 --length 40",
+      "instruction_count": 16,
+      "last_instruction": "00b47d87: ret"
+    },
+    {
+      "role": "create_streams",
+      "start": "00b60790",
+      "end_exclusive": "00b60a01",
+      "byte_count": 625,
+      "sha256": "85f05328e0179c8568bb20fa25d07fec6ea1348008e9ec4b743b0e91cdef008e",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b60790 --length 625",
+      "instruction_count": 170,
+      "last_instruction": "00b609fe: ret 4"
+    },
+    {
+      "role": "derived_constructor",
+      "start": "00b60cb0",
+      "end_exclusive": "00b60d01",
+      "byte_count": 81,
+      "sha256": "64e2a22328fd7ce69a9822d4c7ed1c52b452c21fee16a4a9546c9200a78456be",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b60cb0 --length 81",
+      "instruction_count": 24,
+      "last_instruction": "00b60cfe: ret 4"
+    },
+    {
+      "role": "slab_init",
+      "start": "00b5ff50",
+      "end_exclusive": "00b5ff90",
+      "byte_count": 64,
+      "sha256": "d4b33d29826c32ced3f1974e6f5b013d41e1c7fe309e2f2c1494c4739078263d",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b5ff50 --length 64",
+      "instruction_count": 23,
+      "last_instruction": "00b5ff8d: ret 4"
+    },
+    {
+      "role": "pool_allocate",
+      "start": "00b605b0",
+      "end_exclusive": "00b606ec",
+      "byte_count": 316,
+      "sha256": "236366956c29917f848b8e4c684067e2060f2c950ac52cfcd30e0c0e382555ad",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b605b0 --length 316",
+      "instruction_count": 111,
+      "last_instruction": "00b606eb: ret"
+    },
+    {
+      "role": "allocation_wrapper",
+      "start": "00b606f0",
+      "end_exclusive": "00b606fa",
+      "byte_count": 10,
+      "sha256": "01d5c56c95933e7bf15d963f6fc527438e550deff92f55b9117a7245386aa797",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b606f0 --length 10",
+      "instruction_count": 2,
+      "last_instruction": "00b606f5: jmp 0xb605b0"
+    },
+    {
+      "role": "raw_return_wrapper",
+      "start": "00b60260",
+      "end_exclusive": "00b6026c",
+      "byte_count": 12,
+      "sha256": "30c6d752df15f16d223d0e3229bcb75553de93b63b7ba3b904a15650bc9092ab",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b60260 --length 12",
+      "instruction_count": 4,
+      "last_instruction": "00b6026b: ret"
+    },
+    {
+      "role": "key_compare",
+      "start": "00b20bf0",
+      "end_exclusive": "00b20c45",
+      "byte_count": 85,
+      "sha256": "6e6d6669f660a3c4b509d65c395f5fb965bba338cf83b66e22faea58334db079",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b20bf0 --length 85",
+      "instruction_count": 43,
+      "last_instruction": "00b20c42: ret 4"
+    },
+    {
+      "role": "lower_bound",
+      "start": "00b23020",
+      "end_exclusive": "00b23059",
+      "byte_count": 57,
+      "sha256": "576b49eb2c12f512fd10b41786c9ae5f1dd78509c6dc9c4d60f80d24d5c93b8e",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b23020 --length 57",
+      "instruction_count": 25,
+      "last_instruction": "00b23056: ret 4"
+    },
+    {
+      "role": "find",
+      "start": "00b28220",
+      "end_exclusive": "00b28286",
+      "byte_count": 102,
+      "sha256": "9f1335ea5719f57a602939d7b9963d8cbf5889e2aab08ed2cc7380bfa958cc95",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b28220 --length 102",
+      "instruction_count": 40,
+      "last_instruction": "00b28283: ret 8"
+    },
+    {
+      "role": "pair_from_key",
+      "start": "00b282b0",
+      "end_exclusive": "00b282eb",
+      "byte_count": 59,
+      "sha256": "46daf012841afdfdb27a44633421da5ddd55c324855b94ac12472c2a769a0d0a",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b282b0 --length 59",
+      "instruction_count": 26,
+      "last_instruction": "00b282e8: ret 8"
+    },
+    {
+      "role": "pair_copy",
+      "start": "00b25ef0",
+      "end_exclusive": "00b25f28",
+      "byte_count": 56,
+      "sha256": "8ee1c9389e64f9983218adee983f6a9bda783363800ccea8d5e385e05089bfcd",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b25ef0 --length 56",
+      "instruction_count": 25,
+      "last_instruction": "00b25f25: ret 4"
+    },
+    {
+      "role": "tree_decrement",
+      "start": "00b20d30",
+      "end_exclusive": "00b20db9",
+      "byte_count": 137,
+      "sha256": "267eb4535b6833c506f6ad22ad8105b14c1d7f4bf9aaf0f402635ac88d4751bf",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b20d30 --length 137",
+      "instruction_count": 48,
+      "last_instruction": "00b20db8: ret"
+    },
+    {
+      "role": "node_init",
+      "start": "00b28370",
+      "end_exclusive": "00b283ce",
+      "byte_count": 94,
+      "sha256": "d35caaf02f8a80fdeaa66aa752a7cc0351a52c67e71efe229401dee786ad6d55",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b28370 --length 94",
+      "instruction_count": 38,
+      "last_instruction": "00b283cb: ret 0x14"
+    },
+    {
+      "role": "node_allocate",
+      "start": "00b29cd0",
+      "end_exclusive": "00b29d07",
+      "byte_count": 55,
+      "sha256": "c19949ba1a457e038523eb69dbe98f1ce50b9189bc23fd960b122fdad28f508b",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b29cd0 --length 55",
+      "instruction_count": 22,
+      "last_instruction": "00b29d04: ret 0x14"
+    },
+    {
+      "role": "tree_link_balance",
+      "start": "00b2f1b0",
+      "end_exclusive": "00b2f39c",
+      "byte_count": 492,
+      "sha256": "a2dbecd3c70ec9eb474a9b76d61acaae4d8c0b7a5daa5ed07361d2a28c9b3799",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b2f1b0 --length 492",
+      "instruction_count": 167,
+      "last_instruction": "00b2f399: ret 0x10"
+    },
+    {
+      "role": "tree_insert",
+      "start": "00b2f540",
+      "end_exclusive": "00b2f62b",
+      "byte_count": 235,
+      "sha256": "ca2cffe7151672f686d2f39257e1cb0b01a71f66a297904f28f1af251d6421c0",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b2f540 --length 235",
+      "instruction_count": 95,
+      "last_instruction": "00b2f628: ret 8"
+    },
+    {
+      "role": "pool_init_followup_only",
+      "start": "00b604d0",
+      "end_exclusive": "00b605a3",
+      "byte_count": 211,
+      "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00b604d0 --length 211",
+      "instruction_count": 68,
+      "last_instruction": "00b605a2: ret"
+    },
+    {
+      "role": "pool_static_init",
+      "start": "00cd7ca0",
+      "end_exclusive": "00cd7cb6",
+      "byte_count": 22,
+      "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cd7ca0 --length 22",
+      "instruction_count": 6,
+      "last_instruction": "00cd7cb5: ret"
+    },
+    {
+      "role": "base_ctor_unwind_handler",
+      "start": "00cbf770",
+      "end_exclusive": "00cbf782",
+      "byte_count": 18,
+      "sha256": "169857b793e5c0eb19004e4c7864a12019796a1776425923a983cda8c08a6efc",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cbf770 --length 18",
+      "instruction_count": 4,
+      "last_instruction": "00cbf77d: jmp 0xbf6b43"
+    },
+    {
+      "role": "append_unwind_handler",
+      "start": "00cbf6f0",
+      "end_exclusive": "00cbf702",
+      "byte_count": 18,
+      "sha256": "887772a315d7893d543478e6868ec75cfe557ae45f8eb6a4d5ba17b4fbe8330d",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cbf6f0 --length 18",
+      "instruction_count": 4,
+      "last_instruction": "00cbf6fd: jmp 0xbf6b43"
+    },
+    {
+      "role": "create_unwind_handlers",
+      "start": "00cc1310",
+      "end_exclusive": "00cc1330",
+      "byte_count": 32,
+      "sha256": "da33cb97ecd59602701f2eda1150f1ab30bcabb561232abb90216c1ce78306cb",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cc1310 --length 32",
+      "instruction_count": 6,
+      "last_instruction": "00cc132b: jmp 0xbf6b43"
+    },
+    {
+      "role": "derived_ctor_unwind_handler",
+      "start": "00cc1350",
+      "end_exclusive": "00cc1362",
+      "byte_count": 18,
+      "sha256": "bbca437440870cf20b3a0ec86d1b4e21272e5f8e9eb46db7695bea6959340df8",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cc1350 --length 18",
+      "instruction_count": 4,
+      "last_instruction": "00cc135d: jmp 0xbf6b43"
+    },
+    {
+      "role": "factory_unwind_handler",
+      "start": "00cbd800",
+      "end_exclusive": "00cbd812",
+      "byte_count": 18,
+      "sha256": "0b407fb8d14323e80d204a7f319f9d0d8f2e846cd66fa9d3b95f6427061ffff1",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cbd800 --length 18",
+      "instruction_count": 4,
+      "last_instruction": "00cbd80d: jmp 0xbf6b43"
+    },
+    {
+      "role": "tree_insert_unwind_handler",
+      "start": "00cbd7c0",
+      "end_exclusive": "00cbd7d2",
+      "byte_count": 18,
+      "sha256": "18667a44b006d54a2b6177c0692efc96eed5509c19581ec6c8b7518b61f4c8e1",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cbd7c0 --length 18",
+      "instruction_count": 4,
+      "last_instruction": "00cbd7cd: jmp 0xbf6b43"
+    },
+    {
+      "role": "pool_init_unwind_handlers",
+      "start": "00cc12c0",
+      "end_exclusive": "00cc12e8",
+      "byte_count": 40,
+      "sha256": "bd28c99b85f8be1e198ce96da0cab1df3737b6dfe0faab11d082147dc674a349",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00cc12c0 --length 40",
+      "instruction_count": 10,
+      "last_instruction": "00cc12e3: jmp 0xbf6b43"
+    },
+    {
+      "role": "hardware_profile",
+      "start": "00d62af4",
+      "end_exclusive": "00d62b00",
+      "byte_count": 12,
+      "sha256": "9de1be15d202d1eaf11f78ef55501c98426ca679b0acb46d3cee8a63b310c4a9",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00d62af4 --length 12",
+      "hex": "e0 30 bd 00 70 07 b6 00 00 ff b5 00"
+    },
+    {
+      "role": "renderer_factory_remove_slots",
+      "start": "00d5f0e8",
+      "end_exclusive": "00d5f0f0",
+      "byte_count": 8,
+      "sha256": "3524d24a0995fc444e8b0cd704fda37f5290ead23fbbe132b306707adc7dd650",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00d5f0e8 --length 8",
+      "hex": "10 f7 b2 00 c0 f4 b2 00"
+    },
+    {
+      "role": "diagnostic_literal",
+      "start": "00d61bd0",
+      "end_exclusive": "00d61bdd",
+      "byte_count": 13,
+      "sha256": "d646723f4c499d91c842bf483b646f9f94f258b07d7610ad1e89f94b3a6e8233",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00d61bd0 --length 13",
+      "hex": "56 65 72 74 65 78 46 6f 72 6d 61 74 00"
+    },
+    {
+      "role": "factory_eh",
+      "start": "00df60a0",
+      "end_exclusive": "00df60cc",
+      "byte_count": 44,
+      "sha256": "979fc6976bc84fc93c31ddc9fd856be6cc275abd7d50510d95b1b1794543eaa6",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00df60a0 --length 44",
+      "hex": "ff ff ff ff 00 d8 cb 00 22 05 93 19 01 00 00 00 a0 60 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    },
+    {
+      "role": "base_ctor_eh",
+      "start": "00df818c",
+      "end_exclusive": "00df81b8",
+      "byte_count": 44,
+      "sha256": "07543e77be89a1e2a80ba7946ac825c46df898ae4e645768441b34e9645d6054",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00df818c --length 44",
+      "hex": "ff ff ff ff 70 f7 cb 00 22 05 93 19 01 00 00 00 8c 81 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    },
+    {
+      "role": "append_eh",
+      "start": "00df80f0",
+      "end_exclusive": "00df811c",
+      "byte_count": 44,
+      "sha256": "b06a0c68296b6c21d634356d437f978f3f2b01ffc3cac26df2980b52b0be02ee",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00df80f0 --length 44",
+      "hex": "ff ff ff ff f0 f6 cb 00 22 05 93 19 01 00 00 00 f0 80 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    },
+    {
+      "role": "create_eh",
+      "start": "00dfa0a8",
+      "end_exclusive": "00dfa0dc",
+      "byte_count": 52,
+      "sha256": "53cfd56b209bc5eb86f1029c96d79011cd015f1ba5498b2738be80d50f3b7a08",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00dfa0a8 --length 52",
+      "hex": "ff ff ff ff 10 13 cc 00 00 00 00 00 1b 13 cc 00 22 05 93 19 02 00 00 00 a8 a0 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    },
+    {
+      "role": "derived_ctor_eh",
+      "start": "00dfa110",
+      "end_exclusive": "00dfa13c",
+      "byte_count": 44,
+      "sha256": "78e62e9116387cbf6074a8502895e7ec08433a5e5f116622f14c1de78de59d16",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00dfa110 --length 44",
+      "hex": "ff ff ff ff 50 13 cc 00 22 05 93 19 01 00 00 00 10 a1 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    },
+    {
+      "role": "tree_insert_eh",
+      "start": "00df6048",
+      "end_exclusive": "00df6074",
+      "byte_count": 44,
+      "sha256": "5aca0aa8981b17d20d19ce009ed1bdbf09ffd23d2e438c113aa9358e66955f55",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00df6048 --length 44",
+      "hex": "ff ff ff ff c0 d7 cb 00 22 05 93 19 01 00 00 00 48 60 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    },
+    {
+      "role": "pool_init_eh",
+      "start": "00dfa040",
+      "end_exclusive": "00dfa07c",
+      "byte_count": 60,
+      "sha256": "fcbe9156f44b7a2c3f871544e9fa11dd2570a0a807202a21cd91bdd36bf924dc",
+      "live_matches_disk": true,
+      "live_query": "tools/bsp.py ghidra bytes 00dfa040 --length 60",
+      "hex": "ff ff ff ff c0 12 cc 00 00 00 00 00 c8 12 cc 00 01 00 00 00 d3 12 cc 00 22 05 93 19 03 00 00 00 40 a0 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+    }
+  ],
+  "verification": {
+    "method": "Every live query uses tools/bsp.py ghidra, whose client verifies project, program path, language, and image base before querying. Complete code/data range bytes are compared to the configured installed binary.",
+    "code_ranges": 30,
+    "data_ranges": 10,
+    "all_live_bytes_match_disk": true,
+    "full_constructor_factory_pool_assembly_reviewed": true,
+    "local_capture": "local/hardware_layout_construction_next/byte_evidence.json",
+    "new_tests": 0,
+    "build_run": false,
+    "original_code_fixture_run": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "entry_routes": [
+    {
+      "profile": "00d5f0a8",
+      "slot_offset": "40",
+      "slot_address": "00d5f0e8",
+      "entry": "00b2f710",
+      "role": "Find or construct cached hardware layout from pointer-identity stream key",
+      "runtime_profile_verified": false
+    },
+    {
+      "profile": "00d5f0a8",
+      "slot_offset": "44",
+      "slot_address": "00d5f0ec",
+      "entry": "00b2f4c0",
+      "role": "Existing actual-storage removal during base teardown"
+    },
+    {
+      "profile": "00d62af4",
+      "entries": [
+        "00bd30e0",
+        "00b60770",
+        "00b5ff00"
+      ],
+      "role": "Constructed owner zero-reference dispatch, deleting slot, direct COM getter"
+    }
+  ],
+  "constructor_chain": [
+    "00b2f710",
+    "00b606f0",
+    "00b605b0",
+    "00b60cb0",
+    "00b48c00",
+    "00b60790"
+  ],
+  "factory": {
+    "address": "00b2f710",
+    "end_exclusive": "00b2f7f7",
+    "inventory_state_at_discovery": "No function starts here; preceding 00b2f700 is a separate five-byte thunk.",
+    "abi": "Renderer ECX unused; stack stream-key pointer; EAX owner; RET4.",
+    "direct_calls": [
+      "00b28220",
+      "00bf6713",
+      "00b606f0",
+      "00b60cb0",
+      "00b282b0",
+      "00b25ef0",
+      "00b2f540"
+    ],
+    "indirect_imports": [
+      "InterlockedIncrement through 00ce221c"
+    ],
+    "success_path": [
+      "Find in actual 0108D530 with 00b28220; validate returned iterator owner and current sentinel before reading node+20.",
+      "Hit: retain actual owner+4 and return existing owner.",
+      "Miss: ECX44 -> 00b606f0, which ignores size and selects actual pool0108FE9C.",
+      "Save raw slot; arm state0 after successful allocation; call 00b60cb0 when nonnull.",
+      "If allocation returned null, skip construction but still create/copy/insert a pair with null value; no early return.",
+      "Disarm raw-slot guard before 00b282b0 and 00b25ef0 copy key/value pair; call 00b2f540.",
+      "Ignore insertion result and duplicate flag; return newly constructed owner without cache-owned AddRef."
+    ],
+    "exception_path": "Only construction is inside factory state0. Action00cbd800 loads raw slot at EBP+4 and calls 00b60260 -> existing00b60110. No factory owner/slot guard remains for copy/insertion failure.",
+    "constructor_callsite": "00b2f7a0"
+  },
+  "constructor_contracts": [
+    {
+      "address": "00b47640",
+      "abi": "ECX actual0Ch record; EAX same; RET.",
+      "contract": "Write +00=0, +04=1, +08=0 in that order.",
+      "inventory_state_at_discovery": "Undefined function entry; actual complete body 17h bytes."
+    },
+    {
+      "address": "00b48c00",
+      "abi": "ECX actual owner; EAX same; RET.",
+      "contract": "Write CEB130 and refcount1; arm base cleanup; publish D61D10; fixed CRT construction iterator over four0Ch records at+08 uses B47640/B483F0; then write count+38=0 and stride+3C=0. Preserve COM+40 and pool index+44.",
+      "ledger_state_at_discovery": "Named/tagged CG_array_ctor_helper, no reconstruction."
+    },
+    {
+      "address": "00b60cb0",
+      "abi": "ECX owner, stack stream-list pointer; EAX same; RET4.",
+      "contract": "Call complete B48C00; arm state0; clear COM+40; install D62AF4; call complete B60790. Cleanup uses B48960, not B60700.",
+      "ledger_state_at_discovery": "Named constructor, no native reconstruction."
+    },
+    {
+      "address": "00b60790",
+      "abi": "ECX owner, stack stream-list pointer; RET4; no semantic HRESULT return.",
+      "contract": "Append each input declaration using nativeB48A00, convert actual records, preserve both diagnostic string lifetimes and B3E730, call current renderer+1A10/current COM table+158 into actual owner+40, recompute native stride regardless of HRESULT.",
+      "ledger_state_at_discovery": "Named only. Related B60A10 is a host conversion fragment and does not satisfy this body.",
+      "input_layout": "Four pointer positions at+00..+0C followed by signed count+10. Native loops impose no four-item check.",
+      "declaration_layout": "Main array data+0C/count+10; five DWORD records of14h bytes; stride+CC.",
+      "element_packing": "Low WORD stream/offset; low BYTE type/method/usage; usage index from14 shared counters indexed by full usage DWORD; END DWORDsFF,11.",
+      "fixed_scratch": "Packed elements at frameESP+68, live element count atESP+E8. No native bounds checks; slot16 overlaps live count. Declare a valid-input domain rather than invent an unbounded vector equivalence.",
+      "diagnostic_literal": "00d61bd0 contains 12 ASCII characters VertexFormat followed by NUL, 13 bytes total.",
+      "current_device_read": [
+        "00b6099c MOV ECX,[00f8d394]",
+        "00b609c6 MOV EAX,[ECX+1a10]",
+        "00b609cc MOV EDX,[EAX]",
+        "00b609ce MOV EDX,[EDX+158]",
+        "00b609de CALL EDX"
+      ],
+      "device_getter_dependency": "None: direct current global/field/table reads."
+    }
+  ],
+  "exception_maps": [
+    {
+      "owner": "00b48c00",
+      "handler": "00cbf778",
+      "funcinfo": "00df8194",
+      "map": "00df818c",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbf770",
+          "cleanup": "[EBP-10] -> 00bd30f0"
+        }
+      ]
+    },
+    {
+      "owner": "00b48a00",
+      "handler": "00cbf6f8",
+      "funcinfo": "00df80f8",
+      "map": "00df80f0",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbf6f0",
+          "cleanup": "EBP-18 stack record -> 00b483f0"
+        }
+      ]
+    },
+    {
+      "owner": "00b60790",
+      "handler": "00cc1326",
+      "funcinfo": "00dfa0b8",
+      "map": "00dfa0a8",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc1310",
+          "cleanup": "EBP-DC temporary string -> 0041dd20"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc131b",
+          "cleanup": "EBP-D4 diagnostic -> 00b3f4c0"
+        }
+      ]
+    },
+    {
+      "owner": "00b60cb0",
+      "handler": "00cc1358",
+      "funcinfo": "00dfa118",
+      "map": "00dfa110",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc1350",
+          "cleanup": "[EBP-10] -> complete00b48960"
+        }
+      ]
+    },
+    {
+      "owner": "00b2f710",
+      "handler": "00cbd808",
+      "funcinfo": "00df60a8",
+      "map": "00df60a0",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbd800",
+          "cleanup": "[EBP+4] -> 00b60260 -> 00b60110"
+        }
+      ]
+    },
+    {
+      "owner": "00b2f1b0",
+      "handler": "00cbd7c8",
+      "funcinfo": "00df6050",
+      "map": "00df6048",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbd7c0",
+          "cleanup": "EBP-50 counted temporary string -> 004072d0"
+        }
+      ]
+    }
+  ],
+  "missing_native_despite_existing_names": [
+    {
+      "address": "00b48a00",
+      "existing_source": "src/d3d9_vertex_layout.cpp",
+      "why_missing": "Existing function takes shared_ptr and writes a host layout. Native temporary retain, pre-incremented raw count, current replacement/old-profile release, and exception guard are missing."
+    },
+    {
+      "address": "00b47d60",
+      "existing_source": "src/d3d9_vertex_layout.cpp",
+      "why_missing": "Existing function reads host declaration stride and aborts on null. Native actual+CCh reads, signed current-count iteration, and DWORD address/arithmetic semantics are missing."
+    },
+    {
+      "address": "00b606f0",
+      "existing_name": "CG_static_dtor_stub_00b606f0",
+      "why_missing": "Name/tag is misleading; actual body MOV ECX,108FE9C; JMP B605B0 allocates a raw hardware slot."
+    },
+    {
+      "address": "00b2f1b0",
+      "existing_name": "STL_xlen_throw_00b2f1b0",
+      "why_missing": "Tagged throw site includes complete node allocation/linking/rebalance and owning length-error branch."
+    }
+  ],
+  "reusable_existing_dependencies": [
+    {
+      "addresses": [
+        "00b483f0",
+        "00b48950",
+        "00b48960",
+        "00b60700",
+        "00b60770",
+        "00b60110"
+      ],
+      "source": "src/native_hardware_layout_owner.cpp",
+      "limits": "Actual storage, borrowed initialized pools and immutable supported profiles; current renderer profile still an input-domain requirement."
+    },
+    {
+      "addresses": [
+        "00b48ca0"
+      ],
+      "source": "src/native_vertex_declaration_owner.cpp",
+      "limits": "Actual CPU declaration owner/profile/pool/type-table domain."
+    },
+    {
+      "addresses": [
+        "00b2f4c0",
+        "00b20910",
+        "00b22bd0"
+      ],
+      "source": "src/native_hardware_layout_tree.cpp",
+      "limits": "Actual borrowed tree and checked-owner identity; constructor/insertion absent."
+    },
+    {
+      "addresses": [
+        "0041dd40",
+        "0041dd20"
+      ],
+      "source": "src/native_string.cpp",
+      "limits": "Actual headers; supplied existing NativeStringStorage remains boundary for00419CC0/BD1120/BD1510."
+    },
+    {
+      "addresses": [
+        "00b3f4c0"
+      ],
+      "source": "src/native_physical_buffer_owner.cpp",
+      "limits": "Actual diagnostic borrowedCOM/name header; existing NativeStringStorage boundary."
+    },
+    {
+      "addresses": [
+        "00b3e730"
+      ],
+      "source": "src/native_resource_support.cpp",
+      "limits": "Actual support global/lifetime; no per-record registration callback."
+    },
+    {
+      "addresses": [
+        "00bf681b",
+        "00bf55be",
+        "00bf6989"
+      ],
+      "source": "src/singleton_lifetime.cpp",
+      "limits": "Reuse existing shared raw allocator/free service domain; host CRT/new-handler and EH identities are explicit boundaries, not completed original CRT replacements."
+    },
+    {
+      "addresses": [
+        "00411700"
+      ],
+      "source": "src/native_legacy_exception_owner.cpp",
+      "limits": "Actual legacy logic-error base; insertion still needs owning length-error profileD69260/throw descriptorD83F98 transport."
+    }
+  ],
+  "pool_contract": {
+    "global": "0108fe9c",
+    "pool_bytes": 56,
+    "slot_bytes": 72,
+    "owner_bytes": 68,
+    "slab_bytes": 2372,
+    "pool_fields": {
+      "critical_section": "0c",
+      "depth": "24",
+      "slab_table": "28",
+      "slab_count": "2c",
+      "slab_capacity": "30",
+      "earliest_free": "34"
+    },
+    "slab_fields": {
+      "32_slot_payloads": "000",
+      "32_word_free_indices": "900",
+      "word_free_count": "940",
+      "slot_slab_index": "44"
+    },
+    "slab_init": "B5FF50 writes WORDcount32, free indices31..0, and each slot+44 slab index only; payload is left untouched.",
+    "allocate": "B605B0 uses live critical section/depth and current table. If exhausted, publishes new slab index, allocates944h, initializes; publishes grown capacity2C+2 before allocation, copies and frees old table before new table publication. Decrement freecount before selected index load. Scan later nonempty slabs when selected count becomes0.",
+    "decompiler_correction": "B60646 is add esp,4, not return after BF6989. Table publication atB60649 remains reachable.",
+    "failure_contract": "No EH frame in B605B0; no exception unlock/rollback may be invented. Current host allocation service failure behavior remains explicit.",
+    "raw_allocation_wrapper": "B606F0 ignores incomingECXsize; ECX=108FE9C; tailB605B0.",
+    "raw_return_wrapper": "B60260 pushes incomingECXrawslot; ECX=108FE9C; callsB60110; RET."
+  },
+  "tree_contract": {
+    "actual_header": "0108d530",
+    "header_bytes": 12,
+    "node_bytes": 40,
+    "node_fields": {
+      "left": "00",
+      "parent": "04",
+      "right": "08",
+      "key_pointers": "0c..18",
+      "signed_key_count": "1c",
+      "owner_value": "20",
+      "color": "24",
+      "sentinel": "25",
+      "untouched_padding": "26..27"
+    },
+    "key_order": "B20BF0 compares signed counts descending, then equal positive count pointer DWORDs ascending unsigned; compare captures leftcount once.",
+    "find": "B23020 lower_bound; B28220 checked iterator find returns actual tree owner and node/head. Null-owner handler occurs after lower_bound; current head is captured after handler.",
+    "copies": "B282B0/B25EF0 forward-copy key DWORDs while reloading signed current sourcecount eachiteration; then publish currentcount thenvalue. Unused words remain unchanged; overlap semantics are observable.",
+    "insert_missing": [
+      "00b20d30",
+      "00b28370",
+      "00b29cd0",
+      "00b2f1b0",
+      "00b2f540"
+    ],
+    "node_owner": "B29CD0 requests28h through BF681B; nonnull -> B28370 raw links/key/value/color/sentinel writes. No key declaration refcounts or cache-owned owner AddRef.",
+    "length_error": {
+      "trigger": "unsigned actualcount >= 0x0aaaaaa9",
+      "temporary": "00408720 counted19 bytes from00ce47bc",
+      "base": "00411700",
+      "profile": "00d69260",
+      "throw_descriptor": "00d83f98",
+      "remaining": "Complete owning host transport preserving native storage and cleanup; original CRT throw ABI remains a boundary."
+    }
+  },
+  "packets": [
+    {
+      "packet": "native_hardware_layout_fields",
+      "addresses": [
+        "00b47640",
+        "00b48c00",
+        "00b48a00",
+        "00b47d60"
+      ],
+      "readiness": "ready_independent; primary dispatched fields worker during discovery",
+      "depends_on_packets": [],
+      "files": [
+        "include/bsp/native_hardware_layout_fields.hpp",
+        "src/native_hardware_layout_fields.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_FIELDS.md",
+        "reports/native_hardware_layout_fields_audit.json"
+      ],
+      "contract": "Actual owner/record fields, intrusive current-profile retain/release and state guards. Reuse B483F0/B48950/BD30F0 and actual CPU declaration deletion context. Keep existing host shared_ptr interfaces separate.",
+      "shared_integration_owner": "primary: CMake, sharded ledgers/tags, locked annotation, export/index refresh",
+      "new_tests_default": 0
+    },
+    {
+      "packet": "native_hardware_layout_pool_allocate",
+      "addresses": [
+        "00b5ff50",
+        "00b605b0",
+        "00b606f0",
+        "00b60260"
+      ],
+      "readiness": "ready_independent_against_actual_initialized_pool",
+      "depends_on_packets": [],
+      "files": [
+        "include/bsp/native_hardware_layout_pool_allocate.hpp",
+        "src/native_hardware_layout_pool_allocate.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_ALLOCATE.md",
+        "reports/native_hardware_layout_pool_allocate_audit.json"
+      ],
+      "contract": "Full initialized-pool raw allocation, slab initialization, global allocation and raw-return wrappers. Reuse existing allocator/free service domain and B60110; no payload clears, fabricated globals, or exception unlock guard.",
+      "shared_integration_owner": "primary: CMake, sharded ledgers/tags, locked annotation, export/index refresh",
+      "new_tests_default": 0
+    },
+    {
+      "packet": "native_hardware_layout_tree_key",
+      "addresses": [
+        "00b20bf0",
+        "00b23020",
+        "00b28220",
+        "00b282b0",
+        "00b25ef0"
+      ],
+      "readiness": "ready_independent; primary preparing implementation during discovery",
+      "depends_on_packets": [],
+      "files": [
+        "include/bsp/native_hardware_layout_tree_key.hpp",
+        "src/native_hardware_layout_tree_key.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_KEY.md",
+        "reports/native_hardware_layout_tree_key_audit.json"
+      ],
+      "contract": "Raw key comparator, lower_bound, checked find and forward key/value copies. Borrow actual tree and existing invalid-parameter service. Preserve current source-count reloads and unused key words.",
+      "shared_integration_owner": "primary: CMake, sharded ledgers/tags, locked annotation, export/index refresh",
+      "new_tests_default": 0
+    },
+    {
+      "packet": "native_hardware_layout_construct",
+      "addresses": [
+        "00b60790",
+        "00b60cb0"
+      ],
+      "readiness": "after_native_hardware_layout_fields",
+      "depends_on_packets": [
+        "native_hardware_layout_fields"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_construct.hpp",
+        "src/native_hardware_layout_construct.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_CONSTRUCT.md",
+        "reports/native_hardware_layout_construct_audit.json"
+      ],
+      "contract": "Complete conversion and derived constructor including actual native header strings, diagnostic record, B3E730, current renderer/device/table reads, fixed frame scratch behavior, and B48960 constructor cleanup. Requires existing initialized owner-teardown domain and NativeStringStorage; no callback replacement or forced runtime field values.",
+      "shared_integration_owner": "primary: CMake, sharded ledgers/tags, locked annotation, export/index refresh",
+      "new_tests_default": 0
+    },
+    {
+      "packet": "native_hardware_layout_tree_insert",
+      "addresses": [
+        "00b20d30",
+        "00b28370",
+        "00b29cd0",
+        "00b2f1b0",
+        "00b2f540"
+      ],
+      "readiness": "after_native_hardware_layout_tree_key; owning length-error transport is part of this packet",
+      "depends_on_packets": [
+        "native_hardware_layout_tree_key"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_tree_insert.hpp",
+        "src/native_hardware_layout_tree_insert.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_INSERT.md",
+        "reports/native_hardware_layout_tree_insert_audit.json"
+      ],
+      "contract": "Checked decrement, actual28h node initialization/allocation, link/rebalance and insert. Reuse B20910/B22BD0 and native legacy SBO/logic-error owners; preserve D69260/D83F98 length-error storage/cleanup in owned files rather than an invented throw callback.",
+      "shared_integration_owner": "primary: CMake, sharded ledgers/tags, locked annotation, export/index refresh",
+      "new_tests_default": 0
+    },
+    {
+      "packet": "native_hardware_layout_factory",
+      "addresses": [
+        "00b2f710"
+      ],
+      "readiness": "after_all_constructor_pool_and_tree_prerequisites",
+      "depends_on_packets": [
+        "native_hardware_layout_pool_allocate",
+        "native_hardware_layout_construct",
+        "native_hardware_layout_tree_key",
+        "native_hardware_layout_tree_insert"
+      ],
+      "files": [
+        "include/bsp/native_hardware_layout_factory.hpp",
+        "src/native_hardware_layout_factory.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_FACTORY.md",
+        "reports/native_hardware_layout_factory_audit.json"
+      ],
+      "contract": "Actual108D530 lookup/retain/allocate/construct/insert route. Create exact missing Ghidra function under lease/lock; retain raw allocation only during construction; no later failure guard or cache AddRef absent from native assembly.",
+      "shared_integration_owner": "primary: CMake, sharded ledgers/tags, locked annotation, export/index refresh",
+      "new_tests_default": 0
+    }
+  ],
+  "deferred_global_startup": {
+    "pool": [
+      "00cd7ca0",
+      "00b604d0",
+      "00ce0d40",
+      "00b60270"
+    ],
+    "contract": "CD7CA0 callsB604D0 on108FE9C and registersCE0D40 with atexit. B604D0 links actual allocator listE188B4, writesD62AF0, initializes real critical section, initialdepth0/tablecount0/capacity32/earliest-1 and allocates80h table. CE0D40 invokes pool destructorB60270.",
+    "not_ready_claim": "Not included in borrowed initialized-pool packet; full startup/shutdown requires separate allocator-list/EH dependency audit. No forcedzero replacement globals or fabricated locks.",
+    "tree_header": "Existing teardown domain borrows initialized actual108D530/head. A full global tree constructor and shutdown route remain separate work."
+  },
+  "integration_constraints": [
+    "Keep host D3D9VertexLayout interfaces; add actual-storage functions rather than counting existing shared_ptr implementations as native coverage.",
+    "Define independent file/address leases; primary integrator owns CMake, shared ledger/tag updates, naming, and refresh.",
+    "Create currently undefinedB47640/B2F710 only in their implementation owners' locked Ghidra annotation step; preserve prior comments and old names/tags.",
+    "Actual runtime renderer/declaration profiles, pool/header storage, string allocator, support/lifetime, and current COM objects are borrowed verified inputs, not substitute callback owners.",
+    "Distinguish static discovery, byte parity, reconstructed native storage, original-code fixture evidence, ABI compatibility, and game validation."
+  ],
+  "discovery_snapshot_time_utc": "2026-09-11T03:24:16.095614+00:00"
+}

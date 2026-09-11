@@ -3490,8 +3490,8 @@
       "id": "native_renderer_texture_name_notification",
       "packet": "native_renderer_texture_name_notification",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "00b32250"
       ],
@@ -3511,7 +3511,8 @@
         "ECX receiver remains the captured actual renderer; optional guard captures current global renderer separately.",
         "Current mode governs normal leave and unwind; skipped entry followed by enabled cleanup remains outside initialized-guard admitted domain.",
         "Only native container match-time profiles D61948/D61870/D618B0 and their currently verified accounting entries; no generic virtual fallback."
-      ]
+      ],
+      "evidence": "reports/native_renderer_texture_name_notification_audit.json"
     },
     {
       "id": "native_retained_memory_owners",
@@ -3551,8 +3552,8 @@
       "id": "native_logical_texture_named_base",
       "packet": "native_logical_texture_named_base",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "00b34120",
         "00b34230",
@@ -3580,14 +3581,15 @@
         "address": "00b3f4c0",
         "source": "src/native_physical_buffer_owner.cpp",
         "evidence": "reports/native_physical_buffer_owner_audit.json"
-      }
+      },
+      "evidence": "reports/native_logical_texture_named_base_audit.json"
     },
     {
       "id": "native_texture_surface_cache_storage",
       "packet": "native_texture_surface_cache_storage",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_actual_surface_cache_storage",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "00b3d9b0",
         "00b3da20",
@@ -3607,7 +3609,52 @@
         "Actual 12-byte header at texture+40: data, signed count, signed capacity; eight-byte raw records.",
         "DWORD address/multiplication wrap, signed comparisons, current count reloads and sequential raw field stores.",
         "No implicit surface references, owner destructors, copied vector or EH cleanup."
-      ]
+      ],
+      "evidence": "reports/native_texture_surface_cache_storage_audit.json"
+    },
+    {
+      "id": "native_texture_2d_owner",
+      "packet": "native_texture_2d_owner",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "implementing_complete_actual_owner_all_four_direct_dependencies_integrated",
+      "function_addresses": [
+        "00b3f930",
+        "00b3f2e0",
+        "00b3f590"
+      ],
+      "code_ownership": [
+        "include/bsp/native_texture_2d_owner.hpp",
+        "src/native_texture_2d_owner.cpp",
+        "docs/NATIVE_TEXTURE_2D_OWNER.md",
+        "reports/native_texture_2d_owner_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_retained_memory_owners",
+        "native_logical_texture_named_base",
+        "native_renderer_texture_name_notification",
+        "native_texture_surface_cache_storage"
+      ],
+      "already_integrated_dependencies": [
+        "native_surface_owner",
+        "native_physical_buffer_owner B3F4C0",
+        "actual canonical D3D9Texture2DPool"
+      ],
+      "discovery_evidence": "reports/native_texture_2d_owner_next.json",
+      "scope": "Full50h owner inside54h poolslot: constructor/base destruction/scalar deletion, exactcurrentprofiles/COM/surfacecache and nativeFH3states. Actualdomains only; no missing terminal callback substitution."
+    },
+    {
+      "id": "native_hardware_layout_construction_next",
+      "packet": "native_hardware_layout_construction_next",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_discovering_complete_constructor_factory_and_minimum_dependencies",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_HARDWARE_LAYOUT_CONSTRUCTION_NEXT.md",
+        "reports/native_hardware_layout_construction_next.json"
+      ],
+      "scope": "Read-only nativeD62AF4/D61D10 construction/factory/pool/tree dependency closure afterteardownproofs; identify readyexact-address packets. No productionorGhidrawrites."
     }
   ],
   "snapshot_after_analysis": {
@@ -4674,8 +4721,10 @@
     {
       "packet": "native_renderer_texture_name_notification",
       "worker": "material_effect_plane",
-      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
-      "validation": null
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "validation": null,
+      "done": true,
+      "evidence": "reports/native_renderer_texture_name_notification_audit.json"
     },
     {
       "packet": "native_retained_memory_owners",
@@ -4688,46 +4737,48 @@
     {
       "packet": "native_logical_texture_named_base",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active",
-      "validation": null
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "validation": null,
+      "done": true,
+      "evidence": "reports/native_logical_texture_named_base_audit.json"
     },
     {
       "packet": "native_texture_surface_cache_storage",
       "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_actual_surface_cache_storage",
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "validation": null,
+      "done": true,
+      "evidence": "reports/native_texture_surface_cache_storage_audit.json"
+    },
+    {
+      "packet": "native_texture_2d_owner",
+      "worker": "material_effect_plane",
+      "state": "implementing_complete_actual_owner_all_four_direct_dependencies_integrated",
+      "validation": null
+    },
+    {
+      "packet": "native_hardware_layout_construction_next",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_discovering_complete_constructor_factory_and_minimum_dependencies",
       "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "packet": "native_renderer_texture_name_notification",
+      "packet": "native_texture_2d_owner",
       "worker": "material_effect_plane",
+      "state": "implementing_complete_actual_owner_waiting_cache_integration",
       "function_addresses": [
-        "00b32250"
-      ],
-      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active"
+        "00b3f930",
+        "00b3f2e0",
+        "00b3f590"
+      ]
     },
     {
-      "packet": "native_logical_texture_named_base",
+      "packet": "native_hardware_layout_construction_next",
       "worker": "system_fog_owner_discovery",
-      "function_addresses": [
-        "00b34120",
-        "00b34230",
-        "00b33f50",
-        "00b34010",
-        "00b33e40"
-      ],
-      "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active"
-    },
-    {
-      "packet": "native_texture_surface_cache_storage",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": [
-        "00b3d9b0",
-        "00b3da20",
-        "00b3ec40"
-      ],
-      "state": "worker_implementing_actual_surface_cache_storage"
+      "state": "worker_discovering_complete_constructor_factory_and_minimum_dependencies",
+      "function_addresses": []
     }
   ],
   "current_partition": {

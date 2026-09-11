@@ -162,3 +162,13 @@ shared host policy. The shared resize helper retains its established C++ copy
 policy; overlapping final constructor buffers use the explicit memmove above.
 Malformed inaccessible storage, concurrent mutation, and exceptions from the
 original pool getter during destructor release are not fixture-covered domains.
+
+## Primary integration
+
+The five entries are registered in the shared primary library. The unchanged
+original-byte fixture was linked to that library and again matches 1,410 words
+and one CRT throw per side. All five owned map entries now identify
+`bsp_core:native_logical_texture_named_base.obj`; all 19 primary loaded native
+postimages match only the listed relocations and service bridges. The combined
+strict Win32 build and both existing CTest checks passed. The final audit
+retains the primary library, map, raw traces and exact service boundaries.
