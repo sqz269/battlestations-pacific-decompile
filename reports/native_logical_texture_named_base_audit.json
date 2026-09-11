@@ -1,0 +1,1299 @@
+{
+  "schema_version": 1,
+  "packet": "native_logical_texture_named_base",
+  "generated_utc": "2026-09-11T03:04:31.823390+00:00",
+  "status": "five_complete_entries_reconstructed_strict_Win32_build_and_original_byte_caller_fixture_passed_pending_primary_integration",
+  "base_commit": "22e54f6244898db6e25964efbfba858864cac1b9",
+  "owned_addresses": [
+    "00b34120",
+    "00b34230",
+    "00b33f50",
+    "00b34010",
+    "00b33e40"
+  ],
+  "owned_files": [
+    "include/bsp/native_logical_texture_named_base.hpp",
+    "src/native_logical_texture_named_base.cpp",
+    "docs/NATIVE_LOGICAL_TEXTURE_NAMED_BASE.md",
+    "reports/native_logical_texture_named_base_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00b34120",
+      "end_exclusive": "00b341d0",
+      "name": "BSP_NativeLogicalTexture_ConstructNamedBase",
+      "name_status": "descriptive hypothesis; original symbol not recovered",
+      "cpp_symbol": "construct_native_logical_texture_named_base_00b34120",
+      "native_abi": "ECX actual owner, stack actual name header/COM/flags, EAX owner, RET0C. Count1, current string copy then raw COM/flags/shared serial. No COM AddRef.",
+      "behavior": "Count-one actual owner and name initialization; current source/destination copy; borrowed COM and flags; shared serial consumed last.",
+      "scope": "complete original entry body, explicit host storage/global interfaces",
+      "status": "reconstructed_build_tested_original_byte_fixture_tested",
+      "native_bytes": 176,
+      "native_byte_sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b34230",
+      "end_exclusive": "00b34255",
+      "name": "BSP_NativeLogicalTexture_ConstructNamedProfile",
+      "name_status": "descriptive hypothesis; original symbol not recovered",
+      "cpp_symbol": "construct_native_logical_texture_named_profile_00b34230",
+      "native_abi": "ECX actual owner, same3stack words, EAX owner, RET0C. FullB34120 then profileD5F228.",
+      "behavior": "Complete B34120 then D5F228 profile; no independent serial consumption or failure continuation.",
+      "scope": "complete original entry body, explicit host storage/global interfaces",
+      "status": "reconstructed_build_tested_original_byte_fixture_tested",
+      "native_bytes": 37,
+      "native_byte_sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b33f50",
+      "end_exclusive": "00b33fb7",
+      "name": "BSP_NativeLogicalTexture_DestroyNamedBase",
+      "name_status": "descriptive hypothesis; original symbol not recovered",
+      "cpp_symbol": "destroy_native_logical_texture_named_base_00b33f50",
+      "native_abi": "ECX actual owner, RET, EAX unspecified. ProfileD5F1F4; return captured name buffer using captured current length+1; header preserved; base afterward and in unwind.",
+      "behavior": "D5F1F4 profile, captured current name release without header clearing, complete BD30F0 base action normally or in native unwind.",
+      "scope": "complete original entry body, explicit host storage/global interfaces",
+      "status": "reconstructed_build_tested_original_byte_fixture_tested",
+      "native_bytes": 103,
+      "native_byte_sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b34010",
+      "end_exclusive": "00b34015",
+      "name": "BSP_NativeLogicalTexture_DestroyNamedBaseThunk",
+      "name_status": "descriptive hypothesis; original symbol not recovered",
+      "cpp_symbol": "unwind_native_logical_texture_named_base_00b34010",
+      "native_abi": "ECX actual owner; full5byte JMP B33F50.",
+      "behavior": "Full five-byte JMP forwarding to the complete B33F50 body.",
+      "scope": "complete original entry body, explicit host storage/global interfaces",
+      "status": "reconstructed_build_tested_original_byte_fixture_tested",
+      "native_bytes": 5,
+      "native_byte_sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b33e40",
+      "end_exclusive": "00b33e44",
+      "name": "BSP_NativeLogicalTexture_GetNameHeaderAddress",
+      "name_status": "descriptive hypothesis; original symbol not recovered",
+      "cpp_symbol": "native_logical_texture_name_address_00b33e40",
+      "native_abi": "ECX actual owner; EAX owner+8; RET; full4bytes, no callback.",
+      "behavior": "Full four-byte LEA EAX,[ECX+8]; RET. No owner/name dereference, DWORD wrap retained.",
+      "scope": "complete original entry body, explicit host storage/global interfaces",
+      "status": "reconstructed_build_tested_original_byte_fixture_tested",
+      "native_bytes": 4,
+      "native_byte_sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra bytes call verifies project/program/language/image base before reading.",
+    "installed_binary": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "captured_utc": "2026-09-11T02:57:26.036621+00:00",
+    "all_live_matches_disk": true
+  },
+  "native_byte_evidence": [
+    {
+      "address": "00b34120",
+      "byte_count": 176,
+      "end_exclusive": "00b341d0",
+      "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb"
+    },
+    {
+      "address": "00b34230",
+      "byte_count": 37,
+      "end_exclusive": "00b34255",
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568"
+    },
+    {
+      "address": "00b33f50",
+      "byte_count": 103,
+      "end_exclusive": "00b33fb7",
+      "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb"
+    },
+    {
+      "address": "00b34010",
+      "byte_count": 5,
+      "end_exclusive": "00b34015",
+      "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c"
+    },
+    {
+      "address": "00b33e40",
+      "byte_count": 4,
+      "end_exclusive": "00b33e44",
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7"
+    }
+  ],
+  "storage_contract": {
+    "actual_owner_minimum_accessed_prefix_bytes": 36,
+    "header_offset": 8,
+    "header_bytes": 8,
+    "initialized_fields": {
+      "00": "CEB130 then D5F1F4 profile",
+      "04": "count 1",
+      "08": "name length 0",
+      "0c": "name data null",
+      "10": "borrowed COM after copy",
+      "1c": "flags after copy",
+      "20": "previous actual shared texture serial"
+    },
+    "untouched_fields": [
+      "owner+14 DWORD",
+      "owner+18 DWORD",
+      "bytes at and after owner+24"
+    ],
+    "actual_shared_serial": "caller-supplied actual DWORD corresponding to 0108D6E8, shared with existing unnamed constructors; wrap; no private counter",
+    "current_field_order": [
+      "initialize actual owner and name",
+      "compare name-header identity after clearing",
+      "read current source length for complete existing resize",
+      "after resize test current source length",
+      "read current destination length/source data/destination data",
+      "overlap-safe direct copy",
+      "store captured COM and flags",
+      "read shared serial",
+      "store owner serial",
+      "reread and increment current shared serial"
+    ],
+    "copy_overlap": "Direct BF7680 copy uses std::memmove; full BF7680 overlap detection/backward-copy bytes are captured. Existing resize helper remains unchanged.",
+    "destruction": "Capture name pointer first; null skips length. Release with captured current length+1 modulo2^32. Preserve actual header changes during release. Base action writes CEB130 only.",
+    "native_global_boundary": "Existing NativeStringStorage passed explicitly; PooledStringStorage composes existing SizedStoragePool. Native singleton first-use work is not recreated."
+  },
+  "exception_maps": [
+    {
+      "owner": "logical_base_dtor",
+      "handler": "00cbe098",
+      "funcinfo": "00df690c",
+      "unwind_map": "00df6904",
+      "funcinfo_dwords": [
+        "19930522",
+        "00000001",
+        "00df6904",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "leaf": "00cbe090"
+        }
+      ],
+      "no_catch_map": true,
+      "native_exception_execution": false
+    },
+    {
+      "owner": "logical_base_named_ctor",
+      "handler": "00cbe0c3",
+      "funcinfo": "00df6940",
+      "unwind_map": "00df6930",
+      "funcinfo_dwords": [
+        "19930522",
+        "00000002",
+        "00df6930",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "leaf": "00cbe0b0"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "leaf": "00cbe0b8"
+        }
+      ],
+      "no_catch_map": true,
+      "native_exception_execution": true
+    }
+  ],
+  "exception_reconstruction": {
+    "no_catch_maps": true,
+    "implementation": "Armed cleanup-only RAII; name guard destroyed before base guard; no synthetic catch/rethrow.",
+    "constructor_state0": "Arm before zeroing name fields at native B34155; base action on unwind.",
+    "constructor_state1": "Arm after field initialization at native B34170; current name destruction then base.",
+    "normal_constructor": "Disarm both only after all stores and shared serial increment succeed.",
+    "normal_destructor": "Disarm base guard before complete normal base action, native B33F9A state=-1.",
+    "native_dtor_release_exception_boundary": "NativeStringStorage release is noexcept; original getter-throw path is statically pinned but not dynamically compared.",
+    "actual_original_constructor_unwind_executed": true,
+    "raw_CRT_events_per_side": 1
+  },
+  "existing_dependencies": [
+    {
+      "address": "0041dd40",
+      "body": "resize_native_string_header_0041dd40",
+      "file": "src/native_string.cpp",
+      "ownership": "compose existing complete implementation"
+    },
+    {
+      "address": "0041dd20",
+      "body": "destroy_native_string_header_0041dd20",
+      "file": "src/native_string.cpp",
+      "ownership": "compose existing complete implementation"
+    },
+    {
+      "address": "00b3f4c0",
+      "body": "destroy_native_buffer_diagnostic_record_00b3f4c0",
+      "file": "src/native_physical_buffer_owner.cpp",
+      "ownership": "already full; not claimed or reimplemented; composed only in diagnostic fixture path because the five owned bodies do not call it",
+      "record_contract": "Accessed 0Ch prefix: borrowed COM+00 ignored; name+04/+08 returned without field changes. No larger total record extent is asserted."
+    },
+    {
+      "address": "00419cc0",
+      "body": "PooledStringStorage over SizedStoragePool",
+      "file": "src/native_string.cpp",
+      "ownership": "existing explicit host pool boundary"
+    },
+    {
+      "address": "00bd1120",
+      "body": "SizedStoragePool::allocate_00bd1120",
+      "file": "src/storage_pool.cpp",
+      "ownership": "compose existing storage"
+    },
+    {
+      "address": "00bd1510",
+      "body": "SizedStoragePool::release_00bd1510",
+      "file": "src/storage_pool.cpp",
+      "ownership": "compose existing storage"
+    },
+    {
+      "address": "00bd30f0",
+      "body": "complete seven-byte raw CEB130 profile store action, used locally",
+      "ownership": "pinned dependency action; not separately claimed"
+    },
+    {
+      "address": "00a81880",
+      "body": "complete five-byte JMP BD30F0 in original constructor unwind",
+      "ownership": "pinned dependency thunk; not separately claimed"
+    }
+  ],
+  "validation": {
+    "strict_fixture_build_passed": true,
+    "fixture_exit_code": 0,
+    "scripts_build_passed": true,
+    "existing_tests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "new_tracked_tests": false,
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "native_fixture": {
+    "schema_version": 1,
+    "packet": "native_logical_texture_named_base",
+    "generated_utc": "2026-09-11T03:00:45.073718+00:00",
+    "status": "ten_phase_original_byte_caller_differential_passed",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verification": "Every bsp.py ghidra bytes call verifies project/program/language/image base before reading.",
+    "installed_binary": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "capture_utc": "2026-09-11T02:57:26.036621+00:00",
+    "spans": [
+      {
+        "address": 4299968,
+        "length": 5,
+        "offset": 105664,
+        "code": true,
+        "hex": "64a1000000",
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e9fba6432f",
+        "actual_patched_sha256": "7061a470aa1259fdde4982c0f883e9aa4cc82ab17ed15bd733def199ee85c1fe",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 4316448,
+        "length": 29,
+        "offset": 122144,
+        "code": true,
+        "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+        "actual_patched_sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 4316480,
+        "length": 164,
+        "offset": 122176,
+        "code": true,
+        "hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+        "actual_patched_sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11016320,
+        "length": 5,
+        "offset": 6822016,
+        "code": true,
+        "hex": "e96b181500",
+        "sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e96b181500",
+        "actual_patched_sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11746880,
+        "length": 4,
+        "offset": 7552576,
+        "code": true,
+        "hex": "8d4108c3",
+        "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "8d4108c3",
+        "actual_patched_sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11747152,
+        "length": 103,
+        "offset": 7552848,
+        "code": true,
+        "hex": "6aff6898e0cb0064a100000000506489250000000051568bf189742404c706f4f1d5008b460c85c0c74424100000000074168b4e086a0183c1015150e82f5d8eff8bc8e878d509008bcec7442410ffffffffe849f109008b4c24085e64890d0000000083c410c3",
+        "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "6aff681034003064a100000000506489250000000051568bf189742404c706f4f1d5008b460c85c0c74424100000000074168b4e086a0183c1015150e82f5d8eff8bc8e878d509008bcec7442410ffffffffe849f109008b4c24085e64890d0000000083c410c3",
+        "actual_patched_sha256": "46d73d7129a7ea4b81083be6ea0413bff4ac72f32c7846d3caccd96bd4bb78cc",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11747344,
+        "length": 5,
+        "offset": 7553040,
+        "code": true,
+        "hex": "e93bffffff",
+        "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e93bffffff",
+        "actual_patched_sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11747616,
+        "length": 176,
+        "offset": 7553312,
+        "code": true,
+        "hex": "6aff68c3e0cb0064a10000000050648925000000005155568bf1c70630b1ce00578974240cc74604010000008d7e08c706f4f1d500c744241800000000c70700000000c74704000000008b6c24203bfdc64424180174268b45006a01508bcfe8bc9b8eff837d000074138b0f8b55048b4704515250e8e6340c0083c40c8b4c24248b542428894e108b4c241089561ca1e8d608018946208305e8d60801015f8bc65e5d64890d0000000083c410c20c00",
+        "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "6aff68d033003064a10000000050648925000000005155568bf1c70630b1ce00578974240cc74604010000008d7e08c706f4f1d500c744241800000000c70700000000c74704000000008b6c24203bfdc64424180174268b45006a01508bcfe8bc9b8eff837d000074138b0f8b55048b4704515250e8e6340c0083c40c8b4c24248b542428894e108b4c241089561ca1e8d683018946208305e8d68301015f8bc65e5d64890d0000000083c410c20c00",
+        "actual_patched_sha256": "ad6770e2c3ad0478e06ddc61cdfdd37de46ab17257a694e60b770e839ff208ed",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11747888,
+        "length": 37,
+        "offset": 7553584,
+        "code": true,
+        "hex": "8b44240c8b542404568bf18b4c240c5051528bcee8d7feffffc70628f2d5008bc65ec20c00",
+        "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "8b44240c8b542404568bf18b4c240c5051528bcee8d7feffffc70628f2d5008bc65ec20c00",
+        "actual_patched_sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 11793600,
+        "length": 30,
+        "offset": 7599296,
+        "code": true,
+        "hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+        "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+        "actual_patched_sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 12390688,
+        "length": 5,
+        "offset": 8196384,
+        "code": true,
+        "hex": "538b5c2408",
+        "sha256": "0531f279a653cf955c7017687587e84d99fd94764f2ae7042422bf47be24ce54",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e95b32c82e",
+        "actual_patched_sha256": "0ea75864bcc86c72bf92be752683a0dd0cdd95a5b5b8c2b2f39a2cf641bfc40a",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 12391696,
+        "length": 5,
+        "offset": 8197392,
+        "code": true,
+        "hex": "538b5c240c",
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e9bb2ec82e",
+        "actual_patched_sha256": "ddc79fcdc998f02f8e81aa447fc8bd8bb8a5f2dd618e6ac940105d8d4d8a6186",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 12398832,
+        "length": 7,
+        "offset": 8204528,
+        "code": true,
+        "hex": "c70130b1ce00c3",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "c70130b1ce00c3",
+        "actual_patched_sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 12544835,
+        "length": 5,
+        "offset": 8350531,
+        "code": true,
+        "hex": "558bec83ec",
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e9a61fc62e",
+        "actual_patched_sha256": "f57f18d1b9d0b872f8f4016b5758025b52809018af4ffacfd2c2655442eb8903",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 12547712,
+        "length": 869,
+        "offset": 8353408,
+        "code": true,
+        "hex": "558bec57568b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00901877bf004477bf006877bf0023d18a0688078a46018847018a4602c1e90288470283c60383c70383f90872ccf3a5ff2495f477bf008d490023d18a0688078a4601c1e90288470183c60283c70283f90872a6f3a5ff2495f477bf009023d18a06880783c601c1e90283c70183f9087288f3a5ff2495f477bf008d4900eb77bf00d877bf00d077bf00c877bf00c077bf00b877bf00b077bf00a877bf008b448ee489448fe48b448ee889448fe88b448eec89448fec8b448ef089448ff08b448ef489448ff48b448ef889448ff88b448efc89448ffc8d048d0000000003f003f8ff2495f477bf008bff0478bf000c78bf001878bf002c78bf008b45085e5fc9c3908a0688078b45085e5fc9c3908a0688078a46018847018b45085e5fc9c38d49008a0688078a46018847018a46028847028b45085e5fc9c3908d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bfff7d9ff248d4079bf008d49008bc7ba0300000083f904720c83e0032bc8ff24859478bf00ff248d9079bf0090a478bf00c878bf00f078bf008a460323d188470383ee01c1e90283ef0183f90872b2fdf3a5fcff24959079bf008d49008a460323d18847038a4602c1e90288470283ee0283ef0283f9087288fdf3a5fcff24959079bf00908a460323d18847038a46028847028a4601c1e90288470183ee0383ef0383f9080f8256fffffffdf3a5fcff24959079bf008d49004479bf004c79bf005479bf005c79bf006479bf006c79bf007479bf008779bf008b448e1c89448f1c8b448e1889448f188b448e1489448f148b448e1089448f108b448e0c89448f0c8b448e0889448f088b448e0489448f048d048d0000000003f003f8ff24959079bf008bffa079bf00a879bf00b879bf00cc79bf008b45085e5fc9c3908a46038847038b45085e5fc9c38d49008a46038847038a46028847028b45085e5fc9c3908a46038847038a46028847028a46018847018b45085e5fc9c3",
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "e95bbdc52e8b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00901877bf004477bf006877bf0023d18a0688078a46018847018a4602c1e90288470283c60383c70383f90872ccf3a5ff2495f477bf008d490023d18a0688078a4601c1e90288470183c60283c70283f90872a6f3a5ff2495f477bf009023d18a06880783c601c1e90283c70183f9087288f3a5ff2495f477bf008d4900eb77bf00d877bf00d077bf00c877bf00c077bf00b877bf00b077bf00a877bf008b448ee489448fe48b448ee889448fe88b448eec89448fec8b448ef089448ff08b448ef489448ff48b448ef889448ff88b448efc89448ffc8d048d0000000003f003f8ff2495f477bf008bff0478bf000c78bf001878bf002c78bf008b45085e5fc9c3908a0688078b45085e5fc9c3908a0688078a46018847018b45085e5fc9c38d49008a0688078a46018847018a46028847028b45085e5fc9c3908d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bfff7d9ff248d4079bf008d49008bc7ba0300000083f904720c83e0032bc8ff24859478bf00ff248d9079bf0090a478bf00c878bf00f078bf008a460323d188470383ee01c1e90283ef0183f90872b2fdf3a5fcff24959079bf008d49008a460323d18847038a4602c1e90288470283ee0283ef0283f9087288fdf3a5fcff24959079bf00908a460323d18847038a46028847028a4601c1e90288470183ee0383ef0383f9080f8256fffffffdf3a5fcff24959079bf008d49004479bf004c79bf005479bf005c79bf006479bf006c79bf007479bf008779bf008b448e1c89448f1c8b448e1889448f188b448e1489448f148b448e1089448f108b448e0c89448f0c8b448e0889448f088b448e0489448f048d048d0000000003f003f8ff24959079bf008bffa079bf00a879bf00b879bf00cc79bf008b45085e5fc9c3908a46038847038b45085e5fc9c38d49008a46038847038a46028847028b45085e5fc9c3908a46038847038a46028847028a46018847018b45085e5fc9c3",
+        "actual_patched_sha256": "dc215fb0cb7ed3afb7e9e6b4127f407ded767e55448c96163ea3377d4f2a4311",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 13361296,
+        "length": 18,
+        "offset": 9166992,
+        "code": true,
+        "hex": "8b4df0e9e837dcffb80c69df00e9a18af3ff",
+        "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "8b4df0e9e837dcffb80c695a01e9a18af3ff",
+        "actual_patched_sha256": "1fcefb21132a31c1b50cf863e6fcd9537bb013d1e3ff6261ae3118ac76779cd7",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 13361328,
+        "length": 29,
+        "offset": 9167024,
+        "code": true,
+        "hex": "8b4df0e9c837dcff8b4df083c108e95dfc75ffb84069df00e9768af3ff",
+        "sha256": "fe885481ffb1a1b48822cbf9e8dda2040cb3b83e29da2124a75a6710b3f07d4a",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "8b4df0e9c837dcff8b4df083c108e95dfc75ffb840695a01e9768af3ff",
+        "actual_patched_sha256": "c6b23c523cf0bfc47d990ce8d80db963c8615e656252dc932829c112ee091863",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 14641412,
+        "length": 44,
+        "offset": 10447108,
+        "code": false,
+        "hex": "ffffffff90e0cb0022059319010000000469df00000000000000000000000000000000000000000001000000",
+        "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "ffffffff90e04601220593190100000004695a01000000000000000000000000000000000000000001000000",
+        "actual_patched_sha256": "19e682aed125ae64e24ed8eecb5e1248153525d7dd06c9af7f64efe49fbdc17d",
+        "exact_postimage_matches_only_listed_changes": true
+      },
+      {
+        "address": 14641456,
+        "length": 52,
+        "offset": 10447152,
+        "code": false,
+        "hex": "ffffffffb0e0cb0000000000b8e0cb0022059319020000003069df00000000000000000000000000000000000000000001000000",
+        "sha256": "c6aadcbc89e62cc2a114743bd6fcbacb8099e0203b5b1261142e6520eac40029",
+        "live_ghidra_matches_installed_pe": true,
+        "actual_patched_hex": "ffffffffb0e0460100000000b8e04601220593190200000030695a01000000000000000000000000000000000000000001000000",
+        "actual_patched_sha256": "9a448549151d0aa7dbef1afafec84581ffbc3fb83651b851008c786636e36c97",
+        "exact_postimage_matches_only_listed_changes": true
+      }
+    ],
+    "span_count": 19,
+    "span_bytes": 1592,
+    "owned_bytes": 325,
+    "all_live_ghidra_bytes_match_installed_PE": true,
+    "all_loaded_postimages_verified": true,
+    "absolute_relocations": [
+      {
+        "address": 11747155,
+        "expected": 13361304,
+        "preimage": "98e0cb00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 805319696,
+        "final_kind": "executable-resident FH3 registration adapter"
+      },
+      {
+        "address": 11747619,
+        "expected": 13361347,
+        "preimage": "c3e0cb00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 805319632,
+        "final_kind": "executable-resident FH3 registration adapter"
+      },
+      {
+        "address": 11747760,
+        "expected": 17356520,
+        "preimage": "e8d60801",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 25417448,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 11747769,
+        "expected": 17356520,
+        "preimage": "e8d60801",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 25417448,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 13361305,
+        "expected": 14641420,
+        "preimage": "0c69df00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 22702348,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 13361348,
+        "expected": 14641472,
+        "preimage": "4069df00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 22702400,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 14641416,
+        "expected": 13361296,
+        "preimage": "90e0cb00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 21422224,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 14641428,
+        "expected": 14641412,
+        "preimage": "0469df00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 22702340,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 14641460,
+        "expected": 13361328,
+        "preimage": "b0e0cb00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 21422256,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 14641468,
+        "expected": 13361336,
+        "preimage": "b8e0cb00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 21422264,
+        "final_kind": "absolute native address rebased to sparse image"
+      },
+      {
+        "address": 14641480,
+        "expected": 14641456,
+        "preimage": "3069df00",
+        "kind": "absolute native address rebased to sparse image",
+        "actual_patched_value": 22702384,
+        "final_kind": "absolute native address rebased to sparse image"
+      }
+    ],
+    "entry_bridges": [
+      {
+        "address": 4299968,
+        "boundary": "actual fixture NativeStringStorage getter",
+        "preimage": "64a1000000"
+      },
+      {
+        "address": 12390688,
+        "boundary": "NativeStringStorage allocate with native flag=1 checked",
+        "preimage": "538b5c2408"
+      },
+      {
+        "address": 12391696,
+        "boundary": "NativeStringStorage release with native flag=1 checked",
+        "preimage": "538b5c240c"
+      },
+      {
+        "address": 12547712,
+        "boundary": "actual host memmove matches captured backward-overlap behavior; zero-byte call omitted as shared host string policy; full native body captured but not executed",
+        "preimage": "558bec5756"
+      },
+      {
+        "address": 12544835,
+        "boundary": "actual host CxxFrameHandler3",
+        "preimage": "558bec83ec"
+      }
+    ],
+    "runtime_entry_destinations": {
+      "4299968": 805323712,
+      "12390688": 805323648,
+      "12391696": 805323728,
+      "12547712": 805319648,
+      "12544835": 805341934
+    },
+    "runtime_registration_destinations": {
+      "11747155": 805319696,
+      "11747619": 805319632
+    },
+    "relative_calls_and_jumps_preserved": [
+      {
+        "site": 4316464,
+        "target": 4299968,
+        "bytes": "e88bbfffff",
+        "instruction": "call 0x419cc0"
+      },
+      {
+        "site": 4316471,
+        "target": 12391696,
+        "bytes": "e8d4377b00",
+        "instruction": "call 0xbd1510"
+      },
+      {
+        "site": 4316516,
+        "target": 4299968,
+        "bytes": "e857bfffff",
+        "instruction": "call 0x419cc0"
+      },
+      {
+        "site": 4316523,
+        "target": 12391696,
+        "bytes": "e8a0377b00",
+        "instruction": "call 0xbd1510"
+      },
+      {
+        "site": 4316547,
+        "target": 4299968,
+        "bytes": "e838bfffff",
+        "instruction": "call 0x419cc0"
+      },
+      {
+        "site": 4316560,
+        "target": 12390688,
+        "bytes": "e88b337b00",
+        "instruction": "call 0xbd1120"
+      },
+      {
+        "site": 4316585,
+        "target": 4316592,
+        "bytes": "eb05",
+        "instruction": "jmp 0x41ddb0"
+      },
+      {
+        "site": 4316593,
+        "target": 12547712,
+        "bytes": "e8ca987d00",
+        "instruction": "call 0xbf7680"
+      },
+      {
+        "site": 4316617,
+        "target": 4299968,
+        "bytes": "e8f2beffff",
+        "instruction": "call 0x419cc0"
+      },
+      {
+        "site": 4316624,
+        "target": 12391696,
+        "bytes": "e83b377b00",
+        "instruction": "call 0xbd1510"
+      },
+      {
+        "site": 11016320,
+        "target": 12398832,
+        "bytes": "e96b181500",
+        "instruction": "jmp 0xbd30f0"
+      },
+      {
+        "site": 11747212,
+        "target": 4299968,
+        "bytes": "e82f5d8eff",
+        "instruction": "call 0x419cc0"
+      },
+      {
+        "site": 11747219,
+        "target": 12391696,
+        "bytes": "e878d50900",
+        "instruction": "call 0xbd1510"
+      },
+      {
+        "site": 11747234,
+        "target": 12398832,
+        "bytes": "e849f10900",
+        "instruction": "call 0xbd30f0"
+      },
+      {
+        "site": 11747344,
+        "target": 11747152,
+        "bytes": "e93bffffff",
+        "instruction": "jmp 0xb33f50"
+      },
+      {
+        "site": 11747711,
+        "target": 4316480,
+        "bytes": "e8bc9b8eff",
+        "instruction": "call 0x41dd40"
+      },
+      {
+        "site": 11747733,
+        "target": 12547712,
+        "bytes": "e8e6340c00",
+        "instruction": "call 0xbf7680"
+      },
+      {
+        "site": 11747908,
+        "target": 11747616,
+        "bytes": "e8d7feffff",
+        "instruction": "call 0xb34120"
+      },
+      {
+        "site": 11793617,
+        "target": 4299968,
+        "bytes": "e8eaa78dff",
+        "instruction": "call 0x419cc0"
+      },
+      {
+        "site": 11793624,
+        "target": 12391696,
+        "bytes": "e833200900",
+        "instruction": "call 0xbd1510"
+      },
+      {
+        "site": 13361299,
+        "target": 11016320,
+        "bytes": "e9e837dcff",
+        "instruction": "jmp 0xa81880"
+      },
+      {
+        "site": 13361309,
+        "target": 12544835,
+        "bytes": "e9a18af3ff",
+        "instruction": "jmp 0xbf6b43"
+      },
+      {
+        "site": 13361331,
+        "target": 11016320,
+        "bytes": "e9c837dcff",
+        "instruction": "jmp 0xa81880"
+      },
+      {
+        "site": 13361342,
+        "target": 4316448,
+        "bytes": "e95dfc75ff",
+        "instruction": "jmp 0x41dd20"
+      },
+      {
+        "site": 13361352,
+        "target": 12544835,
+        "bytes": "e9768af3ff",
+        "instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "registered_EH_adapters": {
+      "registration_operands": {
+        "00b34123": "00cbe0c3",
+        "00b33f53": "00cbe098"
+      },
+      "retained_original_funcinfos": [
+        "00df6940",
+        "00df690c"
+      ],
+      "contract": "Executable-resident naked handlers load EAX with the relocated original FuncInfo and tail-jump to the actual host __CxxFrameHandler3. Original unwind maps and constructor cleanup funclets execute.",
+      "executed_ctor_cleanup": [
+        "00cbe0b8 current name via 0041dd20",
+        "00cbe0b0 base via 00a81880 -> 00bd30f0"
+      ],
+      "not_executed": "Original registered-handler thunks are captured but replaced at registration. Destructor cleanup funclet 00cbe090 is captured, not exercised by the nonthrowing release boundary.",
+      "native_exception_ABI_claim": false
+    },
+    "host_boundaries": {
+      "storage": "Original 00419CC0/00BD1120/00BD1510 use exact cdecl/thiscall adapters to the same NativeStringStorage interface. Nonnull allocations and releases run through a real PooledStringStorage and SizedStoragePool on each side; native hidden flag 1 is checked.",
+      "copy": "Full 869-byte BF7680 body is captured as overlap evidence, but its entry is bridged to actual host memmove. The original BF7694/BF769A overlap branch and BF7844 backward path justify memmove. Native zero-byte copy is omitted as the shared string policy.",
+      "native_string_algorithms": "Native side executes complete original 0041DD40 and 0041DD20 instructions. Host side links the existing unchanged production versions.",
+      "global": "Each side uses the same actual mapped DWORD corresponding to 0108D6E8, caller initialized before the sequence. This is not a PE BSS initializer claim.",
+      "CRT": "Actual host CxxThrowException import is observed without intercepting or replacing its exception object. Original and reconstructed cleanup use the actual host FH3. Runtime imports and physical Win32 module hashes are pinned.",
+      "runtime_modules": [
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+          "bytes": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "boundary": "CxxThrowException",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+          "path_resolution": "Physical SysWOW64 file for the x86 process System32 path, PE machine verified 014c."
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\VCRUNTIME140.dll",
+          "bytes": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "boundary": "CxxFrameHandler3",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+          "path_resolution": "Physical SysWOW64 file for the x86 process System32 path, PE machine verified 014c."
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "boundary": "malloc",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "path_resolution": "Physical SysWOW64 file for the x86 process System32 path, PE machine verified 014c."
+        }
+      ],
+      "selected_executable_imports": [
+        {
+          "module": "VCRUNTIME140.dll",
+          "symbol": "memmove"
+        },
+        {
+          "module": "VCRUNTIME140.dll",
+          "symbol": "memcpy"
+        },
+        {
+          "module": "VCRUNTIME140.dll",
+          "symbol": "__CxxFrameHandler3"
+        },
+        {
+          "module": "VCRUNTIME140.dll",
+          "symbol": "_CxxThrowException"
+        },
+        {
+          "module": "api-ms-win-crt-heap-l1-1-0.dll",
+          "symbol": "free"
+        },
+        {
+          "module": "api-ms-win-crt-heap-l1-1-0.dll",
+          "symbol": "malloc"
+        }
+      ]
+    },
+    "build_inputs": {
+      "generated_utc": "2026-09-11T02:57:26.178763+00:00",
+      "original_before": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 20747460,
+        "sha256": "b0291d352b963171d0cac1f04f0626a0498fa13b3f90d93fed104e0a9f496cb3"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\bsp_core.lib",
+        "bytes": 20747460,
+        "sha256": "b0291d352b963171d0cac1f04f0626a0498fa13b3f90d93fed104e0a9f496cb3"
+      },
+      "original_after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 20747460,
+        "sha256": "b0291d352b963171d0cac1f04f0626a0498fa13b3f90d93fed104e0a9f496cb3"
+      },
+      "all_three_library_hashes_equal": true,
+      "source_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\include\\bsp\\native_logical_texture_named_base.hpp",
+          "bytes": 2598,
+          "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\src\\native_logical_texture_named_base.cpp",
+          "bytes": 4363,
+          "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\include\\bsp\\native_string.hpp",
+          "bytes": 6001,
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\src\\native_string.cpp",
+          "bytes": 6003,
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\include\\bsp\\storage_pool.hpp",
+          "bytes": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\src\\storage_pool.cpp",
+          "bytes": 6169,
+          "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\include\\bsp\\native_physical_buffer_owner.hpp",
+          "bytes": 4090,
+          "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\src\\native_physical_buffer_owner.cpp",
+          "bytes": 10263,
+          "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+        }
+      ]
+    },
+    "all_eight_source_pins_unchanged_after_execution": true,
+    "frozen_library_unchanged": true,
+    "link_providers": [
+      {
+        "original_address": "00b34120",
+        "cpp_symbol": "construct_native_logical_texture_named_base_00b34120",
+        "linked_address": 805334752,
+        "provider": "native_logical_texture_named_base.obj",
+        "exact_map_line": " 0001:00005ee0       ?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z 30006ee0 f   native_logical_texture_named_base.obj"
+      },
+      {
+        "original_address": "00b34230",
+        "cpp_symbol": "construct_native_logical_texture_named_profile_00b34230",
+        "linked_address": 805334944,
+        "provider": "native_logical_texture_named_base.obj",
+        "exact_map_line": " 0001:00005fa0       ?construct_native_logical_texture_named_profile_00b34230@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z 30006fa0 f   native_logical_texture_named_base.obj"
+      },
+      {
+        "original_address": "00b33f50",
+        "cpp_symbol": "destroy_native_logical_texture_named_base_00b33f50",
+        "linked_address": 805335152,
+        "provider": "native_logical_texture_named_base.obj",
+        "exact_map_line": " 0001:00006070       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30007070 f   native_logical_texture_named_base.obj"
+      },
+      {
+        "original_address": "00b34010",
+        "cpp_symbol": "unwind_native_logical_texture_named_base_00b34010",
+        "linked_address": 805335216,
+        "provider": "native_logical_texture_named_base.obj",
+        "exact_map_line": " 0001:000060b0       ?unwind_native_logical_texture_named_base_00b34010@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 300070b0 f   native_logical_texture_named_base.obj"
+      },
+      {
+        "original_address": "00b33e40",
+        "cpp_symbol": "native_logical_texture_name_address_00b33e40",
+        "linked_address": 805335200,
+        "provider": "native_logical_texture_named_base.obj",
+        "exact_map_line": " 0001:000060a0       ?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z 300070a0 f   native_logical_texture_named_base.obj"
+      },
+      {
+        "original_address": "0041dd40",
+        "cpp_symbol": "resize_native_string_header_0041dd40",
+        "linked_address": 805337888,
+        "provider": "bsp_core:native_string.obj",
+        "exact_map_line": " 0001:00006b20       ?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z 30007b20 f   bsp_core:native_string.obj"
+      },
+      {
+        "original_address": "0041dd20",
+        "cpp_symbol": "destroy_native_string_header_0041dd20",
+        "linked_address": 805337840,
+        "provider": "bsp_core:native_string.obj",
+        "exact_map_line": " 0001:00006af0       ?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30007af0 f   bsp_core:native_string.obj"
+      },
+      {
+        "original_address": "00b3f4c0",
+        "cpp_symbol": "destroy_native_buffer_diagnostic_record_00b3f4c0",
+        "linked_address": 805338032,
+        "provider": "bsp_core:native_physical_buffer_owner.obj",
+        "exact_map_line": " 0001:00006bb0       ?destroy_native_buffer_diagnostic_record_00b3f4c0@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30007bb0 f   bsp_core:native_physical_buffer_owner.obj"
+      },
+      {
+        "original_address": "00bd1120",
+        "cpp_symbol": "allocate_00bd1120@SizedStoragePool",
+        "linked_address": 805336768,
+        "provider": "bsp_core:storage_pool.obj",
+        "exact_map_line": " 0001:000066c0       ?allocate_00bd1120@SizedStoragePool@bsp@@QAEPAXI@Z 300076c0 f   bsp_core:storage_pool.obj"
+      },
+      {
+        "original_address": "00bd1510",
+        "cpp_symbol": "release_00bd1510@SizedStoragePool",
+        "linked_address": 805337456,
+        "provider": "bsp_core:storage_pool.obj",
+        "exact_map_line": " 0001:00006970       ?release_00bd1510@SizedStoragePool@bsp@@QAEXPAXI@Z 30007970 f   bsp_core:storage_pool.obj"
+      }
+    ],
+    "compiler_and_linker": {
+      "compiler": "MSVC 19.51.36244.0, Win32 C++17",
+      "compile_flags": [
+        "/EHsc",
+        "/fp:strict",
+        "/O2",
+        "/Oy-",
+        "/MD",
+        "/Gy",
+        "/Gw",
+        "/W4",
+        "/WX"
+      ],
+      "link_flags": [
+        "/OPT:REF",
+        "/OPT:NOICF",
+        "/INCREMENTAL:NO",
+        "/BASE:0x30000000",
+        "/DYNAMICBASE:NO",
+        "/FIXED",
+        "/SAFESEH:NO",
+        "/MAP"
+      ],
+      "production_scope": "The fixture compiles the exact new production source as its own object and links all existing dependencies from the frozen worktree bsp_core.lib. Shared CMake is deliberately unchanged for primary integration."
+    },
+    "comparison": {
+      "sequence_count": 1,
+      "phases": 10,
+      "matching_behavior_words": 1410,
+      "complete_behavior_traces_equal": true,
+      "raw_CRT_throw_trace": {
+        "original": [
+          6,
+          0
+        ],
+        "host": [
+          6,
+          0
+        ],
+        "event_shape": [
+          "phase",
+          "uncaught_exceptions_before_CRT_call"
+        ],
+        "events_per_side": 1,
+        "equal": true,
+        "normalization": "None; no synthetic rethrow event removed."
+      },
+      "covered": [
+        "profile replacement after full constructor and serial FFFFFFFF to zero wrap",
+        "embedded NUL and raw non-retained COM pointer, untouched +14/+18 and trailing bytes",
+        "self-header alias clears and abandons its prior buffer without allocation or release",
+        "source header aliases owner +14/+18",
+        "allocation-time mutation of current destination header and current source data/length",
+        "current zero source length skips final copy after resize preserves injected old name",
+        "real allocation exception executes original state1 current-name and state0 base cleanup; no later COM/flags/serial/profile publication",
+        "wrapped length FFFFFFFF releases size zero through actual pool class zero",
+        "release-time mutation of owner name remains after base cleanup",
+        "normal destructor thunk route and existing shared B3F4C0 diagnostic cleanup",
+        "name address EAX for normal/null/wrapping input without dereference",
+        "backward-overlapping current source/destination backed by adjacent real byte-aligned pool allocations"
+      ],
+      "pointer_normalization": "Only actual owner/source/buffer/global pointer addresses are mapped to stable identities for separate pool allocations. All other DWORDs, buffer bytes, release sizes, profile/count/flags/serial values, pool counters, and storage/throw order are retained.",
+      "incidental_results": "Native constructor owner EAX and name-address EAX are checked; unspecified destructor EAX is ignored. General register/stack ABI compatibility is not claimed."
+    },
+    "unexercised_or_limited": [
+      "Original singleton first-use construction and native sized-pool algorithm instructions are explicit host boundaries.",
+      "Release is noexcept under NativeStringStorage; an original pool-getter failure during destruction and 00CBE090 destructor-unwind execution are not compared.",
+      "Shared resize retains its existing C++ copy and allocator-domain policies; this packet only changes the direct named-constructor copy to overlap-safe memmove.",
+      "The complete native BF7680 algorithm is evidence only; it is not executed by this fixture.",
+      "Native profile constants are stored as raw DWORDs; this packet does not bind or invoke a complete logical-texture vtable.",
+      "Concurrent mutations, malformed inaccessible storage, general native ABI compatibility and game validation are not claimed."
+    ],
+    "validation": {
+      "strict_fixture_build_passed": true,
+      "fixture_exit_code": 0,
+      "scripts_build_passed": true,
+      "existing_tests": [
+        "reconstructed_math passed",
+        "native_math_differential passed"
+      ],
+      "new_tracked_tests": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    "artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\capture.py",
+        "bytes": 6538,
+        "sha256": "479c3181bad5bf422fc6bf547b3a1ebe27d6d50528c0b4acca74fd79303f0cd4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\capture.json",
+        "bytes": 16896,
+        "sha256": "966f089b4065171e13417a1ea3f0b6db593b5e40c2b3c08c8e0e34a7b1e4d6c0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\freeze.py",
+        "bytes": 1247,
+        "sha256": "143ced900ab8b8bb0e2e881cbd0ae39dea0740a2f25402fda9b23e677c23c6fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\build_inputs.json",
+        "bytes": 3042,
+        "sha256": "ebf7f930faa25e6567e97b16f07d1caf36682ff54639286ce21f1cf9345f9897"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\bsp_core.lib",
+        "bytes": 20747460,
+        "sha256": "b0291d352b963171d0cac1f04f0626a0498fa13b3f90d93fed104e0a9f496cb3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\make_fixture.py",
+        "bytes": 4014,
+        "sha256": "01a946fffc90fe664d2755df20d08cf1bfc259a58edc079ef268f4b587b09c43"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\fixture_body.inc",
+        "bytes": 12507,
+        "sha256": "be4fa0a4a4bad9cd5fc44b8df8cef35f153d4637745a117641ae7ed069d28595"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\fixture.cpp",
+        "bytes": 21871,
+        "sha256": "dd1d343952efcc27ade30c3a1629af163e19733bea82686cd4da5195a616f2f6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\reference.hpp",
+        "bytes": 4407,
+        "sha256": "89b5b03ae888d2a88e3841aaf93ed60344a3e045c18b99126948e6369f38604e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\CMakeLists.txt",
+        "bytes": 847,
+        "sha256": "990d472c0a5d8cab4da236dda726cadbfb2c1b64267907717d986f1a9d3c7f66"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\configure.log",
+        "bytes": 276,
+        "sha256": "8385c015317aa612a95d400aff6ab97bd6f092360799d825a2b2cc39717c1840"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\build.log",
+        "bytes": 614,
+        "sha256": "bff19717e42d42a48c742f33cc114c2abff2e277c5a4c5cc5be5aea15e58ba88"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\run.log",
+        "bytes": 149,
+        "sha256": "5cf9b2d8162441498d4444bdd1e6ce9f19737e7f1a5c8e006cdd2bd0232b3ed4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\original_behavior_trace.txt",
+        "bytes": 14100,
+        "sha256": "f0e9605ed1b2d698594102baaec2daac0aded027c1495cc7f1762388b73f7ca7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\host_behavior_trace.txt",
+        "bytes": 14100,
+        "sha256": "f0e9605ed1b2d698594102baaec2daac0aded027c1495cc7f1762388b73f7ca7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\original_crt_throw_trace.txt",
+        "bytes": 20,
+        "sha256": "19db08ccfce2f267fc792931ccc169cd65c83ed1699612fa5598cc92b2c5173e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\host_crt_throw_trace.txt",
+        "bytes": 20,
+        "sha256": "19db08ccfce2f267fc792931ccc169cd65c83ed1699612fa5598cc92b2c5173e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\patched_spans.txt",
+        "bytes": 3414,
+        "sha256": "1821ccceeafe1021db590fac7631f08017ea9dbf9d10940390dfaa9de121c217"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\host_bridges.txt",
+        "bytes": 179,
+        "sha256": "1339dd14f02fa817b0bcc9429fc1bd606b7211c9fe15cdfc9c20d8cd9dda25ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\runtime_modules.txt",
+        "bytes": 152,
+        "sha256": "55d820e156a0519d6c13109d33e1925a2906e797e3a0fe5cad3f7132a1398969"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\finalize.py",
+        "bytes": 13328,
+        "sha256": "d39f0f6fa9b98a8c3f5d0ef2eb16bcbbb937ec196fc52c0048c457d4b557aae9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\build\\named_base_diff\\Release\\named_base_diff.exe",
+        "bytes": 54784,
+        "sha256": "910f1b4fa05e9b9b3a69aa08654c9633df263023fb83e2a60e898f077e421639"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\build\\named_base_diff\\Release\\named_base_diff.map",
+        "bytes": 92384,
+        "sha256": "b4e17527c1b3c71d11ada69b6857d1d4f070b4a9eade45097b4b2e2e1c390a35"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_build_seeded.log",
+        "bytes": 1946,
+        "sha256": "d393a9694cf47ae5eca9d9dd8021461cecd84b17cf1cc8f6f23e22608b2c7d39"
+      }
+    ]
+  },
+  "proof_artifact": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\local\\named_base_diff\\proof.json",
+    "bytes": 45022,
+    "sha256": "d64ffa7e768d0a14795f05d281588ab052bd144e2fda258549b2275b8c63561f"
+  },
+  "discovery_artifact": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\reports\\native_texture_2d_owner_next.json",
+    "bytes": 213722,
+    "sha256": "0c0441423d984d6a2b786b0ddca6574e4ff9d4b73f96e27420366cf42e9c4742"
+  },
+  "production_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\include\\bsp\\native_logical_texture_named_base.hpp",
+      "bytes": 2598,
+      "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\src\\native_logical_texture_named_base.cpp",
+      "bytes": 4363,
+      "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-logical-texture-named-base-20260910\\docs\\NATIVE_LOGICAL_TEXTURE_NAMED_BASE.md",
+      "bytes": 9531,
+      "sha256": "aa70cc09ec07b5729d2d5d3c9aa03de48c7013fd92249c6dcca4481b056168e8"
+    }
+  ],
+  "integration_handoff": {
+    "new_shared_CMake_source": "src/native_logical_texture_named_base.cpp",
+    "worker_shared_metadata_edits": false,
+    "worker_Ghidra_edits": false,
+    "primary_tasks": [
+      "review four-file commit",
+      "add source to shared build",
+      "five function/name ledger updates under write lock and annotation export refresh",
+      "packet state/docs integration and required build"
+    ],
+    "do_not_claim": "00B3F4C0 remains existing native_physical_buffer_owner dependency"
+  },
+  "uncertainty": [
+    "Original singleton first-use construction and native sized-pool algorithm instructions are explicit host boundaries.",
+    "Release is noexcept under NativeStringStorage; an original pool-getter failure during destruction and 00CBE090 destructor-unwind execution are not compared.",
+    "Shared resize retains its existing C++ copy and allocator-domain policies; this packet only changes the direct named-constructor copy to overlap-safe memmove.",
+    "The complete native BF7680 algorithm is evidence only; it is not executed by this fixture.",
+    "Native profile constants are stored as raw DWORDs; this packet does not bind or invoke a complete logical-texture vtable.",
+    "Concurrent mutations, malformed inaccessible storage, general native ABI compatibility and game validation are not claimed."
+  ]
+}
