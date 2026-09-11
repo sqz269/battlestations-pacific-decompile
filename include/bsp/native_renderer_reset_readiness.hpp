@@ -3,18 +3,23 @@
 #include <cstdint>
 
 namespace bsp {
-// Borrow all nine immutable original DWORDs of the two pooled physical buffer
-// profiles. These native addresses are data identities, not callable host
-// vtables. The private physical profiles have different +20 selectors and are
-// outside this renderer dynamic-wrapper source contract.
+// Borrow all nine immutable original DWORDs of each reached physical-buffer
+// profile. Native addresses identify data, not callable host vtables. Existing
+// two-argument construction admits pooled profiles only; each private table is
+// required only when its corresponding current identity is actually reached.
 struct NativeRendererResetReadinessProfiles final {
     const volatile std::uint32_t* const pooled_index_00d61e58;
     const volatile std::uint32_t* const pooled_vertex_00d61e7c;
+    const volatile std::uint32_t* const private_index_00d61e10;
+    const volatile std::uint32_t* const private_vertex_00d61e34;
     NativeRendererResetReadinessProfiles(const volatile std::uint32_t* index,
-        const volatile std::uint32_t* vertex) noexcept
-        : pooled_index_00d61e58(index), pooled_vertex_00d61e7c(vertex) {}
+        const volatile std::uint32_t* vertex,
+        const volatile std::uint32_t* private_index = nullptr,
+        const volatile std::uint32_t* private_vertex = nullptr) noexcept
+        : pooled_index_00d61e58(index), pooled_vertex_00d61e7c(vertex),
+          private_index_00d61e10(private_index), private_vertex_00d61e34(private_vertex) {}
 };
-static_assert(sizeof(NativeRendererResetReadinessProfiles) == 8);
+static_assert(sizeof(NativeRendererResetReadinessProfiles) == 16);
 
 // Complete B492B0/B49180, each 276 bytes plus its four-entry pool jump table.
 // ECX actual 2Ch wrapper, unused EDX, stacked actual device, RET4. The actual
@@ -27,7 +32,15 @@ void __fastcall recreate_native_physical_vertex_buffer_00b492b0(
 void __fastcall recreate_native_physical_index_buffer_00b49180(
     void* actual_wrapper, void* unused_edx, void* actual_device);
 
-// Complete B1FD90[70] behavior for the proven pooled dynamic-wrapper profiles.
+// Complete B4B810/B4B9C0: each is exactly RET4. No receiver/device dereference,
+// COM call or lifetime operation; general registers, flags and FP state remain
+// untouched. Explicit unused EDX keeps the unused device argument stacked.
+void __fastcall recreate_native_private_index_buffer_00b4b810(
+    void* actual_wrapper, void* unused_edx, void* actual_device);
+void __fastcall recreate_native_private_vertex_buffer_00b4b9c0(
+    void* actual_wrapper, void* unused_edx, void* actual_device);
+
+// Complete B1FD90[70] behavior for four proven pooled/private buffer profiles.
 // Native ECX renderer/RET; this new interface adds profiles in EDX. Current
 // ready+1D8C/lost+1D8A gate; ready=1 publishes before the first profile call. Reload
 // second wrapper+1978/profile/current device+1A10/slot+20 in native order.
