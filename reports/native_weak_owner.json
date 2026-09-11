@@ -1,0 +1,354 @@
+{
+  "packet": "orch2_native_weak_owner_o",
+  "utc": "2026-09-11T07:54:22.498736+00:00",
+  "target": {
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+  },
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "evidence_method": "Every live query used tools/bsp.py ghidra, which verifies project/program before querying. Read-only Ghidra throughout. Full listed function byte ranges compared against installed PE; selected missing continuations decoded from matching disk bytes.",
+  "layout": {
+    "owner_prefix_bytes": 12,
+    "owner_reference_offset": 4,
+    "owner_weak_handle_offset": 8,
+    "owner_vtable": "00d190f4",
+    "mutex_global": "0109ce90",
+    "mutex_bytes": 8,
+    "mutex_vtable": "00d190b4",
+    "weak_vtable": "00d190b8",
+    "weak_object_bytes": 12,
+    "pool_global": "0109ce94",
+    "pool_vtable": "00d5dcbc",
+    "pool_bytes": 56,
+    "slot_bytes": 16,
+    "slot_slab_index_offset": 12,
+    "slots_per_slab": 128,
+    "slab_bytes": 2308,
+    "free_stack_offset": 2048,
+    "free_count_offset": 2304,
+    "free_count_width": 2,
+    "initial_table_capacity": 32,
+    "growth": "2*n+2"
+  },
+  "functions": [
+    {
+      "address": "00925490",
+      "last_instruction": "0092553c",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "0092553d",
+      "byte_length": 173,
+      "cpp_symbol": "NativeWeakOwnerDomain::construct_00925490",
+      "proposed_name": "BSP_WeakOwner_Construct",
+      "original_abi": "ECX actual object; EAX same object; RET.",
+      "original_annotation": {
+        "address": "00925490",
+        "function_name": "FUN_00925490"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "9ea17813e7d0d771258a553efffc4c88933e3db5ec389639e2546cebfa399d43"
+    },
+    {
+      "address": "00925540",
+      "last_instruction": "009255e5",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "009255e6",
+      "byte_length": 166,
+      "cpp_symbol": "NativeWeakOwnerDomain::destroy_00925540",
+      "proposed_name": "BSP_WeakOwner_Destroy",
+      "original_abi": "ECX actual object; RET.",
+      "original_annotation": {
+        "address": "00925540",
+        "function_name": "FUN_00925540"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "58459f67d0e7f13d81dade6797168b9fbb29446e980cf314cfcbb8d442782e21"
+    },
+    {
+      "address": "00924480",
+      "last_instruction": "0092453c",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "0092453d",
+      "byte_length": 189,
+      "cpp_symbol": "NativeWeakOwnerDomain::lock_owner_00924480",
+      "proposed_name": "BSP_WeakOwner_GetMutex",
+      "original_abi": "No arguments; EAX published mutex; RET.",
+      "original_annotation": {
+        "address": "00924480",
+        "function_name": "FUN_00924480"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "f66e43eef41762fde5c8d9ccfb465732411a8511a34a618cc63c8e38715dc47a"
+    },
+    {
+      "address": "00924050",
+      "last_instruction": "00924094",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "00924095",
+      "byte_length": 69,
+      "cpp_symbol": "NativeWeakOwnerDomain::initialize_lock_owner_00924050",
+      "proposed_name": "BSP_WeakOwnerMutex_Construct",
+      "original_abi": "ECX raw8h object; EAX same object; RET.",
+      "original_annotation": {
+        "address": "00924050",
+        "function_name": "FUN_00924050"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "ef855f289bae73729f475449305b643d433218a3fc066df02f3be82ea29b603d"
+    },
+    {
+      "address": "00925430",
+      "last_instruction": "00925464",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00925467",
+      "byte_length": 55,
+      "cpp_symbol": "NativeWeakOwnerDomain::delete_lock_owner_00925430",
+      "proposed_name": "BSP_WeakOwnerMutex_Delete",
+      "original_abi": "ECX mutex; stack flags; EAX original identity including after free; RET4.",
+      "original_annotation": {
+        "address": "00925430",
+        "function_name": "CG_scalar_deleting_dtor_00925430"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "543416a99c128589c42ce8cdd4331445ea66cdba81322e0ad971b03059edad09"
+    },
+    {
+      "address": "009242f0",
+      "last_instruction": "0092441f",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "00924420",
+      "byte_length": 304,
+      "cpp_symbol": "NativeWeakHandlePool::allocate_raw_slot_009242f0",
+      "proposed_name": "BSP_WeakHandlePool_AllocateSlot",
+      "original_abi": "ECX pool; EAX raw10h slot; RET.",
+      "original_annotation": {
+        "address": "009242f0",
+        "function_name": "FUN_009242f0"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "705ca4d1860033689cfae6a859eebb5be4ccda3bab9d1f59d400e9ec2f21215b"
+    },
+    {
+      "address": "009236a0",
+      "last_instruction": "009236e0",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "009236e3",
+      "byte_length": 67,
+      "cpp_symbol": "initialize_slab_009236a0",
+      "proposed_name": "BSP_WeakHandlePool_InitializeSlab",
+      "original_abi": "ECX raw904h slab; stack index DWORD; EAX same slab; RET4.",
+      "original_annotation": {
+        "address": "009236a0",
+        "function_name": "FUN_009236a0"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "df24fd967c22793f2334fbebe9e94856665072fdf885d245e81216a71008cc9f"
+    },
+    {
+      "address": "00924420",
+      "last_instruction": "00924472",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00924475",
+      "byte_length": 85,
+      "cpp_symbol": "NativeWeakHandlePool::return_raw_slot_00924420",
+      "proposed_name": "BSP_WeakHandlePool_ReturnSlot",
+      "original_abi": "ECX pool; stack raw slot; RET4.",
+      "original_annotation": {
+        "address": "00924420",
+        "function_name": "FUN_00924420"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "6cbb376279aacf83fdbfb03d0381146f8223264d5009ad041c8e0dcb3e397bf1"
+    },
+    {
+      "address": "00925470",
+      "last_instruction": "0092548d",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00925490",
+      "byte_length": 32,
+      "cpp_symbol": "NativeWeakOwnerDomain::delete_handle_00925470",
+      "proposed_name": "BSP_WeakHandle_Delete",
+      "original_abi": "ECX weak0Ch object in10h slot; stack flags; EAX original identity; RET4.",
+      "original_annotation": {
+        "address": "00925470",
+        "function_name": "FUN_00925470"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "ad6758fb5164f7502d99d8829e816a06df682428964a9e42eaeeacb435136da0"
+    },
+    {
+      "address": "00cd8a60",
+      "last_instruction": "00cd8a75",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "00cd8a76",
+      "byte_length": 22,
+      "cpp_symbol": "initialize_static_native_weak_pool_00cd8a60",
+      "proposed_name": "BSP_WeakHandlePool_InitializeStatic",
+      "original_abi": "No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor.",
+      "original_annotation": {
+        "function_name": null,
+        "comment": null,
+        "error": "No function at address 00cd8a60; no plate comment available"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "9869b6836b6c5db2a900e8746625e159998ccb426cc4a4c2b6d0aabdb9f0e949"
+    },
+    {
+      "address": "00ce1040",
+      "last_instruction": "00ce1045",
+      "last_instruction_length": 5,
+      "native_end_exclusive": "00ce104a",
+      "byte_length": 10,
+      "cpp_symbol": "destroy_static_native_weak_pool_00ce1040",
+      "proposed_name": "BSP_WeakHandlePool_DestroyStatic",
+      "original_abi": "No arguments; sets ECX0109CE94; tail JMP00B002C0.",
+      "original_annotation": {
+        "address": "00ce1040",
+        "function_name": "CG_static_init_00ce1040",
+        "comment": "[BSP inventory 00ce1040] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "e943985a272152d0f8b35b552323f8229780e2ff7fac760ce0772d8b404cc7ae"
+    },
+    {
+      "address": "00b004b0",
+      "last_instruction": "00b00582",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "00b00583",
+      "byte_length": 211,
+      "cpp_symbol": "NativeWeakHandlePool::initialize_00b004b0",
+      "proposed_name": "BSP_Pool128x16_Construct",
+      "original_abi": "ECX actual38h pool; EAX same pool; RET. Shared128x10h profile, not weak-only.",
+      "original_annotation": {
+        "address": "00b004b0",
+        "function_name": "FUN_00b004b0"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "8b57c909b6abcf483e2dadde9c8c3036bfcb9b0f794740e5ce4bdad8ea256195"
+    },
+    {
+      "address": "00b003a0",
+      "last_instruction": "00b0043f",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "00b00440",
+      "byte_length": 160,
+      "cpp_symbol": "NativeWeakHandlePool::trim_empty_slabs_00b003a0",
+      "proposed_name": "BSP_Pool128x16_TrimEmptySlabs",
+      "original_abi": "ECX actual38h pool; RET; no internal critical-section entry. Shared profile.",
+      "original_annotation": {
+        "address": "00b003a0",
+        "function_name": "FUN_00b003a0"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "1de4b9ef51d76046c2bdeb702930f98dca756dbcc365199077c5b16018313d26"
+    },
+    {
+      "address": "00b002c0",
+      "last_instruction": "00b00349",
+      "last_instruction_length": 1,
+      "native_end_exclusive": "00b0034a",
+      "byte_length": 138,
+      "cpp_symbol": "NativeWeakHandlePool::destroy_00b002c0",
+      "proposed_name": "BSP_Pool128x16_Destroy",
+      "original_abi": "ECX actual38h pool; RET; shared profile; no object destructor calls.",
+      "original_annotation": {
+        "address": "00b002c0",
+        "function_name": "FUN_00b002c0"
+      },
+      "complete_byte_range_matches_disk": true,
+      "native_bytes_sha256": "f5c741c67e0c8953a1ec70b05863968e345afd570e1500e872db94d45e772503"
+    }
+  ],
+  "annotation_handoff": {
+    "applied": false,
+    "reason": "Packet required Ghidra read-only; proposed names and old plate comments are recorded.",
+    "missing_functions": [
+      {
+        "address": "00cd8a60",
+        "end_exclusive": "00cd8a76",
+        "description": "Static0109CE94 constructor/atexit thunk; current enclosing candidate CD8460 is not ownership evidence."
+      }
+    ],
+    "false_free_continuations": [
+      {
+        "call": "00924381",
+        "start": "00924386",
+        "end_exclusive": "00924389",
+        "effect": "ADD ESP,4; then publication at924389"
+      },
+      {
+        "call": "00925459",
+        "start": "0092545e",
+        "end_exclusive": "00925461",
+        "effect": "ADD ESP,4; EAX identity / RET4 continue"
+      },
+      {
+        "call": "00b002d8",
+        "start": "00b002dd",
+        "end_exclusive": "00b002e8",
+        "effect": "loop increment, stack cleanup, compare and branch"
+      },
+      {
+        "call": "00b002f0",
+        "start": "00b002f5",
+        "end_exclusive": "00b002f8",
+        "effect": "ADD ESP,4; section cleanup and unlink continue"
+      },
+      {
+        "call": "00b003c2",
+        "start": "00b003c7",
+        "end_exclusive": "00b003fd",
+        "effect": "swap last slab into hole, decrement count, rewrite all128 moved slotIDs, recheck moved slab"
+      },
+      {
+        "call": "00b00564",
+        "start": "00b00569",
+        "end_exclusive": "00b0056c",
+        "effect": "ADD ESP,4; then replacement table publication"
+      }
+    ],
+    "shared_profile_note": "B004B0/B003A0/B002C0 use D5DCBC and are shared with a second static pool (CE0BE0 caller of B002C0). Proposed names deliberately describe the128x16 profile."
+  },
+  "unwind_evidence": {
+    "pool": "DF33F8 FuncInfo/DF33E0 map: state2 -> CBB3B3/AFFA20 pointer table; state1 -> CBB3A8/402F70 section; state0 -> CBB3A0/403970 allocator base.",
+    "owner": "CA6BC0/CA6BE0 -> BD30F0; CA6BC8/CA6BE8 ->411EE0 captured guard. Owner constructor restores base vtable on abnormal exit; destructor always restores it after guard cleanup.",
+    "mutex": "CA6AA0 ->923620 clears actual0109CE90 publication and writesCE3818 during constructor unwind; complete925430 first destroys actual section then clears publication."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "compiler": "MSVC19.51 Win32 /W4 /WX",
+    "verify_seeds_passed": true,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "existing_ctests_passed": 2,
+    "host_fixture": {
+      "path": "local/native_weak_owner_probe.cpp",
+      "passed": true,
+      "permanent_test": false,
+      "compiler_options": "/std:c++20 /EHsc /MD /O2 /W4 /WX /link /MANIFEST:EMBED",
+      "scope": "Concrete GUI interface uses actual scene+04/+08 and untouched tail; one retained handle survives with null target;4097slots grow table32->66; empty early slab trim moves last slab and rewrites IDs; real manager registration/shutdown clears mutex; pool unlink leaves native stale table fields."
+    },
+    "weak_owner_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "New C++ interfaces; no drop-in original ABI or full weak-owner native execution claim.",
+    "Caller supplies the canonical singleton domain, actual0109CE90 publication, actual0109CE94 storage, and shared allocator-list head. Manager destroy_registered callback routesD190B4 to delete_lock_owner_00925430.",
+    "Pool ctor/trim/dtor are a shared128x16 specialization. This companion instantiates only the supplied weak pool storage; does not create or claim another pool.",
+    "Only the actual weak-handle reference count and target are implemented. Remaining D190B8 methods925660/9256D0/925740 are not reconstructed; no weak promotion or observer contract is inferred.",
+    "Existing critical_section_create_00bd1860 supplies a genuine TrackedCriticalSection; its pre-existing host nothrow-allocation policy is retained, and native allocation-failure equivalence is untested.",
+    "Exceptional allocation failure, concurrent races, cross-thread retained-handle use, CRT shutdown timing and live game rendering remain untested.",
+    "Pool allocation deliberately has no cleanup guard; the outer owner lock has independent cleanup. Raw slot return assumes a valid slot from this same pool."
+  ],
+  "artifacts": {
+    "include/bsp/native_weak_owner.hpp": "9d30358b5db990b99fda94e53d814cef5e063ca40b22a9dd75a876f7ac0b4b46",
+    "src/native_weak_owner.cpp": "7cfdb7cba481205e8517320f24b902f37b5d314acb62efbc5f0aecf9024c2739",
+    "local/native_weak_owner_probe.cpp": "acad7f7533c4499d96be8be2b288d88b121638d072122f16d229d50231f2030b",
+    "local/native_weak_owner_probe.exe": "817971045a7f8db8549a571b7331097cbd30c80066ead78b2395b75bf00c1847",
+    "local/native_weak_owner_build.log": "e5fdbc6f66847b017cb3dc2cd75d121e11c382ceaa5082e66911fe1eff03b16c"
+  }
+}
