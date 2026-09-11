@@ -1,0 +1,95 @@
+{
+  "packet": "orch2_keyboard_restore",
+  "status": "reconstructed_build_and_host_fixture_tested",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra Client verifies configured project/program/language/image base before each live batch"
+  },
+  "functions": [
+    {
+      "address": "006aba50",
+      "body_end": "006ac025",
+      "old_name": "FUN_006aba50",
+      "old_comments": "No comments returned by bsp.py ghidra comments before annotation",
+      "proposed_name": "BSP_InputSettings_ReadKeyboardArchive",
+      "cpp_symbol": "bsp::read_keyboard_setup_006aba50",
+      "source": "src/keyboard_restore.cpp",
+      "original_abi": "ECX=settings; stack reader pointer; RET 4",
+      "exported": true,
+      "reconstructed": true,
+      "abi_compatible": false,
+      "native_differential_tested": false,
+      "game_validated": false
+    },
+    {
+      "address": "006aa640",
+      "body_end": "006aac43",
+      "old_name": "FUN_006aa640",
+      "old_comments": "No comments returned by bsp.py ghidra comments before annotation",
+      "proposed_name": "BSP_InputSettings_ApplyKeyboardBindings",
+      "cpp_symbol": "bsp::apply_keyboard_setup_006aa640",
+      "source": "src/keyboard_restore.cpp",
+      "original_abi": "ECX=settings; no stack arguments; RET",
+      "exported": true,
+      "reconstructed": true,
+      "abi_compatible": false,
+      "native_differential_tested": false,
+      "game_validated": false
+    }
+  ],
+  "evidence": [
+    {"range": "006aba5a", "behavior": "sets native settings+5 latch; no clear in runtime apply"},
+    {"range": "006aba77..006abbbe", "behavior": "existing case-insensitive device and binding-map traversal, presence-guard device/action Lua keys"},
+    {"range": "006abbd0..006abed0", "behavior": "numeric slot0/1 only, absent binding reset{-1,0,0,-1,false}, preserve absent slot reverse bit"},
+    {"range": "006abc46..006abd3b", "behavior": "typed integer reads, false defaults for slider/reverse; no write to binding+8"},
+    {"range": "006abd4b..006abe61", "behavior": "separate reverse map at devRec+6c indexes input name and current slot"},
+    {"range": "006abf62..006abfcf", "behavior": "only present named runtime sensitivity floats overwritten"},
+    {"range": "006ac013..006ac025", "behavior": "terminal runtime apply after balanced sections; RET4"},
+    {"range": "006aa665..006aa696", "behavior": "DEVINPUTS, loaded latch and input-manager action128h gates"},
+    {"range": "006aa6ef..006aa899", "behavior": "copy base sensitivities then scale by described category and runtime multiplier, preserving Min1SensHacks rule"},
+    {"range": "006aa89e..006aabd0", "behavior": "ordered described input codes, two binding slots, reverse, alternate2/3 and unsigned slider suppression"},
+    {"range": "006aac07..006aac2d", "behavior": "restored continuation increments device iterator then jumps to006aa6b0"},
+    {"range": "006a8046;006a8117;006a8344;006a8381;006a83eb", "behavior": "existing loader description maps merge names case-insensitively, append duplicate codes and overwrite sensitivity category"}
+  ],
+  "runtime_effect_boundaries": [
+    {"address": "00a92260", "host_method": "KeyboardRuntimeHost::action_registered_00a92260", "contract": "one128h action registration probe; native range check then action byte+0"},
+    {"address": "006aa090", "host_method": "KeyboardRuntimeHost::use_alternate_axis_slots_006aa090", "contract": "per-input AxisPairs/helper0069e860 predicate remains supplied; no guessed comparison"},
+    {"address": "00a93750", "host_method": "KeyboardRuntimeHost::bind_action_00a93750", "contract": "action code, slot, 14h native binding projection, float scale; native grows binding vector and resolves devices via00a91e80"}
+  ],
+  "constants": {
+    "00d7a208": "float negative zero",
+    "00d7a218": "float positive zero",
+    "00d7a24c": "float one",
+    "00d7a250": "double negative one",
+    "00d7a260": "float negative one"
+  },
+  "validation": {
+    "seed_byte_comparisons": {"passed": 8, "failed": 0, "command": "python tools/ghidra_export.py verify-seeds"},
+    "build": {"passed": true, "configuration": "Release", "platform": "MSVC Win32", "command": "./scripts/build.ps1", "log": "local/keyboard_restore_build.log"},
+    "existing_ctests": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "native_math_differential"], "scope": "existing math tests, not native keyboard differential proof"},
+    "host_fixture": {
+      "passed": true,
+      "source": "local/keyboard_restore_fixture.cpp",
+      "command": "local/run_keyboard_restore_fixture.cmd",
+      "log": "local/keyboard_restore_fixture.log",
+      "permanent_tests_added": 0,
+      "checks": ["existing writer to Lua5.1.1 reader", "reader section balance", "native latch and registration gates", "present slot preserves binding+8", "missing slot reset preserves reverse", "absent action/device/sensitivity retention", "base sensitivity map stays unmodified", "case-insensitive native order", "second device continuation", "alternate slot2/3 and suppression", "reverse multiplier and minimum-one exception", "disabled native bindings forwarded"]
+    }
+  },
+  "uncertainty": [
+    "Names are hypotheses; new host objects and interfaces are not original ABI replacements.",
+    "Full paired-vector comparison0069e860 behind006aa090 remains an explicit effect boundary.",
+    "Binding+8 meaning is unresolved, preserved for present archive slots and forwarded to runtime host.",
+    "Short arrays throw after possible partial mutation rather than continuing after native checked-container failure.",
+    "Unknown sensitivity category with codes throws instead of reading native stale/uninitialized class temporary.",
+    "Float32 store boundaries are represented but full x87 control-word, denormal, exception and NaN-payload parity is untested.",
+    "No native keyboard differential or actual game execution was performed."
+  ],
+  "ghidra_mutation": {
+    "worker_mutated": false,
+    "integrator_flow_repair": "reports/keyboard_restore_flow_repair.json",
+    "annotation_request": "Rename owned006aba50 and006aa640 to proposed names, preserve prior comments, annotate evidence/ABI/uncertainty, save project and refresh affected exports.",
+    "missing_function_definitions": []
+  }
+}
