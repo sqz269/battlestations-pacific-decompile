@@ -432,3 +432,7 @@ the fields this packet establishes.
 | 00977da0 | `BSP_WarningManager_ReportCaptureShip` | exported, analyzed |
 | 009781e0 | `BSP_WarningManager_ReportCapturePoint` | exported, analyzed |
 | 00978a70 | `BSP_WarningManager_ReportCommandBuilding` | exported, analyzed |
+
+## Correction from docs/MISSION_RESULT_DECISION.md
+
+The five addresses proposed above as the mission failure decision are not one: two are a component-failure hazard roll, one a unit message handler, and two are unit destruction reporting the kill warning. Nothing in the image decides a win or loss natively; the mission script writes objectives (0x2C records in eight per-slot sets at `game+21A4h`, kind at +18h, state at +1Ch) and calls `Scoring_SetMissionCompleted`, and `BSP_Game_CheckMissionCompletion` enqueues request 0Fh once the `PlayBinkMovie` object at `game+7188h` has +21h set; 0Fh runs `GGame::EndScene` (`004d7970`), which commits the score record into `game+6B4h` keyed by the mission id at `game+2198h` and enqueues the teardown request 10h. A player death raises interface 34h (`GUI_limbo`, the respawn screen) after a 1.0f grace period.

@@ -56,13 +56,23 @@ def resolve(worktree, path):
                 regs.append(l)
         # a target defined on both sides (add_executable/add_library with the same name) keeps the
         # incoming definition only: two definitions make CMake refuse the configure
-        defined = {}
-        for l in regs:
-            m = re.search(r'CALL add_(?:executable|library) (\S+)', l)
+        target_re = re.compile(r'CALL add_(?:executable|library) (\S+)')
+        base_def = {}
+        for l in base.splitlines():
+            m = target_re.search(l)
             if m:
-                defined[m.group(1)] = l  # theirs comes last in the concatenation, so it wins
-        regs = [l for l in regs if not re.search(r'CALL add_(?:executable|library) (\S+)', l)
-                or defined[re.search(r'CALL add_(?:executable|library) (\S+)', l).group(1)] == l]
+                base_def[m.group(1)] = l
+        candidates = {}
+        for l in regs:
+            m = target_re.search(l)
+            if m:
+                candidates.setdefault(m.group(1), []).append(l)
+        keep = {}
+        for target, lines_for in candidates.items():
+            # the side that changed the definition wins; if both changed, the incoming side does
+            changed = [l for l in lines_for if l != base_def.get(target)]
+            keep[target] = (changed or lines_for)[-1]
+        regs = [l for l in regs if not target_re.search(l) or keep[target_re.search(l).group(1)] == l]
         (worktree / path).write_text('\n'.join(header + sorted(regs)) + '\n', encoding='utf-8', newline='\n')
         return 'registry union'
     if path.startswith('config/names/') and path.endswith('.jsonl'):
