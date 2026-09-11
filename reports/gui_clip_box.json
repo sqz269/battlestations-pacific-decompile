@@ -1,0 +1,187 @@
+{
+  "packet": "orch2_gui_clip_box_r",
+  "project_verified": "C:/Users/sqz269/bsp.gpr",
+  "program_verified": "/battlestationspacific.exe",
+  "ghidra_mutations": [],
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "00ace0a0",
+      "length": 20,
+      "sha256": "d9ac8bdb38fa5f7b45971c7d04155d684ae6fc732cdd41b6329375398d9040ff",
+      "saved_matches_disk": true,
+      "name": "GuiClipBoxTypeImplementation::GuiClipBoxTypeImplementation",
+      "previous_name": "FUN_00ace0a0",
+      "previous_comment": null,
+      "proposed_name": "BSP_GuiClipBox_Construct",
+      "last_instruction": "00ace0b3",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ace0b3",
+      "original_abi": "ECX widget; EAX widget; RET.",
+      "coverage": "constructor_composed_with_existing_same_base_owner",
+      "ghidra_gaps": 0
+    },
+    {
+      "address": "00ace0f0",
+      "length": 25,
+      "sha256": "b6583c3549252f2578c9e7f4fc5c039101ea03765c6166deec6c63d2c513f922",
+      "saved_matches_disk": true,
+      "name": "copy_gui_clip_box_00ace0f0",
+      "previous_name": "FUN_00ace0f0",
+      "previous_comment": null,
+      "proposed_name": "BSP_GuiClipBox_CopyConstruct",
+      "last_instruction": "00ace106",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ace108",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4.",
+      "coverage": "wrapper_requires_actual_base_copy_00aa9520",
+      "ghidra_gaps": 0
+    },
+    {
+      "address": "00ace120",
+      "length": 263,
+      "sha256": "1d0de8e6b1cbbf1d499bb9534dce4bc25104c70646fc93f468f60b97e9ae8bbd",
+      "saved_matches_disk": true,
+      "name": "update_gui_clip_box_00ace120",
+      "previous_name": "FUN_00ace120",
+      "previous_comment": null,
+      "proposed_name": "BSP_GuiClipBox_UpdateParameters",
+      "last_instruction": "00ace226",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ace226",
+      "original_abi": "ECX widget; RET.",
+      "coverage": "x87_update_bounded_native_differential_checked",
+      "ghidra_gaps": 0
+    },
+    {
+      "address": "00ace650",
+      "length": 119,
+      "sha256": "3ee59e166e1717a5a0b55ff19f2c74934feb135ac533d6892129aef4d674bbbb",
+      "saved_matches_disk": true,
+      "name": "read_gui_clip_box_properties_00ace650",
+      "previous_name": "FUN_00ace650",
+      "previous_comment": null,
+      "proposed_name": "BSP_GuiClipBox_ReadProperties",
+      "last_instruction": "00ace6c4",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ace6c6",
+      "original_abi": "ECX widget; stack visitor; RET4.",
+      "coverage": "derived_reader_composed_after_existing_base_reader",
+      "ghidra_gaps": 0
+    }
+  ],
+  "table": "00d5d058",
+  "verified_slots": {
+    "18": "00ace650",
+    "24": "00ace120",
+    "34": "00aa8530",
+    "38": "00a9e0d0",
+    "3c": "00a9e100",
+    "50": "00aa6870",
+    "5c": "00a9e110",
+    "60": "00aa6a30",
+    "74": "00a9ac00",
+    "78": "00aa7170"
+  },
+  "implementation": [
+    "Existing type factory and canonical model child allocation now accept ClipBox16.",
+    "ONE companion owns uninitialized native EC..108 fields; same base/layout/tree/node and clip flag remain in GuiWidgetOwner.",
+    "Ctor and copy perform no derived field initialization/copy; copy requires actual AA9520 service.",
+    "Reader continuation runs after existing base reader/children, converts BorderWidth via00BD63B0 with native0.1 defaults, then immediately updates.",
+    "Same ClipBox companion supplies stable center/border source references without a registry.",
+    "Update reproduces native x87 spills and destination operands; raw border input bits copied between output stores.",
+    "Current24 is exposed for existing GuiWidgetTransformHost::on_layout_finished; no invented global update dispatcher."
+  ],
+  "x87_operand_evidence": [
+    {
+      "address": "00ace1ba",
+      "bytes": "dcc9",
+      "operation": "fmul st1,st0"
+    },
+    {
+      "address": "00ace1c6",
+      "bytes": "d8c9",
+      "operation": "fmul st0,st1"
+    },
+    {
+      "address": "00ace1f0",
+      "bytes": "dcc9",
+      "operation": "fmul st1,st0"
+    }
+  ],
+  "validation": {
+    "seed_byte_matches": 8,
+    "owned_complete_spans_match_disk": 4,
+    "reference_dependency_spans_match_disk": 2,
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict passed",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "permanent_tests_added": 0,
+    "ignored_fixtures": 1,
+    "native_fixture": {
+      "cases": 8,
+      "field_words_compared": 8,
+      "failures": 0,
+      "coverage": [
+        "ordinary",
+        "parented cancellation",
+        "signed zero",
+        "quiet NaN payload",
+        "signaling NaN payload",
+        "infinity",
+        "overflow",
+        "subnormal"
+      ],
+      "missing_border_default_checked": true,
+      "original_code": [
+        "00ace120",
+        "00aa6750",
+        "00aa6740"
+      ],
+      "relocation": "AC120 two relative calls and half-double operand; AA6750 zero-double operand; self recursion unchanged",
+      "manifest_embedded": true,
+      "scope": "Bounded arithmetic and one reader-default check only; no GUI owner/load/draw or full FP-environment parity."
+    },
+    "gui_owner_runtime_fixture": false,
+    "material_packing_tested": false
+  },
+  "node_class_evidence": {
+    "child_path": [
+      "00aaad89 type factory",
+      "00aaad8e size184h",
+      "00aaad95 model allocator00b74eb0",
+      "00aaadb1 model00b75030",
+      "00aaadc4 widget+4C store"
+    ],
+    "standalone_path": [
+      "00aa6662 size184h",
+      "00aa6681 model00b75030",
+      "00aa6695 bind00aa6720"
+    ],
+    "script_screen_root": "AA5840 missing-.mmod branch: AA58FF calls B8F450; AA5914 calls B8F5E0; AA5944 calls AC6600 with that cGroup. Group+180 is signed capacity, not model geometry.",
+    "color_calls": [
+      "00ab6b50 direct caller",
+      "00ab448c virtual50 load",
+      "00ab4495 Icon own-color call",
+      "00aaa950 base property destination, not virtual color call"
+    ],
+    "limitation": "Inherited slot does not establish group-backed Screen safety; parent integrator owns canonical model guard."
+  },
+  "required_boundaries": [
+    {
+      "address": "00aa9520",
+      "reason": "Actual base copy/node clone and lifetime"
+    },
+    {
+      "address": "00aa8710",
+      "reason": "Bind existing host on_layout_finished current24 to SAME type16 companion update"
+    },
+    {
+      "address": "00b18a40",
+      "reason": "True retained GuiWidgetOwner token and native material owner remain unresolved; ClipBox fields do not supply lifetime"
+    }
+  ]
+}

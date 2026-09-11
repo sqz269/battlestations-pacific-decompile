@@ -272,8 +272,8 @@ void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& re
 }
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget& layout) {
     if (layout.type != GuiWidgetType::Group && layout.type != GuiWidgetType::Icon &&
-        layout.type != GuiWidgetType::FrameBox)
-        throw std::invalid_argument("unsupported retained GUI type: only Group, Icon and FrameBox are composed");
+        layout.type != GuiWidgetType::FrameBox && layout.type != GuiWidgetType::ClipBox)
+        throw std::invalid_argument("unsupported retained GUI type: only Group, Icon, FrameBox and ClipBox are composed");
     auto& result = construct_base(layout);
     try { result.bind_scene_00aa6720(create_model(layout.key)); }
     catch (...) { retire_tree(layout); throw; }
