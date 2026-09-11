@@ -1,0 +1,196 @@
+{
+  "packet": "cc_exe_2d",
+  "owner": "agent/cc-exe-2d",
+  "title": "bsp_game.exe milestone 2d: text on screen, the per-type GUI property readers, and the scene-graph label corrections",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only",
+    "mutations": 0
+  },
+  "sources": [
+    "src/game_hosts_text.cpp",
+    "include/bsp/game_hosts_text.hpp",
+    "src/game_hosts_frontend.cpp",
+    "include/bsp/game_hosts_frontend.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+  "reconstructions_wired": [
+    "include/bsp/gui_text.hpp: bind_gui_text_properties_00abb630, set_font_by_name_00ab8c30, set_localised_source_00abaed0, uses_wrapped_layout_00aba8d0, GuiTextHost",
+    "include/bsp/font_registry_startup.hpp: FontRegistryStartup::find_font_00ac3570, FontRegistryOwnedFont",
+    "include/bsp/font_resources.hpp: FontResources (decoded DAT metrics and the retained glyph sheet)",
+    "include/bsp/font_data.hpp: select_font_glyph_00ad4480",
+    "include/bsp/font_layout.hpp: build_font_single_line_00ab9fd0_fragment (declared; not reached by the shipped pages)",
+    "include/bsp/font_wrapped_layout.hpp: build_font_wrapped_00aba270_fragment, apply_font_wrapped_vertical_offset_00aba860_fragment",
+    "include/bsp/font_geometry.hpp: write_font_quad_00ab98f0_fragment",
+    "include/bsp/locale_text_lookup.hpp: LocaleTextResolver, locale_uppercase_00a9eba0, LocaleTextRuntimeHost",
+    "include/bsp/locale_tables.hpp: LocaleTables::find_00a9ec70",
+    "include/bsp/gui_icon_runtime.hpp: read_gui_icon_authored_page_00ab3310, now recorded at its own call site"
+  ],
+  "addresses": {
+    "text_path": ["00abb630", "00ab8c30", "00abaed0", "00a9fad0", "00a9f4b0", "004c5e60",
+      "00aba8d0", "00a9ec30", "00a9eba0", "00c0391c", "00ab9fd0", "00aba270", "00aba860",
+      "00ab98f0", "00ad4480", "00ab6b50", "00a9ec70", "00e12fd4"],
+    "recorded_not_implemented": ["00ab8ce0", "00ab8400", "00ab8530", "00b692c0", "00ad08e0"],
+    "corrected_labels": ["00aa6720", "00b6d890", "00b74eb0", "00b75030", "00aaa710"],
+    "icon_reader": ["00ab3310"]
+  },
+  "no_ghidra_function": [],
+  "ledger": {
+    "names_added": ["00a9ec30"],
+    "evidence_appended": ["00ab98f0", "00aba270", "00abb630", "00a9fad0", "00aa6720",
+      "00b6d890", "00b74eb0", "00ab8c30"]
+  },
+  "executable_switches_added": {
+    "--screenshot-frame N": "captures frame N instead of the last frame, so one run can photograph the title page before the injected press-start and another the main menu after it; negative keeps the last-frame and close-request rule --screenshot shipped with"
+  },
+  "milestone_decisions_not_recovered_behaviour": [
+    "The sprite bridge draws the glyph quads with fixed-function D3D9 state (one textured triangle pair per glyph, D3DFVF_XYZRHW, MODULATE against the widget colour, source-alpha blending) over the font's own glyph sheet. The native path binds guifontbilinear.shfx through 00ab8ce0 and submits the shared vertex and index objects 00ab8400 creates and 00ab8530 sections. Those three sites are unimplemented records.",
+    "The text context's normalised space is placed at the widget's resolved position with its own pivot subtracted, the same corner the bridge already draws an Icon from. The native places it through the widget's scene node transform, which this process does not build.",
+    "The vertical scale the quad writer and the wrapped builder multiply every y by is the image value of the mutable global 00e12fd4, 0.75. Nothing in the reconstructed startup writes it; a running game may.",
+    "The glyph quads are ordered back to front by the authored Z alongside the icon quads, which is milestone 2b's own rule, not the native RenderOrder/geOrder."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings",
+    "ctest": "reconstructed_math 1/1 passed; no test cases added",
+    "run": {
+      "command": "bsp_game.exe --frames 120 --press-start-frame 30 --log local/game_run.log --screenshot local/run.png --game-root \"<install>\"",
+      "exit_code": 0,
+      "frames_presented": 120,
+      "back_buffer": "640x480",
+      "host_methods_concrete": 154,
+      "host_methods_unimplemented": 80,
+      "host_methods_distinct": 234,
+      "drawn": true,
+      "text_bridge_open": true,
+      "text_widgets_offered": 4,
+      "text_runs_built": 2,
+      "text_glyph_quads_built": 55,
+      "text_glyph_quads_drawn_at_main_menu": 9,
+      "bridge_quads_title": 61,
+      "bridge_quads_main_menu": 14,
+      "screenshot_written": true
+    },
+    "title_only_run": {
+      "command": "bsp_game.exe --frames 40 --log local/title_only.log --screenshot local/title_only.png --game-root \"<install>\"",
+      "exit_code": 0,
+      "host_methods_concrete": 129,
+      "host_methods_unimplemented": 49,
+      "text_glyph_quads_drawn": 55
+    },
+    "screenshot_frame_run": {
+      "command": "bsp_game.exe --frames 120 --press-start-frame 30 --screenshot local/title.png --screenshot-frame 29 --game-root \"<install>\"",
+      "exit_code": 0,
+      "captured_frame": 29,
+      "reads_on_screen": [
+        "LOG INTO ALTERBSP THEN PRESS ENTER TO CONTINUE, centred low over the Pacific map, Viper19, the press-start prompt's pulsing alpha",
+        "MAIN MENU, centred in the winged title plate, Viper19, the authored gold (0.98, 0.86, 0.60, 1.00)"
+      ]
+    },
+    "close_run": {
+      "command": "bsp_game.exe --press-start-frame 30 --log local/close_run.log --screenshot local/close.png --game-root \"<install>\", closed with CloseMainWindow",
+      "exit_code": 0,
+      "frames_presented": 36289,
+      "host_methods_concrete": 155,
+      "host_methods_unimplemented": 80,
+      "close_request_policy_front_end_branch": 1
+    },
+    "vfs_probe": {
+      "fonts/fonts.lua": 0,
+      "does/not/exist.lua": 3
+    },
+    "text_runs": [
+      {
+        "page": "FE_initial",
+        "widget": "press_start_Text",
+        "font": "Viper19",
+        "uppercase_only": true,
+        "builder": "00aba270 wrapped",
+        "source": "LOG INTO ALTERBSP THEN PRESS ENTER TO CONTINUE",
+        "locale_table_entry": false,
+        "resolution": "00a9f4b0's stripped-key fallback widened the key byte by byte",
+        "glyphs": 46,
+        "lines": 1,
+        "container_width": 499,
+        "measured_width": 461.0,
+        "align": "Center",
+        "vertical_align": "Top"
+      },
+      {
+        "page": "FE_frame_title",
+        "widget": "title_Text",
+        "font": "Viper19",
+        "uppercase_only": true,
+        "builder": "00aba270 wrapped",
+        "source": "MAIN MENU",
+        "locale_table_entry": false,
+        "resolution": "00a9f4b0's stripped-key fallback widened the key byte by byte",
+        "glyphs": 9,
+        "lines": 1,
+        "container_width": 768,
+        "measured_width": 101.0,
+        "align": "Center",
+        "vertical_align": "Center"
+      }
+    ],
+    "host_methods_added": {
+      "concrete": [
+        "GuiText::read_properties 00abb630",
+        "GuiText::find_font 00ab8c30",
+        "GuiText::resolve_localised 00a9fad0",
+        "GuiText::uppercase_text 00a9ec30",
+        "GuiText::build_wrapped 00aba270",
+        "GuiText::apply_color 00ab6b50",
+        "GuiText::write_glyph_quad 00ab98f0",
+        "LocaleText::crt_uppercase 00c0391c",
+        "GuiIcon::read_properties 00ab3310"
+      ],
+      "unimplemented": [
+        "GuiText::create_glyph_buffers 00ab8400",
+        "GuiText::ensure_draw_sections 00ab8530",
+        "GuiFrameBox::read_properties 00ad08e0",
+        "GuiLayoutHost::allocate_model_slot 00b74eb0"
+      ],
+      "declared_but_not_reached": [
+        "GuiText::widen_source 004c5e60 (every shipped Text authors DefaultText, which is always localised)",
+        "GuiText::build_single_line 00ab9fd0 (no shipped title or menu Text authors Multiline, so the constructor default selects the wrapped builder)",
+        "GuiText::font_shader 00ab8ce0 (only reached when a font name changes after the first resolve)",
+        "LocaleText::lua_context_value 00b692c0 (no shipped string carries a '#...#' marker)"
+      ],
+      "renamed": [
+        "GuiLayoutHost::create_page_root_node 00aa6720 -> GuiLayoutHost::bind_page_root_scene_node 00aa6720",
+        "GuiLayoutHost::clear_page_root_list 00b6d890 -> GuiLayoutHost::propagate_root_registration 00b6d890"
+      ]
+    }
+  },
+  "corrections": [
+    "00aa6720 is BSP_GuiWidget_SetSceneNode, not a page-root factory. It is four instructions: store a node at widget+4Ch and clear the low two bits of node+138h. Milestone 2b's host table called it create_page_root_node.",
+    "00b6d890 is BSP_Node_PropagateRootRegistration, the recursive root registration pass through 00b721f0 and 00b72220, not a list clear. Milestone 2b's host table called it clear_page_root_list.",
+    "The per-widget scene node is a pair, not one call: 00aa6640 takes a canonical 188h model slot with 00b74eb0 and constructs the 184h generated model in it with 00b75030. Milestone 2b recorded only 00b75030.",
+    "Milestone 2b's single derived_property_reader [00aaa710] record covered every widget type. 00aaa710 is the base half; the leaf reader is the caller, and three of the four types the title and menu pages use have a reconstruction. The table now names 00ab3310 for an Icon, 00abb630 for a Text and 00ad08e0 for a FrameBox, and keeps 00aaa710 only for the types with none.",
+    "Milestone 2b's follow-up 3 (text drawing) is done for the title and menu pages. Its stated blocker, 'the same device binding as item 1', turned out not to be needed: the reconstructed layout and quad writer emit normalised GUI coordinates, so the existing sprite bridge draws them directly.",
+    "Milestone 2c's 'the now empty title plate' is superseded. FE_frame_title's title_Text resolves to MAIN MENU and is readable in the plate, before the injected press-start as well as after it, because no front-end screen owns that layout and the bridge's substitute visibility rule keeps it on."
+  ],
+  "left_unimplemented_and_why": {
+    "00ab8ce0 / 00ab8400 / 00ab8530": "the font material and the shared glyph vertex and index objects. Both need a renderer material owner and a device-backed buffer factory, which is milestone 2b's follow-up 1, the GUI layer draw.",
+    "00ad08e0": "the FrameBox reader is reconstructed but takes GuiFrameBoxTextureServices, the native renderer's texture acquire and release pair. This process owns no such reference, so the reader is not run.",
+    "00aa6720 / 00b74eb0 / 00b75030 / 00b6e680 / 00b6d890": "the scene graph. The reconstructions exist (src/native_model_pool.cpp, src/native_model_owner.cpp, src/native_node_parenting.cpp, src/native_node_destruction.cpp, src/gui_widget_owner.cpp, src/gui_native_scene.cpp) but none is a free function: they compose into GuiWidgetOwnerRuntime over a NativeModelEnvironment and a NativeGroupEnvironment, which need real slab pools and the image's own constants at 00d7a24c and 00ce4970. That composition is a packet of its own and nothing in the repository builds it yet.",
+    "manager +48h/+4Ch, the VFS content-suffix list": "no routine in the ledger is named as its writer, and no query found one. Populating it would be an invention, so it stays the empty list milestone 2b reported and the atlas variants stay enumerated.",
+    "004f75a0 / 004f75b0 / 004f75c0": "these records stand for the leaf screen class's override, not the base virtual. The base bodies really are a single RET, but none of the seven main-menu classes is reconstructed, so making the base concrete would claim behaviour the run does not have.",
+    "00bdb0b0 tick_vfs_providers": "the ledger names a fragment in src/vfs_pending.cpp, but no such symbol exists in the tree today.",
+    "004fde20 update_loading_queue": "the singleton accessor is named, its constructed object is not reconstructed."
+  },
+  "follow_up_packets": [
+    "The GUI layer draw, still milestone 2b's follow-up 1. With the text path wired, deleting the sprite bridge now also means binding 00ab8400, 00ab8530 and 00ab8ce0 to a device and a material owner.",
+    "The scene graph composition: a GuiWidgetOwnerRuntime with a NativeModelEnvironment and a NativeGroupEnvironment the executable can own, which would make 00aa6720, 00b74eb0, 00b75030, 00b6e680, 00b6d890 and the two widget vtable hooks concrete in one packet, 96 calls in a 120 frame run.",
+    "The FrameBox reader 00ad08e0 over a GuiFrameBoxTextureServices the executable can supply, which is the same texture-ownership question as the renderer texture entry point.",
+    "The VFS content-suffix list writer: identify what fills manager +48h/+4Ch, which is the only honest way to populate it.",
+    "The Text widget's shadow half. 00ab72d0's presets are read and stored, and both title widgets author DefaultShadow, but nothing draws the second, offset glyph run: the native shares one geometry pair between the main and shadow sections at 00aba8d0, which is the same buffer factory this packet records as unimplemented.",
+    "The seven main-menu screen classes, still milestone 2c's follow-up 1. FE_main's two Subtitles Text widgets author no DefaultText, so the menu's own labels are built in code by 00584AE0 through 00AAB4C0 and no amount of text drawing puts them on screen."
+  ],
+  "state": "analyzed, reconstructed, build-tested, runtime-validated; not ABI-compatible and not game-validated"
+}

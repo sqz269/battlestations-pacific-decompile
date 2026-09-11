@@ -141,3 +141,12 @@ reference counts require instruction-level review. Effect-loader B45EE0,
 B46950 policy and undefined B469A0 remain broader follow-up work. Recheck
 leases before claiming any of these functions; their pass/shader population
 contracts must be recovered before a runnable renderer claim.
+
+## Correction from docs/NATIVE_MATERIAL_PASS_COPY.md
+
+The complete B455C0 copy, its four actual row helpers, binding constructor
+B44690 and B45E00 secondary builder are now reconstructed and native-fixture
+tested. Copy preserves the source's current state-owner counts in independent
+allocations and appends bindings. Secondary creation publishes before copy;
+constructor and copy failures have different cleanup scopes. See
+docs/NATIVE_MATERIAL_PASS_COPY.md for exact ordering and validation boundaries.

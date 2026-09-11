@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "packet": "native_private_buffer_recreate_discovery",
+  "created_utc": "2026-09-11T19:07:42.758128+00:00",
+  "worker": "agent/native_private_buffer_recreate_discovery",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery",
+  "base_main": "3f292ade0f59db93b69fb03dce89998094c022ae",
+  "status": "read_only_discovery_ready_two_dependency_free_raw_leaves_primary_owned_integration",
+  "owned_files": [
+    "docs/NATIVE_PRIVATE_BUFFER_RECREATE_DISCOVERY.md",
+    "reports/native_private_buffer_recreate_discovery.json"
+  ],
+  "leased_addresses": [],
+  "read_only_candidate_addresses": [
+    "00b4b810",
+    "00b4b9c0"
+  ],
+  "original": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_guarded_live_PE_spans": 7,
+    "fresh_guarded_live_PE_bytes": 246,
+    "complete_candidate_function_bytes": 6,
+    "spans": [
+      {
+        "address": "00b4b810",
+        "length": 16,
+        "role": "private_index_noop_and_13_int3_padding",
+        "bytes_hex": "c20400cccccccccccccccccccccccccc",
+        "sha256": "d63651e2f094917ccab3eb359c334635fe611944e70347563ff10f13fa7147c4",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": [
+          "00b4b810: ret 4",
+          "00b4b813: int3 ",
+          "00b4b814: int3 ",
+          "00b4b815: int3 ",
+          "00b4b816: int3 ",
+          "00b4b817: int3 ",
+          "00b4b818: int3 ",
+          "00b4b819: int3 ",
+          "00b4b81a: int3 ",
+          "00b4b81b: int3 ",
+          "00b4b81c: int3 ",
+          "00b4b81d: int3 ",
+          "00b4b81e: int3 ",
+          "00b4b81f: int3 "
+        ]
+      },
+      {
+        "address": "00b4b9c0",
+        "length": 16,
+        "role": "private_vertex_noop_and_13_int3_padding",
+        "bytes_hex": "c20400cccccccccccccccccccccccccc",
+        "sha256": "d63651e2f094917ccab3eb359c334635fe611944e70347563ff10f13fa7147c4",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": [
+          "00b4b9c0: ret 4",
+          "00b4b9c3: int3 ",
+          "00b4b9c4: int3 ",
+          "00b4b9c5: int3 ",
+          "00b4b9c6: int3 ",
+          "00b4b9c7: int3 ",
+          "00b4b9c8: int3 ",
+          "00b4b9c9: int3 ",
+          "00b4b9ca: int3 ",
+          "00b4b9cb: int3 ",
+          "00b4b9cc: int3 ",
+          "00b4b9cd: int3 ",
+          "00b4b9ce: int3 ",
+          "00b4b9cf: int3 "
+        ]
+      },
+      {
+        "address": "00d61e10",
+        "length": 72,
+        "role": "two_full_private_nine_DWORD_profiles",
+        "bytes_hex": "e030bd0020bbb40050b8b40020b8b40080b4b40050c2b40000b8b40040b8b40010b8b400e030bd0040bbb40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400c0b9b400",
+        "sha256": "3ca151390a3b27b2ed08b85358bbf3d27313c02136fc75f9e21c669d1e2dc8fa",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": []
+      },
+      {
+        "address": "00b4c111",
+        "length": 66,
+        "role": "private_index_allocation_and_inline_profile_initialization",
+        "bytes_hex": "33db6a2ce801a70a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700101ed60089581489581889581c895820895828895824eb0233c0",
+        "sha256": "01836ffb09a988e3c676d4fa0d67d0c152a91305ae0ec6a51ff21e4537457552",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": [
+          "00b4c111: xor ebx, ebx",
+          "00b4c113: push 0x2c",
+          "00b4c115: call 0xbf681b",
+          "00b4c11a: add esp, 4",
+          "00b4c11d: cmp eax, ebx",
+          "00b4c11f: je 0xb4c151",
+          "00b4c121: mov dword ptr [eax], 0xceb130",
+          "00b4c127: mov dword ptr [eax + 4], 1",
+          "00b4c12e: mov dword ptr [eax + 8], ebx",
+          "00b4c131: mov dword ptr [eax + 0xc], ebx",
+          "00b4c134: mov dword ptr [eax + 0x10], ebx",
+          "00b4c137: mov dword ptr [eax], 0xd61e10",
+          "00b4c13d: mov dword ptr [eax + 0x14], ebx",
+          "00b4c140: mov dword ptr [eax + 0x18], ebx",
+          "00b4c143: mov dword ptr [eax + 0x1c], ebx",
+          "00b4c146: mov dword ptr [eax + 0x20], ebx",
+          "00b4c149: mov dword ptr [eax + 0x28], ebx",
+          "00b4c14c: mov dword ptr [eax + 0x24], ebx",
+          "00b4c14f: jmp 0xb4c153",
+          "00b4c151: xor eax, eax"
+        ]
+      },
+      {
+        "address": "00b4be14",
+        "length": 64,
+        "role": "private_vertex_allocation_and_inline_profile_initialization",
+        "bytes_hex": "6a2ce800aa0a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700341ed60089581489581889581c895820895828895824eb0233c0",
+        "sha256": "3e2e9cfc963c0942aff45f62f835d6e7c1677065f1cd2e4aa0409cc98221bd4d",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": [
+          "00b4be14: push 0x2c",
+          "00b4be16: call 0xbf681b",
+          "00b4be1b: add esp, 4",
+          "00b4be1e: cmp eax, ebx",
+          "00b4be20: je 0xb4be52",
+          "00b4be22: mov dword ptr [eax], 0xceb130",
+          "00b4be28: mov dword ptr [eax + 4], 1",
+          "00b4be2f: mov dword ptr [eax + 8], ebx",
+          "00b4be32: mov dword ptr [eax + 0xc], ebx",
+          "00b4be35: mov dword ptr [eax + 0x10], ebx",
+          "00b4be38: mov dword ptr [eax], 0xd61e34",
+          "00b4be3e: mov dword ptr [eax + 0x14], ebx",
+          "00b4be41: mov dword ptr [eax + 0x18], ebx",
+          "00b4be44: mov dword ptr [eax + 0x1c], ebx",
+          "00b4be47: mov dword ptr [eax + 0x20], ebx",
+          "00b4be4a: mov dword ptr [eax + 0x28], ebx",
+          "00b4be4d: mov dword ptr [eax + 0x24], ebx",
+          "00b4be50: jmp 0xb4be54",
+          "00b4be52: xor eax, eax"
+        ]
+      },
+      {
+        "address": "00b4b91d",
+        "length": 6,
+        "role": "index_destructor_installs_private_profile",
+        "bytes_hex": "c706101ed600",
+        "sha256": "22d1a6eaa595b0baa8055bd84f5d6b0364e6519b98c9f5881d5a775e6e130aca",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": [
+          "00b4b91d: mov dword ptr [esi], 0xd61e10"
+        ]
+      },
+      {
+        "address": "00b4bacd",
+        "length": 6,
+        "role": "vertex_destructor_installs_private_profile",
+        "bytes_hex": "c706341ed600",
+        "sha256": "2f296f345541e6f8603369ad23c805b47a4214377b0d3f1928c5419164ffe216",
+        "fresh_guarded_live_equals_installed_mapped_PE": true,
+        "assembly": [
+          "00b4bacd: mov dword ptr [esi], 0xd61e34"
+        ]
+      }
+    ],
+    "function_definition_state_at_capture": "Neither address is a defined Ghidra function; only one DATA xref each, from the private profile+20 cell",
+    "entries": [
+      {
+        "address": "00b4b810",
+        "end_exclusive": "00b4b813",
+        "length": 3,
+        "bytes_hex": "c20400",
+        "profile": "00d61e10",
+        "slot_cell": "00d61e30",
+        "padding_end_exclusive": "00b4b820",
+        "padding_bytes": 13
+      },
+      {
+        "address": "00b4b9c0",
+        "end_exclusive": "00b4b9c3",
+        "length": 3,
+        "bytes_hex": "c20400",
+        "profile": "00d61e34",
+        "slot_cell": "00d61e54",
+        "padding_end_exclusive": "00b4b9d0",
+        "padding_bytes": 13
+      }
+    ],
+    "ABI": "RET4 consumes return address and one stacked DWORD; current B1FD90 call site supplies ECX wrapper/stack current device. No general register, EFLAGS, x87 or SSE state is changed; no argument/object/global dereference.",
+    "dependencies": [],
+    "terminal_ownership": "No call, retain/release, allocation/destruction, COM or unwind dependency is reached"
+  },
+  "private_profile_writers": [
+    {
+      "profile": "00d61e10",
+      "function": "00b4bf30",
+      "write": "00b4c137",
+      "span": "00b4c111+66",
+      "meaning": "logical index constructor calls operator_new00bf681b(2Ch), initializes returned raw object inline, installs private profile"
+    },
+    {
+      "profile": "00d61e34",
+      "function": "00b4bc00",
+      "write": "00b4be38",
+      "span": "00b4be14+64",
+      "meaning": "logical vertex constructor calls operator_new00bf681b(2Ch), initializes returned raw object inline, installs private profile"
+    },
+    {
+      "profile": "00d61e10",
+      "function": "00b4b900",
+      "write": "00b4b91d",
+      "span": "00b4b91d+6",
+      "meaning": "complete physical index destructor installs private profile, including on pooled owner"
+    },
+    {
+      "profile": "00d61e34",
+      "function": "00b4bab0",
+      "write": "00b4bacd",
+      "span": "00b4bacd+6",
+      "meaning": "complete physical vertex destructor installs private profile, including on pooled owner"
+    }
+  ],
+  "readiness": {
+    "leaves_ready": true,
+    "named_but_incomplete_prerequisites": [],
+    "additional_context_required": false,
+    "existing_lifetime_provider_required": false,
+    "reason": "Both complete bodies are exactly RET4; allocator/private owner creation contracts are not called and are not inherited from the pooled packet",
+    "proposed_ABI": "Naked void __fastcall leaf(void* actual_receiver,void* unused_edx,void* unused_stacked_device) with exact RET4",
+    "primary_scope": [
+      "Define/name exactly two3byte functions under the primary Ghidra write lock",
+      "Implement both exact no-op leaves without inventing success results",
+      "Separately expand actual-profile parent context to private D61E10/D61E34 and map the freshly captured +20 targets at original read positions",
+      "Whole six-byte original/COFF proof for leaves; separate validation of changed parent context"
+    ],
+    "source_packet_creation_by_worker": false
+  },
+  "source_contract_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\src\\native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\include\\bsp\\native_physical_buffer_owner.hpp",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\docs\\NATIVE_PHYSICAL_BUFFER_OWNER.md",
+      "bytes": 9371,
+      "sha256": "b76d14c3b68eb861d97b0f727258e809504da764dfde1d39cdd08a20f4f13ec2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\src\\native_renderer_reset_readiness.cpp",
+      "bytes": 10706,
+      "sha256": "68d488488919c5f6d2bbba094aa47c6d521a331473e29f35735975720dc4826b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\include\\bsp\\native_renderer_reset_readiness.hpp",
+      "bytes": 2534,
+      "sha256": "e7d2444883393ac8fb31223dee4a0f73b77ffb0932971e6fa604017ec4bcbdbe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\docs\\NATIVE_RENDERER_RESET_READINESS.md",
+      "bytes": 9948,
+      "sha256": "b85c97a94cce46394bb0d80e46a4bf9f193fada8b06b88d72207cd6aa429e79a"
+    }
+  ],
+  "evidence_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\local\\private_buffer_recreate\\capture.py",
+      "bytes": 2339,
+      "sha256": "7fa2c30a3cda32465a4c8548663ba26b5a92b8ea4e5011cee1a3aa05f51a0ed4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\local\\private_buffer_recreate\\pins.json",
+      "bytes": 6079,
+      "sha256": "f1bc054ee4230bf732b88a93a8e957dd82629470b16f31c133d638a605806427"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\local\\private_buffer_recreate\\guarded_capture.log",
+      "bytes": 2579,
+      "sha256": "cf08492fe013045caf9c66939f46d4b63e5e7769824b44859d314847362946c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\local\\private_buffer_recreate\\emit.py",
+      "bytes": 5131,
+      "sha256": "fe497e89a9e8d227e795a89496af82f62594254b709ca617b499809cdc0c205a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_private_buffer_recreate_discovery\\docs\\NATIVE_PRIVATE_BUFFER_RECREATE_DISCOVERY.md",
+      "bytes": 4151,
+      "sha256": "16c2c6ce787dd10c95f917f45f6c9085a2e102301ea33c89c2acfde9b3f42c65"
+    }
+  ],
+  "limits": [
+    "Read-only bounded discovery; no source implementation, runtime fixture, build test or Ghidra mutation is claimed.",
+    "Private profile identity can appear during destruction of pooled storage; it is not proof of private allocation provenance.",
+    "The enclosing logical constructors and whole private wrapper lifetime remain outside this packet.",
+    "Current two-profile renderer proof excludes these private profiles until primary separately expands and verifies its explicit source context."
+  ],
+  "shared_mutations": {
+    "source": false,
+    "Ghidra": false,
+    "metadata": false,
+    "CMake": false,
+    "installed_game": false,
+    "tests": false
+  },
+  "primary_review": {
+    "passed": true,
+    "worker_pins_verified": 11,
+    "fresh_guarded_spans": 7,
+    "fresh_guarded_bytes": 246,
+    "full_leaf_bytes": 6,
+    "source_added": false,
+    "source_ready": true,
+    "whole_private_owner_lifetime_proved": false,
+    "profile_expansion_integrated": false,
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\private_recreate_discovery_primary\\sealed.json",
+      "bytes": 2300,
+      "sha256": "7a67de52485c6e430f095cca5d1db2cba4bcba4ef468a795a56d58a20a1dd006"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_PRIVATE_BUFFER_RECREATE_DISCOVERY.md",
+    "bytes": 4584,
+    "sha256": "246005a74cb8859b3876586ba8e398fe28d41c9c4b50161e3f8c2e8ab19e215a"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b5e230",
+      "end_exclusive": "00b5e23c",
+      "length": 12,
+      "sha256": "3c418a51debe86d43fcd3b3b04b63c4559bd0103ed986f1104d9c78865e5151c",
+      "missing_before": true,
+      "function_before": "No function found for 00b5e230",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_RendererSurfaceSave_ThreadEntry at 00b5e230\nSignature: undefined BSP_RendererSurfaceSave_ThreadEntry(void)\nEntry: 00b5e230\nBody: 00b5e230 - 00b5e23b"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b5e230",
+        "end_address": "00b5e23c"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b5e230",
+        "end_address": "00b5e23b",
+        "bytes_disassembled": 12,
+        "message": "Successfully disassembled 12 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b5e230",
+        "name": "BSP_RendererSurfaceSave_ThreadEntry",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b5e230",
+        "function_name": "BSP_RendererSurfaceSave_ThreadEntry",
+        "entry_point": "00b5e230",
+        "body_size": 12,
+        "message": "Function created successfully at 00b5e230",
+        "warnings": [
+          "Function name 'BSP_RendererSurfaceSave_ThreadEntry' \u2014 main part 'RendererSurfaceSave_ThreadEntry' is not PascalCase. Expected: RenderersurfacesaveThreadentry",
+          "Function name 'BSP_RendererSurfaceSave_ThreadEntry' \u2014 main part 'RendererSurfaceSave_ThreadEntry' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_RendererSurfaceSave_ThreadEntry' does not start with a recognized verb. First word 'Renderer' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Complete12byte B5E230 raw Win32 thread entry defined and project saved"
+}

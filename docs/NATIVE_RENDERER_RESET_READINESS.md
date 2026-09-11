@@ -1,6 +1,6 @@
 # Native renderer reset readiness
 
-This packet reconstructs four complete original entries, **653 code bytes**:
+This source covers six complete original entries, **659 code bytes**:
 
 | Entry | Bytes | Original behavior and ABI |
 | --- | ---: | --- |
@@ -8,26 +8,38 @@ This packet reconstructs four complete original entries, **653 code bytes**:
 | B20C50 | 31 | Active platform has current thread focus; ECX platform, EAX 0/1, RET |
 | B492B0 | 276 | Recreate physical vertex buffer; ECX wrapper, stacked device, RET 4 |
 | B49180 | 276 | Recreate physical index buffer; ECX wrapper, stacked device, RET 4 |
+| B4B810 | 3 | Private index device method; no-op RET 4 |
+| B4B9C0 | 3 | Private vertex device method; no-op RET 4 |
+
+The original reset-readiness packet covered the first four entries and a
+two-profile context. The current four-profile extension and its separate
+validation are documented in [Native renderer private reset profiles](NATIVE_RENDERER_PRIVATE_RESET_PROFILES.md).
+The earlier two-profile proof remains historical evidence for that interface.
 
 The two recreation bodies also use complete 16-byte jump tables at B493C4 and
 B49294. Descriptive names remain reconstruction hypotheses. Fresh guarded
 queries verified `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`, and
 16 live/installed-PE spans totaling 1,218 bytes. The installed binary SHA256 is
 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
-Exact spans, original ABI notes and artifact pins are in the accompanying audit.
+These original-packet spans, ABI notes and artifact pins remain in
+`reports/native_renderer_reset_readiness_audit.json`; the extension has its own
+`reports/native_renderer_private_reset_profiles_audit.json`.
 
 ## Source boundary and concrete producers
 
-The renderer source accepts actual raw storage and an 8-byte
+The renderer source accepts actual raw storage and a 16-byte
 `NativeRendererResetReadinessProfiles` reference in EDX. That context borrows
 all nine immutable original DWORDs of pooled index profile D61E58 and pooled
-vertex profile D61E7C. Raw wrapper word +00 contains the original numeric
+vertex profile D61E7C, plus private index D61E10 and private vertex D61E34.
+Existing two-argument construction leaves both private table pointers null.
+Each table is required only when its corresponding identity is reached.
+Raw wrapper word +00 contains the original numeric
 profile identity. These addresses identify original data; the source resolves
-their captured +20 selectors to the two complete new raw providers. No host
+their captured +20 selectors to the four established raw providers. No host
 callback table, semantic wrapper cast, arbitrary allocator or success policy
 is introduced.
 
-This is an explicit **two-profile source domain**. Native B1FD90 itself performs
+This is an explicit **four-profile source domain**. Native B1FD90 itself performs
 unrestricted virtual dispatch. Unsupported identities/selectors are outside
 the new interface's contract; the source's `__assume(0)` defaults are not native
 validation or recovery. Context pointers must designate the immutable original
@@ -41,8 +53,11 @@ B2AEB0 initialization span B2B067..B2B11A allocates 2Ch wrapper storage, calls
 B4BBB0 and publishes its result at renderer+1974, then calls B4BB60 and publishes
 its result at +1978. This producer span is evidence, not reconstruction of the
 whole B2AEB0 parent. The pooled profile +20 slots contain B49180 and B492B0.
-Private profiles D61E10 and D61E34 instead contain B4B810 and B4B9C0; those
-different implementations remain outside this packet.
+Private profiles D61E10 and D61E34 instead contain B4B810 and B4B9C0. Both are
+complete three-byte `RET 4` no-ops now admitted by the source. They introduce
+no object/device dereference, allocator, COM or terminal-lifetime dependency.
+Private profile identity does not establish allocation provenance: the same
+profiles are installed during destruction of pooled objects.
 
 Existing `D3D9BufferBinding` and the helpers in `d3d9_buffers.cpp` are semantic
 interfaces with incompatible storage and failure behavior. In particular, they
@@ -95,7 +110,7 @@ When old==output it skips publication/AddRef/old-release but still performs
 the final temporary Release. Failed/null results retain this same behavior:
 there is no success branch, null fallback or preservation policy. Exceptions
 do not gain synthetic cleanup. No wrapper allocation, intrusive retain,
-wrapper destructor or pool return is reached by these four bodies; COM
+wrapper destructor or pool return is reached by these bodies; COM
 AddRef/Release owns the reached terminal lifetime behavior.
 
 B20C50 tests raw platform byte +41. If active, it calls the real GetFocus import
@@ -104,7 +119,13 @@ at +30. Equality returns exactly 1; the inactive/mismatched paths return 0.
 The original byte is not interpreted as a canonical C++ bool before its test.
 No focus-changing API or injected focus context is part of the source.
 
-## Validation and practical limits
+## Historical two-profile validation and practical limits
+
+The following records the original four-entry packet and its former 8-byte
+context. Its 144-byte compiled parent and four paired cases remain immutable
+historical evidence; they do not by themselves validate the current expanded
+context or private dispatch. The extension's separate five-pair proof covers
+the new source and retains all four earlier scenarios.
 
 The ignored source hook compiled this file into the actual MSVC Win32
 `bsp_core.lib` with strict floating-point settings. The standard build, both
@@ -162,3 +183,27 @@ arbitrary wrapper profile support, whole reset-parent reconstruction, a general
 drop-in binary replacement, or installed-game validation. The source performs
 unchecked raw 32-bit accesses; invalid addresses and unhandled COM behavior
 retain the stated native or explicit source-domain limits.
+
+
+## Historical two-profile primary integration
+
+The main strict Win32 build, both existing CTests and eight fresh seeds passed.
+Primary verified 80 worker artifacts plus four owned files and reread all
+16 guarded spans, 1,218 bytes. Only two trailing spaces were removed from
+the worker source; whole compiled code and relocations remain equivalent.
+The unchanged fixture linked the frozen actual main library and repeated
+all four comparisons: 224,152 bytes, 80 real COM calls, 28 terminal releases,
+328 full COFF sections, 1,633 relocations and nine unchanged postimages.
+
+This primary process used a Microsoft-signed apphelp.dll wrapper for device
+Release at slot2. Its recorded module identity, hash and relocated bytes
+were verified. The verifier admits that provider only at the two device
+slot2 positions; buffer Create/AddRef/Release still require d3d9.dll. No
+fixture or source behavior was changed for this observed Windows routing.
+The immutable primary bundle is `local/reset_readiness_primary/`.
+
+Four raw implementations were registered alongside the existing semantic
+interfaces. Four reviewed names/comments were saved and exports refreshed.
+That proof retained the then-current two-profile parent boundary. The current
+four-profile extension has separate source and fixture evidence; the remaining
+original-versus-source and whole-reset/gameplay limits still apply.

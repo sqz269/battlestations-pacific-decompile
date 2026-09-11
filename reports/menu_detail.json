@@ -1,0 +1,230 @@
+{
+  "packet": "cc_menu_detail",
+  "owner": "agent/cc-menu-detail",
+  "date": "2026-09-11",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_access": "read-only",
+  "documents": [
+    "docs/MAIN_MENU_MISSION_DETAIL.md",
+    "docs/BRIEFING_SECOND_FILLER.md"
+  ],
+  "sources": [
+    "include/bsp/main_menu_mission_detail.hpp",
+    "src/main_menu_mission_detail.cpp"
+  ],
+  "edited": [
+    "include/bsp/main_menu_screens.hpp",
+    "src/main_menu_screens.cpp",
+    "cmake/startup.cmake"
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "tests": "reconstructed_math 1/1 passed",
+    "new_tests": 0,
+    "object": "build/win32/bsp_core.dir/Release/main_menu_mission_detail.obj"
+  },
+
+  "subpacket_main_menu_mission_detail": {
+    "function": "0058c010",
+    "name": "BSP_MainMenuScreen_BuildMissionDetailPage",
+    "abi": "__thiscall void(MainMenuScreen* this)",
+    "frame": "PUSH EBP / MOV EBP,ESP / AND ESP,0FFFFFFF8h, one SEH frame, bare RET at 0058CE1F",
+    "instructions": 1040,
+    "extent": "0058c010-0058ce1f",
+    "callers": ["00598ad5", "00599318", "005997c1", "005998d0", "00592722", "0058f552", "0059a444"],
+    "decompiler_usable": false,
+    "decompiler_warnings": [
+      "Unable to track spacebase fully for stack",
+      "unfollowed jump table at 0058CE20",
+      "nine Removing unreachable block warnings"
+    ],
+    "page_word": {"address": "00e08874", "value": 9, "written_at": "0058cac3"},
+    "group_dispatch": {
+      "guard": "0058c097 ADD EAX,-1 / CMP EAX,3 / JA 0058ce0a",
+      "jump_table": "0058ce20",
+      "supported_groups": [1, 2, 3, 4],
+      "group_0_behaviour": "training grounds falls through to the epilogue; no widget work and no page write"
+    },
+    "group_arms": [
+      {"group": 1, "arm": "0058c0be", "handle_field": "0x314", "widget": "missions_JP_Group", "us": false, "dlc": false, "point_list_index": 0},
+      {"group": 2, "arm": "0058c0aa", "handle_field": "0x310", "widget": "missions_US_Group", "us": true, "dlc": false, "point_list_index": 1},
+      {"group": 3, "arm": "0058c0dc", "handle_field": "0x31c", "widget": "missions_JP_DLC_Group", "us": false, "dlc": true, "point_list_index": 3},
+      {"group": 4, "arm": "0058c0fd", "handle_field": "0x318", "widget": "missions_US_DLC_Group", "us": true, "dlc": true, "point_list_index": 4}
+    ],
+    "widget_bindings": {
+      "binder": "005861b0",
+      "page_roots": {
+        "0x2f0": {"page": "FE_worldmap_historical", "at": "0058629c"},
+        "0x244": {"page": "FE_briefing_grid", "at": "0058641a"},
+        "0x248": {"page": "FE_briefing", "at": "005864a0"}
+      },
+      "children": {
+        "0x1b8": {"widget": "Main_Listbox", "at": "00587d3b"},
+        "0x310": {"widget": "missions_US_Group", "at": "0058775e"},
+        "0x314": {"widget": "missions_JP_Group", "at": "005877d4"},
+        "0x318": {"widget": "missions_US_DLC_Group", "at": "0058784a"},
+        "0x31c": {"widget": "missions_JP_DLC_Group", "at": "005878c0"},
+        "0x320": {"widget": "training_Group", "at": "00587936"},
+        "0x324": {"widget": "mission_pic_Group", "at": "00586e8b"},
+        "0x328": {"widget": "bg_01_Icon", "at": "005879ac"},
+        "0x32c": {"widget": "background_Icon", "at": "00587a48"},
+        "0x33c": {"widget": "video_Movie", "at": "00586963"},
+        "0x344": {"widget": "historical_Group", "at": "005868ed"},
+        "0x3b0": {"widget": "test_Clipbox", "at": "00586a4f"},
+        "0x3b8": {"widget": "content_main_Text", "at": "00586b4f"},
+        "0x114": {"widget": "mission_mappoint_template_Icon", "at": "00587000"},
+        "0x118": {"widget": "mission_mapflag_template_Icon", "at": "00587084"}
+      },
+      "unbound_but_hidden": ["0x2ec", "0x3dc", "0x41c"],
+      "cleared_then_filled_by_the_page": {"0x330": {"cleared_at": "00587ac8", "filled_at": "0058c190"}}
+    },
+    "per_mission_loop": {
+      "range": "0058c274-0058c6db",
+      "record_stride": "0x434",
+      "ordinal_base": 1,
+      "flag_widget": "mission_mapflag_<n>_Icon",
+      "point_widget": "mission_mappoint_<n>_Icon",
+      "flag_visible_predicate": "005c2f70(record)",
+      "flag_level": {"selected": 1.0, "unselected": 0.4, "constants": ["00d7a24c", "00ce7804"]},
+      "point_state": "bit0 = selected (0058c641), bit1 = record+360h sideMission (0058c656)",
+      "point_list_fill": {
+        "latched_at": "0058c26f",
+        "vector": "+134h + index*10h",
+        "element": "three floats",
+        "value": "00AA6750(point icon) - screen+124h..+12Ch",
+        "append": "004215d0"
+      }
+    },
+    "briefing_text": {
+      "source_field": "record+30h background",
+      "non_null_path": "00abaed0 at 0058c82d",
+      "null_path": "00abbe50 with 00ce3a0c at 0058c83f",
+      "scroll_range": "00AB6BD0(text) - 00AA6740(test_Clipbox).second + 1/90",
+      "constant": {"address": "00ceed60", "type": "double", "bytes": "17 6c c1 16 6c c1 86 3f", "value": 0.011111111111111112}
+    },
+    "movie": {"widget_field": "0x33c", "source_field": "record+40h backgroundMovie", "set_at": "0058c8a0", "start_at": "0058c8ab"},
+    "streamed_dialog": {
+      "guard": "screen+570h == 0, written as NEG/SBB/TEST ECX,0E18B5Ch at 0058c8b6",
+      "path": "sound/messages/ + 008D57A0(00F88980) + /streamed_dialogs/ + record+48h",
+      "literals": {"00cefbb8": "sound/messages/", "00cefbc8": "/streamed_dialogs/"},
+      "callback": "00588460"
+    },
+    "footer": {
+      "call": "0054b530 at 0058cc1f",
+      "this": "00e1930c",
+      "callee_ret": "0x3c",
+      "stack_dwords": 15,
+      "arguments": [-94, "globals.continue", 0, 0, "", 1, 0, "", 1, -93, "globals.back", 2, 0, "", 1],
+      "grouping": "unresolved, deferred to packet main_menu_command_bar",
+      "help_line_clear": "0054a0c0 at 0058cd73"
+    },
+    "fidelity_notes": [
+      "0058c466 passes the full dword at frame+4Ch to the flag icon's virtual +34h; only its low byte was written at 0058c310",
+      "0058ccf6 and 0058cd12 hide +1b8h twice with identical calls",
+      "0058cdb8..0058cdee adds 0.0f to each component of +558h..+560h before storing",
+      "the page word is set before the footer is built"
+    ]
+  },
+
+  "subpacket_main_menu_page_names": {
+    "settled": true,
+    "authority": "00597870, cross-checked against 0058c010's group switch and 00580940's side arithmetic",
+    "pages": {
+      "4": {"name": "CampaignJapan", "title": "FE.ijn_campaign", "title_at": "005978fe", "group": 1, "handle": "0x314"},
+      "5": {"name": "CampaignUs", "title": "FE.usn_campaign", "title_at": "00597987", "group": 2, "handle": "0x310"},
+      "6": {"name": "CampaignJapanDlc", "title": "FE.main_ijn_dlc_title", "title_at": "00597a75", "group": 3, "handle": "0x31c"},
+      "7": {"name": "CampaignUsDlc", "title": "FE.main_usn_dlc_title", "title_at": "00597afc", "group": 4, "handle": "0x318"},
+      "8": {"name": "TrainingGrounds", "title": "FE.training_grounds", "title_at": "00597a05", "group": 0, "handle": "0x320"}
+    },
+    "side_index": "005c27e0 returns record[0B8h] == 0; record+0B8h is the allied side block, so index 0 is the United States",
+    "pairing": "00580940 computes base - (side_index != 0) with base 7 for groups 3/4 and 5 otherwise (005809ef, 00580a0b); group 0 goes to page 8 at 00580994"
+  },
+
+  "subpacket_briefing_second_filler": {
+    "region_as_briefed": "005e4480-005e4fbf",
+    "region_corrected": "005e4490-005e4fbf",
+    "jump_table_at_005e447c": {
+      "owner": "005e3580",
+      "entries": ["005e3d39", "005e3d74", "005e3daf", "005e3dea"],
+      "note": "defining a function at 005e4480 would swallow the last three entries"
+    },
+    "owner_class": {
+      "constructor": "005e3290 BSP_MultiGameLobbyScreen_Construct",
+      "vtable_slices": {"0x0": "00cf23e4", "0x8": "00cf23d0", "0xc": "00cf23b0"}
+    },
+    "briefing_arm": {
+      "guard": "005e4990 event widget == this+80h",
+      "record": "005d8650 -> mission tree [00E198AC]+5Ch vector at +28h, index 005d7070(game+60Ch), stride 0x434",
+      "side": "[00E188A8]+18CCh[[00E188A8]+18ECh] + 0x28",
+      "fill_call": {"at": "005e49c1", "callee": "0051dce0", "name": "BSP_BriefingScreen_SetMissionData", "abi": "__thiscall(this, MissionRecord*, int side), RET 8"},
+      "briefing_screen": "[00E198AC]+64h",
+      "then": "00688ad0(interface 3)"
+    },
+    "no_ghidra_function": [
+      {
+        "start": "005e4490",
+        "end_inclusive": "005e4f80",
+        "end_exclusive": "005e4f81",
+        "name": "BSP_MultiGameLobbyScreen_HandleGuiEvent",
+        "abi": "__thiscall void(this = lobby + 0Ch, GuiEvent* event), RET 4",
+        "start_evidence": "CC CC CC CC at 005e448c-005e448f; SEH prologue MOV EAX,FS:[0] / PUSH -1 / PUSH 0c75018h / PUSH EAX / MOV FS:[0],ESP; referenced from vtable slot 00cf23b4",
+        "end_evidence": "RET 4 at 005e4f7e followed by fifteen int3 at 005e4f81-005e4f8f; the 23 earlier ret 4 sites are early returns with no padding and a shared epilogue"
+      },
+      {
+        "start": "005e4f90",
+        "end_inclusive": "005e4fb7",
+        "end_exclusive": "005e4fb8",
+        "name": "BSP_MultiGameLobbyScreen_OnValueChanged",
+        "abi": "__thiscall void(this = lobby + 8, int unused, int value), RET 8",
+        "start_evidence": "fifteen int3 at 005e4f81-005e4f8f; 16-byte aligned; referenced from vtable slot 00cf23e0",
+        "end_evidence": "RET 8 at 005e4fb5 followed by eight int3 at 005e4fb8-005e4fbf"
+      }
+    ],
+    "decode_check": {
+      "instructions": 856,
+      "internal_branch_targets": 110,
+      "targets_off_boundary": 0,
+      "computed_jumps": 0,
+      "invalid_opcodes": 0
+    }
+  },
+
+  "ledger": {
+    "names_added": [
+      {"address": "0058c010", "name": "BSP_MainMenuScreen_BuildMissionDetailPage"},
+      {"address": "00597870", "name": "BSP_MainMenuScreen_BuildMissionListPage"},
+      {"address": "005e4490", "name": "BSP_MultiGameLobbyScreen_HandleGuiEvent"},
+      {"address": "005e4f90", "name": "BSP_MultiGameLobbyScreen_OnValueChanged"}
+    ],
+    "evidence_appended": ["00598b60", "005861b0"],
+    "functions_added": [
+      {"address": "0058c010", "name": "build_mission_detail_page_0058c010", "status": "reconstructed_build_tested"}
+    ]
+  },
+
+  "corrections": [
+    "MainMenuPage 4..7 had Japan and the United States reversed; renamed to CampaignJapan, CampaignUs, CampaignJapanDlc, CampaignUsDlc and src/main_menu_screens.cpp updated",
+    "Page08 is the training grounds; TrainingGrounds = 0x08 added as a second spelling, Page08 kept for src/mission_briefing_start.cpp",
+    "is_downloadable_content_page tested screen+564h (the United States flag) because 00598b60 runs on this = screen + 8; split into is_us_campaign_page and a corrected is_downloadable_content_page on screen+565h",
+    "the undefined region starts at 005e4490, not 005e4480; 005e447c-005e448b is 005e3580's jump table"
+  ],
+
+  "follow_up_packets": [
+    "main_menu_command_bar: 0054b530 (15 stack dwords, RET 3Ch, 35 callers) and 0054a0c0",
+    "main_menu_detail_hidden_widgets: +2ech, +3dch, +41ch",
+    "main_menu_map_point_geometry: 004215d0 and 00588c70 over the +134h vectors",
+    "mission_record_side_flag: 005c2f70",
+    "main_menu_screen_enter: 005987f0, 00599340, 00583e50",
+    "multi_game_lobby_screen: 005e3290 and the 005d.... class it delegates to",
+    "lobby_entry_table: game+18cch, game+18ech, entry+28h",
+    "front_end_command_codes: 0a2h, 0a5h, 0b1h, 0b7h, 0b8h and the default at 00e19608"
+  ],
+
+  "left_out": [
+    "0054b530's internal argument grouping was not reverse engineered; only the call site's fifteen literals and the two command ids are recorded",
+    "005e4490's arms for command codes 0b8h and the 005e4873 chain were skimmed, not followed",
+    "005d8650, 005d7070 and 005c2f70 were read only far enough to type their results; none was leased or named"
+  ]
+}

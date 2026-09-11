@@ -1,0 +1,140 @@
+{
+  "packet": "cc_interface_runtime",
+  "owner": "agent/cc-interface-runtime",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only; no write lock taken, no Ghidra mutation",
+  "documents": [
+    "docs/INTERFACE_RUNTIME_TAIL.md",
+    "docs/IN_GAME_INTERFACE_SCREEN_SETS.md"
+  ],
+  "reconstruction": {
+    "header": "include/bsp/interface_runtime_tail.hpp",
+    "source": "src/interface_runtime_tail.cpp",
+    "registered_in": "cmake/startup.cmake",
+    "status": "build_checked",
+    "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean",
+    "tests": "existing reconstructed_math suite passes; no new test added"
+  },
+  "items": [
+    {
+      "id": "mission_overlay_finalize_005b6960",
+      "address": "005b6960",
+      "abi": "__thiscall(this), RET, body 005B6960..005B69AE, no stack parameters",
+      "receiver": "*(00E198C4 + A4h), registry slot 33h, ctor 005BA7B0, vtable 00CF0ED8, E8h bytes",
+      "child": {
+        "offset": "+BCh",
+        "bound_at": "005BB983 inside the register virtual 005BB130",
+        "page": "GUI_blackout (00CF113C, 0Ch chars, loaded into this+20h at 005BB1AC)",
+        "widget": "Blackout_Icon (00CF106C, 0Dh chars, via 00AA7E00)"
+      },
+      "behaviour": "widget vtable +34h(1) then widget vtable +50h({0,0,0,1.0f}); 00D7A24C is 1.0f",
+      "call_site": "tail JMP at 004C42EF from 004C40F0, ECX reloaded at 004C42DD",
+      "confidence": "established from the listing; the fade interpretation is a hypothesis"
+    },
+    {
+      "id": "interface_lock_engage",
+      "address": "005cd1a0",
+      "abi": "__thiscall(this, void* unit), RET 4, body 005CD1A0..005CD22E",
+      "owner_class": "registry slot 37h, manager +9Ch, ctor 005CC120, vtable 00CF17A8, 38h bytes, page GUI_movie, interface id 2Ch",
+      "engage_rule": "00E19894 = 1 iff [00E188A8] != 0 && game+1FE4h != 0",
+      "lock_writers": {
+        "005cd1e9": "engage (the only one in the image)",
+        "00683ea7": "clear, inside 00683E90",
+        "00684636": "clear, the same test inlined in 00684600",
+        "004bc493": "clear, inside 004BC410",
+        "004d2c5f": "clear, BSP_Game_DestroyWorld, gated on 00E198C4",
+        "004dab5d": "clear, BSP_Game_TeardownSessionState, gated on 00E198C4"
+      },
+      "lock_readers": ["004cc478", "00683e90", "0068461c"],
+      "constants": {
+        "random_seeds": [{"stream": 1, "seed": 12345}, {"stream": 0, "seed": 54321}],
+        "input_context": {"id": 30, "level": 5},
+        "session_message": 511
+      },
+      "fields": {"+1Ch": "570h-byte movie camera built by 005CC170", "+20h": "engaged flag"}
+    },
+    {
+      "id": "front_end_gamepad_prompt",
+      "renamed_to": "please_wait_screen",
+      "global": "00e19698",
+      "identity": "registry slot 53h, page _PleaseWait (interface/_pleasewait.lua), widget Background_Icon",
+      "allocation": "operator new(14h) at 004E3DB9, ctor 0060D290, vtable 00CF4AB8, stored 004E3DDB, register virtual called 004E3DEB",
+      "clear_sites": ["004ccd75", "004dd077"],
+      "field_4h": "the standard front-end screen requested byte; +5h is the applied byte",
+      "raise_sites": ["00563618", "005b9a04", "005e58ff", "00637439"],
+      "clear_field_4h_sites": [
+        "004d7c64", "004d844d", "004d85c1", "005629a6", "00565068", "00565b55",
+        "00565cc2", "0056dd46", "0057a17a", "005d9a3f", "005e5f48", "005f7432",
+        "005f77af", "005f77c6", "0076fdfa"
+      ],
+      "non_null_argument": "one construct site in Game::OnInit, two null writes in shutdown routines that guard first; 21 further sites dereference it unguarded",
+      "progress_field": "+10h, -1.0f sentinel from 00D7A260; 0060D2F0 stores completed/total from [01090AB0]->vtable[20h]"
+    },
+    {
+      "id": "in_game_interface_arm_bodies",
+      "address": "0068aca0",
+      "regions_read": ["0068ae0b-0068af2e", "0068af68-0068afaa", "0068b255-0068b38b"],
+      "id20_classifier": [
+        {"site": "0068ae1c", "kind": "0Eh", "redispatch": "27h"},
+        {"site": "0068ae3c", "kind": "08h", "redispatch": "28h"},
+        {"site": "0068ae5c", "kind": "06h", "redispatch": "25h"},
+        {"site": "0068ae7c", "kind": "0Fh", "redispatch": "22h if 007BB9A0 else 24h"},
+        {"site": "0068aeae", "kind": "45h", "redispatch": "2Eh"},
+        {"site": "0068aece", "kind": "1Ch", "redispatch": "2Fh"},
+        {"site": "0068aeee", "kind": "46h", "redispatch": "30h"},
+        {"site": "0068af0e", "kind": "18h", "redispatch": "20h with payload+3D0h, no null test"}
+      ],
+      "tail": "payload non-null, IsKindOf(6), and id not in {29h,2Bh,2Ch,2Dh,34h}; then restart the unit voice line unless this+100h already matches descriptor+10Ch",
+      "epilogue": "0068AF68: stop and release this+104h when set; return AL = 1",
+      "sound": {
+        "type_name": "Normal (00CECD20) via 00A7B0A0",
+        "class_name": "3DEffect (00CE7860) via 00A7ACF0",
+        "create": "00A7E490(&out, this+100h, class, type, 0) then 0054D4C0 into this+104h"
+      },
+      "already_modelled": "include/bsp/ingame_interface.hpp and src/ingame_interface.cpp; the listing read agrees except for the null-delegate edge at 0068AF18"
+    },
+    {
+      "id": "in_game_interface_screen_names",
+      "resolved": 26,
+      "unnamed_register_virtuals": [
+        "00521670", "0054ed00", "005211b0", "00606a90", "0064bb90", "00650170", "0067be80"
+      ],
+      "note": "screen ids in the published lists are registry slot ids, a different space from the dispatch interface ids"
+    }
+  ],
+  "ledger_names_added": [
+    {"address": "005b6960", "name": "BSP_HudNarrativeScreen_BlackOutScreen"},
+    {"address": "005cd1a0", "name": "BSP_HudMovieScreen_EngageMovieInterface"},
+    {"address": "005cd240", "name": "BSP_HudMovieScreen_GetCamera"},
+    {"address": "005cc170", "name": "BSP_HudMovieScreen_EnsureCamera"},
+    {"address": "0060d290", "name": "BSP_PleaseWaitScreen_Construct"},
+    {"address": "0060d430", "name": "BSP_PleaseWaitScreen_Register"},
+    {"address": "0060d390", "name": "BSP_PleaseWaitScreen_Enter"},
+    {"address": "0060d330", "name": "BSP_PleaseWaitScreen_Destroy"}
+  ],
+  "corrections": [
+    "005B6960 writes four floats (an RGBA colour), not a three-float vector plus a constant",
+    "00E19698 is the _PleaseWait screen, registry slot 53h, not a gamepad prompt",
+    "the +4h byte of 00E19698 is cleared by fifteen sites, not five",
+    "registry slot 33h and interface id 33h are different things that share a number",
+    "the id 20h arm publishes only when the payload is null",
+    "docs/IN_GAME_INTERFACE_SCREEN_SETS.md called two regions unanalysed that include/bsp/ingame_interface.hpp already models",
+    "choose_scene_interface_0068ae0b's has_delegate_unit gate has no counterpart in the listing"
+  ],
+  "no_ghidra_function": [
+    {"start": "005b5c00", "end": "005b5c00", "note": "vtable 00CF0ED8 +1Ch, a bare RET"},
+    {"start": "005b5c10", "end": "005b5c30", "note": "adjacent, RET 8, not read for this packet"},
+    {"start": "0060d2b0", "end": "0060d2b5", "note": "vtable 00CF4AB8 +00h, mov eax,53h"},
+    {"start": "0060d2c0", "end": "0060d2c2", "note": "vtable 00CF4AB8 +04h, mov al,1"},
+    {"start": "0060d2d0", "end": "0060d2ef", "note": "vtable 00CF4AB8 +1Ch, the exit virtual"},
+    {"start": "0060d2f0", "end": "0060d32a", "note": "vtable 00CF4AB8 +20h, the update virtual, RET 4"}
+  ],
+  "left_out": [
+    "include/bsp/in_game_interface_screen_sets.hpp and src/in_game_interface_screen_sets.cpp were not created: include/bsp/ingame_interface.hpp already carries InGameInterfaceScreenSet, in_game_interface_screen_set and the 20h classifier, and a parallel module would duplicate them",
+    "include/bsp/main_menu_screens_runtime.hpp was not edited; its mission_overlay_finalize_005b6960 comment is left to a follow-up because the file is outside this lease",
+    "00683e90 was read but not renamed or annotated: it is leased to agent/cc-exe-2c",
+    "no Ghidra annotation of any kind was applied"
+  ]
+}

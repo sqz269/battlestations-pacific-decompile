@@ -366,3 +366,25 @@ must define one before applying a name. End addresses are inclusive.
 ## Corrections from docs/MISSION_TREE_LUA_READER.md
 
 `missionGroups` fills the 34h group vector at screen+14h and `multiMissionInfos` the flat 434h record vector at +24h (settled by destination address). Record +00h is the Lua `id` (the string the selection lookup matches and the launch path saves), +08h the `name`, and the +60h triple is `date` (year, month, day); the difficulty default of 3 is the reader's own default. Side block 0 is `allied`, block 1 `japanese`, and the block's first dword is written 1 before any key is read, so the side selector at `005c572a` is a presence test. The installed table has 5 groups, 143 campaign missions and 34 multiplayer entries; its 188 `prerequisites` lists are commented out (the installed copy is modded), and the commented values are mission ids. The mission-tree interpreter opens only the `table` library (mask 4).
+
+## Corrections from docs/MISSION_BRIEFING_START.md
+
+- **`0051B7B0` is unreferenced.** Its content is described correctly above, but nothing in the image
+  reaches it: a linear `E8`/`E9` scan of `.text` finds no branch into `0051B7B0`..`0051B88C`, and the
+  bytes `B0 B7 51 00` occur nowhere in the file, so no vtable or immediate holds its address either.
+  The reachable play action is `005922F0` on the main-menu screen. Its selector, listed above as
+  outside Ghidra's stored body, is a stack argument: `CMP byte ptr [ESP+0Ch],BL` at `0051B857`, so
+  the routine is `__thiscall void(BriefingScreen* this, bool start_now)`, `RET 4`.
+- **"Nothing in the image requests interface 3" is answered.** The briefing surface is the
+  main-menu screen's mission-detail page, `00E08874 = 9`, built by `0058C010` and bound by
+  `005861B0` (which binds `FE_briefing_grid` and the five `missions_*_Group` widgets). The briefing
+  screen object at `[00E198AC]+64h` is a data holder that `0051DCE0` fills. The proposed
+  `interface_three_raiser` follow-up is therefore closed.
+- **`00626930` takes no `side` argument.** `005C5732` loads EDX with the side index and the callee
+  reads ECX only. Step 7 of the "Starting a mission" list should read `00626930(ECX = record)`.
+  What it does is published in `docs/MISSION_BRIEFING_START.md`: it copies `record+08h` and
+  `record+38h` into the strings at `00E19798`/`00E197A0` and clears twelve containers.
+- **`0051DCE0` has two call sites, not one.** Besides `005C5754` there is `005E49C1`, inside the gap
+  `005E4478`..`005E4FC0` where Ghidra has no function. Its owning screen is unidentified.
+- **`0051B8C0`'s stored body is short.** Ghidra ends it at `0051B90D`, but it continues at least to
+  `0051B9CA`, where it calls `0051B450`; the next function starts at `0051B9E0`.

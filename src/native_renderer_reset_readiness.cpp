@@ -39,7 +39,9 @@ __forceinline const volatile std::uint32_t* profile(std::uint32_t identity,
     switch (identity) {
     case 0x00d61e58: return profiles.pooled_index_00d61e58;
     case 0x00d61e7c: return profiles.pooled_vertex_00d61e7c;
-    default: __assume(0); // Explicit two-profile source domain, not native check.
+    case 0x00d61e10: return profiles.private_index_00d61e10;
+    case 0x00d61e34: return profiles.private_vertex_00d61e34;
+    default: __assume(0); // Explicit four-profile source domain, not native check.
     }
 }
 __forceinline void invoke(std::uint32_t captured_target, void* wrapper,
@@ -51,6 +53,12 @@ __forceinline void invoke(std::uint32_t captured_target, void* wrapper,
     case 0x00b492b0:
         recreate_native_physical_vertex_buffer_00b492b0(wrapper, nullptr, device);
         return;
+    case 0x00b4b810:
+        recreate_native_private_index_buffer_00b4b810(wrapper, nullptr, device);
+        return;
+    case 0x00b4b9c0:
+        recreate_native_private_vertex_buffer_00b4b9c0(wrapper, nullptr, device);
+        return;
     default: __assume(0); // The borrowed immutable original selectors only.
     }
 }
@@ -59,7 +67,8 @@ __forceinline void invoke(std::uint32_t captured_target, void* wrapper,
 // Full B1FD90[70], original ECX renderer / RET. This source interface adds the
 // fixed profile context in EDX. B2AEB0's B2B067..B2B11A producer calls pooled
 // B4BBB0/B4BB60 and stores the resulting wrappers at +1974/+1978. Private
-// D61E10/D61E34 and other virtual implementations remain outside this domain.
+// D61E10/D61E34 have the proven RET4 targets below; other profiles remain outside
+// this domain. A reached private identity requires its own valid borrowed table.
 void __fastcall restore_native_renderer_dynamic_buffers_00b1fd90(
     void* renderer, const NativeRendererResetReadinessProfiles& profiles) {
     if (byte(renderer, 0x1d8c) != 0) return;
@@ -76,6 +85,17 @@ void __fastcall restore_native_renderer_dynamic_buffers_00b1fd90(
     device = reinterpret_cast<void*>(word(renderer, 0x1a10));
     target = table[8];
     invoke(target, wrapper, device);
+}
+
+// Full original B4B810[3] and B4B9C0[3]. The private profile identifies this
+// no-op method, not the object's allocation provenance or terminal lifetime.
+__declspec(naked) void __fastcall recreate_native_private_index_buffer_00b4b810(
+    void*, void*, void*) {
+    __asm { ret 4 }
+}
+__declspec(naked) void __fastcall recreate_native_private_vertex_buffer_00b4b9c0(
+    void*, void*, void*) {
+    __asm { ret 4 }
 }
 
 // Full 00B49180[276]. ECX raw wrapper, stacked device/output cell, RET4.
@@ -327,11 +347,11 @@ __declspec(naked) std::uint32_t __fastcall native_platform_has_focus_00b20c50(
         jne short focus_00b20c6b
         mov eax, 1
         pop esi
-        ret 
+        ret
     focus_00b20c6b:
         xor eax, eax
         pop esi
-        ret 
+        ret
     }
 }
 
