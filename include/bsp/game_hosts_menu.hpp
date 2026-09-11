@@ -42,6 +42,7 @@ class GameFrontendHost;
 class GameVfsHost;
 class GameScriptHost;
 class GameMissionHost;
+class GameHudHost;
 
 // ---------------------------------------------------------------------------
 // The profiler counter pair the application frame brackets itself with
@@ -161,6 +162,32 @@ public:
     GameMissionHost* mission() const noexcept;
     // Milestone 2g: true once the mission's exit path reached request 04h.
     bool mission_exit_finished() const noexcept;
+
+    // ---- milestone 2h: the in-mission HUD ---------------------------------
+    // The 42 HUD screens register into the same 95-slot registry at 00e18b60
+    // the front-end screens use, and the level-1 set they are published in is
+    // one level of the same stack the managers publish level 4 into, so the
+    // pump 004f8830, the recompute 004f7620 and the commit 004f83b0 are the
+    // recovered ones. These entry points are what GameHudHost needs from the
+    // owner of that registry; the HUD logic itself is in src/game_hosts_hud.cpp.
+    bool register_in_game_screen(int slot, const std::string& name,
+        std::uint32_t register_virtual, std::uint32_t layout_virtual);
+    bool attach_in_game_page(int slot, const std::string& page_name);
+    bool in_game_page_has_child(int slot, const std::string& widget_name);
+    // 004f8530, level 1 of the screen-set stack at 00e18cf8.
+    void publish_level1_screen_set_004f8530(const int* ids, std::size_t count);
+    // 004d8a50, level 1 of the input-context stack at game+570h.
+    void publish_level1_input_contexts_004d8a50(const int* ids, std::size_t count);
+    // 004c40f0's pump pass, for the frames the mission owns.
+    void pump_interface_only_004c40f0(float raw_delta);
+    // The load's release at 004dfd96 calls the main-menu manager's vtable slot
+    // 0, 00687300, which calls BSP_MainMenu_Destroy 00686c90, which calls
+    // BSP_FrontEndManager_Deactivate 00683aa0; that routine's tail publishes the
+    // empty level-4 screen set and the empty level-4 input-context set. So the
+    // front-end pages come down through recovered code when the mission starts.
+    void destroy_main_menu_manager_00686c90();
+    // Null until the front end is up; owned by this object for the whole run.
+    GameHudHost* hud() const noexcept;
 
     struct Impl;
 

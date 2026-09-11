@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T22:52:03.048177+00:00",
-  "status": "Complete bounded fallback source and all raw provider instruction streams proved in actual strict archive; no runtime or public pow claim",
+  "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
   "base_commit": "a6bf59522952dd9023ccb4f3e876e1015eabe62c",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback",
   "ownership": {
@@ -4623,5 +4623,67 @@
       "bytes": 10806,
       "sha256": "de1206d73c8e0c32340f242822e9649c2f18c11b55098aac02d6f2b8f23376e5"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+    "main_library_sha256": "e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_gather_build_frozen\\manifest.json",
+      "bytes": 28651,
+      "sha256": "b565fed09f76cacab0ab64c99aa09c8fc611522351a9fe053917cb333887267c"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seeds": 8,
+    "owned_original_bytes": 453,
+    "raw_provider_bytes": 1084,
+    "compiled_owned_bytes": 457,
+    "exact_archive_objects": 9,
+    "whole_COFF_sections": 121,
+    "normal_CFG_exits": 8,
+    "boundary": "Full453 original bytes become457 compiled bytes plus11-byte parity thunk. All123-to125 instruction mappings, six parent/current-address changes,13 raw-provider literal changes and all direct/internal/conditional bindings checked; twelve complete raw providers1084 bytes, total1537 raw original bytes. Both context XCHGs and normal CW-stack/EBX-ESI restoration at eight exits verified, oldEDX dead at both parity continuations. Preserve waiting FSAVE108-byte/FRSTOR, uninitialized current output, unaligned DWORD sign read and packed-CW scratch. Nine exact archive objects and all COFF sections; full existing actual owning-CRT error provider with inherited FP/precision/SEH boundaries. Static synthetic relocation proof only; no linked or runtime original/fallback/publicpow/SSE2/gamma/game claim.",
+    "original_owned_execution": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_fallback_primary\\sealed.json",
+      "bytes": 51064,
+      "sha256": "c68bebdf42d042566640a6d051a785d05e4df41a5b290b0b6825a17df239992e"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_pow_gather_pointer_annotations.json",
+    "bytes": 5341,
+    "sha256": "c65b40e1408435ba1265407de7e927154932f774b2f3005cc4ec52116d3eaac7"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00bfeb6d",
+      "name": "evaluate_native_crt_pow_fallback_00bfeb6d",
+      "cpp_symbol": "bsp::evaluate_native_crt_pow_fallback_00bfeb6d",
+      "source": "src/native_crt_pow_fallback.cpp",
+      "native_end_exclusive": "00bfed32",
+      "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "evidence": "reports/native_crt_pow_fallback_audit.json",
+      "original_abi": "Complete per-entry native contract in header and audit.",
+      "source_abi": "Explicit per-entry source binding and preconditions in header and audit; not general binary replacement.",
+      "original_owned_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00bfeb6d",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfeb6d\\decompiled.c",
+      "bytes": 4482,
+      "sha256": "9a171b495928a87f3bce0adc8b2636878b6a3aeaca9e4a589c6631b95573cf33"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POW_FALLBACK.md",
+    "bytes": 12077,
+    "sha256": "82d4caa753f6af8ff7cf56ca7ffc81e79dc043ce51ffea61a4ff8184b28bace0"
+  }
 }

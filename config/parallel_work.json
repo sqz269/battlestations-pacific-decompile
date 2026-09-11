@@ -7520,6 +7520,42 @@
         "reports/native_crt_sse2_pow_support_discovery.json"
       ],
       "evidence": "reports/native_crt_sse2_pow_support_discovery.json"
+    },
+    {
+      "id": "native_crt_pow_fallback1",
+      "packet": "native_crt_pow_fallback1",
+      "state": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bfeb6d"
+      ],
+      "code_ownership": [
+        "src/native_crt_pow_fallback.cpp",
+        "include/bsp/native_crt_pow_fallback.hpp",
+        "docs/NATIVE_CRT_POW_FALLBACK.md",
+        "reports/native_crt_pow_fallback_audit.json"
+      ],
+      "evidence": "reports/native_crt_pow_fallback_audit.json"
+    },
+    {
+      "id": "native_renderer_gather_capabilities1",
+      "packet": "native_renderer_gather_capabilities1",
+      "state": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b2c8e0"
+      ],
+      "code_ownership": [
+        "src/native_renderer_gather_capabilities.cpp",
+        "include/bsp/native_renderer_gather_capabilities.hpp",
+        "docs/NATIVE_RENDERER_GATHER_CAPABILITIES.md",
+        "reports/native_renderer_gather_capabilities_audit.json"
+      ],
+      "evidence": "reports/native_renderer_gather_capabilities_audit.json"
     }
   ],
   "snapshot_after_analysis": {

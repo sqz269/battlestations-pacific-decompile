@@ -11,6 +11,7 @@
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
+#include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
@@ -160,6 +161,9 @@ struct GameMenuHost::Impl {
     MainMenuPathState path{};
     MainMenuPathStep path_step{MainMenuPathStep::PressStartPoll};
     bool pumped_this_frame{false};
+
+    // --- milestone 2h, the in-mission HUD screens ---------------------------
+    std::unique_ptr<GameHudHost> hud;
 
     // --- milestone 2e, the scripted mission selection -----------------------
     std::unique_ptr<GameMissionHost> mission;
@@ -1506,16 +1510,127 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
     std::string language, long mission_complete_frame)
     : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
+    // Milestone 2h: the in-mission HUD registers into the same registry this
+    // object owns, so the HUD host is built here and handed to the mission.
+    impl_->hud = std::make_unique<GameHudHost>(log, *this);
     if (!menu_select.empty()) {
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
-            mission_complete_frame);
+            mission_complete_frame, impl_->hud.get());
     }
 }
 
 GameMenuHost::~GameMenuHost() = default;
 
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
+
+GameHudHost* GameMenuHost::hud() const noexcept { return impl_->hud.get(); }
+
+// ---------------------------------------------------------------------------
+// Milestone 2h: the four registry services the in-mission HUD needs
+// ---------------------------------------------------------------------------
+
+bool GameMenuHost::register_in_game_screen(int slot, const std::string& name,
+    std::uint32_t register_virtual, std::uint32_t layout_virtual) {
+    Impl& host = *impl_;
+    if (slot < 0 || slot >= kFrontEndScreenSlotCount) return false;
+    if (host.screen_at(slot) != nullptr) return false;
+    // 004f7180 leaves both flag bytes clear, so the screen is registered
+    // neither wanted nor active and only the level-set recompute can ask for it.
+    Impl::MenuScreen& screen = host.add_screen(slot, name, nullptr, 0, 0, layout_virtual,
+        false);
+    screen.enter_virtual = register_virtual;
+    register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
+    ++host.summary.screens_registered;
+    return true;
+}
+
+bool GameMenuHost::attach_in_game_page(int slot, const std::string& page_name) {
+    Impl& host = *impl_;
+    Impl::MenuScreen* screen = host.screen_at(slot);
+    if (screen == nullptr) return false;
+    const std::size_t before = screen->pages.size();
+    host.attach_page(*screen, page_name);
+    return screen->pages.size() != before;
+}
+
+bool GameMenuHost::in_game_page_has_child(int slot, const std::string& widget_name) {
+    Impl& host = *impl_;
+    Impl::MenuScreen* screen = host.screen_at(slot);
+    if (screen == nullptr) return false;
+    for (GuiLayoutPage* page : screen->pages) {
+        if (page == nullptr) continue;
+        if (host.frontend.find_page_child(*page, widget_name) != nullptr) {
+            host.log.implemented("InGameInterface::screen_find_child", "00aa7e00");
+            return true;
+        }
+    }
+    return false;
+}
+
+void GameMenuHost::publish_level1_screen_set_004f8530(const int* ids, std::size_t count) {
+    Impl& host = *impl_;
+    MenuSetBindings bindings(host);
+    set_front_end_screen_set_level(host.screen_sets, host.world.screens, bindings,
+        kFrontEndScreenSetLowestLevel, ids, count);
+}
+
+void GameMenuHost::publish_level1_input_contexts_004d8a50(const int* ids,
+    std::size_t count) {
+    Impl& host = *impl_;
+    // 004d8a50's tail is `PUSH 1 ; CALL 004d6410`, the same level setter
+    // 004d8c00 reaches with 4: the list is stored at its level and 004c4300 is
+    // run for that level.
+    std::vector<int> pending;
+    for (std::size_t i = 0; i < count && ids != nullptr; ++i) {
+        if (ids[i] == 0) break;
+        pending.push_back(ids[i]);
+    }
+    host.input_contexts.levels[kFrontEndScreenSetLowestLevel - 1] = pending;
+    apply_input_context_levels_004c4300(host.input_contexts,
+        kFrontEndScreenSetLowestLevel);
+}
+
+void GameMenuHost::pump_interface_only_004c40f0(float raw_delta) {
+    impl_->pump(raw_delta);
+}
+
+void GameMenuHost::destroy_main_menu_manager_00686c90() {
+    Impl& host = *impl_;
+    host.log.unimplemented("MainMenuManager::deleting_destructor", "00687300");
+    host.log.implemented("MainMenuManager::destroy", "00686c90");
+    // 00686cce..00686d64 collects the seven screens at +58h and +5Ch..+70h, then
+    // 00686d80..00686dd2 runs, for each one that is active, its exit virtual
+    // +1Ch, clears +4h and +5h, and commits through 004f83b0 at 00686db9. That
+    // commit is what publishes false to every layout the screen holds.
+    MenuCommitHost commit(host);
+    std::size_t exited = 0;
+    for (const MainMenuScreenClass& entry : kMainMenuScreens) {
+        Impl::MenuScreen* screen = host.screen_at(entry.screen_id);
+        if (screen == nullptr || screen->flags == nullptr) continue;
+        if (screen->flags->active) {
+            host.log.unimplemented("MainMenuScreen::exit", "00686dad");
+            ++exited;
+        }
+        screen->flags->wanted = false;
+        screen->flags->active = false;
+        commit_front_end_screen_visibility_004f83b0(*screen->flags, entry.screen_id, commit);
+        host.log.implemented("MainMenuManager::commit_screen_visibility", "00686db9");
+        // 00686e14, the screen's own vtable +0Ch with the deleting flag. The
+        // seven classes are not reconstructed; unregistering the executable's
+        // record is what a destroyed screen leaves behind in the registry.
+        host.log.unimplemented("MainMenuScreen::deleting_destructor", "00686e14");
+        unregister_front_end_screen_004f71a0(host.world.screens, *screen->flags);
+    }
+    host.log.notef("main-menu manager destroyed: %zu of %zu screens exited and committed, "
+        "all seven unregistered", exited, kMainMenuScreens.size());
+    MenuSetBindings bindings(host);
+    clear_front_end_manager_screen_set(host.screen_sets, host.world.screens, bindings,
+        host.input_contexts);
+    host.log.implemented("FrontEndManager::deactivate", "00683aa0");
+    host.main_menu.base.active = false;  // +3Ch, cleared by 00683aa0
+    host.summary.main_menu_manager_active = false;
+}
 
 bool GameMenuHost::mission_exit_finished() const noexcept {
     // Milestone 2g: the mission left game state 0Dh through 004d7970 and the

@@ -93,4 +93,43 @@ void resize_point_effect_entry_array_008672a0(
     actual.count = requested_count;
 }
 
+void erase_point_effect_entry_array_unordered_00867210(
+    PointEffectReferenceArray& array,
+    RenderCommandReference** const* position) noexcept {
+    auto** const destination = *position;
+    volatile auto& actual = array;
+    const auto initial_count = static_cast<std::uint32_t>(actual.count);
+    auto** const initial_tail = slot(actual.begin, initial_count - 1u);
+    if (destination != initial_tail)
+        assign_render_command_reference(*destination, *initial_tail);
+
+    // 0086725F reloads both fields after the replaced entry's terminal
+    // callback. Do not release the earlier captured tail or predecrement.
+    const auto current_count = static_cast<std::uint32_t>(actual.count);
+    release_then_clear(slot(actual.begin, current_count - 1u));
+    actual.count = signed_word(static_cast<std::uint32_t>(actual.count) - 1u);
+}
+
+void append_point_effect_entry_array_00867320(
+    PointEffectReferenceArray& array, RenderCommandReference* const* source) {
+    volatile auto& actual = array;
+    const auto capacity = actual.capacity;
+    if (actual.count == capacity) {
+        const auto doubled = signed_word(static_cast<std::uint32_t>(capacity) * 2u);
+        reserve_point_effect_entry_array_008670a0(array, doubled > 1 ? doubled : 1);
+    }
+
+    const auto index = static_cast<std::uint32_t>(actual.count);
+    auto** const destination = slot(actual.begin, index);
+    if (destination) {
+        *destination = nullptr;
+        RenderCommandReference* const reference = *source;
+        if (reference) {
+            *destination = reference;
+            retain_render_command_reference(*reference);
+        }
+    }
+    actual.count = signed_word(static_cast<std::uint32_t>(actual.count) + 1u);
+}
+
 } // namespace bsp

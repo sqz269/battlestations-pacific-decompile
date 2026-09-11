@@ -221,6 +221,24 @@ void NativeGamepadForceEvents::cancel(NativeGamepadForceEventReference& ref) {
     require_slot(ref.storage_, 12, 0x00872160);
     cancel_native_force_event_00872160(ref.storage_, context_);
 }
+NativeGamepadForceEventReference* NativeGamepadForceEvents::find(RenderCommandReference& value) const noexcept {
+    for (auto* ref = references_; ref; ref = ref->next_)
+        if (ref == &value) return ref;
+    return nullptr;
+}
+void NativeGamepadForceEvents::update(NativeGamepadForceEventReference& ref, float,
+    void*) {
+    if (&ref.owner_ != this) throw std::invalid_argument("Wrong rumble event domain");
+    require_slot(ref.storage_, 10, 0x00872150);
+    // Established current virtual+28 is the complete RET8 no-op; no fields read.
+    native_force_event_callback_noop_00872150(ref.storage_, 0, 0);
+}
+void NativeGamepadForceEvents::deactivate(NativeGamepadForceEventReference& ref) {
+    if (&ref.owner_ != this) throw std::invalid_argument("Wrong rumble event domain");
+    require_slot(ref.storage_, 12, 0x00872160);
+    ref.storage_.active_0c = 0;
+    cancel_native_force_event_00872160(ref.storage_, context_);
+}
 std::size_t NativeGamepadForceEvents::binding_count() const noexcept {
     std::size_t count = 0;
     for (auto* ref = references_; ref; ref = ref->next_) ++count;

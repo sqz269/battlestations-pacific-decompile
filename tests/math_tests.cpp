@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
@@ -1973,6 +1974,34 @@ int main() {
                   && std::fabs(countdown - (3.0f - 0.06f)) < 1e-5f,
             "an armed think fires once when its clamped delay runs out, then waits for the "
             "three-second script countdown instead of firing every step");
+    }
+
+    {
+        // 007D20F3..007D2144. The installed Scripts\datatables\PlaneGlobals.lua sets
+        // Dynamics/AccelCheatMul = 1.5 and AccelCheatMulMul = 1.15, so the plane class
+        // reader takes the scaling branch and 007D213C never runs. Below 1.0f the clamp
+        // runs, writes exactly 1.0f and is idempotent, which is why it is a guard and
+        // not a progressive per-class mutation of shared tuning.
+        bsp::GameTuningBlock block{};
+        block.dynamics_accel_cheat_mul = 1.5F;
+        block.dynamics_accel_cheat_mul_mul = 1.15F;
+        const float scaled = bsp::game_tuning_apply_accel_cheat_007d20f3(block, 2.0F);
+
+        bsp::GameTuningBlock low{};
+        low.dynamics_accel_cheat_mul = 0.8F;
+        low.dynamics_accel_cheat_mul_mul = 1.15F;
+        const float first = bsp::game_tuning_apply_accel_cheat_007d20f3(low, 2.0F);
+        const float clamped_once = low.dynamics_accel_cheat_mul;
+        const float second = bsp::game_tuning_apply_accel_cheat_007d20f3(low, 2.0F);
+
+        check(scaled == 1.5F * 1.15F * 2.0F
+                  && block.dynamics_accel_cheat_mul == 1.5F
+                  && first == 2.0F && clamped_once == 1.0F
+                  && second == 2.0F && low.dynamics_accel_cheat_mul == 1.0F
+                  && offsetof(bsp::GameTuningBlock, dynamics_accel_cheat_mul)
+                         == bsp::kGameTuningAccelCheatMul,
+            "the installed AccelCheatMul 1.5 scales Accel and leaves the tuning block "
+            "untouched, and a value below 1.0f clamps to exactly 1.0f idempotently");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -1,0 +1,5196 @@
+{
+ "packet": "cc2_game_tuning",
+ "doc": "docs/GAME_TUNING_SINGLETON.md",
+ "owner": "agent/cc2-game-tuning",
+ "summary": "0042E740 returns the 6D0h-byte plane tuning singleton cached in DAT_00F87440, built once by the __thiscall constructor 007E2A20. The loader runs Scripts\\global\\luaMW_init.lua for its constant and DEG/KMH helpers and Scripts\\datatables\\PlaneGlobals.lua for the data, then copies 423 distinct key paths out of the global PlaneGlobals table into 436 offsets with 439 stores. There are no constructor defaults. 007D213C is the only write into the singleton from any of the 141 call sites and it is an idempotent clamp to 1.0f that the installed value 1.5 makes unreachable.",
+ "corrections": [
+  {
+   "target": "docs/PLANE_CLASS_FIELDS.md line 284",
+   "was": "The tuning object 0042E740 returns is 6D0h bytes loaded from Scripts\\global\\luaMW_init.lua by 007E2A20",
+   "is": "007E2A20 runs luaMW_init.lua at 007E2AE9 but reads no key from it; luaMW_init.lua defines only constants and the DEG/KMH helpers. Every key comes from the global PlaneGlobals table defined by Scripts\\datatables\\PlaneGlobals.lua, run at 007E2B5D and fetched at 007E2BB4 through the key string at 00d085f4.",
+   "evidence": "007E2AE9 and 007E2B5D literal paths; 00b67980 at 007E2B98 then 00b67800 at 007E2BB4"
+  },
+  {
+   "target": "docs/PLANE_CLASS_FIELDS.md line 287",
+   "was": "The Accel path writes 1.0f back into tuning[+31Ch]. It is a per-class read mutating shared tuning; whether that is a guard or a defect is not established here.",
+   "is": "It is a guard. The write is on the AccelCheatMul <= 1.0f branch only and stores the same 1.0f constant it compared against, so it is idempotent and can never scale a value that was already above 1.0f. +31c, +320 and +334 are read by 007D1F70 alone across all 141 callers, and 007D213C is the only write into the singleton from any of them. With the installed AccelCheatMul = 1.5 the branch is never taken.",
+   "evidence": "007D2100 COMISS against 00d7a24c = 1.0f, JBE 007D212F, 007D2134/007D213C; Scripts\\datatables\\PlaneGlobals.lua line 265"
+  }
+ ],
+ "routines": [
+  {
+   "address": "0042E740",
+   "name": "BSP_GameTuning_GetSingleton",
+   "coverage": "complete",
+   "abi": "__cdecl, no arguments, returns the singleton in EAX"
+  },
+  {
+   "address": "007E2A20",
+   "name": "BSP_GameTuning_LoadFromPlaneGlobals",
+   "coverage": "complete for the offset table; exception-state bookkeeping and the two LIBCRT_unmatched_00BF9940 calls at 007E9B3A and 007E9B98 not modelled",
+   "body": "007E2A20-007EAB5E",
+   "abi": "__thiscall, ECX = the operator new(0x6d0) block, no stack arguments, returns this"
+  },
+  {
+   "address": "008875F0",
+   "name": "BSP_LuaScriptOverrideList_Construct",
+   "coverage": "complete",
+   "abi": "__thiscall, ECX = a 14h-byte object, one dword argument, returns this"
+  },
+  {
+   "address": "007D1F70",
+   "name": "BSP_PlaneClass_ReadLuaFields",
+   "coverage": "partial: 007D20F3-007D2144 and 007D23F5 only; docs/PLANE_CLASS_FIELDS.md owns the rest"
+  }
+ ],
+ "host_steps": [
+  {
+   "address": "007e2a72",
+   "native": "008875f0",
+   "function": "007E2A20",
+   "name": "construct_script_override_list",
+   "args": "ECX = a 14h-byte frame local, one dword argument read through `*(*(00e188a8+1A08h)+4)`; returns the object",
+   "gate": "unconditional, first statement after the vtable store"
+  },
+  {
+   "address": "007e2a86",
+   "native": "00b66bd0",
+   "function": "007E2A20",
+   "name": "lua_state_construct",
+   "args": "ECX = a frame-local LuaStateOwner; no stack arguments",
+   "gate": "unconditional"
+  },
+  {
+   "address": "007e2a9c",
+   "native": "00b6a020",
+   "function": "007E2A20",
+   "name": "lua_state_open",
+   "args": "ECX = the frame-local owner, one argument 41h (library selection mask)",
+   "gate": "unconditional"
+  },
+  {
+   "address": "007e2ab1",
+   "native": "0041dd40",
+   "function": "007E2A20",
+   "name": "string_reserve",
+   "args": "ECX = a frame-local string, (1Dh, 1) for the first path and (23h, 1) for the second; each is followed by `_memcpy` of the literal at 007e2acc and 007e2b40",
+   "gate": "twice, once per script path"
+  },
+  {
+   "address": "007e2ae9",
+   "native": "00b69d40",
+   "function": "007E2A20",
+   "name": "run_script",
+   "args": "ECX = the owner, the frame-local path `Scripts\\global\\luaMW_init.lua`, second argument 0",
+   "gate": "unconditional; runs the constants and the DEG/KMH helpers, no key is read from it"
+  },
+  {
+   "address": "007e2b5d",
+   "native": "00b69d40",
+   "function": "007E2A20",
+   "name": "run_script",
+   "args": "ECX = the owner, the frame-local path `Scripts\\datatables\\PlaneGlobals.lua`, second argument 0",
+   "gate": "unconditional; this is the script every key comes from"
+  },
+  {
+   "address": "007e2b09",
+   "native": "00419cc0",
+   "function": "007E2A20",
+   "name": "release_path_block",
+   "args": "(block, size+1, 1), paired with `00bd1510` at 007e2b10 and again at 007e2b7d/007e2b84",
+   "gate": "guarded by the path buffer being non-null"
+  },
+  {
+   "address": "007e2b98",
+   "native": "00b67980",
+   "function": "007E2A20",
+   "name": "globals_table",
+   "args": "ECX = the owner, one out-LuaObject argument; returns the out pointer",
+   "gate": "unconditional"
+  },
+  {
+   "address": "007e2bb4",
+   "native": "00b67800",
+   "function": "007E2A20",
+   "name": "table_field",
+   "args": "ECX = parent table, (out LuaObject, const char* key); returns out in EAX. 471 sites",
+   "gate": "unconditional; this first site fetches `PlaneGlobals` (key at 00d085f4) from the globals table"
+  },
+  {
+   "address": "007e2fd8",
+   "native": "00b67720",
+   "function": "007E2A20",
+   "name": "table_element",
+   "args": "ECX = parent table, (out LuaObject, int one-based index); returns out. 50 sites",
+   "gate": "used for the array-valued keys"
+  },
+  {
+   "address": "007e2bed",
+   "native": "00b66270",
+   "function": "007E2A20",
+   "name": "value_number",
+   "args": "ECX = the fetched LuaObject, no stack arguments; returns the number on the x87 stack. 384 sites",
+   "gate": "unconditional after each fetch"
+  },
+  {
+   "address": "007e2d75",
+   "native": "00b66290",
+   "function": "007E2A20",
+   "name": "value_integer",
+   "args": "ECX = the fetched LuaObject; returns in EAX. 1 site",
+   "gate": "only `Dynamics/RotationLimit`"
+  },
+  {
+   "address": "007e825f",
+   "native": "00b66250",
+   "function": "007E2A20",
+   "name": "value_boolean",
+   "args": "ECX = the fetched LuaObject; returns in AL. 7 sites",
+   "gate": "the seven boolean keys"
+  },
+  {
+   "address": "007e4649",
+   "native": "00b66330",
+   "function": "007E2A20",
+   "name": "value_number_or_default",
+   "args": "ECX = the fetched LuaObject, one float argument pushed through `FSTP [ESP]`. 37 sites",
+   "gate": "the keys that may be absent"
+  },
+  {
+   "address": "007e85db",
+   "native": "00b67a80",
+   "function": "007E2A20",
+   "name": "value_number_triple",
+   "args": "ECX = the fetched LuaObject, one out argument; returns a pointer to three floats. 2 sites",
+   "gate": "`Pilot/Follow/SmallPlaneDisplacement` and `Pilot/Follow/BomberDisplacement`"
+  },
+  {
+   "address": "007e2bc8",
+   "native": "00b67700",
+   "function": "007E2A20",
+   "name": "release_value",
+   "args": "ECX = the LuaObject to release; no arguments, no return. 524 sites",
+   "gate": "after every fetch, and again for each scope object at the end of its section"
+  },
+  {
+   "address": "007e2c9d",
+   "native": "00b65f50",
+   "function": "007E2A20",
+   "name": "value_construct",
+   "args": "ECX = a frame-local LuaObject; default construction of a section scope slot",
+   "gate": "twice, for the two long-lived scope slots"
+  },
+  {
+   "address": "007e2cd1",
+   "native": "00b67690",
+   "function": "007E2A20",
+   "name": "value_assign",
+   "args": "ECX = a section scope slot, one LuaObject argument; rebinds the slot to a new table. 33 sites",
+   "gate": "once per section of the table"
+  },
+  {
+   "address": "007eab2b",
+   "native": "00b669a0",
+   "function": "007E2A20",
+   "name": "lua_state_close",
+   "args": "ECX = the frame-local owner",
+   "gate": "unconditional, after the last key"
+  },
+  {
+   "address": "007eab3f",
+   "native": "00887670",
+   "function": "007E2A20",
+   "name": "destroy_script_override_list",
+   "args": "ECX = the 14h-byte frame local built at 007e2a72",
+   "gate": "unconditional, last statement"
+  }
+ ],
+ "offsets": [
+  {
+   "offset": "+0",
+   "key": "(derived)",
+   "type": "derived",
+   "default": "",
+   "shipped": "",
+   "read": "",
+   "store": "007e2a4c",
+   "consumers": []
+  },
+  {
+   "offset": "+4",
+   "key": "CloseToCameraDist",
+   "type": "number",
+   "default": "",
+   "shipped": "1500.0",
+   "read": "007e2bed",
+   "store": "007e2bf2",
+   "consumers": []
+  },
+  {
+   "offset": "+8",
+   "key": "MoveDetailLODError",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e2c26",
+   "store": "007e2c2b",
+   "consumers": []
+  },
+  {
+   "offset": "+c",
+   "key": "MoveDetailRadius",
+   "type": "number",
+   "default": "",
+   "shipped": "25.0",
+   "read": "007e2c5f",
+   "store": "007e2c64",
+   "consumers": []
+  },
+  {
+   "offset": "+10",
+   "key": "DeathModeChances/Explosion",
+   "type": "number",
+   "default": "",
+   "shipped": "0.2",
+   "read": "007e428c",
+   "store": "007e4291",
+   "consumers": [
+    "007ca8a0"
+   ]
+  },
+  {
+   "offset": "+14",
+   "key": "DeathModeChances/Explosion_delayed",
+   "type": "number",
+   "default": "",
+   "shipped": "0.2",
+   "read": "007e42c7",
+   "store": "007e42cc",
+   "consumers": [
+    "007ca8a0"
+   ]
+  },
+  {
+   "offset": "+18",
+   "key": "DeathModeChances/Spinning",
+   "type": "number",
+   "default": "",
+   "shipped": "0.3",
+   "read": "007e433d",
+   "store": "007e4342",
+   "consumers": [
+    "007ca8a0"
+   ]
+  },
+  {
+   "offset": "+1c",
+   "key": "DeathModeChances/Powerloss",
+   "type": "number",
+   "default": "",
+   "shipped": "0.4",
+   "read": "007e4302",
+   "store": "007e4307",
+   "consumers": [
+    "007ca8a0"
+   ]
+  },
+  {
+   "offset": "+20",
+   "key": "DeathModeChances/Explodetoparts",
+   "type": "number",
+   "default": "",
+   "shipped": "0.2",
+   "read": "007e4251",
+   "store": "007e4256",
+   "consumers": []
+  },
+  {
+   "offset": "+24",
+   "key": "Sound/WindVolMinSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "0.4",
+   "read": "007e6811",
+   "store": "007e6816",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+28",
+   "key": "Sound/WindVolMaxSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "0.9",
+   "read": "007e684f",
+   "store": "007e6854",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+2c",
+   "key": "Sound/WindPitchMinSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e688d",
+   "store": "007e6892",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+30",
+   "key": "Sound/WindPitchMaxSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "2.5",
+   "read": "007e68cb",
+   "store": "007e68d0",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+34",
+   "key": "Sound/WindPitchMin",
+   "type": "number",
+   "default": "",
+   "shipped": "0.9",
+   "read": "007e6909",
+   "store": "007e690e",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+38",
+   "key": "Sound/WindPitchMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e6947",
+   "store": "007e694c",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+3c",
+   "key": "Sound/FallVolMinSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e6985",
+   "store": "007e698a",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+40",
+   "key": "Sound/FallVolMaxSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "1.8",
+   "read": "007e69c3",
+   "store": "007e69c8",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+44",
+   "key": "Sound/FallPitchMinSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "1.3",
+   "read": "007e6a01",
+   "store": "007e6a06",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+48",
+   "key": "Sound/FallPitchMaxSpdRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "4.0",
+   "read": "007e6a3f",
+   "store": "007e6a44",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+4c",
+   "key": "Sound/FallPitchMin",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e6a7d",
+   "store": "007e6a82",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+50",
+   "key": "Sound/FallPitchMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e6abb",
+   "store": "007e6ac0",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+54",
+   "key": "PlaneCamera/ZRotMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.3",
+   "read": "007e43b6",
+   "store": "007e43bb",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+58",
+   "key": "PlaneCamera/ZRotSmoothRate",
+   "type": "number",
+   "default": "",
+   "shipped": "1.75",
+   "read": "007e43f1",
+   "store": "007e43f6",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+5c",
+   "key": "PlaneCamera/XDistMul",
+   "type": "number",
+   "default": "",
+   "shipped": "5.0",
+   "read": "007e442c",
+   "store": "007e4431",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+60",
+   "key": "PlaneCamera/XDistSmoothRate",
+   "type": "number",
+   "default": "",
+   "shipped": "5.0",
+   "read": "007e4467",
+   "store": "007e446c",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+64",
+   "key": "PlaneCamera/YDistMul",
+   "type": "number",
+   "default": "",
+   "shipped": "2.0",
+   "read": "007e44a2",
+   "store": "007e44a7",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+68",
+   "key": "PlaneCamera/YDistSmoothRate",
+   "type": "number",
+   "default": "",
+   "shipped": "7.0",
+   "read": "007e44dd",
+   "store": "007e44e2",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+6c",
+   "key": "PlaneCamera/YDistRollMul",
+   "type": "number",
+   "default": "",
+   "shipped": ".5",
+   "read": "007e4518",
+   "store": "007e451d",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+70",
+   "key": "PlaneCamera/YDistRollSmoothRate",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e4553",
+   "store": "007e4558",
+   "consumers": []
+  },
+  {
+   "offset": "+74",
+   "key": "PlaneCamera/ZDistMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.00",
+   "read": "007e458e",
+   "store": "007e4593",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+78",
+   "key": "PlaneCamera/ZDistSmoothRate",
+   "type": "number",
+   "default": "",
+   "shipped": "10.0",
+   "read": "007e45c9",
+   "store": "007e45ce",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+7c",
+   "key": "PlaneCamera/ShipYardDist",
+   "type": "number",
+   "default": "",
+   "shipped": "100.0",
+   "read": "007e4604",
+   "store": "007e4609",
+   "consumers": [
+    "0060cd50"
+   ]
+  },
+  {
+   "offset": "+80",
+   "key": "PlaneCamera/LookAroundSmoothRate",
+   "type": "number-or-default",
+   "default": "10",
+   "shipped": "10.0",
+   "read": "007e4649",
+   "store": "007e464e",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+84",
+   "key": "PlaneCamera/CockpitFOVMul",
+   "type": "number-or-default",
+   "default": "0.65",
+   "shipped": "0.85",
+   "read": "007e4691",
+   "store": "007e4696",
+   "consumers": [
+    "0042f760",
+    "006068a0",
+    "00799de0",
+    "007c7800"
+   ]
+  },
+  {
+   "offset": "+88",
+   "key": "PlaneCamera/CockpitSmooth",
+   "type": "number-or-default",
+   "default": "0.5",
+   "shipped": "0.5",
+   "read": "007e46d9",
+   "store": "007e46de",
+   "consumers": []
+  },
+  {
+   "offset": "+8c",
+   "key": "PlaneCamera/CockpitYawTurn",
+   "type": "number-or-default",
+   "default": "0.1",
+   "shipped": "DEG(5)",
+   "read": "007e4721",
+   "store": "007e4726",
+   "consumers": []
+  },
+  {
+   "offset": "+90",
+   "key": "PlaneCamera/CockpitPitchTurn",
+   "type": "number-or-default",
+   "default": "0.1",
+   "shipped": "DEG(5)",
+   "read": "007e4769",
+   "store": "007e476e",
+   "consumers": []
+  },
+  {
+   "offset": "+94",
+   "key": "PlaneCamera/CockpitRollTurn",
+   "type": "number-or-default",
+   "default": "0.05",
+   "shipped": "DEG(14)",
+   "read": "007e47b1",
+   "store": "007e47b6",
+   "consumers": []
+  },
+  {
+   "offset": "+98",
+   "key": "PlaneCamera/CockpitRollHTurn",
+   "type": "number-or-default",
+   "default": "0.05",
+   "shipped": "DEG(9)",
+   "read": "007e47f9",
+   "store": "007e47fe",
+   "consumers": []
+  },
+  {
+   "offset": "+9c",
+   "key": "PlaneCamera/CockpitRollVTurn",
+   "type": "number-or-default",
+   "default": "0.05",
+   "shipped": "DEG(2)",
+   "read": "007e4841",
+   "store": "007e4846",
+   "consumers": []
+  },
+  {
+   "offset": "+a0",
+   "key": "PlaneCamera/CockpitViewHMax",
+   "type": "number-or-default",
+   "default": "1.5",
+   "shipped": "DEG(80)",
+   "read": "007e4889",
+   "store": "007e488e",
+   "consumers": []
+  },
+  {
+   "offset": "+a4",
+   "key": "PlaneCamera/CockpitViewVMax",
+   "type": "number-or-default",
+   "default": "1",
+   "shipped": "DEG(70)",
+   "read": "007e4915",
+   "store": "007e491a",
+   "consumers": []
+  },
+  {
+   "offset": "+a8",
+   "key": "PlaneCamera/CockpitViewVMin",
+   "type": "number-or-default",
+   "default": "0.7",
+   "shipped": "DEG(35)",
+   "read": "007e48d1",
+   "store": "007e48d6",
+   "consumers": []
+  },
+  {
+   "offset": "+ac",
+   "key": "PlaneCamera/CockpitMaxHeadMoveDist",
+   "type": "number-or-default",
+   "default": "0.08",
+   "shipped": "0.06",
+   "read": "007e495d",
+   "store": "007e4962",
+   "consumers": []
+  },
+  {
+   "offset": "+b0",
+   "key": "PlaneCamera/CockpitGunfireEffectSize",
+   "type": "number-or-default",
+   "default": "0.008",
+   "shipped": "0.005",
+   "read": "007e49a5",
+   "store": "007e49aa",
+   "consumers": []
+  },
+  {
+   "offset": "+b4",
+   "key": "PlaneCamera/CockpitGunfireEffectTime",
+   "type": "number-or-default",
+   "default": "0.1",
+   "shipped": "0.02",
+   "read": "007e49ed",
+   "store": "007e49f2",
+   "consumers": []
+  },
+  {
+   "offset": "+b8",
+   "key": "PlaneCamera/FOVMinSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "80",
+   "read": "007e4a2b",
+   "store": "007e4a30",
+   "consumers": []
+  },
+  {
+   "offset": "+bc",
+   "key": "PlaneCamera/FOVMaxSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "100",
+   "read": "007e4a69",
+   "store": "007e4a6e",
+   "consumers": []
+  },
+  {
+   "offset": "+c0",
+   "key": "PlaneCamera/FOVMinSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e4aa7",
+   "store": "007e4aac",
+   "consumers": []
+  },
+  {
+   "offset": "+c4",
+   "key": "PlaneCamera/FOVMaxSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.3",
+   "read": "007e4ae5",
+   "store": "007e4aea",
+   "consumers": []
+  },
+  {
+   "offset": "+c8",
+   "key": "PlaneCamera/FOVMinAccel",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e4b23",
+   "store": "007e4b28",
+   "consumers": []
+  },
+  {
+   "offset": "+cc",
+   "key": "PlaneCamera/FOVMaxAccel",
+   "type": "number",
+   "default": "",
+   "shipped": "8.0",
+   "read": "007e4b61",
+   "store": "007e4b66",
+   "consumers": []
+  },
+  {
+   "offset": "+d0",
+   "key": "PlaneCamera/FOVAccelMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e4b9f",
+   "store": "007e4ba4",
+   "consumers": []
+  },
+  {
+   "offset": "+d8",
+   "key": "PlaneCamera/TurboMotionBlurMinSpeed",
+   "type": "number-or-default",
+   "default": "80",
+   "shipped": "80",
+   "read": "007e4be7",
+   "store": "007e4bec",
+   "consumers": [
+    "00608c30",
+    "0067b7e0"
+   ]
+  },
+  {
+   "offset": "+dc",
+   "key": "PlaneCamera/TurboMotionBlurMaxSpeed",
+   "type": "number-or-default",
+   "default": "100",
+   "shipped": "100",
+   "read": "007e4c2f",
+   "store": "007e4c34",
+   "consumers": []
+  },
+  {
+   "offset": "+e0",
+   "key": "PlaneCamera/TurboMotionBlurMaxBlur",
+   "type": "number-or-default",
+   "default": "0.1",
+   "shipped": "0.1",
+   "read": "007e4c77",
+   "store": "007e4c7c",
+   "consumers": []
+  },
+  {
+   "offset": "+e4",
+   "key": "BombCamera/MinCameraAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "2",
+   "read": "007e4cf3",
+   "store": "007e4cf8",
+   "consumers": []
+  },
+  {
+   "offset": "+e8",
+   "key": "BombCamera/CameraPosSmooth",
+   "type": "number",
+   "default": "",
+   "shipped": "0.75",
+   "read": "007e4d31",
+   "store": "007e4d36",
+   "consumers": [
+    "00430da0"
+   ]
+  },
+  {
+   "offset": "+ec",
+   "key": "BombCamera/CameraPosSmooth",
+   "type": "number",
+   "default": "",
+   "shipped": "0.75",
+   "read": "007e4d6c",
+   "store": "007e4d71",
+   "consumers": []
+  },
+  {
+   "offset": "+f0",
+   "key": "BombCamera/CamVelBlenderAcceleration",
+   "type": "number",
+   "default": "",
+   "shipped": "0.005",
+   "read": "007e4da7",
+   "store": "007e4dac",
+   "consumers": [
+    "00430970"
+   ]
+  },
+  {
+   "offset": "+f4",
+   "key": "BombCamera/MaxCamVelBlender",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e4de5",
+   "store": "007e4dea",
+   "consumers": [
+    "00430970"
+   ]
+  },
+  {
+   "offset": "+f8",
+   "key": "BombCamera/TorpedoNearAlt/2",
+   "type": "number",
+   "default": "",
+   "shipped": "30",
+   "read": "007e4ea4",
+   "store": "007e4ea9",
+   "consumers": []
+  },
+  {
+   "offset": "+fc",
+   "key": "BombCamera/TorpedoNearAlt/1",
+   "type": "number",
+   "default": "",
+   "shipped": "80",
+   "read": "007e4e3c",
+   "store": "007e4e41",
+   "consumers": []
+  },
+  {
+   "offset": "+100",
+   "key": "BombCamera/TorpedoFollowDistNear",
+   "type": "number",
+   "default": "",
+   "shipped": "30",
+   "read": "007e4ef0",
+   "store": "007e4ef5",
+   "consumers": []
+  },
+  {
+   "offset": "+104",
+   "key": "BombCamera/TorpedoFollowDistFar",
+   "type": "number",
+   "default": "",
+   "shipped": "80",
+   "read": "007e4f2b",
+   "store": "007e4f30",
+   "consumers": [
+    "00430970"
+   ]
+  },
+  {
+   "offset": "+108",
+   "key": "BombCamera/RocketNearAlt/2",
+   "type": "number",
+   "default": "",
+   "shipped": "30",
+   "read": "007e4fed",
+   "store": "007e4ff2",
+   "consumers": []
+  },
+  {
+   "offset": "+10c",
+   "key": "BombCamera/RocketNearAlt/1",
+   "type": "number",
+   "default": "",
+   "shipped": "80",
+   "read": "007e4f82",
+   "store": "007e4f87",
+   "consumers": []
+  },
+  {
+   "offset": "+110",
+   "key": "BombCamera/RocketFollowDistNear",
+   "type": "number",
+   "default": "",
+   "shipped": "30",
+   "read": "007e503f",
+   "store": "007e5044",
+   "consumers": []
+  },
+  {
+   "offset": "+114",
+   "key": "BombCamera/RocketFollowDistFar",
+   "type": "number",
+   "default": "",
+   "shipped": "80",
+   "read": "007e507d",
+   "store": "007e5082",
+   "consumers": [
+    "00430970"
+   ]
+  },
+  {
+   "offset": "+118",
+   "key": "BombCamera/BombNearAlt/2",
+   "type": "number",
+   "default": "",
+   "shipped": "120",
+   "read": "007e513f",
+   "store": "007e5144",
+   "consumers": []
+  },
+  {
+   "offset": "+11c",
+   "key": "BombCamera/BombNearAlt/1",
+   "type": "number",
+   "default": "",
+   "shipped": "380",
+   "read": "007e50d4",
+   "store": "007e50d9",
+   "consumers": []
+  },
+  {
+   "offset": "+120",
+   "key": "BombCamera/BombFollowDistNear",
+   "type": "number",
+   "default": "",
+   "shipped": "40",
+   "read": "007e5191",
+   "store": "007e5196",
+   "consumers": []
+  },
+  {
+   "offset": "+124",
+   "key": "BombCamera/BombFollowDistFar",
+   "type": "number",
+   "default": "",
+   "shipped": "160",
+   "read": "007e51cf",
+   "store": "007e51db",
+   "consumers": [
+    "00430970"
+   ]
+  },
+  {
+   "offset": "+128",
+   "key": "BombCamera/BulletNearAlt/2",
+   "type": "number",
+   "default": "",
+   "shipped": "120",
+   "read": "007e5291",
+   "store": "007e5296",
+   "consumers": []
+  },
+  {
+   "offset": "+12c",
+   "key": "BombCamera/BulletNearAlt/1",
+   "type": "number",
+   "default": "",
+   "shipped": "380",
+   "read": "007e5226",
+   "store": "007e522b",
+   "consumers": []
+  },
+  {
+   "offset": "+130",
+   "key": "BombCamera/BulletFollowDistNear",
+   "type": "number",
+   "default": "",
+   "shipped": "40",
+   "read": "007e52e3",
+   "store": "007e52e8",
+   "consumers": []
+  },
+  {
+   "offset": "+134",
+   "key": "BombCamera/BulletFollowDistFar",
+   "type": "number",
+   "default": "",
+   "shipped": "160",
+   "read": "007e5321",
+   "store": "007e5326",
+   "consumers": []
+  },
+  {
+   "offset": "+138",
+   "key": "BombCamera/FinalDist",
+   "type": "number",
+   "default": "",
+   "shipped": "210",
+   "read": "007e535f",
+   "store": "007e5364",
+   "consumers": [
+    "00430970"
+   ]
+  },
+  {
+   "offset": "+13c",
+   "key": "BombCamera/BombSubDistLimit",
+   "type": "number",
+   "default": "",
+   "shipped": "30",
+   "read": "007e539d",
+   "store": "007e53a2",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+140",
+   "key": "BombCamera/BombSubDistMin",
+   "type": "number",
+   "default": "",
+   "shipped": "5",
+   "read": "007e53db",
+   "store": "007e53e0",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+144",
+   "key": "BombCamera/BombSubDistMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.25",
+   "read": "007e5419",
+   "store": "007e541e",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+148",
+   "key": "BombCamera/TorpedoSubDist",
+   "type": "number",
+   "default": "",
+   "shipped": "-7.5",
+   "read": "007e5457",
+   "store": "007e545c",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+14c",
+   "key": "BombCamera/TorpedoSubDist2",
+   "type": "number",
+   "default": "",
+   "shipped": "-7.5",
+   "read": "007e5495",
+   "store": "007e549a",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+150",
+   "key": "BombCamera/TorpedoSubAngle",
+   "type": "number",
+   "default": "",
+   "shipped": "-0.1",
+   "read": "007e54d3",
+   "store": "007e54d8",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+154",
+   "key": "BombCamera/TorpedoSubAngle2",
+   "type": "number",
+   "default": "",
+   "shipped": "-0.2",
+   "read": "007e5511",
+   "store": "007e5516",
+   "consumers": [
+    "0042f800"
+   ]
+  },
+  {
+   "offset": "+158",
+   "key": "MultiPlayer/SyncSendMul",
+   "type": "number-or-default",
+   "default": "1",
+   "shipped": "1.0",
+   "read": "007e5593",
+   "store": "007e5598",
+   "consumers": []
+  },
+  {
+   "offset": "+15c",
+   "key": "MultiPlayer/SyncUploadLimitKBitPerSec",
+   "type": "number-or-default",
+   "default": "1024",
+   "shipped": "1024",
+   "read": "007e55db",
+   "store": "007e55e0",
+   "consumers": []
+  },
+  {
+   "offset": "+160",
+   "key": "Rotor/SpeedBase",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(360.0)",
+   "read": "007e5f09",
+   "store": "007e5f0e",
+   "consumers": []
+  },
+  {
+   "offset": "+164",
+   "key": "Rotor/StillMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "5.0",
+   "read": "007e5f47",
+   "store": "007e5f53",
+   "consumers": []
+  },
+  {
+   "offset": "+168",
+   "key": "Rotor/SpeedRandom",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e5f85",
+   "store": "007e5f8a",
+   "consumers": []
+  },
+  {
+   "offset": "+16c",
+   "key": "Rotor/StillOnlySpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e5fc3",
+   "store": "007e5fc8",
+   "consumers": [
+    "007ec3b0"
+   ]
+  },
+  {
+   "offset": "+170",
+   "key": "Rotor/BlurredOnlySpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "0.3",
+   "read": "007e6001",
+   "store": "007e6006",
+   "consumers": [
+    "007ec3b0"
+   ]
+  },
+  {
+   "offset": "+174",
+   "key": "Rotor/IdlePowerSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e603f",
+   "store": "007e6044",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+178",
+   "key": "Rotor/MaxPowerSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e607d",
+   "store": "007e6082",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+17c",
+   "key": "Rotor/RotorSpeedChange",
+   "type": "number",
+   "default": "",
+   "shipped": "0.2",
+   "read": "007e60bb",
+   "store": "007e60c0",
+   "consumers": []
+  },
+  {
+   "offset": "+180",
+   "key": "AirField/TurnMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "2.2",
+   "read": "007e6137",
+   "store": "007e613c",
+   "consumers": []
+  },
+  {
+   "offset": "+184",
+   "key": "AirField/MoveSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(35.0)",
+   "read": "007e61b3",
+   "store": "007e61b8",
+   "consumers": [
+    "009ce2c0"
+   ]
+  },
+  {
+   "offset": "+188",
+   "key": "AirField/MinTurnSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(50.0)",
+   "read": "007e6175",
+   "store": "007e617a",
+   "consumers": [
+    "009ce2c0"
+   ]
+  },
+  {
+   "offset": "+18c",
+   "key": "AirField/PlayerControlSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(80.0)",
+   "read": "007e61f1",
+   "store": "007e61f6",
+   "consumers": [
+    "007cbfa0"
+   ]
+  },
+  {
+   "offset": "+190",
+   "key": "AirField/PlaneSendInterval",
+   "type": "number",
+   "default": "",
+   "shipped": "2.0",
+   "read": "007e622f",
+   "store": "007e6234",
+   "consumers": [
+    "007f1f00"
+   ]
+  },
+  {
+   "offset": "+194",
+   "key": "CameraShake/RollPitchMult",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(0.5)",
+   "read": "007e5657",
+   "store": "007e565c",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+198",
+   "key": "CameraShake/PowerMult",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(0.5)",
+   "read": "007e5695",
+   "store": "007e569a",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+19c",
+   "key": "CameraShake/SpeedMult",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(2.0)",
+   "read": "007e56d3",
+   "store": "007e56d8",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1a0",
+   "key": "CameraShake/Limit",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(1.0)",
+   "read": "007e5711",
+   "store": "007e5716",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1a4",
+   "key": "CameraShake/Ratio",
+   "type": "number",
+   "default": "",
+   "shipped": "4",
+   "read": "007e574f",
+   "store": "007e5754",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1a8",
+   "key": "CameraShake/PauseLenMin",
+   "type": "number",
+   "default": "",
+   "shipped": "1",
+   "read": "007e578d",
+   "store": "007e5792",
+   "consumers": []
+  },
+  {
+   "offset": "+1ac",
+   "key": "CameraShake/PauseLenMax",
+   "type": "number",
+   "default": "",
+   "shipped": "3",
+   "read": "007e57cb",
+   "store": "007e57d0",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1b0",
+   "key": "CameraShake/ShakeLenMin",
+   "type": "number",
+   "default": "",
+   "shipped": "1",
+   "read": "007e5809",
+   "store": "007e580e",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1b4",
+   "key": "CameraShake/ShakeLenMax",
+   "type": "number",
+   "default": "",
+   "shipped": "2",
+   "read": "007e5847",
+   "store": "007e584c",
+   "consumers": []
+  },
+  {
+   "offset": "+1b8",
+   "key": "CameraShake/RandomLenFactor",
+   "type": "number",
+   "default": "",
+   "shipped": "0.9",
+   "read": "007e5885",
+   "store": "007e588a",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1bc",
+   "key": "CameraShake/ForceShakeLimit",
+   "type": "number",
+   "default": "",
+   "shipped": "0.9",
+   "read": "007e58c3",
+   "store": "007e58c8",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+1c0",
+   "key": "Wanderer/SpeedRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(60)",
+   "read": "007e5958",
+   "store": "007e595d",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1c4",
+   "key": "Wanderer/SpeedRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(100)",
+   "read": "007e59c3",
+   "store": "007e59c8",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1c8",
+   "key": "Wanderer/RollChangeChance",
+   "type": "number",
+   "default": "",
+   "shipped": "0.28",
+   "read": "007e5a91",
+   "store": "007e5a96",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1cc",
+   "key": "Wanderer/RollChangeMax",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e5a15",
+   "store": "007e5a1a",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1d0",
+   "key": "Wanderer/RollChangeDecay",
+   "type": "number",
+   "default": "",
+   "shipped": "0.4",
+   "read": "007e5a53",
+   "store": "007e5a58",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1d4",
+   "key": "Wanderer/RollChangeSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e5acf",
+   "store": "007e5ad4",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1d8",
+   "key": "Wanderer/TimeRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e5b26",
+   "store": "007e5b2b",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1dc",
+   "key": "Wanderer/TimeRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "3.2",
+   "read": "007e5b91",
+   "store": "007e5b96",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1e0",
+   "key": "Wanderer/OffsetMax",
+   "type": "number",
+   "default": "",
+   "shipped": "3.5",
+   "read": "007e5c9d",
+   "store": "007e5ca2",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1e4",
+   "key": "Wanderer/ChangeMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e5be3",
+   "store": "007e5be8",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1e8",
+   "key": "Wanderer/AccelMax",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e5c21",
+   "store": "007e5c26",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1ec",
+   "key": "Wanderer/SpeedMax",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e5c5f",
+   "store": "007e5c64",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1f0",
+   "key": "Wanderer/AccelDecayTime",
+   "type": "number",
+   "default": "",
+   "shipped": "5.0",
+   "read": "007e5cdb",
+   "store": "007e5ce0",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1f4",
+   "key": "Wanderer/SpeedDecayTime",
+   "type": "number",
+   "default": "",
+   "shipped": "7.0",
+   "read": "007e5d19",
+   "store": "007e5d1e",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1f8",
+   "key": "Wanderer/OffsetDecayTime",
+   "type": "number",
+   "default": "",
+   "shipped": "8.0",
+   "read": "007e5d57",
+   "store": "007e5d5c",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+1fc",
+   "key": "Wanderer/SmallPlaneDecalMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e5d95",
+   "store": "007e5d9a",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+200",
+   "key": "Wanderer/SmallPlaneRollDecayMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.8",
+   "read": "007e5dd3",
+   "store": "007e5dd8",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+204",
+   "key": "Wanderer/SmallPlaneAccelMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.4",
+   "read": "007e5e11",
+   "store": "007e5e16",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+208",
+   "key": "Wanderer/SmallPlaneTimeMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e5e4f",
+   "store": "007e5e54",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+20c",
+   "key": "Wanderer/SmallPlaneOffsetMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e5e8d",
+   "store": "007e5e92",
+   "consumers": [
+    "007c4560"
+   ]
+  },
+  {
+   "offset": "+210",
+   "key": "Dynamics/Ceiling",
+   "type": "number",
+   "default": "",
+   "shipped": "1500",
+   "read": "007e2d09",
+   "store": "007e2d0e",
+   "consumers": [
+    "005241d0",
+    "006c5050",
+    "007b4f60",
+    "009a87f0",
+    "009a8b20",
+    "009bfee0",
+    "009cadb0",
+    "009fb800",
+    "009fba50",
+    "009fc260"
+   ]
+  },
+  {
+   "offset": "+214",
+   "key": "Dynamics/CeilingForce",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e2d3d",
+   "store": "007e2d42",
+   "consumers": []
+  },
+  {
+   "offset": "+218",
+   "key": "Dynamics/RotationLimit",
+   "type": "integer",
+   "default": "",
+   "shipped": "0",
+   "read": "007e2d75",
+   "store": "007e2d7e",
+   "consumers": []
+  },
+  {
+   "offset": "+21c",
+   "key": "Dynamics/RotationFactors/A",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e3cb9",
+   "store": "007e3cbe",
+   "consumers": []
+  },
+  {
+   "offset": "+220",
+   "key": "Dynamics/RotationFactors/B",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007e3cfb",
+   "store": "007e3d00",
+   "consumers": []
+  },
+  {
+   "offset": "+224",
+   "key": "Dynamics/RotationFactors/C",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e3d3d",
+   "store": "007e3d42",
+   "consumers": []
+  },
+  {
+   "offset": "+228",
+   "key": "Dynamics/DragFuncPower",
+   "type": "number",
+   "default": "",
+   "shipped": "1.8",
+   "read": "007e2dad",
+   "store": "007e2db2",
+   "consumers": []
+  },
+  {
+   "offset": "+22c",
+   "key": "Dynamics/SpdMultipliers/StallRangeMin",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e3daa",
+   "store": "007e3daf",
+   "consumers": [
+    "007c6e10"
+   ]
+  },
+  {
+   "offset": "+230",
+   "key": "Dynamics/SpdMultipliers/StallRangeMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.6",
+   "read": "007e3de9",
+   "store": "007e3dee",
+   "consumers": [
+    "007c4830",
+    "007c6e10"
+   ]
+  },
+  {
+   "offset": "+234",
+   "key": "Dynamics/SpdMultipliers/StallOffPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(-15)",
+   "read": "007e3e28",
+   "store": "007e3e2d",
+   "consumers": []
+  },
+  {
+   "offset": "+238",
+   "key": "Dynamics/SpdMultipliers/StallOnPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e3e67",
+   "store": "007e3e6c",
+   "consumers": []
+  },
+  {
+   "offset": "+23c",
+   "key": "Dynamics/SpdMultipliers/ControlRangeMin",
+   "type": "number",
+   "default": "",
+   "shipped": "1.1",
+   "read": "007e3ea6",
+   "store": "007e3eab",
+   "consumers": []
+  },
+  {
+   "offset": "+240",
+   "key": "Dynamics/SpdMultipliers/ControlRangeMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.7",
+   "read": "007e3ee5",
+   "store": "007e3eea",
+   "consumers": []
+  },
+  {
+   "offset": "+244",
+   "key": "Dynamics/SpdMultipliers/DragRangeMin",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e3f24",
+   "store": "007e3f29",
+   "consumers": []
+  },
+  {
+   "offset": "+248",
+   "key": "Dynamics/SpdMultipliers/DragRangeMax",
+   "type": "number",
+   "default": "",
+   "shipped": "2.0",
+   "read": "007e3f63",
+   "store": "007e3f68",
+   "consumers": []
+  },
+  {
+   "offset": "+24c",
+   "key": "Dynamics/SpdMultipliers/LevelFlight",
+   "type": "number",
+   "default": "",
+   "shipped": "1.8",
+   "read": "007e3fa2",
+   "store": "007e3fa7",
+   "consumers": [
+    "007c47f0",
+    "007c4850",
+    "007cba50"
+   ]
+  },
+  {
+   "offset": "+250",
+   "key": "Dynamics/DeadMeat/RotationMin",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(10)",
+   "read": "007e30e2",
+   "store": "007e30e7",
+   "consumers": []
+  },
+  {
+   "offset": "+254",
+   "key": "Dynamics/DeadMeat/RotationMin",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(10)",
+   "read": "007e311b",
+   "store": "007e3120",
+   "consumers": []
+  },
+  {
+   "offset": "+258",
+   "key": "Dynamics/DeadMeat/SpinRollSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "5.0",
+   "read": "007e3400",
+   "store": "007e3405",
+   "consumers": []
+  },
+  {
+   "offset": "+25c",
+   "key": "Dynamics/DeadMeat/RollMulTime",
+   "type": "number",
+   "default": "",
+   "shipped": "6",
+   "read": "007e318d",
+   "store": "007e3192",
+   "consumers": []
+  },
+  {
+   "offset": "+260",
+   "key": "Dynamics/DeadMeat/RollMul",
+   "type": "number",
+   "default": "",
+   "shipped": "2.0",
+   "read": "007e3154",
+   "store": "007e3159",
+   "consumers": []
+  },
+  {
+   "offset": "+264",
+   "key": "Dynamics/DeadMeat/LostDragTime",
+   "type": "number",
+   "default": "",
+   "shipped": "5",
+   "read": "007e31c6",
+   "store": "007e31cb",
+   "consumers": []
+  },
+  {
+   "offset": "+268",
+   "key": "Dynamics/DeadMeat/ExtraGravityMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007e31ff",
+   "store": "007e3204",
+   "consumers": []
+  },
+  {
+   "offset": "+26c",
+   "key": "Dynamics/DeadMeat/SpinStallMul",
+   "type": "number",
+   "default": "",
+   "shipped": "10",
+   "read": "007e3238",
+   "store": "007e323d",
+   "consumers": []
+  },
+  {
+   "offset": "+270",
+   "key": "Dynamics/DeadMeat/SpinStallMulTime",
+   "type": "number",
+   "default": "",
+   "shipped": "4",
+   "read": "007e3271",
+   "store": "007e3276",
+   "consumers": []
+  },
+  {
+   "offset": "+274",
+   "key": "Dynamics/DeadMeat/SpinStallMulOnPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(0)",
+   "read": "007e32aa",
+   "store": "007e32af",
+   "consumers": []
+  },
+  {
+   "offset": "+278",
+   "key": "Dynamics/DeadMeat/SpinStallMulOffPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(-75)",
+   "read": "007e32e3",
+   "store": "007e32e8",
+   "consumers": []
+  },
+  {
+   "offset": "+27c",
+   "key": "Dynamics/DeadMeat/StallMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1",
+   "read": "007e331c",
+   "store": "007e3321",
+   "consumers": []
+  },
+  {
+   "offset": "+280",
+   "key": "Dynamics/DeadMeat/StallMulTime",
+   "type": "number",
+   "default": "",
+   "shipped": "4",
+   "read": "007e3355",
+   "store": "007e335a",
+   "consumers": []
+  },
+  {
+   "offset": "+284",
+   "key": "Dynamics/DeadMeat/StallMulOnPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(10)",
+   "read": "007e338e",
+   "store": "007e3393",
+   "consumers": []
+  },
+  {
+   "offset": "+288",
+   "key": "Dynamics/DeadMeat/StallMulOffPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(-25)",
+   "read": "007e33c7",
+   "store": "007e33cc",
+   "consumers": []
+  },
+  {
+   "offset": "+28c",
+   "key": "(derived)",
+   "type": "derived",
+   "default": "",
+   "shipped": "",
+   "read": "",
+   "store": "007e41df",
+   "consumers": [
+    "007c4810"
+   ]
+  },
+  {
+   "offset": "+290",
+   "key": "Dynamics/WheelFriction",
+   "type": "number",
+   "default": "",
+   "shipped": "0.75",
+   "read": "007e2de5",
+   "store": "007e2dea",
+   "consumers": []
+  },
+  {
+   "offset": "+294",
+   "key": "Dynamics/WheelFrictionSpeed/1",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e2e33",
+   "store": "007e2e3c",
+   "consumers": []
+  },
+  {
+   "offset": "+298",
+   "key": "Dynamics/WheelFrictionSpeed/2",
+   "type": "number",
+   "default": "",
+   "shipped": "1.4",
+   "read": "007e2e92",
+   "store": "007e2e97",
+   "consumers": []
+  },
+  {
+   "offset": "+29c",
+   "key": "Dynamics/WheelFrictionAccel/1",
+   "type": "number",
+   "default": "",
+   "shipped": "0.0",
+   "read": "007e2ef1",
+   "store": "007e2ef6",
+   "consumers": []
+  },
+  {
+   "offset": "+2a0",
+   "key": "Dynamics/WheelFrictionAccel/2",
+   "type": "number",
+   "default": "",
+   "shipped": "8.0",
+   "read": "007e2f50",
+   "store": "007e2f55",
+   "consumers": []
+  },
+  {
+   "offset": "+2a4",
+   "key": "Dynamics/RunwaySmoothStrength",
+   "type": "number",
+   "default": "",
+   "shipped": "4.0",
+   "read": "007e2f99",
+   "store": "007e2f9e",
+   "consumers": []
+  },
+  {
+   "offset": "+2a8",
+   "key": "Dynamics/RunwayYawTurnSpdLimit/1",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(25)",
+   "read": "007e2fe7",
+   "store": "007e2fec",
+   "consumers": [
+    "009ce2c0"
+   ]
+  },
+  {
+   "offset": "+2ac",
+   "key": "Dynamics/RunwayYawTurnSpdLimit/1",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(25)",
+   "read": "007e3046",
+   "store": "007e304b",
+   "consumers": [
+    "009ce2c0"
+   ]
+  },
+  {
+   "offset": "+2b0",
+   "key": "Dynamics/RunwayYawTurnSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "2.2",
+   "read": "007e308f",
+   "store": "007e3094",
+   "consumers": [
+    "009ce2c0"
+   ]
+  },
+  {
+   "offset": "+2b4",
+   "key": "Dynamics/Water/MaxVSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "10",
+   "read": "007e36a5",
+   "store": "007e36aa",
+   "consumers": []
+  },
+  {
+   "offset": "+2b8",
+   "key": "Dynamics/Water/MaxDownPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(15)",
+   "read": "007e36e4",
+   "store": "007e36e9",
+   "consumers": []
+  },
+  {
+   "offset": "+2bc",
+   "key": "Dynamics/Water/MaxUpPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(50)",
+   "read": "007e3723",
+   "store": "007e3728",
+   "consumers": []
+  },
+  {
+   "offset": "+2c0",
+   "key": "Dynamics/Water/MaxRoll",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e3762",
+   "store": "007e3767",
+   "consumers": []
+  },
+  {
+   "offset": "+2c4",
+   "key": "Dynamics/Water/YawControlFactor",
+   "type": "number",
+   "default": "",
+   "shipped": "0.4",
+   "read": "007e37a1",
+   "store": "007e37a6",
+   "consumers": []
+  },
+  {
+   "offset": "+2c8",
+   "key": "Dynamics/Water/NormalYawControlSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(45)",
+   "read": "007e37e0",
+   "store": "007e37e5",
+   "consumers": []
+  },
+  {
+   "offset": "+2cc",
+   "key": "Dynamics/Water/MaxYawControlSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(18)",
+   "read": "007e381f",
+   "store": "007e3824",
+   "consumers": []
+  },
+  {
+   "offset": "+2d0",
+   "key": "Dynamics/Water/MaxYawControl",
+   "type": "number",
+   "default": "",
+   "shipped": "6.0",
+   "read": "007e385e",
+   "store": "007e3863",
+   "consumers": []
+  },
+  {
+   "offset": "+2d4",
+   "key": "Dynamics/Water/MaxDepth",
+   "type": "number",
+   "default": "",
+   "shipped": "6.0",
+   "read": "007e3968",
+   "store": "007e396d",
+   "consumers": []
+  },
+  {
+   "offset": "+2d8",
+   "key": "Dynamics/Water/LiftDepthRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e38ea",
+   "store": "007e38ef",
+   "consumers": []
+  },
+  {
+   "offset": "+2dc",
+   "key": "Dynamics/Water/LiftMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007e3929",
+   "store": "007e392e",
+   "consumers": []
+  },
+  {
+   "offset": "+2e0",
+   "key": "Dynamics/Water/DecelSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(15)",
+   "read": "007e389d",
+   "store": "007e38d5",
+   "consumers": []
+  },
+  {
+   "offset": "+2e4",
+   "key": "Dynamics/Water/SideDragRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e39a7",
+   "store": "007e39ac",
+   "consumers": []
+  },
+  {
+   "offset": "+2e8",
+   "key": "Dynamics/Water/MaxSideDrag",
+   "type": "number",
+   "default": "",
+   "shipped": "6.0",
+   "read": "007e39e6",
+   "store": "007e39eb",
+   "consumers": []
+  },
+  {
+   "offset": "+2ec",
+   "key": "Dynamics/Water/MaxCtrlAngle",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(5)",
+   "read": "007e3bde",
+   "store": "007e3bfe",
+   "consumers": []
+  },
+  {
+   "offset": "+2f0",
+   "key": "Dynamics/Water/MinCtrlAngle",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e3c33",
+   "store": "007e3c53",
+   "consumers": []
+  },
+  {
+   "offset": "+2f4",
+   "key": "Dynamics/Water/TakeOffMaxLength",
+   "type": "number",
+   "default": "",
+   "shipped": "250",
+   "read": "007e3a25",
+   "store": "007e3a2a",
+   "consumers": [
+    "0099f1c0"
+   ]
+  },
+  {
+   "offset": "+2f8",
+   "key": "Dynamics/Water/TakeOffMinLength",
+   "type": "number",
+   "default": "",
+   "shipped": "140",
+   "read": "007e3a64",
+   "store": "007e3a69",
+   "consumers": []
+  },
+  {
+   "offset": "+2fc",
+   "key": "Dynamics/Water/MinDragSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(20)",
+   "read": "007e3aa3",
+   "store": "007e3aa8",
+   "consumers": []
+  },
+  {
+   "offset": "+300",
+   "key": "Dynamics/Water/LiftBeginDiveMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.35",
+   "read": "007e3ae2",
+   "store": "007e3ae7",
+   "consumers": []
+  },
+  {
+   "offset": "+304",
+   "key": "Dynamics/Water/LiftRotateMax",
+   "type": "number",
+   "default": "",
+   "shipped": "8.0",
+   "read": "007e3b21",
+   "store": "007e3b26",
+   "consumers": []
+  },
+  {
+   "offset": "+308",
+   "key": "Dynamics/Water/LiftRotateDepthRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "1.8",
+   "read": "007e3b60",
+   "store": "007e3b65",
+   "consumers": []
+  },
+  {
+   "offset": "+30c",
+   "key": "Dynamics/Water/LiftRotateAngleRatio",
+   "type": "number",
+   "default": "",
+   "shipped": "8.0",
+   "read": "007e3b9f",
+   "store": "007e3ba4",
+   "consumers": []
+  },
+  {
+   "offset": "+310",
+   "key": "Dynamics/MaxDragSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e3449",
+   "store": "007e344e",
+   "consumers": []
+  },
+  {
+   "offset": "+314",
+   "key": "Dynamics/MinDragSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e3481",
+   "store": "007e3486",
+   "consumers": []
+  },
+  {
+   "offset": "+318",
+   "key": "Dynamics/MaxDragPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e34bc",
+   "store": "007e34c1",
+   "consumers": []
+  },
+  {
+   "offset": "+31c",
+   "key": "Dynamics/AccelCheatMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007e34fa",
+   "store": "007e34ff",
+   "consumers": [
+    "007d1f70"
+   ]
+  },
+  {
+   "offset": "+320",
+   "key": "Dynamics/AccelCheatMulMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.15",
+   "read": "007e3538",
+   "store": "007e353d",
+   "consumers": [
+    "007d1f70"
+   ]
+  },
+  {
+   "offset": "+324",
+   "key": "Dynamics/AccelCheatFallMul",
+   "type": "number",
+   "default": "",
+   "shipped": "2.6",
+   "read": "007e3576",
+   "store": "007e357b",
+   "consumers": []
+  },
+  {
+   "offset": "+328",
+   "key": "Dynamics/AccelCheatFallPitchRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(10)",
+   "read": "007e35cd",
+   "store": "007e35d2",
+   "consumers": []
+  },
+  {
+   "offset": "+32c",
+   "key": "Dynamics/AccelCheatFallPitchRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(60)",
+   "read": "007e3638",
+   "store": "007e363d",
+   "consumers": []
+  },
+  {
+   "offset": "+330",
+   "key": "Dynamics/SpdMultipliers/TurboMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "1.95",
+   "read": "007e3fe1",
+   "store": "007e3fe6",
+   "consumers": []
+  },
+  {
+   "offset": "+334",
+   "key": "Dynamics/SpdMultipliers/NewTravelSpeedMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.6",
+   "read": "007e4020",
+   "store": "007e4025",
+   "consumers": [
+    "007d1f70"
+   ]
+  },
+  {
+   "offset": "+338",
+   "key": "Dynamics/SpdMultipliers/DiveBombSlowMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.3",
+   "read": "007e405f",
+   "store": "007e4064",
+   "consumers": [
+    "007ce040"
+   ]
+  },
+  {
+   "offset": "+33c",
+   "key": "Dynamics/SpdMultipliers/TorpedoBombSlowMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.3",
+   "read": "007e409e",
+   "store": "007e40a3",
+   "consumers": [
+    "007ce040"
+   ]
+  },
+  {
+   "offset": "+340",
+   "key": "Dynamics/SpdMultipliers/DepthChargeSlowMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.3",
+   "read": "007e40dd",
+   "store": "007e40e2",
+   "consumers": [
+    "007ce040"
+   ]
+  },
+  {
+   "offset": "+344",
+   "key": "Dynamics/SpdMultipliers/LevelBombSlowMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e411c",
+   "store": "007e4121",
+   "consumers": [
+    "007ce040"
+   ]
+  },
+  {
+   "offset": "+348",
+   "key": "Retreat/ExitDist",
+   "type": "number",
+   "default": "",
+   "shipped": "1000",
+   "read": "007e6bfd",
+   "store": "007e6c02",
+   "consumers": []
+  },
+  {
+   "offset": "+34c",
+   "key": "Retreat/ExitTime",
+   "type": "number",
+   "default": "",
+   "shipped": "20",
+   "read": "007e6c3e",
+   "store": "007e6c43",
+   "consumers": []
+  },
+  {
+   "offset": "+350",
+   "key": "Retreat/WarningRepeatTime",
+   "type": "number",
+   "default": "",
+   "shipped": "6",
+   "read": "007e6c7f",
+   "store": "007e6c84",
+   "consumers": []
+  },
+  {
+   "offset": "+354",
+   "key": "ParatrooperDrop/MinAltitude",
+   "type": "number",
+   "default": "",
+   "shipped": "300",
+   "read": "007e6d01",
+   "store": "007e6d06",
+   "consumers": [
+    "007c4d90"
+   ]
+  },
+  {
+   "offset": "+358",
+   "key": "ParatrooperDrop/MaxAltitude",
+   "type": "number",
+   "default": "",
+   "shipped": "1500",
+   "read": "007e6d42",
+   "store": "007e6d47",
+   "consumers": [
+    "007c4d90"
+   ]
+  },
+  {
+   "offset": "+35c",
+   "key": "Pilot/MoveTo/SmallPlaneTravelAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "800",
+   "read": "007e82f2",
+   "store": "007e82f7",
+   "consumers": []
+  },
+  {
+   "offset": "+360",
+   "key": "Pilot/MoveTo/LargePlaneTravelAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1400",
+   "read": "007e8333",
+   "store": "007e8338",
+   "consumers": []
+  },
+  {
+   "offset": "+364",
+   "key": "Pilot/MoveTo/TravelAltRandom",
+   "type": "number",
+   "default": "",
+   "shipped": "50",
+   "read": "007e8374",
+   "store": "007e8379",
+   "consumers": []
+  },
+  {
+   "offset": "+368",
+   "key": "Pilot/MoveTo/FollowDist/1",
+   "type": "number",
+   "default": "",
+   "shipped": "20",
+   "read": "007e83ce",
+   "store": "007e83d3",
+   "consumers": []
+  },
+  {
+   "offset": "+36c",
+   "key": "Pilot/MoveTo/FollowDist/2",
+   "type": "number",
+   "default": "",
+   "shipped": "200",
+   "read": "007e843c",
+   "store": "007e8441",
+   "consumers": []
+  },
+  {
+   "offset": "+370",
+   "key": "Pilot/MoveTo/ClosingDist",
+   "type": "number",
+   "default": "",
+   "shipped": "150",
+   "read": "007e8491",
+   "store": "007e8496",
+   "consumers": [
+    "0084e010",
+    "009c3570"
+   ]
+  },
+  {
+   "offset": "+374",
+   "key": "Pilot/MoveTo/SwitchNextPointTime",
+   "type": "number",
+   "default": "",
+   "shipped": "2.0",
+   "read": "007e8513",
+   "store": "007e8518",
+   "consumers": []
+  },
+  {
+   "offset": "+378",
+   "key": "Pilot/MoveTo/CircleAltDiff",
+   "type": "number",
+   "default": "",
+   "shipped": "30",
+   "read": "007e84d2",
+   "store": "007e84d7",
+   "consumers": [
+    "009fc260"
+   ]
+  },
+  {
+   "offset": "+37c",
+   "key": "Pilot/MoveTo/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(300)",
+   "read": "007e8554",
+   "store": "007e8559",
+   "consumers": [
+    "009bc780",
+    "009bc7e0",
+    "009c1c30",
+    "009c1dc0"
+   ]
+  },
+  {
+   "offset": "+380",
+   "key": "Pilot/Follow/FollowedPointDist",
+   "type": "number",
+   "default": "",
+   "shipped": "250",
+   "read": "007e8aa8",
+   "store": "007e8aad",
+   "consumers": []
+  },
+  {
+   "offset": "+384",
+   "key": "Pilot/Follow/LeaderFollowAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "10",
+   "read": "007e8ae9",
+   "store": "007e8aee",
+   "consumers": []
+  },
+  {
+   "offset": "+388",
+   "key": "Pilot/Follow/SafeAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "60",
+   "read": "007e8b2a",
+   "store": "007e8b2f",
+   "consumers": []
+  },
+  {
+   "offset": "+38c",
+   "key": "Pilot/Follow/SmallPlaneTurnMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.1",
+   "read": "007e870c",
+   "store": "007e8711",
+   "consumers": []
+  },
+  {
+   "offset": "+390",
+   "key": "Pilot/Follow/LargePlaneTurnMul",
+   "type": "number",
+   "default": "",
+   "shipped": "1.1",
+   "read": "007e874d",
+   "store": "007e8752",
+   "consumers": []
+  },
+  {
+   "offset": "+394",
+   "key": "Pilot/Follow/GoodPositionDir",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e87cf",
+   "store": "007e87d4",
+   "consumers": []
+  },
+  {
+   "offset": "+398",
+   "key": "Pilot/Follow/GoodPositionDist",
+   "type": "number",
+   "default": "",
+   "shipped": "100",
+   "read": "007e878e",
+   "store": "007e8793",
+   "consumers": []
+  },
+  {
+   "offset": "+39c",
+   "key": "Pilot/Follow/GoodPositionSpdTreshold",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e8810",
+   "store": "007e8815",
+   "consumers": []
+  },
+  {
+   "offset": "+3a0",
+   "key": "Pilot/Follow/GoodPositionSpdDiff",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(200)",
+   "read": "007e8851",
+   "store": "007e8856",
+   "consumers": []
+  },
+  {
+   "offset": "+3a4",
+   "key": "Pilot/Follow/MaxFollowSpdTargetDir",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(30)",
+   "read": "007e8892",
+   "store": "007e88e4",
+   "consumers": []
+  },
+  {
+   "offset": "+3a8",
+   "key": "Pilot/Follow/MinFollowSpdTargetDir",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(100)",
+   "read": "007e891b",
+   "store": "007e8970",
+   "consumers": []
+  },
+  {
+   "offset": "+3ac",
+   "key": "Pilot/Follow/DontWaitForHdgDiff",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(50)",
+   "read": "007e89a7",
+   "store": "007e89ac",
+   "consumers": []
+  },
+  {
+   "offset": "+3b0",
+   "key": "Pilot/Follow/WaitForHdgDiff",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(100)",
+   "read": "007e89e5",
+   "store": "007e89ea",
+   "consumers": []
+  },
+  {
+   "offset": "+3b4",
+   "key": "Pilot/Follow/NearbyDist",
+   "type": "number",
+   "default": "",
+   "shipped": "200",
+   "read": "007e8a26",
+   "store": "007e8a2b",
+   "consumers": []
+  },
+  {
+   "offset": "+3b8",
+   "key": "Pilot/Follow/TightTurn",
+   "type": "number",
+   "default": "",
+   "shipped": "1.25",
+   "read": "007e8a67",
+   "store": "007e8a6c",
+   "consumers": []
+  },
+  {
+   "offset": "+3bc",
+   "key": "Pilot/Follow/LeaderHeadingSpdTime/1",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e8b84",
+   "store": "007e8b89",
+   "consumers": []
+  },
+  {
+   "offset": "+3c0",
+   "key": "Pilot/Follow/LeaderHeadingSpdTime/2",
+   "type": "number",
+   "default": "",
+   "shipped": "4.0",
+   "read": "007e8bef",
+   "store": "007e8bf4",
+   "consumers": []
+  },
+  {
+   "offset": "+3c4",
+   "key": "Pilot/Follow/LeaderHeadingSpdDist/1",
+   "type": "number",
+   "default": "",
+   "shipped": "100",
+   "read": "007e8c5a",
+   "store": "007e8c5f",
+   "consumers": []
+  },
+  {
+   "offset": "+3c8",
+   "key": "Pilot/Follow/LeaderHeadingSpdDist/2",
+   "type": "number",
+   "default": "",
+   "shipped": "500",
+   "read": "007e8cc5",
+   "store": "007e8cca",
+   "consumers": []
+  },
+  {
+   "offset": "+3cc",
+   "key": "(derived)",
+   "type": "derived",
+   "default": "",
+   "shipped": "",
+   "read": "",
+   "store": "007e908d",
+   "consumers": []
+  },
+  {
+   "offset": "+3d0",
+   "key": "Pilot/Follow/SmallPlaneDisplacement",
+   "type": "number[3]",
+   "default": "",
+   "shipped": "",
+   "read": "007e85db",
+   "store": "007e85e2",
+   "consumers": [
+    "007f23a0"
+   ]
+  },
+  {
+   "offset": "+3d4",
+   "key": "Pilot/Follow/SmallPlaneDisplacement",
+   "type": "number[3]",
+   "default": "",
+   "shipped": "",
+   "read": "007e85db",
+   "store": "007e85f9",
+   "consumers": []
+  },
+  {
+   "offset": "+3d8",
+   "key": "Pilot/Follow/SmallPlaneDisplacement",
+   "type": "number[3]",
+   "default": "",
+   "shipped": "",
+   "read": "007e85db",
+   "store": "007e8602",
+   "consumers": []
+  },
+  {
+   "offset": "+3dc",
+   "key": "Pilot/Follow/BomberDisplacement",
+   "type": "number[3]",
+   "default": "",
+   "shipped": "",
+   "read": "007e8635",
+   "store": "007e863c",
+   "consumers": [
+    "007f23a0"
+   ]
+  },
+  {
+   "offset": "+3e0",
+   "key": "Pilot/Follow/BomberDisplacement",
+   "type": "number[3]",
+   "default": "",
+   "shipped": "",
+   "read": "007e8635",
+   "store": "007e8653",
+   "consumers": []
+  },
+  {
+   "offset": "+3e4",
+   "key": "Pilot/Follow/BomberDisplacement",
+   "type": "number[3]",
+   "default": "",
+   "shipped": "",
+   "read": "007e8635",
+   "store": "007e865c",
+   "consumers": []
+  },
+  {
+   "offset": "+3e8",
+   "key": "Pilot/Follow/SymmetricalPosition",
+   "type": "boolean",
+   "default": "",
+   "shipped": "true",
+   "read": "007e868a",
+   "store": "007e8696",
+   "consumers": [
+    "007f23a0"
+   ]
+  },
+  {
+   "offset": "+3e9",
+   "key": "Pilot/Follow/SymmetricalAltitude",
+   "type": "boolean",
+   "default": "",
+   "shipped": "false",
+   "read": "007e86cb",
+   "store": "007e86d7",
+   "consumers": [
+    "007f23a0"
+   ]
+  },
+  {
+   "offset": "+3ec",
+   "key": "Pilot/Follow/yf_hdg_rad",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / DEG(10)",
+   "read": "007e8d17",
+   "store": "007e8d1c",
+   "consumers": []
+  },
+  {
+   "offset": "+3f0",
+   "key": "Pilot/Follow/yf_yawV_radPerSec",
+   "type": "number",
+   "default": "",
+   "shipped": "0 / DEG(10)",
+   "read": "007e8d58",
+   "store": "007e8d5d",
+   "consumers": []
+  },
+  {
+   "offset": "+3f4",
+   "key": "Pilot/Follow/yf_sidepos_meter",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / 25",
+   "read": "007e8d99",
+   "store": "007e8d9e",
+   "consumers": []
+  },
+  {
+   "offset": "+3f8",
+   "key": "Pilot/Follow/yf_sidedir",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / 25",
+   "read": "007e8dda",
+   "store": "007e8ddf",
+   "consumers": []
+  },
+  {
+   "offset": "+3fc",
+   "key": "Pilot/Follow/pf_pitch_rad",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / DEG(10)",
+   "read": "007e8e1b",
+   "store": "007e8e20",
+   "consumers": []
+  },
+  {
+   "offset": "+400",
+   "key": "Pilot/Follow/pf_pitchV_radPerSec",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / DEG(100)",
+   "read": "007e8e5c",
+   "store": "007e8e61",
+   "consumers": []
+  },
+  {
+   "offset": "+404",
+   "key": "Pilot/Follow/pf_vertpos_meter",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / 25",
+   "read": "007e8e9d",
+   "store": "007e8ea2",
+   "consumers": []
+  },
+  {
+   "offset": "+408",
+   "key": "Pilot/Follow/pf_vertdir",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / 25",
+   "read": "007e8ede",
+   "store": "007e8ee3",
+   "consumers": []
+  },
+  {
+   "offset": "+40c",
+   "key": "Pilot/Follow/rf_roll_rad",
+   "type": "number",
+   "default": "",
+   "shipped": "-1 / DEG(30)",
+   "read": "007e8f1f",
+   "store": "007e8f24",
+   "consumers": []
+  },
+  {
+   "offset": "+410",
+   "key": "Pilot/Follow/rf_rollV_radPerSec",
+   "type": "number",
+   "default": "",
+   "shipped": "-0 / DEG(80)",
+   "read": "007e8f60",
+   "store": "007e8f65",
+   "consumers": []
+  },
+  {
+   "offset": "+414",
+   "key": "Pilot/Follow/rf_hdg_rad",
+   "type": "number",
+   "default": "",
+   "shipped": "0 / DEG(40)",
+   "read": "007e8fa1",
+   "store": "007e8fa6",
+   "consumers": []
+  },
+  {
+   "offset": "+418",
+   "key": "Pilot/Follow/rf_hdgV_radPerSec",
+   "type": "number",
+   "default": "",
+   "shipped": "0 / DEG(400)",
+   "read": "007e8fe2",
+   "store": "007e8fe7",
+   "consumers": []
+  },
+  {
+   "offset": "+41c",
+   "key": "Pilot/Follow/pwr_back_meter",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / 10",
+   "read": "007e9023",
+   "store": "007e9028",
+   "consumers": []
+  },
+  {
+   "offset": "+420",
+   "key": "Pilot/Follow/pwr_spd_meterPerSec",
+   "type": "number",
+   "default": "",
+   "shipped": "1 / KMH(10)",
+   "read": "007e9064",
+   "store": "007e9069",
+   "consumers": []
+  },
+  {
+   "offset": "+424",
+   "key": "Pilot/CloseToShip/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1200",
+   "read": "007e9237",
+   "store": "007e923c",
+   "consumers": [
+    "009a2d60"
+   ]
+  },
+  {
+   "offset": "+428",
+   "key": "Pilot/CloseToShip/DropAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1000",
+   "read": "007e9278",
+   "store": "007e927d",
+   "consumers": [
+    "009a2d60"
+   ]
+  },
+  {
+   "offset": "+42c",
+   "key": "Pilot/CloseToShip/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(300)",
+   "read": "007e92b9",
+   "store": "007e92be",
+   "consumers": [
+    "009a1d60",
+    "009a1dc0"
+   ]
+  },
+  {
+   "offset": "+430",
+   "key": "Pilot/Torpedo/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "500",
+   "read": "007e933b",
+   "store": "007e9340",
+   "consumers": [
+    "009d4a70"
+   ]
+  },
+  {
+   "offset": "+434",
+   "key": "Pilot/Torpedo/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "2200",
+   "read": "007e937c",
+   "store": "007e9381",
+   "consumers": [
+    "009d4a70"
+   ]
+  },
+  {
+   "offset": "+438",
+   "key": "Pilot/Torpedo/SafeDist",
+   "type": "number",
+   "default": "",
+   "shipped": "700",
+   "read": "007e93bd",
+   "store": "007e93c2",
+   "consumers": []
+  },
+  {
+   "offset": "+43c",
+   "key": "Pilot/Torpedo/MoveOnCruisingAlt",
+   "type": "boolean",
+   "default": "",
+   "shipped": "true",
+   "read": "007e93fe",
+   "store": "007e9411",
+   "consumers": []
+  },
+  {
+   "offset": "+440",
+   "key": "Pilot/Torpedo/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(300)",
+   "read": "007e9448",
+   "store": "007e944d",
+   "consumers": [
+    "009d0380"
+   ]
+  },
+  {
+   "offset": "+444",
+   "key": "Pilot/LevelBomb/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1300",
+   "read": "007e94ca",
+   "store": "007e94cf",
+   "consumers": [
+    "009b8c90"
+   ]
+  },
+  {
+   "offset": "+448",
+   "key": "Pilot/LevelBomb/DropAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1300",
+   "read": "007e950b",
+   "store": "007e9510",
+   "consumers": [
+    "009b8c90"
+   ]
+  },
+  {
+   "offset": "+44c",
+   "key": "Pilot/LevelBomb/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "2000",
+   "read": "007e954c",
+   "store": "007e9551",
+   "consumers": [
+    "009b8c90"
+   ]
+  },
+  {
+   "offset": "+450",
+   "key": "Pilot/LevelBomb/SafeDist",
+   "type": "number",
+   "default": "",
+   "shipped": "1000",
+   "read": "007e958d",
+   "store": "007e9592",
+   "consumers": [
+    "009b8d80"
+   ]
+  },
+  {
+   "offset": "+454",
+   "key": "Pilot/LevelBomb/MoveOnCruisingAlt",
+   "type": "boolean",
+   "default": "",
+   "shipped": "false",
+   "read": "007e95ce",
+   "store": "007e95e1",
+   "consumers": []
+  },
+  {
+   "offset": "+458",
+   "key": "Pilot/LevelBomb/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(300)",
+   "read": "007e9618",
+   "store": "007e961d",
+   "consumers": [
+    "009abab0",
+    "009abbe0",
+    "009b44f0",
+    "009b4690"
+   ]
+  },
+  {
+   "offset": "+45c",
+   "key": "Pilot/Kamikaze/RocketLike/CruisingAlt",
+   "type": "number-or-default",
+   "default": "1200",
+   "shipped": "1300",
+   "read": "007e982c",
+   "store": "007e9831",
+   "consumers": []
+  },
+  {
+   "offset": "+460",
+   "key": "Pilot/Kamikaze/RocketLike/DropDist",
+   "type": "number-or-default",
+   "default": "2000",
+   "shipped": "3500",
+   "read": "007e9875",
+   "store": "007e987a",
+   "consumers": []
+  },
+  {
+   "offset": "+464",
+   "key": "Pilot/Kamikaze/RocketLike/AttackRange",
+   "type": "number-or-default",
+   "default": "1400",
+   "shipped": "3500",
+   "read": "007e96bf",
+   "store": "007e96c4",
+   "consumers": []
+  },
+  {
+   "offset": "+468",
+   "key": "Pilot/Kamikaze/RocketLike/AttackAlt",
+   "type": "number-or-default",
+   "default": "500",
+   "shipped": "800",
+   "read": "007e9708",
+   "store": "007e970d",
+   "consumers": []
+  },
+  {
+   "offset": "+46c",
+   "key": "Pilot/Kamikaze/RocketLike/TurboRange",
+   "type": "number-or-default",
+   "default": "1000",
+   "shipped": "3000",
+   "read": "007e9751",
+   "store": "007e9756",
+   "consumers": []
+  },
+  {
+   "offset": "+470",
+   "key": "Pilot/Kamikaze/RocketLike/TurboAngle",
+   "type": "number-or-default",
+   "default": "0.2",
+   "shipped": "DEG(12)",
+   "read": "007e979a",
+   "store": "007e979f",
+   "consumers": []
+  },
+  {
+   "offset": "+474",
+   "key": "Pilot/Kamikaze/RocketLike/ReferenceSpeed",
+   "type": "number-or-default",
+   "default": "180",
+   "shipped": "KMH(600)",
+   "read": "007e97e3",
+   "store": "007e97e8",
+   "consumers": [
+    "009ab920"
+   ]
+  },
+  {
+   "offset": "+478",
+   "key": "Pilot/Kamikaze/FighterLike/CruisingAlt",
+   "type": "number-or-default",
+   "default": "1200",
+   "shipped": "1200",
+   "read": "007e9a63",
+   "store": "007e9a68",
+   "consumers": []
+  },
+  {
+   "offset": "+47c",
+   "key": "Pilot/Kamikaze/FighterLike/DropDist",
+   "type": "number-or-default",
+   "default": "1200",
+   "shipped": "",
+   "read": "007e9aac",
+   "store": "007e9ab1",
+   "consumers": []
+  },
+  {
+   "offset": "+480",
+   "key": "Pilot/Kamikaze/FighterLike/AttackRange",
+   "type": "number-or-default",
+   "default": "1200",
+   "shipped": "2600",
+   "read": "007e98fa",
+   "store": "007e98ff",
+   "consumers": []
+  },
+  {
+   "offset": "+484",
+   "key": "Pilot/Kamikaze/FighterLike/AttackAlt",
+   "type": "number-or-default",
+   "default": "600",
+   "shipped": "800",
+   "read": "007e9943",
+   "store": "007e9948",
+   "consumers": []
+  },
+  {
+   "offset": "+488",
+   "key": "Pilot/Kamikaze/FighterLike/TurboRange",
+   "type": "number-or-default",
+   "default": "500",
+   "shipped": "2400",
+   "read": "007e998c",
+   "store": "007e9991",
+   "consumers": []
+  },
+  {
+   "offset": "+48c",
+   "key": "Pilot/Kamikaze/FighterLike/TurboAngle",
+   "type": "number-or-default",
+   "default": "0",
+   "shipped": "",
+   "read": "007e99d1",
+   "store": "007e99d6",
+   "consumers": []
+  },
+  {
+   "offset": "+490",
+   "key": "Pilot/Kamikaze/FighterLike/ReferenceSpeed",
+   "type": "number-or-default",
+   "default": "100",
+   "shipped": "KMH(400)",
+   "read": "007e9a1a",
+   "store": "007e9a1f",
+   "consumers": [
+    "009ab920"
+   ]
+  },
+  {
+   "offset": "+494",
+   "key": "Pilot/DepthCharge/AimAltRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "20",
+   "read": "007e9b58",
+   "store": "007e9b5d",
+   "consumers": [
+    "009a3390"
+   ]
+  },
+  {
+   "offset": "+498",
+   "key": "Pilot/DepthCharge/AimAltRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "60",
+   "read": "007e9bc3",
+   "store": "007e9bc8",
+   "consumers": [
+    "009a6500"
+   ]
+  },
+  {
+   "offset": "+49c",
+   "key": "Pilot/DepthCharge/ManeuverAltRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "80",
+   "read": "007e9c2e",
+   "store": "007e9c33",
+   "consumers": [
+    "009a3390",
+    "009a5f50"
+   ]
+  },
+  {
+   "offset": "+4a0",
+   "key": "Pilot/DepthCharge/ManeuverAltRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "150",
+   "read": "007e9c99",
+   "store": "007e9c9e",
+   "consumers": []
+  },
+  {
+   "offset": "+4a4",
+   "key": "Pilot/DepthCharge/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "700",
+   "read": "007e9ceb",
+   "store": "007e9cf0",
+   "consumers": [
+    "009a6500"
+   ]
+  },
+  {
+   "offset": "+4a8",
+   "key": "Pilot/DepthCharge/FlyAboveDist",
+   "type": "number",
+   "default": "",
+   "shipped": "400",
+   "read": "007e9d2c",
+   "store": "007e9d31",
+   "consumers": [
+    "009a3390"
+   ]
+  },
+  {
+   "offset": "+4ac",
+   "key": "Pilot/DepthCharge/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "1800",
+   "read": "007e9d6d",
+   "store": "007e9d72",
+   "consumers": [
+    "009a6500"
+   ]
+  },
+  {
+   "offset": "+4b0",
+   "key": "Pilot/DepthCharge/SafeDist",
+   "type": "number",
+   "default": "",
+   "shipped": "250",
+   "read": "007e9dae",
+   "store": "007e9db3",
+   "consumers": [
+    "009a65f0"
+   ]
+  },
+  {
+   "offset": "+4b4",
+   "key": "Pilot/DepthCharge/MoveOnCruisingAlt",
+   "type": "boolean",
+   "default": "",
+   "shipped": "true",
+   "read": "007e9e30",
+   "store": "007e9e43",
+   "consumers": []
+  },
+  {
+   "offset": "+4b8",
+   "key": "Pilot/DepthCharge/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(270)",
+   "read": "007e9def",
+   "store": "007e9df4",
+   "consumers": [
+    "009a3390",
+    "009a35d0"
+   ]
+  },
+  {
+   "offset": "+4bc",
+   "key": "Pilot/DepthCharge/TargetLostTime",
+   "type": "number-or-default",
+   "default": "20",
+   "shipped": "20",
+   "read": "007e9e84",
+   "store": "007e9e89",
+   "consumers": [
+    "009a5f50"
+   ]
+  },
+  {
+   "offset": "+4c0",
+   "key": "Pilot/DiveBomb/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1300",
+   "read": "007e9f47",
+   "store": "007e9f4c",
+   "consumers": [
+    "009c8920"
+   ]
+  },
+  {
+   "offset": "+4c4",
+   "key": "Pilot/DiveBomb/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "1100",
+   "read": "007e9f06",
+   "store": "007e9f0b",
+   "consumers": [
+    "009c8920"
+   ]
+  },
+  {
+   "offset": "+4c8",
+   "key": "Pilot/DiveBomb/SafeDist",
+   "type": "number",
+   "default": "",
+   "shipped": "100",
+   "read": "007e9f88",
+   "store": "007e9f8d",
+   "consumers": [
+    "009c8a90"
+   ]
+  },
+  {
+   "offset": "+4cc",
+   "key": "Pilot/DiveBomb/BeginAltRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "1000",
+   "read": "007e9fe2",
+   "store": "007e9fe7",
+   "consumers": [
+    "009c3ea0",
+    "009c8920"
+   ]
+  },
+  {
+   "offset": "+4d0",
+   "key": "Pilot/DiveBomb/BeginAltRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "1200",
+   "read": "007ea04d",
+   "store": "007ea052",
+   "consumers": []
+  },
+  {
+   "offset": "+4d4",
+   "key": "Pilot/DiveBomb/MoveOnCruisingAlt",
+   "type": "boolean",
+   "default": "",
+   "shipped": "true",
+   "read": "007ea0e0",
+   "store": "007ea0f3",
+   "consumers": []
+  },
+  {
+   "offset": "+4d8",
+   "key": "Pilot/DiveBomb/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(280)",
+   "read": "007ea09f",
+   "store": "007ea0a4",
+   "consumers": [
+    "009c3ea0"
+   ]
+  },
+  {
+   "offset": "+4dc",
+   "key": "Pilot/TakeOff/PrepareTime",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007ea717",
+   "store": "007ea71c",
+   "consumers": [
+    "009cdd50",
+    "009cde50"
+   ]
+  },
+  {
+   "offset": "+4e0",
+   "key": "Pilot/Landing/ApproachPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(6)",
+   "read": "007ea16b",
+   "store": "007ea170",
+   "consumers": [
+    "009afe70",
+    "009b1420"
+   ]
+  },
+  {
+   "offset": "+4e4",
+   "key": "Pilot/Landing/ApproachAngle",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(12)",
+   "read": "007ea1ac",
+   "store": "007ea1b1",
+   "consumers": [
+    "006c3b10",
+    "009afe70"
+   ]
+  },
+  {
+   "offset": "+4e8",
+   "key": "Pilot/Landing/ParkVelocity",
+   "type": "number",
+   "default": "",
+   "shipped": "KTS(40)",
+   "read": "007ea26f",
+   "store": "007ea274",
+   "consumers": []
+  },
+  {
+   "offset": "+4ec",
+   "key": "Pilot/Landing/ApproachDist",
+   "type": "number",
+   "default": "",
+   "shipped": "210",
+   "read": "007ea1ed",
+   "store": "007ea1f9",
+   "consumers": [
+    "007c5ac0",
+    "009b1420"
+   ]
+  },
+  {
+   "offset": "+4f0",
+   "key": "Pilot/Landing/PosBehind",
+   "type": "number",
+   "default": "",
+   "shipped": "780",
+   "read": "007ea332",
+   "store": "007ea337",
+   "consumers": [
+    "006c3b10",
+    "006c5380",
+    "006c5e20",
+    "006c6020",
+    "009b3c00"
+   ]
+  },
+  {
+   "offset": "+4f4",
+   "key": "Pilot/Landing/PosAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "170",
+   "read": "007ea373",
+   "store": "007ea378",
+   "consumers": [
+    "006c5380"
+   ]
+  },
+  {
+   "offset": "+4f8",
+   "key": "Pilot/Landing/CircleMultiplierMin",
+   "type": "number",
+   "default": "",
+   "shipped": "1.1",
+   "read": "007ea3b4",
+   "store": "007ea3b9",
+   "consumers": [
+    "007c6760"
+   ]
+  },
+  {
+   "offset": "+4fc",
+   "key": "Pilot/Landing/CircleMultiplierMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.05",
+   "read": "007ea3f5",
+   "store": "007ea3fa",
+   "consumers": [
+    "007c6760"
+   ]
+  },
+  {
+   "offset": "+500",
+   "key": "Pilot/Landing/StandbyDist",
+   "type": "number",
+   "default": "",
+   "shipped": "3200",
+   "read": "007ea436",
+   "store": "007ea43b",
+   "consumers": [
+    "006c45c0",
+    "006c46b0",
+    "006c5e20",
+    "006cc9f0"
+   ]
+  },
+  {
+   "offset": "+504",
+   "key": "Pilot/Landing/FollowDistTime",
+   "type": "number",
+   "default": "",
+   "shipped": "9",
+   "read": "007ea22e",
+   "store": "007ea233",
+   "consumers": [
+    "006c3f80"
+   ]
+  },
+  {
+   "offset": "+508",
+   "key": "Pilot/Landing/TakeoffDist",
+   "type": "number",
+   "default": "",
+   "shipped": "180",
+   "read": "007ea2f1",
+   "store": "007ea2f6",
+   "consumers": [
+    "006c2400"
+   ]
+  },
+  {
+   "offset": "+50c",
+   "key": "Pilot/Landing/TouchDownDist",
+   "type": "number",
+   "default": "",
+   "shipped": "135",
+   "read": "007ea2b0",
+   "store": "007ea2b5",
+   "consumers": [
+    "006c2400"
+   ]
+  },
+  {
+   "offset": "+510",
+   "key": "Pilot/Landing/LiftDelay",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007ea477",
+   "store": "007ea47c",
+   "consumers": []
+  },
+  {
+   "offset": "+514",
+   "key": "Pilot/Landing/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1400",
+   "read": "007ea57b",
+   "store": "007ea580",
+   "consumers": [
+    "009b3c60"
+   ]
+  },
+  {
+   "offset": "+518",
+   "key": "Pilot/Landing/WireRope",
+   "type": "number",
+   "default": "",
+   "shipped": "7.25",
+   "read": "007ea4b8",
+   "store": "007ea4bd",
+   "consumers": [
+    "007db680"
+   ]
+  },
+  {
+   "offset": "+51c",
+   "key": "Pilot/Landing/MaxWireRope",
+   "type": "number",
+   "default": "",
+   "shipped": "100.0",
+   "read": "007ea4f9",
+   "store": "007ea4fe",
+   "consumers": [
+    "007c7a40",
+    "007db630",
+    "007db680"
+   ]
+  },
+  {
+   "offset": "+520",
+   "key": "Pilot/Landing/MinFreeRunwayLength",
+   "type": "number",
+   "default": "",
+   "shipped": "12",
+   "read": "007ea53a",
+   "store": "007ea53f",
+   "consumers": [
+    "006d0530"
+   ]
+  },
+  {
+   "offset": "+524",
+   "key": "Pilot/Landing/RadiusChange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "10",
+   "read": "007ea5d5",
+   "store": "007ea5da",
+   "consumers": [
+    "006c3e50"
+   ]
+  },
+  {
+   "offset": "+528",
+   "key": "Pilot/Landing/RadiusChange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "50",
+   "read": "007ea644",
+   "store": "007ea649",
+   "consumers": []
+  },
+  {
+   "offset": "+52c",
+   "key": "Pilot/Landing/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(140)",
+   "read": "007ea695",
+   "store": "007ea69a",
+   "consumers": [
+    "009afe70",
+    "009afff0"
+   ]
+  },
+  {
+   "offset": "+530",
+   "key": "UnitAI/StopClearSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(50.0)",
+   "read": "007e6b3a",
+   "store": "007e6b3f",
+   "consumers": []
+  },
+  {
+   "offset": "+534",
+   "key": "UnitAI/StopClearAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "30.0",
+   "read": "007e6b7b",
+   "store": "007e6b80",
+   "consumers": []
+  },
+  {
+   "offset": "+538",
+   "key": "Pilot/General/WaggleLimit",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e6e46",
+   "store": "007e6e4b",
+   "consumers": []
+  },
+  {
+   "offset": "+53c",
+   "key": "Pilot/General/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1000",
+   "read": "007e6fec",
+   "store": "007e6ff1",
+   "consumers": [
+    "007f2bd0",
+    "0084ddc1",
+    "009c91b0"
+   ]
+  },
+  {
+   "offset": "+540",
+   "key": "Pilot/General/MaxAltOffset",
+   "type": "number",
+   "default": "",
+   "shipped": "5",
+   "read": "007e702d",
+   "store": "007e7032",
+   "consumers": [
+    "009bc780",
+    "009c1c30"
+   ]
+  },
+  {
+   "offset": "+544",
+   "key": "Pilot/General/ClimbDist",
+   "type": "number",
+   "default": "",
+   "shipped": "130",
+   "read": "007e6e05",
+   "store": "007e6e0a",
+   "consumers": [
+    "009fb700",
+    "009fb800"
+   ]
+  },
+  {
+   "offset": "+548",
+   "key": "Pilot/General/DropDist",
+   "type": "number",
+   "default": "",
+   "shipped": "200",
+   "read": "007e6dc4",
+   "store": "007e6dc9",
+   "consumers": [
+    "009fb700",
+    "009fb800"
+   ]
+  },
+  {
+   "offset": "+54c",
+   "key": "Pilot/General/MinTurnCircle",
+   "type": "number",
+   "default": "",
+   "shipped": "450",
+   "read": "007e7131",
+   "store": "007e7136",
+   "consumers": [
+    "007c4850"
+   ]
+  },
+  {
+   "offset": "+550",
+   "key": "Pilot/General/LevelBombAngleMax",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e75b4",
+   "store": "007e75b9",
+   "consumers": [
+    "007c7750",
+    "007cc8e0"
+   ]
+  },
+  {
+   "offset": "+550",
+   "key": "Pilot/General/LevelBombAngleMax",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e75f5",
+   "store": "007e75fa",
+   "consumers": [
+    "007c7750",
+    "007cc8e0"
+   ]
+  },
+  {
+   "offset": "+550",
+   "key": "Pilot/General/LevelBombAngleMax",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e7636",
+   "store": "007e763b",
+   "consumers": [
+    "007c7750",
+    "007cc8e0"
+   ]
+  },
+  {
+   "offset": "+550",
+   "key": "Pilot/General/LevelBombAngleMax",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(20)",
+   "read": "007e7677",
+   "store": "007e767c",
+   "consumers": [
+    "007c7750",
+    "007cc8e0"
+   ]
+  },
+  {
+   "offset": "+554",
+   "key": "Pilot/General/DiveBombRollAngleMin",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(60)",
+   "read": "007e7352",
+   "store": "007e7357",
+   "consumers": []
+  },
+  {
+   "offset": "+558",
+   "key": "Pilot/General/DiveBombRollAngleMax",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(90)",
+   "read": "007e7393",
+   "store": "007e7398",
+   "consumers": []
+  },
+  {
+   "offset": "+55c",
+   "key": "Pilot/General/DiveBombRollAngleMinPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "-DEG(80)",
+   "read": "007e73d4",
+   "store": "007e73d9",
+   "consumers": []
+  },
+  {
+   "offset": "+560",
+   "key": "Pilot/General/DiveBombRollAngleMaxPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(90)",
+   "read": "007e7415",
+   "store": "007e741a",
+   "consumers": [
+    "007c7600"
+   ]
+  },
+  {
+   "offset": "+564",
+   "key": "Pilot/General/DiveBombPitchAngleMin",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(60)",
+   "read": "007e7456",
+   "store": "007e745b",
+   "consumers": [
+    "007c7600"
+   ]
+  },
+  {
+   "offset": "+568",
+   "key": "Pilot/General/DiveBombPitchAngleMax",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(90)",
+   "read": "007e7497",
+   "store": "007e749c",
+   "consumers": [
+    "007c7600"
+   ]
+  },
+  {
+   "offset": "+56c",
+   "key": "Pilot/General/SoftHdgMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.35",
+   "read": "007e6f13",
+   "store": "007e6f18",
+   "consumers": []
+  },
+  {
+   "offset": "+570",
+   "key": "Pilot/General/SoftHdgLimit",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e6e87",
+   "store": "007e6e8c",
+   "consumers": []
+  },
+  {
+   "offset": "+574",
+   "key": "Pilot/General/SoftHdgZone",
+   "type": "number-or-default",
+   "default": "0.01",
+   "shipped": "0.01",
+   "read": "007e6ed2",
+   "store": "007e6ed7",
+   "consumers": []
+  },
+  {
+   "offset": "+578",
+   "key": "Pilot/General/SoftRollCtrl",
+   "type": "number",
+   "default": "",
+   "shipped": "0.05",
+   "read": "007e6f54",
+   "store": "007e6f59",
+   "consumers": []
+  },
+  {
+   "offset": "+57c",
+   "key": "Pilot/General/SoftRollMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e6f95",
+   "store": "007e6f9a",
+   "consumers": []
+  },
+  {
+   "offset": "+580",
+   "key": "(derived)",
+   "type": "derived",
+   "default": "",
+   "shipped": "",
+   "read": "",
+   "store": "007e6fd4",
+   "consumers": []
+  },
+  {
+   "offset": "+584",
+   "key": "Pilot/General/HdgDiffCalcLimit/1",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e720d",
+   "store": "007e7212",
+   "consumers": []
+  },
+  {
+   "offset": "+588",
+   "key": "Pilot/General/HdgDiffCalcLimit/2",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007e727b",
+   "store": "007e7280",
+   "consumers": []
+  },
+  {
+   "offset": "+58c",
+   "key": "Pilot/General/HdgDiffCalcMinPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "0.1",
+   "read": "007e72d0",
+   "store": "007e72d5",
+   "consumers": []
+  },
+  {
+   "offset": "+590",
+   "key": "Pilot/General/HdgDiffCalcMinRoll",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(5)",
+   "read": "007e7311",
+   "store": "007e7316",
+   "consumers": []
+  },
+  {
+   "offset": "+594",
+   "key": "Pilot/General/GuardDist",
+   "type": "number",
+   "default": "",
+   "shipped": "3000",
+   "read": "007e706e",
+   "store": "007e7073",
+   "consumers": [
+    "0084e010",
+    "009f7fe0"
+   ]
+  },
+  {
+   "offset": "+598",
+   "key": "Pilot/General/LeaveAlonePwr",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e70f0",
+   "store": "007e70f5",
+   "consumers": []
+  },
+  {
+   "offset": "+59c",
+   "key": "Pilot/General/TurnRollLimitSmall",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(85)",
+   "read": "007e7172",
+   "store": "007e7177",
+   "consumers": []
+  },
+  {
+   "offset": "+5a0",
+   "key": "Pilot/General/TurnRollLimitLarge",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(56)",
+   "read": "007e71b3",
+   "store": "007e71b8",
+   "consumers": []
+  },
+  {
+   "offset": "+5a4",
+   "key": "Pilot/General/TurnRollPitchLimitPitch/1",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(0)",
+   "read": "007e77ee",
+   "store": "007e77f3",
+   "consumers": []
+  },
+  {
+   "offset": "+5a8",
+   "key": "Pilot/General/TurnRollPitchLimitPitch/2",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(12)",
+   "read": "007e785c",
+   "store": "007e7861",
+   "consumers": []
+  },
+  {
+   "offset": "+5ac",
+   "key": "Pilot/General/TurnRollPitchLimitRoll/1",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(15)",
+   "read": "007e78ca",
+   "store": "007e78cf",
+   "consumers": []
+  },
+  {
+   "offset": "+5b0",
+   "key": "Pilot/General/TurnRollPitchLimitRoll/2",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(60)",
+   "read": "007e7938",
+   "store": "007e793d",
+   "consumers": []
+  },
+  {
+   "offset": "+5b4",
+   "key": "Pilot/General/YawTurnRollRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(30)",
+   "read": "007e76d1",
+   "store": "007e76d6",
+   "consumers": [
+    "007db4d0"
+   ]
+  },
+  {
+   "offset": "+5b8",
+   "key": "Pilot/General/YawTurnRollRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(60)",
+   "read": "007e773f",
+   "store": "007e7744",
+   "consumers": []
+  },
+  {
+   "offset": "+5bc",
+   "key": "Pilot/General/YawTurnMaxPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "0.6",
+   "read": "007e7794",
+   "store": "007e7799",
+   "consumers": []
+  },
+  {
+   "offset": "+5c0",
+   "key": "Pilot/General/PitchTurnMaxPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(06)",
+   "read": "007e798d",
+   "store": "007e7992",
+   "consumers": []
+  },
+  {
+   "offset": "+5c4",
+   "key": "Pilot/General/PitchTurnHdgRange/1",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(25)",
+   "read": "007e79e7",
+   "store": "007e79ec",
+   "consumers": []
+  },
+  {
+   "offset": "+5c8",
+   "key": "Pilot/General/PitchTurnHdgRange/2",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(50)",
+   "read": "007e7a55",
+   "store": "007e7a5a",
+   "consumers": []
+  },
+  {
+   "offset": "+5cc",
+   "key": "Pilot/General/WingmenWaitDist/1",
+   "type": "number",
+   "default": "",
+   "shipped": "3000",
+   "read": "007e74f1",
+   "store": "007e74f6",
+   "consumers": [
+    "009becd0"
+   ]
+  },
+  {
+   "offset": "+5d0",
+   "key": "Pilot/General/WingmenWaitDist/2",
+   "type": "number",
+   "default": "",
+   "shipped": "5000",
+   "read": "007e755f",
+   "store": "007e7564",
+   "consumers": []
+  },
+  {
+   "offset": "+5d4",
+   "key": "Pilot/General/YawCtrlSetTimeMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e7aaa",
+   "store": "007e7aaf",
+   "consumers": []
+  },
+  {
+   "offset": "+5d8",
+   "key": "Pilot/General/PitchCtrlSetTimeMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e7aeb",
+   "store": "007e7af0",
+   "consumers": []
+  },
+  {
+   "offset": "+5dc",
+   "key": "Pilot/General/MoveCircleMinAngle",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(15)",
+   "read": "007e7b2c",
+   "store": "007e7b31",
+   "consumers": [
+    "009fbb20"
+   ]
+  },
+  {
+   "offset": "+5e0",
+   "key": "Pilot/General/MoveCircleMaxAngle",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(45)",
+   "read": "007e7b6d",
+   "store": "007e7b72",
+   "consumers": []
+  },
+  {
+   "offset": "+5e4",
+   "key": "Pilot/General/MoveCircleFollowedDist",
+   "type": "number",
+   "default": "",
+   "shipped": "180",
+   "read": "007e7bae",
+   "store": "007e7bb3",
+   "consumers": [
+    "009fbb20"
+   ]
+  },
+  {
+   "offset": "+5e8",
+   "key": "Pilot/General/TrgSpeedCorrMinPitch",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(70)",
+   "read": "007e7bef",
+   "store": "007e7bf4",
+   "consumers": []
+  },
+  {
+   "offset": "+5ec",
+   "key": "Pilot/General/TrgSpeedCorrSpeedMul",
+   "type": "number",
+   "default": "",
+   "shipped": "2.6",
+   "read": "007e7c30",
+   "store": "007e7c35",
+   "consumers": []
+  },
+  {
+   "offset": "+5f0",
+   "key": "Pilot/General/TrgSpeedCorrMulDecay",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e7c71",
+   "store": "007e7c76",
+   "consumers": []
+  },
+  {
+   "offset": "+5f4",
+   "key": "Pilot/General/DropAllEquipmentPercent",
+   "type": "number",
+   "default": "",
+   "shipped": "0.41",
+   "read": "007e70af",
+   "store": "007e70b4",
+   "consumers": [
+    "007f2bd0"
+   ]
+  },
+  {
+   "offset": "+5f8",
+   "key": "Pilot/Avoidance/Gunfire/MaxWeight",
+   "type": "number",
+   "default": "",
+   "shipped": "0.6",
+   "read": "007e7d40",
+   "store": "007e7d45",
+   "consumers": []
+  },
+  {
+   "offset": "+5fc",
+   "key": "Pilot/Avoidance/Gunfire/WeightInc",
+   "type": "number",
+   "default": "",
+   "shipped": "1.3",
+   "read": "007e7d7f",
+   "store": "007e7d84",
+   "consumers": []
+  },
+  {
+   "offset": "+600",
+   "key": "Pilot/Avoidance/Gunfire/WeightDec",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e7dbe",
+   "store": "007e7dc3",
+   "consumers": []
+  },
+  {
+   "offset": "+604",
+   "key": "Pilot/Avoidance/Gunfire/AvoidTime/1",
+   "type": "number",
+   "default": "",
+   "shipped": "2",
+   "read": "007e7e16",
+   "store": "007e7e1b",
+   "consumers": [
+    "0099ec40"
+   ]
+  },
+  {
+   "offset": "+608",
+   "key": "Pilot/Avoidance/Gunfire/AvoidTime/2",
+   "type": "number",
+   "default": "",
+   "shipped": "3",
+   "read": "007e7e82",
+   "store": "007e7e87",
+   "consumers": []
+  },
+  {
+   "offset": "+60c",
+   "key": "Pilot/Avoidance/Gunfire/WaitTime/1",
+   "type": "number",
+   "default": "",
+   "shipped": "5",
+   "read": "007e7eee",
+   "store": "007e7ef3",
+   "consumers": [
+    "0099ec40"
+   ]
+  },
+  {
+   "offset": "+610",
+   "key": "Pilot/Avoidance/Gunfire/WaitTime/2",
+   "type": "number",
+   "default": "",
+   "shipped": "8",
+   "read": "007e7f5a",
+   "store": "007e7f5f",
+   "consumers": []
+  },
+  {
+   "offset": "+614",
+   "key": "Pilot/Avoidance/Gunfire/BomberVSGunfire",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e7fad",
+   "store": "007e7fb2",
+   "consumers": [
+    "0099ec40"
+   ]
+  },
+  {
+   "offset": "+618",
+   "key": "Pilot/Avoidance/Vehicle/MaxWeight",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e8028",
+   "store": "007e802d",
+   "consumers": []
+  },
+  {
+   "offset": "+61c",
+   "key": "Pilot/Avoidance/Vehicle/WeightInc",
+   "type": "number",
+   "default": "",
+   "shipped": "4.0",
+   "read": "007e8067",
+   "store": "007e806c",
+   "consumers": []
+  },
+  {
+   "offset": "+620",
+   "key": "Pilot/Avoidance/Vehicle/WeightDec",
+   "type": "number",
+   "default": "",
+   "shipped": "1.4",
+   "read": "007e80a6",
+   "store": "007e80ab",
+   "consumers": []
+  },
+  {
+   "offset": "+624",
+   "key": "Pilot/Avoidance/Vehicle/MinCollTime",
+   "type": "number",
+   "default": "",
+   "shipped": "3.0",
+   "read": "007e80e5",
+   "store": "007e80ea",
+   "consumers": []
+  },
+  {
+   "offset": "+628",
+   "key": "Pilot/Avoidance/Vehicle/AvoidSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.4",
+   "read": "007e81e1",
+   "store": "007e81e6",
+   "consumers": []
+  },
+  {
+   "offset": "+62c",
+   "key": "Pilot/Avoidance/Vehicle/MinPlaneSpd",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(70)",
+   "read": "007e8124",
+   "store": "007e8129",
+   "consumers": []
+  },
+  {
+   "offset": "+630",
+   "key": "Pilot/Avoidance/Vehicle/UseRollStrength",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e8220",
+   "store": "007e8225",
+   "consumers": []
+  },
+  {
+   "offset": "+634",
+   "key": "Pilot/Avoidance/Vehicle/MaxDistMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "1.2",
+   "read": "007e8163",
+   "store": "007e8168",
+   "consumers": []
+  },
+  {
+   "offset": "+638",
+   "key": "Pilot/Avoidance/Vehicle/MinDistMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e81a2",
+   "store": "007e81a7",
+   "consumers": []
+  },
+  {
+   "offset": "+63c",
+   "key": "Pilot/Avoidance/Vehicle/BomberVSSmallPlane",
+   "type": "boolean",
+   "default": "",
+   "shipped": "false",
+   "read": "007e825f",
+   "store": "007e826b",
+   "consumers": []
+  },
+  {
+   "offset": "+640",
+   "key": "Pilot/Dogfight/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1400",
+   "read": "007ea799",
+   "store": "007ea79e",
+   "consumers": [
+    "009aaf30"
+   ]
+  },
+  {
+   "offset": "+644",
+   "key": "Pilot/Dogfight/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "2000",
+   "read": "007ea7da",
+   "store": "007ea7df",
+   "consumers": [
+    "009aac70"
+   ]
+  },
+  {
+   "offset": "+648",
+   "key": "Pilot/Dogfight/FighterAimMulVersusAI",
+   "type": "number-or-default",
+   "default": "1.8",
+   "shipped": "1.6",
+   "read": "007ea825",
+   "store": "007ea82a",
+   "consumers": [
+    "009fc7c0"
+   ]
+  },
+  {
+   "offset": "+64c",
+   "key": "Pilot/Dogfight/FighterAimMulVersusPlayer",
+   "type": "number-or-default",
+   "default": "1.2",
+   "shipped": "1.1",
+   "read": "007ea870",
+   "store": "007ea875",
+   "consumers": [
+    "009fc7c0"
+   ]
+  },
+  {
+   "offset": "+650",
+   "key": "Pilot/Dogfight/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(300)",
+   "read": "007ea8b1",
+   "store": "007ea8b6",
+   "consumers": [
+    "009a6c10",
+    "009a6d40"
+   ]
+  },
+  {
+   "offset": "+654",
+   "key": "Pilot/Strafe/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "1000",
+   "read": "007ea933",
+   "store": "007ea938",
+   "consumers": [
+    "009cd020"
+   ]
+  },
+  {
+   "offset": "+658",
+   "key": "Pilot/Strafe/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "2000",
+   "read": "007ea974",
+   "store": "007ea979",
+   "consumers": [
+    "009ca4a0",
+    "009cadb0",
+    "009cced0"
+   ]
+  },
+  {
+   "offset": "+65c",
+   "key": "Pilot/Strafe/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(280)",
+   "read": "007ea9b5",
+   "store": "007ea9ba",
+   "consumers": [
+    "009ca4a0"
+   ]
+  },
+  {
+   "offset": "+660",
+   "key": "Pilot/Strike/CruisingAlt",
+   "type": "number",
+   "default": "",
+   "shipped": "500",
+   "read": "007eaa37",
+   "store": "007eaa3c",
+   "consumers": [
+    "007b7af0"
+   ]
+  },
+  {
+   "offset": "+664",
+   "key": "Pilot/Strike/AttackDist",
+   "type": "number",
+   "default": "",
+   "shipped": "1800",
+   "read": "007eaa78",
+   "store": "007eaa7d",
+   "consumers": [
+    "007b41e0",
+    "007b4f60",
+    "007b78f0"
+   ]
+  },
+  {
+   "offset": "+668",
+   "key": "Pilot/Strike/ReferenceSpeed",
+   "type": "number",
+   "default": "",
+   "shipped": "KMH(280)",
+   "read": "007eaab9",
+   "store": "007eaabe",
+   "consumers": [
+    "007b41e0"
+   ]
+  },
+  {
+   "offset": "+66c",
+   "key": "Pilot/AutoStrafeAngle/Angle_Prepare",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(0)",
+   "read": "007e90f2",
+   "store": "007e90f7",
+   "consumers": [
+    "009b0fe0",
+    "009bee30"
+   ]
+  },
+  {
+   "offset": "+670",
+   "key": "Pilot/AutoStrafeAngle/Angle_MoveTo",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(2)",
+   "read": "007e9133",
+   "store": "007e9138",
+   "consumers": [
+    "007b4f60",
+    "009a3770",
+    "009a71e0",
+    "009bca50",
+    "009bee30",
+    "009c18c0",
+    "009c2430",
+    "009c26d0",
+    "009c4220",
+    "009c9310",
+    "009cadb0",
+    "009d07b0",
+    "009d0f10"
+   ]
+  },
+  {
+   "offset": "+674",
+   "key": "Pilot/AutoStrafeAngle/Angle_GoAway",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(10)",
+   "read": "007e9174",
+   "store": "007e9179",
+   "consumers": [
+    "007b6240",
+    "009b5760",
+    "009c4a40",
+    "009cbb30",
+    "009d0f10"
+   ]
+  },
+  {
+   "offset": "+678",
+   "key": "Pilot/AutoStrafeAngle/Angle_Strafe",
+   "type": "number",
+   "default": "",
+   "shipped": "DEG(15)",
+   "read": "007e91b5",
+   "store": "007e91ba",
+   "consumers": [
+    "009a76e0",
+    "009ca870",
+    "009cb1b0"
+   ]
+  },
+  {
+   "offset": "+67c",
+   "key": "PlaneGUI/PitchYawZoomControlLimit",
+   "type": "number",
+   "default": "",
+   "shipped": "0.8",
+   "read": "007e62ab",
+   "store": "007e62b0",
+   "consumers": []
+  },
+  {
+   "offset": "+680",
+   "key": "PlaneGUI/RollZoomControlLimit",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e62e9",
+   "store": "007e62ee",
+   "consumers": []
+  },
+  {
+   "offset": "+684",
+   "key": "PlaneGUI/AltimeterCeiling",
+   "type": "number",
+   "default": "",
+   "shipped": "1600",
+   "read": "007e6327",
+   "store": "007e632c",
+   "consumers": [
+    "006093d0"
+   ]
+  },
+  {
+   "offset": "+688",
+   "key": "PlaneGUI/MouseInputMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e6365",
+   "store": "007e636a",
+   "consumers": [
+    "006062b0"
+   ]
+  },
+  {
+   "offset": "+68c",
+   "key": "PlaneGUI/MouseInputDeadZoneMin",
+   "type": "number",
+   "default": "",
+   "shipped": "0.05",
+   "read": "007e63a3",
+   "store": "007e63a8",
+   "consumers": [
+    "006062b0"
+   ]
+  },
+  {
+   "offset": "+690",
+   "key": "PlaneGUI/MouseInputDeadZoneMax",
+   "type": "number",
+   "default": "",
+   "shipped": "0.95",
+   "read": "007e63e1",
+   "store": "007e63e6",
+   "consumers": [
+    "006062b0"
+   ]
+  },
+  {
+   "offset": "+694",
+   "key": "PlaneGUI/MouseInputSmoothTreshold",
+   "type": "number",
+   "default": "",
+   "shipped": "1.1",
+   "read": "007e641f",
+   "store": "007e6424",
+   "consumers": [
+    "006062b0"
+   ]
+  },
+  {
+   "offset": "+698",
+   "key": "PlaneGUI/MouseInputSmoothMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "0.50",
+   "read": "007e645d",
+   "store": "007e6462",
+   "consumers": [
+    "006062b0"
+   ]
+  },
+  {
+   "offset": "+69c",
+   "key": "PlaneGUI/MouseInputExponencialWeight",
+   "type": "number",
+   "default": "",
+   "shipped": "0.0",
+   "read": "007e649b",
+   "store": "007e64a0",
+   "consumers": [
+    "006062b0"
+   ]
+  },
+  {
+   "offset": "+6a0",
+   "key": "PlaneGUI/SpeedDisplayMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "2",
+   "read": "007e64d9",
+   "store": "007e64de",
+   "consumers": [
+    "00609bd0"
+   ]
+  },
+  {
+   "offset": "+6a4",
+   "key": "Sound/EnginePowerMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "0.7",
+   "read": "007e6555",
+   "store": "007e655a",
+   "consumers": []
+  },
+  {
+   "offset": "+6a8",
+   "key": "Sound/EngineSpeedMultiplier",
+   "type": "number",
+   "default": "",
+   "shipped": "0.35",
+   "read": "007e6593",
+   "store": "007e6598",
+   "consumers": []
+  },
+  {
+   "offset": "+6ac",
+   "key": "Sound/IdleOffVolume",
+   "type": "number",
+   "default": "",
+   "shipped": "0.5",
+   "read": "007e65d1",
+   "store": "007e65d6",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+6b0",
+   "key": "Sound/EngineMinFreq",
+   "type": "number",
+   "default": "",
+   "shipped": "0.4",
+   "read": "007e660f",
+   "store": "007e6614",
+   "consumers": []
+  },
+  {
+   "offset": "+6b4",
+   "key": "Sound/EngineMaxFreq",
+   "type": "number",
+   "default": "",
+   "shipped": "1.0",
+   "read": "007e664d",
+   "store": "007e6652",
+   "consumers": [
+    "007eb380"
+   ]
+  },
+  {
+   "offset": "+6b8",
+   "key": "Sound/PitchChangeRate",
+   "type": "number",
+   "default": "",
+   "shipped": "10.0",
+   "read": "007e668b",
+   "store": "007e6690",
+   "consumers": [
+    "007ec5a0"
+   ]
+  },
+  {
+   "offset": "+6bc",
+   "key": "Sound/VolumeChangeRate",
+   "type": "number",
+   "default": "",
+   "shipped": "10.0",
+   "read": "007e66cc",
+   "store": "007e66d1",
+   "consumers": [
+    "007ec5a0"
+   ]
+  },
+  {
+   "offset": "+6c0",
+   "key": "Sound/IdleSafetyTime",
+   "type": "number",
+   "default": "",
+   "shipped": "2.0",
+   "read": "007e670d",
+   "store": "007e6712",
+   "consumers": [
+    "007ec5a0"
+   ]
+  },
+  {
+   "offset": "+6c4",
+   "key": "Sound/EngineFreqLimitSpdMul",
+   "type": "number",
+   "default": "",
+   "shipped": "0.6",
+   "read": "007e674e",
+   "store": "007e6753",
+   "consumers": []
+  },
+  {
+   "offset": "+6c8",
+   "key": "Sound/EngineFreqLimitMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.4",
+   "read": "007e678f",
+   "store": "007e6794",
+   "consumers": []
+  },
+  {
+   "offset": "+6cc",
+   "key": "Sound/IdleAndEngineVolMax",
+   "type": "number",
+   "default": "",
+   "shipped": "1.5",
+   "read": "007e67d0",
+   "store": "007e67d5",
+   "consumers": [
+    "007eb380"
+   ]
+  }
+ ],
+ "defects": [
+  {
+   "destination": "`+2a8` and `+2ac`",
+   "key_fetched": "`Dynamics/RunwayYawTurnSpdLimit`",
+   "evidence": "007e2fc7 and 007e3026 both push index `1`",
+   "effect": "`RunwayYawTurnSpdLimit[2] = KMH(40)` is never read; the upper limit field holds the lower limit"
+  },
+  {
+   "destination": "`+250` and `+254`",
+   "key_fetched": "`Dynamics/DeadMeat/RotationMin`",
+   "evidence": "007e30bd and 007e30fe both push the string at `00d084d8` (`RotationMin`)",
+   "effect": "`DeadMeat/RotationMax = DEG(30)` is never read; the maximum field holds the minimum"
+  },
+  {
+   "destination": "`+e8` and `+ec`",
+   "key_fetched": "`BombCamera/CameraPosSmooth`",
+   "evidence": "the two fetches at 007e4d31 and 007e4d6c push the same key string",
+   "effect": "`BombCamera/FinalCameraPosSmooth = 2.0` is never read; the final-smooth field holds the normal one"
+  },
+  {
+   "destination": "`+550` (four times)",
+   "key_fetched": "`Pilot/General/LevelBombAngleMax`",
+   "evidence": "007e7591, 007e75d2, 007e7613 and 007e7654 push `00d07458` and all four stores target `[EBP+550h]`",
+   "effect": "no field is lost, but the same value is fetched and stored four times"
+  }
+ ],
+ "not_read": [
+  "BombCamera/FinalCameraPosSmooth = 2.0",
+  "BombCamera/FinalCameraSmooth = 10.0",
+  "Dynamics/DeadMeat/RotationMax = DEG(30)",
+  "Dynamics/RunwayYawTurnSpdLimit/2 = KMH(40)",
+  "Dynamics/Water/DecelMax = 3.5",
+  "Pilot/Avoidance/Terrain/MaxWeight = 1.0",
+  "Pilot/Avoidance/Terrain/PitchTurnRollRange/1 = DEG(45)",
+  "Pilot/Avoidance/Terrain/PitchTurnRollRange/2 = DEG(60)",
+  "Pilot/Avoidance/Terrain/SafeAlt/1 = 12",
+  "Pilot/Avoidance/Terrain/SafeAlt/2 = 30",
+  "Pilot/Avoidance/Terrain/TimeTick = 1.0",
+  "Pilot/Avoidance/Terrain/WeightDec = 1.0",
+  "Pilot/Avoidance/Terrain/WeightInc = 2.0",
+  "Pilot/Avoidance/Terrain/YawTurnRollRange/1 = DEG(35)",
+  "Pilot/Avoidance/Terrain/YawTurnRollRange/2 = DEG(55)",
+  "Pilot/Follow/BomberDisplacement/1 = 100",
+  "Pilot/Follow/BomberDisplacement/2 = 0",
+  "Pilot/Follow/BomberDisplacement/3 = -100",
+  "Pilot/Follow/SmallPlaneDisplacement/1 = 60",
+  "Pilot/Follow/SmallPlaneDisplacement/2 = 25",
+  "Pilot/Follow/SmallPlaneDisplacement/3 = 70",
+  "Pilot/General/EnableFullInvincible = true",
+  "PlaneCamera/CockpitGunfireEffectSmooth = 0.1",
+  "PlaneCamera/DistY = 0.6",
+  "PlaneCamera/DistZ = 1.5",
+  "WingTip/MaxAlpha = 1.0",
+  "WingTip/MaxalphaOwnPlane = 0.5"
+ ],
+ "read_but_undefined": [
+  {
+   "offset": "+47c",
+   "key": "Pilot/Kamikaze/FighterLike/DropDist",
+   "default": "1200",
+   "address": "007E9AAC",
+   "native": "00B66330",
+   "function": "007E2A20"
+  },
+  {
+   "offset": "+48c",
+   "key": "Pilot/Kamikaze/FighterLike/TurboAngle",
+   "default": "0",
+   "address": "007E99D1",
+   "native": "00B66330",
+   "function": "007E2A20"
+  }
+ ],
+ "call_site_survey": {
+  "callers": 141,
+  "callers_with_a_resolved_offset": 133,
+  "callers_without": [
+   "004e3aa0",
+   "0076f210",
+   "007d5ac0",
+   "0099d0a0",
+   "0099d300",
+   "009bc3a0",
+   "009bed80",
+   "009c2980"
+  ],
+  "distinct_offsets_consumed": 197,
+  "offsets_written_by_the_loader": 436,
+  "consumed_but_never_written": [],
+  "writes_into_the_singleton": [
+   {
+    "address": "007D213C",
+    "function": "007D1F70",
+    "offset": "+31c",
+    "value": "1.0f from 00d7a24c",
+    "verdict": "idempotent clamp, unreachable with the installed data"
+   }
+  ],
+  "method": "forward walk of each caller's listing from every CALL 0x0042e740, following EAX through register moves and stack spills; alias set reset at each getter call and caller-saved registers dropped at every other call. Lower bound: an offset reached after the pointer is passed to another function is not counted."
+ },
+ "no_ghidra_function": [],
+ "installed_file_check": {
+  "file": "Scripts/datatables/PlaneGlobals.lua",
+  "leaves": 448,
+  "distinct_paths_read": 423,
+  "never_read": 27,
+  "read_but_absent": 2,
+  "luaMW_init": "Scripts/global/luaMW_init.lua, 533 lines, constants and the DEG/KMH helpers only; the loader runs it but reads no key from it"
+ },
+ "uncertainties": [
+  "All game_tuning_* C++ names are hypotheses; no recovered symbol names the object or a field.",
+  "The consumer lists are a lower bound (see call_site_survey.method).",
+  "LIBCRT_unmatched_00BF9940 at 007E9B3A and 007E9B98 is unidentified; the two stores it guards are keyed in the table.",
+  "No run-time evidence: the loader runs once and its result is determined by the installed script, which was read directly."
+ ],
+ "followups": [
+  "game_tuning_field_names: name the 197 consumed offsets as Ghidra struct fields from local/offsets.json",
+  "plane_globals_dead_keys: whether the 27 unread keys are read by another loader",
+  "lua_number_triple_00b67a80: the array-to-float3 helper shared with the ship and mothership class readers"
+ ],
+ "state": "analyzed_and_reconstructed_build_tested"
+}

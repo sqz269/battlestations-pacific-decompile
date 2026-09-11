@@ -1,0 +1,286 @@
+{
+  "packet": "cc2_unit_subobjects",
+  "worktree": "agent/cc2-unit-subobjects",
+  "ghidra": "read-only",
+  "names_are_hypotheses": true,
+  "doc": "docs/UNIT_INSTANCE_SUBOBJECTS.md",
+  "subject": "The sub-objects BSP_UnitVehicleBase_Construct 0081ED40 builds inside the 0x1188 unit instance: their interior layouts, vtables, constructor field writes and sizes.",
+  "headline": {
+    "was": "docs/UNIT_INSTANCE_LAYOUT.md recorded eight sub-objects only as call sites; its coverage row for 0081ED40 says the interiors were not read.",
+    "is": "Five named constructors and one inlined constructor are read in full. The +72Ch base owns one virtual-release slot; +A20h is a 0x54 block with a unit back-pointer, a 20-element dword array and two settings floats; +BD0h is a 0x3DC block with an owned critical section and a 40-slot ring of five floats; +10A0h is a 0x34 block with two owned containers; +10D4h is the already-documented leak manager and its constructor adds 200.0f and 60.0f.",
+    "evidence": "00809270 body 00809270..00809280 (11 bytes); 0093BCC0 body 0093BCC0..0093BD7D RET 4; 00815600 body 00815600..00815672; 0074E7B0 body 0074E7B0..0074E7ED; 0081EB90 body 0081EB90..0081EBF0 writes the same field set as the inline block 0081F102..0081F154."
+  },
+  "corrections": [
+    {
+      "doc": "docs/UNIT_INSTANCE_LAYOUT.md",
+      "was": "`+72Ch` | 4 | vptr 8, also the 00809270 sub-object | 0081ED7B then 006FE4A9 | 00CFC384",
+      "is": "00809270 writes 00D09004 there, not 00CFC384. 00CFC384 is the most-derived override that 006FE4A9 stores over it; 00D09004 is the base's own one-slot vtable and the sub-object is 0Ch bytes, not 4.",
+      "evidence": "00809274 MOV dword ptr [EAX],0xd09004 then 0080927A/0080927D zero +4h and +8h. The dword at 00D09004 is 00809B80 and the bytes at 00D09008 are the string \"RepairZoneArea\", so the table has one slot."
+    },
+    {
+      "doc": "docs/UNIT_INSTANCE_LAYOUT.md",
+      "was": "the eight sub-object constructors (00809270, 00812D40, 0093BCC0, 00815600, 0074E7B0, and three vector iterators)",
+      "is": "There are four iterator call sites, not three: 00BF7CD1 at 0081EF24, 0081EFCE and 0081EFED with element constructor 0043F620, plus 00403560 at 0081EF7D with element constructor 0080FAE0 inside the two-record loop.",
+      "evidence": "CALL list of 0081ED40: 0081ED6A 0095CC90, 0081ED7B 00809270, 0081EE95 00812D40, 0081EF24 00BF7CD1, 0081EF47 0093BCC0, 0081EF7D 00403560, 0081EFCE 00BF7CD1, 0081EFED 00BF7CD1, 0081F03D 00815600, 0081F15F 0074E7B0, 0081F200 00BF681B."
+    },
+    {
+      "doc": "docs/UNIT_INSTANCE_LAYOUT.md",
+      "was": "`+A98h` and `+AECh` are listed only as further sub-object offsets.",
+      "is": "They are the two elements of one array: 0081EF63..0081EFB1 is a loop with EDI starting at ESI+A98h, stride 54h and EBP = EBX+1 = 1, so it runs exactly twice, and 0081F1E6/0081F1EC then store the unit pointer into each record's +50h field (A98h+50h = AE8h, AECh+50h = B3Ch).",
+      "evidence": "0081EF69 LEA EBP,[EBX+1] with EBX zeroed once at 0081ED60 and never rewritten in the body; 0081EFAB ADD EDI,0x54; 0081EFAE SUB EBP,0x1; 0081EFB1 JNS 0x0081EF70."
+    }
+  ],
+  "calls": [
+    {
+      "routine": "0081ed40",
+      "step": "construct the +72Ch base",
+      "address": "0081ed7b",
+      "native": "00809270",
+      "this": "unit+72Ch (0081ED6F LEA EDI,[ESI+72Ch]; 0081ED75 MOV ECX,EDI)",
+      "args": "none",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "construct the order ring (contract, docs/UNIT_STATE_MESSAGE.md)",
+      "address": "0081ee95",
+      "native": "00812d40",
+      "this": "unit+838h (0081EDEF LEA ECX,[ESI+838h])",
+      "args": "none",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "zero four dwords at +A00h",
+      "address": "0081ef24",
+      "native": "00bf7cd1",
+      "this": "-",
+      "args": "(ESI+A00h, 4, 4, 0043F620, 00440A30) cdecl",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "construct the +A20h block with the unit as its argument",
+      "address": "0081ef47",
+      "native": "0093bcc0",
+      "this": "unit+A20h (0081EF3C LEA ECX,[ESI+A20h])",
+      "args": "unit (0081EF3B PUSH ESI; callee RET 4)",
+      "ret": "EAX = this"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "construct the two 1Ch elements inside each of the two 54h records",
+      "address": "0081ef7d",
+      "native": "00403560",
+      "this": "-",
+      "args": "(EDI+8, 1Ch, 2, 0080FAE0) cdecl, EDI = unit+A98h then unit+AECh",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "zero four dwords at +B44h",
+      "address": "0081efce",
+      "native": "00bf7cd1",
+      "this": "-",
+      "args": "(ESI+B44h, 4, 4, 0043F620, 00440A30) cdecl",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "zero five dwords at +B54h",
+      "address": "0081efed",
+      "native": "00bf7cd1",
+      "this": "-",
+      "args": "(ESI+B54h, 4, 5, 0043F620, 00440A30) cdecl",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "construct the +BD0h ring",
+      "address": "0081f03d",
+      "native": "00815600",
+      "this": "unit+BD0h (0081F02A LEA ECX,[ESI+BD0h])",
+      "args": "none",
+      "ret": "EAX = this, ignored by the caller"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "construct the leak manager (use is a contract, docs/UNIT_CONTROLLER_UPDATE.md)",
+      "address": "0081f15f",
+      "native": "0074e7b0",
+      "this": "unit+10D4h (0081F154 LEA ECX,[ESI+10D4h])",
+      "args": "none",
+      "ret": "none"
+    },
+    {
+      "routine": "00815600",
+      "step": "create the critical section stored at +4h",
+      "address": "00815625",
+      "native": "00bd1860",
+      "this": "-",
+      "args": "none",
+      "ret": "EAX = handle, stored at 00815637 MOV dword ptr [ESI+4],EAX"
+    },
+    {
+      "routine": "00815600",
+      "step": "fill all 40 ring slots from the global vec3 with angle 0",
+      "address": "0081563a",
+      "native": "00810020",
+      "this": "the ring (00815635 MOV ECX,ESI)",
+      "args": "(00F87574, 0.0f); callee RET 8",
+      "ret": "none"
+    },
+    {
+      "routine": "0093bcc0",
+      "step": "read the settings float at singleton+3B0h into +2Ch",
+      "address": "0093bd22",
+      "native": "00424c40",
+      "this": "-",
+      "args": "none",
+      "ret": "EAX = settings singleton; 0093BD27 FLD [EAX+3B0h], 0093BD2D FSTP [ESI+2Ch]"
+    },
+    {
+      "routine": "0093bcc0",
+      "step": "read the settings float at singleton+3ACh into +30h",
+      "address": "0093bd30",
+      "native": "00424c40",
+      "this": "-",
+      "args": "none",
+      "ret": "EAX = settings singleton; 0093BD35 FLD [EAX+3ACh], 0093BD3F FSTP [ESI+30h]"
+    },
+    {
+      "routine": "0093bcc0",
+      "step": "resize the dword array to 20 elements of 0",
+      "address": "0093bd60",
+      "native": "00822460",
+      "this": "sub-object+4h (0093BCDD LEA EDI,[ESI+4]; 0093BD5C MOV ECX,EDI)",
+      "args": "(&zero on the stack, 14h)",
+      "ret": "none"
+    },
+    {
+      "routine": "00818ea0",
+      "step": "re-seed the +BD0h ring from the unit's world position and a computed angle",
+      "address": "00819381",
+      "native": "00810020",
+      "this": "unit+BD0h (0081937B LEA ECX,[ESI+BD0h])",
+      "args": "(unit+FCh, the float returned by the virtual at [EDX+50h])",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ec00",
+      "step": "release each 8-byte element of the container at +8h",
+      "address": "0081ec8e",
+      "native": "00867b10",
+      "this": "the element",
+      "args": "not read",
+      "ret": "none"
+    },
+    {
+      "routine": "0081ec00",
+      "step": "release each element of the container at +18h",
+      "address": "0081ecb6",
+      "native": "004cc760",
+      "this": "the element",
+      "args": "not read",
+      "ret": "none"
+    },
+    {
+      "routine": "00745940",
+      "step": "a second unit base builds the same +72Ch sub-object",
+      "address": "00745978",
+      "native": "00809270",
+      "this": "unit+72Ch (0074596C LEA EDI,[ESI+72Ch]; 00745972 MOV ECX,EDI)",
+      "args": "none",
+      "ret": "none"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0043f620",
+      "end": "0043f628",
+      "read_from": "raw bytes at 0043F620, 9 bytes: 8B C1 C7 00 00 00 00 00 C3",
+      "meaning": "MOV EAX,ECX / MOV dword ptr [EAX],0 / RET. The element constructor of the three dword arrays; its matching destructor 00440A30 is a Ghidra function.",
+      "enclosing_candidate": "0043f590"
+    },
+    {
+      "address": "0080fae0",
+      "end": "0080fb03",
+      "read_from": "raw bytes at 0080FAE0, 36 bytes read, 20 decoded to the RET at 0080FB03",
+      "meaning": "Element constructor of the 1Ch elements inside the two 54h records: +0h 0.0f, +4h 0.0f, +8h 1000.0f from 00CE3804, +0Ch byte 0, +18h dword 0.",
+      "enclosing_candidate": "0080fa50"
+    }
+  ],
+  "tail_jumps_not_call_rows": [
+    "00818100 is the plain destructor of the +BD0h object and its whole body is three instructions: MOV dword ptr [ECX],0xd09480 / ADD ECX,0x4 / JMP 0x0041cc80. The transfer at 00818109 is a JMP, not a CALL, so it is deliberately not a call row; the RET belongs to 0041CC80 BSP_CriticalSection_DestroyOwned and the receiver is the object's +4h."
+  ],
+  "not_functions": [
+    {
+      "address": "0081f370",
+      "read_from": "the dword at 00D09628 in the byte dump of 00D09610..00D0964F, plus ghidra proto 0081f370",
+      "meaning": "Ghidra has no function starting here and 0081ED40's body ends at 0081F354, so this is undefined code. Its body was not read; it is cited only as the second dword of the table region, which is why the one-slot vtable at 00D09624 cannot be assumed longer."
+    }
+  ],
+  "vtables": [
+    {
+      "address": "00d09004",
+      "slots": ["00809b80"],
+      "bound": "the string \"RepairZoneArea\" begins at 00D09008",
+      "object": "unit+72Ch"
+    },
+    {
+      "address": "00d09480",
+      "slots": ["0081acf0"],
+      "bound": "the string \"TorpedoStock\" begins at 00D09484",
+      "object": "unit+BD0h",
+      "plain_destructor": "00818100"
+    },
+    {
+      "address": "00d09624",
+      "slots": ["00822660"],
+      "bound": "0080DF90 and 00811AB0 at 00D0962C and 00D09634 read this+3B4h, this+30h and this+364h, offsets that only fit a whole unit, so they belong to an adjacent table; the dword at 00D09620 is 0, so there is no RTTI locator",
+      "object": "unit+10A0h",
+      "plain_destructor": "0081ec00"
+    },
+    {
+      "address": "00d00514",
+      "slots": ["0074ec00", "0074eda0", "0074eb20", "0074eb80", "0074eb00", "004499c0"],
+      "bound": "the strings \"sumLeaks\" and \"sumForces\" begin at 00D0052C",
+      "object": "unit+10D4h, the leak manager"
+    }
+  ],
+  "constants": [
+    {"address": "00d7a24c", "value": "1.0f"},
+    {"address": "00d7a260", "value": "-1.0f"},
+    {"address": "00ce3804", "value": "1000.0f"},
+    {"address": "00ce386c", "value": "200.0f"},
+    {"address": "00ceb4b0", "value": "60.0f"}
+  ],
+  "coverage": {
+    "complete": ["00809270", "0093bcc0", "00815600", "0074e7b0", "0081eb90", "0081ed40 sub-object region 0081ED6F..0081F1F8"],
+    "partial": [
+      "00810020: field writes and loop bounds read; the x87 interpolation 008100E4..00810139 is transcribed only as five floats written per slot",
+      "0081ec00: the two container walks and their element releases are read; the tail after 0081ECF1 is unread",
+      "00822460: element size and the path to 0081E600 are read; the growth branch is an STL contract"
+    ],
+    "contract_unread": [
+      "00812d40 (reused from docs/UNIT_STATE_MESSAGE.md)",
+      "0074e7b0 use (reused from docs/UNIT_CONTROLLER_UPDATE.md)",
+      "00867b10",
+      "004cc760",
+      "0080df90",
+      "00811ab0",
+      "all readers of +A20h, +A98h, +B44h, +B54h and +10A0h"
+    ]
+  },
+  "open_questions": [
+    "0074F2E0 reads the leak list length at +14h of the unit+10D4h object, but 0074E7B0 does not write +4h..+14h. Either the unit's storage is zeroed before the constructor chain runs or another routine initialises the list head.",
+    "The container header word at container+0h (unit+A24h, unit+10A8h, unit+10B8h) is written by neither constructor. It is an STL-style contract and its producer was not found.",
+    "The purpose of the +A20h block, the two 54h records and the +10A0h containers rests on shape alone. No consumer was read."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/unit_instance_subobjects.hpp",
+    "source": "src/unit_instance_subobjects.cpp",
+    "status": "semantic_reconstruction_strict_win32_build_passed",
+    "note": "The constructors are reproduced as sequences over an injected host with one virtual method per native call site. STL containers, the CRT vector iterators, the critical section and the settings singleton are host contracts, not ported."
+  }
+}
