@@ -396,12 +396,16 @@ std::optional<std::uint32_t> GameSettingsBinding::read_registry_language_lcid() 
         return std::nullopt;
     }
     DWORD type = 0;
-    DWORD value = 0;
-    DWORD size = sizeof(value);
+    std::array<std::uint8_t, 0x400> data{};
+    DWORD size = static_cast<DWORD>(data.size());
     const LSTATUS status = RegQueryValueExA(key, kSettingsRegistryLanguageValue, nullptr,
-        &type, reinterpret_cast<LPBYTE>(&value), &size);
+        &type, data.data(), &size);
     RegCloseKey(key);
     if (status != ERROR_SUCCESS || type != REG_DWORD) return std::nullopt;
+    if (size < sizeof(std::uint32_t))
+        throw std::runtime_error("Registry language has an incomplete native DWORD");
+    std::uint32_t value{};
+    std::memcpy(&value, data.data(), sizeof(value));
     return value;
 }
 

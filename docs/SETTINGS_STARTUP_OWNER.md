@@ -62,6 +62,12 @@ provider manager, search registrations, content-suffix vector and hints owner.
 Their lifetimes extend past settings loading. Profile/DLC population and the full
 renderer resource owner remain separate integration work.
 
+The native renderer shares its API at+1990 with device creation. The current
+process still creates a separate API in `GameDeviceHost::create`; this batch
+establishes the settings query behavior and lifetime, not that shared renderer
+ownership. The full constructor's intervening adapter-identifier/NVIDIA check
+also remains outside the settings projection.
+
 `--settings-personal-root <dir>` supplies an explicit personal-directory override
 for isolated checks. It is resolved before `--game-root` changes the working
 directory. Normal runs use CSIDL_PERSONAL. Both startup language lookup and the
@@ -72,3 +78,17 @@ original's indeterminate unused buffer tail. Query failures do not fabricate cap
 Validation and saved annotation evidence are recorded in
 `reports/settings_startup_owner.json`. Build/fixture/process validation does not
 establish native object ABI compatibility or gameplay completion.
+
+The combined strict Win32 build and both existing CTests pass. An ignored
+fixture checks retained sentinel fields, case-insensitive language selection,
+typed token failures, exact single-token diagnostics, both resolution-index
+rules, AA selection and the pre-tail writer snapshot. Its concrete binding run
+loads one installed language descriptor, queries 26 resolutions and four AA
+levels, and writes/reloads options only in an isolated personal directory.
+
+The rebuilt executable then ran with that isolated windowed configuration:
+640x480 device, 60 frames presented, clean loop completion, exit0, and three VFS
+probes resolved. The original installed executable and live personal options
+retained their hashes, sizes and modification times. This is startup/process
+validation with the milestone clear/present path, not gameplay validation. Input,
+GUI, world and scene owners still have unimplemented bindings in the run log.

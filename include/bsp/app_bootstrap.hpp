@@ -236,8 +236,8 @@ public:
     // The stride-4 table at DAT_00f88968 with count DAT_00f8896c, used at
     // 008d8850 to snap the parsed antialias sample count onto a supported one.
     virtual const std::vector<int>& supported_antialias_levels() const = 0;
-    // TRIV_body_00b200b0, the renderer's highest supported shader model. Read
-    // twice: once to seed +0x88 and once to clamp it.
+    // 00b200b0, the renderer's game-specific shader ceiling (one or two). Read
+    // to seed +0x88, repair a value below one, and clamp the selected value.
     virtual int max_shader_model() const = 0;
     // Missing input file: persist the retained object BEFORE the common tail.
     virtual void write_options_text_008d6170(const GameSettingsBlock& settings) = 0;
