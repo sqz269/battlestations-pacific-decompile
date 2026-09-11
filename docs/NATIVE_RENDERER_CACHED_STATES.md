@@ -7,7 +7,7 @@ renderer plus sampler/state/value with RET0C, and ECX renderer with RET.
 New C++ interfaces borrow the actual renderer and existing actual synchronization
 globals. They are independent of unresolved logical-vertex owner destruction.
 Full source passes the strict Win32 build and both existing CTests.
-Original-code fixture verification and reconstruction closure remain pending.
+Original-code verification and reconstruction closure are complete.
 
 Both setters enter the optional guard before cache observation. They read the
 current validity byte before arming the native-shaped cleanup state. They then
@@ -37,3 +37,22 @@ and observe callbacks between every individual state, without snapshotting the
 device, cache or global guard mode. It has no independent guard or cleanup.
 
 Full renderer reset, drawing, original-caller ABI and gameplay remain unclaimed.
+
+## Primary integration
+
+The primary independently verified 84 sealed worker artifacts and 15 fresh
+live-Ghidra/PE spans totaling 1,024 bytes (749 owned). The earlier 1,124-byte
+summary was an arithmetic error; all captured lengths and bytes are unchanged.
+The actual completed main library and two exact archive objects passed the
+unchanged eleven-case fixture. Both traces match 91,920 bytes and all eleven
+complete 8,192-byte renderer postimages match after pointer normalization.
+Each run makes 186 genuine COM calls, 189/186 actual OS enters/leaves, 556
+writes, 188 pre-cleanup validity probes and 1,331 snapshots. Full native FH3
+search/unwind, the 159-call defaults and stopped 22-call defaults are verified.
+All 1,122 call PCs and 1,488 access PCs resolve to native instructions or fourteen
+main source/helper ranges; whole runtime .text and actual module bytes match.
+All actual HRESULTs were S_OK; returning failure remains instruction-audited.
+The strict main build, both CTests and eight fresh native seeds passed. Names
+and appended evidence are saved in Ghidra with prior comments preserved; full
+ledger records and forced exports are registered. No permanent tests, original
+caller ABI, full reset, gameplay or visual claims are added.

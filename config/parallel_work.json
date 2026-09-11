@@ -5468,8 +5468,8 @@
       "id": "native_renderer_cached_states3",
       "packet": "native_renderer_cached_states3",
       "worker": "main",
-      "done": false,
-      "state": "full_source_strict_Win32_checked_worker_original_fixture_pending",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b24460",
         "00b24610",
@@ -5520,6 +5520,25 @@
       ],
       "source_ready": true,
       "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
+    },
+    {
+      "id": "native_frame_target_getters3",
+      "packet": "native_frame_target_getters3",
+      "worker": "main",
+      "function_addresses": [
+        "00b1f6d0",
+        "00b1f6e0",
+        "00b1f710"
+      ],
+      "code_ownership": [
+        "include/bsp/native_frame_target_getters.hpp",
+        "src/native_frame_target_getters.cpp",
+        "docs/NATIVE_FRAME_TARGET_GETTERS.md",
+        "reports/native_frame_target_getters_audit.json"
+      ],
+      "done": true,
+      "state": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
+      "evidence": "reports/native_frame_target_getters_audit.json"
     }
   ],
   "snapshot_after_analysis": {
