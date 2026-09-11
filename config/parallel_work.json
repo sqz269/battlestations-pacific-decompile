@@ -5362,6 +5362,27 @@
       "source_ready": true,
       "evidence": "reports/native_logical_vertex_pool_return_audit.json",
       "scope": "Full105-byte raw pool slot return; actualpool/OSstorage; signed quotient andWORDalias count verified; independent of unresolvednon-null4C terminal."
+    },
+    {
+      "id": "native_renderer_cached_states3",
+      "packet": "native_renderer_cached_states3",
+      "worker": "main",
+      "done": false,
+      "state": "full_source_strict_Win32_checked_worker_original_fixture_pending",
+      "function_addresses": [
+        "00b24460",
+        "00b24610",
+        "00b26170"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_cached_states.hpp",
+        "src/native_renderer_cached_states.cpp",
+        "docs/NATIVE_RENDERER_CACHED_STATES.md",
+        "reports/native_renderer_cached_states_audit.json"
+      ],
+      "source_ready": true,
+      "evidence": "reports/native_renderer_cached_states_audit.json",
+      "scope": "Full749nativebytes:actualcachedrender/sampler setters andordereddefaultinitializer, fullactualsynchronization; independent ofunknownlogicalowner lifetimes."
     }
   ],
   "snapshot_after_analysis": {
