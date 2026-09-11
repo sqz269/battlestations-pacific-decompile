@@ -1,0 +1,245 @@
+{
+  "packet": "orch2_directional_reference_o",
+  "date": "2026-09-11",
+  "status": "strict_win32_build_and_focused_host_lifetime_fixture_passed",
+  "source": [
+    "include/bsp/directional_light_reference.hpp",
+    "src/directional_light_reference.cpp"
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verification": "Every live query used tools/bsp.py ghidra, whose client verifies project and program before querying.",
+  "previous_ghidra_metadata": {
+    "address": "00b7c820",
+    "name": "BSP_DirectionalLight_DeletingDestructor",
+    "reported_signature": "undefined BSP_DirectionalLight_DeletingDestructor(void)",
+    "body": [
+      "00b7c820",
+      "00b7c845"
+    ],
+    "comment": "[BSP reconstruction 00b7c820]\nNative [00b7c820,00b7c846); ECX light; stack flags; EAX original raw address; RET4. Complete directional deleting destructor. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+  },
+  "ghidra_mutations": [],
+  "previous_reconstruction_record": {
+    "address": "00b7c820",
+    "name": "delete_native_directional_light_00b7c820",
+    "source": "src/directional_light_owner.cpp",
+    "status": "typed_implementation_integrated_strict_win32_build_native_host_fixtures_and_installed_draw_checked",
+    "original_abi": "ECX light; stack flags; EAX original raw address; RET4",
+    "native_end_exclusive": "00b7c846",
+    "evidence": "docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "remaining": "Full nonnull shadow construction/update, native nonempty ownership/EH execution, full process startup and gameplay remain.",
+    "kind": "function"
+  },
+  "actual_vtable_evidence": [
+    {
+      "address": "00d62fb0",
+      "length": 88,
+      "sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "words": [
+        "00bd30e0",
+        "00b7c820",
+        "00b7ab00",
+        "00b7c6d0",
+        "00b6f8f0",
+        "00b7ab10",
+        "00b6f310",
+        "00b6d7b0",
+        "00b6d990",
+        "00b6e150",
+        "00b6d820",
+        "00b6dab0",
+        "00b6dae0",
+        "00b6e870",
+        "00b6db10",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b7c020",
+        "00b7bd60"
+      ],
+      "matches_current_ghidra_bytes": true
+    },
+    {
+      "address": "00d62f58",
+      "length": 88,
+      "sha256": "af8ec4a0bbbd2273a8df0a767d138a13f2ebdbef13a3ae876e16c28b8afe86e3",
+      "words": [
+        "00bd30e0",
+        "00b7c800",
+        "00b7aa90",
+        "00b7c580",
+        "00b6f8f0",
+        "00b7aaa0",
+        "00b6f310",
+        "00b6d7b0",
+        "00b6d990",
+        "00b6e150",
+        "00b6d820",
+        "00b6dab0",
+        "00b6dae0",
+        "00b6e870",
+        "00b6db10",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b7c020",
+        "00b7bd60"
+      ],
+      "matches_current_ghidra_bytes": true
+    },
+    {
+      "address": "00d62c88",
+      "length": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "words": [
+        "00bd30e0",
+        "00b6f8d0",
+        "00b6d790",
+        "00b6f570",
+        "00b6f8f0",
+        "00b6d7a0",
+        "00b6f310",
+        "00b6d7b0",
+        "00b6d990",
+        "00b6e150",
+        "00b6d820",
+        "00b6dab0",
+        "00b6dae0",
+        "00b6e870",
+        "00b6db10",
+        "00b6dbc0",
+        "00b6dbe0",
+        "00b6dc00",
+        "00b6e8c0",
+        "00b6dc20",
+        "00b6ed80",
+        "00b6ee10"
+      ],
+      "matches_current_ghidra_bytes": true
+    }
+  ],
+  "deleting_body": {
+    "address": "00b7c820",
+    "end_exclusive": "00b7c846",
+    "length": 38,
+    "sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+    "ghidra_hex": "568bf1c706b02fd600e882fdfffff644240801740b56b954010901e8b0eaffff8bc65ec20400",
+    "matches_installed_pe": true,
+    "original_abi": "ECX actual owner; stack flags; EAX original address; RET4"
+  },
+  "supporting_contracts": [
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "abi": "ECX owner; no stack arguments; RET",
+      "behavior": "Current virtual04 with flag1; no decrement or released-byte gate."
+    },
+    {
+      "address": "00b6f310",
+      "abi": "ECX node; no stack arguments; RET or tail current virtual00 on zero",
+      "behavior": "Shared live point-light backlink removal/shrink, child virtual18 release, byte44-gated self decrement."
+    },
+    {
+      "address": "00b7bd60",
+      "end_exclusive": "00b7bdea",
+      "abi": "ECX light; stack scene/recurse; RET8",
+      "behavior": "Directional/light virtual54 uses actual178 retained-scene array; recurse via live child54."
+    },
+    {
+      "address": "00b6ee10",
+      "abi": "ECX node; stack scene/recurse; RET8",
+      "behavior": "Current node-base virtual54 uses actual170 and real child callbacks."
+    },
+    {
+      "address": "00b7c6d0",
+      "end_exclusive": "00b7c6f8",
+      "abi": "ECX ignored; stack token; AL boolean; RET4",
+      "behavior": "Actual current directional predicate from existing LightTypeBootstrap."
+    },
+    {
+      "address": "00b6e870",
+      "abi": "ECX node; stack matrix; RET4",
+      "behavior": "Existing world setter is directional virtual34."
+    },
+    {
+      "address": "00b6dbe0",
+      "abi": "ECX node; no stack arguments; RET",
+      "behavior": "Existing world-change notification is directional virtual40."
+    }
+  ],
+  "invariants": [
+    "One borrowed actual04 counter; constructor reference unchanged.",
+    "Canonical actual transform/scene storage in the same two supplied runtime associations.",
+    "Live point-light and retained-scene arrays; no copied hierarchy, light tail or list backing.",
+    "Logical release can leave queue references, retained scenes and shadow alive.",
+    "Directional/light/node phase callbacks and associations survive destruction reentry.",
+    "Final B7C820(1) completes before identity-only lifetime unbind and mandatory companion disposal.",
+    "No access to ended native storage or retired companions after final disposal."
+  ],
+  "host_factory_exception_scope": "Unpublished fresh storage only. Before scene binding, host setup rollback releases the copied name and ends raw typed lifetimes; after binding it calls existing native deletion with flag0 then returns the slot. No recovered native factory/EH claim.",
+  "validation": {
+    "seed_regions_verified": 8,
+    "seed_regions_matched_installed_binary": 8,
+    "build_command": "./scripts/build.ps1",
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict passed",
+    "existing_ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "permanent_tests_added": 0,
+    "focused_fixture": "local/directional_reference_probe.cpp",
+    "fixture_compile": "cl /std:c++17 /EHsc /W4 /WX /O2 /MD; /link /MANIFEST:EMBED",
+    "fixture_result": "directional_reference_probe.cpp\nPASS actual +04 1/2/1/1/0; shared child and point-light logical release; retained-scene +54; light/node destruction reentry; same-pool slot reuse; companion retirement",
+    "fixture_uses": "Actual PE tables; actual type bootstrap/counter; actual1F0 pool; real owner/node/string implementations; one shared scene/lifetime runtime pair.",
+    "fixture_checks": [
+      "Counter1/2/1/1/0 and same actual04 reference address",
+      "Constructor-unwritten tail bytes and slab identity preserved",
+      "Canonical scene and lifetime associations",
+      "Child logical/terminal release; original parent child_count retained",
+      "Point-light backlink removal and actual-array shrink retaining begin/capacity",
+      "Retained-scene virtual54 remove/re-attach",
+      "Repeat virtual18 adds no second self decrement",
+      "Light-phase scene/shadow callbacks and node-phase130 callback can reenter the same companion",
+      "Three terminal resource callbacks fire once; both node lifetimes unbound",
+      "Actual pool returns the identical slot after final companion retirement"
+    ],
+    "original_directional_machine_code_executed": false
+  },
+  "boundaries": [
+    "New descriptive C++ interfaces; not native ABI drop-in replacements.",
+    "Terminal queue callbacks are nonthrowing; throwing native virtual/EH domains remain outside this companion.",
+    "Actual pool, initialized type predicates, string/runtime associations and table views are mandatory borrowed services.",
+    "Full shadow rendering, GUI rendering and gameplay were not tested."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "artifacts": [
+    {
+      "path": "include/bsp/directional_light_reference.hpp",
+      "sha256": "09bf93d580f9e4a3afac0c3c637b9bbc8fb8c82635ae7099ac49727f59b6b82e"
+    },
+    {
+      "path": "src/directional_light_reference.cpp",
+      "sha256": "7fc493c0cba3b63cd3d9a774aede7be50df8f99a6eece41e870ba897b095c369"
+    },
+    {
+      "path": "local/directional_reference_probe.cpp",
+      "sha256": "5b60154064fb628639722a66962175645ed1acc0564f265a95bb0e5abb41228c"
+    },
+    {
+      "path": "local/directional_reference_probe.log",
+      "sha256": "6218e7567be0d4f9dace59595168c25f9f1915da94118371307ee81832975f5d"
+    },
+    {
+      "path": "local/directional_light_reference_build.log",
+      "sha256": "cbf7aa1f58364542ae71d965fed5b78c12d4e0ef6d6c7b389ecbe3be7a61220a"
+    }
+  ]
+}
