@@ -3,7 +3,10 @@
 This read-only discovery identifies the remaining lifetime dependency of
 full renderer vertex binding `B24840` and reset unbinding `B24BF0`. It adds
 no source implementation or runtime claim. The report pins complete fresh
-live-Ghidra/installed-PE spans and twelve current provider files.
+live-Ghidra/installed-PE spans and twelve current provider files. The follow-up
+audit retains all original 24 spans / 2,159 bytes and expands the report to
+49 spans / 6,651 bytes. All spans were compared afresh with the guarded live
+`bsp` program and installed PE; all twelve provider hashes remain unchanged.
 
 ## Binding and current profiles
 
@@ -88,11 +91,81 @@ records: B61F90 lazily allocates element-count*20h bytes and copies eight
 DWORDs into a selected record; B61D90 directly stores a raw allocation.
 
 A narrow raw-byte heuristic found five candidate +4C stores near atomic
-increments. B860E0/B861D0 were checked and belong to a different D63194
-object, with +4C acting as a count. This scan is incomplete and establishes
-neither an owner type nor absence of other writers. Further investigation
-must trace actual writes/constructor callers before defining the base's
-supported ownership domain.
+increments. The follow-up checked all five and expanded the search to
+instruction-aligned address-taking assignments. None establishes a writer
+of logical-stream+4C. The field's actual nonnull runtime type and final-zero
+terminal remain unresolved; the whole binding/reset owner closure is still
+not source-ready.
+
+## Constructor and current-profile audit
+
+Fresh live callers identify exactly two direct callers of B61E20:
+B4BC00 and B4A9B0. D61D6C references identify these two constructors and
+B4B5D0 destruction; D62B68 references identify B61E20 and B62010. These are
+the observed native reference sets, not proof against arbitrary indirect
+construction or writes through escaped addresses.
+
+Full B4A9B0 is 228 bytes. Its ABI is ECX logical stream; four stack arguments
+count, declaration, physical buffer and byte offset; EAX logical stream;
+RET10h. After the base constructor it initializes +58/+5C/+68/+6C/+70,
+sets count+64 and flags+60=1, retains declaration+68 and physical+58, stores
+the supplied offset+5C, then registers through B28A40 on current F8D394.
+It contains no nonnull +4C assignment and accepts no parent logical-stream
+argument. The ordinary B4BC00 constructor likewise contains no direct
+nonnull +4C assignment; its full 758-byte body is pinned.
+
+B4A9B0's sole direct caller AE47E0 contains two creation sites, AE4941 and
+AE4A83. Each gets count through the source logical stream's current +20
+method and declaration through current +24; B48D00 reads its physical+58.
+The byte offset is the caller object's +48 shifted left five. The result is
+tagged +54=80000000h and appended to a draw section. Sharing the physical
+buffer on this path does not establish a retained parent in logical+4C.
+The full 1,084-byte caller and 234-byte primary factory B287C0 are pinned.
+
+The additional current-profile bodies also expose no nonnull +4C store:
+B49980 lock, B49A80 unlock, B48D40 offset invalidation, B48CC0 flags getter,
+B48CD0 count getter and the three no-op methods. In particular D61D6C+18
+points to B48D30, exactly `RET8`; +0C and +30 point to plain `RET` bodies
+B4AAA0 and B4AAB0. B48CC0 and B48D30 currently lack Ghidra function records,
+so their exact live bytes were pinned without creating functions. B61D90
+and B61F90 concern owned allocation+50 only. This direct-body audit does
+not close mutations through calls receiving escaped object addresses.
+
+## Rejected assignment candidates and remaining search
+
+The expanded retain-near search yielded nine instruction-aligned candidates:
+
+| Site | Native evidence excluding a logical-stream writer |
+| --- | --- |
+| 651189 in 650E00 | HUD `PeriscopeDrops` effect handle at screen+4C. |
+| 6522DF in 651800 | HUD+4C passed by address; the subsequent retained assignment destination is HUD+50. |
+| 7EC633 in 7EC5A0 | Value comes from aircraft-associated source+4A4; the following retained reference is destination+50. |
+| A7C4E0 in A7C480 | Constructor installs distinct D5ABB8 and retains its first argument at its own +4C. |
+| B10A00 in B107F0 | Stores a B4E020 render-target-holder construction result; that holder installs D61EB8. |
+| B2C618 in B2C2D0 | EBP is the B3F930 texture-constructor result; B23640 receives texture+4C. |
+| B85F53 in B85EF0 | D63194 copy constructor initializes an entry count at +4C. |
+| B86123 in B860E0 | D63194 constructor initializes that count. |
+| B862DB in B861D0 | D63194 assignment updates that count. |
+
+The texture candidate is an actual retained-source writer, but its object
+origin is a texture constructor. Equal offsets provide no evidence that its
+retained memory-stream type can also occupy logical-stream+4C.
+
+A broader offline pass decoded 3,345,748 instructions / 9,293,732 bytes from
+snapshot function starts, collecting 2,429 non-ESP memory+4C references or
+literal register adjustments by 4C. Its 71 retain-near candidates include
+reads, scalar values and stack cleanup. It also records 239 DWORD stores
+whose source is not literal zero; many use zero-valued registers. Most of
+that adoption-oriented set is not ownership-classified. Linear decoding
+can stop at invalid bytes and includes interfunction gaps, so neither this
+inventory nor the retain-near filter proves the field permanently null.
+
+The report names two bounded read-only follow-ups: classify adoption-style
+stores in AE5550/B0B6A0 and apparent gap bodies following B2F630/B2F800;
+then trace escaped constructor outputs through B28A40 registration,
+B93800/B93E60 payload loading, B85B80 draw-section append and B73BB0
+geometry assignment. These are discovery candidates, not ready source
+dependencies. Address leases must be coordinated before any mutation.
 
 ## Reset consequence
 
