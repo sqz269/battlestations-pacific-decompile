@@ -1,0 +1,72 @@
+{
+  "annotation_events": [
+    {
+      "address": "00414e10",
+      "before": {
+        "address": "00414e10",
+        "function_name": "FUN_00414e10"
+      },
+      "after": {
+        "address": "00414e10",
+        "name": "BSP_EntityPose_GetDerivedAffineInverse",
+        "evidence": "Hypothesis, not recovered symbol. Packet orch3_pose_derived_i; read-only bsp.gpr /battlestationspacific.exe. Any nonzero derived byte10C returns actual output110 without refreshing world. Dirty path calls414DB0, sets byte10C=1 at414E2D BEFORE B63D50 at414E34, passes ECXoutput110 EDXworldCC. Typed view binds SAME PoseRefreshView and actual output. Complete 49-byte body; final instruction 00414e40 length1; no flow gaps. docs/POSE_DERIVED.md; reports/pose_derived.json. Strict Win32/2CTests and focused disk-matched native fixture passed."
+      },
+      "status": "applied",
+      "readback_verified": {
+        "name": true,
+        "evidence": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "0073d410",
+      "before": {
+        "address": "0073d410",
+        "function_name": "BSP_Application_Initialize",
+        "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof."
+      },
+      "after": {
+        "address": "0073d410",
+        "name": "BSP_Application_Initialize",
+        "evidence": "WinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Configured native argument path: WinMain8F841E pushes fixed cachedload and8F8423 pushes0; app ESP-=148h,73D4C2 reads second argument atESP+150h intoEBP,73D933/73D93C duplicate it,73D945 storesE1AE78,73D94A parses. GameStartupHost now forwards that borrowed mode through its phases instead of parsing GetCommandLineA; separate bsp_game executable options remain separate. This corrects a composed fragment only, not the complete initializer or native string/global ABI. docs/NATIVE_STARTUP_ARGUMENT.md; reports/native_startup_argument.json; docs/NATIVE_ENTRY_BOOTSTRAP.md."
+      },
+      "status": "applied",
+      "readback_verified": {
+        "name": true,
+        "evidence": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00b63d50",
+      "before": {
+        "address": "00b63d50",
+        "function_name": "FUN_00b63d50"
+      },
+      "after": {
+        "address": "00b63d50",
+        "name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+        "evidence": "Hypothesis, not recovered symbol. Packet orch3_pose_derived_i; read-only bsp.gpr /battlestationspacific.exe. Leaf with18h scratch, no calls. Transpose each upper source row divided by squared length, x87 negative transformed translation, force last column+0,+0,+0,1 fromD7A24C3F800000. Inverse only for nonzero orthogonal rows; source assembly preserves145-instruction schedule, spills and overwrite/rereads. Complete 442-byte body; final instruction 00b63f09 length1; no flow gaps. docs/POSE_DERIVED.md; reports/pose_derived.json. Strict Win32/2CTests and focused disk-matched native fixture passed."
+      },
+      "status": "applied",
+      "readback_verified": {
+        "name": true,
+        "evidence": true,
+        "prior_comments_preserved": true
+      }
+    }
+  ],
+  "export_refreshed": true,
+  "definition_or_flow_mutations": false,
+  "new_native_bodies": 2,
+  "other_address": "0073d410 composed startup argument correction only",
+  "combined_validation": {
+    "build": "local/derived-startup-j-build.log",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "fixture": "local/pose-derived-composed-j-fixture.log",
+    "fixture_passed": true,
+    "native_comparison_scope": "16 full-output-bit/FP-status leaf comparisons plus native cache accessor; only canonical pose refresh dependency shared",
+    "game_validated": false
+  }
+}
