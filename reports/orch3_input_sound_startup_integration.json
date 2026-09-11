@@ -241,5 +241,13 @@
     "No original object or exception ABI claim",
     "Full sound constructor/VFS Lua load/teardown not runtime exercised",
     "No audible output or gameplay validation"
-  ]
+  ],
+  "integration": {
+    "validated_source_commit": "b3e673814012921149ff9882e395f3ea3869f98a",
+    "merged_to_main": true,
+    "win32_release": "passed after merging concurrent main",
+    "ctests_passed": 2,
+    "installed_fmod_probe": "relinked against merged build and passed;111 actual calls,no errors",
+    "log": "local/orch3-input-sound-integration.log"
+  }
 }

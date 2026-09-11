@@ -1,0 +1,250 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "008d4440",
+      "end_exclusive": "008d446d",
+      "length": 45,
+      "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+      "function_before": "Function: FUN_008d4440 at 008d4440\nSignature: undefined FUN_008d4440(void)\nEntry: 008d4440\nBody: 008d4440 - 008d4451",
+      "documentation_before": {
+        "hash": "66ad3ce5f8431bc7b545830131d7ecbaa599ecc4dfe64c219ef36a30f89debbd",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "008d4440",
+        "function_name": "FUN_008d4440",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "008d444d"
+      ],
+      "function_after": "Function: FUN_008d4440 at 008d4440\nSignature: undefined FUN_008d4440(void)\nEntry: 008d4440\nBody: 008d4440 - 008d446c",
+      "documentation_after": {
+        "hash": "f545daeeb5da5c5ec9d18b5639d4289cbb8a36bfce41d2fd50a1db124259042c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "008d4440",
+        "function_name": "FUN_008d4440",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "008d4470",
+      "end_exclusive": "008d44b2",
+      "length": 66,
+      "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+      "function_before": "Function: CG_scalar_deleting_dtor_008d4470 at 008d4470\nSignature: undefined CG_scalar_deleting_dtor_008d4470(void)\nEntry: 008d4470\nBody: 008d4470 - 008d4481",
+      "documentation_before": {
+        "hash": "66ad3ce5f8431bc7b545830131d7ecbaa599ecc4dfe64c219ef36a30f89debbd",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 008d4470]\nPreserve compiler-generated name. Complete66-byte body: free bytes, decrement0109db98, subtract storedlength from0109db9c, base cleanup, optional storagefree(flags bit0), EAX original object, RET4. Tail008d4482..008d44b1 exists after first free. Check per-instruction flow override before repair; callee no-return is not established. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX backing; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "returning_free_call_sites": [
+        "008d447d",
+        "008d44a4"
+      ],
+      "function_after": "Function: CG_scalar_deleting_dtor_008d4470 at 008d4470\nSignature: undefined CG_scalar_deleting_dtor_008d4470(void)\nEntry: 008d4470\nBody: 008d4470 - 008d44b1",
+      "documentation_after": {
+        "hash": "d86763e74b4a12a1d148e1e8fe8512cfab5f7c10aeb011c9ea6043458848759b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 008d4470]\nPreserve compiler-generated name. Complete66-byte body: free bytes, decrement0109db98, subtract storedlength from0109db9c, base cleanup, optional storagefree(flags bit0), EAX original object, RET4. Tail008d4482..008d44b1 exists after first free. Check per-instruction flow override before repair; callee no-return is not established. docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. No native ABI or game validation claim. Original ABI: ECX backing; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/STREAM_CONVERSION_LIFETIME.md; reports/stream_conversion_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 60,
+            "name": "LAB_008d44ac"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "008d4452",
+        "end_address": "008d446d"
+      },
+      "result": {
+        "success": true,
+        "start_address": "008d4452",
+        "end_address": "008d446c",
+        "bytes_disassembled": 27,
+        "message": "Successfully disassembled 27 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "008d444d"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d444d (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "008d4440"
+      },
+      "result": {
+        "success": true,
+        "address": "008d4440",
+        "deleted_function": "FUN_008d4440",
+        "body_size": 18,
+        "message": "Function 'FUN_008d4440' deleted at 008d4440"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "008d4440",
+        "name": "FUN_008d4440",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "008d4440",
+        "function_name": "FUN_008d4440",
+        "entry_point": "008d4440",
+        "body_size": 45,
+        "message": "Function created successfully at 008d4440"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "008d4482",
+        "end_address": "008d44b2"
+      },
+      "result": {
+        "success": true,
+        "start_address": "008d4482",
+        "end_address": "008d44b1",
+        "bytes_disassembled": 48,
+        "message": "Successfully disassembled 48 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "008d447d"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d447d (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "008d44a9",
+        "end_address": "008d44b2"
+      },
+      "result": {
+        "success": true,
+        "start_address": "008d44a9",
+        "end_address": "008d44b1",
+        "bytes_disassembled": 9,
+        "message": "Successfully disassembled 9 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "008d44a4"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 008d44a4 (was: NONE, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "008d4470"
+      },
+      "result": {
+        "success": true,
+        "address": "008d4470",
+        "deleted_function": "CG_scalar_deleting_dtor_008d4470",
+        "body_size": 18,
+        "message": "Function 'CG_scalar_deleting_dtor_008d4470' deleted at 008d4470"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "008d4470",
+        "name": "CG_scalar_deleting_dtor_008d4470",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "008d4470",
+        "function_name": "CG_scalar_deleting_dtor_008d4470",
+        "entry_point": "008d4470",
+        "body_size": 66,
+        "message": "Function created successfully at 008d4470",
+        "warnings": [
+          "Function name 'CG_scalar_deleting_dtor_008d4470' \u2014 main part 'CG_scalar_deleting_dtor_008d4470' is not PascalCase. Expected: CgScalarDeletingDtor008d4470",
+          "Function name 'CG_scalar_deleting_dtor_008d4470' \u2014 main part 'CG_scalar_deleting_dtor_008d4470' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Retained backing owner returning-free continuations restored with comments preserved; project saved"
+}
