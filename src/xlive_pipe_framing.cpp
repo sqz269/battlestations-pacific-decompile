@@ -1,4 +1,5 @@
 #include "bsp/xlive_pipe_framing.hpp"
+#include "bsp/xlive_pipe_preimage.hpp"
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
@@ -310,9 +311,19 @@ I32 encode_xlive_pipe_frame_00a5f6c0(XLivePipeNativeState& owner, void* buffer,
         transform_00a5efa1(p->pending_30, g.value_f8b9a0, p->pending_30, g, t);
         copy_dwords_forward(frame, p->pending_30.bytes.data(), 18);
     } else {
-        // Typed boundary acquires defined preimage before owning the native lock.
-        const auto preimage = system.temporary_wide_preimage();
-        Wide temporary{system.create_value_lock(), preimage};
+        // Native creates/stores the lock before consuming this actual stack
+        // payload. Default initialization leaves its bytes available to capture.
+        Wide temporary;
+        temporary.lock = system.create_value_lock();
+        try {
+            const auto preimage = system.temporary_wide_preimage(temporary);
+            std::memcpy(temporary.bytes.data(), preimage.data(), preimage.size());
+        } catch (...) {
+            // This added host boundary owns a lock already. Native transforms
+            // below still retain their original lack of C++ unwind cleanup.
+            destroy_temporary(temporary);
+            throw;
+        }
         transform_00a5ee0d(g.value_f8b858, temporary, g, t);
         transform_00a5efa1(temporary, g.value_f8b9a0, temporary, g, t);
         copy_dwords_forward(frame, temporary.bytes.data(), 18);
@@ -373,11 +384,12 @@ I32 decode_xlive_pipe_frame_00a5e09e(XLivePipeTransport* p, const void* buffer, 
     return decode_xlive_pipe_frame_00a5f7c5(p->native, buffer, size, callback, context, g, t, system);
 }
 
-std::array<Byte, 72> Win32XLivePipeFrameSystemHost::temporary_wide_preimage() {
-    return preimages_.temporary_wide_preimage();
+std::array<Byte, 72> Win32XLivePipeFrameSystemHost::temporary_wide_preimage(
+    const Wide& actual_temporary) {
+    return preimages_.temporary_wide_preimage(actual_temporary);
 }
 XLivePipeRandomOutput Win32XLivePipeFrameSystemHost::random_output_preimage() {
-    return preimages_.random_output_preimage();
+    return {}; // unknown transport carrier; never used as the real API buffer
 }
 XLivePipeValueLock* Win32XLivePipeFrameSystemHost::create_value_lock() {
     return create_xlive_pipe_value_lock_00a5fa5a();
@@ -385,8 +397,12 @@ XLivePipeValueLock* Win32XLivePipeFrameSystemHost::create_value_lock() {
 void Win32XLivePipeFrameSystemHost::set_last_error(DWORD e) { SetLastError(e); }
 DWORD Win32XLivePipeFrameSystemHost::get_last_error() { return GetLastError(); }
 bool Win32XLivePipeFrameSystemHost::random_bytes(HCRYPTPROV p, XLivePipeRandomOutput& out) {
-    const bool success = CryptGenRandom(p, 8, out.bytes.data()) != FALSE;
-    if (success) out.defined.set();
+    // This is the actual API output region. Braces/value initialization here
+    // would replace the failure preimage with invented zeros.
+    std::array<Byte, 8> native_output;
+    const bool success = CryptGenRandom(p, 8, native_output.data()) != FALSE;
+    capture_current_process_xlive_pipe_bytes(native_output.data(), out.bytes.data(), native_output.size());
+    out.defined.set(); // observed actual bytes, including any failure remainder
     return success;
 }
 I32 ReconstructedXLivePipeFramingHost::send_capacity_00a5df96(void* p, U32 n, U32& out) {

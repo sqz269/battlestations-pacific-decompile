@@ -1,0 +1,291 @@
+{
+  "packet": "orch3_pipe_preimage_audit_h",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "game_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_writes": false,
+  "new_game_addresses": 0,
+  "native_loops": [
+    {
+      "address": "00a5fe80",
+      "inclusive_end": "00a5ffab",
+      "last_instruction": "00a5ffa9",
+      "last_instruction_length": 3,
+      "raw_sha256": "2c65e54f109f7c1114a1ce4ae7cae888fc9af45be28469757c69736ac1fe8a2e",
+      "live_matches_disk_fixture": true,
+      "native_abi": "stdcall nine DWORD stack arguments (two inputs,output,two row pointers,displacement,three signed lengths), RET24h",
+      "uncertainty": "Original generic machine code executed with relocated immutable table operands; two FD15 memset calls rebound to the host CRT. Full native frame wrapper not executed."
+    },
+    {
+      "address": "00a5fbc3",
+      "inclusive_end": "00a5fd14",
+      "last_instruction": "00a5fd12",
+      "last_instruction_length": 3,
+      "raw_sha256": "656e06d01f5a9eec72b2c09ba0daa7a890eb79727a775ab5d58e91158fab3e0b",
+      "live_matches_disk_fixture": true,
+      "native_abi": "stdcall nine DWORD stack arguments (two inputs,output,two row pointers,displacement,three signed lengths), RET24h",
+      "uncertainty": "Original generic machine code executed with relocated immutable table operands; two FD15 memset calls rebound to the host CRT. Full native frame wrapper not executed."
+    },
+    {
+      "address": "00a5fa70",
+      "inclusive_end": "00a5fbc2",
+      "last_instruction": "00a5fbc0",
+      "last_instruction_length": 3,
+      "raw_sha256": "f9313b6bbfeff7816ee5170d125edeb3b222aa48a7318b491d8a1ee1ea35a321",
+      "live_matches_disk_fixture": true,
+      "native_abi": "stdcall nine DWORD stack arguments (two inputs,output,two row pointers,displacement,three signed lengths), RET24h",
+      "uncertainty": "Original generic machine code executed with relocated immutable table operands; two FD15 memset calls rebound to the host CRT. Full native frame wrapper not executed."
+    },
+    {
+      "address": "00a5fd15",
+      "inclusive_end": "00a5fe7f",
+      "last_instruction": "00a5fe7d",
+      "last_instruction_length": 3,
+      "raw_sha256": "a18aa925101f248b1ad6452a133f3654a856bd8805922070f279ef6cdc4b33ae",
+      "live_matches_disk_fixture": true,
+      "native_abi": "stdcall nine DWORD stack arguments (two inputs,output,two row pointers,displacement,three signed lengths), RET24h",
+      "uncertainty": "Original generic machine code executed with relocated immutable table operands; two FD15 memset calls rebound to the host CRT. Full native frame wrapper not executed."
+    }
+  ],
+  "inputs": {
+    "tables": {
+      "first_va": "00d25d9c",
+      "exclusive_end": "00d56eb0",
+      "size": 200980,
+      "sha256": "f3456122844489dc39ceee393fc4ecfaddf789449bddf89b434b2cd55fe5c77c"
+    },
+    "initialized_globals": {
+      "first_va": "00e12ac8",
+      "exclusive_end": "00e12d00",
+      "size": 568,
+      "sha256": "20436ee57ad0c179e4cde3ffd80ea75b53339dea4d500cda75769177176eae21"
+    },
+    "random_seed32": "deadbeef",
+    "random_seed64_little_endian": "0102030405060708",
+    "variation": "each of8 bits at every byte,256 full-byte patterns,256 LCG-generated mixed preimages; zero only a comparison baseline"
+  },
+  "results": {
+    "initial_key_predicate": false,
+    "updated_key_predicate": true,
+    "cases": [
+      {
+        "name": "heap_seed_init",
+        "cases": 832,
+        "bit_flip_changed_counts": [
+          15,
+          31,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 492,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "03030302020000010301030201020102010201030100030200010202030100010200010002000302"
+      },
+      {
+        "name": "heap_key_init",
+        "cases": 832,
+        "bit_flip_changed_counts": [
+          22,
+          26,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 0,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "02030103010102010001000001000200020101020102010000020103010102010303020301000002"
+      },
+      {
+        "name": "stack_header",
+        "cases": 1088,
+        "bit_flip_changed_counts": [
+          28,
+          51,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 0,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "000003030001030301010301030303030202010101000102030301020201030300000102020302010202030300000002000303030303010003010303000001000300010000020102"
+      },
+      {
+        "name": "heap_pending_init",
+        "cases": 1088,
+        "bit_flip_changed_counts": [
+          28,
+          51,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 0,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "030300020001010001030100000102020200010203030200020303020103000203010300030000000300020303000002000000020303020202010300030301010300030303020000"
+      },
+      {
+        "name": "heap_pending_next_frame",
+        "cases": 1088,
+        "bit_flip_changed_counts": [
+          28,
+          51,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 0,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "000303010200010302000200020300030000030102000200020103020100020200010001010200020303020303030003000303010002000301010003010100030303010303020301"
+      },
+      {
+        "name": "stack_header_to_seed",
+        "cases": 1088,
+        "bit_flip_changed_counts": [
+          22,
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 492,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "03000100000203010001020101000203010102020302020202030103020300020202000201020100"
+      },
+      {
+        "name": "heap_seed_to_frame",
+        "cases": 832,
+        "bit_flip_changed_counts": [
+          15,
+          30,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "comparison_predicate_changes": 0,
+        "constant_pattern_changes": 192,
+        "mixed_preimage_changes": 256,
+        "baseline_hex": "000303020301010003030002010002000002010002010001030202030101000101000101000000010100030003020000030302030100010200010200020003010303000201020000"
+      }
+    ],
+    "self_wide_comparison_predicate": false
+  },
+  "conclusions": [
+    "Encoded preimage low2 bits are observable in frame bytes; no all-zero production substitution is justified.",
+    "Encoded byte bits2..7 are universally masked before use in the recovered transform chains; requiring their historical values overstates data dependency.",
+    "Fully written C++ byte representations are still required; capture all8 actual bits is a straightforward binding.",
+    "Native wide/key predicate stability across sampled variants does not prove universal protocol equivalence, equality semantics or byte independence.",
+    "Narrow comparison on seed representations is recorded only as data; its semantic applicability to seeds is unproven.",
+    "The raw8 random-output bytes are distinct from encoded bytes; A5FA70 consumes their64 individual bits.",
+    "Protocol/temporary default initialization does not clear payload; a new brace initializer or zero fill would replace the preimage.",
+    "Current allocation provider can leak new context storage on exception; proposed capture must use RAII until successful publication."
+  ],
+  "exact_dataflow": {
+    "heap": {
+      "seed_payload": "+08..+2f",
+      "pending_payload": "+34..+7b",
+      "key_payload": "+80..+a7",
+      "constructor_only_writes": [
+        "+04 lock",
+        "+30 lock",
+        "+7c lock"
+      ]
+    },
+    "encoded_masks": [
+      "00a5fec3 AND EDX,3 right input",
+      "00a5fecf AND EBX,3 left input"
+    ],
+    "temporary": {
+      "lock_create": "00a5f778",
+      "lock_store": "00a5f77d",
+      "payload": "EBP-4c through EBP-5",
+      "first_transform_call": "00a5f789"
+    },
+    "random": {
+      "api_call": "00a5f8b0",
+      "error_read": "00a5f8ba",
+      "signed_negative_exit": "00a5f8c2",
+      "raw_words_consumed": [
+        "00a5f8c8",
+        "00a5f8cb"
+      ]
+    }
+  },
+  "proposed_contract": {
+    "heap": "Receive exact newly allocated context address; default initialize without braces, hold RAII, capture before any lock allocation/payload write, copy observed representation back, release RAII on success.",
+    "temporary": "Receive exact actual Wide.bytes address; default initialize Wide without braces, create/store lock first, capture payload before transform; destroy newly created lock if custom capture provider throws.",
+    "random": "Real host calls CryptGenRandom into actual uninitialized local8 buffer; immediately leaf-capture actual bytes including failure remainder, copy to output and mark all known; preserve API LastError for caller.",
+    "capture": "No-inline MSVC Win32 x86 leaf using MOV/REP MOVSB, preserving ESI/EDI; valid distinct owned ranges; no APIs, allocation, TLS, locks or callbacks; Win32 DF-clear ABI required.",
+    "representation": "Observed current-process allocation/temporary bytes; not original-game heap/stack history, ABI parity, cryptographic randomness or a fabricated successful output."
+  },
+  "capture_proof": {
+    "compiler": "MSVC Win32 14.51.36231 /std:c++17 /O2 /W4 /WX /fp:strict",
+    "trivial_default_construction": true,
+    "allocation_initializes_payload": false,
+    "temporary_initializes_payload": false,
+    "last_error_sentinels": [
+      "1234abcd",
+      "87654321",
+      "3456789a"
+    ],
+    "passed": true,
+    "compiled_assembly": {
+      "capture_owned_storage": "\t\t\t\t; COMDAT\n\n; 15   :     void* destination, std::size_t count) {\n\n\tpush\tesi\n\tpush\tedi\n\n; 17   :         mov esi, source\n\n\tmov\tesi, DWORD PTR _source$[esp+4]\n\n; 18   :         mov edi, destination\n\n\tmov\tedi, DWORD PTR _destination$[esp+4]\n\n; 19   :         mov ecx, count\n\n\tmov\tecx, DWORD PTR _count$[esp+4]\n\n; 20   :         rep movsb\n\n\trep\t movsb\n\n; 16   :     __asm {\n\n\tpop\tedi\n\tpop\tesi\n\n; 21   :     }\n; 22   : }\n\n\tret\t0\n",
+      "capture_new_context": "\t\t\t\t; COMDAT\n\n; 24   :     std::array<std::uint8_t,0xa8>& observation) {\n\n\tpush\tebx\n\tpush\tesi\n\tpush\tedi\n\n; 25   :     auto* context=new XLivePipeProtocolNativeState; // NO parentheses/braces\n\n\tpush\t168\t\t\t\t\t; 000000a8H\n\tcall\t??2@YAPAXI@Z\t\t\t\t; operator new\n\n; 26   :     capture_owned_storage(context,observation.data(),observation.size());\n\n\tmov\tesi, DWORD PTR _observation$[esp+12]\n\tmov\tebx, eax\n\tpush\t168\t\t\t\t\t; 000000a8H\n\tpush\tesi\n\tpush\tebx\n\tcall\t_capture_owned_storage\n\tadd\tesp, 16\t\t\t\t\t; 00000010H\n\n; 27   :     std::memcpy(context,observation.data(),observation.size());\n\n\tmov\tedi, ebx\n\tmov\tecx, 42\t\t\t\t\t; 0000002aH\n\n; 28   :     return context;\n\n\tmov\teax, ebx\n\trep movsd\n\tpop\tedi\n\tpop\tesi\n\tpop\tebx\n\n; 29   : }\n\n\tret\t0\n",
+      "capture_actual_temporary": "\t\t\t\t; COMDAT\n\n; 31   :     XLivePipeValueLock* lock,std::array<std::uint8_t,72>& observation) {\n\n\tsub\tesp, 76\t\t\t\t\t; 0000004cH\n\tmov\teax, DWORD PTR _lock$[esp+72]\n\tpush\tesi\n\tmov\tesi, DWORD PTR _observation$[esp+76]\n\n; 32   :     XLivePipeEncodedWideValue temporary; // NO member default initializer\n; 33   :     temporary.lock=lock; // native lock is created/stored before this capture\n; 34   :     capture_owned_storage(temporary.bytes.data(),observation.data(),observation.size());\n\n\tpush\t72\t\t\t\t\t; 00000048H\n\tmov\tDWORD PTR _temporary$[esp+84], eax\n\tlea\teax, DWORD PTR _temporary$[esp+88]\n\tpush\tesi\n\tpush\teax\n\tcall\t_capture_owned_storage\n\n; 35   :     std::memcpy(temporary.bytes.data(),observation.data(),observation.size());\n\n\tmovups\txmm0, XMMWORD PTR [esi]\n\n; 36   :     // Force a subsequent use of the exact member storage, avoiding dead removal.\n; 37   :     capture_owned_storage(temporary.bytes.data(),observation.data(),observation.size());\n\n\tpush\t72\t\t\t\t\t; 00000048H\n\tlea\teax, DWORD PTR _temporary$[esp+100]\n\tmovups\tXMMWORD PTR _temporary$[esp+100], xmm0\n\tpush\tesi\n\tmovups\txmm0, XMMWORD PTR [esi+16]\n\tpush\teax\n\tmovups\tXMMWORD PTR _temporary$[esp+124], xmm0\n\tmovups\txmm0, XMMWORD PTR [esi+32]\n\tmovups\tXMMWORD PTR _temporary$[esp+140], xmm0\n\tmovups\txmm0, XMMWORD PTR [esi+48]\n\tmovups\tXMMWORD PTR _temporary$[esp+156], xmm0\n\tmovq\txmm0, QWORD PTR [esi+64]\n\tmovq\tQWORD PTR _temporary$[esp+172], xmm0\n\tcall\t_capture_owned_storage\n\tadd\tesp, 24\t\t\t\t\t; 00000018H\n\tpop\tesi\n\n; 38   : }\n\n\tadd\tesp, 76\t\t\t\t\t; 0000004cH\n\tret\t0\n"
+    }
+  },
+  "evidence_files": {
+    "local/pipe_preimage_audit.cpp": "ff4b825172694ff4aae7c1263cd98f1455431a4d06c091cc08a5a1399a8b1717",
+    "local/pipe_preimage_results.json": "75e1dd2c44b742f715fde28c302a62293bff048404fb564c103d680986a2f67f",
+    "local/pipe_capture_proof.cpp": "1446128934122e151f42bc96b06c2aaea8cef45cb2cb2db3e61ad0f735bdc9e3",
+    "local/pipe_capture_proof.asm": "30eb22c481f430dc4022b710e4812d9704b8b2d259e6f722a1e70c6557d883db"
+  },
+  "checks": {
+    "native_component_variation_fixture": "passed",
+    "native_variation_cases": 6848,
+    "actual_storage_capture_fixture": "passed",
+    "native_live_byte_checks": "4/4 passed",
+    "shared_source_changed": false,
+    "repository_build_inputs_changed": false,
+    "permanent_tests_added": 0,
+    "endpoints_opened": 0,
+    "native_threads_started": 0,
+    "game_launches": 0,
+    "sdk_calls": 0
+  },
+  "limits": [
+    "No exhaustive proof of low-bit irrelevance at individual positions; retain all low2 bits conservatively.",
+    "Frame bytes differ, even where sampled wide comparison results agree.",
+    "No whole native frame execution, endpoint compatibility or game-runtime validation.",
+    "Capture is explicit MSVC x86 machine-storage observation; not portable ISO C++ treatment of indeterminate values.",
+    "No production source change authorized in this audit; parent reviews the proposed contract before a separate implementation packet."
+  ]
+}

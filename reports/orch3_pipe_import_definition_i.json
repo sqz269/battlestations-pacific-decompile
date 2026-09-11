@@ -1,0 +1,56 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a607ee",
+    "end_address": "00a607f4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a607ee",
+    "end_address": "00a607f3",
+    "bytes_disassembled": 6,
+    "message": "Successfully disassembled 6 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a607ee",
+    "disassemble_first": false,
+    "name": "CreateNamedPipeW"
+   },
+   "result": {
+    "success": true,
+    "address": "00a607ee",
+    "function_name": "CreateNamedPipeW",
+    "entry_point": "00a607ee",
+    "body_size": 6,
+    "message": "Function created successfully at 00a607ee"
+   }
+  },
+  {
+   "defined": "00a607ee",
+   "end": "00a607f4",
+   "name": "CreateNamedPipeW",
+   "after": "Function: CreateNamedPipeW at 00a607ee\nSignature: HANDLE __stdcall CreateNamedPipeW(LPCWSTR lpName, DWORD dwOpenMode, DWORD dwPipeMode, DWORD nMaxInstances, DWORD nOutBufferSize, DWORD nInBufferSize, DWORD nDefaultTimeOut, LPSECURITY_ATTRIBUTES lpSecurityAttributes)\nEntry: 00a607ee\nBody: 00a607ee - 00a607f3"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

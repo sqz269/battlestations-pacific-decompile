@@ -1,0 +1,21 @@
+{
+  "annotation_events": [
+    {
+      "address": "00414db0",
+      "before": {
+        "address": "00414db0",
+        "function_name": "FUN_00414db0"
+      },
+      "after": {
+        "address": "00414db0",
+        "name": "BSP_EntityPose_RefreshWorld",
+        "evidence": "Hypothesis, not recovered symbol. Packet orch3_pose_refresh_h; read-only bsp.gpr /battlestationspacific.exe. ByteC8 any-nonzero early return; parent3C recursive refresh then live reload; full canonical413920(local74 * parent.worldCC) into disjoint40h scratch, or root local74; canonical x874134F0 copy to worldCC; only then C8=1 followed by10C=0. Complete89-byte body, final RET414E08 length1, no missing instructions/flow gaps. docs/POSE_REFRESH.md; reports/pose_refresh.json. Byte-matched isolated native-control fixture with shared canonical matrix callees passed."
+      },
+      "status": "applied"
+    }
+  ],
+  "saved_name_evidence_and_prior_comment_readback_verified": true,
+  "export_refreshed": true,
+  "original_complete_body": "00414db0..00414e08",
+  "definition_or_flow_mutations": false
+}

@@ -1,0 +1,62 @@
+{
+  "packet": "orch3_pose_derived_i",
+  "source": "src/pose_derived.cpp",
+  "header": "include/bsp/pose_derived.hpp",
+  "functions": [
+    {"address":"00414e10","name":"get_pose_derived_00414e10","hypothesis":"BSP_EntityPose_GetDerivedAffineInverse","original_abi":"ECX=pose owner; no stack arguments; EAX=owner+110; RET","length":49,"instruction_count":12,"final_instruction":"00414e40","final_length":1,"end":"00414e40","sha256":"d57da3a7cf21e96d3143b214953715a9dd591221364027f35d5bf208a00027d7","evidence":"Any nonzero derived byte10C returns actual output110 without refreshing world. Dirty path calls414DB0, sets byte10C=1 at414E2D BEFORE B63D50 at414E34, passes ECXoutput110 EDXworldCC. Typed view binds SAME PoseRefreshView and actual output."},
+    {"address":"00b63d50","name":"derive_pose_affine_inverse_00b63d50","hypothesis":"BSP_Matrix_BuildOrthogonalScaledAffineInverse","original_abi":"ECX=destination float16; EDX=source float16; no stack arguments; EAX untouched; plain RET","length":442,"instruction_count":145,"final_instruction":"00b63f09","final_length":1,"end":"00b63f09","sha256":"f796b55571445ad63c6ef518a777d8007992f29cae564fd9ed89b452a62345f8","evidence":"Leaf with18h scratch, no calls. Transpose each upper source row divided by squared length, x87 negative transformed translation, force last column+0,+0,+0,1 fromD7A24C3F800000. Inverse only for nonzero orthogonal rows; source assembly preserves145-instruction schedule, spills and overwrite/rereads."}
+  ],
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_target_verified_bsp_wrappers",
+    "ghidra_mutations": 0,
+    "missing_definitions": [],
+    "flow_gaps": [],
+    "fixture_reference_matches_disk": true,
+    "byte_comparison": "local/pose-derived-byte-comparison.json",
+    "constant": {"address":"00d7a24c","hex":"0000803f","meaning":"exact float1"}
+  },
+  "math": {
+    "formula": "For i,j<3: dst[j][i]=src[i][j]/dot(src_row_i,src_row_i); dst[3][j]=-sum(src[3][k]*dst[k][j]); force column3=(+0,+0,+0,1)",
+    "formula_rounding_note": "Mathematical shorthand only; original float squared-component/norm/division spills and x87 intermediates are retained in the source kernel",
+    "inverse_preconditions": "nonzero mutually orthogonal upper source rows and affine source semantics",
+    "proof": "ri dot rj / qj forms identity for nonzero orthogonal rows; negative transformed translation supplies affine inverse",
+    "unsupported_input_behavior": "same unvalidated formula for shear, projective, zero row and nonfinite inputs; not a general inverse",
+    "difference_from_b63b30": "no initial source copy, canonical affine last column, x87 FCHS/subtraction translation instead of SSE negative-zero subtraction",
+    "exact_alias": "preserve native source rereads after earlier output writes; deterministic native sequential result generally not an inverse",
+    "partial_overlap": "outside typed CameraMatrix object contract",
+    "library_calls": 0,
+    "native_image_execution_in_production": false,
+    "fp_environment": "ambient x87/MXCSR retained; no epsilon, fallback, sanitization, exception mask or control-word changes"
+  },
+  "cache_composition": {
+    "view": "PoseDerivedView references existing PoseRefreshView and actual CameraMatrix at110",
+    "owned_or_copied_state": false,
+    "same_validity_field": "PoseRefreshView.derived_valid_10c",
+    "dirty_sequence": "canonical pose refresh, byte10C=1, actual leaf math, return same output",
+    "clean_sequence": "any nonzero10C returns output even if world_valid_c8==0",
+    "fault_order": "flag is set before leaf; no rollback or late valid store. Assembly/source proven, unmasked FPU/SEH faults not fixture-tested",
+    "shared_files_modified": false,
+    "adjacent_accessors_reconstructed": false
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "build_log": "local/pose-derived-build.log",
+    "existing_ctests_passed": ["reconstructed_math","native_math_differential"],
+    "fixture_source": "local/pose_derived_fixture.cpp",
+    "fixture_command": "cmd /c local\\run_pose_derived_fixture.cmd",
+    "fixture_log": "local/pose-derived-fixture.log",
+    "fixture_passed": true,
+    "leaf_comparisons": 16,
+    "leaf_compared": "all64 output bytes and floating-point status, distinct and exact in-place",
+    "leaf_inputs": ["identity","orthogonal scaled basis","shear","zero row","signed zero","quiet NaN","infinity","subnormal"],
+    "leaf_shared_math": false,
+    "cache_reference": "original49-byte accessor calls original442-byte leaf; only414DB0 refresh dependency is shared through explicit bridge",
+    "cache_cases": ["returned output address","real shared flags/world refresh","nonzero derived gate bypasses invalid world","singular results still cached"],
+    "limits": ["default masked FP configuration only","no arbitrary partial overlap","no unmasked FPU/SEH trap","no signaling-NaN payload sweep or broad randomized suite","no native owner lifetime or gameplay validation"],
+    "hardware_or_game_calls": false
+  }
+}

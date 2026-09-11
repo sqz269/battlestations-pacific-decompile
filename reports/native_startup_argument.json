@@ -1,0 +1,25 @@
+{
+  "packet": "orch3_startup_argument_j",
+  "source": "src/game_hosts.cpp",
+  "header": "include/bsp/game_hosts.hpp",
+  "native_evidence": "reports/native_entry_bootstrap.json.exact_argument_path",
+  "configured_entry_arguments": [
+    0,
+    "cachedload"
+  ],
+  "before": "mode discarded; native parser read GetCommandLineA",
+  "after": "borrow actual mode through run_initialize_phases, parse mode at existing phase3, then feed cached_load to VFS factorytail",
+  "separate_executable_cli_preserved": true,
+  "native_first_argument_global_storage_not_claimed": true,
+  "null_mode": "explicit invalid_argument typed binding error; configured native entry is nonnull",
+  "build_command": "./scripts/build.ps1",
+  "build_log": "local/native-startup-argument-j-build.log",
+  "build_target": "MSVC Win32 Release /W4 /WX",
+  "build_passed": true,
+  "existing_ctests_passed": 2,
+  "new_tests": 0,
+  "original_installation_or_live_process_modified": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "final_combined_build_log": "local/derived-startup-j-build.log"
+}

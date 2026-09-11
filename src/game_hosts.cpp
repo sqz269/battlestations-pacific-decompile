@@ -658,12 +658,13 @@ void GameStartupHost::application_construct() {
 }
 
 void GameStartupHost::application_initialize(int flags, const char* mode) {
+    if (mode == nullptr) throw std::invalid_argument("application initialization requires its native mode string");
     log_.implemented("StartupHost::application_initialize", "0073d410");
     log_.notef("initialize flags=%d mode=%s", flags, mode != nullptr ? mode : "(null)");
-    run_initialize_phases();
+    run_initialize_phases(mode);
 }
 
-void GameStartupHost::run_initialize_phases() {
+void GameStartupHost::run_initialize_phases(const char* mode) {
     // Phase 0, allocator and process identity (0073d43f-0073d4bd).
     char module_name[MAX_PATH] = {};
     GetModuleFileNameA(nullptr, module_name, static_cast<DWORD>(sizeof(module_name)));
@@ -703,9 +704,10 @@ void GameStartupHost::run_initialize_phases() {
     // The command line is parsed at 0073d94a, after the whole phase-2 block, which is why
     // cachedload cannot have influenced any phase-2 mount. Milestone 1 parsed it before
     // phase 2; the native position is used here.
-    const CommandLineOptions command_line =
-        parse_command_line_0073ce20(GetCommandLineA() != nullptr ? GetCommandLineA() : "");
-    log_.implemented("Phase 1 parse_command_line", "0073ce20");
+    // WinMain passes "cachedload" as the second 0073d410 argument. Native keeps
+    // that pointer in EBP, duplicates it at 0073d933, then parses at 0073d94a.
+    const CommandLineOptions command_line = parse_command_line_0073ce20(mode);
+    log_.implemented("Phase 3 parse_command_line", "0073ce20");
     log_.notef("command line cached_load=%d fixed_frame_rate=%d file_access_log=%d",
         command_line.cached_load ? 1 : 0, command_line.fixed_frame_rate ? 1 : 0,
         command_line.file_access_log ? 1 : 0);
