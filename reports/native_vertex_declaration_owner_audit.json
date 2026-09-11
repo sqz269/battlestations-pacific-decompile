@@ -706,11 +706,11 @@
     },
     {
       "path": "src/native_vertex_declaration_owner.cpp",
-      "sha256": "4baca0d3de09ccf6c5225eda8bdcefea3bb71248ddf73348e898b23b0c83d2fe"
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
     },
     {
       "path": "docs/NATIVE_VERTEX_DECLARATION_OWNER.md",
-      "sha256": "596932bf258afda637f61678172ea305b6bd23ff36d5ae58765478ff41c67735"
+      "sha256": "5967d6e08ebff8ee97069bc7eed6b683772927587fa70beca7c2d00a771695f9"
     }
   ],
   "existing_dependency_pins": [
@@ -1481,5 +1481,132 @@
     "No concurrent mutation, invalid memory access/hardware-fault unwind, constructor store-fault or secondary-exception termination runtime proof is claimed.",
     "Original profile/type meanings retain reconstruction uncertainty; raw type-table addressing remains unchecked exactly as implemented by the native caller."
   ],
-  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked"
+  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+  "cleanup_search_correction": {
+    "report": "reports/native_cleanup_search_fidelity.json",
+    "source_pin": {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+    },
+    "addresses": [
+      "00b48af0",
+      "00b48b70"
+    ],
+    "native_evidence": "Existing nine-entry original fixture rechecked current primary library:43032words/sixcheckpoints. Hardware composition additionally matches botharray/deriveddoublefaultterminalstates; arraypool-entryfailure occurs after CPUdtorreturn, not insideCPUclear.",
+    "existing_fixture_recheck": {
+      "passed": true,
+      "matching_words": 43032,
+      "production_map_providers": [
+        {
+          "address": "00b48af0",
+          "map_line": "0001:000037e0       ?construct_native_vertex_declaration_00b48af0@bsp@@YAPAXPAX@Z 004047e0 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b47910",
+          "standalone_map_entry": false,
+          "scope": "Optimized within the same production constructor/scalar-delete translation unit; no standalone host call-count claim."
+        },
+        {
+          "address": "00b488e0",
+          "map_line": "0001:000036f0       ?clear_native_vertex_declaration_00b488e0@bsp@@YAXPAXPDI@Z 004046f0 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b48ad0",
+          "map_line": "0001:00003b30       ?destroy_native_vertex_elements_00b48ad0@bsp@@YAXPAX@Z 00404b30 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b480f0",
+          "map_line": "0001:00003e70       ?resize_native_vertex_elements_00b480f0@bsp@@YAXPAXH@Z 00404e70 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b47a30",
+          "map_line": "0001:00003cd0       ?reserve_native_vertex_elements_00b47a30@bsp@@YAXPAXH@Z 00404cd0 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b48b70",
+          "standalone_map_entry": false,
+          "scope": "Optimized within the same production constructor/scalar-delete translation unit; no standalone host call-count claim."
+        },
+        {
+          "address": "00b48ca0",
+          "map_line": "0001:00003880       ?delete_native_vertex_declaration_00b48ca0@bsp@@YAPAXPAXI0PDI@Z 00404880 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b47950",
+          "map_line": "0001:00004110       ?return_native_vertex_declaration_slot_00b47950@bsp@@YAXPAX0@Z 00405110 f   bsp_core:native_vertex_declaration_owner.obj"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "local/native_declaration_cleanup_primary_fixture.txt",
+          "sha256": "3eefc1d626821dd618e97a4f5685f78c02bccc8df4b1ea7aa586928836e0eb2f"
+        },
+        {
+          "path": "local/build_native_vertex_declaration_cleanup_check.ps1",
+          "sha256": "bcfc4512243edf575d55530d23bdc4008a1b085c052032409e2ef1f5a84d4270"
+        },
+        {
+          "path": "local/native_vertex_declaration_owner_check.cpp",
+          "sha256": "87f23258841245cc5aef612dd8e6b6d7448424706bae4a29219ec8b625227076"
+        },
+        {
+          "path": "build/native-vertex-declaration-cleanup-check/native_vertex_declaration_owner_primary.map",
+          "sha256": "39f270c1333005e0830bc9b6840259e810a5292dae3c9bc548b0e95bdf0415d4"
+        },
+        {
+          "path": "build/native-vertex-declaration-cleanup-check/native_vertex_declaration_owner_check.exe",
+          "sha256": "583e025a2b61b5c7307b23c88585807dd685573c4df9a1745875eb28150781f0"
+        }
+      ]
+    },
+    "build": {
+      "path": "local/native_cleanup_search_primary_build.txt",
+      "sha256": "03e34924726b1f71fd977a0fb678dca5964c20088dc2dcde23932c88bc9a22e0",
+      "passed": true,
+      "tests": 2
+    },
+    "validation_annotations_pending": false,
+    "final_validation_annotations": {
+      "journal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T025615Z.json",
+        "sha256": "6169f8d8890557f46dcc93146fdb29312b9eaeb26c8cf3fef64dd718990e62f0"
+      },
+      "saved_project": true,
+      "force_refreshed_exports": [
+        "00b60700",
+        "00b60770",
+        "00b48960",
+        "00b483f0",
+        "00b48950",
+        "00b60110",
+        "00b2f4c0",
+        "00b2ef00",
+        "00b20dc0",
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0",
+        "00441760",
+        "004412b0",
+        "00b48af0",
+        "00b48b70",
+        "00411700",
+        "004118d0"
+      ]
+    }
+  },
+  "initial_implementation_source_artifacts": [
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "sha256": "4baca0d3de09ccf6c5225eda8bdcefea3bb71248ddf73348e898b23b0c83d2fe"
+    },
+    {
+      "path": "docs/NATIVE_VERTEX_DECLARATION_OWNER.md",
+      "sha256": "596932bf258afda637f61678172ea305b6bd23ff36d5ae58765478ff41c67735"
+    }
+  ]
 }

@@ -1,0 +1,565 @@
+{
+  "packet": "native_cleanup_search_fidelity",
+  "status": "integrated_saved_original_byte_proofs_and_existing_fixture_rechecks_passed",
+  "changed_entries": [
+    "00b60700",
+    "00b48960",
+    "00b48950",
+    "00b48af0",
+    "00b48b70",
+    "00411700",
+    "004118d0"
+  ],
+  "new_complete_functions": 0,
+  "source_pins": [
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    }
+  ],
+  "build": {
+    "path": "local/native_cleanup_search_primary_build.txt",
+    "sha256": "03e34924726b1f71fd977a0fb678dca5964c20088dc2dcde23932c88bc9a22e0",
+    "passed": true,
+    "tests": 2
+  },
+  "primary_proof_verification": {
+    "hardware": {
+      "proof": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fixture-20260910\\local\\native_hardware_layout_fixture_proof.json",
+        "sha256": "3269fc851cb9d1644f925d939b0ec26afef2c8f6802beb5ba30e9ad6c54d897f"
+      },
+      "pins_verified": 31,
+      "native_spans": 26,
+      "native_bytes": 1101,
+      "production_map_providers": 9,
+      "postimages_verified": 26,
+      "comparisons": 14,
+      "words": 72954,
+      "terminal_snapshots": {
+        "array": {
+          "native_exit": 91,
+          "source_exit": 91,
+          "both_reached_requested_second_exception": true,
+          "terminal_snapshots": {
+            "native": "profile=00d61d10 records=10/11/12/0 refs=1/0/0/0 enters=3 leaves=1 invalid=0 uncaught=0",
+            "source": "profile=00d61d10 records=10/11/12/0 refs=1/0/0/0 enters=3 leaves=1 invalid=0 uncaught=0"
+          },
+          "terminal_snapshots_match": true
+        },
+        "derived": {
+          "native_exit": 91,
+          "source_exit": 91,
+          "both_reached_requested_second_exception": true,
+          "terminal_snapshots": {
+            "native": "profile=00d61d10 records=10/11/12/13 refs=1/1/1/1 enters=0 leaves=0 invalid=1 uncaught=1",
+            "source": "profile=00d61d10 records=10/11/12/13 refs=1/1/1/1 enters=0 leaves=0 invalid=1 uncaught=1"
+          },
+          "terminal_snapshots_match": true
+        }
+      }
+    },
+    "tree": {
+      "proof": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-tree-core-20260910\\local\\hardware_tree_diff\\proof.json",
+        "sha256": "083239de9c302e280d9f71d581c5e85cd2dc2ca26a0088af899da6c93dacb8a5"
+      },
+      "source_pins_verified": 10,
+      "artifact_pins_verified": 24,
+      "native_spans": 44,
+      "native_bytes": 2115,
+      "production_map_providers": 9,
+      "postimages_verified": 44,
+      "words": 1618,
+      "output_stores": {
+        "mechanism": "Output lives on a read-only private page. A vectored write-fault handler makes it writable for one instruction, uses single-step to record actual post-store words/count, then reapplies read-only protection. Native instruction PCs are asserted.",
+        "original_store_count": 12,
+        "host_store_count": 12,
+        "same_phase_offset_order": true,
+        "original_store_pcs": [
+          [
+            5,
+            0,
+            11727247
+          ],
+          [
+            5,
+            4,
+            11727254
+          ],
+          [
+            6,
+            0,
+            11727247
+          ],
+          [
+            6,
+            4,
+            11727254
+          ],
+          [
+            7,
+            0,
+            11727247
+          ],
+          [
+            7,
+            4,
+            11727254
+          ],
+          [
+            11,
+            0,
+            11727247
+          ],
+          [
+            11,
+            4,
+            11727254
+          ],
+          [
+            12,
+            0,
+            11727247
+          ],
+          [
+            12,
+            4,
+            11727254
+          ],
+          [
+            13,
+            0,
+            11727247
+          ],
+          [
+            13,
+            4,
+            11727254
+          ]
+        ],
+        "host_store_pcs": [
+          [
+            5,
+            0,
+            805338603
+          ],
+          [
+            5,
+            4,
+            805338605
+          ],
+          [
+            6,
+            0,
+            805338603
+          ],
+          [
+            6,
+            4,
+            805338605
+          ],
+          [
+            7,
+            0,
+            805338603
+          ],
+          [
+            7,
+            4,
+            805338605
+          ],
+          [
+            11,
+            0,
+            805338603
+          ],
+          [
+            11,
+            4,
+            805338605
+          ],
+          [
+            12,
+            0,
+            805338603
+          ],
+          [
+            12,
+            4,
+            805338605
+          ],
+          [
+            13,
+            0,
+            805338603
+          ],
+          [
+            13,
+            4,
+            805338605
+          ]
+        ],
+        "host_store_instructions": [
+          {
+            "address": 805338603,
+            "instruction": "mov dword ptr [eax], ecx",
+            "hex": "8908"
+          },
+          {
+            "address": 805338605,
+            "instruction": "mov dword ptr [eax + 4], edx",
+            "hex": "895004"
+          }
+        ],
+        "matched_post_store_states": [
+          {
+            "phase": 5,
+            "output_offset": 0,
+            "owner_identity": 3,
+            "node_identity": 572662306,
+            "current_tree_count": 0
+          },
+          {
+            "phase": 5,
+            "output_offset": 4,
+            "owner_identity": 3,
+            "node_identity": 12,
+            "current_tree_count": 0
+          },
+          {
+            "phase": 6,
+            "output_offset": 0,
+            "owner_identity": 2,
+            "node_identity": 572662306,
+            "current_tree_count": 4
+          },
+          {
+            "phase": 6,
+            "output_offset": 4,
+            "owner_identity": 2,
+            "node_identity": 13,
+            "current_tree_count": 4
+          },
+          {
+            "phase": 7,
+            "output_offset": 0,
+            "owner_identity": 2,
+            "node_identity": 572662306,
+            "current_tree_count": 3
+          },
+          {
+            "phase": 7,
+            "output_offset": 4,
+            "owner_identity": 2,
+            "node_identity": 15,
+            "current_tree_count": 3
+          },
+          {
+            "phase": 11,
+            "output_offset": 0,
+            "owner_identity": 2,
+            "node_identity": 572662306,
+            "current_tree_count": 2
+          },
+          {
+            "phase": 11,
+            "output_offset": 4,
+            "owner_identity": 2,
+            "node_identity": 1,
+            "current_tree_count": 2
+          },
+          {
+            "phase": 12,
+            "output_offset": 0,
+            "owner_identity": 2,
+            "node_identity": 572662306,
+            "current_tree_count": 1
+          },
+          {
+            "phase": 12,
+            "output_offset": 4,
+            "owner_identity": 2,
+            "node_identity": 1,
+            "current_tree_count": 1
+          },
+          {
+            "phase": 13,
+            "output_offset": 0,
+            "owner_identity": 2,
+            "node_identity": 572662306,
+            "current_tree_count": 0
+          },
+          {
+            "phase": 13,
+            "output_offset": 4,
+            "owner_identity": 2,
+            "node_identity": 1,
+            "current_tree_count": 0
+          }
+        ]
+      },
+      "CRT": {
+        "original_events": [
+          [
+            15,
+            1,
+            1
+          ],
+          [
+            16,
+            1,
+            1
+          ],
+          [
+            16,
+            1,
+            1
+          ],
+          [
+            16,
+            0,
+            0
+          ],
+          [
+            17,
+            1,
+            1
+          ],
+          [
+            17,
+            1,
+            1
+          ],
+          [
+            17,
+            0,
+            0
+          ]
+        ],
+        "host_events": [
+          [
+            15,
+            1,
+            1
+          ],
+          [
+            16,
+            1,
+            1
+          ],
+          [
+            16,
+            1,
+            1
+          ],
+          [
+            16,
+            0,
+            0
+          ],
+          [
+            17,
+            1,
+            1
+          ],
+          [
+            17,
+            1,
+            1
+          ],
+          [
+            17,
+            0,
+            0
+          ]
+        ],
+        "original_event_count": 7,
+        "host_event_count": 7,
+        "exact_events_equal": true,
+        "difference": "None in the final bounded sequence. Armed base-only RAII guards removed the synthetic constructor rethrow.",
+        "not_removed_from_raw_evidence": true,
+        "allocation_free_ownership_order_equal": true,
+        "native_exception_ABI_claim": false
+      }
+    },
+    "build": {
+      "path": "local/native_cleanup_search_primary_build.txt",
+      "sha256": "03e34924726b1f71fd977a0fb678dca5964c20088dc2dcde23932c88bc9a22e0",
+      "passed": true,
+      "tests": 2
+    }
+  },
+  "existing_fixture_rechecks": {
+    "declaration": {
+      "passed": true,
+      "matching_words": 43032,
+      "production_map_providers": [
+        {
+          "address": "00b48af0",
+          "map_line": "0001:000037e0       ?construct_native_vertex_declaration_00b48af0@bsp@@YAPAXPAX@Z 004047e0 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b47910",
+          "standalone_map_entry": false,
+          "scope": "Optimized within the same production constructor/scalar-delete translation unit; no standalone host call-count claim."
+        },
+        {
+          "address": "00b488e0",
+          "map_line": "0001:000036f0       ?clear_native_vertex_declaration_00b488e0@bsp@@YAXPAXPDI@Z 004046f0 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b48ad0",
+          "map_line": "0001:00003b30       ?destroy_native_vertex_elements_00b48ad0@bsp@@YAXPAX@Z 00404b30 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b480f0",
+          "map_line": "0001:00003e70       ?resize_native_vertex_elements_00b480f0@bsp@@YAXPAXH@Z 00404e70 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b47a30",
+          "map_line": "0001:00003cd0       ?reserve_native_vertex_elements_00b47a30@bsp@@YAXPAXH@Z 00404cd0 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b48b70",
+          "standalone_map_entry": false,
+          "scope": "Optimized within the same production constructor/scalar-delete translation unit; no standalone host call-count claim."
+        },
+        {
+          "address": "00b48ca0",
+          "map_line": "0001:00003880       ?delete_native_vertex_declaration_00b48ca0@bsp@@YAPAXPAXI0PDI@Z 00404880 f   bsp_core:native_vertex_declaration_owner.obj"
+        },
+        {
+          "address": "00b47950",
+          "map_line": "0001:00004110       ?return_native_vertex_declaration_slot_00b47950@bsp@@YAXPAX0@Z 00405110 f   bsp_core:native_vertex_declaration_owner.obj"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "local/native_declaration_cleanup_primary_fixture.txt",
+          "sha256": "3eefc1d626821dd618e97a4f5685f78c02bccc8df4b1ea7aa586928836e0eb2f"
+        },
+        {
+          "path": "local/build_native_vertex_declaration_cleanup_check.ps1",
+          "sha256": "bcfc4512243edf575d55530d23bdc4008a1b085c052032409e2ef1f5a84d4270"
+        },
+        {
+          "path": "local/native_vertex_declaration_owner_check.cpp",
+          "sha256": "87f23258841245cc5aef612dd8e6b6d7448424706bae4a29219ec8b625227076"
+        },
+        {
+          "path": "build/native-vertex-declaration-cleanup-check/native_vertex_declaration_owner_primary.map",
+          "sha256": "39f270c1333005e0830bc9b6840259e810a5292dae3c9bc548b0e95bdf0415d4"
+        },
+        {
+          "path": "build/native-vertex-declaration-cleanup-check/native_vertex_declaration_owner_check.exe",
+          "sha256": "583e025a2b61b5c7307b23c88585807dd685573c4df9a1745875eb28150781f0"
+        }
+      ]
+    },
+    "legacy_exception": {
+      "passed": true,
+      "matching_words": 463,
+      "production_map_providers": [
+        {
+          "address": "00411700",
+          "map_line": "0001:00005c70       ?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z 30006c70 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "00411780",
+          "map_line": "0001:00005eb0       ?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z 30006eb0 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "004117c0",
+          "map_line": "0001:00005ef0       ?scalar_delete_native_legacy_logic_error_004117c0@bsp@@YAPAUNativeLegacyExceptionStorage@1@AAU21@I@Z 30006ef0 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "004118d0",
+          "map_line": "0001:00005de0       ?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z 30006de0 f   bsp_core:native_legacy_exception_owner.obj"
+        },
+        {
+          "address": "00411940",
+          "map_line": "0001:00005d00       ?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z 30006d00 f   bsp_core:native_legacy_exception_owner.obj"
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "local/native_exception_owner_cleanup_fixture_fixed.txt",
+          "sha256": "57167e9bd8fea9b329e5cfab261eeaacdacb1183291579abf637989a81d3d438"
+        },
+        {
+          "path": "local/build_native_exception_owner_cleanup_check.ps1",
+          "sha256": "25c605028339f30965adafa611cf2db1f0ca57699496aa156789d194a8303a99"
+        },
+        {
+          "path": "local/native_exception_owner_cleanup_check.cpp",
+          "sha256": "04a3e063e960162a9e602daa6aa6363b78d15cd70a5206f2bc7991c0e42e763e"
+        },
+        {
+          "path": "build/exception-owner-cleanup-check/native_exception_owner_cleanup.map",
+          "sha256": "bc5386389d3b91aeedd7436089b91b010cabe0813baf7f9bfbe98886b87d5cfa"
+        },
+        {
+          "path": "build/exception-owner-cleanup-check/native_exception_owner_check.exe",
+          "sha256": "311f1ceb479fc712f5ac511878cd91458d61bf9e5c40c9cdea691e5a52f354a0"
+        },
+        {
+          "path": "build/exception-owner-cleanup-check/native_exception_owner_trace.txt",
+          "sha256": "fd9374c3fc7cbe3a30507c8fb59f0e97a2cb36ac7463cc540b84c84133f94e40"
+        }
+      ],
+      "fixture_normalization_correction": "The old local fixture classified a stale heap word with only its low byte cleared inconsistently when malloc returned a 256-byte-aligned pointer. In an actual empty inline header (capacity15,length0,firstbyte0), prioritize the low-byte-reset allocation identity before exact-pointer matching. Production unchanged; original11 phases/five owners and463 words preserved.",
+      "initial_failure_log": {
+        "path": "local/native_exception_owner_cleanup_fixture.txt",
+        "sha256": "28bed3e49e728def8eb1e48bd5d4fe0f7c27d77b2de2dd959e5fa3bfccc9a84f"
+      }
+    }
+  },
+  "correction": "Native owner FH3 maps have cleanup actions but no catch map. Armed cleanup guards preserve first exception search; unwind-only calls terminate on E06D7363 during search using SEH filters. Array helpers use scalar __try/__finally with completed/remaining state, matching original SEH4 prefix cleanup and avoiding an extra C++ unwind counter. Actual allocation-retry catch maps remain unchanged.",
+  "negative_before_correction": "A second throwing invalid callback reached through original derived base unwind terminates before inner base/array cleanup. The earlier synthetic catch/rethrow ran extra declaration destructors and returned pool slots before termination. Pinned before/intermediate/final proofs preserve the discrepancy.",
+  "host_boundary": "Terminal std::uncaught_exceptions agrees for array 0/0 and derived 1/1 using the actual host MSVC personality. Native static FH3 filter C0695E separately zeroes its own CRT ProcessingThrow field; those original static personality bytes are audited only and are not executed here. No equivalence between native CRT offset90 and host TLS is assumed.",
+  "new_tracked_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "annotations_applied": true,
+  "saved_annotations": {
+    "journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T025615Z.json",
+      "sha256": "6169f8d8890557f46dcc93146fdb29312b9eaeb26c8cf3fef64dd718990e62f0"
+    },
+    "saved_project": true,
+    "force_refreshed_exports": [
+      "00b60700",
+      "00b60770",
+      "00b48960",
+      "00b483f0",
+      "00b48950",
+      "00b60110",
+      "00b2f4c0",
+      "00b2ef00",
+      "00b20dc0",
+      "00b20860",
+      "00b20880",
+      "00b20910",
+      "00b22bd0",
+      "00441760",
+      "004412b0",
+      "00b48af0",
+      "00b48b70",
+      "00411700",
+      "004118d0"
+    ]
+  }
+}

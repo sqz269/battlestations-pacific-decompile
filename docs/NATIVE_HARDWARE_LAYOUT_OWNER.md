@@ -66,11 +66,13 @@ ownership behavior, and native numeric profile addresses are not host vtables.
 | `CBF6E3`, FuncInfo `DF80CC`, map `DF80BC` | 1 to 0 | `CBF6D8` adds 8 to saved owner and invokes `B48950` |
 | Same base handler | 0 to -1 | `CBF6D0` invokes `BD30F0` on saved owner |
 
-Normal array/base calls may throw. Calls made only during active cleanup use
-`noexcept` helpers to preserve termination on a second C++ exception. This
-also preserves the native `BF7C10` array-unwind boundary. These state choices
-come from assembly and original FH3 metadata; the pseudocode's aliased local
-state variables do not accurately show them.
+Normal array/base calls may throw. The native owners have cleanup maps but no
+catch maps. Armed cleanup guards preserve that distinction; unwind-only calls
+use SEH filters to terminate on C++ exception code `E06D7363` during exception
+search, before inner cleanup runs. A synthetic catch/rethrow plus `noexcept`
+terminated too late and incorrectly released the four declaration records.
+The array iterator uses scalar `__try/__finally` with completed/remaining state,
+matching the original SEH4 prefix cleanup without adding a C++ unwind count.
 
 ## Actual pool return
 
@@ -95,8 +97,19 @@ Current live Ghidra bytes are compared with the installed executable and
 pinned with the source and existing dependencies in
 [the audit](../reports/native_hardware_layout_owner_audit.json).
 
-An independent original-code comparison is in progress. Build checks alone
-do not establish the exception paths, D3D driver behavior, runtime renderer
-profile, binary ABI compatibility, full pool lifetime or gameplay behavior.
-Construction and arbitrary declaration/renderer profiles remain outside this
-packet. No new tracked tests are introduced.
+The completed independent comparison executes all six original bodies and their
+array/EH paths: 26 live-PE spans, 1,101 bytes, 14 comparisons and 72,954 matching
+DWORDs. Nine map entries bind the source side to the frozen primary library.
+Both isolated double faults match terminal owner/record/reference/pool state
+and `std::uncaught_exceptions`: array 0/0 and derived 1/1. The retained before,
+intermediate and final artifacts show why matching termination exit codes alone
+was insufficient. See [cleanup evidence](../reports/native_cleanup_search_fidelity.json).
+
+Original static FH3 filter `C0695E` is separately byte-audited, including its own
+CRT counter reset. It is not executed here: the fixture uses the host MSVC
+personality and makes no native-offset-to-host-TLS equivalence claim. No counter
+compensation was added. COM Release uses a fixture object, without a D3D driver.
+Tree/declaration/support calls compose actual production dependencies at declared
+native entry adapters; the independent tree proof covers its original bodies.
+Construction, arbitrary runtime profiles, full pool lifetime, native ABI and
+game validation remain outside this packet. No tracked tests were added.
