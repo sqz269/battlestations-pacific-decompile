@@ -23,6 +23,8 @@ struct NativeLiveEffectManagerStorage {
     std::uint32_t native_vtable_00;
     NativeEffectDeletionListStorage pending_04;
     NativeRenderPointerArrayStorage effects_10;
+    // 867C00 frees/clears this backing without releasing cells; count/capacity
+    // remain unchanged. It has different teardown ownership from effects_10.
     NativeRenderPointerArrayStorage references_1c;
 };
 static_assert(sizeof(NativeEffectDeletionNode) == 0x0c);
@@ -62,6 +64,6 @@ NativeLiveEffectManagerStorage& construct_native_live_effect_manager_004cf700(
     NativeLiveEffectManagerStorage* volatile& actual_global_00f8765c);
 
 // These are new C++ interfaces. Native addresses are evidence identities only.
-// Full manager destruction, lazy registration and pending-object dispatch are
-// separate operations; none are replaced by an implicit host destructor here.
+// Full destruction/registration are declared in live_effect_manager_lifetime.hpp;
+// none are replaced by an implicit host destructor on this storage type.
 } // namespace bsp

@@ -1,0 +1,378 @@
+{
+  "packet": "orch3_live_effect_manager_lifetime_v",
+  "sources": [
+    "src/live_effect_manager_lifetime.cpp"
+  ],
+  "headers": [
+    "include/bsp/live_effect_manager_lifetime.hpp"
+  ],
+  "documentation": "docs/LIVE_EFFECT_MANAGER_LIFETIME.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "004ba0f0",
+      "end_exclusive": "004ba10a",
+      "length": 26,
+      "sha256": "7feee0dce4298b79c0aebeee633df33d78b384ba835e6dba9d2f2383be30639e",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "packet"
+    },
+    {
+      "address": "004cdea0",
+      "end_exclusive": "004cdeb7",
+      "length": 23,
+      "sha256": "0c28ffd88f2de70c71dcc5b33b1460aefc9b42213334844ec4d1cd33caeb8325",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "packet"
+    },
+    {
+      "address": "004c8c20",
+      "end_exclusive": "004c8c25",
+      "length": 5,
+      "sha256": "3a7e2519bff30e808f21182776b02da2fc44ee9060a52428a8bd5825a52b2957",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "packet"
+    },
+    {
+      "address": "004d1100",
+      "end_exclusive": "004d11bd",
+      "length": 189,
+      "sha256": "1b87333790c15c9875dfa32417f73ab9c51464b59fbca4691666eb43e93f29c7",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00f8765c": [
+          22,
+          83,
+          130,
+          141,
+          169
+        ],
+        "00ce2218": [
+          65
+        ],
+        "00ce2210": [
+          164
+        ]
+      },
+      "role": "packet"
+    },
+    {
+      "address": "00867c00",
+      "end_exclusive": "00867c98",
+      "length": 152,
+      "sha256": "034bfa8d0aad90db7fdd1a2c46e55cec76c7e87fb6b6bb2fcfcd1053db9fef36",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00f8765c": [
+          125
+        ]
+      },
+      "role": "packet"
+    },
+    {
+      "address": "004cf770",
+      "end_exclusive": "004cf78e",
+      "length": 30,
+      "sha256": "8ccd20fb142652f7b105a86bf5e17d58979570afd66c128fbec8f59068aad1fd",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "packet"
+    },
+    {
+      "address": "00c65e73",
+      "end_exclusive": "00c65e7d",
+      "length": 10,
+      "sha256": "de13bd2f4559f6c5cb5415b59e9fa0ad460156f512cf4434a95d2e3b3597ce51",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "packet"
+    },
+    {
+      "address": "00c94f99",
+      "end_exclusive": "00c94fa3",
+      "length": 10,
+      "sha256": "ca1c99bafdc616be354528c2a42a86e10540d66cb8de238175b551e702c460b0",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "packet"
+    },
+    {
+      "address": "004cf700",
+      "end_exclusive": "004cf761",
+      "length": 97,
+      "sha256": "130030f570dfac398781997cdf04373854e0d886ac9c43537339b5f35aa39947",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "dependency"
+    },
+    {
+      "address": "004c3200",
+      "end_exclusive": "004c321a",
+      "length": 26,
+      "sha256": "10669f8973e5f5fe4155f7e3673554d547d1113721c015a54fb0ce6ace31c978",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "dependency"
+    },
+    {
+      "address": "004c9550",
+      "end_exclusive": "004c95ce",
+      "length": 126,
+      "sha256": "a041f5ad5e2e5ffd65193ea4822110d0394bd0003a348998b02fb430f661499d",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00ce2220": [
+          89
+        ]
+      },
+      "role": "dependency"
+    },
+    {
+      "address": "008671a0",
+      "end_exclusive": "0086720d",
+      "length": 109,
+      "sha256": "93824f551861b738c46c14a8b06e22b2478aa25ac4e550af4ab65e8ff50547d5",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "dependency"
+    },
+    {
+      "address": "004c5940",
+      "end_exclusive": "004c5988",
+      "length": 72,
+      "sha256": "3a405487faef79bf6a501042db1890e5c27fc04f35ff451431be66f73b172442",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "role": "dependency"
+    }
+  ],
+  "reconstructed": [
+    {
+      "address": "004ba0f0",
+      "cpp_symbol": "destroy_live_effect_auxiliary_array_004ba0f0",
+      "end_exclusive": "004ba10a",
+      "original_abi": "ECX0Ch arrayheader; RET",
+      "behavior": "Free captured nonnull backing then clear current data; no cell releases/count/capacity mutation. Restored4BA0FF continuation."
+    },
+    {
+      "address": "004cdea0",
+      "cpp_symbol": "destroy_live_effect_reference_array_004cdea0",
+      "end_exclusive": "004cdeb7",
+      "original_abi": "ECX0Ch owning arrayheader; RET",
+      "behavior": "Canonical4C9550 resize0 then free CURRENT backing; leaves data/capacity stale. Stored body ends4CDEB1; verified full five-byte tail4CDEB2..4CDEB7 restores stack/ESI/RET."
+    },
+    {
+      "address": "004c8c20",
+      "cpp_symbol": "destroy_live_effect_pending_list_004c8c20",
+      "end_exclusive": "004c8c25",
+      "original_abi": "ECX actual0Ch list; tailJMP4C5940",
+      "behavior": "Complete five-byte thunk to actual4C5940 storage cleanup; no added payload dispatch or lock."
+    },
+    {
+      "address": "004d1100",
+      "cpp_symbol": "live_effect_manager_singleton_004d1100",
+      "end_exclusive": "004d11bd",
+      "original_abi": "No inputs; EAX actualF8765C manager; RET",
+      "behavior": "Same actual singleton domain; capturesection/recheck/alloc28/construct4CF700/publish/getmanageragain/registerCURRENTglobal/unlock/reloadreturn. Fast capturedglobal; raw constructor failure free before unlock; no registration rollback."
+    },
+    {
+      "address": "00867c00",
+      "cpp_symbol": "destroy_live_effect_manager_00867c00",
+      "end_exclusive": "00867c98",
+      "original_abi": "ECX actual28h manager; RET",
+      "behavior": "CE789C; resize+10 zero, flushpending, free/clear+1C with no cellrelease, resize+10 AGAIN, freecurrent+10, destroylist+04, clearF8765C/baseCE3818. State3 aux->owningarray->list->base; state1 at secondresize list->base only. Restored867C4C interior gap; stored body still ends867C6B, verified44-byte tail through867C97 included in source/fixture."
+    },
+    {
+      "address": "004cf770",
+      "cpp_symbol": "delete_live_effect_manager_004cf770",
+      "end_exclusive": "004cf78e",
+      "original_abi": "ECX actualowner; stackflags; EAX original; RET4",
+      "behavior": "Preserve correct compiler name. Unconditional867C00; flags&1 ordinary ownerfree only after success; no unregister, no physical ownerfree on destructor failure. Restored4CF785 stack continuation."
+    }
+  ],
+  "ownership": "Actual28h F8765C owner/one shared domain. +10 actual reference releases; +1C storage-only free/clear, no cell releases. Required actual current pending scalar binding. No replacement owner/count/registry.",
+  "constructor_ownership_correction": "Packet orch3_live_effect_manager_lifetime_v corrects constructor-only ownership interpretation: headers+10/+1C share physical layout but867C00 releases+10 owners twice around pending flush; +1C only frees/clears backing without cell releases and preserves count/capacity. Zero initialization in4CF700 alone did not prove identical ownership policies. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. Prior annotation retained as history.",
+  "flow_repair": "reports/live_effect_manager_flow_v.json",
+  "stored_body_limits": [
+    "867C00 ends867C6B, verified44-byte tail through867C97 remains outside export body",
+    "4CDEA0 ends4CDEB1, verifiedfive-byte tail through4CDEB6 remains outside export body"
+  ],
+  "handler_definitions": "reports/live_effect_manager_definitions_v.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/live-manager-v-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/live-manager-v-fixture.log",
+    "fixture_source": "local/live_manager_probe_v.cpp",
+    "native_cases": [
+      "Six complete main bodies and five native dependencies",
+      "Actual release -> pending flush -> repopulated reference release sequence; untouched auxiliary owner counts",
+      "Full dead28h compare with stale allocation pointer normalized; auxiliary count/capacity preserved",
+      "Direct aux/owningarray/thunk helper behavior including null aux",
+      "Scalar flags2/1; lazy getter fast path and real shared-domain registration/shutdown including deferred-deletion lock"
+    ],
+    "rebindings": [
+      "Canonical allocation/free and Win32 Interlocked/Enter/Leave",
+      "Internal calls -> copied native ctor/sentinel/resize/flush/list bodies; unused resize grow -> canonical reserve",
+      "Lifetime/registration bridge uses same real domain/native section and actual published owner",
+      "F8765C operands -> fixture publication cell",
+      "Instrumented current actual raw-owner zero/scalar callbacks enqueue through reconstructed real queue, free ownedpayload and keep dead fixture wrappers for observation"
+    ],
+    "cpp_failure_cases": [
+      "State3 pending scalar throws after repopulating+10: aux/owningarray/list/base cleanup, no pending retry or ownerfree",
+      "State1 secondresize zero-owner binding fails: list/base cleanup, owning backing and owner remain unfreed",
+      "12-byte sentinel failure: constructor global/base cleanup, raw ownerfree at captured depth1 then unlock0, no registration"
+    ],
+    "fixture_symbol_rebinding": "Only lifetime/storage production modules allocation/free -> canonical inspection delegates plus one sentinel bad_alloc; production has no added seam.",
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Concrete effect currentvirtual04 and virtual0 frame-job-policy bindings",
+    "Whole point-effect constructor",
+    "Original exception ABI and gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/live_manager_probe_v.cpp": "ee0ff3d78f5ef3197f6684fac146956e7cd98e8339f91c9368f178f947ff2cc7",
+    "local/run_live_manager_probe_v.cmd": "86b79686e8dc0c428b57fc988ab6c418c0f99bd64c7c856fe4c5bb675b993cbf",
+    "local/live_manager_native_bytes_v.hpp": "73439cdbd01f170079cbb5710c906b6cd1140ccf03a5c451b8677bbd30721e26",
+    "local/live-manager-byte-evidence-v.json": "9bf725b8eedfa78cab18a0b96c042a35f0013ee4ab80fa353a00098f63da1d64"
+  },
+  "ghidra_annotation_audit": [
+    {
+      "address": "004ba0f0",
+      "before": {
+        "address": "004ba0f0",
+        "function_name": "FUN_004ba0f0"
+      },
+      "after": {
+        "address": "004ba0f0",
+        "name": "BSP_LiveEffectAuxiliaryArray_DestroyStorage",
+        "evidence": "Hypothesis, not a recovered symbol. Free captured nonnull backing then clear current data; no cell releases/count/capacity mutation. Restored4BA0FF continuation. Strict Win32/original-body lifetime comparisons and focused C++ unwind checks passed. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004c8c20",
+      "before": {
+        "address": "004c8c20",
+        "function_name": "FUN_004c8c20"
+      },
+      "after": {
+        "address": "004c8c20",
+        "name": "BSP_EffectDeletionList_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. Complete five-byte thunk to actual4C5940 storage cleanup; no added payload dispatch or lock. Strict Win32/original-body lifetime comparisons and focused C++ unwind checks passed. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004cdea0",
+      "before": {
+        "address": "004cdea0",
+        "function_name": "FUN_004cdea0"
+      },
+      "after": {
+        "address": "004cdea0",
+        "name": "BSP_LiveEffectReferences_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. Canonical4C9550 resize0 then free CURRENT backing; leaves data/capacity stale. Stored body ends4CDEB1; verified full five-byte tail4CDEB2..4CDEB7 restores stack/ESI/RET. Strict Win32/original-body lifetime comparisons and focused C++ unwind checks passed. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004cf700",
+      "before": {
+        "address": "004cf700",
+        "function_name": "BSP_EffectManager_Construct",
+        "comment": "[BSP reconstruction 004cf700]\nHypothesis, not a recovered symbol. __fastcall(this) constructor for the 0x28-byte effect manager allocated by 004D1100. Writes the vtable at 00CE789C, sets +08h from 004C3200 (the deferred-destroy list head) and zeroes +0Ch..+24h, which are the list size and two {data, size, capacity} arrays at +10h and +1Ch. docs/GAME_WORLD_OCEAN.md.\n\n[BSP reconstruction 004cf700] update\nHypothesis, not a recovered symbol. __fastcall(this) constructor for the 0x28-byte effect manager allocated by 004D1100. Writes the vtable at 00CE789C, sets +08h from 004C3200 (the deferred-destroy list head) and zeroes +0Ch..+24h, which are the list size and two {data, size, capacity} arrays at +10h and +1Ch. docs/GAME_WORLD_OCEAN.md. | Packet orch3_live_effect_manager_constructor_t. Actual storage: identity00=CE789C, untouched allocator04, listhead08/count0C, owning raw-pointer arrays10/1C. Publish identity before sentinel allocation, then sentinel/count and six zero array fields. HandlerC65C68 selectsD8E698/mapD8E690 state0->-1 C65C60/4B7F50: allocation failure clears global and base identity only, no list unwind. No global publication in constructor. Strict Win32 and original-byte normal-path comparisons passed; one C++ allocation failure verifies base unwind. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "after": {
+        "address": "004cf700",
+        "name": "BSP_EffectManager_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall(this) constructor for the 0x28-byte effect manager allocated by 004D1100. Writes the vtable at 00CE789C, sets +08h from 004C3200 (the deferred-destroy list head) and zeroes +0Ch..+24h, which are the list size and two {data, size, capacity} arrays at +10h and +1Ch. docs/GAME_WORLD_OCEAN.md. | Packet orch3_live_effect_manager_constructor_t. Actual storage: identity00=CE789C, untouched allocator04, listhead08/count0C, owning raw-pointer arrays10/1C. Publish identity before sentinel allocation, then sentinel/count and six zero array fields. HandlerC65C68 selectsD8E698/mapD8E690 state0->-1 C65C60/4B7F50: allocation failure clears global and base identity only, no list unwind. No global publication in constructor. Strict Win32 and original-byte normal-path comparisons passed; one C++ allocation failure verifies base unwind. docs/NATIVE_LIVE_EFFECT_MANAGER.md; reports/native_live_effect_manager_constructor.json. New C++ ABI; originalEH/gameplay unvalidated. | Packet orch3_live_effect_manager_lifetime_v corrects constructor-only ownership interpretation: headers+10/+1C share physical layout but867C00 releases+10 owners twice around pending flush; +1C only frees/clears backing without cell releases and preserves count/capacity. Zero initialization in4CF700 alone did not prove identical ownership policies. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. Prior annotation retained as history."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004cf770",
+      "before": {
+        "address": "004cf770",
+        "function_name": "CG_scalar_deleting_dtor_004cf770"
+      },
+      "after": {
+        "address": "004cf770",
+        "name": "CG_scalar_deleting_dtor_004cf770",
+        "evidence": "Packet orch3_live_effect_manager_lifetime_v. Preserve correct compiler name. Unconditional867C00; flags&1 ordinary ownerfree only after success; no unregister, no physical ownerfree on destructor failure. Restored4CF785 stack continuation. Strict Win32/original-body lifetime comparisons and focused C++ unwind checks passed. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004d1100",
+      "before": {
+        "address": "004d1100",
+        "function_name": "BSP_EffectManager_GetSingleton",
+        "comment": "[BSP reconstruction 004d1100]\nHypothesis, not a recovered symbol. __cdecl, no arguments, RET, returns DAT_00F8765C. Locked lazy singleton: BSP_SingletonLifetime_GetManager, its critical section, operator new(0x28), 004CF700, BSP_SingletonLifetime_Register. Eleven callers. Corrects docs/GAME_ON_MOVE_MAP.md line 75, which records it as taking (scaledDelta, game+19FCh); the two pushes at 004e536b/536c belong to 00867EE0 and are consumed by its RET 8. docs/GAME_WORLD_OCEAN.md."
+      },
+      "after": {
+        "address": "004d1100",
+        "name": "BSP_EffectManager_GetSingleton",
+        "evidence": "Hypothesis, not a recovered symbol. __cdecl, no arguments, RET, returns DAT_00F8765C. Locked lazy singleton: BSP_SingletonLifetime_GetManager, its critical section, operator new(0x28), 004CF700, BSP_SingletonLifetime_Register. Eleven callers. Corrects docs/GAME_ON_MOVE_MAP.md line 75, which records it as taking (scaledDelta, game+19FCh); the two pushes at 004e536b/536c belong to 00867EE0 and are consumed by its RET 8. docs/GAME_WORLD_OCEAN.md. | Packet orch3_live_effect_manager_lifetime_v. Same actual singleton domain; capturesection/recheck/alloc28/construct4CF700/publish/getmanageragain/registerCURRENTglobal/unlock/reloadreturn. Fast capturedglobal; raw constructor failure free before unlock; no registration rollback. Strict Win32/original-body lifetime comparisons and focused C++ unwind checks passed. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00867c00",
+      "before": {
+        "address": "00867c00",
+        "function_name": "FUN_00867c00"
+      },
+      "after": {
+        "address": "00867c00",
+        "name": "BSP_LiveEffectManager_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. CE789C; resize+10 zero, flushpending, free/clear+1C with no cellrelease, resize+10 AGAIN, freecurrent+10, destroylist+04, clearF8765C/baseCE3818. State3 aux->owningarray->list->base; state1 at secondresize list->base only. Restored867C4C interior gap; stored body still ends867C6B, verified44-byte tail through867C97 included in source/fixture. Strict Win32/original-body lifetime comparisons and focused C++ unwind checks passed. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c65e73",
+      "before": {
+        "address": "00c65e73",
+        "function_name": "FUN_00c65e73"
+      },
+      "after": {
+        "address": "00c65e73",
+        "name": "EH_LiveEffectManager_GetSingleton",
+        "evidence": "Ten-byte compiler handler selectsD8EA20/mapD8EA10: state1->0 C65E68 savedraw/free after ctor base unwind; state0->-1 C65E60/411EE0 capturedlock. Verified bytes/defined/saved. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. Original dispatcher unexecuted."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c94f99",
+      "before": {
+        "address": "00c94f99",
+        "function_name": "FUN_00c94f99"
+      },
+      "after": {
+        "address": "00c94f99",
+        "name": "EH_LiveEffectManager_Destroy",
+        "evidence": "Ten-byte compiler handler selectsDC6E44/mapDC6E24: state3 C94F8E/4BA0F0 aux ->2 C94F83/4CDEA0 owningarray ->1 C94F78/4C8C20 list ->0 C94F70/4B7F50 base. Main3 then1 before secondresize. Verified bytes/defined/saved. docs/LIVE_EFFECT_MANAGER_LIFETIME.md; reports/live_effect_manager_lifetime.json. Original dispatcher unexecuted."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All9 names/evidence saved and read back, prior comments preserved;9 affected exports refreshed. Separate thunk-target4C5940 canonical name remains unchanged."
+}
