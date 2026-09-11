@@ -1,0 +1,14 @@
+{
+  "address": "00451020",
+  "end_exclusive": "004512d3",
+  "sha256": "d57be7c50d8eb3a2a4e3345c39b5466c3efe5fc250ce42d0990082b04f6e39e3",
+  "project": "bsp",
+  "program": "battlestationspacific.exe",
+  "before": "Function: STL_xlen_throw_00451020 at 00451020\nSignature: undefined STL_xlen_throw_00451020(void)\nEntry: 00451020\nBody: 00451020 - 0045129c",
+  "before_comment": {
+    "address": "00451020",
+    "function_name": "STL_xlen_throw_00451020"
+  },
+  "script": "import ghidra.app.script.GhidraScript;\nimport ghidra.program.model.address.*;\nimport ghidra.program.model.listing.*;\npublic class BspExtendReviewedBody extends GhidraScript {\n public void run() throws Exception {\n  if (!currentProgram.getDomainFile().getPathname().equals(\"/battlestationspacific.exe\"))\n   throw new IllegalStateException(\"Wrong BSP program\");\n  Address start=toAddr(0x451020L), end=toAddr(0x4512d3L);\n  Function f=currentProgram.getFunctionManager().getFunctionAt(start);\n  if(f==null) throw new IllegalStateException(\"Missing existing function\");\n  Address cursor=start;\n  while(cursor.compareTo(end)<0) {\n   Instruction i=currentProgram.getListing().getInstructionAt(cursor);\n   if(i==null) throw new IllegalStateException(\"Undecoded instruction at \"+cursor);\n   Function other=currentProgram.getFunctionManager().getFunctionContaining(cursor);\n   if(other!=null && other!=f) throw new IllegalStateException(\"Other function at \"+cursor);\n   cursor=cursor.add(i.getLength());\n  }\n  if(!cursor.equals(end)) throw new IllegalStateException(\"End is not an instruction boundary\");\n  println(\"BSP_BODY_BEFORE: \"+f.getBody().toString());\n  AddressSet extended=new AddressSet(f.getBody());\n  extended.addRange(start,end.subtract(1));\n  int transaction=currentProgram.startTransaction(\"Extend reviewed BSP function tail\");\n  boolean commit=false;\n  try { f.setBody(extended); commit=true; }\n  finally { currentProgram.endTransaction(transaction,commit); }\n  println(\"BSP_BODY_AFTER: \"+f.getBody().toString());\n }\n}",
+  "error": "{\"error\":\"Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.\"}"
+}

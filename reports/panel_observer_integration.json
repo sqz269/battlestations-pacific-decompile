@@ -1,0 +1,130 @@
+{
+  "packet": "orch4_panel_observer_integration_d",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "handles": "8651daa",
+    "palette": "372f59d602724480fcf43536a6b9d52f94e4f706",
+    "panel": "b37c246ec48b3405b4e40e4b1e347df87cb0f6ff",
+    "observer": "24d0372"
+  },
+  "new_body_implementations": 41,
+  "standard_library_reuse": [
+    "00694d30 std::remove"
+  ],
+  "connected_existing": [
+    "006ad0d0",
+    "005bbf10",
+    "005bc640"
+  ],
+  "reviewed_addresses": [
+    "00443d00",
+    "004483f0",
+    "004487d0",
+    "00448ba0",
+    "00449160",
+    "004491f0",
+    "00449af0",
+    "00449f00",
+    "0044ab90",
+    "0044b530",
+    "0044ba00",
+    "0044c390",
+    "0044d2c0",
+    "0044e090",
+    "0044e7b0",
+    "0044ec00",
+    "0044fff0",
+    "00450110",
+    "00451020",
+    "00451920",
+    "00452360",
+    "00452740",
+    "004527f0",
+    "005b8a00",
+    "005b9490",
+    "005b94d0",
+    "005bbf10",
+    "005bc640",
+    "00693c50",
+    "00694200",
+    "00694280",
+    "006944c0",
+    "006949d0",
+    "00694d30",
+    "00694ea0",
+    "00694f60",
+    "006952a0",
+    "00695530",
+    "00695870",
+    "006ad080",
+    "006ad0c0",
+    "006ad0d0",
+    "00888aa0",
+    "00b662d0",
+    "00bd4fc0"
+  ],
+  "documents": [
+    "docs/OBJECT_HANDLE_RESOLVERS.md",
+    "docs/PANEL_SEQUENCE.md",
+    "docs/PANEL_PALETTE.md",
+    "docs/OBSERVER_LIFETIME.md"
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "log": "local/panel_observer_build.log",
+    "source_baseline": "Compiled C++ source matches ca4fd98; commit recorded after passing combined build and fixtures",
+    "library_sha256": "b08a9b2e7fa1ee11934610fb6ddae255d2d5ca49d736f1f7a5eee0ff07d3cfb3",
+    "fixture_logs": [
+      "local/panel_palette_integrated_fixture.log",
+      "local/panel_erase_integrated_fixture.log",
+      "local/observer_integrated_fixture.log",
+      "local/manager_observer_integrated_fixture.log",
+      "local/sequence_panel_integrated_fixture.log",
+      "local/object_handle_integrated_fixture.log"
+    ],
+    "new_permanent_tests": 0,
+    "game_validated": false,
+    "native_abi": false,
+    "tested_source_commit": "ca4fd9895af94e8d5dc84e633794562f7967c979"
+  },
+  "ghidra": {
+    "annotation": "45 names/evidence applied, saved and read back; earlier comments preserved",
+    "defined_callbacks": "reports/object_handle_resolver_definitions.json",
+    "flow_repairs": [
+      "reports/observer_lifetime_flow_repair.json",
+      "reports/panel_sequence_flow_repair.json"
+    ],
+    "prototype_correction": "reports/panel_observer_prototype_corrections.json",
+    "retired_tags": "reports/panel_inventory_tag_corrections.json",
+    "body_extension": {
+      "address": "00451020",
+      "tail_decoded": true,
+      "stored_body_complete": false,
+      "reason": "Configured bridge disables run_script_inline; no script mutation occurred",
+      "report": "reports/panel_sequence_body_extension.json"
+    },
+    "annotation_log": "local/ghidra-annotations-20260911T065508Z.json",
+    "readback": "local/panel_wave_comments.json",
+    "exports": "local/panel_wave_exports.log"
+  },
+  "remaining": [
+    "00451c90 panel row publication",
+    "00705e00 message record resolver",
+    "Actual world handle-table owners",
+    "Palette and panel queue construction/loading",
+    "Actual edge virtual deletion"
+  ],
+  "integration": {
+    "helper_log": "local/panel_observer_integrate_final.log",
+    "tested_commit": "5361e3f3c78aea1edc77a5abc289d4d2faebcc40",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "main_fast_forward": "5361e3f3c78aea1edc77a5abc289d4d2faebcc40",
+    "packet_merge": "Structured three-way merge preserved4 own additions,3 main additions and existing main evidence update; no conflicting packet edits",
+    "annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T065818Z.json",
+    "snapshot_internal_functions": 62629
+  }
+}

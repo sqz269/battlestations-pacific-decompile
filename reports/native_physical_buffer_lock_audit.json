@@ -1,0 +1,1548 @@
+{
+  "schema": 1,
+  "packet": "native_physical_buffer_lock2",
+  "utc": "2026-09-11T06:51:59.615098+00:00",
+  "worker_baseline": "884bdf2",
+  "status": "complete_reconstructed_strict_build_and_actual_provider_differential_fixture_passed",
+  "owned_addresses": [
+    "00b4b850",
+    "00b4ba00"
+  ],
+  "owned_original_bytes": 344,
+  "abi": {
+    "original": "ECX actual 2Ch owner; five stack arguments (bytes, extra offset, unused DWORD, output DWORD address, read-only byte); EAX data; RET14h",
+    "host_difference": "New explicit context in EDX binds actual diagnostic publication/lifetime and sentinel address. Original callers require binding.",
+    "original_caller_binary_compatible": false,
+    "noexcept": false,
+    "owner_access": "single unaligned x86 DWORD instructions"
+  },
+  "source_contract": {
+    "wrapped_signed_capacity_check": true,
+    "diagnostic_is_actual_complete_provider": true,
+    "flags_selected_before_second_diagnostic": true,
+    "dynamic_count_after_second_diagnostic": true,
+    "current_COM_loaded_after_diagnostics": true,
+    "COM_table_captured_before_current_cursor_load": true,
+    "COM_Lock_target_loaded_after_current_cursor_load": true,
+    "HRESULT_ignored": true,
+    "null_result_is_sentinel_address": true,
+    "output_store_before_fresh_flags_test": true,
+    "current_cursor_and_depth_RMW_after_output_alias": true,
+    "provider_exceptions_propagate": true
+  },
+  "native_preparation": {
+    "utc": "2026-09-11T06:38:58.107176+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b4b850",
+        "end_exclusive": "00b4b8fc",
+        "length": 172,
+        "role": "owned_index_lock",
+        "PE_offset": 7649360,
+        "PE_zero_filled_virtual_tail": false,
+        "bytes_hex": "538b5c240c55568bf18b461c03c33b46187e05e8585c97ff807c24200057c744241800000000bf000800007405bf10080000f7461400100000741d837e1c00bf001000007505bf0020000085db7405e81c5c97ff834624018b462885c08b6c2414741b8b08578d54241c528b561c5503d352508b412cffd08b442418eb0cb8b8d4f800c7461c000000008b4e1c8b542420890af74614001000005f740503eb016e1c834620015e5d5bc21400",
+        "sha256": "edaadda7b10dd54d8f91cb34bb6fdfb1905e028532642ba5e2fb24a15815542c",
+        "live_matches_installed_PE": true,
+        "assembly": [
+          "00b4b850: push ebx",
+          "00b4b851: mov ebx, dword ptr [esp + 0xc]",
+          "00b4b855: push ebp",
+          "00b4b856: push esi",
+          "00b4b857: mov esi, ecx",
+          "00b4b859: mov eax, dword ptr [esi + 0x1c]",
+          "00b4b85c: add eax, ebx",
+          "00b4b85e: cmp eax, dword ptr [esi + 0x18]",
+          "00b4b861: jle 0xb4b868",
+          "00b4b863: call 0x4c14c0",
+          "00b4b868: cmp byte ptr [esp + 0x20], 0",
+          "00b4b86d: push edi",
+          "00b4b86e: mov dword ptr [esp + 0x18], 0",
+          "00b4b876: mov edi, 0x800",
+          "00b4b87b: je 0xb4b882",
+          "00b4b87d: mov edi, 0x810",
+          "00b4b882: test dword ptr [esi + 0x14], 0x1000",
+          "00b4b889: je 0xb4b8a8",
+          "00b4b88b: cmp dword ptr [esi + 0x1c], 0",
+          "00b4b88f: mov edi, 0x1000",
+          "00b4b894: jne 0xb4b89b",
+          "00b4b896: mov edi, 0x2000",
+          "00b4b89b: test ebx, ebx",
+          "00b4b89d: je 0xb4b8a4",
+          "00b4b89f: call 0x4c14c0",
+          "00b4b8a4: add dword ptr [esi + 0x24], 1",
+          "00b4b8a8: mov eax, dword ptr [esi + 0x28]",
+          "00b4b8ab: test eax, eax",
+          "00b4b8ad: mov ebp, dword ptr [esp + 0x14]",
+          "00b4b8b1: je 0xb4b8ce",
+          "00b4b8b3: mov ecx, dword ptr [eax]",
+          "00b4b8b5: push edi",
+          "00b4b8b6: lea edx, [esp + 0x1c]",
+          "00b4b8ba: push edx",
+          "00b4b8bb: mov edx, dword ptr [esi + 0x1c]",
+          "00b4b8be: push ebp",
+          "00b4b8bf: add edx, ebx",
+          "00b4b8c1: push edx",
+          "00b4b8c2: push eax",
+          "00b4b8c3: mov eax, dword ptr [ecx + 0x2c]",
+          "00b4b8c6: call eax",
+          "00b4b8c8: mov eax, dword ptr [esp + 0x18]",
+          "00b4b8cc: jmp 0xb4b8da",
+          "00b4b8ce: mov eax, 0xf8d4b8",
+          "00b4b8d3: mov dword ptr [esi + 0x1c], 0",
+          "00b4b8da: mov ecx, dword ptr [esi + 0x1c]",
+          "00b4b8dd: mov edx, dword ptr [esp + 0x20]",
+          "00b4b8e1: mov dword ptr [edx], ecx",
+          "00b4b8e3: test dword ptr [esi + 0x14], 0x1000",
+          "00b4b8ea: pop edi",
+          "00b4b8eb: je 0xb4b8f2",
+          "00b4b8ed: add ebp, ebx",
+          "00b4b8ef: add dword ptr [esi + 0x1c], ebp",
+          "00b4b8f2: add dword ptr [esi + 0x20], 1",
+          "00b4b8f6: pop esi",
+          "00b4b8f7: pop ebp",
+          "00b4b8f8: pop ebx",
+          "00b4b8f9: ret 0x14"
+        ]
+      },
+      {
+        "address": "00b4ba00",
+        "end_exclusive": "00b4baac",
+        "length": 172,
+        "role": "owned_vertex_lock",
+        "PE_offset": 7649792,
+        "PE_zero_filled_virtual_tail": false,
+        "bytes_hex": "538b5c240c55568bf18b461c03c33b46187e05e8a85a97ff807c24200057c744241800000000bf000800007405bf10080000f7461400100000741d837e1c00bf001000007505bf0020000085db7405e86c5a97ff834624018b462885c08b6c2414741b8b08578d54241c528b561c5503d352508b412cffd08b442418eb0cb8b8d4f800c7461c000000008b4e1c8b542420890af74614001000005f740503eb016e1c834620015e5d5bc21400",
+        "sha256": "87189e6531e1e1825214ba9459615786a4eef618c5f5020aab1ce8f276115b61",
+        "live_matches_installed_PE": true,
+        "assembly": [
+          "00b4ba00: push ebx",
+          "00b4ba01: mov ebx, dword ptr [esp + 0xc]",
+          "00b4ba05: push ebp",
+          "00b4ba06: push esi",
+          "00b4ba07: mov esi, ecx",
+          "00b4ba09: mov eax, dword ptr [esi + 0x1c]",
+          "00b4ba0c: add eax, ebx",
+          "00b4ba0e: cmp eax, dword ptr [esi + 0x18]",
+          "00b4ba11: jle 0xb4ba18",
+          "00b4ba13: call 0x4c14c0",
+          "00b4ba18: cmp byte ptr [esp + 0x20], 0",
+          "00b4ba1d: push edi",
+          "00b4ba1e: mov dword ptr [esp + 0x18], 0",
+          "00b4ba26: mov edi, 0x800",
+          "00b4ba2b: je 0xb4ba32",
+          "00b4ba2d: mov edi, 0x810",
+          "00b4ba32: test dword ptr [esi + 0x14], 0x1000",
+          "00b4ba39: je 0xb4ba58",
+          "00b4ba3b: cmp dword ptr [esi + 0x1c], 0",
+          "00b4ba3f: mov edi, 0x1000",
+          "00b4ba44: jne 0xb4ba4b",
+          "00b4ba46: mov edi, 0x2000",
+          "00b4ba4b: test ebx, ebx",
+          "00b4ba4d: je 0xb4ba54",
+          "00b4ba4f: call 0x4c14c0",
+          "00b4ba54: add dword ptr [esi + 0x24], 1",
+          "00b4ba58: mov eax, dword ptr [esi + 0x28]",
+          "00b4ba5b: test eax, eax",
+          "00b4ba5d: mov ebp, dword ptr [esp + 0x14]",
+          "00b4ba61: je 0xb4ba7e",
+          "00b4ba63: mov ecx, dword ptr [eax]",
+          "00b4ba65: push edi",
+          "00b4ba66: lea edx, [esp + 0x1c]",
+          "00b4ba6a: push edx",
+          "00b4ba6b: mov edx, dword ptr [esi + 0x1c]",
+          "00b4ba6e: push ebp",
+          "00b4ba6f: add edx, ebx",
+          "00b4ba71: push edx",
+          "00b4ba72: push eax",
+          "00b4ba73: mov eax, dword ptr [ecx + 0x2c]",
+          "00b4ba76: call eax",
+          "00b4ba78: mov eax, dword ptr [esp + 0x18]",
+          "00b4ba7c: jmp 0xb4ba8a",
+          "00b4ba7e: mov eax, 0xf8d4b8",
+          "00b4ba83: mov dword ptr [esi + 0x1c], 0",
+          "00b4ba8a: mov ecx, dword ptr [esi + 0x1c]",
+          "00b4ba8d: mov edx, dword ptr [esp + 0x20]",
+          "00b4ba91: mov dword ptr [edx], ecx",
+          "00b4ba93: test dword ptr [esi + 0x14], 0x1000",
+          "00b4ba9a: pop edi",
+          "00b4ba9b: je 0xb4baa2",
+          "00b4ba9d: add ebp, ebx",
+          "00b4ba9f: add dword ptr [esi + 0x1c], ebp",
+          "00b4baa2: add dword ptr [esi + 0x20], 1",
+          "00b4baa6: pop esi",
+          "00b4baa7: pop ebp",
+          "00b4baa8: pop ebx",
+          "00b4baa9: ret 0x14"
+        ]
+      },
+      {
+        "address": "004c14c0",
+        "end_exclusive": "004c156a",
+        "length": 170,
+        "role": "actual_diagnostic_provider_native_reference_first5byte_bridge",
+        "PE_offset": 791744,
+        "PE_zero_filled_virtual_tail": false,
+        "bytes_hex": "64a1000000006aff68684fc6005064892500000000a114cf090183ec0885c0757a56e8693ef5ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833d14cf09010075306a04e8fe52730083c40485c07408c7002c75ce00eb0233c0a314cf0901e8183ef5ff8b0d14cf0901518bc8e8eaf6700085f6740b834618ff56ff151022ce00a114cf09015e8b4c240864890d0000000083c414c3",
+        "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+        "live_matches_installed_PE": true
+      },
+      {
+        "address": "004bbca0",
+        "end_exclusive": "004bbcc9",
+        "length": 41,
+        "role": "actual_diagnostic_deleter_reference",
+        "PE_offset": 769184,
+        "PE_zero_filled_virtual_tail": false,
+        "bytes_hex": "f644240401568bf1c70514cf090100000000c7061838ce00740956e8eca8730083c4048bc65ec20400",
+        "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+        "live_matches_installed_PE": true
+      },
+      {
+        "address": "00411ee0",
+        "end_exclusive": "00411ef9",
+        "length": 25,
+        "role": "actual_diagnostic_guard_reference",
+        "PE_offset": 73440,
+        "PE_zero_filled_virtual_tail": false,
+        "bytes_hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "live_matches_installed_PE": true
+      },
+      {
+        "address": "00f8d4b8",
+        "end_exclusive": "00f8d4bc",
+        "length": 4,
+        "role": "actual_null_sentinel_address_preimage",
+        "PE_offset": 4294967295,
+        "PE_zero_filled_virtual_tail": true,
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_installed_PE": true
+      },
+      {
+        "address": "0109cf14",
+        "end_exclusive": "0109cf18",
+        "length": 4,
+        "role": "actual_diagnostic_publication_preimage",
+        "PE_offset": 4294967295,
+        "PE_zero_filled_virtual_tail": true,
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_installed_PE": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/physical_buffer_lock_live_00b4b850.txt",
+        "sha256": "bb112796d9b914a887b6b774426fe7675cfee6bd3aa56a47d88648bcc783da8e"
+      },
+      {
+        "path": "local/physical_buffer_lock_live_00b4ba00.txt",
+        "sha256": "8b8e6adef543d65d2ab4b7371e04847cab77ca1d8db18805c4d89004fb83ca42"
+      },
+      {
+        "path": "local/physical_buffer_lock_live_004c14c0.txt",
+        "sha256": "3b5da8cfe02f6e35185e347de1ee89dccfa10e3fdf93adb414f6cbe2d40ffe58"
+      },
+      {
+        "path": "local/physical_buffer_lock_live_004bbca0.txt",
+        "sha256": "4b7813597d3967c9fcd2c74a9d37cdc7d1f1399458763077ca9a84e86b2915b5"
+      },
+      {
+        "path": "local/physical_buffer_lock_live_00411ee0.txt",
+        "sha256": "0777736c25cfad0510d76b69989675f3e5df3b5d81afb0ecbdbec937008222b1"
+      },
+      {
+        "path": "local/physical_buffer_lock_live_00f8d4b8.txt",
+        "sha256": "84a26f78ee3a3a8157c641a9c9854dbe573d3c25201fc9c4e57638bc6baf6690"
+      },
+      {
+        "path": "local/physical_buffer_lock_live_0109cf14.txt",
+        "sha256": "ecb70f6be1a24a52f6e66c08113630e74abce6c72700bde045555f74f182551a"
+      },
+      {
+        "path": "local/physical_buffer_lock_proto.txt",
+        "sha256": "47cd8b6cfd1e9885207201d245b7aeb8d47b605e4a78070a63f6c04f062616fe"
+      },
+      {
+        "path": "local/physical_buffer_lock_flow.txt",
+        "sha256": "b302799d4b8eafb3bf4977ce37ba61d7160cd39904a0164a7ee54dd0aca74e7d"
+      }
+    ],
+    "guard": "Each bsp.py ghidra query verifies bsp project, /battlestationspacific.exe, language and image base before reading."
+  },
+  "build": {
+    "strict_Msvc_win32": true,
+    "compiler": "MSVC14.51.36231",
+    "flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "scripts_build_ps1_passed": true,
+    "existing_CTests_passed": 2,
+    "native_seeds_verified": 8,
+    "owned_source_recompiled_in_fixture": false,
+    "strict_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/win32/Release/bsp_core.lib",
+      "bytes": 27033126,
+      "sha256": "22f8885eb7c4dc39e619068bcbcbaf08c2706a20680541f247d91bca958c22ac"
+    },
+    "frozen_link_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/bsp_core.linked.lib",
+      "bytes": 27033126,
+      "sha256": "22f8885eb7c4dc39e619068bcbcbaf08c2706a20680541f247d91bca958c22ac"
+    },
+    "tracked_CMake_changes": false,
+    "permanent_tests_added": false
+  },
+  "actual_diagnostic_dependency": {
+    "worker_commit": "ec95cac38e7f7d83c40c48a593cb81dbd9c27ca5",
+    "integrated_main_evidence_commit": "ba0f6b2",
+    "pins": [
+      {
+        "source": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "identical_private_worker_main": true,
+        "copies": [
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/actual_diagnostic/include/bsp/native_diagnostic_sink_lifetime.hpp",
+            "bytes": 1471,
+            "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile-native-diagnostic-sink-lifetime-20260910/include/bsp/native_diagnostic_sink_lifetime.hpp",
+            "bytes": 1471,
+            "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_diagnostic_sink_lifetime.hpp",
+            "bytes": 1471,
+            "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+          }
+        ]
+      },
+      {
+        "source": "src/native_diagnostic_sink_lifetime.cpp",
+        "identical_private_worker_main": true,
+        "copies": [
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/actual_diagnostic/native_diagnostic_sink_lifetime.cpp",
+            "bytes": 3472,
+            "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile-native-diagnostic-sink-lifetime-20260910/src/native_diagnostic_sink_lifetime.cpp",
+            "bytes": 3472,
+            "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/src/native_diagnostic_sink_lifetime.cpp",
+            "bytes": 3472,
+            "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+          }
+        ]
+      }
+    ],
+    "actual_lifetime_domain": true,
+    "actual_Win32_critical_section_calls": true,
+    "actual_registration_and_shutdown": true
+  },
+  "compiled_entries": [
+    {
+      "coff": {
+        "name": "?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+        "value": 0,
+        "section": 9,
+        "type": 32,
+        "storage_class": 2,
+        "index": 28,
+        "length": 29,
+        "section_length": 29,
+        "bytes_hex": "558becff7518ff7514ff750cff75085251e80000000083c4185dc21400",
+        "relocations": [
+          {
+            "offset": 18,
+            "symbol": "?lock@?A0x8719c003@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+            "type": 20
+          }
+        ]
+      },
+      "link": {
+        "name": "?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+        "linked_address": 805340160,
+        "member": "bsp_core.linked:native_physical_buffer_lock.obj",
+        "line": "0001:00007400       ?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z 30008400 f   bsp_core.linked:native_physical_buffer_lock.obj"
+      },
+      "linked_body_hex": "558becff7518ff7514ff750cff75085251e85afeffff83c4185dc21400",
+      "linked_sha256": "e4fbab16910a23660430328c79aadf7f61e44c725f32aa79f7eb280f69c05854",
+      "non_relocation_bytes_equal": true
+    },
+    {
+      "coff": {
+        "name": "?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+        "value": 0,
+        "section": 10,
+        "type": 32,
+        "storage_class": 2,
+        "index": 29,
+        "length": 29,
+        "section_length": 29,
+        "bytes_hex": "558becff7518ff7514ff750cff75085251e80000000083c4185dc21400",
+        "relocations": [
+          {
+            "offset": 18,
+            "symbol": "?lock@?A0x8719c003@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+            "type": 20
+          }
+        ]
+      },
+      "link": {
+        "name": "?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+        "linked_address": 805340192,
+        "member": "bsp_core.linked:native_physical_buffer_lock.obj",
+        "line": "0001:00007420       ?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z 30008420 f   bsp_core.linked:native_physical_buffer_lock.obj"
+      },
+      "linked_body_hex": "558becff7518ff7514ff750cff75085251e83afeffff83c4185dc21400",
+      "linked_sha256": "ef2a28bd77979bd279b43ebc9ab87b7e22865433cb31310f9d3c879e4eb7229f",
+      "non_relocation_bytes_equal": true
+    },
+    {
+      "coff": {
+        "name": "?lock@?A0x8719c003@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+        "value": 0,
+        "section": 8,
+        "type": 32,
+        "storage_class": 3,
+        "index": 36,
+        "length": 388,
+        "section_length": 388,
+        "bytes_hex": "558bec83ec0c5356578b7d088d771c8975fc8b45fc8b008945f88d47188945fc8b45fc8b008945f48b550c8b45f80345148d4a04894dfc3b45f47e12ff31ff32e8000000008b4dfc83c4088b550c807d1c00b810080000bb00080000c74508000000000f45d88d471489451c8b451c8b008945f4f745f400100000743e89751c8b451c8b008945f4837df400bb00100000b8002000000f44d8837d1400740cff31ff32e80000000083c4088d472489451c8b451cba0100000001108d472889451c8b451c8b008945f48b4df4894d1c85c9743b8b451c8b008945f889751c8b451c8b008945fc8b45f883c02c89451c8b451c8b008945f8538b5d148d450850ff75108b45fc03c35051ff55f8eb198b450c89751c8b40088945088b451cba0000000089108b5d1489751c8b451c8b008945148b451489451c8b45188b551c89108d471489451c8b451c8b00894514f745140010000074138b451003c389751c8945148b451c8b551401108d472089451c8b451cba0100000001108b45085f5e5b8be55dc3",
+        "relocations": [
+          {
+            "offset": 65,
+            "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 164,
+            "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "type": 20
+          }
+        ]
+      },
+      "link": {
+        "name": "?lock@?A0x8719c003@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+        "linked_address": 805339760,
+        "member": "bsp_core.linked:native_physical_buffer_lock.obj",
+        "line": "0001:00007270       ?lock@?A0x8719c003@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z 30008270 f   bsp_core.linked:native_physical_buffer_lock.obj"
+      },
+      "linked_body_hex": "558bec83ec0c5356578b7d088d771c8975fc8b45fc8b008945f88d47188945fc8b45fc8b008945f48b550c8b45f80345148d4a04894dfc3b45f47e12ff31ff32e8abfeffff8b4dfc83c4088b550c807d1c00b810080000bb00080000c74508000000000f45d88d471489451c8b451c8b008945f4f745f400100000743e89751c8b451c8b008945f4837df400bb00100000b8002000000f44d8837d1400740cff31ff32e848feffff83c4088d472489451c8b451cba0100000001108d472889451c8b451c8b008945f48b4df4894d1c85c9743b8b451c8b008945f889751c8b451c8b008945fc8b45f883c02c89451c8b451c8b008945f8538b5d148d450850ff75108b45fc03c35051ff55f8eb198b450c89751c8b40088945088b451cba0000000089108b5d1489751c8b451c8b008945148b451489451c8b45188b551c89108d471489451c8b451c8b00894514f745140010000074138b451003c389751c8945148b451c8b551401108d472089451c8b451cba0100000001108b45085f5e5b8be55dc3",
+      "linked_sha256": "92da4b762dc0af60daf0805ad16e7cc66eb07801e937a9a63b1444cc9df00162",
+      "non_relocation_bytes_equal": true
+    },
+    {
+      "coff": {
+        "name": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+        "value": 0,
+        "section": 7,
+        "type": 32,
+        "storage_class": 2,
+        "index": 31,
+        "length": 260,
+        "section_length": 260,
+        "bytes_hex": "558bec6aff680000000064a1000000005083ec1ca10000000033c58945ec535657508d45f464a3000000008965f08b7d088b5d0c8b0785c00f858f0000008bcbe800000000c745d8fc37ce008b40288b3085f674158b368975dc85f6741156ff1500000000ff4618eb0533f68975dc833f00c745fc0000000075428d45e0c745e00300000050c745e404000000c745e804000000e80000000083c40485c07408c7002c75ce00eb0233c08bcb8907e8000000008bc88b0750e80000000085f6740aff4e1856ff15000000008b078b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc38d45d850e80000000083c4046a006a00e800000000cccccccccccc",
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__ehhandler$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 21,
+            "symbol": "___security_cookie",
+            "type": 6
+          },
+          {
+            "offset": 65,
+            "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+            "type": 20
+          },
+          {
+            "offset": 97,
+            "symbol": "__imp__EnterCriticalSection@4",
+            "type": 6
+          },
+          {
+            "offset": 149,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 175,
+            "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+            "type": 20
+          },
+          {
+            "offset": 185,
+            "symbol": "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 199,
+            "symbol": "__imp__LeaveCriticalSection@4",
+            "type": 6
+          },
+          {
+            "offset": 225,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20
+          },
+          {
+            "offset": 238,
+            "symbol": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 250,
+            "symbol": "__CxxThrowException@8",
+            "type": 20
+          }
+        ]
+      },
+      "link": {
+        "name": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+        "linked_address": 805339488,
+        "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+        "line": "0001:00007160       ?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z 30008160 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+      },
+      "linked_body_hex": "558bec6aff68809a003064a1000000005083ec1ca140f0003033c58945ec535657508d45f464a3000000008965f08b7d088b5d0c8b0785c00f858f0000008bcbe8ebfaffffc745d8fc37ce008b40288b3085f674158b368975dc85f6741156ff1520a00030ff4618eb0533f68975dc833f00c745fc0000000075428d45e0c745e00300000050c745e404000000c745e804000000e887feffff83c40485c07408c7002c75ce00eb0233c08bcb8907e87dfaffff8bc88b0750e873fdffff85f6740aff4e1856ff151ca000308b078b4df464890d00000000595f5e5b8b4dec33cde83b0700008be55dc38d45d850e8eefeffff83c4046a006a00e872110000cccccccccccc",
+      "linked_sha256": "03b601905bb91b912786afeeb3f6b2f2a35d56b95292378558e1007adf21db74",
+      "non_relocation_bytes_equal": true
+    },
+    {
+      "coff": {
+        "name": "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z",
+        "value": 0,
+        "section": 5,
+        "type": 32,
+        "storage_class": 2,
+        "index": 32,
+        "length": 42,
+        "section_length": 42,
+        "bytes_hex": "558becf6450c018b4510568b7508c70000000000c7061838ce00740956e80000000083c4048bc65e5dc3",
+        "relocations": [
+          {
+            "offset": 30,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20
+          }
+        ]
+      },
+      "link": {
+        "name": "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z",
+        "linked_address": 805339408,
+        "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+        "line": "0001:00007110       ?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z 30008110 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+      },
+      "linked_body_hex": "558becf6450c018b4510568b7508c70000000000c7061838ce00740956e8aeffffff83c4048bc65e5dc3",
+      "linked_sha256": "00603c4e63ca394f735cd5ca7ee33dac8056f242a5b3e1e912247e9efdd33348",
+      "non_relocation_bytes_equal": true
+    },
+    {
+      "coff": {
+        "name": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+        "value": 0,
+        "section": 6,
+        "type": 32,
+        "storage_class": 2,
+        "index": 33,
+        "length": 31,
+        "section_length": 31,
+        "bytes_hex": "558bec8b45088b4804c700fc37ce0085c9740aff491851ff15000000005dc3",
+        "relocations": [
+          {
+            "offset": 25,
+            "symbol": "__imp__LeaveCriticalSection@4",
+            "type": 6
+          }
+        ]
+      },
+      "link": {
+        "name": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+        "linked_address": 805339456,
+        "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+        "line": "0001:00007140       ?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z 30008140 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+      },
+      "linked_body_hex": "558bec8b45088b4804c700fc37ce0085c9740aff491851ff151ca000305dc3",
+      "linked_sha256": "a9a042f695d97b697e5e4e5127e4ace4128b98b9e71daa864829587d04af8787",
+      "non_relocation_bytes_equal": true
+    }
+  ],
+  "native_execution": {
+    "code_delta": "1f4c0000",
+    "owned_bytes_patched": 0,
+    "owned_operands_patched": 0,
+    "native_execution_pages": "read_execute",
+    "external_diagnostic_bridge": {
+      "original_address": 4986048,
+      "loaded_address": 530060480,
+      "length": 5,
+      "target": 805319728,
+      "execution_address_delta": 525074432,
+      "owned_bytes_changed": 0,
+      "owned_operand_changes": 0
+    },
+    "bridge_bytes_hex": "e96b1f6810",
+    "absolute_sentinel": "00f8d4b8",
+    "absolute_publication": "0109cf14",
+    "real_diagnostic_provider_executes_through_bridge": true,
+    "original_diagnostic_provider_bytes_executed": false,
+    "fixture_link_options": [
+      "/BASE:0x30000000",
+      "/DYNAMICBASE:NO",
+      "/FIXED",
+      "/SAFESEH:NO",
+      "/OPT:NOICF",
+      "/DELAYLOAD:d3d9.dll",
+      "/DELAYLOAD:user32.dll"
+    ]
+  },
+  "runtime_postimages": {
+    "stages": 41,
+    "complete_spans_per_stage": 9,
+    "span_snapshots": 369,
+    "all_equal_to_initial": true,
+    "six_initial_library_spans_match_linked_PE": true,
+    "two_initial_native_spans_match_installed_PE": true,
+    "external_bridge_matches_exact_jump": true,
+    "span_bytes_per_stage": 1128,
+    "spans": [
+      {
+        "address": "30008400",
+        "length": 29,
+        "sha256": "e4fbab16910a23660430328c79aadf7f61e44c725f32aa79f7eb280f69c05854"
+      },
+      {
+        "address": "30008420",
+        "length": 29,
+        "sha256": "ef2a28bd77979bd279b43ebc9ab87b7e22865433cb31310f9d3c879e4eb7229f"
+      },
+      {
+        "address": "30008270",
+        "length": 388,
+        "sha256": "92da4b762dc0af60daf0805ad16e7cc66eb07801e937a9a63b1444cc9df00162"
+      },
+      {
+        "address": "30008160",
+        "length": 260,
+        "sha256": "03b601905bb91b912786afeeb3f6b2f2a35d56b95292378558e1007adf21db74"
+      },
+      {
+        "address": "30008110",
+        "length": 42,
+        "sha256": "00603c4e63ca394f735cd5ca7ee33dac8056f242a5b3e1e912247e9efdd33348"
+      },
+      {
+        "address": "30008140",
+        "length": 31,
+        "sha256": "a9a042f695d97b697e5e4e5127e4ace4128b98b9e71daa864829587d04af8787"
+      },
+      {
+        "address": "2000b850",
+        "length": 172,
+        "sha256": "edaadda7b10dd54d8f91cb34bb6fdfb1905e028532642ba5e2fb24a15815542c"
+      },
+      {
+        "address": "2000ba00",
+        "length": 172,
+        "sha256": "87189e6531e1e1825214ba9459615786a4eef618c5f5020aab1ce8f276115b61"
+      },
+      {
+        "address": "1f9814c0",
+        "length": 5,
+        "sha256": "036e1d107a126af9d1cddf608b91ec49fa15775249c45fd32fcbf7981a3828e8"
+      }
+    ]
+  },
+  "actual_D3D9_provider": {
+    "device_line": "DEVICE hr=00000000 type=HAL adapter=NVIDIA GeForce RTX 5090 driver=nvldumd.dll vendor=000010DE device=00002B85",
+    "buffer_lines": [
+      "BUFFER kind=0 dynamic=0 object=04D0A180 bytes=64 usage=00000000 pool=2 format=100 realLock=60475B90 module=C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+      "BUFFER kind=0 dynamic=1 object=04D0AFE0 bytes=64 usage=00000208 pool=0 format=100 realLock=60475B90 module=C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+      "BUFFER kind=1 dynamic=0 object=04CA8FE0 bytes=64 usage=00000000 pool=2 format=101 realLock=60476B20 module=C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+      "BUFFER kind=1 dynamic=1 object=04CA93E0 bytes=64 usage=00000208 pool=0 format=101 realLock=60476B20 module=C:\\WINDOWS\\SYSTEM32\\d3d9.dll"
+    ],
+    "actual_COM_objects_and_receivers": true,
+    "only_cloned_COM_Lock_slot_observed": true,
+    "observer_forwards_saved_real_Lock_unchanged_arguments": true,
+    "observer_owner_mutations": true,
+    "READONLY_reads_actual_seeded_mapping": true,
+    "writable_mapping_explicit_observer_writes": true,
+    "tables_restored_before_Release": true,
+    "successful_mappings_unlocked": true,
+    "present_or_draw_calls": 0,
+    "visible_windows_created": 0,
+    "all_observed_real_Lock_HRESULTs": "S_OK",
+    "failed_driver_HRESULT_runtime_coverage": false
+  },
+  "real_Win32_IAT_observers": {
+    "bindings": [
+      {
+        "name": "LeaveCriticalSection",
+        "cell": 805347356,
+        "forwarded_target": 2006725728,
+        "observer": 805323248
+      },
+      {
+        "name": "EnterCriticalSection",
+        "cell": 805347360,
+        "forwarded_target": 2006729696,
+        "observer": 805323024
+      }
+    ]
+  },
+  "differential_fixture": {
+    "paired_cases": 20,
+    "real_Lock_pairs": 16,
+    "null_COM_pairs": 4,
+    "DWORDs_per_implementation": 5396,
+    "event_frames_per_implementation": 128,
+    "all_pairs_equal": true,
+    "literal_storage_compared": "48 owner-storage bytes and 12 output-storage bytes at every event, including unaligned padding",
+    "normalization": "Mapping null/sentinel/actual output role after identity check; publication presence with actual profile/registration checked separately",
+    "exception_source": "Fixture observer throws after real successful Lock, not a driver exception",
+    "cases": [
+      {
+        "kind": "vertex",
+        "scenario": 0,
+        "description": "static_readonly_high_bit_byte",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "50d78c59d9f780a7365c91fb9cc874e2399a91c3a4fb368023a02718ad827023",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 1,
+        "description": "first_cold_diagnostic_actual_com_mutation_full_output_alias",
+        "DWORDs_per_implementation": 421,
+        "event_frames_per_implementation": 10,
+        "equal": true,
+        "trace_sha256": "3fec76728cde1c7adfccbddcb34f3af4d16784342aa787aef3e11cb8c1c7d0c4",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 2,
+        "description": "second_cold_diagnostic_retains_flags_reloads_cursor",
+        "DWORDs_per_implementation": 421,
+        "event_frames_per_implementation": 10,
+        "equal": true,
+        "trace_sha256": "f6da9291145f210b85afbe19b6b36686beea16310da8e4c8598bbbc349707d55",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 3,
+        "description": "dynamic_nooverwrite",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "ee160356d59cea49f526b67d3b9f62e172553c80e73160a3c5070d44bb32afff",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 4,
+        "description": "unaligned_partial_flags_output_alias",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "2f32d3bb1d70a13941aecfc21e19be8878422ee8d3c7d6609a0b3c775ba17e99",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 5,
+        "description": "null_sentinel_dynamic_wrapped_advance",
+        "DWORDs_per_implementation": 295,
+        "event_frames_per_implementation": 7,
+        "equal": true,
+        "trace_sha256": "ff2eb26ddc523b95abfe873a3eeb4dac71386a3ee4e229932db6ab5e424c4551",
+        "real_D3D9_Lock": false
+      },
+      {
+        "kind": "vertex",
+        "scenario": 6,
+        "description": "wrapped_signed_capacity_null_cursor_clear",
+        "DWORDs_per_implementation": 85,
+        "event_frames_per_implementation": 2,
+        "equal": true,
+        "trace_sha256": "b71ce4adcca17f6c2c3bca9e1102e78251c095f4f4326491af155b3902545eae",
+        "real_D3D9_Lock": false
+      },
+      {
+        "kind": "vertex",
+        "scenario": 7,
+        "description": "actual_writeonly_buffer_readonly_lock",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "d9144f4bf273f52d0002fb4bfdca51861997c13f2ac721ba35a8834d8470a68a",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 8,
+        "description": "observer_throw_after_real_successful_lock",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "b86d99ee7051d334e9a0ac546ef053c894acc1e24a9ce9a093f54c94bde6e552",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "vertex",
+        "scenario": 9,
+        "description": "first_cold_and_second_hot_diagnostic",
+        "DWORDs_per_implementation": 421,
+        "event_frames_per_implementation": 10,
+        "equal": true,
+        "trace_sha256": "8c02c88b7020b22c39900945d3c2e87a3a3d16133687e3fd0387210a6d99b4c8",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 0,
+        "description": "static_readonly_high_bit_byte",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "1c3c004a93ad34243e0487962db82f52e0280195a715337e7d79a91e41db0ef4",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 1,
+        "description": "first_cold_diagnostic_actual_com_mutation_full_output_alias",
+        "DWORDs_per_implementation": 421,
+        "event_frames_per_implementation": 10,
+        "equal": true,
+        "trace_sha256": "2e1ac6354d02a4cafb923d6ff1edd591bb1b40ef0455da8e2c5cc6619e60ae07",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 2,
+        "description": "second_cold_diagnostic_retains_flags_reloads_cursor",
+        "DWORDs_per_implementation": 421,
+        "event_frames_per_implementation": 10,
+        "equal": true,
+        "trace_sha256": "d2a7ecd0ffb51cca872bef9727a2170ffb304b1971e63a69bc457f8327fc51a0",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 3,
+        "description": "dynamic_nooverwrite",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "8b0b7e5f269a5e520c19efa54eba5284f127c9cc29c6ea8490a943f77729f5ab",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 4,
+        "description": "unaligned_partial_flags_output_alias",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "c137b8c73bcf2d5233c33de93194b81c4571d9032163770a5c9f02e6435f623e",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 5,
+        "description": "null_sentinel_dynamic_wrapped_advance",
+        "DWORDs_per_implementation": 295,
+        "event_frames_per_implementation": 7,
+        "equal": true,
+        "trace_sha256": "92706e45991807650073b5e3eabf11aee6a1885739638b298644a6eb44de13db",
+        "real_D3D9_Lock": false
+      },
+      {
+        "kind": "index",
+        "scenario": 6,
+        "description": "wrapped_signed_capacity_null_cursor_clear",
+        "DWORDs_per_implementation": 85,
+        "event_frames_per_implementation": 2,
+        "equal": true,
+        "trace_sha256": "97ac34b8fca055ee7aaf3cbf1eed8c81e5eec9e9c6612b7e882887c82529e84e",
+        "real_D3D9_Lock": false
+      },
+      {
+        "kind": "index",
+        "scenario": 7,
+        "description": "actual_writeonly_buffer_readonly_lock",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "bc1d23ee1c3d269e0fdb401fab46b6f214ac4fea343d66d99bbadbf1b1f2720d",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 8,
+        "description": "observer_throw_after_real_successful_lock",
+        "DWORDs_per_implementation": 211,
+        "event_frames_per_implementation": 5,
+        "equal": true,
+        "trace_sha256": "216ebace2ff54f01da0164d1b185273b65aae27544d7acfcb503d3c0448ab1d0",
+        "real_D3D9_Lock": true
+      },
+      {
+        "kind": "index",
+        "scenario": 9,
+        "description": "first_cold_and_second_hot_diagnostic",
+        "DWORDs_per_implementation": 421,
+        "event_frames_per_implementation": 10,
+        "equal": true,
+        "trace_sha256": "063ceda5463577e9df61079d13d9a8b3dd5f75c8e3b53a13e6b47a9452c75cc2",
+        "real_D3D9_Lock": true
+      }
+    ],
+    "actual_provider_observations": [
+      {
+        "kind": 0,
+        "scenario": 0,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 0,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 1,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 1,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 2,
+        "HRESULT": "00000000",
+        "offset": 36,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 2,
+        "HRESULT": "00000000",
+        "offset": 36,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 3,
+        "HRESULT": "00000000",
+        "offset": 16,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 3,
+        "HRESULT": "00000000",
+        "offset": 16,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 4,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 4,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 5,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 5,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 6,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 6,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 7,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 7,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 8,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": true
+      },
+      {
+        "kind": 0,
+        "scenario": 8,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": true
+      },
+      {
+        "kind": 0,
+        "scenario": 9,
+        "HRESULT": "00000000",
+        "offset": 20,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 0,
+        "scenario": 9,
+        "HRESULT": "00000000",
+        "offset": 20,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 0,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 0,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 1,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 1,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 2,
+        "HRESULT": "00000000",
+        "offset": 36,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 2,
+        "HRESULT": "00000000",
+        "offset": 36,
+        "bytes": 16,
+        "flags": "00002000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 3,
+        "HRESULT": "00000000",
+        "offset": 16,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 3,
+        "HRESULT": "00000000",
+        "offset": 16,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 4,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 4,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 5,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 5,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 6,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 6,
+        "HRESULT": "00000001",
+        "offset": 0,
+        "bytes": 0,
+        "flags": "00000000",
+        "diagnostic_allocations": 0,
+        "actual_mapping": false,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 7,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 7,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 8,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": true
+      },
+      {
+        "kind": 1,
+        "scenario": 8,
+        "HRESULT": "00000000",
+        "offset": 0,
+        "bytes": 16,
+        "flags": "00000810",
+        "diagnostic_allocations": 0,
+        "actual_mapping": true,
+        "observer_exception": true
+      },
+      {
+        "kind": 1,
+        "scenario": 9,
+        "HRESULT": "00000000",
+        "offset": 20,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      },
+      {
+        "kind": 1,
+        "scenario": 9,
+        "HRESULT": "00000000",
+        "offset": 20,
+        "bytes": 16,
+        "flags": "00001000",
+        "diagnostic_allocations": 1,
+        "actual_mapping": true,
+        "observer_exception": false
+      }
+    ]
+  },
+  "optimized_flow_evidence": {
+    "common_body_length": 388,
+    "diagnostic_call_relocations": [
+      {
+        "offset": 65,
+        "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+        "type": 20
+      },
+      {
+        "offset": 164,
+        "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+        "type": 20
+      }
+    ],
+    "COM_call_offset": "109",
+    "postcall_output_store_offset": "13e",
+    "fresh_flags_load_offset": "149",
+    "fresh_flags_test_offset": "14e",
+    "cursor_RMW_offset": "168",
+    "depth_RMW_offset": "178",
+    "HRESULT_dependent_branch_present": false,
+    "both_public_entries_RET": "14h"
+  },
+  "limits": [
+    "New EDX service-context binding is not original-caller drop-in ABI",
+    "No actual failed-driver HRESULT observed; ignored result established by original and optimized assembly",
+    "No original full diagnostic machine body executed here; actual integrated provider executes through one external bridge",
+    "No allocator failure or concurrent diagnostic publication coverage",
+    "No complete buffer owner lifetime, renderer integration, device reset, gameplay or visual validation"
+  ],
+  "artifacts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/include/bsp/native_physical_buffer_lock.hpp",
+      "bytes": 1504,
+      "sha256": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/src/native_physical_buffer_lock.cpp",
+      "bytes": 3972,
+      "sha256": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/docs/NATIVE_PHYSICAL_BUFFER_LOCK.md",
+      "bytes": 9704,
+      "sha256": "9c86e67e62d1f71e0498d637d870a1f200597f669fb6527828d4770f4f422151"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/audit_physical_buffer_lock.py",
+      "bytes": 16059,
+      "sha256": "c272454028a07cbe20de2cdcde5c89c6d6c7e296acdefd511cb279462b67bf7f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_check.cpp",
+      "bytes": 27701,
+      "sha256": "5d8ed6f885cdfa1dd7f57eb3180188fb675c3c2ad9696a59cc991b15838b7aaf"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_coff.py",
+      "bytes": 2415,
+      "sha256": "31959820a21ade8870b733203d07e230f1aefebe13dcb1ea7e626902a5542a26"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_library_sizes.hpp",
+      "bytes": 74,
+      "sha256": "90cedcce4090229e9ef6eb244fb129a86d78693569ca457d5eeb0fe4619db51f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_spans.hpp",
+      "bytes": 3735,
+      "sha256": "0977d9cb767bfd583c0b91003175746ce1b1aa28e4e9a7a319372d43ce477b31"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/prepare_physical_buffer_lock.py",
+      "bytes": 3651,
+      "sha256": "5b767872040a472141a7b7e4497f7bd698a5751d840b7ff5bd030101bc033e72"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_preparation.json",
+      "bytes": 10579,
+      "sha256": "2fd77979cc03a9e163867fb68939c4f9d6479e7fa5200b0f394d2b3ebd174c18"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/build_physical_buffer_lock.ps1",
+      "bytes": 1819,
+      "sha256": "1f337b356a4844fa99c747d78a511240f02ae1c5882cfa4f2c4771d2a522fd3b"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/build_physical_buffer_lock_check.ps1",
+      "bytes": 2472,
+      "sha256": "36a30439da839d912bd996c2b324fe7b844005a426724264de9ab1f3fe7e12c6"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_sources.cmake",
+      "bytes": 321,
+      "sha256": "5644697ad2144e378efb7b177941ae8d5bffe652b6a47f3e5a9c2b9ae55cd45f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_build.log",
+      "bytes": 15798,
+      "sha256": "8845538521b8a752fa85e5569275b494043dd70bc48ccfe05f6cf2acf04de56b"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_check.log",
+      "bytes": 6026,
+      "sha256": "181b66c808e82c0bc964091303791dbeded3b2c79dd4e1177c13d0f05c46ce84"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/local/physical_buffer_lock_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/win32/bsp_core.vcxproj",
+      "bytes": 104496,
+      "sha256": "487c419463198acca99943293208af26a7462526a9017a8f58bac6c0019893e4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/win32/bsp_core.dir/Release/native_physical_buffer_lock.obj",
+      "bytes": 3156,
+      "sha256": "3e3a581ee9f6bba1e366a2551a0fc685347e616038295be7658d94ef52b5f27e"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+      "bytes": 4669,
+      "sha256": "609425bc61e032406fd3453ddbc547fd168eb2899bc2cab0b2ef35c7fe09a09d"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/build_physical_buffer_lock.cmd",
+      "bytes": 1514,
+      "sha256": "82f8bc63d660e21c695de159655925c9fabae517c134fd1357504a44c0394838"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_check.exe",
+      "bytes": 55296,
+      "sha256": "dcba95a9ed3dfa9e334f42332ff32fad7257be373d523076b19e081d159193eb"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_check.obj",
+      "bytes": 226797,
+      "sha256": "b1bc66666907baf8458629b16ca671b52b04fdfc3d94fa35041f2eae0de855d9"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_check.map",
+      "bytes": 106934,
+      "sha256": "ee5deca5569022b8578c23b9509a8115fa57dcb4c8ef1e21b1250ee0534e4816"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_symbols.txt",
+      "bytes": 5073,
+      "sha256": "2bc4f53ccab2eb2c1be64a55602d82677f27fe17d07af5a996f0edd687dcc285"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_disasm.txt",
+      "bytes": 14565,
+      "sha256": "5e7a06634a4cab7a3542028731054f807b855391a06c308522635a18e546ce54"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_code_postimages.bin",
+      "bytes": 49528,
+      "sha256": "83cca59a3711b042e686f3f0001d48383ea9bb304934c2322f7e34e234846888"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_traces.bin",
+      "bytes": 43408,
+      "sha256": "23c3e039cff5ab9062c119b5a5200ea281b0abe8add753ded90a64ae8647cda4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_imports.json",
+      "bytes": 216,
+      "sha256": "63aeb242cec03842120f29d02cf740ec00610898f8763da95b251200f1825f57"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-native-physical-buffer-lock-20260910/build/physical-buffer-lock-check/physical_buffer_lock_native_bridge.json",
+      "bytes": 173,
+      "sha256": "cbecd148359fe337e57bf1782eab09e9bccd20c0c59919f649231f1b2dfaf8a5"
+    }
+  ]
+}

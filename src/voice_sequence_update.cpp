@@ -1,6 +1,7 @@
 #include "bsp/voice_sequence_update.hpp"
 
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/panel_sequence.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/voice_manager_update.hpp"
 #include "bsp/voice_slot_start.hpp"
@@ -219,8 +220,10 @@ bool update_voice_sequence_005bbf10(VoiceSequenceContext& context, float delta)
                     ScopedString prefix(text.value, 0, prefix_length, context.strings);
                     palette_key = static_cast<std::int32_t>(std::atol(prefix.value.data() ? prefix.value.data() : ""));
                 }
-                const auto& color = context.host.palette_value_0044ec00(palette_key);
-                row.color_10 = color;
+                const auto& color = panel_palette_value_0044ec00(
+                    context.host.current_panel_palette_00e188a8_21e4_10(), &palette_key,
+                    context.missing_palette_words, context.palette_callbacks);
+                std::memcpy(row.color_10.data(), color.data(), sizeof(row.color_10));
                 {
                     ScopedString suffix(text.value, prefix_length + 1, 0x7fffffffu, context.strings);
                     text.value.copy_from_00be0a30_fragment(context.strings, suffix.value); // 00425F40
@@ -238,7 +241,8 @@ bool update_voice_sequence_005bbf10(VoiceSequenceContext& context, float delta)
     fields.selected_row_84 = 0xffffffffu;
     manager.delay_88 = subtract(manager.delay_88, delta);
     if (manager.delay_88 > 0.0f) return true;
-    const bool active = context.host.advance_panel_state_004527f0();
+    const bool active = advance_panel_sequence_004527f0(
+        context.host.current_panel_sequence_00e188a8_21e4());
     if (active) context.host.log_004254b0("vanmeg");
     context.subtitles.calls.set_visible_vslot_34(*manager.panel_28, active);
     return active;

@@ -225,6 +225,11 @@ const char* GuiLua51Host::to_string(const GuiLuaRef& object) {
     }
     return result;
 }
+void* GuiLua51Host::to_userdata(const GuiLuaRef& object) {
+    StackTop restore(impl_->state);
+    impl_->push(object);
+    return lua_touserdata(impl_->state, -1);
+}
 void GuiLua51Host::release(const GuiLuaRef& object) {
     impl_->end_cursor(object.id);
     const auto found = impl_->refs.find(object.id);

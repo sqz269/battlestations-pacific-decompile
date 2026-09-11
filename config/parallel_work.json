@@ -4856,6 +4856,141 @@
       "evidence": "reports/native_occlusion_query_device_reset_audit.json"
     },
     {
+      "id": "orch4_object_handle_resolvers_d",
+      "packet": "orch4_object_handle_resolvers_d",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "006ad080",
+        "006ad0c0",
+        "00888aa0",
+        "00b662d0",
+        "00bd4fc0",
+        "006ad0d0"
+      ],
+      "code_ownership": [
+        "include/bsp/object_handle_resolvers.hpp",
+        "src/object_handle_resolvers.cpp",
+        "docs/OBJECT_HANDLE_RESOLVERS.md",
+        "reports/object_handle_resolvers.json"
+      ],
+      "scope": "Startup/live reader callbacks and two native table views.",
+      "prerequisite_packets": [
+        "orch4_voice_sequence_update_c",
+        "orch4_voice_manager_update_c",
+        "orch4_gui_lua_reader_identity_c"
+      ],
+      "integration_report": "reports/panel_observer_integration.json",
+      "discovery_evidence": "docs/PANEL_OBSERVER_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_panel_state_d",
+      "packet": "orch4_panel_state_d",
+      "worker": "agent/orch4-panel-state-20260910d",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "004527f0",
+        "00452740",
+        "00452360",
+        "0044c390",
+        "0044ba00",
+        "00451020",
+        "00451920",
+        "005b9490",
+        "00449af0",
+        "00443d00",
+        "004483f0",
+        "005b8a00",
+        "0044fff0",
+        "00450110",
+        "0044b530",
+        "005b94d0"
+      ],
+      "code_ownership": [
+        "include/bsp/panel_sequence.hpp",
+        "src/panel_sequence.cpp",
+        "docs/PANEL_SEQUENCE.md",
+        "reports/panel_sequence.json"
+      ],
+      "scope": "Panel state, command progression, queue cleanup and voice row control.",
+      "prerequisite_packets": [
+        "orch4_voice_sequence_update_c",
+        "orch4_voice_manager_update_c",
+        "orch4_gui_lua_reader_identity_c"
+      ],
+      "integration_report": "reports/panel_observer_integration.json",
+      "discovery_evidence": "docs/PANEL_OBSERVER_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_panel_palette_d",
+      "packet": "orch4_panel_palette_d",
+      "worker": "agent/orch4-panel-palette-20260910d",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "0044ec00",
+        "0044e7b0",
+        "0044e090",
+        "0044d2c0",
+        "0044ab90",
+        "00448ba0",
+        "00449f00",
+        "00449160",
+        "004491f0",
+        "004487d0"
+      ],
+      "code_ownership": [
+        "include/bsp/panel_palette.hpp",
+        "src/panel_palette.cpp",
+        "docs/PANEL_PALETTE.md",
+        "reports/panel_palette.json"
+      ],
+      "scope": "Actual signed-key tree insertion/lookup with explicit residual miss words.",
+      "prerequisite_packets": [
+        "orch4_voice_sequence_update_c",
+        "orch4_voice_manager_update_c",
+        "orch4_gui_lua_reader_identity_c"
+      ],
+      "integration_report": "reports/panel_observer_integration.json",
+      "discovery_evidence": "docs/PANEL_OBSERVER_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_observer_lifetime_d",
+      "packet": "orch4_observer_lifetime_d",
+      "worker": "agent/orch4-observer-lifetime-20260910d",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "00693c50",
+        "00694200",
+        "00694280",
+        "006944c0",
+        "006949d0",
+        "00694d30",
+        "00694ea0",
+        "00694f60",
+        "006952a0",
+        "00695530",
+        "00695870"
+      ],
+      "code_ownership": [
+        "include/bsp/observer_lifetime.hpp",
+        "src/observer_lifetime.cpp",
+        "docs/OBSERVER_LIFETIME.md",
+        "reports/observer_lifetime.json"
+      ],
+      "scope": "Actual endpoint/edge arrays, observer cleanup and lock singleton lifetime.",
+      "prerequisite_packets": [
+        "orch4_voice_sequence_update_c",
+        "orch4_voice_manager_update_c",
+        "orch4_gui_lua_reader_identity_c"
+      ],
+      "integration_report": "reports/panel_observer_integration.json",
+      "discovery_evidence": "docs/PANEL_OBSERVER_INTEGRATION.md"
+    },
+    {
       "id": "native_renderer_vertex_layout_binding1",
       "packet": "native_renderer_vertex_layout_binding1",
       "worker": "system_fog_owner_discovery",

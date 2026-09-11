@@ -2,6 +2,7 @@
 
 #include "bsp/native_string.hpp"
 #include "bsp/scheduled_voice_types.hpp"
+#include "bsp/panel_sequence_types.hpp"
 
 #include <array>
 #include <cstdint>
@@ -105,7 +106,12 @@ struct VoicePlaybackManager {
     float fade_rate_dc{};
     NativeString fade_callback_e0;
 };
-struct VoicePanelState { std::uint32_t field_34{}, field_24{}; };
+struct VoicePanelState {
+    PanelSequenceQueue queued_1c;
+    std::uint32_t field_24{};
+    NativeString current_28;
+    std::uint32_t field_34{};
+};
 struct VoiceSlotStartContext;
 
 // Required game services at the named native callsites. They must implement

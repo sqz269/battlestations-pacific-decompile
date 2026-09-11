@@ -1,5 +1,7 @@
 #pragma once
 
+#include "bsp/object_handle_resolvers.hpp"
+
 // Bootstrap phase of cSkeletonAppMidway::Init (0073d410).
 //
 // Addresses: 00439040, 006ad0d0, 0073ce20, 0073c3b0, 008d8190, 00737c40.
@@ -36,24 +38,9 @@ std::string capture_module_directory_00439040(const std::string& module_file_nam
 // 006ad0d0 - three callback slots, registered through 00bd4fc0
 // ---------------------------------------------------------------------------
 
-// 006ad0d0 is *not* a crash handler. It calls 00bd4fc0 with three code
-// pointers, which land in DAT_0109ced4/ced8/cedc and are consumed by the
-// debug-inspection readers 00bd63b0, 00bd7180 and 00bd7f50.
-struct ObjectHandleResolverSlots {
-    // DAT_0109ced4 <- 006ad080: 16-bit handle -> object pointer, through the
-    // two stride-0x10 tables at 00f8895c-relative 00f89a0c / 00f89a60.
-    const void* handle_to_object = nullptr;
-    // DAT_0109ced8 <- 00888aa0: pulls a value out of the scripting context.
-    const void* context_value = nullptr;
-    // DAT_0109cedc <- 006ad0c0: object pointer -> 16-bit handle at object+0x174,
-    // returning 0 for a null pointer.
-    const void* object_to_handle = nullptr;
-};
-
-// Mirrors 00bd4fc0: three unconditional stores, no validation, no return value.
-void install_object_handle_resolvers_006ad0d0(ObjectHandleResolverSlots& slots,
-    const void* handle_to_object, const void* context_value,
-    const void* object_to_handle);
+// The three callbacks and their typed registration now live in
+// object_handle_resolvers.hpp.006AD0D0 installs reconstructed callable bodies;
+// the actual object table owners/population remain separate dependencies.
 
 // ---------------------------------------------------------------------------
 // 0073ce20 - the command line switch table

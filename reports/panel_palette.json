@@ -1,0 +1,464 @@
+{
+  "packet": "orch4_panel_palette_d",
+  "supporting_packet": "orch4_panel_palette_helpers_d",
+  "worker": "agent/orch4-panel-palette-20260910d",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "ghidra_mutations": [],
+  "reconstructions": [
+    {
+      "address": "0044ec00",
+      "name": "panel_palette_value_0044ec00",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_d",
+      "native_abi": "ECX=tree; signed key pointer stack; EAX=Float4 pointer; RET4",
+      "body_start": "0044ec00",
+      "body_end": "0044ec96",
+      "last_instruction": "0044ec94",
+      "last_instruction_length": 3,
+      "scope": "Complete signed lower-bound lookup-or-insert returns actual node+10h. Native miss copies four uninitialized stack words, then allocator copies them with integer MOVs unchanged. Explicit defined four-word miss input only read on absence; no default color or float conversion.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; signed key pointer stack; EAX=Float4 pointer; RET4; body0044ec00..0044ec96. Complete signed lower-bound lookup-or-insert returns actual node+10h. Native miss copies four uninitialized stack words, then allocator copies them with integer MOVs unchanged. Explicit defined four-word miss input only read on absence; no default color or float conversion. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0044e7b0",
+      "name": "insert_panel_palette_hint_0044e7b0",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_d",
+      "native_abi": "ECX=tree; output pointer,hint owner,hint node,pair pointer stack; EAX=output; RET10h",
+      "body_start": "0044e7b0",
+      "body_end": "0044e96b",
+      "last_instruction": "0044e969",
+      "last_instruction_length": 3,
+      "scope": "Complete checked hinted insertion: empty,before minimum,after maximum,interior predecessor/successor checks and fallback0044e090. Signed keys; preserve duplicate value and identity; returning invalid policy semantics retained.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; output pointer,hint owner,hint node,pair pointer stack; EAX=output; RET10h; body0044e7b0..0044e96b. Complete checked hinted insertion: empty,before minimum,after maximum,interior predecessor/successor checks and fallback0044e090. Signed keys; preserve duplicate value and identity; returning invalid policy semantics retained. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0044e090",
+      "name": "insert_panel_palette_pair_0044e090",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=tree; output pointer,pair pointer stack; EAX=output; RET8",
+      "body_start": "0044e090",
+      "body_end": "0044e148",
+      "last_instruction": "0044e146",
+      "last_instruction_length": 3,
+      "scope": "Complete signed-key descent, predecessor duplicate check and link0044d2c0. Existing duplicates retain value/node; output publication owner,node,inserted byte; result padding9..B unchanged.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; output pointer,pair pointer stack; EAX=output; RET8; body0044e090..0044e148. Complete signed-key descent, predecessor duplicate check and link0044d2c0. Existing duplicates retain value/node; output publication owner,node,inserted byte; result padding9..B unchanged. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0044d2c0",
+      "name": "link_panel_palette_node_0044d2c0",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=tree; output pointer,left byte,parent pointer,pair pointer stack; EAX=output; RET10h",
+      "body_start": "0044d2c0",
+      "body_end": "0044d4ab",
+      "last_instruction": "0044d4a9",
+      "last_instruction_length": 3,
+      "scope": "Complete normally returning count guard, allocation, count increment, extrema/root linking and red-black rebalance. Unsigned count>=0CCCCCCBh throws D69260/D83F98 length-error profile via existing owning transport. Output node before owner. Old STL_xlen_throw name/stl_throw_site tag describe only one branch; retain provenance and correct role.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; output pointer,left byte,parent pointer,pair pointer stack; EAX=output; RET10h; body0044d2c0..0044d4ab. Complete normally returning count guard, allocation, count increment, extrema/root linking and red-black rebalance. Unsigned count>=0CCCCCCBh throws D69260/D83F98 length-error profile via existing owning transport. Output node before owner. Old STL_xlen_throw name/stl_throw_site tag describe only one branch; retain provenance and correct role. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0044ab90",
+      "name": "allocate_panel_palette_node_0044ab90",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "left,parent,right,pair pointer,color stack; EAX=allocated node; RET14h; ECX unused as input",
+      "body_start": "0044ab90",
+      "body_end": "0044abe0",
+      "last_instruction": "0044abde",
+      "last_instruction_length": 3,
+      "scope": "Complete24h allocation then left/right/parent links; five integer pair-word loads/stores to+C..1C; color20; sentinel21=0. No Float4 initialization; padding22..23 untouched. Reuses existing00BF681B allocation service.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native left,parent,right,pair pointer,color stack; EAX=allocated node; RET14h; ECX unused as input; body0044ab90..0044abe0. Complete24h allocation then left/right/parent links; five integer pair-word loads/stores to+C..1C; color20; sentinel21=0. No Float4 initialization; padding22..23 untouched. Reuses existing00BF681B allocation service. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00448ba0",
+      "name": "rotate_panel_palette_right_00448ba0",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=tree; node pointer stack; RET4; semantic void",
+      "body_start": "00448ba0",
+      "body_end": "00448bf1",
+      "last_instruction": "00448bef",
+      "last_instruction_length": 3,
+      "scope": "Complete right rotation of actual node offsets0/4/8 with sentinel21. Reread transferred right child after first store; root or parent child link then replacement right/node parent. No allocation or payload change.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; node pointer stack; RET4; semantic void; body00448ba0..00448bf1. Complete right rotation of actual node offsets0/4/8 with sentinel21. Reread transferred right child after first store; root or parent child link then replacement right/node parent. No allocation or payload change. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00449f00",
+      "name": "rotate_panel_palette_left_00449f00",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=tree; node pointer stack; RET4; semantic void",
+      "body_start": "00449f00",
+      "body_end": "00449f4d",
+      "last_instruction": "00449f4b",
+      "last_instruction_length": 3,
+      "scope": "Complete left rotation of actual node offsets0/4/8 with sentinel21. Reread transferred left child after first store; root or parent child link then replacement left/node parent. Same order as0044d436..472 inline rotation.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; node pointer stack; RET4; semantic void; body00449f00..00449f4d. Complete left rotation of actual node offsets0/4/8 with sentinel21. Reread transferred left child after first store; root or parent child link then replacement left/node parent. Same order as0044d436..472 inline rotation. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00449160",
+      "name": "decrement_panel_palette_iterator_00449160",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=actual checked iterator; RET; semantic void",
+      "body_start": "00449160",
+      "body_end": "004491e8",
+      "last_instruction": "004491e8",
+      "last_instruction_length": 1,
+      "scope": "Complete checked predecessor: validate owner then reload node, sentinel to maximum, left-subtree maximum or climb parent links.00BF6713 may return; tail validation returns without further advancement. Sentinel flag21.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=actual checked iterator; RET; semantic void; body00449160..004491e8. Complete checked predecessor: validate owner then reload node, sentinel to maximum, left-subtree maximum or climb parent links.00BF6713 may return; tail validation returns without further advancement. Sentinel flag21. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004491f0",
+      "name": "increment_panel_palette_iterator_004491f0",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=actual checked iterator; RET; semantic void",
+      "body_start": "004491f0",
+      "body_end": "00449252",
+      "last_instruction": "00449252",
+      "last_instruction_length": 1,
+      "scope": "Complete checked successor: validate owner then reload node, sentinel tail validation, right-subtree minimum or climb parent links. Returning first handler continues; returning sentinel handler stops. Sentinel flag21.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=actual checked iterator; RET; semantic void; body004491f0..00449252. Complete checked successor: validate owner then reload node, sentinel tail validation, right-subtree minimum or climb parent links. Returning first handler continues; returning sentinel handler stops. Sentinel flag21. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004487d0",
+      "name": "equal_panel_palette_iterators_004487d0",
+      "source": "src/panel_palette.cpp",
+      "header": "include/bsp/panel_palette.hpp",
+      "doc": "docs/PANEL_PALETTE.md",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "packet": "orch4_panel_palette_helpers_d",
+      "native_abi": "ECX=left checked iterator; right iterator pointer stack; bool AL; RET4",
+      "body_start": "004487d0",
+      "body_end": "004487f8",
+      "last_instruction": "004487f6",
+      "last_instruction_length": 3,
+      "scope": "Preserve correct existing STL instantiation identity. Complete checked iterator equality: left owner must be nonnull and equal right owner, otherwise00BF6713; compare current node pointers after returning validation handler.",
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=left checked iterator; right iterator pointer stack; bool AL; RET4; body004487d0..004487f8. Preserve correct existing STL instantiation identity. Complete checked iterator equality: left owner must be nonnull and equal right owner, otherwise00BF6713; compare current node pointers after returning validation handler. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "validation": "MSVC Win32 Release and reconstructed_math1/1 passed; one ignored actual-tree insertion/identity/invariant fixture passed.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "names": [
+    {
+      "address": "0044ec00",
+      "name": "BSP_PanelPalette_ValueForKey",
+      "old_name": "FUN_0044ec00",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; signed key pointer stack; EAX=Float4 pointer; RET4; body0044ec00..0044ec96. Complete signed lower-bound lookup-or-insert returns actual node+10h. Native miss copies four uninitialized stack words, then allocator copies them with integer MOVs unchanged. Explicit defined four-word miss input only read on absence; no default color or float conversion. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "0044e7b0",
+      "name": "BSP_PanelPalette_InsertHint",
+      "old_name": "FUN_0044e7b0",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; output pointer,hint owner,hint node,pair pointer stack; EAX=output; RET10h; body0044e7b0..0044e96b. Complete checked hinted insertion: empty,before minimum,after maximum,interior predecessor/successor checks and fallback0044e090. Signed keys; preserve duplicate value and identity; returning invalid policy semantics retained. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "0044e090",
+      "name": "BSP_PanelPalette_InsertUnique",
+      "old_name": "FUN_0044e090",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; output pointer,pair pointer stack; EAX=output; RET8; body0044e090..0044e148. Complete signed-key descent, predecessor duplicate check and link0044d2c0. Existing duplicates retain value/node; output publication owner,node,inserted byte; result padding9..B unchanged. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "0044d2c0",
+      "name": "BSP_PanelPalette_LinkAndRebalance",
+      "old_name": "STL_xlen_throw_0044d2c0",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; output pointer,left byte,parent pointer,pair pointer stack; EAX=output; RET10h; body0044d2c0..0044d4ab. Complete normally returning count guard, allocation, count increment, extrema/root linking and red-black rebalance. Unsigned count>=0CCCCCCBh throws D69260/D83F98 length-error profile via existing owning transport. Output node before owner. Old STL_xlen_throw name/stl_throw_site tag describe only one branch; retain provenance and correct role. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "0044ab90",
+      "name": "BSP_PanelPalette_AllocateNode",
+      "old_name": "FUN_0044ab90",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native left,parent,right,pair pointer,color stack; EAX=allocated node; RET14h; ECX unused as input; body0044ab90..0044abe0. Complete24h allocation then left/right/parent links; five integer pair-word loads/stores to+C..1C; color20; sentinel21=0. No Float4 initialization; padding22..23 untouched. Reuses existing00BF681B allocation service. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "00448ba0",
+      "name": "BSP_PanelPalette_RotateRight",
+      "old_name": "FUN_00448ba0",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; node pointer stack; RET4; semantic void; body00448ba0..00448bf1. Complete right rotation of actual node offsets0/4/8 with sentinel21. Reread transferred right child after first store; root or parent child link then replacement right/node parent. No allocation or payload change. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "00449f00",
+      "name": "BSP_PanelPalette_RotateLeft",
+      "old_name": "FUN_00449f00",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=tree; node pointer stack; RET4; semantic void; body00449f00..00449f4d. Complete left rotation of actual node offsets0/4/8 with sentinel21. Reread transferred left child after first store; root or parent child link then replacement left/node parent. Same order as0044d436..472 inline rotation. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "00449160",
+      "name": "BSP_PanelPalette_IteratorPrevious",
+      "old_name": "FUN_00449160",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=actual checked iterator; RET; semantic void; body00449160..004491e8. Complete checked predecessor: validate owner then reload node, sentinel to maximum, left-subtree maximum or climb parent links.00BF6713 may return; tail validation returns without further advancement. Sentinel flag21. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "004491f0",
+      "name": "BSP_PanelPalette_IteratorNext",
+      "old_name": "FUN_004491f0",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=actual checked iterator; RET; semantic void; body004491f0..00449252. Complete checked successor: validate owner then reload node, sentinel tail validation, right-subtree minimum or climb parent links. Returning first handler continues; returning sentinel handler stops. Sentinel flag21. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": false
+    },
+    {
+      "address": "004487d0",
+      "name": "STL_inst_004487d0",
+      "old_name": "STL_inst_004487d0",
+      "previous_plate_comment": null,
+      "evidence": "Descriptive role hypothesis, not recovered symbol. Native ECX=left checked iterator; right iterator pointer stack; bool AL; RET4; body004487d0..004487f8. Preserve correct existing STL instantiation identity. Complete checked iterator equality: left owner must be nonnull and equal right owner, otherwise00BF6713; compare current node pointers after returning validation handler. Actual Win32 storage and new C++ interfaces; docs/PANEL_PALETTE.md; src/panel_palette.cpp. Worker Ghidra read-only.",
+      "annotation_pending": true,
+      "name_preserved": true
+    }
+  ],
+  "flow_audits": [
+    {
+      "address": "0044ec00",
+      "listed_instructions": 56,
+      "gaps": 0
+    },
+    {
+      "address": "0044e7b0",
+      "listed_instructions": 183,
+      "gaps": 0
+    },
+    {
+      "address": "0044e090",
+      "listed_instructions": 73,
+      "gaps": 0
+    },
+    {
+      "address": "0044d2c0",
+      "listed_instructions": 167,
+      "gaps": 0
+    },
+    {
+      "address": "0044ab90",
+      "listed_instructions": 26,
+      "gaps": 0
+    },
+    {
+      "address": "00448ba0",
+      "listed_instructions": 30,
+      "gaps": 0
+    },
+    {
+      "address": "00449f00",
+      "listed_instructions": 30,
+      "gaps": 0
+    },
+    {
+      "address": "00449160",
+      "listed_instructions": 48,
+      "gaps": 0
+    },
+    {
+      "address": "004491f0",
+      "listed_instructions": 38,
+      "gaps": 0
+    },
+    {
+      "address": "004487d0",
+      "listed_instructions": 18,
+      "gaps": 0
+    }
+  ],
+  "missing_functions": [],
+  "flow_repairs_pending": [],
+  "prototype_corrections_pending": "Live saved prototypes still show undefined(void) for inspected0044EC00/0044AB90; apply assembly-backed ABI evidence for all10 routines during annotation.",
+  "tag_review_pending": [
+    {
+      "address": "0044d2c0",
+      "old_tag": "stl_throw_site",
+      "old_name": "STL_xlen_throw_0044d2c0",
+      "finding": "Normally returning tree link/rebalance with count-guard length throw; tag/name cover only error branch.",
+      "proposed_role": "specific STL map instantiation: link and rebalance",
+      "worker_tag_mutation": false
+    }
+  ],
+  "actual_layout": {
+    "tree_bytes": 12,
+    "tree_fields": {
+      "0": "opaque allocator/comparator",
+      "4": "head",
+      "8": "uint32 count"
+    },
+    "node_bytes": 36,
+    "node_fields": {
+      "0": "left",
+      "4": "parent",
+      "8": "right",
+      "0c": "int32 key",
+      "10": "Float4 value",
+      "20": "color0red1black",
+      "21": "sentinel flag",
+      "22..23": "untouched padding"
+    },
+    "iterator": "existing8h owner,node representation",
+    "result": "existing0Ch iterator,inserted byte,untouched padding"
+  },
+  "missing_value_contract": {
+    "native": "Four uninitialized stack DWORDs copied into temporary pair on miss, then into node unchanged by integer MOVs.",
+    "evidence": [
+      "0044ec3c-0044ec64",
+      "0044abb6-0044abd4"
+    ],
+    "cpp": "Required explicit PanelPaletteValueWords input; read only on absence; no uninitialized C++ read or default/fallback.",
+    "deterministic_native_default": false,
+    "float_conversion": false,
+    "returned_offset": "node+10h"
+  },
+  "read_only_loader_context": {
+    "address": "0044fa30",
+    "reconstructed": false,
+    "palette_name": "DialogColors",
+    "map_offset": "panel owner+10h; ADD EDI,10 at0044fe4a",
+    "lookup_call": "0044fe64",
+    "value_stores": [
+      "0044fe9c",
+      "0044fed4",
+      "0044ff0d",
+      "0044ff45"
+    ],
+    "normalization": "Each Lua number / double255 then float spill, sequential lanes0..3",
+    "constant_address": "00ce4b48",
+    "constant_bytes": "0000000000e06f40"
+  },
+  "existing_reuse": [
+    "NativeHardwareLayoutTreeIterator layout",
+    "NativeHardwareLayoutTreeInsertResult layout",
+    "singleton_lifetime_allocate object24h",
+    "SingletonLifetimeCallbacks::invalid_parameter",
+    "native_legacy_sbo_string_assign_counted_00408720",
+    "native_legacy_sbo_string_destroy_004072d0",
+    "NativeHardwareLayoutTreeLengthError D69260 owning transport and existing logic-error/copy/destruction"
+  ],
+  "native_limit": {
+    "count_threshold": "0ccccccb",
+    "comparison": "unsigned count >= threshold",
+    "message": "map/set<T> too long",
+    "message_count": 19,
+    "vtable": "00d69260",
+    "throw_profile": "00d83f98"
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_target": "MSVC Win32 Release",
+    "build_exit_code": 0,
+    "build_log": "local/panel_palette_build.log",
+    "existing_tests": "reconstructed_math1/1 passed",
+    "fixture_command": "./local/run_panel_palette_insert_check.ps1",
+    "fixture_source": "local/panel_palette_insert_check.cpp",
+    "fixture_log": "local/panel_palette_insert_check.log",
+    "fixture_result": "PASS: signed palette insertion, bit preservation, identity, balancing, iterators and length boundary",
+    "fixture_scope": [
+      "13 signed keys including INT_MIN,-7,INT_MAX; hinted and fallback insertions.",
+      "Root black, red-child rules, equal black heights, sorted keys, parent links and head extrema.",
+      "Duplicate unique insertion preserves node/value, count and result padding.",
+      "Lookup returns same live node+10 reference; loader-style overwrite remains on later lookup.",
+      "Miss words include signed-zero,qNaN,sNaN and arbitrary bits compared bytewise without FP evaluation.",
+      "Forward/reverse checked iteration and checked equality.",
+      "Count>=0CCCCCCB throws existing owning D69260 transport without tree count change."
+    ],
+    "invalid_fixture_service": "unexpected invalid-parameter call throws; no successful no-op",
+    "native_differential": false,
+    "game_validated": false,
+    "actual_lua_loader": false,
+    "displayed_color": false,
+    "new_shared_tests": 0,
+    "new_test_targets": 0
+  },
+  "limits": [
+    "MSVC Win32 actual storage with new C++ interfaces, not native calling ABI or portable owning std::map.",
+    "Borrow an initialized valid red-black tree and live owners/keys/values through each recovered use; no concurrent mutation guarantee.",
+    "No map constructor, erase, whole-tree destruction, generic STL/CRT port or complete panel/Lua loader reconstruction.",
+    "Native residual stack acquisition is external input; no deterministic default exists in observed lookup/insertion bodies.",
+    "Host allocator/new-handler and owning exception RTTI/ABI boundaries retained; no binary SEH or actual gameplay claim."
+  ],
+  "integration_handoff": [
+    "Parent replaces VoiceSequenceHost lookup behavior with concrete panel_palette_value_0044ec00 and live actual map resolver.",
+    "Provide explicit defined miss words as input; no fabricated fallback color or std::map zero initialization.",
+    "Integrator applies pending names/prototype evidence and reviews throw-only classification under Ghidra write lock, preserving old comments and correct library identity.",
+    "Loader0044FA30 remains read-only context; its caller assigns four normalized lane values after lookup."
+  ]
+}
