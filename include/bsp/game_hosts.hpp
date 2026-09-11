@@ -135,6 +135,7 @@ public:
     int window_color_depth(HWND window) override;
     void show_window(HWND window, int command) override;
     ATOM registered_class() const noexcept { return registered_class_; }
+    void unregister_class(const char* name) noexcept;
 
 private:
     GameHostLog& log_;
@@ -333,6 +334,7 @@ public:
 
 private:
     void run_initialize_phases();
+    void release_platform_window() noexcept;
 
     GameHostLog& log_;
     HINSTANCE instance_{};

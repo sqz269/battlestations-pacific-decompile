@@ -35,6 +35,12 @@ region initialized by the five native stores00b32512..00b32534 is retained too;
 device creation updates that same region instead of a temporary local copy.
 This is still not the complete native1d94h renderer or its resource initialization.
 
+Host destruction also clears the active-platform pointer, destroys the window
+and unregisters its class when initialization unwinds without application_shutdown.
+This nonthrowing cleanup shares the normal shutdown path and does not log after
+WinMain closes its log. A controlled unwind after actual window/device creation
+checks HWND destruction and class removal; native SEH equivalence is not claimed.
+
 The host also restores the relative order of existing platform/save setup before
 command-line parsing/factory-tail setup, and parser registration after settings.
 See APP_INIT_PLATFORM.md for0073d8f3/0073d921/0073d94a and the application listing

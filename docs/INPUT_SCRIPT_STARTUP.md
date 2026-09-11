@@ -83,3 +83,12 @@ Logs and installed source hashes are recorded in `reports/input_script_startup.j
 No new permanent test or test framework was added. This proves host composition and
 installed-script compatibility; native differential behavior, ABI compatibility and
 gameplay validation remain unproven.
+
+### Application binding
+
+[RUNTIME_STARTUP_OWNERS.md](RUNTIME_STARTUP_OWNERS.md) connects this composition
+to the executable before settings loading. GameScriptHost owns the globals,
+VFS file adapter, Lua runtime and input owner for the application lifetime.
+LUA_RUNTIME_GLOBALS.md establishes the initial false/unset platform globals
+from image zero-fill and write ordering. Device polling, profile application
+and native singleton lifetime remain separate integration requirements.

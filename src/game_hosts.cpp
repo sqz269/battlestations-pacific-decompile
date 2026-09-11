@@ -243,6 +243,10 @@ ATOM GameWindowHost::register_class(const WNDCLASSA& window_class) {
     return registered_class_;
 }
 
+void GameWindowHost::unregister_class(const char* name) noexcept {
+    if (registered_class_ != 0 && UnregisterClassA(name, instance_)) registered_class_ = 0;
+}
+
 BOOL GameWindowHost::adjust_window_rect(RECT& rectangle, DWORD style, BOOL menu) {
     log_.implemented("PlatformWindowHost::adjust_window_rect", "00becfd6");
     return AdjustWindowRect(&rectangle, style, menu);
@@ -483,6 +487,7 @@ GameStartupHost::~GameStartupHost() {
     delete device_;
     delete renderer_parameters_;
     if (renderer_api_) renderer_api_->Release();
+    release_platform_window();
     delete window_host_;
     delete vfs_;
     delete random_threads_;
@@ -735,6 +740,11 @@ void GameStartupHost::run_initialize_phases() {
         renderer_full_capabilities_, renderer_capabilities_, *renderer_api_);
     if (FAILED(capabilities_result)) throw std::runtime_error("Renderer capability query failed");
     log_.implemented("RendererHost::gather_capabilities", "00b2c8e0");
+    log_.notef("renderer capabilities api=%p pixel_version=0x%04x shader_ceiling=%d "
+        "formats=%zu declaration_types=%zu", static_cast<void*>(renderer_api_),
+        renderer_capabilities_.pixel_shader_version_28, renderer_capabilities_.max_shader_model,
+        renderer_full_capabilities_.texture_formats_1b68.size(),
+        renderer_full_capabilities_.declaration_types_1b5c.size());
 
     scripts_ = new GameScriptHost(log_, vfs_->manager()->context(), content_suffixes_,
         make_initial_lua_runtime_globals_0108ff20());
@@ -854,7 +864,8 @@ void GameStartupHost::run_initialize_phases() {
 
     // Locale construction and exact setter/register/reload order0073e057..e135.
     locale_ = new GameLocaleHost(log_);
-    locale_->initialize(settings_host.locale_source(), settings_.options_file.language);
+    locale_->initialize(settings_host.locale_source(), language_name_008d4870(
+        settings_host.language_catalog(), static_cast<std::size_t>(settings_.gameplay.language_index_04)));
     summary_.locale_keys = locale_->tables().size();
     summary_.locale_files = locale_->tables().loaded_files().size();
 
@@ -886,21 +897,24 @@ void GameStartupHost::platform_run_loop_dispatch() {
         loop_callbacks_->frames(), summary_.frames_presented);
 }
 
-void GameStartupHost::application_shutdown() {
-    // 00737f30 tears down 23 singletons, the GUI manager, the game and four datatable
-    // files. None of those subsystems exist in this milestone, so only the two steps the
-    // process actually owns run: the device is released and the window is destroyed.
-    log_.implemented("StartupHost::application_shutdown", "00737f30");
-    log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
-    if (device_ != nullptr) device_->release();
-    set_active_platform_state(nullptr);
+void GameStartupHost::release_platform_window() noexcept {
+    // Host cleanup also runs if a required startup service throws. Do not log:
+    // WinMain can close the log before this object's destructor executes.
+    if (g_active_platform == &platform_) set_active_platform_state(nullptr);
     if (platform_.window != nullptr) {
         DestroyWindow(platform_.window);
         platform_.window = nullptr;
     }
-    if (window_host_ != nullptr && window_host_->registered_class() != 0) {
-        UnregisterClassA(window_class_name_.c_str(), instance_);
-    }
+    if (window_host_ != nullptr) window_host_->unregister_class(window_class_name_.c_str());
+}
+
+void GameStartupHost::application_shutdown() {
+    // Native00737f30's full singleton teardown remains unbound. Retained C++
+    // input/locale/settings owners close later in dependency order at destruction.
+    log_.implemented("StartupHost::application_shutdown", "00737f30");
+    log_.unimplemented("ApplicationShutdownHost::singleton_teardown", "00737f80");
+    if (device_ != nullptr) device_->release();
+    release_platform_window();
 }
 
 void GameStartupHost::application_destruct() {

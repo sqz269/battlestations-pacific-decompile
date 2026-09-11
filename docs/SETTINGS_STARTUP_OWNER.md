@@ -92,3 +92,13 @@ probes resolved. The original installed executable and live personal options
 retained their hashes, sizes and modification times. This is startup/process
 validation with the milestone clear/present path, not gameplay validation. Input,
 GUI, world and scene owners still have unimplemented bindings in the run log.
+
+### Follow-up: shared renderer and startup consumers
+
+[RUNTIME_STARTUP_OWNERS.md](RUNTIME_STARTUP_OWNERS.md) supersedes this packet's
+two-API ownership boundary. GameStartupHost now owns one IDirect3D9 interface
+and retained renderer parameter/capability state; GameSettingsBinding and
+GameDeviceHost borrow them. The complete capability query sequence is in
+RENDERER_CAPABILITIES.md. Input script startup runs before options loading, and
+the selected catalog language feeds the retained locale tables after device setup.
+The earlier packet's validation remains evidence for its recorded source commit.
