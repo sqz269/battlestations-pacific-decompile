@@ -133,6 +133,12 @@ struct GameExecutableOptions {
     // photograph the title page before the injected press-start as well as the main
     // menu after it. Negative keeps the last-frame default.
     long screenshot_frame{-1};
+    // --screenshot-mission-frame N, milestone 2h: capture the application frame
+    // on which in-mission frame N of 004e4a40 ran, so the HUD can be
+    // photographed over the mission without counting frames from the press.
+    // Negative captures nothing extra; it takes precedence over
+    // --screenshot-frame when both are given.
+    long screenshot_mission_frame{-1};
     // --menu-select <mission id>: the mission the mission-tree screen's loader asks the
     // shell for at 00586150. Once the main menu is up the run publishes that selection
     // through 00580940, builds the mission-detail page 0058c010, takes the page's play
@@ -271,6 +277,9 @@ public:
     // Global exit byte 00e1ae75, set by the close policy at 004ca2f0.
     bool global_exit() const noexcept { return global_exit_; }
     unsigned long long frames() const noexcept { return frame_index_; }
+    // Milestone 2h, --screenshot-mission-frame N: how many in-mission frames of
+    // 004e4a40 have run. Zero while the run is still in the front end.
+    unsigned long long mission_frames_run() const noexcept;
 
 private:
     GameHostLog& log_;
@@ -292,10 +301,12 @@ public:
     GameLoopCallbacks(GameHostLog& log, ApplicationFrameState& frame_state,
         FrameMarkerColor& color, GameFrameHost& frame_host, GameDeviceHost& device,
         PlatformLoopState& loop, long frame_limit,
-        std::function<void(IDirect3DDevice9&)> capture = {}, long screenshot_frame = -1)
+        std::function<void(IDirect3DDevice9&)> capture = {}, long screenshot_frame = -1,
+        long screenshot_mission_frame = -1)
         : log_(log), frame_state_(frame_state), color_(color), frame_host_(frame_host),
           device_(device), loop_(loop), frame_limit_(frame_limit),
-          capture_(std::move(capture)), screenshot_frame_(screenshot_frame) {}
+          capture_(std::move(capture)), screenshot_frame_(screenshot_frame),
+          screenshot_mission_frame_(screenshot_mission_frame) {}
 
     bool pretranslate(MSG& message) override;
     void frame() override;
@@ -314,6 +325,10 @@ private:
     // --screenshot-frame N, milestone 2d: the frame index to capture. Negative keeps the
     // last-frame (or close-request) rule the switch shipped with.
     long screenshot_frame_{-1};
+    // --screenshot-mission-frame N, milestone 2h: the in-mission frame of
+    // 004e4a40 to capture, so a run can photograph the HUD over the mission
+    // without counting application frames back from the injected press.
+    long screenshot_mission_frame_{-1};
     bool capture_requested_{};
     unsigned long long frames_{};
 };
