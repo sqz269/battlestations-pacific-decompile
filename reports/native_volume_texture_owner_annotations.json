@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00b3eb70",
+    "before": {
+      "address": "00b3eb70",
+      "function_name": "FUN_00b3eb70"
+    },
+    "after": {
+      "address": "00b3eb70",
+      "old_name": "FUN_00b3eb70",
+      "name": "BSP_VolumeTexture_Destroy",
+      "evidence": "Complete180 native bytes; Install D618B0; capture renderer/current table; name notification first; read current retained source+30, decrement/zero dispatch, clear after return; captured COM AddRef then refreshed-table Release; independent current COM Release then clear; current named base normal/unwind cleanup. Actual source in src/native_volume_texture_owner.cpp; reports/native_volume_texture_owner_audit.json. Original ABI: ECX actual owner; no stack arguments; RET; no semantic result. Context borrows actual notification/string/retained domains, original renderer profile and initialized volume pool108DBA8. NativeCD7BA0/B3F2D0/CE0CC0 prove shared38h-slot/32-slot/slab744h B3EC60/B3ED40/B3E2B0 algorithms; no surface108DB00 routing. Destructor differs from cube: notification precedes current source30 release; captured COM AddRef/current-table Release then fresh ownerCOM Release/clear. FH3CBEDE8/DF7628 onecleanupstate maps CBEDE0 to distinctB340F0/B33F50; no retry, only current named-base cleanup on throw. Primary verified99 workerpins/16 current sourcefiles/34 fresh live-PE spans1854bytes, strict main build/two CTests/eight seeds. Frozen actualmain-library replay6states/12214literalDWORDs/197frames;24 actual D3D9 calls with currenttable/callsite/module proof,48 real volume objects drained to zero. All11 frozen provider objects equal exact main archive members. All442 native span postimages and complete fixture.text before/after match PE; four dependency jumps enter fullactual source providers, one FH3runtimebridge, one4-byte owned EHregistration relocation tojump-onlyadmissiontrampoline; other213ownedbytes unchanged. Unchanged singleton provider compiled withallocation/free symbol aliases for observation; owned source not recompiled. Descriptive name hypothesis; new source interface, no originalcaller ABI, complete reset, render or gameplay claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f430",
+    "before": {
+      "address": "00b3f430",
+      "function_name": "FUN_00b3f430"
+    },
+    "after": {
+      "address": "00b3f430",
+      "old_name": "FUN_00b3f430",
+      "name": "BSP_VolumeTexture_DeleteScalar",
+      "evidence": "Complete32 native bytes; Complete destruction first; flags bit0 alone returns actual0108DBA8 slot through shared B3D860. Throw prevents raw-slot return. Actual source in src/native_volume_texture_owner.cpp; reports/native_volume_texture_owner_audit.json. Original ABI: ECX actual owner; stack flags; EAX original address; RET4. Context borrows actual notification/string/retained domains, original renderer profile and initialized volume pool108DBA8. NativeCD7BA0/B3F2D0/CE0CC0 prove shared38h-slot/32-slot/slab744h B3EC60/B3ED40/B3E2B0 algorithms; no surface108DB00 routing. Destructor differs from cube: notification precedes current source30 release; captured COM AddRef/current-table Release then fresh ownerCOM Release/clear. FH3CBEDE8/DF7628 onecleanupstate maps CBEDE0 to distinctB340F0/B33F50; no retry, only current named-base cleanup on throw. Primary verified99 workerpins/16 current sourcefiles/34 fresh live-PE spans1854bytes, strict main build/two CTests/eight seeds. Frozen actualmain-library replay6states/12214literalDWORDs/197frames;24 actual D3D9 calls with currenttable/callsite/module proof,48 real volume objects drained to zero. All11 frozen provider objects equal exact main archive members. All442 native span postimages and complete fixture.text before/after match PE; four dependency jumps enter fullactual source providers, one FH3runtimebridge, one4-byte owned EHregistration relocation tojump-onlyadmissiontrampoline; other213ownedbytes unchanged. Unchanged singleton provider compiled withallocation/free symbol aliases for observation; owned source not recompiled. Descriptive name hypothesis; new source interface, no originalcaller ABI, complete reset, render or gameplay claim."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b340f0",
+    "before": {
+      "address": "00b340f0",
+      "function_name": "FUN_00b340f0"
+    },
+    "after": {
+      "address": "00b340f0",
+      "old_name": "FUN_00b340f0",
+      "name": "BSP_VolumeTextureBase_Unwind",
+      "evidence": "Complete5 native bytes; Distinct complete native cleanup tail to actual named logical-texture base destruction. Actual source in src/native_volume_texture_owner.cpp; reports/native_volume_texture_owner_audit.json. Original ABI: ECX actual owner; JMP B33F50; no additional state or semantic result. Context borrows actual notification/string/retained domains, original renderer profile and initialized volume pool108DBA8. NativeCD7BA0/B3F2D0/CE0CC0 prove shared38h-slot/32-slot/slab744h B3EC60/B3ED40/B3E2B0 algorithms; no surface108DB00 routing. Destructor differs from cube: notification precedes current source30 release; captured COM AddRef/current-table Release then fresh ownerCOM Release/clear. FH3CBEDE8/DF7628 onecleanupstate maps CBEDE0 to distinctB340F0/B33F50; no retry, only current named-base cleanup on throw. Primary verified99 workerpins/16 current sourcefiles/34 fresh live-PE spans1854bytes, strict main build/two CTests/eight seeds. Frozen actualmain-library replay6states/12214literalDWORDs/197frames;24 actual D3D9 calls with currenttable/callsite/module proof,48 real volume objects drained to zero. All11 frozen provider objects equal exact main archive members. All442 native span postimages and complete fixture.text before/after match PE; four dependency jumps enter fullactual source providers, one FH3runtimebridge, one4-byte owned EHregistration relocation tojump-onlyadmissiontrampoline; other213ownedbytes unchanged. Unchanged singleton provider compiled withallocation/free symbol aliases for observation; owned source not recompiled. Descriptive name hypothesis; new source interface, no originalcaller ABI, complete reset, render or gameplay claim."
+    },
+    "status": "applied"
+  }
+]

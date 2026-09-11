@@ -145,3 +145,21 @@ replacement, arbitrary-profile dispatch, volume construction/factory behavior,
 full renderer reset, game execution or visual parity. There are no new permanent
 tests. Static instruction/store evidence and observation frames are not claimed
 as a per-store hardware trace.
+
+## Primary integration
+
+The primary registered the source in CMake and passed the strict Win32 build,
+both existing tests and eight fresh native seeds. It independently verified
+99 worker artifact pins, 16 current source files and 34 fresh live-Ghidra/PE
+spans (1,854 bytes). Frozen actual main library
+`12b239bcbf44379d4523d195917f31e31c2bc49073b0551d28b0c1a589b26e19`
+replayed all six states: 12,214 literal DWORDs and 197 frames matched. All 24
+real COM calls have source/original caller and actual x86-module evidence; all
+48 real volume objects were released to zero. Eleven frozen provider objects
+match exact main archive members. All 442 original span postimages and the
+whole fixture executable text before/after were checked. Declared external
+provider bridges, FH3 registration relocation and singleton allocation/free
+observation aliases retain the boundaries documented above. Three names with
+appended evidence are saved in Ghidra, exports forcibly refreshed and complete
+reconstruction records registered. No permanent test was added. This does not
+establish original-caller ABI, complete renderer reset or gameplay.

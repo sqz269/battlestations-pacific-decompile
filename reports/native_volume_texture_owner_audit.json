@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_volume_texture_owner3",
-  "status": "complete_actual_storage_frozen_library_original_caller_real_D3D9_fixture_and_strict_Win32_checked",
+  "status": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
   "generated_utc": "2026-09-11T07:43:20.026982+00:00",
   "base_commit": "5bf77a32dddb3d9d92f519028df158222850aab2",
   "owned_addresses": [
@@ -6510,5 +6510,2432 @@
       "bytes": 392,
       "sha256": "0eb2221d8d7cdea0658b52f657c227d5d27ce14bb4a365248f2f93fedad370bb"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verification": {
+      "passed": true,
+      "actual_main_library": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\volume-owner-primary-check\\bsp_core.linked.lib",
+        "bytes": 31415798,
+        "sha256": "12b239bcbf44379d4523d195917f31e31c2bc49073b0551d28b0c1a589b26e19"
+      },
+      "matching_DWORDs": 12214,
+      "matching_frames": 197,
+      "runtime_native_postimages": 442,
+      "native_bindings": {
+        "jumps": [
+          {
+            "address": 11747152,
+            "target": 805323376
+          },
+          {
+            "address": 11739728,
+            "target": 805329200
+          },
+          {
+            "address": 12291984,
+            "target": 805338176
+          },
+          {
+            "address": 9258096,
+            "target": 805323344
+          },
+          {
+            "address": 12544835,
+            "target": 805362358
+          }
+        ],
+        "IAT": [
+          {
+            "address": 13509152,
+            "target": 805323776
+          },
+          {
+            "address": 13509144,
+            "target": 805329232
+          },
+          {
+            "address": 13509136,
+            "target": 805329424
+          }
+        ],
+        "owner_operand_relocations": [
+          {
+            "address": 11791219,
+            "original": 13364712,
+            "target": 805323824
+          }
+        ]
+      },
+      "host_imports": {
+        "bindings": [
+          {
+            "name": "EnterCriticalSection",
+            "site": 805367808,
+            "original": 2006729696,
+            "postimage": 805329232
+          },
+          {
+            "name": "LeaveCriticalSection",
+            "site": 805367844,
+            "original": 2006725728,
+            "postimage": 805329424
+          }
+        ]
+      },
+      "whole_runtime_text": {
+        "bytes": 55227,
+        "sha256": "c9900d7c4aae086afec4cb8f4f5949ed3f17dcf235f902394191228581ae5813"
+      },
+      "actual_provider_map": [
+        {
+          "name": "unwind_native_volume_texture_base_00b340f0",
+          "symbol": "?unwind_native_volume_texture_base_00b340f0@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+          "address": 805349808,
+          "object": "bsp_core.linked:native_volume_texture_owner.obj",
+          "map_line": "0001:000099b0       ?unwind_native_volume_texture_base_00b340f0@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 3000a9b0 f   bsp_core.linked:native_volume_texture_owner.obj"
+        },
+        {
+          "name": "destroy_native_volume_texture_00b3eb70",
+          "symbol": "?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z",
+          "address": 805349312,
+          "object": "bsp_core.linked:native_volume_texture_owner.obj",
+          "map_line": "0001:000097c0       ?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z 3000a7c0 f   bsp_core.linked:native_volume_texture_owner.obj"
+        },
+        {
+          "name": "delete_native_volume_texture_00b3f430",
+          "symbol": "?delete_native_volume_texture_00b3f430@bsp@@YAPAXPAXIAAUNativeVolumeTextureOwnerContext@1@@Z",
+          "address": 805349264,
+          "object": "bsp_core.linked:native_volume_texture_owner.obj",
+          "map_line": "0001:00009790       ?delete_native_volume_texture_00b3f430@bsp@@YAPAXPAXIAAUNativeVolumeTextureOwnerContext@1@@Z 3000a790 f   bsp_core.linked:native_volume_texture_owner.obj"
+        },
+        {
+          "name": "destroy_native_logical_texture_named_base_00b33f50",
+          "symbol": "?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+          "address": 805352384,
+          "object": "bsp_core.linked:native_logical_texture_named_base.obj",
+          "map_line": "0001:0000a3c0       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 3000b3c0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "name": "native_logical_texture_name_address_00b33e40",
+          "symbol": "?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z",
+          "address": 805352432,
+          "object": "bsp_core.linked:native_logical_texture_named_base.obj",
+          "map_line": "0001:0000a3f0       ?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z 3000b3f0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "name": "notify_native_renderer_texture_name_removal_00b32250",
+          "symbol": "?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z",
+          "address": 805347152,
+          "object": "bsp_core.linked:native_renderer_texture_name_notification.obj",
+          "map_line": "0001:00008f50       ?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z 30009f50 f   bsp_core.linked:native_renderer_texture_name_notification.obj"
+        },
+        {
+          "name": "delete_native_memory_backing_008d4470",
+          "symbol": "?delete_native_memory_backing_008d4470@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z",
+          "address": 805348464,
+          "object": "bsp_core.linked:native_retained_memory_owners.obj",
+          "map_line": "0001:00009470       ?delete_native_memory_backing_008d4470@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 3000a470 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "name": "delete_native_memory_stream_00bb8f90",
+          "symbol": "?delete_native_memory_stream_00bb8f90@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z",
+          "address": 805348608,
+          "object": "bsp_core.linked:native_retained_memory_owners.obj",
+          "map_line": "0001:00009500       ?delete_native_memory_stream_00bb8f90@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 3000a500 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "name": "return_raw_slot_00b3d860",
+          "symbol": "?return_raw_slot_00b3d860@D3D9SurfacePool@bsp@@QAEXPAX@Z",
+          "address": 805346992,
+          "object": "bsp_core.linked:d3d9_surface_pool.obj",
+          "map_line": "0001:00008eb0       ?return_raw_slot_00b3d860@D3D9SurfacePool@bsp@@QAEXPAX@Z 30009eb0 f   bsp_core.linked:d3d9_surface_pool.obj"
+        },
+        {
+          "name": "initialize_00b3ec60",
+          "symbol": "?initialize_00b3ec60@D3D9SurfacePool@bsp@@QAEXXZ",
+          "address": 805346416,
+          "object": "bsp_core.linked:d3d9_surface_pool.obj",
+          "map_line": "0001:00008c70       ?initialize_00b3ec60@D3D9SurfacePool@bsp@@QAEXXZ 30009c70 f   bsp_core.linked:d3d9_surface_pool.obj"
+        },
+        {
+          "name": "allocate_raw_slot_00b3ed40",
+          "symbol": "?allocate_raw_slot_00b3ed40@D3D9SurfacePool@bsp@@QAEPAXXZ",
+          "address": 805345760,
+          "object": "bsp_core.linked:d3d9_surface_pool.obj",
+          "map_line": "0001:000089e0       ?allocate_raw_slot_00b3ed40@D3D9SurfacePool@bsp@@QAEPAXXZ 300099e0 f   bsp_core.linked:d3d9_surface_pool.obj"
+        },
+        {
+          "name": "destroy_00b3e2b0",
+          "symbol": "?destroy_00b3e2b0@D3D9SurfacePool@bsp@@QAEXXZ",
+          "address": 805346272,
+          "object": "bsp_core.linked:d3d9_surface_pool.obj",
+          "map_line": "0001:00008be0       ?destroy_00b3e2b0@D3D9SurfacePool@bsp@@QAEXXZ 30009be0 f   bsp_core.linked:d3d9_surface_pool.obj"
+        }
+      ],
+      "owned_source_functions": [
+        {
+          "name": "unwind_native_volume_texture_base_00b340f0",
+          "address": 805349808,
+          "end_exclusive": 805349824,
+          "object": "bsp_core.linked:native_volume_texture_owner.obj",
+          "range_includes_trailing_alignment": true,
+          "bytes": 16,
+          "sha256": "c9a15987b1eb024bc82ad608305005436d9e0369c3521737968ad17d485503ad",
+          "instructions": [
+            {
+              "address": 805349808,
+              "hex": "e90b0a0000",
+              "instruction": "jmp 0x3000b3c0"
+            },
+            {
+              "address": 805349813,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349814,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349815,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349816,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349817,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349818,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349819,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349820,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349821,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349822,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349823,
+              "hex": "cc",
+              "instruction": "int3 "
+            }
+          ]
+        },
+        {
+          "name": "destroy_native_volume_texture_00b3eb70",
+          "address": 805349312,
+          "end_exclusive": 805349808,
+          "object": "bsp_core.linked:native_volume_texture_owner.obj",
+          "range_includes_trailing_alignment": true,
+          "bytes": 496,
+          "sha256": "a9f3fcfd5ae43259d4af61c77a151e32d6d05aa6b504f77299cd41c40fab4d16",
+          "instructions": [
+            {
+              "address": 805349312,
+              "hex": "55",
+              "instruction": "push ebp"
+            },
+            {
+              "address": 805349313,
+              "hex": "8bec",
+              "instruction": "mov ebp, esp"
+            },
+            {
+              "address": 805349315,
+              "hex": "6aff",
+              "instruction": "push -1"
+            },
+            {
+              "address": 805349317,
+              "hex": "681de40030",
+              "instruction": "push 0x3000e41d"
+            },
+            {
+              "address": 805349322,
+              "hex": "64a100000000",
+              "instruction": "mov eax, dword ptr fs:[0]"
+            },
+            {
+              "address": 805349328,
+              "hex": "50",
+              "instruction": "push eax"
+            },
+            {
+              "address": 805349329,
+              "hex": "83ec18",
+              "instruction": "sub esp, 0x18"
+            },
+            {
+              "address": 805349332,
+              "hex": "53",
+              "instruction": "push ebx"
+            },
+            {
+              "address": 805349333,
+              "hex": "56",
+              "instruction": "push esi"
+            },
+            {
+              "address": 805349334,
+              "hex": "57",
+              "instruction": "push edi"
+            },
+            {
+              "address": 805349335,
+              "hex": "a140500130",
+              "instruction": "mov eax, dword ptr [0x30015040]"
+            },
+            {
+              "address": 805349340,
+              "hex": "33c5",
+              "instruction": "xor eax, ebp"
+            },
+            {
+              "address": 805349342,
+              "hex": "50",
+              "instruction": "push eax"
+            },
+            {
+              "address": 805349343,
+              "hex": "8d45f4",
+              "instruction": "lea eax, [ebp - 0xc]"
+            },
+            {
+              "address": 805349346,
+              "hex": "64a300000000",
+              "instruction": "mov dword ptr fs:[0], eax"
+            },
+            {
+              "address": 805349352,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349355,
+              "hex": "bab018d600",
+              "instruction": "mov edx, 0xd618b0"
+            },
+            {
+              "address": 805349360,
+              "hex": "8910",
+              "instruction": "mov dword ptr [eax], edx"
+            },
+            {
+              "address": 805349362,
+              "hex": "8b4d0c",
+              "instruction": "mov ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 805349365,
+              "hex": "8b01",
+              "instruction": "mov eax, dword ptr [ecx]"
+            },
+            {
+              "address": 805349367,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349369,
+              "hex": "8b38",
+              "instruction": "mov edi, dword ptr [eax]"
+            },
+            {
+              "address": 805349371,
+              "hex": "897df0",
+              "instruction": "mov dword ptr [ebp - 0x10], edi"
+            },
+            {
+              "address": 805349374,
+              "hex": "8b45f0",
+              "instruction": "mov eax, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": 805349377,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349379,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349382,
+              "hex": "8b01",
+              "instruction": "mov eax, dword ptr [ecx]"
+            },
+            {
+              "address": 805349384,
+              "hex": "8b5d08",
+              "instruction": "mov ebx, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349387,
+              "hex": "8b710c",
+              "instruction": "mov esi, dword ptr [ecx + 0xc]"
+            },
+            {
+              "address": 805349390,
+              "hex": "895ddc",
+              "instruction": "mov dword ptr [ebp - 0x24], ebx"
+            },
+            {
+              "address": 805349393,
+              "hex": "8b4008",
+              "instruction": "mov eax, dword ptr [eax + 8]"
+            },
+            {
+              "address": 805349396,
+              "hex": "8945e0",
+              "instruction": "mov dword ptr [ebp - 0x20], eax"
+            },
+            {
+              "address": 805349399,
+              "hex": "c645e401",
+              "instruction": "mov byte ptr [ebp - 0x1c], 1"
+            },
+            {
+              "address": 805349403,
+              "hex": "53",
+              "instruction": "push ebx"
+            },
+            {
+              "address": 805349404,
+              "hex": "c745fc00000000",
+              "instruction": "mov dword ptr [ebp - 4], 0"
+            },
+            {
+              "address": 805349411,
+              "hex": "e8c80b0000",
+              "instruction": "call 0x3000b3f0"
+            },
+            {
+              "address": 805349416,
+              "hex": "8d4e6c",
+              "instruction": "lea ecx, [esi + 0x6c]"
+            },
+            {
+              "address": 805349419,
+              "hex": "83c404",
+              "instruction": "add esp, 4"
+            },
+            {
+              "address": 805349422,
+              "hex": "8bd0",
+              "instruction": "mov edx, eax"
+            },
+            {
+              "address": 805349424,
+              "hex": "894d08",
+              "instruction": "mov dword ptr [ebp + 8], ecx"
+            },
+            {
+              "address": 805349427,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349430,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349432,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349435,
+              "hex": "8b750c",
+              "instruction": "mov esi, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 805349438,
+              "hex": "ff36",
+              "instruction": "push dword ptr [esi]"
+            },
+            {
+              "address": 805349440,
+              "hex": "52",
+              "instruction": "push edx"
+            },
+            {
+              "address": 805349441,
+              "hex": "57",
+              "instruction": "push edi"
+            },
+            {
+              "address": 805349442,
+              "hex": "e809f7ffff",
+              "instruction": "call 0x30009f50"
+            },
+            {
+              "address": 805349447,
+              "hex": "8d7b30",
+              "instruction": "lea edi, [ebx + 0x30]"
+            },
+            {
+              "address": 805349450,
+              "hex": "83c40c",
+              "instruction": "add esp, 0xc"
+            },
+            {
+              "address": 805349453,
+              "hex": "897d08",
+              "instruction": "mov dword ptr [ebp + 8], edi"
+            },
+            {
+              "address": 805349456,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349459,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349461,
+              "hex": "8945f0",
+              "instruction": "mov dword ptr [ebp - 0x10], eax"
+            },
+            {
+              "address": 805349464,
+              "hex": "8b55f0",
+              "instruction": "mov edx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": 805349467,
+              "hex": "895508",
+              "instruction": "mov dword ptr [ebp + 8], edx"
+            },
+            {
+              "address": 805349470,
+              "hex": "85d2",
+              "instruction": "test edx, edx"
+            },
+            {
+              "address": 805349472,
+              "hex": "0f848d000000",
+              "instruction": "je 0x3000a8f3"
+            },
+            {
+              "address": 805349478,
+              "hex": "8d4a04",
+              "instruction": "lea ecx, [edx + 4]"
+            },
+            {
+              "address": 805349481,
+              "hex": "83c8ff",
+              "instruction": "or eax, 0xffffffff"
+            },
+            {
+              "address": 805349484,
+              "hex": "f00fc101",
+              "instruction": "lock xadd dword ptr [ecx], eax"
+            },
+            {
+              "address": 805349488,
+              "hex": "7574",
+              "instruction": "jne 0x3000a8e6"
+            },
+            {
+              "address": 805349490,
+              "hex": "8b4e04",
+              "instruction": "mov ecx, dword ptr [esi + 4]"
+            },
+            {
+              "address": 805349493,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349496,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349498,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349501,
+              "hex": "33c0",
+              "instruction": "xor eax, eax"
+            },
+            {
+              "address": 805349503,
+              "hex": "817decd85ad100",
+              "instruction": "cmp dword ptr [ebp - 0x14], 0xd15ad8"
+            },
+            {
+              "address": 805349510,
+              "hex": "0f95c0",
+              "instruction": "setne al"
+            },
+            {
+              "address": 805349513,
+              "hex": "8d048508000000",
+              "instruction": "lea eax, [eax*4 + 8]"
+            },
+            {
+              "address": 805349520,
+              "hex": "8b0408",
+              "instruction": "mov eax, dword ptr [eax + ecx]"
+            },
+            {
+              "address": 805349523,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349526,
+              "hex": "8b45ec",
+              "instruction": "mov eax, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": 805349529,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349531,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349534,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349537,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349539,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349542,
+              "hex": "33c0",
+              "instruction": "xor eax, eax"
+            },
+            {
+              "address": 805349544,
+              "hex": "817decd85ad100",
+              "instruction": "cmp dword ptr [ebp - 0x14], 0xd15ad8"
+            },
+            {
+              "address": 805349551,
+              "hex": "0f95c0",
+              "instruction": "setne al"
+            },
+            {
+              "address": 805349554,
+              "hex": "8d048508000000",
+              "instruction": "lea eax, [eax*4 + 8]"
+            },
+            {
+              "address": 805349561,
+              "hex": "8b0401",
+              "instruction": "mov eax, dword ptr [ecx + eax]"
+            },
+            {
+              "address": 805349564,
+              "hex": "83c004",
+              "instruction": "add eax, 4"
+            },
+            {
+              "address": 805349567,
+              "hex": "894508",
+              "instruction": "mov dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 805349570,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349573,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349575,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349578,
+              "hex": "817dec70448d00",
+              "instruction": "cmp dword ptr [ebp - 0x14], 0x8d4470"
+            },
+            {
+              "address": 805349585,
+              "hex": "51",
+              "instruction": "push ecx"
+            },
+            {
+              "address": 805349586,
+              "hex": "6a01",
+              "instruction": "push 1"
+            },
+            {
+              "address": 805349588,
+              "hex": "52",
+              "instruction": "push edx"
+            },
+            {
+              "address": 805349589,
+              "hex": "7507",
+              "instruction": "jne 0x3000a8de"
+            },
+            {
+              "address": 805349591,
+              "hex": "e894fbffff",
+              "instruction": "call 0x3000a470"
+            },
+            {
+              "address": 805349596,
+              "hex": "eb05",
+              "instruction": "jmp 0x3000a8e3"
+            },
+            {
+              "address": 805349598,
+              "hex": "e81dfcffff",
+              "instruction": "call 0x3000a500"
+            },
+            {
+              "address": 805349603,
+              "hex": "83c40c",
+              "instruction": "add esp, 0xc"
+            },
+            {
+              "address": 805349606,
+              "hex": "897d08",
+              "instruction": "mov dword ptr [ebp + 8], edi"
+            },
+            {
+              "address": 805349609,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349612,
+              "hex": "ba00000000",
+              "instruction": "mov edx, 0"
+            },
+            {
+              "address": 805349617,
+              "hex": "8910",
+              "instruction": "mov dword ptr [eax], edx"
+            },
+            {
+              "address": 805349619,
+              "hex": "8d7b10",
+              "instruction": "lea edi, [ebx + 0x10]"
+            },
+            {
+              "address": 805349622,
+              "hex": "897d08",
+              "instruction": "mov dword ptr [ebp + 8], edi"
+            },
+            {
+              "address": 805349625,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349628,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349630,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349633,
+              "hex": "8b75ec",
+              "instruction": "mov esi, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": 805349636,
+              "hex": "897508",
+              "instruction": "mov dword ptr [ebp + 8], esi"
+            },
+            {
+              "address": 805349639,
+              "hex": "85f6",
+              "instruction": "test esi, esi"
+            },
+            {
+              "address": 805349641,
+              "hex": "7435",
+              "instruction": "je 0x3000a940"
+            },
+            {
+              "address": 805349643,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349646,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349648,
+              "hex": "8945f0",
+              "instruction": "mov dword ptr [ebp - 0x10], eax"
+            },
+            {
+              "address": 805349651,
+              "hex": "8345f004",
+              "instruction": "add dword ptr [ebp - 0x10], 4"
+            },
+            {
+              "address": 805349655,
+              "hex": "8b45f0",
+              "instruction": "mov eax, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": 805349658,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349660,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349663,
+              "hex": "56",
+              "instruction": "push esi"
+            },
+            {
+              "address": 805349664,
+              "hex": "ff55e8",
+              "instruction": "call dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": 805349667,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349670,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349672,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349675,
+              "hex": "8b45e8",
+              "instruction": "mov eax, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": 805349678,
+              "hex": "83c008",
+              "instruction": "add eax, 8"
+            },
+            {
+              "address": 805349681,
+              "hex": "894508",
+              "instruction": "mov dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 805349684,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349687,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349689,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349692,
+              "hex": "56",
+              "instruction": "push esi"
+            },
+            {
+              "address": 805349693,
+              "hex": "ff55e8",
+              "instruction": "call dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": 805349696,
+              "hex": "897d08",
+              "instruction": "mov dword ptr [ebp + 8], edi"
+            },
+            {
+              "address": 805349699,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349702,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349704,
+              "hex": "8945e8",
+              "instruction": "mov dword ptr [ebp - 0x18], eax"
+            },
+            {
+              "address": 805349707,
+              "hex": "8b4de8",
+              "instruction": "mov ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": 805349710,
+              "hex": "894d08",
+              "instruction": "mov dword ptr [ebp + 8], ecx"
+            },
+            {
+              "address": 805349713,
+              "hex": "85c9",
+              "instruction": "test ecx, ecx"
+            },
+            {
+              "address": 805349715,
+              "hex": "742a",
+              "instruction": "je 0x3000a97f"
+            },
+            {
+              "address": 805349717,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349720,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349722,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349725,
+              "hex": "8b45ec",
+              "instruction": "mov eax, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": 805349728,
+              "hex": "83c008",
+              "instruction": "add eax, 8"
+            },
+            {
+              "address": 805349731,
+              "hex": "894508",
+              "instruction": "mov dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 805349734,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349737,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349739,
+              "hex": "8945ec",
+              "instruction": "mov dword ptr [ebp - 0x14], eax"
+            },
+            {
+              "address": 805349742,
+              "hex": "51",
+              "instruction": "push ecx"
+            },
+            {
+              "address": 805349743,
+              "hex": "ff55ec",
+              "instruction": "call dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": 805349746,
+              "hex": "897d08",
+              "instruction": "mov dword ptr [ebp + 8], edi"
+            },
+            {
+              "address": 805349749,
+              "hex": "8b4508",
+              "instruction": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349752,
+              "hex": "ba00000000",
+              "instruction": "mov edx, 0"
+            },
+            {
+              "address": 805349757,
+              "hex": "8910",
+              "instruction": "mov dword ptr [eax], edx"
+            },
+            {
+              "address": 805349759,
+              "hex": "8b450c",
+              "instruction": "mov eax, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 805349762,
+              "hex": "c645e400",
+              "instruction": "mov byte ptr [ebp - 0x1c], 0"
+            },
+            {
+              "address": 805349766,
+              "hex": "8b00",
+              "instruction": "mov eax, dword ptr [eax]"
+            },
+            {
+              "address": 805349768,
+              "hex": "ff7008",
+              "instruction": "push dword ptr [eax + 8]"
+            },
+            {
+              "address": 805349771,
+              "hex": "53",
+              "instruction": "push ebx"
+            },
+            {
+              "address": 805349772,
+              "hex": "e82f0a0000",
+              "instruction": "call 0x3000b3c0"
+            },
+            {
+              "address": 805349777,
+              "hex": "83c408",
+              "instruction": "add esp, 8"
+            },
+            {
+              "address": 805349780,
+              "hex": "8b4df4",
+              "instruction": "mov ecx, dword ptr [ebp - 0xc]"
+            },
+            {
+              "address": 805349783,
+              "hex": "64890d00000000",
+              "instruction": "mov dword ptr fs:[0], ecx"
+            },
+            {
+              "address": 805349790,
+              "hex": "59",
+              "instruction": "pop ecx"
+            },
+            {
+              "address": 805349791,
+              "hex": "5f",
+              "instruction": "pop edi"
+            },
+            {
+              "address": 805349792,
+              "hex": "5e",
+              "instruction": "pop esi"
+            },
+            {
+              "address": 805349793,
+              "hex": "5b",
+              "instruction": "pop ebx"
+            },
+            {
+              "address": 805349794,
+              "hex": "8be5",
+              "instruction": "mov esp, ebp"
+            },
+            {
+              "address": 805349796,
+              "hex": "5d",
+              "instruction": "pop ebp"
+            },
+            {
+              "address": 805349797,
+              "hex": "c3",
+              "instruction": "ret "
+            },
+            {
+              "address": 805349798,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349799,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349800,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349801,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349802,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349803,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349804,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349805,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349806,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349807,
+              "hex": "cc",
+              "instruction": "int3 "
+            }
+          ]
+        },
+        {
+          "name": "delete_native_volume_texture_00b3f430",
+          "address": 805349264,
+          "end_exclusive": 805349312,
+          "object": "bsp_core.linked:native_volume_texture_owner.obj",
+          "range_includes_trailing_alignment": true,
+          "bytes": 48,
+          "sha256": "d1b54643bc5c21c4bcf2c6763273471decb964e96ae28aab630b483349a0c6b6",
+          "instructions": [
+            {
+              "address": 805349264,
+              "hex": "55",
+              "instruction": "push ebp"
+            },
+            {
+              "address": 805349265,
+              "hex": "8bec",
+              "instruction": "mov ebp, esp"
+            },
+            {
+              "address": 805349267,
+              "hex": "56",
+              "instruction": "push esi"
+            },
+            {
+              "address": 805349268,
+              "hex": "8b7508",
+              "instruction": "mov esi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 805349271,
+              "hex": "57",
+              "instruction": "push edi"
+            },
+            {
+              "address": 805349272,
+              "hex": "8b7d10",
+              "instruction": "mov edi, dword ptr [ebp + 0x10]"
+            },
+            {
+              "address": 805349275,
+              "hex": "57",
+              "instruction": "push edi"
+            },
+            {
+              "address": 805349276,
+              "hex": "56",
+              "instruction": "push esi"
+            },
+            {
+              "address": 805349277,
+              "hex": "e81e000000",
+              "instruction": "call 0x3000a7c0"
+            },
+            {
+              "address": 805349282,
+              "hex": "83c408",
+              "instruction": "add esp, 8"
+            },
+            {
+              "address": 805349285,
+              "hex": "f6450c01",
+              "instruction": "test byte ptr [ebp + 0xc], 1"
+            },
+            {
+              "address": 805349289,
+              "hex": "7409",
+              "instruction": "je 0x3000a7b4"
+            },
+            {
+              "address": 805349291,
+              "hex": "8b4f08",
+              "instruction": "mov ecx, dword ptr [edi + 8]"
+            },
+            {
+              "address": 805349294,
+              "hex": "56",
+              "instruction": "push esi"
+            },
+            {
+              "address": 805349295,
+              "hex": "e8fcf6ffff",
+              "instruction": "call 0x30009eb0"
+            },
+            {
+              "address": 805349300,
+              "hex": "5f",
+              "instruction": "pop edi"
+            },
+            {
+              "address": 805349301,
+              "hex": "8bc6",
+              "instruction": "mov eax, esi"
+            },
+            {
+              "address": 805349303,
+              "hex": "5e",
+              "instruction": "pop esi"
+            },
+            {
+              "address": 805349304,
+              "hex": "5d",
+              "instruction": "pop ebp"
+            },
+            {
+              "address": 805349305,
+              "hex": "c3",
+              "instruction": "ret "
+            },
+            {
+              "address": 805349306,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349307,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349308,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349309,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349310,
+              "hex": "cc",
+              "instruction": "int3 "
+            },
+            {
+              "address": 805349311,
+              "hex": "cc",
+              "instruction": "int3 "
+            }
+          ]
+        }
+      ],
+      "actual_module_proof": [
+        {
+          "method": "CreateVolumeTexture",
+          "reported_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "actual_x86_file": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "target": 1615190736,
+          "loaded_base": 1614282752,
+          "RVA": 907984,
+          "machine": 332,
+          "timestamp": 1987618885,
+          "size": 1548288,
+          "checksum": 1572350,
+          "verified_runtime_first16": "8bff558bec83e4f883ec0c53568b7508"
+        },
+        {
+          "method": "AddRef",
+          "reported_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "actual_x86_file": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "target": 1614860960,
+          "loaded_base": 1614282752,
+          "RVA": 578208,
+          "machine": 332,
+          "timestamp": 1987618885,
+          "size": 1548288,
+          "checksum": 1572350,
+          "verified_runtime_first16": "836c240460e926490600cccccccccccc"
+        },
+        {
+          "method": "Release",
+          "reported_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "actual_x86_file": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "target": 1614861008,
+          "loaded_base": 1614282752,
+          "RVA": 578256,
+          "machine": 332,
+          "timestamp": 1987618885,
+          "size": 1548288,
+          "checksum": 1572350,
+          "verified_runtime_first16": "836c240460e9e6550600cccccccccccc"
+        }
+      ],
+      "actual_COM_calls": [
+        {
+          "mode": "native",
+          "scenario": 0,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 11791333,
+          "call_instruction": {
+            "address": "00b3ebe3",
+            "hex": "ffd2",
+            "instruction": "call edx"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "native",
+          "scenario": 0,
+          "method": "Release",
+          "object_role": 2,
+          "observed_table": 2,
+          "return_site": 11791341,
+          "call_instruction": {
+            "address": "00b3ebeb",
+            "hex": "ffd1",
+            "instruction": "call ecx"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "native",
+          "scenario": 0,
+          "method": "Release",
+          "object_role": 4,
+          "observed_table": 1,
+          "return_site": 11791356,
+          "call_instruction": {
+            "address": "00b3ebfa",
+            "hex": "ffd0",
+            "instruction": "call eax"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 8
+        },
+        {
+          "mode": "host",
+          "scenario": 0,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 805349667,
+          "call_instruction": {
+            "address": 805349664,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "host",
+          "scenario": 0,
+          "method": "Release",
+          "object_role": 2,
+          "observed_table": 2,
+          "return_site": 805349696,
+          "call_instruction": {
+            "address": 805349693,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "host",
+          "scenario": 0,
+          "method": "Release",
+          "object_role": 4,
+          "observed_table": 1,
+          "return_site": 805349746,
+          "call_instruction": {
+            "address": 805349743,
+            "hex": "ff55ec",
+            "instruction": "call dword ptr [ebp - 0x14]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 8
+        },
+        {
+          "mode": "native",
+          "scenario": 2,
+          "method": "AddRef",
+          "object_role": 1,
+          "observed_table": 1,
+          "return_site": 11791333,
+          "call_instruction": {
+            "address": "00b3ebe3",
+            "hex": "ffd2",
+            "instruction": "call edx"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "native",
+          "scenario": 2,
+          "method": "Release",
+          "object_role": 1,
+          "observed_table": 1,
+          "return_site": 11791341,
+          "call_instruction": {
+            "address": "00b3ebeb",
+            "hex": "ffd1",
+            "instruction": "call ecx"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "native",
+          "scenario": 2,
+          "method": "Release",
+          "object_role": 1,
+          "observed_table": 1,
+          "return_site": 11791356,
+          "call_instruction": {
+            "address": "00b3ebfa",
+            "hex": "ffd0",
+            "instruction": "call eax"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 8
+        },
+        {
+          "mode": "host",
+          "scenario": 2,
+          "method": "AddRef",
+          "object_role": 1,
+          "observed_table": 1,
+          "return_site": 805349667,
+          "call_instruction": {
+            "address": 805349664,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "host",
+          "scenario": 2,
+          "method": "Release",
+          "object_role": 1,
+          "observed_table": 1,
+          "return_site": 805349696,
+          "call_instruction": {
+            "address": 805349693,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "host",
+          "scenario": 2,
+          "method": "Release",
+          "object_role": 1,
+          "observed_table": 1,
+          "return_site": 805349746,
+          "call_instruction": {
+            "address": 805349743,
+            "hex": "ff55ec",
+            "instruction": "call dword ptr [ebp - 0x14]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 8
+        },
+        {
+          "mode": "native",
+          "scenario": 3,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 11791333,
+          "call_instruction": {
+            "address": "00b3ebe3",
+            "hex": "ffd2",
+            "instruction": "call edx"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "host",
+          "scenario": 3,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 805349667,
+          "call_instruction": {
+            "address": 805349664,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "native",
+          "scenario": 4,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 11791333,
+          "call_instruction": {
+            "address": "00b3ebe3",
+            "hex": "ffd2",
+            "instruction": "call edx"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "native",
+          "scenario": 4,
+          "method": "Release",
+          "object_role": 2,
+          "observed_table": 2,
+          "return_site": 11791341,
+          "call_instruction": {
+            "address": "00b3ebeb",
+            "hex": "ffd1",
+            "instruction": "call ecx"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "host",
+          "scenario": 4,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 805349667,
+          "call_instruction": {
+            "address": 805349664,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "host",
+          "scenario": 4,
+          "method": "Release",
+          "object_role": 2,
+          "observed_table": 2,
+          "return_site": 805349696,
+          "call_instruction": {
+            "address": 805349693,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "native",
+          "scenario": 5,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 11791333,
+          "call_instruction": {
+            "address": "00b3ebe3",
+            "hex": "ffd2",
+            "instruction": "call edx"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "native",
+          "scenario": 5,
+          "method": "Release",
+          "object_role": 2,
+          "observed_table": 2,
+          "return_site": 11791341,
+          "call_instruction": {
+            "address": "00b3ebeb",
+            "hex": "ffd1",
+            "instruction": "call ecx"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "native",
+          "scenario": 5,
+          "method": "Release",
+          "object_role": 4,
+          "observed_table": 1,
+          "return_site": 11791356,
+          "call_instruction": {
+            "address": "00b3ebfa",
+            "hex": "ffd0",
+            "instruction": "call eax"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 8
+        },
+        {
+          "mode": "host",
+          "scenario": 5,
+          "method": "AddRef",
+          "object_role": 2,
+          "observed_table": 1,
+          "return_site": 805349667,
+          "call_instruction": {
+            "address": 805349664,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614860960,
+          "actual_COM_result": 10
+        },
+        {
+          "mode": "host",
+          "scenario": 5,
+          "method": "Release",
+          "object_role": 2,
+          "observed_table": 2,
+          "return_site": 805349696,
+          "call_instruction": {
+            "address": 805349693,
+            "hex": "ff55e8",
+            "instruction": "call dword ptr [ebp - 0x18]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 9
+        },
+        {
+          "mode": "host",
+          "scenario": 5,
+          "method": "Release",
+          "object_role": 4,
+          "observed_table": 1,
+          "return_site": 805349746,
+          "call_instruction": {
+            "address": 805349743,
+            "hex": "ff55ec",
+            "instruction": "call dword ptr [ebp - 0x14]"
+          },
+          "actual_D3D9_target": 1614861008,
+          "actual_COM_result": 8
+        }
+      ],
+      "actual_COM_table_count": 48,
+      "trace": {
+        "states": [
+          {
+            "scenario": 0,
+            "words": 2480,
+            "events": 40
+          },
+          {
+            "scenario": 1,
+            "words": 1364,
+            "events": 22
+          },
+          {
+            "scenario": 2,
+            "words": 1860,
+            "events": 30
+          },
+          {
+            "scenario": 3,
+            "words": 1984,
+            "events": 32
+          },
+          {
+            "scenario": 4,
+            "words": 2170,
+            "events": 35
+          },
+          {
+            "scenario": 5,
+            "words": 2356,
+            "events": 38
+          }
+        ],
+        "matched_words": 12214,
+        "events": 197,
+        "frame_words": 62,
+        "real_COM_calls": 24,
+        "explicit_mutations": 34,
+        "created_volumes": 48,
+        "cleaned_volumes": 48
+      },
+      "trace_sha256": "b50ca9c6815d82c528de5f1df5c31dc90626ca009e8ae7b6ecc07e456b77efb1",
+      "limitations": [
+        "New interface is not original caller ABI",
+        "Four external dependency jumps enter actual source providers",
+        "Four-byte FH3 registration operand uses an admission trampoline",
+        "Unchanged singleton source compiled with allocation/free symbol aliases for observation",
+        "No full reset, drawing or gameplay proof"
+      ],
+      "primary_preparation": {
+        "worker": "J:\\PROG\\battlestations-pacific-decompile-native-volume-texture-owner-20260911",
+        "manifest_sha256": "2125b790339536081502fecef6d1e57911f05da9fac274f4a7aea3562b1fafbb",
+        "verified_worker_artifact_pins": 99,
+        "current_source_pins": [
+          {
+            "path": "include/bsp/native_volume_texture_owner.hpp",
+            "bytes": 2610,
+            "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+          },
+          {
+            "path": "src/native_volume_texture_owner.cpp",
+            "bytes": 5380,
+            "sha256": "f17e5c2634b9ef4d53cedcd1f0868bf1befe71ab79aca01c5d8b1496a7f2e29f"
+          },
+          {
+            "path": "src/native_logical_texture_named_base.cpp",
+            "bytes": 4363,
+            "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+          },
+          {
+            "path": "src/native_retained_memory_owners.cpp",
+            "bytes": 6850,
+            "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+          },
+          {
+            "path": "src/native_renderer_texture_name_notification.cpp",
+            "bytes": 5111,
+            "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+          },
+          {
+            "path": "src/d3d9_surface_pool.cpp",
+            "bytes": 11194,
+            "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          {
+            "path": "src/allocator_list.cpp",
+            "bytes": 2682,
+            "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+          },
+          {
+            "path": "src/native_renderer_synchronization_actual.cpp",
+            "bytes": 3242,
+            "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+          },
+          {
+            "path": "src/native_render_resource_container_removal.cpp",
+            "bytes": 7488,
+            "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+          },
+          {
+            "path": "src/native_render_resource_record.cpp",
+            "bytes": 6429,
+            "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+          },
+          {
+            "path": "src/native_string.cpp",
+            "bytes": 6003,
+            "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+          },
+          {
+            "path": "src/storage_pool.cpp",
+            "bytes": 6169,
+            "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+          },
+          {
+            "path": "include/bsp/d3d9_surface_pool.hpp",
+            "bytes": 3168,
+            "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+          },
+          {
+            "path": "include/bsp/native_retained_memory_owners.hpp",
+            "bytes": 3829,
+            "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+          },
+          {
+            "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+            "bytes": 1656,
+            "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+          }
+        ],
+        "fresh_live_PE_spans": [
+          {
+            "address": "00b3eb70",
+            "length": 180,
+            "sha256": "d803fe1bd7dab559dd109905a70885730fae685399c5fef2b9befb265dd3ce96",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3f430",
+            "length": 32,
+            "sha256": "96e85ab766eb77a1b235bb9a8de5058506e4fe7b2983ca33c5452a338c08c6eb",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b340f0",
+            "length": 5,
+            "sha256": "7aea68a929f7e0d1ba3bce26ceca8d756c94765527a11499892025d7afd6d42e",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00cbede0",
+            "length": 8,
+            "sha256": "92f913ea0be2a61143a877e579b16bdbe4a84cdb14dd28b49909c787192a9e23",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00cbede8",
+            "length": 10,
+            "sha256": "1ccc4ffc37d95b16b0a407b6ab19a325134b3032afa2dfb5d3e7691f2b5eccd9",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00df7620",
+            "length": 44,
+            "sha256": "2ad561835988f9a2964fe36d5eac4123a7d5d8b5aabdda94e183fff9eb25e226",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "length": 5,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b33f50",
+            "length": 103,
+            "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b33e40",
+            "length": 4,
+            "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b32250",
+            "length": 241,
+            "sha256": "3cbfd91a0d878d2251bb3a4a89bd5d05e5017596e6a1b118b740fafdf5e96905",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00bd30e0",
+            "length": 14,
+            "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "008d4470",
+            "length": 66,
+            "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00bb8f90",
+            "length": 30,
+            "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3d860",
+            "length": 105,
+            "sha256": "8d80f84dc90c96d606e64f3db1cbe685bcad7063cc5026a9f6af93037f5db23c",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3ec60",
+            "length": 211,
+            "sha256": "2a969324269efba1bd41402b96dde3f7b65547861e1168d277f6a063313fbeb4",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3ed40",
+            "length": 316,
+            "sha256": "38ae02876198dabeeeede2eb945c1ce47d8ddb5dc642a4e313065cfdc18669e4",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3e2b0",
+            "length": 138,
+            "sha256": "1776923567ac203aee55f16bc225217109a88e5e820c496298d114318c6b7908",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00cd7ba0",
+            "length": 22,
+            "sha256": "17f53eaf0aa65c7e954af4080673f4cb7742bfbf169550b1c093d316c0d42cfc",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3f2d0",
+            "length": 10,
+            "sha256": "805a4ecb22eafcfadb9b0228c1b6cf07a59eac39e26f4bab58b719c7a7b6372d",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00ce0cc0",
+            "length": 10,
+            "sha256": "521be35064a5dadc29c7325b0133b7b34f39ae00178a38d9fbb2c848438ac7d8",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b3dcf0",
+            "length": 12,
+            "sha256": "7ffd6c089a190e2045bab56035ae1546d73633d61097e5a583277739db21c034",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d6193c",
+            "length": 4,
+            "sha256": "eefb0c0af6b0ca1d405a78df177c8e91d90e9a732a24a8e1b5caffbc90eb41df",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d618b0",
+            "length": 64,
+            "sha256": "9a163e6335d65102be8f16a9da4ca319c7046d749ed63a21aec28a3d23d26116",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d5f0a8",
+            "length": 112,
+            "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d15ad8",
+            "length": 8,
+            "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d642c0",
+            "length": 8,
+            "sha256": "2755848844406d8a6a0e5301377e32c2f3d1aa1b7a87abcb9856164311e22ec8",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00ce2220",
+            "length": 4,
+            "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00ce2218",
+            "length": 4,
+            "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00ce2210",
+            "length": 4,
+            "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00f8d394",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "0108d6dc",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "0109db98",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00e188b4",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "0108dba8",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "fresh_live_PE_match": true
+          }
+        ],
+        "frozen_main_library": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\volume-owner-primary-check\\bsp_core.linked.lib",
+          "bytes": 31415798,
+          "sha256": "12b239bcbf44379d4523d195917f31e31c2bc49073b0551d28b0c1a589b26e19"
+        }
+      },
+      "fresh_native_seeds": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true,
+          "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+          "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true,
+          "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+          "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+          "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true,
+          "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+          "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+          "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true,
+          "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+          "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true,
+          "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+          "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true,
+          "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+          "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+        }
+      ],
+      "exact_main_archive_members": [
+        {
+          "path": "build/volume-owner-primary-check/allocator_list.obj",
+          "bytes": 109234,
+          "sha256": "c46232f3a62696af93c760eba0d80e31a2f2f78549f57b92ae44ec329974e992"
+        },
+        {
+          "path": "build/volume-owner-primary-check/d3d9_surface_pool.obj",
+          "bytes": 18612,
+          "sha256": "5c790e56d1202c10db5c4388dd5147ee610a5238f358728b4d7ca5652ace827a"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_logical_texture_named_base.obj",
+          "bytes": 6766,
+          "sha256": "1f53b85bc347d2ce94f6a39336a3439deb58bd7f93b9ec785a4ef3322b8da55b"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_renderer_synchronization_actual.obj",
+          "bytes": 2409,
+          "sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_renderer_texture_name_notification.obj",
+          "bytes": 5869,
+          "sha256": "dc7a42ee82e506b1355911a38d6a0d91e3910da442987f585cdbdd32b371711c"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_render_resource_container_removal.obj",
+          "bytes": 11017,
+          "sha256": "1ecffb04bead7b7cbdfd345ed9d301659281af321383367eef3b285623b14df6"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_render_resource_record.obj",
+          "bytes": 8549,
+          "sha256": "66879ef24eda5390adefc873479b622051c5d48882504eac367cf1cc6c1dd6bc"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_retained_memory_owners.obj",
+          "bytes": 9573,
+          "sha256": "3d926946b2a7c2973b8cac56e35494c21672faa4a1893989eebfc664b0846b62"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_string.obj",
+          "bytes": 14529,
+          "sha256": "713fea602ae89117c21d092f67f7e7fd113ddef4c2f32746925f6bbba138b286"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_volume_texture_owner.obj",
+          "bytes": 6640,
+          "sha256": "82893f9bc83563ab4428756297629a8febcd8e3b76827fb42e2c4ee441d39d78"
+        },
+        {
+          "path": "build/volume-owner-primary-check/storage_pool.obj",
+          "bytes": 53639,
+          "sha256": "ca3eca33a3189a7db71b31ffc8c470ae7630b6dd941abc4871d26e61e7091fff"
+        }
+      ],
+      "primary_artifact_pins": [
+        {
+          "path": "build/volume-owner-primary-check/actual_singleton_lifetime.obj",
+          "bytes": 32949,
+          "sha256": "4603d4c86e3d1e996e91ff2b7e219a7544265a2189ad77ddc4aaf4fc89193822"
+        },
+        {
+          "path": "build/volume-owner-primary-check/allocator_list.obj",
+          "bytes": 109234,
+          "sha256": "c46232f3a62696af93c760eba0d80e31a2f2f78549f57b92ae44ec329974e992"
+        },
+        {
+          "path": "build/volume-owner-primary-check/bsp_core.linked.lib",
+          "bytes": 31415798,
+          "sha256": "12b239bcbf44379d4523d195917f31e31c2bc49073b0551d28b0c1a589b26e19"
+        },
+        {
+          "path": "build/volume-owner-primary-check/build_volume_owner.cmd",
+          "bytes": 1200,
+          "sha256": "d9211aaf6af3b60e4e4a500582bb421a2cd92f6be814116bb1753adaa9731356"
+        },
+        {
+          "path": "build/volume-owner-primary-check/d3d9_surface_pool.obj",
+          "bytes": 18612,
+          "sha256": "5c790e56d1202c10db5c4388dd5147ee610a5238f358728b4d7ca5652ace827a"
+        },
+        {
+          "path": "build/volume-owner-primary-check/fixture.obj",
+          "bytes": 324046,
+          "sha256": "13fcbf85b83d6b24e8362dbeec94898393d08428b6f5b5548667dde1113c6e58"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_logical_texture_named_base.obj",
+          "bytes": 6766,
+          "sha256": "1f53b85bc347d2ce94f6a39336a3439deb58bd7f93b9ec785a4ef3322b8da55b"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_renderer_synchronization_actual.obj",
+          "bytes": 2409,
+          "sha256": "df2f8d2001e3c7f7000980988780853ce25bbdf7f1314166a123d94a760a61bf"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_renderer_texture_name_notification.obj",
+          "bytes": 5869,
+          "sha256": "dc7a42ee82e506b1355911a38d6a0d91e3910da442987f585cdbdd32b371711c"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_render_resource_container_removal.obj",
+          "bytes": 11017,
+          "sha256": "1ecffb04bead7b7cbdfd345ed9d301659281af321383367eef3b285623b14df6"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_render_resource_record.obj",
+          "bytes": 8549,
+          "sha256": "66879ef24eda5390adefc873479b622051c5d48882504eac367cf1cc6c1dd6bc"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_retained_memory_owners.obj",
+          "bytes": 9573,
+          "sha256": "3d926946b2a7c2973b8cac56e35494c21672faa4a1893989eebfc664b0846b62"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_string.obj",
+          "bytes": 14529,
+          "sha256": "713fea602ae89117c21d092f67f7e7fd113ddef4c2f32746925f6bbba138b286"
+        },
+        {
+          "path": "build/volume-owner-primary-check/native_volume_texture_owner.obj",
+          "bytes": 6640,
+          "sha256": "82893f9bc83563ab4428756297629a8febcd8e3b76827fb42e2c4ee441d39d78"
+        },
+        {
+          "path": "build/volume-owner-primary-check/primary_verified.json",
+          "bytes": 48822,
+          "sha256": "291be475c7dd21528522dfb4bccfee6eb713124eeb7b5ea34c417246551802b2"
+        },
+        {
+          "path": "build/volume-owner-primary-check/storage_pool.obj",
+          "bytes": 53639,
+          "sha256": "ca3eca33a3189a7db71b31ffc8c470ae7630b6dd941abc4871d26e61e7091fff"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_bindings.json",
+          "bytes": 430,
+          "sha256": "970de9031421f813d61571041638963b420ac4992d80275d0fc2dc2efa6480c7"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_check.exe",
+          "bytes": 80384,
+          "sha256": "071db2f97322353e4a06e1f7f3b7cb3dce6c4716c2daa8bc6b6f84acb8e3c55a"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_check.map",
+          "bytes": 151311,
+          "sha256": "3dc5287ea6806818cc419c10f2c34b7dd09bb738b56c934682f2741db9fee7bb"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_COM_calls.txt",
+          "bytes": 1044,
+          "sha256": "3504b776c560b9ad2a84fce06ff691ff6a5982967714c5fdb706656c3eb4cfdf"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_COM_modules.txt",
+          "bytes": 9494,
+          "sha256": "5b74c98a62946f5755fc96f5b308f84c592fa28879afc04d3138285a0494e12c"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_COM_tables.txt",
+          "bytes": 12720,
+          "sha256": "c82253b692f7351f882e3e9bea61b703f4957abe8c181f432fac8fed2d4c1a27"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_host_imports.json",
+          "bytes": 202,
+          "sha256": "87dba33c9524bc3edf02383f146eec360cf890af219bd86836f9093c61bcb7ba"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_mutations.txt",
+          "bytes": 2900,
+          "sha256": "8f6680c855b91aabd482c1ad07896783fb6f8253cdb927c6e7adfeaa4304172c"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_original.bin",
+          "bytes": 48856,
+          "sha256": "b50ca9c6815d82c528de5f1df5c31dc90626ca009e8ae7b6ecc07e456b77efb1"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_runtime_postimages.jsonl",
+          "bytes": 71641,
+          "sha256": "a93fc04ad7616011a2921ac93eef86c17b3f4d0a7966b43f5d32fb39b3eef343"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_runtime_text_0.bin",
+          "bytes": 55227,
+          "sha256": "c9900d7c4aae086afec4cb8f4f5949ed3f17dcf235f902394191228581ae5813"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_runtime_text_1.bin",
+          "bytes": 55227,
+          "sha256": "c9900d7c4aae086afec4cb8f4f5949ed3f17dcf235f902394191228581ae5813"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_source.bin",
+          "bytes": 48856,
+          "sha256": "b50ca9c6815d82c528de5f1df5c31dc90626ca009e8ae7b6ecc07e456b77efb1"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_source_entries.txt",
+          "bytes": 54,
+          "sha256": "14e526143af8424e4cdace71ebeae1f9008a2c7448a37c082bd546924415815e"
+        },
+        {
+          "path": "build/volume-owner-primary-check/volume_owner_trace.json",
+          "bytes": 392,
+          "sha256": "0eb2221d8d7cdea0658b52f657c227d5d27ce14bb4a365248f2f93fedad370bb"
+        },
+        {
+          "path": "local/prepare_volume_owner_primary.py",
+          "bytes": 4854,
+          "sha256": "d493c96a67273e15e9a1cbf88fc7c67330feced0dab507afc412cc83bb8a3837"
+        },
+        {
+          "path": "local/build_volume_owner_primary_fixture.ps1",
+          "bytes": 1946,
+          "sha256": "dafd1289b0e40b8dd71b9d3db3228fe749059164a3e62468ec8fd1a50d8fb315"
+        },
+        {
+          "path": "local/verify_volume_owner_primary.py",
+          "bytes": 13795,
+          "sha256": "b43a29f207e1989900bda082b49347ecebe1ba722dd799bfd215a173d0baa6f9"
+        },
+        {
+          "path": "local/native_volume_texture_owner_primary_build.txt",
+          "bytes": 2249,
+          "sha256": "d669369ef6eabc5731c90f6a1cecd53f36b0b146786a39144cdc3f3ebe07a827"
+        },
+        {
+          "path": "local/volume_owner_primary_fixture.txt",
+          "bytes": 389,
+          "sha256": "9cdcc6cb70c050c189aa0a33494cb512abfd8253cf593182ae5fbf974ded35d0"
+        },
+        {
+          "path": "local/volume_owner_primary_seeds.json",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        }
+      ]
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_volume_texture_owner_annotations.json",
+    "bytes": 6222,
+    "sha256": "f44f275b9fc2eb84d46c5a552cc18440fa9359dd27b9c602c4d13deff98f9bcc",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b3eb70",
+      "path": "exports/bsp/functions/00b3eb70/decompiled.c",
+      "bytes": 3077,
+      "sha256": "8f84da9dded7b50a363ba1fbf0b179cc0e1c4ad76f3a7968a77c0e9ce03801c8"
+    },
+    {
+      "address": "00b3f430",
+      "path": "exports/bsp/functions/00b3f430/decompiled.c",
+      "bytes": 2028,
+      "sha256": "b0395140942cf4e51d13b1ccdeb82cd01c8336901359fc8e59b2d13972f29609"
+    },
+    {
+      "address": "00b340f0",
+      "path": "exports/bsp/functions/00b340f0/decompiled.c",
+      "bytes": 2434,
+      "sha256": "287d5236f75b8203cc2d12926074e81b35fd7792076d4779791cf920434b96f2"
+    }
+  ],
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b3eb70",
+      "name": "destroy_native_volume_texture_00b3eb70",
+      "cpp_symbol": "bsp::destroy_native_volume_texture_00b3eb70",
+      "source": "src/native_volume_texture_owner.cpp",
+      "native_end_exclusive": "00b3ec24",
+      "original_abi": "ECX actual owner; no stack arguments; RET; no semantic result",
+      "evidence": "reports/native_volume_texture_owner_audit.json",
+      "status": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "real_D3D9_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3f430",
+      "name": "delete_native_volume_texture_00b3f430",
+      "cpp_symbol": "bsp::delete_native_volume_texture_00b3f430",
+      "source": "src/native_volume_texture_owner.cpp",
+      "native_end_exclusive": "00b3f450",
+      "original_abi": "ECX actual owner; stack flags; EAX original address; RET4",
+      "evidence": "reports/native_volume_texture_owner_audit.json",
+      "status": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "real_D3D9_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b340f0",
+      "name": "unwind_native_volume_texture_base_00b340f0",
+      "cpp_symbol": "bsp::unwind_native_volume_texture_base_00b340f0",
+      "source": "src/native_volume_texture_owner.cpp",
+      "native_end_exclusive": "00b340f5",
+      "original_abi": "ECX actual owner; JMP B33F50; no additional state or semantic result",
+      "evidence": "reports/native_volume_texture_owner_audit.json",
+      "status": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "real_D3D9_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_VOLUME_TEXTURE_OWNER.md",
+    "bytes": 10044,
+    "sha256": "c75a69cfe750df1b48705d7d05480f36d2be670765da929046b7d03f1022752a"
+  },
+  "closure_utc": "2026-09-11T08:01:49.845731+00:00"
 }
