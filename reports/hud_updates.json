@@ -1,0 +1,1224 @@
+{
+  "packet": "cc_hud_updates",
+  "owner": "agent/cc-hud-updates",
+  "doc": "docs/IN_MISSION_INTERFACE_RUNTIME.md",
+  "sources": [
+    "include/bsp/in_mission_interface_runtime.hpp",
+    "src/in_mission_interface_runtime.cpp"
+  ],
+  "object": {
+    "global": "00e198c4",
+    "size_bytes": "0x108",
+    "vtable": "00cf7a60",
+    "prior_packet": "docs/IN_MISSION_INTERFACE_MANAGER.md"
+  },
+  "frame_position": {
+    "note": "The manager's per-frame tick is step 17 of BSP_Game_OnMove, not a fixed-step job.",
+    "steps": [
+      {
+        "frame_step": 16,
+        "address": "004e524c",
+        "native": "guard",
+        "function": "004e4a40",
+        "what": "00e198c4 != 0 && [00e198c4]+3Ch != 0"
+      },
+      {
+        "frame_step": 17,
+        "address": "004e5252",
+        "native": "0068c1f0",
+        "function": "004e4a40",
+        "what": "the manager's per-frame update"
+      },
+      {
+        "frame_step": 18,
+        "address": "004e5259",
+        "native": "004c40f0",
+        "function": "004e4a40",
+        "what": "the front-end screen pump; this is what drives the HUD pages' update virtuals"
+      },
+      {
+        "frame_step": 45,
+        "address": "004e5442",
+        "native": "006840f0",
+        "function": "004e4a40",
+        "what": "the request drain, which calls the manager's virtual +10h (0068aca0)"
+      },
+      {
+        "frame_step": 48,
+        "address": "004e5477",
+        "native": "006840f0",
+        "function": "004e4a40",
+        "what": "the drain again, inside the do/while"
+      },
+      {
+        "frame_step": 50,
+        "address": "004e549d",
+        "native": "004d8620",
+        "function": "004e4a40",
+        "what": "the GUI manager update and page loading"
+      }
+    ],
+    "fixed_step_contact": {
+      "address": "00875ff7",
+      "native": "00a317f0",
+      "function": "00875bb0",
+      "what": "the only fixed-step contact: a tail gate on 00e198c4 and its +54h screen whose hook is a bare RET in this build"
+    }
+  },
+  "construct_0068a990": {
+    "convention": "__thiscall(this) -> this in EAX",
+    "ret": "0068a9be",
+    "coverage": "complete (derived part; the base 00684e10 belongs to frontend_managers)",
+    "clears": [
+      "0x54",
+      "0xec",
+      "0xfd",
+      "0x100",
+      "0x104"
+    ],
+    "host_steps": [
+      {
+        "method": "base_construct",
+        "address": "0068a993",
+        "native": "00684e10",
+        "function": "0068a990",
+        "what": "the shared 40h-byte base"
+      }
+    ]
+  },
+  "init_0068cc70": {
+    "convention": "__thiscall(this)",
+    "ret": "0068d759",
+    "seh_handler": "00c7e093",
+    "coverage": "complete as a sequence; the SEH unwind of a partially built screen list is not modelled",
+    "host_steps": [
+      {
+        "method": "load_texture_atlas",
+        "address": "0068ccd1",
+        "native": "00af0060",
+        "function": "0068cc70",
+        "what": "[00f8c26c]->00af0060(&stem), stem 'interface/Textures/game.ats' built at 0068cc9f"
+      },
+      {
+        "method": "publish_manager_global",
+        "address": "0068ccfe",
+        "native": "store",
+        "function": "0068cc70",
+        "what": "00e198c4 = this"
+      },
+      {
+        "method": "base_init",
+        "address": "0068cd04",
+        "native": "00683a90",
+        "function": "0068cc70",
+        "what": "the base Init; a bare RET in this build"
+      },
+      {
+        "method": "allocate_screen",
+        "address": "0068cd0e",
+        "native": "00bf681b",
+        "function": "0068cc70",
+        "what": "operator new(174h) for the first of 41 screens allocated this way"
+      },
+      {
+        "method": "construct_screen",
+        "address": "0068cd28",
+        "native": "0068bf60",
+        "function": "0068cc70",
+        "what": "the slot 44h HUD root constructor, the first of 42"
+      },
+      {
+        "method": "register_screen",
+        "address": "0068cd3f",
+        "native": "vtable+10h",
+        "function": "0068cc70",
+        "what": "BSP_FrontEndScreen_Register 004f71d0; not guarded by the allocation"
+      },
+      {
+        "method": "allocate_screen",
+        "address": "0068d47f",
+        "native": "00bf55be",
+        "function": "0068cc70",
+        "what": "the exception: registry slot 29h at +CCh, F0h bytes"
+      },
+      {
+        "method": "allocate_screen",
+        "address": "0068d48d",
+        "native": "00bf79f0",
+        "function": "0068cc70",
+        "what": "memset(p, 0, F0h) on that one allocation before its constructor"
+      },
+      {
+        "method": "construct_screen",
+        "address": "0068d4a7",
+        "native": "00525a90",
+        "function": "0068cc70",
+        "what": "the slot 29h constructor"
+      },
+      {
+        "method": "push_interface_request",
+        "address": "0068d73a",
+        "native": "004cc460",
+        "function": "0068cc70",
+        "what": "this->004cc460(20h, 0): the mission's first interface is INTF_SCENE3D"
+      },
+      {
+        "method": "hud_root_set_field_1c",
+        "address": "0068d743",
+        "native": "00644220",
+        "function": "0068cc70",
+        "what": "[this+40h]->00644220(0); the callee body is 'this->[1Ch] = argument'"
+      }
+    ],
+    "allocator_counts": {
+      "00bf681b": 41,
+      "00bf55be": 1,
+      "register_calls": 42
+    }
+  },
+  "update_0068c1f0": {
+    "convention": "__thiscall(this = 00e198c4), no stack arguments",
+    "ret": "0068cc68",
+    "body": "0068c1f0-0068cc68",
+    "coverage": "complete (every branch)",
+    "caller": {
+      "address": "004e5252",
+      "native": "0068c1f0",
+      "function": "004e4a40"
+    },
+    "blocks": [
+      {
+        "name": "A spectator resolution",
+        "range": "0068c1fe-0068c3e7",
+        "guard": "004bca50(game) in {4,5,6,7}"
+      },
+      {
+        "name": "B free-camera toggle",
+        "range": "0068c3e7-0068c462",
+        "guard": "00e1ae80 set or action 5Ah pressed"
+      },
+      {
+        "name": "C spectate-next",
+        "range": "0068c462-0068c5e4",
+        "guard": "the local slot record's byte +19h"
+      },
+      {
+        "name": "D movie cameras",
+        "range": "0068c5e4-0068c61a",
+        "guard": "actions 89h and 8Ah"
+      },
+      {
+        "name": "E input block",
+        "range": "0068c61a-0068caa9",
+        "guard": "this->[20h] not in {29h,2Bh,2Ch,2Dh}"
+      },
+      {
+        "name": "F ambience and audio environment",
+        "range": "0068cad9-0068cc5d",
+        "guard": "none"
+      }
+    ],
+    "host_steps": [
+      {
+        "method": "effective_game_mode",
+        "address": "0068c1fe",
+        "native": "004bca50",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_spectating",
+        "address": "0068c23d",
+        "native": "006529e0",
+        "function": "0068c1f0",
+        "what": "ECX = [this+BCh], the registry-slot 4Eh camera screen"
+      },
+      {
+        "method": "camera_screen_flag_09",
+        "address": "0068c24c",
+        "native": "00652a20",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_set_flag_08",
+        "address": "0068c262",
+        "native": "00652a50",
+        "function": "0068c1f0",
+        "what": "argument 0"
+      },
+      {
+        "method": "toggle_tactical_overlay",
+        "address": "0068c26b",
+        "native": "0068c0b0",
+        "function": "0068c1f0",
+        "what": "ECX = this, argument 0"
+      },
+      {
+        "method": "unit_is_kind_of",
+        "address": "0068c29c",
+        "native": "vtable+5Ch",
+        "function": "0068c1f0",
+        "what": "IsKindOf(0Fh), the plane test"
+      },
+      {
+        "method": "unit_player_slot",
+        "address": "0068c2eb",
+        "native": "009ffd20",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "unit_is_kind_of",
+        "address": "0068c2fd",
+        "native": "vtable+5Ch",
+        "function": "0068c1f0",
+        "what": "IsKindOf(1Ch), the command-building test"
+      },
+      {
+        "method": "pilot_detach",
+        "address": "0068c32c",
+        "native": "007ee4e0",
+        "function": "0068c1f0",
+        "what": "ECX = unit->[9D4h]"
+      },
+      {
+        "method": "camera_screen_set_flag_08",
+        "address": "0068c339",
+        "native": "00652a50",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "toggle_tactical_overlay",
+        "address": "0068c342",
+        "native": "0068c0b0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_spectating",
+        "address": "0068c354",
+        "native": "006529e0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "unit_bind_player",
+        "address": "0068c36c",
+        "native": "00927cc0",
+        "function": "0068c1f0",
+        "what": "ECX = unit, argument game+18ECh"
+      },
+      {
+        "method": "camera_screen_set_flag_08",
+        "address": "0068c379",
+        "native": "00652a50",
+        "function": "0068c1f0",
+        "what": "argument 1"
+      },
+      {
+        "method": "exit_free_camera_overlay",
+        "address": "0068c380",
+        "native": "0068b3f0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "unit_is_kind_of",
+        "address": "0068c38e",
+        "native": "vtable+5Ch",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "hud_root_set_spectated_unit",
+        "address": "0068c3af",
+        "native": "00647300",
+        "function": "0068c1f0",
+        "what": "ECX = [00e198c4]+40h, the HUD root screen; __thiscall(hudRoot, unit), RET 4"
+      },
+      {
+        "method": "camera_screen_flag_08",
+        "address": "0068c3bb",
+        "native": "00652a30",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_flag_09",
+        "address": "0068c3d1",
+        "native": "00652a20",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_set_flag_08",
+        "address": "0068c3e2",
+        "native": "00652a50",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c3f8",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action 5Ah, skipped when the 00e1ae80 latch is already set"
+      },
+      {
+        "method": "hud_root_set_field_1c",
+        "address": "0068c419",
+        "native": "00644220",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_interface_request",
+        "address": "0068c424",
+        "native": "004cc460",
+        "function": "0068c1f0",
+        "what": "INTF_FREECAMERA 29h, no payload"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c431",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "a second, independent edge read of 5Ah"
+      },
+      {
+        "method": "screen_2b_set_mode",
+        "address": "0068c442",
+        "native": "0053d290",
+        "function": "0068c1f0",
+        "what": "ECX = [this+90h], argument 0 when the action was pressed"
+      },
+      {
+        "method": "screen_2b_set_mode",
+        "address": "0068c44b",
+        "native": "0053d290",
+        "function": "0068c1f0",
+        "what": "argument 1 when the arm was reached through the latch"
+      },
+      {
+        "method": "push_interface_request",
+        "address": "0068c45d",
+        "native": "004cc460",
+        "function": "0068c1f0",
+        "what": "INTF_SCENE3D 20h with 00e188d8 as payload"
+      },
+      {
+        "method": "camera_screen_spectating",
+        "address": "0068c484",
+        "native": "006529e0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_spectating",
+        "address": "0068c51d",
+        "native": "006529e0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "screen_34_query",
+        "address": "0068c52c",
+        "native": "0054d3c0",
+        "function": "0068c1f0",
+        "what": "ECX = [this+A8h]"
+      },
+      {
+        "method": "camera_screen_flag_66",
+        "address": "0068c541",
+        "native": "006529c0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "set_level3_screen_set",
+        "address": "0068c587",
+        "native": "004f8670",
+        "function": "0068c1f0",
+        "what": "the empty list; cleanup ADD ESP,0Ch at 0068c59a is shared with the next call"
+      },
+      {
+        "method": "set_level3_input_contexts",
+        "address": "0068c595",
+        "native": "004d8b70",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "query_scene_unit",
+        "address": "0068c59d",
+        "native": "004b4b00",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_interface_request",
+        "address": "0068c5df",
+        "native": "004cc460",
+        "function": "0068c1f0",
+        "what": "the inlined body of 0068aa40: INTF_SCENE3D for 004b4b00()'s unit"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c5ef",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action 89h"
+      },
+      {
+        "method": "toggle_movie_camera",
+        "address": "0068c5fa",
+        "native": "0068a160",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c60a",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action 8Ah"
+      },
+      {
+        "method": "toggle_new_movie_camera",
+        "address": "0068c615",
+        "native": "0068a1f0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c64c",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action C1h"
+      },
+      {
+        "method": "modifier_key_allows_back_out",
+        "address": "0068c67a",
+        "native": "GetKeyState via [00ce2350]",
+        "function": "0068c1f0",
+        "what": "VK_RMENU A4h, only when 00f88a30 is clear"
+      },
+      {
+        "method": "back_out_one_overlay_level",
+        "address": "0068c6b1",
+        "native": "0068b470",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "screen_3b_idle",
+        "address": "0068c6bb",
+        "native": "005fb080",
+        "function": "0068c1f0",
+        "what": "ECX = [this+64h]; the else of the whole C1h test"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c6cb",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action D6h"
+      },
+      {
+        "method": "collapse_overlays",
+        "address": "0068c6e7",
+        "native": "0068ab80",
+        "function": "0068c1f0",
+        "what": "arguments (1, 1) after clearing [this+5Ch]+4h at 0068c6e3"
+      },
+      {
+        "method": "input_manager_update",
+        "address": "0068c6f9",
+        "native": "00a92c40",
+        "function": "0068c1f0",
+        "what": "receiver from 004bec00 at 0068c6f2, argument 0.0f"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c709",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action FBh, sampled into [ESP+12h]"
+      },
+      {
+        "method": "device_a_flag_0b",
+        "address": "0068c712",
+        "native": "004bec00",
+        "function": "0068c1f0",
+        "what": "[[input+4h]+2F3Ch]+0Bh, held in BL"
+      },
+      {
+        "method": "device_a_flag_10",
+        "address": "0068c723",
+        "native": "004bec00",
+        "function": "0068c1f0",
+        "what": "[[input+4h]+2F3Ch]+10h, into [ESP+10h]"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c744",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action FCh, into [ESP+13h]"
+      },
+      {
+        "method": "device_b_flag_0b",
+        "address": "0068c74d",
+        "native": "004bec00",
+        "function": "0068c1f0",
+        "what": "[[input+4h]+2F6Ch]+0Bh, into [ESP+0Fh]"
+      },
+      {
+        "method": "device_b_flag_10",
+        "address": "0068c763",
+        "native": "004bec00",
+        "function": "0068c1f0",
+        "what": "[[input+4h]+2F6Ch]+10h, into [ESP+11h]"
+      },
+      {
+        "method": "camera_screen_frame_step",
+        "address": "0068c77f",
+        "native": "00673130",
+        "function": "0068c1f0",
+        "what": "ECX = [this+BCh]"
+      },
+      {
+        "method": "map_screen_frame_step",
+        "address": "0068c78a",
+        "native": "00612da0",
+        "function": "0068c1f0",
+        "what": "ECX = [this+C0h], the registry-slot 4Fh screen"
+      },
+      {
+        "method": "support_request_pending",
+        "address": "0068c7a1",
+        "native": "008ed9c0",
+        "function": "0068c1f0",
+        "what": "ECX = [00f88c30]"
+      },
+      {
+        "method": "set_level3_screen_set",
+        "address": "0068c7de",
+        "native": "004f8670",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "set_level3_input_contexts",
+        "address": "0068c7ec",
+        "native": "004d8b70",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_scene_request_for_unit",
+        "address": "0068c7f4",
+        "native": "004b4b00",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_scene_request_for_unit",
+        "address": "0068c7fc",
+        "native": "0068aa40",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "controlled_unit_overlay_argument",
+        "address": "0068c81b",
+        "native": "00927880",
+        "function": "0068c1f0",
+        "what": "ECX = 00e188d8"
+      },
+      {
+        "method": "toggle_tactical_overlay",
+        "address": "0068c823",
+        "native": "0068c0b0",
+        "function": "0068c1f0",
+        "what": "arm 1 of the four-armed chain"
+      },
+      {
+        "method": "camera_screen_flag_09",
+        "address": "0068c846",
+        "native": "00652a20",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "pause_screen_child_query",
+        "address": "0068c863",
+        "native": "vtable+38h",
+        "function": "0068c1f0",
+        "what": "on [[00e198c4+A8h]+20h]"
+      },
+      {
+        "method": "toggle_tactical_overlay",
+        "address": "0068c890",
+        "native": "0068c0b0",
+        "function": "0068c1f0",
+        "what": "arm 2, argument [this+CCh]+4Ch"
+      },
+      {
+        "method": "toggle_tactical_overlay",
+        "address": "0068c89f",
+        "native": "0068c0b0",
+        "function": "0068c1f0",
+        "what": "arms 1 and 2 with no controlled unit, argument 0"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068c8c2",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action 108h"
+      },
+      {
+        "method": "support_request_pending",
+        "address": "0068c923",
+        "native": "008ed9c0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "set_level3_screen_set",
+        "address": "0068c932",
+        "native": "004f8670",
+        "function": "0068c1f0",
+        "what": "{4Fh, 50h}; cleanup ADD ESP,0Ch at 0068c93c"
+      },
+      {
+        "method": "set_level3_input_contexts",
+        "address": "0068c94f",
+        "native": "004d8b70",
+        "function": "0068c1f0",
+        "what": "{14h, 0Eh}; cleanup ADD ESP,10h at 0068c954, so four arguments including the shared PUSH 0"
+      },
+      {
+        "method": "set_level3_input_contexts",
+        "address": "0068c967",
+        "native": "004d8b70",
+        "function": "0068c1f0",
+        "what": "{14h, 4, 0Bh, 6, 0Ah}; cleanup ADD ESP,1Ch at 0068c96c"
+      },
+      {
+        "method": "camera_screen_spectating",
+        "address": "0068c9a6",
+        "native": "006529e0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "exit_free_camera_overlay",
+        "address": "0068c9bb",
+        "native": "0068b3f0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "map_screen_busy",
+        "address": "0068c9ce",
+        "native": "00611750",
+        "function": "0068c1f0",
+        "what": "ECX = [this+C0h]"
+      },
+      {
+        "method": "set_level3_screen_set",
+        "address": "0068ca0a",
+        "native": "004f8670",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "set_level3_input_contexts",
+        "address": "0068ca17",
+        "native": "004d8b70",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_scene_request_for_unit",
+        "address": "0068ca1f",
+        "native": "004b4b00",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_scene_request_for_unit",
+        "address": "0068ca27",
+        "native": "0068aa40",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "input_action_pressed",
+        "address": "0068ca34",
+        "native": "004c43c0",
+        "function": "0068c1f0",
+        "what": "action 4Bh"
+      },
+      {
+        "method": "map_screen_busy",
+        "address": "0068ca49",
+        "native": "00611750",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "set_level3_screen_set",
+        "address": "0068ca86",
+        "native": "004f8670",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "set_level3_input_contexts",
+        "address": "0068ca94",
+        "native": "004d8b70",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_scene_request_for_unit",
+        "address": "0068ca9c",
+        "native": "004b4b00",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "push_scene_request_for_unit",
+        "address": "0068caa4",
+        "native": "0068aa40",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_flag_66",
+        "address": "0068cabd",
+        "native": "006529c0",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "camera_screen_set_flag_66",
+        "address": "0068cad4",
+        "native": "006529b0",
+        "function": "0068c1f0",
+        "what": "argument 0"
+      },
+      {
+        "method": "refresh_camera_transform",
+        "address": "0068cb07",
+        "native": "00b6db70",
+        "function": "0068c1f0",
+        "what": "only when camera->[5Ch] & 2 is clear"
+      },
+      {
+        "method": "set_ambient_volume",
+        "address": "0068cb45",
+        "native": "00a79880",
+        "function": "0068c1f0",
+        "what": "ECX = [this+104h], one float"
+      },
+      {
+        "method": "cockpit_screen_mode",
+        "address": "0068cb53",
+        "native": "00604f30",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "refresh_camera_transform",
+        "address": "0068cba7",
+        "native": "00b6db70",
+        "function": "0068c1f0"
+      },
+      {
+        "method": "water_height",
+        "address": "0068cbde",
+        "native": "0078cf20",
+        "function": "0068c1f0",
+        "what": "ECX = [game+19F0h], arguments (camera+120h, camera+124h)"
+      },
+      {
+        "method": "controlled_unit_is_submarine",
+        "address": "0068cc04",
+        "native": "vtable+5Ch",
+        "function": "0068c1f0",
+        "what": "IsKindOf(8) on 00e188d8"
+      },
+      {
+        "method": "refresh_controlled_unit_pose",
+        "address": "0068cc1b",
+        "native": "00414db0",
+        "function": "0068c1f0",
+        "what": "only when unit->[C8h] is clear"
+      },
+      {
+        "method": "set_audio_environment",
+        "address": "0068cc4f",
+        "native": "00a7b710",
+        "function": "0068c1f0",
+        "what": "ECX = [00f8bbd8]; one of 00cf7a90 'Cockpit', 00ce9b1c 'Air', 00ce5484 'Underwater'"
+      },
+      {
+        "method": "tick_profile_hints",
+        "address": "0068cc56",
+        "native": "004c1e90",
+        "function": "0068c1f0",
+        "what": "argument 0Ch"
+      },
+      {
+        "method": "tick_profile_hints",
+        "address": "0068cc5d",
+        "native": "00427190",
+        "function": "0068c1f0",
+        "what": "ECX = the result of 004c1e90"
+      }
+    ],
+    "constants": {
+      "ambient_volume_bias": {
+        "address": "00d7a308",
+        "value": 2.0,
+        "type": "double"
+      },
+      "ambient_volume_scale": {
+        "address": "00d7a348",
+        "value": 0.25,
+        "type": "double"
+      },
+      "ambient_volume_max": {
+        "address": "00d7a24c",
+        "value": 1.0,
+        "type": "float"
+      },
+      "underwater_unit_height": {
+        "address": "00cf1430",
+        "value": -4.0,
+        "type": "float"
+      }
+    }
+  },
+  "teardown": {
+    "delete_0068bc60": {
+      "convention": "__thiscall(this, byte flags) -> this",
+      "ret": "0068bc7b",
+      "coverage": "complete",
+      "host_steps": [
+        {
+          "method": "destruct",
+          "address": "0068bc63",
+          "native": "0068b630",
+          "function": "0068bc60"
+        },
+        {
+          "method": "free_manager_memory",
+          "address": "0068bc70",
+          "native": "00bf65ac",
+          "function": "0068bc60",
+          "what": "only when bit 0 of flags is set"
+        }
+      ]
+    },
+    "destruct_0068b630": {
+      "convention": "__thiscall(this)",
+      "ret": "0068bc5f",
+      "seh_handler": "00c7ddd4",
+      "coverage": "complete",
+      "host_steps": [
+        {
+          "method": "restore_vtable",
+          "address": "0068b651",
+          "native": "store",
+          "function": "0068b630",
+          "what": "[this] = 00cf7a60"
+        },
+        {
+          "method": "stop_ambient_sound",
+          "address": "0068b67a",
+          "native": "vtable+08h",
+          "function": "0068b630",
+          "what": "on [this+104h], argument 0"
+        },
+        {
+          "method": "release_ambient_instance",
+          "address": "0068b68a",
+          "native": "InterlockedDecrement via [00ce2220]",
+          "function": "0068b630"
+        },
+        {
+          "method": "collect_screens",
+          "address": "0068b6ca",
+          "native": "00686c20",
+          "function": "0068b630",
+          "what": "the first of 44 calls; the callee de-duplicates"
+        },
+        {
+          "method": "screen_hide",
+          "address": "0068bacf",
+          "native": "vtable+1Ch",
+          "function": "0068b630",
+          "what": "only for a screen whose +5h is set; null entries skipped at 0068bab2"
+        },
+        {
+          "method": "screen_commit_visibility",
+          "address": "0068bad9",
+          "native": "004f83b0",
+          "function": "0068b630"
+        },
+        {
+          "method": "screen_delete",
+          "address": "0068bb34",
+          "native": "vtable+0Ch",
+          "function": "0068b630",
+          "what": "pass two, argument 1"
+        },
+        {
+          "method": "clear_manager_global",
+          "address": "0068bb54",
+          "native": "store",
+          "function": "0068b630",
+          "what": "00e198c4 = 0, before the atlas unload"
+        },
+        {
+          "method": "unload_texture_atlas",
+          "address": "0068bb96",
+          "native": "00aefa30",
+          "function": "0068b630"
+        },
+        {
+          "method": "close_menu_command_screen",
+          "address": "0068bbc1",
+          "native": "00425d10",
+          "function": "0068b630",
+          "what": "argument 1"
+        },
+        {
+          "method": "close_menu_command_screen",
+          "address": "0068bbc8",
+          "native": "00530630",
+          "function": "0068b630",
+          "what": "ECX = the result of 00425d10"
+        },
+        {
+          "method": "free_screen_vector",
+          "address": "0068bbd6",
+          "native": "00bf65ac",
+          "function": "0068b630"
+        },
+        {
+          "method": "release_ambient_instance",
+          "address": "0068bbfd",
+          "native": "InterlockedDecrement via [00ce2220]",
+          "function": "0068b630",
+          "what": "the second release of +104h"
+        },
+        {
+          "method": "release_ambient_source",
+          "address": "0068bc27",
+          "native": "InterlockedDecrement via [00ce2220]",
+          "function": "0068b630",
+          "what": "+100h"
+        },
+        {
+          "method": "destroy_base",
+          "address": "0068bc49",
+          "native": "00684fa0",
+          "function": "0068b630"
+        }
+      ],
+      "ghidra_flow_gap": {
+        "range": "0068bbdb-0068bbde",
+        "bytes": 3,
+        "instruction": "ADD ESP,4 after the _free at 0068bbd6",
+        "repaired": false,
+        "effect": "the export shows the last three steps as unreachable; the reconstruction follows the real control flow"
+      }
+    },
+    "mission_exit": {
+      "reached_from": {
+        "address": "004e4710",
+        "native": "004da780",
+        "function": "004e4430",
+        "what": "the request 10h arm of BSP_Game_DrainStateRequestQueue, reached at 004e458a; docs/GAME_EXECUTABLE.md milestone 2g"
+      },
+      "coverage": "read only, not claimed, not reconstructed",
+      "steps": [
+        {
+          "method": "release_interface_lock",
+          "address": "004dab53",
+          "native": "store",
+          "function": "004da780",
+          "what": "[00e19894] = 0 while [00e198c4] != 0"
+        },
+        {
+          "method": "release_camera",
+          "address": "004dab77",
+          "native": "00b6dfa0",
+          "function": "004da780",
+          "what": "game+19FCh released before the manager is destroyed"
+        },
+        {
+          "method": "delete_manager",
+          "address": "004dab82",
+          "native": "vtable+00h",
+          "function": "004da780",
+          "what": "flags = 1, i.e. 0068bc60 with the free bit"
+        },
+        {
+          "method": "clear_manager_global",
+          "address": "004dab94",
+          "native": "store",
+          "function": "004da780",
+          "what": "00e198c4 = 0"
+        }
+      ]
+    }
+  },
+  "names_added": [
+    {
+      "address": "0068aa40",
+      "name": "BSP_InGameInterface_RequestSceneForUnit"
+    },
+    {
+      "address": "0068b3f0",
+      "name": "BSP_InGameInterface_CollapseLevel3WhenSpectating"
+    },
+    {
+      "address": "0068c0b0",
+      "name": "BSP_InGameInterface_ToggleTacticalOverlay"
+    },
+    {
+      "address": "00647300",
+      "name": "BSP_InGameHudRoot_SetSpectatedUnit"
+    },
+    {
+      "address": "0068b470",
+      "name": "BSP_InGameInterface_BackOutOneOverlayLevel"
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "0068cad9 and 0068b665",
+      "was": "a bit test of [this+104h] against the mask E19311h, as the decompiler renders it",
+      "is": "the MSVC NEG/SBB/TEST idiom for 'the pointer is non-null'; the constant is meaningless",
+      "evidence": "NEG EDX; SBB EDX,EDX; TEST EDX,0E19311h at 0068cadf-0068cae3, identical at 0068b65f-0068b665"
+    },
+    {
+      "subject": "include/bsp/simulation_gate.hpp AudioEnvironmentInputs::device_allows_underwater",
+      "was": "a device-capability flag at 0068cc0a that forces Air when no device reports capability 8",
+      "is": "the controlled unit 00e188d8: IsKindOf(8) (kUnitTypeSubmarine) and its world height +100h against the -4.0f at 00cf1430. No device is involved",
+      "evidence": "0068cbf3 loads 00e188d8, the global docs/UNIT_INSTANCE_UPDATE.md shows 004c0890 writes a unit instance to; 0068cc04 is the IsKindOf call; 0068cc28 is COMISS against 00cf1430",
+      "header_not_edited": "simulation_gate.hpp belongs to game_simulation_gate; in_mission_audio_environment_0068cb4a takes the corrected inputs instead"
+    },
+    {
+      "subject": "004d8b70 at 0068c94f",
+      "was": "three arguments (game, 14h, 0Eh), as the decompiler prints",
+      "is": "four: the PUSH 0 at 0068c946 is shared by both branches as the varargs terminator",
+      "evidence": "ADD ESP,10h at 0068c954 against ADD ESP,1Ch at 0068c96c for the seven-argument branch"
+    },
+    {
+      "subject": "00647300",
+      "was": "__cdecl(unit), as Ghidra types it",
+      "is": "__thiscall(hudRootScreen, unit), RET 4",
+      "evidence": "MOV ECX,[00e198c4+40h] at 0068c3a1 and 0068c3ab; MOV ESI,ECX at 00647311 makes ESI the receiver of 00645600 and 00647040"
+    },
+    {
+      "subject": "0068b3f0",
+      "was": "the shared level-3 collapse may raise [this+BCh]+0Ah at every site",
+      "is": "not inside 0068b3f0: it clears [00e198c4+BCh]+30h and then tests the same byte, so the write is dead",
+      "evidence": "the two accesses to the same byte in one basic block of 0068b3f0"
+    },
+    {
+      "subject": "docs/IN_MISSION_INTERFACE_MANAGER.md, 0068ab80's run_extra_hook arm",
+      "was": "0051e8e0() as a free call",
+      "is": "[this+4Ch]->0051e8e0(), a method on the registry-slot 26h screen",
+      "evidence": "MOV ECX,[ESI+4Ch] at 0068abe2 immediately before the call at 0068abe5"
+    },
+    {
+      "subject": "0068cc70's allocations",
+      "was": "42 operator new calls",
+      "is": "41 through 00bf681b plus one 00bf55be + memset for registry slot 29h at +CCh",
+      "evidence": "41 CALL 0x00bf681b against 42 CALL EAX register calls in the Init listing; 0068d47f-0068d492"
+    },
+    {
+      "subject": "the packet brief's 'pending-interface apply' inside the update",
+      "was": "0068c1f0 applies the pending interface",
+      "is": "0068c1f0 only enqueues through 004cc460; the apply is the drain 006840f0 at frame steps 45 and 48, which calls the manager's virtual +10h (0068aca0)",
+      "evidence": "the callee list of 0068c1f0 contains no path to 0068aca0; docs/MISSION_STATE_FRAME.md rows 45 and 48"
+    }
+  ],
+  "no_ghidra_function": "none",
+  "ghidra_function_bodies_confirmed": [
+    {
+      "address": "0068c1f0",
+      "body": "0068c1f0-0068cc68"
+    },
+    {
+      "address": "0068a990",
+      "body": "0068a990-0068a9be"
+    },
+    {
+      "address": "0068cc70",
+      "body": "0068cc70-0068d759"
+    },
+    {
+      "address": "0068b630",
+      "body": "0068b630-0068bc5f"
+    },
+    {
+      "address": "0068bc60",
+      "body": "0068bc60-0068bc7d"
+    },
+    {
+      "address": "0068ab80",
+      "body": "0068ab80-0068ac23"
+    },
+    {
+      "address": "0068aca0",
+      "body": "0068aca0-0068b38f"
+    },
+    {
+      "address": "0068c0b0",
+      "body": "0068c0b0-0068c1e6"
+    },
+    {
+      "address": "0068b3f0",
+      "body": "0068b3f0-0068b469"
+    },
+    {
+      "address": "0068b470",
+      "body": "0068b470-0068b50e"
+    },
+    {
+      "address": "0068aa40",
+      "body": "0068aa40-0068aa86"
+    },
+    {
+      "address": "00647300",
+      "body": "00647300-00647360"
+    },
+    {
+      "address": "004da780",
+      "body": "004da780-004db02c"
+    },
+    {
+      "address": "004e4a40",
+      "body": "004e4a40-004e5537"
+    }
+  ],
+  "uncertainties": [
+    "game+19C4h: it selects between a two-entry and a five-entry level-3 input-context list here and in 0068c0b0; 'networked' is an inference and is not asserted",
+    "the camera screen's bytes +8h, +9h, +0Ah, +30h, +5h and +66h: their roles here are consistent but no writer outside this routine was read",
+    "00611750's +1F9h and +13Fh on the slot 4Fh screen: 'busy' is the role, not a recovered meaning",
+    "0053d290's argument: the two sites pass 0 and 1 and nothing in this body reads it back",
+    "the unit field +100h compared against -4.0f: a world-space component refreshed by 00414db0, but the entity pose layout was not confirmed against a writer"
+  ],
+  "follow_up_packets": [
+    "in_mission_spectate_predicate: 00645060, 00645600, 00647040, 00927c50 and the HUD root's +1Ch",
+    "in_mission_tactical_overlay: 0068c0b0, 0066ffa0, 0068bc80, 0065be80, 0065f170 and the level-3 set {4Eh, 50h}",
+    "in_mission_camera_screen_flags: 006529b0, 006529c0, 006529e0, 00652a20, 00652a30, 00652a50, 00673130",
+    "in_mission_input_device_bytes: [[input+4h]+2F3Ch] and [[input+4h]+2F6Ch], bytes +0Bh and +10h",
+    "in_mission_support_requests: 008ed9c0 on 00f88c30 and its per-player list at +20h + slot*0Ch"
+  ],
+  "coverage": {
+    "0068a990": "complete (derived part)",
+    "0068cc70": "complete as a sequence; the SEH unwind of a partially built screen list is not modelled",
+    "0068c1f0": "complete (0068c1f0-0068cc68, every branch)",
+    "0068b630": "complete",
+    "0068bc60": "complete",
+    "0068aa40": "complete, as the predicate scene_request_accepts_unit_0068aa40",
+    "0068c0b0": "partial: read end to end and named; unread callees 0066ffa0, 0068bc80, 0065be80, 0065f170",
+    "0068b3f0": "partial: read end to end and named; reconstructed only as a host method",
+    "0068b470": "partial: read end to end and named; unread callee 0068ac30",
+    "00647300": "partial: the sequence is read; 00645060's nine clauses and 00645600/00647040 are not reconstructed",
+    "00673130": "partial: entry guard only (0067313a-00673160 read; the body is not reconstructed)",
+    "00612da0": "partial: entry guard only",
+    "004da780": "read only, not claimed, not reconstructed"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "MSVC Win32 /W4 /WX clean; bsp_core, bsp_game and the probes link; ctest 1/1 passed",
+    "new_sources": [
+      "src/in_mission_interface_runtime.cpp"
+    ],
+    "registry_line": "cmake/startup.cmake, appended"
+  },
+  "tests": "none added; the existing reconstructed_math suite was run unchanged",
+  "run_time_evidence": {
+    "command": "bsp_game.exe --frames 40 --log local/hud_updates_run.log --game-root \"<install>\"",
+    "exit": 0,
+    "reaches_0068c1f0": false,
+    "why": "the run stops at the title screen; src/game_hosts_mission_frame.cpp:744 records step 17 and returns, so the native body is not executed and no claim in this packet rests on a run",
+    "confirmed": "Init's atlas stem: the log shows interface/textures/game_dxt1.ats, game_dxt5_1.ats and game_dxt5_2.ats loaded, so 'interface/Textures/game.ats' is a stem the loader expands by compression format"
+  }
+}
