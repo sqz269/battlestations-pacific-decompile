@@ -1,0 +1,475 @@
+{
+  "packet": "orch2_native_lua_file_loading_al",
+  "functions": [
+    {
+      "address": "00b66ca0",
+      "name": "BSP_LuaStateOwner_LoadAndCallChunk",
+      "cpp": "load_native_lua_chunk_00b66ca0",
+      "source": "src/native_lua_file_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; stack NativeString path/low-byte flag; RET8",
+      "evidence": "Full316-byte actual consumer. Current manager virtual04(mode2), stream18/64bit30 gates; earlyclosed/empty returns retain stream. Repeatedlength lowDWORD allocation/read/load; captured read-table pointer before thirdlengthcall. Ignore readcount/loadstatus, live-length prefix/nibble decode, InterlockedDecrement(stream+4), currentvirtual00 atzero, rereadownerstate then unprotected Lua call/free. Actual callable VFS/stream ownership remains external. Four native/rebuilt fatal childcases exit1 afterrelease.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00b69d40",
+      "name": "BSP_LuaStateOwner_RunScriptWithOverrides",
+      "cpp": "run_native_lua_file_00b69d40",
+      "source": "src/native_lua_file_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; stack NativeString path/flag; RET8",
+      "evidence": "Full165-byte disk extent. Initial chunk BEFORE empty0Ch vector; rereadlive0109CEEC manager, requiredBDEF90 actual-header append service, capturedbegin/end with8byte paths andduplicates. Fullvector cleanup onnormal/EH. Storedbody stillendsB69DCC;24-byte tailthroughB69DE4 captured/executed but lockedrepair didnotextendbody. No full-flow-repair claim.",
+      "stored_body_complete": false
+    },
+    {
+      "address": "00b69e00",
+      "name": "BSP_LuaStateOwner_DoFileCallback",
+      "cpp": "do_native_lua_file_00b69e00",
+      "source": "src/native_lua_file_loading.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX lua_State; EAX0; RET; explicit host services in C++",
+      "evidence": "Full280-byte callback composition: actual borrowed4C8h owner reinstalls zero-upvalue appcallback, kind3 callframe and argument0, uncheckedtolstring/NativeStringconstructor, runfileflag0, native local cleanup distinction andzeroresults. Four-state unwind owner/frame/argument/path checked, not originalEH-executed. Installed nestedshaderincludes execute original/rebuilt actualpath through externalfixturestreams.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00b679b0",
+      "name": "BSP_LuaObject_OpenCallFrame",
+      "cpp": "native_lua_call_frame_00b679b0",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; stack output; EAXoutput; RET4",
+      "evidence": "Full52-byte actual producer: owner00,kind3,index1,opaque0C zero then currentlua_gettop,tracked0; padding preserved. No stack/tracking registration or cleanup.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00b67720",
+      "name": "BSP_LuaObject_GetByIndex",
+      "cpp": "native_lua_get_by_index_00b67720",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual object; stack output/signedindex; EAXoutput; RET8",
+      "evidence": "Full188-byte actual helper. Kind2: checkstack1ignored, pushsignedinteger asdouble, readcurrentinputindex/gettable/top then currentowner, publishkind2/tracked outputactualpointer/highwater/slotcount. Everyotherkind: untrackedkind2 atcapturedbase+index wrapping32bits. Zeroopaque0C, preservepadding. Original table/metatablevalues and1224-byte owner snapshots verified.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00b677e0",
+      "name": "BSP_LuaObject_ArgumentAt",
+      "cpp": "native_lua_argument_at_00b677e0",
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual object; stack output/index; EAXoriginaloutput; RET8",
+      "evidence": "Full32-byte wrapper delegatesB67720 then returns capturedoutputpointer. Four non-tablekinds/fouroffsets and actual20-byte output records compared to originalinstructions.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00426520",
+      "name": "BSP_NativeStringVector_Reserve",
+      "cpp": "reserve_native_string_vector_00426520",
+      "source": "src/native_string_vector.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual0Ch vector; stack signedcapacity; RET4",
+      "evidence": "Full290-byte reserve: minimum1, actual8-byte strings deep-copied into sharedheap with livecount/data; oldnames releasedforward, currentoldbacking freed before newpointer/cap publication. Sole unwindcalls00401130 bareRET, so NO allocatedcopy rollback. Reuses actual NativeMeshWeightNamesStorage layout via alias; full originalnormalflow fixture.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "00427110",
+      "name": "BSP_NativeStringVector_Resize",
+      "cpp": "resize_native_string_vector_00427110",
+      "source": "src/native_string_vector.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual0Ch vector; stack signedcount; RET4",
+      "evidence": "Full120-byte resize now includesgrowth via426520 andzeroinitializednew8-byteheaders. Shrink decrementslivecount before reverse stringrelease, finalrequestedcount. Existing no-grow fragment retained; originaldeepcopy/growth/shrink/regrowth trace verified.",
+      "stored_body_complete": true
+    },
+    {
+      "address": "004d0fa0",
+      "name": "BSP_NativeStringVector_Destruct",
+      "cpp": "destroy_native_string_vector_004d0fa0",
+      "source": "src/native_string_vector.cpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual0Ch vector; RET",
+      "evidence": "Full23-byte disk destructor: resize0 then freecurrentbacking, leavepointer/capstale. Storedbody stops4D0FB1; five-byte tailFB2..FB6 captured/executed, not claimed in storedexport. Used by B69D40 unwindCC1680.",
+      "stored_body_complete": false
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b66cf7",
+      "native": "00bf55be",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66da2",
+      "native": "00a6a160",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66dc4",
+      "native": "00a68090",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66dca",
+      "native": "00bf6989",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b69d68",
+      "native": "00b66ca0",
+      "function": "00b69d40"
+    },
+    {
+      "address": "00b69d8b",
+      "native": "00bdef90",
+      "function": "00b69d40"
+    },
+    {
+      "address": "00b69da4",
+      "native": "00b66ca0",
+      "function": "00b69d40"
+    },
+    {
+      "address": "00b69dbe",
+      "native": "00427110",
+      "function": "00b69d40"
+    },
+    {
+      "address": "00b69dc8",
+      "native": "00bf6989",
+      "function": "00b69d40"
+    },
+    {
+      "address": "00b69e20",
+      "native": "00b66c00",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69e39",
+      "native": "00b679b0",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69e49",
+      "native": "00b677e0",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69e60",
+      "native": "00a67810",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69e6a",
+      "native": "0041e870",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69e82",
+      "native": "00b69d40",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69ea1",
+      "native": "00419cc0",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69ea8",
+      "native": "00bd1510",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69ec4",
+      "native": "00b66de0",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69ee0",
+      "native": "00b66de0",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b69efc",
+      "native": "00a68a90",
+      "function": "00b69e00"
+    },
+    {
+      "address": "00b679d5",
+      "native": "00a673d0",
+      "function": "00b679b0"
+    },
+    {
+      "address": "00b6773e",
+      "native": "00a672f0",
+      "function": "00b67720"
+    },
+    {
+      "address": "00b67752",
+      "native": "00a679d0",
+      "function": "00b67720"
+    },
+    {
+      "address": "00b6775f",
+      "native": "00a67c20",
+      "function": "00b67720"
+    },
+    {
+      "address": "00b67769",
+      "native": "00a673d0",
+      "function": "00b67720"
+    },
+    {
+      "address": "00b677f4",
+      "native": "00b67720",
+      "function": "00b677e0"
+    },
+    {
+      "address": "00426562",
+      "native": "00bf55be",
+      "function": "00426520"
+    },
+    {
+      "address": "004265b0",
+      "native": "0041dd40",
+      "function": "00426520"
+    },
+    {
+      "address": "004265c5",
+      "native": "00bf7680",
+      "function": "00426520"
+    },
+    {
+      "address": "00426605",
+      "native": "00419cc0",
+      "function": "00426520"
+    },
+    {
+      "address": "0042660c",
+      "native": "00bd1510",
+      "function": "00426520"
+    },
+    {
+      "address": "0042661c",
+      "native": "00bf6989",
+      "function": "00426520"
+    },
+    {
+      "address": "0042711e",
+      "native": "00426520",
+      "function": "00427110"
+    },
+    {
+      "address": "0042716f",
+      "native": "00419cc0",
+      "function": "00427110"
+    },
+    {
+      "address": "00427176",
+      "native": "00bd1510",
+      "function": "00427110"
+    },
+    {
+      "address": "004d0fa5",
+      "native": "00427110",
+      "function": "004d0fa0"
+    },
+    {
+      "address": "004d0fad",
+      "native": "00bf6989",
+      "function": "004d0fa0"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b66cbd",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66cd0",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66ce1",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66cf4",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66d0d",
+      "operand": "edx",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66d16",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66d2d",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66d6b",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66d9a",
+      "operand": "eax",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66dab",
+      "operand": "dword ptr [0xce2220]",
+      "function": "00b66ca0"
+    },
+    {
+      "address": "00b66dbb",
+      "operand": "eax",
+      "function": "00b66ca0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "source_boundaries": {
+    "required": [
+      "live actual VFS publication",
+      "callable manager+04/stream+00,+18,+24,+30 tables",
+      "actual-header BDEF90 override append service",
+      "zero-upvalue application DoFile bridge"
+    ],
+    "implemented": "Full consumers and actual native string vector/Lua reference helpers.",
+    "not_implemented": "BDEF90 actual producer, native VFS manager/stream owners and numeric-vtable resolver.",
+    "invalid_host_services": "Explicit C++ invalid_argument boundary, not original failure semantics."
+  },
+  "chunk": {
+    "early_returns_release_stream": false,
+    "length_is_64bit": true,
+    "allocation_read_load_use_low_dword": true,
+    "read_count_ignored": true,
+    "read_table_pointer_captured_before_length": true,
+    "read_target_fetched_after_length": true,
+    "obfuscation": "Low flag byte; prefix bytes through marker01 become spaces; subsequentnibblerotation; live length aftereachbyte; signextendedindex comparedunsigned64.",
+    "path_pointer_captured_before_final_length": true,
+    "lua_state_read_after_final_length": true,
+    "load_status_ignored": true,
+    "release_before_lua_call": true,
+    "state_reread_after_release": true,
+    "call_protected": false,
+    "buffer_free_only_after_successful_call": true
+  },
+  "file": {
+    "initial_chunk_before_vector": true,
+    "current_manager_after_initial_chunk": true,
+    "actual_vector_bytes": 12,
+    "actual_path_bytes": 8,
+    "captured_begin_end": true,
+    "duplicates_preserved": true,
+    "normal_and_unwind_vector_cleanup": true
+  },
+  "dofile": {
+    "actual_borrowed_owner_bytes": 1224,
+    "call_frame_kind": 3,
+    "first_argument_index": 1,
+    "zero_upvalues": true,
+    "unchecked_path_constructor": true,
+    "obfuscated_flag": 0,
+    "returns_zero_lua_results": true,
+    "normal_argument_kind_not_cleared": true,
+    "normal_owner_state_not_cleared": true
+  },
+  "vector": {
+    "type_alias": "NativeStringVectorStorage = NativeMeshWeightNamesStorage",
+    "minimum_capacity": 1,
+    "deep_copies": true,
+    "live_counts_and_data": true,
+    "old_names_forward": true,
+    "free_before_publication": true,
+    "unwind_action": "00401130 bareRET",
+    "allocated_copy_rollback": false,
+    "shrink_reverse_with_predecrement": true,
+    "destroy_leaves_pointer_capacity_stale": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "permanent_tests_added": 0,
+    "focused_ignored_fixtures": 1,
+    "original_packet_functions_executed": 9,
+    "prior_dependency_bodies_relocated": 31,
+    "vector_growth_shrink_regrowth": true,
+    "minimum_capacity": true,
+    "paired_native_string_events": true,
+    "argument_non_table_kinds": 4,
+    "argument_offsets": 4,
+    "paired_argument_bytes": 20,
+    "table_metatable_values": true,
+    "paired_owner_bytes": 1224,
+    "chunk_shapes": 8,
+    "early_retention": true,
+    "shared_reference": true,
+    "multiple_lua_returns": true,
+    "low_byte_obfuscation_flag": true,
+    "prefix_and_no_marker": true,
+    "large_64bit_lengths_low_dword_consumers": true,
+    "ignored_reported_zero_read_count": true,
+    "captured_read_table": true,
+    "owner_state_reload": true,
+    "current_manager_reload": true,
+    "ordered_duplicate_overrides": true,
+    "nested_zero_upvalue_dofile": true,
+    "installed_scripts": [
+      "debugshader.shfx",
+      "alphablend.shfx",
+      "dx9_lua.inc"
+    ],
+    "fatal_child_processes": 4,
+    "fatal_conditions": [
+      "syntax error",
+      "runtime error"
+    ],
+    "fatal_exit_code": 1,
+    "stream_released_before_panic": true,
+    "rebuilt_append_exception_owned_name_cleanup": true,
+    "original_exception_execution": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "corrections": [
+    {
+      "was": "Existing Lua file runtime uses std::string/vector projections and protected failure handling.",
+      "is": "Actual native-storage consumer keeps native length/release ordering, ignored statuses and fatal unprotected Lua behavior.",
+      "evidence": "Complete original bodies and paired fixture/four fatal children."
+    },
+    {
+      "was": "426520 named but incomplete;427110 only no-grow fragment reconstructed.",
+      "is": "Full actual vector growth/deep-copy/resize/destructor with verified no-op reserve unwind.",
+      "evidence": "290/120/23-byte captures and original/rebuilt vector traces."
+    },
+    {
+      "was": "B69D40 export appeared to return after free.",
+      "is": "Complete24-byte disk tail captured/executed; storedbody remains incomplete after standard lockedrepair.",
+      "evidence": "local/native-lua-file-loading-flow-repair.json and complete165-byte PE span."
+    }
+  ],
+  "fixture_boundaries": {
+    "lua": "StockLua5.1.1 via register/stack ABI adapters; actual panic/exit execution in separate child processes.",
+    "vfs": "Same explicit fixture manager/stream/override services on both sides; installedbytes supplied through those streams. Does not prove native physical/archive VFS routing.",
+    "storage": "Previously established actual Lua owners/objects, native stringpool/sharedheap, and new actual vector helpers.",
+    "exceptions": "Six original EH states verified; no original MSVC EH execution. Rebuilt append exception cleanup tested. Reserve no-rollback is established by bareRET evidence.",
+    "tails": "B69D40 and4D0FA0 full PE tails execute in fixture but remain outside stored Ghidra bodies."
+  },
+  "limitations": [
+    "Not original binary ABI/SEH replacements.",
+    "Actual BDEF90/VFS manager/stream owners must be reconstructed/bound before full B43B00 integration.",
+    "Two stored Ghidra body tails remain incomplete; no full flow-repair claim.",
+    "Invalid indices/extents, uninitialized short-read tails and arbitrary callback-driven mutation remain unvalidated.",
+    "No game rendering or gameplay validation."
+  ]
+}
