@@ -2,7 +2,7 @@
   "schema": 1,
   "packet": "native_logical_buffer_device_save2",
   "utc": "2026-09-11T07:27:59.726505+00:00",
-  "status": "complete_reconstructed_strict_build_and_actual_provider_differential_fixture_passed",
+  "status": "complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked",
   "baseline_main": "4cd11c4",
   "private_frozen_Lock2_cherry_pick": "27d2916",
   "original_Lock2_commit": "018478d1ccff1dccc2e8fe47f1bd7302a8bc9257",
@@ -5274,5 +5274,4241 @@
       "bytes": 2415,
       "sha256": "31959820a21ade8870b733203d07e230f1aefebe13dcb1ea7e626902a5542a26"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verification": {
+      "passed": true,
+      "actual_main_library": {
+        "path": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/bsp_core.linked.lib",
+        "bytes": 30907682,
+        "sha256": "adb3e13067c2322933df7555f35d01702530ea5a3dae8ae77b875b99e15eacca"
+      },
+      "compiled_entries": [
+        {
+          "coff": {
+            "name": "?save_native_logical_vertex_buffer_for_device_reset_00b49d00@bsp@@YIXPAXAAUNativeLogicalBufferDeviceSaveContext@1@@Z",
+            "value": 0,
+            "section": 14,
+            "type": 32,
+            "storage_class": 2,
+            "index": 41,
+            "length": 19,
+            "section_length": 19,
+            "bytes_hex": "6a006a6c6a606a585251e80000000083c418c3",
+            "relocations": [
+              {
+                "offset": 11,
+                "symbol": "?save@?A0x9065c737@bsp@@YAXPAXAAUNativeLogicalBufferDeviceSaveContext@2@III_N@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?save_native_logical_vertex_buffer_for_device_reset_00b49d00@bsp@@YIXPAXAAUNativeLogicalBufferDeviceSaveContext@1@@Z",
+            "address": 805352096,
+            "member": "bsp_core.linked:native_logical_buffer_device_save.obj",
+            "map_line": "0001:0000a2a0       ?save_native_logical_vertex_buffer_for_device_reset_00b49d00@bsp@@YIXPAXAAUNativeLogicalBufferDeviceSaveContext@1@@Z 3000b2a0 f   bsp_core.linked:native_logical_buffer_device_save.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_logical_buffer_device_save.obj",
+          "object_sha256": "8bd6421dd8a93a18ce24529a0b8918aa9ca4bd105247f158c680d84c1f861899",
+          "linked_bytes_hex": "6a006a6c6a606a585251e841fdffff83c418c3",
+          "linked_sha256": "0820f6bc4d3b9f374e2073b03d1f2a4bf00b5d45ba97c163df97566bff13c9ea",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?save_native_logical_index_buffer_for_device_reset_00b49f80@bsp@@YIXPAXAAUNativeLogicalBufferDeviceSaveContext@1@@Z",
+            "value": 0,
+            "section": 12,
+            "type": 32,
+            "storage_class": 2,
+            "index": 42,
+            "length": 19,
+            "section_length": 19,
+            "bytes_hex": "6a016a1c6a106a085251e80000000083c418c3",
+            "relocations": [
+              {
+                "offset": 11,
+                "symbol": "?save@?A0x9065c737@bsp@@YAXPAXAAUNativeLogicalBufferDeviceSaveContext@2@III_N@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?save_native_logical_index_buffer_for_device_reset_00b49f80@bsp@@YIXPAXAAUNativeLogicalBufferDeviceSaveContext@1@@Z",
+            "address": 805352064,
+            "member": "bsp_core.linked:native_logical_buffer_device_save.obj",
+            "map_line": "0001:0000a280       ?save_native_logical_index_buffer_for_device_reset_00b49f80@bsp@@YIXPAXAAUNativeLogicalBufferDeviceSaveContext@1@@Z 3000b280 f   bsp_core.linked:native_logical_buffer_device_save.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_logical_buffer_device_save.obj",
+          "object_sha256": "8bd6421dd8a93a18ce24529a0b8918aa9ca4bd105247f158c680d84c1f861899",
+          "linked_bytes_hex": "6a016a1c6a106a085251e861fdffff83c418c3",
+          "linked_sha256": "bfb8c3f3ea00922bb392b63358e7cf8e9fa29b1e1a36bfa80ac7e731bac05a2b",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+            "value": 0,
+            "section": 10,
+            "type": 32,
+            "storage_class": 3,
+            "index": 55,
+            "length": 72,
+            "section_length": 72,
+            "bytes_hex": "558bec518b45088b008945fc8b45fc3d101ed60075098b450c8b008be55dc33d341ed600750a8b450c8b40048be55dc33d581ed6008b450c75078b40088be55dc38b400c8be55dc3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+            "address": 805351328,
+            "member": "bsp_core.linked:native_logical_buffer_device_save.obj",
+            "map_line": "0001:00009fa0       ?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z 3000afa0 f   bsp_core.linked:native_logical_buffer_device_save.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_logical_buffer_device_save.obj",
+          "object_sha256": "8bd6421dd8a93a18ce24529a0b8918aa9ca4bd105247f158c680d84c1f861899",
+          "linked_bytes_hex": "558bec518b45088b008945fc8b45fc3d101ed60075098b450c8b008be55dc33d341ed600750a8b450c8b40048be55dc33d581ed6008b450c75078b40088be55dc38b400c8be55dc3",
+          "linked_sha256": "33662b2269f4b7e804dab78d628b99fa172f60c6eadb419d10e6e7609d380ed1",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?save@?A0x9065c737@bsp@@YAXPAXAAUNativeLogicalBufferDeviceSaveContext@2@III_N@Z",
+            "value": 0,
+            "section": 11,
+            "type": 32,
+            "storage_class": 3,
+            "index": 60,
+            "length": 655,
+            "section_length": 655,
+            "bytes_hex": "558bec83ec2ca10000000033c58945fc8b4d088b45148b551003c1538b5d0c568b7518894ddc8975e48945ec8b45ec8b008945e88b45e82500f000003d001000000f84380200008d340a8975e88b45e88b008945ec8b4dec85c90f841f020000ff730451e80000000083c4088b401c3d40b8b4007507e800000000eb05e80000000085c00f84f5010000578975e88b45e88b008945ecff73048b4dec51e80000000083c4088b401c3d40b8b4007507e800000000eb05e8000000008bf885ff7440897de88b45e88b008945ec8b45ec83c0048945e88b45e88b008945ec57ff55ec897de88b45e88b008945ec8b45ec83c0088945e88b45e88b008945ec57ff55ec8975e88b45e88b008945ecff73048b4dec51e80000000083c4088b40183d00b8b4007507e800000000eb05e8000000008945f48945f88d45f050c745f003000000e80000000083c4048945e08975e88b45e88b008945d48b45dc0345e48b4dd48945ec8b45ec8b55e08910ff7304c745d80000000051e80000000083c4088945dc8b501881fa00b8b4007507e800000000eb05e8000000008bc88975e08b45e08b008945e48b45dc8b7de48b136a018b40083d50b8b4008d45d8506a016a00518bcf7507e800000000eb05e8000000008bf88975e08b45e08b008945e4ff73048b4de451e80000000083c4088b40183d00b8b4007507e800000000eb05e8000000008bc88b45ec8945e08b45e08b008945e45157ff75e4e80000000083c40c8975e08b45e08b008945e4ff73048b4de451e80000000083c4088b400c5f3d20b8b4007507e800000000eb05e8000000008975e08b45e08b008945e4807d1c008b4de47415e8000000005e5b8b4dfc33cde8000000008be55dc3e8000000008b4dfc5e33cd5be8000000008be55dc3",
+            "relocations": [
+              {
+                "offset": 7,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 101,
+                "symbol": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+                "type": 20
+              },
+              {
+                "offset": 119,
+                "symbol": "?native_physical_index_buffer_get_com_00b4b840@bsp@@YIPAXPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 126,
+                "symbol": "?native_physical_vertex_buffer_get_com_00b4b9f0@bsp@@YIPAXPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 158,
+                "symbol": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+                "type": 20
+              },
+              {
+                "offset": 176,
+                "symbol": "?native_physical_index_buffer_get_com_00b4b840@bsp@@YIPAXPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 183,
+                "symbol": "?native_physical_vertex_buffer_get_com_00b4b9f0@bsp@@YIPAXPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 276,
+                "symbol": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+                "type": 20
+              },
+              {
+                "offset": 294,
+                "symbol": "?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 301,
+                "symbol": "?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 323,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 376,
+                "symbol": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+                "type": 20
+              },
+              {
+                "offset": 398,
+                "symbol": "?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 405,
+                "symbol": "?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 454,
+                "symbol": "?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+                "type": 20
+              },
+              {
+                "offset": 461,
+                "symbol": "?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+                "type": 20
+              },
+              {
+                "offset": 486,
+                "symbol": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+                "type": 20
+              },
+              {
+                "offset": 504,
+                "symbol": "?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 511,
+                "symbol": "?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z",
+                "type": 20
+              },
+              {
+                "offset": 537,
+                "symbol": "_memcpy",
+                "type": 20
+              },
+              {
+                "offset": 563,
+                "symbol": "?profile@?A0x9065c737@bsp@@YAPDIPBXABUNativeLogicalBufferDeviceSaveProfiles@2@@Z",
+                "type": 20
+              },
+              {
+                "offset": 582,
+                "symbol": "?unlock_native_physical_index_buffer_00b4b820@bsp@@YIXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 589,
+                "symbol": "?unlock_native_physical_vertex_buffer_00b4b9d0@bsp@@YIXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 614,
+                "symbol": "?release_native_physical_index_buffer_for_reset_00b23180@bsp@@YIXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 626,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 635,
+                "symbol": "?release_native_physical_vertex_buffer_for_reset_00b23270@bsp@@YIXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 647,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?save@?A0x9065c737@bsp@@YAXPAXAAUNativeLogicalBufferDeviceSaveContext@2@III_N@Z",
+            "address": 805351408,
+            "member": "bsp_core.linked:native_logical_buffer_device_save.obj",
+            "map_line": "0001:00009ff0       ?save@?A0x9065c737@bsp@@YAXPAXAAUNativeLogicalBufferDeviceSaveContext@2@III_N@Z 3000aff0 f   bsp_core.linked:native_logical_buffer_device_save.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_logical_buffer_device_save.obj",
+          "object_sha256": "8bd6421dd8a93a18ce24529a0b8918aa9ca4bd105247f158c680d84c1f861899",
+          "linked_bytes_hex": "558bec83ec2ca14020013033c58945fc8b4d088b45148b551003c1538b5d0c568b7518894ddc8975e48945ec8b45ec8b008945e88b45e82500f000003d001000000f84380200008d340a8975e88b45e88b008945ec8b4dec85c90f841f020000ff730451e847ffffff83c4088b401c3d40b8b4007507e835030000eb05e83e03000085c00f84f5010000578975e88b45e88b008945ecff73048b4dec51e80effffff83c4088b401c3d40b8b4007507e8fc020000eb05e8050300008bf885ff7440897de88b45e88b008945ec8b45ec83c0048945e88b45e88b008945ec57ff55ec897de88b45e88b008945ec8b45ec83c0088945e88b45e88b008945ec57ff55ec8975e88b45e88b008945ecff73048b4dec51e898feffff83c4088b40183d00b8b4007507e8a6010000eb05e8af0100008945f48945f88d45f050c745f003000000e8a9faffff83c4048945e08975e88b45e88b008945d48b45dc0345e48b4dd48945ec8b45ec8b55e08910ff7304c745d80000000051e834feffff83c4088945dc8b501881fa00b8b4007507e83e010000eb05e8470100008bc88975e08b45e08b008945e48b45dc8b7de48b136a018b40083d50b8b4008d45d8506a016a00518bcf7507e8a6fdffffeb05e8bffdffff8bf88975e08b45e08b008945e4ff73048b4de451e8c6fdffff83c4088b40183d00b8b4007507e8d4000000eb05e8dd0000008bc88b45ec8945e08b45e08b008945e45157ff75e4e8a50f000083c40c8975e08b45e08b008945e4ff73048b4de451e879fdffff83c4088b400c5f3d20b8b4007507e826010000eb05e83f0100008975e08b45e08b008945e4807d1c008b4de47415e8860000005e5b8b4dfc33cde80a0200008be55dc3e8b10000008b4dfc5e33cd5be8f50100008be55dc3",
+          "linked_sha256": "8c104b3785676dec670a331498c692ed1f45a84c26a4012cc47cb35853fc1bae",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+            "value": 0,
+            "section": 9,
+            "type": 32,
+            "storage_class": 2,
+            "index": 28,
+            "length": 29,
+            "section_length": 29,
+            "bytes_hex": "558becff7518ff7514ff750cff75085251e80000000083c4185dc21400",
+            "relocations": [
+              {
+                "offset": 18,
+                "symbol": "?lock@?A0x6d917ad3@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+            "address": 805351264,
+            "member": "bsp_core.linked:native_physical_buffer_lock.obj",
+            "map_line": "0001:00009f60       ?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z 3000af60 f   bsp_core.linked:native_physical_buffer_lock.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_lock.obj",
+          "object_sha256": "814e73c591ab78575bc3f2c601893c14b03d4b145fa3e78c67404a1cc944e442",
+          "linked_bytes_hex": "558becff7518ff7514ff750cff75085251e85afeffff83c4185dc21400",
+          "linked_sha256": "e4fbab16910a23660430328c79aadf7f61e44c725f32aa79f7eb280f69c05854",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+            "value": 0,
+            "section": 10,
+            "type": 32,
+            "storage_class": 2,
+            "index": 29,
+            "length": 29,
+            "section_length": 29,
+            "bytes_hex": "558becff7518ff7514ff750cff75085251e80000000083c4185dc21400",
+            "relocations": [
+              {
+                "offset": 18,
+                "symbol": "?lock@?A0x6d917ad3@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+            "address": 805351296,
+            "member": "bsp_core.linked:native_physical_buffer_lock.obj",
+            "map_line": "0001:00009f80       ?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z 3000af80 f   bsp_core.linked:native_physical_buffer_lock.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_lock.obj",
+          "object_sha256": "814e73c591ab78575bc3f2c601893c14b03d4b145fa3e78c67404a1cc944e442",
+          "linked_bytes_hex": "558becff7518ff7514ff750cff75085251e83afeffff83c4185dc21400",
+          "linked_sha256": "ef2a28bd77979bd279b43ebc9ab87b7e22865433cb31310f9d3c879e4eb7229f",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?lock@?A0x6d917ad3@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+            "value": 0,
+            "section": 8,
+            "type": 32,
+            "storage_class": 3,
+            "index": 36,
+            "length": 388,
+            "section_length": 388,
+            "bytes_hex": "558bec83ec0c5356578b7d088d771c8975fc8b45fc8b008945f88d47188945fc8b45fc8b008945f48b550c8b45f80345148d4a04894dfc3b45f47e12ff31ff32e8000000008b4dfc83c4088b550c807d1c00b810080000bb00080000c74508000000000f45d88d471489451c8b451c8b008945f4f745f400100000743e89751c8b451c8b008945f4837df400bb00100000b8002000000f44d8837d1400740cff31ff32e80000000083c4088d472489451c8b451cba0100000001108d472889451c8b451c8b008945f48b4df4894d1c85c9743b8b451c8b008945f889751c8b451c8b008945fc8b45f883c02c89451c8b451c8b008945f8538b5d148d450850ff75108b45fc03c35051ff55f8eb198b450c89751c8b40088945088b451cba0000000089108b5d1489751c8b451c8b008945148b451489451c8b45188b551c89108d471489451c8b451c8b00894514f745140010000074138b451003c389751c8945148b451c8b551401108d472089451c8b451cba0100000001108b45085f5e5b8be55dc3",
+            "relocations": [
+              {
+                "offset": 65,
+                "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 164,
+                "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?lock@?A0x6d917ad3@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z",
+            "address": 805350864,
+            "member": "bsp_core.linked:native_physical_buffer_lock.obj",
+            "map_line": "0001:00009dd0       ?lock@?A0x6d917ad3@bsp@@YAPAXPAXAAUNativePhysicalBufferLockContext@2@II0E@Z 3000add0 f   bsp_core.linked:native_physical_buffer_lock.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_lock.obj",
+          "object_sha256": "814e73c591ab78575bc3f2c601893c14b03d4b145fa3e78c67404a1cc944e442",
+          "linked_bytes_hex": "558bec83ec0c5356578b7d088d771c8975fc8b45fc8b008945f88d47188945fc8b45fc8b008945f48b550c8b45f80345148d4a04894dfc3b45f47e12ff31ff32e8abfeffff8b4dfc83c4088b550c807d1c00b810080000bb00080000c74508000000000f45d88d471489451c8b451c8b008945f4f745f400100000743e89751c8b451c8b008945f4837df400bb00100000b8002000000f44d8837d1400740cff31ff32e848feffff83c4088d472489451c8b451cba0100000001108d472889451c8b451c8b008945f48b4df4894d1c85c9743b8b451c8b008945f889751c8b451c8b008945fc8b45f883c02c89451c8b451c8b008945f8538b5d148d450850ff75108b45fc03c35051ff55f8eb198b450c89751c8b40088945088b451cba0000000089108b5d1489751c8b451c8b008945148b451489451c8b45188b551c89108d471489451c8b451c8b00894514f745140010000074138b451003c389751c8945148b451c8b551401108d472089451c8b451cba0100000001108b45085f5e5b8be55dc3",
+          "linked_sha256": "92da4b762dc0af60daf0805ad16e7cc66eb07801e937a9a63b1444cc9df00162",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?release_native_physical_vertex_buffer_for_reset_00b23270@bsp@@YIXPAX@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage_class": 2,
+            "index": 18,
+            "length": 52,
+            "section_length": 52,
+            "bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?release_native_physical_vertex_buffer_for_reset_00b23270@bsp@@YIXPAX@Z",
+            "address": 805352224,
+            "member": "bsp_core.linked:native_physical_buffer_access.obj",
+            "map_line": "0001:0000a320       ?release_native_physical_vertex_buffer_for_reset_00b23270@bsp@@YIXPAX@Z 3000b320 f   bsp_core.linked:native_physical_buffer_access.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "object_sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756",
+          "linked_bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+          "linked_sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?release_native_physical_index_buffer_for_reset_00b23180@bsp@@YIXPAX@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 2,
+            "index": 19,
+            "length": 52,
+            "section_length": 52,
+            "bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?release_native_physical_index_buffer_for_reset_00b23180@bsp@@YIXPAX@Z",
+            "address": 805352160,
+            "member": "bsp_core.linked:native_physical_buffer_access.obj",
+            "map_line": "0001:0000a2e0       ?release_native_physical_index_buffer_for_reset_00b23180@bsp@@YIXPAX@Z 3000b2e0 f   bsp_core.linked:native_physical_buffer_access.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "object_sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756",
+          "linked_bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+          "linked_sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage_class": 2,
+            "index": 20,
+            "length": 4,
+            "section_length": 4,
+            "bytes_hex": "8b4118c3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z",
+            "address": 805352128,
+            "member": "bsp_core.linked:native_physical_buffer_access.obj",
+            "map_line": "0001:0000a2c0       ?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z 3000b2c0 f   bsp_core.linked:native_physical_buffer_access.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "object_sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756",
+          "linked_bytes_hex": "8b4118c3",
+          "linked_sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage_class": 2,
+            "index": 21,
+            "length": 4,
+            "section_length": 4,
+            "bytes_hex": "8b4118c3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z",
+            "address": 805352144,
+            "member": "bsp_core.linked:native_physical_buffer_access.obj",
+            "map_line": "0001:0000a2d0       ?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z 3000b2d0 f   bsp_core.linked:native_physical_buffer_access.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "object_sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756",
+          "linked_bytes_hex": "8b4118c3",
+          "linked_sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?unlock_native_physical_index_buffer_00b4b820@bsp@@YIXPAX@Z",
+            "value": 0,
+            "section": 7,
+            "type": 32,
+            "storage_class": 2,
+            "index": 22,
+            "length": 24,
+            "section_length": 24,
+            "bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?unlock_native_physical_index_buffer_00b4b820@bsp@@YIXPAX@Z",
+            "address": 805352288,
+            "member": "bsp_core.linked:native_physical_buffer_access.obj",
+            "map_line": "0001:0000a360       ?unlock_native_physical_index_buffer_00b4b820@bsp@@YIXPAX@Z 3000b360 f   bsp_core.linked:native_physical_buffer_access.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "object_sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756",
+          "linked_bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+          "linked_sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?unlock_native_physical_vertex_buffer_00b4b9d0@bsp@@YIXPAX@Z",
+            "value": 0,
+            "section": 8,
+            "type": 32,
+            "storage_class": 2,
+            "index": 23,
+            "length": 24,
+            "section_length": 24,
+            "bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?unlock_native_physical_vertex_buffer_00b4b9d0@bsp@@YIXPAX@Z",
+            "address": 805352320,
+            "member": "bsp_core.linked:native_physical_buffer_access.obj",
+            "map_line": "0001:0000a380       ?unlock_native_physical_vertex_buffer_00b4b9d0@bsp@@YIXPAX@Z 3000b380 f   bsp_core.linked:native_physical_buffer_access.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "object_sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756",
+          "linked_bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+          "linked_sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_physical_vertex_buffer_get_com_00b4b9f0@bsp@@YIPAXPBX@Z",
+            "value": 0,
+            "section": 8,
+            "type": 32,
+            "storage_class": 2,
+            "index": 27,
+            "length": 4,
+            "section_length": 4,
+            "bytes_hex": "8b4128c3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?native_physical_vertex_buffer_get_com_00b4b9f0@bsp@@YIPAXPBX@Z",
+            "address": 805352368,
+            "member": "bsp_core.linked:native_renderer_binding_getters.obj",
+            "map_line": "0001:0000a3b0       ?native_physical_vertex_buffer_get_com_00b4b9f0@bsp@@YIPAXPBX@Z 3000b3b0 f   bsp_core.linked:native_renderer_binding_getters.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_renderer_binding_getters.obj",
+          "object_sha256": "948f9e487fff004e173c9407259d35a10fbb3f0161f8c045552b81401a61fdbc",
+          "linked_bytes_hex": "8b4128c3",
+          "linked_sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_physical_index_buffer_get_com_00b4b840@bsp@@YIPAXPBX@Z",
+            "value": 0,
+            "section": 7,
+            "type": 32,
+            "storage_class": 2,
+            "index": 28,
+            "length": 4,
+            "section_length": 4,
+            "bytes_hex": "8b4128c3",
+            "relocations": []
+          },
+          "link": {
+            "name": "?native_physical_index_buffer_get_com_00b4b840@bsp@@YIPAXPBX@Z",
+            "address": 805352352,
+            "member": "bsp_core.linked:native_renderer_binding_getters.obj",
+            "map_line": "0001:0000a3a0       ?native_physical_index_buffer_get_com_00b4b840@bsp@@YIPAXPBX@Z 3000b3a0 f   bsp_core.linked:native_renderer_binding_getters.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_renderer_binding_getters.obj",
+          "object_sha256": "948f9e487fff004e173c9407259d35a10fbb3f0161f8c045552b81401a61fdbc",
+          "linked_bytes_hex": "8b4128c3",
+          "linked_sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "value": 0,
+            "section": 7,
+            "type": 32,
+            "storage_class": 2,
+            "index": 31,
+            "length": 260,
+            "section_length": 260,
+            "bytes_hex": "558bec6aff680000000064a1000000005083ec1ca10000000033c58945ec535657508d45f464a3000000008965f08b7d088b5d0c8b0785c00f858f0000008bcbe800000000c745d8fc37ce008b40288b3085f674158b368975dc85f6741156ff1500000000ff4618eb0533f68975dc833f00c745fc0000000075428d45e0c745e00300000050c745e404000000c745e804000000e80000000083c40485c07408c7002c75ce00eb0233c08bcb8907e8000000008bc88b0750e80000000085f6740aff4e1856ff15000000008b078b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc38d45d850e80000000083c4046a006a00e800000000cccccccccccc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 21,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 65,
+                "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 20
+              },
+              {
+                "offset": 97,
+                "symbol": "__imp__EnterCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 149,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 175,
+                "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 20
+              },
+              {
+                "offset": 185,
+                "symbol": "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 199,
+                "symbol": "__imp__LeaveCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 225,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 238,
+                "symbol": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 250,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "address": 805350592,
+            "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+            "map_line": "0001:00009cc0       ?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z 3000acc0 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_diagnostic_sink_lifetime.obj",
+          "object_sha256": "69051fbea6144a5d43ab2970f846cb8f3967122f8c849709fb16ab0f540698eb",
+          "linked_bytes_hex": "558bec6aff68c0ca003064a1000000005083ec1ca14020013033c58945ec535657508d45f464a3000000008965f08b7d088b5d0c8b0785c00f858f0000008bcbe8ebfaffffc745d8fc37ce008b40288b3085f674158b368975dc85f6741156ff1528d00030ff4618eb0533f68975dc833f00c745fc0000000075428d45e0c745e00300000050c745e404000000c745e804000000e887feffff83c40485c07408c7002c75ce00eb0233c08bcb8907e87dfaffff8bc88b0750e873fdffff85f6740aff4e1856ff1524d000308b078b4df464890d00000000595f5e5b8b4dec33cde8cb0600008be55dc38d45d850e8eefeffff83c4046a006a00e806140000cccccccccccc",
+          "linked_sha256": "46047f4ccb8646667514e1f1d80014054a29b36630cf1fc1d1d1707c54f21114",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 2,
+            "index": 32,
+            "length": 42,
+            "section_length": 42,
+            "bytes_hex": "558becf6450c018b4510568b7508c70000000000c7061838ce00740956e80000000083c4048bc65e5dc3",
+            "relocations": [
+              {
+                "offset": 30,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z",
+            "address": 805350512,
+            "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+            "map_line": "0001:00009c70       ?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z 3000ac70 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_diagnostic_sink_lifetime.obj",
+          "object_sha256": "69051fbea6144a5d43ab2970f846cb8f3967122f8c849709fb16ab0f540698eb",
+          "linked_bytes_hex": "558becf6450c018b4510568b7508c70000000000c7061838ce00740956e8aeffffff83c4048bc65e5dc3",
+          "linked_sha256": "00603c4e63ca394f735cd5ca7ee33dac8056f242a5b3e1e912247e9efdd33348",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage_class": 2,
+            "index": 33,
+            "length": 31,
+            "section_length": 31,
+            "bytes_hex": "558bec8b45088b4804c700fc37ce0085c9740aff491851ff15000000005dc3",
+            "relocations": [
+              {
+                "offset": 25,
+                "symbol": "__imp__LeaveCriticalSection@4",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+            "address": 805350560,
+            "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+            "map_line": "0001:00009ca0       ?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z 3000aca0 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_diagnostic_sink_lifetime.obj",
+          "object_sha256": "69051fbea6144a5d43ab2970f846cb8f3967122f8c849709fb16ab0f540698eb",
+          "linked_bytes_hex": "558bec8b45088b4804c700fc37ce0085c9740aff491851ff1524d000305dc3",
+          "linked_sha256": "c5191dc35643e76b02e855d1cea4ca313a191cf640823ee88d6248f2159bf091",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__ehhandler$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "value": 0,
+            "section": 8,
+            "type": 32,
+            "storage_class": 3,
+            "index": 40,
+            "length": 39,
+            "section_length": 39,
+            "bytes_hex": "90908b5424088d420c8b4ad433c8e8000000008b4af833c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 25,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 30,
+                "symbol": "__ehfuncinfo$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 35,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__ehhandler$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+            "address": 805358272,
+            "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+            "map_line": "0001:0000bac0       __ehhandler$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z 3000cac0 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_diagnostic_sink_lifetime.obj",
+          "object_sha256": "69051fbea6144a5d43ab2970f846cb8f3967122f8c849709fb16ab0f540698eb",
+          "linked_bytes_hex": "90908b5424088d420c8b4ad433c8e89de9ffff8b4af833c8e893e9ffffb848000130e9e3f6ffff",
+          "linked_sha256": "a79d48ac1555066038e01af49b6ccbb19b9f6cb76d901403434e5d69af5e4353",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__catch$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z$0",
+            "value": 233,
+            "section": 7,
+            "type": 32,
+            "storage_class": 3,
+            "index": 43,
+            "length": 27,
+            "section_length": 260,
+            "bytes_hex": "8d45d850e80000000083c4046a006a00e800000000cccccccccccc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 21,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 65,
+                "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 20
+              },
+              {
+                "offset": 97,
+                "symbol": "__imp__EnterCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 149,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 175,
+                "symbol": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 20
+              },
+              {
+                "offset": 185,
+                "symbol": "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 199,
+                "symbol": "__imp__LeaveCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 225,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 238,
+                "symbol": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 250,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__catch$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z$0",
+            "address": 805350825,
+            "member": "bsp_core.linked:native_diagnostic_sink_lifetime.obj",
+            "map_line": "0001:00009da9       __catch$?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z$0 3000ada9 f   bsp_core.linked:native_diagnostic_sink_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/native_diagnostic_sink_lifetime.obj",
+          "object_sha256": "69051fbea6144a5d43ab2970f846cb8f3967122f8c849709fb16ab0f540698eb",
+          "linked_bytes_hex": "8d45d850e8eefeffff83c4046a006a00e806140000cccccccccccc",
+          "linked_sha256": "c92255f460d1bb0fdb384c9697db892aca7519946626d9f10f31ba0063bccc45",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "value": 0,
+            "section": 76,
+            "type": 32,
+            "storage_class": 2,
+            "index": 184,
+            "length": 90,
+            "section_length": 90,
+            "bytes_hex": "558bec83ec0c538b1d00000000568b7508ff7608ffd383c40485c07520578b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 9,
+                "symbol": "__imp__malloc",
+                "type": 6
+              },
+              {
+                "offset": 32,
+                "symbol": "__imp___callnewh",
+                "type": 6
+              },
+              {
+                "offset": 71,
+                "symbol": "??0bad_alloc@std@@QAE@XZ",
+                "type": 20
+              },
+              {
+                "offset": 76,
+                "symbol": "__TI2?AVbad_alloc@std@@",
+                "type": 6
+              },
+              {
+                "offset": 85,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "address": 805350368,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009be0       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 3000abe0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec83ec0c538b1dc0d10030568b7508ff7608ffd383c40485c07520578b3db8d10030ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e815f7ffff6864ff00308d45f450e88b150000cc",
+          "linked_sha256": "77cbf200df2b7fe83332495e14c1f427318f0d7464e79fff1aef14b0d9755d13",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "value": 0,
+            "section": 77,
+            "type": 32,
+            "storage_class": 2,
+            "index": 185,
+            "length": 6,
+            "section_length": 6,
+            "bytes_hex": "ff2500000000",
+            "relocations": [
+              {
+                "offset": 2,
+                "symbol": "__imp__free",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "address": 805350464,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009c40       ?singleton_lifetime_free@bsp@@YAXPAX@Z 3000ac40 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "ff25c4d10030",
+          "linked_sha256": "a64630e71db1fefc9973520eb7a53e3a21362737af3958fd5c4404a835b6613b",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?lock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ",
+            "value": 0,
+            "section": 67,
+            "type": 32,
+            "storage_class": 2,
+            "index": 189,
+            "length": 24,
+            "section_length": 24,
+            "bytes_hex": "568bf18b4620ff30ff15000000008b46205e8b4004ff00c3",
+            "relocations": [
+              {
+                "offset": 10,
+                "symbol": "__imp__EnterCriticalSection@4",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?lock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ",
+            "address": 805350096,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009ad0       ?lock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ 3000aad0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "568bf18b4620ff30ff1528d000308b46205e8b4004ff00c3",
+          "linked_sha256": "be652ce1482d75ffaf6a050cb7d5940824f49d200f7b3e41066a68a9e9152dee",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?unlock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ",
+            "value": 0,
+            "section": 78,
+            "type": 32,
+            "storage_class": 2,
+            "index": 190,
+            "length": 20,
+            "section_length": 20,
+            "bytes_hex": "8b41208b4004ff088b4120ff30ff1500000000c3",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol": "__imp__LeaveCriticalSection@4",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?unlock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ",
+            "address": 805350480,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009c50       ?unlock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ 3000ac50 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "8b41208b4004ff088b4120ff30ff1524d00030c3",
+          "linked_sha256": "9c6f117040f08917ab66cff7405365102ceec0b8cecc8ec058e33c48d6e4e35b",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+            "value": 0,
+            "section": 71,
+            "type": 32,
+            "storage_class": 2,
+            "index": 191,
+            "length": 118,
+            "section_length": 118,
+            "bytes_hex": "558bec53568bf18b46148d56043b4610730dff328b460cffd083c4048d5604837d0800744b8b4610578b7e1485c074338bcf2bc88b46182b4610c1f902c1f8023bc873108b45088907834614045f5e5b5dc204003b7e10730aff328b460cffd083c4048d45088bce5057e8000000005f5e5b5dc20400",
+            "relocations": [
+              {
+                "offset": 107,
+                "symbol": "?insert_pointer_at_checked_00bd08d0@ConcreteSingletonLifetimeManager@bsp@@AAEXPAPAXPBQAX@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+            "address": 805350128,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009af0       ?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z 3000aaf0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec53568bf18b46148d56043b4610730dff328b460cffd083c4048d5604837d0800744b8b4610578b7e1485c074338bcf2bc88b46182b4610c1f902c1f8023bc873108b45088907834614045f5e5b5dc204003b7e10730aff328b460cffd083c4048d45088bce5057e851fdffff5f5e5b5dc20400",
+          "linked_sha256": "d79ff54067212365002ea69d6ad245f1a42d2171aa3fd9f7ee7f2ad9c8880900",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+            "value": 0,
+            "section": 5,
+            "type": 32,
+            "storage_class": 2,
+            "index": 197,
+            "length": 304,
+            "section_length": 304,
+            "bytes_hex": "558bec6aff680000000064a1000000005083ec08535657a10000000033c5508d45f464a3000000008965f08bf18975ecf30f7e45088d7e208b4510660fd646040f57c089460c8d4508c70600000000660fd64610c746180000000050c745fc00000000c7461c00000000c70700000000897624897e28c7450801000000c7450c00040000c7451000040000e80000000089461089461405000400008946188d450850c645fc01c7450802000000c7450c1c000000c7451024000000e80000000083c4088d481889401c8948205089461cff15000000008b461cc74018000000008b461c83c01c89078bc68b4df464890d00000000595f5e5b8be55dc20c008b75ecff761ce800000000ff7610c7461c00000000e80000000083c40833c00f57c0660fd646108946185050e800000000cc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 24,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 75,
+                "symbol": "??_7ConcreteSingletonLifetimeManager@bsp@@6B@",
+                "type": 6
+              },
+              {
+                "offset": 140,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 188,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 210,
+                "symbol": "__imp__InitializeCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 261,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 276,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 299,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+            "address": 805347776,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000091c0       ??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z 3000a1c0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec6aff680dca003064a1000000005083ec08535657a14020013033c5508d45f464a3000000008965f08bf18975ecf30f7e45088d7e208b4510660fd646040f57c089460c8d4508c70618eb0030660fd64610c746180000000050c745fc00000000c7461c00000000c70700000000897624897e28c7450801000000c7450c00040000c7451000040000e89009000089461089461405000400008946188d450850c645fc01c7450802000000c7450c1c000000c7451024000000e86009000083c4088d481889401c8948205089461cff1500d000308b461cc74018000000008b461c83c01c89078bc68b4df464890d00000000595f5e5b8be55dc20c008b75ecff761ce877090000ff7610c7461c00000000e86809000083c40833c00f57c0660fd646108946185050e8d51e0000cc",
+          "linked_sha256": "56fc6e468c605a5e137c60bf42180a4b2314d3db71a1589812d98e4904b1ec6c",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+            "value": 0,
+            "section": 58,
+            "type": 32,
+            "storage_class": 2,
+            "index": 198,
+            "length": 282,
+            "section_length": 282,
+            "bytes_hex": "558bec515356578bf10f1f80000000008b4e1085c90f84850000008b5e148bc32bc1c1f80285c074778d460c8945fc3bd9730cff76048b00ffd083c404eb038945fc83c3fc3b5e1477053b5e10730bff76048b460cffd083c404395e14770d8b45fcff76048b00ffd083c4048b56108b0b85d274148b5e148bc32bc2c1f80285c074068d43fc89461485c974838b46086a0151ff7604ffd083c40ce970ffffff8b461c8b1d0000000085c0745183781800742e8b3d000000000f1f80000000008b50188d481881fa0000008073138d42ff8901ff761cffd78b461c8378180075df50ff1500000000ff761cffd383c404c7461c00000000c7462000000000ff7610ffd383c4040f57c0660fd6461033c08946185f5e5b8be55dc3",
+            "relocations": [
+              {
+                "offset": 165,
+                "symbol": "__imp__free",
+                "type": 6
+              },
+              {
+                "offset": 181,
+                "symbol": "__imp__LeaveCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 228,
+                "symbol": "__imp__DeleteCriticalSection@4",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+            "address": 805349072,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000096d0       ?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ 3000a6d0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec515356578bf10f1f80000000008b4e1085c90f84850000008b5e148bc32bc1c1f80285c074778d460c8945fc3bd9730cff76048b00ffd083c404eb038945fc83c3fc3b5e1477053b5e10730bff76048b460cffd083c404395e14770d8b45fcff76048b00ffd083c4048b56108b0b85d274148b5e148bc32bc2c1f80285c074068d43fc89461485c974838b46086a0151ff7604ffd083c40ce970ffffff8b461c8b1dc4d1003085c0745183781800742e8b3d24d000300f1f80000000008b50188d481881fa0000008073138d42ff8901ff761cffd78b461c8378180075df50ff1520d00030ff761cffd383c404c7461c00000000c7462000000000ff7610ffd383c4040f57c0660fd6461033c08946185f5e5b8be55dc3",
+          "linked_sha256": "4eba76c3ff2b2970e2f3e0cba73d03194b025e02219ecc885a42fdab40ac187d",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?insert_pointer_at_checked_00bd08d0@ConcreteSingletonLifetimeManager@bsp@@AAEXPAPAXPBQAX@Z",
+            "value": 0,
+            "section": 64,
+            "type": 32,
+            "storage_class": 2,
+            "index": 201,
+            "length": 541,
+            "section_length": 541,
+            "bytes_hex": "558bec83ec1053568bf1c745fc00000000578b7d088b5e108bcb8b561485db74278bc22bc3c1f80285c0741c3bd3730eff76048b460cffd08b4e1083c4048bd72bd3c1fa028955fc8b450c8b0089450885c974738b5e14b8ffffff3f2bd9c1fb022bc383f8010f82950100008b5618432bd1c1fa023bd372558b46148d4f042bc783e0fc743385c97520ff1500000000c70016000000ff1500000000834614048b55088917e91a01000085ff74dc505751e80000000083c40c834614048b55088917e9fd00000033c033d28d58018bc2b9ffffff3fd1e82bc803c2894d0c33c93b550c0f46c83bcb0f43d953895d0ce8000000008b56108bd88b0d000000008bc72bc283c40483e0fc743985db7510ffd1c70016000000ff1500000000eb1f85d27510ffd1c70016000000ff1500000000eb0b505253e80000000083c40c8b0d000000008b55088bc72b4610c1f802891483408d14838b46142bc783e0fc743385d27510ffd1c70016000000ff1500000000eb1f85ff7510ffd1c70016000000ff1500000000eb0b505752e80000000083c40c8b461085c0740a8b7e142bf883e7fceb0233ff50ff15000000008b450c83c404895e108d04838946188d430403c78946148b4610894508394614730bff76048b460cffd083c4048b45fc8b4d088d04813b461477053b4610730bff76048b460cffd083c4045f5e5b8be55dc2080068000000008d4df0e80000000068000000008d45f050e800000000cc",
+            "relocations": [
+              {
+                "offset": 140,
+                "symbol": "__imp___errno",
+                "type": 6
+              },
+              {
+                "offset": 152,
+                "symbol": "__imp___invalid_parameter_noinfo",
+                "type": 6
+              },
+              {
+                "offset": 178,
+                "symbol": "_memmove",
+                "type": 20
+              },
+              {
+                "offset": 240,
+                "symbol": "?allocate_slots@?A0x97b3432d@bsp@@YAPAPAXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 251,
+                "symbol": "__imp___errno",
+                "type": 6
+              },
+              {
+                "offset": 281,
+                "symbol": "__imp___invalid_parameter_noinfo",
+                "type": 6
+              },
+              {
+                "offset": 301,
+                "symbol": "__imp___invalid_parameter_noinfo",
+                "type": 6
+              },
+              {
+                "offset": 311,
+                "symbol": "_memmove",
+                "type": 20
+              },
+              {
+                "offset": 320,
+                "symbol": "__imp___errno",
+                "type": 6
+              },
+              {
+                "offset": 366,
+                "symbol": "__imp___invalid_parameter_noinfo",
+                "type": 6
+              },
+              {
+                "offset": 386,
+                "symbol": "__imp___invalid_parameter_noinfo",
+                "type": 6
+              },
+              {
+                "offset": 396,
+                "symbol": "_memmove",
+                "type": 20
+              },
+              {
+                "offset": 425,
+                "symbol": "__imp__free",
+                "type": 6
+              },
+              {
+                "offset": 514,
+                "symbol": "??_C@_0BD@OLBABOEK@vector?$DMT?$DO?5too?5long@",
+                "type": 6
+              },
+              {
+                "offset": 522,
+                "symbol": "??0length_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 527,
+                "symbol": "__TI3?AVlength_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 536,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?insert_pointer_at_checked_00bd08d0@ConcreteSingletonLifetimeManager@bsp@@AAEXPAPAXPBQAX@Z",
+            "address": 805349552,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000098b0       ?insert_pointer_at_checked_00bd08d0@ConcreteSingletonLifetimeManager@bsp@@AAEXPAPAXPBQAX@Z 3000a8b0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec83ec1053568bf1c745fc00000000578b7d088b5e108bcb8b561485db74278bc22bc3c1f80285c0741c3bd3730eff76048b460cffd08b4e1083c4048bd72bd3c1fa028955fc8b450c8b0089450885c974738b5e14b8ffffff3f2bd9c1fb022bc383f8010f82950100008b5618432bd1c1fa023bd372558b46148d4f042bc783e0fc743385c97520ff15f4d10030c70016000000ff15f0d10030834614048b55088917e91a01000085ff74dc505751e86a18000083c40c834614048b55088917e9fd00000033c033d28d58018bc2b9ffffff3fd1e82bc803c2894d0c33c93b550c0f46c83bcb0f43d953895d0ce8dcfcffff8b56108bd88b0df4d100308bc72bc283c40483e0fc743985db7510ffd1c70016000000ff15f0d10030eb1f85d27510ffd1c70016000000ff15f0d10030eb0b505253e8e517000083c40c8b0df4d100308b55088bc72b4610c1f802891483408d14838b46142bc783e0fc743385d27510ffd1c70016000000ff15f0d10030eb1f85ff7510ffd1c70016000000ff15f0d10030eb0b505752e89017000083c40c8b461085c0740a8b7e142bf883e7fceb0233ff50ff15c4d100308b450c83c404895e108d04838946188d430403c78946148b4610894508394614730bff76048b460cffd083c4048b45fc8b4d088d04813b461477053b4610730bff76048b460cffd083c4045f5e5b8be55dc20800685ceb00308d4df0e872f9ffff6880ff00308d45f050e8f8160000cc",
+          "linked_sha256": "181c0aaf1cece2e0b2cfa93db0df96b9af1074f7836d45283c9acd310414353f",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "??0SingletonLifetimeDomain@bsp@@QAE@USingletonLifetimeCallbacks@1@@Z",
+            "value": 0,
+            "section": 9,
+            "type": 32,
+            "storage_class": 2,
+            "index": 205,
+            "length": 71,
+            "section_length": 71,
+            "bytes_hex": "558becf30f7e45088b4510660fd60189410883790400c7410c00000000740c8379080074068bc15dc20c0068000000008d4d08e80000000068000000008d450850e800000000cc",
+            "relocations": [
+              {
+                "offset": 44,
+                "symbol": "??_C@_0EH@PNIEAIFL@Singleton?5lifetime?5requires?5owne@",
+                "type": 6
+              },
+              {
+                "offset": 52,
+                "symbol": "??0invalid_argument@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 57,
+                "symbol": "__TI3?AVinvalid_argument@std@@",
+                "type": 6
+              },
+              {
+                "offset": 66,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "??0SingletonLifetimeDomain@bsp@@QAE@USingletonLifetimeCallbacks@1@@Z",
+            "address": 805348080,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000092f0       ??0SingletonLifetimeDomain@bsp@@QAE@USingletonLifetimeCallbacks@1@@Z 3000a2f0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558becf30f7e45088b4510660fd60189410883790400c7410c00000000740c8379080074068bc15dc20c006870eb00308d4d08e87800000068d8ff00308d450850e88e1e0000cc",
+          "linked_sha256": "55f9a8c1b408410327c997148368323beef844356d182511d5f6e7b400ba5e03",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+            "value": 0,
+            "section": 26,
+            "type": 32,
+            "storage_class": 2,
+            "index": 206,
+            "length": 104,
+            "section_length": 104,
+            "bytes_hex": "558bec6aff680000000064a100000000505657a10000000033c5508d45f464a3000000008bf98b770c85f674258bcec745fc00000000c70600000000e80000000056ff150000000083c404c7470c000000008b4df464890d00000000595f5e8be55dc3cccccccccc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+                "type": 6
+              },
+              {
+                "offset": 20,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 56,
+                "symbol": "??_7ConcreteSingletonLifetimeManager@bsp@@6B@",
+                "type": 6
+              },
+              {
+                "offset": 61,
+                "symbol": "?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+                "type": 20
+              },
+              {
+                "offset": 68,
+                "symbol": "__imp__free",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+            "address": 805348544,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000094c0       ??1SingletonLifetimeDomain@bsp@@QAE@XZ 3000a4c0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec6aff6830ca003064a100000000505657a14020013033c5508d45f464a3000000008bf98b770c85f674258bcec745fc00000000c70618eb0030e8cf01000056ff15c4d1003083c404c7470c000000008b4df464890d00000000595f5e8be55dc3cccccccccc",
+          "linked_sha256": "f7e4b0f7c88ce238e97e7208083c9929a9eb5526eb7cc05eb3f2ad43b3f8118c",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+            "value": 0,
+            "section": 62,
+            "type": 32,
+            "storage_class": 2,
+            "index": 207,
+            "length": 187,
+            "section_length": 187,
+            "bytes_hex": "558bec6aff680000000064a1000000005083ec18a10000000033c58945ec535657508d45f464a3000000008965f08bf18b460c85c0754e8945dc8d45dc50c745e014000000c745e42c000000e8000000008bd0c745fc0000000083c4048955e885d2741cf30f7e0683ec0c8b46088bcc660fd6018941088bcae800000000eb0233c089460c8b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc3ff75e8e80000000083c4046a006a00e800000000cccccccccccc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 6
+              },
+              {
+                "offset": 21,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 77,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 122,
+                "symbol": "??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 153,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 165,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 177,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+            "address": 805349360,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000097f0       ?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ 3000a7f0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec6aff6870ca003064a1000000005083ec18a14020013033c58945ec535657508d45f464a3000000008965f08bf18b460c85c0754e8945dc8d45dc50c745e014000000c745e42c000000e89f0300008bd0c745fc0000000083c4048955e885d2741cf30f7e0683ec0c8b46088bcc660fd6018941088bcae852f9ffffeb0233c089460c8b4df464890d00000000595f5e5b8b4dec33cde8e30b00008be55dc3ff75e8e8a703000083c4046a006a00e81f190000cccccccccccc",
+          "linked_sha256": "750197cddecbeb5e5827871e7d09a8e28972616932a0c1a715df958f74da2d81",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+            "value": 0,
+            "section": 72,
+            "type": 32,
+            "storage_class": 2,
+            "index": 208,
+            "length": 104,
+            "section_length": 104,
+            "bytes_hex": "558bec6aff680000000064a100000000505657a10000000033c5508d45f464a3000000008bf98b770c85f674258bcec745fc00000000c70600000000e80000000056ff150000000083c404c7470c000000008b4df464890d00000000595f5e8be55dc3cccccccccc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+                "type": 6
+              },
+              {
+                "offset": 20,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 56,
+                "symbol": "??_7ConcreteSingletonLifetimeManager@bsp@@6B@",
+                "type": 6
+              },
+              {
+                "offset": 61,
+                "symbol": "?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+                "type": 20
+              },
+              {
+                "offset": 68,
+                "symbol": "__imp__free",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+            "address": 805350256,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009b70       ?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ 3000ab70 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec6aff68a0ca003064a100000000505657a14020013033c5508d45f464a3000000008bf98b770c85f674258bcec745fc00000000c70618eb0030e81ffbffff56ff15c4d1003083c404c7470c000000008b4df464890d00000000595f5e8be55dc3cccccccccc",
+          "linked_sha256": "6735c8b7cd4d76152185f4f8c1754192c4feaa44fe135f4d3f593bf6b8aec91b",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?allocate_slots@?A0x97b3432d@bsp@@YAPAPAXI@Z",
+            "value": 0,
+            "section": 51,
+            "type": 32,
+            "storage_class": 3,
+            "index": 251,
+            "length": 71,
+            "section_length": 71,
+            "bytes_hex": "558bec8b450883ec0c3dffffff3f7720c1e0028945f88945fc8d45f450c745f401000000e80000000083c4048be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 37,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 52,
+                "symbol": "??0bad_alloc@std@@QAE@XZ",
+                "type": 20
+              },
+              {
+                "offset": 57,
+                "symbol": "__TI2?AVbad_alloc@std@@",
+                "type": 6
+              },
+              {
+                "offset": 66,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?allocate_slots@?A0x97b3432d@bsp@@YAPAPAXI@Z",
+            "address": 805348992,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009680       ?allocate_slots@?A0x97b3432d@bsp@@YAPAPAXI@Z 3000a680 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "558bec8b450883ec0c3dffffff3f7720c1e0028945f88945fc8d45f450c745f401000000e83705000083c4048be55dc38d4df4e888fcffff6864ff00308d45f450e8fe1a0000cc",
+          "linked_sha256": "83efe6650c68bfa63f4ef0fe78482f65dbc654f978a3a65b4885e9791d1d5191",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+            "value": 13,
+            "section": 6,
+            "type": 32,
+            "storage_class": 3,
+            "index": 263,
+            "length": 29,
+            "section_length": 42,
+            "bytes_hex": "90908b5424088d420c8b4ae833c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 4,
+                "symbol": "??1SingletonLifetimeManager@bsp@@UAE@XZ",
+                "type": 20
+              },
+              {
+                "offset": 28,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 33,
+                "symbol": "__ehfuncinfo$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 38,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+            "address": 805358093,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:0000ba0d       __ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z 3000ca0d f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "90908b5424088d420c8b4ae833c8e850eaffffb864fe0030e9a0f7ffff",
+          "linked_sha256": "dc6a0f650f95c37805bde4f8c145a22017c62579bd5dd2d735be80516964f191",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__catch$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$0",
+            "value": 254,
+            "section": 5,
+            "type": 32,
+            "storage_class": 3,
+            "index": 264,
+            "length": 50,
+            "section_length": 304,
+            "bytes_hex": "8b75ecff761ce800000000ff7610c7461c00000000e80000000083c40833c00f57c0660fd646108946185050e800000000cc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 24,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 75,
+                "symbol": "??_7ConcreteSingletonLifetimeManager@bsp@@6B@",
+                "type": 6
+              },
+              {
+                "offset": 140,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 188,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 210,
+                "symbol": "__imp__InitializeCriticalSection@4",
+                "type": 6
+              },
+              {
+                "offset": 261,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 276,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 299,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__catch$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$0",
+            "address": 805348030,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:000092be       __catch$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$0 3000a2be f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "8b75ecff761ce877090000ff7610c7461c00000000e86809000083c40833c00f57c0660fd646108946185050e8d51e0000cc",
+          "linked_sha256": "4e664924407eaf900ee5efa1bb1a73f1bdbbf5440dce6148cd376cf2ad94dc40",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__unwindfunclet$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$2",
+            "value": 0,
+            "section": 6,
+            "type": 32,
+            "storage_class": 3,
+            "index": 266,
+            "length": 42,
+            "section_length": 42,
+            "bytes_hex": "8b4dece900000000cccccccccc90908b5424088d420c8b4ae833c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 4,
+                "symbol": "??1SingletonLifetimeManager@bsp@@UAE@XZ",
+                "type": 20
+              },
+              {
+                "offset": 28,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 33,
+                "symbol": "__ehfuncinfo$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+                "type": 6
+              },
+              {
+                "offset": 38,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__unwindfunclet$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$2",
+            "address": 805358080,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:0000ba00       __unwindfunclet$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$2 3000ca00 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "8b4dece928dbffffcccccccccc90908b5424088d420c8b4ae833c8e850eaffffb864fe0030e9a0f7ffff",
+          "linked_sha256": "1a9c247bdff0375d171f1a2be5a4eb5565b897d4ab75b0c578b991015fcb48f4",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__ehhandler$??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z",
+            "value": 0,
+            "section": 43,
+            "type": 32,
+            "storage_class": 3,
+            "index": 268,
+            "length": 29,
+            "section_length": 29,
+            "bytes_hex": "90908b5424088d420c8b4af833c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 20,
+                "symbol": "__ehfuncinfo$??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z",
+                "type": 6
+              },
+              {
+                "offset": 25,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__ehhandler$??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z",
+            "address": 805358160,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:0000ba50       __ehhandler$??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z 3000ca50 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "90908b5424088d420c8b4af833c8e80deaffffb890fe0030e95df7ffff",
+          "linked_sha256": "82eb26ee39d5b7f10ff41b36bb97adf4259d6ba2650ab775daf8cfeebc277769",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__ehhandler$??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+            "value": 0,
+            "section": 27,
+            "type": 32,
+            "storage_class": 3,
+            "index": 270,
+            "length": 29,
+            "section_length": 29,
+            "bytes_hex": "90908b5424088d420c8b4af433c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 20,
+                "symbol": "__ehfuncinfo$??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+                "type": 6
+              },
+              {
+                "offset": 25,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__ehhandler$??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+            "address": 805358128,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:0000ba30       __ehhandler$??1SingletonLifetimeDomain@bsp@@QAE@XZ 3000ca30 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "90908b5424088d420c8b4af433c8e82deaffffb8bcfe0030e97df7ffff",
+          "linked_sha256": "fdfc73bccf428fa5065b4047a163062110141175b5943da37250deff27017d66",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+            "value": 0,
+            "section": 63,
+            "type": 32,
+            "storage_class": 3,
+            "index": 271,
+            "length": 39,
+            "section_length": 39,
+            "bytes_hex": "90908b5424088d420c8b4ad833c8e8000000008b4af833c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 25,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 30,
+                "symbol": "__ehfuncinfo$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 6
+              },
+              {
+                "offset": 35,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+            "address": 805358192,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:0000ba70       __ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ 3000ca70 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "90908b5424088d420c8b4ad833c8e8ede9ffff8b4af833c8e8e3e9ffffb814ff0030e933f7ffff",
+          "linked_sha256": "43112b38c55b6dac80eb04373eba45c239c36025fcae9529edd6e7d6cc4a1129",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__catch$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ$0",
+            "value": 161,
+            "section": 62,
+            "type": 32,
+            "storage_class": 3,
+            "index": 272,
+            "length": 26,
+            "section_length": 187,
+            "bytes_hex": "ff75e8e80000000083c4046a006a00e800000000cccccccccccc",
+            "relocations": [
+              {
+                "offset": 6,
+                "symbol": "__ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+                "type": 6
+              },
+              {
+                "offset": 21,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 77,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 122,
+                "symbol": "??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 153,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 165,
+                "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "type": 20
+              },
+              {
+                "offset": 177,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__catch$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ$0",
+            "address": 805349521,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:00009891       __catch$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ$0 3000a891 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "ff75e8e8a703000083c4046a006a00e81f190000cccccccccccc",
+          "linked_sha256": "bdb08fea0806c2d851ea726d5e40486de6f1437a9e0c7ce9133d8ef52a1ccb51",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "__ehhandler$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+            "value": 0,
+            "section": 73,
+            "type": 32,
+            "storage_class": 3,
+            "index": 274,
+            "length": 29,
+            "section_length": 29,
+            "bytes_hex": "90908b5424088d420c8b4af433c8e800000000b800000000e900000000",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              },
+              {
+                "offset": 20,
+                "symbol": "__ehfuncinfo$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+                "type": 6
+              },
+              {
+                "offset": 25,
+                "symbol": "___CxxFrameHandler3",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "__ehhandler$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+            "address": 805358240,
+            "member": "bsp_core.linked:singleton_lifetime.obj",
+            "map_line": "0001:0000baa0       __ehhandler$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ 3000caa0 f   bsp_core.linked:singleton_lifetime.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/singleton_lifetime.obj",
+          "object_sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3",
+          "linked_bytes_hex": "90908b5424088d420c8b4af433c8e8bde9ffffb840ff0030e90df7ffff",
+          "linked_sha256": "33c42208bbbf242e65f01d3da57e4a2bab530c726524aa336da2273833b14c84",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_add_ref@@YGKPAX@Z",
+            "value": 0,
+            "section": 752,
+            "type": 32,
+            "storage_class": 3,
+            "index": 1931,
+            "length": 239,
+            "section_length": 239,
+            "bytes_hex": "558bec83ec0c56578b7d08be00000000393e741481c69400000081fe780300000f84ad000000ebe8803d0000000000750e8b467857ffd05f5e8be55dc20400538b1d000000008bcbff83a00000008b868c000000050001000050e8000000008b467857ffd08b8e8c000000894508ff448b5489839c0000008b8e8c00000081c110010000518bcbe800000000837b4404751b80bbac0000000074128d464089078b4348c78001000000d1000000c683ac000000008bcb8b868c000000052001000050e8000000008b45085b5f5e8be55dc2040068000000008d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 12,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 28,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 42,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 66,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 91,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 136,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 165,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 169,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 195,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 212,
+                "symbol": "??_C@_0BM@BNJPNKPL@unknown?5actual?5COM?5receiver@",
+                "type": 6
+              },
+              {
+                "offset": 220,
+                "symbol": "??0runtime_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 225,
+                "symbol": "__TI2?AVruntime_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 234,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_add_ref@@YGKPAX@Z",
+            "address": 805326368,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00003e20       ?observe_add_ref@@YGKPAX@Z 30004e20 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec0c56578b7d08be18240130393e741481c69400000081fe902701300f84ad000000ebe8803d1424013000750e8b467857ffd05f5e8be55dc20400538b1d102401308bcbff83a00000008b868c000000050001000050e8311700008b467857ffd08b8e8c000000894508ff448b5489839c0000008b8e8c00000081c110010000518bcbe804170000837b4404751b80bbac0000000074128d464089078b4348c7809127013061280130c683ac000000008bcb8b868c000000052001000050e8c91600008b45085b5f5e8be55dc2040068a8dd00308d4df4e870deffff68d8fd00308d45f450e8b6720000cc",
+          "linked_sha256": "f350cf54ab28ed7f1352593ee092675109fbd4b8a2cfedbc30f0465fcb3355e1",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_release@@YGKPAX@Z",
+            "value": 0,
+            "section": 759,
+            "type": 32,
+            "storage_class": 3,
+            "index": 1932,
+            "length": 20,
+            "section_length": 20,
+            "bytes_hex": "558bec6a00ff7508e80000000083c4085dc20400",
+            "relocations": [
+              {
+                "offset": 9,
+                "symbol": "?release_impl@@YAKPAX_N@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_release@@YGKPAX@Z",
+            "address": 805327744,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00004380       ?observe_release@@YGKPAX@Z 30005380 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec6a00ff7508e86308000083c4085dc20400",
+          "linked_sha256": "cfb7eed1e04f733c3a4ce066e469b1ae835535fe5dfa0cd2697cc07b944d9a14",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_alternate_release@@YGKPAX@Z",
+            "value": 0,
+            "section": 753,
+            "type": 32,
+            "storage_class": 3,
+            "index": 1933,
+            "length": 20,
+            "section_length": 20,
+            "bytes_hex": "558bec6a01ff7508e80000000083c4085dc20400",
+            "relocations": [
+              {
+                "offset": 9,
+                "symbol": "?release_impl@@YAKPAX_N@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_alternate_release@@YGKPAX@Z",
+            "address": 805326608,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00003f10       ?observe_alternate_release@@YGKPAX@Z 30004f10 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec6a01ff7508e8d30c000083c4085dc20400",
+          "linked_sha256": "c76c45e640e6e08285ee591dde1158e9300113fa0b58b5eca8673dfef8fd06ee",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_lock@@YGJPAXIIPAPAXK@Z",
+            "value": 0,
+            "section": 756,
+            "type": 32,
+            "storage_class": 3,
+            "index": 1934,
+            "length": 367,
+            "section_length": 367,
+            "bytes_hex": "558bec83ec0c538b5d085657be00000000391e741481c69400000081fe780300000f842c010000ebe8803d0000000000751eff75188b8680000000ff7514ff7510ff750c53ffd05f5e5b8be55dc214008b3d000000008b450cff87a40000008987800000008b45108947788b451889477c8b4514833800740a6800000000e9d50000008b868c0000008bcf050002000050e800000000ff75188b8680000000ff7514ff7510ff750c53ffd08b4d148bd8899f940000008b0189476c8bc3c1e81f83f00188869000000085db787f833900747a837d0c007574837d1040776e8b868c0000008bcf051002000050e800000000837f44047520c7051901000008000000c70521010000ffffffff8b4f4c8b47648981010000008b868c0000008bcf052002000050e800000000837f44057511c7451405e00d0c8d45146800000000eb275f5e8bc35b8be55dc214006800000000eb0568000000008d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 13,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 29,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 43,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 82,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 122,
+                "symbol": "??_C@_0CH@ECDPADEL@actual?5Lock?5starts?5null?5mapping?5@",
+                "type": 6
+              },
+              {
+                "offset": 146,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 237,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 249,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 259,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 275,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 294,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 315,
+                "symbol": "__TI1I",
+                "type": 6
+              },
+              {
+                "offset": 333,
+                "symbol": "??_C@_0BP@IBAHPBJD@actual?5bounded?5successful?5Lock@",
+                "type": 6
+              },
+              {
+                "offset": 340,
+                "symbol": "??_C@_0BM@BNJPNKPL@unknown?5actual?5COM?5receiver@",
+                "type": 6
+              },
+              {
+                "offset": 348,
+                "symbol": "??0runtime_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 353,
+                "symbol": "__TI2?AVruntime_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 362,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_lock@@YGJPAXIIPAPAXK@Z",
+            "address": 805327008,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:000040a0       ?observe_lock@@YGJPAXIIPAPAXK@Z 300050a0 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec0c538b5d085657be18240130391e741481c69400000081fe902701300f842c010000ebe8803d1424013000751eff75188b8680000000ff7514ff7510ff750c53ffd05f5e5b8be55dc214008b3d102401308b450cff87a40000008987800000008b45108947788b451889477c8b4514833800740a6874de0030e9d50000008b868c0000008bcf050002000050e87a140000ff75188b8680000000ff7514ff7510ff750c53ffd08b4d148bd8899f940000008b0189476c8bc3c1e81f83f00188869000000085db787f833900747a837d0c007574837d1040776e8b868c0000008bcf051002000050e81f140000837f44047520c705a928013008000000c705b1280130ffffffff8b4f4c8b47648981912701308b868c0000008bcf052002000050e8e6130000837f44057511c7451405e00d0c8d451468f4fd0030eb275f5e8bc35b8be55dc21400689cde0030eb0568a8dd00308d4df4e870dbffff68d8fd00308d45f450e8b66f0000cc",
+          "linked_sha256": "16e00d527fca778e71bb2afea942b801b95962e31980d9b4731fe2e8f492de03",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_unlock@@YGJPAX@Z",
+            "value": 0,
+            "section": 760,
+            "type": 32,
+            "storage_class": 3,
+            "index": 1935,
+            "length": 294,
+            "section_length": 294,
+            "bytes_hex": "558bec83ec0c538b5d0856be00000000391e741481c69400000081fe780300000f84cf000000ebe8803d000000000075118b868400000053ffd05e5b8be55dc20400578b3d000000008bcfff87a80000008b868c000000053002000050e8000000008b868400000053ffd08bd8899f9800000085db7807c6869000000000837f6c00741d33c0b902000000837f44040f44c139868c0000007507c7476c000000008b868c0000008bcf054002000050e800000000837f44047517c705f1000000000000008b4748c78001000000a10000008b868c0000008bcf055002000050e800000000837f44085f74255e8bc35b8be55dc2040068000000008d4df4e80000000068000000008d45f450e80000000068000000008d4508c7450808e00d0c50e800000000cc",
+            "relocations": [
+              {
+                "offset": 12,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 28,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 42,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 69,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 94,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 176,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 188,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 201,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 205,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 224,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 246,
+                "symbol": "??_C@_0BM@BNJPNKPL@unknown?5actual?5COM?5receiver@",
+                "type": 6
+              },
+              {
+                "offset": 254,
+                "symbol": "??0runtime_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 259,
+                "symbol": "__TI2?AVruntime_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 268,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              },
+              {
+                "offset": 273,
+                "symbol": "__TI1I",
+                "type": 6
+              },
+              {
+                "offset": 289,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_unlock@@YGJPAX@Z",
+            "address": 805327776,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:000043a0       ?observe_unlock@@YGJPAX@Z  300053a0 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec0c538b5d0856be18240130391e741481c69400000081fe902701300f84cf000000ebe8803d142401300075118b868400000053ffd05e5b8be55dc20400578b3d102401308bcfff87a80000008b868c000000053002000050e8ae1100008b868400000053ffd08bd8899f9800000085db7807c6869000000000837f6c00741d33c0b902000000837f44040f44c139868c0000007507c7476c000000008b868c0000008bcf054002000050e85c110000837f44047517c70581280130000000008b4748c78091270130312801308b868c0000008bcf055002000050e82c110000837f44085f74255e8bc35b8be55dc2040068a8dd00308d4df4e8ced8ffff68d8fd00308d45f450e8146d000068f4fd00308d4508c7450808e00d0c50e8ff6c0000cc",
+          "linked_sha256": "61604e404cde6ded76e5012553ba29d4901f9644891aea2a5714ace8c91b6b25",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?release_impl@@YAKPAX_N@Z",
+            "value": 0,
+            "section": 780,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2005,
+            "length": 204,
+            "section_length": 204,
+            "bytes_hex": "558bec83ec0c5356578b7d08be00000000393e741481c69400000081fe780300000f8489000000ebe8803d0000000000750d8b467c57ffd05f5e5b8be55dc38b1d000000000fb64d0cc1e10481c130010000ff83a00000008b868c00000003c18bcb50e8000000008b467c57ffd08b8e8c0000008bf8ff4c8b548b8e8c000000837c8b54007d076800000000eb2789bb9c0000008bcb8b868c000000055001000050e8000000008bc75f5e5b8be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 13,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 29,
+                "symbol": "?buffers@@3V?$array@UBuffer@@$05@std@@A",
+                "type": 6
+              },
+              {
+                "offset": 43,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 65,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 100,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 136,
+                "symbol": "??_C@_0CI@GICJDFNO@fixture?5reference?5kept?5actual?5CO@",
+                "type": 6
+              },
+              {
+                "offset": 163,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 177,
+                "symbol": "??_C@_0BM@BNJPNKPL@unknown?5actual?5COM?5receiver@",
+                "type": 6
+              },
+              {
+                "offset": 185,
+                "symbol": "??0runtime_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 190,
+                "symbol": "__TI2?AVruntime_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 199,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?release_impl@@YAKPAX_N@Z",
+            "address": 805329904,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00004bf0       ?release_impl@@YAKPAX_N@Z  30005bf0 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec0c5356578b7d08be18240130393e741481c69400000081fe902701300f8489000000ebe8803d1424013000750d8b467c57ffd05f5e5b8be55dc38b1d102401300fb64d0cc1e10481c130010000ff83a00000008b868c00000003c18bcb50e8580900008b467c57ffd08b8e8c0000008bf8ff4c8b548b8e8c000000837c8b54007d07684cde0030eb2789bb9c0000008bcb8b868c000000055001000050e8190900008bc75f5e5b8be55dc368a8dd00308d4df4e8c3d0ffff68d8fd00308d45f450e809650000cc",
+          "linked_sha256": "ffbd082642907964d4556bcce4dd849a9bff3fd75ecb2ea093eaff1edcbe6457",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_malloc@@YAPAXI@Z",
+            "value": 0,
+            "section": 757,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2006,
+            "length": 189,
+            "section_length": 189,
+            "bytes_hex": "558bec803d0000000000568b75080f849c0000008b0d0000000085c90f848e000000803d00000000000f85810000008b818400000085c0757740c60500000000016800030000897170898184000000e80000000056c6050000000000ff15000000008b0d0000000083c4048bf0c60500000000016801030000897168e8000000008b0d0000000083794404750d8b5148c78201000000010100006802030000e8000000008bc6c60500000000005e5dc356ff150000000083c4045e5dc3",
+            "relocations": [
+              {
+                "offset": 5,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 22,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 36,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 60,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 80,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 87,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 94,
+                "symbol": "?real_malloc@@3P6APAXI@ZA",
+                "type": 6
+              },
+              {
+                "offset": 100,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 111,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 125,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 131,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 146,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 150,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 160,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 168,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 179,
+                "symbol": "?real_malloc@@3P6APAXI@ZA",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_malloc@@YAPAXI@Z",
+            "address": 805327376,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00004210       ?observe_malloc@@YAPAXI@Z  30005210 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec803d1424013000568b75080f849c0000008b0d1024013085c90f848e000000803d15240130000f85810000008b818400000085c0757740c60515240130016800030000897170898184000000e84c13000056c6051524013000ff15c42801308b0d1024013083c4048bf0c60515240130016801030000897168e81f1300008b0d1024013083794404750d8b5148c78291270130912801306802030000e8fc1200008bc6c60515240130005e5dc356ff15c428013083c4045e5dc3",
+          "linked_sha256": "c666db3b3291ca5e8b74515e4d7e49a2087862ed3a941c0a6fc79e4e7140ffaa",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_new_handler@@YAHI@Z",
+            "value": 0,
+            "section": 758,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2007,
+            "length": 174,
+            "section_length": 174,
+            "bytes_hex": "558bec83ec0c803d000000000056578b7d08746c8b0d0000000085c97462803d00000000007559ff81880000006810030000c6050000000001e80000000057c6050000000000ff15000000008b0d0000000083c4048bf0c60500000000013b7970752f85f6752b6811030000e8000000005f8bc6c60500000000005e8be55dc357ff150000000083c4048bf05f5e8be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 8,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 22,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 32,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 52,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 58,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 65,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 72,
+                "symbol": "?real_new_handler@@3P6AHI@ZA",
+                "type": 6
+              },
+              {
+                "offset": 78,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 89,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 109,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 118,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 131,
+                "symbol": "?real_new_handler@@3P6AHI@ZA",
+                "type": 6
+              },
+              {
+                "offset": 147,
+                "symbol": "??_C@_0CE@FOOAGAIN@actual?5exhausted?5allocation?5hand@",
+                "type": 6
+              },
+              {
+                "offset": 155,
+                "symbol": "??0runtime_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 160,
+                "symbol": "__TI2?AVruntime_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 169,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_new_handler@@YAHI@Z",
+            "address": 805327568,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:000042d0       ?observe_new_handler@@YAHI@Z 300052d0 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec0c803d142401300056578b7d08746c8b0d1024013085c97462803d15240130007559ff81880000006810030000c6051524013001e8a212000057c6051524013000ff15d02801308b0d1024013083c4048bf0c60515240130013b7970752f85f6752b6811030000e86f1200005f8bc6c60515240130005e8be55dc357ff15d028013083c4048bf05f5e8be55dc368bcde00308d4df4e801daffff68d8fd00308d45f450e8476e0000cc",
+          "linked_sha256": "cb7ab970c7fd8d0034d33e8601d6b892907fceebd454eb4b87ad445655655396",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_copy@@YAPAXPAXPBXI@Z",
+            "value": 0,
+            "section": 754,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2008,
+            "length": 270,
+            "section_length": 270,
+            "bytes_hex": "558bec83ec0c803d0000000000538b5d10568b750c578b7d080f84be0000008b0d0000000085c90f84b0000000803d00000000000f85a300000039716c0f859a0000008b414cff818c000000895974c60500000000013bb8010000000f85900000006820030000e800000000535657c6050000000000ff15000000008bf0c605000000000183c40c3bf774076800000000eb648b0d000000006821030000c681ad00000001e8000000008b0d0000000083794404750d8b4148c78001000000d10000006822030000e800000000c60500000000008bc65f5e5b8be55dc3535657ff150000000083c40c8bf05f5e5b8be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+            "relocations": [
+              {
+                "offset": 8,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 33,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 47,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 81,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 88,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 104,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 113,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 120,
+                "symbol": "?real_copy@@3P6APAXPAXPBXI@ZA",
+                "type": 6
+              },
+              {
+                "offset": 128,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 141,
+                "symbol": "??_C@_0BJ@DJLDCGNH@actual?5CRT?5memcpy?5return@",
+                "type": 6
+              },
+              {
+                "offset": 149,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 166,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 172,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 187,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 191,
+                "symbol": "?storage@@3URawStorage@@A",
+                "type": 6
+              },
+              {
+                "offset": 201,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 207,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 226,
+                "symbol": "?real_copy@@3P6APAXPAXPBXI@ZA",
+                "type": 6
+              },
+              {
+                "offset": 243,
+                "symbol": "??_C@_0CH@FFFKCHCE@actual?5current?5shadow?5copy?5desti@",
+                "type": 6
+              },
+              {
+                "offset": 251,
+                "symbol": "??0runtime_error@std@@QAE@PBD@Z",
+                "type": 20
+              },
+              {
+                "offset": 256,
+                "symbol": "__TI2?AVruntime_error@std@@",
+                "type": 6
+              },
+              {
+                "offset": 265,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_copy@@YAPAXPAXPBXI@Z",
+            "address": 805326640,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00003f30       ?observe_copy@@YAPAXPAXPBXI@Z 30004f30 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec0c803d1424013000538b5d10568b750c578b7d080f84be0000008b0d1024013085c90f84b0000000803d15240130000f85a300000039716c0f859a0000008b414cff818c000000895974c60515240130013bb8912701300f85900000006820030000e814160000535657c6051524013000ff15c82801308bf0c605152401300183c40c3bf774076808df0030eb648b0d102401306821030000c681ad00000001e8d61500008b0d1024013083794404750d8b4148c78091270130612801306822030000e8b3150000c60515240130008bc65f5e5b8be55dc3535657ff15c828013083c40c8bf05f5e5b8be55dc368e0de00308d4df4e841ddffff68d8fd00308d45f450e887710000cc",
+          "linked_sha256": "f6392d26995fe5f0b5f4992cdec44ee70c08fa4823e71b4284ed831d8b635f85",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?observe_free@@YAXPAX@Z",
+            "value": 0,
+            "section": 755,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2009,
+            "length": 93,
+            "section_length": 93,
+            "bytes_hex": "558bec803d0000000000568b750874408b0d0000000085c97436803d0000000000752d3b7160740a3b716874053b7164751eff81900000006830030000c6050000000001e800000000c605000000000056ff150000000083c4045e5dc3",
+            "relocations": [
+              {
+                "offset": 5,
+                "symbol": "?active@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 18,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 28,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 63,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 69,
+                "symbol": "?snapshot@Run@@QAEXI@Z",
+                "type": 20
+              },
+              {
+                "offset": 75,
+                "symbol": "?busy@@3_NA",
+                "type": 6
+              },
+              {
+                "offset": 83,
+                "symbol": "?real_free@@3P6AXPAX@ZA",
+                "type": 6
+              }
+            ]
+          },
+          "link": {
+            "name": "?observe_free@@YAXPAX@Z",
+            "address": 805326912,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00004040       ?observe_free@@YAXPAX@Z    30005040 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec803d1424013000568b750874408b0d1024013085c97436803d1524013000752d3b7160740a3b716874053b7164751eff81900000006830030000c6051524013001e827150000c605152401300056ff15cc28013083c4045e5dc3",
+          "linked_sha256": "bcfa63a2fffcd7c5b43a847662f4facf9c9cf884701c9c25be4b9ad61e7210c1",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?actual_array_new_binding@@YAPAXI@Z",
+            "value": 0,
+            "section": 657,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2048,
+            "length": 58,
+            "section_length": 58,
+            "bytes_hex": "558bec83ec10a10000000033c58945fc8b45088945f48945f88d45f050c745f003000000e8000000008b4dfc83c40433cde8000000008be55dc3",
+            "relocations": [
+              {
+                "offset": 7,
+                "symbol": "___security_cookie",
+                "type": 6
+              },
+              {
+                "offset": 37,
+                "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "type": 20
+              },
+              {
+                "offset": 50,
+                "symbol": "@__security_check_cookie@4",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?actual_array_new_binding@@YAPAXI@Z",
+            "address": 805322160,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00002db0       ?actual_array_new_binding@@YAPAXI@Z 30003db0 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec83ec10a14020013033c58945fc8b45088945f48945f88d45f050c745f003000000e8076e00008b4dfc83c40433cde88a7600008be55dc3",
+          "linked_sha256": "d42c90f697154a921dcde6c0590c6de60e01b46c1efaf1c6599f7142c3cfc84c",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?actual_index_lock_binding@@YIPAXPAX0III0E@Z",
+            "value": 0,
+            "section": 658,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2049,
+            "length": 18,
+            "section_length": 18,
+            "bytes_hex": "558bec8b15000000008d52105de900000000",
+            "relocations": [
+              {
+                "offset": 5,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 14,
+                "symbol": "?lock_native_physical_index_buffer_00b4b850@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?actual_index_lock_binding@@YIPAXPAX0III0E@Z",
+            "address": 805322224,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00002df0       ?actual_index_lock_binding@@YIPAXPAX0III0E@Z 30003df0 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec8b15102401308d52105de95e710000",
+          "linked_sha256": "f434205e274cce90993cd2f2dfbc3abe573c810e7e310f064edec649f9c9c4e0",
+          "non_relocation_COFF_bytes_equal": true
+        },
+        {
+          "coff": {
+            "name": "?actual_vertex_lock_binding@@YIPAXPAX0III0E@Z",
+            "value": 0,
+            "section": 659,
+            "type": 32,
+            "storage_class": 3,
+            "index": 2050,
+            "length": 18,
+            "section_length": 18,
+            "bytes_hex": "558bec8b15000000008d52105de900000000",
+            "relocations": [
+              {
+                "offset": 5,
+                "symbol": "?current@@3PAURun@@A",
+                "type": 6
+              },
+              {
+                "offset": 14,
+                "symbol": "?lock_native_physical_vertex_buffer_00b4ba00@bsp@@YIPAXPAXAAUNativePhysicalBufferLockContext@1@III0E@Z",
+                "type": 20
+              }
+            ]
+          },
+          "link": {
+            "name": "?actual_vertex_lock_binding@@YIPAXPAX0III0E@Z",
+            "address": 805322256,
+            "member": "logical_buffer_device_save_check.obj",
+            "map_line": "0001:00002e10       ?actual_vertex_lock_binding@@YIPAXPAX0III0E@Z 30003e10 f   logical_buffer_device_save_check.obj"
+          },
+          "object": "J:/PROG/battlestations-pacific-decompile/build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "object_sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0",
+          "linked_bytes_hex": "558bec8b15102401308d52105de95e710000",
+          "linked_sha256": "f434205e274cce90993cd2f2dfbc3abe573c810e7e310f064edec649f9c9c4e0",
+          "non_relocation_COFF_bytes_equal": true
+        }
+      ],
+      "profiles": [
+        {
+          "original_token": 14032400,
+          "token_view": 553652224,
+          "callable_table": 553648128,
+          "Lock": 805322224,
+          "Unlock": 805352288,
+          "capacity": 805352128,
+          "getter": 805352352,
+          "callable_bytes_hex": "e030bd0020bbb400f03d003060b3003080b4b40050c2b400c0b20030a0b3003010b8b400",
+          "unchanged_unused_slots": [
+            0,
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "original_token": 14032436,
+          "token_view": 553652260,
+          "callable_table": 553648164,
+          "Lock": 805322256,
+          "Unlock": 805352320,
+          "capacity": 805352144,
+          "getter": 805352368,
+          "callable_bytes_hex": "e030bd0040bbb400103e003080b3003020b5b40070c3b400d0b20030b0b30030c0b9b400",
+          "unchanged_unused_slots": [
+            0,
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "original_token": 14032472,
+          "token_view": 553652296,
+          "callable_table": 553648200,
+          "Lock": 805322224,
+          "Unlock": 805352288,
+          "capacity": 805352128,
+          "getter": 805352352,
+          "callable_bytes_hex": "e030bd0010c2b400f03d003060b3003080b4b40050c2b400c0b20030a0b300308091b400",
+          "unchanged_unused_slots": [
+            0,
+            1,
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "original_token": 14032508,
+          "token_view": 553652332,
+          "callable_table": 553648236,
+          "Lock": 805322256,
+          "Unlock": 805352320,
+          "capacity": 805352144,
+          "getter": 805352368,
+          "callable_bytes_hex": "e030bd0030c2b400103e003080b3003020b5b40070c3b400d0b20030b0b30030b092b400",
+          "unchanged_unused_slots": [
+            0,
+            1,
+            4,
+            5,
+            8
+          ]
+        }
+      ],
+      "external_bridges": [
+        {
+          "original_address": 11678320,
+          "loaded_address": 536752752,
+          "target": 805352224,
+          "bytes_hex": "e9ab800210",
+          "label": "actual_vertex_release"
+        },
+        {
+          "original_address": 11678080,
+          "loaded_address": 536752512,
+          "target": 805352160,
+          "bytes_hex": "e95b810210",
+          "label": "actual_index_release"
+        },
+        {
+          "original_address": 12539326,
+          "loaded_address": 537613758,
+          "target": 805322160,
+          "bytes_hex": "e9ede7f40f",
+          "label": "actual_CRT_array_new"
+        },
+        {
+          "original_address": 12547712,
+          "loaded_address": 537622144,
+          "target": 805355954,
+          "bytes_hex": "e92d4bf50f",
+          "label": "actual_CRT_memcpy"
+        }
+      ],
+      "whole_runtime_code_and_profile_postimages": 2516,
+      "cases": [
+        {
+          "kind": "vertex",
+          "scenario": 0,
+          "description": "dynamic_logical_flags_skip",
+          "DWORDs_per_implementation": 369,
+          "event_frames_per_implementation": 2,
+          "equal": true,
+          "trace_sha256": "171e8b14eb103639f0b0b59186765979f72cbd7b933a8a9b54d8d7a32c0f8918"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 1,
+          "description": "null_physical_skip",
+          "DWORDs_per_implementation": 369,
+          "event_frames_per_implementation": 2,
+          "equal": true,
+          "trace_sha256": "81a12dcfa7f82b387095c6fcf3d1fcd1269fb8df9d40c600e02049c97574cc44"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 2,
+          "description": "first_actual_COM_getter_null_skip",
+          "DWORDs_per_implementation": 369,
+          "event_frames_per_implementation": 2,
+          "equal": true,
+          "trace_sha256": "3cf6e658f5cadf8ba5d0e906678cdf66e09d902f6d82ff2e8e024270f61f0ff7"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 3,
+          "description": "normal_actual_allocation_Lock_copy_Unlock_release",
+          "DWORDs_per_implementation": 4785,
+          "event_frames_per_implementation": 26,
+          "equal": true,
+          "trace_sha256": "29e4a5b3a915dd9eeffe4572bc56c17e32fbddb05c2d6c756e75f1a1326cf5fc"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 4,
+          "description": "after_real_provider_owner_shadow_table_and_capacity_mutations",
+          "DWORDs_per_implementation": 4785,
+          "event_frames_per_implementation": 26,
+          "equal": true,
+          "trace_sha256": "4c073e10fd835cd622bc21852ce01fe4e73e5894b985e4a4e135064934114c7e"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 5,
+          "description": "observer_throws_after_real_successful_Lock",
+          "DWORDs_per_implementation": 2393,
+          "event_frames_per_implementation": 13,
+          "equal": true,
+          "trace_sha256": "65a09e8276c62e24c35ff274763e514b074c5198c311a3b94e52596fe5a0e3fa"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 6,
+          "description": "actual_FFFFFFFF_malloc_failure_newhandler_zero_bad_alloc",
+          "DWORDs_per_implementation": 2209,
+          "event_frames_per_implementation": 12,
+          "equal": true,
+          "trace_sha256": "f24216b7a946ba064646d6541e1dabb1aae1b4a9f8cb22f23980a026b225c102"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 7,
+          "description": "actual_zero_allocation_Lock_and_memcpy",
+          "DWORDs_per_implementation": 4785,
+          "event_frames_per_implementation": 26,
+          "equal": true,
+          "trace_sha256": "1e2287100ba2121d9078ead23244bcae7e77d7372b88f472d187d60688dcc113"
+        },
+        {
+          "kind": "vertex",
+          "scenario": 8,
+          "description": "observer_throws_after_real_successful_Unlock",
+          "DWORDs_per_implementation": 3497,
+          "event_frames_per_implementation": 19,
+          "equal": true,
+          "trace_sha256": "a0894f02d4176e73f2babbd67fddb7334da7fb0b1722b936f286db5bd48b233e"
+        },
+        {
+          "kind": "index",
+          "scenario": 0,
+          "description": "dynamic_logical_flags_skip",
+          "DWORDs_per_implementation": 369,
+          "event_frames_per_implementation": 2,
+          "equal": true,
+          "trace_sha256": "7d2cff7fb34490ce620731dccc11017b8348d4d8f4bb36a2fa665cfeaacdfb20"
+        },
+        {
+          "kind": "index",
+          "scenario": 1,
+          "description": "null_physical_skip",
+          "DWORDs_per_implementation": 369,
+          "event_frames_per_implementation": 2,
+          "equal": true,
+          "trace_sha256": "849c573bb1d8b684821cd78ecc5bb67a69e78f299e51dbfb46ef0a626540b02b"
+        },
+        {
+          "kind": "index",
+          "scenario": 2,
+          "description": "first_actual_COM_getter_null_skip",
+          "DWORDs_per_implementation": 369,
+          "event_frames_per_implementation": 2,
+          "equal": true,
+          "trace_sha256": "e51f09cb171333a8dc6396c919349622a2de6ba449a585864d27419f28caa1d0"
+        },
+        {
+          "kind": "index",
+          "scenario": 3,
+          "description": "normal_actual_allocation_Lock_copy_Unlock_release",
+          "DWORDs_per_implementation": 4785,
+          "event_frames_per_implementation": 26,
+          "equal": true,
+          "trace_sha256": "e3b32c950ba21cafd0647f5b5422ef880979dbf79d2a60f873f8f613d7521325"
+        },
+        {
+          "kind": "index",
+          "scenario": 4,
+          "description": "after_real_provider_owner_shadow_table_and_capacity_mutations",
+          "DWORDs_per_implementation": 4785,
+          "event_frames_per_implementation": 26,
+          "equal": true,
+          "trace_sha256": "fa34c210406d6c99771e5ffa82ca1c5e04e68b58061283ea962089d0406d5514"
+        },
+        {
+          "kind": "index",
+          "scenario": 5,
+          "description": "observer_throws_after_real_successful_Lock",
+          "DWORDs_per_implementation": 2393,
+          "event_frames_per_implementation": 13,
+          "equal": true,
+          "trace_sha256": "0dd1eca944ded7bdc1ffdd4421606afe0fcc7ab49f01549927d9d17b25f0807b"
+        },
+        {
+          "kind": "index",
+          "scenario": 6,
+          "description": "actual_FFFFFFFF_malloc_failure_newhandler_zero_bad_alloc",
+          "DWORDs_per_implementation": 2209,
+          "event_frames_per_implementation": 12,
+          "equal": true,
+          "trace_sha256": "35caf408677b2e046056e8e85d01b409f7b72e4d6cf74911b4ef3df674a7bfda"
+        },
+        {
+          "kind": "index",
+          "scenario": 7,
+          "description": "actual_zero_allocation_Lock_and_memcpy",
+          "DWORDs_per_implementation": 4785,
+          "event_frames_per_implementation": 26,
+          "equal": true,
+          "trace_sha256": "bce288e3dffba6e035ec46752b1fd940992c0fb43bfd0b9604e5ab125d0d909a"
+        },
+        {
+          "kind": "index",
+          "scenario": 8,
+          "description": "observer_throws_after_real_successful_Unlock",
+          "DWORDs_per_implementation": 3497,
+          "event_frames_per_implementation": 19,
+          "equal": true,
+          "trace_sha256": "8aacbf97d8d1211b497b498e3ca9797347ea342e1d423357061c190499a4eda4"
+        }
+      ],
+      "matching_DWORDs": 47122,
+      "matching_event_frames": 256,
+      "actual_provider_observations": [
+        {
+          "kind": 0,
+          "scenario": 0,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 0,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 1,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 1,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 2,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 2,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 3,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 3,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 4,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 16,
+          "copybytes": 8,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 4,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 16,
+          "copybytes": 8,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 5,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 4294967295,
+          "LockHR": 0,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 202235909
+        },
+        {
+          "kind": 0,
+          "scenario": 5,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 4294967295,
+          "LockHR": 0,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 202235909
+        },
+        {
+          "kind": 0,
+          "scenario": 6,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 1,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 1
+        },
+        {
+          "kind": 0,
+          "scenario": 6,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 1,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 1
+        },
+        {
+          "kind": 0,
+          "scenario": 7,
+          "allocation": 0,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 0,
+          "copybytes": 0,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 7,
+          "allocation": 0,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 0,
+          "copybytes": 0,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 0,
+          "scenario": 8,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 202235912
+        },
+        {
+          "kind": 0,
+          "scenario": 8,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 202235912
+        },
+        {
+          "kind": 1,
+          "scenario": 0,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 0,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 1,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 1,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 2,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 2,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 0,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 0,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 3,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 3,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 4,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 16,
+          "copybytes": 8,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 4,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 16,
+          "copybytes": 8,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 5,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 4294967295,
+          "LockHR": 0,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 202235909
+        },
+        {
+          "kind": 1,
+          "scenario": 5,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 4294967295,
+          "LockHR": 0,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 202235909
+        },
+        {
+          "kind": 1,
+          "scenario": 6,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 1,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 1
+        },
+        {
+          "kind": 1,
+          "scenario": 6,
+          "allocation": 4294967295,
+          "allocated": 0,
+          "newhandler": 1,
+          "lockbytes": 4294967295,
+          "copybytes": 4294967295,
+          "LockHR": 2004318071,
+          "UnlockHR": 2004318071,
+          "refs": 2,
+          "locks": 0,
+          "unlocks": 0,
+          "copies": 0,
+          "frees": 0,
+          "caught": 1
+        },
+        {
+          "kind": 1,
+          "scenario": 7,
+          "allocation": 0,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 0,
+          "copybytes": 0,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 7,
+          "allocation": 0,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 0,
+          "copybytes": 0,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 5,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 0
+        },
+        {
+          "kind": 1,
+          "scenario": 8,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 202235912
+        },
+        {
+          "kind": 1,
+          "scenario": 8,
+          "allocation": 32,
+          "allocated": 1,
+          "newhandler": 0,
+          "lockbytes": 32,
+          "copybytes": 32,
+          "LockHR": 0,
+          "UnlockHR": 0,
+          "refs": 2,
+          "locks": 1,
+          "unlocks": 1,
+          "copies": 1,
+          "frees": 0,
+          "caught": 202235912
+        }
+      ],
+      "actual_import_bindings": {
+        "bindings": [
+          {
+            "name": "memcpy",
+            "cell": 805360000,
+            "forwarded_target": 1923178912,
+            "observer": 805326640
+          },
+          {
+            "name": "_callnewh",
+            "cell": 805360056,
+            "forwarded_target": 1970974720,
+            "observer": 805327568
+          },
+          {
+            "name": "malloc",
+            "cell": 805360064,
+            "forwarded_target": 1970602272,
+            "observer": 805327376
+          },
+          {
+            "name": "free",
+            "cell": 805360068,
+            "forwarded_target": 1970602144,
+            "observer": 805326912
+          }
+        ]
+      },
+      "limitations": [
+        "New EDX context is not original caller ABI",
+        "Physical provider bridges are external to owned native Save bodies",
+        "No complete device reset or gameplay proof"
+      ],
+      "primary_preparation": {
+        "worker": "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910",
+        "verified_artifact_pins": {
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b49d00.txt": "9f4d6d40cbccd957dc39254872972affd80acd685b23640d6a0b068f19300d30",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b49f80.txt": "f3c97552521c0bb3338480d0461786c562def8a0b9d0a23ed4d3d7430975613b",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00d61e10.txt": "96afa3f934fee0c7cf05b82662aa15543a1fbfeab1486ddc8e6d9c9f75d0252f",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00d61e34.txt": "0add9e62f80d973c786ff03e461494127ac7d4797e9c40435e6dee9aa9d67551",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00d61e58.txt": "690e872e9960f73d01c7b0bf8ae163febd0023a38ed499a05e3387e51d2f240e",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00d61e7c.txt": "7ea1cbc3c5146596f94ca7a91bcf9f0f898d610abb9fbc83406e2a22e5af2731",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00bf55be.txt": "2062dd1812b520c221796c8f4fd262c4abab62fc4ac6bd6e14cff7298eae52c3",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00bf681b.txt": "fbf7ae2ab0f928fa3483a2d243f473b50143e6517657f1095eec650915f48a6c",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00bf7680.txt": "76c9a099abb6b4e8a1cb84cf3efd700826741a0b4d44d6e26c3000ec80bd3ef9",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b840.txt": "d3932e06bed133cee9ee4d56dd1658e702a36900bf7ad8355e42ef0190d45aa9",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b9f0.txt": "35ab1d5d449b517b20cfb53592e1c4b3be791a8c4d7ec66fd89fc382c7f287e4",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b800.txt": "9cd8ef83e53133d6915b65f8273d1d61a86e41c21e5f85c112bc5e2fb9753d7a",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b9b0.txt": "fbdb6586a0ab93d654c156936c5b59cbffad9c1538fb1e7eb07d308850ceaf19",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b820.txt": "db3bcd615f29dcbd3982fc734c08ef8d83bd83b46a5f0119b32dc293123fad81",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b9d0.txt": "356d6066197d5a1c0ea365764bb10a6673da0647b5db56f6544cbf439d9bc404",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b23270.txt": "f362fa2ead5c0c5874964840a8f93fd39141b47ca53e9d6b2f2f4dd24a1c7ba5",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b23180.txt": "3a14e046f7cce3868e23737707337f80524c381e7f246436aaceb81d44ba3db3",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4b850.txt": "bb112796d9b914a887b6b774426fe7675cfee6bd3aa56a47d88648bcc783da8e",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_live_00b4ba00.txt": "8b8e6adef543d65d2ab4b7371e04847cab77ca1d8db18805c4d89004fb83ca42",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_proto.txt": "c21388a16e4629ed731d33bc33e4059a0556c4874a5a09653546b38cbb5b482d",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_flow.txt": "feca023b023030ab281a6ee138fa8cef8766bcdfbfa26e4e7f9b29e25d58f0eb",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\src\\native_logical_buffer_device_save.cpp": "393f59b03ed29bf0e935fe2d285d75bd092c2dad02cbe8334bbf13fe03d71d39",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\include\\bsp\\native_logical_buffer_device_save.hpp": "ecc2d7f9b7092cf13b70f9652275e6eb60dbec89d5f91908f7d934e423439ad3",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\Release\\bsp_core.lib": "d557402ed9f064dde9d7f75f0155662f31227f60ea0a00aab0557860604265e7",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\bsp_core.linked.lib": "d557402ed9f064dde9d7f75f0155662f31227f60ea0a00aab0557860604265e7",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\include\\bsp\\native_physical_buffer_lock.hpp": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+          "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_physical_buffer_lock.hpp": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\src\\native_physical_buffer_lock.cpp": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309",
+          "J:\\PROG\\battlestations-pacific-decompile\\src\\native_physical_buffer_lock.cpp": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\include\\bsp\\native_physical_buffer_access.hpp": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5",
+          "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_physical_buffer_access.hpp": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\src\\native_physical_buffer_access.cpp": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c",
+          "J:\\PROG\\battlestations-pacific-decompile\\src\\native_physical_buffer_access.cpp": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\include\\bsp\\native_renderer_binding_getters.hpp": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704",
+          "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_renderer_binding_getters.hpp": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\src\\native_renderer_binding_getters.cpp": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328",
+          "J:\\PROG\\battlestations-pacific-decompile\\src\\native_renderer_binding_getters.cpp": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\include\\bsp\\native_diagnostic_sink_lifetime.hpp": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+          "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_diagnostic_sink_lifetime.hpp": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\src\\native_diagnostic_sink_lifetime.cpp": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+          "J:\\PROG\\battlestations-pacific-decompile\\src\\native_diagnostic_sink_lifetime.cpp": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\include\\bsp\\singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+          "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\src\\singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\docs\\NATIVE_LOGICAL_BUFFER_DEVICE_SAVE.md": "052e8a483f1fdc1809977bb6c2162c5f71a17ccaf9d342ae3b8eb23098e1fb01",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\audit_logical_buffer_device_save.py": "960aaf0627e9cb7bbf0f254410158eb4fea3ad2fd51484b36e1d678f79fc7661",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_check.cpp": "852788c5d8bc741d2027af7aaa980132220f35bab6a07225ecb6c37976a06a23",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\prepare_logical_buffer_device_save.py": "4cc93a401c233748ce36012c0c636b74045c4725986ee1e7f63952f43fea0a45",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\prepare_logical_buffer_device_save_code.py": "a96d9b61dacfd2a9fcc8b5bf8c1c9726eafea51f6ba6a7fa631a24a64bc02899",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_spans.hpp": "bf1cdda81f469a45a1d2199e1efde7cfd21ee999c88d5e9c0b2c50cee06f978a",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_preparation.json": "6f0b914ce8820d34a787e7b2e5a4bc85e24c91852f85cc2a66ac377973de5d1a",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_build.log": "c2c0f935a9d19b110b5e3f746ba4f31d86d7262a624092a1abcdaa9171f25767",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_check.log": "00c6d125957fcd7f05233076dc74d4c6e9ae6d6c909b534d9cfe36687ff4df57",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\build_logical_buffer_device_save.ps1": "9971001d2f313c3e91c976dd28793b76a5b4fbc3b250f047b2c1d0ed76628e86",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\build_logical_buffer_device_save_check.ps1": "96ee432e93a454cd7df45c417b5e3c183fc3f72ddc5a1cc3135bfd3ad842fe57",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\local\\logical_buffer_device_save_sources.cmake": "4d4036ae3f812e3079e7c9d9d5f9891807f2b9095fa84a7a0341952f64530f27",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.vcxproj": "e8c1defda35dec7e1c200960b19a900469d88831df5f7f75e533e805b4acb78f",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\build_logical_buffer_device_save.cmd": "dd06e6e69315bdcaffdeac561c546bb87d3ac60845df188b9e6a35c2617a4482",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_check.exe": "963a3e7c014e44502442b96bdb857f6c4369c6c11ff70e00e821bb68a4cd17e0",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_check.obj": "ea81f274fbf844e7ab57916eeaec69e12fd4430d44bb4e49ae2cc0576becdc61",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_check.map": "9a8e857e7f14349106d49952c2047efc77cfcfc2c674b5f99a283b2e5b63f3ce",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_symbols.txt": "7765ba36cf53174a567b92eed4bb3c922f633f558d2ffabd8db043888d1306c4",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_disasm.txt": "8ac6d125507dda7ea70d8039ebae6e987da334624fbdf525abde8031aa06b437",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_compiled_entries.json": "8ac14ef4386d44b0e037a576275d303c37c77ce5ccd8ffeec287553685a9c7a5",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_code_spans.txt": "b8f4d702bf3ebd3568825d2ade11ab0f640a86f50899ce3c78df6adda1dc2bec",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_code_postimages.bin": "cfcc7bd34cdc0dd18801898b22d494046d5e6bf0b975764ae83788f4f15c3ff5",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_traces.bin": "a0e4aa284b34e97de8cfdd2b36f00dc7adf02abc0ed93ebc5a3b9a82858b52a6",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\logical-buffer-device-save-check\\logical_buffer_device_save_imports.json": "c76cd684de9b2629205d5ac38f5b0f5b4c0c8e09eb888f4826f43aceea63ac5c",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.dir\\Release\\native_diagnostic_sink_lifetime.obj": "7800450196094b839940c30ad4ccbaac1083a9c74808be62e28c85c8dfd7e9a2",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.dir\\Release\\native_logical_buffer_device_save.obj": "07cad62e19329044ce22300dc305ff9c9a3d57d8f267c9a8d0bf250cdda2d321",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.dir\\Release\\native_physical_buffer_access.obj": "34f036d0d78830d8898860bf58c5243f8a58fdff62bff4fe615c5eed1edb8914",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.dir\\Release\\native_physical_buffer_lock.obj": "bb41525d9fe467ba98a602c10ea94ca00bee114e5353c4379cacafe956bcf2b0",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.dir\\Release\\native_renderer_binding_getters.obj": "9ce87139794d4540f175416b62accd9d3567444415c35b07ef50f88183b55785",
+          "J:\\PROG\\battlestations-pacific-decompile-native-logical-buffer-device-save-20260910\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj": "3afe438dea1921e112d9c0b736f3a5f9cc0cd1ca44c58eb8e357815762a091da",
+          "J:\\PROG\\battlestations-pacific-decompile-native-physical-buffer-lock-20260910\\local\\physical_buffer_lock_coff.py": "31959820a21ade8870b733203d07e230f1aefebe13dcb1ea7e626902a5542a26"
+        },
+        "current_source_files": [
+          "include/bsp/native_logical_buffer_device_save.hpp",
+          "src/native_logical_buffer_device_save.cpp",
+          "include/bsp/native_physical_buffer_lock.hpp",
+          "src/native_physical_buffer_lock.cpp",
+          "include/bsp/native_physical_buffer_access.hpp",
+          "src/native_physical_buffer_access.cpp",
+          "include/bsp/native_renderer_binding_getters.hpp",
+          "src/native_renderer_binding_getters.cpp",
+          "include/bsp/native_diagnostic_sink_lifetime.hpp",
+          "src/native_diagnostic_sink_lifetime.cpp",
+          "include/bsp/singleton_lifetime.hpp",
+          "src/singleton_lifetime.cpp"
+        ],
+        "fresh_live_PE_spans": [
+          {
+            "address": "00b49d00",
+            "length": 190,
+            "sha256": "7519e06467c849647526eae78c062149df41f0d097432a661f593424337d2527",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b49f80",
+            "length": 190,
+            "sha256": "c64ebba6df1a8d1895b817b7b76d1d791df7fc91aa076ac9b3055e93e8b8a21b",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d61e10",
+            "length": 36,
+            "sha256": "797cffe6e5a5f88fd251f853006ced781f96229c71934604a2c5a83014ff9ba6",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d61e34",
+            "length": 36,
+            "sha256": "0ce96f1496942ff87525bc114a4ba34656127d397a8e80aaf35b1bebc26234ad",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d61e58",
+            "length": 36,
+            "sha256": "b7737afa19564b630838be9c056951ebc45167662dac96e8ae54d925414e8050",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00d61e7c",
+            "length": 36,
+            "sha256": "d74f853720d97ef5f568b327d488040b9a2cb5924c65cdc72197ae3f31597be1",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00bf55be",
+            "length": 5,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00bf681b",
+            "length": 105,
+            "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00bf7680",
+            "length": 869,
+            "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b840",
+            "length": 4,
+            "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b9f0",
+            "length": 4,
+            "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b800",
+            "length": 4,
+            "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b9b0",
+            "length": 4,
+            "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b820",
+            "length": 24,
+            "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b9d0",
+            "length": 24,
+            "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b23270",
+            "length": 52,
+            "sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b23180",
+            "length": 52,
+            "sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4b850",
+            "length": 172,
+            "sha256": "edaadda7b10dd54d8f91cb34bb6fdfb1905e028532642ba5e2fb24a15815542c",
+            "fresh_live_PE_match": true
+          },
+          {
+            "address": "00b4ba00",
+            "length": 172,
+            "sha256": "87189e6531e1e1825214ba9459615786a4eef618c5f5020aab1ce8f276115b61",
+            "fresh_live_PE_match": true
+          }
+        ],
+        "actual_main_library": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\logical-save-primary-check\\bsp_core.linked.lib",
+          "bytes": 30907682,
+          "sha256": "adb3e13067c2322933df7555f35d01702530ea5a3dae8ae77b875b99e15eacca"
+        }
+      },
+      "fresh_native_seeds": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true,
+          "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+          "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true,
+          "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+          "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+          "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true,
+          "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+          "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+          "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true,
+          "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+          "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true,
+          "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+          "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true,
+          "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+          "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+        }
+      ],
+      "primary_artifact_pins": [
+        {
+          "path": "build/logical-save-primary-check/bsp_core.linked.lib",
+          "bytes": 30907682,
+          "sha256": "adb3e13067c2322933df7555f35d01702530ea5a3dae8ae77b875b99e15eacca"
+        },
+        {
+          "path": "build/logical-save-primary-check/build_logical_buffer_device_save.cmd",
+          "bytes": 1438,
+          "sha256": "994b883c3774a8fd33db84a8e6c2e8776fba4599ca4c6ed405f6b13849bf7320"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_check.exe",
+          "bytes": 70656,
+          "sha256": "237da2e1478e14a2f8bdedd11ce96668932f62514e093b9982039224b1c899bf"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_check.map",
+          "bytes": 125137,
+          "sha256": "2b99f602ce41b2a985f37734065ec680ad4f434bd383a6c5e56a4db06c381205"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_check.obj",
+          "bytes": 271809,
+          "sha256": "451f6ce1e446f828f950feea92c11aed3b1df15803877ede52501098139b86a0"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_code_postimages.bin",
+          "bytes": 265549,
+          "sha256": "cfcc7bd34cdc0dd18801898b22d494046d5e6bf0b975764ae83788f4f15c3ff5"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_code_spans.txt",
+          "bytes": 4285,
+          "sha256": "17462e55abe58eb167405321bb5a68f825e3cdfc71cac4225224ca1171e3a945"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_compiled_entries.json",
+          "bytes": 96509,
+          "sha256": "3af8602fc4b56787a6662deb74e1201a8deb4c7f60cb62bd5f034574c2fe2d86"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_disasm.txt",
+          "bytes": 25114,
+          "sha256": "9a07899c63dbdc051d100b513c0fa24cca9c47641559be6edfc9c92b18fbd651"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_imports.json",
+          "bytes": 361,
+          "sha256": "c76cd684de9b2629205d5ac38f5b0f5b4c0c8e09eb888f4826f43aceea63ac5c"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_symbols.txt",
+          "bytes": 8939,
+          "sha256": "a9751862e376b5c5408e38de4fe828656ff5ebd7cc4f7b04c317b76607f57bc3"
+        },
+        {
+          "path": "build/logical-save-primary-check/logical_buffer_device_save_traces.bin",
+          "bytes": 377192,
+          "sha256": "343b21e95fd6e2570644fb40b57968714f9946766593250e632906ceca4b1000"
+        },
+        {
+          "path": "build/logical-save-primary-check/native_diagnostic_sink_lifetime.obj",
+          "bytes": 4633,
+          "sha256": "69051fbea6144a5d43ab2970f846cb8f3967122f8c849709fb16ab0f540698eb"
+        },
+        {
+          "path": "build/logical-save-primary-check/native_logical_buffer_device_save.obj",
+          "bytes": 5559,
+          "sha256": "8bd6421dd8a93a18ce24529a0b8918aa9ca4bd105247f158c680d84c1f861899"
+        },
+        {
+          "path": "build/logical-save-primary-check/native_physical_buffer_access.obj",
+          "bytes": 1708,
+          "sha256": "eda1b7616efd1a58cd0d4a626e2a7f2b19b564509748c0984126676f90c45756"
+        },
+        {
+          "path": "build/logical-save-primary-check/native_physical_buffer_lock.obj",
+          "bytes": 3120,
+          "sha256": "814e73c591ab78575bc3f2c601893c14b03d4b145fa3e78c67404a1cc944e442"
+        },
+        {
+          "path": "build/logical-save-primary-check/native_renderer_binding_getters.obj",
+          "bytes": 1908,
+          "sha256": "948f9e487fff004e173c9407259d35a10fbb3f0161f8c045552b81401a61fdbc"
+        },
+        {
+          "path": "build/logical-save-primary-check/primary_verified.json",
+          "bytes": 148194,
+          "sha256": "0216a23cecbf21cd294b986f3b1fec58d8bb266bffcf370792c744d94c87f68c"
+        },
+        {
+          "path": "build/logical-save-primary-check/singleton_lifetime.obj",
+          "bytes": 32943,
+          "sha256": "db9b59a7cfebe75d38ff77b12c855174fd5b8606221b4d5ce9feaee5b55cf3e3"
+        },
+        {
+          "path": "local/prepare_logical_save_primary.py",
+          "bytes": 5768,
+          "sha256": "411779e9ccdec9e2c01c8ff2da87d6222d975fc9922997821f3cedc15b6dd970"
+        },
+        {
+          "path": "local/prepare_logical_save_primary_code.py",
+          "bytes": 2418,
+          "sha256": "c26d0ab07922d5207d59ed7c60dd7e4f23fd3585ff968713cc59d8863db6f82d"
+        },
+        {
+          "path": "local/build_logical_save_primary.ps1",
+          "bytes": 2368,
+          "sha256": "1b3f621ffd5f8663ab3252bcfac6bb3bb9dbed3662163aa34670224fc36ce8ad"
+        },
+        {
+          "path": "local/verify_logical_save_primary.py",
+          "bytes": 11525,
+          "sha256": "c4d5edf71633d971f23d8fbf4936e6c1369b446504bab143373a688655aac1c2"
+        },
+        {
+          "path": "local/native_logical_buffer_device_save_primary_build.txt",
+          "bytes": 2035,
+          "sha256": "43323c3b9340ab92371e339999a62bd550d56a197a9dc808f0aa5647232af2b9"
+        },
+        {
+          "path": "local/logical_save_primary_fixture.txt",
+          "bytes": 12229,
+          "sha256": "ab7fb2da8f6ab58396d532822f3447b3d10b0f9c04d1a072c85dbf18126bb733"
+        },
+        {
+          "path": "local/logical_save_primary_seeds.json",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        }
+      ]
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_logical_buffer_device_save_annotations.json",
+    "bytes": 4019,
+    "sha256": "6c6a41031eff7b87ad2e62bc2571b978819a89aa9b5e14d109df50d2f5dc4ddd",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b49d00",
+      "path": "exports/bsp/functions/00b49d00/decompiled.c",
+      "bytes": 2939,
+      "sha256": "8cfc3cdc1b33ba86bc49b0f37d5ef13ff11173db73b0896834c501b9a796f185"
+    },
+    {
+      "address": "00b49f80",
+      "path": "exports/bsp/functions/00b49f80/decompiled.c",
+      "bytes": 2913,
+      "sha256": "de706d5d070c1bde8316bbe50f074df5acdf5c01ced932a9c55ead736eb66eaf"
+    }
+  ],
+  "closure_utc": "2026-09-11T07:41:07.388310+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b49d00",
+      "name": "save_native_logical_vertex_buffer_for_device_reset_00b49d00",
+      "cpp_symbol": "bsp::save_native_logical_vertex_buffer_for_device_reset_00b49d00",
+      "source": "src/native_logical_buffer_device_save.cpp",
+      "native_end_exclusive": "00b49dbe",
+      "original_abi": "ECX actual logical owner, no stack arguments, no stable EAX contract, plain RET, no local FH3 cleanup",
+      "host_abi_boundary": "New __fastcall entries additionally take actual service/profile context in EDX",
+      "evidence": "reports/native_logical_buffer_device_save_audit.json",
+      "status": "complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "real_D3D9_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b49f80",
+      "name": "save_native_logical_index_buffer_for_device_reset_00b49f80",
+      "cpp_symbol": "bsp::save_native_logical_index_buffer_for_device_reset_00b49f80",
+      "source": "src/native_logical_buffer_device_save.cpp",
+      "native_end_exclusive": "00b4a03e",
+      "original_abi": "ECX actual logical owner, no stack arguments, no stable EAX contract, plain RET, no local FH3 cleanup",
+      "host_abi_boundary": "New __fastcall entries additionally take actual service/profile context in EDX",
+      "evidence": "reports/native_logical_buffer_device_save_audit.json",
+      "status": "complete_actual_storage_primary_library_real_D3D9_CRT_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "real_D3D9_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_LOGICAL_BUFFER_DEVICE_SAVE.md",
+    "bytes": 11609,
+    "sha256": "a9ad240097453096a6bf84c9e4cf3069034bd0d4dbb3c7487cc26b1f18fac632"
+  }
 }

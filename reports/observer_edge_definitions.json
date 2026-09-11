@@ -1,0 +1,95 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00693ca0",
+    "end_address": "00693cbf"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00693ca0",
+    "end_address": "00693cbe",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00693ca0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00693ca0",
+    "function_name": "FUN_00693ca0",
+    "entry_point": "00693ca0",
+    "body_size": 28,
+    "message": "Function created successfully at 00693ca0"
+   }
+  },
+  {
+   "defined": "00693ca0",
+   "end": "00693cbf",
+   "name": null,
+   "after": "Function: FUN_00693ca0 at 00693ca0\nSignature: undefined FUN_00693ca0(void)\nEntry: 00693ca0\nBody: 00693ca0 - 00693cbe"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "decoded_call_repair": "00693cb1",
+   "before": {
+    "proto": "Function: FUN_00693ca0 at 00693ca0\nSignature: undefined FUN_00693ca0(void)\nEntry: 00693ca0\nBody: 00693ca0 - 00693cbe\n{\n \"function_name\": \"FUN_00693ca0\",\n \"address\": \"00693ca0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 3,\n \"edge_count\": 2,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"1b5b810f765d1c3e4960b2920f3e476c6cd143c99830acc20760c8e63a7cfb5d\",\n  \"ecd163bc5aca8c13e498342c0435262fd9e4a9cd5b0f9abd516157edcccbb4be\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+    "flow": "00693ca0: 11 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "disasm": "00693ca0: TEST byte ptr [ESP + 0x4],0x1 \n00693ca5: PUSH ESI \n00693ca6: MOV ESI,ECX \n00693ca8: MOV dword ptr [ESI],0xcf7e64 \n00693cae: JZ 0x00693cb9 \n00693cb0: PUSH ESI \n00693cb1: CALL 0x00bf65ac \n00693cb6: ADD ESP,0x4 \n00693cb9: MOV EAX,ESI \n00693cbb: POP ESI \n00693cbc: RET 0x4 \n",
+    "decompile": "\nundefined4 * __thiscall FUN_00693ca0(undefined4 *param_1,byte param_2)\n\n{\n  undefined4 *extraout_EAX;\n  \n  *param_1 = &PTR_FUN_00cf7e64;\n  if ((param_2 & 1) != 0) {\n    _free(param_1);\n    return extraout_EAX;\n  }\n  return param_1;\n}\n\n"
+   },
+   "native_body_bytes": 31,
+   "initial_created_body_size": 28
+  },
+  {
+   "endpoint": "clear_instruction_flow_override",
+   "body": {
+    "address": "00693cb1"
+   },
+   "result": {
+    "status": "success",
+    "message": "Success: Cleared flow override at 00693cb1 (was: CALL_RETURN, now: NONE)"
+   }
+  },
+  {
+   "decoded_call_repair": "00693cb1",
+   "after": {
+    "proto": "Function: FUN_00693ca0 at 00693ca0\nSignature: undefined FUN_00693ca0(void)\nEntry: 00693ca0\nBody: 00693ca0 - 00693cbe\n{\n \"function_name\": \"FUN_00693ca0\",\n \"address\": \"00693ca0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"1b5b810f765d1c3e4960b2920f3e476c6cd143c99830acc20760c8e63a7cfb5d\",\n  \"dee373613c7688d4270eaf82a8c4225f18b8d5e7cc115b54eec9dbec105941ca\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+    "flow": "00693ca0: 11 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "disasm": "00693ca0: TEST byte ptr [ESP + 0x4],0x1 \n00693ca5: PUSH ESI \n00693ca6: MOV ESI,ECX \n00693ca8: MOV dword ptr [ESI],0xcf7e64 \n00693cae: JZ 0x00693cb9 \n00693cb0: PUSH ESI \n00693cb1: CALL 0x00bf65ac \n00693cb6: ADD ESP,0x4 \n00693cb9: MOV EAX,ESI \n00693cbb: POP ESI \n00693cbc: RET 0x4 \n",
+    "decompile": "\nundefined4 * __thiscall FUN_00693ca0(undefined4 *param_1,byte param_2)\n\n{\n  *param_1 = &PTR_FUN_00cf7e64;\n  if ((param_2 & 1) != 0) {\n    _free(param_1);\n  }\n  return param_1;\n}\n\n"
+   },
+   "body_extent_note": "Readbacks preserve stored inclusive bounds and listed instruction coverage separately; no deletion, recreation or body-extension script was issued."
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

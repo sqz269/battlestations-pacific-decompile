@@ -1,4 +1,5 @@
 #include "bsp/observer_lifetime.hpp"
+#include "bsp/observer_edges.hpp"
 #include <algorithm>
 #include <cstring>
 #include <new>
@@ -259,7 +260,11 @@ void NativeObserverLifetime::remove_from_endpoints_and_delete(NativeObserverEdge
     erase_observer_edge_00694f60(first->edges_04, &edge);
     erase_observer_edge_00694f60(callback_owner->edges_04, &edge);
     const std::uint32_t table = edge.native_vtable_00; // after both removals
-    services_.delete_edge_virtual_00(edge, table, 1);
+    if (table == kObserverEdgeVtable00cf7e64) {
+        (void)delete_observer_edge_00693ca0(&edge, 1);
+    } else {
+        services_.delete_edge_virtual_00(edge, table, 1);
+    }
 }
 void NativeObserverLifetime::unregister_pair_006952a0(
     NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner) {

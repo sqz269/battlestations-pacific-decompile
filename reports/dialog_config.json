@@ -1,0 +1,108 @@
+{
+  "packet": "orch4_dialog_config_e",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "0044fa30",
+      "name": "load_dialog_config_0044fa30",
+      "source": "src/dialog_config.cpp",
+      "status": "reconstructed_semantic_build_and_focused_fixture_tested",
+      "abi": "ECX=panel owner; RET",
+      "evidence": "Hypothesis, not recovered symbol. Complete sequence: temporary Lua owner mask1; DialogGlobals.lua plus overrides; live character map picture integers, pause+30, actual palette+10 with float32 input then double255 divisor; state+34=0 before references/interpreter close. Two false _free continuations repaired. Original ABI ECX=panel owner; RET. docs/DIALOG_CONFIG.md; src/dialog_config.cpp. Explicit C++ state views; no game validation.",
+      "document": "docs/DIALOG_CONFIG.md",
+      "instructions": 368,
+      "last_instruction": "0044ffe5",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00b66270",
+      "name": "lua_object_number_00b66270",
+      "source": "src/lua_numeric.cpp",
+      "status": "reconstructed_semantic_build_and_focused_fixture_tested",
+      "abi": "ECX=LuaObject; ST0=float32-rounded number; RET",
+      "evidence": "Hypothesis, not recovered symbol. Lua tonumber double is spilled to float32 at00B66280 then reloaded at00B66283. Concrete host plus x87 spill, not direct double result. Original ABI ECX=LuaObject; ST0=float32-rounded number; RET. docs/DIALOG_CONFIG.md; src/lua_numeric.cpp. Explicit C++ state views; no game validation.",
+      "document": "docs/DIALOG_CONFIG.md",
+      "instructions": 10,
+      "last_instruction": "00b66287",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00b66290",
+      "name": "lua_object_integer_00b66290",
+      "source": "src/lua_numeric.cpp",
+      "status": "reconstructed_semantic_build_and_focused_fixture_tested",
+      "abi": "ECX=LuaObject; tail JMP00BF7420; EAX=integer bits",
+      "evidence": "Hypothesis, not recovered symbol. Lua number float32 spill/reload precedes runtime0109EEA4 choice: SSE2 CVTTSD2SI or low32 of existing complete00BF7456 x87 kernel. Required live mode reference sampled after Lua call, no out-of-range C++ cast/fallback. Original ABI ECX=LuaObject; tail JMP00BF7420; EAX=integer bits. docs/DIALOG_CONFIG.md; src/lua_numeric.cpp. Explicit C++ state views; no game validation.",
+      "document": "docs/DIALOG_CONFIG.md",
+      "instructions": 10,
+      "last_instruction": "00b662a9",
+      "last_instruction_length": 5
+    },
+    {
+      "address": "00b66fa0",
+      "name": "GuiLua51Host::copy_ref_00b66fa0",
+      "source": "src/gui_lua_runtime.cpp",
+      "status": "reconstructed_semantic_build_and_focused_fixture_tested",
+      "abi": "ECX=destination; source* stack; EAX=destination; RET4",
+      "evidence": "Hypothesis, not recovered symbol. Native copies14h fields, conditionally registers copied tracking pointer/increments tracking count. Registry-reference projection keeps same Lua value and independent lifetime, including untracked globals; native tracking layout/stack/GC timing not reproduced. Original ABI ECX=destination; source* stack; EAX=destination; RET4. docs/DIALOG_CONFIG.md; src/gui_lua_runtime.cpp. Explicit C++ state views; no game validation.",
+      "document": "docs/DIALOG_CONFIG.md",
+      "instructions": 29,
+      "last_instruction": "00b66ff2",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "0044da70",
+      "name": "std::vector<LuaObject> copy construction",
+      "source": "src/dialog_config.cpp",
+      "status": "standard_library_reuse",
+      "abi": "ECX=destination vector; source* stack; EAX=destination; RET4",
+      "evidence": "Hypothesis, not recovered symbol. Library reuse: copy constructor of20-byte LuaObject vector; exactcount allocation, max0CCCCCCC, checked source range,0044ADA0 copies elements. Loader uses standard reference ownership for the proven one-element copy; no native STL allocation or invalid-iterator behavior claim. Original ABI ECX=destination vector; source* stack; EAX=destination; RET4. docs/DIALOG_CONFIG.md; src/dialog_config.cpp. Explicit C++ state views; no game validation.",
+      "document": "docs/DIALOG_CONFIG.md",
+      "instructions": 77,
+      "last_instruction": "0044db44",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "0044ada0",
+      "name": "std::uninitialized_copy<LuaObject>",
+      "source": "src/dialog_config.cpp",
+      "status": "standard_library_reuse",
+      "abi": "ECX=first; EDX=last; output plus allocator/debug words stack; EAX=end; RET10",
+      "evidence": "Hypothesis, not recovered symbol. Library reuse: constructs each20-byte LuaObject through00B66FA0, returns outputend; EH destroys constructed range and rethrows. Standard ownership reused; no new STL port. Original ABI ECX=first; EDX=last; output plus allocator/debug words stack; EAX=end; RET10. docs/DIALOG_CONFIG.md; src/dialog_config.cpp. Explicit C++ state views; no game validation.",
+      "document": "docs/DIALOG_CONFIG.md",
+      "instructions": 42,
+      "last_instruction": "0044ae2d",
+      "last_instruction_length": 3
+    }
+  ],
+  "validation": {
+    "build": "Combined MSVC Win32 Release passed; local/dialog_voice_build_final.log",
+    "fixture": "local/dialog_config_fixture.log passed; actual Lua, typed character map and actual palette storage",
+    "new_permanent_tests": 0,
+    "game_validated": false,
+    "native_abi": false,
+    "existing_tests": "reconstructed_math and native_math_differential2/2 passed",
+    "adapter_correction_addresses": [
+      "00b67800",
+      "00b67720",
+      "00b67080",
+      "00b65fb0",
+      "00b662b0"
+    ],
+    "independent_review": "Reference ordering and numeric paths reviewed; identified old-root and mode-probe ordering corrected; borrowed-index paths then independently rereviewed"
+  },
+  "flow_repairs": "reports/dialog_config_flow_repair.json",
+  "new_sequence_and_numeric_bodies": 3,
+  "semantic_reference_copy": 1,
+  "standard_library_reuse": [
+    "0044da70",
+    "0044ada0"
+  ],
+  "remaining": [
+    "Panel owner and actual palette construction/startup binding",
+    "Generic GUI reader numeric mode and float-spill migration",
+    "Native Lua tracking/GC/SEH and ABI equivalence",
+    "Game startup and gameplay validation"
+  ]
+}

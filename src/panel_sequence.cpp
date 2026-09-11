@@ -1,4 +1,5 @@
 #include "bsp/panel_sequence.hpp"
+#include "bsp/panel_publication.hpp"
 
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
@@ -230,7 +231,9 @@ void request_panel_voice_004483f0(PanelSequenceContext& context,
 {
     const float delay = entry.elapsed_0c; // captured before either game call
     entry.selected_slot_3c = slot;
-    const auto& record = context.host.resolve_message_00705e00(name, 0);
+    auto& records = context.host.current_message_record_store_00e188a8_21dc();
+    auto& resolver = context.host.message_record_resolver_context();
+    const auto& record = resolve_message_record_00705e00(records, name, 0, resolver);
     auto& manager = context.host.current_voice_manager_00e198c4_a4();
     auto scheduled = context.host.scheduled_context(manager);
     begin_panel_voice_record_005b94d0(scheduled, slot, record, delay, context.subtitles);
@@ -244,7 +247,8 @@ void consume_panel_commands_00452360(PanelSequenceContext& context)
     for (;;) {
         if (command->kind_vslot_04() != 1 && command->kind_vslot_04() != 2
             && command->kind_vslot_04() != 4) {
-            context.host.publish_panel_rows_00451c90(context.owner);
+            auto& publication = context.host.panel_publication_context();
+            publish_panel_rows_00451c90(context, publication);
             return;
         }
         // Repeated virtual calls are intentional; do not cache the kind.

@@ -1,0 +1,192 @@
+{
+  "packet": "orch4_dialog_voice_integration_e",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "publication": "a6e57b3b32d23fcc10e37840807fbca9890a1eda",
+    "observer": "f7f5c1a",
+    "message": "342fe57ea52017bfbb08664d81cf506744ce11bd"
+  },
+  "reviewed_addresses": [
+    "004261a0",
+    "004483f0",
+    "0044ada0",
+    "0044da70",
+    "0044f220",
+    "0044fa30",
+    "00451c90",
+    "00452360",
+    "005b6910",
+    "005b7dc0",
+    "00693ca0",
+    "00694850",
+    "00694a60",
+    "006952a0",
+    "00695530",
+    "00702300",
+    "00702910",
+    "007029b0",
+    "00703170",
+    "00703b10",
+    "00703b90",
+    "00703c20",
+    "00703ce0",
+    "00703ff0",
+    "00704060",
+    "00704120",
+    "00704190",
+    "007042b0",
+    "007044a0",
+    "00705a20",
+    "00705c50",
+    "00705e00",
+    "00b65fb0",
+    "00b66270",
+    "00b66290",
+    "00b662b0",
+    "00b66fa0",
+    "00b67080",
+    "00b67720",
+    "00b67800"
+  ],
+  "scope": "Dialog configuration and Lua adapter; direct panelpublication/message resolution; canonical observer edge creation/deletion.",
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "2/2 passed",
+    "build_log": "local/dialog_voice_build_final.log",
+    "source": "d36b594 plus final Lua reference changes committed in this batch",
+    "library_sha256": "56d39e27e60b6090c41ec2b80a8b38ea7bde1a78593c5705fee63e414b6dd2e0",
+    "focused_fixtures": [
+      {
+        "name": "dialog_config",
+        "evidence": "local/dialog_config_fixture.log"
+      },
+      {
+        "name": "panel_publication",
+        "evidence": "local/panel_publication_integrated_fixture.log"
+      },
+      {
+        "name": "sequence_terminal",
+        "evidence": "local/dialog_sequence_integrated_fixture.log"
+      },
+      {
+        "name": "message_record",
+        "evidence": "Worker tool result: parameterized fixture against parent library exit0; source/recipe preserved in parent local/"
+      },
+      {
+        "name": "observer_edges",
+        "evidence": "Worker tool result: /W4 /WX compile with parentinclude/library and fixture exit0; source/recipe preserved in parent local/"
+      }
+    ],
+    "new_permanent_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "annotations": {
+      "count": 40,
+      "saved": true,
+      "prior_comments_preserved": true,
+      "names_and_evidence_readback_verified": true,
+      "before_log": "local\\ghidra-annotations-20260911T073948Z.json",
+      "readback": "local/dialog_wave_comments.json",
+      "exports": "All40 force-refreshed successfully; local/dialog_wave_exports.log"
+    },
+    "repairs": [
+      "reports/dialog_config_flow_repair.json",
+      "reports/observer_edges_flow_repair.json",
+      "reports/observer_edge_definitions.json",
+      "reports/message_record_flow_repairs.json",
+      "reports/message_record_definitions.json"
+    ],
+    "retired_tags": [
+      "reports/dialog_inventory_tag_corrections.json",
+      "reports/message_inventory_tag_corrections.json"
+    ],
+    "membership_limits": [
+      "00693ca0 initial28-byte/10-instruction metadata versus complete31-byte/11-instruction listing; correctedflow/pseudocode, no body-extension claim",
+      "Previous00451020 stored body extension remains incomplete"
+    ]
+  },
+  "next_owner_packet": {
+    "analysis_only": true,
+    "caller": "004dc6a0",
+    "startup_order": "004DC849 allocate38h;004DC862 construct00452660;004DC872 publish game+21E4;004DC878 load0044FA30; no null guard",
+    "constructor": {
+      "address": "00452660",
+      "last": "00452718",
+      "last_length": 1,
+      "vtable": "00ce4bc0",
+      "behavior": "Three map sentinel links/counts and currentNativeString initialized; fields30/34 and allocatorwords4/10/1C untouched"
+    },
+    "allocators": [
+      {
+        "address": "0044ab00",
+        "bytes": 28,
+        "last": "0044ab36"
+      },
+      {
+        "address": "0044ab50",
+        "bytes": 36,
+        "last": "0044ab86"
+      },
+      {
+        "address": "0044ac00",
+        "bytes": 88,
+        "last": "0044ac36"
+      }
+    ],
+    "destructor": {
+      "address": "00452040",
+      "last": "0045212e",
+      "last_length": 1,
+      "order": "Currentstring, queue, palette, character map. Subtrees visitright, destroycurrent, iteratecapturedleft. Publishedcount clears only after whole subtree."
+    },
+    "deleting_wrapper": {
+      "address": "00452720",
+      "last": "0045273b",
+      "last_length": 3
+    },
+    "subtree_helpers": [
+      "004512e0",
+      "0044ac90",
+      "0044e4f0"
+    ],
+    "full_range_helpers": [
+      "004517e0",
+      "0044e150",
+      "0044f0a0"
+    ],
+    "flow_repairs_needed": [
+      "00452730 ->00452735 ADDESP4",
+      "004520AF truncatedtail004520B4..0045212E plus004520DD/0045210F",
+      "0044ACAF->0044ACB4..BE loop",
+      "0044E52C->0044E531..3B loop",
+      "00451350->00451355..5F loop"
+    ]
+  },
+  "remaining": [
+    "Panel constructor/destructor and actual palette lifetime/startupbinding",
+    "Generic GUI reader numeric mode/spill migration",
+    "Message resource loading and observer dispatch population",
+    "Actual world handle-table owners",
+    "Running game rebuild and gameplay validation"
+  ],
+  "final_integration": {
+    "tested_revision": "e4f3add2231d1000815e3af26f75efc86c73e678",
+    "main_after_integration": "e4f3add2231d1000815e3af26f75efc86c73e678",
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+    "log": "local/dialog_integrate_final.log",
+    "library_sha256": "ee9bb0a206dab17013d3300911dbf9d7b4254c9b45d2608331ca3e6945b1a2d8",
+    "fixture_scope": "Five focused fixtures used the earlier same-wave library documented above; final merge incorporates other orchestrators startup/input/renderer work. No new gameplay/runtime validation.",
+    "ghidra_applied_again": "40 names saved by integration helper; main/local/ghidra-annotations-20260911T074218Z.json",
+    "index": {
+      "functions": 62655,
+      "calls": 131973,
+      "datarefs": 32747,
+      "docs": 597,
+      "doc_addresses": 10857
+    }
+  }
+}
