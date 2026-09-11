@@ -1,0 +1,51 @@
+{
+  "packet": "orch2_archive_text_writer",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "source": "src/archive_text_writer.cpp",
+  "header": "include/bsp/archive_text_writer.hpp",
+  "evidence": "docs/ARCHIVE_TEXT_WRITER.md",
+  "functions": ["00bd8c80", "00bd6cc0", "00bd8cd0", "00bd6990", "00bd6ac0", "00bd6bd0", "00bd7b30", "00bd7f50", "00bd6100"],
+  "reviewed_dependencies": ["00435640", "004260b0", "004caca0", "00781740", "0043bdf0", "00bd49b0", "00bd48f0"],
+  "scope": "Concrete host archive text writer; key tags0..2 at nested depth and scalar value tags0..3; shared raw memory/FILE and compact encoded FILE output",
+  "api": {
+    "writer": "ArchiveTextWriter implements SettingsWriter and ProfileArchiveWriter; supports GuiLuaVariant section keys",
+    "shared_output": "ArchiveTextOutput FILE*, compact flag and required fallback byte sink",
+    "memory": "ArchiveStringSink owns uncompressed text bytes",
+    "settings_services": "Required options.txt persistence and keyboardSetup writer callbacks; absent services throw",
+    "lifetime": "Depth begins0. Destruction emits nothing and owns neither FILE nor sink. Consecutive writers may share output."
+  },
+  "syntax": {
+    "root": "name = value followed by LF",
+    "nested_name": "TABs then [quoted raw name] = value followed by comma and LF",
+    "nested_numeric": "Integer and fixed float keys are bracketed; float keys are not truncated",
+    "section": "Opening brace and LF; closing decrements depth and uses ordinary row terminator",
+    "string_values": "Escape backslash then double quote only; preserve raw control bytes",
+    "bool": ["false", "true"],
+    "integer_format": "%d",
+    "float_format": "%f after binary32 to binary64 promotion",
+    "compact_encoding": "Drop space/CR/LF/TAB globally; (signed byte SAR4) OR (byte SHL4), each remaining byte to FILE;81h->F8h,F1h->FFh"
+  },
+  "validation": {
+    "seed_ranges": {"command": "python tools/ghidra_export.py verify-seeds", "passed": true, "matched_ranges": 8, "scope": "Existing math seeds only; not archive differential execution"},
+    "build": {"command": "./scripts/build.ps1", "passed": true, "platform": "MSVC Win32 Release", "log": "local/archive_text_writer_build.log"},
+    "ctest": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "native_math_differential"]},
+    "focused_fixture": {"source": "local/archive_text_writer_probe.cpp", "command": "local/archive_text_writer_probe.cmd", "log": "local/archive_text_writer_probe.log", "passed": true, "checks": ["exact full text bytes", "numeric sections", "float keys", "raw key quote preservation", "value escaping", "shared sink lifetime", "plain FILE byte equality and precedence", "signed compact transform", "missing settings service and encoded FILE rejection"]},
+    "lua_roundtrip": "Deferred to primary integration using actual Lua5.1.1 host",
+    "archive_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "No compressed native save container:00bd49b0/00bd48f0 manager remains external; string sink captures real uncompressed text",
+    "No extended00bd7f50 value tags4..8 or10",
+    "New C++ interfaces omit native pooled allocation and SEH ABI",
+    "Host rejects malformed inputs and missing sinks/services and reports fwrite errors; native code lacks those safeguards",
+    "Old CRT nonfinite float spellings and unusual floating-point rounding environments unproven",
+    "Raw quote-bearing keys and literal newlines in values may be invalid Lua, matching native formatting quirks",
+    "Primary partial00bd48f0 flow repair did not fully repair saved function body; raw tail evidence used only"
+  ],
+  "worker_ghidra_mutations": false,
+  "ignored_artifacts": ["local/archive_text_writer_probe.cpp", "local/archive_text_writer_probe.cmd", "local/archive_text_writer_probe.exe", "local/archive_text_writer_probe.obj", "local/archive_text_writer_probe.log", "local/archive_text_writer_build.log", "local/archive_text_writer_metadata.py", "local/archive_text_writer_commit.txt", "build/win32"],
+  "fresh_exports": "Shared exports/bsp/functions for owned writer functions and reviewed dependencies"
+}
