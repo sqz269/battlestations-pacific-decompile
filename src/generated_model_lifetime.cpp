@@ -56,6 +56,11 @@ GeneratedModelNodeLifetime& GeneratedModelLifetimeRuntime::resolve(CameraTransfo
         if (&lifetime->transform() == &node) return *lifetime;
     std::terminate();
 }
+GeneratedModelNodeLifetime* GeneratedModelLifetimeRuntime::find_actual_node(std::uint32_t key) const noexcept {
+    for (auto* lifetime : nodes_)
+        if (lifetime->scene_attachment().pointer_key == key) return lifetime;
+    return nullptr;
+}
 void GeneratedModelLifetimeRuntime::bind_attachment(GeneratedModelAttachmentLinks& attachment) {
     if (!attachment.identity) throw std::invalid_argument("Null generated model attachment identity");
     const auto& view = attachment.native_array;

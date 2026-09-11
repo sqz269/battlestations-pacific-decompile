@@ -1,0 +1,44 @@
+{
+  "packet": "orch2_native_gui_owners_l",
+  "status": "reconstructed_build_and_focused_fixture_tested",
+  "fragments": [
+    {
+      "address": "00aa5840",
+      "name": "create_plain_page_root_00aa5840_fragment",
+      "cpp_symbol": "bsp::GuiNativeScene::create_plain_page_root_00aa5840_fragment",
+      "source": "src/gui_native_scene.cpp",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "documentation": "docs/GUI_NATIVE_SCENE.md",
+      "validation_report": "reports/gui_native_scene.json",
+      "original_abi": "Containing manager method ECX manager, stack name/flag/add_reference, RET0Ch; fragment supplies name/node/flag to ECX layer constructor RET0Ch.",
+      "evidence": "Hypothesis, not a recovered symbol. Plain-page root path00AA58FA..00AA5949 allocates the canonical18Ch group slot, constructs188h object with name, and supplies name/node/exact screen flag to layer construction. GuiNativeScene binds that same group to GuiWidgetOwnerRuntime, with actual current parent/notification dispatch and retained retirement. New C++ interface; controlled-profile host fixture passed, native allocation-failure/EH, Screen setup, model-backed page and rendering excluded. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "validation": {
+    "build_log": "local/native-gui-group-integrated-build.log",
+    "existing_ctests": 2,
+    "fixture_source": "local/gui_native_scene_probe.cpp",
+    "fixture_log": "local/gui-native-scene-result.log",
+    "fixture_widget_profile": "controlled base profile; not actual Screen",
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "render_validated": false,
+    "game_validated": false
+  },
+  "dependencies": [
+    "native_group_pool",
+    "native_group_owner",
+    "gui_widget_owner",
+    "native_node_parenting",
+    "generated_model_lifetime"
+  ],
+  "remaining": [
+    "actual GuiTypeDispatchFactory composition with required Screen camera/store/scene services",
+    "model-backed page roots",
+    "native allocation failure and full EH",
+    "GUI render and gameplay validation"
+  ]
+}

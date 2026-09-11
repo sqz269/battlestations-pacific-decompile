@@ -48,6 +48,10 @@ public:
     void bind(GeneratedModelNodeLifetime&);
     void unbind(GeneratedModelNodeLifetime&) noexcept;
     GeneratedModelNodeLifetime& resolve(CameraTransform&) const noexcept;
+    // Association lookup only, using the same scene binding's actual Win32 key.
+    // Returns null when absent; does not interpret a native-array context as a
+    // particular C++ owner or create another node/identity registry.
+    GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;
     void bind_attachment(GeneratedModelAttachmentLinks&);
     void unbind_attachment(GeneratedModelAttachmentLinks&) noexcept;
     GeneratedModelAttachmentLinks& attachment(void* identity) const noexcept;
