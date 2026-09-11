@@ -188,8 +188,7 @@ void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
 void GuiWidgetOwner::release_scene_nodes_00aa8320() {
     for (const auto& child : layout_.children)
         runtime_.owner(*child).release_scene_nodes_00aa8320();
-    //These supported profiles have no glyph-owner secondary node. A new
-    //glyph-owning type must provide its real+20 override before factory use.
+    implementation().release_secondary_scene_nodes(*this);
     if (node_) {
         auto& lifetime = runtime_.environment_.models.nodes.attachments.resolve(node_->transform);
         unlink_and_release_render_model_00b6dfa0(lifetime);
@@ -224,11 +223,15 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
     }
     return result;
 }
-NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name) {
+NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
+    NativeNodeBinding** publication) {
     auto& environment = environment_.models;
     auto record = std::make_unique<ModelRecord>();
     void* slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
-    if (!slot) return nullptr;
+    if (!slot) {
+        if (publication) *publication = nullptr;
+        return nullptr;
+    }
     // A broken allocator returning an occupied slot did not transfer ownership
     // of that slot. Do not erase its live record or return it in the unwind.
     if (models_.count(slot))
@@ -241,7 +244,9 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name) 
         record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
         native_name.assign_0041e870(strings, name.c_str());
         construct_native_model_00b75030(*record->owner, native_name);
-        native_name.release_to(strings);
+        // The ordinary widget path keeps its existing cleanup point. Text's
+        // auxiliary path publishes+188 before native temporary-name release.
+        if (!publication) native_name.release_to(strings);
         //Insert before reference creation: its terminal retirement callback
         //must always resolve the one owning record.
         models_.at(slot) = std::move(record);
@@ -254,7 +259,14 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name) 
             models_.erase(slot);
             throw;
         }
-        return &inserted.owner->node;
+        auto* const created_node = &inserted.owner->node;
+        if (publication) {
+            *publication = created_node;
+            native_name.release_to(strings);
+        }
+        // Name release can reenter through the published auxiliary slot.
+        // Return the captured value without dereferencing a retired companion.
+        return created_node;
     } catch (...) {
         native_name.release_to(strings);
         if (record && record->owner && record->owner->phase == NativeModelOwner::Phase::live)
@@ -264,6 +276,12 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name) 
         environment.pool_01090054.return_raw_slot_00b74750(slot);
         throw;
     }
+}
+void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
+    NativeNodeBinding*& publication, const std::string& name) {
+    if (publication)
+        throw std::logic_error("GUI auxiliary model publication must be empty");
+    create_model(name, &publication);
 }
 void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& reference) noexcept {
     auto& runtime = *static_cast<GuiWidgetOwnerRuntime*>(context);

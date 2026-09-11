@@ -158,3 +158,7 @@ their parsed declaration vectors are now passed into both stage generators.
 This check does not exercise a textured alphablend draw, texture-source
 resolution, nonempty texture-stage states or arbitrary sampler records.
 Those remain separate work; no new test target or test framework was added.
+
+## Correction from docs/NATIVE_SHADER_SAMPLER_READER.md
+
+B57B50 and B41830 are now fully reconstructed over the actual sampler, descriptor, definition manager and tracked Lua storage. Native/rebuilt fixtures cover metatable freshness, iteration, append growth, live manager reload and installed shader inputs. The host outer reader explicitly installs shared callable sampler dispatch for descriptor cleanup. Original exception ABI, full descriptor loading, rendering and gameplay remain unvalidated. See the new document and reports/native_shader_sampler_reader.json for evidence.

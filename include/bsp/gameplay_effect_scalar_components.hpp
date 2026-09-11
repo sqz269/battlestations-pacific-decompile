@@ -44,6 +44,40 @@ void* scalar_delete_effect_square_rumble_0086d120(void*, std::uint32_t, EffectSc
 void* scalar_delete_effect_light_0086d140(void*, std::uint32_t, EffectScalarComponentContext&);
 void* scalar_delete_effect_splash_0086d160(void*, std::uint32_t, EffectScalarComponentContext&);
 
+// These six actual scalar bodies require only the existing name storage.
+// Context overloads above forward to the same implementation, without forcing
+// point-effect lifetimes to construct unrelated sound/texture dependencies.
+void* scalar_delete_effect_shake_0086d0a0(void*, std::uint32_t, NativeStringStorage&);
+void* scalar_delete_effect_const_rumble_0086d0e0(void*, std::uint32_t, NativeStringStorage&);
+void* scalar_delete_effect_slope_rumble_0086d100(void*, std::uint32_t, NativeStringStorage&);
+void* scalar_delete_effect_square_rumble_0086d120(void*, std::uint32_t, NativeStringStorage&);
+void* scalar_delete_effect_light_0086d140(void*, std::uint32_t, NativeStringStorage&);
+void* scalar_delete_effect_splash_0086d160(void*, std::uint32_t, NativeStringStorage&);
+
+struct GameplayEffectPlainComponentTable {
+    std::uint32_t original_identity;
+    const volatile std::uint32_t* actual_words; // Borrow current words0 and1.
+};
+// Compose raw component+04 zero callbacks with actual BD30E0 -> current+04
+// scalar destruction. No new component storage, registry, count or retain.
+// The caller performs its original decrement before invoking this boundary.
+// Bound tables must use the six plain scalar implementations; unbound classes
+// go to the required remaining lifetime. A changed unsupported bound virtual
+// is an explicit binding failure, never silently replaced with plain cleanup.
+class GameplayEffectPlainComponentLifetime final : public GameplayEffectComponentLifetime {
+public:
+    GameplayEffectPlainComponentLifetime(NativeStringStorage&,
+        const GameplayEffectPlainComponentTable*, std::size_t count,
+        GameplayEffectComponentLifetime& remaining);
+    void zero_references_slot_00(void*) override;
+private:
+    const GameplayEffectPlainComponentTable* current_table(void*) const noexcept;
+    NativeStringStorage& strings_;
+    const GameplayEffectPlainComponentTable* tables_;
+    std::size_t table_count_;
+    GameplayEffectComponentLifetime& remaining_;
+};
+
 // Read CURRENT component vtable at each dispatch. Seven scalar tables and
 // Sound have concrete readers and scalar cleanup; every other table goes
 // to the required remaining services. Reuse this for definition destruction.

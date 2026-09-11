@@ -1,0 +1,88 @@
+{
+ "events": [
+  {
+   "recreate": "00ad53a0",
+   "previous": "Function: BSP_Font_Destroy at 00ad53a0\nSignature: undefined BSP_Font_Destroy(void)\nEntry: 00ad53a0\nBody: 00ad53a0 - 00ad5568",
+   "plate": "[BSP reconstruction 00ad53a0]\nECX font, plain RET at00ad5586. Raw continuation beyond misanalyzed free traverses/frees glyph payloads without image decrements, releases exactly font+64 GFX then+68 alpha, then strings/tree nodes/sentinel and clears tree fields. All other glyph image fields alias these owners. FontResources destructor projects payload-before-images with shared owners; native pool/string/tree/intrusive ABI absent. docs/FONT_RESOURCE_OWNERSHIP.md."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00ad53a0"
+   },
+   "result": {
+    "success": true,
+    "address": "00ad53a0",
+    "deleted_function": "BSP_Font_Destroy",
+    "body_size": 447,
+    "message": "Function 'BSP_Font_Destroy' deleted at 00ad53a0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ad53a0",
+    "end_address": "00ad5587"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ad53a0",
+    "end_address": "00ad5586",
+    "bytes_disassembled": 487,
+    "message": "Successfully disassembled 487 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ad53a0",
+    "disassemble_first": false,
+    "name": "BSP_Font_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00ad53a0",
+    "function_name": "BSP_Font_Destroy",
+    "entry_point": "00ad53a0",
+    "body_size": 487,
+    "message": "Function created successfully at 00ad53a0",
+    "warnings": [
+     "Function name 'BSP_Font_Destroy' \u2014 main part 'Font_Destroy' is not PascalCase. Expected: FontDestroy",
+     "Function name 'BSP_Font_Destroy' \u2014 main part 'Font_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Font_Destroy' does not start with a recognized verb. First word 'Font_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00ad53a0",
+    "comment": "[BSP reconstruction 00ad53a0]\nECX font, plain RET at00ad5586. Raw continuation beyond misanalyzed free traverses/frees glyph payloads without image decrements, releases exactly font+64 GFX then+68 alpha, then strings/tree nodes/sentinel and clears tree fields. All other glyph image fields alias these owners. FontResources destructor projects payload-before-images with shared owners; native pool/string/tree/intrusive ABI absent. docs/FONT_RESOURCE_OWNERSHIP.md."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00ad53a0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00ad53a0",
+   "end": "00ad5587",
+   "name": "BSP_Font_Destroy",
+   "after": "Function: BSP_Font_Destroy at 00ad53a0\nSignature: undefined BSP_Font_Destroy(void)\nEntry: 00ad53a0\nBody: 00ad53a0 - 00ad5586"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

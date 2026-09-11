@@ -1,0 +1,144 @@
+[
+  {
+    "address": "00ad53a0",
+    "documentation": {
+      "hash": "90db61823f11e034ba48926e8f3ef7108525c0c2d904c739a7ee31833dcdc240",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "00ad53a0",
+      "function_name": "BSP_Font_Destroy",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 00ad53a0]\nECX font, plain RET at00ad5586. Raw continuation beyond misanalyzed free traverses/frees glyph payloads without image decrements, releases exactly font+64 GFX then+68 alpha, then strings/tree nodes/sentinel and clears tree fields. All other glyph image fields alias these owners. FontResources destructor projects payload-before-images with shared owners; native pool/string/tree/intrusive ABI absent. docs/FONT_RESOURCE_OWNERSHIP.md.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "LVar3",
+          "type": "LONG",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "iVar4",
+          "type": "int",
+          "storage": "(register, 0x4, 4)"
+        },
+        {
+          "name": "iVar5",
+          "type": "int",
+          "storage": "(stack, 0xffffffffffffffcc, 4)"
+        },
+        {
+          "name": "uVar6",
+          "type": "undefined4",
+          "storage": "(stack, 0xffffffffffffffd4, 4)"
+        },
+        {
+          "name": "local_10",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffff0, 4)"
+        },
+        {
+          "name": "local_14",
+          "type": "int",
+          "storage": "(stack, 0xffffffffffffffec, 4)"
+        },
+        {
+          "name": "pvStack_c",
+          "type": "void *",
+          "storage": "(stack, 0xfffffffffffffff4, 4)"
+        },
+        {
+          "name": "local_4",
+          "type": "int",
+          "storage": "(stack, 0xfffffffffffffffc, 4)"
+        },
+        {
+          "name": "puStack_8",
+          "type": "undefined1 *",
+          "storage": "(stack, 0xfffffffffffffff8, 4)"
+        },
+        {
+          "name": "puVar1",
+          "type": "undefined4 *",
+          "storage": "(unique, 0x17200, 4)"
+        },
+        {
+          "name": "iVar2",
+          "type": "int",
+          "storage": "(unique, 0x100001a3, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 64,
+          "name": "LAB_00ad53e0"
+        },
+        {
+          "relative_offset": 75,
+          "name": "LAB_00ad53eb"
+        },
+        {
+          "relative_offset": 80,
+          "name": "LAB_00ad53f0"
+        },
+        {
+          "relative_offset": 93,
+          "name": "LAB_00ad53fd"
+        },
+        {
+          "relative_offset": 103,
+          "name": "LAB_00ad5407"
+        },
+        {
+          "relative_offset": 126,
+          "name": "LAB_00ad541e"
+        },
+        {
+          "relative_offset": 145,
+          "name": "LAB_00ad5431"
+        },
+        {
+          "relative_offset": 176,
+          "name": "LAB_00ad5450"
+        },
+        {
+          "relative_offset": 183,
+          "name": "LAB_00ad5457"
+        },
+        {
+          "relative_offset": 208,
+          "name": "LAB_00ad5470"
+        },
+        {
+          "relative_offset": 215,
+          "name": "LAB_00ad5477"
+        },
+        {
+          "relative_offset": 249,
+          "name": "LAB_00ad5499"
+        },
+        {
+          "relative_offset": 283,
+          "name": "LAB_00ad54bb"
+        },
+        {
+          "relative_offset": 317,
+          "name": "LAB_00ad54dd"
+        },
+        {
+          "relative_offset": 351,
+          "name": "LAB_00ad54ff"
+        },
+        {
+          "relative_offset": 385,
+          "name": "LAB_00ad5521"
+        },
+        {
+          "relative_offset": 419,
+          "name": "LAB_00ad5543"
+        }
+      ],
+      "completeness_score": 100.0
+    }
+  }
+]

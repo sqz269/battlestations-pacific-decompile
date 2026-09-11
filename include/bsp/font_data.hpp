@@ -7,12 +7,18 @@
 
 namespace bsp {
 // Field offsets refer to native glyph payloads, not this projected C++ layout.
-// Native padding +16h and resource pointers +18h/+1Ch are deliberately absent.
+// Native padding +16h is not a semantic field. Scalar decoding leaves the
+// resource slots null; native_font_resources binds actual identities in place.
 struct FontGlyphData {
     std::array<float, 4> fields_00_0c{}; // UV edges used by 00ab98f0.
     std::uint16_t field_10{}; // Raw bits; quad writer uses signed horizontal offset.
     std::uint16_t scaled_field_12{}; // Unsigned horizontal advance in layout.
     std::uint16_t scaled_field_14{}; // Unsigned quad width, distinct from advance.
+    // Borrowed aliases except space_lf_glyph: its two slots are the font's
+    // owning references (+64/+68). Never use semantic D3D9RetainedTexture2D*
+    // here. NativeFontResources alone adopts/releases these actual raw owners.
+    void* gfx_texture_18{};
+    void* alpha_texture_1c{};
 };
 
 struct FontData {

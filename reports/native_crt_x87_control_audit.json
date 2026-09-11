@@ -1,0 +1,510 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-11T21:27:30.689923+00:00",
+  "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+  "base_commit": "6ccfc91e12762c69ace3ee4b2e52d6e6445bb1ce",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_x87_control",
+  "ownership": {
+    "packet": "native_crt_x87_control2",
+    "addresses": [
+      "00c083a5",
+      "00c0842e"
+    ],
+    "files": [
+      "src/native_crt_x87_control.cpp",
+      "include/bsp/native_crt_x87_control.hpp",
+      "docs/NATIVE_CRT_X87_CONTROL.md",
+      "reports/native_crt_x87_control_audit.json"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original": [
+    {
+      "address": "00c083a5",
+      "length": 23,
+      "end_exclusive": "00c083bc",
+      "role": "complete_control_word_CALL_entry",
+      "bytes_hex": "8b54240481e20003000083ca7f6689542406d96c2406c3",
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 6,
+      "assembly": [
+        "00c083a5: mov edx, dword ptr [esp + 4]",
+        "00c083a9: and edx, 0x300",
+        "00c083af: or edx, 0x7f",
+        "00c083b2: mov word ptr [esp + 6], dx",
+        "00c083b7: fldcw word ptr [esp + 6]",
+        "00c083bb: ret "
+      ]
+    },
+    {
+      "address": "00c0842e",
+      "length": 13,
+      "end_exclusive": "00c0843b",
+      "role": "complete_saved_CW_top_JMP_tail",
+      "bytes_hex": "66813c247f027403d92c245ac3",
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 5,
+      "assembly": [
+        "00c0842e: cmp word ptr [esp], 0x27f",
+        "00c08434: je 0xc08439",
+        "00c08436: fldcw word ptr [esp]",
+        "00c08439: pop edx",
+        "00c0843a: ret "
+      ]
+    }
+  ],
+  "naming": "Descriptive new source names; saved LIBCRT_unmatched_00c083a5 / LIBCRT_unmatched_00c0842e unchanged by worker",
+  "interfaces": [
+    {
+      "address": "00c083a5",
+      "declaration": "void __cdecl prepare_native_crt_x87_control_00c083a5()",
+      "assembly_callers_only": true,
+      "ordinary_cpp_call_safe": false,
+      "entry_kind": "CALL",
+      "stack": "EntryESP return, ESP+4 readable/writable packed DWORD; ESP+6 upper scratch word",
+      "ordered_effects": [
+        "MOV EDX,current packed DWORD",
+        "AND EDX,0300h",
+        "OR EDX,007Fh",
+        "MOV current upper word,DX",
+        "FLDCW current upper word",
+        "RET"
+      ],
+      "low_saved_word_written": false,
+      "EDX": "(initial_packed & 0300h) | 007Fh",
+      "EFLAGS": "from OR EDX,7Fh",
+      "preserved_general_registers": [
+        "EAX",
+        "ECX",
+        "EBX",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
+      "return_behavior": "RET consumes only helper return; packed DWORD remains caller-owned"
+    },
+    {
+      "address": "00c0842e",
+      "declaration": "void __cdecl restore_native_crt_x87_control_tail_00c0842e()",
+      "assembly_callers_only": true,
+      "ordinary_cpp_call_safe": false,
+      "entry_kind": "JMP/tail only, never ordinary CALL",
+      "stack": "EntryESP packed DWORD, ESP+4 real return address",
+      "ordered_effects": [
+        "CMP current low word,027Fh",
+        "If unequal FLDCW current low word",
+        "POP EDX current full packed DWORD",
+        "RET"
+      ],
+      "equal_branch": "Skips FLDCW even if live x87 environment changed independently",
+      "EDX": "Current full packed DWORD at POP time; not a comparison-time snapshot",
+      "EFLAGS": "from CMP word ptr [ESP],027Fh",
+      "preserved_general_registers": [
+        "EAX",
+        "ECX",
+        "EBX",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
+      "return_behavior": "POP consumes packed DWORD, then RET consumes the real return below it"
+    }
+  ],
+  "floating_environment": {
+    "saved_or_reset": false,
+    "status_cleared": false,
+    "host_FP_wrapper": false,
+    "x87_value_pushes_or_pops": 0,
+    "current_FLDCW_effects": true,
+    "exception_translation": false
+  },
+  "dependencies": {
+    "context": false,
+    "direct_calls": [],
+    "globals": [],
+    "constants": [],
+    "undefined_providers": [],
+    "body_relocations": []
+  },
+  "source_review": "Primary approved complete source/header unchanged after independently rereading both full original live listings.",
+  "validation": {
+    "fresh_live_PE_spans": 2,
+    "fresh_live_PE_bytes": 36,
+    "full_original_binary_SHA_checked": true,
+    "complete_built_object_equals_archive_member": true,
+    "full_function_bytes_exact": true,
+    "normalizations": 0,
+    "body_relocations": 0,
+    "independent_complete_instruction_decode": true,
+    "instructions": 11,
+    "whole_object_sections": 5,
+    "strict_release_win32_build": true,
+    "compiler_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "existing_CTests_passed": 2,
+    "fresh_seed_matches": 8,
+    "new_permanent_tests": 0,
+    "focused_runtime_fixture": false,
+    "linked_runtime_postimages": false,
+    "game_or_display_calls": false
+  },
+  "actual_artifacts": {
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 38757156,
+      "sha256": "ba1fee055c6ce04082b4c9c690c95814743be8b68f32d150ca58e083c1b575e4"
+    },
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_x87_control.obj",
+      "bytes": 912,
+      "sha256": "0eee2584f70889498846f7e5c95d9ffc9473051b426aa38e90933ca52fc27aae"
+    },
+    "archive_member": {
+      "name": "bsp_core.dir\\Release\\native_crt_x87_control.obj",
+      "offset": 29404032,
+      "bytes": 912,
+      "sha256": "0eee2584f70889498846f7e5c95d9ffc9473051b426aa38e90933ca52fc27aae"
+    },
+    "functions": [
+      {
+        "name": "?prepare_native_crt_x87_control_00c083a5@bsp@@YAXXZ",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "address": "00c083a5",
+        "bytes": 23,
+        "instructions": 6,
+        "bytes_hex": "8b54240481e20003000083ca7f6689542406d96c2406c3",
+        "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+        "original_sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+        "exact_original_equal": true,
+        "normalizations": [],
+        "relocations": [],
+        "all_body_relocations_accounted_for": true,
+        "direct_calls": [],
+        "compiled_assembly": [
+          "00c083a5: mov edx, dword ptr [esp + 4]",
+          "00c083a9: and edx, 0x300",
+          "00c083af: or edx, 0x7f",
+          "00c083b2: mov word ptr [esp + 6], dx",
+          "00c083b7: fldcw word ptr [esp + 6]",
+          "00c083bb: ret "
+        ]
+      },
+      {
+        "name": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "address": "00c0842e",
+        "bytes": 13,
+        "instructions": 5,
+        "bytes_hex": "66813c247f027403d92c245ac3",
+        "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+        "original_sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+        "exact_original_equal": true,
+        "normalizations": [],
+        "relocations": [],
+        "all_body_relocations_accounted_for": true,
+        "direct_calls": [],
+        "compiled_assembly": [
+          "00c0842e: cmp word ptr [esp], 0x27f",
+          "00c08434: je 0xc08439",
+          "00c08436: fldcw word ptr [esp]",
+          "00c08439: pop edx",
+          "00c0843a: ret "
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "Assembly callers must construct the original custom stack and preserve/capture required register/flag results.",
+    "Complete COFF-byte proof does not claim linked-address, runtime or gameplay verification.",
+    "Existing repository tests do not directly invoke these assembly-only entries.",
+    "No complete pow, gamma, original-address/drop-in, or generalized host FP API claim.",
+    "Shared CMake, consumers, metadata and Ghidra integration belong to the primary; no worker edits there."
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/x87_control/00c083a5_assembly.txt",
+      "bytes": 174,
+      "sha256": "9fc7105d632abdf027e28704edd247f86276f8c17313d3a6364db85aea45ad7b"
+    },
+    {
+      "path": "local/x87_control/00c083a5_original.bin",
+      "bytes": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902"
+    },
+    {
+      "path": "local/x87_control/00c0842e_assembly.txt",
+      "bytes": 122,
+      "sha256": "d4d1e0d9024bd7800d77ba8047dff68f1154d858bb0fe097f7bc348095c3bba3"
+    },
+    {
+      "path": "local/x87_control/00c0842e_original.bin",
+      "bytes": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd"
+    },
+    {
+      "path": "local/x87_control/build.log",
+      "bytes": 22288,
+      "sha256": "6e0e85d6c6cf63a06e656e9ca5cc2dc0887bc28afcd89758f4de598205363e36"
+    },
+    {
+      "path": "local/x87_control/build_library.ps1",
+      "bytes": 832,
+      "sha256": "4f357e445b7246b42870907ffb4073c3ffd343fabcb928493a62fd984d0821b0"
+    },
+    {
+      "path": "local/x87_control/capture.py",
+      "bytes": 2353,
+      "sha256": "dbf4bb215602d4c7c009d13a8511413c2dd0a57ed69a9534e4c5bc2d7e962a00"
+    },
+    {
+      "path": "local/x87_control/configure.log",
+      "bytes": 961,
+      "sha256": "313e19af099ca9099996c3fc0c7fbaa84d1098b0eff52553ca650e08b8782e9d"
+    },
+    {
+      "path": "local/x87_control/extra.cmake",
+      "bytes": 122,
+      "sha256": "2c0385db16abeb58402680a6c420f4f879cb130e8874bf6364523331d9555249"
+    },
+    {
+      "path": "local/x87_control/frozen/00c083a5_compiled_function.bin",
+      "bytes": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902"
+    },
+    {
+      "path": "local/x87_control/frozen/00c0842e_compiled_function.bin",
+      "bytes": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd"
+    },
+    {
+      "path": "local/x87_control/frozen/archive_member.obj",
+      "bytes": 912,
+      "sha256": "0eee2584f70889498846f7e5c95d9ffc9473051b426aa38e90933ca52fc27aae"
+    },
+    {
+      "path": "local/x87_control/frozen/bsp_core.lib",
+      "bytes": 38757156,
+      "sha256": "ba1fee055c6ce04082b4c9c690c95814743be8b68f32d150ca58e083c1b575e4"
+    },
+    {
+      "path": "local/x87_control/frozen/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 1042224,
+      "sha256": "39c0e4ed0a706bab60bd247984a02a0f0ac50fd9c25f5b6637b7e4df2d8f4d1e"
+    },
+    {
+      "path": "local/x87_control/frozen/build/win32/bsp_core.vcxproj",
+      "bytes": 122646,
+      "sha256": "6179bd523d162f8d76f3c7be3f8246138f403ee3c3a5d53d6c84d2ef8540a1d6"
+    },
+    {
+      "path": "local/x87_control/frozen/build/win32/CMakeCache.txt",
+      "bytes": 19095,
+      "sha256": "c55cde27d7f70feff341354e4939ea4125463cb7012f27a495515d37313bff19"
+    },
+    {
+      "path": "local/x87_control/frozen/build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1745,
+      "sha256": "9560bb742420393522d0783a48989aa57bad79a851ac587f6e6f99c333fe0878"
+    },
+    {
+      "path": "local/x87_control/frozen/cmake/startup.cmake",
+      "bytes": 38473,
+      "sha256": "d1695fc9386ebf21d19d82707018505444555e175efc8dfeb0c7d2d98b546a6c"
+    },
+    {
+      "path": "local/x87_control/frozen/CMakeLists.txt",
+      "bytes": 13264,
+      "sha256": "30bb345b405038c0585c5fdfabc0a78642c8f75f86fa45e349d61f3297504ab4"
+    },
+    {
+      "path": "local/x87_control/frozen/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/x87_control/frozen/include/bsp/native_crt_x87_control.hpp",
+      "bytes": 1868,
+      "sha256": "8e93f12ba4ddb11d454df85e554db5c748bf32cce0019d6e4a82c53e232d7ce1"
+    },
+    {
+      "path": "local/x87_control/frozen/local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/x87_control/frozen/native_crt_x87_control.obj",
+      "bytes": 912,
+      "sha256": "0eee2584f70889498846f7e5c95d9ffc9473051b426aa38e90933ca52fc27aae"
+    },
+    {
+      "path": "local/x87_control/frozen/scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/x87_control/frozen/src/native_crt_x87_control.cpp",
+      "bytes": 1114,
+      "sha256": "2548c6b8e18765d8d1e33f84df8dc88a0ce0cbc22df27cde9d2372292873bb2d"
+    },
+    {
+      "path": "local/x87_control/frozen/tools/bsp.py",
+      "bytes": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975"
+    },
+    {
+      "path": "local/x87_control/frozen/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/x87_control/guarded_capture.json",
+      "bytes": 1883,
+      "sha256": "6fac3fae83a9c2c6dd00fef72aecfb8cc7331f0cc6b044c13a641eac836188bb"
+    },
+    {
+      "path": "local/x87_control/object_proof.json",
+      "bytes": 8403,
+      "sha256": "764b11c1fdb2a8eb34f0c9a318121db8d6b967082c6c6e2a825e6137ed9a6b24"
+    },
+    {
+      "path": "local/x87_control/pins.json",
+      "bytes": 1940,
+      "sha256": "a6705c0180239ad741de551861fa5df9244b34ba19127b84ed5aaf46ec716c3a"
+    },
+    {
+      "path": "local/x87_control/prove.py",
+      "bytes": 7027,
+      "sha256": "496fd2145b3713ae80185951f626ac58267b790eac1e340a71d219bbe26c65c6"
+    },
+    {
+      "path": "local/x87_control/seal.py",
+      "bytes": 5570,
+      "sha256": "ae0783bd964fecf68fd1bc3bd39a6c5d86ff3188ea4b6fc62460e57f38129f74"
+    },
+    {
+      "path": "local/x87_control/seeds.json",
+      "bytes": 2976,
+      "sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    {
+      "path": "src/native_crt_x87_control.cpp",
+      "bytes": 1114,
+      "sha256": "2548c6b8e18765d8d1e33f84df8dc88a0ce0cbc22df27cde9d2372292873bb2d"
+    },
+    {
+      "path": "include/bsp/native_crt_x87_control.hpp",
+      "bytes": 1868,
+      "sha256": "8e93f12ba4ddb11d454df85e554db5c748bf32cce0019d6e4a82c53e232d7ce1"
+    },
+    {
+      "path": "docs/NATIVE_CRT_X87_CONTROL.md",
+      "bytes": 4587,
+      "sha256": "630313e7dc4f61f6d421f8f325f542e504d4481f89cac4f36b5677f015f8470b"
+    }
+  ],
+  "primary_integration": {
+    "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+    "main_library_sha256": "aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 37,
+    "report_pins": 36,
+    "fresh_spans": 2,
+    "fresh_bytes": 36,
+    "whole_COFF_sections": 5,
+    "whole_COFF_relocations": 0,
+    "owned_original_bytes": 36,
+    "owned_instructions": 11,
+    "original_owned_execution": false,
+    "boundary": "Primary checked37 sealed worker files,36 report pins,2 fresh spans36bytes and all five main-object sections. Every body byte is exact; no relocation, normalization, added instruction or undefined provider. Descriptive name is a hypothesis. No new runtime fixture, original caller/FP exception-state/ABI, pow/gamma or gameplay claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\x87_control_primary\\sealed.json",
+      "bytes": 10946,
+      "sha256": "6ad3da0f978266306beb9b1032c368806b68d11d648600417b5b28532ddfa00a"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_classification_control_tree_annotations.json",
+    "bytes": 19546,
+    "sha256": "548546db7e9c835c625b43decc9530bfbcaf5f334b2a9fcc6cec21c4df6e2bfc"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c083a5",
+      "name": "BSP_CRT_X87_PrepareControlWord",
+      "cpp_symbol": "bsp::prepare_native_crt_x87_control_00c083a5",
+      "source": "src/native_crt_x87_control.cpp",
+      "native_end_exclusive": "00c083bc",
+      "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_control_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00c0842e",
+      "name": "BSP_CRT_X87_RestoreControlTail",
+      "cpp_symbol": "bsp::restore_native_crt_x87_control_tail_00c0842e",
+      "source": "src/native_crt_x87_control.cpp",
+      "native_end_exclusive": "00c0843b",
+      "status": "complete_original_control_CALL_and_restore_JMP_tail_main_archive_exact_bytes_and_strict_Win32_checked",
+      "evidence": "reports/native_crt_x87_control_audit.json",
+      "original_abi": "Complete original register, raw stack-slot and x87 obligations recorded in the public header and audit.",
+      "source_abi": "Explicit new source interface; see public header and complete audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c083a5",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c083a5\\decompiled.c",
+      "bytes": 1942,
+      "sha256": "dd1ce8abe1f0fca8367fc1a03b09acad9eeddcf9f563921872d6e69f27dd9037"
+    },
+    {
+      "address": "00c0842e",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0842e\\decompiled.c",
+      "bytes": 1957,
+      "sha256": "2557d4345334b975801fbccddc3752bfab50774ece7d496d898e14c78679f9a8"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_X87_CONTROL.md",
+    "bytes": 5506,
+    "sha256": "974e714da183377030082995e45dc24fa62213e66d416dc6a1b9f73615a7497c"
+  },
+  "closure_utc": "2026-09-11T21:44:44.463232+00:00"
+}

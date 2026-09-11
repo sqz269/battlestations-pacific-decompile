@@ -1,0 +1,211 @@
+{
+  "packet": "orch5_native_gui_clip",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00aa9f10",
+      "name": "register_native_gui_clip_parameters_00aa9f10",
+      "coverage": "complete supported fixed GUI type and native constant profile",
+      "status": "reconstructed_normal_win32_build_and_existing_tests_passed",
+      "source": "src/gui_native_clip_parameters.cpp",
+      "header": "include/bsp/gui_native_clip_parameters.hpp",
+      "document": "docs/GUI_NATIVE_CLIP_PARAMETERS.md",
+      "original_abi": "ECX widget, material stack, RET4 at00AAA0D7; new C++ interface",
+      "last_instruction": "00aaa0e4",
+      "last_instruction_length": 5,
+      "end_inclusive": "00aaa0e8",
+      "length": 473,
+      "evidence": "Full assembly, parameter wrapper bodies, all9 attributed caller sites and actual B17E10 storage reviewed. Nearest captured ClipBox, live E8 reload after name release, exact ordered-zero predicate, borrowed actual source fields. Report includes one explicitly unattributed xref.",
+      "remaining": "Borrowed source lifetime and initialized ClipBox fields required. No arbitrary virtual profiles, native allocation failure/SEH, stack-header ABI, focused execution or game validation.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aa9f10",
+      "address": "00aa9f3f",
+      "native": "current widget virtual5C",
+      "binding": "supported canonical fixed type identity; nearest self or parent type16"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aa9f6e",
+      "native": "0041dd40",
+      "binding": "NativeString resize5 preserve1"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aa9f89",
+      "native": "00bf7680",
+      "binding": "copy cClip including terminator"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aa9fa1",
+      "native": "00b18b20",
+      "binding": "actual B17E10 count1 matrix0; same widget E8"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aa9fc0",
+      "native": "00419cc0",
+      "binding": "actual name storage singleton"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aa9fc7",
+      "native": "00bd1510",
+      "binding": "name return before live E8 reload"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aa9fea",
+      "native": "0041e870",
+      "binding": "construct cClipCenter"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa005",
+      "native": "00b18b00",
+      "binding": "actual B17E10 count2 matrix0; captured ancestor EC"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa021",
+      "native": "00419cc0",
+      "binding": "actual name storage singleton"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa028",
+      "native": "00bd1510",
+      "binding": "return center name"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa036",
+      "native": "0041e870",
+      "binding": "construct cClipBorder"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa053",
+      "native": "00b18ac0",
+      "binding": "actual B17E10 count4 matrix0; captured ancestor F4"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa06f",
+      "native": "00419cc0",
+      "binding": "actual name storage singleton"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa076",
+      "native": "00bd1510",
+      "binding": "return border name"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa084",
+      "native": "0041e870",
+      "binding": "construct cAspectRatio"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa09d",
+      "native": "00b18b20",
+      "binding": "actual B17E10 count1 matrix0; same live E12FC0 slot"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa0b9",
+      "native": "00419cc0",
+      "binding": "actual name storage singleton"
+    },
+    {
+      "function": "00aa9f10",
+      "address": "00aaa0c0",
+      "native": "00bd1510",
+      "binding": "return aspect name"
+    }
+  ],
+  "callers": [
+    {
+      "function": "00aaa3e0",
+      "address": "00aaa423",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00ab3cb0",
+      "address": "00ab4114",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00ab7a40",
+      "address": "00ab7a83",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00ab7a40",
+      "address": "00ab7ac9",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00aba8d0",
+      "address": "00abab46",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00aba8d0",
+      "address": "00abac24",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00acc8a0",
+      "address": "00accb24",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00acccf0",
+      "address": "00accdda",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    },
+    {
+      "function": "00ad0d80",
+      "address": "00ad10f2",
+      "native": "00aa9f10",
+      "arguments": "ECX widget; one pushed actual material; callee RET4"
+    }
+  ],
+  "unattributed_xrefs": [
+    {
+      "site": "00abce7d",
+      "target": "00aa9f10",
+      "live_bytes": "e8 8e d0 fe ff",
+      "containing_function": null,
+      "evidence": "Live xrefs and exact bytes; deliberately not assigned to an enclosing candidate"
+    }
+  ],
+  "constants_profile": {
+    "00d7a24c": 1.0,
+    "00d7a218": 0.0
+  },
+  "validation": {
+    "normal_build": "passed",
+    "existing_tests": "2/2 passed",
+    "new_tests": 0,
+    "native_execution": false,
+    "game_validation": false
+  }
+}

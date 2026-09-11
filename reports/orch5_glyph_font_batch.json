@@ -1,0 +1,56 @@
+{
+  "branch": "agent/orch5-20260911",
+  "status": "reviewed_normal_win32_build_passed_ready_for_main",
+  "worker_commits": {
+    "mapping_glyph": "7ae534f3",
+    "font_resources": "1445d2a1"
+  },
+  "registered_sources": [
+    "native_logical_buffer_mapping.cpp",
+    "gui_text_geometry.cpp",
+    "native_font_resources.cpp"
+  ],
+  "validation": {
+    "normal_win32_build": true,
+    "existing_tests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "numeric_call_rows": 50,
+    "direct_calls": 35,
+    "resolved_indirect_rows": 15,
+    "symbolic_indirect_rows": 8,
+    "failed_rows": 0,
+    "new_tests": 0,
+    "new_operations_executed": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "logs": [
+      "local/orch5_glyph_font_build.log",
+      "local/orch5_glyph_font_calls.log"
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "exports_refreshed": true,
+    "font_destructor_end": "00ad5586",
+    "font_destructor_bytes": 487,
+    "remaining_gaps": 0,
+    "metadata_preservation": "name/signature/parameters/convention/comments/17labels/11local triples verified",
+    "records": [
+      "reports/orch5_font_flow_repair.json",
+      "reports/orch5_font_function_recreated.json",
+      "reports/orch5_font_documentation_before.json",
+      "reports/orch5_glyph_font_annotations.json"
+    ]
+  },
+  "remaining": [
+    "review/integrate material and content stages35173c7b",
+    "review/integrate single-line builder3a5af118 and forthcoming wrapped builder",
+    "actual Text child construction/deletion and type dispatch",
+    "actual font loading and native resource registration",
+    "factory/menu/runtime wiring and gameplay validation"
+  ]
+}

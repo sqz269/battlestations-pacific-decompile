@@ -1005,7 +1005,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             ++host.load.records;
             continue;
         }
-        if (method == "lua_reset_state") {
+        if (method == "sync_lobby_settings_from_lua") {
             host.lua.publish_lobby_settings_005e2f00();
             // 004e0305 is the next thing the same pass does: it creates the
             // `thisTable` self table and clears `recon`

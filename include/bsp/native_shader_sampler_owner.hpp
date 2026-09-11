@@ -64,4 +64,22 @@ private:
     NativeShaderStateListPool& pool_;
     NativeStringStorage& strings_;
 };
+// Shared host callable table for any number of actual sampler objects from the
+// same pool/string domain. It owns no objects and stores no per-object registry.
+// Binding, pool and strings must outlive all attached samplers and their users.
+class NativeShaderSamplerClassBinding final {
+public:
+    NativeShaderSamplerClassBinding(NativeShaderStateListPool&,NativeStringStorage&) noexcept;
+    NativeShaderSamplerClassBinding(const NativeShaderSamplerClassBinding&)=delete;
+    NativeShaderSamplerClassBinding& operator=(const NativeShaderSamplerClassBinding&)=delete;
+    void bind(NativeShaderSamplerStorage&);
+    void detach(NativeShaderSamplerStorage&) noexcept;
+    NativeShaderStateListPool& pool() const noexcept{return pool_;}
+    NativeStringStorage& strings() const noexcept{return strings_;}
+private:
+    static void* __fastcall invoke(void*,void*,std::uint32_t);
+    std::array<std::uintptr_t,2> table_;
+    NativeShaderStateListPool& pool_;
+    NativeStringStorage& strings_;
+};
 } // namespace bsp

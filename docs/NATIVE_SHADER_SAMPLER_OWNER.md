@@ -153,3 +153,7 @@ full descriptor readerB43B00 also remain. Existing semantic shader Lua parsing
 does not yet establish these concrete allocation/publication paths. This packet
 is reconstructed, build-tested and fixture-tested; binary ABI, shader rendering
 and gameplay remain unvalidated.
+
+## Correction from docs/NATIVE_SHADER_SAMPLER_READER.md
+
+The full B57B50/B41830 sampler readers now use these concrete owners and the reconstructed B579B0/B567B0 state reader and actual definition manager. NativeShaderSamplerClassBinding supplies one external callable table for all parsed samplers in a shared pool/string domain, without a per-object registry or implicit ownership. Installed shader parsing and descriptor cleanup pass original/rebuilt fixtures; full descriptor construction, original exception ABI and gameplay remain open.

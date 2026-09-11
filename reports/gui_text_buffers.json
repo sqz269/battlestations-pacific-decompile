@@ -1,0 +1,456 @@
+{
+  "packet": "orch5_text_buffers",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_buffers.cpp",
+  "documentation": "docs/GUI_TEXT_BUFFERS.md",
+  "reconstructed": [
+    {
+      "address": "00ab8400",
+      "name": "create_gui_text_glyph_buffers_00ab8400",
+      "end": "00ab852d",
+      "final_instruction": "00ab852b",
+      "final_instruction_length": 3,
+      "coverage": "complete",
+      "abi": "two stack DWORDs capacity, actual mesh; ECX unused; RET8",
+      "domain": "supported successful actual-resource normal path; native pool/SEH failure paths excluded"
+    },
+    {
+      "address": "00ab8530",
+      "name": "ensure_gui_text_draw_sections_00ab8530",
+      "end": "00ab87cb",
+      "final_instruction": "00ab87cb",
+      "final_instruction_length": 1,
+      "coverage": "complete",
+      "abi": "ECX Text; no stack arguments; RET",
+      "domain": "supported successful actual-owner normal path; native pool/SEH failure paths excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab842e",
+      "native": "0041dd40",
+      "function": "00ab8400",
+      "operation": "native format resize(10h,preserve=1)"
+    },
+    {
+      "address": "00ab8449",
+      "native": "00bf7680",
+      "function": "00ab8400",
+      "operation": "memcpy current length+1; three args; ADD ESP,0Ch at844E; existing CRT library"
+    },
+    {
+      "address": "00ab8465",
+      "native": "00b317e0",
+      "function": "00ab8400",
+      "operation": "renderer virtual38(format wrapper); tableD5F0E0 resolves B317E0; RET4; actual factory prerequisite"
+    },
+    {
+      "address": "00ab8484",
+      "native": "00419cc0",
+      "function": "00ab8400",
+      "operation": "string pool getter before temporary release"
+    },
+    {
+      "address": "00ab848b",
+      "native": "00bd1510",
+      "function": "00ab8400",
+      "operation": "return format storage(pointer,length+1,1)"
+    },
+    {
+      "address": "00ab84aa",
+      "native": "00b287c0",
+      "function": "00ab8400",
+      "operation": "reload renderer virtual5C(capacity*4,1,declaration); tableD5F104; RET0Ch; actual factory prerequisite"
+    },
+    {
+      "address": "00ab84b4",
+      "native": "00b73bb0",
+      "function": "00ab8400",
+      "operation": "actual mesh stream0 publish/retain-new/release-old; RET8"
+    },
+    {
+      "address": "00ab84c3",
+      "native": "IAT00ce2220",
+      "function": "00ab8400",
+      "operation": "InterlockedDecrement vertex creator; stdcall pointer; callee cleanup4"
+    },
+    {
+      "address": "00ab84cf",
+      "native": "vertex+vtable00",
+      "function": "00ab8400",
+      "operation": "actual zero-count vertex terminal callback; no stack args"
+    },
+    {
+      "address": "00ab84d5",
+      "native": "IAT00ce2220",
+      "function": "00ab8400",
+      "operation": "InterlockedDecrement declaration creator; stdcall pointer; callee cleanup4"
+    },
+    {
+      "address": "00ab84e2",
+      "native": "declaration+vtable00",
+      "function": "00ab8400",
+      "operation": "actual zero-count declaration terminal callback; no stack args"
+    },
+    {
+      "address": "00ab84f9",
+      "native": "00b288b0",
+      "function": "00ab8400",
+      "operation": "reload renderer virtual60(capacity*6,1,65h); tableD5F108; RET0Ch; actual factory prerequisite"
+    },
+    {
+      "address": "00ab8502",
+      "native": "00b73b70",
+      "function": "00ab8400",
+      "operation": "actual mesh index publish/retain-new/release-old; RET4"
+    },
+    {
+      "address": "00ab850b",
+      "native": "IAT00ce2220",
+      "function": "00ab8400",
+      "operation": "InterlockedDecrement index creator; stdcall pointer; callee cleanup4"
+    },
+    {
+      "address": "00ab8517",
+      "native": "index+vtable00",
+      "function": "00ab8400",
+      "operation": "actual zero-count index terminal callback; no stack args"
+    },
+    {
+      "address": "00ab8565",
+      "native": "00b74eb0",
+      "function": "00ab8530",
+      "operation": "allocate actual model184h payload in canonical188h slot; requested184h stack word"
+    },
+    {
+      "address": "00ab8581",
+      "native": "0041e870",
+      "function": "00ab8530",
+      "operation": "construct native Shadow name; RET4"
+    },
+    {
+      "address": "00ab859b",
+      "native": "00b75030",
+      "function": "00ab8530",
+      "operation": "actual model constructor; name wrapper stack arg; RET4"
+    },
+    {
+      "address": "00ab85c9",
+      "native": "00419cc0",
+      "function": "00ab8530",
+      "operation": "string pool getter after live shadow+188 publication85AA"
+    },
+    {
+      "address": "00ab85d0",
+      "native": "00bd1510",
+      "function": "00ab8530",
+      "operation": "release Shadow temporary(pointer,length+1,1); after publication and before shadow reload"
+    },
+    {
+      "address": "00ab85e7",
+      "native": "00b73b60",
+      "function": "00ab8530",
+      "operation": "allocate actual mesh BCh payload in canonical C0h slot; requestedBCh stack word"
+    },
+    {
+      "address": "00ab85fe",
+      "native": "00b73d70",
+      "function": "00ab8530",
+      "operation": "actual mesh constructor; no stack args"
+    },
+    {
+      "address": "00ab8626",
+      "native": "00b75170",
+      "function": "00ab8530",
+      "operation": "reload shadow and assign geometry(0,mesh,sentinel,sentinel); RET10h"
+    },
+    {
+      "address": "00ab862b",
+      "native": "00533fa0",
+      "function": "00ab8530",
+      "operation": "create actual shadow draw section; no semantic args"
+    },
+    {
+      "address": "00ab8635",
+      "native": "00b73c60",
+      "function": "00ab8530",
+      "operation": "append actual shadow section BEFORE material creation; RET4"
+    },
+    {
+      "address": "00ab8643",
+      "native": "0041e870",
+      "function": "00ab8530",
+      "operation": "construct guidefault.mshd name; RET4"
+    },
+    {
+      "address": "00ab8654",
+      "native": "00535320",
+      "function": "00ab8530",
+      "operation": "existing actual effect-name material factory ECX name; no stack args"
+    },
+    {
+      "address": "00ab8676",
+      "native": "00419cc0",
+      "function": "00ab8530",
+      "operation": "string pool getter for shadow effect-name temporary"
+    },
+    {
+      "address": "00ab867d",
+      "native": "00bd1510",
+      "function": "00ab8530",
+      "operation": "return effect-name storage(pointer,length+1,1)"
+    },
+    {
+      "address": "00ab8685",
+      "native": "00b864c0",
+      "function": "00ab8530",
+      "operation": "publish actual material on shadow section; RET4"
+    },
+    {
+      "address": "00ab868e",
+      "native": "IAT00ce2220",
+      "function": "00ab8530",
+      "operation": "decrement shadow section creator; stdcall pointer cleanup4"
+    },
+    {
+      "address": "00ab869e",
+      "native": "shadow_section+vtable00",
+      "function": "00ab8530",
+      "operation": "actual zero-count section terminal callback; no stack args"
+    },
+    {
+      "address": "00ab86aa",
+      "native": "IAT00ce2220",
+      "function": "00ab8530",
+      "operation": "decrement shadow material creator; stdcall pointer cleanup4"
+    },
+    {
+      "address": "00ab86b7",
+      "native": "shadow_material+vtable00",
+      "function": "00ab8530",
+      "operation": "actual zero-count material terminal callback; no stack args"
+    },
+    {
+      "address": "00ab86bd",
+      "native": "IAT00ce2220",
+      "function": "00ab8530",
+      "operation": "decrement shadow mesh creator AFTER section/material; stdcall pointer cleanup4"
+    },
+    {
+      "address": "00ab86c9",
+      "native": "shadow_mesh+vtable00",
+      "function": "00ab8530",
+      "operation": "actual zero-count mesh terminal callback; no stack args"
+    },
+    {
+      "address": "00ab86d6",
+      "native": "00b74650",
+      "function": "00ab8530",
+      "operation": "test actual current primary model geometry; no stack args"
+    },
+    {
+      "address": "00ab86e8",
+      "native": "00b74640",
+      "function": "00ab8530",
+      "operation": "reload primary and select geometry0; RET4"
+    },
+    {
+      "address": "00ab86f1",
+      "native": "00b72b40",
+      "function": "00ab8530",
+      "operation": "read actual mesh section count+58; no stack args"
+    },
+    {
+      "address": "00ab86fe",
+      "native": "00533fa0",
+      "function": "00ab8530",
+      "operation": "create actual primary section only for zero count; no semantic args"
+    },
+    {
+      "address": "00ab8708",
+      "native": "00b73c60",
+      "function": "00ab8530",
+      "operation": "append primary section BEFORE material creation; RET4"
+    },
+    {
+      "address": "00ab8716",
+      "native": "0041e870",
+      "function": "00ab8530",
+      "operation": "construct primary guidefault.mshd name; RET4"
+    },
+    {
+      "address": "00ab8727",
+      "native": "00535320",
+      "function": "00ab8530",
+      "operation": "existing actual material factory ECX name; no stack args"
+    },
+    {
+      "address": "00ab8749",
+      "native": "00419cc0",
+      "function": "00ab8530",
+      "operation": "string pool getter for primary effect-name temporary"
+    },
+    {
+      "address": "00ab8750",
+      "native": "00bd1510",
+      "function": "00ab8530",
+      "operation": "return effect-name storage(pointer,length+1,1)"
+    },
+    {
+      "address": "00ab8758",
+      "native": "00b864c0",
+      "function": "00ab8530",
+      "operation": "publish actual primary section material; RET4"
+    },
+    {
+      "address": "00ab8767",
+      "native": "IAT00ce2220",
+      "function": "00ab8530",
+      "operation": "decrement primary section creator; stdcall pointer cleanup4"
+    },
+    {
+      "address": "00ab8773",
+      "native": "primary_section+vtable00",
+      "function": "00ab8530",
+      "operation": "actual zero-count section terminal callback; no stack args"
+    },
+    {
+      "address": "00ab8779",
+      "native": "IAT00ce2220",
+      "function": "00ab8530",
+      "operation": "decrement primary material creator; stdcall pointer cleanup4"
+    },
+    {
+      "address": "00ab8785",
+      "native": "primary_material+vtable00",
+      "function": "00ab8530",
+      "operation": "actual zero-count material terminal callback; no stack args"
+    },
+    {
+      "address": "00ab879e",
+      "native": "00b6e680",
+      "function": "00ab8530",
+      "operation": "actual shadow reparent using current+15C/current+4C; RET4"
+    },
+    {
+      "address": "00ab87b4",
+      "native": "00b6d890",
+      "function": "00ab8530",
+      "operation": "after callback reread+15C and shadow+188, propagate null root when disabled; RET4"
+    },
+    {
+      "address": "00aba9c3",
+      "native": "00ab8400",
+      "function": "00aba8d0",
+      "operation": "ECX Text unused; stack copied UTF16 length fromEAX, main geometry fromEBX; RET8"
+    },
+    {
+      "address": "00aba8ec",
+      "native": "00ab8530",
+      "function": "00aba8d0",
+      "operation": "ECX incoming Text, unconditional before copy/compare; no stack args"
+    },
+    {
+      "address": "00ab98d8",
+      "native": "00ab8530",
+      "function": "00ab9650",
+      "operation": "ECX ESI constructed Text after initial fields; no stack args"
+    },
+    {
+      "address": "00ab9d93",
+      "native": "00ab8530",
+      "function": "00ab98f0",
+      "operation": "ECX ESI glyph child Text after primary node assignment; no stack args"
+    },
+    {
+      "address": "00abb601",
+      "native": "00ab8530",
+      "function": "00abb2c0",
+      "operation": "ECX ESI Text after material properties; no stack args"
+    }
+  ],
+  "shared_extensions": [
+    {
+      "source": "src/gui_widget_owner.cpp",
+      "coverage": "partial_projection",
+      "operation": "Same canonical model factory supports live auxiliary publication before temporary name release atAB85AA..AB85D0; ordinary existing creation cleanup point retained."
+    },
+    {
+      "source": "src/gui_native_geometry.cpp",
+      "coverage": "complete",
+      "operation": "Same geometry registration domain retains actual material companions; existing00535320 creates storage; NativeMaterialReference retires actual material and companion."
+    },
+    {
+      "source": "src/gui_widget_owner.cpp",
+      "coverage": "partial_projection",
+      "operation": "Default-empty secondary scene release hook atAA8320 after child20 and before primary unlink; Text live descriptor predicate andAB73B0 provided by separate lifetime packet; no factory enable."
+    }
+  ],
+  "consumed_lifetime_contract": [
+    {
+      "address": "00aa8352",
+      "native": "child+vtable20",
+      "function": "00aa8320",
+      "operation": "current child scene release before secondary hook"
+    },
+    {
+      "address": "00aa8372",
+      "native": "widget+vtable0c",
+      "function": "00aa8320",
+      "operation": "live descriptor query delegated to Text lifetime implementation"
+    },
+    {
+      "address": "00aa837b",
+      "native": "00ab73b0",
+      "function": "00aa8320",
+      "operation": "Text-match secondary release; owned and reported by lifetime packet"
+    },
+    {
+      "address": "00aa8387",
+      "native": "00b6dfa0",
+      "function": "00aa8320",
+      "operation": "primary unlink after derived secondary hook"
+    }
+  ],
+  "producer_fields": [
+    "Existing NativeModelOwner construction00B75030:184h payload/188h poolslot, actual node138 flags and retained mesh180.",
+    "Existing NativeMeshStorage construction00B73D70:BCh payload/C0h poolslot, sections54/count58/index60/streams64/highwater7C, actual atomic04.",
+    "Existing NativeMeshSectionStorage construction00B857F0:60h payload/64h poolslot, material20, actual atomic04.",
+    "Existing GuiTextWidget and LIVE NativeNodeBinding*& shadow188; Text constructor00AB9650 initializes these associations; no duplicated state."
+  ],
+  "register_provenance": {
+    "00ab8400": "Full function filter: EBX zero at841E, indexzero push84B3, then IATCE2220 at84B9; EDI capacity fromESP+28 at8496 preserved; EBP declaration846D; ESI vertex84B0 then index84FF; mesh ESP+2C at84AC/84FB; renderer reloads8451/8490/84E4.",
+    "00ab8530": "Full function filter: ESI=this at854D fixed; EBX zero then1/shadowmesh/mainmesh/material; EDI allocation thenSEH/section/IAT; EBP material thenIAT. Shadow reloads after temporary release; flag and shadow reread after parenting.",
+    "caller_contexts": "All five direct xrefs inspected in bounded live complete-function listings; Ghidra proto body attribution checked."
+  },
+  "remaining_dependencies": [
+    "Actual callable native renderer38/5C/60 and48 factories; registered declaration/vertex/index/effect owners; actual pools, destruction profiles and node attachment runtime.",
+    "Canonical Text lifetime and remaining virtual behavior; current ordinary GuiWidgetOwnerRuntime factory rejects Text.",
+    "Font/shader resource loading, complete changed-nonempty content geometry, glyph fill/upload, drawing and rendering. No synthetic fallback or resource service supplied.",
+    "GuiTextBufferServices and raw resource/registration access lifetimes extend through final native releases; new shadow slot holds creator model reference."
+  ],
+  "validation": {
+    "compile": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /fp:strict compile-only passed for gui_text_buffers.cpp, gui_native_geometry.cpp, gui_widget_owner.cpp; local/text_buffers_compile.cmd",
+    "call_verifier": "Stronger live verify_report_calls.py from orch5-20260911:43 numeric rows,0 failures;40 exact direct calls and3 resolved renderer indirect calls.18 symbolic IAT/virtual rows separately reviewed in complete-function CALL listings.",
+    "new_tests": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_evidence": "Not reachable through current ordinary Text factory; no bsp_game runtime/visual claim. Parent runs standard combined Win32 build."
+  },
+  "lease": "Only reconstructed AB8400/AB8530 plus eight owned output/source files; all other addresses consumed read-only, AA8320 owned by lifetime packet.",
+  "parent_validation": {
+    "normal_win32_build": "passed including both shared owner modules",
+    "existing_tests": "2/2 passed",
+    "numeric_rows": 43,
+    "direct_rows": 40,
+    "resolved_indirect_rows": 3,
+    "symbolic_indirect_rows": 18,
+    "failed_rows": 0,
+    "existing_detach_probe": "passed against rebuilt actual owner library",
+    "buffer_operations_executed": false,
+    "game_validated": false
+  }
+}

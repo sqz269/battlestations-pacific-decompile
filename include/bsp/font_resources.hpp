@@ -17,8 +17,10 @@ using FontStreamResolver = std::function<bool(const std::string& logical_name,
 
 struct FontResources {
     FontData data;
-    // One font-level reference each (native embedded space fields +64/+68).
-    // All glyph resource pointers alias these; material owners may retain them.
+    // One font-level semantic reference each (native space fields +64/+68).
+    // This compatibility loader leaves FontGlyphData's ACTUAL resource slots
+    // null; native_font_resources supplies the separate native-owner path.
+    // Semantic material owners may retain these shared image wrappers.
     std::shared_ptr<D3D9RetainedTexture2D> gfx;
     std::shared_ptr<D3D9RetainedTexture2D> alpha;
     ~FontResources();

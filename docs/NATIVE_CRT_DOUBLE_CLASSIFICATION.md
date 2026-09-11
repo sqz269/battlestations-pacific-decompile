@@ -97,3 +97,8 @@ plus the existing build checks. It is not runtime verification of FP values,
 exception paths, arbitrary native callers, original ABI compatibility or game
 behavior. No shared build file, Ghidra annotation, ledger or parent body is
 changed.
+
+
+## Primary integration
+
+Primary registered the full source entries, passed the strict Win32 build, both existing CTests and eight fresh original seeds, and used the same frozen main library `aa4a9f060ade446e7638fed51f8977610df500a5c070984af473e5d8cc5eb3ae` for all three packets. All 37 sealed worker files and nine report pins passed. Three fresh spans cover all 256 original bytes and 112 instructions. The six-section main object has only the complete fpclass-to-sptype call relocation, which resolves back to every original byte. The CPP has only a CRLF/LF byte difference; decoded source is identical. No new FP runtime or exception-state claim is added. Reviewed names and evidence comments are saved with prior values retained; correct CRT library names remain. All affected exports were forcibly refreshed. Immutable primary evidence: `local/crt_double_classification_primary/`. New source interfaces are not original caller ABI or gameplay validation.

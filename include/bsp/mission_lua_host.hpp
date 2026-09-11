@@ -342,7 +342,7 @@ struct MissionLuaEntryPoint {
     bool threadsafe; // true selects 0045f440, false selects 0045f520
 };
 inline constexpr MissionLuaEntryPoint kMissionLuaEntryPoints[] = {
-    {"luaPrecacheUnits", false}, // 0045f520 at 004e0aa5
+    {"luaPrecacheUnits", false}, // 0045f520 at 004e0a96 (docs/GAME_EXECUTABLE.md, milestone 2f correction 2: xrefs give 004e0a96 and 004e0c2e; 004e0aa5 is inside the 0095ca70 precache block)
     {"luaStageInitMulti", false}, // 0045f520
     {"luaStageInit", true}, // 0045f440
     {"luaEngineMovieInit", true}, // 0045f440, slot 9 only

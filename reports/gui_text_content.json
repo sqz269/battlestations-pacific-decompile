@@ -1,0 +1,335 @@
+{
+  "packet": "orch5_gui_text_content",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/gui_text_content.cpp",
+  "routines": [
+    {
+      "address": "00aba8d0",
+      "end_inclusive": "00abaec6",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX=Text, one UTF16 wrapper pointer, RET4 at00ABAEC4",
+      "coverage": "partial_projection",
+      "scope": "Reconstructed prefix00ABA8D0..00ABA9BE and common cleanup00ABAE8A..00ABAEC6; nonempty00ABA9BF..00ABAE89 unimplemented, returns explicit pending continuation. Full body read; tail callee closure not claimed."
+    },
+    {
+      "address": "00ab80c0",
+      "end_inclusive": "00ab81b6",
+      "last_instruction_length": 1,
+      "native_abi": "__thiscall ECX=Text, no stack args, RET",
+      "coverage": "complete",
+      "scope": "Complete valid-collection control flow over live vector and concrete retained-owner detach; required actual Text virtual04 and lifetime transport remain external. Corrupt-vector CRT termination not reconstructed."
+    },
+    {
+      "address": "00ab8ee0",
+      "end_inclusive": "00ab8eff",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX=Text, deletion flags stack DWORD, EAX original object, RET4 at00AB8EFD",
+      "coverage": "complete",
+      "scope": "Analysis only; actual Text deleting destructor not implemented by this packet. Vtable00D5C6C8+04 ->00AB8EE0. Lease handed to parallel Text lifetime packet after analysis."
+    },
+    {
+      "address": "00ab75a0",
+      "end_inclusive": "00ab760b",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX=Text pool, stack object, RET4 at00AB7609",
+      "coverage": "complete",
+      "scope": "Analysis only; critical-section protected pool return. Full listing/caller setup read; no native pool invented."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aba8ec",
+      "native": "00ab8530",
+      "function": "00aba8d0",
+      "contract": "Direct ensure_gui_text_draw_sections_00ab8530 over peer GuiTextBufferServices; runs before copy/compare including equal-empty."
+    },
+    {
+      "address": "00aba8fa",
+      "native": "004c8dd0",
+      "function": "00aba8d0",
+      "contract": "Copy UTF16 wrapper; null-free signed32-length domain represented by separate owned std::u16string."
+    },
+    {
+      "address": "00aba91c",
+      "native": "00a9ec30",
+      "function": "00aba8d0",
+      "contract": "ECX live locale manager; one stack wrapper, RET4. Repeat per-code-unit uppercase via existing locale_uppercase_00a9eba0 even after ellipsis."
+    },
+    {
+      "address": "00aba945",
+      "native": "00c03a39",
+      "function": "00aba8d0",
+      "contract": "Two terminated strings, stored then copied; ADD ESP8 at00ABA94A. Native length-empty split before comparison; no length equality."
+    },
+    {
+      "address": "00c03abf",
+      "native": "00c0392a",
+      "function": "00c03a39",
+      "contract": "CRT-mode nonzero arm: stored, copied, null locale; ADD ESP0Ch at00C03AC4. Required current-locale comparator; mode0 ASCII fold implemented locally."
+    },
+    {
+      "address": "00aba964",
+      "native": "00ab80c0",
+      "function": "00aba8d0",
+      "contract": "Concrete live glyph clear after measured_width+114=0."
+    },
+    {
+      "address": "00ab8118",
+      "native": "00aa83a0",
+      "function": "00ab80c0",
+      "contract": "Concrete detach_gui_widget_child_00aa83a0, called even for null. Transfer unique_ptr to required lifetime binding before reloading native slot."
+    },
+    {
+      "address": "00ab8151",
+      "native": "Text+vtable04",
+      "function": "00ab80c0",
+      "contract": "CALL EAX from current child vtable+04; flags1. Resolved00AB8EE0 by producer Text constructor and00D5C6CC bytes, required actual destructor/pool operation."
+    },
+    {
+      "address": "00aba96d",
+      "native": "00b74640",
+      "function": "00aba8d0",
+      "contract": "Actual main model geometry0, retained owner verifies matching native storage."
+    },
+    {
+      "address": "00aba97b",
+      "native": "00b732c0",
+      "function": "00aba8d0",
+      "contract": "Actual main raw mesh section0, captured before text assignment."
+    },
+    {
+      "address": "00aba98d",
+      "native": "004c5e20",
+      "function": "00aba8d0",
+      "contract": "Stored UTF16 assignment after main section capture."
+    },
+    {
+      "address": "00aba9a7",
+      "native": "00b74640",
+      "function": "00aba8d0",
+      "contract": "Actual live shadow model geometry0 after main +18/+10 stores."
+    },
+    {
+      "address": "00aba9af",
+      "native": "00b732c0",
+      "function": "00aba8d0",
+      "contract": "Actual shadow raw mesh section0; writes +18 then+10 only."
+    },
+    {
+      "address": "00abaeaa",
+      "native": "00419cc0",
+      "function": "00aba8d0",
+      "contract": "Native temporary cleanup pool selection; C++ temporary ownership substitutes valid-domain allocation/free."
+    },
+    {
+      "address": "00abaeb1",
+      "native": "00bd1510",
+      "function": "00aba8d0",
+      "contract": "Native temporary block return; not binary allocation ABI."
+    }
+  ],
+  "ownership_contract_steps": [
+    {
+      "address": "00ab8ee3",
+      "native": "00ab8250",
+      "function": "00ab8ee0",
+      "contract": "Actual Text destructor before optional pool return; existing full analyzed body consumed, separate lifetime packet implements."
+    },
+    {
+      "address": "00ab8ef5",
+      "native": "00ab75a0",
+      "function": "00ab8ee0",
+      "contract": "If flags&1, ECX00F8BDF0 and original Text pointer stack argument."
+    },
+    {
+      "address": "00ab76f6",
+      "native": "00ab75a0",
+      "function": "00ab76f0",
+      "contract": "Other pool-return caller: ECX00F8BDF0, original ECX pushed as object."
+    },
+    {
+      "address": "00ab9d38",
+      "native": "00ab78a0",
+      "function": "00ab98f0",
+      "contract": "Existing producer acquires Text pool slot; only child type/lifetime provenance consumed."
+    },
+    {
+      "address": "00ab9d4f",
+      "native": "00ab9650",
+      "function": "00ab98f0",
+      "contract": "Existing producer constructs Text before append; no alternate generic child owner."
+    },
+    {
+      "address": "00ab9d70",
+      "native": "005dad40",
+      "function": "00ab98f0",
+      "contract": "Producer appends same child via parent+194 vector (data+198)."
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "00abaf66",
+      "native": "00aba8d0",
+      "function": "00abaed0",
+      "contract": "Localized/widened temporary wrapper submitted on same Text."
+    },
+    {
+      "address": "00abafaa",
+      "native": "00aba8d0",
+      "function": "00abaed0",
+      "contract": "Localized/widened temporary wrapper submitted on same Text."
+    },
+    {
+      "address": "00abb0d2",
+      "native": "00aba8d0",
+      "function": "00abb000",
+      "contract": "Ellipsis result wrapper; future caller still needs final color50."
+    },
+    {
+      "address": "00abb151",
+      "native": "00aba8d0",
+      "function": "00abb000",
+      "contract": "Ellipsis result wrapper; future caller still needs final color50."
+    },
+    {
+      "address": "00abb275",
+      "native": "00aba8d0",
+      "function": "00abb1d0",
+      "contract": "Copied current text resubmitted after stored wrapper cleared."
+    },
+    {
+      "address": "00ab9e61",
+      "native": "00aba8d0",
+      "function": "00ab98f0",
+      "contract": "Child Text receives constructed glyph wrapper."
+    },
+    {
+      "address": "00ab6ab8",
+      "native": "00aba8d0",
+      "function": "00ab6ab0",
+      "contract": "Forwards one incoming wrapper; subsequent current virtual50 outside content routine."
+    },
+    {
+      "address": "0053266d",
+      "native": "00ab80c0",
+      "function": "00530a60",
+      "contract": "ECX Text handle+28, no stack args; live body00530A60..005329B9 supersedes old index attribution00532360."
+    },
+    {
+      "address": "00532684",
+      "native": "00ab80c0",
+      "function": "00530a60",
+      "contract": "ECX Text handle+2C, no stack args; live body00530A60..005329B9 supersedes old index attribution00532360."
+    },
+    {
+      "address": "0053269b",
+      "native": "00ab80c0",
+      "function": "00530a60",
+      "contract": "ECX Text handle+30, no stack args; live body00530A60..005329B9 supersedes old index attribution00532360."
+    },
+    {
+      "address": "005326b2",
+      "native": "00ab80c0",
+      "function": "00530a60",
+      "contract": "ECX Text handle+34, no stack args; live body00530A60..005329B9 supersedes old index attribution00532360."
+    },
+    {
+      "address": "0054b608",
+      "native": "00ab80c0",
+      "function": "0054b530",
+      "contract": "ECX current command-bar Text in five-item loop, no stack args."
+    },
+    {
+      "address": "005d2bcb",
+      "native": "00ab80c0",
+      "function": "005d26d0",
+      "contract": "ECX Text handle+20, no stack args."
+    },
+    {
+      "address": "005d2be2",
+      "native": "00ab80c0",
+      "function": "005d26d0",
+      "contract": "ECX Text handle+24, no stack args."
+    },
+    {
+      "address": "005d2bf9",
+      "native": "00ab80c0",
+      "function": "005d26d0",
+      "contract": "ECX Text handle+28, no stack args."
+    },
+    {
+      "address": "0062169b",
+      "native": "00ab80c0",
+      "function": "0061fbe0",
+      "contract": "ECX ESI Text, no stack args, containing body0061FBE0..00621714."
+    },
+    {
+      "address": "00ab82bc",
+      "native": "00ab80c0",
+      "function": "00ab8250",
+      "contract": "Destructor clears glyph children after shadow unlink/slot zero."
+    },
+    {
+      "address": "00aba279",
+      "native": "00ab80c0",
+      "function": "00aba270",
+      "contract": "Wrapped builder clears current Text children before layout."
+    },
+    {
+      "address": "00aba964",
+      "native": "00ab80c0",
+      "function": "00aba8d0",
+      "contract": "Content changed branch after measured width reset."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "One cached child pointer can be detached and then deleted without re-reading the collection.",
+      "is": "Reload vector and bound after detach; deletion consumes the reloaded current slot. Detached C++ ownership transport must permit changed identity.",
+      "evidence": "00AB8118 then00AB811D..00AB8144, CALL EAX00AB8151, captured-slot zero00AB8153."
+    },
+    {
+      "was": "A prepared-section assertion can substitute for00AB8530 before text comparison.",
+      "is": "Call actual preparation every invocation before copy/compare; actual shadow parenting is observable even equal-empty.",
+      "evidence": "00ABA8EC precedes00ABA8FA/00ABA921; complete existing00AB8530 body read and peer concrete implementation consumed."
+    },
+    {
+      "was": "The old clear caller index identifies00532360.",
+      "is": "Live Ghidra body for the four005326xx sites starts00530A60 and ends005329B9.",
+      "evidence": "Live proto for each site and exact instruction verifier."
+    },
+    {
+      "was": "Existing Text comparison approximation was ASCII-only without a live CRT-mode branch.",
+      "is": "ASCII fold applies only while0109DE1C==0; nonzero invokes current-locale00C0392A with null locale.",
+      "evidence": "Full00C03A39 body, call00C03ABF and ADD ESP0Ch at00C03AC4."
+    }
+  ],
+  "register_provenance": {
+    "method": "Read complete listings and every ESI/EDI/EBP/EBX occurrence, retaining callee-save and covered-range boundaries.",
+    "content": "ESI=ECX at00ABA8EA; EBP=0 at00ABA905 throughout covered prefix; EBX=main mesh at00ABA972; EDI=main section at00ABA98B. Later tail reassignments are outside prefix.",
+    "clear": "ESI=ECX at00AB80C4; EBP=0 at00AB80C6, increments00AB8159; EBX=index*4 at00AB810E; EDI reloaded base00AB813B then captured slot00AB8144."
+  },
+  "ownership_transport": {
+    "native_call": false,
+    "method": "accept_detached_child(std::unique_ptr<GuiLayoutWidget>) noexcept",
+    "contract": "Retain same detached instance before reload; do not change native-visible state or invoke before_destroy/page-retirement fallback. Actual virtual04 must consume correct ownership and clear before_destroy after actual teardown. No second widget tree."
+  },
+  "remaining": [
+    "00ABA9BF..00ABAE89 nonempty geometry/material/shadow continuation is not implemented; pending result must not be accepted as successful text update.",
+    "Actual Text scalar-deleting destructor/lifetime owner and detached ownership sink are required; parallel lifetime packet now owns00AB8EE0.",
+    "Current native CRT locale comparator is required when live CRT changed flag is nonzero.",
+    "Actual original pool/SEH allocation ABI and corrupt-collection termination are outside the C++ valid domain.",
+    "Not wired into bsp_game.exe; existing GameTextHost bridge/layout logs do not execute these new functions."
+  ],
+  "verification": {
+    "strict_win32_compile": "passed /std:c++17 /W4 /WX /EHsc /permissive- with parent detach and peer buffer header",
+    "report_calls": "passed integrator exact-instruction verifier:39 direct call rows,0 failed;1 Text virtual04 manually resolved from actual vtable and producer",
+    "tests_added": 0,
+    "combined_build": "integrator",
+    "runtime": "not run; new functions not wired into executable; no frame-path, rendering or ABI-equivalence claim"
+  }
+}
