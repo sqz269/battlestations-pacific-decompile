@@ -12,9 +12,10 @@ struct KeyboardRuntimeHost {
     // 00a92260 tests the native 30h-stride action record's byte +0, with a
     // bounds check. Apply calls this once for action 128h before all devices.
     virtual bool action_registered_00a92260(std::uint32_t action) = 0;
-    // 006aa090 inspects AxisPairs and compares the pair's input descriptions
-    // through 0069e860. That helper remains a boundary, not guessed equality.
-    virtual bool use_alternate_axis_slots_006aa090(const InputSettings& settings,
+    // 006aa090 compares ordered action-code lists for matching second names
+    // in AxisPairs; its map lookups insert defaults. Concrete reconstruction
+    // is available in keyboard_axis_pairs.hpp.
+    virtual bool use_alternate_axis_slots_006aa090(InputSettings& settings,
         const std::string& device_name, const std::string& input_name) = 0;
     // 00a93750 grows the native action's bindings, copies the 14h binding and
     // float scale, then calls 00a91e80 to resolve device references.

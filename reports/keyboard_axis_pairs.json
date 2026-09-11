@@ -1,0 +1,96 @@
+{
+  "packet": "orch2_axis_pairs",
+  "status": "reconstructed_build_tested_native_body_differential_with_container_adapters",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "verification": "bsp.py ghidra Client.verify before every live analysis/export batch"
+  },
+  "functions": [
+    {
+      "address": "006aa090",
+      "body_end": "006aa1bf",
+      "old_name": "FUN_006aa090",
+      "old_comments": "No plate comment returned before annotation",
+      "proposed_name": "BSP_InputSettings_UseAlternateAxisSlots",
+      "cpp_symbol": "bsp::use_alternate_axis_slots_006aa090",
+      "source": "src/keyboard_axis_pairs.cpp",
+      "original_abi": "ECX=settings; stack device-name*, input-name*; AL bool; RET8",
+      "exported": true,
+      "reconstructed": true,
+      "build_tested": true,
+      "native_differential_scope": "original body with typed container getter and CRT import adapters",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0069e860",
+      "body_end": "0069e8f5",
+      "old_name": "FUN_0069e860",
+      "old_comments": "No plate comment returned before annotation",
+      "proposed_name": "BSP_InputCodeVector_EqualsOrdered",
+      "cpp_symbol": "bsp::keyboard_input_codes_equal_0069e860",
+      "source": "src/keyboard_axis_pairs.cpp",
+      "original_abi": "ECX=first checked int32 vector*, EDX=second vector*; EAX=0/1; RET",
+      "exported": true,
+      "reconstructed": true,
+      "build_tested": true,
+      "native_differential_scope": "original body and original0069dd80 integer loop; checked-failure import patched to terminating adapter",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "evidence": [
+    {"range": "006aa09a..006aa0ab", "behavior": "settings+8 device subscript0055c110 then device+5c pair-vector walk"},
+    {"range": "006aa0f7..006aa13a", "behavior": "input query matches second pair name only; equal stored length before case-insensitive string compare"},
+    {"range": "006aa171..006aa191", "behavior": "device+0 code-description subscript006a44b0; second lookup before first; ECX first vector, EDX second vector for equality"},
+    {"range": "0069e868..0069e892", "behavior": "int32 vector lengths must match; null begin means zero length"},
+    {"range": "0069ddc2..0069ddce", "behavior": "ordered dword equality; integer MOV/CMP, increment4; no float instructions"},
+    {"range": "0055c15d..0055c1be", "behavior": "default-device insertion on absent device key"},
+    {"range": "006a44fe..006a459e", "behavior": "empty code-vector insertion on absent input; assembly shows continuation after false-no-return free calls"},
+    {"range": "006a8046;006a8117", "behavior": "loader uses same description map and appends ordered codes for duplicate case-insensitive input names"}
+  ],
+  "model": {
+    "description": "existing InputEntry table-form rows aggregate into case-insensitive ordered int32 code lists",
+    "bindings": "existing KeyboardInputBinding/runtime_bindings are separate and unchanged",
+    "mutation": "InputSettings&; missing device inserts default; missing description appends empty table-form InputEntry; no runtime bindings/reverse/input-order entries created",
+    "aliasing": "same code-vector references allowed; snapshot query before row insertion; copies preserve same-name map alias semantics",
+    "floating_point": "No floating-point operations or comparisons in these routines"
+  },
+  "validation": {
+    "seed_byte_comparisons": {"passed": 8, "failed": 0},
+    "native_body_ranges": [
+      {"address": "006aa090", "length": 304, "matches_disk": true, "sha256": "c779f4241f2c6b26d68fcc3a0951f3dcb16bb0b7d934f6706185e8ea56d63154"},
+      {"address": "0069e860", "length": 150, "matches_disk": true, "sha256": "6506ccacb77eced55ecf4c7539c5f3404cd7f150c6a7275dbc2375585a9bb57d"},
+      {"address": "0069dd80", "length": 94, "matches_disk": true, "sha256": "862fddc6cfbbec62ec9512d5d93bad93db6eee5ef300614d63e117629b627f1c"}
+    ],
+    "build": {"passed": true, "platform": "MSVC Win32", "configuration": "Release", "command": "./scripts/build.ps1", "log": "local/keyboard_axis_pairs_build.log"},
+    "existing_ctests": {"passed": 2, "failed": 0, "names": ["reconstructed_math", "native_math_differential"]},
+    "focused_fixture": {
+      "source": "local/keyboard_axis_pairs_fixture.cpp",
+      "command": "local/run_keyboard_axis_pairs_fixture.cmd",
+      "log": "local/keyboard_axis_pairs_fixture.log",
+      "passed": 193,
+      "failed": 0,
+      "native_code_vector_comparisons": 132,
+      "native_predicate_cases": 8,
+      "permanent_tests_added": 0,
+      "boundary": "predicate executes original304-byte body but substitutes typed container getters; equality executes both original native bodies"
+    }
+  },
+  "uncertainty": [
+    "Names are hypotheses and new host interfaces are not native ABI replacement objects.",
+    "Existing CaseInsensitiveLess covers ASCII names; non-ASCII locale/embedded-NUL behavior is not established.",
+    "Malformed native checked-vector layouts and allocation-failure/tree-storage behavior are not represented by the typed host model.",
+    "Existing keyboard apply snapshots descriptions before predicates; its traversal after creating previously absent axis names is not established for incomplete/malformed runtime bindings.",
+    "Native predicate fixture substitutes map getters and CRT imports, so it does not establish original tree implementation or complete keyboard runtime parity.",
+    "No game execution or full runtime validation was performed."
+  ],
+  "ghidra_mutation": {
+    "worker_mutated": false,
+    "integrator_required": "Apply proposed names/evidence comments under write lock, preserve existing comments, save project, refresh affected exports",
+    "library_name_preserved": "STL_inst_0069dd80",
+    "missing_function_boundaries": []
+  }
+}
