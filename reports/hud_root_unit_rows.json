@@ -1,0 +1,188 @@
+{
+  "packet": "orch2_hud_root_unit_rows",
+  "binary": "battlestationspacific.exe",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/HUD_ROOT_UNIT_ROWS.md",
+  "source": "src/hud_root_rows.cpp",
+  "header": "include/bsp/hud_root_rows.hpp",
+  "summary": "Five HUD-root routines reconstructed as bounded selection, row-update and closed-row host contracts. These routines do not write the medal widgets.",
+  "reconstruction_scope": "Whole seed control policies expressed through mandatory host interfaces; supporting native callees, NativeString allocator/SEH paths and exact x87 execution are not implemented. This is a partial native reconstruction, not five complete native replacements.",
+  "evidence_date": "2026-09-10",
+  "routines": [
+    {
+      "address": "00644c20",
+      "old_name": "FUN_00644c20",
+      "proposed_name": "BSP_InGameHudRootScreen_FindPrimaryUnitSelection",
+      "implementation": "hud_root_find_primary_unit",
+      "native_abi": "ECX=root; stack=(result*, unit); EAX=result*; RET 8",
+      "end_inclusive": "00644cb2",
+      "last_instruction": "00644cb0",
+      "last_instruction_byte_length": 3,
+      "size_bytes": 147,
+      "listed_instructions": 56,
+      "ghidra_function": true,
+      "flow_gaps": 0,
+      "status": "bounded_host_implementation_build_tested",
+      "behavior": "Initialize discriminator zero/index FFFFh; map members to group leader through 007788B0/007788D0; primary pointer equality search; native signed BX index tests. Byte +1 padding is omitted."
+    },
+    {
+      "address": "00644cc0",
+      "old_name": "FUN_00644cc0",
+      "proposed_name": "BSP_InGameHudRootScreen_FindUnitSelection",
+      "implementation": "hud_root_find_unit",
+      "native_abi": "ECX=root; stack=(result*, unit); EAX=result*; RET 8",
+      "end_inclusive": "00644daf",
+      "last_instruction": "00644dad",
+      "last_instruction_byte_length": 3,
+      "size_bytes": 240,
+      "listed_instructions": 93,
+      "ghidra_function": true,
+      "flow_gaps": 0,
+      "status": "bounded_host_implementation_build_tested",
+      "behavior": "Leaders take primary lookup; only members are searched in the secondary list. A found secondary member sets discriminator only for count > 1."
+    },
+    {
+      "address": "00644db0",
+      "old_name": "FUN_00644db0",
+      "proposed_name": "BSP_InGameHudRootScreen_PollUnitSelection",
+      "implementation": "hud_root_poll_selection",
+      "native_abi": "ECX=root; one unused four-byte stack argument; RET 4",
+      "end_inclusive": "0064505b",
+      "last_instruction": "00645059",
+      "last_instruction_byte_length": 3,
+      "size_bytes": 684,
+      "listed_instructions": 180,
+      "ghidra_function": true,
+      "flow_gaps": 0,
+      "status": "bounded_host_implementation_build_tested",
+      "behavior": "Poll 8D,8C,8E,8F; suppression gate; next before previous; primary before secondary; primary and secondary word-index wrap rules; secondary zero maps to primary; pending byte is set but never cleared."
+    },
+    {
+      "address": "00648c20",
+      "old_name": "FUN_00648c20",
+      "proposed_name": "BSP_InGameHudRootScreen_UpdateUnitRowWidgets",
+      "implementation": "hud_root_update_rows",
+      "native_abi": "ECX=root; no stack arguments; RET; native SEH and string temporary cleanup outside projection",
+      "end_inclusive": "0064983f",
+      "last_instruction": "0064983f",
+      "last_instruction_byte_length": 1,
+      "size_bytes": 3104,
+      "listed_instructions": 885,
+      "ghidra_function": true,
+      "flow_gaps": 0,
+      "status": "bounded_host_implementation_build_tested",
+      "behavior": "Rebuild lists; choose controlled/selected/override unit; weapon-source recipe and animation policy; command descriptor state; name and controlled-country flags; computed payload state; health-width policy and cache; final weapon hide gate."
+    },
+    {
+      "address": "00647080",
+      "old_name": "FUN_00647080",
+      "proposed_name": "BSP_InGameHudRootScreen_ToggleClosedRows",
+      "implementation": "hud_root_toggle_closed",
+      "native_abi": "ECX=root; no stack arguments; RET; native caller guarantees required controlled unit/member",
+      "end_inclusive": "0064715b",
+      "last_instruction": "0064715b",
+      "last_instruction_byte_length": 1,
+      "size_bytes": 220,
+      "listed_instructions": 68,
+      "ghidra_function": true,
+      "flow_gaps": 0,
+      "status": "bounded_host_implementation_build_tested",
+      "behavior": "Exactly-zero closed state conditionally switches 22h/23h using first-member payload; exactly-one clears flag and optionally restores saved interface/payload; other state values unchanged."
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00648c20",
+      "name": "hud_root_command_icon_state",
+      "native_range": "0064931e..0064945d",
+      "status": "bounded_rule_build_tested",
+      "note": "Pure table over descriptor identities. Special 00927F30 branch forces state 2; descriptor meanings remain unassigned."
+    },
+    {
+      "address": "00648c20",
+      "name": "hud_root_healthy_width",
+      "native_range": "006496a6..00649705",
+      "status": "bounded_rule_build_tested_not_x87_bit_exact",
+      "note": "Preserves two explicit float multiplier spills and expression order. MSVC long double lacks native 80-bit x87 precision; no clamp or divisor guards added."
+    }
+  ],
+  "widget_fields": {
+    "34": "unit_name_Text",
+    "3c": "WeaponInfo_Text",
+    "50": "unit_payload_Icon",
+    "5c": "Medal_Icon: binding only, not written by these five routines",
+    "60": "Medal_Text: binding only, not written by these five routines",
+    "64": "FlagJP_Icon",
+    "68": "FlagUS_Icon",
+    "7c": "unit_HP_damage_Icon",
+    "80": "unit_HP_healthy_Icon",
+    "84": "unit_command_Icon"
+  },
+  "source_corrections": [
+    {
+      "subject": "00644DB0 scope and size",
+      "evidence": "Full listing 00644DB0..00645059, final C2 04 00",
+      "finding": "Input selection routine, 684 bytes. It does not write row widgets; earlier 1195-byte label is wrong."
+    },
+    {
+      "subject": "Payload state lost by decompiler",
+      "evidence": ["006492DD writes default 3 to stack+20h", "00649516 writes 0 for kind 1Ch", "0064955C calls 00653200", "00649561 stores EAX to stack+20h", "006497F2 loads EAX from stack+20h", "00649802 pushes EAX to root+50h virtual+88h"],
+      "finding": "The tail state is computed, not the decompiler's constant 3."
+    },
+    {
+      "subject": "Literal dot in weapon sources",
+      "evidence": "00CE3A70 raw bytes 2E 00; 004263B0 copies prefix and appends 004260B0 %d; 004261A0 appends suffix",
+      "finding": "Counted source is '.' + signed decimal count + 'x |' + key; no-machinegun fallback is '.'."
+    },
+    {
+      "subject": "Medal scope",
+      "evidence": "006463E0 binds Medal_Icon at root+5Ch and Medal_Text at root+60h; neither field is accessed as a root widget in the five seed listings",
+      "finding": "Dynamic medal writers remain outside this packet."
+    }
+  ],
+  "health_expression": {
+    "inputs": "A=00939F70, B=00939F80, C=00939FC0, D=00939FB0 on selected+A20h; each result spilled to float; F1/F2=separate 00470440(3,selected) results; S1=tuning+3C8h only for selected+A44h==4 else 1; S2=tuning+3CCh only for ==3 else 1",
+    "expression": "float(health - ((D*B)/float(F1*S1) + (C*A)/float(F2*S2))/selected[36Ch])",
+    "cache": "A and B both ordered equal zero: fresh health write, cache untouched. Otherwise write if unequal (including NaN), then store width in root+88h.",
+    "boundary": "No exact x87 extended precision or floating-exception timing equivalence is claimed."
+  },
+  "external_dependencies_analyzed_only": [
+    "006463e0 widget layout bindings",
+    "00644a60 selected-unit resolver",
+    "00778890/007788b0/007788d0 leader/member probes and leader accessor",
+    "00653200 class icon mapper (partial supporting read only)",
+    "004263b0 and 004260b0 decimal-source construction",
+    "00449af0 case-insensitive source comparison"
+  ],
+  "host_boundaries": [
+    "00648290 list rebuild and native STL storage/bounds checks",
+    "Unit virtuals, group probes, weapon probes/counts, health metrics, tuning and power-up internals",
+    "00653200 class payload mapping",
+    "NativeString/CRT allocation, formatting, cache and SEH cleanup",
+    "Localization, GUI widget/animation calls and interface-request dispatch"
+  ],
+  "no_ghidra_function": [],
+  "ghidra_writes": false,
+  "annotation_state": "Five names proposed in repository ledger only; integrator annotation pending; existing library names retained",
+  "validation": {
+    "native_listings_read": "all five full listings",
+    "flow_gaps": 0,
+    "final_instruction_bytes_checked": true,
+    "native_seed_verification": "8/8 matches_disk; infrastructure check only",
+    "build_command": "./scripts/build.ps1",
+    "build": "MSVC 19.51.36244.0 Win32 Release passed",
+    "existing_checks": ["reconstructed_math passed", "native_math_differential passed"],
+    "new_tests": 0,
+    "hud_fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "visual_validated": false
+  },
+  "uncertainties": [
+    "Health metric semantic names and descriptor identities remain provisional.",
+    "Mandatory host implementations and in-game integration are not provided.",
+    "Medal dynamic writers were not recovered.",
+    "Floating-point bit parity and exception timing differ at the host/x87 boundary."
+  ]
+}
