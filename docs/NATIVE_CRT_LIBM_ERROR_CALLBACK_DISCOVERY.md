@@ -263,3 +263,8 @@ canonical name-address domain compatible with every admitted callback. These
 must be explicit caller-owned preconditions until separately evidenced. The
 finite negative caller scan is not a reason to force flag0. This read-only
 packet makes no reconstructed/build/fixture/native-ABI/game-valid claim.
+
+
+## Primary review
+
+Primary verified all 149 sealed worker artifacts and 24 pinned source/evidence inputs, then freshly reread 48 disk-backed spans (2523 bytes) and 4 separate saved virtual spans (28 bytes). Current source/header contents agree after newline normalization. Full native schedules, provider boundaries and remaining implementation dependencies are reviewed. This discovery makes no source, build, runtime or game claim. Immutable primary evidence: `local/libm_error_callback_discovery_primary/`.
