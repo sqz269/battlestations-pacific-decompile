@@ -116,3 +116,8 @@ host path checks copy independence, ignored high count, immutable numeric table
 identity, empty/null inputs, and actual stream/backing counters after release.
 This is fixture and ABI evidence; it does not validate Lua loading or gameplay.
 See `reports/native_memory_stream.json` for completed validation results.
+
+
+## Integration correction
+
+The integrator defined BEF4C0..BEF4C3, preserved prior comments, saved all four reviewed names, and refreshed exports. Standard flow repair decoded CC76D9..CC76DA, but those two bytes remain outside the CC76D0 stored function body. The combined Win32 build and both existing tests pass. Worker evidence remains its original pre-integration snapshot. See `reports/native_am_integration.json` for the integration evidence and remaining boundaries.

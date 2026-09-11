@@ -129,3 +129,8 @@ original logger, native FH3 unwind, or the original game's runtime. The new rout
 is not yet connected to `bsp_game`, so no frame or gameplay claim is made.
 Fixture source, executable, build command, raw byte captures and hashes are under
 the worktree's ignored `local/`; the durable report records their evidence.
+
+
+## Integration correction
+
+The integrator defined BD9040..BD9049, preserved prior comments, saved all five reviewed names, and refreshed exports. The combined Win32 build and both existing tests pass. An independent review found no mismatch within the documented D6838C domain. Provider, stream and logger ownership remain external; worker evidence remains its original pre-integration snapshot. See `reports/native_am_integration.json` for the integration evidence and remaining boundaries.

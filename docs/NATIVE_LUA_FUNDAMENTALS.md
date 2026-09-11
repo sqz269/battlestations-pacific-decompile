@@ -138,3 +138,8 @@ The strict Win32 build, both existing CTests and the focused fixture passed.
 All 17 direct report call rows passed live verification; the eight indirect
 rows retain their explicit slot/import boundaries. No permanent test suite,
 runtime game integration or game validation is claimed.
+
+
+## Integration correction
+
+The integrator repaired both B66B80 internal fall-through gaps; no call gap remains in that body. Standard repair decoded C970C1..C970C2, but those two bytes remain outside the C970B8 stored function body. All four names/comments were preserved and saved, with exports refreshed. The combined Win32 build and both existing tests pass. Worker evidence remains its original pre-integration snapshot. See `reports/native_am_integration.json` for the integration evidence and remaining boundaries.
