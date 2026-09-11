@@ -3354,8 +3354,8 @@
       "id": "native_logical_index_owner",
       "packet": "native_logical_index_owner",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "actual_logical_index_lifetime_implemented_original_caller_fixture_active",
+      "done": true,
+      "state": "integrated_actual_owner_primary_library_original_caller_and_build_checked",
       "function_addresses": [
         "00b4b6f0",
         "00b4c1f0",
@@ -3366,7 +3366,8 @@
         "src/native_logical_index_owner.cpp",
         "docs/NATIVE_LOGICAL_INDEX_OWNER.md",
         "reports/native_logical_index_owner_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_logical_index_owner_audit.json"
     },
     {
       "id": "native_hardware_layout_tree_next",
@@ -3427,7 +3428,7 @@
       "packet": "native_hardware_layout_tree",
       "worker": "system_fog_owner_discovery",
       "done": false,
-      "state": "implementing_actual_checked_tree_and_owning_out_of_range_throw",
+      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
       "function_addresses": [
         "00b2f4c0",
         "00b2ef00",
@@ -3442,14 +3443,15 @@
         "src/native_hardware_layout_tree.cpp",
         "docs/NATIVE_HARDWARE_LAYOUT_TREE.md",
         "reports/native_hardware_layout_tree_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_hardware_layout_tree_audit.json"
     },
     {
       "id": "native_hardware_layout_owner",
       "packet": "native_hardware_layout_owner",
       "worker": "main",
       "done": false,
-      "state": "recovering_actual_hardware_layout_lifetime_with_frozen_tree_dependency",
+      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
       "function_addresses": [
         "00b60700",
         "00b60770",
@@ -3463,14 +3465,15 @@
         "src/native_hardware_layout_owner.cpp",
         "docs/NATIVE_HARDWARE_LAYOUT_OWNER.md",
         "reports/native_hardware_layout_owner_audit.json"
-      ]
+      ],
+      "evidence": "reports/native_hardware_layout_owner_audit.json"
     },
     {
       "id": "native_texture_2d_owner_next",
       "packet": "native_texture_2d_owner_next",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "discovering_actual_texture_2d_retained_stream_notification_and_surface_record_lifetimes",
+      "done": true,
+      "state": "integrated_reviewed_native_dependency_discovery",
       "function_addresses": [
         "00b3f930",
         "00b3f2e0",
@@ -3480,6 +3483,129 @@
       "code_ownership": [
         "docs/NATIVE_TEXTURE_2D_OWNER_NEXT.md",
         "reports/native_texture_2d_owner_next.json"
+      ],
+      "evidence": "reports/native_texture_2d_owner_next.json"
+    },
+    {
+      "id": "native_renderer_texture_name_notification",
+      "packet": "native_renderer_texture_name_notification",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "implementing_actual_renderer_name_notification",
+      "function_addresses": [
+        "00b32250"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_texture_name_notification.hpp",
+        "src/native_renderer_texture_name_notification.cpp",
+        "docs/NATIVE_RENDERER_TEXTURE_NAME_NOTIFICATION.md",
+        "reports/native_renderer_texture_name_notification_audit.json"
+      ],
+      "prerequisites": [
+        "Integrated native_renderer_synchronization_actual.hpp/.cpp, with actual global and guard storage.",
+        "Integrated actual native_string.hpp/.cpp resize/lowercase/header destruction and actual shared SizedStoragePool.",
+        "Integrated native_render_resource_container_removal.hpp/.cpp, actual SingletonLifetimeCallbacks and borrowed NativeRenderResourceAccountingTables."
+      ],
+      "discovery_evidence": "reports/native_texture_2d_owner_next.json",
+      "admitted_domain": [
+        "ECX receiver remains the captured actual renderer; optional guard captures current global renderer separately.",
+        "Current mode governs normal leave and unwind; skipped entry followed by enabled cleanup remains outside initialized-guard admitted domain.",
+        "Only native container match-time profiles D61948/D61870/D618B0 and their currently verified accounting entries; no generic virtual fallback."
+      ]
+    },
+    {
+      "id": "native_retained_memory_owners",
+      "packet": "native_retained_memory_owners",
+      "worker": "main",
+      "done": false,
+      "state": "primary_implementing_actual_backing_and_stream_owners",
+      "function_addresses": [
+        "008d43c0",
+        "008d4440",
+        "008d4470",
+        "00bef6d0",
+        "00bef9c0",
+        "00bb8f90",
+        "00b23640"
+      ],
+      "code_ownership": [
+        "include/bsp/native_retained_memory_owners.hpp",
+        "src/native_retained_memory_owners.cpp",
+        "docs/NATIVE_RETAINED_MEMORY_OWNERS.md",
+        "reports/native_retained_memory_owners_audit.json"
+      ],
+      "prerequisites": [
+        "Existing real ordinary/array allocation and free boundaries; actual 0109DB98/0109DB9C counter storage.",
+        "Full original BD30E0 current-zero/current-deleting dispatcher, seven-byte BD30F0 base action and full stream-unwind base BB86E0 are pinned in this audit.",
+        "Use actual Win32 InterlockedIncrement/Decrement, actual object storage and supported borrowed current table views."
+      ],
+      "discovery_evidence": "reports/native_texture_2d_owner_next.json",
+      "admitted_domain": [
+        "Backing terminal current profile D15AD8, zero entry BD30E0 and deleting entry 8D4470.",
+        "Stream terminal current profile D642C0, zero entry BD30E0 and deleting entry BB8F90.",
+        "No shared_ptr owner, alternate count, generic terminal callback, arbitrary backing profile inference or null-allocation repair."
+      ]
+    },
+    {
+      "id": "native_logical_texture_named_base",
+      "packet": "native_logical_texture_named_base",
+      "worker": "unassigned",
+      "done": false,
+      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "function_addresses": [
+        "00b34120",
+        "00b34230",
+        "00b33f50",
+        "00b34010",
+        "00b33e40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_texture_named_base.hpp",
+        "src/native_logical_texture_named_base.cpp",
+        "docs/NATIVE_LOGICAL_TEXTURE_NAMED_BASE.md",
+        "reports/native_logical_texture_named_base_audit.json"
+      ],
+      "prerequisites": [
+        "Integrated actual NativeStringStorage/resize/header destruction and actual SizedStoragePool.",
+        "Borrow actual shared texture serial DWORD 0108D6E8.",
+        "Full BD30F0 base action and A81880 unwind thunk are pinned."
+      ],
+      "discovery_evidence": "reports/native_texture_2d_owner_next.json",
+      "admitted_domain": [
+        "Actual owner/name headers, real string allocations and native source/header aliases remain observable.",
+        "Diagnostic record +0 is borrowed COM and +4/+8 is the name; no COM retain/release belongs in its cleanup."
+      ],
+      "already_integrated_dependency": {
+        "address": "00b3f4c0",
+        "source": "src/native_physical_buffer_owner.cpp",
+        "evidence": "reports/native_physical_buffer_owner_audit.json"
+      }
+    },
+    {
+      "id": "native_texture_surface_cache_storage",
+      "packet": "native_texture_surface_cache_storage",
+      "worker": "unassigned",
+      "done": false,
+      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "function_addresses": [
+        "00b3d9b0",
+        "00b3da20",
+        "00b3ec40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_texture_surface_cache_storage.hpp",
+        "src/native_texture_surface_cache_storage.cpp",
+        "docs/NATIVE_TEXTURE_SURFACE_CACHE_STORAGE.md",
+        "reports/native_texture_surface_cache_storage_audit.json"
+      ],
+      "prerequisites": [
+        "Real BF55BE array-allocation and BF6989 free boundary, using actual Win32 raw array/header storage."
+      ],
+      "discovery_evidence": "reports/native_texture_2d_owner_next.json",
+      "admitted_domain": [
+        "Actual 12-byte header at texture+40: data, signed count, signed capacity; eight-byte raw records.",
+        "DWORD address/multiplication wrap, signed comparisons, current count reloads and sequential raw field stores.",
+        "No implicit surface references, owner destructors, copied vector or EH cleanup."
       ]
     }
   ],
@@ -4505,8 +4631,8 @@
     {
       "packet": "native_logical_index_owner",
       "worker": "particle_clock_lifetime",
-      "state": "actual_logical_index_lifetime_implemented_original_caller_fixture_active",
-      "validation": null
+      "state": "integrated_actual_owner_primary_library_original_caller_and_build_checked",
+      "validation": "reports/native_logical_index_owner_audit.json"
     },
     {
       "packet": "native_hardware_layout_tree_next",
@@ -4529,32 +4655,47 @@
     {
       "packet": "native_hardware_layout_tree",
       "worker": "system_fog_owner_discovery",
-      "state": "implementing_actual_checked_tree_and_owning_out_of_range_throw",
-      "validation": null
+      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+      "validation": "reports/native_hardware_layout_tree_audit.json"
     },
     {
       "packet": "native_hardware_layout_owner",
       "worker": "main",
-      "state": "recovering_actual_hardware_layout_lifetime_with_frozen_tree_dependency",
-      "validation": null
+      "state": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+      "validation": "reports/native_hardware_layout_owner_audit.json"
     },
     {
       "packet": "native_texture_2d_owner_next",
       "worker": "material_effect_plane",
-      "state": "discovering_actual_texture_2d_retained_stream_notification_and_surface_record_lifetimes",
+      "state": "integrated_reviewed_native_dependency_discovery",
+      "validation": "reports/native_texture_2d_owner_next.json"
+    },
+    {
+      "packet": "native_renderer_texture_name_notification",
+      "worker": "material_effect_plane",
+      "state": "implementing_actual_renderer_name_notification",
+      "validation": null
+    },
+    {
+      "packet": "native_retained_memory_owners",
+      "worker": "main",
+      "state": "primary_implementing_actual_backing_and_stream_owners",
+      "validation": null
+    },
+    {
+      "packet": "native_logical_texture_named_base",
+      "worker": "unassigned",
+      "state": "ready_from_verified_actual_texture_owner_discovery",
+      "validation": null
+    },
+    {
+      "packet": "native_texture_surface_cache_storage",
+      "worker": "unassigned",
+      "state": "ready_from_verified_actual_texture_owner_discovery",
       "validation": null
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_logical_index_owner",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": [
-        "00b4b6f0",
-        "00b4c1f0",
-        "00b495e0"
-      ]
-    },
     {
       "packet": "native_hardware_layout_tree",
       "worker": "system_fog_owner_discovery",
@@ -4581,13 +4722,43 @@
       ]
     },
     {
-      "packet": "native_texture_2d_owner_next",
+      "packet": "native_renderer_texture_name_notification",
       "worker": "material_effect_plane",
       "function_addresses": [
-        "00b3f930",
-        "00b3f2e0",
-        "00b3f590",
         "00b32250"
+      ]
+    },
+    {
+      "packet": "native_retained_memory_owners",
+      "worker": "main",
+      "function_addresses": [
+        "008d43c0",
+        "008d4440",
+        "008d4470",
+        "00bef6d0",
+        "00bef9c0",
+        "00bb8f90",
+        "00b23640"
+      ]
+    },
+    {
+      "packet": "native_logical_texture_named_base",
+      "worker": "unassigned",
+      "function_addresses": [
+        "00b34120",
+        "00b34230",
+        "00b33f50",
+        "00b34010",
+        "00b33e40"
+      ]
+    },
+    {
+      "packet": "native_texture_surface_cache_storage",
+      "worker": "unassigned",
+      "function_addresses": [
+        "00b3d9b0",
+        "00b3da20",
+        "00b3ec40"
       ]
     }
   ],

@@ -1,0 +1,456 @@
+{
+  "packet": "native_hardware_layout_owner",
+  "status": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "source": "src/native_hardware_layout_owner.cpp",
+  "header": "include/bsp/native_hardware_layout_owner.hpp",
+  "documentation": "docs/NATIVE_HARDWARE_LAYOUT_OWNER.md",
+  "functions": [
+    {
+      "address": "00b60700",
+      "end_exclusive": "00b60765",
+      "length": 101,
+      "cpp_symbol": "destroy_native_hardware_layout_00b60700",
+      "proposed_name": "BSP_HardwareVertexLayout_Destruct",
+      "original_abi": "ECX actual44h owner; RET",
+      "behavior": "WriteD62AF4; captureCOM40 beforestate0, currentCOM Release then current40zero, actualsupportB3E730; disarm before fullnormalbase. State0 unwind calls fullbase under second-exception termination.",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "header": "include/bsp/native_hardware_layout_owner.hpp"
+    },
+    {
+      "address": "00b60770",
+      "end_exclusive": "00b60790",
+      "length": 32,
+      "cpp_symbol": "delete_native_hardware_layout_00b60770",
+      "proposed_name": "BSP_HardwareVertexLayout_DeletePooled",
+      "original_abi": "ECX owner; stackflags; EAX originalowner; RET4",
+      "behavior": "FullB60700 first; only successful return and flagsbit0 call actualpool108FE9C B60110; return originaladdress.",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "header": "include/bsp/native_hardware_layout_owner.hpp"
+    },
+    {
+      "address": "00b48960",
+      "end_exclusive": "00b489cf",
+      "length": 111,
+      "cpp_symbol": "destroy_native_hardware_layout_base_00b48960",
+      "proposed_name": "BSP_HardwareVertexLayout_DestroyBase",
+      "original_abi": "ECX actual44h owner; RET",
+      "behavior": "WriteD61D10; readCURRENTglobalrenderer/profile/+44 before armingstate1; exactB2F4C0 actualtree notification; state0before reverse4records; disarm beforeBD30F0. State1 array thenbase, state0base; no retryfailedrecord; cleanup-only secondexception terminates.",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "header": "include/bsp/native_hardware_layout_owner.hpp"
+    },
+    {
+      "address": "00b483f0",
+      "end_exclusive": "00b48419",
+      "length": 41,
+      "cpp_symbol": "destroy_native_hardware_layout_record_00b483f0",
+      "proposed_name": "BSP_HardwareVertexLayout_ReleaseDeclarationRecord",
+      "original_abi": "ECX actual0Ch record; RET",
+      "behavior": "Capturefirstword; null no write; realInterlockedDecrement decl+4, zero readsCURRENTprofile0 BD30E0 then rereadsCURRENTprofile4 B48CA0 flag1 actualCPUdeclpool108FD38; clearCURRENTrecord0 onlyafterreturn. Other8bytes untouched; terminalthrow leaves recordnonnull.",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "header": "include/bsp/native_hardware_layout_owner.hpp"
+    },
+    {
+      "address": "00b48950",
+      "end_exclusive": "00b48960",
+      "length": 16,
+      "cpp_symbol": "destroy_native_hardware_layout_records_00b48950",
+      "proposed_name": "BSP_HardwareVertexLayout_DestroyFourDeclarationRecords",
+      "original_abi": "ECX FOUR_RECORDS_BEGIN, notowner; RET",
+      "behavior": "ExactBF7C6E four0Ch reverse records; decrementremaining BEFOREdestructor; throw cleansremaining lowerprefix via nativeBF7C10 semantics, skipfailed record and terminate on secondarycleanup exception.",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "header": "include/bsp/native_hardware_layout_owner.hpp"
+    },
+    {
+      "address": "00b60110",
+      "end_exclusive": "00b60175",
+      "length": 101,
+      "cpp_symbol": "return_native_hardware_layout_slot_00b60110",
+      "proposed_name": "BSP_HardwareVertexLayoutPool_ReturnSlot",
+      "original_abi": "ECX actualpool108FE9C; stackraw48hslot; RET4",
+      "behavior": "RealpoolCRITICAL_SECTION+0C/depth24, slabarray28/currentindex44; signedDWORDwrapped displacement /48h trunczero; lowWORD freeindex+900 then REREADCURRENTcount940 increment; unsignedearliest34 min; depth-- before leave, noEH.",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "header": "include/bsp/native_hardware_layout_owner.hpp"
+    }
+  ],
+  "evidence": {
+    "owned_functions": 6,
+    "owned_native_bytes": 402,
+    "spans": [
+      {
+        "address": "00b60700",
+        "length": 101,
+        "end_exclusive": "00b60765",
+        "role": "complete_owned",
+        "sha256": "05051ac9f6426beca60c8e772d34ea209d09895e4e57bab2bcd8ae70f8a45ce8",
+        "hex": "6aff68f812cc0064a100000000506489250000000051568bf189742404c706f42ad6008b464085c0c744241000000000740f8b088b510850ffd2c7464000000000e8eadffdff8bcec7442410ffffffffe80b82feff8b4c24085e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b60770",
+        "length": 32,
+        "end_exclusive": "00b60790",
+        "role": "complete_owned",
+        "sha256": "a14ef74c87406d88e40140cb3651236708a1e417eb9607d00b7346c686ab5ac3",
+        "hex": "568bf1e888fffffff644240801740b56b99cfe0801e886f9ffff8bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b48960",
+        "length": 111,
+        "end_exclusive": "00b489cf",
+        "role": "complete_owned",
+        "sha256": "22ab23afc06b440755488df3897d937d5061b0444bdcbab0cf6bce3cbc6c810e",
+        "hex": "6aff68e3f6cb0064a100000000506489250000000051568bf189742404c706101dd6008b0d94d3f8008b018b504456c744241401000000ffd268f083b4006a048d46086a0c50c644242000e8bef20a008bcec7442410ffffffffe831a708008b4c24085e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b483f0",
+        "length": 41,
+        "end_exclusive": "00b48419",
+        "role": "complete_owned",
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b48950",
+        "length": 16,
+        "end_exclusive": "00b48960",
+        "role": "complete_owned",
+        "sha256": "08f7b22dd2ba2cf3cea0b20248c423e9d0e640b365e0cc2add957cd01bb9dad9",
+        "hex": "68f083b4006a046a0c51e80ff30a00c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b60110",
+        "length": 101,
+        "end_exclusive": "00b60175",
+        "role": "complete_owned",
+        "sha256": "85a15cb16f32836623bb5dcd33e6a0390351b75da87df1a3a7748652361d3b62",
+        "hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58448b4e288b0c992bc18bd0b8398ee338f7eac1fa048bc2c1e81f03c20fb79140090000668984510009000066838140090000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf6d0",
+        "length": 8,
+        "end_exclusive": "00cbf6d8",
+        "role": "base_state0_action",
+        "sha256": "b51802d534dca161f476f6739219f4bf7019440103517a0e7077931c6a407dab",
+        "hex": "8b4df0e9183af1ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf6d8",
+        "length": 11,
+        "end_exclusive": "00cbf6e3",
+        "role": "base_state1_action",
+        "sha256": "e25119b6d723dadce7ab96b9f04030b4bc658e396c0fd2005d40c694f1189717",
+        "hex": "8b4df083c108e96d92e8ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cc12f0",
+        "length": 8,
+        "end_exclusive": "00cc12f8",
+        "role": "derived_state0_action",
+        "sha256": "34ec1c368ae7412383832e900ebfb796c69b868774ef178c70d7057f4a195b25",
+        "hex": "8b4df0e96876e8ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf6e3",
+        "length": 10,
+        "end_exclusive": "00cbf6ed",
+        "role": "base_FH3_handler",
+        "sha256": "7f2ca5d208bb751514221738dd6aeea45401fc758da83eedcceb5050b51e6f4d",
+        "hex": "b8cc80df00e95674f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cc12f8",
+        "length": 10,
+        "end_exclusive": "00cc1302",
+        "role": "derived_FH3_handler",
+        "sha256": "755a917e08ce2173c4eb9d8de26f77b17ea67888ff26dd6bf3f45c5465a5c4d5",
+        "hex": "b884a0df00e94158f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df80cc",
+        "length": 36,
+        "end_exclusive": "00df80f0",
+        "role": "base_FuncInfo",
+        "sha256": "d028a0d8cf2d15a5a70b61e08ad0d3e981f607092348eeba1cccfc5990692190",
+        "hex": "2205931902000000bc80df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df80bc",
+        "length": 16,
+        "end_exclusive": "00df80cc",
+        "role": "base_UnwindMap",
+        "sha256": "12043e50acacdd0dfecaee7627e28a69d46022afc15f617e34fb6820bb7ac2fc",
+        "hex": "ffffffffd0f6cb0000000000d8f6cb00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00dfa084",
+        "length": 36,
+        "end_exclusive": "00dfa0a8",
+        "role": "derived_FuncInfo",
+        "sha256": "3e2bcf7ba60dd4e5da0c480791ff278bd2ad22138a1b84948bc336d229711649",
+        "hex": "22059319010000007ca0df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00dfa07c",
+        "length": 8,
+        "end_exclusive": "00dfa084",
+        "role": "derived_UnwindMap",
+        "sha256": "b19a97721f8bf8b0394a8fc9e962c88a1a54b036e182fc6d0a78882799b2841f",
+        "hex": "fffffffff012cc00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61d1c",
+        "length": 8,
+        "end_exclusive": "00d61d24",
+        "role": "CPU_declaration_profile_prefix",
+        "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78",
+        "hex": "e030bd00a08cb400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d5f0ec",
+        "length": 4,
+        "end_exclusive": "00d5f0f0",
+        "role": "renderer_profile_D5F0A8_slot44",
+        "sha256": "4480cf4cb9d0318ac19ef26cffeedb0a79711b73775e0251b3ea9921a5e5741f",
+        "hex": "c0f4b200",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d62af4",
+        "length": 8,
+        "end_exclusive": "00d62afc",
+        "role": "hardware_derived_profile_prefix",
+        "sha256": "22b7c729f31369c6714abc3492f15e0c4a38dfebf2876592c310c8d2d2f26a94",
+        "hex": "e030bd007007b600",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "end_exclusive": "00bd30ee",
+        "role": "zero_reference_invoker",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "hex": "85c974098b018b50046a01ffd2c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "end_exclusive": "00bd30f7",
+        "role": "refcounted_base_profile_store",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "hex": "c70130b1ce00c3",
+        "live_PE_match": true
+      }
+    ],
+    "span_count": 20,
+    "total_bytes": 586
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "sha256": "c423369cdafb07efdcfb5324ab75a36b55283ee4079b9a03e81df6db933b3583"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "src/native_hardware_layout_tree.cpp",
+      "sha256": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "sha256": "4baca0d3de09ccf6c5225eda8bdcefea3bb71248ddf73348e898b23b0c83d2fe"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    }
+  ],
+  "build": {
+    "path": "reports/native_index_tree_hardware_primary_build.txt",
+    "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
+    "passed": true,
+    "tests": 2
+  },
+  "native_differential_fixture": false,
+  "input_domain": [
+    "Actual initialized48h hardware pool and D4h CPU declaration pool, actual tree header, shared support/lifetime domain.",
+    "Runtime renderer profile must be D5F0A8 with immutable+44 B2F4C0; current CPU declaration profile D61D1C with BD30E0/B48CA0. Views retain originaladdress tokens.",
+    "Unknown profiles have no callback fallback; runtime active renderer profile is not yet proven."
+  ],
+  "validation_limits": [
+    "No full owner constructor or pool constructor/whole-lifetime claim.",
+    "COM Release is the actual interface call; D3D driver/runtime not tested.",
+    "Original-byte fixture pending at source integration."
+  ],
+  "new_tracked_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "status": "integrated_complete_actual_storage_build_checked_native_fixture_active",
+    "new_complete_functions": 6,
+    "upgraded_complete_functions": 0,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b60700",
+        "name": "destroy_native_hardware_layout_00b60700",
+        "cpp_symbol": "destroy_native_hardware_layout_00b60700",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b60765",
+        "original_abi": "ECX actual44h owner; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b60770",
+        "name": "delete_native_hardware_layout_00b60770",
+        "cpp_symbol": "delete_native_hardware_layout_00b60770",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b60790",
+        "original_abi": "ECX owner; stackflags; EAX originalowner; RET4",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48960",
+        "name": "destroy_native_hardware_layout_base_00b48960",
+        "cpp_symbol": "destroy_native_hardware_layout_base_00b48960",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b489cf",
+        "original_abi": "ECX actual44h owner; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b483f0",
+        "name": "destroy_native_hardware_layout_record_00b483f0",
+        "cpp_symbol": "destroy_native_hardware_layout_record_00b483f0",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b48419",
+        "original_abi": "ECX actual0Ch record; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48950",
+        "name": "destroy_native_hardware_layout_records_00b48950",
+        "cpp_symbol": "destroy_native_hardware_layout_records_00b48950",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b48960",
+        "original_abi": "ECX FOUR_RECORDS_BEGIN, notowner; RET",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b60110",
+        "name": "return_native_hardware_layout_slot_00b60110",
+        "cpp_symbol": "return_native_hardware_layout_slot_00b60110",
+        "source": "src/native_hardware_layout_owner.cpp",
+        "native_end_exclusive": "00b60175",
+        "original_abi": "ECX actualpool108FE9C; stackraw48hslot; RET4",
+        "evidence": "reports/native_hardware_layout_owner_audit.json",
+        "status": "complete_actual_storage_live_bytes_and_primary_build_checked",
+        "native_differential_fixture": false,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "source_byte_evidence": "evidence",
+      "source_pins": "source_pins"
+    },
+    "primary_source_pins": [
+      {
+        "path": "src/native_hardware_layout_owner.cpp",
+        "sha256": "c423369cdafb07efdcfb5324ab75a36b55283ee4079b9a03e81df6db933b3583"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_owner.hpp",
+        "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+      }
+    ],
+    "build": {
+      "path": "reports/native_index_tree_hardware_primary_build.txt",
+      "sha256": "e9038cdc9b4e177416260dc587516c14feed87a10f2416f072f11712e0e9f2e5",
+      "tests": 2,
+      "passed": true
+    },
+    "annotations_applied": true,
+    "native_differential_fixture": false,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "annotation_journal": {
+      "path": "local/ghidra-annotations-20260911T022002Z.json",
+      "sha256": "685df7d2bbac81f1fc05e41cc2efbb832c1ba8b4da1c60c9331ed699cc987107"
+    },
+    "saved_project": true,
+    "exports_force_refreshed": true
+  }
+}
