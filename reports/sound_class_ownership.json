@@ -1,0 +1,112 @@
+{
+  "packet": "orch3_sound_class_ownership",
+  "branch": "agent/orch3-sound-classes-20260910b",
+  "status": "reconstructed_build_and_host_lifetime_probe_passed",
+  "evidence_doc": "docs/SOUND_CLASS_OWNERSHIP.md",
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py validates project/program, language and image base before each live query",
+    "worker_read_only": true,
+    "parent_repairs": ["00a7bbe0", "00a7c460"],
+    "refreshed_exports_reviewed": true
+  },
+  "reconstructed": [
+    {
+      "address": "00a7c350",
+      "old_name": "FUN_00a7c350",
+      "reviewed_name": "BSP_SoundClass_Construct",
+      "cpp": "SoundClassDescriptor::SoundClassDescriptor; create_sound_class_00a7c350",
+      "native_abi": "ECX allocated 20h descriptor, plain RET, descriptor in EAX",
+      "last_instruction": {"address": "00a7c3e1", "length": 1},
+      "inclusive_end": "00a7c3e1",
+      "evidence": ["00a7c37a ref1", "00a7c382 vtable00d5ac3c", "00a7c38c empty native string", "00a7c391 float1 constant00d7a24c", "00a7c3a1/+a6 floats+10/+14", "00a7c3ab/+ae byte+C and index+8 zero"]
+    },
+    {
+      "address": "00a7c3f0",
+      "old_name": "FUN_00a7c3f0",
+      "reviewed_name": "BSP_SoundClass_Destroy",
+      "cpp": "SoundClassDescriptor::~SoundClassDescriptor",
+      "native_abi": "ECX descriptor, plain RET",
+      "last_instruction": {"address": "00a7c450", "length": 1},
+      "inclusive_end": "00a7c450",
+      "evidence": ["00a7c40d name pointer snapshot", "00a7c41c length read only for nonnull", "00a7c42d sized pool release length+1", "00a7c43c refcount base destruction"]
+    },
+    {
+      "address": "00a7bbe0",
+      "old_name": "FUN_00a7bbe0",
+      "reviewed_name": "BSP_SoundClassTable_Reserve",
+      "cpp": "SoundClassOwnership::reserve_00a7bbe0",
+      "native_abi": "__thiscall(table_header, signed capacity), RET 4",
+      "last_instruction": {"address": "00a7bcd1", "length": 3},
+      "inclusive_end": "00a7bcd3",
+      "evidence": ["00a7bbfc clamp minimum1", "00a7bc21 allocate4*capacity", "00a7bc40 retain every copied counted slot", "00a7bc70 separate release-old pass", "00a7bcaa free old buffer", "00a7bcbc install pointer", "00a7bcbe install capacity"]
+    },
+    {
+      "address": "00a7c2c0",
+      "old_name": "FUN_00a7c2c0",
+      "reviewed_name": "BSP_SoundClassTable_Resize",
+      "cpp": "SoundClassOwnership::resize_00a7c2c0",
+      "native_abi": "__thiscall(table_header, signed count), RET 4",
+      "last_instruction": {"address": "00a7c33b", "length": 3},
+      "inclusive_end": "00a7c33d",
+      "evidence": ["00a7c2ce reserve requested count", "00a7c2e9 null new slots", "00a7c300 decrement count before reverse removal", "00a7c317 decrement refs", "00a7c327 vslot0 on zero", "00a7c336 final count"]
+    }
+  ],
+  "analyzed_only": [
+    {
+      "address": "00a7c460",
+      "name": "CG_scalar_deleting_dtor_00a7c460",
+      "native_abi": "ECX descriptor, stack flags byte, RET 4, original pointer returned",
+      "last_instruction": {"address": "00a7c47b", "length": 3},
+      "inclusive_end": "00a7c47d",
+      "evidence": "destroy at00a7c463; flag&1 controls free00a7c470; repaired stack adjust00a7c475; always EAX=this00a7c478"
+    }
+  ],
+  "setup_fragment": {
+    "owner": "orch3_sound_configuration",
+    "function": "00a7ff80",
+    "insertion_range": "00a80eba-00a80ef5",
+    "support_api": "SoundClassOwnership::append_retained",
+    "proved_relation": "descriptor+8 receives current table count before insertion; native final reference count1 belongs to table"
+  },
+  "integration": {
+    "existing_level_type": "SoundClassDescriptor derives SoundClassLevel; no duplicate volume/index/name view",
+    "existing_table": "manager.classes_98 remains canonical",
+    "existing_host": "SoundClassOwnership implements both SoundLevelTableHost growth call sites",
+    "growth_does_not_create_descriptors": true,
+    "parent_build_registration_required": "src/sound_class_ownership.cpp; another orchestrator leases cmake/startup.cmake"
+  },
+  "external_contracts": [
+    "NativeStringStorage and existing actual-header destructor cover sized allocation/free",
+    "actual C++ allocation and vector storage replace library implementation internals",
+    "entry descriptor attachment and native full manager destruction remain outside packet",
+    "setup owns Lua access, population, ordinal assignment and temporary-reference lifetime"
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [
+    {"function": "00a7bbe0", "call": "00a7bcaa", "gap": "00a7bcaf-00a7bcc1", "state": "parent repaired/saved; refreshed export inspected"},
+    {"function": "00a7c460", "call": "00a7c470", "gap": "00a7c475-00a7c477", "state": "parent repaired/saved; refreshed export inspected"}
+  ],
+  "validation": {
+    "seed_verification": "8/8 installed-image matches; generated local/seed_reference.hpp",
+    "build": "Release MSVC Win32 scripts/build.ps1 passed",
+    "build_log": "local/sound-class-build.log",
+    "build_registration": "ignored local/extra-sources.cmake via CMAKE_PROJECT_TOP_LEVEL_INCLUDES",
+    "existing_ctests": {"reconstructed_math": "passed", "native_math_differential": "passed"},
+    "local_probe": "passed defaults, reserve refs/capacity, null resize, existing class-level/dirty path, reverse shrink, retained lifetime and exact name allocation release",
+    "probe_log": "local/sound-class-probe.log",
+    "new_permanent_tests": 0,
+    "native_audio_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Native descriptor vtables/20h layout/SEH and scalar-deletion flags interface are not exposed",
+    "Valid nonnegative counts, no overflow, successful allocation, serialized non-reentrant table edits",
+    "Class byte+C and float+14 semantics remain unknown beyond constructor defaults",
+    "Null table slots stay null; level setter requires populated indices",
+    "No playback, gain formula or game runtime validation"
+  ]
+}
