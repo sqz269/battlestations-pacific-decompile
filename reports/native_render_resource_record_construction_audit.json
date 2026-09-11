@@ -1166,5 +1166,982 @@
       "sha256": "9ded74b9f49749bd5d4b65622a6ea8b5a8e9e61892a7d1f7ae6a911c0e3d8f94",
       "bytes": 133
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "integrated_four_complete_actual_construction_functions_and_catch_support_original_caller_fixture_and_strict_build_checked",
+    "worker_commit": "3b8dc85bc91f1dbb882926d3ee63c4e4dc1286ea",
+    "new_complete_functions": 4,
+    "new_catch_support_fragments": 1,
+    "records": [
+      {
+        "kind": "function",
+        "address": "004c3020",
+        "name": "allocate_native_render_alias_sentinel_004c3020",
+        "cpp_symbol": "allocate_native_render_alias_sentinel_004c3020",
+        "source": "src/native_render_resource_record_construction.cpp",
+        "native_end_exclusive": "004c303a",
+        "original_abi": "No register inputs; EAX allocation pointer; plain RET",
+        "evidence": "reports/native_render_resource_record_construction_audit.json",
+        "status": "complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "004d0a10",
+        "name": "destroy_native_render_alias_list_004d0a10",
+        "cpp_symbol": "destroy_native_render_alias_list_004d0a10",
+        "source": "src/native_render_resource_record_construction.cpp",
+        "native_end_exclusive": "004d0a2d",
+        "original_abi": "ECX actual owner; plain RET; no semantic result",
+        "evidence": "reports/native_render_resource_record_construction_audit.json",
+        "status": "complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "004d48a0",
+        "name": "copy_construct_native_render_alias_list_004d48a0",
+        "cpp_symbol": "copy_construct_native_render_alias_list_004d48a0",
+        "source": "src/native_render_resource_record_construction.cpp",
+        "native_end_exclusive": "004d490c",
+        "original_abi": "ECX destination owner; stack source owner; EAX destination; RET4",
+        "evidence": "reports/native_render_resource_record_construction_audit.json",
+        "status": "complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false,
+        "native_eh_support_ranges": [
+          {
+            "start": "004d490c",
+            "end_exclusive": "004d491d",
+            "role": "catch_destroy_current_list_and_rethrow"
+          }
+        ]
+      },
+      {
+        "kind": "function",
+        "address": "00b2fc60",
+        "name": "copy_construct_native_render_resource_record_00b2fc60",
+        "cpp_symbol": "copy_construct_native_render_resource_record_00b2fc60",
+        "source": "src/native_render_resource_record_construction.cpp",
+        "native_end_exclusive": "00b2fd02",
+        "original_abi": "ECX destination; stack source; EAX destination; RET4",
+        "evidence": "reports/native_render_resource_record_construction_audit.json",
+        "status": "complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "fragment",
+        "address": "004d490c",
+        "name": "native_render_alias_list_copy_catch_004d490c",
+        "cpp_symbol": "copy_construct_native_render_alias_list_004d48a0",
+        "source": "src/native_render_resource_record_construction.cpp",
+        "parent_address": "004d48a0",
+        "native_end_exclusive": "004d491d",
+        "original_abi": "Native EH catch context; EBP parent frame, caught exception/rethrow state; not a standalone ordinary call",
+        "evidence": "reports/native_render_resource_record_construction_audit.json",
+        "status": "complete_parent_catch_support_original_caller_fixture_and_build_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "spans": [
+        {
+          "address": "004c3020",
+          "end_exclusive": "004c303a",
+          "length": 26,
+          "role": "full_sentinel",
+          "raw_offset": 798752,
+          "bytes_hex": "6a10e8f437730083c40485c0740289008d480485c974028901c3",
+          "sha256": "26e8567348cafc27e9775c7948b101ae4331dbd853d3dd3baa8c820e6c106eb4",
+          "live_matches_disk": true
+        },
+        {
+          "address": "004d48a0",
+          "end_exclusive": "004d490c",
+          "length": 108,
+          "role": "full_list_main",
+          "raw_offset": 870560,
+          "bytes_hex": "558bec6aff683060c60064a100000000506489250000000083ec085356578bf18965f08975ece855e7feff8b4d088b5d0853894604c74608000000008b51048b3a8b005251575150568bcec745fc00000000e8a9ddffff8b4df45f8bc65e64890d000000005b8be55dc20400",
+          "sha256": "ff902583a2bcf7247cedaf5c3786feff0f024e0f453bc8af3d81e816822b516b",
+          "live_matches_disk": true
+        },
+        {
+          "address": "004d490c",
+          "end_exclusive": "004d491d",
+          "length": 17,
+          "role": "full_list_catch",
+          "raw_offset": 870668,
+          "bytes_hex": "8b4dece8fcc0ffff6a006a00e8681f7200",
+          "sha256": "9cb038c0d2940b5cec1de7eccdcd341c22c17e600f2556b741881e529891dd27",
+          "live_matches_disk": true
+        },
+        {
+          "address": "004d0a10",
+          "end_exclusive": "004d0a2d",
+          "length": 29,
+          "role": "full_list_destroy",
+          "raw_offset": 854544,
+          "bytes_hex": "568bf1e8c8fbffff8b460450e88b5b720083c404c74604000000005ec3",
+          "sha256": "271c0147decc0725cafb2939111aca067926e2155be3d22035080168058c5d25",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00b2fc60",
+          "end_exclusive": "00b2fd02",
+          "length": 162,
+          "role": "full_record",
+          "raw_offset": 7535712,
+          "bytes_hex": "6aff6808d9cb0064a100000000506489250000000051568bf1578b7c241c3bf789742408c70600000000c746040000000074228b076a0150e8a3e08eff833f0074138b068b4e04508b47045051e8ce790c0083c40c8d5708528d4e08c744241800000000e8d74b9aff8b47148946148b4f18894e188b571c89561c8b47208946208b4f24894e248b57288b4c240c8956285f8bc65e64890d0000000083c410c20400",
+          "sha256": "c5543d9d1fa084ee4c8fae4eb6eb185dc47980b06b93b48e55db4ef16242e3f9",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00cbd900",
+          "end_exclusive": "00cbd908",
+          "length": 8,
+          "role": "record_unwind_funclet",
+          "raw_offset": 9165056,
+          "bytes_hex": "8b4df0e9180476ff",
+          "sha256": "9b346ecc83e81aae2fa5fbf48e1be5c42d35e223451128d997aa356a4269c3ca",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00cbd908",
+          "end_exclusive": "00cbd912",
+          "length": 10,
+          "role": "record_eh_handler",
+          "raw_offset": 9165064,
+          "bytes_hex": "b80862df00e93192f3ff",
+          "sha256": "b229d2360b50b332e5c809c0cf6a194a8e43186701058e08ee9169bc3e2c388a",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00df6200",
+          "end_exclusive": "00df6208",
+          "length": 8,
+          "role": "record_unwind_map",
+          "raw_offset": 10445312,
+          "bytes_hex": "ffffffff00d9cb00",
+          "sha256": "22eca2e89462ee47cb76742f6bfa6bbd0f59802ca1accf58c9ab1bfc495fe553",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00df6208",
+          "end_exclusive": "00df622c",
+          "length": 36,
+          "role": "record_funcinfo",
+          "raw_offset": 10445320,
+          "bytes_hex": "22059319010000000062df00000000000000000000000000000000000000000001000000",
+          "sha256": "b71a709fb78ff96268cdfb2a5de74ab47bc3357bb662e80aeae351897ca9d9e2",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00c66030",
+          "end_exclusive": "00c6603a",
+          "length": 10,
+          "role": "list_eh_handler",
+          "raw_offset": 8806448,
+          "bytes_hex": "b81ceed800e9090bf9ff",
+          "sha256": "a4ae7a95adffd8f47886b1992c3ea6310c309cdcee3fed54be071424676fd19b",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d8edf8",
+          "end_exclusive": "00d8ee08",
+          "length": 16,
+          "role": "list_unwind_map",
+          "raw_offset": 10022392,
+          "bytes_hex": "ffffffff00000000ffffffff00000000",
+          "sha256": "3b11da84f00f0bd394c3f0bb8f50e0f6b173fd88e048d0894fe181366059c4ae",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d8ee08",
+          "end_exclusive": "00d8ee1c",
+          "length": 20,
+          "role": "list_try_map",
+          "raw_offset": 10022408,
+          "bytes_hex": "00000000000000000100000001000000e8edd800",
+          "sha256": "ac5e46d2e8817988946a7262232a2762fc53cd5b90a5df236981b959e314eac6",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d8ede8",
+          "end_exclusive": "00d8edf8",
+          "length": 16,
+          "role": "list_catch_map",
+          "raw_offset": 10022376,
+          "bytes_hex": "4000000000000000000000000c494d00",
+          "sha256": "3539855983f3a9df935837b354955cfe3dc324f67746e5ffc223208bfa08315f",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d8ee1c",
+          "end_exclusive": "00d8ee40",
+          "length": 36,
+          "role": "list_funcinfo",
+          "raw_offset": 10022428,
+          "bytes_hex": "2205931902000000f8edd8000100000008eed80000000000000000000000000001000000",
+          "sha256": "72cc73678a5e260ecd666d91d04118158f273f324ecb10cf87bb21e1feadf080",
+          "live_matches_disk": true
+        },
+        {
+          "address": "0041dd40",
+          "end_exclusive": "0041dde4",
+          "length": 164,
+          "role": "full_actual_resize_hook",
+          "raw_offset": 122176,
+          "bytes_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+          "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+          "live_matches_disk": true
+        },
+        {
+          "address": "0041dd20",
+          "end_exclusive": "0041dd3d",
+          "length": 29,
+          "role": "full_actual_name_destroy_hook",
+          "raw_offset": 122144,
+          "bytes_hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+          "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+          "live_matches_disk": true
+        },
+        {
+          "address": "004d05e0",
+          "end_exclusive": "004d0632",
+          "length": 82,
+          "role": "full_actual_alias_clear_hook",
+          "raw_offset": 853472,
+          "bytes_hex": "56578bf98b47048b3089008b47048940043b7704c74708000000007433538bff8b4e0c85c98b1e74168b46086a0183c0015051e8a896f4ff8bc8e8f10e700056e8875f720083c4043b5f048bf375d15b5f5e",
+          "sha256": "0f345fdb6274d2d0e8980bee78befb3eece1f9d37637dad0b7aa7b93153e17b6",
+          "live_matches_disk": true
+        },
+        {
+          "address": "004d26a0",
+          "end_exclusive": "004d26a5",
+          "length": 5,
+          "role": "actual_range_hook",
+          "raw_offset": 861856,
+          "bytes_hex": "558bec6aff",
+          "sha256": "19bad2162e08fd3b256f0af4024c51343feb7827eb43fd73dcfea11a662668d8",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf681b",
+          "end_exclusive": "00bf6820",
+          "length": 5,
+          "role": "lifetime_allocate_hook",
+          "raw_offset": 8349723,
+          "bytes_hex": "558bec83ec",
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf65ac",
+          "end_exclusive": "00bf65b1",
+          "length": 5,
+          "role": "lifetime_free_hook",
+          "raw_offset": 8349100,
+          "bytes_hex": "e917380000",
+          "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf7680",
+          "end_exclusive": "00bf7685",
+          "length": 5,
+          "role": "host_memcpy_hook",
+          "raw_offset": 8353408,
+          "bytes_hex": "558bec5756",
+          "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf6b43",
+          "end_exclusive": "00bf6b48",
+          "length": 5,
+          "role": "host_eh_hook",
+          "raw_offset": 8350531,
+          "bytes_hex": "558bec83ec",
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf6885",
+          "end_exclusive": "00bf688a",
+          "length": 5,
+          "role": "host_rethrow_hook",
+          "raw_offset": 8349829,
+          "bytes_hex": "558bec83ec",
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_matches_disk": true
+        }
+      ],
+      "archived_artifacts": [
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_render_resource_record_construction.hpp",
+          "sha256": "25cf8139d44be366e68e6d3782f1071341f050604bdcea31f5c9671291b9b7cc",
+          "bytes": 2170
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_render_resource_record_construction.cpp",
+          "sha256": "ad100a08046f1fb169510135ab6c77f8cf14ee598b6a0361792a613d5f092813",
+          "bytes": 5450
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md",
+          "sha256": "0a9bd6ca3ed60afe8b759af140f881a075414f6d070ca5d4e64c9302054e7c50",
+          "bytes": 11080
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_render_resource_record.hpp",
+          "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4",
+          "bytes": 3197
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_render_resource_record.cpp",
+          "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b",
+          "bytes": 6429
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_render_alias_insertion.hpp",
+          "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4",
+          "bytes": 2053
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_render_alias_insertion.cpp",
+          "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771",
+          "bytes": 4958
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+          "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee",
+          "bytes": 1897
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_render_resource_alias_nodes.cpp",
+          "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617",
+          "bytes": 3982
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_render_alias_checked_ops.hpp",
+          "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c",
+          "bytes": 2413
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_render_alias_checked_ops.cpp",
+          "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872",
+          "bytes": 5090
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_alias_count_growth.hpp",
+          "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3",
+          "bytes": 1379
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_alias_count_growth.cpp",
+          "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b",
+          "bytes": 1729
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/native_string.hpp",
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+          "bytes": 6001
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/native_string.cpp",
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+          "bytes": 6003
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+          "bytes": 3986
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/singleton_lifetime.cpp",
+          "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+          "bytes": 10921
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "include/bsp/storage_pool.hpp",
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+          "bytes": 5571
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "src/storage_pool.cpp",
+          "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+          "bytes": 6169
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "reports/native_render_resource_container_next.json",
+          "sha256": "441e69064addfb74fc1e7500e87038437d9c0558aeebb7d6caa34e881e37866d",
+          "bytes": 62790
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/prepare_native_render_resource_record_construction.py",
+          "sha256": "4d492306ccaaf237bdd23f39480a706151bcab9d296922ba17da1712dd8ac622",
+          "bytes": 4818
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/native_render_resource_record_construction_preparation.json",
+          "sha256": "119a8d6bc58251fcdf7baede2cb88fdba3470d4569d2d782b4519324c34778c8",
+          "bytes": 11723
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/native_render_resource_record_construction_spans.hpp",
+          "sha256": "c6bd1a4072adb45e2ee082398f3b96a08d386e35a639a85a93230ff5f0a658e7",
+          "bytes": 6898
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/native_render_resource_record_construction_check.cpp",
+          "sha256": "8848f71ef04167bce0eda22f4c27e6b81496be798df3bdb916a43bf2b8286f77",
+          "bytes": 17774
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/build_native_render_resource_record_construction_check.ps1",
+          "sha256": "c88a74d4741212e2662aa8b2c0ec97644701befb8af81e8934ed952ab54b6536",
+          "bytes": 2046
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/build_native_render_resource_record_construction.ps1",
+          "sha256": "ed1fb1a26b549be207aa1889bbacc8ed036f81e7cabb1ab1d7e229cfd5e9f3ed",
+          "bytes": 1047
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_sources.cmake",
+          "sha256": "8a1e29290f68bbfc3940fa6d6946f5fd5302f0494dcb8c86c9eaaf2e7866e69f",
+          "bytes": 235
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_build_initial.log",
+          "sha256": "b23641be9905d852e755d5d0492d5371d281b61f1231a15987ebf91f8c2ba679",
+          "bytes": 11087
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_build_final.log",
+          "sha256": "f217e78cf644fa37720e02663cbdf6e63dae7f426e517142cc1adbe4d4f91353",
+          "bytes": 2193
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_fixture.log",
+          "sha256": "8bf5225095da50926f70f5ad2fa3c008d5a2496a3c8d228422b94124d9e263be",
+          "bytes": 312
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_verify_seeds.log",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "bytes": 3034
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "build/resource-record-construction-check/native_render_resource_record_construction_trace.json",
+          "sha256": "db5793d7a81c75f804a9d6644d05e7957695e88532344518301a184ab7e13a3f",
+          "bytes": 3114
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "build/resource-record-construction-check/native_render_resource_record_construction_check.exe",
+          "sha256": "319950b042b21cfb7aefc5e5293ad1a31c12c875120e782d7569abab19ac28be",
+          "bytes": 49152
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "build/win32/Release/bsp_core.lib",
+          "sha256": "08cae682aedd8d315c4cd73514fe5b6c29275798c3fd38507fdc5fbb2a392dc3",
+          "bytes": 17638892
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_004c3020.txt",
+          "sha256": "ae606fb6d39c0a19d21bda2bf4f256ffd02164b23a458a6ccfe01f20831d58bd",
+          "bytes": 130
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_004d48a0.txt",
+          "sha256": "d862f7142f62ca6d35ba00a326b7ae0fb95aa931a064a7985778cb1f95591ebb",
+          "bytes": 523
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_004d490c.txt",
+          "sha256": "583c6ecbc784d0df19d1e856343d34528d6c5fe0e84e0c6b856fc860028ac246",
+          "bytes": 94
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_004d0a10.txt",
+          "sha256": "292f963cf320751d01a4057f440b424f69ece9ef022bc982d49cc7464afe5c35",
+          "bytes": 142
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00b2fc60.txt",
+          "sha256": "8699b84114e94afe8dccec486cc922e5ba5060bacaed3eafbaee0c686e650cd5",
+          "bytes": 791
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00cbd900.txt",
+          "sha256": "7bc092d099b16b5fc082f549546d405fb4145ba4eb2306f09c680d8cbb26116d",
+          "bytes": 45
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00cbd908.txt",
+          "sha256": "858b1b6c5a6723edab7c506ed83bc0b3c0bc10a31a688f1871db6421f2fcbe0f",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00df6200.txt",
+          "sha256": "61e325ccd175d2cde9c4ef2f059d661b706ba4a31ece387988247bede6c9b1b6",
+          "bytes": 45
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00df6208.txt",
+          "sha256": "5189ce780b65e62537390d69607455ffcda59d4e8e09c49871f04bca4a9fe44a",
+          "bytes": 183
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00c66030.txt",
+          "sha256": "af2d35567f20c6ebb351ff6c1818de6d8b4f6a32e1c14732e0346bba03fc19a0",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00d8edf8.txt",
+          "sha256": "3a2aeefff37e4599cfa90d80e76ab8514bab000e8dbd7c5c8e451dadeb9ad73b",
+          "bytes": 77
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00d8ee08.txt",
+          "sha256": "8a5ad1d370b75fd4a7489aa12afb049e977cfbd4afbf3a80ed2ea703fd462c5d",
+          "bytes": 106
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00d8ede8.txt",
+          "sha256": "98fe3b0f17eccb53dc9e516d27980a862f85bb68443bd97bfbf666cdb6c906e1",
+          "bytes": 77
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00d8ee1c.txt",
+          "sha256": "fa846694515ee71ea5f95825daf909955d0f5e21906c738ff9435b32027c5bd2",
+          "bytes": 183
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_0041dd40.txt",
+          "sha256": "35ab49464fb315caa5eeaac9ea5f17aade682fc2169ec1e656b7c378cd8ccdae",
+          "bytes": 799
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_0041dd20.txt",
+          "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850",
+          "bytes": 142
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_004d05e0.txt",
+          "sha256": "2c2c6e270a2e1cd4f7b9c917af3f635617c832df721cb6af986f2a28724bce8a",
+          "bytes": 406
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_004d26a0.txt",
+          "sha256": "899d439e539bd961003ae637c422ddd865ffa614b5432fe4b5d6cde8621bc1a7",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00bf681b.txt",
+          "sha256": "ca146872dceb616cb7924a2000172ff109813339785fb9d31c52103c2b471c79",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00bf65ac.txt",
+          "sha256": "3644837c583910bd51d56c2737cdd2ffffa8fbc16c782ca4280e7a7d67977017",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00bf7680.txt",
+          "sha256": "871ebcbc3369e3a2cd4ad4e0290065cc71783c2a00162582c8e9c742e492599b",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00bf6b43.txt",
+          "sha256": "097d3d6d6e023a7f934487b934bffdc04d57b0b5811a1e9966770453ba241ca2",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_live_00bf6885.txt",
+          "sha256": "a095dbd4b792dd114abc42508c2ea3978f897a263320a698eb4faede56b8a922",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_004c3020.asm",
+          "sha256": "a8e646e734d0a80bc53fe05f2957203e71fe2cd38d04a824dfda754ad6c879c5",
+          "bytes": 282
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_004d48a0.asm",
+          "sha256": "a1098697a6d571b43405f5b3824e0636f61cbf32eb12d334c68c86e908b4b4f5",
+          "bytes": 1116
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_004d490c.asm",
+          "sha256": "bd056ce36c4e927ccb253b4e2fc9c54545464063056bf3f742883d65370339c3",
+          "bytes": 129
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_004d0a10.asm",
+          "sha256": "fb734a2ae8d36cf75e4a6389d02bbd5727c8c6e30d941d74bec77c8df4b656e4",
+          "bytes": 249
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_00b2fc60.asm",
+          "sha256": "15227f26890d36af9fdec3b9ba48513bb4cd04de35c4927d90a80534921e4de8",
+          "bytes": 1650
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_00cbd900.asm",
+          "sha256": "aefb84fea1f5211043bdcf9cf08f5166196409419405b4045a1289d9328d81ef",
+          "bytes": 67
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_00cbd908.asm",
+          "sha256": "3e39e7b3e98b8274bbc783fe4e2f468aef00af6f7928c43be825206877fbcf9a",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_00c66030.asm",
+          "sha256": "46c26ecab786dcbceeb9d9f0bfee8ac32bd41a9bc21acf5fdc0be6dfea7ef32c",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_0041dd40.asm",
+          "sha256": "dfa4fe7f1f74c793ffd9005c37018906fd4db95c3a607e24321bf69be9f42e8d",
+          "bytes": 1660
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_0041dd20.asm",
+          "sha256": "dedae49dda63f1b698c46a53a9b59aace0d00dbd4001d540390d36361b4de116",
+          "bytes": 294
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_004d05e0.asm",
+          "sha256": "416b39842efbf1cbd3fcdbfb927e6eaafd9584ebfd10af9a7e9dd8b91b59652b",
+          "bytes": 933
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004c3020_proto.txt",
+          "sha256": "63ecc63163241811b7cc1671de4363541cdfe2e20ecbc82cab3ceb7a287548ed",
+          "bytes": 949
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004c3020_comments.json",
+          "sha256": "64d5ba6c1a79663446a203af0e4edfa6af2323034c6c984c94405eaaa5d05810",
+          "bytes": 127
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004d48a0_proto.txt",
+          "sha256": "3691bd9641f4b8ac671441a08254fc12096310af9f7b653112e66bbf7c68d8ac",
+          "bytes": 709
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004d48a0_comments.json",
+          "sha256": "a35e8ef0ed21d1459ef7646c57238aabd3f0743995735eb34eea3eb2053106ea",
+          "bytes": 127
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_00b2fc60_proto.txt",
+          "sha256": "a2dbe08ae3bd3b455107fbc54655502862b9f2b78df59930347958146d071f30",
+          "bytes": 942
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_00b2fc60_comments.json",
+          "sha256": "de3d8dc6b55cc9c5f2ecfce1cd3365af37b6ddb5744cf5e65cf11bcdeedebb45",
+          "bytes": 127
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004d0a10_proto.txt",
+          "sha256": "155aa8d1783f7b3b96f3b18e1a8a5f31b848b0720de3828415a955597ecde3a2",
+          "bytes": 682
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004d0a10_comments.json",
+          "sha256": "a3f67dc0f2a4dbc1bea04cd9dc3429fa7d9f2d380592aad01e4bd6118cc55123",
+          "bytes": 127
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004d490c_proto.txt",
+          "sha256": "e8d0d157bbae067ebf46e5ccdd60b6b11f61ff8cf968adfa47f96e87ec05ac8c",
+          "bytes": 695
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-render-resource-record-construction-20260910",
+          "path": "local/record_construction_old_004d490c_comments.json",
+          "sha256": "9ded74b9f49749bd5d4b65622a6ea8b5a8e9e61892a7d1f7ae6a911c0e3d8f94",
+          "bytes": 133
+        }
+      ],
+      "pinned_dependencies": [
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/native_render_resource_record.hpp",
+          "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4",
+          "bytes": 3197
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/native_render_resource_record.cpp",
+          "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b",
+          "bytes": 6429
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/native_render_alias_insertion.hpp",
+          "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4",
+          "bytes": 2053
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/native_render_alias_insertion.cpp",
+          "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771",
+          "bytes": 4958
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+          "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee",
+          "bytes": 1897
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/native_render_resource_alias_nodes.cpp",
+          "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617",
+          "bytes": 3982
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/native_render_alias_checked_ops.hpp",
+          "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c",
+          "bytes": 2413
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/native_render_alias_checked_ops.cpp",
+          "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872",
+          "bytes": 5090
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/native_alias_count_growth.hpp",
+          "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3",
+          "bytes": 1379
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/native_alias_count_growth.cpp",
+          "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b",
+          "bytes": 1729
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/native_string.hpp",
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+          "bytes": 6001
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/native_string.cpp",
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+          "bytes": 6003
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+          "bytes": 3986
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/singleton_lifetime.cpp",
+          "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+          "bytes": 10921
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "include/bsp/storage_pool.hpp",
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+          "bytes": 5571
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "src/storage_pool.cpp",
+          "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+          "bytes": 6169
+        },
+        {
+          "commit": "2d519e7a8c3cfe62ae2dcad91826d036737abc54",
+          "path": "reports/native_render_resource_container_next.json",
+          "sha256": "441e69064addfb74fc1e7500e87038437d9c0558aeebb7d6caa34e881e37866d",
+          "bytes": 62790
+        }
+      ],
+      "worker_source_unchanged": true
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_render_resource_record_construction.hpp",
+        "sha256": "25cf8139d44be366e68e6d3782f1071341f050604bdcea31f5c9671291b9b7cc"
+      },
+      {
+        "path": "src/native_render_resource_record_construction.cpp",
+        "sha256": "ad100a08046f1fb169510135ab6c77f8cf14ee598b6a0361792a613d5f092813"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+      },
+      {
+        "path": "local/native_record_construction_primary_fixture.txt",
+        "sha256": "44c4dca81dd8b9b4d41f80e3b8ca5a07e3abf0425988e49fd47b9b45defbf59e"
+      },
+      {
+        "path": "local/build_native_render_resource_record_construction_check.ps1",
+        "sha256": "4c0eb9db1813d0cbcb26a9723f582921774a28862b44318b6999666850f08942"
+      },
+      {
+        "path": "build/resource-record-construction-check/native_render_resource_record_construction_trace.json",
+        "sha256": "db5793d7a81c75f804a9d6644d05e7957695e88532344518301a184ab7e13a3f"
+      }
+    ],
+    "primary_library_constructors": true,
+    "real_lifetime_body_instrumentation_retained": true,
+    "build": {
+      "path": "reports/native_record_construction_primary_build.txt",
+      "sha256": "70b9d16f668204808d896a9ece60f5232c2e777883717fa3f2bdea9aa06037ed",
+      "tests": 2,
+      "passed": true
+    },
+    "flow_repair": {
+      "path": "reports/native_record_construction_defined_function.json",
+      "sha256": "a528f5971738b81616ee6b14f03d11c05ffde7d3f2a6414cea261ada0589109f",
+      "hidden_range": [
+        "004d0a24",
+        "004d0a2d"
+      ],
+      "project_saved": true,
+      "old_documentation_preserved": true
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_record_construction_annotations.json",
+      "sha256": "6c44fbdcf561a115ef62508a2fe5b00f49bae50b1ba7fa09cc8777d77c77df76",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "004c3020",
+        "path": "exports/bsp/functions/004c3020/decompiled.c",
+        "sha256": "f2c6de486818c479041dff9a0fcad18fd7329b57c123ce374bcb8c8b8de68659"
+      },
+      {
+        "address": "004d0a10",
+        "path": "exports/bsp/functions/004d0a10/decompiled.c",
+        "sha256": "c2500b3304147fbb48956c439f97e463e7902029f40875ffe45daa3efd130151"
+      },
+      {
+        "address": "004d48a0",
+        "path": "exports/bsp/functions/004d48a0/decompiled.c",
+        "sha256": "12505038d7c673c148ad78b649fd40b48129e9adfeba9070b37b5a329b494d32"
+      },
+      {
+        "address": "00b2fc60",
+        "path": "exports/bsp/functions/00b2fc60/decompiled.c",
+        "sha256": "8d2e3dd480cd31d3967d162a3df433bfa70e3427781b8a5296314f05a788694c"
+      },
+      {
+        "address": "004d490c",
+        "path": "exports/bsp/functions/004d490c/decompiled.c",
+        "sha256": "ca8c1e30e27fd0ff885b2ed8e2c966bea0958a8ada1644cd4fb7ff2ca5343f3c"
+      }
+    ],
+    "closure_utc": "2026-09-11T00:37:20.858487+00:00"
+  }
 }
