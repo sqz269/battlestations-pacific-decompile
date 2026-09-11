@@ -112,3 +112,18 @@ The integrator registers the source, applies evidence comments and ledgers,
 and refreshes exports. `B33F10` and `B33F20` currently lack saved function
 definitions; define their exact one-byte and three-byte bodies before naming
 them. Existing `B3DD30/B3DD90` names and comments should be preserved.
+
+## Primary integration
+
+The primary registered the source in CMake and passed the strict Win32 build
+and both existing checks. It verified 52 worker artifact pins, four current
+source/provider files and 12 fresh live-Ghidra/installed-PE spans (652 bytes).
+The unchanged fixture linked frozen actual main library `e4722daa6979b84a72afd085312ad7f5b9670e601763a21b1262720b938c923d`.
+Both real-HAL runs again matched 17,134 DWORDs, 183 snapshots and 17 phases,
+including seven actual INVALIDCALL/null CreateTexture results per process.
+All 51 call origins per process, real COM slots/modules, factory thunk/IAT,
+whole executed source text, complete native code and tables were checked.
+The 23 labeled mutations are fixture writes; no hardware store trace is claimed.
+The exact one-byte B33F10 and three-byte B33F20 functions were defined and
+saved before all four names received appended evidence. Full records and
+forced export refreshes are registered. No permanent tests were added.

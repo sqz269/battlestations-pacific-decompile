@@ -1,0 +1,60 @@
+[
+  {
+    "address": "00b3dd30",
+    "before": {
+      "address": "00b3dd30",
+      "function_name": "BSP_D3D9Texture_ReleaseCachedLevelsForReset",
+      "comment": "[BSP reconstruction 00b3dd30]\nECX2Dwrapper RET. Signedindexcached8byterecords+40/+44, eachsurfacevirtual3C; thenbalancedtextureAddRef/Release and ownedCOMdrop/null+10. Typedstableborrowedlevels port; realResetverified existing64/32mipowners."
+    },
+    "after": {
+      "address": "00b3dd30",
+      "old_name": "BSP_D3D9Texture_ReleaseCachedLevelsForReset",
+      "name": "BSP_D3D9Texture_ReleaseCachedLevelsForReset",
+      "evidence": "Full86-byte actual texture2D reset release. Current signed +44 level count/current +40 record base select each wrapper+3C with no null gate; then captured texture+10 AddRef/current-table Release pair followed by independently reloaded current texture Release/clear-after-return. New source interface in src/native_texture_device_reset.cpp borrows actual raw owner/record/wrapper storage and two distinct four-byte cells; D619A0 current slot tokens select full actual surface providers, numeric addresses never host-callable. reports/native_texture_device_reset_audit.json. Primary verified52 worker pins,4 current source/provider files and12 fresh live-PE spans652bytes; strict main Win32 build/two existing checks/eight seeds passed. Frozen actual main-library replay matched17134DWORDs/183snapshots/17phases and51 actual COM calls per process:13 CreateTexture (6success,7actual INVALIDCALL/null),4 GetSurfaceLevel,4 GetDesc,30 reference calls.51 native/source caller sites each, saved real COM slots,32 loaded x86 module entries/factory thunk-IAT, all452owned+152original surface-provider bytes/pool/profile postimages and entire runtime executable text checked.23 explicit observer writes per process; static store sites and callback snapshots are not hardware store tracing. No original instruction/service bridge and no owned source recompile. Names descriptive hypotheses; no original-caller ABI, full renderer reset, draw or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3dd90",
+    "before": {
+      "address": "00b3dd90",
+      "function_name": "BSP_D3D9Texture_RestoreCachedLevels",
+      "comment": "[BSP reconstruction 00b3dd90]\nECX2Dwrapper,device stackRET4. Decodeflags,CreateTexture,installretainednewbeforeoldrelease/dropgetter; thenGetSurfaceLevelkey,reinitializeexistingwrapper14/dropgetter. Nativeuninitializedoutputonfailure noHRESULTguard; typedsafe sequentialHRESULTboundary. Full362bytebody plus16bytepooltable verified; realReset64/32mipidentitychecked."
+    },
+    "after": {
+      "address": "00b3dd90",
+      "old_name": "BSP_D3D9Texture_RestoreCachedLevels",
+      "name": "BSP_D3D9Texture_RestoreCachedLevels",
+      "evidence": "Full362-byte actual texture2D restore plus separate16-byte pool jump table. CORRECTION to older semantic/uninitialized-scratch notes: native entry S has incoming device at S+4; same cell is ppTexture, initially DEVICE BITS, and unsupported pool nibble uses those bits. Entry PUSH ECX seeds S-4 surface output with OWNER BITS; reused GetSurfaceLevel output is never cleared per level. Select captured flags/device arguments, ignore actual CreateTexture HRESULT. Compare current owner10/current output, publishnew before captured-new AddRef/captured-old Release, reread argument after callbacks; release current temporary then clear after return. Loop uses captured current texture/table before current record key, reloads record base/wrapper after GetSurfaceLevel, binds through current surface+14, rereads scratch before unconditional Release and fresh signed count. No rollback or null repair. New source interface in src/native_texture_device_reset.cpp borrows actual raw owner/record/wrapper storage and two distinct four-byte cells; D619A0 current slot tokens select full actual surface providers, numeric addresses never host-callable. reports/native_texture_device_reset_audit.json. Primary verified52 worker pins,4 current source/provider files and12 fresh live-PE spans652bytes; strict main Win32 build/two existing checks/eight seeds passed. Frozen actual main-library replay matched17134DWORDs/183snapshots/17phases and51 actual COM calls per process:13 CreateTexture (6success,7actual INVALIDCALL/null),4 GetSurfaceLevel,4 GetDesc,30 reference calls.51 native/source caller sites each, saved real COM slots,32 loaded x86 module entries/factory thunk-IAT, all452owned+152original surface-provider bytes/pool/profile postimages and entire runtime executable text checked.23 explicit observer writes per process; static store sites and callback snapshots are not hardware store tracing. No original instruction/service bridge and no owned source recompile. Names descriptive hypotheses; no original-caller ABI, full renderer reset, draw or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b33f10",
+    "before": {
+      "address": "00b33f10",
+      "function_name": "BSP_Texture_ResetNoOp"
+    },
+    "after": {
+      "address": "00b33f10",
+      "old_name": "BSP_Texture_ResetNoOp",
+      "name": "BSP_Texture_ResetNoOp",
+      "evidence": "Complete genuine native RET one-byte reset callback for actual cube D61870 and volume D618B0 profiles; no owner/device/application-storage access. Missing saved-analysis function has now been defined exactly, without inventing behavior. New source interface in src/native_texture_device_reset.cpp borrows actual raw owner/record/wrapper storage and two distinct four-byte cells; D619A0 current slot tokens select full actual surface providers, numeric addresses never host-callable. reports/native_texture_device_reset_audit.json. Primary verified52 worker pins,4 current source/provider files and12 fresh live-PE spans652bytes; strict main Win32 build/two existing checks/eight seeds passed. Frozen actual main-library replay matched17134DWORDs/183snapshots/17phases and51 actual COM calls per process:13 CreateTexture (6success,7actual INVALIDCALL/null),4 GetSurfaceLevel,4 GetDesc,30 reference calls.51 native/source caller sites each, saved real COM slots,32 loaded x86 module entries/factory thunk-IAT, all452owned+152original surface-provider bytes/pool/profile postimages and entire runtime executable text checked.23 explicit observer writes per process; static store sites and callback snapshots are not hardware store tracing. No original instruction/service bridge and no owned source recompile. Names descriptive hypotheses; no original-caller ABI, full renderer reset, draw or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b33f20",
+    "before": {
+      "address": "00b33f20",
+      "function_name": "BSP_Texture_RestoreNoOp"
+    },
+    "after": {
+      "address": "00b33f20",
+      "old_name": "BSP_Texture_RestoreNoOp",
+      "name": "BSP_Texture_RestoreNoOp",
+      "evidence": "Complete genuine native RET4 three-byte restore callback for actual cube D61870 and volume D618B0 profiles; no owner/device/application-storage access. Missing saved-analysis function has now been defined exactly, without inventing behavior. New source interface in src/native_texture_device_reset.cpp borrows actual raw owner/record/wrapper storage and two distinct four-byte cells; D619A0 current slot tokens select full actual surface providers, numeric addresses never host-callable. reports/native_texture_device_reset_audit.json. Primary verified52 worker pins,4 current source/provider files and12 fresh live-PE spans652bytes; strict main Win32 build/two existing checks/eight seeds passed. Frozen actual main-library replay matched17134DWORDs/183snapshots/17phases and51 actual COM calls per process:13 CreateTexture (6success,7actual INVALIDCALL/null),4 GetSurfaceLevel,4 GetDesc,30 reference calls.51 native/source caller sites each, saved real COM slots,32 loaded x86 module entries/factory thunk-IAT, all452owned+152original surface-provider bytes/pool/profile postimages and entire runtime executable text checked.23 explicit observer writes per process; static store sites and callback snapshots are not hardware store tracing. No original instruction/service bridge and no owned source recompile. Names descriptive hypotheses; no original-caller ABI, full renderer reset, draw or game validation."
+    },
+    "status": "applied"
+  }
+]

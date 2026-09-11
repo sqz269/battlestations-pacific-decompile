@@ -5015,8 +5015,8 @@
     {
       "id": "native_texture_device_reset4",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_explicit_seeded_scratch_API_and_source_in_progress",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3dd30",
         "00b3dd90",
@@ -5033,7 +5033,8 @@
       "prerequisite_packets": [],
       "scope": "452 native bytes plus16-byte pool table. Actual D619A0 surface providers; raw device argument/output cell seeded with input device, distinct reused surface-output cell seeded with captured owner at entry; preserve current reads and exact native RET/RET4 no-ops.",
       "packet": "native_texture_device_reset4",
-      "discovery_evidence": "reports/native_renderer_reset_routes_next.json"
+      "discovery_evidence": "reports/native_renderer_reset_routes_next.json",
+      "evidence": "reports/native_texture_device_reset_audit.json"
     },
     {
       "id": "native_renderer_index_binding2",
@@ -5055,6 +5056,68 @@
       "scope": "Full236-byte renderer index binding plus complete B48DC0 current physical getter/tailcall. Actual D61DE0 lifetimes and token-profile dispatch must retain native load/receiver order; no numeric native address is host callable.",
       "packet": "native_renderer_index_binding2",
       "discovery_evidence": "reports/native_renderer_reset_routes_next.json"
+    },
+    {
+      "id": "native_renderer_resource_restore1",
+      "packet": "native_renderer_resource_restore1",
+      "worker": "main",
+      "done": false,
+      "state": "source_strict_Win32_checked_original_body_fixture_pending",
+      "function_addresses": [
+        "00b23b10"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_resource_restore.hpp",
+        "src/native_renderer_resource_restore.cpp",
+        "docs/NATIVE_RENDERER_RESOURCE_RESTORE.md",
+        "reports/native_renderer_resource_restore_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_texture_device_reset4",
+        "native_occlusion_query_device_reset2"
+      ],
+      "discovery_evidence": "reports/native_renderer_reset_routes_next.json",
+      "scope": "Full319-byte actual renderer restore; fullproviders and original-token views; retained texture/surface cursors/current signed query registry; original fixture pending."
+    },
+    {
+      "id": "native_volume_texture_owner3",
+      "packet": "native_volume_texture_owner3",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_actual_volume_pool_binding_approved_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b3eb70",
+        "00b3f430",
+        "00b340f0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_volume_texture_owner.hpp",
+        "src/native_volume_texture_owner.cpp",
+        "docs/NATIVE_VOLUME_TEXTURE_OWNER.md",
+        "reports/native_volume_texture_owner_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Full180-byte volume destructor/32-byte scalar/5-byte base cleanup tail; actual108DBA8 pool reuses B3EC60/B3ED40/B3D860/B3E2B0 with0x38byte slots/32slots/slab; native name notification precedes retained source+30 release."
+    },
+    {
+      "id": "native_logical_vertex_terminal_next",
+      "packet": "native_logical_vertex_terminal_next",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_bounded_nonnull_4c_terminal_discovery_in_progress",
+      "function_addresses": [
+        "00b62010",
+        "00b4b5d0",
+        "00b4bf10",
+        "00b49570"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_LOGICAL_VERTEX_TERMINAL_NEXT.md",
+        "reports/native_logical_vertex_terminal_next.json"
+      ],
+      "source_ready": false,
+      "scope": "Advance prior logical-vertex discovery by proving concrete nonnull base+4C writers/profiles/zero terminal; no constructor-null assumption; ready exact source packets."
     }
   ],
   "snapshot_after_analysis": {
