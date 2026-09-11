@@ -99,5 +99,21 @@
     "retired_overbroad_role_tag": "reports/weather_inventory_tag_correction.json"
   },
   "independent_review": "Panel worker reviewed full197-instruction004DC6A0 plus00871BA0 return identity; no must-fix. External services, native SEH/ABI and game validation excluded.",
-  "independent_weather_review": "Complete loader ordering and COMISS/x87 normalization reviewed independently; no must-fix for string-keyed naming tables. Existing numeric-key cursor, STL/GC/SEH/ABI limits retained."
+  "independent_weather_review": "Complete loader ordering and COMISS/x87 normalization reviewed independently; no must-fix for string-keyed naming tables. Existing numeric-key cursor, STL/GC/SEH/ABI limits retained.",
+  "main_merge_fixes": {
+    "main_base": "0b6a6819",
+    "packet_registry": "Three-way merge by packet ID, preserving independent updates.",
+    "gui_layout": "Preserved main pre-property hooks on empty child/page bodies plus required CRT mode argument.",
+    "gui_dispatch": "New main GuiTypeDispatchServices requires a long-lived CRT mode reference; Screen/FrameBox implementations retain and pass the same alias to evaluated readers.",
+    "files": [
+      "include/bsp/gui_type_dispatch.hpp",
+      "src/gui_type_dispatch.cpp",
+      "src/gui_layout_loader.cpp"
+    ],
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "2/2 passed",
+    "log": "local/global_main_build_final.log",
+    "code_revision": "cd8f3b9a2fd5d3fc1d46a32db75e2aae8d07a4b0",
+    "library_sha256": "60ed8e6397c4c6a4a67f9873ea1c1eaa10826def81b77aac8c4a95b8ec0e888a"
+  }
 }

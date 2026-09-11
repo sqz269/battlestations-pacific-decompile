@@ -67,3 +67,9 @@ panel owner lifetime, weather real-Lua loading, and generic Lua numeric conversi
 All28 names/evidence comments were saved and read back with prior comments intact;
 affected exports were refreshed. The tested revision, library hash, logs and later
 main integration result are retained in the report. No gameplay validation was run.
+
+Integration with concurrent main work preserved the new GUI pre-property hooks.
+The newly landed type-dispatch factory now also requires the same live CRT mode
+alias and passes it to Screen and FrameBox readers. That reference must outlive
+the factory and its types. The combined build and both checks passed after this
+caller migration; see the report for the exact code revision and log.
