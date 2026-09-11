@@ -17,6 +17,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_binding_poll
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_device_state.cpp src/sound_file_callbacks.cpp src/sound_system_owner.cpp src/sound_startup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_pools.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/platform_services.cpp src/xlive_manager_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/sound_resource_cleanup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/sound_resource_runtime.cpp)
