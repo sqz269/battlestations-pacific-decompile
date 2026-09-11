@@ -1,0 +1,382 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6e16",
+    "end_address": "00cd6e2c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6e16",
+    "end_address": "00cd6e2b",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6e16",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeAcquisition"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6e16",
+    "function_name": "BSP_XLivePipeGlobals_InitializeAcquisition",
+    "entry_point": "00cd6e16",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd6e16",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeAcquisition' \u2014 main part 'XLivePipeGlobals_InitializeAcquisition' is not PascalCase. Expected: XlivepipeglobalsInitializeacquisition",
+     "Function name 'BSP_XLivePipeGlobals_InitializeAcquisition' \u2014 main part 'XLivePipeGlobals_InitializeAcquisition' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6e16",
+   "end": "00cd6e2c",
+   "name": "BSP_XLivePipeGlobals_InitializeAcquisition",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeAcquisition at 00cd6e16\nSignature: undefined BSP_XLivePipeGlobals_InitializeAcquisition(void)\nEntry: 00cd6e16\nBody: 00cd6e16 - 00cd6e2b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6e2c",
+    "end_address": "00cd6e47"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6e2c",
+    "end_address": "00cd6e46",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6e2c",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeWideA"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6e2c",
+    "function_name": "BSP_XLivePipeGlobals_InitializeWideA",
+    "entry_point": "00cd6e2c",
+    "body_size": 27,
+    "message": "Function created successfully at 00cd6e2c",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeWideA' \u2014 main part 'XLivePipeGlobals_InitializeWideA' is not PascalCase. Expected: XlivepipeglobalsInitializewidea",
+     "Function name 'BSP_XLivePipeGlobals_InitializeWideA' \u2014 main part 'XLivePipeGlobals_InitializeWideA' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6e2c",
+   "end": "00cd6e47",
+   "name": "BSP_XLivePipeGlobals_InitializeWideA",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeWideA at 00cd6e2c\nSignature: undefined BSP_XLivePipeGlobals_InitializeWideA(void)\nEntry: 00cd6e2c\nBody: 00cd6e2c - 00cd6e46"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6e47",
+    "end_address": "00cd6e62"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6e47",
+    "end_address": "00cd6e61",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6e47",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeWideB"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6e47",
+    "function_name": "BSP_XLivePipeGlobals_InitializeWideB",
+    "entry_point": "00cd6e47",
+    "body_size": 27,
+    "message": "Function created successfully at 00cd6e47",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeWideB' \u2014 main part 'XLivePipeGlobals_InitializeWideB' is not PascalCase. Expected: XlivepipeglobalsInitializewideb",
+     "Function name 'BSP_XLivePipeGlobals_InitializeWideB' \u2014 main part 'XLivePipeGlobals_InitializeWideB' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6e47",
+   "end": "00cd6e62",
+   "name": "BSP_XLivePipeGlobals_InitializeWideB",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeWideB at 00cd6e47\nSignature: undefined BSP_XLivePipeGlobals_InitializeWideB(void)\nEntry: 00cd6e47\nBody: 00cd6e47 - 00cd6e61"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6e62",
+    "end_address": "00cd6e7d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6e62",
+    "end_address": "00cd6e7c",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6e62",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeSeed"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6e62",
+    "function_name": "BSP_XLivePipeGlobals_InitializeSeed",
+    "entry_point": "00cd6e62",
+    "body_size": 27,
+    "message": "Function created successfully at 00cd6e62",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeSeed' \u2014 main part 'XLivePipeGlobals_InitializeSeed' is not PascalCase. Expected: XlivepipeglobalsInitializeseed",
+     "Function name 'BSP_XLivePipeGlobals_InitializeSeed' \u2014 main part 'XLivePipeGlobals_InitializeSeed' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6e62",
+   "end": "00cd6e7d",
+   "name": "BSP_XLivePipeGlobals_InitializeSeed",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeSeed at 00cd6e62\nSignature: undefined BSP_XLivePipeGlobals_InitializeSeed(void)\nEntry: 00cd6e62\nBody: 00cd6e62 - 00cd6e7c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6e7d",
+    "end_address": "00cd6e98"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6e7d",
+    "end_address": "00cd6e97",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6e7d",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeFrameValue"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6e7d",
+    "function_name": "BSP_XLivePipeGlobals_InitializeFrameValue",
+    "entry_point": "00cd6e7d",
+    "body_size": 27,
+    "message": "Function created successfully at 00cd6e7d",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeFrameValue' \u2014 main part 'XLivePipeGlobals_InitializeFrameValue' is not PascalCase. Expected: XlivepipeglobalsInitializeframevalue",
+     "Function name 'BSP_XLivePipeGlobals_InitializeFrameValue' \u2014 main part 'XLivePipeGlobals_InitializeFrameValue' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6e7d",
+   "end": "00cd6e98",
+   "name": "BSP_XLivePipeGlobals_InitializeFrameValue",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeFrameValue at 00cd6e7d\nSignature: undefined BSP_XLivePipeGlobals_InitializeFrameValue(void)\nEntry: 00cd6e7d\nBody: 00cd6e7d - 00cd6e97"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6e98",
+    "end_address": "00cd6eb3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6e98",
+    "end_address": "00cd6eb2",
+    "bytes_disassembled": 27,
+    "message": "Successfully disassembled 27 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6e98",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeKey"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6e98",
+    "function_name": "BSP_XLivePipeGlobals_InitializeKey",
+    "entry_point": "00cd6e98",
+    "body_size": 27,
+    "message": "Function created successfully at 00cd6e98",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeKey' \u2014 main part 'XLivePipeGlobals_InitializeKey' is not PascalCase. Expected: XlivepipeglobalsInitializekey",
+     "Function name 'BSP_XLivePipeGlobals_InitializeKey' \u2014 main part 'XLivePipeGlobals_InitializeKey' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6e98",
+   "end": "00cd6eb3",
+   "name": "BSP_XLivePipeGlobals_InitializeKey",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeKey at 00cd6e98\nSignature: undefined BSP_XLivePipeGlobals_InitializeKey(void)\nEntry: 00cd6e98\nBody: 00cd6e98 - 00cd6eb2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd6f03",
+    "end_address": "00cd6f13"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd6f03",
+    "end_address": "00cd6f12",
+    "bytes_disassembled": 16,
+    "message": "Successfully disassembled 16 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd6f03",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeGlobals_InitializeRaw72"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd6f03",
+    "function_name": "BSP_XLivePipeGlobals_InitializeRaw72",
+    "entry_point": "00cd6f03",
+    "body_size": 16,
+    "message": "Function created successfully at 00cd6f03",
+    "warnings": [
+     "Function name 'BSP_XLivePipeGlobals_InitializeRaw72' \u2014 main part 'XLivePipeGlobals_InitializeRaw72' is not PascalCase. Expected: XlivepipeglobalsInitializeraw72",
+     "Function name 'BSP_XLivePipeGlobals_InitializeRaw72' \u2014 main part 'XLivePipeGlobals_InitializeRaw72' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00cd6f03",
+   "end": "00cd6f13",
+   "name": "BSP_XLivePipeGlobals_InitializeRaw72",
+   "after": "Function: BSP_XLivePipeGlobals_InitializeRaw72 at 00cd6f03\nSignature: undefined BSP_XLivePipeGlobals_InitializeRaw72(void)\nEntry: 00cd6f03\nBody: 00cd6f03 - 00cd6f12"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872150",
+    "end_address": "00872153"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872150",
+    "end_address": "00872152",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872150",
+    "disassemble_first": false,
+    "name": "BSP_ForceEvent_CallbackNoop"
+   },
+   "result": {
+    "success": true,
+    "address": "00872150",
+    "function_name": "BSP_ForceEvent_CallbackNoop",
+    "entry_point": "00872150",
+    "body_size": 3,
+    "message": "Function created successfully at 00872150",
+    "warnings": [
+     "Function name 'BSP_ForceEvent_CallbackNoop' \u2014 main part 'ForceEvent_CallbackNoop' is not PascalCase. Expected: ForceeventCallbacknoop",
+     "Function name 'BSP_ForceEvent_CallbackNoop' \u2014 main part 'ForceEvent_CallbackNoop' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ForceEvent_CallbackNoop' does not start with a recognized verb. First word 'Force' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872150",
+   "end": "00872153",
+   "name": "BSP_ForceEvent_CallbackNoop",
+   "after": "Function: BSP_ForceEvent_CallbackNoop at 00872150\nSignature: undefined BSP_ForceEvent_CallbackNoop(void)\nEntry: 00872150\nBody: 00872150 - 00872152"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00872180",
+    "end_address": "00872194"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00872180",
+    "end_address": "00872193",
+    "bytes_disassembled": 20,
+    "message": "Successfully disassembled 20 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00872180",
+    "disassemble_first": false,
+    "name": "BSP_ForceEvent_IsRequestComplete"
+   },
+   "result": {
+    "success": true,
+    "address": "00872180",
+    "function_name": "BSP_ForceEvent_IsRequestComplete",
+    "entry_point": "00872180",
+    "body_size": 20,
+    "message": "Function created successfully at 00872180",
+    "warnings": [
+     "Function name 'BSP_ForceEvent_IsRequestComplete' \u2014 main part 'ForceEvent_IsRequestComplete' is not PascalCase. Expected: ForceeventIsrequestcomplete",
+     "Function name 'BSP_ForceEvent_IsRequestComplete' \u2014 main part 'ForceEvent_IsRequestComplete' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ForceEvent_IsRequestComplete' does not start with a recognized verb. First word 'Force' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00872180",
+   "end": "00872194",
+   "name": "BSP_ForceEvent_IsRequestComplete",
+   "after": "Function: BSP_ForceEvent_IsRequestComplete at 00872180\nSignature: undefined BSP_ForceEvent_IsRequestComplete(void)\nEntry: 00872180\nBody: 00872180 - 00872193"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
