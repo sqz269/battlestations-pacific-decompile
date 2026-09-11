@@ -327,11 +327,11 @@ __declspec(naked) std::uint32_t __fastcall native_platform_has_focus_00b20c50(
         jne short focus_00b20c6b
         mov eax, 1
         pop esi
-        ret 
+        ret
     focus_00b20c6b:
         xor eax, eax
         pop esi
-        ret 
+        ret
     }
 }
 

@@ -162,3 +162,26 @@ arbitrary wrapper profile support, whole reset-parent reconstruction, a general
 drop-in binary replacement, or installed-game validation. The source performs
 unchecked raw 32-bit accesses; invalid addresses and unhandled COM behavior
 retain the stated native or explicit source-domain limits.
+
+
+## Primary integration
+
+The main strict Win32 build, both existing CTests and eight fresh seeds passed.
+Primary verified 80 worker artifacts plus four owned files and reread all
+16 guarded spans, 1,218 bytes. Only two trailing spaces were removed from
+the worker source; whole compiled code and relocations remain equivalent.
+The unchanged fixture linked the frozen actual main library and repeated
+all four comparisons: 224,152 bytes, 80 real COM calls, 28 terminal releases,
+328 full COFF sections, 1,633 relocations and nine unchanged postimages.
+
+This primary process used a Microsoft-signed apphelp.dll wrapper for device
+Release at slot2. Its recorded module identity, hash and relocated bytes
+were verified. The verifier admits that provider only at the two device
+slot2 positions; buffer Create/AddRef/Release still require d3d9.dll. No
+fixture or source behavior was changed for this observed Windows routing.
+The immutable primary bundle is `local/reset_readiness_primary/`.
+
+Four raw implementations are now registered alongside the existing semantic
+interfaces. Four reviewed names/comments were saved and exports refreshed.
+The two-profile parent boundary, original-versus-source distinctions and
+remaining whole-reset/gameplay limits above still apply.
