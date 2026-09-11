@@ -48,13 +48,29 @@ not executable bytes or the installed game.
   floats at each descriptor record's `+4h`, `+8h`, `+Ch` (stores at `007D492E`,
   `007D4938`, `007D4946`). Runtime effect construction is a separate boundary.
 - The rudder curve `0082ECB0` spills its normalized speed and divided base rate
-  to floats before the final x87 multiply chain. Native operation order and
-  float spill locations are evidence; a portable C++ translation alone does
-  not prove bitwise x87 equivalence.
+  to floats before the final x87 multiply chain. The reconstruction uses explicit
+  x87 for the interpolation and curve; numerical evidence is limited to the
+  focused native comparison described below.
 
 ## Integration and validation
 
-Worker commits, final integration, annotation readback and the combined build
-are recorded in `reports/hud_plane_rudder_integration.json` when this batch
-finishes. Reconstruction uses explicit C++ interfaces and external host
-contracts; it is not a drop-in native ABI replacement or game validation.
+The three worker branches were merged through `agent/orch2-20260910` and
+integrated into `main` at `7a2b0ea`. The combined MSVC Win32 Release build passed
+both `reconstructed_math` and `native_math_differential`. A local probe linked
+against that combined library reproduced 55/55 composed rudder-curve fixtures
+bitwise, with 220 settings getter calls per implementation. It compares the
+verified native bodies of `00419010`, `0082E890` and `0082ECB0` with fixture
+settings; it does not execute the whole game or validate other routines.
+
+All 18 reviewed naming entries were applied under the Ghidra write lock, saved,
+read back and re-exported. Old names and annotation changes were recorded before
+edits; readback verified that every previous plate comment was preserved and
+every new evidence comment is present. No new Ghidra function definitions were
+needed. Worker commits, the exact tested revision, annotation evidence paths and
+the remaining limits are in `reports/hud_plane_rudder_integration.json`.
+
+The rudder native-probe source, verified byte captures and build command are
+preserved in this integration worktree's ignored `local/` directory before worker
+retirement. There are no new repository test cases. HUD and plane behavior has
+code/build evidence only; the reconstructed interfaces and external host
+contracts are not drop-in native ABI replacements or game validation.

@@ -30,7 +30,8 @@
       "report": "reports/unit_rudder_curve.json",
       "undefined_functions_to_define": [],
       "worker_build_passed": true,
-      "worker_ctests_passed": 2
+      "worker_ctests_passed": 2,
+      "doc_followup_commit": "acfaa37"
     }
   ],
   "review": {
@@ -40,7 +41,12 @@
     "native_seed_matches": 8,
     "baseline_win32_release_ctests": "2/2 passed",
     "rudder_native_fixture_result": "55/55 bitwise equal, 220 settings getter calls per implementation",
-    "rudder_probe_preserved_in": "local/ (check_rudder_bytes.py, rudder_differential.cpp, run-rudder-differential.cmd, rudder_reference.hpp, rudder_native_verification.json, and three *-native-bytes.txt files)"
+    "rudder_probe_preserved_in": "local/ (check_rudder_bytes.py, rudder_differential.cpp, run-rudder-differential.cmd, rudder_reference.hpp, rudder_native_verification.json, and three *-native-bytes.txt files)",
+    "integrated_rudder_probe": {
+      "command": "./local/run-rudder-differential.cmd",
+      "result": "55/55 bitwise equal; 220 settings getter calls per implementation",
+      "log": "local/rudder-differential-integrated.log"
+    }
   },
   "flow_repair": {
     "report": "reports/plane_bow_wave_flow_repair.json",
@@ -54,100 +60,143 @@
     {
       "address": "00419010",
       "old_name": "FUN_00419010",
-      "new_name": "BSP_Math_InterpolateClamped"
+      "new_name": "BSP_Math_InterpolateClamped",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00438aa0",
       "old_name": "FUN_00438aa0",
-      "new_name": "BSP_Math_AddWrappedAngle"
+      "new_name": "BSP_Math_AddWrappedAngle",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00438b10",
       "old_name": "FUN_00438b10",
-      "new_name": "BSP_Math_SubtractWrappedAngle"
+      "new_name": "BSP_Math_SubtractWrappedAngle",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00644c20",
       "old_name": "FUN_00644c20",
-      "new_name": "BSP_InGameHudRootScreen_FindPrimaryUnitSelection"
+      "new_name": "BSP_InGameHudRootScreen_FindPrimaryUnitSelection",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00644cc0",
       "old_name": "FUN_00644cc0",
-      "new_name": "BSP_InGameHudRootScreen_FindUnitSelection"
+      "new_name": "BSP_InGameHudRootScreen_FindUnitSelection",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00644db0",
       "old_name": "FUN_00644db0",
-      "new_name": "BSP_InGameHudRootScreen_PollUnitSelection"
+      "new_name": "BSP_InGameHudRootScreen_PollUnitSelection",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00647080",
       "old_name": "FUN_00647080",
-      "new_name": "BSP_InGameHudRootScreen_ToggleClosedRows"
+      "new_name": "BSP_InGameHudRootScreen_ToggleClosedRows",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00648c20",
       "old_name": "FUN_00648c20",
-      "new_name": "BSP_InGameHudRootScreen_UpdateUnitRowWidgets"
+      "new_name": "BSP_InGameHudRootScreen_UpdateUnitRowWidgets",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "007cd2f0",
       "old_name": "FUN_007cd2f0",
-      "new_name": "BSP_PlaneBowWaveDefinition_FillRetainedCopies"
+      "new_name": "BSP_PlaneBowWaveDefinition_FillRetainedCopies",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "007d1b50",
       "old_name": "FUN_007d1b50",
-      "new_name": "BSP_PlaneBowWaveVector_InsertOne"
+      "new_name": "BSP_PlaneBowWaveVector_InsertOne",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "007d3e60",
       "old_name": "FUN_007d3e60",
-      "new_name": "BSP_PlaneClass_BindModelData_Provisional"
+      "new_name": "BSP_PlaneClass_BindModelData_Provisional",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "007d5890",
       "old_name": "FUN_007d5890",
-      "new_name": "BSP_Plane_CreateBowWaveEffects"
+      "new_name": "BSP_Plane_CreateBowWaveEffects",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00811890",
       "old_name": "BSP_UnitInstance_ComputeYawRateFromRudder",
-      "new_name": "BSP_UnitInstance_ComputeYawRateFromRudder"
+      "new_name": "BSP_UnitInstance_ComputeYawRateFromRudder",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00811940",
       "old_name": "FUN_00811940",
-      "new_name": "BSP_UnitInstance_GetCurrentCommandYawRate"
+      "new_name": "BSP_UnitInstance_GetCurrentCommandYawRate",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00811960",
       "old_name": "FUN_00811960",
-      "new_name": "BSP_UnitHeadingCommand_SetLimitedTarget"
+      "new_name": "BSP_UnitHeadingCommand_SetLimitedTarget",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "00811ab0",
       "old_name": "FUN_00811ab0",
-      "new_name": "BSP_UnitInstance_RunShiftedControllerUpdate"
+      "new_name": "BSP_UnitInstance_RunShiftedControllerUpdate",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "0082e890",
       "old_name": "FUN_0082e890",
-      "new_name": "BSP_ShipClass_ComputeRudderCurveDenominator"
+      "new_name": "BSP_ShipClass_ComputeRudderCurveDenominator",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     },
     {
       "address": "0082ecb0",
       "old_name": "FUN_0082ecb0",
-      "new_name": "BSP_ShipClass_ComputeYawRateFromRudder"
+      "new_name": "BSP_ShipClass_ComputeYawRateFromRudder",
+      "readback_matches": true,
+      "previous_comment_preserved": true
     }
   ],
   "combined_build": {
-    "status": "pending integration",
-    "command": "tools/integrate_workers.py with all three worker branches --no-push"
+    "status": "passed",
+    "tested_commit": "7a2b0ea",
+    "target": "MSVC Win32 Release",
+    "ctests": "2/2 passed",
+    "command": "tools/integrate_workers.py with all three worker branches --no-push",
+    "log": "local/integrate.log"
   },
   "annotation_apply": {
-    "status": "pending integration"
+    "status": "18/18 applied, read back, comments preserved, saved and exports refreshed",
+    "prior_values_and_apply_log": "local/ghidra-annotations-20260911T001257Z.json",
+    "readback": "local/orch2-comments-after.json",
+    "export_log": "local/orch2-exports-after.log"
   },
   "limits": [
     "New C++ interfaces, not native ABI replacements.",

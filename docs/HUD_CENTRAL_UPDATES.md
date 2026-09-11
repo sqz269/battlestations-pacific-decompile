@@ -403,5 +403,8 @@ body is `00644DB0..0064505B` inclusive (684 bytes), correcting the 1195-byte siz
 above. `00648C20` performs the per-unit row presentation. Its payload icon call at
 `00649803` takes the computed state loaded into EAX at `006497F2` and pushed at
 `00649802`; the decompiler's constant `3` is not the call's unconditional argument.
+`00CE3A70` contains the literal `"."`; counted weapon source strings retain this
+prefix and the no-machinegun fallback is `"."`. None of the five follow-up seeds
+writes Medal_Icon (`+5Ch`) or Medal_Text (`+60h`).
 See the follow-up's listing evidence, bounded reconstruction and remaining widget
 ownership questions. These findings do not establish native ABI or in-game UI parity.
