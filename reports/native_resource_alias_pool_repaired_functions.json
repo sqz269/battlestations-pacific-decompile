@@ -1,0 +1,141 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "004ce75c",
+      "end_exclusive": "004ce771",
+      "length": 21,
+      "sha256": "ed475c06fb5df27f7cec406abe8554aa3dca0995b3d74ec0d3a4e430abafc625",
+      "function_before": "Function: Catch_All@004ce75c at 004ce75c\nSignature: undefined Catch_All@004ce75c(void)\nEntry: 004ce75c\nBody: 004ce75c - 004ce764",
+      "documentation_before": {
+        "hash": "509d404985664f99d56a1a689bc96ae42896bf0b871ab6a8cbb96d9e9724a366",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004ce75c",
+        "function_name": "Catch_All@004ce75c",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "returning_free_call_sites": [
+        "004ce760"
+      ],
+      "function_after": "Function: Catch_All@004ce75c at 004ce75c\nSignature: undefined Catch_All@004ce75c(void)\nEntry: 004ce75c\nBody: 004ce75c - 004ce770",
+      "documentation_after": {
+        "hash": "a3c54033cb97ccc7d05b2c45edff2c0ee244d87b7947ee76fa2a81545eeeec70",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004ce75c",
+        "function_name": "Catch_All@004ce75c",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004ce765",
+        "end_address": "004ce771"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004ce765",
+        "end_address": "004ce770",
+        "bytes_disassembled": 12,
+        "message": "Successfully disassembled 12 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "004ce760"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 004ce760 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004ce75c"
+      },
+      "result": {
+        "success": true,
+        "address": "004ce75c",
+        "deleted_function": "Catch_All@004ce75c",
+        "body_size": 9,
+        "message": "Function 'Catch_All@004ce75c' deleted at 004ce75c"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004ce75c",
+        "name": "Catch_All@004ce75c",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004ce75c",
+        "function_name": "Catch_All@004ce75c",
+        "entry_point": "004ce75c",
+        "body_size": 21,
+        "message": "Function created successfully at 004ce75c",
+        "warnings": [
+          "Function name 'Catch_All@004ce75c' \u2014 main part 'Catch_All@004ce75c' is not PascalCase. Expected: CatchAll@004ce75c",
+          "Function name 'Catch_All@004ce75c' \u2014 main part 'Catch_All@004ce75c' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'Catch_All@004ce75c' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Complete alias-node catch repaired through rethrow with original comments preserved; project saved"
+}
