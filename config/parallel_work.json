@@ -3517,8 +3517,8 @@
       "id": "native_retained_memory_owners",
       "packet": "native_retained_memory_owners",
       "worker": "main",
-      "done": false,
-      "state": "primary_source_build_checked_independent_original_byte_fixture_active",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "008d43c0",
         "008d4440",
@@ -3544,7 +3544,8 @@
         "Backing terminal current profile D15AD8, zero entry BD30E0 and deleting entry 8D4470.",
         "Stream terminal current profile D642C0, zero entry BD30E0 and deleting entry BB8F90.",
         "No shared_ptr owner, alternate count, generic terminal callback, arbitrary backing profile inference or null-allocation repair."
-      ]
+      ],
+      "evidence": "reports/native_retained_memory_owners_audit.json"
     },
     {
       "id": "native_logical_texture_named_base",
@@ -3584,9 +3585,9 @@
     {
       "id": "native_texture_surface_cache_storage",
       "packet": "native_texture_surface_cache_storage",
-      "worker": "material_effect_plane",
+      "worker": "particle_clock_lifetime",
       "done": false,
-      "state": "ready_assigned_worker_after_notification_copy_followup",
+      "state": "worker_implementing_actual_surface_cache_storage",
       "function_addresses": [
         "00b3d9b0",
         "00b3da20",
@@ -4679,8 +4680,10 @@
     {
       "packet": "native_retained_memory_owners",
       "worker": "main",
-      "state": "primary_source_build_checked_independent_original_byte_fixture_active",
-      "validation": null
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "validation": null,
+      "evidence": "reports/native_retained_memory_owners_audit.json",
+      "done": true
     },
     {
       "packet": "native_logical_texture_named_base",
@@ -4690,8 +4693,8 @@
     },
     {
       "packet": "native_texture_surface_cache_storage",
-      "worker": "material_effect_plane",
-      "state": "ready_assigned_worker_after_notification_copy_followup",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_implementing_actual_surface_cache_storage",
       "validation": null
     }
   ],
@@ -4703,20 +4706,6 @@
         "00b32250"
       ],
       "state": "worker_original_byte_fixture_passed_copy_overlap_followup_active"
-    },
-    {
-      "packet": "native_retained_memory_owners",
-      "worker": "main",
-      "function_addresses": [
-        "008d43c0",
-        "008d4440",
-        "008d4470",
-        "00bef6d0",
-        "00bef9c0",
-        "00bb8f90",
-        "00b23640"
-      ],
-      "state": "primary_source_build_checked_independent_original_byte_fixture_active"
     },
     {
       "packet": "native_logical_texture_named_base",
@@ -4732,13 +4721,13 @@
     },
     {
       "packet": "native_texture_surface_cache_storage",
-      "worker": "material_effect_plane",
+      "worker": "particle_clock_lifetime",
       "function_addresses": [
         "00b3d9b0",
         "00b3da20",
         "00b3ec40"
       ],
-      "state": "ready_assigned_worker_after_notification_copy_followup"
+      "state": "worker_implementing_actual_surface_cache_storage"
     }
   ],
   "current_partition": {
