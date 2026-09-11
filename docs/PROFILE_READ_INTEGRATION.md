@@ -62,3 +62,15 @@ local roots. Real archive/Lua checks do not establish engine rendering, native
 object ABI, keyboard-device dispatch, or gameplay. Required follow-up contracts
 include DoFile VFS/override dispatch, keyboard006aa090/00a93750, and game/platform/
 renderer/content hosts used by the composed persistence path.
+
+Validation at source34bd240: MSVC Win32 Release and both existing CTests passed.
+The ignored combined fixture loaded copied native player/quick, exercised a
+synthetic checkpoint through the real nested manager/storage path, wrote and read
+both save files plus isolated options.txt, and checked keyboard dispatch, callback
+order, string/index fields, sparse defaults and post-close global-root destruction.
+All three worker fixtures also pass against the combined library. Twelve worker
+artifacts are preserved under local/worker-validation/profile-read-20260910e.
+Original native save hashes were rechecked unchanged. UI/renderer/device effects
+are recorded fixture services, not gameplay or render proof. Initial CMake
+registration was corrected to individual deferred entries; both new modules were
+compiled and linked before these passing checks.

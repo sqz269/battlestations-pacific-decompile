@@ -31,9 +31,51 @@
   "writer_correction": "008d64a0",
   "reader_lifetime": "00441a20 / 00b67980 / 00b66de0",
   "validation": {
-    "combined": "pending"
+    "tested_source_commit": "34bd240",
+    "build": "MSVC Win32 Release; both existing CTests passed after eight seed byte matches",
+    "build_log": "local/profile-read-full-build.log",
+    "integration_fixture": "local/profile_read_fixture.cpp",
+    "integration_log": "local/profile-read-fixture.log",
+    "integration_checks": [
+      "copied native player and quick through real PC filesystem/decompression/Lua owner/read callbacks",
+      "isolated synthetic checkpoint forces nested manager close/read and actual Lua table import",
+      "actual two-file write/read plus isolated options.txt",
+      "ClanText string and numeric DownloadedContent entries roundtrip",
+      "keyboard writer/read/application dispatch",
+      "callback slot/order and actual installed empty DLC commit",
+      "sparse defaults, absent ClanText preservation, DLC clearing and unsigned low-shader gate",
+      "balanced borrowed global reader destruction after Lua close"
+    ],
+    "controlled_services": [
+      "UI rendering",
+      "platform and renderer effects recorded by fixture",
+      "keyboard action installation recorded by fixture",
+      "DLC base file only; engine override resolution remains external"
+    ],
+    "worker_fixtures": "All three worker fixtures recompiled and passed against combined bsp_core",
+    "worker_fixture_log": "local/profile-read-worker-fixtures.log",
+    "preserved_worker_artifacts": "local/worker-validation/profile-read-20260910e/manifest.json",
+    "preserved_artifact_count": 12,
+    "native_save_sources_unchanged": true,
+    "native_save_hashes": {
+      "player": "a3ea2cbdeab70fa3a1fd96a9e2891367628f00675ab6984cfae1926ba4619faf",
+      "quick": "585435f3964f45b797b2ec15d8d0384dd7c9a9aa8398d7a245bc8ad2df9c42e2"
+    },
+    "independent_review": "Keyboard worker checked both settings functions against assembly; Lua worker checked balanced close/reentry lifetime. No blockers.",
+    "registry_correction": "Initial combined multi-source line was dropped by mechanical registry union. Separate deferred entries now compile/link both sources; full build and runtime fixture rerun."
   },
   "annotations": "pending",
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "worker_commits": {
+    "lua_owner": "9438ac2",
+    "keyboard_restore": "9af4c4f",
+    "profile_commit": "1dec7d5"
+  },
+  "followup": [
+    "actual DoFile VFS override host",
+    "keyboard006aa090 paired-axis test and00a93750 installer/00a91e80 device resolution",
+    "runtime game/platform/renderer/content hosts and scene selection",
+    "native ABI/object allocation proof and gameplay"
+  ]
 }
