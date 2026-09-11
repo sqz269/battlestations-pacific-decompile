@@ -1,0 +1,17 @@
+[
+  {
+    "address": "00b20a80",
+    "before": {
+      "address": "00b20a80",
+      "function_name": "BSP_D3D9_TranslateResourceFlags",
+      "comment": "[BSP reconstruction 00b20a80]\nHypothesis, not a recovered symbol. Two stack arguments (engine resource flags, resource kind), RET 8, and two out-parameters in registers: EDX receives a D3DPOOL and ECX a D3DUSAGE mask (stored at 00b20b6e). Pool comes from flags & 0Fh through the jump table at 00b20b78: 0 -> D3DPOOL_DEFAULT, 1, 2, 3. Usage bits accumulate from flags & 0F00h (100h -> D3DUSAGE_DEPTHSTENCIL 2 at 00b20af8, 200h -> 4000h, 300h -> 40h, 400h -> 100h, 500h -> 80h), flags & 0F000h == 1000h -> D3DUSAGE_DYNAMIC 200h, flags & 0F0000h == 10000h -> D3DUSAGE_WRITEONLY 8, and for resource kind 3 or 5 with flags & 0FF000000h == 1000000h -> D3DUSAGE_AUTOGENMIPMAP 400h. Its one caller in this packet is the renderer virtual +F8h wrapper 00b21ec0, which forwards the usage to IDirect3D9::CheckDeviceFormat and ignores the pool. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json."
+    },
+    "after": {
+      "address": "00b20a80",
+      "old_name": "BSP_D3D9_TranslateResourceFlags",
+      "name": "BSP_D3D9_TranslateResourceFlags",
+      "evidence": "Complete 245-byte resource creation flags translator plus16-byte jump table. Original ABI ECX actual usage DWORD output, EDX actual pool DWORD output, stack captured flags/kind, RET8, no semantic result. Writes supported low-nibble0..3 pool first, never accesses unsupported pool output, always writes final usage last. Output cells may be unaligned or exactly/partially overlapping; no output read. Nibble0/kinds6or7 OR flags10000 BEFORE masked WRITEONLY equality; preexisting20000 becomes30000 and contributes no8. Usage mapping retains exact field equality, not independent-bit guesses. Complete src/native_resource_creation_flags.cpp; reports/native_resource_creation_flags_audit.json. Primary verified25 worker pins/current source/SDK and fresh live-PE261bytes, then actual frozen main-library original-entry replay:35phases/1960 literal tracebytes, seven overlap layouts, unaligned outputs, unsupported inaccessible pool and captured-input storage aliases. No entry/service bridges; all runtime original code/table postimages have only five enumerated absolute operand relocations. Actual236-byte linked main-library provider exactly matches frozen main COFF body; optimized DWORD pool store18 then mutually-exclusive final usage storesC7/E7; zero calls/output reads and unsupported path skips pool pointer load. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis; new C++ interface not original binary ABI. No surrounding resource/COM/reset/game/concurrency validation, invalid reached output storage remains outside domain."
+    },
+    "status": "applied"
+  }
+]

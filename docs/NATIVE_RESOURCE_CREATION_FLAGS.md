@@ -84,3 +84,17 @@ These checks establish the helper's reconstruction and focused native-byte
 agreement. Reached outputs still require valid four-byte backing storage; no
 concurrency, exception-recovery, device-restoration, or game-validation claim
 follows from this pure helper.
+
+## Primary integration
+
+The primary registered the source in CMake and repeated the strict Win32 build
+and both existing CTests. It rechecked 25 worker pins, current sources, the SDK
+and both fresh live-Ghidra/installed-PE spans (261 bytes). The unchanged fixture
+linked the frozen main library, SHA-256
+`7859285bd3c55666cfa1e49462fc68f886f0945f7d151aaa1ccd3dbf4088c4b2`. All 35 phases and
+1,960 literal trace bytes agree; the complete original body/table postimages
+and five declared relocations pass. The linked 236-byte provider exactly matches
+the frozen main object, with the same three DWORD stores and no calls or output
+reads. Saved Ghidra annotation preserves the previous name/comments; the full
+reconstruction ledger and refreshed export are registered. No permanent tests
+were added, and the scope limits above remain.

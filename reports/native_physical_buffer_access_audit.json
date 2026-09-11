@@ -1,0 +1,689 @@
+{
+  "schema_version": 1,
+  "packet": "native_physical_buffer_access6",
+  "status": "complete_native_bodies_strict_win32_library_byte_identical_and_original_code_COM_fixture_checked",
+  "utc": "2026-09-11T06:11:39.212244+00:00",
+  "checkout_commit": "12c62ee1b5afbf8f17273a7cb31848d38e629a6d",
+  "discovery_commit": "78212f9",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "target_verification": "Each bsp.py ghidra call verifies bsp project, /battlestationspacific.exe, language and image base before reading.",
+  "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "scope": {
+    "owned_addresses": [
+      "00b23270",
+      "00b23180",
+      "00b4b800",
+      "00b4b9b0",
+      "00b4b820",
+      "00b4b9d0"
+    ],
+    "owned_files": [
+      "include/bsp/native_physical_buffer_access.hpp",
+      "src/native_physical_buffer_access.cpp",
+      "docs/NATIVE_PHYSICAL_BUFFER_ACCESS.md",
+      "reports/native_physical_buffer_access_audit.json"
+    ],
+    "production_callback_substitutes": false,
+    "Ghidra_mutations": false,
+    "shared_CMake_changes": false,
+    "permanent_tests_added": false
+  },
+  "functions": [
+    {
+      "address": "00b23270",
+      "end_exclusive": "00b232a4",
+      "length": 52,
+      "PE_offset": 7484016,
+      "bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+      "sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+      "live_matches_installed_PE": true,
+      "assembly": [
+        "00b23270: push esi",
+        "00b23271: mov esi, ecx",
+        "00b23273: push edi",
+        "00b23274: mov edi, dword ptr [esi + 0x28]",
+        "00b23277: test edi, edi",
+        "00b23279: je 0xb2328b",
+        "00b2327b: mov eax, dword ptr [edi]",
+        "00b2327d: mov ecx, dword ptr [eax + 4]",
+        "00b23280: push edi",
+        "00b23281: call ecx",
+        "00b23283: mov edx, dword ptr [edi]",
+        "00b23285: mov eax, dword ptr [edx + 8]",
+        "00b23288: push edi",
+        "00b23289: call eax",
+        "00b2328b: mov eax, dword ptr [esi + 0x28]",
+        "00b2328e: test eax, eax",
+        "00b23290: je 0xb232a1",
+        "00b23292: mov ecx, dword ptr [eax]",
+        "00b23294: mov edx, dword ptr [ecx + 8]",
+        "00b23297: push eax",
+        "00b23298: call edx",
+        "00b2329a: mov dword ptr [esi + 0x28], 0",
+        "00b232a1: pop edi",
+        "00b232a2: pop esi",
+        "00b232a3: ret "
+      ],
+      "COFF_symbol": "?release_native_physical_vertex_buffer_for_reset_00b23270@bsp@@YIXPAX@Z",
+      "COFF_section": 6,
+      "COFF_section_name": ".text$mn",
+      "COFF_body_offset": 0,
+      "COFF_relocations": 0,
+      "COFF_matches_live_PE": true,
+      "linked_address": "004045f0",
+      "linked_provider": "bsp_core.linked:native_physical_buffer_access.obj",
+      "linked_body_matches_live_PE": true,
+      "runtime_host_address": "00b545f0",
+      "runtime_original_copy_address": "015e0000",
+      "runtime_body_and_code_postimages_match": true,
+      "runtime_code_changes": [],
+      "original_body_bridges": []
+    },
+    {
+      "address": "00b23180",
+      "end_exclusive": "00b231b4",
+      "length": 52,
+      "PE_offset": 7483776,
+      "bytes_hex": "568bf1578b7e2885ff74108b078b480457ffd18b178b420857ffd08b462885c0740f8b088b510850ffd2c74628000000005f5ec3",
+      "sha256": "13268f2010e2329b0ae1b5d7bc37c95baeb489cbc5617f02b1b7f38e1a554125",
+      "live_matches_installed_PE": true,
+      "assembly": [
+        "00b23180: push esi",
+        "00b23181: mov esi, ecx",
+        "00b23183: push edi",
+        "00b23184: mov edi, dword ptr [esi + 0x28]",
+        "00b23187: test edi, edi",
+        "00b23189: je 0xb2319b",
+        "00b2318b: mov eax, dword ptr [edi]",
+        "00b2318d: mov ecx, dword ptr [eax + 4]",
+        "00b23190: push edi",
+        "00b23191: call ecx",
+        "00b23193: mov edx, dword ptr [edi]",
+        "00b23195: mov eax, dword ptr [edx + 8]",
+        "00b23198: push edi",
+        "00b23199: call eax",
+        "00b2319b: mov eax, dword ptr [esi + 0x28]",
+        "00b2319e: test eax, eax",
+        "00b231a0: je 0xb231b1",
+        "00b231a2: mov ecx, dword ptr [eax]",
+        "00b231a4: mov edx, dword ptr [ecx + 8]",
+        "00b231a7: push eax",
+        "00b231a8: call edx",
+        "00b231aa: mov dword ptr [esi + 0x28], 0",
+        "00b231b1: pop edi",
+        "00b231b2: pop esi",
+        "00b231b3: ret "
+      ],
+      "COFF_symbol": "?release_native_physical_index_buffer_for_reset_00b23180@bsp@@YIXPAX@Z",
+      "COFF_section": 5,
+      "COFF_section_name": ".text$mn",
+      "COFF_body_offset": 0,
+      "COFF_relocations": 0,
+      "COFF_matches_live_PE": true,
+      "linked_address": "004045b0",
+      "linked_provider": "bsp_core.linked:native_physical_buffer_access.obj",
+      "linked_body_matches_live_PE": true,
+      "runtime_host_address": "00b545b0",
+      "runtime_original_copy_address": "015e0080",
+      "runtime_body_and_code_postimages_match": true,
+      "runtime_code_changes": [],
+      "original_body_bridges": []
+    },
+    {
+      "address": "00b4b800",
+      "end_exclusive": "00b4b804",
+      "length": 4,
+      "PE_offset": 7649280,
+      "bytes_hex": "8b4118c3",
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "live_matches_installed_PE": true,
+      "assembly": [
+        "00b4b800: mov eax, dword ptr [ecx + 0x18]",
+        "00b4b803: ret "
+      ],
+      "COFF_symbol": "?native_physical_index_buffer_capacity_00b4b800@bsp@@YIIPBX@Z",
+      "COFF_section": 3,
+      "COFF_section_name": ".text$mn",
+      "COFF_body_offset": 0,
+      "COFF_relocations": 0,
+      "COFF_matches_live_PE": true,
+      "linked_address": "00404590",
+      "linked_provider": "bsp_core.linked:native_physical_buffer_access.obj",
+      "linked_body_matches_live_PE": true,
+      "runtime_host_address": "00b54590",
+      "runtime_original_copy_address": "015e0100",
+      "runtime_body_and_code_postimages_match": true,
+      "runtime_code_changes": [],
+      "original_body_bridges": []
+    },
+    {
+      "address": "00b4b9b0",
+      "end_exclusive": "00b4b9b4",
+      "length": 4,
+      "PE_offset": 7649712,
+      "bytes_hex": "8b4118c3",
+      "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "live_matches_installed_PE": true,
+      "assembly": [
+        "00b4b9b0: mov eax, dword ptr [ecx + 0x18]",
+        "00b4b9b3: ret "
+      ],
+      "COFF_symbol": "?native_physical_vertex_buffer_capacity_00b4b9b0@bsp@@YIIPBX@Z",
+      "COFF_section": 4,
+      "COFF_section_name": ".text$mn",
+      "COFF_body_offset": 0,
+      "COFF_relocations": 0,
+      "COFF_matches_live_PE": true,
+      "linked_address": "004045a0",
+      "linked_provider": "bsp_core.linked:native_physical_buffer_access.obj",
+      "linked_body_matches_live_PE": true,
+      "runtime_host_address": "00b545a0",
+      "runtime_original_copy_address": "015e0180",
+      "runtime_body_and_code_postimages_match": true,
+      "runtime_code_changes": [],
+      "original_body_bridges": []
+    },
+    {
+      "address": "00b4b820",
+      "end_exclusive": "00b4b838",
+      "length": 24,
+      "PE_offset": 7649312,
+      "bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+      "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+      "live_matches_installed_PE": true,
+      "assembly": [
+        "00b4b820: push esi",
+        "00b4b821: mov esi, ecx",
+        "00b4b823: mov eax, dword ptr [esi + 0x28]",
+        "00b4b826: test eax, eax",
+        "00b4b828: je 0xb4b836",
+        "00b4b82a: mov ecx, dword ptr [eax]",
+        "00b4b82c: mov edx, dword ptr [ecx + 0x30]",
+        "00b4b82f: push eax",
+        "00b4b830: call edx",
+        "00b4b832: add dword ptr [esi + 0x20], -1",
+        "00b4b836: pop esi",
+        "00b4b837: ret "
+      ],
+      "COFF_symbol": "?unlock_native_physical_index_buffer_00b4b820@bsp@@YIXPAX@Z",
+      "COFF_section": 7,
+      "COFF_section_name": ".text$mn",
+      "COFF_body_offset": 0,
+      "COFF_relocations": 0,
+      "COFF_matches_live_PE": true,
+      "linked_address": "00404630",
+      "linked_provider": "bsp_core.linked:native_physical_buffer_access.obj",
+      "linked_body_matches_live_PE": true,
+      "runtime_host_address": "00b54630",
+      "runtime_original_copy_address": "015e0200",
+      "runtime_body_and_code_postimages_match": true,
+      "runtime_code_changes": [],
+      "original_body_bridges": []
+    },
+    {
+      "address": "00b4b9d0",
+      "end_exclusive": "00b4b9e8",
+      "length": 24,
+      "PE_offset": 7649744,
+      "bytes_hex": "568bf18b462885c0740c8b088b513050ffd2834620ff5ec3",
+      "sha256": "75b3b4e8251e08ccbb24e9bba26a18b159c0787a8c2192583fd7b23b8703cfd5",
+      "live_matches_installed_PE": true,
+      "assembly": [
+        "00b4b9d0: push esi",
+        "00b4b9d1: mov esi, ecx",
+        "00b4b9d3: mov eax, dword ptr [esi + 0x28]",
+        "00b4b9d6: test eax, eax",
+        "00b4b9d8: je 0xb4b9e6",
+        "00b4b9da: mov ecx, dword ptr [eax]",
+        "00b4b9dc: mov edx, dword ptr [ecx + 0x30]",
+        "00b4b9df: push eax",
+        "00b4b9e0: call edx",
+        "00b4b9e2: add dword ptr [esi + 0x20], -1",
+        "00b4b9e6: pop esi",
+        "00b4b9e7: ret "
+      ],
+      "COFF_symbol": "?unlock_native_physical_vertex_buffer_00b4b9d0@bsp@@YIXPAX@Z",
+      "COFF_section": 8,
+      "COFF_section_name": ".text$mn",
+      "COFF_body_offset": 0,
+      "COFF_relocations": 0,
+      "COFF_matches_live_PE": true,
+      "linked_address": "00404650",
+      "linked_provider": "bsp_core.linked:native_physical_buffer_access.obj",
+      "linked_body_matches_live_PE": true,
+      "runtime_host_address": "00b54650",
+      "runtime_original_copy_address": "015e0280",
+      "runtime_body_and_code_postimages_match": true,
+      "runtime_code_changes": [],
+      "original_body_bridges": []
+    }
+  ],
+  "complete_native_bytes": 160,
+  "distinct_COFF_symbols": 6,
+  "distinct_COFF_sections": 6,
+  "distinct_linked_and_runtime_function_addresses": 6,
+  "native_ABI": {
+    "input": "ECX actual2Ch owner; no stack arguments",
+    "return": "plain RET; capacities EAX raw DWORD+18, other four no stable C++ result contract",
+    "declarations": "naked MSVC Win32 __fastcall bodies; capacities noexcept only",
+    "local_FH3": false,
+    "normal_preserved": [
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP",
+      "ESP"
+    ]
+  },
+  "behavior": {
+    "release": "Capture COM+28, current-table AddRef then captured-object current-table Release; reload current COM+28 for final current-table Release; clear+28 only after return; no retries/cleanup if a call throws.",
+    "capacity": "Exact raw DWORD+18 without mutation.",
+    "unlock": "Capture current COM+28; null leaves current depth intact; current COM table stdcall+30 then wrapped --current_depth+20 even failed HRESULT; throwing COM prevents decrement.",
+    "COM_slots": {
+      "AddRef": "04",
+      "Release": "08",
+      "Unlock": "30"
+    },
+    "storage": "Actual borrowed2Ch owner; no semantic D3D9BufferBinding, owner construction/destruction or pool work."
+  },
+  "strict_build": {
+    "script": "scripts/build.ps1",
+    "registration": "local/physical_buffer_access_sources.cmake via CMAKE_PROJECT_INCLUDE_BEFORE",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "native_seeds_verified": 8,
+    "CTest_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "strict_library_sha256": "e0d79a41c932b3805f3556753723132b6bfac53e82f7a61038cbe12550052062"
+  },
+  "focused_fixture": {
+    "source": "local/physical_buffer_access_check.cpp",
+    "build_script": "local/build_physical_buffer_access_check.ps1",
+    "owned_translation_unit_recompiled_for_fixture": false,
+    "library": "build/physical-buffer-access-check/bsp_core.linked.lib",
+    "library_equals_strict_build": true,
+    "link_provider_for_all_six": "bsp_core.linked:native_physical_buffer_access.obj",
+    "ICF": "disabled to retain six independent symbols",
+    "original_code": "Installed PE span bytes copied unchanged into separate RX page; all branches local and calls indirect; no code bridges or relocations.",
+    "runtime_postimage_checks": "All six library bodies and all six native copies compared to pinned original bytes after all14 paired cases.",
+    "comparison": "Same actual owner/COM storage addresses reused; complete raw DWORD/state frames compared literally, without pointer-role normalization. ABI stack delta normalized to0, not an owner/COM field.",
+    "COM_endpoints": "Deterministic actual x86 stdcall vtable endpoints in ignored fixture only; production performs direct current COM forwarding.",
+    "cases": [
+      {
+        "kind": "vertex",
+        "scenario": 0,
+        "address": "00b4b9b0",
+        "DWORDs": 54,
+        "event_frames": 2,
+        "literal_host_native_equal": true,
+        "trace_sha256": "c6c43afc92ab3c1a040caff8fb0a0923a3c7dc0d6a9678731f9837df446e88c7",
+        "case": "raw_capacity"
+      },
+      {
+        "kind": "vertex",
+        "scenario": 1,
+        "address": "00b23270",
+        "DWORDs": 54,
+        "event_frames": 2,
+        "literal_host_native_equal": true,
+        "trace_sha256": "d3b9dd4c63fafa83db25d3ab44535a00aa53dafd6d873cfc839ea85d3dbf0520",
+        "case": "null_release"
+      },
+      {
+        "kind": "vertex",
+        "scenario": 2,
+        "address": "00b23270",
+        "DWORDs": 198,
+        "event_frames": 8,
+        "literal_host_native_equal": true,
+        "trace_sha256": "73e205aa25d1a7a3db6bf0885edd068cf8a8d638a231d534b743c0cfdf7ee762",
+        "case": "current_COM_table_and_owner_release_chain"
+      },
+      {
+        "kind": "vertex",
+        "scenario": 3,
+        "address": "00b23270",
+        "DWORDs": 217,
+        "event_frames": 9,
+        "literal_host_native_equal": true,
+        "trace_sha256": "40a34c14aed473bff2ed9d90c430e0a6163e2c62a8a6a93270abfbb1195d6ddc",
+        "case": "final_Release_throws_after_replacing_owner_COM"
+      },
+      {
+        "kind": "vertex",
+        "scenario": 4,
+        "address": "00b4b9d0",
+        "DWORDs": 54,
+        "event_frames": 2,
+        "literal_host_native_equal": true,
+        "trace_sha256": "98cb2670f39e753449bad0ef38db1e0f2d03b2ed6f415c0e44ef8f29f000b994",
+        "case": "null_Unlock"
+      },
+      {
+        "kind": "vertex",
+        "scenario": 5,
+        "address": "00b4b9d0",
+        "DWORDs": 102,
+        "event_frames": 4,
+        "literal_host_native_equal": true,
+        "trace_sha256": "65a49a5239ee385cfceb4cc45b22956050a3760744a46afd99f526ad007a0406",
+        "case": "E_FAIL_Unlock_mutates_current_depth_to_zero_before_wrap"
+      },
+      {
+        "kind": "vertex",
+        "scenario": 6,
+        "address": "00b4b9d0",
+        "DWORDs": 121,
+        "event_frames": 5,
+        "literal_host_native_equal": true,
+        "trace_sha256": "75f38707b181b17be0d615a7cb91647cef0dd246129cfbe7ad6bb16050b346dc",
+        "case": "Unlock_throws_after_mutating_current_depth"
+      },
+      {
+        "kind": "index",
+        "scenario": 0,
+        "address": "00b4b800",
+        "DWORDs": 54,
+        "event_frames": 2,
+        "literal_host_native_equal": true,
+        "trace_sha256": "c6c43afc92ab3c1a040caff8fb0a0923a3c7dc0d6a9678731f9837df446e88c7",
+        "case": "raw_capacity"
+      },
+      {
+        "kind": "index",
+        "scenario": 1,
+        "address": "00b23180",
+        "DWORDs": 54,
+        "event_frames": 2,
+        "literal_host_native_equal": true,
+        "trace_sha256": "d3b9dd4c63fafa83db25d3ab44535a00aa53dafd6d873cfc839ea85d3dbf0520",
+        "case": "null_release"
+      },
+      {
+        "kind": "index",
+        "scenario": 2,
+        "address": "00b23180",
+        "DWORDs": 198,
+        "event_frames": 8,
+        "literal_host_native_equal": true,
+        "trace_sha256": "73e205aa25d1a7a3db6bf0885edd068cf8a8d638a231d534b743c0cfdf7ee762",
+        "case": "current_COM_table_and_owner_release_chain"
+      },
+      {
+        "kind": "index",
+        "scenario": 3,
+        "address": "00b23180",
+        "DWORDs": 217,
+        "event_frames": 9,
+        "literal_host_native_equal": true,
+        "trace_sha256": "40a34c14aed473bff2ed9d90c430e0a6163e2c62a8a6a93270abfbb1195d6ddc",
+        "case": "final_Release_throws_after_replacing_owner_COM"
+      },
+      {
+        "kind": "index",
+        "scenario": 4,
+        "address": "00b4b820",
+        "DWORDs": 54,
+        "event_frames": 2,
+        "literal_host_native_equal": true,
+        "trace_sha256": "98cb2670f39e753449bad0ef38db1e0f2d03b2ed6f415c0e44ef8f29f000b994",
+        "case": "null_Unlock"
+      },
+      {
+        "kind": "index",
+        "scenario": 5,
+        "address": "00b4b820",
+        "DWORDs": 102,
+        "event_frames": 4,
+        "literal_host_native_equal": true,
+        "trace_sha256": "65a49a5239ee385cfceb4cc45b22956050a3760744a46afd99f526ad007a0406",
+        "case": "E_FAIL_Unlock_mutates_current_depth_to_zero_before_wrap"
+      },
+      {
+        "kind": "index",
+        "scenario": 6,
+        "address": "00b4b820",
+        "DWORDs": 121,
+        "event_frames": 5,
+        "literal_host_native_equal": true,
+        "trace_sha256": "75f38707b181b17be0d615a7cb91647cef0dd246129cfbe7ad6bb16050b346dc",
+        "case": "Unlock_throws_after_mutating_current_depth"
+      }
+    ],
+    "paired_cases": 14,
+    "matching_DWORDs": 1600,
+    "matching_event_frames": 64,
+    "normal_return_ABI_frames_per_implementation": 10,
+    "throw_cases_per_implementation": 4
+  },
+  "SDK": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+      "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+      "lines": [
+        1478,
+        1497
+      ],
+      "excerpt": "DECLARE_INTERFACE_(IDirect3DVertexBuffer9, IDirect3DResource9)\n{\n    /*** IUnknown methods ***/\n    STDMETHOD(QueryInterface)(THIS_ REFIID riid, void** ppvObj) PURE;\n    STDMETHOD_(ULONG,AddRef)(THIS) PURE;\n    STDMETHOD_(ULONG,Release)(THIS) PURE;\n\n    /*** IDirect3DResource9 methods ***/\n    STDMETHOD(GetDevice)(THIS_ IDirect3DDevice9** ppDevice) PURE;\n    STDMETHOD(SetPrivateData)(THIS_ REFGUID refguid,CONST void* pData,DWORD SizeOfData,DWORD Flags) PURE;\n    STDMETHOD(GetPrivateData)(THIS_ REFGUID refguid,void* pData,DWORD* pSizeOfData) PURE;\n    STDMETHOD(FreePrivateData)(THIS_ REFGUID refguid) PURE;\n    STDMETHOD_(DWORD, SetPriority)(THIS_ DWORD PriorityNew) PURE;\n    STDMETHOD_(DWORD, GetPriority)(THIS) PURE;\n    STDMETHOD_(void, PreLoad)(THIS) PURE;\n    STDMETHOD_(D3DRESOURCETYPE, GetType)(THIS) PURE;\n    STDMETHOD(Lock)(THIS_ UINT OffsetToLock,UINT SizeToLock,void** ppbData,DWORD Flags) PURE;\n    STDMETHOD(Unlock)(THIS) PURE;\n    STDMETHOD(GetDesc)(THIS_ D3DVERTEXBUFFER_DESC *pDesc) PURE;\n    "
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+      "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+      "lines": [
+        1550,
+        1569
+      ],
+      "excerpt": "DECLARE_INTERFACE_(IDirect3DIndexBuffer9, IDirect3DResource9)\n{\n    /*** IUnknown methods ***/\n    STDMETHOD(QueryInterface)(THIS_ REFIID riid, void** ppvObj) PURE;\n    STDMETHOD_(ULONG,AddRef)(THIS) PURE;\n    STDMETHOD_(ULONG,Release)(THIS) PURE;\n\n    /*** IDirect3DResource9 methods ***/\n    STDMETHOD(GetDevice)(THIS_ IDirect3DDevice9** ppDevice) PURE;\n    STDMETHOD(SetPrivateData)(THIS_ REFGUID refguid,CONST void* pData,DWORD SizeOfData,DWORD Flags) PURE;\n    STDMETHOD(GetPrivateData)(THIS_ REFGUID refguid,void* pData,DWORD* pSizeOfData) PURE;\n    STDMETHOD(FreePrivateData)(THIS_ REFGUID refguid) PURE;\n    STDMETHOD_(DWORD, SetPriority)(THIS_ DWORD PriorityNew) PURE;\n    STDMETHOD_(DWORD, GetPriority)(THIS) PURE;\n    STDMETHOD_(void, PreLoad)(THIS) PURE;\n    STDMETHOD_(D3DRESOURCETYPE, GetType)(THIS) PURE;\n    STDMETHOD(Lock)(THIS_ UINT OffsetToLock,UINT SizeToLock,void** ppbData,DWORD Flags) PURE;\n    STDMETHOD(Unlock)(THIS) PURE;\n    STDMETHOD(GetDesc)(THIS_ D3DINDEXBUFFER_DESC *pDesc) PURE;\n    "
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "include/bsp/native_physical_buffer_access.hpp",
+      "bytes": 1430,
+      "sha256": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5"
+    },
+    {
+      "path": "src/native_physical_buffer_access.cpp",
+      "bytes": 3020,
+      "sha256": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c"
+    },
+    {
+      "path": "docs/NATIVE_PHYSICAL_BUFFER_ACCESS.md",
+      "bytes": 6358,
+      "sha256": "de58a276b23b34b21d93bcad2fab91665a7259c47ec2f59df7f8b7dfbb0447a6"
+    },
+    {
+      "path": "local/prepare_physical_buffer_access.py",
+      "bytes": 3057,
+      "sha256": "ddc920f460e5e921fd682d860d1301dc1893c5608c47cc1ea63ca6866a117fe0"
+    },
+    {
+      "path": "local/physical_buffer_access_preparation.json",
+      "bytes": 7064,
+      "sha256": "1b16661b553a56ee0762292254f96797a0bb209a945021870e3ef10a4d2e1fa2"
+    },
+    {
+      "path": "local/physical_buffer_access_spans.hpp",
+      "bytes": 1492,
+      "sha256": "53109e4a00464021a90701b092f1fa36a4528a95fae96a7710e21a8fa6f612c1"
+    },
+    {
+      "path": "local/physical_buffer_access_sources.cmake",
+      "bytes": 129,
+      "sha256": "f70cfe14c0ca8b3bc3ac8389197dab17486873d074ce4e316b6de9a1c824f736"
+    },
+    {
+      "path": "local/build_physical_buffer_access.ps1",
+      "bytes": 1142,
+      "sha256": "200b0159d523b6cd5ec34e1bdcc1d429ddbdf1af424badf303f0e0e134bdd5d5"
+    },
+    {
+      "path": "local/build_physical_buffer_access_check.ps1",
+      "bytes": 2362,
+      "sha256": "eb6f89f986e8ae0c54f91bf96af520a34e77f3bc9a1bbac772999fe53e5e5238"
+    },
+    {
+      "path": "local/physical_buffer_access_check.cpp",
+      "bytes": 9777,
+      "sha256": "a7147af4d08a4354633b43b276b29fcb982ef549194db35ef49ed57e6bef92f9"
+    },
+    {
+      "path": "local/write_physical_buffer_access_audit.py",
+      "bytes": 11207,
+      "sha256": "fd961a8c88ed80e93d50cdf8412a5f8b5e859cba8477744404f70aac5675234b"
+    },
+    {
+      "path": "local/physical_buffer_access_build.log",
+      "bytes": 15724,
+      "sha256": "44b62e49f9abd1155a92765734463abfb7b2b44332474a4defbccbe494629f5d"
+    },
+    {
+      "path": "local/physical_buffer_access_check.log",
+      "bytes": 1574,
+      "sha256": "46673221686e712281a274039ac762123f0b0ae3f06d1f292c9e8479c9bb07da"
+    },
+    {
+      "path": "local/physical_buffer_access_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 27021912,
+      "sha256": "e0d79a41c932b3805f3556753723132b6bfac53e82f7a61038cbe12550052062"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_physical_buffer_access.obj",
+      "bytes": 1748,
+      "sha256": "7858bd5b8eb8d71d0b7a419b6b20c4dceaf6aec4e38c30b0c0670c339828c1fd"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 103811,
+      "sha256": "39b148827a30a7af240bf2d695cdfdc051c36ac0c69f137e5f3f89fd78d93534"
+    },
+    {
+      "path": "build/physical-buffer-access-check/bsp_core.linked.lib",
+      "bytes": 27021912,
+      "sha256": "e0d79a41c932b3805f3556753723132b6bfac53e82f7a61038cbe12550052062"
+    },
+    {
+      "path": "build/physical-buffer-access-check/physical_buffer_access_check.exe",
+      "bytes": 32768,
+      "sha256": "15d3255d38d2098ac7e21074ecd30025ec12a27b2a72634db909d7e074e9b0f9"
+    },
+    {
+      "path": "build/physical-buffer-access-check/physical_buffer_access_check.obj",
+      "bytes": 139626,
+      "sha256": "7bf07942c937eb81c8b7dab878b5e1ffa822c459bed17e0479caae07764f8f1b"
+    },
+    {
+      "path": "build/physical-buffer-access-check/physical_buffer_access_check.map",
+      "bytes": 65434,
+      "sha256": "560f1fd05e3659e7acb03e091c1d0ead243fc51e4bd3bf0242ee01a3df0ab8d7"
+    },
+    {
+      "path": "build/physical-buffer-access-check/physical_buffer_access_symbols.txt",
+      "bytes": 3186,
+      "sha256": "cd97432aafbb919f97625036055c364c11d0f09efe424075c0f36ea1e9050d78"
+    },
+    {
+      "path": "build/physical-buffer-access-check/physical_buffer_access_disasm.txt",
+      "bytes": 5635,
+      "sha256": "44d7eb9f5a2ad9e76bfefed04e4a1484462569f59805ce766fb0edf481f4aaef"
+    },
+    {
+      "path": "build/physical-buffer-access-check/physical_buffer_access_traces.bin",
+      "bytes": 12968,
+      "sha256": "79ca008ab499e3f6dc5d55bff5e167332bd4bced2c4c54d757002c09b6e93a68"
+    },
+    {
+      "path": "build/physical-buffer-access-check/build_physical_buffer_access.cmd",
+      "bytes": 1301,
+      "sha256": "f8fd1ddacf366f27bcd1f78c4a344254bfc37ef6931164728b81ef3bca9e665b"
+    },
+    {
+      "path": "docs/NATIVE_BUFFER_DEVICE_RESET_NEXT.md",
+      "bytes": 14881,
+      "sha256": "7566a1420f3fb3ced69939f8847e13ed5b0b17d9ee3f369fb4008df539b5e36e"
+    },
+    {
+      "path": "reports/native_buffer_device_reset_next.json",
+      "bytes": 98684,
+      "sha256": "3b19eee001ee18478feecba87bbfe789a1c6eb8b6caec7007060eef1a8735d76"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 55606,
+      "sha256": "61af8bf3c2ff60acb6af58494c9d287b8fc6613ecd8cd5de3c0cee668c787486"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/physical_buffer_access_live_00b23270.txt",
+      "sha256": "f362fa2ead5c0c5874964840a8f93fd39141b47ca53e9d6b2f2f4dd24a1c7ba5"
+    },
+    {
+      "path": "local/physical_buffer_access_live_00b23180.txt",
+      "sha256": "3a14e046f7cce3868e23737707337f80524c381e7f246436aaceb81d44ba3db3"
+    },
+    {
+      "path": "local/physical_buffer_access_live_00b4b800.txt",
+      "sha256": "9cd8ef83e53133d6915b65f8273d1d61a86e41c21e5f85c112bc5e2fb9753d7a"
+    },
+    {
+      "path": "local/physical_buffer_access_live_00b4b9b0.txt",
+      "sha256": "fbdb6586a0ab93d654c156936c5b59cbffad9c1538fb1e7eb07d308850ceaf19"
+    },
+    {
+      "path": "local/physical_buffer_access_live_00b4b820.txt",
+      "sha256": "db3bcd615f29dcbd3982fc734c08ef8d83bd83b46a5f0119b32dc293123fad81"
+    },
+    {
+      "path": "local/physical_buffer_access_live_00b4b9d0.txt",
+      "sha256": "356d6066197d5a1c0ea365764bb10a6673da0647b5db56f6544cbf439d9bc404"
+    },
+    {
+      "path": "local/physical_buffer_access_proto.txt",
+      "sha256": "ca26987f26b229a17ef4c9b58b306e1a47e64d7039a24f2155e954c37fad5527"
+    },
+    {
+      "path": "local/physical_buffer_access_flow.txt",
+      "sha256": "077795d5d1dcacc9dd5604fc9ef009cd0f6e0f13ecd15e1fed3d571735d771cd"
+    }
+  ],
+  "artifact_hash_verification": {
+    "all_match": true,
+    "count": 41
+  },
+  "limitations": [
+    "These six machine entry contracts are byte-identical; this does not make the surrounding reconstruction a full game-compatible replacement.",
+    "Deterministic fixture COM endpoints are not a real D3D9 GPU/device reset or game validation.",
+    "Physical Lock/Attach/GetCOM and logical save/restore are separate providers; semantic wrapper source is unchanged.",
+    "No Ghidra annotations, shared ledger registration or final primary integration is performed by this worker."
+  ]
+}
