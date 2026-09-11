@@ -1,0 +1,303 @@
+{
+  "packet": "orch3_xlive_ipc_f",
+  "source": "src/xlive_ipc.cpp",
+  "header": "include/bsp/xlive_ipc.hpp",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live_count": 63018,
+    "mode": "read-only",
+    "mutated": false,
+    "evidence": "capped decompile/disasm/export/proto/flow queries and disasm-raw disk bytes; final missing starts rechecked"
+  },
+  "functions": [
+    {
+      "address": "00a4bc80",
+      "name": "xlive_ipc_last_error_00a4bc80",
+      "reviewed_name": "BSP_XLiveIpc_LastError",
+      "previous_function_name": "FUN_00a4bc80",
+      "native_abi": "RET; EAX=DWORD GetLastError or 507h when zero",
+      "native_last_instruction": "00a4bc8f",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a4bc8f",
+      "native_exclusive_end": "00a4bc90",
+      "notes": "Raw Win32 error helper; no HRESULT conversion here."
+    },
+    {
+      "address": "00a4bd40",
+      "name": "encode_xlive_ipc_probe_00a4bd40",
+      "reviewed_name": "BSP_XLiveIpc_EncodeProbe",
+      "previous_function_name": null,
+      "native_abi": "__stdcall(buffer, uint32 capacity*, owner); RET12; EAX=HRESULT",
+      "native_last_instruction": "00a4bd75",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a4bd77",
+      "native_exclusive_end": "00a4bd78",
+      "notes": "Capacity>=8 writes {8,counter+27h}, increments unsigned counter, phase3. Does not change pointed capacity. Short capacity -> 8007007A without writes."
+    },
+    {
+      "address": "00a4bd80",
+      "name": "decode_xlive_ipc_probe_00a4bd80",
+      "reviewed_name": "BSP_XLiveIpc_DecodeProbe",
+      "previous_function_name": null,
+      "native_abi": "__stdcall(buffer, uint32 bytes, owner); RET12; EAX=HRESULT",
+      "native_last_instruction": "00a4bdaf",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a4bdb1",
+      "native_exclusive_end": "00a4bdb2",
+      "notes": "Require size8, DWORD8 marker and complemented second DWORD equal current counter; success phase1, failure E_UNEXPECTED without state change."
+    },
+    {
+      "address": "00a4bde0",
+      "name": "destroy_xlive_ipc_00a4bde0",
+      "reviewed_name": "BSP_XLiveIpc_Destroy",
+      "previous_function_name": "FUN_00a4bde0",
+      "native_abi": "ECX=2Ch IPC owner; RET",
+      "native_last_instruction": "00a4be4a",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a4be4a",
+      "native_exclusive_end": "00a4be4b",
+      "notes": "Signal stop event, wait1000 and ignore result, close/null thread then pipe/event, free/null receive/send buffers and free owner. Native wait does not ensure worker exit."
+    },
+    {
+      "address": "00a4be50",
+      "name": "run_xlive_ipc_loop_00a4be50",
+      "reviewed_name": "BSP_XLiveIpc_RunLoop",
+      "previous_function_name": "FUN_00a4be50",
+      "native_abi": "ECX=IPC owner; RET; EAX=signed HRESULT",
+      "native_last_instruction": "00a4bfdf",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a4bfdf",
+      "native_exclusive_end": "00a4bfe0",
+      "notes": "Full phase1..7 worker: Sleep14897/system-time discard, synchronous encode callback, pending send/wait exact length, pending receive/wait, exact frame length, synchronous decode callback. Preserve EDI reset only after pending I/O; invalid phase E_UNEXPECTED."
+    },
+    {
+      "address": "00a4c000",
+      "name": "run_xlive_ipc_thread_00a4c000",
+      "reviewed_name": "BSP_XLiveIpc_ThreadEntry",
+      "previous_function_name": null,
+      "native_abi": "DWORD __stdcall(void* owner); RET4",
+      "native_last_instruction": "00a4c029",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a4c02b",
+      "native_exclusive_end": "00a4c02c",
+      "notes": "Run worker loop; only E_ABORT avoids TerminateProcess(GetCurrentProcess(),8000FFFF). Original loop result is returned if termination API returns. Real kernel32 IAT operations, no dummy thread."
+    },
+    {
+      "address": "00a4c030",
+      "name": "create_xlive_ipc_00a4c030",
+      "reviewed_name": "BSP_XLiveIpc_Create",
+      "previous_function_name": "FUN_00a4c030",
+      "native_abi": "ECX=output pointer; RET; EAX=signed HRESULT",
+      "native_last_instruction": "00a4c224",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a4c224",
+      "native_exclusive_end": "00a4c225",
+      "notes": "Null output E_INVALIDARG; initial nothrow allocation failure null/E_OUTOFMEMORY. Preserve +14/+20 raw preimages, create manual-reset event, open pipe, query+allocate bounded frame buffers, start real worker before publishing output. All later failures cleanup and _exit(0); hidden post-free call at A4C20D is genuinely nonreturning."
+    }
+  ],
+  "missing_function_starts": [
+    {
+      "address": "00a4bd40",
+      "native_last_instruction": "00a4bd75",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a4bd77",
+      "native_exclusive_end": "00a4bd78"
+    },
+    {
+      "address": "00a4bd80",
+      "native_last_instruction": "00a4bdaf",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a4bdb1",
+      "native_exclusive_end": "00a4bdb2"
+    },
+    {
+      "address": "00a4c000",
+      "native_last_instruction": "00a4c029",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a4c02b",
+      "native_exclusive_end": "00a4c02c"
+    }
+  ],
+  "false_no_return_gaps": [
+    {
+      "function": "00a4c030",
+      "call": "00a4c1e5",
+      "callee": "00bf6989",
+      "start": "00a4c1ea",
+      "length": 6,
+      "inclusive_end": "00a4c1ef",
+      "exclusive_end": "00a4c1f0",
+      "instructions": "ADD ESP,4; MOV [ESI+C],EBX"
+    },
+    {
+      "function": "00a4c030",
+      "call": "00a4c1f8",
+      "callee": "00bf6989",
+      "start": "00a4c1fd",
+      "length": 6,
+      "inclusive_end": "00a4c202",
+      "exclusive_end": "00a4c203",
+      "instructions": "ADD ESP,4; MOV [ESI+18],EBX"
+    },
+    {
+      "function": "00a4c030",
+      "call": "00a4c204",
+      "callee": "00bf65ac",
+      "start": "00a4c209",
+      "length": 9,
+      "inclusive_end": "00a4c211",
+      "exclusive_end": "00a4c212",
+      "instructions": "ADD ESP,4; PUSH EBX(0); CALL _exit(0) at A4C20D"
+    },
+    {
+      "function": "00a4bde0",
+      "call": "00a4be2a",
+      "callee": "00bf6989",
+      "start": "00a4be2f",
+      "length": 25,
+      "inclusive_end": "00a4be47",
+      "exclusive_end": "00a4be48",
+      "instructions": "load/send-buffer; clear receive pointer; free send at A4BE36; clear send pointer; free owner at A4BE3F; ADD ESP,C; POP EDI",
+      "additional_hidden_free_calls": [
+        "00a4be36",
+        "00a4be3f"
+      ]
+    }
+  ],
+  "parent_repair_commands": [
+    "python tools/ghidra_define_function.py 00a4bd40 00a4bd78 00a4bd80 00a4bdb2 00a4c000 00a4c02c --record reports/orch3_xlive_ipc_definitions.json",
+    "python tools/bsp.py ghidra flow 00a4c030 --apply",
+    "python tools/bsp.py ghidra flow 00a4bde0 --apply"
+  ],
+  "repair_caveats": [
+    "Parent only after lease release, using standard write locks; refresh exports afterward.",
+    "A4BE2F..47 contains further frees A4BE36/A4BE3F; recheck flow after initial repair and clear any newly exposed false no-return sites.",
+    "A4C20D calls _exit(0) and is genuinely nonreturning. Do not invent normal fallthrough into the success block at A4C212.",
+    "No entry is requested at an interior worker switch block or callback branch; three missing starts are direct callback/thread addresses in CALL/CreateThread arguments."
+  ],
+  "linked_operation_provenance": {
+    "classification": "verified named-pipe functionality; library/vendor provenance uncertain",
+    "names": "PIPEIPC_* are analyst-assigned medium block_pipe_ipc tags, not recovered vendor symbols",
+    "direct_body_evidence": [
+      "A4C0EA direct CALL A5DE34; A5DE34 direct body calls A5E844 and RET12",
+      "A5DF96/A5DFCE direct validation wrappers call A5F204/A5F230 and RET12",
+      "A5E055/A5E09E direct wrappers call A5F6C0/A5F7C5; no IAT forwarding"
+    ],
+    "behavior_evidence": [
+      "A5E844 formats \\\\.\\pipe\\%08x, uses CreateFileW/SetNamedPipeHandleState and creates events",
+      "A5F204/A5F230 add48h to payload length below3B9h",
+      "A5F6C0/A5F7C5 invoke callbacks after48h envelope and contain crypto/state operations including CryptGenRandom"
+    ],
+    "boundary": "Ten genuine operations required by XLiveIpcPipeHost. They remain unreconstructed, not exempt from future reconstruction due to their descriptive names."
+  },
+  "thread_iat": {
+    "00ce2228": {
+      "name": "GetCurrentProcess",
+      "import_name_rva": "00a05714",
+      "import_name_va": "00e05714"
+    },
+    "00ce2224": {
+      "name": "TerminateProcess",
+      "import_name_rva": "00a05700",
+      "import_name_va": "00e05700"
+    }
+  },
+  "followup_packets": [
+    {
+      "candidate": "xlive_pipe_io",
+      "addresses": [
+        "00a5deaa",
+        "00a5dee8",
+        "00a5df20",
+        "00a5df5e",
+        "00a5e1f7",
+        "00a5e28b",
+        "00a5e31f",
+        "00a5e7e6",
+        "00a5e815"
+      ],
+      "files": [
+        "include/bsp/xlive_pipe_io.hpp",
+        "src/xlive_pipe_io.cpp",
+        "docs/XLIVE_PIPE_IO.md",
+        "reports/xlive_pipe_io.json"
+      ],
+      "dependencies": "Uses same retained30h pipe owner as transport; agree canonical shared state before parallel implementation."
+    },
+    {
+      "candidate": "xlive_pipe_framing",
+      "addresses": [
+        "00a5df96",
+        "00a5dfce",
+        "00a5e055",
+        "00a5e09e",
+        "00a5f204",
+        "00a5f230",
+        "00a5f6c0",
+        "00a5f7c5"
+      ],
+      "files": [
+        "include/bsp/xlive_pipe_framing.hpp",
+        "src/xlive_pipe_framing.cpp",
+        "docs/XLIVE_PIPE_FRAMING.md",
+        "reports/xlive_pipe_framing.json"
+      ],
+      "dependencies": [
+        "00a5ee0d",
+        "00a5ee78",
+        "00a5ef36",
+        "00a5efa1",
+        "00a5f020",
+        "00a5f25c",
+        "00a5f2a4",
+        "00a5f397",
+        "00a5fa5a"
+      ]
+    },
+    {
+      "candidate": "xlive_pipe_transport",
+      "addresses": [
+        "00a5de34",
+        "00a5de68",
+        "00a5e145",
+        "00a5e710",
+        "00a5e844"
+      ],
+      "files": [
+        "include/bsp/xlive_pipe_transport.hpp",
+        "src/xlive_pipe_transport.cpp",
+        "docs/XLIVE_PIPE_TRANSPORT.md",
+        "reports/xlive_pipe_transport.json"
+      ],
+      "dependencies": [
+        "00a5e3d0",
+        "00a5e557",
+        "00a5e6cd",
+        "00a5f371",
+        "00a5f416"
+      ],
+      "ownership_note": "Identity lookup, protocol lifetime and framing subobject need explicit leases/ownership; caller metadata has stale edges and must be checked against assembly."
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release scripts/build.ps1 passed; local/xlive-ipc-final-build.log",
+    "ctests": "2/2 passed reconstructed_math and native_math_differential",
+    "verify_seeds": "8/8 matched disk/Ghidra; local/xlive-ipc-seeds.json",
+    "fixture": "Passed one ignored local/xlive_ipc_fixture.cpp via local/run_xlive_ipc_fixture.cmd; local/xlive-ipc-fixture.log",
+    "fixture_scope": "synchronous real thread entry with scripted hosts; full phase cycle and actual callbacks; positive success-result preservation; count preimages; output publication after thread create; negative allocation and fatal full-cleanup path; 1000ms wait timeout ignored; unexpected loop result requests termination, E_ABORT does not",
+    "ipc_endpoints_started": false,
+    "threads_created": false,
+    "process_exit_or_termination_invoked": false,
+    "live_dll_tested": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "domain_limits": [
+    "Native destruction ignores one-second wait result while phase1 may sleep14897ms; surviving worker can use freed memory. No invented native join or timing fix. Safe host lifetime must be independently established.",
+    "Host context pointers are extra projection data, stable for worker lifetime; original allocation size is2Ch and native count fields+14/+20 are not initialized.",
+    "Real Win32 system host provided, but no replacement linked framing/named-pipe implementation.",
+    "Valid retained frame buffers and successful output-count contracts required; unavailable/invalid memory is not fabricated.",
+    "No game, DLL, transport, cryptographic framing or binary ABI validation claimed."
+  ]
+}
