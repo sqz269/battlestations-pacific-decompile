@@ -6035,8 +6035,8 @@
       "id": "native_renderer_indexed_draw3",
       "packet": "native_renderer_indexed_draw3",
       "worker": "main",
-      "done": false,
-      "state": "complete_actual_storage_source_main_Win32_build_CTests_passed_native_fixture_pending",
+      "done": true,
+      "state": "complete_actual_storage_primary_main_library_original_bodies_and_HAL_draw_fixture_checked",
       "source_ready": true,
       "function_addresses": [
         "00b24010",
@@ -6051,6 +6051,75 @@
       ],
       "scope": "Complete raw indexed draw with inhibit/lost gates, discarded viewport-address leaf, native guard/mode branches, concrete borrowed logical count getter and current real DIP; no stream owner dependency.",
       "evidence": "reports/native_renderer_indexed_draw_audit.json"
+    },
+    {
+      "id": "orch4_effect_name_index_k",
+      "packet": "orch4_effect_name_index_k",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00871750",
+        "00cdeb00",
+        "004bf370",
+        "00505ba0",
+        "00505340",
+        "00504bd0",
+        "00502170",
+        "0058d860",
+        "0058b520",
+        "00b65f80"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_name_index.hpp",
+        "src/gameplay_effect_name_index.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_name_index.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "validated_revision": "14916ec1347481ec28e5d493b34cfcd275b0d7dc"
+    },
+    {
+      "id": "native_plane_set4",
+      "packet": "native_plane_set4",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_storage_primary_main_library_original_bodies_identical_and_strict_Win32_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00b250b0",
+        "00b65080",
+        "00b656f0",
+        "00b65700"
+      ],
+      "code_ownership": [
+        "src/native_plane_set.cpp",
+        "include/bsp/native_plane_set.hpp",
+        "docs/NATIVE_PLANE_SET.md",
+        "reports/native_plane_set_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete raw plane-set sixteen-record x87 copy, count, wrapped plane pointer and raw flags; full original instruction identity.",
+      "evidence": "reports/native_plane_set_audit.json"
+    },
+    {
+      "id": "native_camera_matrix_copy1",
+      "packet": "native_camera_matrix_copy1",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_entry_strict_main_Win32_and_full_original_COFF_identity_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "004134f0"
+      ],
+      "code_ownership": [
+        "src/native_camera_matrix_copy.cpp",
+        "include/bsp/native_camera_matrix_copy.hpp",
+        "docs/NATIVE_CAMERA_MATRIX_COPY.md",
+        "reports/native_camera_matrix_copy_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete raw 16-coefficient x87 matrix copy entry; full original/COFF identity without new fixture.",
+      "evidence": "reports/native_camera_matrix_copy_audit.json"
     }
   ],
   "snapshot_after_analysis": {

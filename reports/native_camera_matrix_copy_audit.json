@@ -1,0 +1,272 @@
+{
+  "packet": "native_camera_matrix_copy1",
+  "status": "complete_raw_entry_strict_main_Win32_and_full_original_COFF_identity_checked",
+  "address": "004134f0",
+  "source": "src/native_camera_matrix_copy.cpp",
+  "cpp_symbol": "bsp::copy_native_camera_matrix_004134f0",
+  "original_abi": "ECX destination, stack source, RET4, EAX retains destination",
+  "native_end_exclusive": "00413557",
+  "raw_interface": "MSVC Win32 fastcall void* destination, unused EDX, const void* source; no C++ array overlay",
+  "verification": {
+    "utc": "2026-09-11T16:39:30.144413+00:00",
+    "capture": {
+      "utc": "2026-09-11T16:37:43.618596+00:00",
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "address": "004134f0",
+      "native_end_exclusive": "00413557",
+      "length": 103,
+      "bytes_hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "fresh_guarded_live_PE_equal": true,
+      "prototype": "004134f0 BSP_Matrix_Copy4x4X87  undefined BSP_Matrix_Copy4x4X87(void)  body 004134f0 - 00413556\n"
+    },
+    "verified_seeds": [
+      {
+        "address": "00401170",
+        "length": 28,
+        "matches_disk": true,
+        "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+        "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+      },
+      {
+        "address": "00401c20",
+        "length": 47,
+        "matches_disk": true,
+        "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+        "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+      },
+      {
+        "address": "00401cb0",
+        "length": 25,
+        "matches_disk": true,
+        "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+        "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+      },
+      {
+        "address": "00401cd0",
+        "length": 29,
+        "matches_disk": true,
+        "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+        "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+      },
+      {
+        "address": "00401cf0",
+        "length": 25,
+        "matches_disk": true,
+        "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+        "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+      },
+      {
+        "address": "00bf0cf0",
+        "length": 46,
+        "matches_disk": true,
+        "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+        "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+      },
+      {
+        "address": "00bf0d20",
+        "length": 207,
+        "matches_disk": true,
+        "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+        "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+      },
+      {
+        "address": "00ba2c20",
+        "length": 94,
+        "matches_disk": true,
+        "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+        "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+      }
+    ],
+    "strict_main_build": {
+      "passed": true,
+      "CTests_passed": 2,
+      "permanent_tests_added": false
+    },
+    "complete_COFF_original_identity": {
+      "symbol": {
+        "name": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32
+      },
+      "section": {
+        "index": 3,
+        "size": 103,
+        "raw": 411,
+        "reloc": 0,
+        "count": 0,
+        "name": ".text$mn"
+      },
+      "bytes": 103,
+      "bytes_hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "relocations": [],
+      "every_original_instruction_identical": true
+    },
+    "exact_archive_member": {
+      "name": "bsp_core.dir\\Release\\native_camera_matrix_copy.obj",
+      "offset": 28960014,
+      "bytes": 804,
+      "sha256": "f88bad496b79e5e3a5742ed413f3aaad4f26ddcba8fa24db9417792109b10bd1"
+    },
+    "artifacts": [
+      {
+        "path": "local/camera_matrix_copy/frozen/bsp_core.lib",
+        "bytes": 35805372,
+        "sha256": "e7e8df70936bf4bebdfa1cb25d153199cc937bb26f64a883718e9f7921ecd6f0"
+      },
+      {
+        "path": "local/camera_matrix_copy/frozen/native_camera_matrix_copy.obj",
+        "bytes": 804,
+        "sha256": "f88bad496b79e5e3a5742ed413f3aaad4f26ddcba8fa24db9417792109b10bd1"
+      },
+      {
+        "path": "local/camera_matrix_copy/frozen/native_camera_matrix_copy.cpp",
+        "bytes": 1626,
+        "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+      },
+      {
+        "path": "local/camera_matrix_copy/frozen/native_camera_matrix_copy.hpp",
+        "bytes": 606,
+        "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+      },
+      {
+        "path": "local/camera_matrix_copy/frozen/strict_build.log",
+        "bytes": 2030,
+        "sha256": "d1b35e6460b0ca70af1d83d16ec8552bdd046f8884ba1092aea4d0a64c8f23d8"
+      },
+      {
+        "path": "local/camera_matrix_copy/frozen/CL.command.1.tlog",
+        "bytes": 727434,
+        "sha256": "f137b68eba57949940232bee7cbf3d418e0dc40230e68d6d7600da9f3775d4c6"
+      },
+      {
+        "path": "local/camera_matrix_copy/coff_provenance.py",
+        "bytes": 2331,
+        "sha256": "0bd0b9f6bccb10ce34acdf32ca949ef94cff8a451eefc65ef0fb0601c090d59f"
+      }
+    ],
+    "original_body_fixture": false,
+    "linked_runtime_fixture": false,
+    "ABI_integration": false,
+    "game_validated": false,
+    "limitations": [
+      "Complete raw entry instruction identity is verified in the actual main archive; the leaf has not been forced into a separate executable or independently run.",
+      "Existing CTests passed but are not a new dedicated matrix-copy runtime fixture.",
+      "Raw pointer interface does not resolve camera hierarchy companion-pointer integration."
+    ],
+    "seal": {
+      "path": "local/camera_matrix_copy/sealed.json",
+      "bytes": 2153,
+      "sha256": "50131d8c389612fb711939d0c750e03208a81e63e812259b113174044d50fe7c",
+      "artifacts": [
+        {
+          "path": "local/camera_matrix_copy/capture.json",
+          "bytes": 1135,
+          "sha256": "41ca936fe21189517854060945033cbd2d776dfbfd52fe9c560efd86344daf62"
+        },
+        {
+          "path": "local/camera_matrix_copy/coff_provenance.py",
+          "bytes": 2331,
+          "sha256": "0bd0b9f6bccb10ce34acdf32ca949ef94cff8a451eefc65ef0fb0601c090d59f"
+        },
+        {
+          "path": "local/camera_matrix_copy/live.txt",
+          "bytes": 503,
+          "sha256": "9e1350b50ee75f30314840fdf2f15760d7e91bb39015dbe373c94ad08fcee25a"
+        },
+        {
+          "path": "local/camera_matrix_copy/verified.json",
+          "bytes": 7386,
+          "sha256": "07f2d53a26365c4ceae24a0ea21daf833395b8ae87859d8ddd9283ac83be1338"
+        },
+        {
+          "path": "local/camera_matrix_copy/verify_seeds.json",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "local/camera_matrix_copy/frozen/bsp_core.lib",
+          "bytes": 35805372,
+          "sha256": "e7e8df70936bf4bebdfa1cb25d153199cc937bb26f64a883718e9f7921ecd6f0"
+        },
+        {
+          "path": "local/camera_matrix_copy/frozen/CL.command.1.tlog",
+          "bytes": 727434,
+          "sha256": "f137b68eba57949940232bee7cbf3d418e0dc40230e68d6d7600da9f3775d4c6"
+        },
+        {
+          "path": "local/camera_matrix_copy/frozen/native_camera_matrix_copy.cpp",
+          "bytes": 1626,
+          "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+        },
+        {
+          "path": "local/camera_matrix_copy/frozen/native_camera_matrix_copy.hpp",
+          "bytes": 606,
+          "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+        },
+        {
+          "path": "local/camera_matrix_copy/frozen/native_camera_matrix_copy.obj",
+          "bytes": 804,
+          "sha256": "f88bad496b79e5e3a5742ed413f3aaad4f26ddcba8fa24db9417792109b10bd1"
+        },
+        {
+          "path": "local/camera_matrix_copy/frozen/strict_build.log",
+          "bytes": 2030,
+          "sha256": "d1b35e6460b0ca70af1d83d16ec8552bdd046f8884ba1092aea4d0a64c8f23d8"
+        }
+      ]
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_camera_matrix_copy_annotations.json",
+    "bytes": 2048,
+    "sha256": "c54bc3dd16a0daaa3db5bf7a87bafde745cf353ef44adf28d6c5b99261170a57",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_export": {
+    "path": "exports/bsp/functions/004134f0/decompiled.c",
+    "bytes": 2349,
+    "sha256": "c8900859de49034c8299fd9503f30a70ecaf6e46dae016f54b380918fb713015"
+  },
+  "current_document": {
+    "path": "docs/NATIVE_CAMERA_MATRIX_COPY.md",
+    "bytes": 2019,
+    "sha256": "3475cc30e482145b5f0871632733fbfb4dd150b87d3c097bc981a2b27080e731"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "004134f0",
+      "name": "copy_native_camera_matrix_004134f0",
+      "cpp_symbol": "bsp::copy_native_camera_matrix_004134f0",
+      "source": "src/native_camera_matrix_copy.cpp",
+      "native_end_exclusive": "00413557",
+      "original_abi": "ECX destination, stack source, RET4, EAX retains destination",
+      "host_abi_boundary": "MSVC Win32 fastcall void* destination, unused EDX, const void* source; no C++ array overlay",
+      "evidence": "reports/native_camera_matrix_copy_audit.json",
+      "status": "complete_raw_entry_strict_main_Win32_and_full_original_COFF_identity_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ]
+}

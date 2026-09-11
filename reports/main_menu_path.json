@@ -1,0 +1,70 @@
+{
+  "packet": "cc_main_menu_path",
+  "owner": "agent/cc-main-menu-path",
+  "doc": "docs/MAIN_MENU_PATH.md",
+  "sources": [
+    "include/bsp/main_menu_path.hpp",
+    "src/main_menu_path.cpp"
+  ],
+  "path_steps": [
+    {"step": 1, "address": "0067d2dd", "native": "004c43c0", "host": "input_action_pressed", "note": "input action 4Eh edge test inside 0067cfb0"},
+    {"step": 2, "address": "0068d8a6", "native": "00bd3450", "host": "reset_storage_availability", "note": "ECX = *0109cecc, unconditional"},
+    {"step": 3, "address": "0068d8b1", "native": null, "host": null, "note": "guard: game+5e8h non-zero returns without releasing the hold byte"},
+    {"step": 4, "address": "0068d8bc", "native": "004d7920", "host": "request_game_state", "note": "state 4"},
+    {"step": 5, "address": "0068d8c6", "native": null, "host": "release_state_request_hold", "note": "game+5ech = 0"},
+    {"step": 6, "address": "004e4d07", "native": "004e4430", "host": "drain_state_request", "note": "case 4 calls the shell entry"},
+    {"step": 7, "address": "004e4000", "native": "004e4000", "host": "enter_front_end_shell", "note": "00686380 Init runs inside; returns with game+5d4h still 3"},
+    {"step": 8, "address": "004e424a", "native": null, "host": "main_menu_manager_mode", "note": "*(00e198ac)+4h"},
+    {"step": 9, "address": "004e4259", "native": "004cc460", "host": "push_interface_request", "note": "PUSH EDI; PUSH 1; ECX = manager. Skipped when the applied id is 4. Writes the pending record only"},
+    {"step": 10, "address": "004e4269", "native": "00684700", "host": "activate_main_menu_manager", "note": "vtable +8h, mutual exclusion, sets manager+3ch"},
+    {"step": 11, "address": "004e4274", "native": "005884a0", "host": "start_main_menu_screen_object", "note": "ECX = *(00e198ac)+58h"},
+    {"step": 12, "address": "004e4279", "native": null, "host": "set_game_state", "note": "game+5d4h = 5 (EBX from 004e41b6); the frame path changes here"},
+    {"step": 13, "address": "004e5442", "native": "006840f0", "host": "service_pending_interface_requests", "note": "pending != applied with manager+3ch set"},
+    {"step": 14, "address": "00685826", "native": "00684600", "host": "apply_interface_request", "note": "syncs applied = pending, which stops 006840f0 refiring"},
+    {"step": 15, "address": "00685848", "native": null, "host": "map_interface_to_screen", "note": "identity arm: interface 1 to screen 1"},
+    {"step": 16, "address": "006858ba", "native": "004f8710", "host": "publish_screen_set_level4", "note": "one-element set; 004f7620 runs inside"},
+    {"step": 17, "address": "006858e6", "native": "004d8c00", "host": "publish_input_context_set_level4", "note": "one-element set {1}"},
+    {"step": 18, "address": "004c4165", "native": "004f8830", "host": "pump_front_end_screens", "note": "reached through 004c40f0 at 004e53b6, not the front-end branch"},
+    {"step": 19, "address": "004f88e8", "native": "004f83b0", "host": "commit_screen_visibility", "note": "commit precedes the enter virtual"},
+    {"step": 20, "address": "004f88f4", "native": "005987f0", "host": "enter_screen", "note": "main-menu screen enter"},
+    {"step": 21, "address": "004f8925", "native": "00599db0", "host": "update_screen", "note": "pass C, raw delta"}
+  ],
+  "screen_set_levels": [
+    {"level": 1, "screen_setter": "004f8530", "context_setter": "004d8a50", "call_sites": 18, "owner": "in-mission HUD interface (0068aca0)", "multi_element": true},
+    {"level": 2, "screen_setter": "004f85d0", "context_setter": "004d8ae0", "call_sites": 5, "owner": "in-mission overlays", "multi_element": false},
+    {"level": 3, "screen_setter": "004f8670", "context_setter": "004d8b70", "call_sites": 17, "owner": "in-mission transients", "multi_element": false},
+    {"level": 4, "screen_setter": "004f8710", "context_setter": "004d8c00", "call_sites": 5, "owner": "front-end managers", "multi_element": false},
+    {"level": 5, "screen_setter": "004f87b0", "context_setter": null, "call_sites": 0, "owner": null, "multi_element": false}
+  ],
+  "level5_unreferenced": true,
+  "level1_sample_lists": {
+    "0068afd0": ["0x29", "0x49", "0x44", "0x27", "0x4d", "0x3e", "0x25", "0x26"],
+    "0068b0ec": ["0x29", "0x49", "0x44", "0x27", "0x4d", "0x45", "0x47", "0x48"]
+  },
+  "front_end_branch_game_states": [1, 2, 4],
+  "shell_ready_game_state": 5,
+  "main_menu_interface_id": 1,
+  "main_menu_screen_id": 1,
+  "input_context_clear_bound_004c4300": "0x19",
+  "input_context_teardown_bound_004da780": "0x1e",
+  "names_added": [
+    {"address": "004da780", "name": "BSP_Game_TeardownSessionState", "kind": "new"},
+    {"address": "004f87b0", "name": "BSP_FrontEndScreens_SetLevel5Set", "kind": "evidence appended"},
+    {"address": "004f8530", "name": "BSP_FrontEndScreens_SetLevel1Set", "kind": "evidence appended"},
+    {"address": "004f85d0", "name": "BSP_FrontEndScreens_SetLevel2Set", "kind": "evidence appended"},
+    {"address": "004f8670", "name": "BSP_FrontEndScreens_SetLevel3Set", "kind": "evidence appended"}
+  ],
+  "reused_not_redefined": [
+    "bsp::action_pressed_this_frame_004c43c0 (include/bsp/input_tick.hpp) for 004c43c0",
+    "bsp::set_front_end_screen_set_level and bsp::apply_input_context_levels_004c4300 (include/bsp/frontend_screen_sets.hpp)",
+    "bsp::main_menu_screen_id_00685820 (include/bsp/frontend_screen_sets.hpp)",
+    "bsp::init_main_menu_00686380 (include/bsp/frontend_managers.hpp) for 00686380",
+    "bsp::update_press_start_screen_0067cfb0 (include/bsp/press_start_screen.hpp)",
+    "bsp::FrontEndScreenPhase (include/bsp/frontend_state_machine.hpp)"
+  ],
+  "ghidra_writes": 0,
+  "new_tests": 0,
+  "validation": "Win32 /W4 /WX build clean, main_menu_path.obj produced, existing reconstructed_math CTest passed",
+  "abi_compatible": false,
+  "game_validated": false
+}

@@ -41,7 +41,47 @@ current lock/mode behavior. Entry exceptions occur before cleanup arming;
 exceptions after arming use that original cleanup; normal leave exceptions
 do not cause a second leave. Skipped uninitialized records are not repaired.
 
-The strict MSVC Win32 main build and both existing CTests passed.
-Original-body fixture validation is pending. This
-does not claim complete stream binding/ownership, original caller ABI or
-gameplay. No permanent tests were added.
+The strict MSVC Win32 main build and both existing CTests passed. The primary
+independently replayed all three original bodies against the frozen actual
+main library. All 16 pairs passed, including real HAL drawing and pixel
+readback. Complete stream binding/ownership, original caller ABI and gameplay
+remain separate. No permanent tests were added.
+
+
+## Primary validation
+
+The primary verified 75 immutable worker pins and seven unchanged current
+provider source/header files. Thirteen fresh guarded live/installed-PE spans
+cover 604 bytes; eight native seeds matched. The unchanged fixture linked
+only frozen actual main library
+`9a9de67d355ddadcfdd957b89d4479c0f057ffc159f327adf2e502ad31d663b9`.
+Two exact archive objects and 317 complete COFF sections match all linked
+bytes and relocations, including fixture code: 121 entries and 15,424 unique
+code bytes. Thirty-three normal postimage stages plus two per termination
+child preserve complete original/linked code, read-only data and actual tables.
+
+All 249,641 compared DWORDs match literally across 125 snapshots: complete
+renderer and logical storage, actual synchronization globals and critical
+sections, real VB/IB binding getters, and sampled pixel readback. Cases cover
+the inhibit/lost gates, poisoned stream behind zero counts, unsigned counts,
+ordinary versus special tags, entry-time mode change, current device/table/
+stream/base/lock mutation, and armed/unarmed cleanup exceptions. The changed
+device case draws the actual triangle with base -1, minimum 1 and start 3;
+the red pixel appears on device 1 while device 0 remains black.
+
+All three complete originals execute at their original addresses in an
+isolated reserved child, with the full original guards and FH3 map. The
+D61D6C profile and its four-byte count getter remain byte-identical. There
+is no getter callback or source-provider bridge. The 68 provider call proofs
+resolve to actual HAL D3D9 and Windows critical-section implementations.
+Both secondary-cleanup exceptions terminate with marker 73 after real Leave.
+
+The actual absent-index draw returned S_OK without changing its black target.
+Ignored HRESULT behavior is therefore established by complete code inspection,
+without a negative-HRESULT runtime claim. A disabled-entry mode was never
+changed to enable use of uninitialized guard fields. Pixel readback proves
+a fixture draw effect; it does not establish game rendering or render parity.
+
+The existing Ghidra names and comments were preserved, reviewed evidence
+was appended and saved, and all three exports and complete reconstruction
+records were refreshed.

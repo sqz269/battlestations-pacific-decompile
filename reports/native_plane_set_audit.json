@@ -1,6 +1,6 @@
 {
   "packet": "native_plane_set4",
-  "status": "complete_actual_storage_strict_build_and_original_full_library_fixture_checked_pending_primary_integration",
+  "status": "complete_actual_storage_primary_main_library_original_bodies_identical_and_strict_Win32_checked",
   "utc": "2026-09-11T16:16:14.811028+00:00",
   "base_commit": "cab05995ebbc5875ab27cbc29728860c97b091fd",
   "functions": [
@@ -1210,5 +1210,2351 @@
       "bytes": 7635,
       "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verification": {
+      "packet": "native_plane_set4",
+      "status": "complete_actual_storage_strict_build_and_original_full_library_fixture_checked_pending_primary_integration",
+      "utc": "2026-09-11T16:28:39.739301+00:00",
+      "base_commit": "34dc60a32cbd7cc188c3d4fdac7f9557cc13d5ee",
+      "functions": [
+        {
+          "address": "00b250b0",
+          "length": 346,
+          "original_ABI": "ECX destination; stack source; RET4; EAX incidentally destination, no semantic result required",
+          "source_symbol": "?copy_native_plane_set_records_00b250b0@bsp@@YIXPAX0PBX@Z",
+          "source": "src/native_plane_set.cpp"
+        },
+        {
+          "address": "00b65080",
+          "length": 7,
+          "original_ABI": "ECX actual set; RET; EAX raw count+140",
+          "source_symbol": "?native_plane_set_count_00b65080@bsp@@YIIPBX@Z",
+          "source": "src/native_plane_set.cpp"
+        },
+        {
+          "address": "00b656f0",
+          "length": 13,
+          "original_ABI": "ECX base; stack DWORD index; RET4; EAX wrapped record address",
+          "source_symbol": "?native_plane_set_plane_00b656f0@bsp@@YIPBUNativePlaneRecord@1@PBXPAXI@Z",
+          "source": "src/native_plane_set.cpp"
+        },
+        {
+          "address": "00b65700",
+          "length": 14,
+          "original_ABI": "ECX base; stack DWORD index; RET4; EAX raw flags+10",
+          "source_symbol": "?native_plane_set_flags_00b65700@bsp@@YIIPBXPAXI@Z",
+          "source": "src/native_plane_set.cpp"
+        }
+      ],
+      "storage": {
+        "record_bytes": 20,
+        "coefficient_offsets": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "flags_offset": 16,
+        "inline_record_count": 16,
+        "count_offset": 320,
+        "set_bytes": 324,
+        "copy_excludes_count": true
+      },
+      "dependency_contract": "No owner, virtual, allocator, diagnostic, global-state or helper dependency. Ambient x87 state and addressed memory are native inputs.",
+      "original_evidence": {
+        "utc": "2026-09-11T16:28:25.289240+00:00",
+        "target": {
+          "project": "bsp",
+          "program": "battlestationspacific.exe",
+          "program_path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": "00400000",
+          "ghidra_url": "http://127.0.0.1:8089",
+          "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "project_file": "C:/Users/sqz269/bsp.gpr",
+          "coordination_dir": "C:/Users/sqz269/.bsp"
+        },
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "spans": [
+          {
+            "address": "00b250b0",
+            "length": 346,
+            "end_exclusive": "00b2520a",
+            "bytes_hex": "5356578b7c24108bc18d77208d50182bf8bb02000000eb088da4240000000090d946e081c6a0000000d95ae8d98644ffffffd95aecd98648ffffffd95af0d9864cffffffd95af48b8e50ffffff894af8d98654ffffffd95afcd90417d91ad9865cffffffd95a04d98660ffffffd95a088b8e64ffffff894a0cd98668ffffffd95a10d9866cffffffd95a14d98670ffffffd95a18d98674ffffffd95a1c8b8e78ffffff894a20d9867cffffffd95a24d94680d95a28d94684d95a2cd94688d95a308b4e8c894a34d94690d95a38d94694d95a3cd94698d95a40d9469cd95a448b4ea0894a48d946a4d95a4cd946a8d95a50d946acd95a54d946b0d95a588b4eb4894a5cd946b8d95a60d946bcd95a64d946c0d95a68d946c4d95a6c8b4ec8894a70d946ccd95a74d946d0d95a78d946d4d95a7cd946d8d99a800000008b4edc898a8400000081c2a000000083eb010f85ccfeffff5f5e5bc20400",
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+            "live_equals_installed_PE": true
+          },
+          {
+            "address": "00b65080",
+            "length": 7,
+            "end_exclusive": "00b65087",
+            "bytes_hex": "8b8140010000c3",
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+            "live_equals_installed_PE": true
+          },
+          {
+            "address": "00b656f0",
+            "length": 13,
+            "end_exclusive": "00b656fd",
+            "bytes_hex": "8b4424048d04808d0481c20400",
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+            "live_equals_installed_PE": true
+          },
+          {
+            "address": "00b65700",
+            "length": 14,
+            "end_exclusive": "00b6570e",
+            "bytes_hex": "8b4424048d04808b448110c20400",
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+            "live_equals_installed_PE": true
+          }
+        ],
+        "total_bytes": 380,
+        "guarded_query": "bsp.py ghidra verifies configured bsp.gpr/program before every query"
+      },
+      "strict_build": {
+        "MSVC_Win32": true,
+        "existing_CTests_passed": 2,
+        "verified_native_seeds": 8,
+        "permanent_tests_added": false,
+        "ignored_CMake_hook": "local/plane_set_primary/extra.cmake"
+      },
+      "original_runtime": {
+        "bytes": 380,
+        "bodies_intact": true,
+        "operand_relocations": [],
+        "bridges": [],
+        "entry_bindings": [
+          {
+            "index": 0,
+            "original_entry": 536870912,
+            "compiled_entry": 805314048,
+            "bytes": 346
+          },
+          {
+            "index": 1,
+            "original_entry": 536871424,
+            "compiled_entry": 805314400,
+            "bytes": 7
+          },
+          {
+            "index": 2,
+            "original_entry": 536871936,
+            "compiled_entry": 805314432,
+            "bytes": 13
+          },
+          {
+            "index": 3,
+            "original_entry": 536872448,
+            "compiled_entry": 805314416,
+            "bytes": 14
+          }
+        ],
+        "postimage_stages": 14
+      },
+      "actual_library_member": {
+        "object": {
+          "path": "local/plane_set_primary/frozen/native_plane_set.obj",
+          "bytes": 1552,
+          "sha256": "397727e13a94e8194f90871774cb773ab6e6509bfe322f3f614c5be153cd9a67"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_plane_set.obj",
+          "offset": 28939054,
+          "bytes": 1552,
+          "sha256": "397727e13a94e8194f90871774cb773ab6e6509bfe322f3f614c5be153cd9a67"
+        }
+      },
+      "complete_COFF_linked_runtime_symbols": [
+        {
+          "symbol": "?copy_native_plane_set_records_00b250b0@bsp@@YIXPAX0PBX@Z",
+          "address": 805314048,
+          "provider": "bsp_core:native_plane_set.obj",
+          "bytes": 346,
+          "COFF_section": 3,
+          "relocations": [],
+          "all_relocations_accounted_for": true,
+          "complete_original_COFF_linked_runtime_identical": true,
+          "complete_bytes_hex": "5356578b7c24108bc18d77208d50182bf8bb02000000eb088da4240000000090d946e081c6a0000000d95ae8d98644ffffffd95aecd98648ffffffd95af0d9864cffffffd95af48b8e50ffffff894af8d98654ffffffd95afcd90417d91ad9865cffffffd95a04d98660ffffffd95a088b8e64ffffff894a0cd98668ffffffd95a10d9866cffffffd95a14d98670ffffffd95a18d98674ffffffd95a1c8b8e78ffffff894a20d9867cffffffd95a24d94680d95a28d94684d95a2cd94688d95a308b4e8c894a34d94690d95a38d94694d95a3cd94698d95a40d9469cd95a448b4ea0894a48d946a4d95a4cd946a8d95a50d946acd95a54d946b0d95a588b4eb4894a5cd946b8d95a60d946bcd95a64d946c0d95a68d946c4d95a6c8b4ec8894a70d946ccd95a74d946d0d95a78d946d4d95a7cd946d8d99a800000008b4edc898a8400000081c2a000000083eb010f85ccfeffff5f5e5bc20400",
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "runtime_postimages": 14
+        },
+        {
+          "symbol": "?native_plane_set_count_00b65080@bsp@@YIIPBX@Z",
+          "address": 805314400,
+          "provider": "bsp_core:native_plane_set.obj",
+          "bytes": 7,
+          "COFF_section": 4,
+          "relocations": [],
+          "all_relocations_accounted_for": true,
+          "complete_original_COFF_linked_runtime_identical": true,
+          "complete_bytes_hex": "8b8140010000c3",
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "runtime_postimages": 14
+        },
+        {
+          "symbol": "?native_plane_set_plane_00b656f0@bsp@@YIPBUNativePlaneRecord@1@PBXPAXI@Z",
+          "address": 805314432,
+          "provider": "bsp_core:native_plane_set.obj",
+          "bytes": 13,
+          "COFF_section": 6,
+          "relocations": [],
+          "all_relocations_accounted_for": true,
+          "complete_original_COFF_linked_runtime_identical": true,
+          "complete_bytes_hex": "8b4424048d04808d0481c20400",
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "runtime_postimages": 14
+        },
+        {
+          "symbol": "?native_plane_set_flags_00b65700@bsp@@YIIPBXPAXI@Z",
+          "address": 805314416,
+          "provider": "bsp_core:native_plane_set.obj",
+          "bytes": 14,
+          "COFF_section": 5,
+          "relocations": [],
+          "all_relocations_accounted_for": true,
+          "complete_original_COFF_linked_runtime_identical": true,
+          "complete_bytes_hex": "8b4424048d04808b448110c20400",
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "runtime_postimages": 14
+        }
+      ],
+      "executable": {
+        "base": "30000000",
+        "whole_text_sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+        "whole_text_bytes": 7635,
+        "whole_text_runtime_postimages": 14
+      },
+      "fixture": {
+        "paired_cases": 13,
+        "matched_arena_bytes": 26624,
+        "normal_frames_preserve_nonvolatile_and_stack": true,
+        "x87_comparison": "Control/status/abridged tag/opcode; all eight 80-bit register payloads; data pointer and MXCSR. FIP checked after normalization to same owned instruction offset or unchanged fixture seed address. XMM payloads are not relevant or compared.",
+        "exception": "Actual unmasked signaling NaN raises C0000090 after two coefficient stores; original/library partial arena and exception code/instruction offset/x87 control/status/tag agree.",
+        "compiled_provider_replaced": false,
+        "source_recompiled_in_probe": false,
+        "adapters": "Fixture-only caller sets original ECX/stack convention and register sentinels; no owned or external dependency bridge.",
+        "observations": [
+          {
+            "index": 0,
+            "name": "disjoint_masked_all16",
+            "eax": 570426368,
+            "status": 12291,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 1,
+            "name": "disjoint_chop_single",
+            "eax": 570426368,
+            "status": 12291,
+            "control": 3199,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 2,
+            "name": "self_alias",
+            "eax": 570425600,
+            "status": 12291,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "f7e9c0ee781bbb6c0f6f4fe529a335fe638f4ef87d97170e12fbede360f2212d",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 3,
+            "name": "forward_word_overlap",
+            "eax": 570425604,
+            "status": 12288,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "7dd9e8a5b98efd340b5edeadcb43e60b369deba592396b0f2d15578a5b864452",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 4,
+            "name": "backward_word_overlap",
+            "eax": 570425596,
+            "status": 12291,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "5ceb1d3cc95899306c8dbd648e6a3c79e029c04391b06d0cf50173ceebf92c98",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 5,
+            "name": "forward_byte_overlap",
+            "eax": 570425601,
+            "status": 12291,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "c5b7400f939d85e3c05dfb7c54d30708c1a61b753ce1e199a7c82a3924d588d2",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 6,
+            "name": "forward_record_overlap",
+            "eax": 570425620,
+            "status": 12289,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "2595ab74c970729cf9563c1ff48cd1aaed25d8d380e31690d982c8e8e5d7925b",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 7,
+            "name": "unmasked_invalid_partial_copy",
+            "eax": 0,
+            "status": 0,
+            "control": 0,
+            "exception": 3221225616,
+            "offset": 59,
+            "faultstatus": 45185,
+            "faultcontrol": 894,
+            "tag": 8191,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "dac92bc7201b7e1f49daf31991e9b951af8c7c70a0607302f66b2b7d63411712",
+            "normalized_x87_instruction_pointer": "unmasked exception before normal frame capture"
+          },
+          {
+            "index": 8,
+            "name": "raw_count",
+            "eax": 4275878552,
+            "status": 12288,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 9,
+            "name": "plane_address_wrap",
+            "eax": 4,
+            "status": 12288,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 10,
+            "name": "plane_index_wrap",
+            "eax": 570425600,
+            "status": 12288,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 11,
+            "name": "flags_index_wrap",
+            "eax": 2139095041,
+            "status": 12288,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          },
+          {
+            "index": 12,
+            "name": "flags_negative_bits",
+            "eax": 2139095041,
+            "status": 12288,
+            "control": 895,
+            "exception": 0,
+            "offset": 0,
+            "faultstatus": 0,
+            "faultcontrol": 0,
+            "tag": 0,
+            "matched_arena_bytes": 2048,
+            "arena_sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+            "normalized_x87_instruction_pointer": [
+              "fixture",
+              0
+            ]
+          }
+        ]
+      },
+      "interpretations": [
+        "Names are descriptive hypotheses. Copy has all16 records regardless count, exact forward per-coefficient FLD/FSTP then raw flags MOV.",
+        "Naked source preserves raw 32-bit wrapped address calculations and ordered overlapping/unaligned views; no C++ float copy, memcpy or SSE substitution.",
+        "Eight unreachable original alignment bytes retained for full-body identity; no executable instructions hidden in opaque emitted byte body."
+      ],
+      "Ghidra_mutations": false,
+      "shared_metadata_mutations": false,
+      "existing_semantic_APIs_unchanged": true,
+      "limitations": [
+        "New explicit C++ interfaces use unused EDX parameter where needed; complete bytes match but general drop-in game integration is not claimed.",
+        "Copy/count/flags require memory valid for actually reached accesses; plane-address getter does not dereference and is checked with wrapped non-addressable results.",
+        "Ambient x87 pending exceptions, full-stack faults, denormal unmask and all OS fault modes are not separately fixture-tested; exact whole-body equality preserves instructions.",
+        "No whole-camera B285A0, renderer clip-plane parent, rendering or game validation; no permanent tests."
+      ],
+      "artifacts": [
+        {
+          "path": "local/plane_set_primary/evidence/src/native_plane_set.cpp",
+          "bytes": 4676,
+          "sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8",
+          "original_path": "src/native_plane_set.cpp"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/include/bsp/native_plane_set.hpp",
+          "bytes": 1915,
+          "sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246",
+          "original_path": "include/bsp/native_plane_set.hpp"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/docs/NATIVE_PLANE_SET.md",
+          "bytes": 6153,
+          "sha256": "2148d778d5f502077471fb9140f1f7c353502a68b9fc5f15ebe15152b67abf03",
+          "original_path": "docs/NATIVE_PLANE_SET.md"
+        },
+        {
+          "path": "local/plane_set_primary/pin.py",
+          "bytes": 1614,
+          "sha256": "8cff9cf4c793d93b5d5e403a304f53f81d68d3393a9d3906498934ae02be2585"
+        },
+        {
+          "path": "local/plane_set_primary/pins.json",
+          "bytes": 2486,
+          "sha256": "e36ac2b2399ae13ff5f1d45384c84b1d12dc4b16a2cc0ca35626eba567591635"
+        },
+        {
+          "path": "local/plane_set_primary/spans.hpp",
+          "bytes": 2118,
+          "sha256": "9f8d1ca20c3fb8f2e7b18a6de656f49799ad50a31ab4de4f0f459dfd20ec730e"
+        },
+        {
+          "path": "local/plane_set_primary/extra.cmake",
+          "bytes": 116,
+          "sha256": "1b75d0fb1637c84e32d8b9902205805947178b461137505775eb46b7f742a244"
+        },
+        {
+          "path": "local/plane_set_primary/build.ps1",
+          "bytes": 860,
+          "sha256": "d974ed800e8dc2d5d593d7295281db36ac46c7a7fa70a8e0c7cebcee179b7dd0"
+        },
+        {
+          "path": "local/plane_set_primary/build_fixture.ps1",
+          "bytes": 1609,
+          "sha256": "2ba8b9d59623e4d20986f43e05199d57771ed70884bc6bd84cc977bb67a429d7"
+        },
+        {
+          "path": "local/plane_set_primary/fixture.cpp",
+          "bytes": 10286,
+          "sha256": "e6215c6d2cd9291cf3dc8c047451eb51ed7921830270d01044567832df15bc57"
+        },
+        {
+          "path": "local/plane_set_primary/strict_build.log",
+          "bytes": 3047,
+          "sha256": "ada92b42aed14583eefe9028b79c87d8ef96a9928ca23f5a307bb1d73f1c5cfe"
+        },
+        {
+          "path": "local/plane_set_primary/fixture.log",
+          "bytes": 90,
+          "sha256": "b0164f5972cae7cafa3b88da2c3fbaacdc80b2926ba931bbbc965c10010e2979"
+        },
+        {
+          "path": "local/plane_set_primary/audit.py",
+          "bytes": 12188,
+          "sha256": "a42f8c56c1b8507e904554f4d9b7d8ebe8d64341cf699ab12975c2b3a8dbe0cf"
+        },
+        {
+          "path": "local/plane_set_primary/seed_reference.hpp",
+          "bytes": 2995,
+          "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+        },
+        {
+          "path": "local/plane_set_primary/frozen/bsp_core.lib",
+          "bytes": 35783548,
+          "sha256": "6a2ac575759efcb9b50e92b7b2b566933360c9006529082796f20be43e7e4a9d"
+        },
+        {
+          "path": "local/plane_set_primary/frozen/native_plane_set.obj",
+          "bytes": 1552,
+          "sha256": "397727e13a94e8194f90871774cb773ab6e6509bfe322f3f614c5be153cd9a67"
+        },
+        {
+          "path": "local/plane_set_primary/frozen/CL.command.1.tlog",
+          "bytes": 724446,
+          "sha256": "b82f061a2f165812393b5e291286f2171e26b68d99da122bec112e2594c7c2fb"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/plane_set_probe.exe",
+          "bytes": 14848,
+          "sha256": "0ccd494f7d680c0e45dc3c70664845c2fc7b0a400ce615f210a2296990740525",
+          "original_path": "build/plane-set-primary-probe/plane_set_probe.exe"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/plane_set_probe.map",
+          "bytes": 30519,
+          "sha256": "6bf6d0eafbb93384c3111c5c68dc16b25c0335c3dc3893c755f7e6e53830642c",
+          "original_path": "build/plane-set-primary-probe/plane_set_probe.map"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/fixture.obj",
+          "bytes": 20748,
+          "sha256": "792553e94903a52d9cc3dac4fa1e6b1da5855509950fe1be4f3c74b64713b810",
+          "original_path": "build/plane-set-primary-probe/fixture.obj"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/build_probe.cmd",
+          "bytes": 1092,
+          "sha256": "a6a07b369fd3b452d7331722acb99a0ac0d39883d5987c296d21d74e63eed6a3",
+          "original_path": "build/plane-set-primary-probe/build_probe.cmd"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/linked_headers.txt",
+          "bytes": 4601,
+          "sha256": "995582c92901f75dac0742695ed04c03ab34382f125b50054da3c569a885227a",
+          "original_path": "build/plane-set-primary-probe/linked_headers.txt"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/coff_symbols.txt",
+          "bytes": 2408,
+          "sha256": "ad837628ce363005bd5dcfe749253e3e736f0c816ee014784e43170e92c3e7a8",
+          "original_path": "build/plane-set-primary-probe/coff_symbols.txt"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/coff_disasm.txt",
+          "bytes": 7892,
+          "sha256": "ee04fd950730daf4563833dcc29728aa570197fa48376dbf3c3d5114a078e11e",
+          "original_path": "build/plane-set-primary-probe/coff_disasm.txt"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/bindings.txt",
+          "bytes": 96,
+          "sha256": "6497e4f65b89a44df1300ff8b62a0ff8fe1c22c2fea257c89d6e9a75147a67e5",
+          "original_path": "build/plane-set-primary-probe/bindings.txt"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/results.txt",
+          "bytes": 1618,
+          "sha256": "562475afbc14ef9284275bb04224e3287af9fbbd1234c55775e2e53a46ca774c",
+          "original_path": "build/plane-set-primary-probe/results.txt"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_00_0.bin",
+          "bytes": 2048,
+          "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa",
+          "original_path": "build/plane-set-primary-probe/case_00_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_00_1.bin",
+          "bytes": 2048,
+          "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa",
+          "original_path": "build/plane-set-primary-probe/case_00_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_01_0.bin",
+          "bytes": 2048,
+          "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa",
+          "original_path": "build/plane-set-primary-probe/case_01_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_01_1.bin",
+          "bytes": 2048,
+          "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa",
+          "original_path": "build/plane-set-primary-probe/case_01_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_02_0.bin",
+          "bytes": 2048,
+          "sha256": "f7e9c0ee781bbb6c0f6f4fe529a335fe638f4ef87d97170e12fbede360f2212d",
+          "original_path": "build/plane-set-primary-probe/case_02_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_02_1.bin",
+          "bytes": 2048,
+          "sha256": "f7e9c0ee781bbb6c0f6f4fe529a335fe638f4ef87d97170e12fbede360f2212d",
+          "original_path": "build/plane-set-primary-probe/case_02_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_03_0.bin",
+          "bytes": 2048,
+          "sha256": "7dd9e8a5b98efd340b5edeadcb43e60b369deba592396b0f2d15578a5b864452",
+          "original_path": "build/plane-set-primary-probe/case_03_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_03_1.bin",
+          "bytes": 2048,
+          "sha256": "7dd9e8a5b98efd340b5edeadcb43e60b369deba592396b0f2d15578a5b864452",
+          "original_path": "build/plane-set-primary-probe/case_03_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_04_0.bin",
+          "bytes": 2048,
+          "sha256": "5ceb1d3cc95899306c8dbd648e6a3c79e029c04391b06d0cf50173ceebf92c98",
+          "original_path": "build/plane-set-primary-probe/case_04_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_04_1.bin",
+          "bytes": 2048,
+          "sha256": "5ceb1d3cc95899306c8dbd648e6a3c79e029c04391b06d0cf50173ceebf92c98",
+          "original_path": "build/plane-set-primary-probe/case_04_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_05_0.bin",
+          "bytes": 2048,
+          "sha256": "c5b7400f939d85e3c05dfb7c54d30708c1a61b753ce1e199a7c82a3924d588d2",
+          "original_path": "build/plane-set-primary-probe/case_05_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_05_1.bin",
+          "bytes": 2048,
+          "sha256": "c5b7400f939d85e3c05dfb7c54d30708c1a61b753ce1e199a7c82a3924d588d2",
+          "original_path": "build/plane-set-primary-probe/case_05_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_06_0.bin",
+          "bytes": 2048,
+          "sha256": "2595ab74c970729cf9563c1ff48cd1aaed25d8d380e31690d982c8e8e5d7925b",
+          "original_path": "build/plane-set-primary-probe/case_06_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_06_1.bin",
+          "bytes": 2048,
+          "sha256": "2595ab74c970729cf9563c1ff48cd1aaed25d8d380e31690d982c8e8e5d7925b",
+          "original_path": "build/plane-set-primary-probe/case_06_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_07_0.bin",
+          "bytes": 2048,
+          "sha256": "dac92bc7201b7e1f49daf31991e9b951af8c7c70a0607302f66b2b7d63411712",
+          "original_path": "build/plane-set-primary-probe/case_07_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_07_1.bin",
+          "bytes": 2048,
+          "sha256": "dac92bc7201b7e1f49daf31991e9b951af8c7c70a0607302f66b2b7d63411712",
+          "original_path": "build/plane-set-primary-probe/case_07_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_08_0.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_08_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_08_1.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_08_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_09_0.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_09_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_09_1.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_09_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_10_0.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_10_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_10_1.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_10_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_11_0.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_11_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_11_1.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_11_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_12_0.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_12_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_12_1.bin",
+          "bytes": 2048,
+          "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd",
+          "original_path": "build/plane-set-primary-probe/case_12_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_00_0.bin",
+          "bytes": 544,
+          "sha256": "e65eee9dbfa8c784ec45f208905afdcdcad235de6d59306a4d754e5797fa4d68",
+          "original_path": "build/plane-set-primary-probe/frame_00_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_00_1.bin",
+          "bytes": 544,
+          "sha256": "e65eee9dbfa8c784ec45f208905afdcdcad235de6d59306a4d754e5797fa4d68",
+          "original_path": "build/plane-set-primary-probe/frame_00_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_01_0.bin",
+          "bytes": 544,
+          "sha256": "8f9b9f38b5bc05034832ab9c50f2781c3b202ecd136f740df7fca2f528144b76",
+          "original_path": "build/plane-set-primary-probe/frame_01_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_01_1.bin",
+          "bytes": 544,
+          "sha256": "8f9b9f38b5bc05034832ab9c50f2781c3b202ecd136f740df7fca2f528144b76",
+          "original_path": "build/plane-set-primary-probe/frame_01_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_02_0.bin",
+          "bytes": 544,
+          "sha256": "3c3e77c7fb610df10f33a41dadadb1ecfe32570d2bd513a2b55ce70a34e2c295",
+          "original_path": "build/plane-set-primary-probe/frame_02_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_02_1.bin",
+          "bytes": 544,
+          "sha256": "3c3e77c7fb610df10f33a41dadadb1ecfe32570d2bd513a2b55ce70a34e2c295",
+          "original_path": "build/plane-set-primary-probe/frame_02_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_03_0.bin",
+          "bytes": 544,
+          "sha256": "f2507bdba41e172fff2b51a0918090c58be00fea67146e0d6bf6a34620afdca3",
+          "original_path": "build/plane-set-primary-probe/frame_03_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_03_1.bin",
+          "bytes": 544,
+          "sha256": "f2507bdba41e172fff2b51a0918090c58be00fea67146e0d6bf6a34620afdca3",
+          "original_path": "build/plane-set-primary-probe/frame_03_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_04_0.bin",
+          "bytes": 544,
+          "sha256": "2de55513b700301e4c8951e27a198a6c956e9cec693cb03ff6e086ed7075e449",
+          "original_path": "build/plane-set-primary-probe/frame_04_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_04_1.bin",
+          "bytes": 544,
+          "sha256": "2de55513b700301e4c8951e27a198a6c956e9cec693cb03ff6e086ed7075e449",
+          "original_path": "build/plane-set-primary-probe/frame_04_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_05_0.bin",
+          "bytes": 544,
+          "sha256": "c8ab41a547455c7ff4875833135a7deb03925a2b3204001ccbc77631c7192b9e",
+          "original_path": "build/plane-set-primary-probe/frame_05_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_05_1.bin",
+          "bytes": 544,
+          "sha256": "c8ab41a547455c7ff4875833135a7deb03925a2b3204001ccbc77631c7192b9e",
+          "original_path": "build/plane-set-primary-probe/frame_05_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_06_0.bin",
+          "bytes": 544,
+          "sha256": "5ae045bd20cf304f4f1daa76bc4730b0e6d5e9a09f1c2744193a215dcd99dac2",
+          "original_path": "build/plane-set-primary-probe/frame_06_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_06_1.bin",
+          "bytes": 544,
+          "sha256": "5ae045bd20cf304f4f1daa76bc4730b0e6d5e9a09f1c2744193a215dcd99dac2",
+          "original_path": "build/plane-set-primary-probe/frame_06_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_07_0.bin",
+          "bytes": 544,
+          "sha256": "654034bbb7157e154f47bba447da5a286cce49be8da96dc0ad59179cb825faa5",
+          "original_path": "build/plane-set-primary-probe/frame_07_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_07_1.bin",
+          "bytes": 544,
+          "sha256": "654034bbb7157e154f47bba447da5a286cce49be8da96dc0ad59179cb825faa5",
+          "original_path": "build/plane-set-primary-probe/frame_07_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_08_0.bin",
+          "bytes": 544,
+          "sha256": "0c14b53f44930b3e92262b02c73f084679bec90cbb14ef97de0914f516b943b7",
+          "original_path": "build/plane-set-primary-probe/frame_08_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_08_1.bin",
+          "bytes": 544,
+          "sha256": "0c14b53f44930b3e92262b02c73f084679bec90cbb14ef97de0914f516b943b7",
+          "original_path": "build/plane-set-primary-probe/frame_08_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_09_0.bin",
+          "bytes": 544,
+          "sha256": "26d509da31b89511455fd70bd3346eb8b544d05d5938e9e5614f965f8eafbfed",
+          "original_path": "build/plane-set-primary-probe/frame_09_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_09_1.bin",
+          "bytes": 544,
+          "sha256": "26d509da31b89511455fd70bd3346eb8b544d05d5938e9e5614f965f8eafbfed",
+          "original_path": "build/plane-set-primary-probe/frame_09_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_10_0.bin",
+          "bytes": 544,
+          "sha256": "f0ff049e71cffd38c4341361ff0339ccea816335ab83f70e0d96e3dedfffe5b1",
+          "original_path": "build/plane-set-primary-probe/frame_10_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_10_1.bin",
+          "bytes": 544,
+          "sha256": "f0ff049e71cffd38c4341361ff0339ccea816335ab83f70e0d96e3dedfffe5b1",
+          "original_path": "build/plane-set-primary-probe/frame_10_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_11_0.bin",
+          "bytes": 544,
+          "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0",
+          "original_path": "build/plane-set-primary-probe/frame_11_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_11_1.bin",
+          "bytes": 544,
+          "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0",
+          "original_path": "build/plane-set-primary-probe/frame_11_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_12_0.bin",
+          "bytes": 544,
+          "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0",
+          "original_path": "build/plane-set-primary-probe/frame_12_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_12_1.bin",
+          "bytes": 544,
+          "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0",
+          "original_path": "build/plane-set-primary-probe/frame_12_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_00_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_00_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_00_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_00_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_01_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_01_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_01_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_01_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_02_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_02_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_02_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_02_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_03_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_03_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_03_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_03_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_04_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_04_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_04_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_04_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_05_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_05_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_05_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_05_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_06_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_06_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_06_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_06_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_07_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_07_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_07_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_07_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_08_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_08_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_08_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_08_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_09_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_09_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_09_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_09_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_10_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_10_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_10_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_10_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_11_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_11_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_11_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_11_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_12_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_12_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_12_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_12_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_0.bin",
+          "bytes": 346,
+          "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce",
+          "original_path": "build/plane-set-primary-probe/original_13_0.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_1.bin",
+          "bytes": 7,
+          "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626",
+          "original_path": "build/plane-set-primary-probe/original_13_1.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_2.bin",
+          "bytes": 13,
+          "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d",
+          "original_path": "build/plane-set-primary-probe/original_13_2.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_3.bin",
+          "bytes": 14,
+          "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897",
+          "original_path": "build/plane-set-primary-probe/original_13_3.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_00.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_00.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_01.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_01.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_02.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_02.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_03.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_03.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_04.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_04.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_05.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_05.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_06.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_06.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_07.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_07.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_08.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_08.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_09.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_09.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_10.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_10.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_11.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_11.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_12.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_12.bin"
+        },
+        {
+          "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_13.bin",
+          "bytes": 7635,
+          "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8",
+          "original_path": "build/plane-set-primary-probe/runtime_text_13.bin"
+        }
+      ],
+      "primary_preparation": {
+        "utc": "2026-09-11T16:28:23.128857+00:00",
+        "worker_report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-native_plane_set\\reports\\native_plane_set_audit.json",
+          "bytes": 42427,
+          "sha256": "dcae9795995fb60b9bf109b55db773a86595e5566b9efb3a771f9ecadc1c74b3"
+        },
+        "worker_artifact_pins_verified": 148,
+        "unchanged_current_source_files": 2,
+        "unchanged_fixture_cpp": true,
+        "helper_changes": "Paths only; capture/audit/fixture semantics unchanged. Main actual library/object frozen immediately after successful strict build; provider is never recompiled by fixture.",
+        "main_commit": "34dc60a32cbd7cc188c3d4fdac7f9557cc13d5ee",
+        "frozen_artifacts": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\plane_set_primary\\frozen\\bsp_core.lib",
+            "bytes": 35783548,
+            "sha256": "6a2ac575759efcb9b50e92b7b2b566933360c9006529082796f20be43e7e4a9d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\plane_set_primary\\frozen\\native_plane_set.obj",
+            "bytes": 1552,
+            "sha256": "397727e13a94e8194f90871774cb773ab6e6509bfe322f3f614c5be153cd9a67"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\plane_set_primary\\frozen\\CL.command.1.tlog",
+            "bytes": 724446,
+            "sha256": "b82f061a2f165812393b5e291286f2171e26b68d99da122bec112e2594c7c2fb"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\plane_set_primary\\frozen\\include\\bsp\\native_plane_set.hpp",
+            "bytes": 1915,
+            "sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\plane_set_primary\\frozen\\native_plane_set.cpp",
+            "bytes": 4676,
+            "sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8"
+          }
+        ],
+        "strict_build": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\plane_set_primary\\strict_build.log",
+          "bytes": 3047,
+          "sha256": "ada92b42aed14583eefe9028b79c87d8ef96a9928ca23f5a307bb1d73f1c5cfe"
+        }
+      },
+      "fresh_seeds": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true,
+          "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+          "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true,
+          "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+          "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+          "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true,
+          "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+          "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true,
+          "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+          "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true,
+          "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+          "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true,
+          "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+          "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true,
+          "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+          "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+        }
+      ],
+      "primary_seal": {
+        "manifest": {
+          "path": "local/plane_set_primary/sealed.json",
+          "bytes": 32921,
+          "sha256": "67bee50a1bc8da841230ec616b526cf8bbe703deec0d8e2b32a30c78507d1b2f"
+        },
+        "passed": true,
+        "utc": "2026-09-11T16:30:41.524607+00:00",
+        "packet": "native_plane_set4",
+        "literal_arena_bytes": 26624,
+        "original_library_pairs": 13,
+        "complete_original_COFF_linked_runtime_bytes": 380,
+        "original_operand_relocations": 0,
+        "COFF_relocations": 0,
+        "postimage_phases": 14,
+        "actual_unmasked_invalid": true,
+        "artifacts": [
+          {
+            "path": "local/plane_set_primary/audit.json",
+            "bytes": 44785,
+            "sha256": "3b70a93fed9f8f1fcf7d7cb9c7017fd6bb7344c383a1f03dc4cc11bcef49cce3"
+          },
+          {
+            "path": "local/plane_set_primary/audit.py",
+            "bytes": 12188,
+            "sha256": "a42f8c56c1b8507e904554f4d9b7d8ebe8d64341cf699ab12975c2b3a8dbe0cf"
+          },
+          {
+            "path": "local/plane_set_primary/build.ps1",
+            "bytes": 860,
+            "sha256": "d974ed800e8dc2d5d593d7295281db36ac46c7a7fa70a8e0c7cebcee179b7dd0"
+          },
+          {
+            "path": "local/plane_set_primary/build_fixture.ps1",
+            "bytes": 1609,
+            "sha256": "2ba8b9d59623e4d20986f43e05199d57771ed70884bc6bd84cc977bb67a429d7"
+          },
+          {
+            "path": "local/plane_set_primary/extra.cmake",
+            "bytes": 116,
+            "sha256": "1b75d0fb1637c84e32d8b9902205805947178b461137505775eb46b7f742a244"
+          },
+          {
+            "path": "local/plane_set_primary/fixture.cpp",
+            "bytes": 10286,
+            "sha256": "e6215c6d2cd9291cf3dc8c047451eb51ed7921830270d01044567832df15bc57"
+          },
+          {
+            "path": "local/plane_set_primary/fixture.log",
+            "bytes": 90,
+            "sha256": "b0164f5972cae7cafa3b88da2c3fbaacdc80b2926ba931bbbc965c10010e2979"
+          },
+          {
+            "path": "local/plane_set_primary/pin.py",
+            "bytes": 1614,
+            "sha256": "8cff9cf4c793d93b5d5e403a304f53f81d68d3393a9d3906498934ae02be2585"
+          },
+          {
+            "path": "local/plane_set_primary/pins.json",
+            "bytes": 2486,
+            "sha256": "e36ac2b2399ae13ff5f1d45384c84b1d12dc4b16a2cc0ca35626eba567591635"
+          },
+          {
+            "path": "local/plane_set_primary/primary_verification.json",
+            "bytes": 64436,
+            "sha256": "e0fcf8059fed5ef288f9dc01371d2d10ddf0abd9462820b7289eae249666c837"
+          },
+          {
+            "path": "local/plane_set_primary/seed_reference.hpp",
+            "bytes": 2995,
+            "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+          },
+          {
+            "path": "local/plane_set_primary/spans.hpp",
+            "bytes": 2118,
+            "sha256": "9f8d1ca20c3fb8f2e7b18a6de656f49799ad50a31ab4de4f0f459dfd20ec730e"
+          },
+          {
+            "path": "local/plane_set_primary/strict_build.log",
+            "bytes": 3047,
+            "sha256": "ada92b42aed14583eefe9028b79c87d8ef96a9928ca23f5a307bb1d73f1c5cfe"
+          },
+          {
+            "path": "local/plane_set_primary/verify_seeds.json",
+            "bytes": 3034,
+            "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+          },
+          {
+            "path": "local/plane_set_primary/frozen/bsp_core.lib",
+            "bytes": 35783548,
+            "sha256": "6a2ac575759efcb9b50e92b7b2b566933360c9006529082796f20be43e7e4a9d"
+          },
+          {
+            "path": "local/plane_set_primary/frozen/CL.command.1.tlog",
+            "bytes": 724446,
+            "sha256": "b82f061a2f165812393b5e291286f2171e26b68d99da122bec112e2594c7c2fb"
+          },
+          {
+            "path": "local/plane_set_primary/frozen/native_plane_set.cpp",
+            "bytes": 4676,
+            "sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8"
+          },
+          {
+            "path": "local/plane_set_primary/frozen/native_plane_set.obj",
+            "bytes": 1552,
+            "sha256": "397727e13a94e8194f90871774cb773ab6e6509bfe322f3f614c5be153cd9a67"
+          },
+          {
+            "path": "local/plane_set_primary/frozen/include/bsp/native_plane_set.hpp",
+            "bytes": 1915,
+            "sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/docs/NATIVE_PLANE_SET.md",
+            "bytes": 6153,
+            "sha256": "2148d778d5f502077471fb9140f1f7c353502a68b9fc5f15ebe15152b67abf03"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/src/native_plane_set.cpp",
+            "bytes": 4676,
+            "sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/include/bsp/native_plane_set.hpp",
+            "bytes": 1915,
+            "sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/bindings.txt",
+            "bytes": 96,
+            "sha256": "6497e4f65b89a44df1300ff8b62a0ff8fe1c22c2fea257c89d6e9a75147a67e5"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/build_probe.cmd",
+            "bytes": 1092,
+            "sha256": "a6a07b369fd3b452d7331722acb99a0ac0d39883d5987c296d21d74e63eed6a3"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_00_0.bin",
+            "bytes": 2048,
+            "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_00_1.bin",
+            "bytes": 2048,
+            "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_01_0.bin",
+            "bytes": 2048,
+            "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_01_1.bin",
+            "bytes": 2048,
+            "sha256": "31b6d7ea17ae15bcef0f37503d97863824d638530b9fa0fa63363ab9f062abaa"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_02_0.bin",
+            "bytes": 2048,
+            "sha256": "f7e9c0ee781bbb6c0f6f4fe529a335fe638f4ef87d97170e12fbede360f2212d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_02_1.bin",
+            "bytes": 2048,
+            "sha256": "f7e9c0ee781bbb6c0f6f4fe529a335fe638f4ef87d97170e12fbede360f2212d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_03_0.bin",
+            "bytes": 2048,
+            "sha256": "7dd9e8a5b98efd340b5edeadcb43e60b369deba592396b0f2d15578a5b864452"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_03_1.bin",
+            "bytes": 2048,
+            "sha256": "7dd9e8a5b98efd340b5edeadcb43e60b369deba592396b0f2d15578a5b864452"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_04_0.bin",
+            "bytes": 2048,
+            "sha256": "5ceb1d3cc95899306c8dbd648e6a3c79e029c04391b06d0cf50173ceebf92c98"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_04_1.bin",
+            "bytes": 2048,
+            "sha256": "5ceb1d3cc95899306c8dbd648e6a3c79e029c04391b06d0cf50173ceebf92c98"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_05_0.bin",
+            "bytes": 2048,
+            "sha256": "c5b7400f939d85e3c05dfb7c54d30708c1a61b753ce1e199a7c82a3924d588d2"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_05_1.bin",
+            "bytes": 2048,
+            "sha256": "c5b7400f939d85e3c05dfb7c54d30708c1a61b753ce1e199a7c82a3924d588d2"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_06_0.bin",
+            "bytes": 2048,
+            "sha256": "2595ab74c970729cf9563c1ff48cd1aaed25d8d380e31690d982c8e8e5d7925b"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_06_1.bin",
+            "bytes": 2048,
+            "sha256": "2595ab74c970729cf9563c1ff48cd1aaed25d8d380e31690d982c8e8e5d7925b"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_07_0.bin",
+            "bytes": 2048,
+            "sha256": "dac92bc7201b7e1f49daf31991e9b951af8c7c70a0607302f66b2b7d63411712"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_07_1.bin",
+            "bytes": 2048,
+            "sha256": "dac92bc7201b7e1f49daf31991e9b951af8c7c70a0607302f66b2b7d63411712"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_08_0.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_08_1.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_09_0.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_09_1.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_10_0.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_10_1.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_11_0.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_11_1.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_12_0.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/case_12_1.bin",
+            "bytes": 2048,
+            "sha256": "9a05f0c8fef99bbc926da3a521c8881ec38c15850834fb5da09035f3d2e486bd"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/coff_disasm.txt",
+            "bytes": 7892,
+            "sha256": "ee04fd950730daf4563833dcc29728aa570197fa48376dbf3c3d5114a078e11e"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/coff_symbols.txt",
+            "bytes": 2408,
+            "sha256": "ad837628ce363005bd5dcfe749253e3e736f0c816ee014784e43170e92c3e7a8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/fixture.obj",
+            "bytes": 20748,
+            "sha256": "792553e94903a52d9cc3dac4fa1e6b1da5855509950fe1be4f3c74b64713b810"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_00_0.bin",
+            "bytes": 544,
+            "sha256": "e65eee9dbfa8c784ec45f208905afdcdcad235de6d59306a4d754e5797fa4d68"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_00_1.bin",
+            "bytes": 544,
+            "sha256": "e65eee9dbfa8c784ec45f208905afdcdcad235de6d59306a4d754e5797fa4d68"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_01_0.bin",
+            "bytes": 544,
+            "sha256": "8f9b9f38b5bc05034832ab9c50f2781c3b202ecd136f740df7fca2f528144b76"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_01_1.bin",
+            "bytes": 544,
+            "sha256": "8f9b9f38b5bc05034832ab9c50f2781c3b202ecd136f740df7fca2f528144b76"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_02_0.bin",
+            "bytes": 544,
+            "sha256": "3c3e77c7fb610df10f33a41dadadb1ecfe32570d2bd513a2b55ce70a34e2c295"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_02_1.bin",
+            "bytes": 544,
+            "sha256": "3c3e77c7fb610df10f33a41dadadb1ecfe32570d2bd513a2b55ce70a34e2c295"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_03_0.bin",
+            "bytes": 544,
+            "sha256": "f2507bdba41e172fff2b51a0918090c58be00fea67146e0d6bf6a34620afdca3"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_03_1.bin",
+            "bytes": 544,
+            "sha256": "f2507bdba41e172fff2b51a0918090c58be00fea67146e0d6bf6a34620afdca3"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_04_0.bin",
+            "bytes": 544,
+            "sha256": "2de55513b700301e4c8951e27a198a6c956e9cec693cb03ff6e086ed7075e449"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_04_1.bin",
+            "bytes": 544,
+            "sha256": "2de55513b700301e4c8951e27a198a6c956e9cec693cb03ff6e086ed7075e449"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_05_0.bin",
+            "bytes": 544,
+            "sha256": "c8ab41a547455c7ff4875833135a7deb03925a2b3204001ccbc77631c7192b9e"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_05_1.bin",
+            "bytes": 544,
+            "sha256": "c8ab41a547455c7ff4875833135a7deb03925a2b3204001ccbc77631c7192b9e"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_06_0.bin",
+            "bytes": 544,
+            "sha256": "5ae045bd20cf304f4f1daa76bc4730b0e6d5e9a09f1c2744193a215dcd99dac2"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_06_1.bin",
+            "bytes": 544,
+            "sha256": "5ae045bd20cf304f4f1daa76bc4730b0e6d5e9a09f1c2744193a215dcd99dac2"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_07_0.bin",
+            "bytes": 544,
+            "sha256": "654034bbb7157e154f47bba447da5a286cce49be8da96dc0ad59179cb825faa5"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_07_1.bin",
+            "bytes": 544,
+            "sha256": "654034bbb7157e154f47bba447da5a286cce49be8da96dc0ad59179cb825faa5"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_08_0.bin",
+            "bytes": 544,
+            "sha256": "0c14b53f44930b3e92262b02c73f084679bec90cbb14ef97de0914f516b943b7"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_08_1.bin",
+            "bytes": 544,
+            "sha256": "0c14b53f44930b3e92262b02c73f084679bec90cbb14ef97de0914f516b943b7"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_09_0.bin",
+            "bytes": 544,
+            "sha256": "26d509da31b89511455fd70bd3346eb8b544d05d5938e9e5614f965f8eafbfed"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_09_1.bin",
+            "bytes": 544,
+            "sha256": "26d509da31b89511455fd70bd3346eb8b544d05d5938e9e5614f965f8eafbfed"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_10_0.bin",
+            "bytes": 544,
+            "sha256": "f0ff049e71cffd38c4341361ff0339ccea816335ab83f70e0d96e3dedfffe5b1"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_10_1.bin",
+            "bytes": 544,
+            "sha256": "f0ff049e71cffd38c4341361ff0339ccea816335ab83f70e0d96e3dedfffe5b1"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_11_0.bin",
+            "bytes": 544,
+            "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_11_1.bin",
+            "bytes": 544,
+            "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_12_0.bin",
+            "bytes": 544,
+            "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/frame_12_1.bin",
+            "bytes": 544,
+            "sha256": "b7bc75fb7d201e51ec4cdf6cf14fe1f8ddb6103943f12552b521592b80d0d9e0"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/linked_headers.txt",
+            "bytes": 4601,
+            "sha256": "995582c92901f75dac0742695ed04c03ab34382f125b50054da3c569a885227a"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_00_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_01_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_02_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_03_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_04_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_05_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_06_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_07_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_08_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_09_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_10_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_11_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_12_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_0.bin",
+            "bytes": 346,
+            "sha256": "727c1e63b5bff2ffef719eef5371f128863e08ce18cf63088ce919fb34b0e0ce"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_1.bin",
+            "bytes": 7,
+            "sha256": "0c6d59074d2cea9c25b72d56d2c7ce892d91bc0949cbe31005f9f8d3527b1626"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_2.bin",
+            "bytes": 13,
+            "sha256": "ccd648b145933a1f71bc1652559aba818746bea64f1dc2766c41419fcc2c437d"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/original_13_3.bin",
+            "bytes": 14,
+            "sha256": "807f706b48d9384cc1442cf904fbdbd9fc8e07630474ee1570aff2b9547a1897"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/plane_set_probe.exe",
+            "bytes": 14848,
+            "sha256": "0ccd494f7d680c0e45dc3c70664845c2fc7b0a400ce615f210a2296990740525"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/plane_set_probe.map",
+            "bytes": 30519,
+            "sha256": "6bf6d0eafbb93384c3111c5c68dc16b25c0335c3dc3893c755f7e6e53830642c"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/results.txt",
+            "bytes": 1618,
+            "sha256": "562475afbc14ef9284275bb04224e3287af9fbbd1234c55775e2e53a46ca774c"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_00.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_01.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_02.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_03.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_04.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_05.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_06.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_07.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_08.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_09.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_10.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_11.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_12.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          },
+          {
+            "path": "local/plane_set_primary/evidence/build/plane-set-primary-probe/runtime_text_13.bin",
+            "bytes": 7635,
+            "sha256": "13fec660d601171978605023363013e512d3fbb21cd304e20e3faf1b7bd03be8"
+          }
+        ]
+      }
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "original_body_fixture_passed": true,
+  "native_differential_fixture": true,
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_plane_set_annotations.json",
+    "bytes": 9972,
+    "sha256": "36f5e624b827348a14fe0db74e57313dabd8ef1d42fbef53e68da61bd1facd91",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b250b0",
+      "path": "exports/bsp/functions/00b250b0/decompiled.c",
+      "bytes": 4309,
+      "sha256": "1e1025ab403ce666719fb1156f154e2fb75027cdc24ffc6e7eec16dd135892df"
+    },
+    {
+      "address": "00b65080",
+      "path": "exports/bsp/functions/00b65080/decompiled.c",
+      "bytes": 2143,
+      "sha256": "df981206deffec683e72825266fb733e9164af8e9945ed434ebc74086b791547"
+    },
+    {
+      "address": "00b656f0",
+      "path": "exports/bsp/functions/00b656f0/decompiled.c",
+      "bytes": 2253,
+      "sha256": "31a9bf9d8c55c9647a36f9bd37a3b19ea58a6f1cb10a30c6e568f47bf342c744"
+    },
+    {
+      "address": "00b65700",
+      "path": "exports/bsp/functions/00b65700/decompiled.c",
+      "bytes": 2288,
+      "sha256": "d423a7e40004280f8d8aecae81b021b73ac8db792aa75f19d0b31c59c1f4a367"
+    }
+  ],
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b250b0",
+      "name": "copy_native_plane_set_records_00b250b0",
+      "cpp_symbol": "bsp::copy_native_plane_set_records_00b250b0",
+      "source": "src/native_plane_set.cpp",
+      "native_end_exclusive": "00b2520a",
+      "original_abi": "ECX destination; stack source; RET4; EAX incidentally destination, no semantic result required",
+      "host_abi_boundary": "Explicit raw pointer MSVC Win32 fastcall entry; unused EDX for native stack arguments. Full entry bytes identical but general original game caller integration remains separate.",
+      "evidence": "reports/native_plane_set_audit.json",
+      "status": "complete_actual_storage_primary_main_library_original_bodies_identical_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b65080",
+      "name": "native_plane_set_count_00b65080",
+      "cpp_symbol": "bsp::native_plane_set_count_00b65080",
+      "source": "src/native_plane_set.cpp",
+      "native_end_exclusive": "00b65087",
+      "original_abi": "ECX actual set; RET; EAX raw count+140",
+      "host_abi_boundary": "Explicit raw pointer MSVC Win32 fastcall entry; unused EDX for native stack arguments. Full entry bytes identical but general original game caller integration remains separate.",
+      "evidence": "reports/native_plane_set_audit.json",
+      "status": "complete_actual_storage_primary_main_library_original_bodies_identical_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b656f0",
+      "name": "native_plane_set_plane_00b656f0",
+      "cpp_symbol": "bsp::native_plane_set_plane_00b656f0",
+      "source": "src/native_plane_set.cpp",
+      "native_end_exclusive": "00b656fd",
+      "original_abi": "ECX base; stack DWORD index; RET4; EAX wrapped record address",
+      "host_abi_boundary": "Explicit raw pointer MSVC Win32 fastcall entry; unused EDX for native stack arguments. Full entry bytes identical but general original game caller integration remains separate.",
+      "evidence": "reports/native_plane_set_audit.json",
+      "status": "complete_actual_storage_primary_main_library_original_bodies_identical_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b65700",
+      "name": "native_plane_set_flags_00b65700",
+      "cpp_symbol": "bsp::native_plane_set_flags_00b65700",
+      "source": "src/native_plane_set.cpp",
+      "native_end_exclusive": "00b6570e",
+      "original_abi": "ECX base; stack DWORD index; RET4; EAX raw flags+10",
+      "host_abi_boundary": "Explicit raw pointer MSVC Win32 fastcall entry; unused EDX for native stack arguments. Full entry bytes identical but general original game caller integration remains separate.",
+      "evidence": "reports/native_plane_set_audit.json",
+      "status": "complete_actual_storage_primary_main_library_original_bodies_identical_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_PLANE_SET.md",
+    "bytes": 7435,
+    "sha256": "c569e3770adac15b4780629843029c090a9f66cc1388fde03298e3cbfbd1fbd7"
+  },
+  "closure_utc": "2026-09-11T16:30:59.701225+00:00"
 }

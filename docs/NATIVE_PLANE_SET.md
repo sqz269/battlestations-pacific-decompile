@@ -26,3 +26,27 @@ One focused parametrized probe passed thirteen original/library pairs, comparing
 Normal calls preserve the nonvolatile-register sentinels and original stack cleanup. The probe compares x87 control/status, abridged tag/opcode, all eight 80-bit register payloads, data pointer and MXCSR. The final x87 instruction pointer is compared after normalization to the same original/library instruction offset; XMM register payloads are not compared. With control word `037E`, the signaling NaN produces real exception `C0000090` at copy offset `3B`, after exactly two coefficient stores. Original and library partial memory, exception instruction offset and x87 control/status/tag agree. Other pending-exception states, stack overflow, unmasked denormal and all possible OS memory faults are not separately exercised; the complete instruction identity is recorded without converting those into additional runtime claims.
 
 The header/source/document/report form the four-file handoff. All ignored build/probe sources, executable, archive, object, command log, results and postimages are pinned and preserved for primary replay. Camera B285A0 and renderer clip-plane parent integration remain outside this packet.
+
+
+## Primary integration
+
+The primary reviewed all four complete sources and the focused fixture,
+verified all 148 worker artifact pins, and integrated the unchanged source
+into the main CMake target. The strict Win32 main build and both existing
+CTests passed. A new actual main library, exact archive object, source/header
+and build-command log were frozen before linking the unchanged fixture.
+Fresh guarded Ghidra/installed-PE checks covered all 380 original bytes; all
+eight native seeds matched.
+
+The independent primary replay passed the same 13 original/library pairs,
+including the actual unmasked invalid exception. All 26,624 arena bytes
+matched; the complete four original/COFF/linked/runtime bodies remain
+identical with zero relocations. Fourteen stages preserve all original
+bodies and the entire linked text. Main-library evidence and raw artifacts
+are sealed read-only under `local/plane_set_primary/`; the tracked audit
+contains their hashes and full verification.
+
+The four existing Ghidra names and prior comments were preserved, reviewed
+evidence was appended and saved, and exports and complete reconstruction
+records were refreshed. No general original-caller integration or gameplay
+validation is claimed.
