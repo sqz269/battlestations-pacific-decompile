@@ -1,0 +1,170 @@
+{
+  "packet": "orch3_effect_admission_l",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verified_live_function_count": 63101,
+  "source": "src/effect_admission.cpp",
+  "header": "include/bsp/effect_admission.hpp",
+  "evidence": "docs/EFFECT_ADMISSION.md",
+  "functions": [
+    {
+      "address": "00865fb0",
+      "name": "unwind_effect_manager_base_00865fb0",
+      "ghidra_name": "BSP_EffectManager_UnwindBase",
+      "old_name": "FUN_00865fb0",
+      "native_abi": "ECX owner; RET; no defined result",
+      "native_last_instruction": "00865fc0",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00865fc0",
+      "instructions": 3,
+      "bytes": 17,
+      "scope": "Complete base unwind: unconditional F87650 clear then CE3818 identity store"
+    },
+    {
+      "address": "00866230",
+      "name": "construct_effect_manager_00866230",
+      "ghidra_name": "BSP_EffectManager_Construct",
+      "old_name": "FUN_00866230",
+      "native_abi": "ECX raw owner; EAX same owner; RET",
+      "native_last_instruction": "00866274",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00866274",
+      "instructions": 19,
+      "bytes": 69,
+      "scope": "Complete identity store and actual section creation plus verified base EH unwind"
+    },
+    {
+      "address": "00866440",
+      "name": "effect_manager_singleton_00866440",
+      "ghidra_name": "BSP_EffectManager_Get",
+      "old_name": "FUN_00866440",
+      "native_abi": "No inputs; EAX owner; RET",
+      "native_last_instruction": "008664fc",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "008664fc",
+      "instructions": 51,
+      "bytes": 189,
+      "scope": "Complete lazy getter/control flow with actual constructor, canonical shared lifetime access, explicit required application lifetime dispatcher"
+    },
+    {
+      "address": "008669d0",
+      "name": "delete_effect_manager_008669d0",
+      "ghidra_name": "BSP_EffectManager_DeletingDestructor",
+      "old_name": "CG_scalar_deleting_dtor_008669d0",
+      "native_abi": "ECX owner; stack flags; EAX original pointer including free branch; RET4",
+      "native_last_instruction": "00866a04",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00866a06",
+      "instructions": 15,
+      "bytes": 55,
+      "scope": "Complete lock destruction, unconditional publication clear, base identity, optional free; no unregister",
+      "gaps": [
+        {
+          "start": "008669fe",
+          "inclusive_end": "00866a00",
+          "bytes": "83c404",
+          "decoded": "ADD ESP,4",
+          "length": 3,
+          "assessment": "Original listing omitted free fallthrough"
+        }
+      ]
+    },
+    {
+      "address": "0086a650",
+      "name": "admit_point_effect_0086a650",
+      "ghidra_name": "BSP_EffectTemplate_AdmitPoint",
+      "old_name": "FUN_0086a650",
+      "native_abi": "ECX template; stack original XYZ and reference transform; AL result; RET8; upper EAX stale",
+      "native_last_instruction": "0086a73a",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "0086a73c",
+      "instructions": 84,
+      "bytes": 237,
+      "scope": "Complete captured-array admission loop, canonical transform refresh, exact x87 operation/spill order, required actual row projection/current virtual dispatch"
+    }
+  ],
+  "missing_function_starts": [
+    {
+      "address": "00c94cc8",
+      "kind": "EH handler",
+      "bytes": 10,
+      "last_instruction": "00c94ccd",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94cd1",
+      "evidence": "live bytes and disk disasm; FuncInfo DC6ABC/map DC6AB4"
+    },
+    {
+      "address": "00c94d13",
+      "kind": "EH handler",
+      "bytes": 10,
+      "last_instruction": "00c94d18",
+      "last_instruction_length": 5,
+      "inclusive_end": "00c94d1c",
+      "evidence": "live bytes and disk disasm; FuncInfo DC6B1C/map DC6B0C"
+    }
+  ],
+  "truncated_helper_body": {
+    "address": "00c94d08",
+    "listed_end_call": "00c94d0c",
+    "disk_tail": [
+      {
+        "address": "00c94d11",
+        "instruction": "POP ECX",
+        "length": 1
+      },
+      {
+        "address": "00c94d12",
+        "instruction": "RET",
+        "length": 1
+      }
+    ],
+    "inclusive_end": "00c94d12"
+  },
+  "original_vtable_identity": {
+    "table": "00d0d3cc",
+    "entry_00": "008669d0",
+    "entry_04": "00866790",
+    "base": "00ce3818",
+    "treatment": "Integer evidence identities only; never callable reconstructed process vtables"
+  },
+  "reused": [
+    "CameraTransform borrowing actual fields",
+    "refresh_camera_world_00b6db70",
+    "SystemSingletonCriticalSection actual OS section/+18 count",
+    "singleton_enter_critical_section",
+    "singleton_leave_critical_section",
+    "SingletonLifetimeDomain",
+    "ConcreteSingletonLifetimeManager::register_object",
+    "singleton_lifetime_allocate",
+    "singleton_lifetime_free"
+  ],
+  "required_boundaries": [
+    "Actual template native pointer-slot array/count fields, stable captured allocation, pure nonthrowing row projection",
+    "Actual current row virtual+1C callback and canonical reference transform bound to actual storage",
+    "Shared application SingletonLifetimeCallbacks dispatcher routes the exact registered EffectManager to delete_effect_manager_008669d0; no production dispatcher added",
+    "Same F87650 publication field and shared SingletonLifetimeDomain used by every owner/consumer",
+    "008680B0 complete owner construction and production point-effect host binding remain external"
+  ],
+  "verification": {
+    "build_command": "./scripts/build.ps1",
+    "build_log": "local/effect_admission_build.log",
+    "build_result": "PASS existing MSVC Win32 targets; new source pending integrator registration",
+    "source_compile_result": "PASS independent MSVC Win32 /std:c++17 /EHsc /O2 /W4 /WX /fp:strict /MD",
+    "existing_ctests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS"
+    },
+    "focused_fixture_source": "local/effect_admission_fixture.cpp",
+    "focused_fixture_source_sha256": "7FA13D1DC6D5691294844AEC62339FDA07E5172B57479F17297DC9ECA555309F",
+    "focused_fixture_command": "cmd /c local\\run_effect_admission_fixture.cmd",
+    "focused_fixture_log": "local/effect_admission_fixture.log",
+    "focused_fixture_result": "PASS captured range/distance, callback slot replacement/throw, x87 threshold rounding, actual singleton registration/lock identity, constructor EH, registration failure retention",
+    "fixture_location": "Ignored local/ in assigned worktree; no permanent test suite",
+    "new_functions_native_differential_tested": false
+  },
+  "ghidra_mutated": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "uncertainty": "Descriptive names are hypotheses. Typed owner section pointer is a canonical projection, not native layout. Actual native virtual/lifetime dispatch and host integration are required; original vtable addresses are never called. Concurrent memory mutation, asynchronous native faults, and throwing terminal destruction are outside the host domain."
+}
