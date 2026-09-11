@@ -1,0 +1,142 @@
+{
+  "packet": "orch4_voice_fade_b",
+  "worker": "agent/orch4-fade-20260910b",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "ghidra_mutations": [],
+  "reconstruction": {
+    "address": "005b8c30",
+    "name": "update_voice_sound_fade_005b8c30",
+    "source": "src/voice_fade_update.cpp",
+    "header": "include/bsp/voice_fade_update.hpp",
+    "doc": "docs/VOICE_FADE_UPDATE.md",
+    "status": "reconstructed_build_and_focused_fixture_tested",
+    "packet": "orch4_voice_fade_b",
+    "native_abi": "void __thiscall(manager*, float delta); ECX=manager; RET4",
+    "body_start": "005b8c30",
+    "body_end": "005b8d94",
+    "last_instruction": "005b8d92",
+    "last_instruction_length": 3,
+    "scope": "Complete bounded fade math, callback copy/clear/threadsafe Lua dispatch/cleanup and sound6c update with fresh singleton reload and existing4c reapplication.",
+    "evidence": "Verified complete Ghidra listing,105 instructions/0 gaps; docs/VOICE_FADE_UPDATE.md. Reuses existing math/native-string/sound/Lua implementations; logger and current Lua service resolver remain required.",
+    "validation": "MSVC Win32 Release and reconstructed_math1/1 passed. One ignored callback/reentry/cleanup/singleton fixture passed via concrete Lua wrapper and sound dirty walker.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "analyzed_only": [
+    {
+      "address": "00449af0",
+      "name": "BSP_NativeString_NotEqualCaseInsensitive",
+      "status": "analyzed_read_only",
+      "body_end": "00449b3c",
+      "last_instruction": "00449b3a",
+      "last_instruction_length": 3,
+      "native_abi": "bool/AL __thiscall(left NativeString*, right NativeString*), RET4",
+      "generic_library_port": false,
+      "fixed_empty_specialization": "callback.length()!=0; no __stricmp call"
+    }
+  ],
+  "names": [
+    {
+      "address": "005b8c30",
+      "old_name": "FUN_005b8c30",
+      "name": "BSP_VoiceManager_UpdateSoundFade",
+      "evidence": "Hypothesis, not recovered symbol. Complete native void __thiscall(manager,float delta), RET4; body005b8c30-005b8d94. StepD4 towardD8 by float(DC*delta) via0042ac60; on ordered equality and nonempty callback log, copy current NativeString, clear original before00887e50, cleanup copy. Then rereadD4 and sound singleton00f8bbd8; if sound+6c differs including NaN, store it, reload singleton and reapply its EXISTING+4c via00a7a440 to dirty entries. Concrete existing string/math/sound/Lua helpers; callback/cleanup reentry preserved. src/voice_fade_update.cpp; docs/VOICE_FADE_UPDATE.md. Ghidra read-only.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    },
+    {
+      "address": "00449af0",
+      "old_name": "FUN_00449af0",
+      "name": "BSP_NativeString_NotEqualCaseInsensitive",
+      "evidence": "Provisional descriptive wrapper name, not recovered symbol or CRT port. Complete bool/AL __thiscall(left NativeString,right NativeString), RET4; body00449af0-00449b3c. If left length0 return right length!=0; if right length0 return true; otherwise call existing CRT __stricmp00bf7fbf and return nonzero. Stored lengths need not match. Analyzed only; voice fade005b8cad uses fixed-empty RHS, so its caller specializes to left.length()!=0 without CRT call. Existing __stricmp name retained; docs/VOICE_FADE_UPDATE.md. Ghidra read-only.",
+      "previous_plate_comment": null,
+      "annotation_pending": true
+    }
+  ],
+  "flow_audits": [
+    {
+      "address": "005b8c30",
+      "instructions": 105,
+      "gaps": 0
+    },
+    {
+      "address": "00449af0",
+      "instructions": 30,
+      "gaps": 0
+    }
+  ],
+  "missing_functions": [],
+  "native_calls": {
+    "step": "005b8c76",
+    "empty_string": "005b8c9b",
+    "inequality": "005b8cad",
+    "log": "005b8cdd",
+    "copy": "005b8cea",
+    "clear": "005b8cfe",
+    "resolve_game": "005b8d03",
+    "resolve_lua": "005b8d14",
+    "call_lua": "005b8d1c",
+    "cleanup": "005b8d21-005b8d43",
+    "reread_current": "005b8d48",
+    "load_sound": "005b8d4a",
+    "store_sound6c": "005b8d6e",
+    "reload_sound": "005b8d73",
+    "apply_existing_global4c": "005b8d7f"
+  },
+  "existing_reuse": [
+    "unit_step_towards_0042ac60",
+    "NativeString::resize_0041dd40",
+    "copy_construct_native_string_header_00426060",
+    "destroy_native_string_header_0041dd20",
+    "SoundSystemOwner::level_6c",
+    "SoundManagerLevels::global_4c",
+    "apply_sound_global_level_00a7a440",
+    "call_named_entry_point_threadsafe"
+  ],
+  "binding_contract": "VoiceFadeBindings{NativeStringStorage&,SoundSystemOwner* volatile&,VoiceFadeHost&}. Host only logs and resolves CURRENT game+1A08 MissionLua services after callback clearing. Sound singleton loads remain explicit and uncached.",
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_target": "MSVC Win32 Release",
+    "build_exit_code": 0,
+    "existing_tests": "reconstructed_math1/1 passed",
+    "build_log": "local/voice_fade_build.log",
+    "fixture_command": "./local/run_voice_fade_reentry_check.ps1",
+    "fixture_source": "local/voice_fade_reentry_check.cpp",
+    "fixture_log": "local/voice_fade_reentry_check.log",
+    "fixture_result": "PASS: one callback/reentry/cleanup/singleton fixture",
+    "fixture_scope": [
+      "Logger replaces original callback before snapshot.",
+      "Concrete existing Lua wrapper invokes callback with original callback already cleared.",
+      "Callback recursively updates new fade and sound owner, then installs a later callback.",
+      "Temporary string cleanup changes current fade and singleton again; outer publication observes both.",
+      "Existing sound global4c unchanged; actual dirty propagation reaches matching entries.",
+      "Later callback retained; Lua depth/marker/stack restored; zero live NativeString allocations."
+    ],
+    "fixture_unused_services": "throw unexpected-call errors; no default successful stand-ins",
+    "native_differential": false,
+    "actual_lua_interpreter": false,
+    "fmod_playback": false,
+    "game_validated": false,
+    "new_shared_tests": 0,
+    "new_test_targets": 0
+  },
+  "numeric_boundaries": [
+    "No clamp/absolute normalization of rate or delta; negative step may move away.",
+    "NaN target takes subtraction in existing scalar helper; finite current can remain finite.",
+    "Completion requires ordered equality, signed zeros equal; final sound comparison updates on NaN.",
+    "Signaling-NaN payload/quieting, unmasked x87 traps and FP status/control equivalence are excluded."
+  ],
+  "limits": [
+    "Semantic C++ interfaces, not native ABI/layout replacements.",
+    "C++ cleanup guard preserves documented state timing; no binary SEH equivalence.",
+    "Existing Lua/math/string/sound adapter limits retained.",
+    "Loaded manager/sound objects must remain valid through use; no new synchronization or null fallback."
+  ],
+  "integration_handoff": [
+    "Parent replaces VoiceLineHost::update_fade_005b8c30 with VoiceFadeBindings accessor and direct update_voice_sound_fade_005b8c30 call in shared voice_playback files.",
+    "Integrator annotates two pending descriptive hypotheses under Ghidra write lock, preserves existing comments, saves and refreshes affected exports."
+  ]
+}
