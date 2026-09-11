@@ -72,7 +72,11 @@ Remaining boundaries are actual effect virtual8/virtual0 implementations,
 configuration population, native SEH unwind, drop-in function ABI and gameplay.
 No game installation or saved game state was modified.
 
-Follow-up packets: investigate00432750/004329D0 configuration population and the
-00871BA0 effect acquisition chain only after checking current leases. Connect
-other00432650 callers to the same canonical owner and lifetime domain as their
-own runtime contracts are recovered.
+Follow-up packets: identify the actual configuration writer and recover the
+00871BA0 effect acquisition chain after checking current leases. The initial
+00432750/004329D0 candidates are consumers, not population routines:00432750
+constructs another owner using fields78/7C, while004329D0 updates that owner's
+motion-related fields.004DC940/004DCDF0 consume the FOV array atF4. These were
+bounded decompiler inspections, not complete reconstructions. Connect other
+00432650 callers to the same canonical owner/domain as their contracts become
+known; do not infer a population routine from a getter call alone.
