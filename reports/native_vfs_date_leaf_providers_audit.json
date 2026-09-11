@@ -1,0 +1,467 @@
+{
+  "packet": "native_vfs_date_leaf_providers",
+  "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+  "utc": "2026-09-11T16:58:32.424575+00:00",
+  "base_commit": "4aa18451",
+  "upstream_discovery_commit": "9d7ad167",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "names_are_hypotheses": true,
+  "functions": [
+    {
+      "kind": "function",
+      "address": "00443d00",
+      "cpp_symbol": "less_native_string_headers_00443d00",
+      "name": "less_native_string_headers_00443d00",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00443d51",
+      "original_abi": "Two actual-header pointers stack; RET8; AL boolean, upper EAX incidental",
+      "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be54d0",
+      "cpp_symbol": "lower_bound_native_file_store_name_00be54d0",
+      "name": "lower_bound_native_file_store_name_00be54d0",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00be5523",
+      "original_abi": "ECX actual tree; name stack; RET4; EAX selected node",
+      "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be5a50",
+      "cpp_symbol": "find_native_file_store_name_00be5a50",
+      "name": "find_native_file_store_name_00be5a50",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00be5ab6",
+      "original_abi": "ECX actual tree; hidden iterator-output/name stack; RET8; EAX output",
+      "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be5c80",
+      "cpp_symbol": "query_native_file_store_date_00be5c80",
+      "name": "query_native_file_store_date_00be5c80",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00be5ced",
+      "original_abi": "ECX actual FileStore; hidden date-output/name stack; RET8; EAX output",
+      "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bb9d50",
+      "cpp_symbol": "query_native_mpkg_file_date_00bb9d50",
+      "name": "query_native_mpkg_file_date_00bb9d50",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00bb9d67",
+      "original_abi": "ECX unused; hidden date-output/name-unused stack; RET8; EAX output",
+      "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bbb640",
+      "cpp_symbol": "query_native_msar_file_date_00bbb640",
+      "name": "query_native_msar_file_date_00bbb640",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00bbb657",
+      "original_abi": "ECX unused; hidden date-output/name-unused stack; RET8; EAX output",
+      "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "spans": [
+    {
+      "address": "00443d00",
+      "length": 81,
+      "end_exclusive": "00443d51",
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "bytes_hex": "8b4c24048339008b44240875128b00f7d81bc033c985c00f9cc18ac1c208008338007511b80100000033c985c00f9cc18ac1c208008b50048b41045250e87d427b0033c983c40885c00f9cc18ac1c20800",
+      "fresh_guarded_PE_match": true,
+      "role": "complete_implemented_native_body",
+      "instruction_count": 31,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00be54d0",
+      "length": 83,
+      "end_exclusive": "00be5523",
+      "sha256": "5bdcf1cde7eca209d12843f8b773035de68ccef488273a8e44ef4cc61b9a0da7",
+      "bytes_hex": "8b410453568b7004807e19008bd8753e578b7c2410837e0c0075088b07f7d81bc0eb15833f0074198b47048b4e105051e8ba2a010083c40885c07d058b7608eb048bde8b36807e190074ca8bc35f5e5bc20400",
+      "fresh_guarded_PE_match": true,
+      "role": "complete_implemented_native_body",
+      "instruction_count": 36,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00be5a50",
+      "length": 102,
+      "end_exclusive": "00be5ab6",
+      "sha256": "d9a94ec386e2f4f69beaff64deff4a8a63156fb32e8ec8b9e3d94f0514e948e9",
+      "bytes_hex": "83ec10538b5c241c5657538bf1e86efaffff85f68bf8897c24107505e8a20c01003b7e048974240c741683c70c57538bcee87ae285ff84c075068d4c240ceb0f8b460489442418897424148d4c24148b118b4424208b49045f5e89108948045b83c410c20800",
+      "fresh_guarded_PE_match": true,
+      "role": "complete_implemented_native_body",
+      "instruction_count": 39,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00be5c80",
+      "length": 109,
+      "end_exclusive": "00be5ced",
+      "sha256": "8cb4f7cce85ddcdf689be651496d27dc184df5f083e9eb2f07c30beb5ada9741",
+      "bytes_hex": "83ec108b41185355568b742420578d79148b4c242833ed518d54241c528bcf896e10896e0c896e08896e04892e8944241ce89afdffff8bd88b033bc574043bc77405e84c0a01008b442414394304741183c8ff89461089460c89460889460489065f8bc65e5d5b83c410c20800",
+      "fresh_guarded_PE_match": true,
+      "role": "complete_implemented_native_body",
+      "instruction_count": 44,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00bb9d50",
+      "length": 23,
+      "end_exclusive": "00bb9d67",
+      "sha256": "43a4fe4be93b647f42859db4995e29d6a9661d11f1b27a014656c2a6a15537db",
+      "bytes_hex": "8b44240433c989481089480c8948088948048908c20800",
+      "fresh_guarded_PE_match": true,
+      "role": "complete_implemented_native_body",
+      "instruction_count": 8,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00bbb640",
+      "length": 23,
+      "end_exclusive": "00bbb657",
+      "sha256": "43a4fe4be93b647f42859db4995e29d6a9661d11f1b27a014656c2a6a15537db",
+      "bytes_hex": "8b44240433c989481089480c8948088948048908c20800",
+      "fresh_guarded_PE_match": true,
+      "role": "complete_implemented_native_body",
+      "instruction_count": 8,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00d689e8",
+      "end_exclusive": "00d68a14",
+      "length": 44,
+      "role": "FileStore_profile",
+      "bytes_hex": "e030bd009080be00a05fbe00b07cbe00005cbe008064be00405cbe004060be00805cbe00b00fbf00c07cbe00",
+      "sha256": "699ad14715b26910d53c8258d884f08fef22b0bd0cc1c743474773eeb0b64fb7",
+      "fresh_guarded_PE_match": true
+    },
+    {
+      "address": "00d64390",
+      "end_exclusive": "00d643bc",
+      "length": 44,
+      "role": "MPKG_profile",
+      "bytes_hex": "e030bd00e09ebb00708ebb00309dbb00808ebb00f098bb004086bb004055bb00509dbb00b00fbf00409dbb00",
+      "sha256": "888d4133abb4a1ee84947195840dc2fb26a73e710087d9f976ab49b48e69b64a",
+      "fresh_guarded_PE_match": true
+    },
+    {
+      "address": "00d643c4",
+      "end_exclusive": "00d643f0",
+      "length": 44,
+      "role": "MSAR_profile",
+      "bytes_hex": "e030bd00c0b7bb00c0a7bb0020b6bb0010a7bb0060adbb0080a0bb004055bb0040b6bb00b00fbf0030b6bb00",
+      "sha256": "a5daaa0fac9237f816f22137025b882aa4971a5d3179e8b4a6d0518c28c63aa5",
+      "fresh_guarded_PE_match": true
+    },
+    {
+      "address": "00be7fa0",
+      "end_exclusive": "00be808e",
+      "length": 238,
+      "role": "FileStore_concrete_profile_constructor_evidence_only",
+      "bytes_hex": "6aff686b6ecc0064a100000000506489250000000083ec0c55565733ed8bf96a01558d4c2418897c2414896c2418896c241ce8695d83ff8b7424143bf574168b44241083c00150680c3ace0056e88ef6000083c40c8d4c2410518bcf896c2424e88bd5fcff3bf5c64424200274178b4424106a0183c0015056e8a21c83ff8bc8e8eb94feff8d77148bcec707e889d600e8abd5ffff894604c64019018b46048940048b460489008b4604894008896e088d77208bcec644242003e831d6ffff8b4c2418894604c64019018b46048940048b460489008b4604894008896e088bc75f5e5d64890d0000000083c418c3",
+      "sha256": "ca1ebfa3644d33ca4377a8b23aa70f064f10019c33efaef5ae0c2d92e6499ad2",
+      "fresh_guarded_PE_match": true,
+      "instruction_count": 78,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00bb9cb0",
+      "end_exclusive": "00bb9d21",
+      "length": 113,
+      "role": "MPKG_concrete_profile_constructor_evidence_only",
+      "bytes_hex": "6aff68e348cc0064a10000000050648925000000005156578b7c241c8bf1578974240ce8b8b8ffff6a34c744241800000000c7069043d600e82ecb030083c4048944241c85c0c644241401740a578bc8e81bfcffffeb0233c08b4c240c8946145f8bc65e64890d0000000083c410c20400",
+      "sha256": "58d187cfc7cf73f4a35f6c6d17b1723816017216ef53e1e7e322ca156cb0d7bf",
+      "fresh_guarded_PE_match": true,
+      "instruction_count": 35,
+      "instruction_bytes_cover_entire_span": true
+    },
+    {
+      "address": "00bbb5b0",
+      "end_exclusive": "00bbb61b",
+      "length": 107,
+      "role": "MSAR_concrete_profile_constructor_evidence_only",
+      "bytes_hex": "6aff68434acc0064a1000000005064892500000000518b442414568bf15089742408e8b99fffff33c0c706c443d6008944241089461c8946208946248b0decce09018b118b52046a028d460850c644241801ffd28b4c24088946148bc65e64890d0000000083c410c20400",
+      "sha256": "a6015fa6490a2810b02e145586762fb37b362565114723209f729c00aef1649f",
+      "fresh_guarded_PE_match": true,
+      "instruction_count": 33,
+      "instruction_bytes_cover_entire_span": true
+    }
+  ],
+  "total_spans": 12,
+  "total_bytes": 1011,
+  "implemented_body_spans": 6,
+  "implemented_body_bytes": 421,
+  "source_and_artifact_pins": [
+    {
+      "path": "src/native_vfs_date_leaf_providers.cpp",
+      "role": "implemented actual raw readers and zero leaves",
+      "bytes": 4749,
+      "sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559"
+    },
+    {
+      "path": "include/bsp/native_vfs_date_leaf_providers.hpp",
+      "role": "public actual-storage interfaces and original ABI",
+      "bytes": 3083,
+      "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0"
+    },
+    {
+      "path": "docs/NATIVE_VFS_DATE_LEAF_PROVIDERS.md",
+      "role": "source contract and validation boundaries",
+      "bytes": 7451,
+      "sha256": "2b0ec10ab5ec8d1deadcdced68871daa73d092ca5fa2af8fbe36111319c94d57"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "role": "existing returning invalid-parameter boundary contract",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/vfs_file_date.cpp",
+      "role": "existing typed projection, not called by raw source",
+      "bytes": 3277,
+      "sha256": "1e74117b9188f5a4c2713abd9061efa852571f09aa6bbfd98cb69a09ab65d533"
+    },
+    {
+      "path": "include/bsp/vfs_file_date.hpp",
+      "role": "typed date projection contracts",
+      "bytes": 1305,
+      "sha256": "69781cbe3fc43cd91b7c75ae4741dc7f4b8d4b9e0dc4ddd48540067fbe89c37a"
+    },
+    {
+      "path": "src/file_store.cpp",
+      "role": "existing std::map/shared-stream projection, not called by raw source",
+      "bytes": 2957,
+      "sha256": "4a2a987ea2355fcb2c870b5121aa36573dcc063172e433c78544a71889a6e76c"
+    },
+    {
+      "path": "include/bsp/file_store.hpp",
+      "role": "typed FileStore boundary",
+      "bytes": 2038,
+      "sha256": "1a9ee0c2dfb6ab098fc20ff74013de5bc317ff28616a7c4a309865a727a45796"
+    },
+    {
+      "path": "local/vfs_date_leaf_probe.cpp",
+      "role": "ignored original/actual-library comparison source",
+      "bytes": 6793,
+      "sha256": "634aef72d23ea11db0fac19a72743a60cb436d443d36aa18939524f6b071cbcb"
+    },
+    {
+      "path": "local/vfs_date_original_bytes.hpp",
+      "role": "ignored original unmodified instruction bytes",
+      "bytes": 2790,
+      "sha256": "b1fcce70ff03adbb093e4dd2bc00ec21c0b8d8975eb5d84196781c1b7cb89b73"
+    },
+    {
+      "path": "local/vfs_date_leaf_build_hook.cmake",
+      "role": "ignored source/probe registration",
+      "bytes": 673,
+      "sha256": "b81aa21afff212ae66d2b55746e42eb59bd4ab20c39bcf1ca6a1666fe7e10d67"
+    },
+    {
+      "path": "local/vfs_date_leaf_build.log",
+      "role": "strict build and existing CTest output",
+      "bytes": 19006,
+      "sha256": "8db7f27334d95878e759ea9ce01528063c2155c09829bacf5d829d494e3ea09d"
+    },
+    {
+      "path": "local/vfs_date_leaf_probe_build.log",
+      "role": "focused probe rebuild after code-allocation adjustment",
+      "bytes": 606,
+      "sha256": "15b3c15ee3274e3ed2c36def95890d61ed624e089b35242e0c9703f21a263733"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "role": "eight verified original math reference spans",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "role": "actual strict Win32 library containing new source",
+      "bytes": 35943342,
+      "sha256": "152fef35041fd8931fa94184312ec5a4b6d1457b3873723be7f7164b513cae5f"
+    },
+    {
+      "path": "build/win32/Release/bsp_vfs_date_leaf_probe.exe",
+      "role": "executed comparison linked to actual library",
+      "bytes": 13824,
+      "sha256": "619a5d33aeded774a2504654ba40729940a8523e65815fb8acff423ba229cb40"
+    }
+  ],
+  "guarded_queries": {
+    "proto_00443d00": "00443d00 BSP_NativeString_LessCaseInsensitive  undefined BSP_NativeString_LessCaseInsensitive(void)  body 00443d00 - 00443d50\n",
+    "proto_00be54d0": "00be54d0 FUN_00be54d0  undefined FUN_00be54d0(void)  body 00be54d0 - 00be5522\n",
+    "proto_00be5a50": "00be5a50 FUN_00be5a50  undefined FUN_00be5a50(void)  body 00be5a50 - 00be5ab5\n",
+    "proto_00be5c80": "00be5c80 BSP_FileStore_GetFileDateSentinel  undefined BSP_FileStore_GetFileDateSentinel(void)  body 00be5c80 - 00be5cec\n",
+    "proto_00bb9d50": "00bb9d50 BSP_MpkgProvider_GetEmptyFileDate  undefined BSP_MpkgProvider_GetEmptyFileDate(void)  body 00bb9d50 - 00bb9d66\n",
+    "proto_00bbb640": "00bbb640 ?  ?  body ?\n",
+    "verified_target_count": "live function count 63149; snapshot 63149; same\n",
+    "MSAR_registration_references": "No references found to address: 0073bc40 FUN_0073bc40\n"
+  },
+  "raw_storage_contract": {
+    "native_name": "DWORD length+0/data pointer+4; no NativeString object overlay",
+    "FileStore_primary_tree": "actual provider+14; head provider+18; count and secondary tree unused",
+    "tree": "head+4 root; node+0/+4/+8 links; key+C/+10; sentinel byte+19; stream+14 unused",
+    "iterator": "eight bytes {tree owner,node}; output owner then node, both values captured before first output store",
+    "comparator": "Zero stored length gates, otherwise current host CRT _stricmp <0; right data before left data; no length tie-break, bounded memcmp, normalization or ASCII replacement",
+    "lower_bound": "Current head/root and node links; no snapshot or validation; uses matching recovered comparator over raw current headers",
+    "find": "Lower-bound precedes null-owner handler; compare against current head; fallback rereads head after comparison; captured node on hit",
+    "date": "Capture old provider+18 head before descending output zero stores; find uses current tree; validate returned owner; compare returned node to captured head; descendingFFFFFFFF hit stores",
+    "package": "Five descending zero stores; return supplied output; no provider/name read",
+    "ownership": "No allocation, stream query, provider retain/release or date-provider callback field"
+  },
+  "concrete_profiles": [
+    {
+      "profile": "00d689e8",
+      "constructor": "00be7fa0",
+      "date_slot20": "00be5c80",
+      "kind": "FileStore"
+    },
+    {
+      "profile": "00d64390",
+      "constructor": "00bb9cb0",
+      "date_slot20": "00bb9d50",
+      "kind": "MPKG"
+    },
+    {
+      "profile": "00d643c4",
+      "constructor": "00bbb5b0",
+      "date_slot20": "00bbb640",
+      "kind": "MSAR",
+      "normal_startup_reachability_established": false
+    }
+  ],
+  "exception_contract": {
+    "native_EH_registration": false,
+    "returning_CRT_sites": [
+      "00be5a6c",
+      "00be5cc2"
+    ],
+    "binding": "SingletonLifetimeCallbacks::invalid_parameter; required callable boundary; continue after return",
+    "extra_throw_or_recovery": false,
+    "noexcept": "Only store-only package leaves and private raw access helpers; comparator/tree/find/FileStore allow host exceptions to propagate",
+    "fixture_exercised_invalid_sites": false,
+    "invalid_sites_validation": "Complete original assembly and actual source reviewed; valid Win32 raw-storage fixture does not claim invalid/null-page continuation execution"
+  },
+  "fixture": {
+    "command": "build/win32/Release/bsp_vfs_date_leaf_probe.exe",
+    "exit_code": 0,
+    "stdout": "PASS original/actual-library scenarios=42 spans=6 bytes=421; same-arena full-memory and return checks; host CRT boundary; invalid continuation source-reviewed",
+    "scenario_count": 42,
+    "original_instruction_body_bytes_modified": false,
+    "code_placement": "One common translation into an8MiB process-local executable allocation; all internal PC-relative calls remain original and unchanged",
+    "external_boundaries": [
+      "native BF7FBF entry forwards to same host _stricmp used by library",
+      "native BF6713 entry forwards to explicit returning diagnostic counter; no fixture scenario reaches it"
+    ],
+    "actual_comparison_target": "bsp_core.lib, not an inline source mirror",
+    "checks": [
+      "Exact return pointer or AL boolean",
+      "All1024 arena bytes after each original/actual call at identical addresses",
+      "Empty/nonempty trees and lower-bound hit/miss",
+      "Case-insensitive keys and high-bit recorded lengths differing from C-string size",
+      "Zero-length name with invalid data pointer ignored",
+      "Find output aliasing tree header/query header/node key",
+      "Date output aliasing provider prefix/tree-owner word/query header/node key",
+      "MPKG/MSAR invalid name pointer ignored; distinct/aliased output"
+    ],
+    "not_claimed": [
+      "Original CRT locale implementation equivalence",
+      "Native EH/SEH ABI",
+      "Invalid callback paths dynamically executed",
+      "VFS or MSAR startup integration",
+      "Game execution"
+    ],
+    "initial_probe_observation": "Exact original-address reservation was unavailable in standalone process; switched to common translation without altering six original bodies; final42-scenario run passes"
+  },
+  "build": {
+    "command": "scripts/build.ps1 through ignored local project hook",
+    "configuration": "MSVC Win32 Release",
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "success": true,
+    "source_compiled_into_bsp_core": true,
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matched": 8,
+      "total": 8
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "total": 2,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "shared_CMake_changed": false,
+    "registration_pending_primary": true
+  },
+  "integration_handoff": {
+    "source_registration": "Add src/native_vfs_date_leaf_providers.cpp to shared source registration after primary review; local hook is ignored",
+    "shared_comparator": "less_native_string_headers_00443d00 declared in this packet header, reusable by physical reader",
+    "remaining_callers": [
+      "BDD340/BD9E80 actual date visitor integration",
+      "BDD0A0 actual mount traversal",
+      "BF3A80/BF39C0 physical date/path reader"
+    ],
+    "name_and_function_metadata": "Primary to coordinate; BBB640 currently has no function record; existing443D00 typed comparator/source remains separately scoped",
+    "standalone_raw_inputs": "Caller provides actual valid Win32 backing storage; no reconstructed FileStore ownership prerequisite for these readers"
+  },
+  "annotations_applied": false,
+  "Ghidra_mutations": false,
+  "ledger_registered": false,
+  "reconstructed": true,
+  "build_tested": true,
+  "original_body_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false
+}
