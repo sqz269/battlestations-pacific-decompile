@@ -9,6 +9,11 @@ clear), and `229fb285` (canonical Text lifetime), plus the primary's actual
 native clip binding. The earlier detach, ellipsis and style sources from
 `f721a16d` now also enter the normal build through `cmake/startup.cmake`.
 
+Integrated into `main` at `c2d7def9`. The combined build and both existing
+tests passed after merging the other orchestrator's current main branch.
+The integration recorded 17 applicable annotations and refreshed the two
+newly changed exports; `00ABA8D0` remains deferred under the active worker lease.
+
 The buffer path uses the existing native renderer, model, mesh, section,
 material and reference-owner domains. The auxiliary Shadow model is published
 before temporary-name release. The lifetime owns one Text state, shadow slot,

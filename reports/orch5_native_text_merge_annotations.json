@@ -1,0 +1,239 @@
+[
+  {
+    "address": "00aa8320",
+    "before": {
+      "address": "00aa8320",
+      "function_name": "BSP_GuiWidget_ReleaseSceneNodes",
+      "comment": "[BSP reconstruction 00aa8320]\nHypothesis, not a recovered symbol. __thiscall(widget), RET, widget vtable +20h in both tables. 00AA8325 walks the children in list order calling each child's own vtable +20h; 00AA8372 dispatches vtable +0Ch with the class descriptor 00AB6A30 returns from 00f8be28 and calls 00AB73B0 on a match; 00AA8380 unlinks and releases the node at +4Ch through 00B6DFA0 and clears the field, so a second call is a no-op. Called by the destructor 00AA9730 and by 00ACC6A0. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00aa8320] update\nHypothesis, not a recovered symbol. __thiscall(widget), RET, widget vtable +20h in both tables. 00AA8325 walks the children in list order calling each child's own vtable +20h; 00AA8372 dispatches vtable +0Ch with the class descriptor 00AB6A30 returns from 00f8be28 and calls 00AB73B0 on a match; 00AA8380 unlinks and releases the node at +4Ch through 00B6DFA0 and clears the field, so a second call is a no-op. Called by the destructor 00AA9730 and by 00ACC6A0. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | AA31F0 calls this pure current20 logical pass before deleting the page. It walks child current20 and releases/nulls main node+4C; it does not invoke derived destruction. Retained runtime corrected and actual outer-scene/group/model disposal fixture passed. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.\n\n[BSP reconstruction 00aa8320] update\nHypothesis, not a recovered symbol. __thiscall(widget), RET, widget vtable +20h in both tables. 00AA8325 walks the children in list order calling each child's own vtable +20h; 00AA8372 dispatches vtable +0Ch with the class descriptor 00AB6A30 returns from 00f8be28 and calls 00AB73B0 on a match; 00AA8380 unlinks and releases the node at +4Ch through 00B6DFA0 and clears the field, so a second call is a no-op. Called by the destructor 00AA9730 and by 00ACC6A0. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | AA31F0 calls this pure current20 logical pass before deleting the page. It walks child current20 and releases/nulls main node+4C; it does not invoke derived destruction. Retained runtime corrected and actual outer-scene/group/model disposal fixture passed. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Text secondary phase now has canonical GuiTextLifetime implementation and coordinated owner hook: child virtual20 CALL isAA8352 (AA8343 is bounds JNZ), descriptor getterAA8368, current0C AA8372, conditional shadow helperAA837B, main releaseAA8387. After derived teardown AA9730 installs base vtable; retained Text companion does not redispatch Text during base phase. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "after": {
+      "address": "00aa8320",
+      "name": "BSP_GuiWidget_ReleaseSceneNodes",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget), RET, widget vtable +20h in both tables. 00AA8325 walks the children in list order calling each child's own vtable +20h; 00AA8372 dispatches vtable +0Ch with the class descriptor 00AB6A30 returns from 00f8be28 and calls 00AB73B0 on a match; 00AA8380 unlinks and releases the node at +4Ch through 00B6DFA0 and clears the field, so a second call is a no-op. Called by the destructor 00AA9730 and by 00ACC6A0. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | AA31F0 calls this pure current20 logical pass before deleting the page. It walks child current20 and releases/nulls main node+4C; it does not invoke derived destruction. Retained runtime corrected and actual outer-scene/group/model disposal fixture passed. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Text secondary phase now has canonical GuiTextLifetime implementation and coordinated owner hook: child virtual20 CALL isAA8352 (AA8343 is bounds JNZ), descriptor getterAA8368, current0C AA8372, conditional shadow helperAA837B, main releaseAA8387. After derived teardown AA9730 installs base vtable; retained Text companion does not redispatch Text during base phase. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa83a0",
+    "before": {
+      "address": "00aa83a0",
+      "function_name": "BSP_GuiWidget_DetachChild",
+      "comment": "[BSP reconstruction 00aa83a0]\nHypothesis, not a recovered symbol. __thiscall(parent, child), RET 4. A null child is a no-op. Otherwise, when the child's scene node at child+4Ch is non-null it gets 00b6e680(0) and 00b6d890(0); when the parent's node is non-null it gets 00b6d940(child node); the child is erased from the parent's std::list at parent+64h through 00a9bd50; and child+70h, the parent back-pointer, is cleared. Callers 00AAA5A0, 00AAA650, 00AAA710 and BSP_TextContext_ClearGlyphChildren. docs/GUI_WIDGET_TRANSFORM.md.\n\n[BSP reconstruction 00aa83a0] update\nHypothesis, not a recovered symbol. __thiscall(parent, child), RET 4. A null child is a no-op. Otherwise, when the child's scene node at child+4Ch is non-null it gets 00b6e680(0) and 00b6d890(0); when the parent's node is non-null it gets 00b6d940(child node); the child is erased from the parent's std::list at parent+64h through 00a9bd50; and child+70h, the parent back-pointer, is cleared. Callers 00AAA5A0, 00AAA650, 00AAA710 and BSP_TextContext_ClearGlyphChildren. docs/GUI_WIDGET_TRANSFORM.md. | Concrete same-owner C++ implementation in src/gui_widget_detach.cpp. Native list helper removes all matches;00A9BDC0 false CALL_RETURN repaired and saved. Ownership transfer avoids implicit widget destruction. docs/GUI_WIDGET_DETACH.md; reports/gui_widget_detach.json. Actual-owner focused probe passed; no ABI/game validation."
+    },
+    "after": {
+      "address": "00aa83a0",
+      "name": "BSP_GuiWidget_DetachChild",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(parent, child), RET 4. A null child is a no-op. Otherwise, when the child's scene node at child+4Ch is non-null it gets 00b6e680(0) and 00b6d890(0); when the parent's node is non-null it gets 00b6d940(child node); the child is erased from the parent's std::list at parent+64h through 00a9bd50; and child+70h, the parent back-pointer, is cleared. Callers 00AAA5A0, 00AAA650, 00AAA710 and BSP_TextContext_ClearGlyphChildren. docs/GUI_WIDGET_TRANSFORM.md. | Concrete same-owner C++ implementation in src/gui_widget_detach.cpp. Native list helper removes all matches;00A9BDC0 false CALL_RETURN repaired and saved. Ownership transfer avoids implicit widget destruction. docs/GUI_WIDGET_DETACH.md; reports/gui_widget_detach.json. Actual-owner focused probe passed; no ABI/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00aa9f10",
+    "before": {
+      "address": "00aa9f10",
+      "function_name": "BSP_UIContext_RegisterClipParameters",
+      "comment": "[BSP reconstruction 00aa9f10]\nECX context, material stack RET4. Walk self/parent+70 until virtual+5C returns16; context+E8=1/0 and bind cClip. Active only: ancestor+EC pair cClipCenter, ancestor+F4 float4 cClipBorder, global00e12fc0 cAspectRatio. Source addresses borrowed; no inactive default writes. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json.\n\n[BSP reconstruction 00aa9f10] update\nECX context, material stack RET4. Walk self/parent+70 until virtual+5C returns16; context+E8=1/0 and bind cClip. Active only: ancestor+EC pair cClipCenter, ancestor+F4 float4 cClipBorder, global00e12fc0 cAspectRatio. Source addresses borrowed; no inactive default writes. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json. | Full clip registration over SAME GuiWidgetOwner+E8, existing parent chain and MaterialCloneState.parameters; active real ClipBox fields/aspect remain required borrowed sources. ABI: ECX widget; stack material pointer; RET4 at00aaa0d7. Final instruction is a backward JMP. Final instruction00aaa0e4 length5; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation.\n\n[BSP reconstruction 00aa9f10] update\nECX context, material stack RET4. Walk self/parent+70 until virtual+5C returns16; context+E8=1/0 and bind cClip. Active only: ancestor+EC pair cClipCenter, ancestor+F4 float4 cClipBorder, global00e12fc0 cAspectRatio. Source addresses borrowed; no inactive default writes. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json. | Full clip registration over SAME GuiWidgetOwner+E8, existing parent chain and MaterialCloneState.parameters; active real ClipBox fields/aspect remain required borrowed sources. ABI: ECX widget; stack material pointer; RET4 at00aaa0d7. Final instruction is a backward JMP. Final instruction00aaa0e4 length5; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation. | Actual NativeMaterialStorage and parameter-pool implementation now in src/gui_native_clip_parameters.cpp. Full assembly, all9 attributed caller sites, name allocation/release order and live ordered-zero flag reload verified. Captured canonical ClipBox fields and live aspect slot stay borrowed. Separate from MaterialCloneState projection; normal Win32 build and2existing tests pass, no ABI/game claim. docs/GUI_NATIVE_CLIP_PARAMETERS.md."
+    },
+    "after": {
+      "address": "00aa9f10",
+      "name": "BSP_UIContext_RegisterClipParameters",
+      "evidence": "ECX context, material stack RET4. Walk self/parent+70 until virtual+5C returns16; context+E8=1/0 and bind cClip. Active only: ancestor+EC pair cClipCenter, ancestor+F4 float4 cClipBorder, global00e12fc0 cAspectRatio. Source addresses borrowed; no inactive default writes. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json. | Full clip registration over SAME GuiWidgetOwner+E8, existing parent chain and MaterialCloneState.parameters; active real ClipBox fields/aspect remain required borrowed sources. ABI: ECX widget; stack material pointer; RET4 at00aaa0d7. Final instruction is a backward JMP. Final instruction00aaa0e4 length5; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation. | Actual NativeMaterialStorage and parameter-pool implementation now in src/gui_native_clip_parameters.cpp. Full assembly, all9 attributed caller sites, name allocation/release order and live ordered-zero flag reload verified. Captured canonical ClipBox fields and live aspect slot stay borrowed. Separate from MaterialCloneState projection; normal Win32 build and2existing tests pass, no ABI/game claim. docs/GUI_NATIVE_CLIP_PARAMETERS.md."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6b50",
+    "before": {
+      "address": "00ab6b50",
+      "function_name": "BSP_GuiText_SetColor",
+      "comment": "[BSP reconstruction 00ab6b50]\nHypothesis, not a recovered symbol. GUI Text widget vtable +50h. __thiscall(this, const float rgba[4]), RET 4, established from the listing 00AB6B50..00AB6BC1 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base colour setter 00AA6870, then scales the shadow alpha +174h by the incoming colour w lane at [arg+0Ch] into the shadow material parameter +0Ch. This is the target 00ABAED0 invokes with this+50h, which is the base widget four-float Color property, resolving the virtual +50 with context+50 note in docs/FONT_CONTEXT_OWNERSHIP.md. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json.\n\n[BSP reconstruction 00ab6b50] update\nHypothesis, not a recovered symbol. GUI Text widget vtable +50h. __thiscall(this, const float rgba[4]), RET 4, established from the listing 00AB6B50..00AB6BC1 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base colour setter 00AA6870, then scales the shadow alpha +174h by the incoming colour w lane at [arg+0Ch] into the shadow material parameter +0Ch. This is the target 00ABAED0 invokes with this+50h, which is the base widget four-float Color property, resolving the virtual +50 with context+50 note in docs/FONT_CONTEXT_OWNERSHIP.md. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Concrete same-owner Text style binding now implemented: existing base00AA6870 then live shadow+188 geometry/count/element/material chain, only diffuse alpha = current shadow alpha times borrowed incoming alpha. Same canonical node/model/material identity validated through existing lifetime domains; no fake material or secondary owner. Existing Text color projection mirrors base stores. Current Ghidra function00AB6B50..00AB6BC3 exists, final00AB6BC1 RET4/3. Strict Win32 compile passed; operation not runtime-tested. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "after": {
+      "address": "00ab6b50",
+      "name": "BSP_GuiText_SetColor",
+      "evidence": "Hypothesis, not a recovered symbol. GUI Text widget vtable +50h. __thiscall(this, const float rgba[4]), RET 4, established from the listing 00AB6B50..00AB6BC1 because Ghidra has no function starting here (enclosing candidate 00AB6AB0). Calls the base colour setter 00AA6870, then scales the shadow alpha +174h by the incoming colour w lane at [arg+0Ch] into the shadow material parameter +0Ch. This is the target 00ABAED0 invokes with this+50h, which is the base widget four-float Color property, resolving the virtual +50 with context+50 note in docs/FONT_CONTEXT_OWNERSHIP.md. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Concrete same-owner Text style binding now implemented: existing base00AA6870 then live shadow+188 geometry/count/element/material chain, only diffuse alpha = current shadow alpha times borrowed incoming alpha. Same canonical node/model/material identity validated through existing lifetime domains; no fake material or secondary owner. Existing Text color projection mirrors base stores. Current Ghidra function00AB6B50..00AB6BC3 exists, final00AB6BC1 RET4/3. Strict Win32 compile passed; operation not runtime-tested. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab6c30",
+    "before": {
+      "address": "00ab6c30",
+      "function_name": "BSP_GuiText_ConfigureShadow",
+      "comment": "[BSP reconstruction 00ab6c30]\nHypothesis, not a recovered symbol. Full00AB6C30..00AB6CAC, final00AB6CAA RET10h length3; ECX Text, stack raw enable byte, position DWORD, offset float, color pointer. Store position/raw byte/offset/RGBA then actual shadow+188 parent call; reread enable/slot before optional root clear. Same GuiTextWidget fields and actual NodeBinding/model lifetime; canonical shadowed now uint8_t. All4 direct sites checked, raw+61Fh caller retained. Strict Win32 compile; not executed. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "after": {
+      "address": "00ab6c30",
+      "name": "BSP_GuiText_ConfigureShadow",
+      "evidence": "Hypothesis, not a recovered symbol. Full00AB6C30..00AB6CAC, final00AB6CAA RET10h length3; ECX Text, stack raw enable byte, position DWORD, offset float, color pointer. Store position/raw byte/offset/RGBA then actual shadow+188 parent call; reread enable/slot before optional root clear. Same GuiTextWidget fields and actual NodeBinding/model lifetime; canonical shadowed now uint8_t. All4 direct sites checked, raw+61Fh caller retained. Strict Win32 compile; not executed. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab7200",
+    "before": {
+      "address": "00ab7200",
+      "function_name": "BSP_GuiText_ApplyStateColor",
+      "comment": "[BSP reconstruction 00ab7200]\nHypothesis, not a recovered symbol. Raw132-byte00AB7200..00AB7283; final00AB7281 RET4/3; ECX Text,state DWORD stack. Current+80 fromText vtable00D5C748. Existing owner.hidden+77 selects disabled color; otherwise state*10h+11Ch. State1 adds exactdouble00D5C5D0 RGB and+0 alpha, including hidden case, then current50 ->00AB6B50. Partial input-domain projection supports hidden any state or non-hidden0..3; unrelated native storage access00AB7215..7220 for other indices explicitly unsupported. Strict Win32 compile only. Worker Ghidra readonly; raw definition needed for call verifier. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "after": {
+      "address": "00ab7200",
+      "name": "BSP_GuiText_ApplyStateColor",
+      "evidence": "Hypothesis, not a recovered symbol. Raw132-byte00AB7200..00AB7283; final00AB7281 RET4/3; ECX Text,state DWORD stack. Current+80 fromText vtable00D5C748. Existing owner.hidden+77 selects disabled color; otherwise state*10h+11Ch. State1 adds exactdouble00D5C5D0 RGB and+0 alpha, including hidden case, then current50 ->00AB6B50. Partial input-domain projection supports hidden any state or non-hidden0..3; unrelated native storage access00AB7215..7220 for other indices explicitly unsupported. Strict Win32 compile only. Worker Ghidra readonly; raw definition needed for call verifier. docs/GUI_TEXT_STYLE.md; reports/gui_text_style.json."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab73b0",
+    "before": {
+      "address": "00ab73b0",
+      "function_name": "BSP_GuiTextWidget_ReleaseGlyphNode",
+      "comment": "[BSP reconstruction 00ab73b0]\nHypothesis, not a recovered symbol. __thiscall(widget), RET, nine instructions: when the pointer at widget+188h is non-null it calls BSP_Node_UnlinkAndRelease (00B6DFA0) on it and clears the field. Reached only from 00AA8320 when the widget's virtual +0Ch matches the class descriptor at 00f8be28, so it is the second node of that class. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00ab73b0] update\nHypothesis, not a recovered symbol. __thiscall(widget), RET, nine instructions: when the pointer at widget+188h is non-null it calls BSP_Node_UnlinkAndRelease (00B6DFA0) on it and clears the field. Reached only from 00AA8320 when the widget's virtual +0Ch matches the class descriptor at 00f8be28, so it is the second node of that class. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | The secondary node is the actual Shadow model created byAB8530. Complete same-model release now in GuiTextLifetime: capture actual node storage/lifetime, B6DFA0, clear live+188 after callback. Called conditionally inside baseAA8320 after child20 before main node. Text vtable20 is baseAA8320, not an override. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "after": {
+      "address": "00ab73b0",
+      "name": "BSP_GuiTextWidget_ReleaseGlyphNode",
+      "evidence": "Hypothesis, not a recovered symbol. __thiscall(widget), RET, nine instructions: when the pointer at widget+188h is non-null it calls BSP_Node_UnlinkAndRelease (00B6DFA0) on it and clears the field. Reached only from 00AA8320 when the widget's virtual +0Ch matches the class descriptor at 00f8be28, so it is the second node of that class. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | The secondary node is the actual Shadow model created byAB8530. Complete same-model release now in GuiTextLifetime: capture actual node storage/lifetime, B6DFA0, clear live+188 after callback. Called conditionally inside baseAA8320 after child20 before main node. Text vtable20 is baseAA8320, not an override. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab75a0",
+    "before": {
+      "address": "00ab75a0",
+      "function_name": "FUN_00ab75a0"
+    },
+    "after": {
+      "address": "00ab75a0",
+      "name": "BSP_GuiTextPool_ReturnSlot",
+      "evidence": "Descriptive hypothesis, analysis only: ECX pool; stack object; RET4 at00AB7609, body through00AB760B. Critical-section protected block/free-slot return using object+1F4; both callers00AB76F6 and00AB8EF5 set pool00F8BDF0. Whole body/arguments read; no pool reconstructed. docs/GUI_TEXT_CONTENT.md reports/gui_text_content.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab80c0",
+    "before": {
+      "address": "00ab80c0",
+      "function_name": "BSP_TextContext_ClearGlyphChildren",
+      "comment": "[BSP reconstruction 00ab80c0]\nECX context; no stack args; RET. For each +198..+19C child, detach through00aa83a0 then child virtual+4(1), zero pointer and reset vector end. Child object internals remain external. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json"
+    },
+    "after": {
+      "address": "00ab80c0",
+      "name": "BSP_TextContext_ClearGlyphChildren",
+      "evidence": "ECX context; no stack args; RET. For each +198..+19C child, detach through00aa83a0 then child virtual+4(1), zero pointer and reset vector end. Child object internals remain external. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Complete valid-collection caller control flow now reconstructed in src/gui_text_content.cpp, actual AA83A0 detach with ownership transport BEFORE post-detach slot reload; actual Text virtual04 remains required, never page retire_tree. docs/GUI_TEXT_CONTENT.md reports/gui_text_content.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8250",
+    "before": {
+      "address": "00ab8250",
+      "function_name": "BSP_TextContext_Destroy",
+      "comment": "[BSP reconstruction 00ab8250]\nECX context; no stack args; RET. Release cached shader +1EC; pass shadow +188 to drawable cleanup and clear; clear optional children, release owned strings/vector, call base00aa9730. Raw assembly continues after falsely noreturn _free at00ab8345 through RET00ab83cf. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab8250] update\nECX context; no stack args; RET. Release cached shader +1EC; pass shadow +188 to drawable cleanup and clear; clear optional children, release owned strings/vector, call base00aa9730. Raw assembly continues after falsely noreturn _free at00ab8345 through RET00ab83cf. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Canonical GuiTextLifetime partial implementation releases actual shader+1EC, same shadow+188, actual glyph children, then C++ font/shader/optional/vector/source/text allocations in native order. Raw+04 release uses actual owner registry. Base/SEH tail83AF..83CF and native pooled-header/Text-slot ABI external; no retire_tree substitution. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "after": {
+      "address": "00ab8250",
+      "name": "BSP_TextContext_Destroy",
+      "evidence": "ECX context; no stack args; RET. Release cached shader +1EC; pass shadow +188 to drawable cleanup and clear; clear optional children, release owned strings/vector, call base00aa9730. Raw assembly continues after falsely noreturn _free at00ab8345 through RET00ab83cf. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Canonical GuiTextLifetime partial implementation releases actual shader+1EC, same shadow+188, actual glyph children, then C++ font/shader/optional/vector/source/text allocations in native order. Raw+04 release uses actual owner registry. Base/SEH tail83AF..83CF and native pooled-header/Text-slot ABI external; no retire_tree substitution. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab83d0",
+    "before": {
+      "address": "00ab83d0",
+      "function_name": "BSP_GuiText_MatchesTypeDescriptor",
+      "comment": "[BSP reconstruction 00ab83d0]\nHypothesis, not a recovered symbol. Raw Text virtual0C, ECX unused, descriptor DWORD stack, AL result RET4. Reads three current DWORDs F8BE28/2C/30 in order. Full40 bytes83D0..83F7, final RET4 at83F5 length3, padding83F8. Typed loop with required live table implemented; no static-zero descriptor defaults. docs/GUI_TEXT_LIFETIME.md; reports/gui_text_lifetime.json"
+    },
+    "after": {
+      "address": "00ab83d0",
+      "name": "BSP_GuiText_MatchesTypeDescriptor",
+      "evidence": "Hypothesis, not a recovered symbol. Raw Text virtual0C, ECX unused, descriptor DWORD stack, AL result RET4. Reads three current DWORDs F8BE28/2C/30 in order. Full40 bytes83D0..83F7, final RET4 at83F5 length3, padding83F8. Typed loop with required live table implemented; no static-zero descriptor defaults. docs/GUI_TEXT_LIFETIME.md; reports/gui_text_lifetime.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8400",
+    "before": {
+      "address": "00ab8400",
+      "function_name": "BSP_TextContext_CreateGlyphBuffers",
+      "comment": "[BSP reconstruction 00ab8400]\nTwo stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab8400] update\nTwo stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Host owner allocates fresh real vertex/index buffers from text capacity, writes checked simplecolor geometry, registers/unregisters borrowed logical-stream pointers, shares main/shadow resources. Supplied declaration/font/shader projection is not native allocator/factory ABI. docs/FONT_GEOMETRY_OWNER.md.\n\n[BSP reconstruction 00ab8400] update\nTwo stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Host owner allocates fresh real vertex/index buffers from text capacity, writes checked simplecolor geometry, registers/unregisters borrowed logical-stream pointers, shares main/shadow resources. Supplied declaration/font/shader projection is not native allocator/factory ABI. docs/FONT_GEOMETRY_OWNER.md. | Two stack DWORDs capacity, actual mesh; ECX unused; RET8 at00AB852B length3; inclusive end00AB852D. Concrete supported normal path in src/gui_text_buffers.cpp. NativeString/simplecolor.mvfm then current renderer38/5C/60, actual native mesh retaining setters and creator releases in native order; DWORD products wrap. Actual callable registered renderer/resource owners remain prerequisites, no factory fallback. Old font_geometry_owner_allocate fragment remains a separate semantic projection. docs/GUI_TEXT_BUFFERS.md; reports/gui_text_buffers.json. Names remain hypotheses; Ghidra unchanged."
+    },
+    "after": {
+      "address": "00ab8400",
+      "name": "BSP_TextContext_CreateGlyphBuffers",
+      "evidence": "Two stack args: glyph capacity and geometry; RET8. ECX not consumed. Requests simplecolor.mvfm, vertex object(4*N,1,declaration), index object(6*N,1,65h); retaining geometry setters then local releases. No capacity reuse check in body. Decompiler unaff_retaddr/EBX are artifacts. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json Host owner allocates fresh real vertex/index buffers from text capacity, writes checked simplecolor geometry, registers/unregisters borrowed logical-stream pointers, shares main/shadow resources. Supplied declaration/font/shader projection is not native allocator/factory ABI. docs/FONT_GEOMETRY_OWNER.md. | Two stack DWORDs capacity, actual mesh; ECX unused; RET8 at00AB852B length3; inclusive end00AB852D. Concrete supported normal path in src/gui_text_buffers.cpp. NativeString/simplecolor.mvfm then current renderer38/5C/60, actual native mesh retaining setters and creator releases in native order; DWORD products wrap. Actual callable registered renderer/resource owners remain prerequisites, no factory fallback. Old font_geometry_owner_allocate fragment remains a separate semantic projection. docs/GUI_TEXT_BUFFERS.md; reports/gui_text_buffers.json. Names remain hypotheses; Ghidra unchanged."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8530",
+    "before": {
+      "address": "00ab8530",
+      "function_name": "BSP_TextContext_EnsureDrawSections",
+      "comment": "[BSP reconstruction 00ab8530]\nECX context; no stack args; RET. Lazily constructs +188 Shadow drawable, geometry0, section and guidefault material; retains assignments and releases temporaries. Adds missing section to existing main geometry. +15C controls shadow attachment. Does not create missing main drawable. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00ab8530] update\nECX context; no stack args; RET. Lazily constructs +188 Shadow drawable, geometry0, section and guidefault material; retains assignments and releases temporaries. Adds missing section to existing main geometry. +15C controls shadow attachment. Does not create missing main drawable. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | ECX Text; no stack arguments; RET00AB87CB length1; inclusive end00AB87CB. Concrete supported normal path in src/gui_text_buffers.cpp. Same GuiWidgetOwnerRuntime model factory publishes live shadow188 before name cleanup, canonical actual mesh/section/material companions share existing registration domain. Section append precedes material factory; creator releases section/material/mesh, then current primary section check and real shadow parenting/root propagation. Actual Text lifetime/factory/renderer/font/draw prerequisites remain explicit. docs/GUI_TEXT_BUFFERS.md; reports/gui_text_buffers.json. Names remain hypotheses; Ghidra unchanged."
+    },
+    "after": {
+      "address": "00ab8530",
+      "name": "BSP_TextContext_EnsureDrawSections",
+      "evidence": "ECX context; no stack args; RET. Lazily constructs +188 Shadow drawable, geometry0, section and guidefault material; retains assignments and releases temporaries. Adds missing section to existing main geometry. +15C controls shadow attachment. Does not create missing main drawable. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | ECX Text; no stack arguments; RET00AB87CB length1; inclusive end00AB87CB. Concrete supported normal path in src/gui_text_buffers.cpp. Same GuiWidgetOwnerRuntime model factory publishes live shadow188 before name cleanup, canonical actual mesh/section/material companions share existing registration domain. Section append precedes material factory; creator releases section/material/mesh, then current primary section check and real shadow parenting/root propagation. Actual Text lifetime/factory/renderer/font/draw prerequisites remain explicit. docs/GUI_TEXT_BUFFERS.md; reports/gui_text_buffers.json. Names remain hypotheses; Ghidra unchanged."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8ee0",
+    "before": {
+      "address": "00ab8ee0",
+      "function_name": "BSP_GuiText_ScalarDeletingDestructor",
+      "comment": "[BSP reconstruction 00ab8ee0]\nHypothesis, not a recovered symbol. ECX Text, flags DWORD stack RET4, EAX original Text. Calls AB8250 at8EE3 then only flags bit0 calls AB75A0 at8EF5 with ECX F8BDF0 and original object. Callee consumes object stack RET4 and requires actual Text pool metadata beyond instance at+1F4. Analyzed only; no native scalar delete/pool replacement. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "after": {
+      "address": "00ab8ee0",
+      "name": "BSP_GuiText_ScalarDeletingDestructor",
+      "evidence": "Hypothesis, not a recovered symbol. ECX Text, flags DWORD stack RET4, EAX original Text. Calls AB8250 at8EE3 then only flags bit0 calls AB75A0 at8EF5 with ECX F8BDF0 and original object. Callee consumes object stack RET4 and requires actual Text pool metadata beyond instance at+1F4. Analyzed only; no native scalar delete/pool replacement. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab8f00",
+    "before": {
+      "address": "00ab8f00",
+      "function_name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+      "comment": "[BSP reconstruction 00ab8f00]\nProvisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE.\n\n[BSP reconstruction 00ab8f00] update\nProvisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE. | Concrete supported scalar/string normal path in src/gui_text_ellipsis.cpp: existing locale uppercase and glyph selector, exact x87 signed32 truncation then low16 for target/add/dot reserve/subtract; finite and null-free domain. No geometry/font owner or native string-pool ABI. MSVC Win32 translation unit compiled; combined build pending integrator. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Ghidra left read-only. | Primary assembly review removed invented finite/range checks: direct FISTP at00AB8F51/8FF4/9062/90E4 preserves masked invalid/overflow integer-indefinite then low16 zero. Focused public ellipsis NaN/dot-wrap/control-word probe passed. docs/GUI_TEXT_ELLIPSIS.md; exact unmasked trap timing and native pool/SEH not claimed."
+    },
+    "after": {
+      "address": "00ab8f00",
+      "name": "BSP_TextContext_EllipsizeUtf16ToWidth",
+      "evidence": "Provisional descriptive name. ECX context; stack destination/source UTF16 wrappers and normalized float width; RET0C/EAX destination. Copy then optional font+48 transformation. Target=low16(trunc_i32(width*double960)); each selected unsigned glyph+12*context+1D8 accumulation truncates to int32 then low16. If too wide reserve three scaled dot advances with the same low16 truncation, remove suffix until fitting, append literal three dots. No pair kerning or line breaking; tiny targets can wrap. Native string ownership and transformation mapping remain external. docs/FONT_LAYOUT_BOUNDARY.md;832 bytes match PE. | Concrete supported scalar/string normal path in src/gui_text_ellipsis.cpp: existing locale uppercase and glyph selector, exact x87 signed32 truncation then low16 for target/add/dot reserve/subtract; finite and null-free domain. No geometry/font owner or native string-pool ABI. MSVC Win32 translation unit compiled; combined build pending integrator. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Ghidra left read-only. | Primary assembly review removed invented finite/range checks: direct FISTP at00AB8F51/8FF4/9062/90E4 preserves masked invalid/overflow integer-indefinite then low16 zero. Focused public ellipsis NaN/dot-wrap/control-word probe passed. docs/GUI_TEXT_ELLIPSIS.md; exact unmasked trap timing and native pool/SEH not claimed."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00ab9650",
+    "before": {
+      "address": "00ab9650",
+      "function_name": "BSP_GuiText_Construct",
+      "comment": "[BSP reconstruction 00ab9650]\nHypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json.\n\n[BSP reconstruction 00ab9650] update\nHypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Canonical GuiTextLifetime now owns one Text projection/shadow/glyph-vector/shader identity and verified extra fields, initializing derived state with live constants then actual AB8530. Partial: AA9390(3) already supplied by same GuiWidgetOwner; native vtable/SEH/container ABI excluded. Constructor DOES NOT write1D4,1DC..1E8; existing semantic defaults are not native stores. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "after": {
+      "address": "00ab9650",
+      "name": "BSP_GuiText_Construct",
+      "evidence": "Hypothesis, not a recovered symbol. GUI Text widget constructor, class id 3, instance size 1F4h. __thiscall(this) -> this, RET 0. Calls 00AA9390 with the literal 3, installs the vtable 00D5C6C8 and writes every Text default: Multiline +FCh=1, Align +100h=0, VerticalAlign +104h=0, MISColors +11Ch..+14Ch, Shadowed +15Ch=0, ShadowPos +160h=0, ShadowOffset +164h=0.05, ShadowColor +168h=(0,0,0,0.75), DefaultShadow +1D0h=-1, FontScale +1D8h=1.0. Then 00AB8530. Evidence: docs/GUI_TEXT_WIDGET.md, reports/gui_text_widget.json. | Canonical GuiTextLifetime now owns one Text projection/shadow/glyph-vector/shader identity and verified extra fields, initializing derived state with live constants then actual AB8530. Partial: AA9390(3) already supplied by same GuiWidgetOwner; native vtable/SEH/container ABI excluded. Constructor DOES NOT write1D4,1DC..1E8; existing semantic defaults are not native stores. docs/GUI_TEXT_LIFETIME.md"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00abb000",
+    "before": {
+      "address": "00abb000",
+      "function_name": "BSP_GuiText_SetEllipsizedSource",
+      "comment": "[BSP reconstruction 00abb000]\nECX context; narrow wrapper, float width, byte flag; RET0Ch. Same narrow conversion flag, then00ab8f00 ellipsis and00aba8d0. Ordered zero width uses context+20. Equal narrow input skips width/flag reconsideration. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00abb000] update\nECX Text; narrow wrapper, float width, low-byte localize; RET0Ch. Corrected sentinel: live00D7A260 bytes00 00 80 BF are -1.0f; ordered equality selects context+20, zero stays zero and NaN does not fallback. Source equality skips changed width/flag. Concrete preparation fragment preserves cache, conversion and ellipsis; actual00ABA8D0 plus virtual50 remain excluded. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Read-only Ghidra; existing name retained.\n\n[BSP reconstruction 00abb000] update\nECX Text; narrow wrapper, float width, low-byte localize; RET0Ch. Corrected sentinel: live00D7A260 bytes00 00 80 BF are -1.0f; ordered equality selects context+20, zero stays zero and NaN does not fallback. Source equality skips changed width/flag. Concrete preparation fragment preserves cache, conversion and ellipsis; actual00ABA8D0 plus virtual50 remain excluded. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Read-only Ghidra; existing name retained. | Full native body and58 callers establish cached narrow-source comparison/store, ordered -1 width fallback, optional localization,00AB8F00 trimming,00ABA8D0 content assignment then current50 color. Native name is a hypothesis; the new C++ API covers only preparation. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json."
+    },
+    "after": {
+      "address": "00abb000",
+      "name": "BSP_GuiText_SetEllipsizedSource",
+      "evidence": "ECX Text; narrow wrapper, float width, low-byte localize; RET0Ch. Corrected sentinel: live00D7A260 bytes00 00 80 BF are -1.0f; ordered equality selects context+20, zero stays zero and NaN does not fallback. Source equality skips changed width/flag. Concrete preparation fragment preserves cache, conversion and ellipsis; actual00ABA8D0 plus virtual50 remain excluded. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json. Read-only Ghidra; existing name retained. | Full native body and58 callers establish cached narrow-source comparison/store, ordered -1 width fallback, optional localization,00AB8F00 trimming,00ABA8D0 content assignment then current50 color. Native name is a hypothesis; the new C++ API covers only preparation. docs/GUI_TEXT_ELLIPSIS.md; reports/gui_text_ellipsis.json."
+    },
+    "status": "applied"
+  }
+]

@@ -1,6 +1,6 @@
 {
   "branch": "agent/orch5-20260911",
-  "status": "reviewed_normal_win32_build_passed_ready_for_main",
+  "status": "integrated_main_normal_win32_build_and_existing_tests_passed",
   "worker_commits": {
     "buffers": "28e9cf55",
     "content_prefix": "c79cb75b",
@@ -59,6 +59,31 @@
     "records": [
       "reports/orch5_text_lifetime_definitions.json",
       "reports/orch5_native_text_annotations.json"
+    ],
+    "merge_annotation_record": "reports/orch5_native_text_merge_annotations.json",
+    "merge_applied_addresses": [
+      "00aa8320",
+      "00aa83a0",
+      "00aa9f10",
+      "00ab6b50",
+      "00ab6c30",
+      "00ab7200",
+      "00ab73b0",
+      "00ab75a0",
+      "00ab80c0",
+      "00ab8250",
+      "00ab83d0",
+      "00ab8400",
+      "00ab8530",
+      "00ab8ee0",
+      "00ab8f00",
+      "00ab9650",
+      "00abb000"
+    ],
+    "deferred_leased_address": "00aba8d0",
+    "changed_merge_annotations_exported": [
+      "00ab75a0",
+      "00ab80c0"
     ]
   },
   "remaining": [
@@ -67,5 +92,7 @@
     "nonempty builders and optional child recursive Text deletion",
     "complete factory and command/menu runtime wiring",
     "gameplay validation"
-  ]
+  ],
+  "main_integration_commit": "c2d7def9",
+  "integration_validation": "combined normal Win32 build and2existing tests passed after main merge"
 }
