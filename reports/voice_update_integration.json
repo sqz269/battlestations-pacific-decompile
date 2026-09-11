@@ -7,7 +7,7 @@
     "scheduled": "66c85082ccf42b95618e554b59a4be01f8c9fd4c",
     "lifetime": "5f988b2",
     "manager": "94ebe6e7434ceebef3f7dc199963ff1fc4e337a9",
-    "reader": "pending"
+    "reader": "2414fdbd656ce99e389015586f53f6ca9de5a3a1"
   },
   "implemented_new_functions": 13,
   "corrected_existing": [
@@ -32,20 +32,47 @@
   "validation": {
     "win32_build": "passed initial integrated build",
     "ctest": "reconstructed_math and native_math_differential passed2/2",
-    "final_build": "pending reader integration",
-    "manager_fixture": "passed canonical and noncanonical destructor routes against parent library",
-    "scheduled_fixture": "worker passed",
-    "lifetime_fixture": "worker passed",
-    "sequence_fixture": "pending",
-    "reader_fixture": "pending",
+    "final_build": "MSVC Win32 Release passed; reconstructed_math and native_math_differential2/2 passed",
+    "manager_fixture": "local/voice_update_manager_fixture.log passed: canonical concrete and noncanonical virtual destruction, vector release and cleanup ordering",
+    "scheduled_fixture": "local/voice_update_scheduled_fixture.log passed against integrated library",
+    "lifetime_fixture": "local/voice_update_lifetime_fixture.log passed: callback mutation/exception cleanup and scalar flags",
+    "sequence_fixture": "local/voice_update_sequence_fixture.log passed: quiet-NaN terminal timers and current panel identity after log callback",
+    "reader_fixture": "local/voice_update_reader_fixture.log passed: real Lua5.1.1 two table identities, normal token release and both String NUL paths",
     "new_permanent_tests": 0,
     "gameplay": false,
     "audio": false,
     "rendered_ui": false,
-    "native_abi": false
+    "native_abi": false,
+    "tested_commit": "6f8c72631f694612dcad14dbb8144c88b683a5f2",
+    "library_sha256": "32edb8093003d575fc7ad18fc06835d00b580bed79782294e784729937df7602",
+    "final_build_log": "local/voice_update_final_build.log"
   },
   "ghidra": {
-    "annotation": "pending scoped annotation and readback"
+    "annotation": "15 reviewed names/evidence applied and saved to existing BSP project; prior comments preserved and read back",
+    "addresses": [
+      "005b6710",
+      "005b71d0",
+      "005b7290",
+      "005b9160",
+      "005b9300",
+      "005b93d0",
+      "005b9420",
+      "005b9b80",
+      "005baf30",
+      "005bbf10",
+      "005bc640",
+      "00701870",
+      "00702130",
+      "007026f0",
+      "00bd63b0"
+    ],
+    "prior_state_logs": [
+      "local/ghidra-annotations-20260911T061751Z.json",
+      "local/ghidra-annotations-20260911T061954Z.json"
+    ],
+    "readback": "local/voice_update_comments.json",
+    "refreshed_exports": "local/voice_update_exports.log",
+    "flow_repairs": "5 false _free callsite overrides repaired; correct _free identity retained"
   },
   "next_candidates": [
     "004527f0 panel state machine",
