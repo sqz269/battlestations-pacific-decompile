@@ -69,3 +69,14 @@ widget identity/deletion remain separate work. These fixtures do not execute
 original pool instructions or exercise allocation-failure unwind. Nonnull
 effect/texture ownership, a complete renderer draw, binary ABI replacement and
 gameplay remain unvalidated.
+
+## Parameter registration update from docs/NATIVE_MATERIAL_PARAMETERS.md
+
+B17E10/B44D60 now have actual-storage implementations over the material's sole
+parameter table, existing88h parameter pool and actual NativeString headers.
+They scan the current raw effect/pass/stage metadata, preserve skipped selectors
+and borrow source memory. Four full88h original-instruction comparisons and
+actual native string-pool/final-material cleanup passed. Effect metadata in that
+fixture is controlled and borrowed; its lifecycle is not reconstructed by it.
+The semantic GUI installer and canonical widget/effect ownership remain separate
+required integrations; no retained effect or widget token was fabricated.

@@ -1,0 +1,159 @@
+{
+  "packet": "orch3_node_pool_composition_q",
+  "sources": [
+    "src/native_node_construction.cpp",
+    "src/point_effect_instance.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_node_construction.hpp",
+    "include/bsp/point_effect_instance.hpp"
+  ],
+  "documentation": "docs/NATIVE_NODE_POOL_COMPOSITION.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "00b6f5a0",
+      "end_exclusive": "00b6f8ce",
+      "length": 814,
+      "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+      "live_disk_equal": true,
+      "rebound_data_operand_offsets": {
+        "00ce4970": [
+          57,
+          708
+        ],
+        "00ce4adc": [
+          666
+        ],
+        "00d7a24c": [
+          218,
+          357,
+          495
+        ]
+      }
+    },
+    {
+      "address": "00868193",
+      "end_exclusive": "008681be",
+      "length": 43,
+      "sha256": "8794beb0b51995baaabc5c11d4f72dcbcbf2f9b0c949e1a2d9e0729dc6ad9bf3",
+      "live_disk_equal": true,
+      "rebound_data_operand_offsets": {}
+    }
+  ],
+  "implementation": [
+    "NativeStringStorage core constructor with compatible SizedStoragePool adapter",
+    "Same storage canonical41DD20 member cleanup",
+    "Bounded868193..8681BD real raw pool/node construction; C++ state6 raw return",
+    "No new physical pool, node type, reference count or successful terminal stub"
+  ],
+  "unwind": {
+    "node_handler": "00cc1a31",
+    "node_descriptor": "00dfa93c",
+    "node_map": "00dfa924",
+    "node_actions": [
+      "state2 CC1A23/B6F3E0 array",
+      "state1 CC1A18/41DD20 name",
+      "state0 CC1A10/AA6E10 base"
+    ],
+    "effect_map": "00dc6eb8",
+    "effect_state6": "C95012..C95019 saved raw slot -> B6E670; next5",
+    "original_exception_dispatch_executed": false
+  },
+  "definitions_report": "reports/native_node_pool_composition_definitions_q.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/node-pool-composition-q-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/node-pool-composition-q-fixture.log",
+    "fixture_source": "local/node_composition_probe_q.cpp",
+    "original_spans_executed": [
+      "814-byte node constructor",
+      "43-byte bounded point-effect allocation stage"
+    ],
+    "inputs": [
+      "actual node and actual string pools",
+      "name lengths0/7/148/149/299",
+      "full178h slot including ID174; only name pointer normalized",
+      "name bytes including terminator",
+      "actual string bump/ring state; empty name avoids lazy singleton allocation",
+      "input name aliases destination header",
+      "C++ bad_alloc restores base profile and returns same raw slot"
+    ],
+    "original_rebindings": [
+      "Six data operands CE4970/CE4ADC/D7A24C",
+      "B6F656 canonical41DD40 through actual string storage",
+      "B6F66B current memcpy",
+      "B6F6F9/B6F783/B6F82E canonical4134F0 x87 matrix copy",
+      "86819D canonicalB6ED70 bound to fixture actual pool",
+      "8681B5 copied original node constructor"
+    ],
+    "fragment_harness": "Preserve EBX/ESI, supply EBX0/capturedESI and native stack scratch; append RET at boundary8681BE. Native relative branch and state stores retained.",
+    "native_exception_handler_immediate": "Unchanged and not executed",
+    "native_allocation_failure_executed": false,
+    "cpp_allocation_failure_executed": true,
+    "terminal_or_scene_callbacks_executed": false,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "permanent_tests_added": 0
+  },
+  "remaining": [
+    "Stable actual plain-node terminal/scene/type binding",
+    "Whole point-effect constructor including manager insertion and outer member/template unwind",
+    "Original exception ABI and gameplay validation"
+  ],
+  "ghidra_annotation_audit": [
+    {
+      "address": "008680b0",
+      "before": {
+        "address": "008680b0",
+        "function_name": "BSP_PointEffect_Construct_Provisional",
+        "comment": "[BSP reconstruction 008680b0]\nHypothesis, not recovered symbol. Actual114h constructor; ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json.\n\n[BSP reconstruction 008680b0] update\nHypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json.\n\n[BSP reconstruction 008680b0] update\nHypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json. | Packet orch3_effect_o_integration adds bounded8682D5..86838C actual row stage: resize current count, refresh current node then global19FC reference, option gate, capture current template extent, current row flags/required virtual18, reload destination backing afterfactory, assign and consume original temporary. Whole constructor/row factory/manager insertion remain required. True constructor ABI seven DWORDstackslots/RET1C. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/effect_o_integration.json."
+      },
+      "after": {
+        "address": "008680b0",
+        "name": "BSP_PointEffect_Construct_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json. | Packet orch3_effect_o_integration adds bounded8682D5..86838C actual row stage: resize current count, refresh current node then global19FC reference, option gate, capture current template extent, current row flags/required virtual18, reload destination backing afterfactory, assign and consume original temporary. Whole constructor/row factory/manager insertion remain required. True constructor ABI seven DWORDstackslots/RET1C. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/effect_o_integration.json. | Packet orch3_node_pool_composition_q adds only868193..8681BD: canonical B6ED70 actual raw allocation, nonnull B6F5A0 construction from captured template+1C through NativeStringStorage; on C++ constructor failure return captured slot viaB6E670 then rethrow to required outerstates5..0. No110 publication/retain/companion creation here. Original43-byte stage plus complete814-byte node constructor differential passed for empty/nonempty/threshold names with actual pools; reconstructed C++ failure reuses same slot. Wholeconstructor remains sevenDWORDarguments/RET1C, with actual scene/terminal, manager insertion and outerunwind still required. docs/NATIVE_NODE_POOL_COMPOSITION.md; reports/native_node_pool_composition.json. No original EHABI/gameplay proof."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00b6f5a0",
+      "before": {
+        "address": "00b6f5a0",
+        "function_name": "BSP_Node_Construct",
+        "comment": "[BSP reconstruction 00b6f5a0]\nNative174prefix in actualpoolslot: ref1, pooledname54, hierarchy/attachment/scene/pointlightarrayzero, identitymatricesB0/F0/60 in order, exactbounds501502F9/D01502F9; preserve08..2F,45..47,135..137 andall174..1EF. Newsharedbackingview ABI; nofullterminalownership claim. Complete constructor through00b6f8ce. Raw174prefix lies in actual1F0 slot; same CameraTransform/SceneNodeAttachment views. All496 empty-name bytes matched original execution. docs/NATIVE_NODE_CONSTRUCTION.md; reports/native_node_construction_audit.json. Native nonempty/EH not executed. Integration: docs/NATIVE_LIGHT_OWNER_INTEGRATION.md; reports/native_light_owner_integration_audit.json\n\n[BSP reconstruction 00b6f5a0] update\nComplete original[00b6f5a0,00b6f8ce); ECX actualnodeprefix; stacknative name; EAX sameprefix; RET4. Existing complete174h prefix constructor unchanged; corrected hostextent guard fromnode-specific1F0h tosizeofprefix174h, permitting original188h modelcaller. Full392byte native/host modelslotcomparison including derivedtail/184poolID passed; nodepoolitselfremains1F0h. Evidence reports/native_render_group_storage_audit.json; docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code storage/lifetime comparisons pass. New C++ ABI; nativeEH execution/fullrenderer/fullnativecommands/gameplay remain unvalidated."
+      },
+      "after": {
+        "address": "00b6f5a0",
+        "name": "BSP_Node_Construct",
+        "evidence": "Native174prefix in actualpoolslot: ref1, pooledname54, hierarchy/attachment/scene/pointlightarrayzero, identitymatricesB0/F0/60 in order, exactbounds501502F9/D01502F9; preserve08..2F,45..47,135..137 andall174..1EF. Newsharedbackingview ABI; nofullterminalownership claim. Complete constructor through00b6f8ce. Raw174prefix lies in actual1F0 slot; same CameraTransform/SceneNodeAttachment views. All496 empty-name bytes matched original execution. docs/NATIVE_NODE_CONSTRUCTION.md; reports/native_node_construction_audit.json. Native nonempty/EH not executed. Integration: docs/NATIVE_LIGHT_OWNER_INTEGRATION.md; reports/native_light_owner_integration_audit.json | Complete original[00b6f5a0,00b6f8ce); ECX actualnodeprefix; stacknative name; EAX sameprefix; RET4. Existing complete174h prefix constructor unchanged; corrected hostextent guard fromnode-specific1F0h tosizeofprefix174h, permitting original188h modelcaller. Full392byte native/host modelslotcomparison including derivedtail/184poolID passed; nodepoolitselfremains1F0h. Evidence reports/native_render_group_storage_audit.json; docs/NATIVE_RENDER_STORAGE_INTEGRATION.md; reports/native_render_storage_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code storage/lifetime comparisons pass. New C++ ABI; nativeEH execution/fullrenderer/fullnativecommands/gameplay remain unvalidated. | Packet orch3_node_pool_composition_q. Complete [B6F5A0,B6F8CE), RET4 atB6F8CB. One shared body now accepts NativeStringStorage, permitting ActualNativeStringPoolStorage; existing SizedStoragePool adapter retained. Member cleanup uses canonical41DD20 on same storage. Correct prior generic1F0h pool claim: plain0108FF58 slots178h, payload174h/slabID174; directional/model/camera callers retain their own extents. Original constructor and bounded effect allocation-stage differential passed using actual node/string pools, name lengths0/7/148/149/299, full178h bytes except normalized name pointer, alias and reconstructed C++ failure raw return. docs/NATIVE_NODE_POOL_COMPOSITION.md; reports/native_node_pool_composition.json. No original exception-dispatch, terminal/scene or gameplay proof."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00cc1a31",
+      "before": {
+        "address": "00cc1a31",
+        "function_name": "FUN_00cc1a31"
+      },
+      "after": {
+        "address": "00cc1a31",
+        "name": "BSP_Node_Construct_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. Compiler10-byte [CC1A31,CC1A3B) MOV EAX,DFA93C; JMP BF6B43. DFA924 states0 next-1 CC1A10/AA6E10 base,1 next0 CC1A18/41DD20 name,2 next1 CC1A23/B6F3E0 array. Defined from verified live/installed bytes and saved. Original exception dispatch not executed. docs/NATIVE_NODE_POOL_COMPOSITION.md; reports/native_node_pool_composition_definitions_q.json."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All three names/evidence read back, prior comments preserved, project saved and all three exports refreshed.",
+  "fixture_artifact_sha256": {
+    "local/node_composition_probe_q.cpp": "de4f10a6765340c852c5501134feba6936b0edb577fdab2f9da822c4add987bf",
+    "local/run_node_composition_probe_q.cmd": "9c0ac1dbf5c630ba590619a13a8272ed89a5d07aaecd2582c8979fe9b2c43ef4",
+    "local/node_composition_native_bytes_q.hpp": "c0da0a4789932d66f9a718820063f36065d1c78f6c784195aa7e196c0971b260",
+    "local/node-composition-byte-evidence-q.json": "02be74f6ea5392c20720d40d3ee6d5074c39cee941afd2c549c53a4884803059"
+  }
+}

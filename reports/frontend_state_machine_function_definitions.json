@@ -1,0 +1,363 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f7570",
+    "end_address": "004f7573"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f7570",
+    "end_address": "004f7572",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f7570",
+    "disassemble_first": false,
+    "name": "BSP_FrontEndScreen_IsSelfManaged"
+   },
+   "result": {
+    "success": true,
+    "address": "004f7570",
+    "function_name": "BSP_FrontEndScreen_IsSelfManaged",
+    "entry_point": "004f7570",
+    "body_size": 3,
+    "message": "Function created successfully at 004f7570",
+    "warnings": [
+     "Function name 'BSP_FrontEndScreen_IsSelfManaged' \u2014 main part 'FrontEndScreen_IsSelfManaged' is not PascalCase. Expected: FrontendscreenIsselfmanaged",
+     "Function name 'BSP_FrontEndScreen_IsSelfManaged' \u2014 main part 'FrontEndScreen_IsSelfManaged' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrontEndScreen_IsSelfManaged' does not start with a recognized verb. First word 'Front' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f7570",
+   "end": "004f7573",
+   "name": "BSP_FrontEndScreen_IsSelfManaged",
+   "after": "Function: BSP_FrontEndScreen_IsSelfManaged at 004f7570\nSignature: undefined BSP_FrontEndScreen_IsSelfManaged(void)\nEntry: 004f7570\nBody: 004f7570 - 004f7572"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f75a0",
+    "end_address": "004f75a1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f75a0",
+    "end_address": "004f75a0",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f75a0",
+    "disassemble_first": false,
+    "name": "BSP_FrontEndScreen_BaseEnter"
+   },
+   "result": {
+    "success": true,
+    "address": "004f75a0",
+    "function_name": "BSP_FrontEndScreen_BaseEnter",
+    "entry_point": "004f75a0",
+    "body_size": 1,
+    "message": "Function created successfully at 004f75a0",
+    "warnings": [
+     "Function name 'BSP_FrontEndScreen_BaseEnter' \u2014 main part 'FrontEndScreen_BaseEnter' is not PascalCase. Expected: FrontendscreenBaseenter",
+     "Function name 'BSP_FrontEndScreen_BaseEnter' \u2014 main part 'FrontEndScreen_BaseEnter' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrontEndScreen_BaseEnter' does not start with a recognized verb. First word 'Front' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f75a0",
+   "end": "004f75a1",
+   "name": "BSP_FrontEndScreen_BaseEnter",
+   "after": "Function: BSP_FrontEndScreen_BaseEnter at 004f75a0\nSignature: undefined BSP_FrontEndScreen_BaseEnter(void)\nEntry: 004f75a0\nBody: 004f75a0 - 004f75a0"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f75b0",
+    "end_address": "004f75b1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f75b0",
+    "end_address": "004f75b0",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f75b0",
+    "disassemble_first": false,
+    "name": "BSP_FrontEndScreen_BaseExit"
+   },
+   "result": {
+    "success": true,
+    "address": "004f75b0",
+    "function_name": "BSP_FrontEndScreen_BaseExit",
+    "entry_point": "004f75b0",
+    "body_size": 1,
+    "message": "Function created successfully at 004f75b0",
+    "warnings": [
+     "Function name 'BSP_FrontEndScreen_BaseExit' \u2014 main part 'FrontEndScreen_BaseExit' is not PascalCase. Expected: FrontendscreenBaseexit",
+     "Function name 'BSP_FrontEndScreen_BaseExit' \u2014 main part 'FrontEndScreen_BaseExit' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrontEndScreen_BaseExit' does not start with a recognized verb. First word 'Front' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f75b0",
+   "end": "004f75b1",
+   "name": "BSP_FrontEndScreen_BaseExit",
+   "after": "Function: BSP_FrontEndScreen_BaseExit at 004f75b0\nSignature: undefined BSP_FrontEndScreen_BaseExit(void)\nEntry: 004f75b0\nBody: 004f75b0 - 004f75b0"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f75c0",
+    "end_address": "004f75c3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f75c0",
+    "end_address": "004f75c2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f75c0",
+    "disassemble_first": false,
+    "name": "BSP_FrontEndScreen_BaseUpdate"
+   },
+   "result": {
+    "success": true,
+    "address": "004f75c0",
+    "function_name": "BSP_FrontEndScreen_BaseUpdate",
+    "entry_point": "004f75c0",
+    "body_size": 3,
+    "message": "Function created successfully at 004f75c0",
+    "warnings": [
+     "Function name 'BSP_FrontEndScreen_BaseUpdate' \u2014 main part 'FrontEndScreen_BaseUpdate' is not PascalCase. Expected: FrontendscreenBaseupdate",
+     "Function name 'BSP_FrontEndScreen_BaseUpdate' \u2014 main part 'FrontEndScreen_BaseUpdate' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrontEndScreen_BaseUpdate' does not start with a recognized verb. First word 'Front' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f75c0",
+   "end": "004f75c3",
+   "name": "BSP_FrontEndScreen_BaseUpdate",
+   "after": "Function: BSP_FrontEndScreen_BaseUpdate at 004f75c0\nSignature: undefined BSP_FrontEndScreen_BaseUpdate(void)\nEntry: 004f75c0\nBody: 004f75c0 - 004f75c2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f75d0",
+    "end_address": "004f75d3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f75d0",
+    "end_address": "004f75d2",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f75d0",
+    "disassemble_first": false,
+    "name": "BSP_FrontEndScreen_BaseCollectChildren"
+   },
+   "result": {
+    "success": true,
+    "address": "004f75d0",
+    "function_name": "BSP_FrontEndScreen_BaseCollectChildren",
+    "entry_point": "004f75d0",
+    "body_size": 3,
+    "message": "Function created successfully at 004f75d0",
+    "warnings": [
+     "Function name 'BSP_FrontEndScreen_BaseCollectChildren' \u2014 main part 'FrontEndScreen_BaseCollectChildren' is not PascalCase. Expected: FrontendscreenBasecollectchildren",
+     "Function name 'BSP_FrontEndScreen_BaseCollectChildren' \u2014 main part 'FrontEndScreen_BaseCollectChildren' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_FrontEndScreen_BaseCollectChildren' does not start with a recognized verb. First word 'Front' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f75d0",
+   "end": "004f75d3",
+   "name": "BSP_FrontEndScreen_BaseCollectChildren",
+   "after": "Function: BSP_FrontEndScreen_BaseCollectChildren at 004f75d0\nSignature: undefined BSP_FrontEndScreen_BaseCollectChildren(void)\nEntry: 004f75d0\nBody: 004f75d0 - 004f75d2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f7580",
+    "end_address": "004f7583"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f7580",
+    "end_address": "004f7582",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f7580",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004f7580",
+    "function_name": "FUN_004f7580",
+    "entry_point": "004f7580",
+    "body_size": 3,
+    "message": "Function created successfully at 004f7580"
+   }
+  },
+  {
+   "defined": "004f7580",
+   "end": "004f7583",
+   "name": null,
+   "after": "Function: FUN_004f7580 at 004f7580\nSignature: undefined FUN_004f7580(void)\nEntry: 004f7580\nBody: 004f7580 - 004f7582"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f7590",
+    "end_address": "004f7591"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f7590",
+    "end_address": "004f7590",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f7590",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004f7590",
+    "function_name": "FUN_004f7590",
+    "entry_point": "004f7590",
+    "body_size": 1,
+    "message": "Function created successfully at 004f7590"
+   }
+  },
+  {
+   "defined": "004f7590",
+   "end": "004f7591",
+   "name": null,
+   "after": "Function: FUN_004f7590 at 004f7590\nSignature: undefined FUN_004f7590(void)\nEntry: 004f7590\nBody: 004f7590 - 004f7590"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

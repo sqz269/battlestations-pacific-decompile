@@ -1,0 +1,242 @@
+{
+  "packet": "orch3_node_pool_owner_p",
+  "source": "src/native_node_pool_owner.cpp",
+  "header": "include/bsp/native_node_pool_owner.hpp",
+  "documentation": "docs/NATIVE_NODE_POOL_OWNER.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "00b6e980",
+      "end_exclusive": "00b6ea53",
+      "length": 211,
+      "sha256": "faedeaa80a30ebc5be94d5eb8a0c18c5cc6abcd64fad0a55dd5147bba94c4949",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePool_Construct",
+      "cpp_symbol": "initialize_native_node_pool_00b6e980",
+      "original_abi": "ECX fresh actual38h owner; EAX same owner; RET",
+      "behavior": "Prepend same actual E188B4 allocator list; D62C78 profile; real CS0C/depth24; table28/count2C/cap30/first34 initialization; publish cap32 before80h allocation, current copy/free/replacement publication. DFA8AC states0base,1section,2table; main0to2; cleanup table/section/base."
+    },
+    {
+      "address": "00b6e3d0",
+      "end_exclusive": "00b6e45a",
+      "length": 138,
+      "sha256": "5fae3a1e4bd064b4d2a5cd55b4397e6d4c5ca5a0ad16fe0cabec21639d92cffa",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePool_Destroy",
+      "cpp_symbol": "destroy_native_node_pool_00b6e3d0",
+      "original_abi": "ECX actual38h owner; RET",
+      "behavior": "Capture count comparison before D62C78 store; ascending current slab frees, current table free, positive signed depth drain/DeleteCS, D7A0C0/base unlink same E188B4 domain. No node destructors, metadata clears, own-link clears or physical owner free."
+    },
+    {
+      "address": "00b6ea60",
+      "end_exclusive": "00b6eb00",
+      "length": 160,
+      "sha256": "ea181518adaa697c65d8b17ccd4114ceabc55b00e08daa44b9641c8fb50aad3c",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePool_TrimEmptySlabs",
+      "cpp_symbol": "trim_native_node_pool_00b6ea60",
+      "original_abi": "ECX actual38h owner; D62C78 virtual+00; RET",
+      "behavior": "No internal lock. WORD2F40==32 frees slab, reloads table/count, moves last pointer/decrements count, rewrites all32 moved slot IDs at174 stride178, retries hole. Reset firstFFFFFFFF; captured table cursor/current count scans first nonfull. Capacity retained."
+    },
+    {
+      "address": "00b6ddf0",
+      "end_exclusive": "00b6ddfe",
+      "length": 14,
+      "sha256": "422c4f50470ca822cb1c0f27f0538e08f45fb995af2d644c6d5ee8222770d291",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePool_FreePointerTable",
+      "cpp_symbol": "free_native_node_pool_table_00b6ddf0",
+      "original_abi": "ECX actual0Ch table header; RET",
+      "behavior": "Capture backing pointer; nonnull BF6989 free; preserve pointer/count/capacity. Returning-free POP ECX at B6DDFC restored."
+    },
+    {
+      "address": "00cd7d10",
+      "end_exclusive": "00cd7d26",
+      "length": 22,
+      "sha256": "154d55e860bc2d2e099b2cf08b646be2c322d5c411a5016461ca54dbf8cc8809",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_Static_InitializeNodePool",
+      "cpp_symbol": "initialize_static_native_node_pool_00cd7d10",
+      "original_abi": "No arguments; EAX actual atexit status; RET",
+      "behavior": "Select actual0108FF58; call B6E980; register CE0E20 through real BF6FF5 atexit; return actual status without rollback. Source binding borrows one actual pool/domain and uses real std::atexit."
+    },
+    {
+      "address": "00ce0e20",
+      "end_exclusive": "00ce0e2a",
+      "length": 10,
+      "sha256": "da81fed6de98ce6a3795f1f85871617dcc29d685e86304d45d8c2a6a3e755c90",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_Static_DestroyNodePool",
+      "cpp_symbol": "destroy_static_native_node_pool_00ce0e20",
+      "original_abi": "MOV ECX,0108FF58; tail JMP B6E3D0; no arguments",
+      "behavior": "Corrects saved CG_static_init label: this is the exit callback registered by CD7D10. Same actual static owner; CE0E2A padding is outside body."
+    }
+  ],
+  "physical_storage": {
+    "owner_bytes": "0x38",
+    "actual_global": "0108ff58",
+    "allocator_head": "00e188b4",
+    "profile": "0x00",
+    "previous": "0x04",
+    "next": "0x08",
+    "critical_section": "0x0c",
+    "depth": "0x24",
+    "table": "0x28",
+    "count": "0x2c",
+    "capacity": "0x30",
+    "earliest": "0x34"
+  },
+  "exception_evidence": {
+    "handler": "00cc19ce",
+    "descriptor": "00dfa8c4",
+    "unwind_map": "00dfa8ac",
+    "states": [
+      "0 -> -1: CC19B0/403970 base unlink",
+      "1 -> 0: CC19B8/402F70 section cleanup",
+      "2 -> 1: CC19C3/B6DDF0 table cleanup"
+    ],
+    "main_state_transition": "0 directly to2",
+    "original_dispatch_executed": false
+  },
+  "static_binding": "Borrow same actual storage/list; bind actual D62C78/B6EA60 trim; change no raw bytes/list links/atexit until startup; both borrowed objects survive exit. No private pool/list or unbound fallback.",
+  "flow_report": "reports/native_node_pool_owner_flow_p.json",
+  "definitions_report": "reports/native_node_pool_owner_definitions_p.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/node-pool-owner-p-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/node-pool-owner-p-fixture.log",
+    "fixture_source": "local/node_pool_owner_probe_p.cpp",
+    "cases": [
+      "Two constructed physical owners share one actual list",
+      "65 allocations, middle slab compaction, all32 moved IDs and preserved174h payloads",
+      "Return slots through rewritten indices; retry moved empty slabs; count0/firstFFFFFFFF/cap32",
+      "Real AllocatorListDomain trim dispatch through D62C78/B6EA60",
+      "Unlink tail then head; retain stale own links/table metadata; drain positive depth2",
+      "Null and nonnull table cleanup preserve header",
+      "Original and rebuilt static hooks in separate processes through real std::atexit",
+      "Static binding preserves full38h preimage and actual list head"
+    ],
+    "rebindings": [
+      "Constructor E188B4 operands and InitializeCriticalSection IAT cell",
+      "B6EA02 table allocation; B6EA34/B6E3E8/B6E400/B6EA81/B6DDF7 canonical free",
+      "Destructor E188B4 operand and Leave/DeleteCriticalSection IAT cells",
+      "CD7D10/CE0E20 fixture pool immediates and copied constructor/destructor/exit target",
+      "CD7D1F real std::atexit"
+    ],
+    "original_exception_handler_immediate": "Unmodified; only normal path executed",
+    "allocation_failure_executed": false,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "permanent_tests_added": 0,
+    "merged_build": "PASS local/node-pool-owner-p-integration.log; integrated cab05995; 2/2 CTests"
+  },
+  "remaining": [
+    "Compose existing native_node_construction.cpp B6F5A0 with this actual raw pool and ActualNativeStringPoolStorage; retain semantic adapter compatibility and required retained terminal/scene binding",
+    "Original exception ABI and allocation-failure execution",
+    "Full point-effect construction and gameplay"
+  ],
+  "ghidra_annotation_audit": [
+    {
+      "address": "00b6ddf0",
+      "before": {
+        "address": "00b6ddf0",
+        "function_name": "FUN_00b6ddf0"
+      },
+      "after": {
+        "address": "00b6ddf0",
+        "name": "BSP_NativeNodePool_FreePointerTable",
+        "evidence": "Hypothesis, not a recovered symbol. ECX actual0Ch table header; RET. Capture backing pointer; nonnull BF6989 free; preserve pointer/count/capacity. Returning-free POP ECX at B6DDFC restored. Live/disk verified complete body; strict Win32 and original-byte normal-path/storage/CRT-exit fixture passed. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner.json. New C++ interface; original exception ABI, allocation failure and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00b6e3d0",
+      "before": {
+        "address": "00b6e3d0",
+        "function_name": "FUN_00b6e3d0"
+      },
+      "after": {
+        "address": "00b6e3d0",
+        "name": "BSP_NativeNodePool_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. ECX actual38h owner; RET. Capture count comparison before D62C78 store; ascending current slab frees, current table free, positive signed depth drain/DeleteCS, D7A0C0/base unlink same E188B4 domain. No node destructors, metadata clears, own-link clears or physical owner free. Live/disk verified complete body; strict Win32 and original-byte normal-path/storage/CRT-exit fixture passed. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner.json. New C++ interface; original exception ABI, allocation failure and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00b6e980",
+      "before": {
+        "address": "00b6e980",
+        "function_name": "FUN_00b6e980"
+      },
+      "after": {
+        "address": "00b6e980",
+        "name": "BSP_NativeNodePool_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. ECX fresh actual38h owner; EAX same owner; RET. Prepend same actual E188B4 allocator list; D62C78 profile; real CS0C/depth24; table28/count2C/cap30/first34 initialization; publish cap32 before80h allocation, current copy/free/replacement publication. DFA8AC states0base,1section,2table; main0to2; cleanup table/section/base. Live/disk verified complete body; strict Win32 and original-byte normal-path/storage/CRT-exit fixture passed. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner.json. New C++ interface; original exception ABI, allocation failure and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00b6ea60",
+      "before": {
+        "address": "00b6ea60",
+        "function_name": "FUN_00b6ea60"
+      },
+      "after": {
+        "address": "00b6ea60",
+        "name": "BSP_NativeNodePool_TrimEmptySlabs",
+        "evidence": "Hypothesis, not a recovered symbol. ECX actual38h owner; D62C78 virtual+00; RET. No internal lock. WORD2F40==32 frees slab, reloads table/count, moves last pointer/decrements count, rewrites all32 moved slot IDs at174 stride178, retries hole. Reset firstFFFFFFFF; captured table cursor/current count scans first nonfull. Capacity retained. Live/disk verified complete body; strict Win32 and original-byte normal-path/storage/CRT-exit fixture passed. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner.json. New C++ interface; original exception ABI, allocation failure and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00cc19ce",
+      "before": {
+        "address": "00cc19ce",
+        "function_name": "FUN_00cc19ce"
+      },
+      "after": {
+        "address": "00cc19ce",
+        "name": "BSP_NativeNodePool_Construct_ExceptionHandler",
+        "evidence": "Hypothesis, not a recovered symbol. Compiler10-byte CC19CE..CC19D7 MOV EAX,DFA8C4; JMP BF6B43. Descriptor maxState3; DFA8AC map0 next-1 CC19B0/403970 base,1 next0 CC19B8/402F70 section,2 next1 CC19C3/B6DDF0 table. B6E980 main advances0to2 after initialized CS/metadata. Handler defined from live/disk verified bytes and saved. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner_definitions_p.json. Original exception dispatch not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00cd7d10",
+      "before": {
+        "address": "00cd7d10",
+        "function_name": "FUN_00cd7d10"
+      },
+      "after": {
+        "address": "00cd7d10",
+        "name": "BSP_Static_InitializeNodePool",
+        "evidence": "Hypothesis, not a recovered symbol. No arguments; EAX actual atexit status; RET. Select actual0108FF58; call B6E980; register CE0E20 through real BF6FF5 atexit; return actual status without rollback. Source binding borrows one actual pool/domain and uses real std::atexit. Live/disk verified complete body; strict Win32 and original-byte normal-path/storage/CRT-exit fixture passed. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner.json. New C++ interface; original exception ABI, allocation failure and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00ce0e20",
+      "before": {
+        "address": "00ce0e20",
+        "function_name": "CG_static_init_00ce0e20",
+        "comment": "[BSP inventory 00ce0e20] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "after": {
+        "address": "00ce0e20",
+        "name": "BSP_Static_DestroyNodePool",
+        "evidence": "Hypothesis, not a recovered symbol. MOV ECX,0108FF58; tail JMP B6E3D0; no arguments. Corrects saved CG_static_init label: this is the exit callback registered by CD7D10. Same actual static owner; CE0E2A padding is outside body. Live/disk verified complete body; strict Win32 and original-byte normal-path/storage/CRT-exit fixture passed. docs/NATIVE_NODE_POOL_OWNER.md; reports/native_node_pool_owner.json. New C++ interface; original exception ABI, allocation failure and gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All seven names/evidence read back; prior comments preserved; project saved; all seven exports refreshed. Complete stored spans verified through ghidra proto; no unresolved body truncation in this packet."
+}

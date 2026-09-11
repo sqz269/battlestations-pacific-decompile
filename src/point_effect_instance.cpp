@@ -1,4 +1,5 @@
 #include "bsp/point_effect_instance.hpp"
+#include "bsp/native_node_pool_allocation.hpp"
 
 #include <cstring>
 #include <new>
@@ -74,6 +75,19 @@ PointEffectInstanceStorage& initialize_point_effect_instance_008680d9(
     ++counters.actual_00f87604;
     ++counters.actual_00f87600;
     return effect;
+}
+
+NativeNodeStorage* construct_point_effect_node_00868193(void* pool,
+    const NativeString& name, NativeStringStorage& strings) {
+    void* const slot = allocate_native_node_00b6ed70(pool);
+    if (!slot) return nullptr;
+    try {
+        return &construct_native_node_00b6f5a0(slot,
+            native_node_pool_payload_bytes, name, strings);
+    } catch (...) {
+        return_native_node_00b6e670(slot, pool);
+        throw;
+    }
 }
 
 void register_point_effect_node_and_parent_008681be(PointEffectInstanceStorage& effect,
