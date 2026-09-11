@@ -96,11 +96,20 @@ GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
     if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
     return *implementation_;
 }
+void GuiWidgetTypeImplementation::set_visible34(GuiWidgetOwner& owner, bool visible) {
+    owner.set_visible_00aa8530(visible);
+}
+void GuiWidgetOwner::set_visible34(bool visible) {
+    implementation().set_visible34(*this, visible);
+}
+void GuiWidgetOwner::propagate_visibility_00aa8450(const GuiWidgetVisibilityArgs& args) {
+    runtime_.propagate_visibility(*this, args);
+}
 NativeModelReference* GuiWidgetOwner::model_reference() noexcept {
     const auto found = runtime_.models_.find(scene_.scene_node);
     return found == runtime_.models_.end() ? nullptr : found->second->reference.get();
 }
-void GuiWidgetOwner::bind_scene_00aa6720(NativeNodeBinding* node) {
+void GuiWidgetOwner::bind_scene_00aa6720(NativeNodeBinding* node) noexcept {
     //Native binding does not retain/release either pointer.
     node_ = node;
     scene_.scene_node = node ? &node->storage : nullptr;
@@ -177,6 +186,7 @@ void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
     refresh_bounds_00aa70e0();
 }
 void GuiWidgetOwner::release_scene_nodes_00aa8320() {
+    implementation().before_scene_release(*this);
     for (const auto& child : layout_.children)
         runtime_.owner(*child).release_scene_nodes_00aa8320();
     //These supported profiles have no glyph-owner secondary node. A new
@@ -220,12 +230,15 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name) 
     auto record = std::make_unique<ModelRecord>();
     void* slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
     if (!slot) return nullptr;
+    // A broken allocator returning an occupied slot did not transfer ownership
+    // of that slot. Do not erase its live record or return it in the unwind.
+    if (models_.count(slot))
+        throw std::logic_error("canonical model pool returned an occupied slot");
     PooledStringStorage strings(environment.nodes.strings);
     NativeString native_name;
     try {
         //Reserve the map node before constructing a native live object.
-        if (!models_.emplace(slot, nullptr).second)
-            throw std::logic_error("canonical model pool returned an occupied slot");
+        models_.emplace(slot, nullptr);
         record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
         native_name.assign_0041e870(strings, name.c_str());
         construct_native_model_00b75030(*record->owner, native_name);
@@ -301,11 +314,15 @@ void GuiWidgetOwnerRuntime::constructed74(GuiLayoutWidget& layout) {
     auto& retained = owner(layout);
     retained.implementation().constructed74(retained);
 }
+void GuiWidgetOwnerRuntime::before_properties(GuiLayoutWidget& layout, const GuiTable& table) {
+    auto& retained = owner(layout);
+    retained.implementation().before_properties(retained, table);
+}
 void GuiWidgetOwnerRuntime::base_properties_bound(GuiLayoutWidget& layout) {
     auto& retained = owner(layout);
     retained.scene_.authored_visible = layout.visible;
     retained.recompose_00aa7220();
-    if (layout.type != GuiWidgetType::Screen) retained.set_visible_00aa8530(layout.visible);
+    if (layout.type != GuiWidgetType::Screen) retained.set_visible34(layout.visible);
 }
 void GuiWidgetOwnerRuntime::properties_bound(GuiLayoutWidget& layout, const GuiTable& table) {
     auto& retained = owner(layout);

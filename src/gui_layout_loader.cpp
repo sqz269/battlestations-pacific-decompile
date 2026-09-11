@@ -685,6 +685,7 @@ void build_widget_children_00aaa710(
         if (entry.second.is_table()) {
             const GuiTable& body = *entry.second.table();
             stored.source = &body;
+            host.on_widget_before_properties(stored, body);
             bind_widget_properties_00aaa710(
                 body, stored, false, host.widescreen_enabled());
             host.on_widget_base_properties_bound(stored, body);
@@ -692,6 +693,7 @@ void build_widget_children_00aaa710(
             host.on_widget_properties_bound(stored, body);
         } else {
             const GuiTable empty;
+            host.on_widget_before_properties(stored, empty);
             bind_widget_properties_00aaa710(empty, stored, false, host.widescreen_enabled());
             host.on_widget_base_properties_bound(stored, empty);
             host.on_widget_properties_bound(stored, empty);
@@ -759,6 +761,7 @@ GuiLayoutPage* load_gui_page_00aa5840(
     if (table) {
         page->script_evaluated = true;
         root->source = table.get();
+        host.on_widget_before_properties(*root, *table);
         bind_widget_properties_00aaa710(
             *table, *root, true, host.widescreen_enabled());
         if (const GuiValue* priority = table->find("Priority")) {
@@ -770,6 +773,7 @@ GuiLayoutPage* load_gui_page_00aa5840(
         host.on_widget_properties_bound(*root, *table);
     } else {
         const GuiTable empty;
+        host.on_widget_before_properties(*root, empty);
         bind_widget_properties_00aaa710(empty, *root, true, host.widescreen_enabled());
         host.on_widget_base_properties_bound(*root, empty);
         host.on_widget_properties_bound(*root, empty);
