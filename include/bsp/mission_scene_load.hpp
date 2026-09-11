@@ -36,8 +36,10 @@ const char* mission_scene_load_block_label(std::uint32_t request) noexcept;
 
 // The five numbered VFS file blocks 004dfb70 opens around the load phases. Each
 // name is the prefix below concatenated with derive_scene_short_name of the
-// scene path. There is no "2_" block: the GvSpace_Init block sits between the
-// "1_" and "3_" blocks.
+// scene path. 004dfb70 itself opens no "2_" block; the "2_" block is opened
+// inside 004d4df0 (load_scene_contents) around scene-file passes 2 and 3
+// (docs/MISSION_SCENE_CONTENTS.md), and the GvSpace_Init block sits between
+// the "1_" and "3_" blocks of this routine.
 enum class MissionLoadPhase {
     WorldConstruction = 1, // "1_", 004dff44; scene file pass 1 and the world
     MissionScript = 3, // "3_", 004e0971; Scripts/missions/<name>.lua
