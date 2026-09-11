@@ -24,7 +24,12 @@ setters must mirror a nonempty display name in preference to the base name,
 and the write-name comparison uses CRT C-string termination after checking
 native header lengths. Their correction and verification are recorded in
 the profile packet. Movie callback re-reads and adapter lifetime were also
-reviewed against native instructions.
+reviewed against native instructions. The prompt review also caught queued
+strings being released before their FIFO node was unlinked. The corrected
+implementation splices the node out first, allowing release-time reentry to
+restore the next prompt. The original fixture failed on the prior commit and
+passed after correction. Native list-count decrement happens after node free;
+the projected `std::list` size changes at unlink and is a documented limit.
 
 ## Startup callers
 
@@ -85,6 +90,14 @@ movie callback replacement during close, prompt preservation/response/timeout,
 and profile callback ownership plus review regressions. The logo regression
 passed in the existing test target. Final combined build and annotation
 results are recorded in `reports/startup_frontend_integration.json`.
+
+The combined code at `53ddca9` passed MSVC Win32 Release and both CTests.
+Movie `b6f62c5`, prompt `8d2a973` and profile `7b30145` are included. All
+42 reviewed names/evidence comments were saved and read back with prior
+comments preserved, and all 42 affected exports were refreshed. Nine new
+function bodies reach their verified final instructions. Eighteen ignored
+worker validation artifacts were retained with matching SHA256 hashes under
+the integrator's `local/worker-validation/startup-20260910/` directory.
 
 This is reconstructed and build-tested control flow with explicit codec,
 renderer, GUI/input, score storage, archive and settings contracts. It is not

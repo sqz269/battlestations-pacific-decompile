@@ -22,11 +22,42 @@
     "worker_ctest": "2/2 each",
     "seed_parity": "8/8",
     "logo_regression": "passed",
-    "combined_build": "pending integration"
+    "combined_build": "passed MSVC Win32 Release",
+    "combined_ctest": "2/2 passed",
+    "validated_code_head": "53ddca9",
+    "independent_review": "three profile/prompt findings corrected and independently verified",
+    "probe_artifacts": "local/worker-validation/startup-20260910/manifest.json",
+    "probe_artifact_count": 18,
+    "build_log": "local/startup-integrate.log"
   },
   "definitions_report": "reports/startup_frontend_definitions.json",
   "partial_flow_repair": "reports/profile_tail_flow_repair.json",
-  "ghidra_annotation": "pending integration",
+  "ghidra_annotation": {
+    "count": 42,
+    "readback": "all names and markers matched",
+    "prior_comments": "preserved",
+    "saved": true,
+    "exports_refreshed": 42,
+    "before_names": "local/startup_names_before.txt",
+    "before_comments": "local/startup_comments_before.json",
+    "after_comments": "local/startup_comments_after.json",
+    "mutation_log": "local/ghidra-annotations-20260911T004930Z.json"
+  },
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "worker_commits": {
+    "movie": "b6f62c5",
+    "prompts": "8d2a973",
+    "profile": "7b30145"
+  },
+  "prompt_list_flow_repair": {
+    "report": "reports/prompt_list_flow_repair.json",
+    "restored_bytes": 7,
+    "remaining_call_gaps": 0
+  },
+  "host_projection_limits": [
+    "prompt list size updates during unlink instead of after native node free",
+    "startup adapter fixed player reference and temporary name conversion",
+    "profile destructor stored Ghidra body remains truncated"
+  ]
 }
