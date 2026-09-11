@@ -264,7 +264,7 @@ const std::uint32_t* mission_start_state_requests_00439020(std::size_t& count) n
 
 // Offsets into the mission-tree record 005c3870 returns. Only what 005c5600
 // reads is listed.
-inline constexpr std::size_t kMissionRecordTitleOffset = 0x0;    // native string pair
+inline constexpr std::size_t kMissionLoadRecordTitleOffset = 0x0;    // native string pair
 inline constexpr std::size_t kMissionRecordSubtitleOffset = 0x8; // native string pair
 // The native string pair sits at +20h; 005c5670 loads its data pointer from
 // +24h and passes that, so an empty string with a null buffer is substituted at
