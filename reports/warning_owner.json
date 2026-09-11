@@ -424,5 +424,15 @@
     "function_definitions": "reports/warning_owner_function_definitions.json",
     "tag_corrections": "reports/warning_owner_tag_corrections.json"
   },
-  "integration_report": "reports/global_subsystems.json:owner_integration_h"
+  "integration_report": "reports/global_subsystems.json:owner_integration_h",
+  "parent_ghidra": {
+    "saved": true,
+    "readback_verified": true,
+    "prior_comments_preserved": true,
+    "count": 58,
+    "before_log": "local/ghidra-annotations-20260911T153357Z.json",
+    "readback": "local/owner_h_comments.json",
+    "exports": "local/owner_h_annotated_exports.log"
+  },
+  "combined_source_revision": "60af126b0099c8d7219af78ee802c90a05cad8d5"
 }
