@@ -286,7 +286,12 @@ void apply_audio_settings_008d5430(const GameSettingsBlock& settings, SettingsAu
     host.sound_set_named_bus_volume(kBusGuiTestSpeech, settings.audio.speech_30); // 008d55bc
     host.sound_set_named_bus_volume(kBusGuiMusic, settings.audio.music_28);  // 008d5647
     float ui_volume = settings.audio.master_20; // 008d568b clamp to [0, 1]
-    ui_volume = std::max(0.0f, std::min(ui_volume, 1.0f));
+    // COMISS/JA then COMISS/JBE preserve unordered values and negative zero.
+    if (ui_volume < 0.0f) {
+        ui_volume = 0.0f;
+    } else if (ui_volume > 1.0f) {
+        ui_volume = 1.0f;
+    }
     host.ui_sound_set_master_volume(ui_volume); // 008d56b0
 }
 
