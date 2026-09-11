@@ -95,6 +95,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_dynamic_buffer_device_release.cpp
   src/native_resource_creation_flags.cpp
   src/native_physical_buffer_access.cpp
+  src/native_occlusion_query_device_reset.cpp
   src/native_hardware_layout_owner.cpp
   src/native_logical_index_owner.cpp
   src/native_retained_memory_owners.cpp

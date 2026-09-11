@@ -1,0 +1,1167 @@
+{
+  "schema_version": 1,
+  "packet": "native_diagnostic_sink_lifetime3",
+  "utc": "2026-09-11T06:31:17.451685+00:00",
+  "status": "Worker complete: three actual-provider functions; full original FH3 fixture verified; primary integration pending.",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native-diagnostic-sink-lifetime-20260910",
+  "branch": "agent/native-diagnostic-sink-lifetime-20260910",
+  "base_commit": "b327e7d6abd79bcea5c24cc1849c8262f1fee7a3",
+  "owned_addresses": [
+    "004c14c0",
+    "004bbca0",
+    "00411ee0"
+  ],
+  "owned_files": [
+    "include/bsp/native_diagnostic_sink_lifetime.hpp",
+    "src/native_diagnostic_sink_lifetime.cpp",
+    "docs/NATIVE_DIAGNOSTIC_SINK_LIFETIME.md",
+    "reports/native_diagnostic_sink_lifetime_audit.json"
+  ],
+  "scope": "Exact four-byte diagnostic singleton and raw eight-byte native-section guard. Actual shared SingletonLifetimeDomain, CRT and Windows providers. No semantic GUI singleton, fake manager, permanent tests, shared CMake/ledger/analysis mutation.",
+  "functions": [
+    {
+      "address": "004c14c0",
+      "end_exclusive": "004c156a",
+      "native_bytes": 170,
+      "native_instructions": 47,
+      "old_ghidra_name": "BSP_DiagnosticSink_GetOrCreate",
+      "proposed_ghidra_name": "BSP_DiagnosticSink_GetOrCreate",
+      "preserve_existing_name": true,
+      "requires_function_creation": false,
+      "name_status": "Provisional descriptive name, not recovered symbol.",
+      "native_abi": "No native arguments; EAX current publication; RET.",
+      "cpp_api": "native_diagnostic_sink_get_or_create_004c14c0",
+      "behavior": "Lock/recheck/allocate4/publish/second-manager/current-publication registration/captured unlock/final current publication.",
+      "native_preimage": {
+        "address": "004c14c0",
+        "end_exclusive": "004c156a",
+        "length": 170,
+        "role": "full_owned_getter",
+        "raw_offset": 791744,
+        "bytes_hex": "64a1000000006aff68684fc6005064892500000000a114cf090183ec0885c0757a56e8693ef5ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833d14cf09010075306a04e8fe52730083c40485c07408c7002c75ce00eb0233c0a314cf0901e8183ef5ff8b0d14cf0901518bc8e8eaf6700085f6740b834618ff56ff151022ce00a114cf09015e8b4c240864890d0000000083c414c3",
+        "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "address": "004c1569",
+            "operand": ""
+          }
+        ]
+      },
+      "evidence_status": "Complete original extent freshly live/disk verified; reconstructed, strict-build-tested and complete-original fixture-tested; new C++ interface, not native ABI/game validated."
+    },
+    {
+      "address": "004bbca0",
+      "end_exclusive": "004bbcc9",
+      "native_bytes": 41,
+      "native_instructions": 12,
+      "old_ghidra_name": null,
+      "proposed_ghidra_name": "BSP_DiagnosticSink_ScalarDeletingDestructor",
+      "preserve_existing_name": false,
+      "requires_function_creation": true,
+      "name_status": "Provisional descriptive name, not recovered symbol.",
+      "native_abi": "ECX actual four-byte owner; stack flags; EAX original owner; RET4.",
+      "cpp_api": "delete_native_diagnostic_sink_004bbca0",
+      "behavior": "Test low flags bit0; unconditional publication clear, base profile; actual free iff bit0; preserve return identity; no unregister.",
+      "native_preimage": {
+        "address": "004bbca0",
+        "end_exclusive": "004bbcc9",
+        "length": 41,
+        "role": "full_owned_delete",
+        "raw_offset": 769184,
+        "bytes_hex": "f644240401568bf1c70514cf090100000000c7061838ce00740956e8eca8730083c4048bc65ec20400",
+        "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "address": "004bbcc6",
+            "operand": "4"
+          }
+        ]
+      },
+      "evidence_status": "Complete original extent freshly live/disk verified; reconstructed, strict-build-tested and complete-original fixture-tested; new C++ interface, not native ABI/game validated."
+    },
+    {
+      "address": "00411ee0",
+      "end_exclusive": "00411ef9",
+      "native_bytes": 25,
+      "native_instructions": 8,
+      "old_ghidra_name": "FUN_00411ee0",
+      "proposed_ghidra_name": "BSP_SystemSingletonGuard_Destroy",
+      "preserve_existing_name": false,
+      "requires_function_creation": false,
+      "name_status": "Provisional descriptive name, not recovered symbol.",
+      "native_abi": "ECX actual eight-byte guard; RET.",
+      "cpp_api": "destroy_native_singleton_guard_00411ee0",
+      "behavior": "Capture raw guard+4 before profile reset; nonnull capture decrements current native section+18 then actual Leave; preserve raw guard+4.",
+      "native_preimage": {
+        "address": "00411ee0",
+        "end_exclusive": "00411ef9",
+        "length": 25,
+        "role": "full_owned_guard",
+        "raw_offset": 73440,
+        "bytes_hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "address": "00411ef8",
+            "operand": ""
+          }
+        ]
+      },
+      "evidence_status": "Complete original extent freshly live/disk verified; reconstructed, strict-build-tested and complete-original fixture-tested; new C++ interface, not native ABI/game validated."
+    }
+  ],
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "guard": "Each fresh live bytes/proto/comments read uses bsp.py ghidra project/program/language/image-base guard.",
+    "fresh_spans": 15,
+    "all_live_bytes_match_disk": true
+  },
+  "storage": {
+    "native_owner_bytes": 4,
+    "publication_address": "0109cf14",
+    "owner_profile": "00ce752c",
+    "base_profile": "00ce3818",
+    "guard_profile": "00ce37fc",
+    "raw_guard_bytes": 8,
+    "raw_guard_section_offset": "04",
+    "raw_guard_points_to": "Actual Win32 CRITICAL_SECTION, never C++ SystemSingletonCriticalSection projection.",
+    "tracked_counter_physical_offset": "18",
+    "application_lifetime_global": "01090aa0"
+  },
+  "api": {
+    "getter": "NativeDiagnosticSinkStorage* native_diagnostic_sink_get_or_create_004c14c0(NativeDiagnosticSinkStorage* volatile& actual_published_0109cf14, SingletonLifetimeDomain& actual_lifetime)",
+    "scalar": "NativeDiagnosticSinkStorage* delete_native_diagnostic_sink_004bbca0(NativeDiagnosticSinkStorage& owner, uint32_t flags, NativeDiagnosticSinkStorage* volatile& actual_published_0109cf14) noexcept",
+    "guard": "void destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard)",
+    "contract": "Publication and shared domain are the actual application objects. Domain destroy_registered must dispatch this actual scalar deleter with flags1. The new C++ manager layout is not native manager+10."
+  },
+  "actual_dependencies": [
+    {
+      "address": "00415350",
+      "provider": "SingletonLifetimeDomain::get_manager_00415350",
+      "contract": "Actual shared domain; called twice only on allocation path."
+    },
+    {
+      "address": "00bf681b",
+      "provider": "singleton_lifetime_allocate",
+      "contract": "Existing actual CRT retry/new-handler allocation; native_bytes4, host_bytes4."
+    },
+    {
+      "address": "00bd0c30",
+      "provider": "ConcreteSingletonLifetimeManager::register_object",
+      "contract": "Actual retained pointer-container validation and registration, including returning/throwing invalid_parameter."
+    },
+    {
+      "address": "00bf65ac",
+      "provider": "singleton_lifetime_free",
+      "contract": "Existing noexcept actual CRT free."
+    },
+    {
+      "address": "00ce2218 / 00ce2210",
+      "provider": "Actual EnterCriticalSection / LeaveCriticalSection",
+      "contract": "Captured physical native pointer; current +18 increment after enter and decrement before leave."
+    }
+  ],
+  "exception_evidence": {
+    "native_handler": "00c64f68",
+    "funcinfo": "00d8d5b8",
+    "unwind_map": "00d8d5b0",
+    "cleanup_action": "00c64f60",
+    "cleanup_endpoint": "00411ee0",
+    "magic": "19930522",
+    "max_state": 1,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "Captured guard at EBP-14 ->00411EE0"
+      }
+    ],
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "arm_after": "Actual Enter returns and current physical counter increments.",
+    "normal_leave": "State0 remains armed through normal current-counter decrement and actual Leave.",
+    "registration_failure": "Leaves publication/allocation intact; only captured guard cleanup runs.",
+    "native_execution": true,
+    "exception_test_domain": "Original copied FH3 and real vcruntime140. Actual manager validation throws marker; Windows observers throw only after forwarding the actual operation. Pre-arm Enter and normal Leave distinctions verified; /EHsc asynchronous-SEH and second-exception parity unclaimed."
+  },
+  "ordering": {
+    "warm": "Capture first volatile publication and return it without providers.",
+    "cold": "Get actual manager; capture native pointer; form guard; optional Enter then current counter++; armstate0; recheck; allocate4; profile; publish; get manager again; reload publication; actualregister; counter--; actualLeave; final volatile publication read.",
+    "guard": "Capture+4; storeCE37FC; if capture nonnull counter-- then actualLeave; preserve+4.",
+    "scalar": "Testbit0; clearpublication; baseprofile; optionalactualfree; returnoriginal. No managerunregister."
+  },
+  "native_spans": [
+    {
+      "address": "004c14c0",
+      "end_exclusive": "004c156a",
+      "length": 170,
+      "role": "full_owned_getter",
+      "raw_offset": 791744,
+      "bytes_hex": "64a1000000006aff68684fc6005064892500000000a114cf090183ec0885c0757a56e8693ef5ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833d14cf09010075306a04e8fe52730083c40485c07408c7002c75ce00eb0233c0a314cf0901e8183ef5ff8b0d14cf0901518bc8e8eaf6700085f6740b834618ff56ff151022ce00a114cf09015e8b4c240864890d0000000083c414c3",
+      "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "004c1569",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "004bbca0",
+      "end_exclusive": "004bbcc9",
+      "length": 41,
+      "role": "full_owned_delete",
+      "raw_offset": 769184,
+      "bytes_hex": "f644240401568bf1c70514cf090100000000c7061838ce00740956e8eca8730083c4048bc65ec20400",
+      "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "004bbcc6",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00411ee0",
+      "end_exclusive": "00411ef9",
+      "length": 25,
+      "role": "full_owned_guard",
+      "raw_offset": 73440,
+      "bytes_hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+      "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00411ef8",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00c64f60",
+      "end_exclusive": "00c64f68",
+      "length": 8,
+      "role": "full_guard_unwind",
+      "raw_offset": 8802144,
+      "bytes_hex": "8d4dece978cf7aff",
+      "sha256": "3222ccb7953b854b137f7f49d727ff786e1896319f7f6c46b13442c01ad067c1",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00c64f68",
+      "end_exclusive": "00c64f72",
+      "length": 10,
+      "role": "full_handler",
+      "raw_offset": 8802152,
+      "bytes_hex": "b8b8d5d800e9d11bf9ff",
+      "sha256": "0dcffa68416af86f5c4408787989e1b7e4e3a1056ea2bb153173b1c6c2bb14a7",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00d8d5b0",
+      "end_exclusive": "00d8d5b8",
+      "length": 8,
+      "role": "unwind_map",
+      "raw_offset": 10016176,
+      "bytes_hex": "ffffffff604fc600",
+      "sha256": "870241559e73bb28a8297dfd7dffd2da3cbd877fb5a83e5d23d19c37174fbde6",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d8d5b8",
+      "end_exclusive": "00d8d5dc",
+      "length": 36,
+      "role": "funcinfo",
+      "raw_offset": 10016184,
+      "bytes_hex": "2205931901000000b0d5d800000000000000000000000000000000000000000001000000",
+      "sha256": "288f281ebf97febec23aee4f7d1cef696ce64b57602abaf7ee5aee67c8825f78",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0109cf14",
+      "end_exclusive": "0109cf18",
+      "length": 4,
+      "role": "actual_publication",
+      "raw_offset": 4294967295,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce2218",
+      "end_exclusive": "00ce221c",
+      "length": 4,
+      "role": "actual_enter_iat",
+      "raw_offset": 9314840,
+      "bytes_hex": "b856a000",
+      "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce2210",
+      "end_exclusive": "00ce2214",
+      "length": 4,
+      "role": "actual_leave_iat",
+      "raw_offset": 9314832,
+      "bytes_hex": "8856a000",
+      "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6b43",
+      "end_exclusive": "00bf6b48",
+      "length": 5,
+      "role": "host_fh3_entry_prefix",
+      "raw_offset": 8350531,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00415350",
+      "end_exclusive": "00415355",
+      "length": 5,
+      "role": "getter_provider_prefix",
+      "raw_offset": 86864,
+      "bytes_hex": "6aff68dbe0",
+      "sha256": "6426f859eacc9c3112aace060019e686ae1d0c42b0eccc7077c9c9274f746a91",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "role": "allocation_provider_prefix",
+      "raw_offset": 8349723,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bd0c30",
+      "end_exclusive": "00bd0c35",
+      "length": 5,
+      "role": "registration_provider_prefix",
+      "raw_offset": 8195120,
+      "bytes_hex": "568bf18b46",
+      "sha256": "07c12b9d69520518eca87f5215f83fcffc895ddd38b6bc3366600ab9211abfe6",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "role": "free_provider_prefix",
+      "raw_offset": 8349100,
+      "bytes_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true
+    }
+  ],
+  "fixture_relocations": [
+    {
+      "address": "004c14c9",
+      "expected": "00c64f68",
+      "kind": "instruction_absolute_immediate"
+    },
+    {
+      "address": "004c14d6",
+      "expected": "0109cf14",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004c14fd",
+      "expected": "00ce2218",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004c150f",
+      "expected": "0109cf14",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004c152f",
+      "expected": "0109cf14",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004c153a",
+      "expected": "0109cf14",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004c1551",
+      "expected": "00ce2210",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004c1556",
+      "expected": "0109cf14",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "004bbcaa",
+      "expected": "0109cf14",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00411ef4",
+      "expected": "00ce2210",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00c64f69",
+      "expected": "00d8d5b8",
+      "kind": "instruction_absolute_immediate"
+    },
+    {
+      "address": "00d8d5b4",
+      "expected": "00c64f60",
+      "kind": "unwind_action"
+    },
+    {
+      "address": "00d8d5c0",
+      "expected": "00d8d5b0",
+      "kind": "funcinfo_unwind_map"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 1471,
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "bytes": 3472,
+      "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    }
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "./local/build_diagnostic_sink.ps1 -> ./scripts/build.ps1",
+      "passed": true,
+      "configuration": "MSVC Win32 Release /fp:strict; ignored local source registration.",
+      "existing_CTests": 2,
+      "seed_matches": 8,
+      "library_sha256": "0a93d014abb4632d8b52a24f8e754443605e044c1458fcb4a8616d70dc188d46"
+    },
+    "private_fixture": {
+      "passed": true,
+      "scenarios": 15,
+      "original_owned_bytes": 236,
+      "original_total_copied_bytes": 335,
+      "full_original_EH": true,
+      "all_full_postimages_verified": true,
+      "relocation_preimages": 13,
+      "actual_compiled_provider_trampolines": 8,
+      "real_module_entry16_captures": 14,
+      "all_entry16_match_disk_with_only_loader_relocations": true,
+      "trace_words": 38274,
+      "trace_bytes": 153096,
+      "trace_sha256": "31c1d12140ccc8a4522848ba049790e019df2a2f6e234d999ba92e881977a23d",
+      "snapshot_count": 128,
+      "actual_provider_calls_per_process": 57,
+      "publication_raw_guard_writes_per_process": 17,
+      "all_114_call_PCs_and_34_write_PCs_verified": true,
+      "actual_manager_shutdowns": [
+        {
+          "scenario": 1,
+          "owner": 1,
+          "flags": 1,
+          "published_after": 0
+        },
+        {
+          "scenario": 4,
+          "owner": 2,
+          "flags": 1,
+          "published_after": 0
+        },
+        {
+          "scenario": 5,
+          "owner": 1,
+          "flags": 1,
+          "published_after": 0
+        },
+        {
+          "scenario": 7,
+          "owner": 1,
+          "flags": 1,
+          "published_after": 0
+        },
+        {
+          "scenario": 8,
+          "owner": 1,
+          "flags": 1,
+          "published_after": 0
+        },
+        {
+          "scenario": 9,
+          "owner": 1,
+          "flags": 1,
+          "published_after": 0
+        },
+        {
+          "scenario": 14,
+          "owner": 1,
+          "flags": 1,
+          "published_after": 0
+        }
+      ],
+      "library_link": "Unmodified full build bsp_core.lib snapshot; linker providers native_diagnostic_sink_lifetime.obj and singleton_lifetime.obj.",
+      "provider_observation": "Four actual compiled provider entry detours preserve whole original instructions and forward untouched bodies; every trampoline byte verified. Actual ntdll synchronization and ucrtbase allocation/free forwarded exactly once. Native twenty-byte manager carrier exposes the genuine current section+10, with actual domain and registration behind explicit ABI bridges.",
+      "fault_and_mutation_injection": "Only fixture state/observers: current publication/current section changes; invalid slots repaired or thrown by real manager callback; marker after real OS entry/leave; raw guard pointer changed at original/compiled profile write. No substitute owner/manager/OS implementation.",
+      "native_fixture_only_link_flag": "/SAFESEH:NO for copied native exception code.",
+      "full_verification_artifact": "local/diagnostic_sink_fixture/verified.json",
+      "decoded_trace": "local/diagnostic_sink_fixture/decoded_trace.json"
+    }
+  },
+  "scenarios": [
+    {
+      "id": 0,
+      "description": "Warm publication skips all providers"
+    },
+    {
+      "id": 1,
+      "description": "Cold create/register; later warm no re-registration; real shutdown"
+    },
+    {
+      "id": 2,
+      "description": "Actual Enter observer publishes owner; recheck skips allocation/register"
+    },
+    {
+      "id": 3,
+      "description": "Actual manager validation throws; published allocation survives; captured guard unlocks; later warm does not retry"
+    },
+    {
+      "id": 4,
+      "description": "Normal actual Leave publishes another actual owner; final return follows mutation; shutdown clears unrelated current publication"
+    },
+    {
+      "id": 5,
+      "description": "Normal Leave throws after real operation with two prior recursive entries; state0 invokes second real leave"
+    },
+    {
+      "id": 6,
+      "description": "Entry observer throws after real Enter before counter/state0; no cleanup"
+    },
+    {
+      "id": 7,
+      "description": "Entry changes current projection; captured original section still decremented/unlocked"
+    },
+    {
+      "id": 8,
+      "description": "Current section is null; actual allocation/registration proceed without OS calls"
+    },
+    {
+      "id": 9,
+      "description": "Second actual getter publishes different actual owner before registration argument reload"
+    },
+    {
+      "id": 10,
+      "description": "Scalar flags0,2,3; unconditional clear/base; actual free iff low bit"
+    },
+    {
+      "id": 11,
+      "description": "Null raw guard; profile only"
+    },
+    {
+      "id": 12,
+      "description": "Raw guard profile-write observer changes+4; captured original section is decremented/unlocked"
+    },
+    {
+      "id": 13,
+      "description": "Raw guard tracked counter0 wrapsFFFFFFFF before actual Leave"
+    },
+    {
+      "id": 14,
+      "description": "Actual validation callback repairs pointer end and returns; actual register continues"
+    }
+  ],
+  "integration": {
+    "worker_mutations": "Only four owned tracked files; no Ghidra/ledger/shared CMake changes.",
+    "primary_actions": [
+      "Add owned source to main CMake.",
+      "Preserve existing getter name; create missing scalar function from full41-byte extent.",
+      "Append evidence comments while preserving original values; use write lock and save Ghidra.",
+      "Add sharded name/function ledger records and refresh exports/index.",
+      "Rerun proportionate primary strict build and review private fixture evidence."
+    ],
+    "old_analysis_preimages": [
+      "local/diagnostic_sink_old_004c14c0_proto.txt",
+      "local/diagnostic_sink_old_004c14c0_comments.txt",
+      "local/diagnostic_sink_old_004bbca0_proto.txt",
+      "local/diagnostic_sink_old_004bbca0_comments.txt",
+      "local/diagnostic_sink_old_00411ee0_proto.txt",
+      "local/diagnostic_sink_old_00411ee0_comments.txt"
+    ]
+  },
+  "replay": [
+    "./local/build_diagnostic_sink.ps1",
+    "Copy-Item build/win32/Release/bsp_core.lib local/diagnostic_sink_fixture/bsp_core.lib",
+    "./local/build_diagnostic_sink_fixture.ps1",
+    "python local/prepare_diagnostic_sink_hooks.py",
+    "python local/run_diagnostic_sink_fixture.py",
+    "python local/verify_diagnostic_sink_fixture.py"
+  ],
+  "unclaimed": [
+    "native drop-in ABI or global publication race safety",
+    "game execution or visual behavior",
+    "native access-fault/SEH parity under /EHsc",
+    "allocator-null/OOM branch runtime execution; actual CRT four-byte allocation succeeds and otherwise throws",
+    "native runtime internals of already reconstructed singleton providers; original getter uses explicit genuine-provider layout carrier",
+    "Arbitrary second exception during native unwind."
+  ],
+  "private_artifact_root": "J:/PROG/battlestations-pacific-decompile-native-diagnostic-sink-lifetime-20260910",
+  "private_artifacts": [
+    {
+      "path": "build/diagnostic-sink-fixture/build.cmd",
+      "bytes": 847,
+      "sha256": "376c2aae3c78c66df8cfc6b2581fe5508eb0ebc7da9f4a6202daaed592476fc7",
+      "tracked": false
+    },
+    {
+      "path": "build/diagnostic-sink-fixture/diagnostic_sink_fixture.exe",
+      "bytes": 58368,
+      "sha256": "f0ba2eac267b70040e29d4e3350583aa419ace88689394d0a502fa0d79c81d26",
+      "tracked": false
+    },
+    {
+      "path": "build/diagnostic-sink-fixture/diagnostic_sink_fixture.map",
+      "bytes": 100731,
+      "sha256": "863a2de5086be9f82c3f324eb42a789b782a52d3941d3efd09fd59550f0e73e0",
+      "tracked": false
+    },
+    {
+      "path": "build/diagnostic-sink-fixture/fixture.obj",
+      "bytes": 239729,
+      "sha256": "29682ad3ff52caaa60f364fd2e716086a6ca19f563b4e19dee77f6f4b5a7f654",
+      "tracked": false
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+      "bytes": 4673,
+      "sha256": "090ed429fdebec392cff7723fce290cda1ae77959767cfd76e06e64c2959b3fa",
+      "tracked": false
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "bytes": 32983,
+      "sha256": "4342af3d709771ce9bf87e206c92271a371156fe679fcbc505d08eb5f298617c",
+      "tracked": false
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 104749,
+      "sha256": "b9e19a6ee82c938b50c8d3e22390f610b3a79aab79e4751a9227b4990b96dbd6",
+      "tracked": false
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 27025306,
+      "sha256": "0a93d014abb4632d8b52a24f8e754443605e044c1458fcb4a8616d70dc188d46",
+      "tracked": false
+    },
+    {
+      "path": "local/build_diagnostic_sink.ps1",
+      "bytes": 1096,
+      "sha256": "68b1308841d618d14a6e343f1b232b43dae84178bdc9728ca6db8877b6b31e09",
+      "tracked": false
+    },
+    {
+      "path": "local/build_diagnostic_sink_fixture.ps1",
+      "bytes": 1311,
+      "sha256": "3cf6cc2f76ead0153dd2bce1e72c220d639cb68385faa86048c56805291b77a0",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_00411ee0.asm",
+      "bytes": 244,
+      "sha256": "2a5f4334149c8f066993a1ae014a0a631b81224ad2cbb75cfac2678b9ecac809",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_004bbca0.asm",
+      "bytes": 313,
+      "sha256": "004666dab865ba9735f0b719fce9652005dfff2e9303df68c2518b41d920c713",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_004c14c0.asm",
+      "bytes": 1381,
+      "sha256": "a0d906a4ea59fb63ff49d6ce03c5b6436216d3b1f38d23ff5c46077f09eeb997",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_00c64f60.asm",
+      "bytes": 57,
+      "sha256": "392e0982ff4bf14e147666e4263a37abd461ffd8d9638c22de970f81af7ecb82",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_00c64f68.asm",
+      "bytes": 53,
+      "sha256": "7e9620a5b078f7208b676d162f3ba9e2a6645e355052659177d2cc55717692fe",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_build.log",
+      "bytes": 2367,
+      "sha256": "33cb4584b126b90135808e65a4cfd9993ddfdcc224a4e49b4c0f4a06c4e18f77",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/bsp_core.lib",
+      "bytes": 27025306,
+      "sha256": "0a93d014abb4632d8b52a24f8e754443605e044c1458fcb4a8616d70dc188d46",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/decoded_trace.json",
+      "bytes": 133704,
+      "sha256": "a6070822981b8343c576ea5136652910b2f962cfbb984d06797866460d30221e",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/fixture.cpp",
+      "bytes": 27667,
+      "sha256": "2166a5b402cf572992acd48e1bcc798f3706ae48c4d78bbfcd629612a11b071e",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/hooks.json",
+      "bytes": 3493,
+      "sha256": "8b192cd1a7cd825054a73f24e7016972957143d72839116a8cb27c2e764e1af8",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/hooks.txt",
+      "bytes": 75,
+      "sha256": "723f4998359e7a5dd9e258cbfef9d02ac8f4cb4e65cb5b89aabb8d858c9df689",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/bindings.json",
+      "bytes": 192,
+      "sha256": "e79f0560a544364f8289efa1c2896a80ef80f1411e0f25c0484ca9345c17f7ad",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/calls.json",
+      "bytes": 3908,
+      "sha256": "469c3f2ae3d24005ab6de9a8e0d624a2138fbe446a483a9d30204640ba97ec6f",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/detours.txt",
+      "bytes": 347,
+      "sha256": "74619411fec462d3e0b163dd8fa1406dfcdb8b35171dd79b00fad56bebf95647",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/iat.txt",
+      "bytes": 98,
+      "sha256": "2257d7b82c335341bfd28dd9064641b2522f6673e44338fe8ddd8a8178f54dd3",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/modules.txt",
+      "bytes": 1133,
+      "sha256": "af97f4be46becd63d78013173b161e783354643749a5dfdd27c15a37e85dc5c2",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/postimage.bin",
+      "bytes": 335,
+      "sha256": "3b2b026be76a2f4e0b7b7743f6a44d3999bb3e79af2de336a09bb1fbdfd5c605",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/result.json",
+      "bytes": 106,
+      "sha256": "b96719bf7daca2a8bb741835d9550d51a14340df8f8e00d36f7cf395952853bd",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/run.log",
+      "bytes": 118,
+      "sha256": "d56d02fc095a01cbf2e73a48b20088ca92fdf7331e8e2f817cdcf5cf195f17e4",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/shutdowns.bin",
+      "bytes": 112,
+      "sha256": "3703d3cabc6659ae9349ebdb367cc1acb5cdda25d38de001f90371a844b99f18",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/trace.bin",
+      "bytes": 153096,
+      "sha256": "31c1d12140ccc8a4522848ba049790e019df2a2f6e234d999ba92e881977a23d",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/host/writes.json",
+      "bytes": 1068,
+      "sha256": "e21db1054599e91230e054e1db6d48213aa32a6d31ebd0c5b2e27b4df04121bf",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/bindings.json",
+      "bytes": 192,
+      "sha256": "984f5e8855486211e79c0c39bb28c8acd58d1fc36f27b9caa5ddceeede0ee0d7",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/calls.json",
+      "bytes": 3928,
+      "sha256": "dcf9955e1a32e4203b2b7e63443b652cd77ec2ab736349165b40b3d0800a49cb",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/detours.txt",
+      "bytes": 347,
+      "sha256": "2f8c9e06ad71091b87c2f8d8e617b4d990fc153d1ec0002c03c83a5b1ed3faec",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/iat.txt",
+      "bytes": 98,
+      "sha256": "2257d7b82c335341bfd28dd9064641b2522f6673e44338fe8ddd8a8178f54dd3",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/modules.txt",
+      "bytes": 1133,
+      "sha256": "af97f4be46becd63d78013173b161e783354643749a5dfdd27c15a37e85dc5c2",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/postimage.bin",
+      "bytes": 335,
+      "sha256": "edbc8f7ee82a13a0737c45c960582aec11c26e840b66686a032a83a61b772c15",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/result.json",
+      "bytes": 106,
+      "sha256": "b96719bf7daca2a8bb741835d9550d51a14340df8f8e00d36f7cf395952853bd",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/run.log",
+      "bytes": 118,
+      "sha256": "d56d02fc095a01cbf2e73a48b20088ca92fdf7331e8e2f817cdcf5cf195f17e4",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/shutdowns.bin",
+      "bytes": 112,
+      "sha256": "3703d3cabc6659ae9349ebdb367cc1acb5cdda25d38de001f90371a844b99f18",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/trace.bin",
+      "bytes": 153096,
+      "sha256": "31c1d12140ccc8a4522848ba049790e019df2a2f6e234d999ba92e881977a23d",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/runs/native/writes.json",
+      "bytes": 1068,
+      "sha256": "444928d12e589caae127ac08806e9143d3b1a893d01e7f056007f866df988f5a",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture/verified.json",
+      "bytes": 134390,
+      "sha256": "ead45c1931d9d3cd64661e0dad783a7c49efe678522e9b7b7b4a8e6ea4d10998",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_fixture_build.log",
+      "bytes": 13,
+      "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00411ee0.txt",
+      "bytes": 126,
+      "sha256": "3f67c75e87463d661704fb53419f1b4544a97b731fb77a28665ca02576a2dd70",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00415350.txt",
+      "bytes": 33,
+      "sha256": "309cb2b15db1d2218468fa30ec2ebe1616946ad5ed4c4347c8e7e42f2f44698b",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_004bbca0.txt",
+      "bytes": 203,
+      "sha256": "9f5503c1cc7ec096ee858725562b9c887c453c4dbc02d9dbcf992ed293e25c2b",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_004c14c0.txt",
+      "bytes": 823,
+      "sha256": "f3106457c48abbc7b8d3746efbc41394d1a39917e07d01612160305574a49ebf",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00bd0c30.txt",
+      "bytes": 33,
+      "sha256": "e6448e541ee5972e1ddc9bc729d05dcc9aad8f9bd22e7a8ce5cb0f28a04b91c8",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00bf65ac.txt",
+      "bytes": 33,
+      "sha256": "3644837c583910bd51d56c2737cdd2ffffa8fbc16c782ca4280e7a7d67977017",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00bf681b.txt",
+      "bytes": 33,
+      "sha256": "ca146872dceb616cb7924a2000172ff109813339785fb9d31c52103c2b471c79",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00bf6b43.txt",
+      "bytes": 33,
+      "sha256": "097d3d6d6e023a7f934487b934bffdc04d57b0b5811a1e9966770453ba241ca2",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00c64f60.txt",
+      "bytes": 45,
+      "sha256": "64cbe50949ee47fe8ea306cfdfa46fcc20b2f0283d1622367374933e945a3526",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00c64f68.txt",
+      "bytes": 53,
+      "sha256": "81abb41f482f8680bfe9d10597a89e357b03cd9281b53bb8a93ecd682787a620",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00ce2210.txt",
+      "bytes": 29,
+      "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00ce2218.txt",
+      "bytes": 29,
+      "sha256": "ee5099081c36f9c261ece4cb33d2bd0aaf07633d77eae228411563b1be9b0bfc",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00d8d5b0.txt",
+      "bytes": 45,
+      "sha256": "850af42d0acb05c76b3644d7ec4c811e9ce53d6c0f4196672319beadda8080e5",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_00d8d5b8.txt",
+      "bytes": 183,
+      "sha256": "aa9e8144092433ce5ac0ae415caa4e574a705e2b3db44f81111fcb29627907eb",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_live_0109cf14.txt",
+      "bytes": 29,
+      "sha256": "8298f8c0d0f0e008f87971530746765ada5d6dee28f157c073d794ff53dcffca",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_old_00411ee0_comments.txt",
+      "bytes": 140,
+      "sha256": "e0701068ce60ff0aaa53b9fc12f4e35abac7c08c97e778701cded7b25c0dc3d0",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_old_00411ee0_proto.txt",
+      "bytes": 792,
+      "sha256": "025a4e462da8cc035f498a5543ccbd66791e1488ac63f208257a9eefa1f4cd71",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_old_004bbca0_comments.txt",
+      "bytes": 943,
+      "sha256": "1ab9526719d4b4a0ef2b369a8bbede0f2baf33b3ccd92df67e85808bd88d068f",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_old_004bbca0_proto.txt",
+      "bytes": 141,
+      "sha256": "6e92e8b402ff3dccf000ec30e788c22d99c8f481a96558c06086d5d420cc9038",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_old_004c14c0_comments.txt",
+      "bytes": 1183,
+      "sha256": "8c86c3609028d9b126334a825059e8c09bac2044476ec523a1df0dbde5afc3b0",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_old_004c14c0_proto.txt",
+      "bytes": 1610,
+      "sha256": "94a3e93e870e560302eb91e50a22bdab9a65a52058a4d028900b92324a54a42d",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_preparation.json",
+      "bytes": 9493,
+      "sha256": "294dadef551653a2cf3e13f9c25702100c7dbb0f3c734a3da56eec15a074f440",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_preparation.log",
+      "bytes": 130,
+      "sha256": "5f8343e43f6e7e587db9e3902644ca7bc01b0ec62c1361997ae2c25acd3770dc",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_registration.cmake",
+      "bytes": 132,
+      "sha256": "c309fb36d6a9fb465f4654c150deec6261dd390f63508c0a2cfdcc18d0b71754",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_spans.hpp",
+      "bytes": 3915,
+      "sha256": "9c2ea818304154893ab7cd4901750e0646b38683fe13eff349bdb79dca31f7ae",
+      "tracked": false
+    },
+    {
+      "path": "local/diagnostic_sink_verify_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "tracked": false
+    },
+    {
+      "path": "local/prepare_diagnostic_sink.py",
+      "bytes": 5408,
+      "sha256": "e3fc7c0632e4ff74fb9e127eeaaca53beed5fb2abc901730227573da0ff1cba6",
+      "tracked": false
+    },
+    {
+      "path": "local/prepare_diagnostic_sink_hooks.py",
+      "bytes": 2080,
+      "sha256": "48e35a6a88d5f700d4daeb2d20415cad55d3c09c0e46fb445d8acc1071f47b13",
+      "tracked": false
+    },
+    {
+      "path": "local/run_diagnostic_sink_fixture.py",
+      "bytes": 1126,
+      "sha256": "f8382fa408653112d499c4ea8443409ae4d9e1dbb1d6a60b824ea6046c04aab8",
+      "tracked": false
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "tracked": false
+    },
+    {
+      "path": "local/verify_diagnostic_sink_fixture.py",
+      "bytes": 17361,
+      "sha256": "62ae6a2191d4df0cfc9f15b53d42456dd827a661d81bb86b92562d766ad3abda",
+      "tracked": false
+    },
+    {
+      "path": "local/write_diagnostic_sink_audit.py",
+      "bytes": 11860,
+      "sha256": "827a0453768821f514ba55f465f8da592115dcb90a0416068df43006756a936c",
+      "tracked": false
+    }
+  ]
+}
